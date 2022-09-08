@@ -7,8 +7,12 @@ import sys
 import ssg.constants
 import ssg.yaml
 import io
+import re
 
-machine_cpe = "#machine"
+
+BASH_MACHINE_CONDITIONAL = re.compile('^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.M)
+ANSIBLE_MACHINE_CONDITIONAL = re.compile(r'ansible_virtualization_type not in \["docker", "lxc", "openvz", "podman", "container"\]', re.M)
+
 
 
 def main():
@@ -30,14 +34,12 @@ def main():
 def check_product(build_dir, product, rules_dirs):
     input_groups, input_rules = scan_rules_groups(rules_dirs, False)
     ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
-    if not check_ds(ds_path, "Group", input_groups):
-        return False
-    if not check_ds(ds_path, "Rule", input_rules):
+    if not check_ds(ds_path, input_rules):
         return False
     return True
 
 
-def check_ds(ds_path, what, input_elems):
+def check_ds(ds_path, input_elems):
     try:
         tree = ET.parse(ds_path)
     except IOError as e:
@@ -47,31 +49,41 @@ def check_ds(ds_path, what, input_elems):
 
     platform_missing = False
     root = tree.getroot()
-    if what == "Group":
-        replacement = "xccdf_org.ssgproject.content_group_"
-        xpath_query = ".//{%s}Group" % ssg.constants.XCCDF12_NS
-    if what == "Rule":
-        replacement = "xccdf_org.ssgproject.content_rule_"
-        xpath_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
+    # if what == "Group":
+        # replacement = "xccdf_org.ssgproject.content_group_"
+        # xpath_query = ".//{%s}Group" % ssg.constants.XCCDF12_NS
+    replacement = "xccdf_org.ssgproject.content_rule_"
+    xpath_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
     benchmark = root.find(".//{%s}Benchmark" % ssg.constants.XCCDF12_NS)
     for elem in benchmark.findall(xpath_query):
         elem_id = elem.get("id")
         elem_short_id = elem_id.replace(replacement, "")
         if elem_short_id not in input_elems:
             continue
-        platforms = elem.findall("{%s}platform" % ssg.constants.XCCDF12_NS)
-        machine_platform = False
-        for p in platforms:
-            idref = p.get("idref")
-            if idref == machine_cpe:
-                machine_platform = True
-        # If the rule already has any platform,
-        # it is not required to inherit machine CPE from its parent group
-        if not platforms and not machine_platform:
-            sys.stderr.write("%s %s in %s is missing a machine <platform> element\n" %
-                             (what, elem_short_id, ds_path))
-            platform_missing = True
+        fixes = elem.findall("{%s}fix" % ssg.constants.XCCDF12_NS)
+        ansible_fix_present = False
+        ansible_fix_has_machine_conditional = False
+        bash_fix_present = False
+        bash_fix_has_machine_conditional = False
+        for f in fixes:
+            system = f.get("system")
+            if system == ssg.constants.ansible_system:
+                ansible_fix_present = True
+                if ANSIBLE_MACHINE_CONDITIONAL.search("".join(f.itertext())):
+                    ansible_fix_has_machine_conditional = True
+            elif system == ssg.constants.bash_system:
+                bash_fix_present = True
+                if BASH_MACHINE_CONDITIONAL.search("".join(f.itertext())):
+                    bash_fix_has_machine_conditional = True
 
+        if ansible_fix_present and not ansible_fix_has_machine_conditional:
+            sys.stderr.write("Rule %s in %s is missing a machine conditional in Ansible remediation\n" %
+                             (elem_short_id, ds_path))
+            platform_missing = True
+        if bash_fix_present and not bash_fix_has_machine_conditional:
+            sys.stderr.write("Rule %s in %s is missing a machine conditional in Bash remediation\n" %
+                             (elem_short_id, ds_path))
+            platform_missing = True
     return not platform_missing
 
 
