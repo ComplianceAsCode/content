@@ -12,6 +12,8 @@ import re
 
 BASH_MACHINE_CONDITIONAL = re.compile('^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.M)
 ANSIBLE_MACHINE_CONDITIONAL = re.compile(r'ansible_virtualization_type not in \["docker", "lxc", "openvz", "podman", "container"\]', re.M)
+MACHINE_PLATFORM_ONE_LINE = re.compile(r'^\s*platform:\s+machine\s*$', re.M)
+MACHINE_PLATFORM_MULTILINE = re.compile(r'^\s*platforms:\s*\n(\s+-\s+.*machine.*)+', re.M)
 
 
 
@@ -106,7 +108,9 @@ def check_if_machine_only(dirpath, name, is_machine_only_group):
         yml_path = os.path.join(dirpath, name)
         with io.open(yml_path, "r", encoding="utf-8") as yml_file:
             yml_file_contents = yml_file.read()
-            if "platform: machine" in yml_file_contents:
+            single_line_platform_found = MACHINE_PLATFORM_ONE_LINE.search(yml_file_contents)
+            multiline_platform_found = MACHINE_PLATFORM_MULTILINE.search(yml_file_contents)
+            if single_line_platform_found or multiline_platform_found:
                 return True
     return False
 
