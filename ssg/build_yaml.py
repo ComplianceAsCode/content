@@ -2038,9 +2038,6 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.groups, Group)
 
-        filenames = glob.glob(os.path.join(self.resolved_profiles_dir, "*.yml"))
-        self.load_entities_by_id(filenames, self.profiles, Profile)
-
         filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.values, Value)
 
