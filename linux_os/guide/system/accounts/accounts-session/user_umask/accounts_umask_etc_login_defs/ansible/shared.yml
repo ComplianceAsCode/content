@@ -32,7 +32,7 @@
   when: result_umask_is_correctly_set.found is defined and result_umask_is_correctly_set.found == 0
 
 - name: Ensure the Default UMASK is Appended Correctly
-  lineinfile:
+  ansible.builtin.lineinfile:
     create: yes
     path: /etc/login.defs
     line: "UMASK {{ var_accounts_user_umask }}"
