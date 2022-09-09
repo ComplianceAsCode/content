@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}-node
+platform: {{{ product }}}
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
@@ -45,11 +45,10 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
+
 template:
-    name: yamlfile_value
-    vars:
-        filepath: {{{ kubeletconf_path }}}
-        yamlpath: ".rotateCertificates"
-        values:
-         - value: "true"
-           operation: "equals"
+    name: kubelet_combine

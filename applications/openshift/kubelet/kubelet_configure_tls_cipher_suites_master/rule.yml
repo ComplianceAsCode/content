@@ -1,0 +1,70 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+platform: ocp4
+
+title: "Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers"
+
+description: |-
+  Ensure that the Kubelet is configured to only use strong cryptographic ciphers.
+  To set the cipher suites for the kubelet, create new or modify existing
+  <tt>KubeletConfig</tt> object along these lines, one for every
+  <tt>MachineConfigPool</tt>:
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: KubeletConfig
+    metadata:
+       name: kubelet-config-$pool
+    spec:
+        machineConfigPoolSelector:
+            matchLabels:
+                pools.operator.machineconfiguration.openshift.io/$pool_name: ""
+        kubeletConfig:
+          tlsCipherSuites:
+          - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+    </pre>
+  In order to configure this rule to check for an alternative cipher, both var_kubelet_tls_cipher_suites_regex
+  and var_kubelet_tls_cipher_suites have to be set
+rationale: |-
+  TLS ciphers have had a number of known vulnerabilities and weaknesses,
+  which can reduce the protection provided by them. By default Kubernetes
+  supports a number of TLS ciphersuites including some that have security
+  concerns, weakening the protection provided.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4:
+
+references:
+  cis@ocp4: 4.2.13
+  nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1)
+  srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+ocil_clause: "TLS cipher suite configuration is not configured or contains insecure ciphers"
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep tlsCipherSuites; done</pre>
+    Verify that the set of ciphers contains only the following:
+    <pre>
+    TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+    TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+    TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+    TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    </pre>
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_master
+        yamlpath: ".tlsCipherSuites[:]"
+        xccdf_variable: var_kubelet_tls_cipher_suites_regex
+        regex_data: true

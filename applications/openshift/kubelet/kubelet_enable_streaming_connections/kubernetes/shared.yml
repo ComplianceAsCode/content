@@ -1,3 +1,5 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config(path='kubeletConfig',parameter='streamingConnectionIdleTimeout', value='var_streaming_connection_timeouts') }}}
+{{{ kubelet_config(path='kubeletConfig',parameter='streamingConnectionIdleTimeout', value='var_streaming_connection_timeouts', role='var_role_worker') }}}
+---
+{{{ kubelet_config(path='kubeletConfig',parameter='streamingConnectionIdleTimeout', value='var_streaming_connection_timeouts', role='var_role_master') }}}

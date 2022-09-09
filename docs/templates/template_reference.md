@@ -873,6 +873,8 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     -   **filepath** - full path to the file to check
 
+    -   **filepath_suffix** - suffix to the `filepath`; optional.
+
     -   **yamlpath** - OVAL’s [YAML
         Path](https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition)
         expression.

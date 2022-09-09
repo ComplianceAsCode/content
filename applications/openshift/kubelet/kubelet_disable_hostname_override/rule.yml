@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}-node
+platform: {{{ product }}}
 
 {{%- if product == "eks"  %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
@@ -39,13 +39,12 @@ references:
     nist: CM-6,CM-6(1)
 
 {{%- if product == "eks"  %}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
+
 template:
-  name: yamlfile_value
-  vars:
-    filepath: {{{ kubeletconf_path }}}
-    yamlpath: ".hostname-override"
-    check_existence: "none_exist"
-    values:
-      - value: ".*"
-        operation: "pattern match"
+    name: kubelet_combine
 {{%- endif %}}

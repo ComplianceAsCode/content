@@ -1,0 +1,69 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Kubelet - Ensure Event Creation Is Configured'
+
+description: |-
+    Security relevant information should be captured. The eventRecordQPS
+    Kubelet option can be used to limit the rate at which events are gathered.
+    Setting this too low could result in relevant events not being logged,
+    however the unlimited setting of 0 could result in a denial of service on
+    the kubelet. Processing and storage systems should be scaled to handle the
+    expected event load. To set the <tt>eventRecordQPS</tt> option for the kubelet,
+    create a <tt>KubeletConfig</tt> option along these lines:
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: KubeletConfig
+    metadata:
+       name: kubelet-config-$pool
+    spec:
+        machineConfigPoolSelector:
+            matchLabels:
+                pools.operator.machineconfiguration.openshift.io/$pool_name: ""
+        kubeletConfig:
+            eventRecordQPS: {{{ xccdf_value("var_event_record_qps") }}}
+    </pre>
+
+
+warnings:
+    - functionality: |-
+        The MachineConfig Operator does not merge <tt>KubeletConfig</tt>
+        objects, the last object is used instead. In case you need to
+        set multiple options for kubelet, consider putting all the custom
+        options into a single <tt>KubeletConfig</tt> object.
+
+rationale: |-
+    It is important to capture all events and not restrict event creation.
+    Events are an important source of security information and analytics that
+    ensure that your environment is consistently monitored using the event
+    data.
+
+severity: medium
+
+ocil_clause: 'event creation limits are not configured'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep eventRecordQPS; done</pre>
+    The output should return <tt>{{{ xccdf_value("var_event_record_qps") }}}</tt>.
+
+references:
+    cis@ocp4: 4.2.9
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+# This check ensures that the option is not left defaulted in the config.  The
+# default of 5 might be sufficient for a deployment; here the point is to check
+# that at least _some_ value has been considered.
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/kubeletconfig/role'
+        filepath_suffix: var_role_master
+        yamlpath: ".eventRecordQPS"
+        check_existence: "all_exist"
+        xccdf_variable: var_event_record_qps
+
