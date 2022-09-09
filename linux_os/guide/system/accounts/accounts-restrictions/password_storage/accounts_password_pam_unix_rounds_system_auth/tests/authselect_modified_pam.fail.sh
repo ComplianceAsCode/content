@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect
-# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
 # remediation = none
 # variables = var_password_pam_unix_rounds=65536
 
