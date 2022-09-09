@@ -71,12 +71,14 @@ def get_element_fix_text_by_system(element):
 
 
 def machine_platform_missing_in_rules(ds_path, short_ids_to_check):
+    machine_platform_missing = False
+
     try:
         tree = ET.parse(ds_path)
     except IOError:
         sys.stderr.write("The product datastream '%s' hasn't been build, "
                          "skipping the test.\n" % (ds_path))
-        return False
+        return machine_platform_missing
 
     root = tree.getroot()
     only_rules_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
@@ -105,7 +107,6 @@ def machine_platform_missing_in_rules(ds_path, short_ids_to_check):
             ansible_fix_has_machine_conditional = ANSIBLE_MACHINE_CONDITIONAL.search(
                     maybe_ansible_fix_text)
 
-        machine_platform_missing = False
         elem_short_id = shorten_id(elem.get("id"))
         if ansible_fix_present and not ansible_fix_has_machine_conditional:
             sys.stderr.write(
