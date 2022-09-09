@@ -25,6 +25,11 @@ def main():
     args = parse_command_line_args()
     test_result = 0
     for product in ssg.constants.product_directories:
+        ds_path = os.path.join(args.build_dir, "ssg-" + product + "-ds.xml")
+        if not os.path.exists(ds_path):
+            sys.stderr.write("The product datastream '%s' hasn't been build, "
+                             "skipping the test.\n" % (ds_path))
+            continue
         product_dir = os.path.join(args.source_dir, "products", product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
@@ -33,15 +38,14 @@ def main():
         additional_content_directories = product_yaml.get("additional_content_directories", [])
         add_content_dirs = [os.path.abspath(
             os.path.join(product_dir, rd)) for rd in additional_content_directories]
-        if not check_product(args.build_dir, product, [guide_dir] + add_content_dirs):
+        if not check_product(ds_path, [guide_dir] + add_content_dirs):
             test_result = 1
     if test_result:
         sys.exit(1)
 
 
-def check_product(build_dir, product, rules_dirs):
+def check_product(ds_path, rules_dirs):
     input_groups, input_rules = scan_rules_groups(rules_dirs, False)
-    ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
     return not machine_platform_missing_in_rules(ds_path, input_rules)
 
 
@@ -70,14 +74,7 @@ def get_element_fix_text_by_system(element):
 
 def machine_platform_missing_in_rules(ds_path, short_ids_to_check):
     machine_platform_missing = False
-
-    try:
-        tree = ET.parse(ds_path)
-    except IOError:
-        sys.stderr.write("The product datastream '%s' hasn't been build, "
-                         "skipping the test.\n" % (ds_path))
-        return machine_platform_missing
-
+    tree = ET.parse(ds_path)
     root = tree.getroot()
     only_rules_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
     benchmark = root.find(".//{%s}Benchmark" % ssg.constants.XCCDF12_NS)
