@@ -1,3 +1,8 @@
+{{% if product == "ol8" %}}
+{{% set filepath_regex="^/etc/security/pwquality\.conf(\.d/[^/]+\.conf)?$" %}}
+{{% else %}}
+{{% set filepath_regex="^/etc/security/pwquality\.conf$" %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
     {{{ oval_metadata("The password " + VARIABLE + " should meet minimum requirements") }}}
@@ -5,9 +10,6 @@
       <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
       <criteria operator="OR">
         <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}" />
-        {{% if product == "ol8" %}}
-        <criterion comment="/etc/security/pwquality.conf.d/*.conf" test_ref="test_password_pam_pwquality_d_{{{ VARIABLE }}}" />
-        {{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -23,25 +25,10 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
-    <ind:filepath>/etc/security/pwquality.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*{{{ VARIABLE }}}[\s]*=[\s]*({{{ SIGN }}}\d+)(?:[\s]|$)</ind:pattern>
+    <ind:filepath operation="pattern match">{{{ filepath_regex }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*{{{ VARIABLE }}}[\s]*=[\s]*(-?\d+)(?:[\s]|$)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-  
-  {{% if product == "ol8" %}}
-  <ind:textfilecontent54_test check="all"
-  comment="check the configuration of /etc/security/pwquality.conf.d/*.conf"
-  id="test_password_pam_pwquality_d_{{{ VARIABLE }}}" version="1">
-    <ind:object object_ref="obj_password_pam_pwquality_d_{{{ VARIABLE }}}" />
-    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_password_pam_pwquality_d_{{{ VARIABLE }}}" version="1">
-    <ind:filepath operation="pattern match">^/etc/security/pwquality.conf.d/.*\.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*{{{ VARIABLE }}}[\s]*=[\s]*({{{ SIGN }}}\d+)(?:[\s]|$)</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-  {{% endif %}}
 
   <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}" version="3">
     <ind:subexpression datatype="int" operation="{{{ OPERATION }}}" var_ref="var_password_pam_{{{ VARIABLE }}}" />
