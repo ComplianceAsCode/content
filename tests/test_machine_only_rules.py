@@ -45,7 +45,7 @@ def main():
 
 
 def check_product(ds_path, rules_dirs):
-    input_groups, input_rules = scan_rules_groups(rules_dirs, False)
+    input_rules = scan_rules_groups(rules_dirs, False)
     return not machine_platform_missing_in_rules(ds_path, input_rules)
 
 
@@ -146,8 +146,8 @@ def scan_rules_groups(dir_paths, parent_machine_only):
     groups = set()
     rules = set()
     for dir_path in dir_paths:
-        groups, rules = scan_rules_group(dir_path, parent_machine_only, groups, rules)
-    return groups, rules
+        _, rules = scan_rules_group(dir_path, parent_machine_only, groups, rules)
+    return rules
 
 
 def scan_rules_group(dir_path, parent_machine_only, groups, rules):
