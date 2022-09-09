@@ -1228,18 +1228,18 @@ class Group(XCCDFEntity):
 
     def add_rule(self, rule, env_yaml=None, product_cpes=None):
         self._add_child(rule, self.rules, env_yaml, product_cpes)
+        if env_yaml:
+            for platform in rule.inherited_platforms:
+                cpe_platform = Platform.from_text(platform, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
+                rule.inherited_cpe_platform_names.add(cpe_platform.id_)
 
     def _add_child(self, child, childs, env_yaml=None, product_cpes=None):
         if child is None:
             return
         child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
-        # Once the child has inherited platforms, update cpe_names
-        if env_yaml:
-            for platform in child.inherited_platforms:
-                cpe_platform = Platform.from_text(platform, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                child.cpe_platform_names.add(cpe_platform.id_)
+
 
     def __str__(self):
         return self.id_
@@ -1286,7 +1286,7 @@ class Rule(XCCDFEntity):
         inherited_platforms=lambda: set(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),
-        inherited_cpe_platform_names=lambda: list(),
+        inherited_cpe_platform_names=lambda: set(),
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
         ** XCCDFEntity.KEYS
@@ -1955,9 +1955,6 @@ class BuildLoader(DirectoryLoader):
             self.all_rules[rule.id_] = rule
             self.loaded_group.add_rule(
                 rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
-
-            if self.loaded_group.cpe_platform_names:
-                rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
 
             rule.normalize(self.env_yaml["product"])
             if self.stig_references:
