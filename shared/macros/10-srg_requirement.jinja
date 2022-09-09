@@ -205,5 +205,5 @@ SRG requirement for separate filesystems
 
 #}}
 {{% macro srg_requirement_separate_partition(part) -%}}
-A separate {{{ full_name }}} filesystem must be used for the {{{ part }}} directory.
+{{{ full_name }}} must use a separate file system for {{{ part }}}.
 {{%- endmacro -%}}

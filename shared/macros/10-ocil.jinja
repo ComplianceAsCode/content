@@ -605,10 +605,9 @@ ocil: |
     {{{ rhcos_node_login_instructions() }}}
     Subsequently,
     {{%- endif -%}}
-    Run the following command to determine if <code>{{{ part }}}</code>
-    is on its own partition or logical volume:
-    <pre>$ mount | grep "on {{{ part }}}"</pre>
-    If <code>{{{ part }}}</code> has its own partition or volume group, a line will be returned.
+    Verify that a separate file system/partition has been created for <code>{{{ part }}}</code> with the following command:
+
+    <pre>$ mountpoint {{{ part }}}</pre>
 {{%- endmacro %}}
 
 
@@ -624,7 +623,7 @@ ocil: |
 ocil: |
     {{{ partition_check(part) }}}
 
-ocil_clause: "no line is returned"
+ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
 {{%- endmacro %}}
 
 
