@@ -42,13 +42,11 @@ def main():
 def check_product(build_dir, product, rules_dirs):
     input_groups, input_rules = scan_rules_groups(rules_dirs, False)
     ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
-    if machine_platform_missing_in_rules(ds_path, input_rules):
-        return False
-    return True
+    return not machine_platform_missing_in_rules(ds_path, input_rules)
 
 
 def shorten_id(full_id):
-    id_prefix = "xccdf_org.ssgproject.content_rule_"
+    id_prefix = ssg.constants.OSCAP_RULE
     return full_id.replace(id_prefix, "")
 
 
