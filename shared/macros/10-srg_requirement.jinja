@@ -39,7 +39,7 @@ Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must gen
 
 #}}
 {{% macro srg_requirement_audit_command(command) %}}
-Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}} must generate an audit record.
+{{{ full_name }}} must audit all uses of the {{{ command }}} command.
 {{%- endmacro %}}
 
 {{#
