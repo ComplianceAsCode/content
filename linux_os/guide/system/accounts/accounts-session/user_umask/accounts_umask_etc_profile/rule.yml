@@ -62,4 +62,14 @@ fixtext: |-
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
 
+checktext: |-
+    Verify the "umask" setting is configured correctly in the "/etc/profile" file with the
+    following command:
+    Note: If the value of the "umask" parameter is set to "000" in "/etc/profile" file, the
+    Severity is raised to a CAT I.
+    $ grep umask /etc/profile
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}
+    If the value for the <tt>umask</tt> parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}",
+    or the "umask" parameter is missing or is commented out, this is a finding.
+
 srg_requirement: '{{{ full_name }}} must define default permissions for the system default profile.'
