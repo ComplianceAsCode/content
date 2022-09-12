@@ -51,25 +51,22 @@ references:
     vmmsrg: SRG-OS-000077-VMM-000440
 
 ocil_clause: |-
-     the value of remember is not set equal to or greater than {{{ xccdf_value("var_password_pam_remember") }}}
+     the line containing "pam_pwhistory.so" does not have the "remember" module argument set,
+     is commented out, or the value of the "remember" module argument is set to less than
+     "{{{ xccdf_value("var_password_pam_remember") }}}"
 
 ocil: |-
-    Check that the operating system prohibits the reuse of a password for a minimum of
-    <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt> generations with the following command:
-    <pre># grep pam_pwhistory.so /etc/pam.d/system-auth
-    password <i>control_flag</i> pam_pwhistory.so remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
-    If the command does not return a result, the returned line is commented out,
-    the line does not contain "remember" value, the value is less than <tt>{{{
-    xccdf_value("var_password_pam_remember") }}}</tt>, the <i>control_flag</i> value isn't one of
-    the next: <tt>{{{ xccdf_value("var_password_pam_remember_control_flag") }}}</tt> this is a
-    finding.
+    Verify {{{ full_name }}} is configured in the system-auth file to prohibit password reuse
+    for a minimum of {{{ xccdf_value("var_password_pam_remember") }}} generations with the following command:
+
+    <pre>$ grep -i remember /etc/pam.d/system-auth
+    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}} retry=3</pre>
 
 fixtext: |-
-    To configure the <tt>remember</tt> option for the <tt>pam_pwhistory</tt> PAM module, in the
-    file <tt>/etc/pam.d/system-auth</tt>, make sure the <tt>remember</tt> parameter is present
-    and it has a value equal to or greater than {{{ xccdf_value("var_password_pam_remember") }}}
-    For example:
-    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
+    Configure the {{{ full_name }}} system-auth file to prohibit password reuse for a minimum of
+    {{{ xccdf_value("var_password_pam_remember") }}} generations. Add the following line in
+    "/etc/pam.d/system-auth" (or modify the line to have the required value):
+    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so use_authtok remember={{{ xccdf_value("var_password_pam_remember") }}} retry=3</pre>
 
 srg_requirement: '{{{ full_name }}} must be configured in the system-auth file to prohibit password reuse for a minimum of five generations.'
 
