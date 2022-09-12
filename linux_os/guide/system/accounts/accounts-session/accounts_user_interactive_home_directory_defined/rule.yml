@@ -39,11 +39,11 @@ references:
 ocil_clause: 'users home directory is not defined'
 
 ocil: |-
-    To verify interactive users on the system have a home directory assigned,
-    run the following command:
-    <pre>$ sudo awk -F":" '{print $1 ":" $6}' /etc/passwd</pre>
-    Inspect the output and verify that all interactive users have a home directory
-    defined.
+    Verify that interactive users on the system have a home directory assigned with the following command:
+
+    <pre>$ sudo awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd</pre>
+
+    Inspect the output and verify that all interactive users (normally users with a UID greater that 1000) have a home directory defined.
 
 fixtext: |-
     Assign home directories to all local interactive users on {{{ full_name }}} that currently do not have a home directory assigned.
