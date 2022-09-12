@@ -30,7 +30,12 @@ references:
     stigid@ol8: OL08-00-040282
     stigid@rhel8: RHEL-08-040282
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.yama.ptrace_scope", value="1") }}}
+ocil: |-
+    Verify {{{ full_name }}} restricts usage of ptrace to descendant processes.
+    {{{ ocil_sysctl_option_value(sysctl="kernel.yama.ptrace_scope", value="1") }}}
+
+ocil_clause: |-
+    "kernel.yama.ptrace_scope is not set to 1 or is missing"
 
 fixtext: |-
     Configure {{{ full_name }}} to restrict usage of ptrace to descendant processes.
