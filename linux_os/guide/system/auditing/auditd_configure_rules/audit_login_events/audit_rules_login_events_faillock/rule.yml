@@ -62,11 +62,14 @@ references:
     stigid@rhel8: RHEL-08-030590
     vmmsrg: SRG-OS-000473-VMM-001930,SRG-OS-000470-VMM-001900
 
-ocil_clause: 'there is no output'
+ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    To verify that auditing is configured for system administrator actions, run the following command:
-    <pre>$ sudo auditctl -l | grep "watch={{{ faillock_path }}}\|-w {{{ faillock_path }}}"</pre>
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/security/opasswd" with the following command:
+
+    $ sudo auditctl -l | grep /var/run/faillock
+
+    -w /var/run/faillock -p wa -k logins
 
 template:
     name: audit_rules_login_events
