@@ -47,16 +47,18 @@ references:
     stigid@sle12: SLES-12-010530
     stigid@sle15: SLES-15-040050
 
-ocil_clause: 'the xattrs option is missing or not added to the correct ruleset'
+ocil_clause: |-
+    the "xattrs" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or
+    extended attributes are not being checked by another file integrity tool
 
 ocil: |-
-    To determine that AIDE is verifying extended file attributes, run the following command:
-    <pre>$ grep xattrs /etc/aide.conf</pre>
-    Verify that the <tt>xattrs</tt> option is added to the correct ruleset.
+    Verify that that AIDE is verify extended attributes with the following command:
+    <pre>$ grep xattrs /etc/aide.conf
+    All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux</pre>
 
 fixtext: |-
     Configure the file integrity tool to check file and directory extended attributes.
 
     If AIDE is installed, ensure the "xattrs" rule is present on all uncommented file and directory selection lists.
 
-srg_requirement: 'The {{{ full_name }}} file integrity tool must be configured to verify extended attributes.'
+srg_requirement: {{{ full_name }}} must be configured so that the file integrity tool verifies extended attributes.
