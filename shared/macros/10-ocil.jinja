@@ -59,7 +59,7 @@ ocil: |-
 
     $ sudo auditctl -l | grep {{{ cmd }}}
 
-    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
+    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 {{% endmacro %}}
 
 {{#
@@ -1123,10 +1123,10 @@ $ sudo grep {{{ syscall }}} /etc/audit/audit.rules
 
 The output should be the following:
 
--a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
--a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
--a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
--a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
 
 {{%- endmacro %}}
 
