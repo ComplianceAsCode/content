@@ -56,20 +56,20 @@ references:
     stigid@ol8: OL08-00-030121
     stigid@rhel8: RHEL-08-030121
 
+ocil_clause: 'the audit system is not set to be immutable by adding the "-e 2" option to the end of "/etc/audit/audit.rules"'
+
 ocil: |-
     Verify the audit system prevents unauthorized changes with the following command:
-
+    <pre>
     $ sudo grep "^\s*[^#]" /etc/audit/audit.rules | tail -1
-
     -e 2
-
-ocil_clause: the audit system is not set to be immutable by adding the "-e 2" option to the "/etc/audit/audit.rules"
+    </pre>
 
 fixtext: |-
-    Configure the audit system to set the audit rules to be immutable by adding the following line to "/etc/audit/rules.d/audit.rules"
+    Configure the audit system to set the audit rules to be immutable by adding the following line to end of "/etc/audit/rules.d/audit.rules"
 
     -e 2
 
-    Note: Once set, the system must be rebooted for auditing to be changed.  It is recommended to add this option as the last step in securing the system.
+    The audit daemon must be restarted for the changes to take effect.
 
 srg_requirement: '{{{ full_name }}} audit system must protect auditing rules from unauthorized change.'
