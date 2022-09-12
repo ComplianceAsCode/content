@@ -25,6 +25,18 @@ rationale: |-
     Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
     monitoring system trap when there is an unauthorized modification of a configuration item.
 
+vuldiscussion: |
+    If anomalies are not acted upon, security functions may fail to secure the system.
+    Security function is defined as the hardware, software, and/or firmware of the information system responsible for
+    enforcing the system security policy and supporting the isolation of code and data on which the protection is based.
+    Security functionality includes, but is not limited to, establishing system accounts,
+    configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and
+    setting intrusion detection parameters.
+    Notifications provided by information systems include messages to local computer consoles,
+    and/or hardware indications, such as lights.
+    This capability must take into account operational requirements for availability for selecting an appropriate response.
+    The organization may choose to shut down or restart the information system upon security function anomaly detection.
+
 severity: medium
 
 identifiers:
@@ -75,4 +87,4 @@ fixtext: |-
     /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
 
 srg_requirement: |-
-    The {{{ full_name }}} file integrity tool must notify the system administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered within an organizationally defined frequency.
+    {{{ full_name }}} Must Shut Down The Information System, Restart The Information System, And/Or Notify The System Administrator When Anomalies In The Operation Of Any Security Functions Are Discovered.
