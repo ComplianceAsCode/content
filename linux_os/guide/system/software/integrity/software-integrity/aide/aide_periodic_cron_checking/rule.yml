@@ -69,6 +69,28 @@ references:
     stigid@sle15: SLES-15-010570
     stigid@ubuntu2004: UBTU-20-010074
 
+{{%- if "rhel" in product %}}
+ocil_clause: |-
+    the file integrity application does not exist, or
+    a script file controlling the execution of the file integrity application does not exist, or
+    the file integrity application does not notify designated personnel of changes
+
+ocil: |-
+    Verify that {{{ full_name }}} routinely executes a file integrity scan for changes to the system baseline.
+    The command used in the example will use a daily occurrence.
+    Check the cron directories for scripts controlling the execution and notification of results of the file integrity application.
+    For example, if AIDE is installed on the system, use the following commands:
+    <pre>
+    $ ls -al /etc/cron.* | grep aide
+    -rwxr-xr-x 1 root root 29 Nov 22 2015 aide
+    $ grep aide /etc/crontab /var/spool/cron/root
+    /etc/crontab: 30 04 * * * root usr/sbin/aide
+    /var/spool/cron/root: 30 04 * * * root usr/sbin/aide
+    $ sudo more /etc/cron.daily/aide
+    #!/bin/bash
+    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+    </pre>
+{{%- else %}}
 ocil_clause: 'AIDE is not configured to scan periodically'
 
 ocil: |-
@@ -80,11 +102,26 @@ ocil: |-
     <pre>05 4 * * * root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
 
     NOTE: The usage of special cron times, such as @daily or @weekly, is acceptable.
+{{%- endif %}}
 
 fixtext: |-
+    Configure the file integrity tool to run automatically on the system at least weekly and to
+    notify designated personnel if baseline configurations are changed in an unauthorized manner.
+    {{%- if "rhel" in product %}}
+    The AIDE tool can be configured to email designated personnel with the use of the cron system.
+    The following example output is generic.
+    It will set cron to run AIDE daily and to send email at the completion of the analysis.
+
+    <pre>
+    $ sudo more /etc/cron.daily/aide
+    #!/bin/bash
+    {{{ aide_bin_path }}} --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+    </pre>
+    {{%- else %}}
     Configure the file integrity to run at least weekly.
     Edit "/etc/crontab" and add or edit the following line:
 
     <pre>05 4 * * * root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
+    {{%- endif %}}
 
-srg_requirement: '{{{ full_name }}} must notify the system administrator when Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation of any security functions.'
+srg_requirement: {{{ full_name }}} must routinely check the baseline configuration for unauthorized changes and notify the system administrator when anomalies in the operation of any security functions are discovered.
