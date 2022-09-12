@@ -1034,7 +1034,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
 {{%- else -%}}
 p+i+n+u+g+s+b+acl+xattrs+sha512
-{{% endif %}}
+{{%- endif -%}}
 {{%- endmacro -%}}
 
 {{#
@@ -1047,11 +1047,17 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/ausearch {{{ aide_string() }}}
     /usr/sbin/aureport {{{ aide_string() }}}
     /usr/sbin/autrace {{{ aide_string() }}}
-    {{% if 'rhel' not in product and product != 'ol8' %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
-    {{% if product == 'ol8' %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
-    {{% if product == 'rhel9' %}}/usr/sbin/autrace {{{ aide_string() }}}{{% endif %}}
+{{%- if 'rhel' not in product and product != 'ol8' %}}
+    /usr/sbin/audispd {{{ aide_string() }}}
+{{%- endif %}}
+{{%- if product == 'ol8' %}}
+    /usr/sbin/rsyslogd {{{ aide_string() }}}
+{{%- endif %}}
+{{%- if product == 'rhel9' %}}
+    /usr/sbin/autrace {{{ aide_string() }}}
+{{%- endif %}}
     /usr/sbin/augenrules {{{ aide_string() }}}
-{{% endmacro %}}
+{{%- endmacro %}}
 
 
 {{#

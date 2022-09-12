@@ -46,20 +46,20 @@ references:
     stigid@sle15: SLES-15-030630
     stigid@ubuntu2004: UBTU-20-010205
 
-ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
-
 ocil: |-
     Check that AIDE is properly configured to protect the integrity of the
-    audit tools by running the following command:
+    audit tools with the following command:
 
-    <pre># sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
+    <pre>$ sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
 
     {{{ aide_files() }}}
     </pre>
-    If AIDE is configured properly to protect the integrity of the audit tools,
-    all lines listed above will be returned from the command.
 
-    If one or more lines are missing, this is a finding.
+ocil_clause: |-
+    AIDE is not installed, ask the System Administrator how file integrity checks are performed on the system.
+    If any of the audit tools listed above do not have a corresponding line, ask the System Administrator to indicate what cryptographic mechanisms are being used to protect the integrity of the audit tools.  
+    If there is no evidence of integrity protection
+
 
 fixtext: |-
     Add or update the following lines to "/etc/aide.conf", to protect the integrity of the audit tools.
