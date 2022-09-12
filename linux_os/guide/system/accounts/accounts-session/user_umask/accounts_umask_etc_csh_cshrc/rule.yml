@@ -50,9 +50,9 @@ ocil: |-
     umask 077
 
 fixtext: |-
-    Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+    Configure the {{{ full_name }}} to define default permissions for all authenticated users using the c shell.
 
-    Add or edit the lines for the "umask" parameter in the "/etc/csh.cshrc" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Add or edit the lines for the "umask" parameter in the "/etc/csh.cshrc" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
 
