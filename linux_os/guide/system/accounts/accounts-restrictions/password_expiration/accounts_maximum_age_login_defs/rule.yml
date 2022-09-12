@@ -72,7 +72,7 @@ ocil: |-
     PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</pre>
 
 fixtext: |-
-    Configure {{{ full_name }}} to enforce a 60-day maximum password lifetime.
+    Configure {{{ full_name }}} to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime.
 
     Add, or modify the following line in the "/etc/login.defs" file:
 
