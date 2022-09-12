@@ -56,29 +56,42 @@ references:
     stigid@rhel8: RHEL-08-020104
     stigid@ubuntu2004: UBTU-20-010057
 
-ocil_clause: 'it is not the required value'
+ocil_clause: 'the value of "retry" is set to "0" or greater than "{{{ xccdf_value("var_password_pam_retry") }}}", or is missing'
 
 ocil: |-
-    To check how many retry attempts are permitted on a per-session basis, run the following command:
+    Verify {{{ full_name }}} is configured to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.
+
     {{% if product in ['rhel8', 'rhel9'] %}}
+    Check for the use of the "pwquality" retry option in the pwquality.conf file with the following command:
     <pre>$ grep retry /etc/security/pwquality.conf</pre>
     {{% else %}}
+    Check for the use of the "pwquality" retry option in the PAM files with the following command:
     {{% if 'ubuntu' in product %}}
     <pre>$ grep pam_pwquality /etc/pam.d/common-password</pre>
     {{% else %}}
     <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
     {{% endif %}}
+
+    <pre>password required pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}</pre>
     {{% endif %}}
-    The <tt>retry</tt> parameter will indicate how many attempts are permitted.
-    The DoD required value is less than or equal to 3.
-    This would appear as <tt>retry={{{ xccdf_value("var_password_pam_retry") }}}</tt>, or a lower value.
 
 platform: pam
 
 fixtext: |-
-    Configure {{{ full_name }}} to allow at most {{{ xccdf_value("var_password_pam_retry") }}} password prompts per-session.
-    Add or edit the following line in "/etc/security/pwquality.conf":
+    Configure {{{ full_name }}} to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.
+
+    {{% if product in ['rhel8', 'rhel9'] %}}
+    Add the following line to the "/etc/security/pwquality.conf" file (or modify the line to have the required value):
 
     retry={{{ xccdf_value("var_password_pam_retry") }}}
+    {{% else %}}
+    {{% if 'ubuntu' in product %}}
+    Add the following line to the "/etc/pam.d/common-password" file (or modify the line to have the required value):
+    {{% else %}}
+    Add the following line to the "/etc/pam.d/system-auth" file (or modify the line to have the required value):
+    {{% endif %}}
+    password required pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}
+    {{% endif %}}
 
-srg_requirement: '{{{ full_name }}} must ensure the password complexity module is configured for three retries or less.'
+srg_requirement: |-
+    '{{{ full_name }}} must ensure the password complexity module in the system-auth file is configured for three retries or less.'
