@@ -49,14 +49,16 @@ references:
     stigid@sle15: SLES-15-040420
     stigid@ubuntu2004: UBTU-20-010016
 
-ocil_clause: 'the above command returns no output, or the umask is configured incorrectly'
+ocil_clause: 'the value for the "UMASK" parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}", or the "UMASK" parameter is missing or is commented out'
 
 ocil: |-
-    Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
-    running the following command:
-    <pre>$ sudo grep "UMASK" /etc/login.defs</pre>
-    All output must show the value of <tt>UMASK</tt> set as shown in the below:
-    <pre>UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+    Verify {{{ full_name }}} defines default permissions for all authenticated users in such a way that the user can only read and modify their own files with the following command:
+
+    Note: If the value of the "UMASK" parameter is set to "000" in "/etc/login.defs" file, the Severity is raised to a CAT I.
+
+    <pre># grep -i umask /etc/login.defs
+
+    UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 platform: login_defs
 
