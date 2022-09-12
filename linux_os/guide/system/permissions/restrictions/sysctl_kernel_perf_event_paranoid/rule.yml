@@ -29,9 +29,15 @@ references:
     stigid@rhel8: RHEL-08-010376
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
+ocil: |-
+    Verify {{{ full_name }}} is configured to prevent kernel profiling by unprivileged users.
+    {{{ ocil_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
+
+ocil_clause: |-
+    "kernel.perf_event_paranoid is not set to 2 or is missing"
 
 fixtext: |-
-    Configure {{{ full_name }}} to only allow root to do kernel profiling.
+    Configure {{{ full_name }}} to prevent profiling by unprivileged users.
     {{{ fixtext_sysctl(sysctl="kernel.perf_event_paranoid", value="2") | indent(4) }}}
 
 srg_requirement: '{{{ full_name }}} must prevent kernel profiling by unprivileged users.'
