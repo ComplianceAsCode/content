@@ -75,7 +75,8 @@ fixtext: |-
 
     ocredit = {{{ xccdf_value("var_password_pam_ocredit") }}}
 
-srg_requirement: '{{{ full_name }}} passwords must contain at least one special character.'
+srg_requirement: |-
+    {{{ full_name }}} must enforce password complexity by requiring that at least one special character be used.
 
 platform: pam
 
