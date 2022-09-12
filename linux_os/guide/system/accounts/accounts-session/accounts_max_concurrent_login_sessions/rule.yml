@@ -45,21 +45,28 @@ references:
     stigid@ubuntu2004: UBTU-20-010400
     vmmsrg: SRG-OS-000027-VMM-000080
 
-ocil_clause: 'maxlogins is not equal to or less than the expected value'
+ocil_clause: |-
+    the "maxlogins" item is missing, commented out, or the value is set greater
+    than "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" and
+    is not documented with the Information System Security Officer (ISSO) as an
+    operational requirement for all domains that have the "maxlogins" item
+    assigned'
 
 ocil: |-
-    Run the following command to ensure the <tt>maxlogins</tt> value is
-    configured for all users on the system:
-    <pre># grep "maxlogins" /etc/security/limits.conf /etc/security/limits.d/*.conf</pre>
-    You should receive output similar to the following:
-    <pre>*\t\thard\tmaxlogins\t{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}</pre>
+    Verify {{{ full_name }}} limits the number of concurrent sessions to
+    "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" for all
+    accounts and/or account types with the following command:
+    <pre>$ grep -r -s maxlogins /etc/security/limits.conf /etc/security/limits.d/*.conf</pre>
+    <pre>/etc/security/limits.conf:* hard maxlogins 10</pre>
+    This can be set as a global domain (with the * wildcard) but may be set differently for multiple domains.
 
 fixtext: |-
-    Configure the operating system to limit the number of concurrent sessions to "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" for all accounts and/or account types.
-
-    Add the following line to the top of the /etc/security/limits.conf or in a ".conf" file defined in /etc/security/limits.d/ :
-
-    * hard maxlogins {{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}
+    Configure {{{ full_name }}} to limit the number of concurrent sessions to
+    "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" for all
+    accounts and/or account types.
+    Add the following line to the top of the /etc/security/limits.conf or in a
+    ".conf" file defined in /etc/security/limits.d/ :
+    <pre>* hard maxlogins 10</pre>
 
 srg_requirement: '{{{ full_name }}} must limit the number of concurrent sessions to ten for all accounts and/or account types.'
 
