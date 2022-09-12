@@ -47,16 +47,21 @@ references:
     stigid@sle12: SLES-12-010520
     stigid@sle15: SLES-15-040040
 
-ocil_clause: 'the acl option is missing or not added to the correct ruleset'
+ocil_clause: |-
+    the "acl" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or
+    ACLs are not being checked by another file integrity tool
 
 ocil: |-
-    To determine that AIDE is verifying ACLs, run the following command:
-    <pre>$ grep acl /etc/aide.conf</pre>
-    Verify that the <tt>acl</tt> option is added to the correct ruleset.
+    Verify that that AIDE is verifying ACLs with the following command:
+    <pre>
+    $ grep acl /etc/aide.conf
+
+    All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+    </pre>
 
 fixtext: |-
     Configure the file integrity tool to check file and directory ACLs.
 
-    If AIDE is installed, ensure the "acl" rule is present on all file and directory selection lists.
+    If AIDE is installed, ensure the "acl" rule is present on all uncommented file and directory selection lists.
 
-srg_requirement: 'The {{{ full_name }}} file integrity tool must be configured to verify Access Control Lists (ACLs).'
+srg_requirement: {{{ full_name }}} must be configured so that the file integrity tool verifies Access Control Lists (ACLs).
