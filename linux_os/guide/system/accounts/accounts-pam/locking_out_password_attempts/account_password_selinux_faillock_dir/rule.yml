@@ -30,9 +30,11 @@ platform: machine
 ocil_clause: 'the security context type of the non-default tally directory is not "faillog_t"'
 
 ocil: |-
-    If the system does not have SELinux enabled and enforcing a targeted policy, or if the pam_faillock.so module is not configured for use, this requirement is not applicable.
+    If the system does not have SELinux enabled and enforcing a targeted policy, or if the
+    pam_faillock.so module is not configured for use, this requirement is not applicable.
 
-    Verify the location of the non-default tally directory for the pam_faillock module with the following command:
+    Verify the location of the non-default tally directory for the pam_faillock.so module with
+    the following command:
 
     $ sudo grep -w dir /etc/security/faillock.conf
 
