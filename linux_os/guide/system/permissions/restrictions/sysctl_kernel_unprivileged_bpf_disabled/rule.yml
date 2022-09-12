@@ -26,10 +26,17 @@ references:
     stigid@ol8: OL08-00-040281
     stigid@rhel8: RHEL-08-040281
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+ocil: |
+    Verify {{{ full_name }}} prevents privilege escalation thru the kernel by disabling access to the bpf syscall.
+
+    {{{ ocil_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+
+ocil_clause: |
+    "kernel.unprivileged_bpf_disabled is not set to 1 or is missing"
 
 fixtext: |-
     Configure {{{ full_name }}} to prevent privilege escalation thru the kernel by disabling access to the bpf syscall.
+    {{{ fixtext_sysctl("kernel.unprivileged_bpf_disabled", "1") | indent(4) }}}
 
 srg_requirement: '{{{ full_name }}} must disable access to network bpf syscall from unprivileged processes.'
 
