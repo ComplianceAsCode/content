@@ -26,7 +26,13 @@ references:
     stigid@rhel8: RHEL-08-010372
 
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
+ocil: |
+    Verify {{{ full_name }}} is configured to disable kernel image loading.
+
+    {{{ ocil_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
+
+ocil_clause: |
+    "kernel.kexec_load_disabled is not set to 1 or is missing"
 
 srg_requirement: '{{{ full_name }}} must prevent the loading of a new kernel for later execution.'
 
