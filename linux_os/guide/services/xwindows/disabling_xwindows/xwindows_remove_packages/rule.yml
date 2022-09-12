@@ -65,8 +65,7 @@ fixtext: |-
     {{{ package_remove("xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland") }}}
     {{% endif %}}
 
-
-srg_requirement: 'The graphical display manager must not be installed on {{{ full_name }}} unless approved.'
+srg_requirement: '{{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.'
 
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
