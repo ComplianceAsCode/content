@@ -30,10 +30,16 @@ references:
     stigid@ol8: OL08-00-010375
     stigid@rhel8: RHEL-08-010375
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}
+ocil: |
+    Verify {{{ full_name }}} is configured to restrict access to the kernel message buffer.
+
+    {{{ ocil_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}
+
+ocil_clause: |
+    "kernel.dmesg_restrict is not set to 1 or is missing"
 
 fixtext: |-
-    Configure {{{ full_name }}} to restrict access to the dmesg bus.
+    Configure {{{ full_name }}} to restrict access to the kernel message buffer.
     {{{ fixtext_sysctl("kernel.dmesg_restrict", "1") | indent(4) }}}
 
 srg_requirement: '{{{ full_name }}} must restrict access to the kernel message buffer.'
