@@ -85,3 +85,14 @@ fixtext: |-
 
     {{{ fixtext_grub2_bootloader_argument_absent("noexec") | indent(4) }}}
     {{%- endif -%}}
+
+srg_requirement: |-
+    {{{ full_name }}} must implement non-executable data to protect its memory from unauthorized
+    code execution.
+
+checktext: |-
+    Verify ExecShield is enabled on 64-bit {{{ full_name }}} systems with the following command:
+    $ dmesg | grep '[NX|DX]*protection'
+    [ 0.000000] NX (Execute Disable) protection: active
+
+    If "dmesg" does not show "NX (Execute Disable) protection" active, this is a finding.
