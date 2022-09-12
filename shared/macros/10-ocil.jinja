@@ -975,10 +975,14 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 #}}
 {{% macro ocil_sysctl_option_value(sysctl, value) -%}}
-    The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
-    by running the following command:
-    <pre>$ sysctl {{{ sysctl }}}</pre>
-    <code>{{{ value }}}</code>.
+    Check the status of the <code>{{{ sysctl }}}</code> kernel parameter with the following commands:
+    $ sudo sysctl {{{ sysctl }}}
+    {{{ sysctl }}} = {{{ value }}}
+    If {{{ sysctl }}} is not set to {{{ value }}} or is missing, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter.
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F {{{ sysctl }}} | tail -1
+    {{{ sysctl }}} = {{{ value }}}
 {{%- endmacro %}}
 
 

@@ -29,10 +29,16 @@ references:
     stigid@ol8: OL08-00-010374
     stigid@rhel8: RHEL-08-010374
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}
+ocil: |
+    Verify {{{ full_name }}} is configured to enable DAC on hardlinks.
+
+    {{{ ocil_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}
+
+ocil_clause: |
+    "fs.protected_hardlinks is not set to 1 or is missing"
 
 fixtext: |-
-    Verify the operating system is configured to enable DAC on hardlinks with the following commands:
+    Verify {{{ full_name }}} is configured to enable DAC on hardlinks with the following commands:
     {{{ fixtext_sysctl("fs.protected_hardlinks", "1") | indent(4) }}}
 
 srg_requirement: '{{{ full_name }}} must enable kernel parameters to enforce discretionary access control on hardlinks.'
@@ -45,3 +51,14 @@ template:
         datatype: int
 
 platform: machine
+
+vuldiscussion: |-
+    Preventing non-privileged users from executing privileged functions mitigates the risk that
+    unauthorized individuals or processes may gain unnecessary access to information or
+    privileges.
+
+    Privileged functions include, for example, establishing accounts, performing system integrity
+    checks, or administering cryptographic key management activities. Non-privileged users are
+    individuals that do not possess appropriate authorizations. Circumventing intrusion detection
+    and prevention mechanisms or malicious code protection mechanisms are examples of privileged
+    functions that require protection from non-privileged users.
