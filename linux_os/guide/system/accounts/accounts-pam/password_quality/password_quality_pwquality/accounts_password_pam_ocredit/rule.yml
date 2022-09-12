@@ -69,8 +69,10 @@ ocil: |-
     ocredit = {{{ xccdf_value("var_password_pam_ocredit") }}}</pre>
 
 fixtext: |-
-    Add or modify the "ocredit" option line in /etc/security/pwquality.conf to have the required
-    value, like in the following example:
+    Configure {{{ full_name }}} to enforce password complexity by requiring that at least one special character be used by setting the "ocredit" option.
+
+    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+
     ocredit = {{{ xccdf_value("var_password_pam_ocredit") }}}
 
 srg_requirement: '{{{ full_name }}} passwords must contain at least one special character.'
