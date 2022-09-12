@@ -33,13 +33,14 @@ references:
     stigid@rhel8: RHEL-08-020300
     stigid@ubuntu2004: UBTU-20-010056
 
-ocil_clause: 'dictcheck is not found or not equal to the required value'
+ocil_clause: '"dictcheck" does not have a value other than "0", or is commented out'
 
 ocil: |-
-    To check if dictionary words are disallowed run the following command:
-    <pre>$ sudo grep dictcheck /etc/security/pwquality.conf /etc/pwquality.conf.d/*.conf</pre>
-    The <tt>dictcheck</tt> parameter should be equal to 1. The value should look like
-    <pre>dictcheck=1</pre>
+    Verify {{{ full_name }}} prevents the use of dictionary words for passwords with the following command:
+
+    <pre>$ sudo grep dictcheck /etc/security/pwquality.conf /etc/pwquality.conf.d/*.conf
+
+    /etc/security/pwquality.conf:dictcheck=1</pre>
 
 platform: pam
 
