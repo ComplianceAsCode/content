@@ -51,7 +51,7 @@ OCIL and OCIL clause for ensuring that a privileged command is audited.
 :type path_prefix: str
 
 #}}
-{{% macro complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) %}}
+{{% macro complete_ocil_entry_audit_privileged_commands(cmd, path_prefix, key) %}}
 ocil_clause: '{{{ ocil_clause_audit() }}}'
 
 ocil: |-
@@ -59,7 +59,7 @@ ocil: |-
 
     $ sudo auditctl -l | grep {{{ cmd }}}
 
-    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 {{% endmacro %}}
 
 {{#

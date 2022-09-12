@@ -386,10 +386,10 @@ Fixtext for ensuring that a privileged command is audited.
 :param path_prefix: The directory the command is in
 :type path_prefix: str
 #}}
-{{% macro fixtext_audit_rules_privileged_commands(cmd, path_prefix) -%}}
+{{% macro fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) -%}}
 Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "{{{ cmd }}}" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
--a always,exit -F path={{{path_prefix}}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+-a always,exit -F path={{{path_prefix}}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 
 The audit daemon must be restarted for the changes to take effect.
 {{%- endmacro %}}
