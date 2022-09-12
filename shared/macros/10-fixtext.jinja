@@ -283,6 +283,7 @@ $ sudo systemctl mask --now {{{ service }}}
 Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
 {{{ sysctl }}} = {{{ value }}}
 
+The system configuration files need to be reloaded for the changes to take effect.
 Load settings from all system configuration files with the following command:
 
 $ sudo sysctl --system

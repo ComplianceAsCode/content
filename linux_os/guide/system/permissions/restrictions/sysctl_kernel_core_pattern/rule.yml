@@ -32,12 +32,21 @@ references:
     stigid@rhel8: RHEL-08-010671
 
 ocil_clause:  |-
-    the returned line does not have a value of "|/bin/false", or a line is not
-    returned and the need for core dumps is not documented with the Information
-    System Security Officer (ISSO) as an operational requirement
+    "kernel.core_pattern" is not set to "|/bin/false" and is not documented with the
+    Information System Security Officer (ISSO) as an operational requirement, or is missing
 
 ocil: |
-    {{{ ocil_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}
+    Verify {{{ full_name }}} disables storing core dumps with the following commands:
+
+    $ sudo sysctl kernel.core_pattern
+    kernel.core_pattern = |/bin/false
+    If the returned line does not have a value of "|/bin/false", or a line is not returned and
+    the need for core dumps is not documented with the Information System Security Officer (ISSO)
+    as an operational requirement, this is a finding.
+
+    Check that the configuration files are present to disable core dump storage.
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.core_pattern | tail -1
+    kernel.core_pattern = |/bin/false
 
 fixtext: |-
     Configure {{{ full_name }}} to disable storing core dumps.
