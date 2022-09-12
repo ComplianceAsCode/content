@@ -53,13 +53,16 @@ references:
     srg: SRG-OS-000343-GPOS-00134
     stigid@ol7: OL07-00-030340
 
-ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
+ocil_clause: 'there is no evidence that real-time alerts are configured on the system'
 
 ocil: |-
-    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
-    determine if the system is configured to either suspend, switch to single user mode,
-    or halt when disk space has run low:
-    <pre>admin_space_left_action single</pre>
+    Verify that {{{ full_name }}} is configured to take action in the event of allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity with the following command:
+
+    <pre>$ sudo grep admin_space_left_action /etc/audit/auditd.conf
+
+    admin_space_left_action = single</pre>
+
+    If the value of the "admin_space_left_action" is not set to "single", or if the line is commented out, ask the System Administrator to indicate how the system is providing real-time alerts to the SA and ISSO.
 
 fixtext: |-
     Configure "auditd" service  to take action in the event of allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity.
