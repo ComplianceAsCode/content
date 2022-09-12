@@ -45,17 +45,17 @@ ocil: |-
     unconfined_u:object_r:faillog_t:s0 /var/log/faillock
 
 fixtext: |-
-    Configure {{{ full_name }}} to allow the use of a non-default pam_faillock.so tally directory while SELinux enforces a targeted policy.
+    Configure {{{ full_name }}} to allow the use of a non-default faillock tally directory while SELinux enforces a targeted policy.
 
-    Create a non-default pam_faillock.so tally directory (if it does not already exist) with the following example:
+    Create a non-default faillock tally directory (if it does not already exist) with the following example:
 
     $ sudo mkdir /var/log/faillock
 
-    Update the /etc/selinux/targeted/contexts/files/file_contexts.local with "faillog_t" context type for the non-default pam_faillock.so tally directory with the following command:
+    Update the /etc/selinux/targeted/contexts/files/file_contexts.local with "faillog_t" context type for the non-default faillock tally directory with the following command:
 
     $ sudo semanage fcontext -a -t faillog_t "/var/log/faillock(/.*)?"
 
-    Next, update the context type of the non-default pam_faillock.so directory/subdirectories and files with the following command:
+    Next, update the context type of the non-default faillock directory/subdirectories and files with the following command:
 
     $ sudo restorecon -R -v /var/log/faillock
 
