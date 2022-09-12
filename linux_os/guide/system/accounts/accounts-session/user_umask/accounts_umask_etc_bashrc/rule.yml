@@ -65,7 +65,7 @@ ocil: |-
     umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 fixtext: |-
-    Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+    Configure {{{ full_name }}} to define default permissions for all authenticated users using the bash shell.
 
     Add or edit the lines for the "umask" parameter in the "{{{ etc_bash_rc }}}" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
