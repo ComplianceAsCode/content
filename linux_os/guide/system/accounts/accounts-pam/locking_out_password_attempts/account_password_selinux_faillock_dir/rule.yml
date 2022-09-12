@@ -59,4 +59,5 @@ fixtext: |-
 
     $ sudo restorecon -R -v /var/log/faillock
 
-srg_requirement: '{{{ full_name }}} must configure SELinux context type to allow the use of a non-default pam_faillock.so tally directory.'
+srg_requirement: |-
+    {{{ full_name }}} must configure SELinux context type to allow the use of a non-default faillock tally directory.
