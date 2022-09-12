@@ -60,11 +60,16 @@ references:
     stigid@sle15: SLES-15-020200
     stigid@ubuntu2004: UBTU-20-010007
 
-ocil_clause: 'it is not equal to or greater than the required value'
+ocil_clause: 'the "PASS_MIN_DAYS" parameter value is not "{{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}" or greater, or is commented out'
 
 ocil: |-
-    To check the minimum password age, run the command:
-    <pre>$ grep PASS_MIN_DAYS /etc/login.defs</pre>
+    Verify {{{ full_name }}} enforces 24 hours/1 day as the minimum password lifetime for new user accounts.
+
+    Check for the value of "PASS_MIN_DAYS" in "/etc/login.defs" with the following command:
+
+    <pre>$ grep -i pass_min_days /etc/login.defs
+
+    PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce 24 hours/1 day as the minimum password lifetime.
