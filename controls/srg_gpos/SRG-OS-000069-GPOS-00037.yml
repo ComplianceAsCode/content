@@ -5,6 +5,7 @@ controls:
         title: {{{ full_name }}} must enforce password complexity by requiring that at
             least one upper-case character be used.
         rules:
+            - var_password_pam_retry=3
             - accounts_password_pam_enforce_root
             - accounts_password_pam_retry
             - accounts_password_pam_ucredit
