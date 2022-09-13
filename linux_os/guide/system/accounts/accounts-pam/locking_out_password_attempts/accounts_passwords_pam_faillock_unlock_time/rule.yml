@@ -13,10 +13,13 @@ description: |-
     it is recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
 
+    If <tt>unlock_time</tt> is set to <tt>0</tt>, manual intervention by an administrator is required
+    to unlock a user. This should be done using the <tt>faillock</tt> tool.
+
 rationale: |-
-    Locking out user accounts after a number of incorrect attempts prevents direct password
-    guessing attacks. Ensuring that an administrator is involved in unlocking locked accounts
-    draws appropriate attention to such situations.
+    By limiting the number of failed logon attempts the risk of unauthorized system
+    access via user password guessing, otherwise known as brute-forcing, is reduced.
+    Limits are imposed by locking the account.
 
 severity: medium
 
@@ -50,24 +53,31 @@ references:
     stigid@rhel8: RHEL-08-020016
     vmmsrg: SRG-OS-000329-VMM-001180
 
-ocil_clause: 'unlock_time is less than the expected value'
+platform: pam
+
+ocil_clause: |-
+    the "unlock_time" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}",
+    the line is missing, or commented out
 
 ocil: |-
-    To ensure the failed password attempt policy is configured correctly, run the following command:
+    Verify {{{ full_name }}} is configured to lock an account until released by an administrator
+    after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unsuccessful logon
+    attempts with the command:
+
     {{% if product in ["rhel7"] %}}
     <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
     For each file, the output should show <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
     {{% else %}}
-    <pre>$ grep fail_interval /etc/security/faillock.conf</pre>
-    The output should show <tt>unlock_time = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+    <pre>$ grep 'unlock_time =' /etc/security/faillock.conf</pre>
+    <tt>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt>
     {{% endif %}}
-    It can also be <tt>0</tt> or <tt>never</tt>.
 
 fixtext: |-
-    To configure the system to lock out accounts during a specified time period after a number of
-    incorrect login attempts using <tt>pam_faillock.so</tt>, first make sure the feature is enabled
-    using the following command:
+    Configure {{{ full_name }}} to lock an account until released by an administrator after
+    {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unsuccessful logon attempts with the command:
+
     {{% if product in ["rhel7"] %}}
+    First make sure the feature is enabled:
     $ sudo authconfig --enablefaillock --update
 
     Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
@@ -83,19 +93,12 @@ fixtext: |-
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
-    add, uncomment or edit the following line:
     <pre>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</pre>
 
-    add or uncomment the following line:
-    <pre>silent</pre>
     {{% endif %}}
-    If <tt>unlock_time</tt> is set to <tt>0</tt>, manual intervention by an administrator is required
-    to unlock a user. This should be done using the <tt>faillock</tt> tool.
 
 srg_requirement: |-
-    {{{ full_name }}} must automatically lock an account until the locked account is released by an administrator.
-
-platform: pam
+    {{{ full_name }}} must maintain an account lock until the locked account is released by an administrator.
 
 warnings:
     - general: |-
