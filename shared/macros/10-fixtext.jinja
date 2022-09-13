@@ -9,9 +9,9 @@
 :type rule_path: str
 #}}
 {{% macro fixtext_audit_file_watch_rule(path, key, rule_path) -%}}
-Configure {{{ full_name }}} to generate audit records for all modifications that affect <tt>{{{ path }}}</tt>.
+Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that <tt>"{{{ path }}}"</tt>.
 
-Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
+Add or update the following file system rule to <tt>"{{{ rule_path }}}"</tt>:
 
 -w {{{ path }}} -p wa -k {{{ key }}}
 
