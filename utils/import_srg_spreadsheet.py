@@ -49,8 +49,8 @@ class Row:
         self.STIGID = sheet[f'D{row_number}'].value
         self.SRG_Requirement = sheet[f'E{row_number}'].value
         self.Requirement = sheet[f'F{row_number}'].value.replace(full_name, changed_name)
-        self.SRG_VulDiscussion = sheet[f'H{row_number}'].value
-        self.Vul_Discussion = sheet[f'G{row_number}'].value
+        self.SRG_VulDiscussion = sheet[f'G{row_number}'].value
+        self.Vul_Discussion = sheet[f'H{row_number}'].value
         self.Status = sheet[f'I{row_number}'].value
         self.SRG_Check = sheet[f'J{row_number}'].value
         self.Check = sheet[f'K{row_number}'].value
