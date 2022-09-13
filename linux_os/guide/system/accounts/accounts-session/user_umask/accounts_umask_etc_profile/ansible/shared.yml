@@ -8,7 +8,7 @@
 - name: Check if umask is already set
   ansible.builtin.lineinfile:
     path: /etc/profile
-    regexp: (^[\s]*[^#]umask)\s+(\d+)
+    regexp: (^[\s]*umask)\s+(\d+)
     state: absent
   check_mode: yes
   changed_when: false
