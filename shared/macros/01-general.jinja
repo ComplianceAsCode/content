@@ -1091,11 +1091,11 @@ Part of the grub2_bootloader_argument(_absent) templates.
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 {{%- endmacro %}}
 
-{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/") %}}
-{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) }}}
+{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/", key="") %}}
+{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix, key) }}}
 
 fixtext: |-
-    {{{ fixtext_audit_rules_privileged_commands(cmd, path_prefix) | indent(4) }}}
+    {{{ fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_audit_command(cmd) }}}'
 {{%- endmacro %}}

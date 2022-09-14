@@ -51,15 +51,15 @@ OCIL and OCIL clause for ensuring that a privileged command is audited.
 :type path_prefix: str
 
 #}}
-{{% macro complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) %}}
+{{% macro complete_ocil_entry_audit_privileged_commands(cmd, path_prefix, key) %}}
 ocil_clause: '{{{ ocil_clause_audit() }}}'
 
 ocil: |-
-    Verify that an audit event is generated for any successful/unsuccessful use of the {{{ cmd }}} command by performing the following command to check the file system rules in "/etc/audit/audit.rules":
+    Verify that {{{ full_name }}} is configured to audit the execution of the "{{{ cmd }}}" command with the following command:
 
-    $ sudo grep -w {{{ cmd }}} /etc/audit/audit.rules
+    $ sudo auditctl -l | grep {{{ cmd }}}
 
-    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 {{% endmacro %}}
 
 {{#
@@ -1123,10 +1123,10 @@ $ sudo grep {{{ syscall }}} /etc/audit/audit.rules
 
 The output should be the following:
 
--a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
--a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
--a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
--a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -k {{{ key }}}
 
 {{%- endmacro %}}
 
