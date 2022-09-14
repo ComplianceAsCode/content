@@ -487,6 +487,13 @@ class Profile(XCCDFEntity, SelectionHandler):
         else:
             return noop_rule_filterfunc
 
+    def _add_selects(self, element, selections, prefix, selected):
+        for selection in selections:
+            select = ET.Element("{%s}select" % XCCDF12_NS)
+            select.set("idref", prefix + selection)
+            select.set("selected", selected)
+            element.append(select)
+
     def to_xml_element(self):
         element = ET.Element('{%s}Profile' % XCCDF12_NS)
         element.set("id", OSCAP_PROFILE + self.id_)
@@ -506,23 +513,9 @@ class Profile(XCCDFEntity, SelectionHandler):
             plat = ET.SubElement(element, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-        for selection in self.selected:
-            select = ET.Element("{%s}select" % XCCDF12_NS)
-            select.set("idref", OSCAP_RULE + selection)
-            select.set("selected", "true")
-            element.append(select)
-
-        for selection in self.unselected:
-            unselect = ET.Element("{%s}select" % XCCDF12_NS)
-            unselect.set("idref", OSCAP_RULE + selection)
-            unselect.set("selected", "false")
-            element.append(unselect)
-
-        for selection in self.unselected_groups:
-            unselect = ET.Element("{%s}select" % XCCDF12_NS)
-            unselect.set("idref", OSCAP_GROUP + selection)
-            unselect.set("selected", "false")
-            element.append(unselect)
+        self._add_selects(element, self.selected, OSCAP_RULE, "true")
+        self._add_selects(element, self.unselected, OSCAP_RULE, "false")
+        self._add_selects(element, self.unselected_groups, OSCAP_GROUP, "false")
 
         for value_id, selector in self.variables.items():
             refine_value = ET.Element("{%s}refine-value" % XCCDF12_NS)
