@@ -965,7 +965,6 @@ class Benchmark(XCCDFEntity):
 
     def to_xml_element(self, env_yaml=None, product_cpes=None):
         root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
-        root.set('id', self.id_)
         root.set('id', OSCAP_BENCHMARK + self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xsi:schemaLocation',
