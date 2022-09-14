@@ -23,7 +23,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_rmmod_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/sbin/rmmod[\s]+-p[\s]+x[\s]+-k[\s]+modules[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/sbin/rmmod[\s]+-p[\s]+x\b.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -32,7 +32,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_rmmod_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/sbin/rmmod[\s]+-p[\s]+x[\s]+-k[\s]+modules[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/sbin/rmmod[\s]+-p[\s]+x\b.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
