@@ -19,5 +19,5 @@ if ! [ -z "$OMFWD_CONFIG" ]; then
         sed -i 's/action\s*(\s*type\s*=\s*"omfwd"/action(type="omfwd"\ StreamDriver="gtls"\ /' $OMFWD_CONFIG_FILE
     fi
 else
-    echo "action(type=\"omfwd\" protocol=\"tcp\" Target=\"{{ rsyslog_remote_loghost_address }}\" port=\"6514\" StreamDriver=\"gtls\" StreamDriverMode=\"1\" StreamDriverAuthMode=\"x509/name\" streamdriver.CheckExtendedKeyPurpose=\"on\")"  >> /etc/rsyslog.conf
+    echo "action(type=\"omfwd\" protocol=\"tcp\" Target=\"$rsyslog_remote_loghost_address\" port=\"6514\" StreamDriver=\"gtls\" StreamDriverMode=\"1\" StreamDriverAuthMode=\"x509/name\" streamdriver.CheckExtendedKeyPurpose=\"on\")"  >> /etc/rsyslog.conf
 fi
