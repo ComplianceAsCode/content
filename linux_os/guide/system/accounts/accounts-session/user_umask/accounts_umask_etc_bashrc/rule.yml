@@ -58,11 +58,21 @@ ocil_clause: 'the value for the "umask" parameter is not "{{{ xccdf_value("var_a
 ocil: |-
     Verify the <tt>umask</tt> setting is configured correctly in the <tt>{{{ etc_bash_rc }}}</tt> file with the following command:
 
-    Note: If the value of the "umask" parameter is set to "000" "/etc/bashrc" file, the Severity is raised to a CAT I.
-
     <pre>$ sudo grep "umask" {{{ etc_bash_rc }}}
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+
+checktext: |-
+    Verify the "umask" setting is configured correctly in the "/etc/bashrc" file with the following command:
+
+    Note: If the value of the "umask" parameter is set to "000" "/etc/bashrc" file, the Severity is raised to a CAT I.
+
+    $ grep umask /etc/bashrc
+
+    umask 077
+    umask 077
+
+    If the value for the "umask" parameter is not "077", or the "umask" parameter is missing or is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to define default permissions for all authenticated users using the bash shell.
