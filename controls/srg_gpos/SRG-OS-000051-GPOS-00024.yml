@@ -5,6 +5,7 @@ controls:
         title: {{{ full_name }}} must provide the capability to centrally review and
             analyze audit records from multiple components within the system.
         rules:
+            - var_auditd_freq=100
             - auditd_freq
             - service_auditd_enabled
             - package_audit_installed
