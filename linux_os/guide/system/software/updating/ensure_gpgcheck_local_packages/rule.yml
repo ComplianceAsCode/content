@@ -49,7 +49,7 @@ references:
 ocil_clause: 'there is no process to validate certificates for local packages that is approved by the organization'
 
 ocil: |-
-    Verify that dnf verifies the signature of local packages prior to install with the following command:
+    Verify that {{{ pkg_manager }}} verifies the signature of local packages prior to install with the following command:
 
     <pre>$ grep localpkg_gpgcheck {{{ pkg_manager_config_file }}}</pre>
 
