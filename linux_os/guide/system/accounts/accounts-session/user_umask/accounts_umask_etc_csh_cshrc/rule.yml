@@ -42,12 +42,22 @@ ocil_clause: 'the value for the "umask" parameter is not "{{{ xccdf_value("var_a
 ocil: |-
     Verify the "umask" setting is configured correctly in the "/etc/csh.cshrc" file with the following command:
 
+    $ grep umask /etc/csh.cshrc
+
+    umask 077
+    umask 077
+
+checktext: |-
+    Verify the "umask" setting is configured correctly in the "/etc/csh.cshrc" file with the following command:
+
     Note: If the value of the "umask" parameter is set to "000" "/etc/csh.cshrc" file, the Severity is raised to a CAT I.
 
     $ grep umask /etc/csh.cshrc
 
     umask 077
     umask 077
+
+    If the value for the "umask" parameter is not "077", or the "umask" parameter is missing or is commented out, this is a finding.
 
 fixtext: |-
     Configure the {{{ full_name }}} to define default permissions for all authenticated users using the c shell.
