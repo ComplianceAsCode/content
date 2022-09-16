@@ -947,7 +947,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         )
     endif()
 
-    define_validate_product("${PRODUCT}")
+    define_validate_product("${DERIVATIVE}")
     if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
             NAME "validate-ssg-${DERIVATIVE}-ds.xml"
