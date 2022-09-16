@@ -10,7 +10,8 @@ endif()
 
 project(scap-security-guide NONE)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
 # This is set to silence GNUInstallDirs warning about no language being used with cmake
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)

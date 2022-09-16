@@ -578,7 +578,8 @@ macro(ssg_build_html_guides PRODUCT)
 
     # despite checking just the index this actually tests all the guides because the index links to them
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
-    set(SSG_HTML_GUIDE_FILE_LIST "${SSG_HTML_GUIDE_FILE_LIST};${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html" PARENT_SCOPE)
+    list(APPEND SSG_HTML_GUIDE_FILE_LIST "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html")
+    set(SSG_HTML_GUIDE_FILE_LIST ${SSG_HTML_GUIDE_FILE_LIST} PARENT_SCOPE)
 endmacro()
 
 # Build per-profile Bash remediation scripts that can be used independently of
@@ -1084,8 +1085,8 @@ macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REFERENCES)
 
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
     # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${OUTPUTS_LIST}")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+    list(APPEND SSG_HTML_TABLE_FILE_LIST ${OUTPUTS_LIST})
+    set(SSG_HTML_TABLE_FILE_LIST ${SSG_HTML_TABLE_FILE_LIST} PARENT_SCOPE)
 
     install(FILES ${OUTPUTS_LIST} DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
@@ -1107,8 +1108,8 @@ macro(ssg_build_html_profile_table BASENAME PRODUCT PROFILE REFERENCE)
 
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
     # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/${BASENAME}.html")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+    list(APPEND SSG_HTML_TABLE_FILE_LIST "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html")
+    set(SSG_HTML_TABLE_FILE_LIST ${SSG_HTML_TABLE_FILE_LIST} PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
     DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1130,8 +1131,8 @@ macro(ssg_build_html_cce_table PRODUCT)
 
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
     # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+    list(APPEND SSG_HTML_TABLE_FILE_LIST "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html")
+    set(SSG_HTML_TABLE_FILE_LIST ${SSG_HTML_TABLE_FILE_LIST} PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1155,8 +1156,8 @@ macro(ssg_build_html_srgmap_tables PRODUCT)
 
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
     # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html;${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+    list(APPEND SSG_HTML_TABLE_FILE_LIST "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html")
+    set(SSG_HTML_TABLE_FILE_LIST ${SSG_HTML_TABLE_FILE_LIST} PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1207,8 +1208,8 @@ macro(ssg_build_html_stig_tables PRODUCT)
 
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
     # also needs to set the variable in local scope for next macro tables
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html;${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html;${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html")
-    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+    list(APPEND SSG_HTML_TABLE_FILE_LIST "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html")
+    set(SSG_HTML_TABLE_FILE_LIST ${SSG_HTML_TABLE_FILE_LIST} PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
