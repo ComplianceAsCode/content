@@ -45,11 +45,3 @@ fixtext: |-
 
 srg_requirement: |-
     {{{ full_name }}} must label all off-loaded audit logs before sending them to the central log server.
-
-template:
-    name: auditd_lineinfile
-    vars:
-        missing_parameter_pass: 'false'
-        parameter: name_format
-        rule_id: auditd_name_format
-        value: hostname
