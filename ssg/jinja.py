@@ -9,6 +9,10 @@ try:
 except ImportError:
     from urllib import quote
 
+try:
+    from shlex import quote as shell_quote
+except ImportError:
+    from pipes import quote as shell_quote
 
 from .constants import JINJA_MACROS_DIRECTORY
 from .utils import (required_key,
@@ -91,6 +95,7 @@ def _get_jinja_environment(substitutions_dict):
         _get_jinja_environment.env.filters['escape_id'] = escape_id
         _get_jinja_environment.env.filters['escape_regex'] = escape_regex
         _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
+        _get_jinja_environment.env.filters['quote'] = shell_quote
         _get_jinja_environment.env.filters['sha256'] = sha256
 
     return _get_jinja_environment.env
