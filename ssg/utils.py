@@ -344,7 +344,7 @@ def escape_regex(text):
     # In python 3.7 the set of charaters escaped by re.escape is reasonable, so lets mimic it.
     # See https://docs.python.org/3/library/re.html#re.sub
     # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
-    return re.sub(r"([#$&*+-.^`|~:()])", r"\\\1", text)
+    return re.sub(r"([#$&*+.^`|~:()-])", r"\\\1", text)
 
 
 def escape_id(text):
