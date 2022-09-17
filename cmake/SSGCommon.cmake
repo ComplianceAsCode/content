@@ -542,9 +542,9 @@ macro(ssg_build_sds PRODUCT)
     set_tests_properties("verify-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
     if("${PRODUCT}" MATCHES "rhel")
         if("${PRODUCT}" MATCHES "rhel7")
-            set(REFERENCES_CHECK_PROFILE_LIST "cis anssi_nt28_high hipaa")
+            set(REFERENCES_CHECK_PROFILE_LIST cis anssi_nt28_high hipaa)
         elseif("${PRODUCT}" MATCHES "rhel8")
-            set(REFERENCES_CHECK_PROFILE_LIST "cis anssi_bp28_high hipaa")
+            set(REFERENCES_CHECK_PROFILE_LIST cis anssi_bp28_high hipaa)
         endif()
         add_test(
                 NAME "missing-references-ssg-${PRODUCT}-ds.xml"
