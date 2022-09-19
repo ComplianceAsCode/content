@@ -70,14 +70,13 @@ references:
     stigid@ubuntu2004: UBTU-20-010074
 
 {{%- if "rhel" in product %}}
-ocil_clause: |-
+ocil_clause: >-
     the file integrity application does not exist, or
     a script file controlling the execution of the file integrity application does not exist, or
     the file integrity application does not notify designated personnel of changes
 
 ocil: |-
-    Verify that {{{ full_name }}} routinely executes a file integrity scan for changes to the system baseline.
-    The command used in the example will use a daily occurrence.
+    Verify that {{{ full_name }}} routinely executes a file integrity scan for changes to the system baseline. The command used in the example will use a daily occurrence.
     Check the cron directories for scripts controlling the execution and notification of results of the file integrity application.
     For example, if AIDE is installed on the system, use the following commands:
     <pre>
@@ -94,9 +93,7 @@ ocil: |-
 ocil_clause: 'AIDE is not configured to scan periodically'
 
 ocil: |-
-    Verify the operating system routinely checks the baseline configuration for unauthorized changes.
-
-    To determine that periodic AIDE execution has been scheduled, run the following command:
+    Verify the operating system routinely checks the baseline configuration for unauthorized changes. To determine that periodic AIDE execution has been scheduled, run the following command:
     <pre>$ grep aide /etc/crontab</pre>
     The output should return something similar to the following:
     <pre>05 4 * * * root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
