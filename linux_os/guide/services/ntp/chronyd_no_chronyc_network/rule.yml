@@ -10,8 +10,8 @@ description: |-
     for management connections made by chronyc.
 
 rationale: |-
-    Not exposing the management interface of the chrony daemon on
-    the network diminishes the attack space.
+    Minimizing the exposure of the server functionality of the chrony
+    daemon diminishes the attack surface.
 
 severity: low
 
@@ -30,18 +30,15 @@ references:
     stigid@ol8: OL08-00-030742
     stigid@rhel8: RHEL-08-030742
 
-ocil_clause: 'cmdport is not set or cmdport is set to a non-zero value'
+ocil_clause: 'the "cmdport" option is not set to "0", is commented out, or is missing'
 
 ocil: |-
-    To verify that <tt>cmdport</tt> has been set properly, perform the following:
-    <pre>$ grep '\bcmdport\b' {{{ chrony_conf_path }}}</pre>
-    The output should return
+    Verify {{{ full_name }}} disables network management of the chrony daemon with the following command:
+    <pre>$ grep -w cmdport {{{ chrony_conf_path }}}</pre>
     <pre>cmdport 0</pre>
 
 fixtext: |-
-    Configure the chrony daemon to disable management over network.
-
-    Add or edit the following line in {{{ chrony_conf_path }}}:
+    Configure {{{ full_name }}} to disable network management of the chrony daemon by adding/modifying the following line in the {{{ chrony_conf_path }}} file:
 
     cmdport 0
 
