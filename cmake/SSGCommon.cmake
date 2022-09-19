@@ -186,7 +186,7 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     if(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
         add_test(
             NAME "${PRODUCT}-bash-shellcheck"
-        COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+            COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
         )
         set_tests_properties("${PRODUCT}-bash-shellcheck" PROPERTIES LABELS quick)
     endif()
@@ -199,7 +199,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     set(ANSIBLE_PLAYBOOKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/playbooks")
     add_custom_command(
         OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
         DEPENDS generate-internal-${PRODUCT}-all-fixes
         COMMENT "[${PRODUCT}-content] Generating Ansible Playbooks"
     )
@@ -487,12 +487,12 @@ macro(ssg_build_sds PRODUCT)
             add_test(
                 NAME "missing-cces-${PRODUCT}"
                 COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/missing_cces.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "-p anssi,hipaa,pci,stig"
-                )
+            )
         else()
             add_test(
                 NAME "missing-cces-${PRODUCT}"
                 COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/missing_cces.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-                )
+            )
         endif()
         set_tests_properties("missing-cces-${PRODUCT}" PROPERTIES LABELS quick)
     endif()
@@ -642,18 +642,18 @@ macro(ssg_make_html_stats_for_product PRODUCT)
 endmacro()
 
 macro(ssg_render_policies_for_product PRODUCT CONTROL_FILES)
-        foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
+    foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render-policy.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html" ${PRODUCT} "${CMAKE_SOURCE_DIR}/controls/${CONTROL_FILE}.yml"
             DEPENDS generate-ssg-${PRODUCT}-ds.xml
             COMMENT "[${PRODUCT}-render-policy-${CONTROL_FILE}] generating rendered policy for ${CONTROL_FILE}"
-            )
+        )
 
-            add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
+        add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
             DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
-            )
-        endforeach()
+        )
+    endforeach()
 endmacro()
 
 macro(ssg_make_all_tables PRODUCT)
@@ -670,21 +670,21 @@ macro(ssg_make_all_tables PRODUCT)
 endmacro()
 
 macro(ssg_build_disa_delta PRODUCT PROFILE)
-        file(GLOB DISA_SCAP_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-scap.xml")
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir
-            DEPENDS "${PRODUCT}-content"
-            COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
-        )
+    file(GLOB DISA_SCAP_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-scap.xml")
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir
+        DEPENDS "${PRODUCT}-content"
+        COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
+    )
 
-        add_custom_target(generate-ssg-delta-${PRODUCT}-${PROFILE}
-            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
-        )
+    add_custom_target(generate-ssg-delta-${PRODUCT}-${PROFILE}
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+    )
 
-        install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
-                DESTINATION ${SSG_TAILORING_INSTALL_DIR})
+    install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+            DESTINATION ${SSG_TAILORING_INSTALL_DIR})
 endmacro()
 
 # Top-level macro to build all output artifacts for the specified product.
@@ -1324,7 +1324,7 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E sha512sum "${ZIPNAME}.zip" > "zipfile/${ZIPNAME}.zip.sha512"
         COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
-        )
+    )
 endmacro()
 macro(ssg_build_zipfile_target ZIPNAME)
     add_custom_target(
