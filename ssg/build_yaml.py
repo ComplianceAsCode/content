@@ -2061,11 +2061,10 @@ class LinearLoader(object):
         register_namespaces()
         return self.benchmark.to_file(filename, self.env_yaml)
 
-    def export_ocil_to_file(self, filename):
+    def export_ocil_to_xml(self):
         root = ET.Element('{%s}ocil' % ocil_namespace)
         root.set('xmlns:xsi', xsi_namespace)
         root.set("xmlns:xhtml", xhtml_namespace)
-        tree = ET.ElementTree(root)
         generator = ET.SubElement(root, "{%s}generator" % ocil_namespace)
         product_name = ET.SubElement(generator, "{%s}product_name" % ocil_namespace)
         product_name.text = "build_shorthand.py from SCAP Security Guide"
@@ -2085,6 +2084,11 @@ class LinearLoader(object):
             questionnaires.append(questionnaire)
             test_actions.append(action)
             questions.append(boolean_question)
+        return root
+
+    def export_ocil_to_file(self, filename):
+        root = self.export_ocil_to_xml()
+        tree = ET.ElementTree(root)
         tree.write(filename)
 
 
