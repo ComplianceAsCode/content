@@ -2054,6 +2054,9 @@ class LinearLoader(object):
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
+    def export_benchmark_to_xml(self):
+        return self.benchmark.to_xml_element(self.env_yaml)
+
     def export_benchmark_to_file(self, filename):
         register_namespaces()
         return self.benchmark.to_file(filename, self.env_yaml)
