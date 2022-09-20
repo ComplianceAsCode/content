@@ -454,33 +454,3 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
                       .format(cceid, rule.get("id"), file=sys.stderr))
                 rule.remove(identcce)
                 sys.exit(1)
-
-
-def assert_that_check_ids_match_rule_id(checks, xccdf_rule):
-    for check in checks:
-        check_name = check.get("name")
-        # Verify match of XCCDF vs OVAL / OCIL IDs for
-        # * the case of OVAL <check>
-        # * the case of OCIL <check>
-        if (xccdf_rule != check_name and check_name is not None and
-                xccdf_rule + '_ocil' != check_name and
-                xccdf_rule != 'sample_rule'):
-            msg_lines = ["The OVAL / OCIL ID does not match the XCCDF Rule ID!"]
-            if '_ocil' in check_name:
-                id_name = "OCIL ID"
-            else:
-                id_name = "OVAL ID"
-            msg_lines.append(" {0:>14}: {1}".format(id_name, check_name))
-            msg_lines.append(" {0:>14}: {1}".format("XCCDF Rule ID", xccdf_rule))
-            raise SSGError("\n".join(msg_lines))
-
-
-def check_that_oval_and_rule_id_match(xccdftree):
-    for xccdfid, rule in rules_with_ids_generator(xccdftree):
-        checks = rule.find(".//{%s}check" % XCCDF11_NS)
-        if checks is None:
-            print("Rule {0} doesn't have checks."
-                  .format(xccdfid), file=sys.stderr)
-            continue
-
-        assert_that_check_ids_match_rule_id(checks, xccdfid)
