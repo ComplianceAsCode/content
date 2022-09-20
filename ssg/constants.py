@@ -59,7 +59,6 @@ product_directories = [
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
     'uos20',
-    'vsel',
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
@@ -207,7 +206,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Java Runtime Environment": "jre",
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 4": "ocp4",
-    "McAfee VirusScan Enterprise for Linux": "vsel",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
@@ -448,7 +446,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fuse': 'JBoss Fuse',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
-    'vsel': 'McAfee VirusScan Enterprise for Linux',
     'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
