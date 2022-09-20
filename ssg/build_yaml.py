@@ -1708,26 +1708,26 @@ class Rule(XCCDFEntity):
         if not self.ocil and not self.ocil_clause:
             raise ValueError("Rule {0} doesn't have OCIL".format(self.id_))
         # Create <questionnaire> for the rule
-        questionnaire = ET.Element("questionnaire", id=self.id_ + "_ocil")
-        title = ET.SubElement(questionnaire, "title")
+        questionnaire = ET.Element("{%s}questionnaire" % ocil_namespace, id=self.id_ + "_ocil")
+        title = ET.SubElement(questionnaire, "{%s}title" % ocil_namespace)
         title.text = self.title
-        actions = ET.SubElement(questionnaire, "actions")
-        test_action_ref = ET.SubElement(actions, "test_action_ref")
+        actions = ET.SubElement(questionnaire, "{%s}actions" % ocil_namespace)
+        test_action_ref = ET.SubElement(actions, "{%s}test_action_ref" % ocil_namespace)
         test_action_ref.text = self.id_ + "_action"
         # Create <boolean_question_test_action> for the rule
         action = ET.Element(
-            "boolean_question_test_action",
+            "{%s}boolean_question_test_action" % ocil_namespace,
             id=self.id_ + "_action",
             question_ref=self.id_ + "_question")
-        when_true = ET.SubElement(action, "when_true")
-        result = ET.SubElement(when_true, "result")
+        when_true = ET.SubElement(action, "{%s}when_true" % ocil_namespace)
+        result = ET.SubElement(when_true, "{%s}result" % ocil_namespace)
         result.text = "PASS"
-        when_true = ET.SubElement(action, "when_false")
-        result = ET.SubElement(when_true, "result")
+        when_true = ET.SubElement(action, "{%s}when_false" % ocil_namespace)
+        result = ET.SubElement(when_true, "{%s}result" % ocil_namespace)
         result.text = "FAIL"
         # Create <boolean_question>
         boolean_question = ET.Element(
-            "boolean_question", id=self.id_ + "_question")
+            "{%s}boolean_question" % ocil_namespace, id=self.id_ + "_question")
         # TODO: The contents of <question_text> element used to be broken in
         # the legacy XSLT implementation. The following code contains hacks
         # to get the same results as in the legacy XSLT implementation.
@@ -2059,23 +2059,22 @@ class LinearLoader(object):
         return self.benchmark.to_file(filename, self.env_yaml)
 
     def export_ocil_to_file(self, filename):
-        root = ET.Element('ocil')
+        root = ET.Element('{%s}ocil' % ocil_namespace)
         root.set('xmlns:xsi', xsi_namespace)
-        root.set("xmlns", ocil_namespace)
         root.set("xmlns:xhtml", xhtml_namespace)
         tree = ET.ElementTree(root)
-        generator = ET.SubElement(root, "generator")
-        product_name = ET.SubElement(generator, "product_name")
+        generator = ET.SubElement(root, "{%s}generator" % ocil_namespace)
+        product_name = ET.SubElement(generator, "{%s}product_name" % ocil_namespace)
         product_name.text = "build_shorthand.py from SCAP Security Guide"
-        product_version = ET.SubElement(generator, "product_version")
+        product_version = ET.SubElement(generator, "{%s}product_version" % ocil_namespace)
         product_version.text = "ssg: " + self.env_yaml["ssg_version_str"]
-        schema_version = ET.SubElement(generator, "schema_version")
+        schema_version = ET.SubElement(generator, "{%s}schema_version" % ocil_namespace)
         schema_version.text = "2.0"
-        timestamp_el = ET.SubElement(generator, "timestamp")
+        timestamp_el = ET.SubElement(generator, "{%s}timestamp" % ocil_namespace)
         timestamp_el.text = timestamp
-        questionnaires = ET.SubElement(root, "questionnaires")
-        test_actions = ET.SubElement(root, "test_actions")
-        questions = ET.SubElement(root, "questions")
+        questionnaires = ET.SubElement(root, "{%s}questionnaires" % ocil_namespace)
+        test_actions = ET.SubElement(root, "{%s}test_actions" % ocil_namespace)
+        questions = ET.SubElement(root, "{%s}questions" % ocil_namespace)
         for rule in self.rules.values():
             if not rule.ocil and not rule.ocil_clause:
                 continue
