@@ -39,14 +39,14 @@ references:
     stigid@sle12: SLES-12-010770
     stigid@sle15: SLES-15-040120
 
-ocil_clause: 'paths contain more than local home directories'
+ocil_clause: 'any local interactive user initialization files have executable search path statements that include directories outside of their home directory and is not documented with the ISSO as an operational requirement'
 
 ocil: |-
-    To verify that all interactive user initialization files executable search
-    path statements do not contain statements that will reference a working
-    directory other than the users home directory, run the following command:
-    <pre>$ sudo grep -r PATH /home/</pre>
-    Inspect the output for any PATH is references directories outside the home directory.
+    Verify that all local interactive user initialization file executable search path statements do not contain statements that will reference a working directory other than user home directories with the following commands:
+
+    <pre>$ sudo grep -i path= /home/*/.*
+
+    /home/[localinteractiveuser]/.bash_profile:PATH=$PATH:$HOME/.local/bin:$HOME/bin</pre>
 
 fixtext: |-
     Edit the local interactive user initialization files to change any PATH variable statements that reference directories other than their home directory.

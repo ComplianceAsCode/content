@@ -46,9 +46,13 @@ references:
 ocil_clause: 'users home directory does not exist'
 
 ocil: |-
-    To verify the assigned home directory of all interactive users on the system
-    exist, run the following command:
-    <pre>$ sudo pwck -r</pre>
+    Verify the assigned home directories of all interactive users on the system exist with the following command:
+
+    <pre>$ sudo pwck -r
+
+    user 'mailnull': directory 'var/spool/mqueue' does not exist</pre>
+
+    The output should not return any interactive users.
 
 fixtext: |-
     Create home directories to all local interactive users that currently do not have a home directory assigned. Use the following commands to create the user home directory assigned in "/etc/passwd":

@@ -45,8 +45,11 @@ references:
 ocil_clause: the value of "maxclassrepeat" is set to "0", more than "{{{ xccdf_value("var_password_pam_maxclassrepeat") }}}" or is commented out
 
 ocil: |-
-    To check the value for maximum consecutive repeating characters, run the following command:
-    <pre>$ sudo grep maxclassrepeat /etc/security/pwquality.conf</pre>
+    Verify the value of the "maxclassrepeat" option in "/etc/security/pwquality.conf" with the following command:
+
+    <pre>$ grep maxclassrepeat /etc/security/pwquality.conf
+
+    maxclassrepeat = {{{ xccdf_value("var_password_pam_maxclassrepeat") }}}</pre>
 
 platform: pam
 

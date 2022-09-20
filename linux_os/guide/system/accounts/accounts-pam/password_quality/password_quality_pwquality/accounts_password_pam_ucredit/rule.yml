@@ -55,13 +55,16 @@ references:
     stigid@ubuntu2004: UBTU-20-010050
     vmmsrg: SRG-OS-000069-VMM-000360
 
-ocil_clause: 'ucredit is not found or not set to the required value'
+ocil_clause: 'the value of "ucredit" is a positive number or is commented out'
 
 ocil: |-
-    To check how many uppercase characters are required in a password, run the following command:
-    <pre>$ grep ucredit /etc/security/pwquality.conf</pre>
-    The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
-    This would appear as <tt>ucredit = -1</tt>.
+    Verify that {{{ full_name }}} enforces password complexity by requiring that at least one upper-case character.
+
+    Check the value for "ucredit" with the following command:
+
+    $ sudo grep ucredit /etc/security/pwquality.conf /etc/security/pwquality.conf.d/*.conf
+
+    ucredit = -1
 
 fixtext: |-
     Configure {{{ full_name }}} to enforce password complexity by requiring that at least one upper-case character be used by setting the "ucredit" option.
@@ -70,7 +73,7 @@ fixtext: |-
 
     ucredit = {{{ xccdf_value("var_password_pam_ucredit") }}}
 
-srg_requirement: '{{{ full_name }}} must enforce password complexity by requiring that at least one uppercase character be used.'
+srg_requirement: '{{{ full_name }}} must enforce password complexity by requiring that at least one upper-case character be used.'
 
 platform: pam
 
