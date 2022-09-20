@@ -224,6 +224,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
     "UnionTech OS Server 20": "uos20",
+    "Not Applicable" : "example"
 }
 
 

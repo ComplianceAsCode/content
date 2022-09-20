@@ -1,6 +1,6 @@
 #!/bin/bash
 {{% if MISSING_PARAMETER_PASS %}}
-# platform = multi_platform_example
+# platform = Not Applicable
 {{% endif%}}
 # packages = audit
 touch "/etc/audit/auditd.conf"
