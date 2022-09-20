@@ -43,9 +43,6 @@ def main():
     # Step over xccdf file, and find referenced check files
     xccdftree = ssg.xml.parse_file(xccdffile)
 
-    if 'unlinked-ocilref' not in xccdffile:
-        ssg.build_renumber.check_that_oval_and_rule_id_match(xccdftree)
-
     checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF11_NS)
 
     translator = ssg.id_translate.IDTranslator(idname)
