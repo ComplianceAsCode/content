@@ -748,7 +748,7 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-tables-${PRODUCT}-all
     )
 
-    add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
+    add_dependencies(zipfile generate-ssg-${PRODUCT}-ds.xml)
 
     if("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
         ssg_build_profile_playbooks(${PRODUCT})
@@ -974,7 +974,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         add_dependencies(${DERIVATIVE}-content generate-ssg-${DERIVATIVE}-ds-1.2.xml)
     endif()
 
-    add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
+    add_dependencies(zipfile generate-ssg-${DERIVATIVE}-ds.xml)
 
     ssg_build_html_guides(${DERIVATIVE})
 
