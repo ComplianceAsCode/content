@@ -4,6 +4,9 @@ import os
 import os.path
 import sys
 
+from ssg.utils import mkdir_p
+
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
@@ -59,7 +62,7 @@ class LogHelper(object):
 
         Also sets LOG_DIR and LOG_FILE
         """
-        os.makedirs(_dirname)
+        mkdir_p(_dirname)
         logfile = os.path.join(_dirname, 'test_suite.log')
 
         file_handler = logging.FileHandler(logfile)

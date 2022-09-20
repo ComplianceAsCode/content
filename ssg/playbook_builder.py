@@ -8,6 +8,7 @@ from collections import OrderedDict
 
 import ssg.rules
 import ssg.utils
+from ssg.utils import mkdir_p
 import ssg.yaml
 import ssg.build_yaml
 import ssg.build_remediations
@@ -198,7 +199,7 @@ class PlaybookBuilder():
         profile_refines = profile.get_variable_selectors()
 
         profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
-        os.makedirs(profile_playbooks_dir)
+        mkdir_p(profile_playbooks_dir)
 
         for rule_id in profile_rules:
             snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
@@ -217,7 +218,7 @@ class PlaybookBuilder():
         profile_rules = profile.get_rule_selectors()
         profile_refines = profile.get_variable_selectors()
         profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
-        os.makedirs(profile_playbooks_dir)
+        mkdir_p(profile_playbooks_dir)
         snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
         if rule_id in profile_rules:
             self.create_playbook(
@@ -230,7 +231,7 @@ class PlaybookBuilder():
 
     def create_playbooks_for_all_rules(self, variables):
         profile_playbooks_dir = os.path.join(self.output_dir, "all")
-        os.makedirs(profile_playbooks_dir)
+        mkdir_p(profile_playbooks_dir)
         for rule in sorted(os.listdir(self.rules_dir)):
             rule_id, _ = os.path.splitext(rule)
             snippet_path = os.path.join(self.input_dir, rule_id + ".yml")

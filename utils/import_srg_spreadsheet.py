@@ -11,7 +11,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
-from ssg.utils import read_file_list
+from ssg.utils import mkdir_p, read_file_list
 from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, \
     get_cce_dict, get_rule_dir_json
 
@@ -44,11 +44,9 @@ def get_cac_status(disa: str) -> str:
 
 def create_output(rule_dir: str) -> str:
     path_dir_parent = os.path.join(rule_dir, "policy")
-    if not os.path.exists(path_dir_parent):
-        os.mkdir(path_dir_parent)
+    mkdir_p(path_dir_parent)
     path_dir = os.path.join(path_dir_parent, "stig")
-    if not os.path.exists(path_dir):
-        os.mkdir(path_dir)
+    mkdir_p(path_dir)
     path = os.path.join(path_dir, 'shared.yml')
     Path(path).touch()
     return path

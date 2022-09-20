@@ -25,6 +25,7 @@ except ImportError:
 
 import ssg.ansible
 import ssg.yaml
+from ssg.utils import mkdir_p
 
 
 def memoize(f):
@@ -394,7 +395,7 @@ class PlaybookToRoleConverter():
         print("Converting Ansible Playbook {} to Ansible Role {}".format(self._local_playbook_filename, os.path.join(directory, self.name)))
         for filename in self.PRODUCED_FILES:
             abs_path = os.path.join(directory, self.name, filename)
-            ssg.utils.mkdir_p(os.path.dirname(abs_path))
+            mkdir_p(os.path.dirname(abs_path))
             open(abs_path, 'wb').write(self.file(filename).encode("utf-8"))
 
 

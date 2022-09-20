@@ -11,6 +11,7 @@ import ssg.rules
 import ssg.jinja
 import ssg.environment
 import ssg.utils
+from ssg.utils import mkdir_p
 import ssg.xml
 from ssg.build_cpe import ProductCPEs
 
@@ -60,8 +61,7 @@ def prepare_output_dirs(output_dir, remediation_types):
     output_dirs = dict()
     for lang in remediation_types:
         language_output_dir = os.path.join(output_dir, lang)
-        if not os.path.exists(language_output_dir):
-            os.makedirs(language_output_dir)
+        mkdir_p(language_output_dir)
         output_dirs[lang] = language_output_dir
     return output_dirs
 

@@ -14,6 +14,7 @@ import yaml
 import ssg.build_yaml
 import ssg.environment
 import ssg.rules
+from ssg.utils import mkdir_p
 import ssg.yaml
 
 
@@ -166,8 +167,7 @@ def main():
         output_dir_name = output_path.stem
         output_root = output_path.parent
         output_dir = os.path.join(output_root, output_dir_name)
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+        mkdir_p(output_dir)
         for control in controls:
             out = dict()
             out['controls'] = [control, ]
