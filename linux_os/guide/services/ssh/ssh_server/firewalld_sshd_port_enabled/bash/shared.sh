@@ -55,6 +55,8 @@ done
 fi
 {{% endif %}}
 
+ip link show
+
 if [ $nic_bound = false ];then
     # Add first Network profile to SSH enabled zone
     interface="${available_nmconfig_profiles[0]}"
