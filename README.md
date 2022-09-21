@@ -13,7 +13,7 @@
 
 The purpose of this project is to create *security policy content* for various
 platforms &mdash; *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, *SUSE Linux Enterprise Server (SLES)*,... &mdash;
-as well as products &mdash; *Firefox*, *Chromium*, *JRE*, ...
+as well as products &mdash; *Firefox*, *Chromium*, ...
 We aim to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
 

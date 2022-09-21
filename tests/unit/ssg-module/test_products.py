@@ -15,5 +15,5 @@ def test_get_all():
     assert "rhel7" in products.linux
     assert "rhel7" not in products.other
 
-    assert "jre" in products.other
-    assert "jre" not in products.linux
+    assert "firefox" in products.other
+    assert "firefox" not in products.linux
