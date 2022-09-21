@@ -387,6 +387,9 @@ selections:
     # RHEL-08-010571
     - mount_option_boot_nosuid
 
+    # RHEL-08-010572
+    - mount_option_boot_efi_nosuid
+
     # RHEL-08-010580
     - mount_option_nodev_nonroot_local_partitions
 
