@@ -117,8 +117,6 @@ refer to their help text for more information and usage:
  - `generate_man_page.py` -- generates the ComplianceAsCode man page.
  - `profile_tool.py` -- utility script to generate statistics about profiles
    in a specific XCCDF/Datastream file.
- - `relabel_ids.py` -- updates various internal identifiers to their final
-   resolved values (e.g., with the `xccdf_org.ssgproject.content_` prefix).
  - `verify_references.py` -- used by the test system to verify cross-linkage
    of identifiers between XCCDF and OVAL/OCIL documents.
  - `yaml_to_shorthand.py` -- generates the shorthand XML document from the

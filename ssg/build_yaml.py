@@ -1689,7 +1689,7 @@ class Rule(XCCDFEntity):
             #       Therefore let's just add an OVAL ref of that ID.
             # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
             #       At the moment, the check elements of rules without OVAL are removed by
-            #       relabel_ids.py
+            #       the OVALFileLinker class.
             check_content_ref.set("href", "oval-unlinked.xml")
             check_content_ref.set("name", self.id_)
 
