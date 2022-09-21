@@ -10,8 +10,10 @@
 
 {{% if product in ['rhel9'] %}}
   {{% set network_config_path = "/etc/NetworkManager/system-connections/${interface}.nmconnection" %}}
+  {{% set zone_param= "zone" %}}
 {{% else %}}
   {{% set network_config_path = "/etc/sysconfig/network-scripts/ifcfg-${interface}" %}}
+  {{% set zone_param= "ZONE" %}}
 {{% endif %}}
 
 # This assumes that firewalld_sshd_zone is one of the pre-defined zones
@@ -31,7 +33,7 @@ for interface in "${dev_interface_list[@]}"; do
     if [ -f {{{ network_config_path }}} ]; then
       available_nmconfig_profiles+=("$interface")
     fi
-    if grep -qi "ZONE=$firewalld_sshd_zone" "{{{ network_config_path }}}"; then
+    if grep -qi "{{{ zone_param }}}=$firewalld_sshd_zone" "{{{ network_config_path }}}"; then
         nic_bound=true
         break;
     fi
@@ -45,7 +47,7 @@ if [ $nic_bound = false ]; then
     if [ -f {{{ network_config_path }}} ]; then
       available_nmconfig_profiles+=("$interface")
     fi
-    if grep -qi "ZONE=$firewalld_sshd_zone" "{{{ network_config_path }}}"; then
+    if grep -qi "{{{ zone_param }}}=$firewalld_sshd_zone" "{{{ network_config_path }}}"; then
         nic_bound=true
         break;
     fi
@@ -58,11 +60,7 @@ if [ $nic_bound = false ];then
     interface="${available_nmconfig_profiles[0]}"
 
     if ! firewall-cmd --state -q; then
-        {{% if product in ['rhel9'] %}}
-          {{{ bash_replace_or_append(network_config_path, '^zone=', "$firewalld_sshd_zone", '%s=%s') | indent(8) }}}
-        {{% else %}}
-          {{{ bash_replace_or_append(network_config_path, '^ZONE=', "$firewalld_sshd_zone", '%s=%s') | indent(8) }}}
-        {{% endif %}}
+        {{{ bash_replace_or_append(network_config_path, '^{{{ zone_param }}}=', "$firewalld_sshd_zone", '%s=%s') | indent(8) }}}
     else
         # If firewalld service is running, we need to do this step with firewall-cmd
         # Otherwise firewalld will communicate with NetworkManage and will revert assigned zone
