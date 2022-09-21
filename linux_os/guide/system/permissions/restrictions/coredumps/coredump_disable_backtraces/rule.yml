@@ -42,13 +42,14 @@ references:
     stigid@ol8: OL08-00-010675
     stigid@rhel8: RHEL-08-010675
 
-ocil_clause: ProcessSizeMax is not set to zero
+ocil_clause: 'the "ProcessSizeMax" item is missing, commented out, or the value is anything other than "0" and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core" item assigned'
 
 ocil: |-
-    Verify that logging core dump backtraces is disabled, run the
-    following command:
-    <pre>$ grep ProcessSizeMax /etc/systemd/coredump.conf</pre>
+    Verify {{{ full_name }}} disables core dump backtraces by issuing the following command:
 
+    <pre>$ grep -i process /etc/systemd/coredump.conf
+
+    ProcessSizeMax=0</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to disable core dump backtraces.

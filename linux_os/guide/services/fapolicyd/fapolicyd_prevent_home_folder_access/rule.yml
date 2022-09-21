@@ -25,17 +25,17 @@ ocil_clause: 'fapolicyd allows non-privileged users to grant other users direct 
 
 ocil: |-
     Verify that fapolicyd on {{{ full_name }}} prevents ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.
+
     Run the following command:
 
     grep -r "deny_audit perm=chmod path=/home" /etc/fapolicyd/rules.d
 
 fixtext: |-
     Configure fapolicyd to ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.
-    Add or edit the following lines in /etc/fapolicyd/rules.d/90-deny-home.rules
+    Add or edit the following lines in /etc/fapolicyd/rules.d/90-deny-home.
 
     deny_audit perm=chmod path=/home all : all
 
-    Note: That fapolicyd must have correctly configured rules.
-    All configurations will be based on the actual system setup and organizational polices and practices.
+    Note: That fapolicyd must have correctly configured rules. All configurations will be based on the actual system setup and organizational polices and practices.
 
-srg_requirement: '{{{ full_name }}} must not allow users to expose their home folder to other users.'
+srg_requirement: '{{{ full_name }}} must limit the ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.'
