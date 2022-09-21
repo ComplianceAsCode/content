@@ -1242,19 +1242,19 @@ macro(ssg_define_guide_and_table_tests)
                 COMMAND "${GREP_EXECUTABLE}" "-zv" "</thead>[[:space:]]*</table>" "${TABLE_FILE}"
             )
         endforeach()
-        add_test(
-            NAME "unique-cces"
-            COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.sh" "cce"
-        )
-        # Disable unique-stigids temporarily since it breaks many jobs. There are multiple duplicates
-        # of STIG IDs and they should be fixed by DISA first.
-        # add_test(
-        #     NAME "unique-stigids"
-        #     COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.sh" "stigid"
-        # )
-        set_tests_properties("unique-cces" PROPERTIES LABELS quick)
-        # set_tests_properties("unique-stigids" PROPERTIES LABELS quick)
     endif()
+    add_test(
+        NAME "unique-cces"
+        COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.py" "${CMAKE_SOURCE_DIR}" "cce"
+    )
+    # Disable unique-stigids temporarily since it breaks many jobs. There are multiple duplicates
+    # of STIG IDs and they should be fixed by DISA first.
+    # add_test(
+    #     NAME "unique-stigids"
+    #     COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.py" "${CMAKE_SOURCE_DIR}" "stigid"
+    # )
+    set_tests_properties("unique-cces" PROPERTIES LABELS quick)
+    # set_tests_properties("unique-stigids" PROPERTIES LABELS quick)
 endmacro()
 
 macro(ssg_build_zipfile ZIPNAME)
