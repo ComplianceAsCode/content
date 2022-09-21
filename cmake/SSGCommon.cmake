@@ -102,18 +102,20 @@ macro(ssg_build_compiled_artifacts PRODUCT)
 
     if(STIG_REFERENCE_FILE STREQUAL "not-found")
         add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+            COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
             COMMENT "[${PRODUCT}-content] compiling everything"
         )
     else()
         add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}"
+            COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
             COMMENT "[${PRODUCT}-content] compiling everything"
@@ -121,7 +123,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
     endif()
     add_custom_target(
         ${PRODUCT}-compile-all
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
     )
 endmacro()
 
@@ -198,14 +200,15 @@ endmacro()
 macro(ssg_build_ansible_playbooks PRODUCT)
     set(ANSIBLE_PLAYBOOKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/playbooks")
     add_custom_command(
-        OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
+        OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}/ansible_playbooks-${PRODUCT}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+        COMMAND ${CMAKE_COMMAND} -E touch "${ANSIBLE_PLAYBOOKS_DIR}/ansible_playbooks-${PRODUCT}"
         DEPENDS generate-internal-${PRODUCT}-all-fixes
         COMMENT "[${PRODUCT}-content] Generating Ansible Playbooks"
     )
     add_custom_target(
         generate-${PRODUCT}-ansible-playbooks
-        DEPENDS "${ANSIBLE_PLAYBOOKS_DIR}"
+        DEPENDS "${ANSIBLE_PLAYBOOKS_DIR}/ansible_playbooks-${PRODUCT}"
     )
     add_test(
         NAME "${PRODUCT}-ansible-playbooks-generated-for-all-rules"
