@@ -56,6 +56,7 @@ fi
 {{% endif %}}
 
 ip link show
+ls /etc/NetworkManager/system-connections/
 
 if [ $nic_bound = false ];then
     # Add first Network profile to SSH enabled zone
