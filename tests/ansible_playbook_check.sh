@@ -1,38 +1,39 @@
 #!/bin/bash
 
-pushd "$2" > /dev/null
+# tries to find playbooks
+# The fourth parameter, when provided, is the product name.
+find_glob=
+if [[ $1 =~ ansible-playbook ]]; then
+	find_glob="${3}-playbook-*.yml"
+elif [[ $1 =~ ansible-lint ]]; then
+	find_glob="${4:-}*.yml"
+elif [[ $1 =~ yamllint ]]; then
+	find_glob="${4:-}*.yml"
+else
+	echo "Error: '$1' is not expected executable" 1>&2
+	exit 1
+fi
 
-DIRS="" # directories which might contain playbooks
-for dir in `find . -type d`
-do
-	# tries to find which directories contain valid playbooks
-	# The fourth parameter, when provided, is the product name.
-	FILES=$(ls $dir/$4*.yml 2> /dev/null | wc -l)
-	if [ ! "$FILES" -eq "0" ]; then
-		CONTAINS_VALID_FILES=1
-		DIRS="$DIRS $dir/$4*.yml"
-	fi
-done
+cd "$2" || exit 1
 
-if [ -z "$CONTAINS_VALID_FILES" ]; then
+readarray -t playbooks < <(find . -type f -name "${find_glob}")
+
+# Scripts main purpose
+# If no playbooks exist at all, then test is okay.
+if (( ${#playbooks[@]} == 0 )); then
 	echo "$2 does not contain any valid YAML files. Skipping the test."
-	popd > /dev/null
 	exit 0
 fi
 
 if [[ $1 =~ ansible-playbook ]]; then
-	$1 --syntax-check $3-playbook-*.yml
+	"$1" --syntax-check "${3}"-playbook-*.yml
 	ret=$?
 elif [[ $1 =~ ansible-lint ]]; then
-	$1 -c $3 -p $DIRS
+	"$1" -c "$3" -p "${playbooks[@]}"
 	ret=$?
 elif [[ $1 =~ yamllint ]]; then
-	$1 -c $3 $DIRS
+	"$1" -c "$3" "${playbooks[@]}"
 	ret=$?
-else
-	echo "Error: '$1' is not expected executable" 1>&2
-	ret=1
 fi
 
-popd > /dev/null
 exit $ret
