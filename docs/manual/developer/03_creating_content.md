@@ -356,8 +356,8 @@ endif()
 ...
 all_cmake_products=(
 	CHROMIUM
-	119
-        <b>CUSTOM6</b>
+	DEBIAN11
+ <b>CUSTOM6</b>
 	EAP6
 ...
 </pre>
