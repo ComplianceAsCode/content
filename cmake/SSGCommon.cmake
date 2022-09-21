@@ -126,19 +126,21 @@ macro(ssg_build_shorthand_xml PRODUCT)
     )
 
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --xccdf "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         DEPENDS ${PRODUCT}-compile-all
         DEPENDS generate-internal-${PRODUCT}-all-fixes
-        COMMENT "[${PRODUCT}-content] generating shorthand.xml and ocil-unlinked.xml"
+        DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
+        COMMENT "[${PRODUCT}-content] generating plain XCCDF, OVAL and OCIL files"
     )
 
     add_custom_target(
-        ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
+        generate-${PRODUCT}-xccdf-oval-ocil
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
     )
 endmacro()
 
@@ -333,11 +335,11 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/cpe_generate.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/cpe_generate.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        DEPENDS generate-${PRODUCT}-xccdf-oval-ocil
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
     )
     add_custom_target(
@@ -358,34 +360,13 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     endif()
 endmacro()
 
-# Generate the linked XCCDF document by combing the unlinked XCCDF, the
-# unlinked OVAL, and the OCIL entries. This removes any referenced but
-# non-existing checks/references.
-macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" --input-xccdf "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --output-xccdf "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output-oval "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --output-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --id-name "ssg"
-        DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] linking IDs"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-linked
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-    )
-endmacro()
-
 # Apply a final xmllint pass over the XCCDF document to pretty-format the output
 # XCCDF document for the product. Then, generate XCCDF 1.2 version as well.
 macro(ssg_build_xccdf_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-internal-${PRODUCT}-linked
+        DEPENDS generate-${PRODUCT}-xccdf-oval-ocil
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_target(
@@ -401,7 +382,7 @@ macro(ssg_build_oval_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DEPENDS generate-internal-${PRODUCT}-linked
+        DEPENDS generate-${PRODUCT}-xccdf-oval-ocil
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-oval.xml"
     )
     add_custom_target(
@@ -423,7 +404,7 @@ macro(ssg_build_ocil_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        DEPENDS generate-internal-${PRODUCT}-linked
+        DEPENDS generate-${PRODUCT}-xccdf-oval-ocil
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
     )
     add_custom_target(
@@ -701,7 +682,6 @@ macro(ssg_build_product PRODUCT)
     endif()
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
-    ssg_build_link_xccdf_oval_ocil(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
