@@ -1280,6 +1280,7 @@ class Rule(XCCDFEntity):
         warnings=lambda: list(),
         conflicts=lambda: list(),
         requires=lambda: list(),
+        regulated_prose=lambda: dict(),
         platform=lambda: None,
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
@@ -1352,6 +1353,7 @@ class Rule(XCCDFEntity):
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
 
+        rule.load_regulated_content(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -1411,6 +1413,33 @@ class Rule(XCCDFEntity):
                 if ref == gref or gref.startswith(start):
                     product_references[gref] = gval
         return product_references
+
+    def find_regulated_content(self, rule_root):
+        regulated_dir = os.path.join(rule_root, "regulated")
+        files = glob.glob(os.path.join(regulated_dir, "*.yml"))
+        return files
+
+    def read_regulated_content_file(self, env_yaml, filename):
+        yaml_data = open_and_macro_expand(filename, env_yaml)
+        return yaml_data
+
+    def read_regulated_content(self, env_yaml, files):
+        keys = dict()
+        for f in files:
+            yaml_data = self.read_regulated_content_file(env_yaml, f)
+            keys.update(yaml_data)
+
+        product_suffix = "@{0}".format(env_yaml.get("product"))
+        keys = self._make_items_product_specific(keys, product_suffix)
+        return keys
+
+    def load_regulated_content(self, rule_filename, env_yaml):
+        rule_root = os.path.dirname(rule_filename)
+        regulated_content_files = self.find_regulated_content(rule_root)
+        regulated_prose = dict()
+        if regulated_content_files:
+            regulated_prose = self.read_regulated_content(env_yaml, regulated_content_files)
+        self.regulated_prose = regulated_prose
 
     def make_template_product_specific(self, product):
         product_suffix = "@{0}".format(product)
