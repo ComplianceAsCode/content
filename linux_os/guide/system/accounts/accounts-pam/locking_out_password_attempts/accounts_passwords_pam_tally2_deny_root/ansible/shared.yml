@@ -4,65 +4,6 @@
 # complexity = low
 # disruption = low
 
-- name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-auth
-  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-auth || true
-  register: check_pam_tally2_result
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/common-auth', 'auth', 'required', 'pam_tally2.so', 'even_deny_root', '', '') }}}
 
-- name: Configure pam_tally2.so module in /etc/pam.d/common-auth
-  lineinfile:
-    path: /etc/pam.d/common-auth
-    line: 'auth required pam_tally2.so'
-    state: present
-  when: '"pam_tally2" not in check_pam_tally2_result.stdout'
-
-- name: Check to see if 'deny' parameter is present
-  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sdeny=.*' /etc/pam.d/common-auth || true
-  register: check_deny_result
-
-- name: Make sure pam_tally2.so has 'deny' parameter set to less than 4
-  replace:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*)deny=([4-9]|[1-9][0-9]+)(\s*.*)
-    replace: '\1deny=3\3'
-
-  when: '"deny=" in check_deny_result.stdout'
-
-- name: Add 'deny' parameter for pam_tally2.so module in /etc/pam.d/common-auth
-  lineinfile:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so)((\s+\S+)*\s*(\\)*$)
-    line: '\1 deny=3\2'
-    backrefs: yes
-    state: present
-  when: '"deny=" not in check_deny_result.stdout'
-
-- name: Check to see if 'even_deny_root' parameter is present
-  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\seven_deny_root.*' /etc/pam.d/common-auth || true
-  register: check_deny_result
-
-- name: Make sure pam_tally2.so has 'deny' parameter set to less than 4
-  replace:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*)even_deny_root(\s*.*)
-
-  when: '"even_deny_root" in check_deny_result.stdout'
-
-- name: Add 'even_deny_root' parameter for pam_tally2.so module in /etc/pam.d/common-auth
-  lineinfile:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*deny=[4-9]|[1-9][0-9]+)((\s+\S+)*\s*(\\)*$)
-    line: '\1 even_deny_root\2'
-    backrefs: yes
-    state: present
-  when: '"even_deny_root" not in check_deny_result.stdout'
-
-- name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-account
-  shell: grep -e '^\s*account\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-account || true
-  register: check_account_pam_tally2_result
-
-- name: Configure pam_tally2.so module in /etc/pam.d/common-account
-  lineinfile:
-    path: /etc/pam.d/common-account
-    line: 'account required pam_tally2.so'
-    state: present
-  when: '"pam_tally2" not in check_account_pam_tally2_result.stdout'
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/common-account', 'account', 'required', 'pam_tally2.so', '', '', '') }}}
