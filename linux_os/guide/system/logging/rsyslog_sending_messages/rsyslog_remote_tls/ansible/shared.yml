@@ -10,7 +10,9 @@
   register: include_omfwd_config_output
 
 - name: "Get include files directives"
-  shell: "echo \"{{ include_omfwd_config_output.stdout }}\"|grep  'StreamDriver=\"gtls\"'"
+  shell: >
+    set -o pipefail
+    echo \"{{ include_omfwd_config_output.stdout }}\"|grep  'StreamDriver=\"gtls\"'
   register: include_omfwd_gtls_config_output
   when: (include_omfwd_config_output.stdout_lines| length > 0)
 
