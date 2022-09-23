@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../tests'))
 import sphinx_rtd_theme
 
 # since these files live outside of root doc directory, we need to create a symlink to a dir under where conf.py lives
-# so recommonmark can properly render them
+# so myst-parser can properly render them
 filepaths = ["tests/README.md"]
 for filepath in filepaths:
     try:
@@ -40,7 +40,7 @@ author = 'ComplianceAsCode'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark',
+extensions = ['myst_parser',
     'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
