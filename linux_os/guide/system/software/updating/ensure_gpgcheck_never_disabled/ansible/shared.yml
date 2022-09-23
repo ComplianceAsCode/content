@@ -12,7 +12,7 @@
     grep -HEr '^\[.+\]' -r /etc/yum.repos.d/
 {{%- endif %}}
   register: repo_grep_results
-  ignore_errors: True
+  failed_when: repo_grep_results.rc not in [0, 1]
   changed_when: False
 
 - name: Set gpgcheck=1 for each {{{ pkg_manager }}} repo
