@@ -393,16 +393,6 @@ macro(ssg_build_xccdf_final PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
 
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam reverse_DNS "org.${SSG_VENDOR}.content" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${OPENSCAP_XCCDF_XSL_1_2}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf-1.2.xml"
-    )
-    add_custom_target(
-        generate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-    )
 endmacro()
 
 # Apply a final xmllint pass over the OVAL document to pretty-format the output
@@ -450,10 +440,10 @@ macro(ssg_build_sds PRODUCT)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-12 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-12 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
+            DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
             DEPENDS generate-ssg-${PRODUCT}-oval.xml
             DEPENDS generate-ssg-${PRODUCT}-ocil.xml
             DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
@@ -467,9 +457,9 @@ macro(ssg_build_sds PRODUCT)
     else()
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
+            DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
             DEPENDS generate-ssg-${PRODUCT}-oval.xml
             DEPENDS generate-ssg-${PRODUCT}-ocil.xml
             DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
@@ -723,7 +713,6 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(
         ${PRODUCT}-content
         generate-ssg-${PRODUCT}-xccdf.xml
-        generate-ssg-${PRODUCT}-xccdf-1.2.xml
         generate-ssg-${PRODUCT}-oval.xml
         generate-ssg-${PRODUCT}-ocil.xml
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
@@ -1141,16 +1130,16 @@ macro(ssg_build_html_stig_tables PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create-stig-overlay.py" --quiet --disa-xccdf="${DISA_STIG_REF}" --ssg-xccdf="${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" -o "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create-stig-overlay.py" --quiet --disa-xccdf="${DISA_STIG_REF}" --ssg-xccdf="${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${DISA_STIG_REF}"
         COMMENT "[${PRODUCT}-tables] generating STIG XML overlay"
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
         DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
@@ -1184,9 +1173,9 @@ macro(ssg_build_html_stig_tables_per_profile PRODUCT STIG_PROFILE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" -stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" -stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML STIG test info document for ${STIG_PROFILE}"

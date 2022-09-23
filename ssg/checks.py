@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import os
 
-from .constants import XCCDF11_NS
+from .constants import XCCDF12_NS
 from .oval import parse_affected
 from .utils import read_file_list
 
@@ -17,7 +17,7 @@ def get_content_ref_if_exists_and_not_remote(check):
 
     ..see-also:: is_content_href_remote
     """
-    checkcontentref = check.find("./{%s}check-content-ref" % XCCDF11_NS)
+    checkcontentref = check.find("./{%s}check-content-ref" % XCCDF12_NS)
     if checkcontentref is None:
         return None
     if is_content_href_remote(checkcontentref):

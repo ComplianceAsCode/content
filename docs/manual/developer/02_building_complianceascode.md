@@ -377,8 +377,6 @@ ssg-rhel7-ds.xml
 ssg-rhel7-ds-1.2.xml
 ssg-rhel7-ocil.xml
 ssg-rhel7-oval.xml
-ssg-rhel7-pcidss-xccdf-1.2.xml
-ssg-rhel7-xccdf-1.2.xml
 ssg-rhel7-xccdf.xml
 ```
 

@@ -43,7 +43,7 @@ def main():
     # Step over xccdf file, and find referenced check files
     xccdftree = ssg.xml.parse_file(xccdffile)
 
-    checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF11_NS)
+    checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
 
     translator = ssg.id_translate.IDTranslator(idname)
 
