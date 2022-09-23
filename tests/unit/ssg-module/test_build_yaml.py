@@ -279,3 +279,20 @@ def test_derive_id_from_file_name():
     assert ssg.build_yaml.derive_id_from_file_name("rule.yml") == "rule"
     assert ssg.build_yaml.derive_id_from_file_name("id.with.dots.yaml") == "id.with.dots"
     assert ssg.build_yaml.derive_id_from_file_name("my_id") == "my_id"
+
+
+def test_rule_triage_policy_files():
+    product = "example"
+    filenames = [
+        "policy/po/shared.yml",
+        "policy/po/example.yml",
+        "policy/li/sample.yml",
+        "policy/li/shared.yml",
+        "policy/cy/sample.yml",
+    ]
+    rule = ssg.build_yaml.Rule("id")
+    triaged = rule.triage_policy_specific_content(product, filenames)
+    number_of_applicable_policies = 2
+    assert len(triaged) == number_of_applicable_policies
+    assert triaged["po"].endswith(product + ".yml")
+    assert triaged["li"].endswith("shared" + ".yml")
