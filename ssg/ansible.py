@@ -47,6 +47,13 @@ def remove_trailing_whitespace(ansible_src):
     return re.sub(r'[ \t]+$', '', ansible_src, 0, flags=re.M)
 
 
+def strip_eof(ansible_src):
+    """
+    Removes extra newlines at end of file
+    """
+    return ansible_src.rstrip() + "\n"
+
+
 def _strings_to_list(one_or_more_strings):
     """
     Output a list, that either contains one string, or a list of strings.
