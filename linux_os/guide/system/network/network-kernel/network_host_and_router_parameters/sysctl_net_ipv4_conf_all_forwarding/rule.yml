@@ -36,6 +36,15 @@ srg_requirement: '{{{ full_name }}} must not perform packet forwarding unless th
 
 platform: machine
 
+
+warnings:
+    - general: |-
+        There might be cases when certain applications can systematically override this option.
+        One such case is {{{ weblink("https://libvirt.org/", "Libvirt") }}}; a toolkit for managing of virtualization platforms.
+        By default, Libvirt requires IP forwarding to be enabled to facilitate
+        network communication between the virtualization host and guest
+        machines. It enables IP forwarding after every reboot.
+
 template:
     name: sysctl
     vars:
