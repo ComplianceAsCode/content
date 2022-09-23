@@ -1265,10 +1265,12 @@ Part of the grub2_bootloader_argument_absent template.
         - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
 
     {{{ ansible_apply_authselect_changes() | indent(4) }}}
-      when: >
-        result_authselect_present is defined and result_authselect_present.stat.exists and
-        ((result_pam_module_add is defined and result_pam_module_add.changed)
-        or (result_pam_module_edit is defined and result_pam_module_edit.changed))
+      when:
+        - result_authselect_present is defined
+        - result_authselect_present.stat.exists
+        - >-
+          (result_pam_module_add is defined and result_pam_module_add.changed)
+           or (result_pam_module_edit is defined and result_pam_module_edit.changed)
   when:
     - result_pam_line_present.found is defined
     - result_pam_line_present.found == 0
