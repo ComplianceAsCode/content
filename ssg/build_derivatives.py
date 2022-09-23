@@ -111,8 +111,6 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
                     rule.remove(ref)
 
         for fix in rule.findall(".//{%s}fix" % (namespace)):
-            if "fips" in fix.get("id"):
-                rule.remove(fix)
             sub_elems = fix.findall(".//{%s}sub" % (namespace))
             for sub_elem in sub_elems:
                 sub_elem.tail = re.sub(r"[\s]+- CCE-.*", "", sub_elem.tail)
