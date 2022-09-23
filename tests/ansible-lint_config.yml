@@ -6,6 +6,14 @@ skip_list:
   - '503' # Tasks that run when changed should likely be handlers
   - no-tabs # Rule permissions_local_var_log uses explicit \t character
   - command-instead-of-module # sometimes systemctl must be executed instead of the module
+  - risky-file-permissions # Almost all rules do not set perms
+  - yaml # There is no use of using ansible-lint to run yamllint as yamllint has own test
+  - fqcn[action-core] # Most playbooks use old format currently, so skip for now.
+  - fqcn[action] # ditto
+  - jinja[spacing] # Too numerous now
+  - key-order[task] # Too numerous now
+  - no-free-form # Too numerous now
+  - name[template] # Style choice to skip this rule
 
 kinds:
   - playbook: "**/*.yml"
