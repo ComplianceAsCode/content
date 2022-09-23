@@ -14,7 +14,6 @@
     state: "started"
     masked: "no"
   when: "'ntp' in ansible_facts.packages"
-  ignore_errors: yes
 
 
 - name: Start chronyd service if chrony or chronyd installed
@@ -24,4 +23,3 @@
     state: "started"
     masked: "no"
   when: ('chrony' in ansible_facts.packages) or ('chronyd' in ansible_facts.packages)
-  ignore_errors: yes
