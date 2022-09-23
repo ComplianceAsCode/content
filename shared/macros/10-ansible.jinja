@@ -1510,7 +1510,9 @@ Part of the grub2_bootloader_argument_absent template.
     {{{ ansible_apply_authselect_changes() | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
-        - (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed) or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
+        - >-
+          (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed)
+           or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
   when:
     - result_pam_file_present.stat.exists
 {{%- endmacro -%}}
