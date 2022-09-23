@@ -6,3 +6,6 @@ skip_list:
   - '503' # Tasks that run when changed should likely be handlers
   - no-tabs # Rule permissions_local_var_log uses explicit \t character
   - command-instead-of-module # sometimes systemctl must be executed instead of the module
+
+kinds:
+  - playbook: "**/*.yml"
