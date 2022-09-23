@@ -735,12 +735,12 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect check
   register: result_authselect_check_cmd
   changed_when: false
-  ignore_errors: yes
+  failed_when: result_authselect_check_cmd.rc not in [0, 3, 4]
 
 - name: '{{{ rule_title }}} - Informative message based on the authselect integrity check result'
   ansible.builtin.assert:
     that:
-      - result_authselect_check_cmd is success
+      - result_authselect_check_cmd.rc == 0
     fail_msg:
       - authselect integrity check failed. Remediation aborted!
       - This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
