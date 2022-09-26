@@ -33,10 +33,7 @@ To start the stabilization:
 
 During the stabilization:
 
-- Run whatever extra tests you have and propose bug fixes to the stabilization branch
-
-- On Fridays, bring the fixes merged on **stabilization** branch to master.\
-  Propose a PR from **stabilization** branch to master.
+- Run whatever extra tests you have and propose bug fixes to the **stabilization** branch
 
 Tests during Stabilization Phase
 -----------
