@@ -185,6 +185,19 @@ yum install python3-pygithub
 apt-get install python3-pygithub
 ```
 
+### mypy (Static Typing)
+```bash
+# Fedora/RHEL
+yum install python3-mypy
+
+# Ubuntu/Debian
+apt-get install python3-mypy
+```
+
+#### Type stubs
+```bash
+pip install types-openpyxl types-PyYAML
+```
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):
