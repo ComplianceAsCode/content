@@ -143,10 +143,6 @@ multiple benchmarks in our project:
 <td><p>Java Runtime Environment</p></td>
 <td><p><code>/products/jre/guide</code></p></td>
 </tr>
-<tr class="odd">
-<td><p>Fuse 6</p></td>
-<td><p><code>/products/fuse6/guide</code></p></td>
-</tr>
 <tr class="even">
 <td><p>Firefox</p></td>
 <td><p><code>/products/firefox/guide</code></p></td>
@@ -368,7 +364,7 @@ all_cmake_products=(
 product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel7', 'rhel8', 'sle12',
                        'ubuntu1604', 'ubuntu1804', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'fuse6', 'jre',
+                       'chromium', 'eap6', 'firefox', 'jre',
                        'example'<b>, 'custom6'</b>]
 ...
 </pre>
