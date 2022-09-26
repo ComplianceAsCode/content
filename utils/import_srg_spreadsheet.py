@@ -4,12 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
+from pathlib import Path
 import yaml
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
+from ssg.utils import read_file_list
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
@@ -48,7 +51,8 @@ class Row:
         self.SRGID = sheet[f'C{row_number}'].value
         self.STIGID = sheet[f'D{row_number}'].value
         self.SRG_Requirement = sheet[f'E{row_number}'].value
-        self.Requirement = sheet[f'F{row_number}'].value.replace(full_name, changed_name)
+        if sheet[f'F{row_number}'].value:
+            self.Requirement = sheet[f'F{row_number}'].value.replace(full_name, changed_name)
         self.SRG_VulDiscussion = sheet[f'G{row_number}'].value
         self.Vul_Discussion = sheet[f'H{row_number}'].value
         self.Status = sheet[f'I{row_number}'].value
@@ -136,6 +140,18 @@ def get_cac_status(disa: str) -> str:
     return SEVERITY.get(disa, 'Unknown')
 
 
+def create_output(rule_dir: dict) -> str:
+    path_dir_parent = os.path.join(rule_dir['dir'], "policy")
+    if not os.path.exists(path_dir_parent):
+        os.mkdir(path_dir_parent)
+    path_dir = os.path.join(path_dir_parent, "stig")
+    if not os.path.exists(path_dir):
+        os.mkdir(path_dir)
+    path = os.path.join(path_dir, 'shared.yml')
+    Path(path).touch()
+    return path
+
+
 def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
     path_dir = rule_dir['dir']
     path = os.path.join(path_dir, 'rule.yml')
@@ -158,28 +174,36 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
             f.write('\n')
 
 
+def write_output(path: str, result: tuple) -> None:
+    with open(path, 'w') as f:
+        first_time = True
+        for line in result:
+            if first_time:
+                first_time = False
+                line = re.sub(r'^\n', '', result[0])
+            f.write(line.rstrip())
+            f.write('\n')
+
+
 def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
-    path_dir = rule_dir['dir']
-    path = os.path.join(path_dir, 'rule.yml')
-    lines = get_yaml_contents(rule_dir)
+    path = create_output(rule_dir)
+
+    lines = read_file_list(path)
     replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
-    section_ranges = find_section_lines(lines.contents, section)
+    section_ranges = find_section_lines(lines, section)
     if section_ranges:
-        result = lines.contents[:section_ranges[0].start]
+        result = lines[:section_ranges[0].start]
         result = (*result, f"{section}: |-")
         result = add_replacement_to_result(replacement, result)
         end_line = section_ranges[0].end
-        for line in lines.contents[end_line:]:
-            result = (*result, line)
+        for line in lines[end_line:]:
+            result = [*result, line]
     else:
-        result = lines.contents
+        result = lines
         result = (*result, f"\n{section}: |-")
         result = add_replacement_to_result(replacement, result)
 
-    with open(path, 'w') as f:
-        for line in result:
-            f.write(line.rstrip())
-            f.write('\n')
+    write_output(path, result)
 
 
 def add_replacement_to_result(replacement, result):
