@@ -88,5 +88,6 @@ def main():
 
     ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf)
 
+
 if __name__ == "__main__":
     main()
