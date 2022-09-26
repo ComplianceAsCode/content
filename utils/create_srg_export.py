@@ -416,7 +416,7 @@ def get_policy_specific_content(key: str, rule_object: ssg.build_yaml.Rule) -> s
     stig = psc.get('stig')
     if not stig:
         return ""
-    return stig.get(key)
+    return stig.get(key, "")
 
 
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
