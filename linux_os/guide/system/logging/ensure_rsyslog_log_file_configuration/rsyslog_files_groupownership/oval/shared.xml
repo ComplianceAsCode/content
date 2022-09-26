@@ -3,7 +3,7 @@
     {{{ oval_metadata("All syslog log files should be owned by the appropriate group.") }}}
 
     <criteria operator="AND">
-      {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604"] %}}
+      {{% if product in ["debian10", "debian11", "ubuntu1604"] %}}
       <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
       {{% endif %}}
       <criterion comment="Check if all system log files are owned by the appropriate group" test_ref="test_rsyslog_files_groupownership" />
@@ -106,7 +106,7 @@
 
   <unix:file_state id="state_rsyslog_files_groupownership" version="1">
     <unix:type operation="equals">regular</unix:type>
-    {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu2004", "ubuntu2204"] %}}
     <unix:group_id datatype="int">4</unix:group_id>
     {{% else %}}
     <unix:group_id datatype="int">0</unix:group_id>

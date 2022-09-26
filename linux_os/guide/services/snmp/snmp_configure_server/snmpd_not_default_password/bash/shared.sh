@@ -1,4 +1,4 @@
-# platform = debian 11,debian 10,debian 9,multi_platform_fedora,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = debian 11,debian 10,multi_platform_fedora,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 
 {{{ bash_instantiate_variables("var_snmpd_ro_string", "var_snmpd_rw_string") }}}
 
