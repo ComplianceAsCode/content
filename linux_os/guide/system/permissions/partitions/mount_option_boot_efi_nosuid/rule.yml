@@ -37,6 +37,8 @@ template:
         mountpoint: /boot/efi
         mountoption: nosuid
         mount_has_to_exist: "no"
+    backends:
+        anaconda: "off"
 
 fixtext: |-
     {{{ fixtext_mount_option("/boot/efi", "nosuid") }}}
