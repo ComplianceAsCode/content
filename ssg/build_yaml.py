@@ -1287,6 +1287,7 @@ class Rule(XCCDFEntity):
         warnings=lambda: list(),
         conflicts=lambda: list(),
         requires=lambda: list(),
+        policy_specific_content=lambda: dict(),
         platform=lambda: None,
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
@@ -1359,6 +1360,7 @@ class Rule(XCCDFEntity):
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
 
+        rule.load_policy_specific_content(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -1418,6 +1420,48 @@ class Rule(XCCDFEntity):
                 if ref == gref or gref.startswith(start):
                     product_references[gref] = gval
         return product_references
+
+    def find_policy_specific_content(self, rule_root):
+        policy_specific_dir = os.path.join(rule_root, "policy")
+        policy_directories = glob.glob(os.path.join(policy_specific_dir, "*"))
+        filenames = set()
+        for pdir in policy_directories:
+            policy_files = glob.glob(os.path.join(pdir, "*.yml"))
+            filenames.update(set(policy_files))
+        return filenames
+
+    def triage_policy_specific_content(self, product_name, filenames):
+        product_dot_yml = product_name + ".yml"
+        filename_by_policy = dict()
+        for fname in filenames:
+            policy = os.path.basename(os.path.dirname(fname))
+            filename_appropriate_for_storage = (
+                fname.endswith(product_dot_yml)
+                or fname.endswith("shared.yml") and policy not in filename_by_policy)
+            if (filename_appropriate_for_storage):
+                filename_by_policy[policy] = fname
+        return filename_by_policy
+
+    def read_policy_specific_content_file(self, env_yaml, filename):
+        yaml_data = open_and_macro_expand(filename, env_yaml)
+        return yaml_data
+
+    def read_policy_specific_content(self, env_yaml, files):
+        keys = dict()
+        filename_by_policy = self.triage_policy_specific_content(env_yaml["product"], files)
+        for p, f in filename_by_policy.items():
+            yaml_data = self.read_policy_specific_content_file(env_yaml, f)
+            keys[p] = yaml_data
+        return keys
+
+    def load_policy_specific_content(self, rule_filename, env_yaml):
+        rule_root = os.path.dirname(rule_filename)
+        policy_specific_content_files = self.find_policy_specific_content(rule_root)
+        policy_specific_content = dict()
+        if policy_specific_content_files:
+            policy_specific_content = self.read_policy_specific_content(
+                env_yaml, policy_specific_content_files)
+        self.policy_specific_content = policy_specific_content
 
     def make_template_product_specific(self, product):
         product_suffix = "@{0}".format(product)
