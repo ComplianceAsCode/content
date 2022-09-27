@@ -11,7 +11,7 @@ Everything you need as requirement is a *Fedora* system with the `ansible` and `
 ```bash
 dnf install -y ansible python3
 ```
-Than you can download the ansible role:
+Then you can download the ansible role:
 ```bash
 ansible-galaxy install marcusburghardt.ansible_role_openscap
 ```
@@ -168,6 +168,7 @@ apt-get install python3-pandas
 ```
 
 ### OpenpyXL (SRG Export XLSX)
+
 ```bash
 # Fedora/RHEL
 yum install python3-openpyxl
@@ -177,6 +178,7 @@ apt-get install python3-openpyxl
 ```
 
 ### pygithub (Ansible Playbooks to Ansible roles)
+
 ```bash
 # Fedora/RHEL
 yum install python3-pygithub
@@ -186,6 +188,7 @@ apt-get install python3-pygithub
 ```
 
 ### mypy (Static Typing)
+
 ```bash
 # Fedora/RHEL
 yum install python3-mypy
@@ -195,6 +198,7 @@ apt-get install python3-mypy
 ```
 
 #### Type stubs
+
 ```bash
 pip install types-openpyxl types-PyYAML
 ```
@@ -375,6 +379,7 @@ That can be any folder you choose but if you followed the examples above
 it will be the `content/build` folder.
 
 ### SCAP XML files
+
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
 `ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source datastream**,
 and `ssg-rhel7-ds-1.2.xml` is the SCAP 1.2 **source datastream**.
@@ -397,6 +402,7 @@ These can be ingested by any SCAP-compatible scanning tool, to enable automated
 checking.
 
 ### HTML Guides
+
 The human readable HTML guide index files will be called
 `ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
 This file will let the user browse all profiles available for that product.
