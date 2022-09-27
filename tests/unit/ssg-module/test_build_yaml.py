@@ -296,3 +296,8 @@ def test_rule_triage_policy_files():
     assert len(triaged) == number_of_applicable_policies
     assert triaged["po"].endswith(product + ".yml")
     assert triaged["li"].endswith("shared" + ".yml")
+    triaged = rule.triage_policy_specific_content("", filenames)
+    number_of_applicable_policies = 2
+    assert len(triaged) == number_of_applicable_policies
+    assert triaged["po"].endswith("shared" + ".yml")
+    assert triaged["li"].endswith("shared" + ".yml")
