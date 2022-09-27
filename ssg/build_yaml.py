@@ -1359,8 +1359,9 @@ class Rule(XCCDFEntity):
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
-
-        rule.load_policy_specific_content(yaml_file, env_yaml)
+        # Only load policy specific content if rule doesn't have it defined yet
+        if not rule.policy_specific_content:
+            rule.load_policy_specific_content(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
