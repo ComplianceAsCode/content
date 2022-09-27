@@ -140,8 +140,8 @@ def get_cac_status(disa: str) -> str:
     return SEVERITY.get(disa, 'Unknown')
 
 
-def create_output(rule_dir: dict) -> str:
-    path_dir_parent = os.path.join(rule_dir['dir'], "policy")
+def create_output(rule_dir: str) -> str:
+    path_dir_parent = os.path.join(rule_dir, "policy")
     if not os.path.exists(path_dir_parent):
         os.mkdir(path_dir_parent)
     path_dir = os.path.join(path_dir_parent, "stig")
@@ -186,7 +186,7 @@ def write_output(path: str, result: tuple) -> None:
 
 
 def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
-    path = create_output(rule_dir)
+    path = create_output(rule_dir['dir'])
 
     lines = read_file_list(path)
     replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
