@@ -36,3 +36,10 @@ extends: stig
 selections:
     # RHEL-08-040320
     - '!xwindows_remove_packages'
+
+    # RHEL-08-040321
+    - '!xwindows_runlevel_target'
+
+    # SRG-OS-000480-GPOS-00227
+    - '!package_gdm_removed'
+    - '!package_xorg-x11-server-common_removed'
