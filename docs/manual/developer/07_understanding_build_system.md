@@ -74,17 +74,16 @@ and testing targets. While the specifics should be understood from this file
 directly, in general this takes the following outline of steps in rough order
 of occurrence:
 
- 1. Generate SCE content and metadata,
- 2. Generate a shorthand XML from various YAML files (like rules, variables,
-    and profiles) -- this is a single document that resembles the structure
-    of the XCCDF but isn't necessarily standards compliant,
- 3. Generation of templated content (such as Bash, OVAL, and Ansible) from
-    the metadata contained in the rule YAML files,
- 4. Transformation of the shorthand into unlinked and linked XCCDF documents,
- 5. Combining the various OVAL, OCIL, and XCCDF documents into a single
-    Datastream document,
- 6. Generating any derived products (such as CentOS and Scientific Linux).
-
+ 1. Generate SCE content and metadata.
+ 2. Resolve rules, profiles, groups, static checks and static remediations to the product-specific resolved form (also known as compiled form).
+ 3. Generate templated checks and remediations from the templates.
+ 4. Collect all available remediations.
+ 5. Combine all available OVAL checks into a single unlinked OVAL document.
+ 6. Load resolved rules, profiles, groups, collected remediations and the unlinked OVAL document and generate XCCDF, OVAL and OCIL documents from this data.
+ 7. Generate CPE OVAL and CPE dictionary.
+ 8. Combining the OVAL, OCIL, CPE and XCCDF documents into a single SCAP source data stream.
+ 9. Generate content for derived products (such as CentOS and Scientific Linux).
+ 10. Generate HTML tables, Bash scripts, Ansible Playbooks and other secondary artifacts.
 
 ### Python Build Scripts
 
@@ -100,12 +99,11 @@ refer to their help text for more information and usage:
  - `build_sce.py` -- outputs SCE content and combined metadata.
  - `build_templated_content.py` -- generates templated audit and remediation
    content.
- - `combine_ovals.py` -- combines separate (per-rule, shared, and templated)
-   OVAL XML trees into a single larger OVAL XML document.
+ - `build_xccdf.py` -- generate XCCDF, OVAL and OCIL documents from resolved content
  - `collect_remediations.py` -- finds the separate (per-rule and templated)
    remediations and places them into a single directory.
- - `compile_profiles.py` -- pre-processes profiles to handle inheritance and
-   the product-independent controls format.
+ - `combine_ovals.py` -- combines separate (per-rule, shared, and templated) OVAL XML trees into a single larger OVAL XML document.
+ - `compile_all.py` -- resolves rules, groups, profiles static checks and remediations to the product-specific resolved form (also known as compiled form)
  - `compose_ds.py` -- composes an SCAP source data stream from individual
    SCAP components
  - `cpe_generate.py` -- generates the product-specific CPE dictionary and
@@ -119,8 +117,6 @@ refer to their help text for more information and usage:
    in a specific XCCDF/Datastream file.
  - `verify_references.py` -- used by the test system to verify cross-linkage
    of identifiers between XCCDF and OVAL/OCIL documents.
- - `yaml_to_shorthand.py` -- generates the shorthand XML document from the
-   various XML pieces.
 
 Many of these utilities are simply front-ends over code in the SSG Python
 module located under `ssg/`.
