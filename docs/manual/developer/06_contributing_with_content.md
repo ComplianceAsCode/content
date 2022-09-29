@@ -26,7 +26,7 @@ checks and remediations.
 Rules are input described in YAML which mirrors the XCCDF format (an XML
 container). Rules are translated to become members of a `Group` in an
 XML file. All existing rules for Linux products can be found in the
-`linux_os/guide` directory. For non-Linux products (e.g., `jre`), this
+`linux_os/guide` directory. For non-Linux products (e.g., `firefox`), this
 content can be found in the `<product>/guide`. The exact location
 depends on the group (or category) that a rule belongs to.
 

@@ -140,10 +140,6 @@ multiple benchmarks in our project:
 <td><p><code>/applications</code> (Notice no <code>guide</code> subdirectory there!)</p></td>
 </tr>
 <tr class="even">
-<td><p>Java Runtime Environment</p></td>
-<td><p><code>/products/jre/guide</code></p></td>
-</tr>
-<tr class="even">
 <td><p>Firefox</p></td>
 <td><p><code>/products/firefox/guide</code></p></td>
 </tr>
@@ -364,7 +360,7 @@ all_cmake_products=(
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel7', 'rhel8', 'sle12',
                        'ubuntu1604', 'ubuntu1804', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'jre',
+                       'chromium', 'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
 ...
 </pre>
@@ -401,7 +397,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
-    'jre': 'Java Runtime Environment',
     'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
@@ -492,7 +487,7 @@ EOF
 
 11. Create a new file under `transforms` directory called `table-style.xslt`:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt 
+cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="../../shared/transforms/shared_table-style.xslt"/>
@@ -532,7 +527,7 @@ EOF
 
 14. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt 
+cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
@@ -595,12 +590,12 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt
 			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
 			<!-- need to resolve <sub idref=""> here  -->
 			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
-			<td> 
+			<td>
 				<xsl:for-each select="cdf:reference[@href=$anssiuri]">
 					<xsl:value-of select="text()"/>
 					<br/>
 				</xsl:for-each>
-			</td> 
+			</td>
 		</tr>
 		</xsl:if>
 	</xsl:template>
@@ -859,7 +854,7 @@ the file will look like this:
 
 ```
 $ cat controls/abcd.yml
- 
+
 id: abcd
 title: ABCD Benchmark for securing Linux systems
 version: 1.2.3
@@ -908,7 +903,7 @@ See the example below.
 
 ```
 $ cat controls/abcd.yml
- 
+
 id: abcd
 title: ABCD Benchmark for securing Linux systems
 version: 1.2.3
@@ -917,7 +912,7 @@ source: https://www.abcd.com/linux.pdf
 
 ```
 $ cat controls/abcd/R1.yml
- 
+
 controls:
   - id: R1
     title: User session timeout
@@ -936,7 +931,7 @@ controls:
 
 ```
 $ cat controls/abcd/R2.yml
- 
+
 controls:
   - id: R2
     title: Minimization of configuration
@@ -1137,7 +1132,7 @@ controls:
     description: >-
       The features configured at the level of launched services
       should be limited to the strict minimum.
-    rationale: >- 
+    rationale: >-
         Minimization of configuration helps to reduce attack surface.
     status: supported
     note: >-
@@ -1187,7 +1182,7 @@ has the form `policy_id:control_id[:level_id]`, where `level_id` is optional.
 
 ```
 $ cat rhel8/profiles/abcd-desktop.profile
- 
+
 documentation_complete: true
 title: ABCD Desktop for Red Hat Enterprise Linux 8
 description: |-
@@ -1211,7 +1206,7 @@ means that all controls will be selected. Let’s show how it will be easier:
 
 ```
 $ cat rhel8/profiles/abcd-high.profile
- 
+
 documentation_complete: true
 title: ABCD High for Red Hat Enterprise Linux 8
 description: |-
@@ -1304,7 +1299,7 @@ If you have an existing product that you want to base your new STIG you can crea
 
     $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r3.xml -o controls/srg_gpos.yml
 
-The manual (`-m`) should be an SRG XML from DISA.  
+The manual (`-m`) should be an SRG XML from DISA.
 
 ##### Filling out content
 Every control in the policy file will create at least one row in the export.
