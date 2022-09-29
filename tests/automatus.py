@@ -48,6 +48,10 @@ def parse_args():
         "Example of a hypervisor domain name tuple: system ssg-test-suite")
 
     common_parser.add_argument(
+        "--container-ssh-port", dest="container_ssh_port", type=int, default=0,
+        help="SSH port used in container test environment.")
+
+    common_parser.add_argument(
         "--datastream", dest="datastream", metavar="DATASTREAM",
         help="Path to the Source DataStream on this machine which is going to be tested. "
         "If not supplied, autodetection is attempted by looking into the build directory.")
@@ -429,12 +433,16 @@ def normalize_passed_arguments(options):
     if options.docker:
         options.test_env = ssg_test_suite.test_env.DockerTestEnv(
             options.scanning_mode, options.docker)
+        if options.container_ssh_port != 0:
+            options.test_env.container_ssh_port = options.container_ssh_port
         logging.info(
             "The base image option has been specified, "
             "choosing Docker-based test environment.")
     elif options.container:
         options.test_env = ssg_test_suite.test_env.PodmanTestEnv(
             options.scanning_mode, options.container)
+        if options.container_ssh_port != 0:
+            options.test_env.container_ssh_port = options.container_ssh_port
         logging.info(
             "The base image option has been specified, "
             "choosing Podman-based test environment.")

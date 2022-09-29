@@ -332,6 +332,7 @@ class ContainerTestEnv(TestEnv):
         self.containers = []
         self.domain_ip = None
         self.internal_ssh_port = 22222
+        self.container_ssh_port = 22222
         self.is_root = True
 
     def start(self):
@@ -489,7 +490,7 @@ class DockerTestEnv(ContainerTestEnv):
         result = self.client.containers.run(
             img, "/usr/sbin/sshd -p {} -D".format(self.internal_ssh_port),
             name="{0}_{1}".format(self._name_stem, container_name),
-            ports={"{}".format(self.internal_ssh_port): None},
+            ports={"{container_ssh_port}:{internal_ssh_port}".format(** self.__dict__): None},
             detach=True)
         return result
 
@@ -563,7 +564,7 @@ class PodmanTestEnv(ContainerTestEnv):
             "--cap-add=cap_sys_admin",
             "--cap-add=cap_sys_chroot",
             # "--privileged",
-            "--publish={internal_ssh_port}".format(** self.__dict__),
+            "--publish={container_ssh_port}:{internal_ssh_port}".format(** self.__dict__),
             "--detach",
             "--volume", "{}:/var/cache:rw,nodev,noexec,nosuid".format(cache_name),
             image_name,
