@@ -89,16 +89,7 @@ macro(ssg_build_man_page)
     )
 endmacro()
 
-# The shorthand XML takes the individual YAML files (rules, profiles,
-# variables, &c) and combines them into a single XML document that resembles
-# the structure of the XCCDF but isn't standards compliant. This "shorthand"
-# XML is later transformed via various tools (including XSLT) to become the
-# final XCCDF. Note that remediations and auditing (with the exception of SCE)
-# is unconditionally added here and then later conditionally removed when the
-# remediation and OVAL documents are generated and a full list of content is
-# known. As part of this step, we also resolve/template the rules in the
-# content repository for each product.
-macro(ssg_build_shorthand_xml PRODUCT)
+macro(ssg_build_xccdf_oval_ocil PRODUCT)
     file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
     list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
     list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
@@ -281,8 +272,8 @@ macro(ssg_build_oval_unlinked PRODUCT)
     )
 endmacro()
 
-# Builds SCE content into the build system. This occurs prior to shorthand
-# generation so that the shorthand builder can correctly place SCE content
+# Builds SCE content into the build system. This occurs prior to XCCDF
+# generation so that the XCCDF builder can correctly place SCE content
 # (without needing a separate XML or XSLT linking step) and also place
 # <complex-check /> elements as necessary.
 macro(ssg_build_sce PRODUCT)
@@ -298,9 +289,9 @@ macro(ssg_build_sce PRODUCT)
         #
         # This is for two reasons:
         # 1. Support for templated SCE isn't yet implemented.
-        # 2. Generating YAML->Shorthand (in ssg_build_shorthand_xml) relies on
+        # 2. Generating YAML->XCCDF (in ssg_build_xccdf_oval_ocil) relies on
         #    our data, so we need it to occur earlier. However, templating depends
-        #    the Shorthand, so we'd have a dependency circle.
+        #    the XCCDF, so we'd have a dependency circle.
         add_custom_command(
             OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
@@ -668,7 +659,7 @@ macro(ssg_build_product PRODUCT)
     endforeach()
 
     ssg_build_sce(${PRODUCT})
-    ssg_build_shorthand_xml(${PRODUCT})
+    ssg_build_xccdf_oval_ocil(${PRODUCT})
     ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
