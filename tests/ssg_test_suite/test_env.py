@@ -489,7 +489,7 @@ class DockerTestEnv(ContainerTestEnv):
         img = self.client.images.get(image_name)
         result = self.client.containers.run(
             img, "/usr/sbin/sshd -p {} -D".format(self.internal_ssh_port),
-            name="{0}_{1}".format(self._name_stem, container_name),
+            name="{0}_{1}_{2}".format(self._name_stem, image_name, container_name),
             ports={"{container_ssh_port}:{internal_ssh_port}".format(** self.__dict__): None},
             detach=True)
         return result
@@ -551,7 +551,7 @@ class PodmanTestEnv(ContainerTestEnv):
         self.run_podman_cmd(podman_cmd)
 
     def _new_container_from_image(self, image_name, container_name):
-        long_name = "{0}_{1}".format(self._name_stem, container_name)
+        long_name = "{0}_{1}_{2}".format(self._name_stem, image_name, container_name)
         cache_name = "var-cache"
         self._ensure_cache_volume(cache_name)
         # Podman drops cap_audit_write which causes that it is not possible
