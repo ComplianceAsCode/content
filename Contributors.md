@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2022-07-28 17:56
+Last Modified: 2022-09-30 10:46
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -121,6 +121,7 @@ The following people have contributed to the SCAP Security Guide project
 * Joseph Lenox <joseph.lenox@collins.com>
 * Jan Lieskovsky <jlieskov@redhat.com>
 * Markus Linnala <Markus.Linnala@knowit.fi>
+* Flos Lonicerae <lonicerae@gmail.com>
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
