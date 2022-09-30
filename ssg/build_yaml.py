@@ -46,14 +46,9 @@ import ssg.build_stig
 
 from .entities.common import (
     XCCDFEntity,
-    SelectionHandler,
     add_sub_element,
-    derive_id_from_file_name
 )
-from .entities.profile import (
-    Profile,
-    ProfileWithInlinePolicies,
-)
+from .entities.profile import Profile, ProfileWithInlinePolicies
 
 
 def add_sub_element(parent, tag, ns, data):

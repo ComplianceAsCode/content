@@ -4,7 +4,7 @@ import os
 import copy
 from glob import glob
 
-import ssg.build_yaml
+import ssg.entities.common
 import ssg.yaml
 import ssg.utils
 
@@ -71,7 +71,7 @@ class Status:
         return False
 
 
-class Control(ssg.build_yaml.SelectionHandler):
+class Control(ssg.entities.common.SelectionHandler):
     def __init__(self):
         super(Control, self).__init__()
         self.id = None
