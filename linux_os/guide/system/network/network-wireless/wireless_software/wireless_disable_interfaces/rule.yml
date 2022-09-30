@@ -67,7 +67,7 @@ references:
     stigid@sle15: SLES-15-010380
     stigid@ubuntu2004: UBTU-20-010455
 
-ocil_clause: 'wireless interfaces are not active'
+ocil_clause: 'a wireless interface is configured and has not been documented and approved by the Information System Security Officer (ISSO)'
 
 ocil: |-
     Verify that there are no wireless interfaces configured on the system
@@ -96,15 +96,21 @@ ocil: |-
     If a wireless interface is configured it must be documented and approved by
     the local Authorizing Official.
     {{% else %}}
-    <pre>$ sudo nmcli device</pre>
-    The output should only contain wireless devices in unavailable state, like in the
-    following example:
-    <pre>wlp0s20f3          wifi      unavailable             -- </pre>
+    Note: This requirement is Not Applicable for systems that do not have physical wireless network radios.
+
+    <pre>$ nmcli device status</pre>
+    <pre>DEVICE          TYPE      STATE         CONNECTION
+    virbr0          bridge    connected     virbr0
+    wlp7s0          wifi      connected     wifiSSID
+    enp6s0          ethernet  disconnected  --
+    p2p-dev-wlp7s0  wifi-p2p  disconnected  --
+    lo              loopback  unmanaged     --
+    virbr0-nic      tun       unmanaged     --</pre>
     {{% endif %}}
 
 fixtext: |-
-    To disable all wireless devices use the following command:
-    <pre>nmcli radio all off</pre>
+    Configure the system to disable all wireless network interfaces with the following command:
+    <pre>$ nmcli radio all off</pre>
 
 srg_requirement: '{{{ full_name }}} wireless network adapters must be disabled.'
 
