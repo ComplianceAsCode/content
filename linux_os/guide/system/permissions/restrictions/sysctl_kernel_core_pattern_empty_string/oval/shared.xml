@@ -50,10 +50,7 @@
         <criterion comment="kernel static parameter kernel.core_pattern set to an empty string in /run/sysctl.d/*.conf"
                    test_ref="test_sysctl_kernel_core_pattern_empty_string_static_run_sysctld"/>
       </criteria>
-
-{{% if target_oval_version >= [5, 11] %}}
       <criterion comment="Check that kernel_core_pattern is defined in only one file" test_ref="test_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" />
-{{% endif %}}
     </criteria>
   </definition>
 
