@@ -38,7 +38,7 @@ set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}"
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
-set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
+set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 
@@ -145,11 +145,12 @@ cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage
 find_package(OpenSCAP REQUIRED)
 
 if (SSG_TARGET_OVAL_MAJOR_VERSION EQUAL "5" AND SSG_TARGET_OVAL_VERSION_MINOR EQUAL "11" AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
-    message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please switch the OVAL target version to 5.10 or lower. $ cmake -DSSG_TARGET_OVAL_MINOR_VERSION=10 ../")
+    message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please upgrade to a newer version of OpenSCAP.")
 endif()
 
-if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
+if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
+    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
+
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
@@ -304,11 +305,7 @@ add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-endif()
+ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
 
 add_custom_target(stats)
 add_custom_target(profile-stats)
@@ -408,11 +405,8 @@ endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-endif()
+ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+
 
 ssg_define_guide_and_table_tests()
 
