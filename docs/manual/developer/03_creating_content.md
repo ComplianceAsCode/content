@@ -825,7 +825,7 @@ in our repository. However, we want one of them to be selected only on RHEL 9,
 but the rule is applicable to all platforms.
 * R2 is up to manual checking, but we have systemd_target_multi_user which is
 related to this control.
-* R3 can be automatically scanned by SCAP but unfortunately we don’t have any
+* R3 can be automatically scanned by SCAP but unfortunately we don't have any
 rules implemented yet.
 
 For each control we will add the `status` key, which describes the current
@@ -1174,7 +1174,7 @@ controls:
 
 ### Using controls in profiles
 
-Later, we can use the policy requirements in profile YAML. Let’s say that we
+Later, we can use the policy requirements in profile YAML. Let's say that we
 will define a “Desktop” profile built from the controls.
 
 To use controls, we add them under `selection` keys in the profile. The entry
@@ -1202,7 +1202,7 @@ requirements.
 
 In the example we have selected all controls from `controls/abcd.yml` by listing
 them explicitly. It is possible to shorten it using the `“all”` value which
-means that all controls will be selected. Let’s show how it will be easier:
+means that all controls will be selected. Let's show how it will be easier:
 
 ```
 $ cat rhel8/profiles/abcd-high.profile

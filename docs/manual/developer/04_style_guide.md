@@ -17,15 +17,14 @@
     * Product related labels, like "RHEL" and "Ubuntu", share the color <span style="color:#4141f4">#4141f4</span>
     * Remediation related labels, like "Ansible" and "Bash", share the color <span style="color:#9bf442">#9bf442</span>
 * It is possible to have custom labels for ad-hoc tasks. These must be properly managed and removed when no longer necessary.
-* Be careful changing labels names or removing labels. Some labels are used by bots and automated processes, like the release changelog generation:
-    * https://github.com/ComplianceAsCode/content/blob/master/.github/workflows/release-changelog.json
+* Be careful changing label names or removing labels. Some labels are used by bots and automated processes, like the [release changelog generation](https://github.com/ComplianceAsCode/content/blob/master/.github/workflows/release-changelog.json).
 
 ## Pull Requests
 
 * Should follow [the template](https://github.com/ComplianceAsCode/content/blob/master/.github/pull_request_template.md)
 * Shall remove the sample text from the template pull request
-* Shall not have merge commits, they should have to be taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
-* Should target `master`, unless pulling an already merged pull request to a stabilization branch
+* Shall not have merge commits; they should have to be taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
+* Should target `master` unless pulling an already merged pull request to a stabilization branch
 
 ### Before Merging
 
@@ -43,13 +42,13 @@
 Prioritize the human-readability of code to its machine efficiency.
 In practice, this implies:
 
-* Keep functions and methods small, just a few of lines, so it is possible to understand what they do with minimal effort.
+* Keep functions and methods small, just a few lines, so it is possible to understand what they do with minimal effort.
   Prioritize the code readability over line count or code performance.
 * Don't mix low-level and high-level code in one function.
   Extract functionality to separate functions or convert functions into classes with multiple methods to avoid this.
-* If a function contains try/except block, there should be no other logic present apart from exception handling.
-* Name variables and functions properly, don't hesitate to use longer identifiers.
-  Use explanatory variables to help the code to express itself --
+* If a function contains a try/except block, there should be no other logic present apart from exception handling.
+* Name variables and functions properly; don't hesitate to use longer identifiers.
+  Use explanatory variables to help the code to express itself &mdash;
   assign a result of the operation into a variable that describes its meaning even if you intend to use it only once.
 * Write comments if and only if there is no chance for the code to explain itself.
 
@@ -61,10 +60,10 @@ and keep these guidelines in mind when writing new code.
 * Include tests for your contribution.
 * Don't take part in making files longer -- files longer than 400 lines should be an exception.
   Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
-* Don't copy-paste code, use e.g. Jinja macros to reduce duplication.
+* Don't copy-paste code, use, e.g., Jinja macros to reduce duplication.
   Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
 * Don't put authorship information into the code, Git tracks authorship for you.
-  Don't copy-paste license text into source files -- use [SPDX IDs](https://spdx.dev/ids/) for that purpose.
+  Don't copy-paste license text into source files &mdash; use [SPDX IDs](https://spdx.dev/ids/) for that purpose.
 * Don't commit one-off scripts to the project.
   On occasions when one would like to get a feedback on the approach or debug the script,
   that makes automated changes to the project in a PR, it is strongly recommended to add a removal commit before merging the PR.
@@ -75,7 +74,7 @@ and keep these guidelines in mind when writing new code.
 
 * Shall use UNIX style line endings
 * Shall have one newline at the end of the file
-* Shall not have trailing whitespace, unless syntactically necessary
+* Shall not have trailing whitespace unless syntactically necessary
 * File names must:
     * Be in lower case
     * Have words separated by an underscore
@@ -89,15 +88,15 @@ and keep these guidelines in mind when writing new code.
 * Shall have a docstring comment describe what the macro does
 * Shall have a docstring comment describing all parameters and their types
     * Types shall be Python class names. (E.g. `str`, `bool`, `dict`, etc)
-    * Shall be last section of the docstring
-    * Shall have one blank after list before the close of the docstring block
+    * Shall be the last section of the docstring
+    * Shall have one blank after a list before the close of the docstring block
 * Shall have two blank lines between macros
 
 ### Python
 
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
     * We use [PEP 8 Speaks](https://pep8speaks.com/) and it leaves a comment on PR if you have PEP8 issues in the Python file(s) you touched
-    * We do make one change from PEP 8, our maximum line length is 99 characters
+    * We do make one change from PEP 8; our maximum line length is 99 characters
 * Methods should be defined before they are called
 * The files in the build system shall be Python 2.7 and Python 3 compatible
 * Utilities may only support Python 3
@@ -115,7 +114,7 @@ and keep these guidelines in mind when writing new code.
 
 #### HTML Like Fields
 
-The sections below marked with an `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
+The sections below that are marked with `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
 The lists of elements below are **not** fully inclusive.
 Any elements that are not strictly for formatting shall not be used.
 
@@ -130,19 +129,21 @@ We support the following elements:
 
 The following elements are not allowed:
 
+* `audio`
+* `form`
 * `script`
 * `video`
-* `audio`
 
 ## Schemas
 
 ### Rule
 
 This section describes the style guide around the `rule.yml` files.
+
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 * A rule should only address one configuration item change.
 * A variable should be when a configuration change can be multiple different values.
-* When writing rule and a template is available, the template should be used over custom content
+* When writing a rule and a template is available, the template should be used over custom content
 
 #### Rule Sections
 
@@ -236,7 +237,7 @@ Control sections must be in the following order, if they are present.
 * `id`
     * Must be short
     * Must be lowercase
-    * If product specific should be in the format `standard_product`. For example CIS on RHEL8 would be `cis_rhel8`
+    * If product-specific should be in the format `standard_product`. For example, CIS on RHEL8 would be `cis_rhel8`
     * Should match the filename of the control
     * Words shall be separated by an underscore
 * `version`
@@ -298,7 +299,6 @@ Unless there is a good reason this should be `multi_platform_all`.
 But if the rule only applies to a specific operating system or family of operating then should be used.
 The values can be product names or values from `MULTI_PLATFORM_LIST` or `MULTI_PLATFORM_LIST` in [ssg/constants.py](https://github.com/ComplianceAsCode/content/blob/master/ssg/constants.py).
 
-
 The `platform` key should first list specific products, then list the `multi_platform`.
 Products and `multi_platform` shall be placed in alphabetical order.
 For example, Oracle Linux 9, Red Hat Enterprise Linux 9, multi_platform_fedora.
@@ -311,6 +311,7 @@ Shall be true if the system needs to be rebooted in order for the changes to tak
 #### `strategy`
 
 Should be one of the following values:
+
 * configure
 * disable
 * enable
@@ -356,7 +357,7 @@ Value must be low, medium, or high.
     * `def-group`
         * `definition`
             * `metadata`
-                * Should be defined by the`oval_metadata` macro
+                * Should be defined by the `oval_metadata' macro
             * `criteria`
         * Like OVAL `test`, `object`, and `state` should have the same name after their respective prefix.
         * Like OVAL `test`, `object`, and `state` should group together, if there are many tests the order below should be repeated for each group.
