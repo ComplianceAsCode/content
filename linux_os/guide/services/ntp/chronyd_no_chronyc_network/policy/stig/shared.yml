@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable network management of the chrony daemon.
+
+vuldiscussion: |-
+    Not exposing the management interface of the chrony daemon on
+    the network diminishes the attack space.
+
+checktext: |-
+    Verify {{{ full_name }}} disables network management of the chrony daemon with the following command:
+
+    $ grep -w cmdport /etc/chrony.conf
+
+    cmdport 0
+
+    If the "cmdport" option is not set to "0", is commented out, or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable network management of the chrony daemon by adding/modifying the following line in the /etc/chrony.conf file:
+
+    cmdport 0

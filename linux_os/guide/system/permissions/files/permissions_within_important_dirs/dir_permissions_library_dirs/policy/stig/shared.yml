@@ -1,0 +1,31 @@
+srg_requirement: |-
+    {{{ full_name }}} library directories must have mode 755 or less permissive.
+
+vuldiscussion: |-
+    If the operating system were to allow any user to make changes to software libraries,
+    then those changes might be implemented without undergoing the appropriate testing
+    and approvals that are part of a robust change management process.
+
+    This requirement applies to operating systems with software libraries that are accessible
+    and configurable, as in the case of interpreted languages. Software libraries also include
+    privileged programs which execute with escalated privileges. Only qualified and authorized
+    individuals must be allowed to obtain access to information system components for purposes
+    of initiating changes, including upgrades and modifications.
+
+checktext: |-
+    Shared libraries are stored in the following directories:
+     /lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+
+    To find shared libraries that are group-writable or world-writable,
+    run the following command for each directory DIR which contains shared libraries:
+     $ sudo find -L DIR -perm /022 -type d
+
+    If any of these files are group-writable or world-writable, then this is a finding.
+
+fixtext: |-
+    Configure the {{{ full_name }}} library directories to be protected from unauthorized access. Run the following command, replacing "[DIRECTORY]" with any library directory with a mode more permissive than 755.
+
+    $ sudo chmod 755 [DIRECTORY]

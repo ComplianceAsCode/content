@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} audit system must protect auditing rules from unauthorized change.
+
+vuldiscussion: |-
+    Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
+
+    Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit RHEL 8 system activity.
+
+    In immutable mode, unauthorized users cannot execute changes to the audit system to potentially hide malicious activity and then put the audit rules back.  A system reboot would be noticeable and a system administrator could then investigate the unauthorized changes.
+
+checktext: |-
+    Verify the audit system prevents unauthorized changes with the following command:
+
+    $ sudo grep "^\s*[^#]" /etc/audit/audit.rules | tail -1
+
+    -e 2
+
+    If the audit system is not set to be immutable by adding the "-e 2" option to the end of "/etc/audit/audit.rules", then this is a finding.
+
+fixtext: |-
+    Configure the audit system to set the audit rules to be immutable by adding the following line to end of "/etc/audit/rules.d/audit.rules"
+
+    -e 2
+
+    The audit daemon must be restarted for the changes to take effect.

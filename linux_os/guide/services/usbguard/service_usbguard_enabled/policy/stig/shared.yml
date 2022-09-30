@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the USBGuard package enabled.
+
+vuldiscussion: |-
+    The USBguard-daemon is the main component of the USBGuard software framework. It runs as a service in the background and enforces the USB device authorization policy for all USB devices. The policy is defined by a set of rules using a rule language described in the usbguard-rules.conf file. The policy and the authorization state of USB devices can be modified during runtime using the usbguard tool.
+
+    The System Administrator (SA) must work with the site Information System Security Officer (ISSO) to determine a list of authorized peripherals and establish rules within the USBGuard software framework to allow only authorized devices.
+
+checktext: |-
+    Verify {{{ full_name }}} has USBGuard enabled with the following command:
+
+    $ systemctl is-active usbguard
+
+    active
+
+    If usbguard is not active, ask the SA to indicate how unauthorized peripherals are being blocked.
+    If there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.
+
+fixtext: |-
+    To enable the USBGuard service run the following command:
+
+    $ sudo systemctl enable --now usbguard

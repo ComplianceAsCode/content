@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the nfs-utils package installed.
+
+vuldiscussion: |-
+    "nfs-utils" provides a daemon for the kernel NFS server and related tools. This
+    package also contains the "showmount" program. "showmount" queries the mount
+    daemon on a remote host for information about the Network File System (NFS) server on the
+    remote host. For example, "showmount" can display the clients which are mounted on
+    that host.
+
+checktext: |-
+    Verify that the nfs-utils package is not installed with the following command:
+
+    $ sudo dnf list --installed nfs-utils
+
+    Error: No matching Packages to list
+
+    If the nfs-utils package is installed, this is a finding.
+
+fixtext: |-
+    Remove the nfs-utils package with the following command:
+
+    $ sudo dnf remove nfs-utils

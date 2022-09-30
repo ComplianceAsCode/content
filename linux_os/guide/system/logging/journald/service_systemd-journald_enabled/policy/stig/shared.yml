@@ -1,0 +1,18 @@
+srg_requirement: |-
+    The {{{ full_name }}} service systemd-journald must be enabled.
+
+vuldiscussion: |-
+    In the event of a system failure, {{{ full_name }}} must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to system processes.
+
+checktext: |-
+    Run the following command to determine the current status of the
+     systemd-journald service:
+     $ sudo systemctl is-active systemd-journald
+    If the service is running, it should return the following: active
+
+    If the systemd-journald service is not running, then this is a finding.
+
+fixtext: |-
+    To enable the systemd-journald service run the following command:
+
+    $ sudo systemctl enable --now systemd-journald

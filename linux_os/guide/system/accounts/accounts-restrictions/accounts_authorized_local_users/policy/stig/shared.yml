@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    Accounts providing no operational purpose provide additional opportunities for
+    system compromise. Unnecessary accounts include user accounts for individuals not
+    requiring access to the system and application accounts for applications not installed
+    on the system.
+
+checktext: |-
+    To verify that there are no unauthorized local user accounts, run the following command:
+     $ less /etc/passwd
+    Inspect the results, and if unauthorized local user accounts exist, remove them by running
+    the following command:
+     $ sudo userdel  unauthorized_user
+
+    If there are unauthorized local user accounts on the system, then this is a finding.

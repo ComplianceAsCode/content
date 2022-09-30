@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Enforce Approved Authorizations For Logical Access To Information And System Resources In Accordance With Applicable Access Control Policies.
+
+vuldiscussion: |-
+    Having a non-default grub superuser username makes password-guessing attacks less effective.
+
+checktext: |-
+    To verify the boot loader superuser account has been set, run the following
+    command:
+     sudo grep -A1 "superusers" /etc/grub2-efi.cfg
+    The output should show the following:
+     set superusers=" superusers-account "
+    export superusers
+    where superusers-account is the actual account name different from common names like root,
+    admin, or administrator.
+
+    If it does not, this is a finding.

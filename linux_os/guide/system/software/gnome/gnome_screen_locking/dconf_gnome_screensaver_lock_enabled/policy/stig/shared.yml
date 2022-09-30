@@ -1,0 +1,36 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable a user session lock until that user re-establishes access using established identification and authentication procedures for graphical user sessions.
+
+vuldiscussion: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+
+    The session lock is implemented at the point where session activity can be determined.
+
+    Regardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.
+
+checktext: |-
+    Verify {{{ full_name }}} enables a user's session lock until that user re-establishes access using established identification and authentication procedures with the following command:
+
+    Note: This requirement assumes the use of the RHEL 8 default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+    $ gsettings get org.gnome.desktop.screensaver lock-enabled
+
+    true
+
+    If the setting is "false", this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable a user's session lock until that user re-establishes access using established identification and authentication procedures.
+
+    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following example:
+
+    $ sudo vi /etc/dconf/db/local.d/00-screensaver
+
+    Edit the "[org/gnome/desktop/screensaver]" section of the database file and add or update the following lines:
+
+    # Set this to true to lock the screen when the screensaver activates
+    lock-enabled=true
+
+    Update the system databases:
+
+    $ sudo dconf update

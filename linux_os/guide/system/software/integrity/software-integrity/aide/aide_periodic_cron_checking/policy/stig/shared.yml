@@ -1,0 +1,42 @@
+srg_requirement: |-
+    {{{ full_name }}} mustroutinely check the baseline configuration for unauthorized changes and notify the system administrator when anomalies in the operation of any security functions are discovered.
+
+vuldiscussion: |-
+    nauthorized changes to the baseline configuration could make the system vulnerable to various attacks or allow unauthorized access to the operating system. Changes to operating system configurations can have unintended side effects, some of which may be relevant to security.
+
+    Detecting such changes and providing an automated response can help avoid unintended, negative consequences that could ultimately affect the security state of the operating system. The operating system's Information Management Officer (IMO)/Information System Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or monitoring system trap when there is an unauthorized modification of a configuration item.
+
+    Notifications provided by information systems include messages to local computer consoles, and/or hardware indications, such as lights.
+
+    This capability must take into account operational requirements for availability for selecting an appropriate response. The organization may choose to shut down or restart the information system upon security function anomaly detection.
+
+checktext: |-
+    Verify that {{{ full_name }}} routinely executes a file integrity scan for changes to the system baseline. The command used in the example will use a daily occurrence.
+
+    Check the cron directories for scripts controlling the execution and notification of results of the file integrity application. For example, if AIDE is installed on the system, use the following commands:
+
+    $ ls -al /etc/cron.* | grep aide
+
+    -rwxr-xr-x 1 root root 29 Nov 22 2015 aide
+
+    $ grep aide /etc/crontab /var/spool/cron/root
+
+    /etc/crontab: 30 04 * * * root usr/sbin/aide
+    /var/spool/cron/root: 30 04 * * * root usr/sbin/aide
+
+    $ sudo more /etc/cron.daily/aide
+
+    #!/bin/bash
+    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+
+    If the file integrity application does not exist, or a script file controlling the execution of the file integrity application does not exist, or the file integrity application does not notify designated personnel of changes, this is a finding.
+
+fixtext: |-
+    Configure the file integrity tool to run automatically on the system at least weekly and to notify designated personnel if baseline configurations are changed in an unauthorized manner. The AIDE tool can be configured to email designated personnel with the use of the cron system.
+
+    The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the
+
+    $ sudo more /etc/cron.daily/aide
+
+    #!/bin/bash
+    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil

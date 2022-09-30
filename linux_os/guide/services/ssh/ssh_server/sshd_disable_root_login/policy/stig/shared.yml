@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must not permit direct logons to the root account using remote access via SSH.
+
+vuldiscussion: |-
+    Even though the communications channel may be encrypted, an additional layer of
+    security is gained by extending the policy of not logging directly on as root.
+    In addition, logging in with a user-specific account provides individual
+    accountability of actions performed on the system and also helps to minimize
+    direct attack attempts on root's password.
+
+checktext: |-
+    Verify {{{ full_name }}} remote access using SSH prevents users from logging on directly as "root" with the following command:
+
+    $ sudo grep -i PermitRootLogin /etc/ssh/sshd_config
+
+    PermitRootLogin no
+
+    If the "PermitRootLogin" keyword is set to "yes", is missing, or is commented out, this is a finding.
+
+fixtext: |-
+    To configure the system to prevent SSH users from logging on directly as root add or modify the following line in "/etc/ssh/sshd_config".
+
+     PermitRootLogin no
+
+    Restart the SSH daemon for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service

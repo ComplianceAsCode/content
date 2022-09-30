@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must ensure the SSH server uses strong entropy.
+
+vuldiscussion: |-
+    SSH implementation in {{{ full_name }}} uses the openssl library, which doesn't use high-entropy sources by default.
+    Randomness is needed to generate data-encryption keys, and as plaintext padding and initialization vectors
+    in encryption algorithms, and high-quality entropy elliminates the possibility that the output of
+    the random number generator used by SSH would be known to potential attackers.
+
+checktext: |-
+    Verify the SSH server uses strong entropy with the following command:
+
+    $ sudo grep -i ssh_use_strong_rng /etc/sysconfig/sshd
+
+    SSH_USE_STRONG_RNG=32
+
+    If the "SSH_USE_STRONG_RNG" line does not equal "32", is commented out or missing, this is a finding.
+
+fixtext: |-
+    Configure the operating system SSH server to use strong entropy.
+
+    Add or modify the following line in the "/etc/sysconfig/sshd" file.
+
+    SSH_USE_STRONG_RNG=32
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

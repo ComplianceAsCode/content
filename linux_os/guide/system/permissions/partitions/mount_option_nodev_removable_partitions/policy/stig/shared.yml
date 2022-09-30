@@ -1,0 +1,13 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    The only legitimate location for device files is the "/dev" directory
+    located on the root partition. An exception to this is chroot jails, and it is
+    not advised to set "nodev" on partitions which contain their root
+    filesystems.
+
+checktext: |-
+
+
+    If , then this is a finding.

@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} Bluetooth must be disabled.
+
+vuldiscussion: |-
+    This requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with {{{ full_name }}} systems. Wireless peripherals (e.g., Wi-Fi/Bluetooth/IR Keyboards, Mice, and Pointing Devices and Near Field Communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. Wireless peripherals must meet DoD requirements for wireless data transmission and be approved for use by the Authorizing Official (AO). Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that need to be protected, modification of communications with these wireless peripherals may be used to compromise the {{{ full_name }}} operating system.
+
+checktext: |-
+    Verify that {{{ full_name }}} disables the ability to load the Bluetooth kernel module with the following command:
+
+    $ sudo grep -r bluetooth /etc/modprobe.conf /etc/modprobe.d/*
+
+    blacklist bluetooth
+    If the command does not return any output, or the line is commented out, and use of Bluetooth is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the Bluetooth adapter when not in use.
+
+    Create or modify the "/etc/modprobe.d/bluetooth.conf" file with the following line:
+
+    blacklist bluetooth
+
+    Reboot the system for the settings to take effect.

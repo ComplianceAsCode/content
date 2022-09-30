@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} must mount /dev/shm with the nodev option.
+
+vuldiscussion: |-
+    The "nodev" mount option causes the system to not interpret character or block special devices. Executing character or block special devices from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.
+
+    The only legitimate location for device files is the "/dev" directory located on the root partition, with the exception of chroot jails if implemented.
+
+checktext: |-
+    Verify "/dev/shm" is mounted with the "nodev" option with the following command:
+
+    $ mount | grep /dev/shm
+
+    tmpfs on /dev/shm type tmpfs (rw,nodev,nosuid,noexec,seclabel)
+
+    If the /dev/shm file system is mounted without the "nodev" option, this is a finding.
+
+fixtext: |-
+    Modify "/etc/fstab" to use the "nodev" option on the "/dev/shm" file system.

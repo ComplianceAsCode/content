@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Implement Nist Fips-Validated Cryptography For The Following: To Provision Digital Signatures, To Generate Cryptographic Hashes, And To Protect Unclassified Information Requiring Confidentiality And Cryptographic Protection In Accordance With Applicable Federal Laws, Executive Orders, Directives, Policies, Regulations, And Standards.
+
+vuldiscussion: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+checktext: |-
+    $ sudo dnf list --installed dracut
+
+fixtext: |-
+    Configure {{{ full_name }}} to run in FIPS mode.
+
+    Run the following command to enable FIPS mode:
+    $ sudo fips-mode-setup --enable
+
+    Check the /etc/dracut.conf.d/40-fips.conf file and make sure it includes the following line:
+    add_dracutmodules+=" fips "
+
+    The system needs to be rebooted for these changes to take effect.

@@ -1,0 +1,32 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.
+
+vuldiscussion: |-
+    Address space layout randomization (ASLR) makes it more difficult for an attacker to predict the location of attack code they have introduced into a
+    process's address space during an attempt at exploitation. Additionally, ASLR makes it more difficult for an attacker to know the location of
+    existing code in order to re-purpose it using return oriented programming (ROP) techniques.
+
+checktext: |-
+    Verify {{{ full_name }}} is implementing ASLR with the following command:
+
+    $ sysctl kernel.randomize_va_space
+
+    kernel.randomize_va_space = 2
+
+    Check that the configuration files are present to enable this kernel parameter.
+    Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.randomize_va_space | tail -1
+
+    kernel.randomize_va_space = 2
+
+    If "kernel.randomize_va_space" is not set to "2" or is missing, this is a finding.
+
+fixtext: |-
+    Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
+
+    kernel.randomize_va_space = 2
+
+    Reload settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

@@ -1,0 +1,18 @@
+srg_requirement: |-
+    A separate {{{ full_name }}} filesystem must be used for user home directories (such as /home or an equivalent).
+
+vuldiscussion: |-
+    Ensuring that "/home" is mounted on its own partition enables the
+    setting of more restrictive mount options, and also helps ensure that
+    users cannot trivially fill partitions used for log or audit data storage.
+
+checktext: |-
+    Verify that a separate file system/partition has been created for  /home  with the following command:
+
+     $ mountpoint /home
+
+
+    If "/home is is not a mountpoint" is returned, then this is a finding.
+
+fixtext: |-
+    Migrate the "/home" directory onto a separate file system.

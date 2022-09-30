@@ -1,0 +1,23 @@
+srg_requirement: |-
+    The root account must be the only account having unrestricted access to the {{{ full_name }}} system.
+
+vuldiscussion: |-
+    An account has root authority if it has a UID of 0. Multiple accounts
+    with a UID of 0 afford more opportunity for potential intruders to
+    guess a password for a privileged account. Proper configuration of
+    sudo is recommended to afford multiple system administrators
+    access to root privileges in an accountable manner.
+
+checktext: |-
+    Verify that only the "root" account has a UID "0" assignment with the following command:
+
+    $ awk -F: '$3 == 0 {print $1}' /etc/passwd
+
+    root
+
+    If any accounts other than "root" have a UID of "0", this is a finding.
+
+fixtext: |-
+    Change the UID of any account on the system, other than root, that has a UID of "0".
+
+    If the account is associated with system commands or applications, the UID should be changed to one greater than "0" but less than "1000". Otherwise, assign a UID of greater than "1000" that has not already been assigned.

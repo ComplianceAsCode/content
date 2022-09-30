@@ -1,0 +1,33 @@
+srg_requirement: |-
+     {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
+
+vuldiscussion: |-
+    Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information in to the system's logs, or could fill the system's storage leading to a Denial of Service.
+
+    If the system is intended to be a log aggregation server its use must be documented with the ISSO.
+
+checktext: |-
+    Verify that {{{ full_name }}} is not configured to receive remote logs using rsyslog.
+
+    Check for lines in configuration that enable receiving remote messages with the following command:
+
+    $ grep -Ei -e '^\s*\$ModLoad (imtcp|imudp|imrelp)' -e '^\s*\$(InputTCP|UDP|InputRELP)ServerRun .*' /etc/rsyslog.conf /etc/rsyslog.d/*
+
+    Note: You may see an error about no files or directories. This is not a finding.
+
+    If any lines are returned by the command, then rsyslog is configured to receive remote messages and this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not receive remote logs using rsyslog.
+
+    Remove the lines in /etc/rsyslog.conf and any files in the /etc/rsyslog.d directory that match any of the following:
+
+    $ModLoad imtcp
+    $ModLoad imudp
+    $ModLoad imrelp
+    $InputTCPServerRun [0-9]*
+    $UDPServerRun [0-9]*
+    $InputRELPServerRun [0-9]*
+
+    The rsyslog daemon must be restarted for the changes to take effect:
+    $ sudo systemctl restart rsyslog.service

@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords.
+
+vuldiscussion: |-
+    Passwords need to be protected at all times, and encryption is the standard
+    method for protecting passwords. If passwords are not encrypted, they can
+    be plainly read (i.e., clear text) and easily compromised. Passwords that
+    are encrypted with a weak algorithm are no more protected than if they are
+    kepy in plain text.
+
+
+
+    This setting ensures user and group account administration utilities are
+    configured to store only encrypted representations of passwords.
+    Additionally, the "crypt_style" configuration option ensures the use
+    of a strong hashing algorithm that makes password cracking attacks more
+    difficult.
+
+checktext: |-
+    Verify the user and group account administration utilities are configured to store only encrypted representations of passwords with the following command:
+
+    # grep crypt /etc/libuser.conf
+
+    crypt_style = sha512
+
+    If the "crypt_style" variable is not set to "sha512", is not in the defaults section, is commented out, or does not exist, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use the SHA-512 algorithm for password hashing.
+
+    Add or change the following line in the "[default]" section of "/etc/libuser.conf" file:
+
+    crypt_style = sha512

@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must enforce password complexity rules for the root account.
+
+vuldiscussion: |-
+    Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
+
+    Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
+
+checktext: |-
+    Verify that {{{ full_name }}} enforces password complexity rules for the root account.
+
+    Check if root user is required to use complex passwords with the following command:
+
+    $ grep enforce_for_root /etc/security/pwquality.conf /etc/security/pwquality.conf/*.conf
+
+    /etc/security/pwquality.conf:enforce_for_root
+
+    If "enforce_for_root" is commented or missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enforce password complexity on the root account.
+
+    Add or update the following line in /etc/security/pwquality.conf:
+
+    enforce_for_root

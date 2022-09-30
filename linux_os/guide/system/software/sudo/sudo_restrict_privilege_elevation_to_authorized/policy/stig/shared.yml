@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must restrict privilege elevation to authorized personnel.
+
+vuldiscussion: |-
+    If the "sudoers" file is not configured correctly, any user defined
+    on the system can initiate privileged actions on the target system.
+
+checktext: |-
+    Verify {{{ full_name }}} restricst privilege elevation to authorized personnel with the following command:
+
+    $ sudo sh -c 'grep -iw ALL /etc/sudoers /etc/sudoers.d/*'
+
+    If the either of the following entries are returned, this is a finding:
+    ALL     ALL=(ALL) ALL
+    ALL     ALL=(ALL:ALL) ALL
+
+fixtext: |-
+    Remove the following entries from the /etc/sudoers file or configuration file under /etc/sudoers.d/:
+
+    ALL     ALL=(ALL) ALL
+    ALL     ALL=(ALL:ALL) ALL

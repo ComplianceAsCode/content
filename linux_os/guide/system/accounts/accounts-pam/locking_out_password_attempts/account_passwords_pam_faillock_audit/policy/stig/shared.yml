@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must log user name information when unsuccessful logon attempts occur.
+
+vuldiscussion: |-
+    Without auditing of these events it may be harder or impossible to identify what an attacker did after an attack.
+
+checktext: |-
+    Verify the "/etc/security/faillock.conf" file is configured to log user name information when unsuccessful logon attempts occur:
+
+    $ sudo grep audit /etc/security/faillock.conf
+
+    audit
+
+    If the "audit" option is not set, is missing or commented out, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to log user name information when unsuccessful logon attempts occur.
+
+    Add/Modify the "/etc/security/faillock.conf" file to match the following line:
+
+    audit

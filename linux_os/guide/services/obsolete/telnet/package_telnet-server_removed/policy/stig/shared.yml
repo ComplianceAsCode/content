@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the telnet-server package installed.
+
+vuldiscussion: |-
+    It is detrimental for operating systems to provide, or install by default,
+    functionality exceeding requirements or mission objectives. These
+    unnecessary capabilities are often overlooked and therefore may remain
+    unsecure. They increase the risk to the platform by providing additional
+    attack vectors.
+
+
+    The telnet service provides an unencrypted remote access service which does
+    not provide for the confidentiality and integrity of user passwords or the
+    remote session. If a privileged user were to login using this service, the
+    privileged user password could be compromised.
+
+
+    Removing the "telnet-server" package decreases the risk of the
+    telnet service's accidental (or intentional) activation.
+
+checktext: |-
+    Verify that the telnet-server package is not installed with the following command:
+
+    $ sudo dnf list --installed telnet-server
+
+    Error: No matching Packages to list
+
+    If the telnet-server package is installed, this is a finding.
+
+fixtext: |-
+    Remove the telnet-server package with the following command:
+
+    $ sudo dnf remove telnet-server

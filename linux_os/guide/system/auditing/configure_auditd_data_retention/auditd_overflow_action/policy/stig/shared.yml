@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must take appropriate action when the internal event queue is full.
+
+vuldiscussion: |-
+    The audit system should have an action setup in the event the internal event queue becomes full
+    so that no data is lost.Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+
+    Off-loading is a common process in information systems with limited audit storage capacity.
+
+checktext: |-
+    Verify that {{{ full_name }}} audit system is configured to take an appropriate action when the internal event queue is full:
+
+     $ sudo grep -i overflow_action /etc/audit/auditd.conf
+
+    overflow_action = syslog
+
+    If the value of the "overflow_action" option is not set to "syslog", "single", "halt" or the line is commented out, ask the System Administrator to indicate how the audit logs are off-loaded to a different system or media.
+
+    If there is no evidence that the transfer of the audit logs being off-loaded to another system or media takes appropriate action if the internal event queue becomes full, this is a finding.
+
+fixtext: |-
+    Edit the /etc/audit/auditd.conf file and add or update the "overflow_action" option:
+
+    overflow_action = syslog
+
+    The audit daemon must be restarted for changes to take effect.
