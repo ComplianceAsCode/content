@@ -91,7 +91,7 @@ controls:
     - base
     automated: yes
     status: pending
-    rules:[]
+    rules: []
 
   - id: Req-1.2.2
     title: 1.2.2 Secure and synchronize router configuration files.
@@ -1852,6 +1852,7 @@ controls:
     levels:
     - base
     status: automated
+    rules:
     - var_accounts_passwords_pam_faillock_deny=6
     - var_accounts_passwords_pam_faillock_unlock_time=1800
     - audit_rules_login_events_tallylog
@@ -1865,6 +1866,7 @@ controls:
     levels:
     - base
     status: automated
+    rules:
     - display_login_attempts
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_rename
