@@ -32,6 +32,21 @@
 * Must have the correct labels
 * Should be assigned to the reviewers
 
+### PR Gating
+
+All gating tests should be passing prior to merging the PR in question.
+An exception to this are cases when a test fails either because there is an infrastructure issue or because the test detects false positives.
+For example, a PR moves things around without making them worse, but the gating detects this as introduction of bad code.
+Alternatively, a PR can contribute code that is not tested, and tests are planned to come in later PRs.
+Such failing tests should be addressed in a reviewer's comment to waive them.
+
+Noteworthy additions to these principles:
+
+* CodeClimate: Failures should be taken seriously, especially when they can be fixed easily &mdash; that includes issues related to the complexity of code.
+  If code that looks reasonably complex is labelled as too complex, relaxation of the corresponding setting in CodeClimate can be proposed and discussed.
+* Openshift CI: As of 2022, those tests frequently fail because of infrastructure issues.
+  Their failing results don't have to be waived if the PR is clearly unrelated to those tests.
+
 ### Merging
 
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
