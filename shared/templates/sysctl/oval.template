@@ -139,7 +139,7 @@
                     test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
 {{% endif %}}
         </criteria>
-        <criterion comment="Check that {{{ SYSCTLID }}} is not defined in any file" test_ref="test_{{{ rule_id }}}_not_defined" 
+        <criterion comment="Check that {{{ SYSCTLID }}} is defined in at least one file" test_ref="test_{{{ rule_id }}}_not_defined"
                    negate="true"/>
       </criteria>
 {{% if MISSING_PARAMETER_PASS == "true" %}}
