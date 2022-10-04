@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ocil xmlns:ocil="http://scap.nist.gov/schema/ocil/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://scap.nist.gov/schema/ocil/2.0" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <generator>
+    <product_name>build_shorthand.py from SCAP Security Guide</product_name>
+    <product_version>ssg: 0.1.65</product_version>
+    <schema_version>2.0</schema_version>
+    <timestamp>2022-10-04T12:06:51</timestamp>
+  </generator>
+  <questionnaires>
+    <questionnaire id="service_cockpit_disabled_ocil">
+      <title>Disable Cockpit Management Server</title>
+      <actions>
+        <test_action_ref>service_cockpit_disabled_action</test_action_ref>
+      </actions>
+    </questionnaire>
+  </questionnaires>
+  <test_actions>
+    <boolean_question_test_action id="service_cockpit_disabled_action" question_ref="service_cockpit_disabled_question">
+      <when_true>
+        <result>PASS</result>
+      </when_true>
+      <when_false>
+        <result>FAIL</result>
+      </when_false>
+    </boolean_question_test_action>
+  </test_actions>
+  <questions>
+    <boolean_question id="service_cockpit_disabled_question">
+      <ocil:question_text>To check that the cockpit service is disabled in system boot configuration,
+run the following command:
+$ sudo systemctl is-enabled cockpit
+Output should indicate the cockpit service has either not been installed,
+or has been disabled at all runlevels, as shown in the example below:
+$ sudo systemctl is-enabled cockpit disabled
+
+Run the following command to verify cockpit is not active (i.e. not running) through current runtime configuration:
+$ sudo systemctl is-active cockpit
+
+If the service is not running the command will return the following output:
+inactive
+
+The service will also be masked, to check that the cockpit is masked, run the following command:
+$ sudo systemctl show cockpit | grep "LoadState\|UnitFileState"
+
+If the service is masked the command will return the following outputs:
+
+LoadState=masked
+
+UnitFileState=masked
+      Is it the case that the "cockpit" is loaded and not masked?
+      </ocil:question_text>
+    </boolean_question>
+  </questions>
+</ocil>
