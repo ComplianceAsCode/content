@@ -6,71 +6,20 @@ import json
 import os
 import re
 from pathlib import Path
-import yaml
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import read_file_list
+from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 SEVERITY = {'CAT III': 'low', 'CAT II': 'medium', 'CAT I': 'high'}
 
-# The start row is 2, to avoid importing the header
-START_ROW = 2
 
-
-class Row:
-    row_id = 0
-    IA_Control = ""
-    CCI = ""
-    SRGID = ""
-    STIGID = ""
-    SRG_Requirement = ""
-    Requirement = ""
-    SRG_VulDiscussion = ""
-    Vul_Discussion = ""
-    Status = ""
-    SRG_Check = ""
-    Check = ""
-    SRG_Fix = ""
-    Fix = ""
-    Severity = ""
-    Mitigation = ""
-    Artifact_Description = ""
-    Status_Justification = ""
-
-    @staticmethod
-    def from_row(sheet: Worksheet, row_number: int, full_name: str, changed_name: str) -> Row:
-        self = Row()
-        self.row_id = row_number
-        self.IA_Control = sheet[f'A{row_number}'].value
-        self.CCI = sheet[f'B{row_number}'].value
-        self.SRGID = sheet[f'C{row_number}'].value
-        self.STIGID = sheet[f'D{row_number}'].value
-        self.SRG_Requirement = sheet[f'E{row_number}'].value
-        if sheet[f'F{row_number}'].value:
-            self.Requirement = sheet[f'F{row_number}'].value.replace(full_name, changed_name)
-        self.SRG_VulDiscussion = sheet[f'G{row_number}'].value
-        self.Vul_Discussion = sheet[f'H{row_number}'].value
-        self.Status = sheet[f'I{row_number}'].value
-        self.SRG_Check = sheet[f'J{row_number}'].value
-        self.Check = sheet[f'K{row_number}'].value
-        self.SRG_Fix = sheet[f'L{row_number}'].value
-        self.Fix = sheet[f'M{row_number}'].value
-        self.Severity = sheet[f'N{row_number}'].value
-        self.Mitigation = sheet[f'O{row_number}'].value
-        self.Artifact_Description = sheet[f'P{row_number}'].value
-        self.Artifact_Description = sheet[f'Q{row_number}'].value
-        return self
-
-    def __str__(self) -> str:
-        return f'<Row {self.row_id}>'
-
-
-def parse_args() -> argparse.Namespace:
+def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--changed', '-c', help="The file with changes, in xlsx", required=True)
     parser.add_argument('--current', '-b', help="The latest file from CaC, in xlsx", required=True)
@@ -88,31 +37,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def get_stigid_set(sheet: Worksheet, end_row: int) -> set[str]:
-    result = set()
-    start_row = 2
-    for i in range(start_row, end_row):
-        cci_raw = sheet[f'D{i}'].value
-
-        if cci_raw is None or cci_raw == "":
-            continue
-        result.add(cci_raw)
-    return result
-
-
-def get_cce_dict_to_row_dict(sheet: Worksheet, full_name: str, changed_name: str,
-                             end_row: int) -> dict:
-    result = dict()
-    for i in range(START_ROW, end_row):
-        cci_raw = sheet[f'D{i}'].value
-        if cci_raw is None or cci_raw == "":
-            continue
-        cci = cci_raw.strip()
-        result[cci] = Row.from_row(sheet, i, full_name, changed_name)
-
-    return result
-
-
 def get_cce_dict(data: dict, product: str) -> dict:
     results = dict()
     for rule_id in data.keys():
@@ -127,13 +51,6 @@ def get_cce_dict(data: dict, product: str) -> dict:
 def get_rule_dir_json(path: str) -> dict:
     with open(path, 'r') as f:
         return json.load(f)
-
-
-def get_full_name(root_dir: str, product: str) -> str:
-    product_yml_path = os.path.join(root_dir, 'products', product, 'product.yml')
-    with open(product_yml_path, 'r') as f:
-        data = yaml.load(f, Loader=yaml.SafeLoader)
-        return data['full_name']
 
 
 def get_cac_status(disa: str) -> str:
@@ -241,7 +158,7 @@ def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
 
 
 def main() -> None:
-    args = parse_args()
+    args = _parse_args()
     full_name = get_full_name(args.root, args.product)
     changed_wb = load_workbook(args.changed)
     current_wb = load_workbook(args.current)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>{{ title }}</title>
+<style type="text/css">
+    /* From difflib.HtmlDiff().make_file() */
+    table.diff {font-family:Courier; border:medium;}
+    .diff_header {background-color:#e0e0e0}
+    td.diff_header {text-align:right}
+    .diff_next {background-color:#c0c0c0}
+    .diff_add {background-color:#aaffaa}
+    .diff_chg {background-color:#ffff77}
+    .diff_sub {background-color:#ffaaaa}
+</style>
+</head>
+<body>
+<h1>{{ title }}</h1>
+<h2>Missing in DISA</h2>
+<ul>
+    {% for rule in missing_in_disa %}
+        <li>{{ rule }}</li>
+    {% endfor %}
+</ul>
+<h2>Missing in CaC</h2>
+<ul>
+    {% for rule in missing_in_cac %}
+        <li>{{ rule }}</li>
+    {% endfor %}
+</ul>
+<h2>Deltas</h2>
+{% for delta in deltas %}
+<h3>{{ delta.cci }}</h3>
+<h4>Requirement</h4>
+{{ delta.Requirement }}
+<h4>Vul_Discussion</h4>
+{{ delta.Vul_Discussion }}
+<h4>Status</h4>
+{{ delta.Status }}
+<h4>Check</h4>
+{{ delta.Check }}
+<h4>Fix</h4>
+{{ delta.Fix }}
+{% endfor %}
+</body>
+</html>
