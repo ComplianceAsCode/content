@@ -107,6 +107,7 @@ def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None
 
     lines = read_file_list(path)
     replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
+    replacement = replacement.replace('<', '&lt').replace('>', '&gt')
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
         result = lines[:section_ranges[0].start]
