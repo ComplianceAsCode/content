@@ -297,6 +297,7 @@ To execute:
     $ ./utils/rule_dir_diff.py [...any options...]
 
 ### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
+
 The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
 It supports the following arguments:
 
@@ -320,6 +321,7 @@ To execute:
     $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r4-xccdf-scap.xml
 
 ### `utils/compare_ds.py` - Compare two data streams (can also compare XCCDFs)
+
 This script compares two data streams or two benchmarks and generates a diff output.
 It can show what changed in rules, for example in description, references and remediation scripts.
 Changes in checks (OVAL and OCIL) are shown too, but the OVAL diff is limited to the `criteria`
@@ -360,6 +362,7 @@ Generate the HTML diffs:
 
 
 ### `utils/compare_results.py` - Compare to two ARF result files
+
 The goal of this script is to compare the result of two ARF files.
 It will show what rules are missing, different, and the same between the two files.
 The script can take results from content created by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
@@ -421,6 +424,7 @@ The intended usage is:
     $ ./build_product <products> -p|--profiling
 
 ### `utils/build_profiler.sh` -- Handle directory structure for profiling files and invokes other script
+
 The goal of this tool is to create the directory structure necessary for the profiling system and create a new numbered logfile, as well as invoking the `utils/build_profiler_report.py` and subsequently generating an interactive HTML file using webtreenode.
 
 It is invoked by the `build_product` script. When invoked for the first time, it creates the `.build_profiling` directory and then a directory inside it named `product_string`, which is passed from the build_product script.
@@ -441,6 +445,7 @@ To execute:
     $ ./build_profiler.sh <product_string>
 
 ### `utils/build_profiler_report.py` -- Parse a ninja file and display report to user
+
 The goal of this tool is to generate a report about differences in build times, both a text version in the terminal and a webtreenode version that is later converted into an interactive HTML report.
 
 The script parses the data from `"logfile"` as the current logfile and the data from `0.ninja_log` as the baseline logfile (if the `--baseline` switch is used, the baseline log is not loaded).
@@ -463,7 +468,10 @@ To execute:
 
     $ ./build_profiler_report.py <logflie> [--baseline]
 
+## Other Scripts
+
 ### `utils/compare_disa_xml.py` - Compare DISA XML
+
 This script will output what SRG or STIG IDs where add or removed between two XML files from DISA.
 
 To execute:
