@@ -1,14 +1,13 @@
 # Tools and Utilities
 
 To run the Python utilities (those ending in `.py`), you will need to
-have the PYTHONPATH environment variable set. This can be accomplished
+have the `PYTHONPATH` environment variable set. This can be accomplished
 one of two ways: by prefixing all commands with a local variable
 (`PYTHONPATH=/path/to/scap-security-guide`), or by exporting
 `PYTHONPATH` in your shell environment. We provide a script for making
 this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the current
 shell, simply call `source .pyenv.sh`. For more information on how to
 use this script, please see the comments at the top of the file.
-
 
 ## Profile Statistics and Utilities
 
@@ -23,8 +22,10 @@ To use the script, first build the content, then pass the built XCCDF
 For example, to check which rules in RHEL8 OSPP profile are missing
 remediations, run this command:
 
+```bash
     $ ./build_product rhel8
     $ ./build-scripts/profile_tool.py stats --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
+```
 
 Note: There is an automated job which provides latest statistics from
 all products and all profiles, you can view it here:
@@ -35,16 +36,19 @@ The tool also can subtract rules between YAML profiles.
 For example, to subtract selected rules from a given profile based on
 rules selected by another profile, run this command:
 
+```bash
     $ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile
+````
 
 This will result in a new YAML profile containing exclusive rules to the
 profile pointed by the `--profile1` option.
 
 ## Generating Controls from DISA's XCCDF Files
+
 If you want a control file for product from DISA's XCCDF files you can run the following command:
 It supports the following arguments:
 
-```
+```text
 options:
   -h, --help            show this help message and exit
   -r ROOT, --root ROOT  Path to SSG root directory (defaults to the root of the repository)
@@ -64,8 +68,9 @@ options:
 
 Example
 
+```bash
     $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r5-xccdf-manual.xml
-
+```
 
 ## Generating login banner regular expressions
 
@@ -90,12 +95,16 @@ build this information in a format understood by these scripts.
 
 To execute it:
 
+```bash
     $ ./utils/rule_dir_json.py
+```
 
 Optionally, provide a path to a CaC root and destination YAML file:
 
+```bash
     $ ./utils/rule_dir_json.py --root /path/to/ComplianceAsCode/content \
                                --output /tmp/rule_dirs.json
+```
 
 ### `utils/fix_rules.py` -- automatically fix-up rules
 
@@ -118,11 +127,15 @@ These sub-commands are:
 
 To execute:
 
+```bash
     $ ./utils/fix_rules.py [--assume-yes] [--dry-run] <command>
+```
 
 For example:
 
+```bash
     $ ./utils/fix_rules.py -y sort_subkeys
+```
 
 Note that it is generally good practice to commit all changes prior to running
 one of these commands and then commit the results separately.
@@ -142,11 +155,15 @@ a profile and it will automatically modify the prodtype, adding this product.
 
 To execute:
 
+```bash
     $ ./utils/autoprodtyper.py <product> <profile>
+```
 
 For example:
 
+```bash
     $ ./utils/autoprodtyper.py ubuntu2004 cis_level1_server
+```
 
 Note that it is generally good practice to commit all changes prior to running
 one of these commands and then commit the results separately.
@@ -160,11 +177,15 @@ of the `rule.yml` files.
 
 To execute:
 
+```bash
     $ ./utils/refchecker.py <product> <profile> <reference>
+```
 
 For example:
 
+```bash
     $ ./utils/refchecker.py ubuntu2004 cis_level1_server cis
+```
 
 This utility has some knowledge of which references are product-specific
 (checking for `cis@ubuntu2004` in the above example) and which are
@@ -185,23 +206,33 @@ files. It supports the following sub-commands:
 
 To execute:
 
+```bash
     $ ./utils/mod_prodtype.py <rule_id> <command> [...other arguments...]
+```
 
 For an example of `add`:
 
+```bash
     $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 add ubuntu2004
+```
 
 For an example of `list`:
 
+```bash
     $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 list
+```
 
 For an example of `replace`:
 
+```bash
     $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 replace ubuntu2004~ubuntu1604,ubuntu1804,ubuntu2004
+```
 
 For an example of `remove`:
 
+```bash
     $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 remove ubuntu1604 ubuntu1804 ubuntu2004
+````
 
 ### `utils/mod_checks.py` and `utils/mod_fixes.py` -- programmatically modify check and fix applicability
 
@@ -223,43 +254,59 @@ applicability of various files (either OVAL or hardening content), similar to
 
 To execute:
 
+```bash
     $ ./utils/mod_checks.py <rule_id> <command> [...other arguments...]
     $ ./utils/mod_fixes.py <rule_id> <type> <command> [...other arguments...]
+````
 
 For an example of `add`:
 
+```bash
     $ ./utils/mod_checks.py clean_components_post_updating add multi_platform_sle
     $ ./utils/mod_fixes.py clean_components_post_updating bash add multi_platform_sle
+```
 
 For an example of `list`:
 
+```bash
     $ ./utils/mod_checks.py clean_components_post_updating list
     $ ./utils/mod_fixes.py clean_components_post_updating ansible list
+```
 
 For an example of `remove`:
 
+```bash
     $ ./utils/mod_checks.py file_permissions_local_var_log_messages remove multi_platform_sle
     $ ./utils/mod_fixes.py file_permissions_local_var_log_messages bash remove multi_platform_sle
+```
 
 For an example of `replace`:
 
+```bash
     $ ./utils/mod_checks.py file_permissions_local_var_log_messages replace multi_platform_sle~multi_platform_sle,multi_platform_ubuntu
     $ ./utils/mod_fixes.py file_permissions_local_var_log_messages bash replace multi_platform_sle~multi_platform_sle,multi_platform_ubuntu
+```
 
 For an example of `diff`:
 
+```bash
     $ ./utils/mod_checks.py clean_components_post_updating diff sle12 sle15
     $ ./utils/mod_fixes.py clean_components_post_updating bash diff sle12 sle15
+```
 
 For an example of `delete`:
 
+```bash
     $ ./utils/mod_checks.py clean_components_post_updating delete sle12
     $ ./utils/mod_fixes.py clean_components_post_updating bash delete sle12
+```
 
 For an example of `make_shared`:
 
+```bash
     $ ./utils/mod_checks.py clean_components_post_updating make_shared sle12
     $ ./utils/mod_fixes.py clean_components_post_updating bash make_shared sle12
+```
 
 ### `utils/rule_dir_diff.py` and `utils/rule_dir_stats.py` -- comparison of rule directories
 
@@ -269,32 +316,34 @@ operating on two separate JSON blobs, presumably at different points in time
 or from different content trees. They support the following arguments which
 affect output:
 
- - `--products`: limit results to only the specified product(s)
- - `--strict`: enforce product applicability strictly on the `rule.yml`
-   level, discarding results from rules which lack specified product in the
-   `rule.yml` file.
- - `--missing`: List rules which are missing OVALs or fixes.
- - `--two-plus`: List rules which have two or more OVALs or fixes.
- - `--prodtypes`: List rules which have different prodtypes/platform
-   applicability between `rule.yml` and its OVALs/fixes.
- - `--product-names`: List rules which have product-specific names (e.g.,
-   a `sle15.xml` with `multi_platform_sle` applicability.
- - `--introspect`: Dump raw objects for explicitly queried rules.
- - `--unassociated`: Search for rules without any product association (e.g.,
-   missing or empty prodtype).
- - `--ovals-only`: Only output information about OVALs.
- - `--fixes-only`: Only output information about fixes.
- - `--summary-only`: Only output summary information.
+- `--products`: limit results to only the specified product(s)
+- `--strict`: enforce product applicability strictly on the `rule.yml`
+  level, discarding results from rules which lack specified product in the
+  `rule.yml` file.
+- `--missing`: List rules which are missing OVALs or fixes.
+- `--two-plus`: List rules which have two or more OVALs or fixes.
+- `--prodtypes`: List rules which have different prodtypes/platform
+  applicability between `rule.yml` and its OVALs/fixes.
+- `--product-names`: List rules which have product-specific names (e.g.,
+  a `sle15.xml` with `multi_platform_sle` applicability.
+- `--introspect`: Dump raw objects for explicitly queried rules.
+- `--unassociated`: Search for rules without any product association (e.g.,
+  missing or empty prodtype).
+- `--ovals-only`: Only output information about OVALs.
+- `--fixes-only`: Only output information about fixes.
+- `--summary-only`: Only output summary information.
 
 Options specific to `utils/rule_dir_stats.py`:
 
- - `--left`: old JSON artifact; displayed on the left of diffs.
- - `--right`: new JSON artifact; displayed on the right of diffs.
+- `--left`: old JSON artifact; displayed on the left of diffs.
+- `--right`: new JSON artifact; displayed on the right of diffs.
 
 To execute:
 
+```bash
     $ ./utils/rule_dir_stats.py [...any options...]
     $ ./utils/rule_dir_diff.py [...any options...]
+```
 
 ### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
 
@@ -304,21 +353,23 @@ It supports the following arguments:
 - `-r`, `--root` - Path to SSG root directory
 - `-p`, `--product` - What product to produce the tailoring file for (required)
 - `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
-- `-j`, `--json` - Path to the `rules_dir.json ` file.
-  - Defaults to `build/stig_control.json`
+- `-j`, `--json` - Path to the `rules_dir.json` file.
+    - Defaults to `build/stig_control.json`
 - `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
-  - Defaults to `build/build_config.yml`
+    - Defaults to `build/build_config.yml`
 - `-b`, `--profile` - What profile to use.
-  - Defaults to stig
+    - Defaults to stig
 - `-ref`, `--reference` - What reference system to check for.
-  - Defaults to `stigid`
-  - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
-  - `--profile-id` - The id of the created profile. Defaults to PROFILE_delta
-  - `--tailoring-id` - The id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default
+    - Defaults to `stigid`
+    - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
+    - `--profile-id` - The id of the created profile. Defaults to PROFILE_delta
+    - `--tailoring-id` - The id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default
 
 To execute:
 
+```bash
     $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r4-xccdf-scap.xml
+```
 
 ### `utils/compare_ds.py` - Compare two data streams (can also compare XCCDFs)
 
@@ -339,11 +390,15 @@ are created in a directory: `./compare_ds-diffs`. To change the output dir use `
 
 Compare current DISA's manual benchmark, and generate per file diffs:
 
+```bash
     $ utils/compare_ds.py --disa-content --rule-diffs ./disa-stig-rhel8-v1r6-xccdf-manual.xml shared/references/disa-stig-rhel8-v1r7-xccdf-manual.xml
+```
 
 Compare two datastreams:
 
+```bash
     $ utils/compare_ds.py /tmp/ssg-rhel8-ds.xml build/ssg-rhel8-ds.xml > content.diff
+```
 
 #### HTML Diffs
 
@@ -351,15 +406,18 @@ The diffs generated by `utils/compare_ds.py` can be transformed to HTML diffs wi
 
 Install `diff2html`:
 
+```bash
     # Fedora
     $ sudo dnf install npm
     $ sudo npm install -g diff2html-cli
+```
 
 Generate the HTML diffs:
 
+```bash
     $ mkdir -p html
     $ for f in $(ls compare_ds-diffs/); do diff2html -i file -t $f -F "html/$f.html" "compare_ds-diffs/$f"; done
-
+```
 
 ### `utils/compare_results.py` - Compare to two ARF result files
 
@@ -368,7 +426,6 @@ It will show what rules are missing, different, and the same between the two fil
 The script can take results from content created by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
 If the result files come from the same source the script will use XCCDF ids as basis for the comparison.
 Otherwise, the script will use STIG ids to compare.
-
 
 If one STIG ID has more than one result (this is the case for a few STIG IDs in this repo) the results will be merged.
 Given a set of status the script will select the status from the group that is the highest value on the list below.
@@ -382,16 +439,16 @@ Given a set of status the script will select the status from the group that is t
 7. Pass
 
 Examples:
+
 - `[pass, pass]` will result in `pass`
 - `[pass, fail]` will result in `fail`
 - `[pass, error, fail]` will result in `error`
 
-
-
 To execute:
 
+```bash
     $ ./utils/compare_results.py ssg_results.xml disa_results.xml
-
+```
 
 ### `utils/import_srg_spreadsheet.py` - Import changes made to an SRG Spreadsheet into the project
 
@@ -408,11 +465,11 @@ It supports the following arguments:
 - `-p`, `--product` &mdash; What product to produce the tailoring file for (required)
 - `-r`, `--root` &mdash; Path to SSG root directory
 
-
 To execute:
 
+```bash
     $ ./utils/import_srg_spreadsheet.py --changed 20220811_submission.xlsx --current build/cac_stig_output.xlsx -p rhel9
-
+```
 
 ## Profiling the buildsystem
 
@@ -421,7 +478,9 @@ Both of these tools shouldn't be invoked alone but rather through the build_prod
 
 The intended usage is:
 
+```bash
     $ ./build_product <products> -p|--profiling
+```
 
 ### `utils/build_profiler.sh` -- Handle directory structure for profiling files and invokes other script
 
@@ -442,7 +501,9 @@ It supports exactly one argument:
 
 To execute:
 
+```bash
     $ ./build_profiler.sh <product_string>
+```
 
 ### `utils/build_profiler_report.py` -- Parse a ninja file and display report to user
 
@@ -466,7 +527,9 @@ It supports up to two arguments:
 
 To execute:
 
+```bash
     $ ./build_profiler_report.py <logflie> [--baseline]
+```
 
 ## Other Scripts
 
@@ -476,11 +539,13 @@ This script will output what SRG or STIG IDs where add or removed between two XM
 
 To execute:
 
+```bash
     $ ./utils/compare_disa_xml.py old.xml new.xml
-
+```
 
 Example:
 
+```text
     $ ./utils/compare_disa_xml.py U_RHEL_8_STIG_V1R4_Manual-xccdf.xml U_RHEL_8_STIG_V1R5_Manual-xccdf.xml
     Base count: 381
     Target count: 371
@@ -522,6 +587,7 @@ Example:
         RHEL-08-030470
         RHEL-08-030430
         RHEL-08-030270
+```
 
 ### Compare Two SRG Spreadsheets - `utils/srg_diff.py`
 
@@ -531,9 +597,9 @@ This script assumes that the STIG ID columns are compatible.
 This script needs the project built for the given product and `utils/rule_dir_json.py` ran.
 The help report has the following sections:
 
-- Missing in DISA: These are rules that in the DISA spreadsheet but are not in the ComplianceAsCode/content spreadsheet
+- Missing in DISA: These are rules that in the DISA spreadsheet but are not in the ComplianceAsCode/content spreadsheet'
 - Missing in CaC : These are rules that in the ComplianceAsCode/content but not in the DISA spreadsheet
-- Delta: If section of rules is not the same a diff will appear. DISA content is on the left.
+- Delta: If section of rules is not the same a diff will appear; DISA content is on the left.
 
 Example:
 
