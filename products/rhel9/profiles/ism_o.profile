@@ -4,7 +4,9 @@ metadata:
     SMEs:
         - shaneboulden
         - wcushen
-        - ahamilto156
+        - eliseelk
+        - sashperso
+        - anjuskantha
 
 reference: https://www.cyber.gov.au/ism
 
