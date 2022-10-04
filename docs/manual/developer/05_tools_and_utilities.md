@@ -514,3 +514,23 @@ Example:
         RHEL-08-030470
         RHEL-08-030430
         RHEL-08-030270
+
+### Compare Two SRG Spreadsheets - `utils/srg_diff.py`
+
+This script will output an HTML page that compares two SRG exports.
+This script should help with reviewing changes created by `utils/import_srg_spreadsheet.py` script.
+This script assumes that the STIG ID columns are compatible.
+The help report has the following sections:
+
+* Missing in DISA
+  * These are rules that in the DISA spreadsheet but are not in the ComplianceAsCode/content spreadsheet
+* Missing in CaC
+   * These are rules that in the ComplianceAsCode/content but not in the DISA spreadsheet
+* Delta
+  * Lists every rule by the STIG column
+  * If section of rules is no the same a diff will appear. DISA content is on the left.
+
+Example:
+
+    $ ./utils/srg_diff.py --disa submission.xlsx --cac build/cac_stig_output.xlsx --output build/diff.html -p rhel9
+    Wrote output to build/diff.html.
