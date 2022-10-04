@@ -34,6 +34,12 @@ To start the stabilization:
 During the stabilization:
 
 - Run whatever extra tests you have and propose bug fixes to the **stabilization** branch
+    - https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+head%3Astabilization+is%3Aopen
+
+- Once the PR is merged in the **stabilization** branch, cherry-pick it to the **master** branch
+    - This way it is prevented any possible conflicts which were encountered in the past when\
+    porting fixes from the stabilization branch to the master branch.
+    - This process was adopted since release 0.1.
 
 Tests during Stabilization Phase
 -----------
@@ -50,7 +56,7 @@ Before the Release
 -   Run `PYTHONPATH=. utils/generate_contributors.py` to update the
     contributors list. De-duplicate names if necessary.\
     Make a commit and PR it.
-    * Make sure you don’t have any uncommited changes, otherwise they may be lost during the release.
+    * Make sure you don’t have any uncommitted changes, otherwise they may be lost during the release.
     * Make sure you have the `master` and `stabilization` branch checked out and up to date.
 
 Release
