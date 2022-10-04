@@ -104,17 +104,17 @@ common problems in rules.
 
 These sub-commands are:
 
- - `empty_identifiers`: removes any `identifiers` which are empty.
- - `invalid_identifiers`: removes any invalid CCE `identifiers` (due to
-   incorrect format).
- - `int_identifiers`: turns any identifiers which are an integer into a
-   string.
- - `empty_references`: removes any `references` which are empty.
- - `int_references`: turns any references which are an integer into a string.
- - `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
-   `identifiers` or `references`.
- - `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
- - `sort_prodtypes`: "sorts the products in prodtype"
+- `empty_identifiers`: removes any `identifiers` which are empty.
+- `invalid_identifiers`: removes any invalid CCE `identifiers` (due to
+  incorrect format).
+- `int_identifiers`: turns any identifiers which are an integer into a
+  string.
+- `empty_references`: removes any `references` which are empty.
+- `int_references`: turns any references which are an integer into a string.
+- `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
+  `identifiers` or `references`.
+- `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
+- `sort_prodtypes`: "sorts the products in prodtype"
 
 To execute:
 
@@ -177,11 +177,11 @@ Note that this utility does not modify the rule directories at all.
 `utils/mod_prodtype.py` is a command-based utility for modifying `rule.yml`
 files. It supports the following sub-commands:
 
- - `add`: add the given product(s) to the specified rule's prodtype.
- - `list`: list computed and actual products in the specified rule's prodtype.
- - `replace`: perform a pattern-match replacement on the specified rule's
-   prodtype.
- - `remove`: remove the given product(s) from the specified rule's prodtype.
+- `add`: add the given product(s) to the specified rule's prodtype.
+- `list`: list computed and actual products in the specified rule's prodtype.
+- `replace`: perform a pattern-match replacement on the specified rule's
+  prodtype.
+- `remove`: remove the given product(s) from the specified rule's prodtype.
 
 To execute:
 
@@ -209,17 +209,17 @@ These two utilities have identical usage. Both modifies the platform/product
 applicability of various files (either OVAL or hardening content), similar to
 `utils/mod_prodtype.py` above. They supports the following sub-commands:
 
- - `add`: add the given platform(s) to the specified rule's OVAL check.
-   **Note**: Only applies to shared content.
- - `list`: list the given OVAL(s) and the products that apply to them; empty
-   if product-independent.
- - `remove`: remove the given platform(s) from the specified rule's OVAL check.
-   **Note**: Only applies to shared content.
- - `replace`: perform a pattern-match replacement on the specified rule's
-   platform applicability. **Note**: Only applies to shared content.
- - `diff`: perform a textual diff between content for the specified products.
- - `delete`: remove an OVAL for the specified product.
- - `make_shared`: move a product-specific OVAL into a shared OVAL.
+- `add`: add the given platform(s) to the specified rule's OVAL check.
+  **Note**: Only applies to shared content.
+- `list`: list the given OVAL(s) and the products that apply to them; empty
+  if product-independent.
+- `remove`: remove the given platform(s) from the specified rule's OVAL check.
+  **Note**: Only applies to shared content.
+- `replace`: perform a pattern-match replacement on the specified rule's
+  platform applicability. **Note**: Only applies to shared content.
+- `diff`: perform a textual diff between content for the specified products.
+- `delete`: remove an OVAL for the specified product.
+- `make_shared`: move a product-specific OVAL into a shared OVAL.
 
 To execute:
 
@@ -528,15 +528,12 @@ Example:
 This script will output an HTML page that compares two SRG exports.
 This script should help with reviewing changes created by `utils/import_srg_spreadsheet.py` script.
 This script assumes that the STIG ID columns are compatible.
+This script needs the project built for the given product and `utils/rule_dir_json.py` ran.
 The help report has the following sections:
 
-* Missing in DISA
-  * These are rules that in the DISA spreadsheet but are not in the ComplianceAsCode/content spreadsheet
-* Missing in CaC
-   * These are rules that in the ComplianceAsCode/content but not in the DISA spreadsheet
-* Delta
-  * Lists every rule by the STIG column
-  * If section of rules is no the same a diff will appear. DISA content is on the left.
+- Missing in DISA: These are rules that in the DISA spreadsheet but are not in the ComplianceAsCode/content spreadsheet
+- Missing in CaC : These are rules that in the ComplianceAsCode/content but not in the DISA spreadsheet
+- Delta: If section of rules is not the same a diff will appear. DISA content is on the left.
 
 Example:
 

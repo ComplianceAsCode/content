@@ -65,7 +65,7 @@ def _get_delta(cac: Row, disa: Row, cce: str) -> SrgDiffResult:
         delta.Check = word_by_word_diff(disa.Check, cac.Check)
     if disa.Fix != cac.Fix and cac.Fix is not None and disa.Fix is not None:
         delta.Fix = word_by_word_diff(disa.Fix, cac.Fix)
-    if disa.Severity != cac.Severity and disa.Severity is not None and cac.Severity is not None:
+    if clean_lines(disa.Severity) != cac.Severity:
         disa.Severity = word_by_word_diff(disa.Severity, cac.Severity)
     return delta
 
