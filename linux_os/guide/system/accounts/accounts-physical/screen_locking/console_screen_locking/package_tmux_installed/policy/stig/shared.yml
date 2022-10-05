@@ -9,7 +9,12 @@ vuldiscussion: |-
     The "tmux" package allows for a session lock to be implemented and configured.
 
 checktext: |-
-    Verify that {{{ full_name }}} has the tmux package installed with the following command:$ sudo dnf list --installed tmuxtmux.x86_64  3.2a-4.el9If the tmux package is not installed, this is a finding.
+    Verify that {{{ full_name }}} has the tmux package installed with the following command:
+
+    $ sudo dnf list --installed tmux
+    tmux.x86_64  3.2a-4.el9
+
+    If the tmux package is not installed, this is a finding.
 
 fixtext: |-
     The tmux package can be installed with the following command:
