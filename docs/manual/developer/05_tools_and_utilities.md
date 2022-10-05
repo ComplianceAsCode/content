@@ -603,5 +603,7 @@ The help report has the following sections:
 
 Example:
 
+```basj
     $ ./utils/srg_diff.py --disa submission.xlsx --cac build/cac_stig_output.xlsx --output build/diff.html -p rhel9
     Wrote output to build/diff.html.
+```
