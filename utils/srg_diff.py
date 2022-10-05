@@ -116,6 +116,7 @@ def main():
     missing_in_disa = list()
     missing_in_cac = list()
     for cci in (cac_set - disa_set):
+        cci = cci.replace('\n', '').strip()
         missing_in_disa.append(f"{cci} - {cce_rule_id_dict[cci]}")
 
     for cci in (disa_set - cac_set):
