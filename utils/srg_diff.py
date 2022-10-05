@@ -7,9 +7,10 @@ import jinja2
 from openpyxl import load_workbook
 
 import ssg.jinja
-from utils.srg_utils import Row, get_full_name, get_stigid_set, get_cce_dict_to_row_dict
+from utils.srg_utils import *
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 
 
 def _parse_args() -> argparse.Namespace:
@@ -29,6 +30,8 @@ def _parse_args() -> argparse.Namespace:
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
     parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
                         help="What row to end on, defaults to 600")
+    parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
+                        help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     return parser.parse_args()
 
 
@@ -106,15 +109,18 @@ def main():
                                              args.end_row)
     common_set = cac_set - (cac_set - disa_set)
 
+    rule_dir_json = get_rule_dir_json(args.json)
+    cce_rule_id_dict = get_cce_dict(rule_dir_json, args.product)
+
     deltas = list()
     missing_in_disa = list()
     missing_in_cac = list()
     for cci in (cac_set - disa_set):
-        missing_in_disa.append(f"{cci} - {cac_cce_dict[cci].Requirement}")
+        missing_in_disa.append(f"{cci} - {cce_rule_id_dict[cci]}")
 
     for cci in (disa_set - cac_set):
         cci = cci.replace('\n', '').strip()
-        missing_in_cac.append(f"{cci} - {disa_cce_dict[cci].Requirement}")
+        missing_in_cac.append(f"{cci} - {cce_rule_id_dict[cci]}")
 
     for cce in common_set:
         disa = disa_cce_dict[cce]

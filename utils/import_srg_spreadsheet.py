@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import re
 from pathlib import Path
@@ -12,7 +11,8 @@ from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import read_file_list
-from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict
+from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, get_cce_dict, \
+    get_rule_dir_json
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
@@ -35,22 +35,6 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
                         help="What row to end on, defaults to 600")
     return parser.parse_args()
-
-
-def get_cce_dict(data: dict, product: str) -> dict:
-    results = dict()
-    for rule_id in data.keys():
-        rule = data[rule_id]
-        cce_key = f'cce@{product}' in rule['identifiers']
-        if product in rule['products'] and cce_key:
-            results[rule['identifiers'][f'cce@{product}']] = rule_id
-
-    return results
-
-
-def get_rule_dir_json(path: str) -> dict:
-    with open(path, 'r') as f:
-        return json.load(f)
 
 
 def get_cac_status(disa: str) -> str:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 
 import yaml
@@ -69,8 +70,7 @@ def get_full_name(root_dir: str, product: str) -> str:
 
 def get_stigid_set(sheet: Worksheet, end_row: int) -> set[str]:
     result = set()
-    start_row = 2
-    for i in range(start_row, end_row):
+    for i in range(START_ROW, end_row):
         cci_raw = sheet[f'D{i}'].value
 
         if cci_raw is None or cci_raw == "":
@@ -90,3 +90,19 @@ def get_cce_dict_to_row_dict(sheet: Worksheet, full_name: str, changed_name: str
         result[cci] = Row.from_row(sheet, i, full_name, changed_name)
 
     return result
+
+
+def get_cce_dict(data: dict, product: str) -> dict:
+    results = dict()
+    for rule_id in data.keys():
+        rule = data[rule_id]
+        cce_key = f'cce@{product}' in rule['identifiers']
+        if product in rule['products'] and cce_key:
+            results[rule['identifiers'][f'cce@{product}']] = rule_id
+
+    return results
+
+
+def get_rule_dir_json(path: str) -> dict:
+    with open(path, 'r') as f:
+        return json.load(f)
