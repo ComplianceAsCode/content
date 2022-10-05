@@ -326,12 +326,14 @@ class StigContentDiffer(StandardContentDiffer):
                             for rule in rules_in_new_benchmark}
 
         for old_rule in rules_in_old_benchmark:
-            sv_rule_id = new_rule_mapping[self.get_stig_rule_SV(old_rule.get_attr("id"))]
-            new_rule = new_benchmark.find_rule(sv_rule_id)
-            if new_rule is None:
-                missing_rules.append(sv_rule_id)
-                print("%s is missing in new datastream." % (sv_rule_id))
+            old_sv_rule_id = self.get_stig_rule_SV(old_rule.get_attr("id"))
+            try:
+                new_sv_rule_id = new_rule_mapping[old_sv_rule_id]
+            except KeyError:
+                missing_rules.append(old_sv_rule_id)
+                print("%s is missing in new datastream." % (old_rule.get_version_element().text))
                 continue
+            new_rule = new_benchmark.find_rule(new_sv_rule_id)
             if self.only_rules:
                 continue
             stig_id = new_rule.get_version_element()
