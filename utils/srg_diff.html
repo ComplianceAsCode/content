@@ -31,7 +31,7 @@
 <h2>Deltas</h2>
 {% for delta in deltas %}
     {% if delta.should_display() %}
-        <h3>{{ delta.cci }}</h3>
+        <h3>{{ delta.cci }} - {{ delta.rule_id }}</h3>
         {% if delta.Requirement != "" %}
             <h4>Requirement</h4>
             {{ delta.Requirement }}

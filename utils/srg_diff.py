@@ -37,6 +37,7 @@ def _parse_args() -> argparse.Namespace:
 
 class SrgDiffResult:
     cci = ""
+    rule_id = ""
     Requirement = ""
     Vul_Discussion = ""
     Status = ""
@@ -66,9 +67,10 @@ def clean_lines(lines: str) -> str:
     return '\n'.join(result)
 
 
-def _get_delta(cac: Row, disa: Row, cce: str) -> SrgDiffResult:
+def _get_delta(cac: Row, disa: Row, cce: str, cce_rule_id_dict: dict) -> SrgDiffResult:
     delta = SrgDiffResult()
     delta.cci = cce
+    delta.rule_id = cce_rule_id_dict[cce]
     if clean_lines(disa.Requirement) != cac.Requirement:
         delta.Requirement = word_by_word_diff(disa.Requirement, cac.Requirement)
     if clean_lines(disa.Vul_Discussion) != cac.Vul_Discussion:
@@ -126,7 +128,7 @@ def main():
     for cce in common_set:
         disa = disa_cce_dict[cce]
         cac = cac_cce_dict[cce]
-        delta = _get_delta(cac, disa, cce)
+        delta = _get_delta(cac, disa, cce, cce_rule_id_dict)
         deltas.append(delta)
 
     title = f"{disa_path} vs {cac_path}"
