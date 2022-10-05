@@ -4,6 +4,7 @@ import difflib
 import os
 import re
 import sys
+import xml.etree.ElementTree as ET
 
 import ssg.xml
 from ssg.constants import FIX_TYPE_TO_SYSTEM
@@ -140,8 +141,9 @@ class StandardContentDiffer(object):
         if old_rule_text == new_rule_text:
             return
 
-        print(
-            "New content has different text for rule '%s'." % (identifier))
+        if old_rule_text != "":
+            print(
+                "New content has different text for rule '%s'." % (identifier))
 
         if self.show_diffs:
             diff = self.generate_diff_text(old_rule_text, new_rule_text,
@@ -324,6 +326,8 @@ class StigContentDiffer(StandardContentDiffer):
         # This creates map the SV numbers to their equivalent full IDs in the new Benchmark.
         new_rule_mapping = {self.get_stig_rule_SV(rule.get_attr("id")): rule.get_attr("id")
                             for rule in rules_in_new_benchmark}
+        old_rule_mapping = {self.get_stig_rule_SV(rule.get_attr("id")): rule.get_attr("id")
+                            for rule in rules_in_old_benchmark}
 
         for old_rule in rules_in_old_benchmark:
             old_sv_rule_id = self.get_stig_rule_SV(old_rule.get_attr("id"))
@@ -340,6 +344,19 @@ class StigContentDiffer(StandardContentDiffer):
             self.compare_rule(old_rule, new_rule, stig_id.text)
             self.compare_platforms(old_rule, new_rule,
                                    old_benchmark, new_benchmark, stig_id)
+
+        # Check for rules added in new content
+        for new_rule in rules_in_new_benchmark:
+            stig_id = new_rule.get_version_element()
+            new_sv_rule_id = self.get_stig_rule_SV(new_rule.get_attr("id"))
+            try:
+                old_sv_rule_id = old_rule_mapping[new_sv_rule_id]
+            except KeyError:
+                print("%s was added in new datastream." % (stig_id.text))
+
+                # Compare against empty rule so that a diff is generated
+                empty_rule = ssg.xml.XMLRule(ET.Element('{xccdf-1.2}Rule'))
+                self.compare_rule(empty_rule, new_rule, stig_id.text)
 
         if self.rule_diffs:
             print("Diff files saved at %s." % self.output_dir)
