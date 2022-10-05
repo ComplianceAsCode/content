@@ -41,29 +41,40 @@ class SrgDiffResult:
     Fix = ""
     Severity = ""
 
+    def should_display(self):
+        return self.Requirement != "" or self.Vul_Discussion != "" or self.Status != "" or \
+                self.Check != "" or self.Fix != "" or self.Severity != ""
+
 
 def word_by_word_diff(original: str, edited: str) -> str:
     if original is None or edited is None:
         return ""
     differ = difflib.HtmlDiff()
 
-    table = differ.make_table(original.split('\n'), edited.split('\n'))
+    table = differ.make_table(clean_lines(original).split('\n'), edited.split('\n'))
 
     return table
+
+
+def clean_lines(lines: str) -> str:
+    result = list()
+    for line in lines.split('\n'):
+        result.append(line.rstrip())
+    return '\n'.join(result)
 
 
 def _get_delta(cac: Row, disa: Row, cce: str) -> SrgDiffResult:
     delta = SrgDiffResult()
     delta.cci = cce
-    if disa.Requirement != cac.Requirement:
+    if clean_lines(disa.Requirement) != cac.Requirement:
         delta.Requirement = word_by_word_diff(disa.Requirement, cac.Requirement)
-    if disa.Vul_Discussion != cac.Vul_Discussion:
+    if clean_lines(disa.Vul_Discussion) != cac.Vul_Discussion:
         delta.Vul_Discussion = word_by_word_diff(disa.Vul_Discussion, cac.Vul_Discussion)
-    if disa.Status != cac.Status:
+    if clean_lines(disa.Status) != cac.Status:
         delta.Status = word_by_word_diff(disa.Status, cac.Status)
-    if disa.Check != cac.Check:
+    if clean_lines(disa.Check) != cac.Check:
         delta.Check = word_by_word_diff(disa.Check, cac.Check)
-    if disa.Fix != cac.Fix and cac.Fix is not None and disa.Fix is not None:
+    if clean_lines(disa.Fix) != cac.Fix and cac.Fix is not None and disa.Fix is not None:
         delta.Fix = word_by_word_diff(disa.Fix, cac.Fix)
     if clean_lines(disa.Severity) != cac.Severity:
         disa.Severity = word_by_word_diff(disa.Severity, cac.Severity)

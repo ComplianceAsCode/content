@@ -30,17 +30,30 @@
 </ul>
 <h2>Deltas</h2>
 {% for delta in deltas %}
-<h3>{{ delta.cci }}</h3>
-<h4>Requirement</h4>
-{{ delta.Requirement }}
-<h4>Vul_Discussion</h4>
-{{ delta.Vul_Discussion }}
-<h4>Status</h4>
-{{ delta.Status }}
-<h4>Check</h4>
-{{ delta.Check }}
-<h4>Fix</h4>
-{{ delta.Fix }}
+    {% if delta.should_display() %}
+        <h3>{{ delta.cci }}</h3>
+        {% if delta.Requirement != "" %}
+            <h4>Requirement</h4>
+            {{ delta.Requirement }}
+        {% endif %}
+
+        {% if delta.Vul_Discussion != "" %}
+            <h4>Vul_Discussion</h4>
+            {{ delta.Vul_Discussion }}
+        {% endif %}
+        {% if delta.Status != "" %}
+            <h4>Status</h4>
+            {{ delta.Status }}
+        {% endif %}
+        {% if delta.Check != "" %}
+            <h4>Check</h4>
+            {{ delta.Check }}
+        {% endif %}
+        {% if delta.Fix != "" %}
+            <h4>Fix</h4>
+            {{ delta.Fix }}
+        {% endif %}
+    {% endif %}
 {% endfor %}
 </body>
 </html>
