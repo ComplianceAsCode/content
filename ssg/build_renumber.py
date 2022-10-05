@@ -354,14 +354,6 @@ def transpose_dict_with_sets(dict_in):
     return result
 
 
-def drop_oval_definitions(ovaltree, defstoremove, oval_groups, indexed_oval_defs):
-    definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
-    for definition in defstoremove:
-        del oval_groups["definitions"][definition.get("id")]
-        del indexed_oval_defs[definition.get("id")]
-        definitions.remove(definition)
-
-
 def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
     """
     Verify if <xccdf:Value> 'type' to corresponding OVAL variable
