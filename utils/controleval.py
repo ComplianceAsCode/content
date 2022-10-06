@@ -116,9 +116,7 @@ def calculate_stats(ctrls):
     ctrlstats, ctrllist = count_controls_by_status(ctrls)
 
     applicable = total - ctrlstats[controls.Status.NOT_APPLICABLE]
-    assessed = ctrlstats[controls.Status.AUTOMATED] + ctrlstats[controls.Status.SUPPORTED] + \
-        ctrlstats[controls.Status.DOCUMENTATION] + ctrlstats[controls.Status.INHERENTLY_MET] + \
-        ctrlstats[controls.Status.PARTIAL]
+    assessed = applicable - ctrlstats[controls.Status.PENDING]
 
     print("Total controls = {total}".format(total=total))
     print_specific_stat("Applicable", applicable, total)
