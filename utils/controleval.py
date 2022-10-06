@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-import collections
 import argparse
-import os
+import collections
 import json
+import os
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
 # package. The ssg package we're referencing here is actually a relative import
