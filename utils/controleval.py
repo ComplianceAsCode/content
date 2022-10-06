@@ -93,6 +93,13 @@ def get_product_yaml(product):
         exit(1)
 
 
+def count_implicit_status(ctrls, status_count):
+    status_count['applicable'] = len(ctrls) - status_count[controls.Status.NOT_APPLICABLE]
+    status_count['assessed'] = status_count['applicable'] - status_count[controls.Status.PENDING]
+    status_count['not assessed'] = status_count['applicable'] - status_count['assessed']
+    return status_count
+
+
 def count_controls_by_status(ctrls):
     status_count = collections.defaultdict(int)
     control_list = collections.defaultdict(set)
@@ -103,6 +110,9 @@ def count_controls_by_status(ctrls):
     for ctrl in ctrls:
         status_count[str(ctrl.status)] += 1
         control_list[str(ctrl.status)].add(ctrl)
+
+    status_count = count_implicit_status(ctrls, status_count)
+
     return status_count, control_list
 
 
@@ -115,15 +125,10 @@ def calculate_stats(ctrls):
 
     ctrlstats, ctrllist = count_controls_by_status(ctrls)
 
-    applicable = total - ctrlstats[controls.Status.NOT_APPLICABLE]
-    assessed = applicable - ctrlstats[controls.Status.PENDING]
-
     print("Total controls = {total}".format(total=total))
-    print_specific_stat("Applicable", applicable, total)
-    print_specific_stat("Assessed", assessed, applicable)
     print()
-    for status in controls.Status.get_status_list():
-        print_specific_stat(status, ctrlstats[status], applicable)
+    for status in sorted(ctrlstats):
+        print_specific_stat(status, ctrlstats[status], ctrlstats['applicable'])
 
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
     assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
