@@ -153,10 +153,10 @@ def print_specific_stat(stat, current, total):
         total=total))
 
 
-def stats(ctrlmgr, args):
-    validate_args(ctrlmgr, args)
-    ctrls = set(ctrlmgr.get_all_controls_of_level(args.id, args.level))
-    total = len(ctrls)
+def stats(controls_manager, args):
+    validate_args(controls_manager, args)
+    controls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
+    total = len(controls)
 
     if total == 0:
         print("No controls founds with the given inputs. Maybe try another level.")
@@ -164,12 +164,12 @@ def stats(ctrlmgr, args):
 
     if args.output_format == 'json':
         print_to_json(
-            ctrls,
+            controls,
             args.product,
             args.id,
             args.level)
     else:
-        calculate_stats(ctrls)
+        calculate_stats(controls)
 
 
 def print_to_json(ctrls, product, id, level):
@@ -180,11 +180,15 @@ def print_to_json(ctrls, product, id, level):
         ctrllist[str(ctrl.status)].add(ctrl)
 
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
-    assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
-        .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
-        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.MANUAL])
+    assessedlist = set()\
+        .union(ctrllist[controls.Status.AUTOMATED])\
+        .union(ctrllist[controls.Status.DOCUMENTATION])\
+        .union(ctrllist[controls.Status.DOES_NOT_MEET])\
+        .union(ctrllist[controls.Status.INHERENTLY_MET])\
+        .union(ctrllist[controls.Status.MANUAL]).union(ctrllist[controls.Status.PLANNED])\
+        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.SUPPORTED])
 
-    data["format_version"] = "v0.0.1"
+    data["format_version"] = "v0.0.2"
     data["product_name"] = product
     data["benchmark"] = dict()
     data["benchmark"]["name"] = id
@@ -194,22 +198,27 @@ def print_to_json(ctrls, product, id, level):
     data["addressed_controls"]["all"] = get_id_array(ctrls)
     data["addressed_controls"]["applicable"] = get_id_array(applicablelist)
     data["addressed_controls"]["assessed"] = get_id_array(assessedlist)
+    data["addressed_controls"]["notassessed"] = get_id_array(applicablelist - assessedlist)
+    data["addressed_controls"]["automated"] = get_id_array(
+        ctrllist[controls.Status.AUTOMATED])
+    data["addressed_controls"]["doesnotmeet"] = get_id_array(
+        ctrllist[controls.Status.DOES_NOT_MEET])
+    data["addressed_controls"]["documentation"] = get_id_array(
+        ctrllist[controls.Status.DOCUMENTATION])
     data["addressed_controls"]["inherently"] = get_id_array(
         ctrllist[controls.Status.INHERENTLY_MET])
     data["addressed_controls"]["manual"] = get_id_array(
         ctrllist[controls.Status.MANUAL])
-    data["addressed_controls"]["supported"] = get_id_array(
-        ctrllist[controls.Status.SUPPORTED])
-    data["addressed_controls"]["automated"] = get_id_array(
-        ctrllist[controls.Status.AUTOMATED])
     data["addressed_controls"]["notapplicable"] = get_id_array(
         ctrllist[controls.Status.NOT_APPLICABLE])
-    data["addressed_controls"]["partial"] = get_id_array(
-        ctrllist[controls.Status.PARTIAL])
+    data["addressed_controls"]["planned"] = get_id_array(
+        ctrllist[controls.Status.PLANNED])
     data["addressed_controls"]["pending"] = get_id_array(
         ctrllist[controls.Status.PENDING])
-    data["addressed_controls"]["notassessed"] = get_id_array(
-        applicablelist - assessedlist)
+    data["addressed_controls"]["partial"] = get_id_array(
+        ctrllist[controls.Status.PARTIAL])
+    data["addressed_controls"]["supported"] = get_id_array(
+        ctrllist[controls.Status.SUPPORTED])
     print(json.dumps(data))
 
 
