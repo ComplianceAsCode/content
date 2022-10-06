@@ -144,13 +144,8 @@ cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage
 
 find_package(OpenSCAP REQUIRED)
 
-if (SSG_TARGET_OVAL_MAJOR_VERSION EQUAL "5" AND SSG_TARGET_OVAL_VERSION_MINOR EQUAL "11" AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
-    message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please upgrade to a newer version of OpenSCAP.")
-endif()
-
 if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
-
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
