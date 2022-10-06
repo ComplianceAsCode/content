@@ -127,6 +127,7 @@ selections:
     - package_audit-audispd-plugins_installed
     - package_openldap-clients_removed
     - package_strongswan_installed
+    - package_vsftpd_removed
     - rpm_verify_hashes
     - rpm_verify_permissions
     - rsyslog_files_groupownership
@@ -142,3 +143,5 @@ selections:
     - sshd_set_idle_timeout
     - sshd_set_keepalive_0
     - sssd_enable_smartcards
+    - sshd_disable_empty_passwords
+    - sshd_disable_root_login
