@@ -255,6 +255,7 @@ else()
     message(STATUS "jinja2 cache: disabled")
 endif()
 message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
+message(STATUS "Build SCE Content: " ${SSG_SCE_ENABLED})
 message(STATUS " ")
 
 message(STATUS "Products:")
