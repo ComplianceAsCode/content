@@ -28,6 +28,7 @@ selections:
     - account_disable_post_pw_expiration
     - account_unique_name
     - accounts_maximum_age_login_defs
+    - accounts_minimum_age_login_defs
     - accounts_no_uid_except_zero
     - accounts_password_all_shadowed
     - accounts_password_pam_lcredit
@@ -68,6 +69,8 @@ selections:
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
     - audit_rules_mac_modification
     - audit_rules_media_export
     - audit_rules_networkconfig_modification
@@ -125,9 +128,14 @@ selections:
     - no_empty_passwords
     - package_aide_installed
     - package_audit-audispd-plugins_installed
+    - package_audit_installed
     - package_openldap-clients_removed
     - package_strongswan_installed
+    - package_sudo_installed
+    - package_telnet-server_removed
     - package_vsftpd_removed
+    - package_ypserv_removed
+    - postfix_network_listening_disabled
     - rpm_verify_hashes
     - rpm_verify_permissions
     - rsyslog_files_groupownership
@@ -140,8 +148,14 @@ selections:
     - set_password_hashing_algorithm_commonauth
     - set_password_hashing_algorithm_libuserconf
     - set_password_hashing_algorithm_logindefs
+    - sshd_do_not_permit_user_env
+    - sssd_enable_smartcards
+    - sshd_enable_warning_banner
     - sshd_set_idle_timeout
     - sshd_set_keepalive_0
     - sssd_enable_smartcards
     - sshd_disable_empty_passwords
     - sshd_disable_root_login
+    - sshd_set_loglevel_verbose
+    - sudo_add_use_pty
+    - sudo_custom_logfile
