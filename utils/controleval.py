@@ -49,15 +49,47 @@ def validate_args(ctrlmgr, args):
     try:
         policy = ctrlmgr._get_policy(args.id)
     except ValueError as e:
-        print("Error: ", e)
+        print("Error:", e)
         print_options(ctrlmgr.policies.keys())
         exit(1)
 
     try:
         policy.get_level_with_ancestors_sequence(args.level)
     except ValueError as e:
-        print("Error: ", e)
+        print("Error:", e)
         print_options(policy.levels_by_id.keys())
+        exit(1)
+
+
+def get_available_products():
+    products_dir = os.path.join(SSG_ROOT, "products")
+    try:
+        return os.listdir(products_dir)
+    except Exception as e:
+        print(e)
+        exit(1)
+
+
+def validate_product(product):
+    products = get_available_products()
+    if product not in products:
+        print(f"Error: Product '{product}' is not valid.")
+        print_options(products)
+        exit(1)
+
+
+def get_product_dir(product):
+    validate_product(product)
+    return os.path.join(SSG_ROOT, "products", product)
+
+
+def get_product_yaml(product):
+    product_dir = get_product_dir(product)
+    product_yml = os.path.join(product_dir, "product.yml")
+    if os.path.exists(product_yml):
+        return product_yml
+    else:
+        print(f"'{product_yml}' file was not found.")
         exit(1)
 
 
@@ -221,8 +253,7 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    product_base = os.path.join(SSG_ROOT, "products", args.product)
-    product_yaml = os.path.join(product_base, "product.yml")
+    product_yaml = get_product_yaml(args.product)
     env_yaml = ssg.products.load_product_yaml(product_yaml)
     controls_manager = controls.ControlsManager(
         args.controls_dir, env_yaml=env_yaml)
