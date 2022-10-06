@@ -190,39 +190,37 @@ def get_id_array(ctrls):
     return [c.id for c in ctrls]
 
 
-def create_parser():
-    parser = argparse.ArgumentParser()
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Tool used to evaluate control files",
+        epilog="Usage example: utils/controleval.py stats -i cis_rhel8 -l l2_server -p rhel8")
     parser.add_argument(
-        "--controls-dir",
-        help=("Directory that contains control files with policy controls. "
-              "e.g.: ~/scap-security-guide/controls"),
-        default="./controls/",
-    )
-    subparsers = parser.add_subparsers(dest="subcmd", required=True)
-    statsparser = subparsers.add_parser(
+        '--controls-dir', default='./controls/',
+        help="Directory that contains control files with policy controls. "
+             "e.g.: ~/scap-security-guide/controls")
+    subparsers = parser.add_subparsers(
+        dest='subcmd', required=True)
+
+    stats_parser = subparsers.add_parser(
         'stats',
         help="calculate and return the statistics for the given benchmark")
-    statsparser.add_argument(
-        "-i", "--id",
-        help="the ID or name of the controls file in the controls/ directory",
-        required=True)
-    statsparser.add_argument(
-        "-l", "--level",
-        help="the compliance target level to analyze",
-        required=True)
-    statsparser.add_argument(
-        "-p", "--product", help="product to check has required references")
-    statsparser.add_argument(
-        "-o",
-        "--output-format",
-        choices=['json'],
-        help="The output format of the report")
-    return parser
+    stats_parser.add_argument(
+        '-i', '--id', required=True,
+        help="the ID or name of the control file in the 'controls' directory")
+    stats_parser.add_argument(
+        '-l', '--level', required=True,
+        help="the compliance target level to analyze")
+    stats_parser.add_argument(
+        '-o', '--output-format', choices=['json'],
+        help="The output format of the result")
+    stats_parser.add_argument(
+        '-p', '--product',
+        help="product to check has required references")
+    return parser.parse_args()
 
 
 def main():
-    parser = create_parser()
-    args = parser.parse_args()
+    args = parse_arguments()
     product_base = os.path.join(SSG_ROOT, "products", args.product)
     product_yaml = os.path.join(product_base, "product.yml")
     env_yaml = ssg.products.load_product_yaml(product_yaml)
