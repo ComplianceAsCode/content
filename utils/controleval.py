@@ -93,18 +93,27 @@ def get_product_yaml(product):
         exit(1)
 
 
+def count_controls_by_status(ctrls):
+    status_count = collections.defaultdict(int)
+    control_list = collections.defaultdict(set)
+
+    for status in controls.Status.get_status_list():
+        status_count[status] = 0
+
+    for ctrl in ctrls:
+        status_count[str(ctrl.status)] += 1
+        control_list[str(ctrl.status)].add(ctrl)
+    return status_count, control_list
+
+
 def calculate_stats(ctrls):
     total = len(ctrls)
-    ctrlstats = collections.defaultdict(int)
-    ctrllist = collections.defaultdict(set)
 
     if total == 0:
         print("No controls founds with the given inputs. Maybe try another level.")
         exit(1)
 
-    for ctrl in ctrls:
-        ctrlstats[str(ctrl.status)] += 1
-        ctrllist[str(ctrl.status)].add(ctrl)
+    ctrlstats, ctrllist = count_controls_by_status(ctrls)
 
     applicable = total - ctrlstats[controls.Status.NOT_APPLICABLE]
     assessed = ctrlstats[controls.Status.AUTOMATED] + ctrlstats[controls.Status.SUPPORTED] + \
@@ -115,27 +124,8 @@ def calculate_stats(ctrls):
     print_specific_stat("Applicable", applicable, total)
     print_specific_stat("Assessed", assessed, applicable)
     print()
-    print_specific_stat("Automated",
-                        ctrlstats[controls.Status.AUTOMATED],
-                        applicable)
-    print_specific_stat("Manual",
-                        ctrlstats[controls.Status.MANUAL],
-                        applicable)
-    print_specific_stat("Supported",
-                        ctrlstats[controls.Status.SUPPORTED],
-                        applicable)
-    print_specific_stat("Documentation",
-                        ctrlstats[controls.Status.DOCUMENTATION],
-                        applicable)
-    print_specific_stat("Inherently Met",
-                        ctrlstats[controls.Status.INHERENTLY_MET],
-                        applicable)
-    print_specific_stat("Does Not Meet",
-                        ctrlstats[controls.Status.DOES_NOT_MEET],
-                        applicable)
-    print_specific_stat("Partial",
-                        ctrlstats[controls.Status.PARTIAL],
-                        applicable)
+    for status in controls.Status.get_status_list():
+        print_specific_stat(status, ctrlstats[status], applicable)
 
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
     assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
