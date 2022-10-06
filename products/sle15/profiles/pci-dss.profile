@@ -28,11 +28,13 @@ selections:
     - account_disable_post_pw_expiration
     - account_unique_name
     - accounts_maximum_age_login_defs
+    - accounts_no_uid_except_zero
     - accounts_password_all_shadowed
     - accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - accounts_tmout
     - aide_build_database
     - aide_periodic_cron_checking
     - auditd_audispd_syslog_plugin_activated
@@ -107,6 +109,8 @@ selections:
     - file_groupowner_etc_group
     - file_groupowner_etc_passwd
     - file_groupowner_etc_shadow
+    - file_permissions_sshd_private_key
+    - file_permissions_sshd_pub_key
     - file_owner_grub2_cfg
     - file_ownership_var_log_audit
     - file_permissions_etc_group
@@ -121,6 +125,7 @@ selections:
     - no_empty_passwords
     - package_aide_installed
     - package_audit-audispd-plugins_installed
+    - package_openldap-clients_removed
     - package_strongswan_installed
     - rpm_verify_hashes
     - rpm_verify_permissions
