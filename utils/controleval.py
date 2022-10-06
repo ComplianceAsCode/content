@@ -118,11 +118,6 @@ def count_controls_by_status(ctrls):
 
 def calculate_stats(ctrls):
     total = len(ctrls)
-
-    if total == 0:
-        print("No controls founds with the given inputs. Maybe try another level.")
-        exit(1)
-
     ctrlstats, ctrllist = count_controls_by_status(ctrls)
 
     print("Total controls = {total}".format(total=total))
