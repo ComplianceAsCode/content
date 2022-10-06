@@ -74,16 +74,16 @@ and testing targets. While the specifics should be understood from this file
 directly, in general this takes the following outline of steps in rough order
 of occurrence:
 
-- Generate SCE content and metadata.
-- Resolve rules, profiles, groups, static checks and static remediations to the product-specific resolved form (also known as compiled form).
-- Generate templated checks and remediations from the templates.
-- Collect all available remediations.
-- Combine all available OVAL checks into a single unlinked OVAL document.
-- Load resolved rules, profiles, groups, collected remediations and the unlinked OVAL document and generate XCCDF, OVAL and OCIL documents from this data.
-- Generate CPE OVAL and CPE dictionary.
-- Combining the OVAL, OCIL, CPE and XCCDF documents into a single SCAP source data stream.
-- Generate content for derived products (such as CentOS and Scientific Linux).
-- Generate HTML tables, Bash scripts, Ansible Playbooks and other secondary artifacts.
+ - Generate SCE content and metadata.
+ - Resolve rules, profiles, groups, static checks and static remediations to the product-specific resolved form (also known as compiled form).
+ - Generate templated checks and remediations from the templates.
+ - Collect all available remediations.
+ - Combine all available OVAL checks into a single unlinked OVAL document.
+ - Load resolved rules, profiles, groups, collected remediations and the unlinked OVAL document and generate XCCDF, OVAL and OCIL documents from this data.
+ - Generate CPE OVAL and CPE dictionary.
+ - Combining the OVAL, OCIL, CPE and XCCDF documents into a single SCAP source data stream.
+ - Generate content for derived products (such as CentOS and Scientific Linux).
+ - Generate HTML tables, Bash scripts, Ansible Playbooks and other secondary artifacts.
 
 ### Python Build Scripts
 
