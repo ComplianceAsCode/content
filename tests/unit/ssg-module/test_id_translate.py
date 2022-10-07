@@ -8,6 +8,7 @@ import ssg.id_translate
 from ssg.constants import XCCDF12_NS, oval_namespace, ocil_namespace
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+oval_unix_namespace = oval_namespace + "#unix"
 
 
 def test__split_namespace():
@@ -197,7 +198,6 @@ def test_idtranslator_translate_oval_differences(idtranslator, oval_tree):
     assert len(old_criterion_el.attrib) == len(new_criterion_el.attrib)
     assert old_criterion_el.get("test_ref") != new_criterion_el.get("test_ref")
     assert old_criterion_el.get("comment") == new_criterion_el.get("comment")
-    oval_unix_namespace = oval_namespace + "#unix"
     tests_xpath = "{%s}tests" % oval_namespace
     old_tests_els = old.findall(tests_xpath)
     new_tests_els = new.findall(tests_xpath)
@@ -314,7 +314,6 @@ def test_idtranslator_translate_oval(idtranslator, oval_tree):
     assert len(criterion_els) == 1
     criterion_el = criterion_els[0]
     assert criterion_el.get("test_ref") == test_id
-    oval_unix_namespace = oval_namespace + "#unix"
     test_els = new_tree.findall(
         "{%s}tests/{%s}file_test" % (oval_namespace, oval_unix_namespace))
     assert len(test_els) == 1
