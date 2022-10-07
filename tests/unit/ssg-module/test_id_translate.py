@@ -174,6 +174,7 @@ def test_idtranslator_translate_oval_differences(idtranslator, oval_tree):
     old_title_el = old_title_els[0]
     new_title_el = new_title_els[0]
     assert len(old_title_el) == len(new_title_el)
+    assert len(old_title_el.attrib) == len(new_title_el.attrib)
     assert old_title_el.text == new_title_el.text
     # verify that the translation doesn't add any reference
     reference_xpath = "{%s}reference" % oval_namespace
@@ -212,6 +213,8 @@ def test_idtranslator_translate_oval_differences(idtranslator, oval_tree):
     assert len(old_file_test_els) == len(new_file_test_els)
     old_file_test_el = old_file_test_els[0]
     new_file_test_el = new_file_test_els[0]
+    assert len(old_file_test_el) == len(new_file_test_el)
+    assert len(old_file_test_el.attrib) == len(new_file_test_el.attrib)
     assert old_file_test_el.get("id") != new_file_test_el.get("id")
     assert old_file_test_el.get("comment") == new_file_test_el.get("comment")
     assert old_file_test_el.get("check") == new_file_test_el.get("check")
@@ -235,6 +238,7 @@ def test_idtranslator_translate_oval_differences(idtranslator, oval_tree):
     old_objects_el = old_objects_els[0]
     new_objects_el = new_objects_els[0]
     assert len(old_objects_el) == len(new_objects_el)
+    assert len(old_objects_el.attrib) == len(new_objects_el.attrib)
     file_object_xpath = "{%s}file_object" % oval_unix_namespace
     old_file_object_els = old_objects_el.findall(file_object_xpath)
     new_file_object_els = new_objects_el.findall(file_object_xpath)
@@ -286,6 +290,25 @@ def test_idtranslator_translate_oval_differences(idtranslator, oval_tree):
     assert old_file_state_el.get("id") != new_file_state_el.get("id")
     assert old_file_state_el.get("comment") == new_file_state_el.get("comment")
     assert old_file_state_el.get("version") == new_file_state_el.get("version")
+    path_xpath = "{%s}path" % oval_unix_namespace
+    old_path_els = old_file_state_el.findall(path_xpath)
+    new_path_els = new_file_state_el.findall(path_xpath)
+    assert len(old_path_els) == len(new_path_els)
+    old_path_el = old_path_els[0]
+    new_path_el = new_path_els[0]
+    assert len(old_path_el) == len(new_path_el)
+    assert len(old_path_el.attrib) == len(new_path_el.attrib)
+    assert old_path_el.text == new_path_el.text
+    filename_xpath = "{%s}filename" % oval_unix_namespace
+    old_filename_els = old_file_state_el.findall(filename_xpath)
+    new_filename_els = new_file_state_el.findall(filename_xpath)
+    assert len(old_filename_els) == len(new_filename_els)
+    old_filename_el = old_filename_els[0]
+    new_filename_el = new_filename_els[0]
+    assert len(old_filename_el) == len(new_filename_el)
+    assert len(old_filename_el.attrib) == len(new_filename_el.attrib)
+    assert old_filename_el.get("operation") == new_filename_el.get("operation")
+    assert old_filename_el.text == new_filename_el.text
 
 
 def test_idtranslator_translate_oval(idtranslator, oval_tree):
