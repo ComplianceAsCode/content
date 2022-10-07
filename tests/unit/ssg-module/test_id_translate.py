@@ -29,19 +29,18 @@ def test__split_namespace():
 
 
 def test_tagname_to_abbrev():
-    ab = ssg.id_translate._tagname_to_abbrev(
-        "{%s}definition" % oval_namespace)
-    assert ab == "def"
-    ab = ssg.id_translate._tagname_to_abbrev("{%s}criteria" % oval_namespace)
-    assert ab == "crit"
-    ab = ssg.id_translate._tagname_to_abbrev("{%s}test" % oval_namespace)
-    assert ab == "tst"
-    ab = ssg.id_translate._tagname_to_abbrev("{%s}object" % oval_namespace)
-    assert ab == "obj"
-    ab = ssg.id_translate._tagname_to_abbrev("{%s}state" % oval_namespace)
-    assert ab == "ste"
-    ab = ssg.id_translate._tagname_to_abbrev("{%s}variable" % oval_namespace)
-    assert ab == "var"
+    tag_expectations = {
+        "definition": "def",
+        "criteria": "crit",
+        "test": "tst",
+        "object": "obj",
+        "state": "ste",
+        "variable": "var",
+    }
+    for tag, expectation in tag_expectations.items():
+        real = ssg.id_translate._tagname_to_abbrev(
+            "{%s}%s" % (oval_namespace, tag))
+        assert real == expectation
 
 
 def test_tagname_to_abbrev_unknown_ns():
