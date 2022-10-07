@@ -110,9 +110,9 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git python3-mypy
       - name: Install deps python
-        run: pip install ruamel.yaml yamlpath
+        run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -169,9 +169,9 @@ jobs:
       image: fedora:rawhide
     steps:
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
+          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck python-mypy
       -   name: Install deps python
-          run: pip install ruamel.yaml yamlpath
+          run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML
       -   name: Checkout
           uses: actions/checkout@v2
       -   name: Build

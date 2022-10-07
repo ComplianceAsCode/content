@@ -143,3 +143,10 @@ if (PY_YAMLPATH)
     )
     set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 endif()
+
+if (PY_MYPY)
+    add_test(
+        NAME "test-mypy"
+        COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py"
+     )
+endif()
