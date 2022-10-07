@@ -94,10 +94,19 @@ def get_product_yaml(product):
 
 
 def count_implicit_status(ctrls, status_count):
+    status_count['all'] = len(ctrls)
     status_count['applicable'] = len(ctrls) - status_count[controls.Status.NOT_APPLICABLE]
     status_count['assessed'] = status_count['applicable'] - status_count[controls.Status.PENDING]
     status_count['not assessed'] = status_count['applicable'] - status_count['assessed']
     return status_count
+
+
+def create_implicit_control_lists(ctrls, control_list):
+    control_list['all'] = ctrls
+    control_list['applicable'] = ctrls - control_list[controls.Status.NOT_APPLICABLE]
+    control_list['assessed'] = control_list['applicable'] - control_list[controls.Status.PENDING]
+    control_list['not assessed'] = control_list['applicable'] - control_list['assessed']
+    return control_list
 
 
 def count_controls_by_status(ctrls):
@@ -112,25 +121,9 @@ def count_controls_by_status(ctrls):
         control_list[str(ctrl.status)].add(ctrl)
 
     status_count = count_implicit_status(ctrls, status_count)
+    control_list = create_implicit_control_lists(ctrls, control_list)
 
     return status_count, control_list
-
-
-def calculate_stats(ctrls):
-    total = len(ctrls)
-    ctrlstats, ctrllist = count_controls_by_status(ctrls)
-
-    print("Total controls = {total}".format(total=total))
-    print()
-    for status in sorted(ctrlstats):
-        print_specific_stat(status, ctrlstats[status], ctrlstats['applicable'])
-
-    applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
-    assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
-        .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
-        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.MANUAL])
-    print("Missing:", ", ".join(sorted(str(c.id)
-          for c in applicablelist - assessedlist)))
 
 
 def print_specific_stat(stat, current, total):
@@ -141,23 +134,34 @@ def print_specific_stat(stat, current, total):
         total=total))
 
 
+def print_to_humans(ctrls, status_count, control_list):
+    print("Total controls = {total}".format(total=status_count['all']))
+    print()
+    for status in sorted(status_count):
+        print_specific_stat(status, status_count[status], status_count['applicable'])
+
+    print("Missing:", ", ".join(sorted(str(c.id)
+          for c in control_list['applicable'] - control_list['assessed'])))
+
+
 def stats(controls_manager, args):
     validate_args(controls_manager, args)
-    controls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
-    total = len(controls)
+    ctrls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
+    total = len(ctrls)
 
     if total == 0:
         print("No controls founds with the given inputs. Maybe try another level.")
         exit(1)
 
+    status_count, control_list = count_controls_by_status(ctrls)
+    print_to_humans(ctrls, status_count, control_list)
+
     if args.output_format == 'json':
         print_to_json(
-            controls,
+            ctrls,
             args.product,
             args.id,
             args.level)
-    else:
-        calculate_stats(controls)
 
 
 def print_to_json(ctrls, product, id, level):
