@@ -1,19 +1,9 @@
 <?xml version="1.0"?>
 <ns0:oval_definitions xmlns:ns0="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:ns2="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:ns3="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:ns4="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ns5="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
-  <ns0:generator>
-    <ns2:product_name>combine_ovals.py from SCAP Security Guide</ns2:product_name>
-    <ns2:product_version>ssg: [0, 1, 64], python: 3.10.6</ns2:product_version>
-    <ns2:schema_version>5.11</ns2:schema_version>
-    <ns2:timestamp>2022-10-04T09:28:20</ns2:timestamp>
-  </ns0:generator>
   <ns0:definitions>
     <ns0:definition class="compliance" id="kerberos_disable_no_keytab" version="1">
       <ns0:metadata>
         <ns0:title>Disable Kerberos by removing host keytab</ns0:title>
-        <ns0:affected family="unix">
-          <ns0:platform>Red Hat Enterprise Linux 9</ns0:platform>
-        </ns0:affected>
-        <ns0:description>Check that there is no Kerberos keytab file present in /etc</ns0:description>
       </ns0:metadata>
       <ns0:criteria>
         <ns0:criterion test_ref="test_kerberos_disable_no_keytab" comment="Restrict Kerberos operation by removing keytab files"/>
@@ -35,18 +25,6 @@
     <ns4:file_state comment="All keys in /etc/ssh groupowned by root have the right permissions" id="filter_ssh_key_owner_root" version="1">
       <ns4:path>/etc</ns4:path>
       <ns4:filename operation="pattern match">.*_key$</ns4:filename>
-      <ns4:group_id datatype="int">0</ns4:group_id>
-      <ns4:user_id datatype="int">0</ns4:user_id>
-      <ns4:suid datatype="boolean">false</ns4:suid>
-      <ns4:sgid datatype="boolean">false</ns4:sgid>
-      <ns4:sticky datatype="boolean">false</ns4:sticky>
-      <ns4:uexec datatype="boolean">false</ns4:uexec>
-      <ns4:gread datatype="boolean">false</ns4:gread>
-      <ns4:gwrite datatype="boolean">false</ns4:gwrite>
-      <ns4:gexec datatype="boolean">false</ns4:gexec>
-      <ns4:oread datatype="boolean">false</ns4:oread>
-      <ns4:owrite datatype="boolean">false</ns4:owrite>
-      <ns4:oexec datatype="boolean">false</ns4:oexec>
     </ns4:file_state>
   </ns0:states>
 </ns0:oval_definitions>
