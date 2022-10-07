@@ -879,7 +879,7 @@ controls:
       The features configured at the level of launched services
       should be limited to the strict minimum.
     status: supported
-    note: |-
+    notes: |-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:
@@ -939,7 +939,7 @@ controls:
       The features configured at the level of launched services
       should be limited to the strict minimum.
     status: supported
-    note: |-
+    notes: |-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:
@@ -1094,7 +1094,6 @@ controls: a list of controls (required key)
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
     related_rules: a list of related rules
-    note: a short paragraph of text
     controls: a nested list of controls
     status: a keyword that reflects the current status of the implementation of this control
     tickets: a list of URLs reflecting the work that still needs to be done to address this control
@@ -1135,7 +1134,7 @@ controls:
     rationale: >-
         Minimization of configuration helps to reduce attack surface.
     status: supported
-    note: >-
+    notes: >-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:

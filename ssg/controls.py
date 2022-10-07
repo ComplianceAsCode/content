@@ -126,7 +126,6 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
-        control.note = control_dict.get("note")
         return control
 
 
