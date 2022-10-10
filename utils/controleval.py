@@ -134,14 +134,30 @@ def print_specific_stat(stat, current, total):
         total=total))
 
 
-def print_to_humans(ctrls, status_count, control_list):
+def print_controls(status_count, control_list, args):
+    status = args.status
+    if status not in status_count:
+        print("Error: The informed status is not available")
+        print_options(status_count)
+        exit(1)
+
+    if status_count[status] > 0:
+        print("List of the {status} ({total}) controls:".format(total=status_count[status],
+                                                                status=status))
+        for ctrl in control_list[status]:
+            print("{id:>16} - {title}".format(id=ctrl.id, title=ctrl.title))
+    else:
+        print("There is no controls with {status} status.".format(status=status))
+
+
+def print_stats(status_count, control_list, args):
     print("Total controls = {total}".format(total=status_count['all']))
     print()
     for status in sorted(status_count):
         print_specific_stat(status, status_count[status], status_count['applicable'])
 
-    print("Missing:", ", ".join(sorted(str(c.id)
-          for c in control_list['applicable'] - control_list['assessed'])))
+    if args.show_controls:
+        print_controls(status_count, control_list, args)
 
 
 def stats(controls_manager, args):
@@ -154,7 +170,6 @@ def stats(controls_manager, args):
         exit(1)
 
     status_count, control_list = count_controls_by_status(ctrls)
-    print_to_humans(ctrls, status_count, control_list)
 
     if args.output_format == 'json':
         print_to_json(
@@ -162,6 +177,8 @@ def stats(controls_manager, args):
             args.product,
             args.id,
             args.level)
+    else:
+        print_stats(status_count, control_list, args)
 
 
 def print_to_json(ctrls, product, id, level):
@@ -249,6 +266,12 @@ def parse_arguments():
     stats_parser.add_argument(
         '-p', '--product',
         help="product to check has required references")
+    stats_parser.add_argument(
+        '--show-controls', action='store_true',
+        help="list the controls and their respective status")
+    stats_parser.add_argument(
+        '-s', '--status', default='all',
+        help="status used to filter the controls list output")
     return parser.parse_args()
 
 
