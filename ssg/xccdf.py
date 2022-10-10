@@ -10,7 +10,7 @@ from __future__ import print_function
 
 import re
 
-from .constants import XCCDF11_NS, XCCDF12_NS
+from .constants import XCCDF12_NS
 
 # if a profile ID ends with a string listed here we skip it
 PROFILE_ID_BLACKLIST = ["test", "index", "default"]
@@ -21,22 +21,20 @@ PROFILE_ID_PREFIX = ("^xccdf_org.*content_profile_")
 def get_benchmark_id_title_map(input_tree):
     input_root = input_tree.getroot()
     ret = {}
+    candidates = []
+    scrape_benchmarks(input_root, XCCDF12_NS, candidates)
 
-    for namespace in [XCCDF11_NS, XCCDF12_NS]:
-        candidates = []
-        scrape_benchmarks(input_root, namespace, candidates)
+    for _, elem in candidates:
+        _id = elem.get("id")
+        if _id is None:
+            continue
 
-        for _, elem in candidates:
-            _id = elem.get("id")
-            if _id is None:
-                continue
+        title = "<unknown>"
+        for element in elem.findall("{%s}title" % (XCCDF12_NS)):
+            title = element.text
+            break
 
-            title = "<unknown>"
-            for element in elem.findall("{%s}title" % (namespace)):
-                title = element.text
-                break
-
-            ret[_id] = title
+        ret[_id] = title
 
     return ret
 
@@ -74,20 +72,12 @@ def get_profile_choices_for_input(input_tree, benchmark_id, tailoring_tree):
                 dest[id_] = title
 
     input_root = input_tree.getroot()
-
-    scrape_profiles(
-        input_root, XCCDF11_NS, ret
-    )
     scrape_profiles(
         input_root, XCCDF12_NS, ret
     )
 
     if tailoring_tree is not None:
         tailoring_root = tailoring_tree.getroot()
-
-        scrape_profiles(
-            tailoring_root, XCCDF11_NS, ret
-        )
         scrape_profiles(
             tailoring_root, XCCDF12_NS, ret
         )
