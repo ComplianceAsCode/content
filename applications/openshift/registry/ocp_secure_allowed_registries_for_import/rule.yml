@@ -1,0 +1,48 @@
+prodtype: ocp4
+
+title: "Check configured allowed registries for import are secure"
+
+description: |-
+    The configuration <tt>allowedRegistriesForImport</tt> limits the container
+    image registries from which normal users may import images. This is a list
+    of the registries that can be trusted to contain valid images and the image
+    location configured is assumed to be secured unless configured otherwise. It
+    is important to allow only secure registries to avoid man in the middle attacks,
+    as the insecure image import request can be impersonated and could lead to
+    fetching malicious content.
+    You can remove allowed repositories for import configured with insecure set to
+    true by applying the following manifest using <pre>oc patch</pre>, e.g. if you
+    save the following snippet to 
+    <pre>/tmp/remove-insecure-allowed-import-registries.yaml</pre>
+    <pre>
+    spec:
+      allowedRegistriesForImport:
+      - domainName: my-trusted-registry.internal.example.com
+        insecure: false
+    </pre> you would call
+    <pre>oc patch image.config.openshift.io cluster --patch="$(cat /tmp/remove-insecure-allowed-import-registries.yaml)" --type=merge</pre>
+
+rationale: |-
+    Configured list of allowed registries for import should be from the secure source.
+
+severity: medium
+
+references:
+    nist: CM-5(3),CM-7(2),CM-7(4),CM-7(5),CM-11
+    srg: SRG-APP-000131-CTR-000280,SRG-APP-000131-CTR-000285,SRG-APP-000384-CTR-000915
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.allowedRegistriesForImport[:].insecure"
+        entity_check: "at least one"
+        values:
+            - value: "true"
+              type: "boolean"
+              operation: "equals"

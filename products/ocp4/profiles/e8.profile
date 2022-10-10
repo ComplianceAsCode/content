@@ -32,3 +32,5 @@ selections:
     - rbac_limit_cluster_admin
     - api_server_tls_cipher_suites
     - api_server_encryption_provider_cipher
+    - ocp_secure_allowed_registries_for_import
+    - ocp_secure_allowed_registries
