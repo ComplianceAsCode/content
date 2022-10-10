@@ -6,7 +6,7 @@ import sys
 
 from .build_yaml import ProfileWithInlinePolicies
 from .xml import ElementTree
-from .constants import XCCDF11_NS, XCCDF12_NS, datastream_namespace
+from .constants import XCCDF12_NS, datastream_namespace
 from .constants import oval_namespace as oval_ns
 from .constants import SCE_SYSTEM as sce_ns
 from .constants import bash_system as bash_rem_system
@@ -103,10 +103,7 @@ class XCCDFBenchmark(object):
             with open(filepath, 'r') as xccdf_file:
                 file_string = xccdf_file.read()
                 tree = ElementTree.fromstring(file_string)
-                if tree.tag == "{%s}Benchmark" % XCCDF11_NS:
-                    self.tree = tree
-                    self.xccdf_ns = XCCDF11_NS
-                elif tree.tag == "{%s}Benchmark" % XCCDF12_NS:
+                if tree.tag == "{%s}Benchmark" % XCCDF12_NS:
                     self.tree = tree
                     self.xccdf_ns = XCCDF12_NS
                 elif tree.tag == "{%s}data-stream-collection" % datastream_namespace:
