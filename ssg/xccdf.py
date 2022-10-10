@@ -21,22 +21,20 @@ PROFILE_ID_PREFIX = ("^xccdf_org.*content_profile_")
 def get_benchmark_id_title_map(input_tree):
     input_root = input_tree.getroot()
     ret = {}
+    candidates = []
+    scrape_benchmarks(input_root, XCCDF12_NS, candidates)
 
-    for namespace in [XCCDF11_NS, XCCDF12_NS]:
-        candidates = []
-        scrape_benchmarks(input_root, namespace, candidates)
+    for _, elem in candidates:
+        _id = elem.get("id")
+        if _id is None:
+            continue
 
-        for _, elem in candidates:
-            _id = elem.get("id")
-            if _id is None:
-                continue
+        title = "<unknown>"
+        for element in elem.findall("{%s}title" % (XCCDF12_NS)):
+            title = element.text
+            break
 
-            title = "<unknown>"
-            for element in elem.findall("{%s}title" % (namespace)):
-                title = element.text
-                break
-
-            ret[_id] = title
+        ret[_id] = title
 
     return ret
 
