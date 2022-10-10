@@ -10,7 +10,7 @@ from __future__ import print_function
 
 import re
 
-from .constants import XCCDF11_NS, XCCDF12_NS
+from .constants import XCCDF12_NS
 
 # if a profile ID ends with a string listed here we skip it
 PROFILE_ID_BLACKLIST = ["test", "index", "default"]
@@ -72,20 +72,12 @@ def get_profile_choices_for_input(input_tree, benchmark_id, tailoring_tree):
                 dest[id_] = title
 
     input_root = input_tree.getroot()
-
-    scrape_profiles(
-        input_root, XCCDF11_NS, ret
-    )
     scrape_profiles(
         input_root, XCCDF12_NS, ret
     )
 
     if tailoring_tree is not None:
         tailoring_root = tailoring_tree.getroot()
-
-        scrape_profiles(
-            tailoring_root, XCCDF11_NS, ret
-        )
         scrape_profiles(
             tailoring_root, XCCDF12_NS, ret
         )
