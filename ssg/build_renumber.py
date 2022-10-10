@@ -272,8 +272,8 @@ class OCILFileLinker(FileLinker):
     def _get_checkid_string(self):
         return "{%s}questionnaire" % self.CHECK_NAMESPACE
 
-    def link(self):
-        self.tree = parse_file(self.fname)
+    def link(self, tree):
+        self.tree = tree
         self.tree = self.translator.translate(self.tree, store_defname=True)
 
 
