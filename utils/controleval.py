@@ -126,12 +126,13 @@ def count_controls_by_status(ctrls):
     return status_count, control_list
 
 
-def print_specific_stat(stat, current, total):
-    print("{stat} = {percent}% -- {current} / {total}".format(
-        stat=stat,
-        percent=round((current / total) * 100.00, 2),
-        current=current,
-        total=total))
+def print_specific_stat(status, current, total):
+    if current > 0:
+        print("{status:14} {current:6} / {total:3} = {percent:4}%".format(
+            status=status,
+            percent=round((current / total) * 100.00, 2),
+            current=current,
+            total=total))
 
 
 def print_controls(status_count, control_list, args):
@@ -142,7 +143,7 @@ def print_controls(status_count, control_list, args):
         exit(1)
 
     if status_count[status] > 0:
-        print("List of the {status} ({total}) controls:".format(total=status_count[status],
+        print("\nList of the {status} ({total}) controls:".format(total=status_count[status],
                                                                 status=status))
         for ctrl in control_list[status]:
             print("{id:>16} - {title}".format(id=ctrl.id, title=ctrl.title))
@@ -151,9 +152,15 @@ def print_controls(status_count, control_list, args):
 
 
 def print_stats(status_count, control_list, args):
-    print("Total controls = {total}".format(total=status_count['all']))
-    print()
-    for status in sorted(status_count):
+    implicit_status = controls.Status.get_status_list()
+    explicit_status = status_count.keys() - implicit_status
+
+    print("General stats:")
+    for status in sorted(explicit_status):
+        print_specific_stat(status, status_count[status], status_count['applicable'])
+
+    print("\nStats grouped by status:")
+    for status in sorted(implicit_status):
         print_specific_stat(status, status_count[status], status_count['applicable'])
 
     if args.show_controls:
