@@ -5,7 +5,6 @@ import os
 import re
 
 from .build_remediations import parse_from_file_without_jinja
-from .constants import XCCDF11_NS
 from .rule_yaml import parse_prodtype
 from .utils import read_file_list
 
