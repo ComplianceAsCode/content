@@ -98,6 +98,12 @@ def count_implicit_status(ctrls, status_count):
     status_count['applicable'] = len(ctrls) - status_count[controls.Status.NOT_APPLICABLE]
     status_count['assessed'] = status_count['applicable'] - status_count[controls.Status.PENDING]
     status_count['not assessed'] = status_count['applicable'] - status_count['assessed']
+    status_count['full coverage'] = status_count[controls.Status.AUTOMATED]\
+                                    + status_count[controls.Status.DOCUMENTATION]\
+                                    + status_count[controls.Status.INHERENTLY_MET]\
+                                    + status_count[controls.Status.MANUAL]
+    status_count['partial coverage'] = status_count['full coverage']\
+                                       + status_count[controls.Status.PARTIAL]
     return status_count
 
 
@@ -106,6 +112,17 @@ def create_implicit_control_lists(ctrls, control_list):
     control_list['applicable'] = ctrls - control_list[controls.Status.NOT_APPLICABLE]
     control_list['assessed'] = control_list['applicable'] - control_list[controls.Status.PENDING]
     control_list['not assessed'] = control_list['applicable'] - control_list['assessed']
+    control_list['full coverage'] = ctrls - control_list[controls.Status.DOES_NOT_MEET]\
+                                    - control_list[controls.Status.NOT_APPLICABLE]\
+                                    - control_list[controls.Status.PARTIAL]\
+                                    - control_list[controls.Status.PENDING]\
+                                    - control_list[controls.Status.PLANNED]\
+                                    - control_list[controls.Status.SUPPORTED]
+    control_list['partial coverage'] = ctrls - control_list[controls.Status.DOES_NOT_MEET]\
+                                    - control_list[controls.Status.NOT_APPLICABLE]\
+                                    - control_list[controls.Status.PENDING]\
+                                    - control_list[controls.Status.PLANNED]\
+                                    - control_list[controls.Status.SUPPORTED]
     return control_list
 
 
@@ -128,7 +145,7 @@ def count_controls_by_status(ctrls):
 
 def print_specific_stat(status, current, total):
     if current > 0:
-        print("{status:14} {current:6} / {total:3} = {percent:4}%".format(
+        print("{status:16} {current:6} / {total:3} = {percent:4}%".format(
             status=status,
             percent=round((current / total) * 100.00, 2),
             current=current,
