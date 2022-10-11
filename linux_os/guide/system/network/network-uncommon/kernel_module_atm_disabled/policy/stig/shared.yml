@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to disable the Asynchronous Transfer Mode kernel module.
+
+vuldiscussion: |-
+    Disabling ATM protects the system against exploitation of any
+    flaws in its implementation.
+
+checktext: |-
+    Verify that {{{ full_name }}} disables the ability to load the ATM kernel module with the following command:
+
+    $ sudo grep -r atm /etc/modprobe.conf /etc/modprobe.d/*
+
+    blacklist atm
+
+    If the command does not return any output, or the line is commented out, and use of ATM is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+fixtext: |-
+    To configure the system to prevent the atm kernel module from being loaded, add the following line to the file  /etc/modprobe.d/atm.conf (or create atm.conf if it does not exist):
+
+    blacklist atm

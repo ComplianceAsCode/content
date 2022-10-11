@@ -1,0 +1,25 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must perform strict mode checking of home directory configuration files.
+
+vuldiscussion: |-
+    If other users have access to modify user-specific SSH configuration files, they may be able to log into the system as another user.
+
+checktext: |-
+    Verify the SSH daemon performs strict mode checking of home directory configuration files with the following command:
+
+    $ sudo grep -ir strictmodes  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    StrictModes yes
+
+    If the "StrictModes" keyword is set to "no", the returned line is commented out, or no output is returned, this is a finding.
+
+fixtext: |-
+    Configure the SSH daemon to to perform strict mode checking of home directory configuration files.
+
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes":
+
+    StrictModes yes
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

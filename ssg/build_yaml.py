@@ -1359,8 +1359,9 @@ class Rule(XCCDFEntity):
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
-
-        rule.load_policy_specific_content(yaml_file, env_yaml)
+        # Only load policy specific content if rule doesn't have it defined yet
+        if not rule.policy_specific_content:
+            rule.load_policy_specific_content(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -1436,7 +1437,7 @@ class Rule(XCCDFEntity):
         for fname in filenames:
             policy = os.path.basename(os.path.dirname(fname))
             filename_appropriate_for_storage = (
-                fname.endswith(product_dot_yml)
+                fname.endswith(product_dot_yml) and product_name
                 or fname.endswith("shared.yml") and policy not in filename_by_policy)
             if (filename_appropriate_for_storage):
                 filename_by_policy[policy] = fname
@@ -1448,7 +1449,11 @@ class Rule(XCCDFEntity):
 
     def read_policy_specific_content(self, env_yaml, files):
         keys = dict()
-        filename_by_policy = self.triage_policy_specific_content(env_yaml["product"], files)
+        if env_yaml:
+            product = env_yaml["product"]
+        else:
+            product = ""
+        filename_by_policy = self.triage_policy_specific_content(product, files)
         for p, f in filename_by_policy.items():
             yaml_data = self.read_policy_specific_content_file(env_yaml, f)
             keys[p] = yaml_data

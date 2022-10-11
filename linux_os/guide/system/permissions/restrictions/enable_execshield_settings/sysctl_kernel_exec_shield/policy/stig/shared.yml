@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement non-executable data to protect its memory from unauthorized code execution.
+
+vuldiscussion: |-
+    ExecShield uses the segmentation feature on all x86 systems to prevent
+    execution in memory higher than a certain address. It writes an address as
+    a limit in the code segment descriptor, to control where code can be
+    executed, on a per-process basis. When the kernel places a process's memory
+    regions such as the stack and heap higher than this address, the hardware
+    prevents execution in that address range. This is enabled by default on the
+    latest Red Hat and Fedora systems if supported by the hardware.
+
+checktext: |-
+    Verify ExecShield is enabled on 64-bit {{{ full_name }}} systems with the following command:
+
+     $ dmesg | grep '[NX|DX]*protection'
+
+    [ 0.000000] NX (Execute Disable) protection: active
+
+
+    If "dmesg" does not show "NX (Execute Disable) protection" active, this is a finding.
+
+fixtext: |-
+    Update the GRUB 2 bootloader configuration.
+
+    Run the following command:
+
+    $ sudo grubby --update-kernel=ALL --remove-args=noexec

@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Require Users To Re-Authenticate For Privilege Escalation.
+
+vuldiscussion: |-
+    The "su" program allows to run commands with a substitute user and
+    group ID. It is commonly used to run commands as the root user. Limiting
+    access to such command is considered a good security practice.
+
+checktext: |-
+    Run the following command to check if the line is present:
+     grep pam_wheel /etc/pam.d/su
+    The output should contain the following line:
+     auth             required        pam_wheel.so use_uid
+
+    If the line is not in the file or it is commented, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to require users to be in the "wheel" group to run "su" command.
+
+    In file "/etc/pam.d/su", uncomment the following line:
+
+    "#auth    required    pam_wheel.so use_uid"
+
+    $ sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\+required[[:space:]]\+pam_wheel\.so[[:space:]]\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su
+
+    If necessary, create a "wheel" group and add administrative users to the group.
+

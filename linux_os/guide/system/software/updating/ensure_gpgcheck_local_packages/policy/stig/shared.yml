@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must check the GPG sign of locally installed packages.
+
+vuldiscussion: |-
+    Changes to any software components can have significant effects on the overall security of the operating system. This requirement ensures the software has not been tampered with and that it has been provided by a trusted vendor.
+
+    Accordingly, patches, service packs, device drivers, or operating system components must be signed with a certificate recognized and approved by the organization.
+
+    Verifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This verifies the software has not been tampered with and that it has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. The operating system should not have to verify the software again. This requirement does not mandate DoD certificates for this purpose; however, the certificate used to verify the software must be from an approved CA.
+
+checktext: |-
+    Verify that dnf verifies the signature of local packages prior to install with the following command:
+
+    $ grep localpkg_gpgcheck /etc/dnf/dnf.conf
+
+    localpkg_gpgcheck=1
+
+    If "localpkg_gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
+
+    If there is no process to validate certificates for local packages that is approved by the organization, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to always check package signatures before installation of local packages.
+
+    Add or update the following line in the [main] section of the /etc/dnf/dnf.conf file:
+
+    localpkg_gpgcheck=1

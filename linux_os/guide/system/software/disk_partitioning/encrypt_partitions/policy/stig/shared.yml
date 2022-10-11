@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at rest protection.
+
+vuldiscussion: |-
+    {{{ full_name }}} systems handling data requiring "data at rest" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.
+
+    Selection of a cryptographic mechanism is based on the need to protect the integrity of organizational information. The strength of the mechanism is commensurate with the security category and/or classification of the information. Organizations have the flexibility to either encrypt all information on storage devices (i.e., full disk encryption) or encrypt specific data structures (e.g., files, records, or fields).
+
+checktext: |-
+    Verify {{{ full_name }}} prevents unauthorized disclosure or modification of all information requiring at-rest protection by using disk encryption.
+
+    If there is a documented and approved reason for not having data-at-rest encryption, this requirement is Not Applicable.
+
+    Verify all system partitions are encrypted with the following command:
+
+    $ blkid
+
+    /dev/map per/rhel-root:  UUID="67b7d7fe-de60-6fd0-befb-e6748cf97743" TYPE="crypto_LUKS"
+
+    Every persistent disk partition present must be of type "crypto_LUKS". If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs) are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted.  If there is no evidence that these partitions are encrypted, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent unauthorized modification of all information at rest by using disk encryption.
+
+    Encrypting a partition in an already installed system is more difficult, because existing partitions will need to be resized and changed.
+    To encrypt an entire partition, dedicate a partition for encryption in the partition layout.

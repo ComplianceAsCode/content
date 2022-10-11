@@ -1,0 +1,35 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent a user from overriding the disabling of the graphical user interface automounter.
+
+vuldiscussion: |-
+    Automatically mounting file systems permits easy introduction of unknown devices, thereby facilitating malicious activity.
+
+checktext: |-
+    Verify {{{ full_name }}} disables ability of the user to override the graphical user interface automounter setting.
+
+    Determine which profile the system database is using with the following command:
+
+    $ sudo grep system-db /etc/dconf/profile/user
+
+    system-db:local
+
+    Check that the automounting setting is locked from non-privileged user modification with the following command:
+
+    Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+    $ grep 'automount-open' /etc/dconf/db/local.d/locks/*
+
+    /org/gnome/desktop/media-handling/automount-open
+
+    If the command does not return at least the example result, this is a finding.
+
+fixtext: |-
+    Configure GNOME 3 to not allow a user to change the setting that disables automated mount of removable media.
+
+    Add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user modification:
+
+    /org/gnome/desktop/media-handling/automount-open
+
+    Then update the dconf system databases:
+
+    $ sudo dconf update

@@ -1,0 +1,18 @@
+srg_requirement: |-
+    {{{ full_name }}} must take action when allocated audit record storage volume reaches 95 percent of the audit record storage capacity.
+
+vuldiscussion: |-
+    If action is not taken when storage volume reaches 95% utilization the auditing system may fail when the storage volume reaches capacity.
+
+checktext: |-
+    Verify {{{ full_name }}} takes action when allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity with the following command:
+    $ sudo grep -w admin_space_left /etc/audit/auditd.conf
+
+    admin_space_left = 5%
+
+    If the value of the "admin_space_left" keyword is not set to 5% of the storage volume allocated to audit logs, or if the line is commented out, ask the System Administrator to indicate how the system is taking action if the allocated storage is about to reach capacity. If the "space_left" value is not configured to the correct value, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to initiate an action when allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity by adding/modifying the following line in the /etc/audit/auditd.conf file.
+
+    admin_space_left  = 5%

@@ -1,0 +1,21 @@
+srg_requirement: |-
+    There must be no .shosts files on the {{{ full_name }}}.
+
+vuldiscussion: |-
+    The .shosts files are used to configure host-based authentication for
+    individual users or the system via SSH. Host-based authentication is not
+    sufficient for preventing unauthorized access to the system, as it does not
+    require interactive identification and authentication of a connection request,
+    or for the use of two-factor authentication.
+
+checktext: |-
+    Verify there are no ".shosts" files on {{{ full_name }}} with the following command:
+
+    $ sudo find / -name .shosts
+
+    If a ".shosts" file is found, this is a finding.
+
+fixtext: |-
+    Remove any found ".shosts" files from the system.
+
+    $ sudo rm /[path]/[to]/[file]/.shosts

@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur.
+
+vuldiscussion: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to lock an account after three unsuccessful logon attempts with the command:
+
+    $ grep 'deny =' /etc/security/faillock.conf
+
+    deny = 3
+
+    If the "deny" option is not set to "3" or less (but not "0"), is missing or commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to lock an account when three unsuccessful logon attempts occur.
+
+    Add/Modify the "/etc/security/faillock.conf" file to match the following line:
+
+    deny = 3

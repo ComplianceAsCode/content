@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable the chrony daemon from acting as a server.
+
+vuldiscussion: |-
+    Minimizing the exposure of the server functionality of the chrony
+    daemon diminishes the attack surface.
+
+checktext: |-
+    Verify {{{ full_name }}} disables the chrony daemon from acting as a server with the following command:
+
+    $ grep -w port /etc/chrony.conf
+
+    port 0
+
+    If the "port" option is not set to "0", is commented out, or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the chrony daemon from acting as a server by adding/modifying the following line in the /etc/chrony.conf file:
+
+    port 0

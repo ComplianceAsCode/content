@@ -1,0 +1,27 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must not allow known hosts authentication.
+
+vuldiscussion: |-
+    Configuring the IgnoreUserKnownHosts setting for the SSH daemon provides additional
+    assurance that remote login via SSH will require a password, even
+    in the event of misconfiguration elsewhere.
+
+checktext: |-
+    Verify the SSH daemon does not allow known hosts authentication with the following command:
+
+    $ sudo grep -ir ignoreuser  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    IgnoreUserKnownHosts yes
+
+    If the value is returned as "no", the returned line is commented out, or no output is returned, this is a finding.
+
+fixtext: |-
+    Configure the SSH daemon to not allow known hosts authentication.
+
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes":
+
+    IgnoreUserKnownHosts yes
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

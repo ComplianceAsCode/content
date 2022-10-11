@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must forward mails from postmaster to the root account using a postfix alias
+
+vuldiscussion: |-
+    It is critical for the appropriate personnel to be aware if a system is at risk of failing to
+    process audit logs as required. Without this notification, the security personnel may be
+    unaware of an impending failure of the audit capability, and system operation may be adversely
+    affected.
+
+    Audit processing failures include software/hardware errors, failures in the audit capturing
+    mechanisms, and audit storage capacity being reached or exceeded.
+
+checktext: |-
+    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+
+    Transport Layer Security (TLS) encryption is a required security setting as a number of known vulnerabilities have been reported against Secure Sockets Layer (SSL) and earlier versions of TLS. Encryption of private information is essential to ensuring data confidentiality. If private information is not encrypted, it can be intercepted and easily read by an unauthorized party. SQL Server must use a minimum of FIPS 140-3-approved TLS version 1.2, and all non-FIPS-approved SSL and TLS versions must be disabled. NIST 800-53 specifies the preferred configurations for government systems.
+
+    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+
+fixtext: |-
+    Configure a valid email address as an alias for the root account.
+
+    Append the following line to "/etc/aliases":
+
+    postmaster: root
+
+    Then, run the following command:
+
+    $ sudo newaliases

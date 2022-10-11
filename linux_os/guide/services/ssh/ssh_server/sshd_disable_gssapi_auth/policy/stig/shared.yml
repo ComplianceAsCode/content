@@ -1,0 +1,30 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must not allow GSSAPI authentication.
+
+vuldiscussion: |-
+    GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's
+    GSSAPI to remote hosts, increasing the attack surface of the system.
+
+checktext: |-
+    Verify the SSH daemon does not allow GSSAPI authentication with the following command:
+
+    $ sudo grep -ir gssapiauth  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    GSSAPIAuthentication no
+
+    If the value is returned as "yes", the returned line is commented out, no output is returned, and the use of GSSAPI authentication has not been documented with the ISSO, this is a finding.
+
+    Fix Text: Configure the SSH daemon to not allow GSSAPI authentication.
+
+    If the required value is not set, then this is a finding.
+
+fixtext: |-
+    Configure the SSH daemon to not allow GSSAPI authentication.
+
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "no":
+
+    GSSAPIAuthentication no
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

@@ -1,0 +1,20 @@
+srg_requirement: |-
+    The rsyslog service on {{{ full_name }}} must be active.
+
+vuldiscussion: |-
+    The "rsyslog" service must be running in order to provide
+    logging services, which are essential to system administration.
+
+checktext: |-
+    Verify that "rsyslog" is active with the following command:
+
+    $ systemctl is-active rsyslog
+
+    active
+
+    If the rsyslog service is not active, this is a finding.
+
+fixtext: |-
+    To enable the rsyslog service run the following command:
+
+    $ sudo systemctl enable --now rsyslog

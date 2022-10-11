@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} must enable hardening for the Berkeley Packet Filter Just-in-time compiler.
+
+vuldiscussion: |-
+    When hardened, the extended Berkeley Packet Filter just-in-time compiler
+    will randomize any kernel addresses in the BPF programs and maps,
+    and will not expose the JIT addresses in "/proc/kallsyms".
+
+checktext: |-
+    Verify {{{ full_name }}} enables hardening for the BPF JIT with the following commands:
+
+    $ sudo sysctl net.core.bpf_jit_harden
+
+    net.core.bpf_jit_harden = 2
+
+    If the returned line does not have a value of "2", or a line is not returned, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to enable hardening for the BPF JIT compiler by adding the following line to a file, in the "/etc/sysctl.d" directory:
+
+    net.core.bpf_jit_harden = 2
+
+    The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
+
+    $ sudo sysctl --system

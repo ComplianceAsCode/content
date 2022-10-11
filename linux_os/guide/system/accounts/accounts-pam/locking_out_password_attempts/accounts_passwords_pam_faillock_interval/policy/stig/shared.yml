@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.
+
+vuldiscussion: |-
+    By limiting the number of failed logon attempts the risk of unauthorized system
+    access via user password guessing, otherwise known as brute-forcing, is reduced.
+    Limits are imposed by locking the account.
+
+checktext: |-
+    Verify {{{ full_name }}} locks an account after three unsuccessful logon attempts within a period of 15 minutes with the following command:
+
+    Note: If the System Administrator demonstrates the use of an approved centralized account management method that locks an account after three unsuccessful logon attempts within a period of 15 minutes, this requirement is not applicable.
+
+    $ grep fail_interval /etc/security/faillock.conf
+
+    fail_interval = 900
+
+    If the "fail_interval" option is not set to "900" or less (but not "0"), the line is commented out, or the line is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to lock out the "root" account after a number of incorrect login attempts within 15 minutes using "pam_faillock.so", first enable the feature using the following command:
+
+    $ authselect enable-feature with-faillock
+
+    Then edit the "/etc/security/faillock.conf" file as follows:
+
+    fail_interval = 900

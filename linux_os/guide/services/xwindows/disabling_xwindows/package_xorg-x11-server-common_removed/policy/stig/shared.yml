@@ -1,0 +1,27 @@
+srg_requirement: |-
+    A graphical display manager must not be installed on {{{ full_name }}} unless approved.
+
+vuldiscussion: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system.
+    Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.
+
+checktext: |-
+    Verify that a graphical user interface is not installed with the following command:
+
+    $ sudo dnf list --installed "xorg*common"
+
+    Error: No matching Packages to list
+
+    If the x11-server-common package is installed and the use of a graphical user interface has not been documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+fixtext: |-
+    Document the requirement for a graphical user interface with the ISSO or remove all xorg packages with the following command:
+
+    Warning: If you are accessing the system through the graphical user interface, change to the multi-user.target with the following command:
+
+    $ sudo systemctl isolate multi-user.target
+
+    Warning: Removal of the graphical user interface will immediately render it useless. The following commands should not be run from a virtual terminal emulator in the graphical interface.
+
+    $ sudo dnf remove "xorg*"
+    $ sudo systemctl set-default multi-user.target

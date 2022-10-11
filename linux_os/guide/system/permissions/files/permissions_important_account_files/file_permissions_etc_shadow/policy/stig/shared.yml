@@ -1,0 +1,22 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/shadow file must have 0000 to prevent unauthorized access.
+
+vuldiscussion: |-
+    The "/etc/shadow" file contains the list of local
+    system accounts and stores password hashes. Protection of this file is
+    critical for system security. Failure to give ownership of this file
+    to root provides the designated owner with access to sensitive information
+    which could weaken the system security posture.
+
+checktext: |-
+    To check the permissions of /etc/shadow ,
+    run the command:
+     $ sudo stat -c "%a %n" /etc/shadow
+    If properly configured, the output should indicate the following permissions:
+    000
+
+    If /etc/shadow does not have unix mode 000, then this is a finding.
+
+fixtext: |-
+    Change the permissions of the file "/etc/shadow" to "0000" by running the following command:
+    $ sudo chmod 0000 /etc/shadow

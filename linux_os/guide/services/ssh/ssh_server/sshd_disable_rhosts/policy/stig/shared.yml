@@ -1,0 +1,26 @@
+srg_requirement: |-
+    The {{{ full_name }}} SSH daemon must not allow rhosts authentication.
+
+vuldiscussion: |-
+    SSH trust relationships mean a compromise on one host
+    can allow an attacker to move trivially to other hosts.
+
+checktext: |-
+    Verify the SSH daemon does not allow rhosts authentication with the following command:
+
+    $ sudo grep -ir ignorerhosts /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    IgnoreRhosts yes
+
+    If the value is returned as "no", the returned line is commented out, or no output is returned, this is a finding.
+
+fixtext: |-
+    Configure the SSH daemon to not allow rhosts authentication.
+
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes":
+
+    IgnoreRhosts yes
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service

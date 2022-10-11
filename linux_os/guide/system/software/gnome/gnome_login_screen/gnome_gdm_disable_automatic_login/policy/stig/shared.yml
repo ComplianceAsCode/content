@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must not allow unattended or automatic logon via the graphical user interface.
+
+vuldiscussion: |-
+    Failure to restrict system access to authenticated users negatively impacts operating system security.
+
+checktext: |-
+    Verify {{{ full_name }}} does not allow an unattended or automatic logon to the system via a graphical user interface.
+
+    Note: This requirement assumes the use of the default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+    Check for the value of the "AutomaticLoginEnable" in the "/etc/gdm/custom.conf" file with the following command:
+
+    $  grep -Pzoi "^\[daemon]\\nautomaticlogin.*" /etc/gdm/custom.conf
+
+    [daemon]
+    AutomaticLoginEnable=false
+
+    If the value of "AutomaticLoginEnable" is not set to "false", this is a finding.
+
+fixtext: |-
+    Configure the Gnome display manager to disable automatic login.
+
+    Set AutomaticLoginEnable to false in the [daemon] section in /etc/gdm/custom.conf. For example:
+
+    [daemon]
+    AutomaticLoginEnable=false

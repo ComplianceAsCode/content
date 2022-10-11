@@ -433,7 +433,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row['Requirement'] = handle_variables(requirement,
                                                       control.variables, root_path,
                                                       product)
-                rationale = get_policy_specific_content('rationale', rule_object)
+                rationale = get_policy_specific_content('vuldiscussion', rule_object)
                 row['Vul Discussion'] = handle_variables(rationale, control.variables,
                                                          root_path, product)
                 checktext = get_policy_specific_content('checktext', rule_object)

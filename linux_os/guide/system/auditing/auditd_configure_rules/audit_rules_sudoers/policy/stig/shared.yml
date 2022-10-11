@@ -1,0 +1,24 @@
+srg_requirement: |-
+     {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/sudoers.
+
+vuldiscussion: |-
+    The actions taken by system administrators should be audited to keep a record
+    of what was executed on the system, as well as, for accountability purposes.
+    Editing the sudoers file may be sign of an attacker trying to
+    establish persistent methods to a system, auditing the editing of the sudoers
+    files mitigates this risk.
+
+checktext: |-
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers" with the following command:
+
+    $ sudo auditctl -l | grep /etc/sudoers
+
+    -w /etc/sudoers -p wa -k identity
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers".
+    Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
+    -w /etc/sudoers -p wa -k identity
+    The audit daemon must be restarted for the changes to take effect.

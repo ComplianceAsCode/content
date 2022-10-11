@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Generate Audit Records For Privileged Activities Or Other System-Level Access.
+
+vuldiscussion: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threats.
+
+
+
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+checktext: |-
+    To verify that auditing of privileged command use is configured, run the
+    following command:
+     $ sudo grep umount /etc/audit/audit.rules /etc/audit/rules.d/*
+    It should return a relevant line in the audit rules.
+
+    If it is not the case, then this is a finding.

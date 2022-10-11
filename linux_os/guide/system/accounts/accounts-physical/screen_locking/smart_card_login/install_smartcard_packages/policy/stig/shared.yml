@@ -1,0 +1,26 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the openssl-pkcs11 package installed.
+
+vuldiscussion: |-
+    Without the use of multifactor authentication, the ease of access to
+    privileged functions is greatly increased. Multifactor authentication
+    requires using two or more factors to achieve authentication.
+    A privileged account is defined as an information system account with
+    authorizations of a privileged user.
+    The DoD CAC with DoD-approved PKI is an example of multifactor
+    authentication.
+
+checktext: |-
+    Verify that {{{ full_name }}} has the openssl-pkcs11 package installed with the following command:
+
+    $ sudo dnf list --installed openssl-pkcs11
+
+    openssl-pkcs.i686        0.4.11-7.el9
+    openssl-pkcs.x86_64        0.4.11-7.el9
+
+    If a openssl-pkcs11 package is not installed, this is a finding.
+
+fixtext: |-
+    The openssl-pkcs11 package can be installed with the following command:
+
+    $ sudo dnf install openssl-pkcs11

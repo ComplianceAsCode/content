@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds.
+
+vuldiscussion: |-
+    Passwords need to be protected at all times, and encryption is the standard
+    method for protecting passwords. If passwords are not encrypted, they can
+    be plainly read (i.e., clear text) and easily compromised. Passwords
+    that are encrypted with a weak algorithm are no more protected than if
+    they are kept in plain text.
+
+
+
+    Using more hashing rounds makes password cracking attacks more difficult.
+
+checktext: |-
+    Inspect "/etc/login.defs" and ensure that if eihter
+    "SHA_CRYPT_MIN_ROUNDS" or "SHA_CRYPT_MAX_ROUNDS"
+    are set, they must have the minimum value of "5000".
+
+    If it does not, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
+
+    Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "5000":
+
+    SHA_CRYPT_MIN_ROUNDS 5000
