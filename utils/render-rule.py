@@ -4,6 +4,7 @@ from glob import glob
 import collections
 import sys
 import pathlib
+import re
 
 import pygments
 import pygments.lexers
@@ -42,6 +43,13 @@ class Namespace:
                 return True
         return False
 
+    def sub_newlines_with_br(self):
+        attributes = vars(self)
+        for attr, value in attributes.items():
+            if not value:
+                continue
+            attributes[attr] = re.sub(r"\n+", r"<br/>\n", value)
+
 
 class HtmlOutput(template_renderer.Renderer):
     TEMPLATE_NAME = "rendering/rule-template.html"
@@ -62,6 +70,7 @@ class HtmlOutput(template_renderer.Renderer):
         prose = Namespace()
         prose.description = common.resolve_var_substitutions(rule.description)
         prose.rationale = common.resolve_var_substitutions(rule.rationale)
+        prose.sub_newlines_with_br()
 
         self.template_data["prose"] = prose
         self.template_data["fixes"] = self._get_fixes(rule_id)
@@ -78,6 +87,7 @@ class HtmlOutput(template_renderer.Renderer):
                     continue
 
                 target_destination = self.template_data[target_category]
+                text = re.sub(r"\n+", r"<br/>\n", text)
                 target_destination.policy_specific_content[policy][field_name] = text
 
     def _highlight_file(self, fname, lexer):

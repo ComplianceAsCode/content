@@ -16,15 +16,15 @@
 {{%- macro collapsible_content(heading, level) %}}
 <button class="collapsible"><h{{{ level }}}>{{{ heading }}}</h{{{ level }}}></button>
 <div class="content">
-{{{ caller() }}}	
+{{{ caller() }}}
 </div>
 {{% endmacro %}}
 
 
 {{%- macro normal_content(heading, level) %}}
 <h{{{ level }}}>{{{ heading }}}</h{{{ level }}}>
-<div">
-{{{ caller() }}}	
+<div>
+{{{ caller() }}}
 </div>
 {{% endmacro %}}
 
@@ -59,11 +59,11 @@
 	  outline: none;
 	  font-size: 15px;
 	}
-	
+
 	.active, .collapsible:hover {
 	  background-color: #555;
 	}
-	
+
 	.content {
 	  padding: 0 18px;
 	  max-height: 0;
@@ -86,14 +86,14 @@
 	{{{ minor_section("Rationale", prose.rationale, collapsible=false) -}}}
 
 	{{{ render_policy_specific_content(prose) -}}}
-	</div>  
+	</div>
 	{{% if checks.contains_something() %}}
 	<div class="checks">
 	<h2>Checks</h2>
 	{{{ minor_section("OVAL", checks.oval, collapsible=true) -}}}
 
 	{{{ render_policy_specific_content(checks) -}}}
-	</div>  
+	</div>
 	{{% endif %}}
 
 	{{%- if fixes.contains_something() %}}
@@ -104,9 +104,9 @@
 	{{{ minor_section("Ansible", fixes.ansible, collapsible=true) -}}}
 
 	{{{ render_policy_specific_content(fixes) -}}}
-	</div>  
+	</div>
 	{{% endif -%}}
-</div>  
+</div>
 
 <script>
 	var coll = document.getElementsByClassName("collapsible");
@@ -120,7 +120,7 @@
 		  content.style.maxHeight = null;
 		} else {
 		  content.style.maxHeight = content.scrollHeight + "px";
-		} 
+		}
 	  });
 	}
 </script>
