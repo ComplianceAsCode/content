@@ -595,13 +595,14 @@ controls:
       - dconf_gnome_login_banner_text
       - login_banner_text=cis_default
 
-  # NEEDS RULE
   - id: 1.8.3
     title: Ensure last logged in user display is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_disable_user_list
 
   # NEEDS RULE
   - id: 1.8.4
