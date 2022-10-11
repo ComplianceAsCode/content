@@ -36,59 +36,6 @@ REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
 
-def get_fixgroup_for_type(fixcontent, remediation_type):
-    """
-    For a given remediation type, return a new subelement of that type.
-
-    Exits if passed an unknown remediation type.
-    """
-    if remediation_type == 'anaconda':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="anaconda",
-            system="urn:redhat:anaconda:pre",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'ansible':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="ansible",
-            system="urn:xccdf:fix:script:ansible",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'bash':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="bash",
-            system="urn:xccdf:fix:script:sh",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'puppet':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="puppet",
-            system="urn:xccdf:fix:script:puppet",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'ignition':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="ignition",
-            system="urn:xccdf:fix:script:ignition",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'kubernetes':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="kubernetes",
-            system="urn:xccdf:fix:script:kubernetes",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    elif remediation_type == 'blueprint':
-        return ElementTree.SubElement(
-            fixcontent, "fix-group", id="blueprint",
-            system="urn:redhat:osbuild:blueprint",
-            xmlns="http://checklists.nist.gov/xccdf/1.1")
-
-    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
-                     % (remediation_type))
-    sys.exit(1)
-
-
 def is_supported_filename(remediation_type, filename):
     """
     Checks if filename has a supported extension for remediation_type.
