@@ -604,13 +604,14 @@ controls:
     rules:
       - dconf_gnome_disable_user_list
 
-  # NEEDS RULE
   - id: 1.8.4
     title: Ensure XDMCP is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - gnome_gdm_disable_xdmcp
 
   # NEEDS RULE
   - id: 1.8.5
