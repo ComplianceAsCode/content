@@ -1,5 +1,3 @@
-{{%- if target_oval_version == [5, 11] -%}}
-{{# there is no good alternative for symlink_object for OVAL 5.10 #}}
 {{% set backend_krb5_config = "/etc/crypto-policies/back-ends/krb5.config" %}}
 <def-group>
   <definition class="compliance" id="configure_kerberos_crypto_policy" version="2">
@@ -49,4 +47,3 @@
   </local_variable>
 
 </def-group>
-{{%- endif -%}}
