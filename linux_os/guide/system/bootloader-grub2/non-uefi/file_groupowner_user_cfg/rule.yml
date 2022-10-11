@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,ol9,rhel7,rhel8,rhel9,rhv4
+
+title: 'Verify {{{ grub2_boot_path }}}/user.cfg Group Ownership'
+
+description: |-
+    The file <tt>{{{ grub2_boot_path }}}/user.cfg</tt> should be group-owned by the <tt>root</tt>
+    group to prevent reading or modification of the file.
+    {{{ describe_file_group_owner(file=grub2_boot_path ~ "/user.cfg", group="root") }}}
+
+rationale: |-
+    The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
+    file should not have any access privileges anyway. Non-root users who read the boot parameters
+    may be able to identify weaknesses in security upon boot and be able to exploit them.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86008-0
+    cce@rhel8: CCE-86009-8
+    cce@rhel9: CCE-86010-6
+
+references:
+    cis-csc: 12,13,14,15,16,18,3,5
+    cis@rhel7: 1.4.2
+    cis@rhel8: 1.4.2
+    cjis: 5.5.2.2
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    cui: 3.4.5
+    disa: CCI-000225
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    isa-62443-2009: 4.3.3.7.3
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    nist: CM-6(a),AC-6(1)
+    nist-csf: PR.AC-4,PR.DS-5
+    pcidss: Req-7.1
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(grub2_boot_path ~ "/user.cfg", "root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file=grub2_boot_path ~ "/user.cfg", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(grub2_boot_path ~ "/user.cfg", "root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(grub2_boot_path ~ "/user.cfg", "root") }}}'
+
+platform: machine
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: {{{ grub2_boot_path }}}/user.cfg
+        filegid: '0'
