@@ -88,41 +88,44 @@ def get_product_yaml(product):
     product_yml = os.path.join(product_dir, "product.yml")
     if os.path.exists(product_yml):
         return product_yml
-    else:
-        print(f"'{product_yml}' file was not found.")
-        exit(1)
+    print(f"'{product_yml}' file was not found.")
+    exit(1)
 
 
 def count_implicit_status(ctrls, status_count):
+    automated = status_count[controls.Status.AUTOMATED]
+    documentation = status_count[controls.Status.DOCUMENTATION]
+    inherently_met = status_count[controls.Status.INHERENTLY_MET]
+    manual = status_count[controls.Status.MANUAL]
+    not_applicable = status_count[controls.Status.NOT_APPLICABLE]
+    partial = status_count[controls.Status.PARTIAL]
+    pending = status_count[controls.Status.PENDING]
+
     status_count['all'] = len(ctrls)
-    status_count['applicable'] = len(ctrls) - status_count[controls.Status.NOT_APPLICABLE]
-    status_count['assessed'] = status_count['applicable'] - status_count[controls.Status.PENDING]
+    status_count['applicable'] = len(ctrls) - not_applicable
+    status_count['assessed'] = status_count['applicable'] - pending
     status_count['not assessed'] = status_count['applicable'] - status_count['assessed']
-    status_count['full coverage'] = status_count[controls.Status.AUTOMATED]\
-                                    + status_count[controls.Status.DOCUMENTATION]\
-                                    + status_count[controls.Status.INHERENTLY_MET]\
-                                    + status_count[controls.Status.MANUAL]
-    status_count['partial coverage'] = status_count['full coverage']\
-                                       + status_count[controls.Status.PARTIAL]
+    status_count['full coverage'] = automated + documentation + inherently_met + manual
+    status_count['partial coverage'] = status_count['full coverage'] + partial
     return status_count
 
 
 def create_implicit_control_lists(ctrls, control_list):
+    does_not_meet = control_list[controls.Status.DOES_NOT_MEET]
+    not_applicable = control_list[controls.Status.NOT_APPLICABLE]
+    partial = control_list[controls.Status.PARTIAL]
+    pending = control_list[controls.Status.PENDING]
+    planned = control_list[controls.Status.PLANNED]
+    supported = control_list[controls.Status.SUPPORTED]
+
     control_list['all'] = ctrls
-    control_list['applicable'] = ctrls - control_list[controls.Status.NOT_APPLICABLE]
-    control_list['assessed'] = control_list['applicable'] - control_list[controls.Status.PENDING]
+    control_list['applicable'] = ctrls - not_applicable
+    control_list['assessed'] = control_list['applicable'] - pending
     control_list['not assessed'] = control_list['applicable'] - control_list['assessed']
-    control_list['full coverage'] = ctrls - control_list[controls.Status.DOES_NOT_MEET]\
-                                    - control_list[controls.Status.NOT_APPLICABLE]\
-                                    - control_list[controls.Status.PARTIAL]\
-                                    - control_list[controls.Status.PENDING]\
-                                    - control_list[controls.Status.PLANNED]\
-                                    - control_list[controls.Status.SUPPORTED]
-    control_list['partial coverage'] = ctrls - control_list[controls.Status.DOES_NOT_MEET]\
-                                    - control_list[controls.Status.NOT_APPLICABLE]\
-                                    - control_list[controls.Status.PENDING]\
-                                    - control_list[controls.Status.PLANNED]\
-                                    - control_list[controls.Status.SUPPORTED]
+    control_list['full coverage'] = ctrls - does_not_meet - not_applicable - partial\
+        - pending - planned - supported
+    control_list['partial coverage'] = ctrls - does_not_meet - not_applicable\
+        - pending - planned - supported
     return control_list
 
 
@@ -160,8 +163,8 @@ def print_controls(status_count, control_list, args):
         exit(1)
 
     if status_count[status] > 0:
-        print("\nList of the {status} ({total}) controls:".format(total=status_count[status],
-                                                                status=status))
+        print("\nList of the {status} ({total}) controls:".format(
+            total=status_count[status], status=status))
         for ctrl in control_list[status]:
             print("{id:>16} - {title}".format(id=ctrl.id, title=ctrl.title))
     else:
@@ -220,7 +223,6 @@ def print_to_json(ctrls, product, id, level):
         .union(ctrllist[controls.Status.INHERENTLY_MET])\
         .union(ctrllist[controls.Status.MANUAL]).union(ctrllist[controls.Status.PLANNED])\
         .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.SUPPORTED])
-
     data["format_version"] = "v0.0.2"
     data["product_name"] = product
     data["benchmark"] = dict()
@@ -269,11 +271,10 @@ def parse_arguments():
         description="Tool used to evaluate control files",
         epilog="Usage example: utils/controleval.py stats -i cis_rhel8 -l l2_server -p rhel8")
     parser.add_argument(
-        '--controls-dir', default='./controls/',
-        help="Directory that contains control files with policy controls. "
-             "e.g.: ~/scap-security-guide/controls")
-    subparsers = parser.add_subparsers(
-        dest='subcmd', required=True)
+        '--controls-dir', default='./controls/', help=(
+            "Directory that contains control files with policy controls. "
+            "e.g.: ~/scap-security-guide/controls"))
+    subparsers = parser.add_subparsers(dest='subcmd', required=True)
 
     stats_parser = subparsers.add_parser(
         'stats',
