@@ -15,10 +15,11 @@ import ssg.controls
 import ssg.yaml
 import ssg.jinja
 import template_renderer
+from rendering import common
 
 
 class HtmlOutput(template_renderer.Renderer):
-    TEMPLATE_NAME = "rules-template.html"
+    TEMPLATE_NAME = "rendering/rules-template.html"
 
     def _get_all_compiled_profiles(self):
         compiled_profiles = glob(os.path.join(self.built_content_path, "profiles", "*.profile"))
@@ -30,14 +31,6 @@ class HtmlOutput(template_renderer.Renderer):
     def _set_rule_profiles_membership(self, rule, profiles):
         rule.in_profiles = [p for p in profiles if rule.id_ in p.selected]
 
-    def _resolve_var_substitutions(self, rule):
-        # The <sub .../> here is not the HTML subscript element <sub>...</sub>,
-        # and therefore is invalid HTML.
-        # so this code substitutes the whole sub element with contents of its idref prefixed by $
-        # as occurrence of sub with idref implies that substitution of XCCDF values takes place
-        rule.description = re.sub(
-            r'<sub\s+idref="([^"]*)"\s*/>', r"<tt>$\1</tt>", rule.description)
-
     def process_rules(self, rule_files):
         rules = []
         profiles = self._get_all_compiled_profiles()
@@ -46,7 +39,7 @@ class HtmlOutput(template_renderer.Renderer):
             rule = ssg.build_yaml.Rule.from_yaml(r_file, self.env_yaml)
             self._set_rule_relative_definition_location(rule)
             self._set_rule_profiles_membership(rule, profiles)
-            self._resolve_var_substitutions(rule)
+            common.resolve_var_substitutions_in_rule(rule)
             rules.append(rule)
 
         self.template_data["rules"] = rules
