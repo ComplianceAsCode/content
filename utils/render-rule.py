@@ -47,7 +47,9 @@ class HtmlOutput(template_renderer.Renderer):
     TEMPLATE_NAME = "rendering/rule-template.html"
 
     def process_rule(self, rule_id):
-        rule_fname = pathlib.Path(self.built_content_path) / "rules" / (rule_id + ".yml")
+        self.built_content_path = pathlib.Path(self.built_content_path)
+
+        rule_fname = self.built_content_path / "rules" / (rule_id + ".yml")
         try:
             rule = ssg.build_yaml.Rule.from_yaml(rule_fname, self.env_yaml)
         except RuntimeError as exc:
@@ -61,20 +63,9 @@ class HtmlOutput(template_renderer.Renderer):
         prose.description = common.resolve_var_substitutions(rule.description)
         prose.rationale = common.resolve_var_substitutions(rule.rationale)
 
-        fixes = Namespace()
-        built_content_path = pathlib.Path(self.built_content_path)
-        bash_loc = built_content_path / "fixes" / "bash" / (rule_id + ".sh")
-        fixes.bash = self._highlight_file(bash_loc, pygments.lexers.BashLexer())
-        ansible_loc = built_content_path / "fixes" / "ansible" / (rule_id + ".yml")
-        fixes.ansible = self._highlight_file(ansible_loc, pygments.lexers.YamlLexer())
-
-        checks = Namespace()
-        oval_loc = built_content_path / "checks" / "oval" / (rule_id + ".xml")
-        checks.oval = self._highlight_file(oval_loc, pygments.lexers.XmlLexer())
-
         self.template_data["prose"] = prose
-        self.template_data["fixes"] = fixes
-        self.template_data["checks"] = checks
+        self.template_data["fixes"] = self._get_fixes(rule_id)
+        self.template_data["checks"] = self._get_checks(rule_id)
         self.template_data["rule"] = rule
 
         self._add_policy_content_to_categories(rule.policy_specific_content)
@@ -92,7 +83,39 @@ class HtmlOutput(template_renderer.Renderer):
     def _highlight_file(self, fname, lexer):
         with open(fname, "r") as f:
             code = f.read()
+            code = common.resolve_var_substitutions(code)
             return pygments.highlight(code, lexer, pygments.formatters.HtmlFormatter())
+
+    def _get_fixes(self, rule_id):
+        fixes = Namespace()
+
+        basename = rule_id + ".sh"
+        bash_loc = self.built_content_path / "fixes" / "bash" / basename
+        if not bash_loc.exists():
+            bash_loc = self.built_content_path / "fixes_from_templates" / "bash" / basename
+        if bash_loc.exists():
+            fixes.bash = self._highlight_file(bash_loc, pygments.lexers.BashLexer())
+
+        basename = rule_id + ".yml"
+        ansible_loc = self.built_content_path / "fixes" / "ansible" / basename
+        if not ansible_loc.exists():
+            ansible_loc = self.built_content_path / "fixes_from_templates" / "ansible" / basename
+        if ansible_loc.exists():
+            fixes.ansible = self._highlight_file(ansible_loc, pygments.lexers.YamlLexer())
+
+        return fixes
+
+    def _get_checks(self, rule_id):
+        checks = Namespace()
+
+        basename = rule_id + ".xml"
+        oval_loc = self.built_content_path / "checks" / "oval" / basename
+        if not oval_loc.exists():
+            oval_loc = self.built_content_path / "checks_from_templates" / "oval" / basename
+        if oval_loc.exists():
+            checks.oval = self._highlight_file(oval_loc, pygments.lexers.XmlLexer())
+
+        return checks
 
 
 def parse_args():
