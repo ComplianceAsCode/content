@@ -281,13 +281,14 @@ controls:
     rules:
       - mount_option_home_usrquota
 
-  # NEEDS RULE
   - id: 1.1.7.5
     title: Ensure grpquota option set on /home partition (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - mount_option_home_grpquota
 
   - id: 1.1.8.1
     title: Ensure nodev option set on /dev/shm partition (Automated)
