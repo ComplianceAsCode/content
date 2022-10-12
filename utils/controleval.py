@@ -210,7 +210,8 @@ def print_stats_json(product, id, level, control_list):
 
     for status in sorted(control_list.keys()):
         json_key_name = get_formatted_name(status)
-        data["addressed_controls"][json_key_name] = [str(c.id) for c in (control_list[status])]
+        data["addressed_controls"][json_key_name] = [
+            sorted(str(c.id) for c in (control_list[status]))]
     print(json.dumps(data))
 
 
