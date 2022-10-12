@@ -92,6 +92,12 @@ def get_product_yaml(product):
     exit(1)
 
 
+def get_formatted_name(text_name):
+    for special_char in '-. ':
+        text_name = text_name.replace(special_char, '_')
+    return text_name
+
+
 def count_implicit_status(ctrls, status_count):
     automated = status_count[controls.Status.AUTOMATED]
     documentation = status_count[controls.Status.DOCUMENTATION]
@@ -187,6 +193,22 @@ def print_stats(status_count, control_list, args):
         print_controls(status_count, control_list, args)
 
 
+def print_stats_json(product, id, level, control_list):
+    data = dict()
+    data["format_version"] = "v0.0.3"
+    data["product_name"] = product
+    data["benchmark"] = dict()
+    data["benchmark"]["name"] = id
+    data["benchmark"]["baseline"] = level
+    data["total_controls"] = len(control_list['applicable'])
+    data["addressed_controls"] = dict()
+
+    for status in sorted(control_list.keys()):
+        json_key_name = get_formatted_name(status)
+        data["addressed_controls"][json_key_name] = [str(c.id) for c in (control_list[status])]
+    print(json.dumps(data))
+
+
 def stats(controls_manager, args):
     validate_args(controls_manager, args)
     ctrls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
@@ -199,71 +221,14 @@ def stats(controls_manager, args):
     status_count, control_list = count_controls_by_status(ctrls)
 
     if args.output_format == 'json':
-        print_to_json(
-            ctrls,
-            args.product,
-            args.id,
-            args.level)
+        print_stats_json(args.product, args.id, args.level, control_list)
     else:
         print_stats(status_count, control_list, args)
-
-
-def print_to_json(ctrls, product, id, level):
-    data = dict()
-    ctrllist = collections.defaultdict(set)
-
-    for ctrl in ctrls:
-        ctrllist[str(ctrl.status)].add(ctrl)
-
-    applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
-    assessedlist = set()\
-        .union(ctrllist[controls.Status.AUTOMATED])\
-        .union(ctrllist[controls.Status.DOCUMENTATION])\
-        .union(ctrllist[controls.Status.DOES_NOT_MEET])\
-        .union(ctrllist[controls.Status.INHERENTLY_MET])\
-        .union(ctrllist[controls.Status.MANUAL]).union(ctrllist[controls.Status.PLANNED])\
-        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.SUPPORTED])
-    data["format_version"] = "v0.0.2"
-    data["product_name"] = product
-    data["benchmark"] = dict()
-    data["benchmark"]["name"] = id
-    data["benchmark"]["baseline"] = level
-    data["total_controls"] = len(applicablelist)
-    data["addressed_controls"] = dict()
-    data["addressed_controls"]["all"] = get_id_array(ctrls)
-    data["addressed_controls"]["applicable"] = get_id_array(applicablelist)
-    data["addressed_controls"]["assessed"] = get_id_array(assessedlist)
-    data["addressed_controls"]["notassessed"] = get_id_array(applicablelist - assessedlist)
-    data["addressed_controls"]["automated"] = get_id_array(
-        ctrllist[controls.Status.AUTOMATED])
-    data["addressed_controls"]["doesnotmeet"] = get_id_array(
-        ctrllist[controls.Status.DOES_NOT_MEET])
-    data["addressed_controls"]["documentation"] = get_id_array(
-        ctrllist[controls.Status.DOCUMENTATION])
-    data["addressed_controls"]["inherently"] = get_id_array(
-        ctrllist[controls.Status.INHERENTLY_MET])
-    data["addressed_controls"]["manual"] = get_id_array(
-        ctrllist[controls.Status.MANUAL])
-    data["addressed_controls"]["notapplicable"] = get_id_array(
-        ctrllist[controls.Status.NOT_APPLICABLE])
-    data["addressed_controls"]["planned"] = get_id_array(
-        ctrllist[controls.Status.PLANNED])
-    data["addressed_controls"]["pending"] = get_id_array(
-        ctrllist[controls.Status.PENDING])
-    data["addressed_controls"]["partial"] = get_id_array(
-        ctrllist[controls.Status.PARTIAL])
-    data["addressed_controls"]["supported"] = get_id_array(
-        ctrllist[controls.Status.SUPPORTED])
-    print(json.dumps(data))
 
 
 subcmds = dict(
     stats=stats
 )
-
-
-def get_id_array(ctrls):
-    return [c.id for c in ctrls]
 
 
 def parse_arguments():
