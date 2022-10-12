@@ -3,6 +3,8 @@ import copy
 import os
 import pytest
 import xml.etree.ElementTree as ET
+import xmldiff.main
+from lxml import etree as LET
 
 import ssg.id_translate
 from ssg.constants import XCCDF12_NS, oval_namespace, ocil_namespace
@@ -126,6 +128,51 @@ def test_idtranslator_translate_oval_ids(idtranslator, oval_tree):
     assert real.filter_ref == expected_state_id
     assert real.filter_ref == real.state_id
     assert real.state_id == expected_state_id
+
+
+def test_idtranslator_translate_oval_xmldiff(idtranslator, oval_tree):
+    old = LET.fromstring(ET.tostring(oval_tree))
+    new = LET.fromstring(ET.tostring(idtranslator.translate(oval_tree)))
+    inverted_new_nsmap = {v: k for k, v in old.nsmap.items()}
+    o = inverted_new_nsmap[oval_namespace]
+    ou = inverted_new_nsmap[oval_unix_namespace]
+    real_diff = set(xmldiff.main.diff_trees(old, new))
+    expected_diff = {
+        xmldiff.actions.UpdateAttrib(
+            node=f'/{o}:oval_definitions/{o}:definitions/{o}:definition[1]',
+            name='id',
+            value='oval:ssg-kerberos_disable_no_keytab:def:1'),
+        xmldiff.actions.UpdateAttrib(
+            node=f'/{o}:oval_definitions/{o}:tests/{ou}:file_test[1]',
+            name='id',
+            value='oval:ssg-test_kerberos_disable_no_keytab:tst:1'),
+        xmldiff.actions.UpdateAttrib(
+            node=f'/{o}:oval_definitions/{o}:objects/{ou}:file_object[1]',
+            name='id',
+            value='oval:ssg-obj_kerberos_disable_no_keytab:obj:1'),
+        xmldiff.actions.UpdateAttrib(
+            node=f'/{o}:oval_definitions/{o}:states/{ou}:file_state[1]',
+            name='id',
+            value='oval:ssg-filter_ssh_key_owner_root:ste:1'),
+        xmldiff.actions.UpdateAttrib(
+            node=(
+                f'/{o}:oval_definitions/{o}:tests/{ou}:file_test/'
+                f'{ou}:object[1]'),
+            name='object_ref',
+            value='oval:ssg-obj_kerberos_disable_no_keytab:obj:1'),
+        xmldiff.actions.UpdateTextIn(
+            node=(
+                f'/{o}:oval_definitions/{o}:objects/{ou}:file_object/'
+                f'{o}:filter[1]'),
+            text='oval:ssg-filter_ssh_key_owner_root:ste:1'),
+        xmldiff.actions.UpdateAttrib(
+            node=(
+                f'/{o}:oval_definitions/{o}:definitions/{o}:definition/'
+                f'{o}:criteria/{o}:criterion[1]'),
+            name='test_ref',
+            value='oval:ssg-test_kerberos_disable_no_keytab:tst:1')
+    }
+    assert real_diff == expected_diff
 
 
 def test_idtranslator_translate_oval_differences(idtranslator, oval_tree):
