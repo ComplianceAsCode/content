@@ -3,7 +3,6 @@ import copy
 import os
 import pytest
 import xml.etree.ElementTree as ET
-from lxml import etree as LET
 
 import ssg.id_translate
 from ssg.constants import XCCDF12_NS, oval_namespace, ocil_namespace
@@ -132,6 +131,7 @@ def test_idtranslator_translate_oval_ids(idtranslator, oval_tree):
 def test_idtranslator_translate_oval_xmldiff(idtranslator, oval_tree):
     xmldiff_main = pytest.importorskip("xmldiff.main")
     xmldiff_actions = pytest.importorskip("xmldiff.actions")
+    LET = pytest.importorskip("lxml.etree")
     old = LET.fromstring(ET.tostring(oval_tree))
     new = LET.fromstring(ET.tostring(idtranslator.translate(oval_tree)))
     inverted_new_nsmap = {v: k for k, v in old.nsmap.items()}
