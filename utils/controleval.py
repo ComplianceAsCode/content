@@ -161,6 +161,10 @@ def print_specific_stat(status, current, total):
             total=total))
 
 
+def sort_controls_by_id(control_list):
+    return sorted([(str(c.id), c.title) for c in control_list])
+
+
 def print_controls(status_count, control_list, args):
     status = args.status
     if status not in status_count:
@@ -171,8 +175,9 @@ def print_controls(status_count, control_list, args):
     if status_count[status] > 0:
         print("\nList of the {status} ({total}) controls:".format(
             total=status_count[status], status=status))
-        for ctrl in control_list[status]:
-            print("{id:>16} - {title}".format(id=ctrl.id, title=ctrl.title))
+
+        for ctrl in sort_controls_by_id(control_list[status]):
+            print("{id:>16} - {title}".format(id=ctrl[0], title=ctrl[1]))
     else:
         print("There is no controls with {status} status.".format(status=status))
 
