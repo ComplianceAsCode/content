@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} disable the ability of systemd to spawn an interactive boot process.
+
+vuldiscussion: |-
+    Using interactive or recovery boot, the console user could disable auditing, firewalls, or other services, weakening system security.
+
+checktext: |-
+    Verify that GRUB 2 is configured to disable interactive boot.
+
+    Check that the current GRUB 2 configuration disables the ability of systemd to spawn an interactive boot process with the following command:
+
+    $ sudo grubby --info=ALL | grep args | grep 'systemd.confirm_spawn'
+
+    If any output is returned, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to allocate sufficient audit_backlog_limit to disable the ability of systemd to spawn an interactive boot process with the following command:
+
+    $ sudo grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"

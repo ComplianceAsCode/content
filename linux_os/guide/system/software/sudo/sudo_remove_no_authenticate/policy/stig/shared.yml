@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must require users to reauthenticate for privilege escalation.
+
+vuldiscussion: |-
+    Without re-authentication, users may access resources or perform tasks for which they
+    do not have authorization.
+
+    When operating systems provide the capability to escalate a functional capability, it
+    is critical that the user re-authenticate.
+
+checktext: |-
+    Verify that "/etc/sudoers" has no occurrences of "!authenticate" with the following command:
+
+    $ sudo grep -i !authenticate /etc/sudoers /etc/sudoers.d/*
+
+    If any occurrences of "!authenticate" are returned, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow users to execute privileged actions without authenticating.
+
+    Remove any occurrence of "!authenticate" found in "/etc/sudoers" file or files in the "/etc/sudoers.d" directory.
+
+    $ sudo sed -i '/\!authenticate/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*

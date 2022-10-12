@@ -140,10 +140,6 @@ multiple benchmarks in our project:
 <td><p><code>/applications</code> (Notice no <code>guide</code> subdirectory there!)</p></td>
 </tr>
 <tr class="even">
-<td><p>Java Runtime Environment</p></td>
-<td><p><code>/products/jre/guide</code></p></td>
-</tr>
-<tr class="even">
 <td><p>Firefox</p></td>
 <td><p><code>/products/firefox/guide</code></p></td>
 </tr>
@@ -364,7 +360,7 @@ all_cmake_products=(
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel7', 'rhel8', 'sle12',
                        'ubuntu1604', 'ubuntu1804', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'jre',
+                       'chromium', 'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
 ...
 </pre>
@@ -401,7 +397,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
-    'jre': 'Java Runtime Environment',
     'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
@@ -492,7 +487,7 @@ EOF
 
 11. Create a new file under `transforms` directory called `table-style.xslt`:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt 
+cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="../../shared/transforms/shared_table-style.xslt"/>
@@ -530,125 +525,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 EOF
 ```
 
-14. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt 
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
-
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-	<xsl:template match="/">
-		<html>
-		<head>
-			<title><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></title>
-		</head>
-		<body>
-			<br/>
-			<br/>
-			<div style="text-align: center; font-size: x-large; font-weight:bold"><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></div>
-			<br/>
-			<br/>
-			<xsl:apply-templates select="cdf:Benchmark"/>
-		</body>
-		</html>
-	</xsl:template>
-
-
-	<xsl:template match="cdf:Benchmark">
-		<xsl:call-template name="table-style" />
-
-		<table>
-			<thead>
-				<td>Rule Title</td>
-				<td>Description</td>
-				<td>Rationale</td>
-				<td>Variable Setting</td>
-				<td>ANSSI Best practice Mapping</td>
-			</thead>
-		<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:select">
-			<xsl:variable name="idrefer" select="@idref" />
-			<xsl:variable name="enabletest" select="@selected" />
-			<xsl:for-each select="//cdf:Rule">
-				<xsl:call-template name="ruleplate">
-					<xsl:with-param name="idreference" select="$idrefer" />
-					<xsl:with-param name="enabletest" select="$enabletest" />
-				</xsl:call-template>
-			</xsl:for-each>
-		</xsl:for-each>
-
-		</table>
-	</xsl:template>
-
-
-	<xsl:template match="cdf:Rule" name="ruleplate">
-		<xsl:param name="idreference" />
-		<xsl:param name="enabletest" />
-		<xsl:if test="@id=$idreference and $enabletest='true'">
-		<tr>
-			<td> <xsl:value-of select="cdf:title" /></td>
-			<td> <xsl:apply-templates select="cdf:description"/> </td>
-			<!-- call template to grab text and also child nodes (which should all be xhtml)  -->
-			<td> <xsl:apply-templates select="cdf:rationale"/> </td>
-			<!-- need to resolve <sub idref=""> here  -->
-			<td> <!-- TODO: print refine-value from profile associated with rule --> </td>
-			<td> 
-				<xsl:for-each select="cdf:reference[@href=$anssiuri]">
-					<xsl:value-of select="text()"/>
-					<br/>
-				</xsl:for-each>
-			</td> 
-		</tr>
-		</xsl:if>
-	</xsl:template>
-
-
-	<xsl:template match="cdf:check">
-		<xsl:for-each select="cdf:check-export">
-			<xsl:variable name="rulevar" select="@value-id" />
-				<!--<xsl:value-of select="$rulevar" />:-->
-				<xsl:for-each select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:refine-value">
-					<xsl:if test="@idref=$rulevar">
-						<xsl:value-of select="@selector" />
-					</xsl:if>
-				</xsl:for-each>
-		</xsl:for-each>
-	</xsl:template>
-
-
-    <!-- getting rid of XHTML namespace -->
-	<xsl:template match="xhtml:*">
-		<xsl:element name="{local-name()}">
-			<xsl:apply-templates select="node()|@*"/>
-		</xsl:element>
-	</xsl:template>
-
-    <xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-		</xsl:copy>
-	</xsl:template>
-
-    <xsl:template match="cdf:description">
-             <!-- print all the text and children (xhtml elements) of the description -->
-        <xsl:apply-templates select="@*|node()" />
-            </xsl:template>
-
-    <xsl:template match="cdf:rationale">
-             <!-- print all the text and children (xhtml elements) of the description -->
-        <xsl:apply-templates select="@*|node()" />
-            </xsl:template>
-
-
-
-</xsl:stylesheet>
-EOF
-```
-
-15. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
+14. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -663,7 +540,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 EOF
 ```
 
-16. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+15. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
@@ -830,7 +707,7 @@ in our repository. However, we want one of them to be selected only on RHEL 9,
 but the rule is applicable to all platforms.
 * R2 is up to manual checking, but we have systemd_target_multi_user which is
 related to this control.
-* R3 can be automatically scanned by SCAP but unfortunately we don’t have any
+* R3 can be automatically scanned by SCAP but unfortunately we don't have any
 rules implemented yet.
 
 For each control we will add the `status` key, which describes the current
@@ -859,7 +736,7 @@ the file will look like this:
 
 ```
 $ cat controls/abcd.yml
- 
+
 id: abcd
 title: ABCD Benchmark for securing Linux systems
 version: 1.2.3
@@ -884,7 +761,7 @@ controls:
       The features configured at the level of launched services
       should be limited to the strict minimum.
     status: supported
-    note: |-
+    notes: |-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:
@@ -908,7 +785,7 @@ See the example below.
 
 ```
 $ cat controls/abcd.yml
- 
+
 id: abcd
 title: ABCD Benchmark for securing Linux systems
 version: 1.2.3
@@ -917,7 +794,7 @@ source: https://www.abcd.com/linux.pdf
 
 ```
 $ cat controls/abcd/R1.yml
- 
+
 controls:
   - id: R1
     title: User session timeout
@@ -936,7 +813,7 @@ controls:
 
 ```
 $ cat controls/abcd/R2.yml
- 
+
 controls:
   - id: R2
     title: Minimization of configuration
@@ -944,7 +821,7 @@ controls:
       The features configured at the level of launched services
       should be limited to the strict minimum.
     status: supported
-    note: |-
+    notes: |-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:
@@ -1099,7 +976,6 @@ controls: a list of controls (required key)
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
     related_rules: a list of related rules
-    note: a short paragraph of text
     controls: a nested list of controls
     status: a keyword that reflects the current status of the implementation of this control
     tickets: a list of URLs reflecting the work that still needs to be done to address this control
@@ -1137,10 +1013,10 @@ controls:
     description: >-
       The features configured at the level of launched services
       should be limited to the strict minimum.
-    rationale: >- 
+    rationale: >-
         Minimization of configuration helps to reduce attack surface.
     status: supported
-    note: >-
+    notes: >-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:
@@ -1179,7 +1055,7 @@ controls:
 
 ### Using controls in profiles
 
-Later, we can use the policy requirements in profile YAML. Let’s say that we
+Later, we can use the policy requirements in profile YAML. Let's say that we
 will define a “Desktop” profile built from the controls.
 
 To use controls, we add them under `selection` keys in the profile. The entry
@@ -1187,7 +1063,7 @@ has the form `policy_id:control_id[:level_id]`, where `level_id` is optional.
 
 ```
 $ cat rhel8/profiles/abcd-desktop.profile
- 
+
 documentation_complete: true
 title: ABCD Desktop for Red Hat Enterprise Linux 8
 description: |-
@@ -1207,11 +1083,11 @@ requirements.
 
 In the example we have selected all controls from `controls/abcd.yml` by listing
 them explicitly. It is possible to shorten it using the `“all”` value which
-means that all controls will be selected. Let’s show how it will be easier:
+means that all controls will be selected. Let's show how it will be easier:
 
 ```
 $ cat rhel8/profiles/abcd-high.profile
- 
+
 documentation_complete: true
 title: ABCD High for Red Hat Enterprise Linux 8
 description: |-
@@ -1304,7 +1180,7 @@ If you have an existing product that you want to base your new STIG you can crea
 
     $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r3.xml -o controls/srg_gpos.yml
 
-The manual (`-m`) should be an SRG XML from DISA.  
+The manual (`-m`) should be an SRG XML from DISA.
 
 ##### Filling out content
 Every control in the policy file will create at least one row in the export.

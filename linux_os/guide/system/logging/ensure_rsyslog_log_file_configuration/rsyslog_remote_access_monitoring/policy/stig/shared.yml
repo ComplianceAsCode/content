@@ -1,0 +1,28 @@
+srg_requirement: |-
+    All {{{ full_name }}} remote access methods must be monitored.
+
+vuldiscussion: |-
+    Logging remote access methods can be used to trace the decrease the risks
+    associated with remote user access management. It can also be used to spot
+    cyber attacks and ensure ongoing compliance with organizational policies
+    surrounding the use of remote access methods.
+
+checktext: |-
+    Verify that {{{ full_name }}} monitors all remote access methods.
+
+    Check that remote access methods are being logged by running the following command:
+
+    $ grep -rE '(auth.\*|authpriv.\*|daemon.\*)' /etc/rsyslog.conf
+
+    /etc/rsyslog.conf:authpriv.*
+
+    If "auth.*", "authpriv.*" or "daemon.*" are not configured to be logged, this is a finding.
+
+fixtext: |-
+    Add or update the following lines to the "/etc/rsyslog.conf" file:
+
+    auth.*;authpriv.*;daemon.* /var/log/secure
+
+    The "rsyslog" service must be restarted for the changes to take effect with the following command:
+
+    $ sudo systemctl restart rsyslog.service

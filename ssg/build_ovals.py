@@ -197,7 +197,7 @@ def append(element, newchild):
 def check_oval_version(oval_version):
     """Not necessary, but should help with typos"""
 
-    supported_versions = ["5.10", "5.11"]
+    supported_versions = ["5.11"]
     if oval_version not in supported_versions:
         supported_versions_str = ", ".join(supported_versions)
         sys.stderr.write(
@@ -245,8 +245,8 @@ def _check_oval_version_from_oval(oval_file_tree, oval_version):
     if file_oval_version is None:
         # oval_version does not exist in <def-group/>
         # which means the OVAL is supported for any version.
-        # By default, that version is 5.10
-        file_oval_version = "5.10"
+        # By default, that version is 5.11
+        file_oval_version = "5.11"
 
     if tuple(oval_version.split(".")) >= tuple(file_oval_version.split(".")):
         return True

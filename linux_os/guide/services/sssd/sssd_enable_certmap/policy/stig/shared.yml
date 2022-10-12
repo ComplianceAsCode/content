@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must map the authenticated identity to the user or group account for PKI-based authentication.
+
+vuldiscussion: |-
+    Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.
+
+checktext: |-
+    Verify the certificate of the user or group is mapped to the corresponding user or group in the "sssd.conf" file with the following command:
+
+    $ sudo cat /etc/sssd/sssd.conf
+
+    [certmap/testing.test/rule_name]
+    matchrule =&lt;SAN&gt;.*EDIPI@mil
+    maprule = (userCertificate;binary={cert!bin})
+    domains = testing.test
+
+    If the certmap section does not exist, ask the System Administrator to indicate how certificates are mapped to accounts.  If there is no evidence of certificate mapping, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to map the authenticated identity to the user or group account by adding or modifying the certmap section of the "/etc/sssd/sssd.conf" file based on the following example:
+
+    [certmap/testing.test/rule_name]
+    matchrule = .*EDIPI@mil
+    maprule = (userCertificate;binary={cert!bin})
+    dmains = testing.test
+
+    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
+
+    $ sudo systemctl restart sssd.service

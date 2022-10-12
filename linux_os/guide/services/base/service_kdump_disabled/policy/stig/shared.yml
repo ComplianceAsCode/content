@@ -1,0 +1,44 @@
+srg_requirement: |-
+    The kdump service on {{{ full_name }}} must be disabled.
+
+vuldiscussion: |-
+    Kernel core dumps may contain the full contents of system memory at the
+    time of the crash. Kernel core dumps consume a considerable amount of disk
+    space and may result in denial of service by exhausting the available space
+    on the target file system partition. Unless the system is used for kernel
+    development or testing, there is little need to run the kdump service.
+
+checktext: |-
+    To check that the  kdump  service is disabled in system boot configuration,
+    run the following command:
+     $ sudo systemctl is-enabled  kdump
+    Output should indicate the  kdump  service has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+     $ sudo systemctl is-enabled  kdump
+     disabled
+
+    Run the following command to verify  kdump  is not active (i.e. not running) through current runtime configuration:
+     $ sudo systemctl is-active kdump
+
+    If the service is not running the command will return the following output:
+     inactive
+
+    The service will also be masked, to check that the  kdump  is masked, run the following command:
+     $ sudo systemctl show  kdump  | grep "LoadState\|UnitFileState"
+
+    If the service is masked the command will return the following outputs:
+
+     LoadState=masked
+
+     UnitFileState=masked
+
+    If the "kdump" is loaded and not masked, then this is a finding.
+
+fixtext: |-
+    Disable the kdump {{{ full_name }}} service.
+
+    To disable the kdump service run the following command:
+
+    $ sudo systemctl disable --now kdump
+
+    $ sudo systemctl mask --now kdump

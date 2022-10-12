@@ -1,5 +1,18 @@
 #!/bin/bash
-# platform = Ubuntu 20.04
+# platform = multi_platform_sle,Ubuntu 20.04
 
-cp -f common-account_pam_config_configured /etc/pam.d/common-account
-cp -f common-auth_pam_config_big_deny /etc/pam.d/common-auth
+cat >/etc/pam.d/common-account <<CACPCC
+account	[success=1 new_authtok_reqd=done default=ignore]	pam_unix.so
+account	requisite			pam_deny.so
+account required                        pam_tally2.so
+account	required			pam_permit.so
+CACPCC
+
+cat /etc/pam.d/common-auth <<CAUPCBD
+auth required pam_tally2.so onerr=fail audit silent deny=20 unlock_time=900
+auth	[success=1 default=ignore]	pam_unix.so nullok_secure
+auth	requisite			pam_deny.so
+auth	required			pam_permit.so
+auth	optional			pam_cap.so
+CAUPCBD
+

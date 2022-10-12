@@ -1,0 +1,33 @@
+srg_requirement: |-
+    {{{ full_name }}} must disable virtual syscalls.
+
+vuldiscussion: |-
+    Syscalls are special routines in the Linux kernel, which userspace applications ask to do privileged tasks.  Invoking a system call is an expensive operation because the processor must interrupt the currently executing task and switch context to kernel mode and then back to userspace after the system call completes.  Virtual Syscalls map into user space a page that contains some variables and the implementation of some system calls.  This allows the system calls to be executed in userspace to alleviate the context switching expense.
+
+    Virtual Syscalls provide an opportunity of attack for a user who has control of the return instruction pointer.  Disabling vsyscalls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns. If the system intends to run containers based on RHEL 6 components, then virtual syscalls will need enabled so the components function properly.
+
+checktext: |-
+    Verify that GRUB 2 is configured to disable vsyscalls .
+
+    Check that the current GRUB 2 configuration disables vsyscalls with the following command:
+
+    $ sudo grubby --info=ALL | grep args | grep -v 'vsyscall=none'
+
+    If any output is returned, this is a finding.
+
+    Check that vsyscalls are disabled by default to persist in kernel updates with the following command:
+
+    $ sudo grep vsyscall /etc/default/grub
+
+    GRUB_CMDLINE_LINUX="vsyscall=none"
+
+    If "vsyscall" is not set to "none", is missing or commented out and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+fixtext: |-
+    Document the use of vsyscalls with the ISSO as an operational requirement or disable them with the following command:
+
+    $ sudo grubby --update-kernel=ALL --args="vsyscall=none"
+
+    Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
+
+    GRUB_CMDLINE_LINUX="vsyscall=none"

@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must not allow users to override SSH environment variables.
+
+vuldiscussion: |-
+    SSH environment options potentially allow users to bypass
+    access restriction in some configurations.
+
+checktext: |-
+    Verify that unattended or automatic logon via ssh is disabled with the following command:
+
+    $ sudo grep -i permituserenvironment /etc/ssh/sshd_config
+
+    PermitUserEnvironment no
+
+    If "PermitUserEnvironment" is set to "yes", is missing completely, or is commented out, this is a finding.
+
+    If the required value is not set, this is a finding.
+
+fixtext: |-
+    Configure the {{{ full_name }}} SSH daemon to not allow unattended or automatic logon to the system.
+
+    Add or edit the following line in the "/etc/ssh/sshd_config" file:
+
+    PermitUserEnvironment no
+
+    Restart the SSH daemon  for the setting to take effect:
+
+    $ sudo systemctl restart sshd.service

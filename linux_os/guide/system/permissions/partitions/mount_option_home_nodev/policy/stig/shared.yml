@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent device files from being interpreted on file systems that contain user home directories.
+
+vuldiscussion: |-
+    The "nodev" mount option causes the system to not interpret character or block special devices. Executing character or block special devices from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.
+
+    The only legitimate location for device files is the "/dev" directory located on the root partition, with the exception of chroot jails if implemented.
+
+checktext: |-
+    Verify "/home" is mounted with the "nodev" option with the following command:
+
+    Note: If a separate file system has not been created for the user home directories (user home directories are mounted under "/"), this is automatically a finding as the "nodev" option cannot be used on the "/" system.
+
+    $ mount | grep /home
+
+    tmpfs on /home type tmpfs (rw,nodev,nosuid,noexec,seclabel)
+
+    If the "/home" file system is mounted without the "nodev" option, this is a finding.
+
+fixtext: |-
+    Modify "/etc/fstab" to use the "nodev" option on the "/home" directory.

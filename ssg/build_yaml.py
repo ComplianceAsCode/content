@@ -1359,8 +1359,9 @@ class Rule(XCCDFEntity):
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
-
-        rule.load_policy_specific_content(yaml_file, env_yaml)
+        # Only load policy specific content if rule doesn't have it defined yet
+        if not rule.policy_specific_content:
+            rule.load_policy_specific_content(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -1436,7 +1437,7 @@ class Rule(XCCDFEntity):
         for fname in filenames:
             policy = os.path.basename(os.path.dirname(fname))
             filename_appropriate_for_storage = (
-                fname.endswith(product_dot_yml)
+                fname.endswith(product_dot_yml) and product_name
                 or fname.endswith("shared.yml") and policy not in filename_by_policy)
             if (filename_appropriate_for_storage):
                 filename_by_policy[policy] = fname
@@ -1448,7 +1449,11 @@ class Rule(XCCDFEntity):
 
     def read_policy_specific_content(self, env_yaml, files):
         keys = dict()
-        filename_by_policy = self.triage_policy_specific_content(env_yaml["product"], files)
+        if env_yaml:
+            product = env_yaml["product"]
+        else:
+            product = ""
+        filename_by_policy = self.triage_policy_specific_content(product, files)
         for p, f in filename_by_policy.items():
             yaml_data = self.read_policy_specific_content_file(env_yaml, f)
             keys[p] = yaml_data
@@ -1733,7 +1738,7 @@ class Rule(XCCDFEntity):
             #       Therefore let's just add an OVAL ref of that ID.
             # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
             #       At the moment, the check elements of rules without OVAL are removed by
-            #       relabel_ids.py
+            #       the OVALFileLinker class.
             check_content_ref.set("href", "oval-unlinked.xml")
             check_content_ref.set("name", self.id_)
 
@@ -1752,26 +1757,26 @@ class Rule(XCCDFEntity):
         if not self.ocil and not self.ocil_clause:
             raise ValueError("Rule {0} doesn't have OCIL".format(self.id_))
         # Create <questionnaire> for the rule
-        questionnaire = ET.Element("questionnaire", id=self.id_ + "_ocil")
-        title = ET.SubElement(questionnaire, "title")
+        questionnaire = ET.Element("{%s}questionnaire" % ocil_namespace, id=self.id_ + "_ocil")
+        title = ET.SubElement(questionnaire, "{%s}title" % ocil_namespace)
         title.text = self.title
-        actions = ET.SubElement(questionnaire, "actions")
-        test_action_ref = ET.SubElement(actions, "test_action_ref")
+        actions = ET.SubElement(questionnaire, "{%s}actions" % ocil_namespace)
+        test_action_ref = ET.SubElement(actions, "{%s}test_action_ref" % ocil_namespace)
         test_action_ref.text = self.id_ + "_action"
         # Create <boolean_question_test_action> for the rule
         action = ET.Element(
-            "boolean_question_test_action",
+            "{%s}boolean_question_test_action" % ocil_namespace,
             id=self.id_ + "_action",
             question_ref=self.id_ + "_question")
-        when_true = ET.SubElement(action, "when_true")
-        result = ET.SubElement(when_true, "result")
+        when_true = ET.SubElement(action, "{%s}when_true" % ocil_namespace)
+        result = ET.SubElement(when_true, "{%s}result" % ocil_namespace)
         result.text = "PASS"
-        when_true = ET.SubElement(action, "when_false")
-        result = ET.SubElement(when_true, "result")
+        when_true = ET.SubElement(action, "{%s}when_false" % ocil_namespace)
+        result = ET.SubElement(when_true, "{%s}result" % ocil_namespace)
         result.text = "FAIL"
         # Create <boolean_question>
         boolean_question = ET.Element(
-            "boolean_question", id=self.id_ + "_question")
+            "{%s}boolean_question" % ocil_namespace, id=self.id_ + "_question")
         # TODO: The contents of <question_text> element used to be broken in
         # the legacy XSLT implementation. The following code contains hacks
         # to get the same results as in the legacy XSLT implementation.
@@ -2098,28 +2103,29 @@ class LinearLoader(object):
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
+    def export_benchmark_to_xml(self):
+        return self.benchmark.to_xml_element(self.env_yaml)
+
     def export_benchmark_to_file(self, filename):
         register_namespaces()
         return self.benchmark.to_file(filename, self.env_yaml)
 
-    def export_ocil_to_file(self, filename):
-        root = ET.Element('ocil')
+    def export_ocil_to_xml(self):
+        root = ET.Element('{%s}ocil' % ocil_namespace)
         root.set('xmlns:xsi', xsi_namespace)
-        root.set("xmlns", ocil_namespace)
         root.set("xmlns:xhtml", xhtml_namespace)
-        tree = ET.ElementTree(root)
-        generator = ET.SubElement(root, "generator")
-        product_name = ET.SubElement(generator, "product_name")
+        generator = ET.SubElement(root, "{%s}generator" % ocil_namespace)
+        product_name = ET.SubElement(generator, "{%s}product_name" % ocil_namespace)
         product_name.text = "build_shorthand.py from SCAP Security Guide"
-        product_version = ET.SubElement(generator, "product_version")
+        product_version = ET.SubElement(generator, "{%s}product_version" % ocil_namespace)
         product_version.text = "ssg: " + self.env_yaml["ssg_version_str"]
-        schema_version = ET.SubElement(generator, "schema_version")
+        schema_version = ET.SubElement(generator, "{%s}schema_version" % ocil_namespace)
         schema_version.text = "2.0"
-        timestamp_el = ET.SubElement(generator, "timestamp")
+        timestamp_el = ET.SubElement(generator, "{%s}timestamp" % ocil_namespace)
         timestamp_el.text = timestamp
-        questionnaires = ET.SubElement(root, "questionnaires")
-        test_actions = ET.SubElement(root, "test_actions")
-        questions = ET.SubElement(root, "questions")
+        questionnaires = ET.SubElement(root, "{%s}questionnaires" % ocil_namespace)
+        test_actions = ET.SubElement(root, "{%s}test_actions" % ocil_namespace)
+        questions = ET.SubElement(root, "{%s}questions" % ocil_namespace)
         for rule in self.rules.values():
             if not rule.ocil and not rule.ocil_clause:
                 continue
@@ -2127,6 +2133,11 @@ class LinearLoader(object):
             questionnaires.append(questionnaire)
             test_actions.append(action)
             questions.append(boolean_question)
+        return root
+
+    def export_ocil_to_file(self, filename):
+        root = self.export_ocil_to_xml()
+        tree = ET.ElementTree(root)
         tree.write(filename)
 
 

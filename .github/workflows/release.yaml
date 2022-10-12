@@ -28,17 +28,6 @@ jobs:
       - name: Build Package Source
         run: make -j2 package_source
         working-directory: ./build
-      - name: Create Build Dir (OVAL 5.10)
-        run: mkdir -p build-oval510
-      - name: Configure (OVAL 5.10)
-        run: cmake -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10 ..
-        working-directory: ./build-oval510
-      - name: Build All (OVAL 5.10)
-        run: make -j2 all
-        working-directory: ./build-oval510
-      - name: Build ZIP (OVAL 5.10)
-        run: make -j2 zipfile
-        working-directory: ./build-oval510
       - name: Set Version
         id: set_version
         run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//} && echo ::set-output name=ver::${GITHUB_REF/refs\/tags\/v/}
@@ -63,7 +52,5 @@ jobs:
             build/scap-security-guide-*.tar.bz2.sha512
             build/zipfile/scap-security-guide-*.zip
             build/zipfile/scap-security-guide-*.zip.sha512
-            build-oval510/zipfile/scap-security-guide-*.zip
-            build-oval510/zipfile/scap-security-guide-*.zip.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

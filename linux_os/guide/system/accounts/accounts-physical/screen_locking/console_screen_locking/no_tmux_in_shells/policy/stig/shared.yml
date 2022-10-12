@@ -1,0 +1,17 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent users from disabling session control mechanisms.
+
+vuldiscussion: |-
+    The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, {{{ full_name }}} needs to provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.
+
+    Tmux is a terminal multiplexer that enables a number of terminals to be created, accessed, and controlled from a single screen.  Red Hat endorses tmux as the recommended session controlling package.
+
+checktext: |-
+    Verify {{{ full_name }}} prevents users from disabling the tmux terminal multiplexer with the following command:
+
+    $ grep -i tmux /etc/shells
+
+    If any output is produced, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent users from disabling the tmux terminal multiplexer by editing the "/etc/shells" configuration file to remove any instances of tmux.

@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} systems using Domain Name Servers (DNS) resolution must have at least two name servers configured.
+
+vuldiscussion: |-
+    To provide availability for name resolution services, multiple redundant
+    name servers are mandated. A failure in name resolution could lead to the
+    failure of security functions requiring name resolution, which may include
+    time synchronization, centralized authentication, and remote system logging.
+
+checktext: |-
+    Verify the name servers used by the system with the following command:
+
+    $ grep nameserver /etc/resolv.conf
+
+    nameserver 192.168.1.2
+    nameserver 192.168.1.3
+
+    If less than two lines are returned that are not commented out, this is a finding.
+
+fixtext: |-
+    Configure the operating system to use two or more name servers for DNS resolution.
+
+    By default, "NetworkManager" on {{{ full_name }}} dynamically updates the /etc/resolv.conf file with the DNS settings from active "NetworkManager" connection profiles. However, this feature can be disabled to allow manual configurations.
+
+    If manually configuring DNS, edit the "/etc/resolv.conf" file to uncomment or add the two or more "nameserver" option lines with the IP address of local authoritative name servers.

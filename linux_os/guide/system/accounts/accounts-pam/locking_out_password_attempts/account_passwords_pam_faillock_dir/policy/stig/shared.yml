@@ -1,0 +1,22 @@
+srg_requirement: |-
+    {{{ full_name }}} must ensure account lockouts persist.
+
+vuldiscussion: |-
+    Having lockouts persist across reboots ensures that account is only unlocked by an administrator.
+    If the lockouts did not persist across reboots an attack could simply reboot the system to continue brute force attacks against the accounts on the system.
+
+checktext: |-
+    Verify the "/etc/security/faillock.conf" file is configured use a non-default faillock directory to ensure contents persist after reboot:
+
+    $ sudo grep 'dir =' /etc/security/faillock.conf
+
+    dir = /var/log/faillock
+
+    If the "dir" option is not set to a non-default documented tally log directory, is missing or commented out, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} maintain the contents of the faillock directory after a reboot.
+
+    Add/Modify the "/etc/security/faillock.conf" file to match the following line:
+
+    dir = /var/log/faillock

@@ -26,7 +26,7 @@ checks and remediations.
 Rules are input described in YAML which mirrors the XCCDF format (an XML
 container). Rules are translated to become members of a `Group` in an
 XML file. All existing rules for Linux products can be found in the
-`linux_os/guide` directory. For non-Linux products (e.g., `jre`), this
+`linux_os/guide` directory. For non-Linux products (e.g., `firefox`), this
 content can be found in the `<product>/guide`. The exact location
 depends on the group (or category) that a rule belongs to.
 
@@ -102,7 +102,7 @@ A rule itself contains these attributes:
     </tr>
     <tr class="even">
     <td><p><code>info</code></p></td>
-    <td><p>Rule is informational only. Failing the rule doesn’t imply failure to conform to the security guidance of the benchmark.</p></td>
+    <td><p>Rule is informational only. Failing the rule doesn't imply failure to conform to the security guidance of the benchmark.</p></td>
     </tr>
     <tr class="odd">
     <td><p><code>low</code></p></td>
@@ -630,7 +630,7 @@ Tips:
 
 -   To use the local `test` subcommand, first create a yaml file under a
     directory structure under /tmp that mirrors the API path. For
-    example, if the resource’s full path is /api/v1/foo, save the yaml
+    example, if the resource's full path is /api/v1/foo, save the yaml
     to /tmp/api/v1/foo. Running `test` will then check the rule against
     the local file by launching an openscap-1.3.3 container using
     podman.
@@ -669,7 +669,7 @@ exceptions:
     tag. Otherwise if `oval_version` does not exist in `<def-group>`, it
     is assumed that the OVAL file applies to *any* OVAL version.
 
--   Don’t use the tags `<definitions>` `<tests>` `<objects>` `<states>`,
+-   Don't use the tags `<definitions>` `<tests>` `<objects>` `<states>`,
     instead, put the tags `<definition>` `<*_test>` `<*_object>`
     `<*_state>` directly inside the `<def-group>` tag.
 
@@ -844,14 +844,14 @@ Puppet, Ignition and Kubernetes. By default all remediation languages
 are built and included in the DataStream.
 
 But each product can specify its own set of remediation to include in
-the DataStream via a CMake Variable in the product’s `CMakeLists.txt`.
+the DataStream via a CMake Variable in the product's `CMakeLists.txt`.
 See example below, from OCP4 product, `ocp4/CMakeLists.txt`:
 
     set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
 
 They also have to be idempotent, meaning that they must be able to be
 executed multiple times without causing the fixes to accumulate. The
-Ansible’s language works in such a way that this behavior is built-in,
+Ansible's language works in such a way that this behavior is built-in,
 however, for the other versions, the remediations must have it
 implemented explicitly. Remediations also carry metadata that should be
 present at the beginning of the files. This meta data will be converted
@@ -926,7 +926,7 @@ Ansible remediations are either:
 -   Generated using jinja2 macros.
 
 They are meant to be executed by Ansible itself when requested by
-openscap, so they are written using [Ansible’s own
+openscap, so they are written using [Ansible's own
 language](http://docs.ansible.com/ansible/latest/intro.html) with the
 following exceptions:
 
@@ -1010,7 +1010,7 @@ guidelines:
     remediation content. If the macro is used from a nested block, use
     the `indent` jinja2 filter assuming the 4-space indentation.
     Typically, you want to call the macro with the intended indentation,
-    and as `indent` doesn’t indent the first line by default, you just
+    and as `indent` doesn't indent the first line by default, you just
     pass the number of spaces as the only argument. See the remediation
     for rule `ensure_fedora_gpgkey_installed` for reference.
 
@@ -1022,7 +1022,7 @@ guidelines:
     them](https://mywiki.wooledge.org/BashPitfalls#cmd1_.26.26_cmd2_.7C.7C_cmd3).
 
 -   Test your script in the "strict mode" with `set -e -o pipefail`
-    specified at the top of it. Make sure that the script doesn’t end
+    specified at the top of it. Make sure that the script doesn't end
     prematurely in the strict mode.
 
 -   Beware of constructs such as `[ $x = 1 ] && echo "$x is one"` as
@@ -1119,7 +1119,7 @@ All profiles and rules included in a products' DataStream are applicable
 by default. For example, all profiles and rules included in a `rhel8` DS
 will apply and evaluate in a RHEL 8 host.
 
-But a content’s applicability can be fine tuned to a specific
+But a content's applicability can be fine tuned to a specific
 environment in the product. The SCAP standard specifies two mechanisms
 to define applicability: - [CPE](https://nvd.nist.gov/products/cpe):
 Allows a specific hardware or platform to be identified. -
@@ -1157,9 +1157,9 @@ restricted to only environments which have `gdm` package installed.
 The OVAL checks for the CPE need to be of `inventory` class, and must be
 under `shared/checks/oval/`.
 
-#### Setting a product’s default CPE
+#### Setting a product's default CPE
 
-The product’s default applicability is set in its `product.yml` file,
+The product's default applicability is set in its `product.yml` file,
 under the `cpes` key. For example:
 
     cpes:
@@ -1170,7 +1170,7 @@ under the `cpes` key. For example:
 
 Multiple CPEs can be set as default platforms for a product.
 
-#### Setting the product’s CPE source directory
+#### Setting the product's CPE source directory
 
 The key `cpes_root` in `product.yml` file specifies the directory to
 source the CPEs from.
@@ -1178,8 +1178,8 @@ By default, all products source their CPEs from `shared/applicability/`.
 Any file with extension `.yml` will be sourced for CPE definitions.
 
 Note: Only CPEs that are referenced by a rule or profile will be included
-in the product’s CPE Dictionary.
-If no content requires the CPE, it is deemed unnecessary and won’t be
+in the product's CPE Dictionary.
+If no content requires the CPE, it is deemed unnecessary and won't be
 included in the dictionary.
 
 ## Tests (ctest)
@@ -1415,8 +1415,8 @@ The test will pass if:
 
 Rules may have extra verifications on them. For instance, one is able to
 verify if:
-- The rule’s expected result is gotten on a clean run.
-- The rule’s result changes after a remediation has been applied.
+- The rule's expected result is gotten on a clean run.
+- The rule's result changes after a remediation has been applied.
 
 If an automated remediation is not possible, one is also able to created
 a "manual" remediation that will be run as a bash script. The end-to-end
@@ -1427,7 +1427,7 @@ be executed.
 
 In order to test that a rule is yielding expected results in the e2e
 tests, one must create a file called `e2e.yml` in a `tests/ocp4/`
-directory which will exist in the rule’s directory itself.
+directory which will exist in the rule's directory itself.
 
 The format may look as follows:
 
@@ -1449,7 +1449,7 @@ roles in the cluster.
 It is also possible to differentiate results between roles. For such a thing,
 the format would look as follows:
 
-Let’s look at an example:
+Let's look at an example:
 
     ---
     default_result:
@@ -1477,11 +1477,11 @@ passing result. So `e2e.yml` has the following content:
     ---
     default_result: PASS
 
-Let’s look at another example:
+Let's look at another example:
 
 For the `api_server_encryption_provider_config` we want to apply a
 remediation which cannot be applied via the `compliance-operator`. So
-we’ll need a manual remediation for this.
+we'll need a manual remediation for this.
 
 The directory structure looks as follows:
 
@@ -1524,7 +1524,7 @@ Here, we apply the remediation (through the `patch` command) and probe
 the cluster for status. Once the cluster converges, we exit the script
 with `0`, which is a successful status.
 
-The e2e test run will time out at **15 minuntes** if a script doesn’t
+The e2e test run will time out at **15 minuntes** if a script doesn't
 converge.
 
 Note that the scripts will be run in parallel, but the test run will
@@ -1537,10 +1537,10 @@ The end-to-end tests for OpenShift are maintained in separate
 
     $ git clone https://github.com/ComplianceAsCode/ocp4e2e; cd ocp4e2e
 
-Note that it’s possible to run the e2e tests on a cluster of your choice.
+Note that it's possible to run the e2e tests on a cluster of your choice.
 
 To do so, ensure that you have a `KUBECONFIG` with appropriate
-credentials that points to the cluster where you’ll run the tests.
+credentials that points to the cluster where you'll run the tests.
 
 Run:
 
@@ -1558,7 +1558,7 @@ For more information on the available options, do:
     $ make help
 
 It is important to note that the tests will do changes to your cluster
-and there currently isn’t an option to clean them up. So take that into
+and there currently isn't an option to clean them up. So take that into
 account before running these tests.
 
 ## Contribution to infrastructure code

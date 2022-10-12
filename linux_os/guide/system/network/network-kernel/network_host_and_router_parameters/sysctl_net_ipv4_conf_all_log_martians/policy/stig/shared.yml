@@ -1,0 +1,38 @@
+srg_requirement: |-
+    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+
+vuldiscussion: |-
+    The presence of "martian" packets (which have impossible addresses)
+    as well as spoofed packets, source-routed packets, and redirects could be a
+    sign of nefarious network activity. Logging these packets enables this activity
+    to be detected.
+
+checktext: |-
+    Verify {{{ full_name }}} logs IPv4 martian packets.
+
+    Check the value of the accept source route variable with the following command:
+
+    $ sudo sysctl net.ipv4.conf.all.log_martians
+
+    net.ipv4.conf.all.log_martians = 1
+
+    If the returned line does not have a value of "1", a line is not returned, or the line is commented out, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv4.conf.all.log_martians | tail -1
+
+    net.ipv4.conf.all.log_martians = 1
+
+    If "net.ipv4.conf.all.log_martians" is not set to "1" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to log martian packets on IPv4 interfaces.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv4.conf.all.log_martians=1
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system

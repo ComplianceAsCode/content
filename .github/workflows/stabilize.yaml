@@ -40,26 +40,3 @@ jobs:
         # Performs linkcheck across all build tables and html guides to ensure there are no broken references.
         run: ctest -j2 -R linkchecker --output-on-failure
         working-directory: ./build
-
-  stabilize-fedora-scapval-12:
-    name: Build and Run SCAPVal on SCAP 1.2 Content (Container)
-    runs-on: ubuntu-latest
-    container:
-      image: fedora:latest
-    steps:
-      - name: Install Deps
-        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible expat libxslt python3-ansible-lint linkchecker java-1.8.0-openjdk unar wget python-unversioned-command
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Configure (OVAL 5.10)
-        run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10 ..
-        working-directory: ./build
-      - name: Build All (OVAL 5.10)
-        run: make -j2 all
-        working-directory: ./build
-      - name: Get SCAPVAL
-        run: wget $SCAPVAL_URL/$SCAPVAL_FILENAME.zip
-      - name: Unpack SCAPVAL
-        run: mkdir -p /opt/scapval/ && unar $SCAPVAL_FILENAME.zip -o /opt/scapval/
-      - name: Run SCAP Validation (1.2)
-        run: $GITHUB_WORKSPACE/tests/run_scapval.py --scap-version 1.2 --scapval-path /opt/scapval/$SCAPVAL_FILENAME/$SCAPVAL_JAR --build-dir $GITHUB_WORKSPACE/build

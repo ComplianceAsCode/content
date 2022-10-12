@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} wireless network adapters must be disabled.
+
+vuldiscussion: |-
+    This requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with {{{ full_name }}} systems. Wireless peripherals (e.g., Wi-Fi/Bluetooth/IR Keyboards, Mice, and Pointing Devices and Near Field Communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. Wireless peripherals must meet DoD requirements for wireless data transmission and be approved for use by the Authorizing Official (AO). Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that need to be protected, modification of communications with these wireless peripherals may be used to compromise the {{{ full_name }}} operating system.
+
+checktext: |-
+    Verify there are no wireless interfaces configured on the system with the following command:
+
+    Note: This requirement is Not Applicable for systems that do not have physical wireless network radios.
+
+    $ nmcli device status
+
+    DEVICE                    TYPE            STATE                    CONNECTION
+    virbr0                      bridge         connected             virbr0
+    wlp7s0                    wifi              connected            wifiSSID
+    enp6s0                    ethernet     disconnected        --
+    p2p-dev-wlp7s0     wifi-p2p     disconnected        --
+    lo                             loopback    unmanaged           --
+    virbr0-nic                tun              unmanaged          --
+
+    If a wireless interface is configured and has not been documented and approved by the Information System Security Officer (ISSO), this is a finding.
+
+fixtext: |-
+    Configure the system to disable all wireless network interfaces with the following command:
+
+    $ nmcli radio all off

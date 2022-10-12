@@ -409,18 +409,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def get_requirement(control: ssg.controls.Control, rule_obj: ssg.build_yaml.Rule) -> str:
-    if rule_obj.srg_requirement != "":
-        return rule_obj.srg_requirement
-    else:
-        return control.title()
-
-
-def get_rationale(rule_object):
-    if rule_object.vuldiscussion != "":
-        return rule_object.vuldiscussion
-    else:
-        return rule_object.rationale
+def get_policy_specific_content(key: str, rule_object: ssg.build_yaml.Rule) -> str:
+    psc = rule_object.policy_specific_content
+    if not psc:
+        return ""
+    stig = psc.get('stig')
+    if not stig:
+        return ""
+    return stig.get(key, "")
 
 
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
@@ -433,19 +429,17 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
                     row['Severity'] = ssg.build_stig.get_severity(control.levels[0])
-                row['Requirement'] = handle_variables(get_requirement(control.title, rule_object),
+                requirement = get_policy_specific_content('srg_requirement', rule_object)
+                row['Requirement'] = handle_variables(requirement,
                                                       control.variables, root_path,
                                                       product)
-                rationale = get_rationale(rule_object)
+                rationale = get_policy_specific_content('vuldiscussion', rule_object)
                 row['Vul Discussion'] = handle_variables(rationale, control.variables,
                                                          root_path, product)
-                ocil_var = handle_variables(rule_object.ocil, control.variables, root_path,
-                                            product)
-                ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables,
-                                                   root_path, product)
-                row['Check'] = f'{ocil_var}\n\n' \
-                               f'If {ocil_clause_var}, then this is a finding.'
-                row['Fix'] = handle_variables(rule_object.fixtext, control.variables, root_path,
+                checktext = get_policy_specific_content('checktext', rule_object)
+                row['Check'] = handle_variables(checktext, control.variables, root_path, product)
+                fixtext = get_policy_specific_content('fixtext', rule_object)
+                row['Fix'] = handle_variables(fixtext, control.variables, root_path,
                                               product)
                 row['STIGID'] = rule_object.identifiers.get('cce', "")
                 if control.status is not None:

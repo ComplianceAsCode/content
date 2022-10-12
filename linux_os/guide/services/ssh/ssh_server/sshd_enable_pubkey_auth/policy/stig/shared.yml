@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} SSHD must accept public key authentication.
+
+vuldiscussion: |-
+    Without the use of multifactor authentication, the ease of access to
+    privileged functions is greatly increased. Multifactor authentication
+    requires using two or more factors to achieve authentication.
+    A privileged account is defined as an information system account with
+    authorizations of a privileged user.
+    The DoD CAC with DoD-approved PKI is an example of multifactor
+    authentication.
+
+checktext: |-
+    Verify that {{{ full_name }}} SSH daemon accepts public key encryption with the following command:
+
+    $ sudo grep -i PubkeyAuthentication /etc/ssh/sshd_config
+
+    PubkeyAuthentication yes
+
+    If "PubkeyAuthentication" is set to no, the line is commented out, or the line is missing, this is a finding.
+
+fixtext: |-
+    To configure the system add or modify the following line in "/etc/ssh/sshd_config".
+
+    PubkeyAuthentication yes
+
+    Restart the SSH daemon for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service

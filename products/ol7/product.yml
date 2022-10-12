@@ -11,6 +11,8 @@ pkg_manager: "yum"
 
 init_system: "systemd"
 
+dconf_gdm_dir: "local.d"
+
 pkg_release: "53619141"
 pkg_version: "ec551f03"
 
@@ -18,6 +20,10 @@ release_key_fingerprint: "42144123FECFC55B9086313D72F97B74EC551F03"
 
 grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
 audisp_conf_path: "/etc/audisp"
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
 
 oval_feed_url: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
 

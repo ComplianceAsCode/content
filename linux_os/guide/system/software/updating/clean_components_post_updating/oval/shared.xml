@@ -1,6 +1,6 @@
-<def-group oval_version="5.10">
+<def-group>
   <definition class="compliance" id="clean_components_post_updating" version="1">
-    {{{ oval_metadata("The clean_requirements_on_remove option should be used to ensure that old 
+    {{{ oval_metadata("The clean_requirements_on_remove option should be used to ensure that old
       versions of software components are removed after updating.") }}}
     <criteria>
       <criterion comment="check value of clean_requirements_on_remove in {{{ pkg_manager_config_file }}}" test_ref="test_yum_clean_components_post_updating" />

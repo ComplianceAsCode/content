@@ -28,11 +28,18 @@ selections:
     - account_disable_post_pw_expiration
     - account_unique_name
     - accounts_maximum_age_login_defs
+    - accounts_minimum_age_login_defs
+    - accounts_no_uid_except_zero
     - accounts_password_all_shadowed
     - accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - accounts_password_warn_age_login_defs
+    - accounts_tmout
+    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
     - aide_build_database
     - aide_periodic_cron_checking
     - auditd_audispd_syslog_plugin_activated
@@ -66,6 +73,8 @@ selections:
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
     - audit_rules_mac_modification
     - audit_rules_media_export
     - audit_rules_networkconfig_modification
@@ -93,12 +102,18 @@ selections:
     - chronyd_or_ntpd_specify_multiple_servers
     - chronyd_specify_remote_server
     - configure_opensc_card_drivers
-    - dconf_gnome_screensaver_idle_activation_enabled
-    - dconf_gnome_screensaver_mode_blank
-    - display_login_attempts
     - configure_libreswan_crypto_policy
     - configure_openssl_crypto_policy
     - configure_ssh_crypto_policy
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_minlen
+    - cracklib_accounts_password_pam_retry
+    - dconf_gnome_screensaver_idle_activation_enabled
+    - dconf_gnome_screensaver_mode_blank
+    - display_login_attempts
     - ensure_logrotate_activated
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
@@ -107,6 +122,8 @@ selections:
     - file_groupowner_etc_group
     - file_groupowner_etc_passwd
     - file_groupowner_etc_shadow
+    - file_permissions_sshd_private_key
+    - file_permissions_sshd_pub_key
     - file_owner_grub2_cfg
     - file_ownership_var_log_audit
     - file_permissions_etc_group
@@ -118,22 +135,40 @@ selections:
     - grub2_audit_argument
     - install_hids
     - install_smartcard_packages
+    - no_direct_root_logins
     - no_empty_passwords
     - package_aide_installed
     - package_audit-audispd-plugins_installed
+    - package_audit_installed
+    - package_chrony_installed
+    - package_openldap-clients_removed
     - package_strongswan_installed
+    - package_sudo_installed
+    - package_telnet-server_removed
+    - package_vsftpd_removed
+    - package_ypserv_removed
+    - postfix_network_listening_disabled
     - rpm_verify_hashes
     - rpm_verify_permissions
     - rsyslog_files_groupownership
     - rsyslog_files_ownership
     - rsyslog_files_permissions
     - security_patches_up_to_date
+    - securetty_root_login_console_only
     - service_auditd_enabled
     - service_chronyd_or_ntpd_enabled
     - service_pcscd_enabled
     - set_password_hashing_algorithm_commonauth
     - set_password_hashing_algorithm_libuserconf
     - set_password_hashing_algorithm_logindefs
+    - sshd_do_not_permit_user_env
+    - sssd_enable_smartcards
+    - sshd_enable_warning_banner
     - sshd_set_idle_timeout
     - sshd_set_keepalive_0
     - sssd_enable_smartcards
+    - sshd_disable_empty_passwords
+    - sshd_disable_root_login
+    - sshd_set_loglevel_verbose
+    - sudo_add_use_pty
+    - sudo_custom_logfile

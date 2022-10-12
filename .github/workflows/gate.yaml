@@ -110,9 +110,9 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git python3-mypy
       - name: Install deps python
-        run: pip install ruamel.yaml yamlpath
+        run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -148,17 +148,8 @@ jobs:
           CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
         with:
           coverageLocations: build/tests/coverage.xml:coverage.py
-      - name: Build 5.10 (sanity only)
-        run: |-
-          ./build_product \
-              -d \
-              --oval '5.10' \
-              rhel7 \
-              rhel8 \
-              rhel9
-      - name: Validate OVAL Build 5.10
-        working-directory: ./build
-        run: ctest -j2 -R validate-ssg-rhel[0-9]+-oval.xml --output-on-failure -E unique-stigids
+      - name: Validate gitmailmap
+        run: egrep "\S" .mailmap | egrep -v '^#' | git check-mailmap --stdin
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
@@ -167,9 +158,9 @@ jobs:
       image: fedora:rawhide
     steps:
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
+          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck python-mypy
       -   name: Install deps python
-          run: pip install ruamel.yaml yamlpath
+          run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML
       -   name: Checkout
           uses: actions/checkout@v2
       -   name: Build

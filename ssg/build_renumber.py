@@ -272,8 +272,8 @@ class OCILFileLinker(FileLinker):
     def _get_checkid_string(self):
         return "{%s}questionnaire" % self.CHECK_NAMESPACE
 
-    def link(self):
-        self.tree = parse_file(self.fname)
+    def link(self, tree):
+        self.tree = tree
         self.tree = self.translator.translate(self.tree, store_defname=True)
 
 
@@ -352,14 +352,6 @@ def transpose_dict_with_sets(dict_in):
         for val in values:
             result[val].add(key)
     return result
-
-
-def drop_oval_definitions(ovaltree, defstoremove, oval_groups, indexed_oval_defs):
-    definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
-    for definition in defstoremove:
-        del oval_groups["definitions"][definition.get("id")]
-        del indexed_oval_defs[definition.get("id")]
-        definitions.remove(definition)
 
 
 def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):

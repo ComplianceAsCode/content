@@ -1,0 +1,28 @@
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.
+
+vuldiscussion: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via
+    user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking
+    the account.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured to lock the root account after three unsuccessful logon attempts with the command:
+
+    $ grep even_deny_root /etc/security/faillock.conf
+
+    even_deny_root
+
+    If the "even_deny_root" option is not set, is missing or commented out, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to lock out the "root" account after a number of incorrect login
+    attempts using "pam_faillock.so", first enable the feature using the following command:
+
+    $  sudo authselect enable-feature with-faillock
+
+     Then edit the "/etc/security/faillock.conf" file as follows:
+
+      add or uncomment the following line:
+     even_deny_root
+

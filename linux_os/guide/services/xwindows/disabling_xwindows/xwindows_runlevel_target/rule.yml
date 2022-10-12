@@ -45,18 +45,14 @@ references:
 ocil_clause: 'the system default target is not set to "multi-user.target" and the Information System Security Officer (ISSO) lacks a documented requirement for a graphical user interface'
 
 ocil: |-
-    Verify the default target is multi-user, run the following command:
+    Verify that {{{ full_name }}} is configured to boot to the command line:
     <pre>$ systemctl get-default</pre>
     <pre>multi-user.target</pre>
 
 fixtext: |-
-    Document the requirement for a graphical user interface with the ISSO or reinstall {{{ full_name }}} without the graphical user interface.
-    If reinstallation is not feasible, then continue with the following procedure:
-    Open an SSH session and enter the following commands:
+    Document the requirement for a graphical user interface with the ISSO or set the default target to multi-user with the following command:
 
     $ sudo systemctl set-default multi-user.target
-
-    A reboot is required for the changes to take effect.
 
 srg_requirement: 'The graphical display manager must not be the default target on {{{ full_name }}} unless approved.'
 

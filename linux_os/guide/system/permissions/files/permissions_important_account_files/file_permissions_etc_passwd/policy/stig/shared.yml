@@ -1,0 +1,21 @@
+srg_requirement: |-
+    The {{{ full_name }}} /etc/group file must have 0644 or less permissive to prevent unauthorized access.
+
+vuldiscussion: |-
+    If the "/etc/passwd" file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the list of
+    accounts on the system and associated information, and protection of this file
+    is critical for system security.
+
+checktext: |-
+    To check the permissions of /etc/passwd ,
+    run the command:
+     $ sudo stat -c "%a %n"/etc/passwd
+    If properly configured, the output should indicate the following permissions:
+    644
+
+    If /etc/passwd does not have unix mode 644, then this is a finding.
+
+fixtext: |-
+    Change the permissions of the file "/etc/group" to "0644" by running the following command:
+    $ sudo chmod 0644 /etc/group

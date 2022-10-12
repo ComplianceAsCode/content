@@ -1,0 +1,21 @@
+srg_requirement: |-
+    Successful/unsuccessful uses of the poweroff command in {{{ full_name }}} must generate an audit record.
+
+vuldiscussion: |-
+    Misuse of the poweroff command may cause availability issues for the system.
+
+checktext: |-
+    Verify that an audit event is generated for any successful/unsuccessful use of the poweroff command by performing the following command to check the file system rules in "/etc/audit/audit.rules":
+
+    $ sudo grep -w poweroff /etc/audit/audit.rules
+
+    -a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid>=1000 -F auid!=unset -k privileged-poweroff
+
+    If the command does not return a line, or the line is commented out, then this is a finding.
+
+fixtext: |-
+    Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "poweroff" command by adding or updating the following rule in the "/etc/audit/rules.d/audit.rules" file:
+
+    -a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid>=1000 -F auid!=unset -k privileged-poweroff
+
+    The audit daemon must be restarted for the changes to take effect.

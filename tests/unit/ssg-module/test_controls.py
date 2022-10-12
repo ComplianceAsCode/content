@@ -35,11 +35,9 @@ def _load_test(profile):
     assert "vague" in c_r1.notes
     c_r2 = controls_manager.get_control(profile, "R2")
     assert c_r2.automated == "no"
-    assert c_r2.note == "This is individual depending on the system " \
+    assert c_r2.notes == "This is individual depending on the system " \
                         "workload therefore needs to be audited manually."
     assert c_r2.rationale == "Minimization of configuration helps to reduce attack surface."
-    assert len(c_r2.selected) == 0
-    assert not c_r2.notes
     c_r4 = controls_manager.get_control(profile, "R4")
     assert len(c_r4.selected) == 3
     c_r4_rules = c_r4.selected

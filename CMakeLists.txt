@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 # Inspired and referenced from https://blog.kitware.com/cmake-and-the-default-build-type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -32,13 +32,13 @@ set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tail
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 64)
+set(SSG_PATCH_VERSION 65)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
-set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
+set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 
@@ -75,7 +75,6 @@ option(SSG_PRODUCT_EKS "If enabled, the EKS SCAP content will be built" ${SSG_PR
 option(SSG_PRODUCT_EXAMPLE "If enabled, the Example SCAP content will be built" FALSE)
 option(SSG_PRODUCT_FEDORA "If enabled, the Fedora SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_FIREFOX "If enabled, the Firefox SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_JRE "If enabled, the JRE SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_MACOS1015 "If enabled, the Apple macOS 10.15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHCOS4 "If enabled, the RHCOS4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -132,6 +131,7 @@ find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
 find_python_module(yamlpath)
+find_python_module(mypy)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -145,12 +145,8 @@ cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage
 
 find_package(OpenSCAP REQUIRED)
 
-if (SSG_TARGET_OVAL_MAJOR_VERSION EQUAL "5" AND SSG_TARGET_OVAL_VERSION_MINOR EQUAL "11" AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
-    message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please switch the OVAL target version to 5.10 or lower. $ cmake -DSSG_TARGET_OVAL_MINOR_VERSION=10 ../")
-endif()
-
-if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
+if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
+    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
@@ -232,6 +228,7 @@ message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABL
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
 message(STATUS "yamlpath module (optional): ${PY_YAMLPATH}")
+message(STATUS "python mypy module (optional): ${PY_MYPY}")
 message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
 message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
 message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")
@@ -256,6 +253,7 @@ else()
     message(STATUS "jinja2 cache: disabled")
 endif()
 message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
+message(STATUS "Build SCE Content: " ${SSG_SCE_ENABLED})
 message(STATUS " ")
 
 message(STATUS "Products:")
@@ -268,7 +266,6 @@ message(STATUS "Example: ${SSG_PRODUCT_EXAMPLE}")
 message(STATUS "EKS: ${SSG_PRODUCT_EKS}")
 message(STATUS "Fedora: ${SSG_PRODUCT_FEDORA}")
 message(STATUS "Firefox: ${SSG_PRODUCT_FIREFOX}")
-message(STATUS "JRE: ${SSG_PRODUCT_JRE}")
 message(STATUS "MacOS 1015: ${SSG_PRODUCT_MACOS1015}")
 message(STATUS "OCP4: ${SSG_PRODUCT_OCP4}")
 message(STATUS "RHCOS4: ${SSG_PRODUCT_RHCOS4}")
@@ -306,11 +303,7 @@ add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-endif()
+ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
 
 add_custom_target(stats)
 add_custom_target(profile-stats)
@@ -352,9 +345,6 @@ if (SSG_PRODUCT_FEDORA)
 endif()
 if (SSG_PRODUCT_FIREFOX)
     add_subdirectory("products/firefox" "firefox")
-endif()
-if (SSG_PRODUCT_JRE)
-    add_subdirectory("products/jre" "jre")
 endif()
 if (SSG_PRODUCT_MACOS1015)
     add_subdirectory("products/macos1015" "macos1015")
@@ -413,11 +403,8 @@ endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-endif()
+ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+
 
 ssg_define_guide_and_table_tests()
 

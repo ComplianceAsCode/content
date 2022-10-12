@@ -22,12 +22,16 @@ plugins:
     enabled: true
   radon:
     enabled: true
+    config:
+        threshold: "C"
   sonar-python:
     enabled: true
   shellcheck:
     enabled: true
   editorconfig:
     enabled: true
+    config:
+      editorconfig: .editorconfig
 
 exclude_patterns:
   - "**/*"

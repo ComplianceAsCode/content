@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must have the opensc package installed.
+
+vuldiscussion: |-
+    The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.
+
+    The DoD has mandated the use of the Common Access Card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.
+
+checktext: |-
+    Verify that {{{ full_name }}} has the opensc package installed with the following command:
+
+    $ sudo dnf list --installed opensc
+    opensc.x86_64  0.22.0-2.el9
+
+    If the opensc package is not installed, this is a finding.
+
+fixtext: |-
+    The opensc package can be installed with the following command:
+
+    $ sudo dnf install opensc

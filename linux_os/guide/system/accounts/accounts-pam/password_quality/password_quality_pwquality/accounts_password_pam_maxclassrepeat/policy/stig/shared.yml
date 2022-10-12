@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must require the maximum number of repeating characters of the same character class be limited to four when passwords are changed.
+
+vuldiscussion: |-
+    Use of a complex password helps to increase the time and resources required to compromise the password.
+    Password complexity, or strength, is a measure of the effectiveness of a password in resisting
+    attempts at guessing and brute-force attacks.
+
+    Password complexity is one factor of several that determines how long it takes to crack a password. The
+    more complex a password, the greater the number of possible combinations that need to be tested before the
+    password is compromised.
+
+checktext: |-
+    Verify the value of the "maxclassrepeat" option in "/etc/security/pwquality.conf" with the following command:
+
+    $ grep maxclassrepeat /etc/security/pwquality.conf
+
+    maxclassrepeat = 4
+
+    If the value of "maxclassrepeat" is set to "0", more than "4" or is commented out, then this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to require the change of the number of repeating characters of the same character class when passwords are changed by setting the "maxclassrepeat" option.
+
+    Add the following line to "/etc/security/pwquality.conf" conf (or modify the line to have the required value):
+
+    maxclassrepeat = 4

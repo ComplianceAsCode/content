@@ -22,7 +22,6 @@ import ssg.build_derivatives
 import ssg.xccdf
 import ssg.xml
 
-XCCDF11_NS = ssg.constants.XCCDF11_NS
 XCCDF12_NS = ssg.constants.XCCDF12_NS
 oval_ns = ssg.constants.oval_namespace
 
@@ -84,12 +83,10 @@ def main():
 
     benchmarks = []
 
-    ssg.xccdf.scrape_benchmarks(root, XCCDF11_NS, benchmarks)
     ssg.xccdf.scrape_benchmarks(root, XCCDF12_NS, benchmarks)
 
     # Remove CCEs and DISA STIG IDs from derivatives as these are specific to
     # the vendor/OS.
-    ssg.build_derivatives.remove_idents(root, XCCDF11_NS)
     ssg.build_derivatives.remove_idents(root, XCCDF12_NS)
     ssg.build_derivatives.remove_cce_reference(root, oval_ns)
 

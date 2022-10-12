@@ -1,0 +1,127 @@
+{{% extends "html-template.html" %}}
+
+
+{{%- macro render_policy_specific_content(of_what) %}}
+	{{% for policy, fields in of_what.policy_specific_content.items() %}}
+	{{% call normal_content(policy ~ "&ndash;related", 3 ) %}}
+	{{% for field, text in fields.items() %}}
+	<h4>{{{ field }}}</h4>
+	{{{ text }}}
+	{{% endfor %}}
+	{{% endcall %}}
+	{{% endfor %}}
+{{% endmacro %}}
+
+
+{{%- macro collapsible_content(heading, level) %}}
+<button class="collapsible"><h{{{ level }}}>{{{ heading }}}</h{{{ level }}}></button>
+<div class="content">
+{{{ caller() }}}
+</div>
+{{% endmacro %}}
+
+
+{{%- macro normal_content(heading, level) %}}
+<h{{{ level }}}>{{{ heading }}}</h{{{ level }}}>
+<div>
+{{{ caller() }}}
+</div>
+{{% endmacro %}}
+
+
+{{%- macro minor_section(title, content, collapsible) %}}
+	{{% if content %}}
+	{{% if collapsible %}}
+		{{% call collapsible_content(title, 3 ) %}}
+		{{{ content }}}
+		{{% endcall %}}
+	{{% else %}}
+		{{% call normal_content(title, 3 ) %}}
+		{{{ content }}}
+		{{% endcall %}}
+	{{% endif %}}
+	{{% endif %}}
+{{% endmacro %}}
+
+
+{{%- block head %}}
+<link rel="stylesheet" href="highlight.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	.collapsible {
+	  background-color: #777;
+	  color: white;
+	  cursor: pointer;
+	  padding: 18px;
+	  width: 100%;
+	  border: none;
+	  text-align: left;
+	  outline: none;
+	  font-size: 15px;
+	}
+
+	.active, .collapsible:hover {
+	  background-color: #555;
+	}
+
+	.content {
+	  padding: 0 18px;
+	  max-height: 0;
+	  overflow: hidden;
+	  transition: max-height 0.2s ease-out;
+	  background-color: #f1f1f1;
+	}
+</style>
+{{% endblock %}}
+
+
+{{%- block body %}}
+{{{ super() }}}
+<h1>{{{ rule.title }}}</h1>
+<div class="rule">
+	<div class="prose">
+	<h2>Prose</h2>
+	{{{ minor_section("Description", prose.description, collapsible=false) -}}}
+
+	{{{ minor_section("Rationale", prose.rationale, collapsible=false) -}}}
+
+	{{{ render_policy_specific_content(prose) -}}}
+	</div>
+	{{% if checks.contains_something() %}}
+	<div class="checks">
+	<h2>Checks</h2>
+	{{{ minor_section("OVAL", checks.oval, collapsible=true) -}}}
+
+	{{{ render_policy_specific_content(checks) -}}}
+	</div>
+	{{% endif %}}
+
+	{{%- if fixes.contains_something() %}}
+	<div class="checks">
+	<h2>Fixes</h2>
+	{{{ minor_section("Bash", fixes.bash, collapsible=true) -}}}
+
+	{{{ minor_section("Ansible", fixes.ansible, collapsible=true) -}}}
+
+	{{{ render_policy_specific_content(fixes) -}}}
+	</div>
+	{{% endif -%}}
+</div>
+
+<script>
+	var coll = document.getElementsByClassName("collapsible");
+	var i;
+
+	for (i = 0; i < coll.length; i++) {
+	  coll[i].addEventListener("click", function() {
+		this.classList.toggle("active");
+		var content = this.nextElementSibling;
+		if (content.style.maxHeight){
+		  content.style.maxHeight = null;
+		} else {
+		  content.style.maxHeight = content.scrollHeight + "px";
+		}
+	  });
+	}
+</script>
+{{% endblock %}}

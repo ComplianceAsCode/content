@@ -1,0 +1,41 @@
+srg_requirement: |-
+    {{{ full_name }}} must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.
+
+vuldiscussion: |-
+    Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
+    If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.
+
+    Audit records can be generated from various components within the information system (e.g., module or policy filter).
+
+    Allocating an audit_backlog_limit of sufficient size is critical in maintaining a stable boot process.  With an insufficient limit allocated, the system is susceptible to boot failures and crashes.
+
+checktext: |-
+    Verify {{{ full_name }}} allocates a sufficient audit_backlog_limit to capture processes that start prior to the audit daemon with the following commands:
+
+    First check if the GRUB recovery is enabled:
+
+    $ sudo grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub
+
+    GRUB_DISABLE_RECOVERY="true"
+
+    If this option is set to true, then check that a line is output by the following command:
+
+    $ sudo grep 'GRUB_CMDLINE_LINUX_DEFAULT.*audit_backlog_limit=8192.*' /etc/default/grub
+
+    If the option is set to false, then check that a line is output by the following command:
+
+    $ sudo grep 'GRUB_CMDLINE_LINUX.*audit_backlog_limit=8192.*' /etc/default/grub
+
+    If 'audit_backlog_limit' is not set to '8192' or greater, or the option is missing, this is a finding.
+
+    Additionally command line parameters for currently installed kernels must be checked as well with the following command:
+
+     $ sudo grubby --info=ALL | grep args | grep -v 'audit_backlog_limit=8192'
+
+    If the command return any outputs and audit_backlog_limit is less than 8182, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to allocate sufficient audit_backlog_limit to capture processes that start prior to the audit daemon with the following command:
+
+    $ sudo grubby --update-kernel=ALL --args=audit_backlog_limit=8192

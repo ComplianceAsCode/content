@@ -8,20 +8,20 @@ system to developers interested in extending or debugging it.
 Before beginning, it is generally expected that some familiarity with the
 relevant standards in this space are understood. Among others, these are:
 
- - [XCCDF](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/xccdf),
-   the eXtensible Configuration Checklist Description Format; this is a
-   textual representation format of various steps in hardening a particular
-   system.
- - [OVAL](https://oval.cisecurity.org/), the Open Vulnerability and Assessment
-   Language; this is a standardized mechanism for auditing various compliance
-   checks.
- - [OCIL](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/ocil),
-   the Open Checklist Interactive Language, an expressive language for
-   handling manual compliance checks.
- - [CPE](https://nvd.nist.gov/products/cpe), the Common Platform Enumeration;
-   a scheme for identifying software and systems.
- - SCAP source data stream format, a mechanism for combining the above into a single
-   redistributable file.
+- [XCCDF](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/xccdf),
+  the eXtensible Configuration Checklist Description Format; this is a
+  textual representation format of various steps in hardening a particular
+  system.
+- [OVAL](https://oval.cisecurity.org/), the Open Vulnerability and Assessment
+  Language; this is a standardized mechanism for auditing various compliance
+  checks.
+- [OCIL](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/ocil),
+  the Open Checklist Interactive Language, an expressive language for
+  handling manual compliance checks.
+- [CPE](https://nvd.nist.gov/products/cpe), the Common Platform Enumeration;
+  a scheme for identifying software and systems.
+- SCAP source data stream format, a mechanism for combining the above into a single
+  redistributable file.
 
 Additionally, some familiarity with the content layout (as discussed in
 previous chapters) is also implied.
@@ -36,11 +36,11 @@ to many questions.
 ComplianceAsCode's content project is ultimately the combination of three
 things:
 
- 1. A collection of content in a format-agnostic manner,
- 2. A build system for collecting this content and combining it to form
-    artifacts understood by other systems,
- 3. A test system for validating both the compliance of these artifacts
-    to various standards and the correctness of the content in the repo.
+- A collection of content in a format-agnostic manner,
+- A build system for collecting this content and combining it to form
+  artifacts understood by other systems,
+- A test system for validating both the compliance of these artifacts
+  to various standards and the correctness of the content in the repo.
 
 As previous sections describe in detail the expectations around content in the
 repo, this section aims to describe the build system. For understanding of the
@@ -62,9 +62,9 @@ CMake requires projects have an entry point called `/CMakeLists.txt`. This
 uses the CMake language and drives building and installing the project. This
 file contains several things:
 
- 1. The many build-time options for customizing the types of content generated,
- 2. The hand-off for generating each product's specific content,
- 3. Common installation, testing, and distribution targets.
+- The many build-time options for customizing the types of content generated,
+- The hand-off for generating each product's specific content,
+- Common installation, testing, and distribution targets.
 
 However, the specifics of building a particular product are contained in the
 shared module located at `cmake/SSGCommon.cmake`. This file contains all of
@@ -74,55 +74,49 @@ and testing targets. While the specifics should be understood from this file
 directly, in general this takes the following outline of steps in rough order
 of occurrence:
 
- 1. Generate SCE content and metadata,
- 2. Generate a shorthand XML from various YAML files (like rules, variables,
-    and profiles) -- this is a single document that resembles the structure
-    of the XCCDF but isn't necessarily standards compliant,
- 3. Generation of templated content (such as Bash, OVAL, and Ansible) from
-    the metadata contained in the rule YAML files,
- 4. Transformation of the shorthand into unlinked and linked XCCDF documents,
- 5. Combining the various OVAL, OCIL, and XCCDF documents into a single
-    Datastream document,
- 6. Generating any derived products (such as CentOS and Scientific Linux).
-
+- Generate SCE content and metadata.
+- Resolve rules, profiles, groups, static checks and static remediations to the product-specific resolved form (also known as compiled form).
+- Generate templated checks and remediations from the templates.
+- Collect all available remediations.
+- Combine all available OVAL checks into a single unlinked OVAL document.
+- Load resolved rules, profiles, groups, collected remediations and the unlinked OVAL document and generate XCCDF, OVAL and OCIL documents from this data.
+- Generate CPE OVAL and CPE dictionary.
+- Combining the OVAL, OCIL, CPE and XCCDF documents into a single SCAP source data stream.
+- Generate content for derived products (such as CentOS and Scientific Linux).
+- Generate HTML tables, Bash scripts, Ansible Playbooks and other secondary artifacts.
 
 ### Python Build Scripts
 
 Various Python utilities under `/build-scripts` contribute to this process;
 refer to their help text for more information and usage:
 
- - `build_all_guides.py` -- generates separate HTML guides for every profile
-   in an XCCDF document.
- - `build_profile_remediations.py` -- generates separate remediation content
-   for each profile.
- - `build_rule_playbooks.py` -- generates per-rule per-profile playbooks in
-   Ansible content.
- - `build_sce.py` -- outputs SCE content and combined metadata.
- - `build_templated_content.py` -- generates templated audit and remediation
-   content.
- - `combine_ovals.py` -- combines separate (per-rule, shared, and templated)
-   OVAL XML trees into a single larger OVAL XML document.
- - `collect_remediations.py` -- finds the separate (per-rule and templated)
-   remediations and places them into a single directory.
- - `compile_profiles.py` -- pre-processes profiles to handle inheritance and
-   the product-independent controls format.
- - `compose_ds.py` -- composes an SCAP source data stream from individual
-   SCAP components
- - `cpe_generate.py` -- generates the product-specific CPE dictionary and
-   checks.
- - `enable_derivatives.py` -- generates derivative product content from a
-   base product.
- - `expand_jinja.py` -- helper script used by the BATS (Bash unit test
-   framework) to expand Jinja in test scripts.
- - `generate_man_page.py` -- generates the ComplianceAsCode man page.
- - `profile_tool.py` -- utility script to generate statistics about profiles
-   in a specific XCCDF/Datastream file.
- - `relabel_ids.py` -- updates various internal identifiers to their final
-   resolved values (e.g., with the `xccdf_org.ssgproject.content_` prefix).
- - `verify_references.py` -- used by the test system to verify cross-linkage
-   of identifiers between XCCDF and OVAL/OCIL documents.
- - `yaml_to_shorthand.py` -- generates the shorthand XML document from the
-   various XML pieces.
+- `build_all_guides.py` -- generates separate HTML guides for every profile
+  in an XCCDF document.
+- `build_profile_remediations.py` -- generates separate remediation content
+  for each profile.
+- `build_rule_playbooks.py` -- generates per-rule per-profile playbooks in
+  Ansible content.
+- `build_sce.py` -- outputs SCE content and combined metadata.
+- `build_templated_content.py` -- generates templated audit and remediation
+  content.
+- `build_xccdf.py` -- generate XCCDF, OVAL and OCIL documents from resolved content
+- `collect_remediations.py` -- finds the separate (per-rule and templated)
+  remediations and places them into a single directory.
+- `combine_ovals.py` -- combines separate (per-rule, shared, and templated) OVAL XML trees into a single larger OVAL XML document.
+- `compile_all.py` -- resolves rules, groups, profiles static checks and remediations to the product-specific resolved form (also known as compiled form)
+- `compose_ds.py` -- composes an SCAP source data stream from individual
+  SCAP components
+- `cpe_generate.py` -- generates the product-specific CPE dictionary and
+  checks.
+- `enable_derivatives.py` -- generates derivative product content from a
+  base product.
+- `expand_jinja.py` -- helper script used by the BATS (Bash unit test
+  framework) to expand Jinja in test scripts.
+- `generate_man_page.py` -- generates the ComplianceAsCode man page.
+- `profile_tool.py` -- utility script to generate statistics about profiles
+  in a specific XCCDF/Datastream file.
+- `verify_references.py` -- used by the test system to verify cross-linkage
+  of identifiers between XCCDF and OVAL/OCIL documents.
 
 Many of these utilities are simply front-ends over code in the SSG Python
 module located under `ssg/`.
