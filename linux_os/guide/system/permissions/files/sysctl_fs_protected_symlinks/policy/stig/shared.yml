@@ -17,9 +17,6 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-
-    Check that the configuration files are present to enable this kernel parameter.
-
     $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F fs.protected_symlinks | tail -1
 
     fs.protected_symlinks = 1

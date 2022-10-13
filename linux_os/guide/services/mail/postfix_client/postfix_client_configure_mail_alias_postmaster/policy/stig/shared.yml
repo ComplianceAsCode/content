@@ -11,11 +11,14 @@ vuldiscussion: |-
     mechanisms, and audit storage capacity being reached or exceeded.
 
 checktext: |-
-    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+   Verify that the administrators are notified in the event of an audit processing failure.
 
-    Transport Layer Security (TLS) encryption is a required security setting as a number of known vulnerabilities have been reported against Secure Sockets Layer (SSL) and earlier versions of TLS. Encryption of private information is essential to ensuring data confidentiality. If private information is not encrypted, it can be intercepted and easily read by an unauthorized party. SQL Server must use a minimum of FIPS 140-3-approved TLS version 1.2, and all non-FIPS-approved SSL and TLS versions must be disabled. NIST 800-53 specifies the preferred configurations for government systems.
+    Check that the "/etc/aliases" file has a defined value for "root".
 
-    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
+    $ sudo grep "postmaster:\s*root$" /etc/aliases
+
+    If the command does not return a line, or the line is commented out, ask the system administrator to indicate how they and the ISSO are notified of an audit process failure.
+    If there is no evidence of the proper personnel being notified of an audit processing failure, this is a finding.
 
 fixtext: |-
     Configure a valid email address as an alias for the root account.
