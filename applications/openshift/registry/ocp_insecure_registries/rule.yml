@@ -10,6 +10,12 @@ description: |-
     and pods. This configuration setting is for accessing the configured registries
     without TLS validation which could lead to security breaches and should be
     avoided.
+    Remove any insecureRegistries configured using the following command:
+    <pre>oc patch image.config.openshift.io cluster --type=json -p "[{'op': 'remove', 'path': '/spec/registrySources/insecureRegistries'}]"</pre>
+
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html",
+                text="the relevant documentation") }}}.
 
 rationale: |-
     Insecure registries should not be configured, which would restrict the possibilities of
@@ -27,31 +33,21 @@ references:
 ocil_clause: 'insecure registry sources is configured for image access'
 
 ocil: |-
-    <b>Audit:</b>
-
     To check for the configured insecure registry sources use below command:
-    <tt>$ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.registrySources}'</tt>
+    <tt>$ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.registrySources.insecureRegistries}'</tt>
     The output lists the insecure registry sources configured.
-
-    <b>Remediation:</b>
-    To remove configured insecure resgitry sources use below command:
-    <tt>$ oc edit image.config.openshift.io/cluster</tt>
-    Remove any registries listed under insecureRegistries.
-
-    Refer to https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html
-    for more details on configuring registries in OpenShift
 
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
 
-#template:
-#    name: yamlfile_value
-#    vars:
-#        ocp_data: 'true'
-#        filepath: /apis/config.openshift.io/v1/images/cluster
-#        yamlpath: ".spec.registrySources.insecureRegistries[:]"
-#        entity_check: "at least one"
-#        values:
-#            - value: ".*"
-#              operation: "pattern match"
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.registrySources.insecureRegistries[:]"
+        entity_check: "at least one"
+        values:
+            - value: ".*"
+              operation: "pattern match"
