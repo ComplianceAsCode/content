@@ -1309,6 +1309,7 @@ controls:
     status: automated
     rules:
       - accounts_passwords_pam_faillock_deny
+      - accounts_passwords_pam_tally2
 
   - id: Req-8.1.7
     title: 8.1.7 Set the lockout duration to a minimum of 30 minutes or until an administrator
@@ -1318,6 +1319,8 @@ controls:
     status:  automated
     rules:
       - accounts_passwords_pam_faillock_unlock_time
+      - accounts_passwords_pam_tally2_unlock_time
+      - var_accounts_passwords_pam_tally2_unlock_time=1800
 
   - id: Req-8.1.8
     title: 8.1.8 If a session has been idle for more than 15 minutes, require the user
