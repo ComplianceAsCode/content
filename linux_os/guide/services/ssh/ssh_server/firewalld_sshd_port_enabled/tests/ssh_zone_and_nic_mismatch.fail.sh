@@ -1,9 +1,5 @@
 #!/bin/bash
 # packages = firewalld
-#
-# remediation = none
-
-# ensure firewalld installed
 
 # Make sure there is only one zone with ssh service enabled
 all_zones=$(firewall-cmd --get-zones)

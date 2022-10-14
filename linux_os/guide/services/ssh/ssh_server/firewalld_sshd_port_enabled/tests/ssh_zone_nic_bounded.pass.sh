@@ -1,8 +1,5 @@
 #!/bin/bash
 # packages = firewalld
-#
-
-# ensure firewalld installed
 
 firewall-cmd --permanent --zone=public --add-service=ssh
 

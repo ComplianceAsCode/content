@@ -1,9 +1,5 @@
 #!/bin/bash
 # packages = firewalld
-#
-# remediation = none
-
-# ensure firewalld installed
 
 all_zones=$(firewall-cmd --get-zones)
 for zone in $all_zones;do
