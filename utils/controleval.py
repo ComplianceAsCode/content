@@ -188,7 +188,7 @@ def print_stats(status_count, control_list, args):
 
     print("General stats:")
     for status in sorted(explicit_status):
-        print_specific_stat(status, status_count[status], status_count['applicable'])
+        print_specific_stat(status, status_count[status], status_count['all'])
 
     print("\nStats grouped by status:")
     for status in sorted(implicit_status):
