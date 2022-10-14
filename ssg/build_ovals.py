@@ -345,7 +345,11 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
             if not filename.endswith(".xml"):
                 continue
             oval_file_path = os.path.join(oval_dir, filename)
-            xml_content = process_file_with_macros(oval_file_path, env_yaml)
+            if "checks_from_templates" in oval_dir:
+                with open(oval_file_path, "r") as f:
+                    xml_content = f.read()
+            else:
+                xml_content = process_file_with_macros(oval_file_path, env_yaml)
 
             if not _check_is_applicable_for_product(xml_content, product):
                 continue
