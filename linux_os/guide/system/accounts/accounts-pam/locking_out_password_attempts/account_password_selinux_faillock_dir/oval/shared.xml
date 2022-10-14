@@ -3,7 +3,7 @@
                           "/etc/security/faillock.conf"] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-  {{{ oval_metadata("An SELinux Context must be configued for the Faillock directory.") }}}
+  {{{ oval_metadata("An SELinux Context must be configured for the Faillock directory.") }}}
     <criteria operator="OR">
       <criterion test_ref="test_account_password_selinux_faillock_dir"
                  comment="The faillock directories should have faillog_t as context"/>
