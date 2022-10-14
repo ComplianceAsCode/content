@@ -338,23 +338,24 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
             already_loaded[filename] = oval_version
 
     for oval_dir in reversed_dirs:
-        if os.path.isdir(oval_dir):
-            # sort the files to make output deterministic
-            for filename in sorted(os.listdir(oval_dir)):
-                if filename.endswith(".xml"):
-                    xml_content = process_file_with_macros(
-                        os.path.join(oval_dir, filename), env_yaml
-                    )
+        if not os.path.isdir(oval_dir):
+            continue
+        # sort the files to make output deterministic
+        for filename in sorted(os.listdir(oval_dir)):
+            if filename.endswith(".xml"):
+                xml_content = process_file_with_macros(
+                    os.path.join(oval_dir, filename), env_yaml
+                )
 
-                    if not _check_is_applicable_for_product(xml_content, product):
-                        continue
-                    if _check_is_loaded(already_loaded, filename, oval_version):
-                        continue
-                    oval_file_tree = _create_oval_tree_from_string(xml_content)
-                    if not _check_oval_version_from_oval(oval_file_tree, oval_version):
-                        continue
-                    body.append(xml_content)
-                    included_checks_count += 1
-                    already_loaded[filename] = oval_version
+                if not _check_is_applicable_for_product(xml_content, product):
+                    continue
+                if _check_is_loaded(already_loaded, filename, oval_version):
+                    continue
+                oval_file_tree = _create_oval_tree_from_string(xml_content)
+                if not _check_oval_version_from_oval(oval_file_tree, oval_version):
+                    continue
+                body.append(xml_content)
+                included_checks_count += 1
+                already_loaded[filename] = oval_version
 
     return "".join(body)
