@@ -1,18 +1,15 @@
 #!/bin/bash
-{{% if "ol" in product %}}
+{{% if MOUNT_HAS_TO_EXIST == "no" %}}
 # platform = multi_platform_example
 {{% else %}}
 # platform = multi_platform_all
 {{% endif %}}
-
 . $SHARED/partition.sh
 
-umount /home || true  # no problem if not mounted
-
-clean_up_partition /home
+clean_up_partition {{{ MOUNTPOINT }}}
 
 create_partition
 
-make_fstab_correct_partition_line /home
+make_fstab_correct_partition_line {{{ MOUNTPOINT }}}
 
 # $SHARED/fstab is correct, but we are not mounted.
