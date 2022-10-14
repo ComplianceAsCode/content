@@ -27,5 +27,4 @@ platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
-definition_location: /home/jcerny/work/git/scap-security-guide/products/rhel9/profiles/ospp.profile
 documentation_complete: true
