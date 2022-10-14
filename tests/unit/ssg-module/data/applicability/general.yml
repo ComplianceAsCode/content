@@ -27,3 +27,13 @@ cpes:
       bash_conditional: {{{ bash_pkg_conditional("yum") }}}
       ansible_conditional: {{{ ansible_pkg_conditional("yum") }}}
 
+  - krb5_server_older_than_1_17-18:
+      name: "cpe:/a:krb5_server_older_than_1_17-18"
+      title: "Package krb5 server is installed and version is lesser than 1.17-18"
+      check_id: krb5_server_older_than_1_17_18
+
+  - krb5_workstation_older_than_1_17-18:
+      name: "cpe:/a:krb5_workstation_older_than_1_17-18"
+      title: "Package krb5 workstation is installed and version is lesser than 1.17-18"
+      check_id: krb5_workstation_older_than_1_17_18
+

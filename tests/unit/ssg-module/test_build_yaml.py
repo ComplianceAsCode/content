@@ -219,6 +219,13 @@ def test_platform_from_text_or(product_cpes):
     assert fact_refs[1].get("name") == "cpe:/a:ntp"
 
 
+def test_platform_from_text_and_empty_conditionals(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text(
+        "krb5_server_older_than_1_17-18 and krb5_workstation_older_than_1_17-18", product_cpes)
+    assert platform.to_bash_conditional() == ""
+    assert platform.to_ansible_conditional() == ""
+
+
 def test_platform_from_text_complex_expression(product_cpes):
     platform = ssg.build_yaml.Platform.from_text(
         "systemd and !yum and (ntp or chrony)", product_cpes)
