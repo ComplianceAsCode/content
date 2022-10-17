@@ -6,7 +6,7 @@ metadata:
 
 reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 
-title: 'PCI-DSS v3.2.1 Control Baseline for SUSE Linux enterprise 12 and 15'
+title: 'PCI-DSS v3.2.1 Control Baseline for SUSE Linux enterprise 12'
 
 description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
