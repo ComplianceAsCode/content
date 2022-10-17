@@ -320,7 +320,7 @@ make -j4 html-stats # generate statistics for all products, as a result <product
 make -j4 html-profile-stats # generate statistics for all profiles in all products, as a result <product>/profile-statistics/statistics.html file is created
 ```
 
-If you want to go deeper into statistics, refer to [Profile Statistics and Utilities](manual/developer/05_tools_and_utilities:Profile%20Statistics%20and%20Utilities) section.
+If you want to go deeper into statistics, refer to [Profile Statistics and Utilities](manual/developer/05_tools_and_utilities.md#profile-statistics-and-utilities) section.
 
 
 ### Generating Sphinx Documentation
