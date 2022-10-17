@@ -18,8 +18,11 @@ description: |-
                 text="the relevant documentation") }}}.
 
 rationale: |-
-    <tt>aescbc</tt> is currently the strongest encryption provider, it should
-    be preferred over other providers.
+    Where etcd encryption is used, it is important to ensure that the
+    appropriate set of encryption providers is used. Currently, aescbc, kms
+    and secretbox are likely to be appropriate options.
+
+    <tt>aescbc</tt> is the only type supported by OCP.
 
 severity: medium
 
