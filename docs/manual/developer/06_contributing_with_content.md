@@ -489,13 +489,6 @@ utilities:
 -   `utils/rule_dir_json.py` - to generate a JSON tree describing the
     current content of all guides
 
--   `utils/rule_dir_stats.py` - for analyzing the JSON tree and finding
-    information about specific rules, products, or summary statistics
-
--   `utils/rule_dir_diff.py` - for diffing two JSON trees (e.g., before
-    and after a major change), using the same interface as
-    `rule_dir_stats.py`.
-
 For more information about these utilities, please see their help text.
 
 To interact with `rule.yml` files and the OVALs inside a rule directory,
