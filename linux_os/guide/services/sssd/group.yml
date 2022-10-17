@@ -17,9 +17,11 @@ description: |-
     {{%- elif product == "rhel9" -%}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/installing_identity_management/index#assembly_installing-an-idm-client_installing-identity-management") }}}
     {{%- elif product == "ol7" -%}}
-        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/userauth/ol7-auth.html#ol7-sssd-auth") }}}
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/userauth/userauth-AuthenticationConfiguration.html#ol7-sssd-auth") }}}
     {{%- elif product == "ol8" -%}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/userauth/userauth-UsingtheSystemSecurityServicesDaemon.html#sssd-auth") }}}
+    {{%- elif product == "ol9" -%}}
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/9/userauth/userauth-UsingtheSystemSecurityServicesDaemon.html") }}}
     {{%- endif %}}
 
 platform: sssd
