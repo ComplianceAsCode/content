@@ -4,7 +4,7 @@ metadata:
     SMEs:
         - abergmann
 
-reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v3-2-1-r1.pdf
 
 title: 'PCI-DSS v3.2.1 Control Baseline for SUSE Linux enterprise 12'
 
