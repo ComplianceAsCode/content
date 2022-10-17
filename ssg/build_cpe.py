@@ -194,14 +194,18 @@ class CPEALLogicalTest(Function):
             arg.enrich_with_cpe_info(cpe_products)
 
     def to_bash_conditional(self):
+        child_bash_conds = [
+            a.to_bash_conditional() for a in self.args
+            if a.to_bash_conditional() != '']
+
+        if not child_bash_conds:
+            return ""
+
         cond = ""
         if self.is_not():
             cond += "! "
             op = " "
         cond += "( "
-        child_bash_conds = [
-            a.to_bash_conditional() for a in self.args
-            if a.to_bash_conditional() != '']
         if self.is_or():
             op = " || "
         elif self.is_and():
@@ -211,14 +215,18 @@ class CPEALLogicalTest(Function):
         return cond
 
     def to_ansible_conditional(self):
+        child_ansible_conds = [
+            a.to_ansible_conditional() for a in self.args
+            if a.to_ansible_conditional() != '']
+
+        if not child_ansible_conds:
+            return ""
+
         cond = ""
         if self.is_not():
             cond += "not "
             op = " "
         cond += "( "
-        child_ansible_conds = [
-            a.to_ansible_conditional() for a in self.args
-            if a.to_ansible_conditional() != '']
         if self.is_or():
             op = " or "
         elif self.is_and():

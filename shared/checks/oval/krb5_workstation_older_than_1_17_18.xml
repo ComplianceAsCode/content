@@ -18,7 +18,7 @@
     </definition>
     {{%- if pkg_system == "rpm" -%}}
     <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
-            comment="Kerberos workstaton version is lesser than 1.17-18"
+            comment="Kerberos workstation version is lesser than 1.17-18"
             id="test_krb5_workstation_version_1_17_18" version="1">
         <linux:object object_ref="obj_krb5_workstation_version_1_17_18" />
         <linux:state state_ref="state_krb5_workstation_version_1_17_18" />
@@ -32,7 +32,7 @@
 
     {{%- elif pkg_system == "dpkg" -%}}
     <linux:dpkginfo_test check="at least one" check_existence="any_exist"
-            comment="Kerberos workstaton version is lesser than 1.17-18"
+            comment="Kerberos workstation version is lesser than 1.17-18"
             id="test_krb5_workstation_version_1_17_18" version="1">
         <linux:object object_ref="obj_krb5_workstation_version_1_17_18" />
         <linux:state state_ref="state_krb5_workstation_version_1_17_18" />
