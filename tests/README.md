@@ -90,7 +90,7 @@ The image needs to fulfil the following requirements:
   - Package `openscap-scanner` version 1.2.15 or higher installed
   - You may want to include other packages, as base images tend to be bare-bone and tests may require more packages to be present.
 
-You can use `test_suite-*` Dockerfiles in the [`content/Dockerfiles`](../Dockerfiles) directory to build the images.
+You can use `test_suite-*` Dockerfiles in the [`content/Dockerfiles`](https://github.com/ComplianceAsCode/content/tree/master/Dockerfiles) directory to build the images.
 
 ### Podman
 
@@ -359,7 +359,7 @@ All test logs are stored in `logs` directory. The specific diretory is shown at 
 
 If you want more verbose logs, pass the `--dontclean` argument that preserves result files, reports and verbose scanner output
 even in cases when the test result went according to the expectations.
-If your system has the [oval-graph](://github.com/OpenSCAP/oval-graph) package installed that provides the `arf-to-html` command,
+If your system has the [oval-graph](https://github.com/OpenSCAP/oval-graph) package installed that provides the `arf-to-html` command,
 Automatus will use it to extract OVAL evaluation details from ARFs, and save those condensed reports to the `logs` directory
 even if the `--dontclean` argument has been specified.
 
@@ -558,4 +558,4 @@ the security content is different, and those scans can be identified by respecti
 Rule <rule_id> has not been evaluated! Wrong profile selected in test scenario?
 ```
 
-If you are using SCAP 1.3 content (which is built by default) and you are sure that you have selected the rule in the particular profile, it might be that the target scan environment has an OpenSCAP version contains a bug with SCAP 1.3 content. To solve this issue you can either update the OpenSCAP package in the target scan environment to the latest version or build SCAP 1.2 content. To build SCAP 1.2 content check the [SSG Developer Guide](../docs/manual/developer_guide.adoc)
+If you are using SCAP 1.3 content (which is built by default) and you are sure that you have selected the rule in the particular profile, it might be that the target scan environment has an OpenSCAP version contains a bug with SCAP 1.3 content. To solve this issue you can either update the OpenSCAP package in the target scan environment to the latest version or build SCAP 1.2 content. To build SCAP 1.2 content check [](../manual/developer/02_building_complianceascode.md#building-compliant-scap-12-content).
