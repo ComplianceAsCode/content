@@ -4,8 +4,6 @@ import tempfile
 import yaml
 import pytest
 import xml.etree.ElementTree as ET
-import lxml.etree as LET
-import xmldiff.main
 
 from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
@@ -316,14 +314,17 @@ def rule_accounts_tmout():
 @pytest.fixture
 def rule_accounts_tmout_xml():
     rule_xml_file = os.path.join(DATADIR, "accounts_tmout.xml")
+    LET = pytest.importorskip("lxml.etree")
     return LET.parse(rule_xml_file)
 
 
 def test_rule_to_xml_element(
         rule_accounts_tmout, rule_accounts_tmout_xml):
     rule_el = rule_accounts_tmout.to_xml_element()
+    LET = pytest.importorskip("lxml.etree")
     rule_tree = LET.fromstring(ET.tostring(rule_el))
-    diff = xmldiff.main.diff_trees(rule_tree, rule_accounts_tmout_xml)
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    diff = xmldiff_main.diff_trees(rule_tree, rule_accounts_tmout_xml)
     assert diff == []
 
 
@@ -336,13 +337,16 @@ def group_selinux():
 @pytest.fixture
 def group_selinux_xml():
     group_xml_file = os.path.join(DATADIR, "selinux.xml")
+    LET = pytest.importorskip("lxml.etree")
     return LET.parse(group_xml_file)
 
 
 def test_group_to_xml_element(group_selinux, group_selinux_xml):
     group_el = group_selinux.to_xml_element()
+    LET = pytest.importorskip("lxml.etree")
     group_tree = LET.fromstring(ET.tostring(group_el))
-    diff = xmldiff.main.diff_trees(group_tree, group_selinux_xml)
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    diff = xmldiff_main.diff_trees(group_tree, group_selinux_xml)
     assert diff == []
 
 
@@ -355,14 +359,17 @@ def value_system_crypto_policy():
 @pytest.fixture
 def value_system_crypto_policy_xml():
     value_xml_file = os.path.join(DATADIR, "var_system_crypto_policy.xml")
+    LET = pytest.importorskip("lxml.etree")
     return LET.parse(value_xml_file)
 
 
 def test_value_to_xml_element(
         value_system_crypto_policy, value_system_crypto_policy_xml):
     value_el = value_system_crypto_policy.to_xml_element()
+    LET = pytest.importorskip("lxml.etree")
     value_tree = LET.fromstring(ET.tostring(value_el))
-    diff = xmldiff.main.diff_trees(value_tree, value_system_crypto_policy_xml)
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    diff = xmldiff_main.diff_trees(value_tree, value_system_crypto_policy_xml)
     assert diff == []
 
 
@@ -375,13 +382,16 @@ def profile_ospp():
 @pytest.fixture
 def profile_ospp_xml():
     profile_xml_file = os.path.join(DATADIR, "ospp.xml")
+    LET = pytest.importorskip("lxml.etree")
     return LET.parse(profile_xml_file)
 
 
 def test_profile_to_xml_element(profile_ospp, profile_ospp_xml):
     profile = profile_ospp.to_xml_element()
+    LET = pytest.importorskip("lxml.etree")
     profile_tree = LET.fromstring(ET.tostring(profile))
-    diff = xmldiff.main.diff_trees(profile_tree, profile_ospp_xml)
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    diff = xmldiff_main.diff_trees(profile_tree, profile_ospp_xml)
     assert diff == []
 
 
