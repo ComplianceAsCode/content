@@ -52,15 +52,6 @@ from .shims import unicode_func
 from .entities.common import XCCDFEntity
 import ssg.build_stig
 
-def dump_yaml_preferably_in_original_order(dictionary, file_object):
-    try:
-        return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
-    except TypeError as exc:
-        # Older versions of libyaml don't understand the sort_keys kwarg
-        if "sort_keys" not in str(exc):
-            raise exc
-        return yaml.dump(dictionary, file_object, indent=4)
-
 
 def add_sub_element(parent, tag, ns, data):
     """
