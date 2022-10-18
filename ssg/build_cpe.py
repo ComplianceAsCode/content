@@ -11,13 +11,13 @@ from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import required_key
 from .xml import ElementTree as ET
-from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
-from .data_structures import XCCDFEntity
+from .entities.common import XCCDFEntity
 
 
 class CPEDoesNotExist(Exception):
     pass
+
 
 class ProductCPEs(object):
     """
@@ -86,7 +86,6 @@ class ProductCPEs(object):
         if cpe_item.is_product_cpe:
             self.product_cpes[cpe_item.id_] = cpe_item
 
-
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
@@ -97,16 +96,14 @@ class ProductCPEs(object):
             else:
                 return self.cpes_by_id[ref]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" %(ref))
-
+            raise CPEDoesNotExist("CPE %s is not defined" % (ref))
 
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)
         return cpe.name
 
     def get_product_cpe_names(self):
-        return [ cpe.name for cpe in self.product_cpes.values() ]
-
+        return [cpe.name for cpe in self.product_cpes.values()]
 
 
 class CPEList(object):
@@ -141,6 +138,7 @@ class CPEList(object):
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
 
+
 class CPEItem(XCCDFEntity):
     """
     Represents the cpe-item element from the CPE standard.
@@ -164,16 +162,6 @@ class CPEItem(XCCDFEntity):
 
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
-
-    @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
-        cpeitem = super(CPEItem, cls).from_yaml(yaml_file, env_yaml)
-
-        self.name = cpeitem_data["name"]
-        self.title = cpeitem_data["title"]
-        self.check_id = cpeitem_data["check_id"]
-        self.bash_conditional = cpeitem_data.get("bash_conditional", "")
-        self.ansible_conditional = cpeitem_data.get("ansible_conditional", "")
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
@@ -209,7 +197,6 @@ class CPEALLogicalTest(Function):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
-
 
     def to_xml_element(self):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
@@ -298,6 +285,7 @@ class CPEALFactRef (Symbol):
     def to_ansible_conditional(self):
         return self.ansible_conditional
 
+
 def extract_subelement(objects, sub_elem_type):
     """
     From a collection of element objects, return the value of
@@ -312,7 +300,7 @@ def extract_subelement(objects, sub_elem_type):
         # decide on usage of .iter or .getiterator method of elementtree class.
         # getiterator is deprecated in Python 3.9, but iter is not available in
         # older versions
-        if getattr(obj, "iter", None) == None:
+        if getattr(obj, "iter", None) is None:
             obj_iterator = obj.getiterator()
         else:
             obj_iterator = obj.iter()

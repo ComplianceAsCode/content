@@ -12,10 +12,9 @@ import sys
 from xml.sax.saxutils import escape
 import glob
 
-import yaml
 
 import ssg.build_remediations
-from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef, CPEItem, ProductCPEs
+from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef, ProductCPEs
 from .constants import (XCCDF12_NS,
                         XCCDF_REFINABLE_PROPERTIES,
                         OSCAP_BENCHMARK,
@@ -23,7 +22,6 @@ from .constants import (XCCDF12_NS,
                         OSCAP_PROFILE,
                         OSCAP_RULE,
                         OSCAP_VALUE,
-                        XCCDF_REFINABLE_PROPERTIES,
                         SCE_SYSTEM,
                         cce_uri,
                         dc_namespace,
@@ -32,7 +30,6 @@ from .constants import (XCCDF12_NS,
                         oval_namespace,
                         xhtml_namespace,
                         xsi_namespace,
-                        stig_ns,
                         timestamp,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
@@ -40,11 +37,11 @@ from .constants import (XCCDF12_NS,
                         PREFIX_TO_NS,
                         FIX_TYPE_TO_SYSTEM
                         )
-from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
+from .rules import get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
 from .cce import is_cce_format_valid, is_cce_value_valid
-from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
+from .yaml import DocumentationNotComplete, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
@@ -481,7 +478,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
-        profile.variables = dict ((k, v) for (k, v) in self.variables.items()
+        profile.variables = dict((k, v) for (k, v) in self.variables.items()
                              if k not in other.variables or v != other.variables[k])
         return profile
 
@@ -766,7 +763,8 @@ class Benchmark(XCCDFEntity):
                 continue
 
             try:
-                new_profile = ProfileWithInlinePolicies.from_yaml(dir_item_path, env_yaml, product_cpes)
+                new_profile = ProfileWithInlinePolicies.from_yaml(
+                    dir_item_path, env_yaml, product_cpes)
             except DocumentationNotComplete:
                 continue
             except Exception as exc:
@@ -926,7 +924,8 @@ class Group(XCCDFEntity):
         if data["platform"]:
             data["platforms"].add(data["platform"])
 
-        # parse platform definition and get CPEAL platform if cpe_platform_names not already defined
+        # parse platform definition and get CPEAL platform
+        # if cpe_platform_names not already defined
         if data["platforms"] and not data["cpe_platform_names"]:
             for platform in data["platforms"]:
                 cpe_platform = Platform.from_text(platform, product_cpes)
@@ -1077,13 +1076,13 @@ class Group(XCCDFEntity):
         child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
 
-
     def __str__(self):
         return self.id_
 
 
 def noop_rule_filterfunc(rule):
     return True
+
 
 def rule_filter_from_def(filterdef):
     if filterdef is None or filterdef == "":
@@ -1181,9 +1180,10 @@ class Rule(XCCDFEntity):
         # to lookup), and the rule's prodtype matches the product being built
         # also if the rule already has cpe_platform_names specified (compiled rule)
         # do not evaluate platforms again
-        if (
-                env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
-                or env_yaml and rule.prodtype == "all") and product_cpes and not rule.cpe_platform_names:
+        if env_yaml and (
+            env_yaml["product"] in parse_prodtype(rule.prodtype)
+            or rule.prodtype == "all") and (
+                product_cpes and not rule.cpe_platform_names):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
@@ -1911,7 +1911,8 @@ class LinearLoader(object):
         self.benchmark = Benchmark.from_yaml(
             os.path.join(directory, "benchmark.yml"), self.env_yaml, self.product_cpes)
 
-        self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
+        self.benchmark.add_profiles_from_dir(
+            self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
