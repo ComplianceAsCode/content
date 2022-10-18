@@ -51,8 +51,8 @@ template:
         ocp_data: 'true'
         filepath: /apis/config.openshift.io/v1/images/cluster
         yamlpath: ".spec.allowedRegistriesForImport[:].insecure"
-        entity_check: "at least one"
+        check_existence: "any_exist"
         values:
             - value: "true"
               type: "boolean"
-              operation: "equals"
+              operation: "not equal"
