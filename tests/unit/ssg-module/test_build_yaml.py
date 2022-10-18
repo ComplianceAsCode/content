@@ -4,8 +4,10 @@ import tempfile
 import yaml
 import pytest
 import xml.etree.ElementTree as ET
-from ssg.build_cpe import ProductCPEs
+import lxml.etree as LET
+import xmldiff.main
 
+from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
 from ssg.constants import (
     OVAL_SUB_NS, XCCDF12_NS, cpe_language_namespace, oval_namespace, ocil_cs
@@ -311,83 +313,18 @@ def rule_accounts_tmout():
     return ssg.build_yaml.Rule.from_yaml(rule_file)
 
 
-def test_rule_to_xml_element(rule_accounts_tmout):
+@pytest.fixture
+def rule_accounts_tmout_xml():
+    rule_xml_file = os.path.join(DATADIR, "accounts_tmout.xml")
+    return LET.parse(rule_xml_file)
+
+
+def test_rule_to_xml_element(
+        rule_accounts_tmout, rule_accounts_tmout_xml):
     rule_el = rule_accounts_tmout.to_xml_element()
-
-    assert rule_el is not None
-    assert rule_el.tag == "{%s}Rule" % XCCDF12_NS
-    assert len(rule_el.attrib) == 3
-    assert rule_el.get("id") == \
-        "xccdf_org.ssgproject.content_rule_accounts_tmout"
-    assert rule_el.get("selected") == "false"
-    assert rule_el.get("selected") == "false"
-
-    title_els = rule_el.findall("{%s}title" % XCCDF12_NS)
-    assert len(title_els) == 1
-    title_el = title_els[0]
-    assert title_el is not None
-    assert title_el.text == "Set Interactive Session Timeout"
-    assert len(title_el.attrib) == 0
-
-    description_els = rule_el.findall("{%s}description" % XCCDF12_NS)
-    assert len(description_els) == 1
-    description_el = description_els[0]
-    assert description_el is not None
-    assert "Setting the TMOUT option in /etc/profile" in \
-        "".join(description_el.itertext())
-    assert len(description_el.attrib) == 0
-
-    sub_el = description_el.find(".//{%s}sub" % XCCDF12_NS)
-    assert sub_el is not None
-
-    reference_els = rule_el.findall("{%s}reference" % XCCDF12_NS)
-    assert len(reference_els) == 50
-    for reference_el in reference_els:
-        assert reference_el.get("href") is not None
-    pp_href = "https://www.niap-ccevs.org/Profile/PP.cfm"
-    pp = rule_el.find("{%s}reference[@href='%s']" % (XCCDF12_NS, pp_href))
-    assert pp is not None
-    assert pp.text == "FMT_MOF_EXT.1"
-
-    rationale_els = rule_el.findall("{%s}rationale" % XCCDF12_NS)
-    assert len(rationale_els) == 1
-    rationale_el = rationale_els[0]
-    assert len(rationale_el.attrib) == 0
-    assert rationale_el.text == \
-        """Terminating an idle session within a short time period reduces
-the window of opportunity for unauthorized personnel to take control of a
-management session enabled on the console or console port that has been
-left unattended."""
-
-    ident_els = rule_el.findall("{%s}ident" % XCCDF12_NS)
-    assert len(ident_els) == 1
-    ident_el = ident_els[0]
-    assert len(ident_el.attrib) == 1
-    assert ident_el.get("system") == "https://nvd.nist.gov/cce/index.cfm"
-    assert ident_el.text == "CCE-83633-8"
-
-    check_els = rule_el.findall("./{%s}check" % XCCDF12_NS)
-    assert len(check_els) == 2
-
-    ocil_check_el = rule_el.find(
-        "{%s}check[@system='%s']" % (XCCDF12_NS, ocil_cs))
-    assert ocil_check_el.text is None
-    ocil_check_content_ref = ocil_check_el.find(
-        "{%s}check-content-ref" % XCCDF12_NS)
-    assert len(ocil_check_content_ref.attrib) == 2
-    assert ocil_check_content_ref.get("href") == "ocil-unlinked.xml"
-    assert ocil_check_content_ref.get("name") == "accounts_tmout_ocil"
-    assert ocil_check_content_ref.text is None
-
-    oval_check_el = rule_el.find(
-        "{%s}check[@system='%s']" % (XCCDF12_NS, oval_namespace))
-    assert oval_check_el.text is None
-    oval_check_content_ref = oval_check_el.find(
-        "{%s}check-content-ref" % XCCDF12_NS)
-    assert len(oval_check_content_ref.attrib) == 2
-    assert oval_check_content_ref.get("href") == "oval-unlinked.xml"
-    assert oval_check_content_ref.get("name") == "accounts_tmout"
-    assert oval_check_content_ref.text is None
+    rule_tree = LET.fromstring(ET.tostring(rule_el))
+    diff = xmldiff.main.diff_trees(rule_tree, rule_accounts_tmout_xml)
+    assert diff == []
 
 
 @pytest.fixture
@@ -396,39 +333,17 @@ def group_selinux():
     return ssg.build_yaml.Group.from_yaml(rule_file)
 
 
-def test_group_to_xml_element(group_selinux):
+@pytest.fixture
+def group_selinux_xml():
+    group_xml_file = os.path.join(DATADIR, "selinux.xml")
+    return LET.parse(group_xml_file)
+
+
+def test_group_to_xml_element(group_selinux, group_selinux_xml):
     group_el = group_selinux.to_xml_element()
-    assert group_el is not None
-    assert group_el.tag == "{%s}Group" % XCCDF12_NS
-    assert len(group_el.attrib) == 1
-    assert group_el.get("id") == "xccdf_org.ssgproject.content_group_selinux"
-    assert group_el.text is None
-
-    title_els = group_el.findall("{%s}title" % XCCDF12_NS)
-    assert len(title_els) == 1
-    title_el = title_els[0]
-    assert title_el.text == "SELinux"
-    assert len(title_el.attrib) == 0
-
-    description_els = group_el.findall("{%s}description" % XCCDF12_NS)
-    assert len(description_els) == 1
-    description_el = description_els[0]
-    assert description_el.text.startswith(
-        "SELinux is a feature of the Linux kernel")
-    assert len(description_el.attrib) == 0
-
-    platform_els = group_el.findall("{%s}platform" % XCCDF12_NS)
-    assert len(platform_els) == 1
-    platform_el = platform_els[0]
-    assert len(platform_el.attrib) == 1
-    assert platform_el.get("idref") == "#machine"
-
-    conflicts_els = group_el.findall("{%s}conflicts" % XCCDF12_NS)
-    assert len(conflicts_els) == 1
-    conflicts_el = conflicts_els[0]
-    assert len(conflicts_el.attrib) == 1
-    assert conflicts_el.get("idref") == \
-        "xccdf_org.ssgproject.content_group_apparmor"
+    group_tree = LET.fromstring(ET.tostring(group_el))
+    diff = xmldiff.main.diff_trees(group_tree, group_selinux_xml)
+    assert diff == []
 
 
 @pytest.fixture
@@ -437,40 +352,18 @@ def value_system_crypto_policy():
     return ssg.build_yaml.Value.from_yaml(value_file)
 
 
-def test_value_to_xml_element(value_system_crypto_policy):
+@pytest.fixture
+def value_system_crypto_policy_xml():
+    value_xml_file = os.path.join(DATADIR, "var_system_crypto_policy.xml")
+    return LET.parse(value_xml_file)
+
+
+def test_value_to_xml_element(
+        value_system_crypto_policy, value_system_crypto_policy_xml):
     value_el = value_system_crypto_policy.to_xml_element()
-    assert value_el.tag == "{%s}Value" % XCCDF12_NS
-    assert len(value_el.attrib) == 2
-    assert value_el.get("id") == \
-        "xccdf_org.ssgproject.content_value_var_system_crypto_policy"
-    assert value_el.get("type") == "string"
-
-    title_els = value_el.findall("{%s}title" % XCCDF12_NS)
-    assert len(title_els) == 1
-    title_el = title_els[0]
-    assert len(title_el.attrib) == 0
-    assert title_el.text == "The system-provided crypto policies"
-
-    description_els = value_el.findall("{%s}description" % XCCDF12_NS)
-    assert len(description_els) == 1
-    description_el = description_els[0]
-    assert len(description_el.attrib) == 0
-    assert description_el.text == "Specify the crypto policy for the system."
-
-    vv_els = value_el.findall("{%s}value" % XCCDF12_NS)
-    assert len(vv_els) == 4
-    vv1 = value_el.find("{%s}value" % XCCDF12_NS)
-    assert len(vv1.attrib) == 0
-    assert vv1.text == "DEFAULT"
-    vv6 = value_el.find("{%s}value[@selector='legacy']" % XCCDF12_NS)
-    assert len(vv6.attrib) == 1
-    assert vv6.text == "LEGACY"
-    vv7 = value_el.find("{%s}value[@selector='future']" % XCCDF12_NS)
-    assert len(vv7.attrib) == 1
-    assert vv7.text == "FUTURE"
-    vv8 = value_el.find("{%s}value[@selector='next']" % XCCDF12_NS)
-    assert len(vv8.attrib) == 1
-    assert vv8.text == "NEXT"
+    value_tree = LET.fromstring(ET.tostring(value_el))
+    diff = xmldiff.main.diff_trees(value_tree, value_system_crypto_policy_xml)
+    assert diff == []
 
 
 @pytest.fixture
@@ -479,55 +372,17 @@ def profile_ospp():
     return ssg.build_yaml.Profile.from_yaml(value_file)
 
 
-def test_profile_to_xml_element(profile_ospp):
-    profile_el = profile_ospp.to_xml_element()
-    assert profile_el.tag == "{%s}Profile" % XCCDF12_NS
-    assert len(profile_el.attrib) == 1
-    assert profile_el.get("id") == "xccdf_org.ssgproject.content_profile_ospp"
-    assert profile_el.get("extends") is None
-    assert profile_el.text is None
+@pytest.fixture
+def profile_ospp_xml():
+    profile_xml_file = os.path.join(DATADIR, "ospp.xml")
+    return LET.parse(profile_xml_file)
 
-    title_els = profile_el.findall("{%s}title" % XCCDF12_NS)
-    assert len(title_els) == 1
-    title_el = title_els[0]
-    assert len(title_el.attrib) == 1
-    assert title_el.get("override") == "true"
-    assert title_el.text == \
-        "Protection Profile for General Purpose Operating Systems"
 
-    description_els = profile_el.findall("{%s}description" % XCCDF12_NS)
-    assert len(description_els) == 1
-    description_el = description_els[0]
-    assert len(description_el.attrib) == 1
-    assert title_el.get("override") == "true"
-    assert description_el.text.startswith(
-        "This profile is part of Red Hat Enterprise Linux 9")
-
-    reference_els = profile_el.findall("{%s}reference" % XCCDF12_NS)
-    assert len(reference_els) == 1
-    assert reference_els[0].text == \
-        "https://www.niap-ccevs.org/Profile/Info.cfm?PPID=442&id=442"
-
-    r1_id = "xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit"
-    r1 = profile_el.find("{%s}select[@idref='%s']" % (XCCDF12_NS, r1_id))
-    assert r1 is not None
-    assert len(r1.attrib) == 2
-    assert r1.get("idref") == r1_id
-    assert r1.get("selected") == "true"
-
-    rr1_id = "xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit"
-    rr1 = profile_el.find("{%s}refine-rule[@idref='%s']" % (XCCDF12_NS, r1_id))
-    assert rr1 is not None
-    assert len(rr1.attrib) == 2
-    assert rr1.get("idref") == rr1_id
-    assert rr1.get("severity") == "info"
-
-    v1_id = "xccdf_org.ssgproject.content_value_var_password_pam_dcredit"
-    rv1 = profile_el.find("{%s}refine-value[@idref='%s']" % (XCCDF12_NS, v1_id))
-    assert rv1 is not None
-    assert len(rv1.attrib) == 2
-    assert rv1.get("idref") == v1_id
-    assert rv1.get("selector") == "1"
+def test_profile_to_xml_element(profile_ospp, profile_ospp_xml):
+    profile = profile_ospp.to_xml_element()
+    profile_tree = LET.fromstring(ET.tostring(profile))
+    diff = xmldiff.main.diff_trees(profile_tree, profile_ospp_xml)
+    assert diff == []
 
 
 @pytest.fixture
