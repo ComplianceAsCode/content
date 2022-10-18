@@ -4,9 +4,10 @@ import difflib
 import os
 import re
 import sys
+import xml.etree.ElementTree as ET
 
 import ssg.xml
-from ssg.constants import FIX_TYPE_TO_SYSTEM
+from ssg.constants import FIX_TYPE_TO_SYSTEM, XCCDF12_NS
 
 
 class StandardContentDiffer(object):
@@ -140,8 +141,9 @@ class StandardContentDiffer(object):
         if old_rule_text == new_rule_text:
             return
 
-        print(
-            "New content has different text for rule '%s'." % (identifier))
+        if old_rule_text != "":
+            print(
+                "New content has different text for rule '%s'." % (identifier))
 
         if self.show_diffs:
             diff = self.generate_diff_text(old_rule_text, new_rule_text,
@@ -302,6 +304,9 @@ class StigContentDiffer(StandardContentDiffer):
 
         self.context_lines = 200
 
+    def _get_stig_id(self, element):
+        return element.get_version_element().text
+
     def get_stig_rule_SV(self, sv_rule_id):
         stig_rule_id = re.search(r'(SV-\d+)r\d+_rule', sv_rule_id)
         if not stig_rule_id:
@@ -324,20 +329,49 @@ class StigContentDiffer(StandardContentDiffer):
         # This creates map the SV numbers to their equivalent full IDs in the new Benchmark.
         new_rule_mapping = {self.get_stig_rule_SV(rule.get_attr("id")): rule.get_attr("id")
                             for rule in rules_in_new_benchmark}
+        old_rule_mapping = {self.get_stig_rule_SV(rule.get_attr("id")): rule.get_attr("id")
+                            for rule in rules_in_old_benchmark}
 
-        for old_rule in rules_in_old_benchmark:
-            sv_rule_id = new_rule_mapping[self.get_stig_rule_SV(old_rule.get_attr("id"))]
-            new_rule = new_benchmark.find_rule(sv_rule_id)
-            if new_rule is None:
-                missing_rules.append(sv_rule_id)
-                print("%s is missing in new datastream." % (sv_rule_id))
-                continue
-            if self.only_rules:
-                continue
-            stig_id = new_rule.get_version_element()
-            self.compare_rule(old_rule, new_rule, stig_id.text)
-            self.compare_platforms(old_rule, new_rule,
-                                   old_benchmark, new_benchmark, stig_id)
+        self.compare_existing_rules(new_benchmark,
+                                    old_benchmark, rules_in_old_benchmark, new_rule_mapping)
+
+        self.check_for_new_rules(rules_in_new_benchmark, old_rule_mapping)
 
         if self.rule_diffs:
             print("Diff files saved at %s." % self.output_dir)
+
+    def compare_existing_rules(self, new_benchmark, old_benchmark,
+                               rules_in_old_benchmark, new_rule_mapping):
+        for old_rule in rules_in_old_benchmark:
+            old_sv_rule_id = self.get_stig_rule_SV(old_rule.get_attr("id"))
+            old_stig_id = self._get_stig_id(old_rule)
+            try:
+                new_sv_rule_id = new_rule_mapping[old_sv_rule_id]
+            except KeyError:
+                missing_rules.append(old_sv_rule_id)
+                print("%s is missing in new datastream." % old_stig_id)
+                continue
+            if self.only_rules:
+                continue
+
+            new_rule = new_benchmark.find_rule(new_sv_rule_id)
+            new_stig_id = self._get_stig_id(new_rule)
+
+            self.compare_rule(old_rule, new_rule, new_stig_id)
+            self.compare_platforms(old_rule, new_rule,
+                                   old_benchmark, new_benchmark, new_stig_id)
+
+    def check_for_new_rules(self, rules_in_new_benchmark, old_rule_mapping):
+        # Check for rules added in new content
+        for new_rule in rules_in_new_benchmark:
+            new_stig_id = self._get_stig_id(new_rule)
+            new_sv_rule_id = self.get_stig_rule_SV(new_rule.get_attr("id"))
+            try:
+                old_sv_rule_id = old_rule_mapping[new_sv_rule_id]
+            except KeyError:
+                print("%s was added in new datastream." % (new_stig_id))
+
+                # Compare against empty rule so that a diff is generated
+                empty_rule = ssg.xml.XMLRule(ET.Element("{%s}Rule" % XCCDF12_NS))
+                self.compare_rule(empty_rule, new_rule, new_stig_id)
+
