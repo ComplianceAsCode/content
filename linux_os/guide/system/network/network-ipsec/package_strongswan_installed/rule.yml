@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15 
+prodtype: sle12,sle15
 
 title: 'Install strongswan Package'
 
@@ -17,6 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+     cce@sle12: CCE-91625-4
      cce@sle15: CCE-85836-5
 
 references:
@@ -30,7 +31,7 @@ references:
     nist-csf: PR.AC-3,PR.MA-2,PR.PT-4
     pcidss: Req-4.1
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000120-GPOS-00061
-    
+
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="strongswan") }}}'
