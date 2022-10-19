@@ -48,3 +48,10 @@ warnings:
         will be shown in the remediation report.
         These respective services will not be started in order to preserve any intentional change
         in network components related to firewall and network interfaces.
+    - general: |-
+        This rule also checks if the SSH port was modified by the administrator and is reflecting
+        the expected port number. Although this is checked, fixing the custom ssh.xml file is not
+        in the scope of the remediation since there is no reliable way to manually change the
+        respective file. If the default SSH port is modified, it is on the administrator
+        responsibility to ensure the firewalld customizations in the service port level are
+        properly configured.
