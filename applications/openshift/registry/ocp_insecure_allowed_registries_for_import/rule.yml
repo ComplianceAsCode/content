@@ -1,0 +1,58 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: "Check configured allowed registries for import uses secure protocol"
+
+description: |-
+    The configuration <tt>allowedRegistriesForImport</tt> limits the container
+    image registries from which normal users may import images. This is a list
+    of the registries that can be trusted to contain valid images and the image
+    location configured is assumed to be secured unless configured otherwise. It
+    is important to allow only secure registries to avoid man in the middle attacks,
+    as the insecure image import request can be impersonated and could lead to
+    fetching malicious content.
+    List all the allowed repositories for import configured with insecure set to true
+    using the following command:
+    <pre>oc get image.config.openshift.io/cluster -o json | jq '.spec | (.allowedRegistriesForImport[])? | select(.insecure==true)'</pre>
+    Remove or edit the listed registries having insecure set by using the command:
+    <pre>oc edit image.config.openshift.io/cluster</pre>
+
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html",
+                text="the relevant documentation") }}}.
+
+rationale: |-
+    Configured list of allowed registries for import should be from the secure source.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86235-9
+
+references:
+    nist: CM-5(3)
+    srg: SRG-APP-000014-CTR-000035
+
+ocil_clause: 'allowedRegistriesForImport is configured with insecure option for image access'
+
+ocil: |-
+    To check for the configured allowedRegistriesForImport with insecure option use below command:
+    <tt>$ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.allowedRegistriesForImport}'</tt>
+    The output lists the configured allowedRegistriesForImport and the insecure option used.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.allowedRegistriesForImport[:].insecure"
+        check_existence: "any_exist"
+        values:
+            - value: "true"
+              type: "boolean"
+              operation: "not equal"
