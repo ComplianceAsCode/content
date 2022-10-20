@@ -333,3 +333,4 @@ selections:
     - package_aide_installed
     - selinux_context_elevation_for_sudo
     - audit_rules_kernel_module_loading_create
+    - account_emergency_expire_date
