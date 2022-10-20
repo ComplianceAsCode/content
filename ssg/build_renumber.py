@@ -403,7 +403,7 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
         if xccdfvartype is None:
             msg = (
                 "Invalid XCCDF variable '{0}': Missing the 'type' attribute."
-                .format(xccdfvar.attrib("id")))
+                .format(xccdfvar.get("id")))
             raise SSGError(msg)
 
         # This is the required XCCDF 'type' for <xccdf:Value> derived
@@ -441,10 +441,11 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
     xccdfrules = xccdftree.findall(".//{%s}Rule" % XCCDF12_NS)
     for rule in xccdfrules:
         identcce = _find_identcce(rule)
-        if identcce is not None:
-            cceid = identcce.text
-            if not is_cce_format_valid(cceid):
-                print("Warning: CCE '{0}' is invalid for rule '{1}'. Removing CCE..."
-                      .format(cceid, rule.get("id"), file=sys.stderr))
-                rule.remove(identcce)
-                sys.exit(1)
+        if identcce is None:
+            continue
+        cceid = identcce.text
+        if not is_cce_format_valid(cceid):
+            msg = (
+                "Warning: CCE '{0}' is invalid for rule '{1}'. "
+                "Removing CCE...".format(cceid, rule.get("id")))
+            raise SSGError(msg)
