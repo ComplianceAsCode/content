@@ -19,7 +19,7 @@ if firewall-cmd --state -q; then
 
         # If the connection is not yet assigned to a firewalld zone, assign it to the proper zone.
         # This will not change connections which are already assigned to any firewalld zone.
-        for connection in $nm_connections; do
+        for connection in "${nm_connections[@]}"; do
             current_zone=$(nmcli -f connection.zone connection show "$connection" | awk '{ print $2}')
             if [ $current_zone = "--" ]; then
                 nmcli connection modify "$connection" connection.zone $firewalld_sshd_zone
@@ -38,7 +38,7 @@ if firewall-cmd --state -q; then
     # It is possible that traffic is comming by any active interface and consequently any
     # active zone. So, this make sure all active zones are permanently allowing SSH service.
     readarray -t firewalld_active_zones < <(firewall-cmd --get-active-zones | grep -v interfaces)
-    for zone in $firewalld_active_zones; do
+    for zone in "${firewalld_active_zones[@]}"; do
         firewall-cmd --permanent --zone="$zone" --add-service=ssh
     done
     firewall-cmd --reload
