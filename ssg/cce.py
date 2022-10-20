@@ -77,8 +77,6 @@ def is_cce_format_valid(cceid):
     IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
     where each X is a digit, and the final X is a check-digit)
     based on Requirement A17:
-
-    http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html
     """
     match = re.match(r'^CCE-\d{4,5}-\d$', cceid)
     return match is not None
