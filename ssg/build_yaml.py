@@ -1161,7 +1161,8 @@ class Group(XCCDFEntity):
             group, "conflicts", "idref",
             list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
         for _value in self.values.values():
-            group.append(_value.to_xml_element())
+            if _value is not None:
+                group.append(_value.to_xml_element())
 
         # Rules that install or remove packages affect remediation
         # of other rules.
@@ -1182,7 +1183,9 @@ class Group(XCCDFEntity):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
-            group.append(self.rules.get(rule_id).to_xml_element(env_yaml))
+            rule = self.rules.get(rule_id)
+            if rule is not None:
+                group.append(rule.to_xml_element(env_yaml))
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -1221,7 +1224,8 @@ class Group(XCCDFEntity):
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
-            group.append(_group.to_xml_element(env_yaml))
+            if _group is not None:
+                group.append(_group.to_xml_element(env_yaml))
 
         return group
 

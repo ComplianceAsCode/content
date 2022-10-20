@@ -1,11 +1,12 @@
+import contextlib
 import os
 import tempfile
 
 import yaml
 import pytest
 import xml.etree.ElementTree as ET
-from ssg.build_cpe import ProductCPEs
 
+from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
 from ssg.constants import cpe_language_namespace
 from ssg.yaml import open_raw
@@ -308,3 +309,91 @@ def test_rule_triage_policy_files():
     assert len(triaged) == number_of_applicable_policies
     assert triaged["po"].endswith("shared" + ".yml")
     assert triaged["li"].endswith("shared" + ".yml")
+
+
+@contextlib.contextmanager
+def temporary_filename():
+    import tempfile
+    try:
+        tmp = tempfile.NamedTemporaryFile(delete=False)
+        tmp_name = tmp.name
+        tmp.close()
+        yield tmp_name
+    finally:
+        os.unlink(tmp_name)
+
+
+@pytest.fixture
+def rule_accounts_tmout():
+    rule_file = os.path.join(DATADIR, "accounts_tmout.yml")
+    return ssg.build_yaml.Rule.from_yaml(rule_file)
+
+
+def test_rule_to_xml_element(rule_accounts_tmout):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    rule_el = rule_accounts_tmout.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(rule_el).write(real)
+        expected = os.path.join(DATADIR, "accounts_tmout.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def group_selinux():
+    rule_file = os.path.join(DATADIR, "selinux.yml")
+    return ssg.build_yaml.Group.from_yaml(rule_file)
+
+
+def test_group_to_xml_element(group_selinux):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    group_el = group_selinux.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(group_el).write(real)
+        expected = os.path.join(DATADIR, "selinux.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def value_system_crypto_policy():
+    value_file = os.path.join(DATADIR, "var_system_crypto_policy.yml")
+    return ssg.build_yaml.Value.from_yaml(value_file)
+
+
+def test_value_to_xml_element(value_system_crypto_policy):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    value_el = value_system_crypto_policy.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(value_el).write(real)
+        expected = os.path.join(DATADIR, "var_system_crypto_policy.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def profile_ospp():
+    value_file = os.path.join(DATADIR, "ospp.profile")
+    return ssg.build_yaml.Profile.from_yaml(value_file)
+
+
+def test_profile_to_xml_element(profile_ospp):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    profile_el = profile_ospp.to_xml_element()
+    with temporary_filename() as real:
+        ET.ElementTree(profile_el).write(real)
+        expected = os.path.join(DATADIR, "ospp.xml")
+        diff = xmldiff_main.diff_files(real, expected)
+        assert diff == []
+
+
+@pytest.fixture
+def profile_ospp_with_extends(profile_ospp):
+    profile_ospp.extends = "xccdf_org.ssgproject.content_profile_standard"
+    return profile_ospp
+
+
+def test_profile_to_xml_element_extends(profile_ospp_with_extends):
+    profile_el = profile_ospp_with_extends.to_xml_element()
+    assert profile_el.get("extends") == \
+        "xccdf_org.ssgproject.content_profile_standard"

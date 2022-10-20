@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ns0:Profile xmlns:ns0="http://checklists.nist.gov/xccdf/1.2" id="xccdf_org.ssgproject.content_profile_ospp">
+  <ns0:title override="true">Protection Profile for General Purpose Operating Systems</ns0:title>
+  <ns0:description override="true">This profile is part of Red Hat Enterprise Linux 9 Common Criteria Guidance
+documentation for Target of Evaluation based on Protection Profile for
+General Purpose Operating Systems (OSPP) version 4.2.1 and Functional
+Package for SSH version 1.0.
+
+Where appropriate, CNSSI 1253 or DoD-specific values are used for
+configuration, based on Configuration Annex to the OSPP.</ns0:description>
+  <ns0:reference>https://www.niap-ccevs.org/Profile/Info.cfm?PPID=442&amp;id=442</ns0:reference>
+  <ns0:select idref="xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit" selected="true"/>
+  <ns0:refine-value idref="xccdf_org.ssgproject.content_value_var_password_pam_dcredit" selector="1"/>
+  <ns0:refine-rule idref="xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit" severity="info"/>
+</ns0:Profile>

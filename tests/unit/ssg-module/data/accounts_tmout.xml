@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<ns0:Rule xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ns0="http://checklists.nist.gov/xccdf/1.2" selected="false" id="xccdf_org.ssgproject.content_rule_accounts_tmout" severity="medium">
+  <ns0:title>Set Interactive Session Timeout</ns0:title>
+  <ns0:description>Setting the <html:code>TMOUT</html:code> option in <html:code>/etc/profile</html:code> ensures that
+all user sessions will terminate based on inactivity.
+The value of TMOUT should be exported and read only.
+The <html:code>TMOUT</html:code>
+
+setting in a file loaded by <html:code>/etc/profile</html:code>, e.g.
+<html:code>/etc/profile.d/tmout.sh</html:code> should read as follows:
+<html:pre>declare -xr TMOUT=<ns0:sub idref="xccdf_org.ssgproject.content_value_var_accounts_tmout" use="legacy"/></html:pre></ns0:description>
+  <ns0:reference href="http://www.ssi.gouv.fr/administration/bonnes-pratiques/">BP28(R29)</ns0:reference>
+  <ns0:reference href="https://www.cisecurity.org/controls/">1</ns0:reference>
+  <ns0:reference href="https://www.cisecurity.org/controls/">12</ns0:reference>
+  <ns0:reference href="https://www.cisecurity.org/controls/">15</ns0:reference>
+  <ns0:reference href="https://www.cisecurity.org/controls/">16</ns0:reference>
+  <ns0:reference href="https://www.isaca.org/resources/cobit">DSS05.04</ns0:reference>
+  <ns0:reference href="https://www.isaca.org/resources/cobit">DSS05.10</ns0:reference>
+  <ns0:reference href="https://www.isaca.org/resources/cobit">DSS06.10</ns0:reference>
+  <ns0:reference href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf">3.1.11</ns0:reference>
+  <ns0:reference href="https://public.cyber.mil/stigs/cci/">CCI-000057</ns0:reference>
+  <ns0:reference href="https://public.cyber.mil/stigs/cci/">CCI-001133</ns0:reference>
+  <ns0:reference href="https://public.cyber.mil/stigs/cci/">CCI-002361</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.1</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.2</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.3</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.4</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.5</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.6</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.7</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.8</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat">4.3.3.6.9</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.1</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.10</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.2</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.5</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.7</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.8</ns0:reference>
+  <ns0:reference href="https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu">SR 1.9</ns0:reference>
+  <ns0:reference href="https://www.iso.org/standard/54534.html">A.18.1.4</ns0:reference>
+  <ns0:reference href="https://www.iso.org/standard/54534.html">A.9.2.1</ns0:reference>
+  <ns0:reference href="https://www.iso.org/standard/54534.html">A.9.2.4</ns0:reference>
+  <ns0:reference href="https://www.iso.org/standard/54534.html">A.9.3.1</ns0:reference>
+  <ns0:reference href="https://www.iso.org/standard/54534.html">A.9.4.2</ns0:reference>
+  <ns0:reference href="https://www.iso.org/standard/54534.html">A.9.4.3</ns0:reference>
+  <ns0:reference href="https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx">CIP-004-6 R2.2.3</ns0:reference>
+  <ns0:reference href="https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx">CIP-007-3 R5.1</ns0:reference>
+  <ns0:reference href="https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx">CIP-007-3 R5.2</ns0:reference>
+  <ns0:reference href="https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx">CIP-007-3 R5.3.1</ns0:reference>
+  <ns0:reference href="https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx">CIP-007-3 R5.3.2</ns0:reference>
+  <ns0:reference href="https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx">CIP-007-3 R5.3.3</ns0:reference>
+  <ns0:reference href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf">AC-12</ns0:reference>
+  <ns0:reference href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf">SC-10</ns0:reference>
+  <ns0:reference href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf">AC-2(5)</ns0:reference>
+  <ns0:reference href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf">CM-6(a)</ns0:reference>
+  <ns0:reference href="https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf">PR.AC-7</ns0:reference>
+  <ns0:reference href="https://www.niap-ccevs.org/Profile/PP.cfm">FMT_MOF_EXT.1</ns0:reference>
+  <ns0:reference href="https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os">SRG-OS-000163-GPOS-00072</ns0:reference>
+  <ns0:reference href="https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os">SRG-OS-000029-GPOS-00010</ns0:reference>
+  <ns0:reference href="">SRG-OS-000163-VMM-000700</ns0:reference>
+  <ns0:reference href="">SRG-OS-000279-VMM-001010</ns0:reference>
+  <ns0:rationale>Terminating an idle session within a short time period reduces
+the window of opportunity for unauthorized personnel to take control of a
+management session enabled on the console or console port that has been
+left unattended.</ns0:rationale>
+  <ns0:platform idref="#machine"/>
+  <ns0:ident system="https://nvd.nist.gov/cce/index.cfm">CCE-83633-8</ns0:ident>
+  <ns0:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+    <ns0:check-content-ref href="oval-unlinked.xml" name="accounts_tmout"/>
+  </ns0:check>
+  <ns0:check system="http://scap.nist.gov/schema/ocil/2">
+    <ns0:check-content-ref href="ocil-unlinked.xml" name="accounts_tmout_ocil"/>
+  </ns0:check>
+</ns0:Rule>
