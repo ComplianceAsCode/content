@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
 - name: "Get omfwd configuration directive"
-  shell: sed -e '/action\s*(\s*type\s*=\s*"omfwd"/,/)/!d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+  shell: sed -e '/^action\s*(\s*type\s*=\s*"omfwd"/,/)/!d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf || true
   register: include_omfwd_config_output
 
 - name: "Get include files directives"

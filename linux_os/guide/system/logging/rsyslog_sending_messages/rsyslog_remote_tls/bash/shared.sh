@@ -7,7 +7,7 @@
 {{{ bash_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
 # Get omfwd configuration directive
-OMFWD_CONFIG_OUTPUT=`grep -Pzo '(?s)action\s*\(\s*type\s*=\s*"omfwd".*\)' /etc/rsyslog.conf /etc/rsyslog.d/*.conf`
+OMFWD_CONFIG_OUTPUT=`grep -Pzo '^(?s)action\s*\(\s*type\s*=\s*"omfwd".*\)' /etc/rsyslog.conf /etc/rsyslog.d/*.conf`
 OMFWD_CONFIG=`echo "$OMFWD_CONFIG_OUTPUT"| awk 'BEGIN {FS=":"; RS=")\n"}; {print $2}'`
 OMFWD_CONFIG_FILE=`echo "$OMFWD_CONFIG_OUTPUT"| awk 'BEGIN {FS=":"; RS=")\n"}; {print $1}'`
 if ! [ -z "$OMFWD_CONFIG" ]; then
