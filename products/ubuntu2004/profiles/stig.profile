@@ -38,7 +38,7 @@ selections:
 
     # UBTU-20-010009 Ubuntu operating systems when booted must require authentication upon booting into single-user and maintenance modes.
     - grub2_uefi_password
-    - '!grub2_password'
+    - grub2_password
 
     # UBTU-20-010010 The Ubuntu operating system must uniquely identify interactive users.
     - no_duplicate_uids

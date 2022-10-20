@@ -130,6 +130,7 @@ selections:
     ## 1.5 Secure Boot Settings ##
     ### 1.5.1 Ensure bootloader password is set (Automated)
     - grub2_password
+    - grub2_uefi_password
 
     ### 1.5.2 Ensure permissions on bootloader config are configured (Automated)
     - file_owner_grub2_cfg
