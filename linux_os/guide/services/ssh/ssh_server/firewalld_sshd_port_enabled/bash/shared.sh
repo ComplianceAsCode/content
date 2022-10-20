@@ -15,7 +15,7 @@ if firewall-cmd --state -q; then
 
     if systemctl is-active NetworkManager; then
         # This will collect all NetworkManager connections names
-        readarray -t nm_connections < <(nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2)
+        readarray -t nm_connections < <(nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2 | sed 's/ *$//g')
 
         # If the connection is not yet assigned to a firewalld zone, assign it to the proper zone.
         # This will not change connections which are already assigned to any firewalld zone.

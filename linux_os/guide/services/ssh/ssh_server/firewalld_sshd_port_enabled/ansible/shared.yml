@@ -22,7 +22,7 @@
   block:
     - name: '{{{ rule_title }}} - Collect NetworkManager connections names'
       ansible.builtin.shell:
-        cmd: nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2
+        cmd: nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2 | sed 's/ *$//g'
       register: result_nmcli_cmd_connections_names
       changed_when: false
 
@@ -36,7 +36,7 @@
 
     - name: '{{{ rule_title }}} - Ensure NetworkManager connections are assigned to a firewalld zone'
       ansible.builtin.command:
-        cmd: nmcli connection modify {{ item.0 | trim }} connection.zone {{ firewalld_sshd_zone }}
+        cmd: nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
       register: result_nmcli_cmd_connections_assignment
       with_together:
         - "{{ result_nmcli_cmd_connections_names.stdout_lines }}"
