@@ -15,15 +15,12 @@ firewall-cmd --reload
 firewall-cmd --zone=$custom_zone_name --add-service=ssh
 
 # Collect all NetworkManager connections names.
-readarray -t nm_connections < <(nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2)
+readarray -t nm_connections < <(nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }')
 
 # If the connection is not yet assigned to a firewalld zone, assign it to the proper zone.
 # This will not change connections which are already assigned to any firewalld zone.
 for connection in $nm_connections; do
-    current_zone=$(nmcli -f connection.zone connection show "$connection" | awk '{ print $2}')
-    if [ $current_zone = "--" ]; then
-        nmcli connection modify "$connection" connection.zone "$custom_zone_name"
-    fi
+    nmcli connection modify "$connection" connection.zone "$custom_zone_name"
 done
 systemctl restart NetworkManager
 

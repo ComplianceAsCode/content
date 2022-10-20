@@ -10,7 +10,7 @@ systemctl start firewalld NetworkManager
 firewall-cmd --zone=work --add-service=ssh
 
 # Collect all NetworkManager connections names.
-readarray -t nm_connections < <(nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2)
+readarray -t nm_connections < <(nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }')
 
 # If the connection is not yet assigned to a firewalld zone, assign it to the proper zone.
 # This will not change connections which are already assigned to any firewalld zone.
@@ -30,8 +30,8 @@ readarray -t firewalld_active_zones < <(firewall-cmd --get-active-zones | grep -
 # Most of the zones already allow ssh, so it is also allowed http to ensure a custom file is
 # created in /etc/firewalld/zones.
 for zone in $firewalld_active_zones; do
-    firewall-cmd --permanent --zone="$zone" --add-service=ssh
     firewall-cmd --permanent --zone="$zone" --add-service=http
+    firewall-cmd --permanent --zone="$zone" --add-service=ssh
 done
 
 firewall-cmd --reload
