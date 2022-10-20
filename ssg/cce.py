@@ -55,7 +55,21 @@ class RedhatCCEFile(CCEFile):
         return os.path.join(self.project_root, "shared", "references", "cce-redhat-avail.txt")
 
 
+class SLE12CCEFile(CCEFile):
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-sle12-avail.txt")
+
+
+class SLE15CCEFile(CCEFile):
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-sle15-avail.txt")
+
+
 CCE_POOLS["redhat"] = RedhatCCEFile
+CCE_POOLS["sle12"] = SLE12CCEFile
+CCE_POOLS["sle15"] = SLE15CCEFile
 
 
 def is_cce_format_valid(cceid):
