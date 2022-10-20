@@ -89,14 +89,6 @@ utils.ignition\-remediation module
    :undoc-members:
    :show-inheritance:
 
-utils.migrate\_template\_csv\_to\_rule module
----------------------------------------------
-
-.. automodule:: utils.migrate_template_csv_to_rule
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.mod\_checks module
 ------------------------
 
@@ -129,34 +121,10 @@ utils.regexify\_banner module
    :undoc-members:
    :show-inheritance:
 
-utils.rule\_dir\_diff module
-----------------------------
-
-.. automodule:: utils.rule_dir_diff
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.rule\_dir\_json module
 ----------------------------
 
 .. automodule:: utils.rule_dir_json
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-utils.rule\_dir\_stats module
------------------------------
-
-.. automodule:: utils.rule_dir_stats
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-utils.xccdf2csv\-stig module
-----------------------------
-
-.. automodule:: utils.xccdf2csv-stig
    :members:
    :undoc-members:
    :show-inheritance:

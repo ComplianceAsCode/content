@@ -308,43 +308,6 @@ For an example of `make_shared`:
     $ ./utils/mod_fixes.py clean_components_post_updating bash make_shared sle12
 ```
 
-### `utils/rule_dir_diff.py` and `utils/rule_dir_stats.py` -- comparison of rule directories
-
-`utils/rule_dir_stats.py` is a utility for extracting various statistics out
-of the `rule_dir.json` file. `utils/rule_dir_diff.py` is its counterpart,
-operating on two separate JSON blobs, presumably at different points in time
-or from different content trees. They support the following arguments which
-affect output:
-
-- `--products`: limit results to only the specified product(s)
-- `--strict`: enforce product applicability strictly on the `rule.yml`
-  level, discarding results from rules which lack specified product in the
-  `rule.yml` file.
-- `--missing`: List rules which are missing OVALs or fixes.
-- `--two-plus`: List rules which have two or more OVALs or fixes.
-- `--prodtypes`: List rules which have different prodtypes/platform
-  applicability between `rule.yml` and its OVALs/fixes.
-- `--product-names`: List rules which have product-specific names (e.g.,
-  a `sle15.xml` with `multi_platform_sle` applicability.
-- `--introspect`: Dump raw objects for explicitly queried rules.
-- `--unassociated`: Search for rules without any product association (e.g.,
-  missing or empty prodtype).
-- `--ovals-only`: Only output information about OVALs.
-- `--fixes-only`: Only output information about fixes.
-- `--summary-only`: Only output summary information.
-
-Options specific to `utils/rule_dir_stats.py`:
-
-- `--left`: old JSON artifact; displayed on the left of diffs.
-- `--right`: new JSON artifact; displayed on the right of diffs.
-
-To execute:
-
-```bash
-    $ ./utils/rule_dir_stats.py [...any options...]
-    $ ./utils/rule_dir_diff.py [...any options...]
-```
-
 ### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
 
 The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.

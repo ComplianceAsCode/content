@@ -489,13 +489,6 @@ utilities:
 -   `utils/rule_dir_json.py` - to generate a JSON tree describing the
     current content of all guides
 
--   `utils/rule_dir_stats.py` - for analyzing the JSON tree and finding
-    information about specific rules, products, or summary statistics
-
--   `utils/rule_dir_diff.py` - for diffing two JSON trees (e.g., before
-    and after a major change), using the same interface as
-    `rule_dir_stats.py`.
-
 For more information about these utilities, please see their help text.
 
 To interact with `rule.yml` files and the OVALs inside a rule directory,
@@ -708,7 +701,7 @@ root:
       </unix:file_object>
 
 Before you start creating an OVAL check, please consult our [list of JINJA
-macros](jinja_macros/oval:oval)
+macros](../../jinja_macros/10-oval.rst)
 specific for OVAL. It might save time for you as an author as well as for
 reviewers.
 
@@ -976,7 +969,7 @@ profile. The Playbook is generated in
 
 Jinja macros for Ansible content are located in
 `/shared/macros/ansible.jinja`. You can see their reference
-[here](jinja_macros/ansible:ansible).
+[here](../../jinja_macros/10-ansible.rst).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
@@ -1042,13 +1035,13 @@ guidelines:
 
 Jinja macros that generate Bash remediations can be found in
 `shared/macros/bash.jinja`. You can see their reference
-[here](jinja_macros/bash:bash).
+[here](../../jinja_macros/10-bash.rst).
 
 ### Kubernetes
 
 Jinja macros for Kubernetes content are located in
 `/shared/macros/kubernetes.jinja`. You can see their reference
-[here](jinja_macros/kubernetes:kubernetes)
+[here](../../jinja_macros/10-kubernetes.rst)
 
 Templating
 ----------
@@ -1111,7 +1104,7 @@ the following to `rule.yml`:
 > strings as arguments until **Python 2** is completely removed from the
 > list of supported interpreters.
 
-you can see reference of all available templates [here](templates/template_reference:available%20templates).
+you can see reference of all available templates [here](../../templates/template_reference.md#available-templates).
 
 ## Applicability of content
 

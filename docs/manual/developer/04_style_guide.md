@@ -155,7 +155,7 @@ The following elements are not allowed:
 
 This section describes the style guide around the `rule.yml` files.
 
-* All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
+* All the above [YAML](#yaml) rules apply.
 * A rule should only address one configuration item change.
 * A variable should be when a configuration change can be multiple different values.
 * When writing a rule and a template is available, the template should be used over custom content
@@ -205,7 +205,7 @@ Rules sections must be in the following order, if they are present.
 
 This section describes the style guide around the `group.yml` files.
 
-* All the above [YAML](manual/developer/04_style_guide:yaml) rules apply
+* All the above [YAML](#yaml) rules apply
 * A group should only contain rules that effect the same software or service
 
 #### Group Sections
@@ -221,7 +221,7 @@ Group sections must be in the following order, if present.
 ### Benchmark
 
 This section describes the style guide around the `benchmark.yml` files.
-All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
+All the above [YAML](#yaml) rules apply.
 
 #### Benchmark Sections
 
@@ -240,7 +240,7 @@ Benchmark sections must be in the following order, if they are present.
 ### Controls
 
 These rules apply to the files in `controls/`.
-All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
+All the above [YAML](#yaml) rules apply.
 
 #### Control Sections
 
@@ -344,7 +344,7 @@ Value must be low, medium, or high.
 
 ### Ansible
 
-* Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
+* Shall follow all the rules in the [YAML](#yaml) section
 * Should prefer using Ansible modules over just calling system commands
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
 * Task names should be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - ensure correct banner"`
@@ -357,7 +357,7 @@ Value must be low, medium, or high.
 
 ### Kubernetes
 
-* Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
+* Shall follow all the rules in the [YAML](#yaml) section
 
 ## XML
 
@@ -416,7 +416,7 @@ or
 <code here>
 ```
 
-* Must follow all the rules in the [Bash](manual/developer/04_style_guide:bash) section
+* Must follow all the rules in the [Bash](#bash) section
 
 ## Markup Languages
 

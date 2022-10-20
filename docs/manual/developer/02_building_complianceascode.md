@@ -320,7 +320,7 @@ make -j4 html-stats # generate statistics for all products, as a result <product
 make -j4 html-profile-stats # generate statistics for all profiles in all products, as a result <product>/profile-statistics/statistics.html file is created
 ```
 
-If you want to go deeper into statistics, refer to [Profile Statistics and Utilities](manual/developer/05_tools_and_utilities:Profile%20Statistics%20and%20Utilities) section.
+If you want to go deeper into statistics, refer to [Profile Statistics and Utilities](manual/developer/05_tools_and_utilities.md#profile-statistics-and-utilities) section.
 
 
 ### Generating Sphinx Documentation
@@ -336,26 +336,12 @@ make -j4 docs # check docs/index.html file
 
 ### Building compliant SCAP 1.2 content
 
-By default, the build system builds SCAP content with OVAL 5.11. This means that the SCAP 1.3 datastream conforms to SCAP standard version 1.3. But the SCAP 1.2 datastream is not fully conformant with SCAP standard version 1.2, as up to OVAL 5.10 version is allowed.
+The build system builds SCAP content with OVAL 5.11.
+This means that the SCAP 1.3 datastream conforms to SCAP standard version 1.3.
+But the SCAP 1.2 datastream is not fully conformant with SCAP standard version 1.2, as up to OVAL 5.10 version is allowed.
 As SCAP 1.3 allows up to OVAL 5.11 and SCAP 1.2 allows up to OVAL 5.10.
-
-To build fully compliant SCAP 1.2 content:
-
-If you use `build_product` script, pass `--oval510` option:
-
-```bash
-./build_product --oval510 <product-name>
-```
-
-If you use `cmake` command, pass `-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10`:
-
-```bash
-cd build/
-cmake -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10 ../
-make
-```
-
-And use the datastream with suffix `-1.2.xml`.
+This project no longer builds content that is fully SCAP 1.2 compliant as we no longer support OVAL 5.10.
+The last release supporting SCAP 1.2 content was [v0.1.64](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.64).
 
 ### Building SCE (non-compliant) content
 
