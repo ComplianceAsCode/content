@@ -383,3 +383,20 @@ def test_verify_correct_form_of_referenced_cce_identifiers(
     assert (
         "Warning: CCE 'RHEL7-CCE-TBD' is invalid for rule 'errata_devel'. "
         "Removing CCE...") in str(e)
+
+
+@pytest.fixture
+def xccdf_with_no_cce():
+    bench = ET.Element("{%s}Benchmark" % XCCDF12_NS)
+    rule = ET.SubElement(bench, "{%s}Rule" % XCCDF12_NS)
+    rule.set("id", "errata_devel")
+    return bench
+
+
+def test_verify_correct_form_of_referenced_cce_identifiers_no_cce(
+        xccdf_with_no_cce):
+    try:
+        ssg.build_renumber.verify_correct_form_of_referenced_cce_identifiers(
+            xccdf_with_no_cce)
+    except SSGError as e:
+        assert False, "Raised SSGError: " + str(e)
