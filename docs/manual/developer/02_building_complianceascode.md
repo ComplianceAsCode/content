@@ -90,6 +90,20 @@ yum install bats
 apt-get install bats
 ```
 
+### xmldiff (Python unit tests)
+
+Install the  `xmldiff` and `lxml` packages to execute Python unit tests that use these packages.
+
+```bash
+pip3 install xmldiff
+
+# Fedora/RHEL
+yum install python3-lxml
+
+# Ubuntu/Debian
+apt-get install python-lxml
+```
+
 ### Ansible Static Analysis packages
 
 Install `yamllint` and `ansible-lint` packages to perform Ansible
