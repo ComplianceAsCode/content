@@ -123,7 +123,8 @@ These sub-commands are:
 - `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
   `identifiers` or `references`.
 - `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
-- `sort_prodtypes`: "sorts the products in prodtype"
+- `sort_prodtypes`: sorts the products in prodtype.
+- `add-cce`: automatically assign CCE identifiers to rules.
 
 To execute:
 
@@ -139,6 +140,30 @@ For example:
 
 Note that it is generally good practice to commit all changes prior to running
 one of these commands and then commit the results separately.
+
+#### How to automatically assign CCEs with the `add-cce` sub-command
+
+First you need to make sure that that the `rule_dirs.json` exists, run the following to create it:
+
+```bash
+    $ ./utils/rule_dir_json.py
+```
+
+Then based on the available pool you want to assign the CCEs, you can run something like:
+
+```bash
+    $ python utils/fix_rules.py --product products/rhel9/product.yml add-cce --cce-pool redhat audit_rules_privileged_commands_newuidmap
+```
+
+Note: Multiple rules can have the CCE at the same time by just adding space separated rule IDs.
+Note: The rule should have the product assigned to the `prodtype` attribute or the `prodtype` should be empty.
+
+Example for `sle15` product:
+
+```bash
+    $ python utils/fix_rules.py --product products/sle15/product.yml add-cce --cce-pool sle15 audit_rules_privileged_commands_newuidmap audit_rules_privileged_commands_newuidmap
+```
+
 
 ### `utils/autoprodtyper.py` -- automatically add product to `prodtype`
 
