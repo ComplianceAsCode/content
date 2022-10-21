@@ -36,13 +36,13 @@ class ProductCPEs(object):
     def load_product_cpes(self, env_yaml):
         try:
             product_cpes_list = env_yaml["cpes"]
-            for cpe in product_cpes_list:
-                for cpe_id in cpe.keys():
+            for cpe_dict_repr in product_cpes_list:
+                for cpe_id, cpe in cpe_dict_repr.items():
                     # these product CPEs defined in product.yml are defined
                     # differently than CPEs in shared/applicability/*.yml
                     # therefore we have to place the ID at the place where it is expected
-                    cpe[cpe_id]["id_"] = cpe_id
-                    cpe_item = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
+                    cpe["id_"] = cpe_id
+                    cpe_item = CPEItem.get_instance_from_full_dict(cpe)
                     cpe_item.is_product_cpe = True
                     self.add_cpe_item(cpe_item)
         except KeyError as exc:
