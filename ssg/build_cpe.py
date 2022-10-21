@@ -50,9 +50,8 @@ class ProductCPEs(object):
                     cpe_item = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
                     cpe_item.is_product_cpe = True
                     self.add_cpe_item(cpe_item)
-        except KeyError:
-            print("Product %s does not define 'cpes'" % (env_yaml["product"]))
-            raise
+        except KeyError as exc:
+            raise exc("Product %s does not define 'cpes'" % (env_yaml["product"]))
 
     def load_content_cpes(self, env_yaml):
         cpes_root = required_key(env_yaml, "cpes_root")
