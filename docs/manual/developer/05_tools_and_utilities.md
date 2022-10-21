@@ -143,7 +143,7 @@ one of these commands and then commit the results separately.
 
 #### How to automatically assign CCEs with the `add-cce` sub-command
 
-First you need to make sure that that the `rule_dirs.json` exists, run the following to create it:
+First, you need to make sure that that the `rule_dirs.json` exists, run the following command to create it:
 
 ```bash
     $ ./utils/rule_dir_json.py
