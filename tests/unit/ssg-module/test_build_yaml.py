@@ -1,4 +1,5 @@
 import contextlib
+import collections
 import os
 import tempfile
 
@@ -8,12 +9,87 @@ import xml.etree.ElementTree as ET
 
 from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
-from ssg.constants import cpe_language_namespace
+from ssg.constants import XCCDF12_NS, cpe_language_namespace, xhtml_namespace
 from ssg.yaml import open_raw
 
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", )
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
+
+
+def test_add_sub_element():
+    parent = ET.Element("{%s}glass" % XCCDF12_NS)
+    text = "Use <tt>public</tt> and<br/> private mushrooms!"
+    child = ssg.build_yaml.add_sub_element(
+        parent, "wall", XCCDF12_NS, text)
+    assert child.tag == "{%s}wall" % XCCDF12_NS
+    all_text = "".join(child.itertext())
+    assert all_text == "Use public and private mushrooms!"
+    assert "&lt;" not in all_text
+    tt_els = child.findall("{%s}tt" % xhtml_namespace)
+    assert len(tt_els) == 0
+    code_els = child.findall("{%s}code" % xhtml_namespace)
+    assert len(code_els) == 1
+    code_el = code_els[0]
+    assert code_el.text == "public"
+    assert len(code_el) == 0
+    assert len(code_el.attrib) == 0
+    br_els = child.findall("{%s}br" % xhtml_namespace)
+    assert len(br_els) == 1
+    br_el = br_els[0]
+    assert br_el.text is None
+    assert len(br_el) == 0
+    assert len(br_el.attrib) == 0
+
+
+def test_add_sub_element_with_sub():
+    parent = ET.Element("{%s}cheese" % XCCDF12_NS)
+    text = "The horse sings <sub idref=\"green\"/> and eats my igloo"
+    child = ssg.build_yaml.add_sub_element(
+        parent, "shop", XCCDF12_NS, text)
+    assert "".join(child.itertext()) == "The horse sings  and eats my igloo"
+    sub_els = child.findall("{%s}sub" % XCCDF12_NS)
+    assert len(sub_els) == 1
+    sub_el = sub_els[0]
+    assert len(sub_el) == 0
+    assert len(sub_el.attrib) == 2
+    assert sub_el.get("idref") == "xccdf_org.ssgproject.content_value_green"
+    assert sub_el.get("use") == "legacy"
+
+
+def test_add_warning_elements():
+    rule_el = ET.Element("{%s}Rule" % XCCDF12_NS)
+    warnings = [
+        {"general": "hot beverage"},
+        {"general": "inflammable material"}
+    ]
+    ssg.build_yaml.add_warning_elements(rule_el, warnings)
+    assert rule_el.tag == "{%s}Rule" % XCCDF12_NS
+    assert len(rule_el) == 2
+    warning_els = rule_el.findall("{%s}warning" % XCCDF12_NS)
+    assert len(warning_els) == 2
+    for warning_el in warning_els:
+        assert len(warning_el) == 0
+        assert len(warning_el.attrib) == 1
+        assert warning_el.get("category") == "general"
+    texts = [x.text for x in warning_els]
+    assert "hot beverage" in texts
+    assert "inflammable material" in texts
+
+
+def test_check_warnings():
+    warnings = [
+        {
+            "general": "hot beverage",
+            "error": "explosive"
+        }
+    ]
+    XCCDFStructure = collections.namedtuple("XCCDFStructure", "warnings")
+    s = XCCDFStructure(warnings=warnings)
+    with pytest.raises(ValueError) as e:
+        ssg.build_yaml.check_warnings(s)
+    msg = "Only one key/value pair should exist for each warnings dictionary"
+    assert msg in str(e)
 
 
 def test_serialize_rule():
