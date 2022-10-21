@@ -50,7 +50,6 @@ class ProductCPEs(object):
 
     def load_content_cpes(self, env_yaml):
         cpes_root = required_key(env_yaml, "cpes_root")
-        # we have to "absolutize" the paths the right way, relative to the env_yaml path
         if not os.path.isabs(cpes_root):
             cpes_root = os.path.join(env_yaml["product_dir"], cpes_root)
         self.load_cpes_from_directory_tree(cpes_root, env_yaml)
