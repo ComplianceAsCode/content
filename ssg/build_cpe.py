@@ -33,11 +33,6 @@ class ProductCPEs(object):
         self.platforms = {}
         self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
 
-    def _load_cpes_list(self, map_, cpes_list):
-        for cpe in cpes_list:
-            for cpe_id in cpe.keys():
-                map_[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
-
     def load_product_cpes(self, env_yaml):
         try:
             product_cpes_list = env_yaml["cpes"]
