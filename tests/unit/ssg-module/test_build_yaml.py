@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
-from ssg.constants import cpe_language_namespace, ocil_namespace
+from ssg.constants import cpe_language_namespace
 from ssg.yaml import open_raw
 
 
