@@ -473,3 +473,31 @@ def test_profile_to_xml_element_extends(profile_ospp_with_extends):
     profile_el = profile_ospp_with_extends.to_xml_element()
     assert profile_el.get("extends") == \
         "xccdf_org.ssgproject.content_profile_standard"
+
+
+@pytest.fixture
+def rule_without_ocil():
+    rule_file = os.path.join(DATADIR, "accounts_tmout_without_ocil.yml")
+    return ssg.build_yaml.Rule.from_yaml(rule_file)
+
+
+def test_rule_to_ocil_without_ocil(rule_without_ocil):
+    with pytest.raises(ValueError) as e:
+        rule_without_ocil.to_ocil()
+    assert "Rule accounts_tmout_without_ocil doesn't have OCIL" in str(e)
+
+
+def test_rule_to_ocil(rule_accounts_tmout):
+    xmldiff_main = pytest.importorskip("xmldiff.main")
+    questionnaire, action, boolean_question = rule_accounts_tmout.to_ocil()
+    testables = {
+        questionnaire: "accounts_tmout_questionnaire.xml",
+        action: "accounts_tmout_action.xml",
+        boolean_question: "accounts_tmout_boolean_question.xml"
+    }
+    for element, expected_filename in testables.items():
+        with temporary_filename() as real_file_path:
+            ET.ElementTree(element).write(real_file_path)
+            expected_file_path = os.path.join(DATADIR, expected_filename)
+            diff = xmldiff_main.diff_files(real_file_path, expected_file_path)
+            assert diff == []
