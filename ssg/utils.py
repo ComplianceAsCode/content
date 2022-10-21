@@ -325,3 +325,7 @@ def check_conflict_regex_directory(data):
                 "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
                 "specify a directory. Append '/' to the filepath or remove the "
                 "'file_regex' key.".format(data["_rule_id"], f))
+
+def enum(*args):
+    enums = dict(zip(args, range(len(args))))
+    return type('Enum', (), enums)

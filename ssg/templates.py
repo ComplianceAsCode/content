@@ -16,21 +16,26 @@ try:
 except ImportError:
     from urllib import quote
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
-             "kubernetes", "blueprint", "sce-bash"]
-preprocessing_file_name = "template.py"
-lang_to_ext_map = {
-    "anaconda": ".anaconda",
-    "ansible": ".yml",
-    "bash": ".sh",
-    "oval": ".xml",
-    "puppet": ".pp",
-    "ignition": ".yml",
-    "kubernetes": ".yml",
-    "blueprint": ".toml",
-    "sce-bash": ".sh",
-}
+from collections import namedtuple
 
+templating_lang = namedtuple(
+    "templating_language_attributes",
+    ["name", "file_extension", "template_type", "lang_specific_dir"])
+template_type = ssg.utils.enum("remediation", "check")
+
+languages = [
+    templating_lang("anaconda", ".anaconda", template_type.remediation, "anaconda"),
+    templating_lang("ansible", ".yml", template_type.remediation, "ansible"),
+    templating_lang("bash", ".sh", template_type.remediation, "bash"),
+    templating_lang("blueprint", ".toml", template_type.remediation, "blueprint"),
+    templating_lang("ignition", ".yml", template_type.remediation, "ignition"),
+    templating_lang("kubernetes", ".yml", template_type.remediation, "kubernetes"),
+    templating_lang("oval", ".xml", template_type.check, "oval"),
+    templating_lang("puppet", ".pp", template_type.remediation, "puppet"),
+    templating_lang("sce-bash", ".sh", template_type.remediation, "sce")
+]
+language_names = [lang.name for lang in languages]
+preprocessing_file_name = "template.py"
 
 templates = dict()
 
@@ -48,14 +53,18 @@ class Template():
             self.preprocessing_file_path = None
         self.langs = []
         template_yaml = ssg.yaml.open_raw(self.template_yaml_path)
-        for lang in template_yaml["supported_languages"]:
-            if lang not in languages:
-                raise ValueError("The template {0} declares to support the {1} language,"
-                "but this language is not supported by the content.".format(self.name, lang))
-            langfilename = lang + ".template"
+        for supported_lang in template_yaml["supported_languages"]:
+            if supported_lang not in language_names:
+                raise ValueError(
+                    "The template {0} declares to support the {1} language,"
+                    "but this language is not supported by the content.".format(
+                        self.name, supported_lang))
+            lang = [lang for lang in languages if lang.name == supported_lang][0]
+            langfilename = lang.name + ".template"
             if not os.path.exists(os.path.join(self.template_path, langfilename)):
-                raise ValueError("The template {0} declares to support the {1} language,"
-                "but the implementation file is missing.".format(self.name, lang))
+                raise ValueError(
+                    "The template {0} declares to support the {1} language,"
+                    "but the implementation file is missing.".format(self.name, lang))
             self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
@@ -112,18 +121,13 @@ class Builder(object):
         self.cpe_items_dir = cpe_items_dir
         self.output_dirs = dict()
         for lang in languages:
-            lang_dir = lang
-            if lang.startswith("oval") or lang.startswith("sce-"):
-                # OVAL and SCE checks need to be put to a different directory
-                # because they are processed differently than remediations
-                # later in the build process
+            lang_dir = lang.lang_specific_dir
+            if lang.template_type == template_type.check:
                 output_dir = self.checks_dir
-                if lang.startswith("sce-"):
-                    lang_dir = "sce"
             else:
                 output_dir = self.remediations_dir
             dir_ = os.path.join(output_dir, lang_dir)
-            self.output_dirs[lang] = dir_
+            self.output_dirs[lang.name] = dir_
         # scan directory structure and dynamically create list of templates
         for item in sorted(os.listdir(self.templates_dir)):
             itempath = os.path.join(self.templates_dir, item)
@@ -143,9 +147,9 @@ class Builder(object):
         if lang not in templates[template_name].langs:
             return None
 
-        template_file_name = lang + ".template"
+        template_file_name = lang.name + ".template"
         template_file_path = os.path.join(self.templates_dir, template_name, template_file_name)
-        template_parameters = templates[template_name].preprocess(template_vars, lang)
+        template_parameters = templates[template_name].preprocess(template_vars, lang.name)
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
@@ -205,17 +209,17 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
-        if lang not in templates[template_name].langs or lang.startswith("sce-"):
+        if lang not in templates[template_name].langs or lang.name == "sce-bash":
             return
 
         filled_template = self.build_lang_file(rule_id, template_name,
                                                template_vars, lang,
                                                local_env_yaml)
 
-        ext = lang_to_ext_map[lang]
+        ext = lang.file_extension
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
-            self.output_dirs[lang], output_file_name)
+            self.output_dirs[lang.name], output_file_name)
 
         with open(output_filepath, "w") as f:
             f.write(filled_template)
@@ -228,14 +232,14 @@ class Builder(object):
         if "backends" in rule.template:
             backends = rule.template["backends"]
             for lang in backends:
-                if lang not in languages:
+                if lang not in language_names:
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
                         "from a template.".format(rule.id_, lang)
                     )
             langs_to_generate = []
             for lang in languages:
-                backend = backends.get(lang, "on")
+                backend = backends.get(lang.name, "on")
                 if backend == "on":
                     langs_to_generate.append(lang)
             return langs_to_generate
@@ -318,8 +322,8 @@ class Builder(object):
                 self.build_lang(
                     rule_id, template_name, template_vars, lang, local_env_yaml, platforms)
             except Exception as e:
-                print("Error building templated {0} content for rule {1}".format(lang, rule_id), file=sys.stderr)
-                raise e
+                raise e(
+                    "Error building templated {0} content for rule {1}".format(lang, rule_id))
 
     def get_lang_for_rule(self, rule_id, rule_title, template, language):
         """
@@ -350,7 +354,7 @@ class Builder(object):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
         declaration = ssg.yaml.open_raw(declaration_path)
         for oval_def_id, template in declaration.items():
-            langs_to_generate = ["oval"]
+            langs_to_generate = [lang for lang in languages if lang.name == "oval"]
             # Since OVAL definition ID in shorthand format is always the same
             # as rule ID, we can use it instead of the rule ID even if no rule
             # with that ID exists
