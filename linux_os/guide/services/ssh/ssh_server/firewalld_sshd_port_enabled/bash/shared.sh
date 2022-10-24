@@ -14,7 +14,7 @@ if systemctl is-active NetworkManager && systemctl is-active firewalld; then
     firewall-cmd --zone="$firewalld_sshd_zone" --add-service=ssh
 
     # This will collect all NetworkManager connections names
-    readarray -t nm_connections < <(nmcli --fields CONNECTION device status | grep -v "\-\-" | tail -n+2 | sed 's/ *$//g')
+    readarray -t nm_connections < <(nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }')
     # If the connection is not yet assigned to a firewalld zone, assign it to the proper zone.
     # This will not change connections which are already assigned to any firewalld zone.
     for connection in "${nm_connections[@]}"; do
