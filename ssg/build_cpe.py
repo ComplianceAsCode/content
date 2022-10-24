@@ -13,6 +13,7 @@ from .utils import required_key
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
 from .entities.common import XCCDFEntity
+from .yaml import convert_string_to_bool
 
 
 class CPEDoesNotExist(Exception):
@@ -75,7 +76,6 @@ class ProductCPEs(object):
     def add_cpe_item(self, cpe_item):
         self.cpes_by_id[cpe_item.id_] = cpe_item
         self.cpes_by_name[cpe_item.name] = cpe_item
-        # we check for "true" here because the structure is loaded from a yaml file
         if cpe_item.is_product_cpe:
             self.product_cpes[cpe_item.id_] = cpe_item
 
@@ -173,18 +173,9 @@ class CPEItem(XCCDFEntity):
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         cpe_item = super(CPEItem, cls).from_yaml(yaml_file, env_yaml, product_cpes)
-        # the is_product_cpe attribute is stored as string
-        # convert it to boolean
         if cpe_item.is_product_cpe:
-            if cpe_item.is_product_cpe.lower() == "true":
-                cpe_item.is_product_cpe = True
-            elif cpe_item.is_product_cpe.lower() == "false":
-                cpe_item.is_product_cpe = False
-            else:
-                raise AttributeError(
-                    "Invalid value %s for is_product_cpe" % cpe_item.is_product_cpe)
+            cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
         return cpe_item
-
 
 class CPEALLogicalTest(Function):
 
