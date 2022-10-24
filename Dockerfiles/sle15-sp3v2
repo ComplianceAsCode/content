@@ -1,0 +1,107 @@
+FROM registry.suse.com/suse/sle15:15.3
+
+ENV OSCAP_USERNAME oscap
+ENV OSCAP_DIR content
+ENV PRODUCT SLE_15_SP3
+ENV ADDITIONAL_MODULES sle-module-desktop-applications,sle-module-development-tools,sle-module-SUSE-PackageHub
+ENV AUTH_KEYS=/root/.ssh/authorised_keys
+ENV PUBLIC_KEY_DSA=id_dsa_test_key.pub
+ENV PUBLIC_KEY_ECDSA=id_ecdsa_test_key.pub
+ENV PUBLIC_KEY_RSA=id_rsa_test_key.pub
+
+# to be honest, i am not entirely sure, why you do RUN true,
+# i never saw this practice and i do not see any advantage
+# but it's not hurting
+RUN true \
+    && update-ca-certificates \
+    && zypper refs && zypper refresh \
+    && zypper in --no-confirm openssh-server \
+    && zypper in --no-confirm openssh-clients \
+    && zypper in --no-confirm openscap* \
+    && zypper in --no-confirm scap-security-guide \
+    && zypper in --no-confirm firewall* \
+    && zypper in --no-confirm vi* \
+    && zypper in --no-confirm git \
+    && zypper in --no-confirm libxslt-tools* \
+    && zypper in --no-confirm libxml2-tools* \
+    && zypper in --no-confirm cmake \
+    && zypper in --no-confirm expat \
+    && zypper in --no-confirm ninja \
+&& true
+
+# i split up the installing, because if something breaks at one step
+# it does not need as much time to install the rest. IMHO a best practice
+
+RUN true \
+    && alias python=python3 \
+    && curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py \
+    && python3 get-pip.py --user \
+    && python3 -m pip install --user ansible \
+    && python3 -m pip install --user pytest \
+    && python3 -m pip install --user pytest-cov \
+    && python3 -m pip install --user PyYAML \
+    && python3 -m pip install --user Jinja2 \
+    && python3 -m pip install --user Sphinx \
+    && python3 -m pip install --user sphinx_rtd_theme \
+    && python3 -m pip install --user recommonmark \
+    && python3 -m pip install --user json2html \ 
+    && python3 -m pip install --user sphinxcontrib.jinjadomain \
+&& true
+
+# place sshd config
+COPY sshd_config /etc/ssh/
+# create host keys
+# firewallcmd in docker has problems?
+RUN true \
+    && ssh-keygen -A -t dsa \
+    && ssh-keygen -A -t ecdsa \
+    && ssh-keygen -A -t rsa \
+#    && firewall-cmd --permanent --add-service=ssh \
+#    && firewall-cmd --reload \
+&& true
+
+# the user creation has to be done properly, only creating the home is not good
+# for various reasons
+RUN useradd -r -m -d /home/$OSCAP_USERNAME -s /bin/bash -g root -u 1000 $OSCAP_USERNAME
+RUN echo $OSCAP_USERNAME:test | chpasswd
+
+# ADD is dark magic, i try not to use it.
+COPY $PUBLIC_KEY_DSA /root/
+COPY $PUBLIC_KEY_ECDSA /root/
+COPY $PUBLIC_KEY_RSA /root/
+#ADD "$PUBLIC_KEY" "$AUTH_KEYS"
+
+RUN true \
+    && mkdir -p /home/$OSCAP_USERNAME/.ssh \
+    && cp /root/$PUBLIC_KEY_DSA /home/$OSCAP_USERNAME/.ssh/ \
+    && cp /root/$PUBLIC_KEY_RSA /home/$OSCAP_USERNAME/.ssh/ \
+    && cp /root/$PUBLIC_KEY_ECDSA /home/$OSCAP_USERNAME/.ssh/ \
+    && cat /home/$OSCAP_USERNAME/.ssh/$PUBLIC_KEY_DSA > /home/$OSCAP_USERNAME/.ssh/authorized_keys \
+    && cat /home/$OSCAP_USERNAME/.ssh/$PUBLIC_KEY_ECDSA >> /home/$OSCAP_USERNAME/.ssh/authorized_keys \
+    && cat /home/$OSCAP_USERNAME/.ssh/$PUBLIC_KEY_RSA >> /home/$OSCAP_USERNAME/.ssh/authorized_keys \
+    && chown -R $OSCAP_USERNAME /home/$OSCAP_USERNAME/.ssh \
+&& true
+
+RUN true \
+    && cd /home/$OSCAP_USERNAME \
+    && git clone https://github.com/ComplianceAsCode/content \
+    && chown -R $OSCAP_USERNAME content \
+&& true
+
+# EXPOSE is deprecated, we do not need it
+#EXPOSE 22
+
+WORKDIR /home/$OSCAP_USERNAME
+RUN rm -rf /home/$OSCAP_USERNAME/$OSCAP_DIR/build/*
+WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
+
+RUN true \
+    && cmake -G Ninja .. / -DANSIBLE_CHECKS=ON \
+    && ninja -v sle12 \
+    && ninja -v sle15 \
+    && ctest -V -j 2 -R ansible-playbook-per-profile-ansible-lint-check-sle12 \
+    && ctest -V -j 2 -R ansible-playbook-per-profile-ansible-lint-check-sle15 \
+&& true
+
+CMD /usr/sbin/sshd -D -4 
+
