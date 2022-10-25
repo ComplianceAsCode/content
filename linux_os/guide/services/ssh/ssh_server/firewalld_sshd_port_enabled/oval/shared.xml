@@ -59,7 +59,7 @@
         <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
         {{% else %}}
         <ind:path>/etc/sysconfig/network-scripts</ind:path>
-        <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
+        <ind:filename operation="pattern match">^ifcfg-(?!lo).*</ind:filename>
         <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
         {{% endif %}}
         <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -88,7 +88,7 @@
         <unix:filename operation="pattern match">.*\.nmconnection</unix:filename>
         {{% else %}}
         <unix:path>/etc/sysconfig/network-scripts</unix:path>
-        <unix:filename operation="pattern match">ifcfg-.*</unix:filename>
+        <unix:filename operation="pattern match">^ifcfg-(?!lo).*</unix:filename>
         {{% endif %}}
     </unix:file_object>
 
@@ -164,12 +164,14 @@
     </ind:xmlfilecontent_state>
 
     <!-- SSH service is configured as expected -->
-    <!-- The firewalld package brings many services already defined out-of-box, inclusing SSH.
-         SSH port is defined as 22/tcp by default. However, is that possible cases where the
-         administrator want, by any reason, to change this default port. The proper way to do this
+    <!-- The firewalld package brings many services already defined out-of-box, including SSH.
+         SSH port is defined as 22/tcp by default. However, there are possible cases where the
+         admin wants, for whatever reason, to change this default port. The proper way to do this
          is overriding the respectice SSH service file by populating the /etc/firewalld/services
-         directory. So, its necessary to ensure the default file is interger and the, if is the
-         case, the customized service is properly configured. -->
+         directory with a file with the same name. So, its necessary to ensure the file delivered
+         by the package, in the /usr/lib/firewalld/services directory, was not changed. However,
+         if the file is changed, there is necessary to ensure there is a customized service
+         properly configured by the administrator. -->
     <ind:xmlfilecontent_test id="test_firewalld_sshd_port_enabled_ssh_service_usr"
         check="all" check_existence="all_exist" version="1"
         comment="SSH service is interger in the /usr/lib/firewalld/services dir">
@@ -182,9 +184,9 @@
       <ind:xpath>/service/port[@port='22']</ind:xpath>
     </ind:xmlfilecontent_object>
 
-    <!-- If, by any reason, the administrator decides to change the SSH default port, the modified
-         ssh.xml file is placed in the /etc/firewalld/services directory with the proper port
-         defined. -->
+    <!-- If, for whatever reason, the administrator decides to change the SSH default port, the
+         modified ssh.xml file is placed in the /etc/firewalld/services directory with the proper
+         port defined. -->
     <ind:textfilecontent54_test id="test_firewalld_sshd_port_enabled_ssh_service_etc"
         check="all" check_existence="any_exist" version="1"
         comment="SSH service is properly configured in /etc/firewalld/services dir">
