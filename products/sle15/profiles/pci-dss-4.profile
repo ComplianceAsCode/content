@@ -17,6 +17,7 @@ selections:
     -  accounts_minimum_age_login_defs
     -  accounts_no_uid_except_zero
     -  accounts_password_warn_age_login_defs
+    -  accounts_root_gid_zero
     -  accounts_tmout
     -  accounts_umask_etc_bashrc
     -  accounts_umask_etc_login_defs
