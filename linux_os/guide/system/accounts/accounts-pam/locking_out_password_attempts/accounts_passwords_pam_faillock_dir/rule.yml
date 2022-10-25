@@ -6,7 +6,7 @@ title: 'Lock Accounts Must Persist'
 
 description: |-
     This rule ensures that the system lock out accounts using <tt>pam_faillock.so</tt> persist
-    after system reboot. From "Pam_Faillock" man pages:
+    after system reboot. From "pam_faillock" man pages:
     <pre>Note that the default directory that "pam_faillock" uses is usually cleared on system
     boot so the access will be reenabled after system reboot. If that is undesirable, a different
     tally directory must be set with the "dir" option.</pre>
