@@ -1,0 +1,111 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="5">
+        {{{
+        oval_metadata("Account Lockouts Must Be Logged")
+        }}}
+        <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+            possible. But due to backwards compatibility, they are also allowed in pam files
+            directly. In case they are defined in both places, pam files have precedence and this
+            may confuse the assessment. The following tests ensure only one option is used. Note
+            that if faillock.conf is available, authselect tool only manage parameters on it -->
+        <criteria operator="OR"
+        comment="Check expected value for pam_faillock.so audit parameter">
+            <criteria operator="AND"
+            comment="Check expected pam_faillock.so audit parameter in pam files">
+                <criterion
+                test_ref="test_pam_faillock_audit_parameter_system_auth"
+                comment="Check the audit parameter in auth section of system-auth file"/>
+                <criterion
+                test_ref="test_pam_faillock_audit_parameter_password_auth"
+                comment="Check the audit parameter in auth section of password-auth file"/>
+                <criterion
+                test_ref="test_pam_faillock_audit_parameter_no_faillock_conf"
+                comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
+            </criteria>
+            <criteria operator="AND"
+            comment="Check expected pam_faillock.so audit parameter in faillock.conf">
+                <criterion
+                test_ref="test_pam_faillock_audit_parameter_no_pamd_system"
+                comment="Check the audit parameter is not present system-auth file"/>
+                <criterion
+                test_ref="test_pam_faillock_audit_parameter_no_pamd_password"
+                comment="Check the audit parameter is not present password-auth file"/>
+                <criterion
+                test_ref="test_pam_faillock_audit_parameter_faillock_conf"
+                comment="Ensure the audit parameter is present in /etc/security/faillock.conf"/>
+            </criteria>
+        </criteria>
+    </definition>
+
+    <constant_variable id="var_pam_faillock_audit_parameter_regex" version="1" datatype="string"
+    comment="regex to identify audit parameter in pam files">
+        <value>^[\s]*auth[\s]+(?:required|requisite)[\s]+pam_faillock.so[^\n#]preauth[^\n#]*audit</value>
+    </constant_variable>
+
+    <ind:textfilecontent54_object id="obj_all_pam_faillock_audit_parameter_system_auth"
+    comment="Get the pam_faillock.so preauth audit parameter from system-auth file" version="1">
+        <ind:filepath >/etc/pam.d/system-auth</ind:filepath>
+        <ind:pattern operation="pattern match"
+        var_ref="var_pam_faillock_audit_parameter_regex" />
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_object id="obj_all_pam_faillock_audit_parameter_password_auth"
+    comment="Get the pam_faillock.so preauth audit parameter from system-auth file" version="1">
+        <ind:filepath >/etc/pam.d/password-auth</ind:filepath>
+        <ind:pattern operation="pattern match"
+        var_ref="var_pam_faillock_audit_parameter_regex" />
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <!-- Check the pam_faillock.so audit parameter in system-auth -->
+    <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    id="test_pam_faillock_audit_parameter_system_auth"
+    comment="Check the presence of audit parameter in system-auth">
+        <ind:object
+        object_ref="obj_all_pam_faillock_audit_parameter_system_auth"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+    id="test_pam_faillock_audit_parameter_no_pamd_system"
+    comment="Check the absence of audit parameter in system-auth">
+        <ind:object
+        object_ref="obj_all_pam_faillock_audit_parameter_system_auth"/>
+    </ind:textfilecontent54_test>
+
+    <!-- Check the pam_faillock.so audit parameter in password-auth -->
+    <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    id="test_pam_faillock_audit_parameter_password_auth"
+    comment="Check the presence of audit parameter in password-auth">
+        <ind:object
+        object_ref="obj_all_pam_faillock_audit_parameter_password_auth"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+    id="test_pam_faillock_audit_parameter_no_pamd_password"
+    comment="Check the absence of audit parameter in password-auth">
+        <ind:object
+        object_ref="obj_all_pam_faillock_audit_parameter_password_auth"/>
+    </ind:textfilecontent54_test>
+
+    <!-- Check pam_faillock.so audit parameter in /etc/security/faillock.conf -->
+    <ind:textfilecontent54_object version="1"
+    id="object_pam_faillock_audit_parameter_faillock_conf"
+    comment="Check the expected pam_faillock.so audit parameter in /etc/security/faillock.conf">
+        <ind:filepath>/etc/security/faillock.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^\s*audit</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+    id="test_pam_faillock_audit_parameter_faillock_conf"
+    comment="Check the expected audit value in in /etc/security/faillock.conf">
+        <ind:object object_ref="object_pam_faillock_audit_parameter_faillock_conf"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+    id="test_pam_faillock_audit_parameter_no_faillock_conf"
+    comment="Check the absence of audit parameter in /etc/security/faillock.conf">
+        <ind:object object_ref="object_pam_faillock_audit_parameter_faillock_conf"/>
+    </ind:textfilecontent54_test>
+</def-group>
