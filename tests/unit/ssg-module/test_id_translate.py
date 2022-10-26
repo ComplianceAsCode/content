@@ -139,48 +139,48 @@ def test_idtranslator_translate_oval_xmldiff(idtranslator, oval_tree):
     ou = inverted_new_nsmap[oval_unix_namespace]
     diff = set(xmldiff_main.diff_trees(old, new))
     uadefid = xmldiff_actions.UpdateAttrib(
-        node=f'/{o}:oval_definitions/{o}:definitions/{o}:definition[1]',
+        node='/{o}:oval_definitions/{o}:definitions/{o}:definition[1]'.format(o=o),
         name='id',
         value='oval:ssg-kerberos_disable_no_keytab:def:1')
     assert uadefid in diff
     diff.remove(uadefid)
     uaftestid = xmldiff_actions.UpdateAttrib(
-        node=f'/{o}:oval_definitions/{o}:tests/{ou}:file_test[1]',
+        node='/{o}:oval_definitions/{o}:tests/{ou}:file_test[1]'.format(o=o, ou=ou),
         name='id',
         value='oval:ssg-test_kerberos_disable_no_keytab:tst:1')
     assert uaftestid in diff
     diff.remove(uaftestid)
     uafoid = xmldiff_actions.UpdateAttrib(
-        node=f'/{o}:oval_definitions/{o}:objects/{ou}:file_object[1]',
+        node='/{o}:oval_definitions/{o}:objects/{ou}:file_object[1]'.format(o=o, ou=ou),
         name='id',
         value='oval:ssg-obj_kerberos_disable_no_keytab:obj:1')
     assert uafoid in diff
     diff.remove(uafoid)
     uafsid = xmldiff_actions.UpdateAttrib(
-        node=f'/{o}:oval_definitions/{o}:states/{ou}:file_state[1]',
+        node='/{o}:oval_definitions/{o}:states/{ou}:file_state[1]'.format(o=o, ou=ou),
         name='id',
         value='oval:ssg-filter_ssh_key_owner_root:ste:1')
     assert uafsid in diff
     diff.remove(uafsid)
     uaftoref = xmldiff_actions.UpdateAttrib(
         node=(
-            f'/{o}:oval_definitions/{o}:tests/{ou}:file_test/'
-            f'{ou}:object[1]'),
+            '/{o}:oval_definitions/{o}:tests/{ou}:file_test/'
+            '{ou}:object[1]'.format(ou=ou, o=o)),
         name='object_ref',
         value='oval:ssg-obj_kerberos_disable_no_keytab:obj:1')
     assert uaftoref in diff
     diff.remove(uaftoref)
     utfofilter = xmldiff_actions.UpdateTextIn(
         node=(
-            f'/{o}:oval_definitions/{o}:objects/{ou}:file_object/'
-            f'{o}:filter[1]'),
+            '/{o}:oval_definitions/{o}:objects/{ou}:file_object/'
+            '{o}:filter[1]'.format(o=o, ou=ou)),
         text='oval:ssg-filter_ssh_key_owner_root:ste:1')
     assert utfofilter in diff
     diff.remove(utfofilter)
     uacrittref = xmldiff_actions.UpdateAttrib(
         node=(
-            f'/{o}:oval_definitions/{o}:definitions/{o}:definition/'
-            f'{o}:criteria/{o}:criterion[1]'),
+            '/{o}:oval_definitions/{o}:definitions/{o}:definition/'
+            '{o}:criteria/{o}:criterion[1]'.format(ou=ou, o=o)),
         name='test_ref',
         value='oval:ssg-test_kerberos_disable_no_keytab:tst:1')
     assert uacrittref in diff
