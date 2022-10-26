@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
-import sys
 import imp
 import glob
 
@@ -10,12 +9,6 @@ import ssg.build_yaml
 import ssg.utils
 import ssg.yaml
 from ssg.build_cpe import ProductCPEs
-
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
-
 from collections import namedtuple
 
 templating_lang = namedtuple(
@@ -129,7 +122,6 @@ class Builder(object):
             self.output_dirs[lang_name] = dir_
         # scan directory structure and dynamically create list of templates
         for item in sorted(os.listdir(self.templates_dir)):
-            itempath = os.path.join(self.templates_dir, item)
             maybe_template = Template(templates_dir, item)
             if maybe_template.looks_like_template():
                 maybe_template.load()
@@ -245,7 +237,7 @@ class Builder(object):
         else:
             return languages.values()
 
-    def get_template_name(self, template):
+    def get_template_name(self, template, rule_id):
         """
         Given a template dictionary from a Rule instance, determine the name
         of the template (from templates) this rule uses.
@@ -272,7 +264,7 @@ class Builder(object):
             return None
 
         rule_langs = set(self.get_langs_to_generate(rule))
-        template_name = self.get_template_name(rule.template)
+        template_name = self.get_template_name(rule.template, rule.id_)
         template_langs = set(templates[template_name].langs)
         return rule_langs.intersection(template_langs)
 
@@ -297,7 +289,7 @@ class Builder(object):
         Builds templated content for a given rule for selected languages,
         writing the output to the correct build directories.
         """
-        template_name = self.get_template_name(template)
+        template_name = self.get_template_name(template, rule_id)
         try:
             template_vars = self.process_product_vars(template["vars"])
         except KeyError:
@@ -329,7 +321,7 @@ class Builder(object):
         For the specified rule, build and return only the specified language
         content.
         """
-        template_name = self.get_template_name(template)
+        template_name = self.get_template_name(template, rule_id)
         try:
             template_vars = self.process_product_vars(template["vars"])
         except KeyError:
