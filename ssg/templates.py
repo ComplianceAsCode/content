@@ -23,18 +23,17 @@ templating_lang = namedtuple(
     ["name", "file_extension", "template_type", "lang_specific_dir"])
 template_type = ssg.utils.enum("remediation", "check")
 
-languages = [
-    templating_lang("anaconda", ".anaconda", template_type.remediation, "anaconda"),
-    templating_lang("ansible", ".yml", template_type.remediation, "ansible"),
-    templating_lang("bash", ".sh", template_type.remediation, "bash"),
-    templating_lang("blueprint", ".toml", template_type.remediation, "blueprint"),
-    templating_lang("ignition", ".yml", template_type.remediation, "ignition"),
-    templating_lang("kubernetes", ".yml", template_type.remediation, "kubernetes"),
-    templating_lang("oval", ".xml", template_type.check, "oval"),
-    templating_lang("puppet", ".pp", template_type.remediation, "puppet"),
-    templating_lang("sce-bash", ".sh", template_type.remediation, "sce")
-]
-language_names = [lang.name for lang in languages]
+languages = {
+    "anaconda": templating_lang("anaconda", ".anaconda", template_type.remediation, "anaconda"),
+    "ansible": templating_lang("ansible", ".yml", template_type.remediation, "ansible"),
+    "bash": templating_lang("bash", ".sh", template_type.remediation, "bash"),
+    "blueprint": templating_lang("blueprint", ".toml", template_type.remediation, "blueprint"),
+    "ignition": templating_lang("ignition", ".yml", template_type.remediation, "ignition"),
+    "kubernetes": templating_lang("kubernetes", ".yml", template_type.remediation, "kubernetes"),
+    "oval": templating_lang("oval", ".xml", template_type.check, "oval"),
+    "puppet": templating_lang("puppet", ".pp", template_type.remediation, "puppet"),
+    "sce-bash": templating_lang("sce-bash", ".sh", template_type.remediation, "sce")
+}
 preprocessing_file_name = "template.py"
 
 templates = dict()
@@ -54,12 +53,12 @@ class Template():
         self.langs = []
         template_yaml = ssg.yaml.open_raw(self.template_yaml_path)
         for supported_lang in template_yaml["supported_languages"]:
-            if supported_lang not in language_names:
+            if supported_lang not in languages.keys():
                 raise ValueError(
                     "The template {0} declares to support the {1} language,"
                     "but this language is not supported by the content.".format(
                         self.name, supported_lang))
-            lang = [lang for lang in languages if lang.name == supported_lang][0]
+            lang = languages[supported_lang]
             langfilename = lang.name + ".template"
             if not os.path.exists(os.path.join(self.template_path, langfilename)):
                 raise ValueError(
@@ -120,14 +119,14 @@ class Builder(object):
         self.platforms_dir = platforms_dir
         self.cpe_items_dir = cpe_items_dir
         self.output_dirs = dict()
-        for lang in languages:
+        for lang_name, lang in languages.items():
             lang_dir = lang.lang_specific_dir
             if lang.template_type == template_type.check:
                 output_dir = self.checks_dir
             else:
                 output_dir = self.remediations_dir
             dir_ = os.path.join(output_dir, lang_dir)
-            self.output_dirs[lang.name] = dir_
+            self.output_dirs[lang_name] = dir_
         # scan directory structure and dynamically create list of templates
         for item in sorted(os.listdir(self.templates_dir)):
             itempath = os.path.join(self.templates_dir, item)
@@ -232,19 +231,19 @@ class Builder(object):
         if "backends" in rule.template:
             backends = rule.template["backends"]
             for lang in backends:
-                if lang not in language_names:
+                if lang not in languages.keys():
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
                         "from a template.".format(rule.id_, lang)
                     )
             langs_to_generate = []
-            for lang in languages:
-                backend = backends.get(lang.name, "on")
+            for lang_name, lang in languages.items():
+                backend = backends.get(lang_name, "on")
                 if backend == "on":
                     langs_to_generate.append(lang)
             return langs_to_generate
         else:
-            return languages
+            return languages.values()
 
     def get_template_name(self, template):
         """
@@ -354,7 +353,7 @@ class Builder(object):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
         declaration = ssg.yaml.open_raw(declaration_path)
         for oval_def_id, template in declaration.items():
-            langs_to_generate = [lang for lang in languages if lang.name == "oval"]
+            langs_to_generate = [languages["oval"]]
             # Since OVAL definition ID in shorthand format is always the same
             # as rule ID, we can use it instead of the rule ID even if no rule
             # with that ID exists
