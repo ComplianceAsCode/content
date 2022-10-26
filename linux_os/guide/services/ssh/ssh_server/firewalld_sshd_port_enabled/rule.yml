@@ -5,14 +5,14 @@ prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 title: 'Enable SSH Server firewalld Firewall Exception'
 
 description: |-
-    By default, inbound connections to SSH's port are allowed. If
-    the SSH server is being used but denied by the firewall, this exception should
-    be added to the firewall configuration.
+    If the SSH server is in use, inbound connections to SSH's port should be allowed to permit
+    remote access through SSH. In more restrictive firewalld settings, the SSH port should be
+    added to the proper firewalld zone in order to allow SSH remote access.
     <br /><br />
     {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
 
 rationale: |-
-    If inbound SSH connections are expected, adding a firewall rule exception
+    If inbound SSH connections are expected, adding the SSH port to the proper firewalld zone
     will allow remote access through the SSH port.
 
 severity: medium
@@ -28,11 +28,31 @@ references:
     nist: AC-17(a),CM-6(b),CM-7(a),CM-7(b)
     srg: SRG-OS-000096-GPOS-00050
 
-ocil_clause: 'sshd service is disabled by firewall'
+platform: machine
+
+ocil_clause: 'sshd service is not enabled in the proper firewalld zone'
+
 ocil: |
     {{{ ocil_firewalld_allow_access(port="22", proto="tcp", service="ssh") }}}
 
 fixtext: |-
-    Enable sshd in firewalld configuration.
+    Enable SSH service in firewalld configuration.
 
     {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
+
+warnings:
+    - general: |-
+        The remediation for this rule uses <tt>firewall-cmd</tt> and <tt>nmcli</tt> tools.
+        Therefore, it will only be executed if <tt>firewalld</tt> and <tt>NetworkManager</tt>
+        services are running. Otherwise, the remediation will be aborted and a informative message
+        will be shown in the remediation report.
+        These respective services will not be started in order to preserve any intentional change
+        in network components related to firewall and network interfaces.
+    - general: |-
+        This rule also checks if the SSH port was modified by the administrator in the firewalld
+        services definitions and is reflecting the expected port number. Although this is checked,
+        fixing the custom ssh.xml file placed by the administrator at /etc/firewalld/services it
+        is not in the scope of the remediation since there is no reliable way to manually change
+        the respective file. If the default SSH port is modified, it is on the administrator
+        responsibility to ensure the firewalld customizations in the service port level are
+        properly configured.

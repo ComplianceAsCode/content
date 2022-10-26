@@ -1,28 +1,89 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_all
 # reboot = false
 # complexity = low
 # strategy = configure
 # disruption = low
 
-- name: Ensure firewalld is installed
-  package:
+{{{ ansible_instantiate_variables("firewalld_sshd_zone") }}}
+
+- name: '{{{ rule_title }}} - Ensure firewalld and NetworkManager packages are installed'
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
     - firewalld
+    - NetworkManager
 
-{{{ ansible_instantiate_variables("sshd_listening_port") }}}
+- name: '{{{ rule_title }}} - Collect facts about system services'
+  ansible.builtin.service_facts:
+  register: result_services_states
 
-- name: Enable SSHD in firewalld (custom port)
-  firewalld:
-    port: "{{ sshd_listening_port }}/tcp"
-    permanent: yes
-    state: enabled
-  when: sshd_listening_port != 22
+- name: '{{{ rule_title }}} - Remediation is applicable if firewalld and NetworkManager services are running'
+  block:
+    - name: '{{{ rule_title }}} - Collect NetworkManager connections names'
+      ansible.builtin.shell:
+        cmd: nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }'
+      register: result_nmcli_cmd_connections_names
+      changed_when: false
 
-- name: Enable SSHD in firewalld (default port)
-  firewalld:
-    service: ssh
-    permanent: yes
-    state: enabled
-  when: sshd_listening_port == 22
+    - name: '{{{ rule_title }}} - Collect NetworkManager connections zones'
+      ansible.builtin.shell:
+        cmd: nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
+      register: result_nmcli_cmd_connections_zones
+      changed_when: false
+      with_items:
+          - "{{ result_nmcli_cmd_connections_names.stdout_lines }}"
+
+    - name: '{{{ rule_title }}} - Ensure NetworkManager connections are assigned to a firewalld zone'
+      ansible.builtin.command:
+        cmd: nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
+      register: result_nmcli_cmd_connections_assignment
+      with_together:
+        - "{{ result_nmcli_cmd_connections_names.stdout_lines }}"
+        - "{{ result_nmcli_cmd_connections_zones.results }}"
+      when:
+        - item.1.stdout == '--'
+
+    - name: '{{{ rule_title }}} - Ensure NetworkManager connections changes are applied'
+      ansible.builtin.service:
+        name: NetworkManager
+        state: restarted
+      when:
+        - result_nmcli_cmd_connections_assignment is changed
+
+    - name: '{{{ rule_title }}} - Collect firewalld active zones'
+      ansible.builtin.shell:
+        cmd: firewall-cmd --get-active-zones | grep -v interfaces
+      register: result_firewall_cmd_zones_names
+      changed_when: false
+
+    - name: '{{{ rule_title }}} - Ensure firewalld zones allow SSH'
+      ansible.builtin.command:
+        cmd: firewall-cmd --permanent --zone={{ item }} --add-service=ssh
+      register: result_nmcli_cmd_connections_assignment
+      changed_when:
+          - "'ALREADY_ENABLED' not in result_nmcli_cmd_connections_assignment.stderr"
+      with_items:
+        - "{{ result_firewall_cmd_zones_names.stdout_lines }}"
+
+    - name: '{{{ rule_title }}} - Ensure firewalld changes are applied'
+      ansible.builtin.service:
+        name: firewalld
+        state: reloaded
+      when:
+        - result_nmcli_cmd_connections_assignment is changed
+  when:
+    - ansible_facts.services['firewalld.service'].state == 'running'
+    - ansible_facts.services['NetworkManager.service'].state == 'running'
+
+- name: '{{{ rule_title }}} - Informative message based on services states'
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.services['firewalld.service'].state == 'running'
+      - ansible_facts.services['NetworkManager.service'].state == 'running'
+    fail_msg:
+      - firewalld and NetworkManager services are not active. Remediation aborted!
+      - This remediation could not be applied because it depends on firewalld and NetworkManager services running.
+      - The service is not started by this remediation in order to prevent connection issues.
+    success_msg:
+      - {{{ rule_title }}} remediation successfully executed
