@@ -527,7 +527,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - file_groupowner_etc_issue_net
+      - file_owner_etc_issue_net
+      - file_permissions_etc_issue_net
 
   - id: 1.8.1
     title: Ensure GNOME Display Manager is removed (Manual)
