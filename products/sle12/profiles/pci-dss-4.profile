@@ -17,18 +17,22 @@ selections:
     -  coredump_disable_backtraces
     -  coredump_disable_storage
     -  disable_host_auth
+    -  disable_prelink
     -  disable_users_coredumps
     -  file_at_deny_not_exist
     -  file_cron_deny_not_exist
     -  file_groupowner_at_allow
+    -  file_groupowner_backup_etc_group
     -  file_groupowner_backup_etc_passwd
     -  file_groupowner_backup_etc_shadow
     -  file_groupowner_cron_allow
     -  file_owner_at_allow
+    -  file_owner_backup_etc_group
     -  file_owner_backup_etc_passwd
     -  file_owner_backup_etc_shadow
     -  file_owner_cron_allow
     -  file_permissions_at_allo
+    -  file_permissions_backup_etc_group
     -  file_permissions_backup_etc_passwd
     -  file_permissions_backup_etc_shadow
     -  file_permissions_cron_allow
