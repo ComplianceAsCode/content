@@ -577,14 +577,16 @@ controls:
       - file_owner_etc_issue
       - file_permissions_etc_issue
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/7225
   - id: 1.7.6
     title: Ensure permissions on /etc/issue.net are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_groupowner_etc_issue_net
+      - file_owner_etc_issue_net
+      - file_permissions_etc_issue_net
 
   - id: 1.8.1
     title: Ensure GNOME Display Manager is removed (Manual)

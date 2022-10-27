@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4
+
+title: 'Verify permissions on System Login Banner for Remote Connections'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/issue.net", perms="0644") }}}
+
+rationale: |-
+    Display of a standardized and approved use notification before granting
+    access to the operating system ensures privacy and security notification
+    verbiage used is consistent with applicable federal laws, Executive Orders,
+    directives, policies, regulations, standards, and guidance.<br />
+    Proper permissions will ensure that only root user can modify the banner.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86058-5
+    cce@rhel8: CCE-86047-8
+    cce@rhel9: CCE-86048-6
+
+references:
+    cis@rhel7: 1.7.6
+    cis@rhel8: 1.7.6
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/issue.net", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/issue.net", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/issue.net
+        filemode: '0644'
+        missing_file_pass: 'true'
