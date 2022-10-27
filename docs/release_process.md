@@ -13,23 +13,42 @@ and ultimately allows the release process to happen while development continues 
 
 ## Preparing the stabilization
 
+### Updating Contributors List
+
+- Update the contributors list by accessing the root folder of Content repository, in the
+**stabilization** branch, and executing the following command:
+    ```
+    PYTHONPATH=. utils/generate_contributors.py`
+    ```
+    - De-duplicate names if necessary.
+    - Make a commit send the a PR.
+    - Reference: https://github.com/ComplianceAsCode/content/pull/9601
+
+### Creating the Stabilization Branch
+
 - Create a new branch called **stabilization-vX.Y.Z** where **X.Y.Z** is the version of upstream
 release to be created.
     - For example, if the last released version was **0.1.64**, the branch should be named as
     `stabilization-v0.1.65`
-<!-- -->
+
+### Creating the New Milestone
+
 - Create a new Milestone called **X.Y.Z**, where **X.Y.Z** is the version of future upstream release.
-    - For example, if you just created the `stabilization-v0.1.65` branch in order to start the
-    stabilization phase for **0.1.65**, the new Milestone should be `0.1.66`.
+    - For example, if you have just created the `stabilization-v0.1.65` branch in order to start
+    the stabilization phase for **0.1.65**, the new Milestone should be `0.1.66`.
+
+### Updating Open PRs and Issues
+
+- All **Pull Requests** and **Issues** which are open at the moment the stabilization branch is
+created can only be part of a future release, through another stabilization branch that will likely
+be created in about 2 months. Therefore, if they have a Milestone defined, they must be updated to
+the new Milestone.
+    - For example, when the `stabilization-v0.1.65` is created, all open Pull Requests and Issues
+    with the Milestone `0.1.65` should be updated to the Milestone `0.1.66`.
 <!-- -->
-- All Pull Requests which are open at the moment the stabilization branch was created won't be
-included in the respective release. Therefore, if they have a Milestone defined, the Milestone
-must be updated to refer the next release.
-    - For example, when the `stabilization-v0.1.65` is created, all open Pull Requests with the
-    Milestone `0.1.65` should be updated to the Milestone `0.1.66`.
-<!-- -->
-- All Issues which are open at the moment the stabilization branch was created won't be included
-in the respective release. Therefore, like Pull Requests, if they have a Milestone defined, the
+- All Issues which are open at the moment the stabilization branch was created can only be part of
+a future release, through another stabilization branch that will likely be created in about 2
+months. Therefore, like Pull Requests, if they have a Milestone defined, the
 Milestone must be updated to refer the next release.
 <!-- -->
 - Close the **Milestone** related to the current stabilization phase.
@@ -37,12 +56,16 @@ Milestone must be updated to refer the next release.
     - This makes the Milestone less visible and reduces the chance of PRs and Issues being
     accidentally added to it.
     _NOTE: It is still possible to add items to the closed Milestone. Just select it in the `closed` tab._
-<!-- -->
+
+### Bumping the Version
+
 - Open a PR to bump the version of `CMakeLists.txt` on the **master** branch.
     - For example, when the `stabilization-v0.1.65` is created, the line `set(SSG_PATCH_VERSION 65)`
     must be updated to `set(SSG_PATCH_VERSION 66)` in the `CMakeLists.txt` file
     - Reference: https://github.com/ComplianceAsCode/content/pull/9600
-<!-- -->
+
+### Announcing the Start of Stabilization Period
+
 - Announce the start of stabilization period on the following communication channels:
     - Gitter
         - https://gitter.im/Compliance-As-Code-The/content
@@ -99,28 +122,16 @@ changes are still "fresh".
 
 ### Tests
 
-There is a GitHub Action hooked up with **stabilization** branch that will run a set of tests on every push.
+There is a GitHub Action hooked up with **stabilization** branch that will run a set of tests on
+every push.
 Make sure that all these tests are passing before moving on with the release process.
 
 # Release
 
-## Updating Contributors List
-
-- Update the contributors list by accessing the root folder of Content repository, in the
-**stabilization** branch, and executing the following command:
-    ```
-    PYTHONPATH=. utils/generate_contributors.py`
-    ```
-    - De-duplicate names if necessary.
-    - Make a commit send the a PR.
-    - Reference: https://github.com/ComplianceAsCode/content/pull/9601
-
 ## Checklist
 
-- Make sure the version in `CMakeLists.txt` is correct.
+- Double check the version in `CMakeLists.txt` is correct.
     - The version should correspond to an unreleased version number.
-- Make sure you don’t have any uncommitted changes, otherwise they may be lost during the release.
-- Make sure you have the **stabilization** branch checked out and up to date.
 - Make sure the relevant labels are defined in the `.github/workflows/release-changelog.json`
 configuration file.
 
@@ -158,6 +169,7 @@ draft and run the GitHb Action again._
 git checkout stable
 git merge stabilization-vX.Y.Z
 ```
+- Make sure any conflicts are solved.
 
 - Delete the **stabilization** branch.
 
