@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: ol7,rhel7
+
+title: 'Configure au-remote Plugin To Send Logs To Remote Server'
+
+description: |-
+    Configure the au-remote plugin to off-load audit records onto a different
+    system or storage media from the system being audited.
+    Edit <tt>
+    {{{ audisp_conf_path }}}/plugins.d/au-remote.conf
+    </tt> add or update the following values:
+    <pre>
+    active = yes
+    direction = out
+    path = /sbin/audisp-remote
+    type = always
+    </pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental
+    deletion or alteration. Off-loading is a common process in information systems
+    with limited audit storage capacity.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86034-6
+
+references:
+    disa: CCI-001851
+    nist@ol7: AU-4(1)
+    srg: SRG-OS-000114-GPOS-00059
+    stigid@ol7: OL07-00-030201
+    stigid@rhel7: RHEL-07-030201
+
+ocil_clause: |-
+    au-remote is not configured to send logs to
+    a remote system using audisp-remote daemon
+
+ocil: |-
+    To verify the au-remote plugin is configured to always off-load audit logs
+    using the audisp-remote daemon, run the following command:
+    <pre># cat {{{ audisp_conf_path }}}/plugins.d/au-remote.conf</pre>
+    The output should contain the following lines
+    <pre>
+    active = yes
+    direction = out
+    path = /sbin/audisp-remote
+    type = always[\s]*
+    </pre>

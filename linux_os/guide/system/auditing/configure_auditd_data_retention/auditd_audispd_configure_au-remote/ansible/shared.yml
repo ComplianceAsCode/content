@@ -1,0 +1,40 @@
+# platform = multi_platform_ol,multi_platform_rhel
+# reboot = false
+# complexity = low
+# strategy = configure
+# disruption = low
+
+{{%- set AUREMOTECONFIG = audisp_conf_path + '/plugins.d/au-remote.conf' %}}
+
+{{{ ansible_lineinfile(
+    msg='The au-remote plugin is active',
+    regex='^active[\s]*=[\s]*yes',
+    new_line='active = yes',
+    when='"audispd-plugins" in ansible_facts.packages',
+    create='no',
+    path=AUREMOTECONFIG,
+    state='present') }}}
+{{{ ansible_lineinfile(
+    msg='Direction for events flow is set to out',
+    regex='^direction[\s]*=[\s]*out',
+    new_line='direction = out',
+    when='"audispd-plugins" in ansible_facts.packages',
+    create='no',
+    path=AUREMOTECONFIG,
+    state='present') }}}
+{{{ ansible_lineinfile(
+    msg='The path to the au-remote executable is correctly set',
+    regex='^path[\s]*=[\s]*\/sbin\/audisp-remote',
+    new_line='path = /sbin/audisp-remote',
+    when='"audispd-plugins" in ansible_facts.packages',
+    create='no',
+    path=AUREMOTECONFIG,
+    state='present') }}}
+{{{ ansible_lineinfile(
+    msg='Type is set to always',
+    regex='^type[\s]*=[\s]*always',
+    new_line='type = always',
+    when='"audispd-plugins" in ansible_facts.packages',
+    create='no',
+    path=AUREMOTECONFIG,
+    state='present') }}}

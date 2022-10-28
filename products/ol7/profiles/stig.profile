@@ -324,3 +324,4 @@ selections:
     - audit_rules_privileged_commands_kmod
     - passwd_system-auth_substack
     - audit_rules_kernel_module_loading_create
+    - auditd_audispd_configure_au-remote

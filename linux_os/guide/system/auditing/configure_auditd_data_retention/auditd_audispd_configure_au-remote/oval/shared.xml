@@ -1,0 +1,53 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Configure the au-remote plugin to send logs to remote server") }}}
+
+    <criteria operator="AND" comment="au-remote plugin is configured to always off-load audit logs">
+        <criterion comment="The au-remote plugin is active" test_ref="test_au-remote_active" />
+        <criterion comment="Direction for events flow is set to out" test_ref="test_au-remote_direction" />
+        <criterion comment="The path to the au-remote executable is correctly set" test_ref="test_au-remote_path" />
+        <criterion comment="Type is set to always" test_ref="test_au-remote_type" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" id="test_au-remote_active" version="1"
+      comment="The au-remote plugin is active">
+    <ind:object object_ref="object_au-remote_active" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_au-remote_active" version="1">
+    <ind:filepath>{{{ audisp_conf_path }}}/plugins.d/au-remote.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*active[\s]*=[\s]*yes</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" id="test_au-remote_direction" version="1"
+       comment="Direction for events flow is set to out">
+    <ind:object object_ref="object_au-remote_direction" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_au-remote_direction" version="1">
+    <ind:filepath>{{{ audisp_conf_path }}}/plugins.d/au-remote.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*direction[\s]*=[\s]*out</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" id="test_au-remote_path" version="1"
+       comment="The path to the au-remote executable is correctly set">
+    <ind:object object_ref="object_au-remote_path" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_au-remote_path" version="1">
+    <ind:filepath>{{{ audisp_conf_path }}}/plugins.d/au-remote.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*path[\s]*=[\s]*\/sbin\/audisp-remote</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" id="test_au-remote_type" version="1"
+       comment="Type is set to always">
+    <ind:object object_ref="object_au-remote_type" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_au-remote_type" version="1">
+    <ind:filepath>{{{ audisp_conf_path }}}/plugins.d/au-remote.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*type[\s]*=[\s]*always</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
