@@ -22,6 +22,10 @@ description: |-
 
     This profile is applicable to OpenShift versions 4.6 and greater.
 selections:
+  ### Helper Rules
+  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift
   ### 1 Control Plane Components
   ###
   #### 1.2 API Server
