@@ -11,8 +11,8 @@ rationale:
 severity: medium
 
 identifiers:
-  cce@rhel8: CCE-86107-0
-  cce@rhel9: CCE-86108-8
+  cce@rhel8: CCE-86099-9
+  cce@rhel9: CCE-86100-5
 
 references:
     disa: CCI-000044
@@ -38,6 +38,3 @@ fixtext: |-
     audit
 
 srg_requirement: '{{{ full_name }}} must log user name information when unsuccessful logon attempts occur.'
-
-warnings:
-{{{ warning_rule_deprecated_by("accounts_passwords_pam_faillock_audit", "0.1.65") | indent(4) }}}
