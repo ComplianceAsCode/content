@@ -126,6 +126,17 @@ Milestone must be updated to refer the next release.
     # Push my_fix_in_master and create the PR
     ```
 
+  - Alternatively, you can create a fix branch that can be used to create both PRs.
+    The branch needs to be created from the merge base of **master** and **stabilization**.
+    This approach only works if the relevant files did not diverge in a way that causes conflicts.
+    Example commands:
+    ```
+    stab_base=$(git merge-base master stabilization-v0.1.65)
+    git checkout -b my_fix $stab_base
+    # Do the fix, commit, push and create two PRs through the Github Web Interface.
+    # One PR should targeting **master** and the other targeting the **stabilization** branch.
+    ```
+
 In the past, to ensure that all fixes pushed to the stabilization branch were also included in the
 master branch, every Friday during the stabilization phase, a PR was created to merge the
 stabilization changes into the master branch. However, this approach was prone to conflicts that
