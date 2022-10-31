@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel8,rhel9
+
+title: "Configure Logind to terminate idle sessions after certain time of inactivity"
+
+description: |-
+    To configure <tt>logind</tt> service to terminate inactive user sessions
+    after {{{ xccdf_value("var_logind_session_timeout") }}} seconds, edit the file
+    <tt>/etc/systemd/logind.conf</tt>. Ensure that there is a section
+    <pre>[Login]</pre> which contains the configuration
+    <pre>StopIdleSessionSec={{{ xccdf_value("var_logind_session_timeout") }}}</pre>.
+
+rationale: |-
+    Terminating an idle session within a short time period reduces the window of
+    opportunity for unauthorized personnel to take control of a management
+    session enabled on the console or console port that has been let unattended.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-90784-0
+    cce@rhel9: CCE-90785-7
+
+references:
+    ospp: FMT_SMF_EXT.1.1
+
+ocil_clause: "The option is not configured"
+
+ocil: |-
+    Display the contents of the file <tt>/etc/systemd/logind.conf</tt>:
+    <pre>cat /etc/systemd/logind.conf</pre>
+    Ensure that there is a section <tt>[login]</tt> which contains the
+    configuration <tt>StopIdleSessionSec={{{ xccdf_value("var_logind_session_timeout")
+    }}}</tt>.

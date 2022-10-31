@@ -1,0 +1,9 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_logind_session_timeout") }}}
+
+{{{ ansible_ini_file_set("/etc/systemd/logind.conf", "Login", "StopIdleSessionSec", "{{ var_logind_session_timeout }}") }}}
