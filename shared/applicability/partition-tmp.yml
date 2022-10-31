@@ -1,0 +1,5 @@
+name: "cpe:/a:partition-tmp"
+title: "There is a /tmp partition"
+check_id: installed_env_mounts_tmp
+bash_conditional: {{{ bash_partition_conditional("/tmp") }}}
+ansible_conditional: {{{ ansible_partition_conditional("/tmp") }}}

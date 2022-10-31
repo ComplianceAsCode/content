@@ -1,0 +1,5 @@
+name: cpe:/a:not_aarch64_arch
+title: System architecture is not AARCH64
+check_id: proc_sys_kernel_osrelease_arch_not_aarch64
+bash_conditional: '! grep -q aarch64 /proc/sys/kernel/osrelease'
+ansible_conditional: 'ansible_architecture != "aarch64"'
