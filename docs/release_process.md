@@ -98,18 +98,22 @@ Milestone must be updated to refer the next release.
 ### Bug Fixes
 - Run whatever extra tests you have and report bugs as Upstream issues using the
 [General Issue](https://github.com/ComplianceAsCode/content/issues/new?assignees=&labels=&template=general_issue.md) template.
-    - Propose bug fixes by targeting the PRs to the **stabilization** branch. e.g. `stabilization-v0.1.65`
-    - Once the PR is **merged** in the **stabilization** branch, cherry-pick it to the **master** branch.
+- Propose bug fixes by targeting PRs to the **stabilization** branch. e.g. `stabilization-v0.1.65`
+  - Once the PR is **merged** in the **stabilization** branch, make a PR with the same fix to the **master** branch.
+
+  _NOTE: There are different ways how to port commits from one branch to another._
+  _Below are listed a few approaches how to do it._
+
+  - Cherry pick individually each of the fixing commits from one branch to another:
     For example:
     ```
     git checkout master
     git pull upstream master
-    git checkout -b backport_from_stabilization
+    git checkout -b my_fix_in_master
     git cherry-pick abcd1234
     ...
+    # Push my_fix_in_master and create the PR
     ```
-    _NOTE: There are different ways to backport a commit from the stabilization to the master branch._
-    _The above approach is just one example._
 
 In the past, to ensure that all fixes pushed to the stabilization branch were also included in the
 master branch, every Friday during the stabilization phase, a PR was created to merge the
