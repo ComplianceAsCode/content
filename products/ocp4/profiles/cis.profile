@@ -54,20 +54,20 @@ selections:
     - api_server_api_priority_gate_enabled
     - api_server_api_priority_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
-    - api_server_admission_control_plugin_AlwaysAdmit
+    - api_server_admission_control_plugin_alwaysadmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
-    - api_server_admission_control_plugin_AlwaysPullImages
+    - api_server_admission_control_plugin_alwayspullimages
   # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is not set
-    - api_server_admission_control_plugin_SecurityContextDeny
+    - api_server_admission_control_plugin_securitycontextdeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
-    - api_server_admission_control_plugin_ServiceAccount
+    - api_server_admission_control_plugin_service_account
     - api_server_no_adm_ctrl_plugins_disabled
   # 1.2.15 Ensure that the admission control plugin NamespaceLifecycle is set
-    - api_server_admission_control_plugin_NamespaceLifecycle
+    - api_server_admission_control_plugin_namespacelifecycle
   # 1.2.16 Ensure that the admission control plugin PodSecurityPolicy is set (Automated)
-    - api_server_admission_control_plugin_Scc
+    - api_server_admission_control_plugin_scc
   # 1.2.17 Ensure that the admission control plugin NodeRestriction is set (Automated)
-    - api_server_admission_control_plugin_NodeRestriction
+    - api_server_admission_control_plugin_noderestriction
   # 1.2.18 Ensure that the --insecure-bind-address argument is not set
     - api_server_insecure_bind_address
   # 1.2.19 Ensure that the --insecure-port argument is set to 0
