@@ -115,6 +115,17 @@ Milestone must be updated to refer the next release.
     # Push my_fix_in_master and create the PR
     ```
 
+  - To quickly move multiple commits from one branch to another:
+    ```
+    # Assuming that my_fix is the branch containing the fix for the **stabilization** branch
+    git fetch upstream master:master
+    git checkout my_fix
+    base_my_fix=$(git merge-base master my_fix)
+    git rebase --onto master $base_my_fix HEAD
+    git checkout -b my_fix_in_master
+    # Push my_fix_in_master and create the PR
+    ```
+
 In the past, to ensure that all fixes pushed to the stabilization branch were also included in the
 master branch, every Friday during the stabilization phase, a PR was created to merge the
 stabilization changes into the master branch. However, this approach was prone to conflicts that
