@@ -137,6 +137,7 @@ Milestone must be updated to refer the next release.
     # One PR should targeting **master** and the other targeting the **stabilization** branch.
     ```
 
+_Historic note_:
 In the past, to ensure that all fixes pushed to the stabilization branch were also included in the
 master branch, every Friday during the stabilization phase, a PR was created to merge the
 stabilization changes into the master branch. However, this approach was prone to conflicts that
