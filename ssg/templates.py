@@ -345,12 +345,11 @@ class Builder(object):
             local_env_yaml["rule_title"] = cpe.title
             local_env_yaml["products"] = self.env_yaml["product"]
 
-            for lang in ['oval', 'bash', 'ansible']:
+            for lang in languages.values():
                 try:
                     self.build_lang(cpe_id, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
-                    print("Error building template {0} for platform {1}".format(lang, symbol.name), file=sys.stderr)
-                    raise e
+                    raise RuntimeError("Error building template {0} for platform {1}".format(lang.name, symbol.name))
 
     def get_lang_for_rule(self, rule_id, rule_title, template, language):
         """
