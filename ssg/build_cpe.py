@@ -207,9 +207,6 @@ class CPEALLogicalTest(Function):
         contents = ''
         config = defaultdict(lambda: None)
         op = " "
-        if self.is_not():
-            contents += CONDITIONAL_OPERATORS[language]["not"] + " "
-        contents += "( "
         child_condlines = []
         for a in self.args:
             r = a.get_remediation_conditional(language, product_cpes, conditionals_path, env_yaml)
@@ -217,12 +214,16 @@ class CPEALLogicalTest(Function):
                 cont = r.contents.strip()
                 if cont:
                     child_condlines.append(cont)
-        if self.is_or():
-            op = " " + CONDITIONAL_OPERATORS[language]["or"] + " "
-        elif self.is_and():
-            op = " " + CONDITIONAL_OPERATORS[language]["and"] + " "
-        contents += op.join(child_condlines)
-        contents += " )"
+        if child_condlines:
+            if self.is_not():
+                contents += CONDITIONAL_OPERATORS[language]["not"] + " "
+            contents += "( "
+            if self.is_or():
+                op = " " + CONDITIONAL_OPERATORS[language]["or"] + " "
+            elif self.is_and():
+                op = " " + CONDITIONAL_OPERATORS[language]["and"] + " "
+            contents += op.join(child_condlines)
+            contents += " )"
         return RemediationObject(contents=contents, config=config)
 
 
