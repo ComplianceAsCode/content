@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+# platform = multi_platform_ubuntu
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
 # dod_short banner

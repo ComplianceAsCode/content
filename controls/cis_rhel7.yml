@@ -498,7 +498,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule is missing
+    status: automated
+    rules:
+      - banner_etc_issue_net
+      - login_banner_text=cis_banners
 
   - id: 1.7.4
     title: Ensure permissions on /etc/motd are configured (Automated)
