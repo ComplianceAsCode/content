@@ -1532,11 +1532,13 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.values, Value)
 
+        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
+
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
 
-        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
+
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
@@ -1585,8 +1587,7 @@ class Platform(XCCDFEntity):
         name=lambda: "",
         original_expression=lambda: "",
         xml_content=lambda: "",
-        bash_conditional=lambda: "",
-        ansible_conditional=lambda: "",
+        conditional=lambda: {},
         ** XCCDFEntity.KEYS
     )
 
@@ -1594,8 +1595,7 @@ class Platform(XCCDFEntity):
         "name",
         "xml_content",
         "original_expression",
-        "bash_conditional",
-        "ansible_conditional"
+        "conditional",
     ]
 
     prefix = "cpe-lang"
@@ -1607,22 +1607,21 @@ class Platform(XCCDFEntity):
             return None
         test = product_cpes.algebra.parse(
             expression, simplify=True)
-        id = test.as_id()
+        id = test.as_uuid()
         platform = cls(id)
         platform.test = test
-        platform.test.enrich_with_cpe_info(product_cpes)
+        # in case some cpe_items were parametrized, we might need to create new CPE items
+        platform.test.add_enriched_cpe_items(product_cpes)
         platform.name = id
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
-        platform.bash_conditional = platform.test.to_bash_conditional()
-        platform.ansible_conditional = platform.test.to_ansible_conditional()
         return platform
 
     def get_xml(self):
         cpe_platform = ET.Element("{%s}platform" % Platform.ns)
         cpe_platform.set('id', self.name)
         # in case the platform contains only single CPE name, fake the logical test
-        # we have to athere to CPE specification
+        # we have to adhere to CPE specification
         if isinstance(self.test, CPEALFactRef):
             cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
             cpe_test.set('operator', 'AND')
@@ -1635,23 +1634,27 @@ class Platform(XCCDFEntity):
         return xmlstr
 
     def to_xml_element(self):
-        return self.xml_content
+        return ET.fromstring(self.xml_content)
 
-    def to_bash_conditional(self):
-        return self.bash_conditional
+    def get_bash_conditional(self):
+        return self.conditional.get('bash', '')
 
-    def to_ansible_conditional(self):
-        return self.ansible_conditional
+    def get_ansible_conditional(self):
+        return self.conditional.get('ansible', '')
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, conditionals_path=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        platform.xml_content = ET.fromstring(platform.xml_content)
         # if we did receive a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
             platform.test = product_cpes.algebra.parse(
                 platform.original_expression, simplify=True)
+            platform.conditional = {
+                'bash': platform.test.get_bash_conditional(product_cpes, conditionals_path, env_yaml),
+                'ansible': platform.test.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+            }
+
         return platform
 
     def __eq__(self, other):
