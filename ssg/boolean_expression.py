@@ -10,7 +10,7 @@ pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
 SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
 
-VERSION_SYMBOLS = ['.', '-', '_', '*']
+VERSION_SYMBOLS = ['.', '-', '_', ':']
 
 SPEC_OP_ID_TRANSLATION = {
     '==': 'eq',
@@ -19,6 +19,15 @@ SPEC_OP_ID_TRANSLATION = {
     '<': 'le',
     '>=': 'gt_or_eq',
     '<=': 'le_or_eq',
+}
+
+SPEC_OP_OVAL_EVR_STRING_TRANSLATION = {
+    '==': 'equal',
+    '!=': 'not equal',
+    '>': 'greater than',
+    '<': 'less than',
+    '>=': 'greater than or equal',
+    '<=': 'less than or equal',
 }
 
 
@@ -60,7 +69,7 @@ class Symbol(boolean.Symbol):
     """
     Base class for boolean symbols
 
-    Sub-class it and pass to the `Algebra` as `symbol_cls` to enrich
+    Subclass it and pass to the `Algebra` as `symbol_cls` to enrich
     expression elements with domain-specific methods.
 
     The `as_id` method will generate an unique string identifier usable as
@@ -69,11 +78,14 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = pkg_resources.Requirement.parse(obj)
+        self.spec = pkg_resources.Requirement.parse(obj.replace(':', '!'))
         self.obj = self.spec
 
     def __call__(self, **kwargs):
-        val = kwargs.get(self.name, False)
+        full_name = self.name
+        if self.spec.extras:
+            full_name += '[' + self.spec.extras[0] + ']'
+        val = kwargs.get(full_name, False)
         if len(self.spec.specs):
             if type(val) is str:
                 return val in self.spec
@@ -87,15 +99,27 @@ class Symbol(boolean.Symbol):
         id_str = self.name
         for (op, ver) in self.spec.specs:
             id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
+        if self.spec.extras:
+            id_str += '_' + self.spec.extras[0]
         return id_str
 
+    def as_dict(self):
+        res = {'id': self.as_id(), 'name': self.name, 'arg': ''}
+        if self.spec.extras:
+            res['arg'] = self.spec.extras[0]
+        return res
+
     @property
-    def name(self):
-        return self.spec.project_name
+    def arg(self):
+        return self.spec.extras[0] if self.spec.extras else None
 
     @property
     def specs(self):
         return self.spec.specs
+
+    @property
+    def name(self):
+        return self.spec.project_name
 
 
 class Algebra(boolean.BooleanAlgebra):
@@ -109,9 +133,9 @@ class Algebra(boolean.BooleanAlgebra):
 
     Limitations:
     - no white space is allowed inside specifier expressions;
-    - ~= specifier operator is not supported.
+    - ~= specifier operator is not supported (along with '*' as a part of the version).
 
-    For example: "(oranges>=2.0.8,<=5 | banana) and ~apple + !pie"
+    For example: "(oranges>=2.0.8,<=5 | banana) and ~apple + !pie[beef]"
     """
 
     def __init__(self, symbol_cls, function_cls):
