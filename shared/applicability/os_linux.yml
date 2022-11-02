@@ -1,0 +1,13 @@
+name: "cpe:/o:{arg}:{ver_cpe}"
+title: "Operating System is {arg} {ver_str}"
+template:
+    name: cond_os_release
+args:
+    rhel:
+        os_name: "Red Hat Enterprise Linux"
+        os_id: 'rhel'
+        os_id_ansible: "RedHat"
+    fedora:
+        os_name: "Fedora"
+        os_id: 'fedora'
+        os_id_ansible: "Fedora"
