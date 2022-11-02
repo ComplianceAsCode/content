@@ -258,9 +258,10 @@ selections:
   #### 5.6 General Policies
   # 5.6.1 Create administrative boundaries between resources using namespaces (info)
     - general_namespaces_in_use
-  # 5.6.2 Ensure Seccomp Profile Pod Definitions (info)
-    - general_default_seccomp_profile
   # 5.6.3 Apply Security Context to your Pods and Containers (info)
     - general_apply_scc
   # 5.6.4 The Default Namespace should not be used (info)
     - general_default_namespace_use
+  #### 5.7
+  # 5.7.2 Ensure Seccomp Profile Pod Definitions (info)
+    - general_default_seccomp_profile
