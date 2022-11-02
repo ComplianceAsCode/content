@@ -34,6 +34,10 @@ Scenario_conditions = namedtuple(
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+DEFAULT_BUILD_DIR = os.path.abspath(os.path.join(SSG_ROOT, "build"))
+
+PROD_PLATFORMS_DIR = "/{}/platforms"
+PROD_CPE_ITEMS_DIR = "/{}/cpe_items"
 
 _BENCHMARK_DIRS = [
         os.path.abspath(os.path.join(SSG_ROOT, 'linux_os', 'guide')),
@@ -43,9 +47,6 @@ _BENCHMARK_DIRS = [
 _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared'))
 
 _SHARED_TEMPLATES = os.path.abspath(os.path.join(SSG_ROOT, 'shared/templates'))
-
-_PLATFORMS_DIR = "/platforms"
-_CPE_ITEMS_DIR = "/cpe_items"
 
 TEST_SUITE_NAME="ssgts"
 TEST_SUITE_PREFIX = "_{}".format(TEST_SUITE_NAME)

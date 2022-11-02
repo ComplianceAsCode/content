@@ -391,10 +391,10 @@ class RuleChecker(oscap.Checker):
         product_yaml = common.get_product_context(self.test_env.product)
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
-        product_build_dir = os.path.join(common.SSG_ROOT, "build", product_yaml["product"])
         template_builder = ssg.templates.Builder(
             product_yaml, empty, common._SHARED_TEMPLATES, empty, empty,
-            product_build_dir + common._PLATFORMS_DIR, product_build_dir + common._CPE_ITEMS_DIR)
+            common.DEFAULT_BUILD_DIR + common.PROD_PLATFORMS_DIR.format(product_yaml["product"]),
+            common.DEFAULT_BUILD_DIR + common.PROD_CPE_ITEMS_DIR.format(product_yaml["product"]))
 
         templated_tests_paths, local_tests_paths = self._find_tests_paths(
             rule, template_builder, product_yaml)
