@@ -394,7 +394,7 @@ class RuleChecker(oscap.Checker):
         product_build_dir = os.path.join(common.SSG_ROOT, "build", product_yaml["product"])
         template_builder = ssg.templates.Builder(
             product_yaml, empty, common._SHARED_TEMPLATES, empty, empty,
-            product_build_dir + "/platforms", product_build_dir + "/cpe_items")
+            product_build_dir + common._PLATFORMS_DIR, product_build_dir + common._CPE_ITEMS_DIR)
 
         templated_tests_paths, local_tests_paths = self._find_tests_paths(
             rule, template_builder, product_yaml)
