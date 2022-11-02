@@ -2,18 +2,11 @@ documentation_complete: true
 
 prodtype: sle12,sle15
 
-title: 'Never Automatically Remove or Disable Emergency Administrator Accounts'
+title: 'Ensure shadow group is empty'
 
 description: |-
     The shadow group allows system programs which require access the ability 
     to read the /etc/shadow file. No users should be assigned to the shadow group.
-
-    Run the following commands and verify no results are returned:
-    # grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group
-    # awk -F: '($4 == "<shadow-gid>") { print }' /etc/passwd
-
-    Remove all users from the shadow group, and change the primary group of any 
-    users with shadow as their primary group.
 
 rationale: |-
     Any users assigned to the shadow group would be granted read access to the 
@@ -26,10 +19,22 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@sle12: 
-    cce@sle15: 
+    cce@sle12: CCE-92213-8
+    cce@sle15: CCE-91344-2
 
 references:
-    disa: CCI-001682
-    nist@sle12: AC-2(2),AC-2(2).1(ii)
-    srg: SRG-OS-000123-GPOS-00064
+    cis@sle12: 6.2.18
+    cis@sle15: 6.2.18
+    pcidss: Req-8.2.1
+
+ocil_clause: 'shadow group is not empty' 
+
+ocil: |-
+    Run the following commands and verify no results are returned:
+    <per>
+    grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group
+    awk -F: '($4 == "<shadow-gid>") { print }' /etc/passwd
+    </per>
+
+    Remove all users from the shadow group, and change the primary group of any
+    users with shadow as their primary group.

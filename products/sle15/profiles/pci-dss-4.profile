@@ -33,6 +33,7 @@ selections:
     -  disable_host_auth
     -  disable_prelink
     -  disable_users_coredumps
+    -  ensure_shadow_group_empty
     -  file_at_deny_not_exist
     -  file_cron_deny_not_exist
     -  file_groupowner_at_allow
