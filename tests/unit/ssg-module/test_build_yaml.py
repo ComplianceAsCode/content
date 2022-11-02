@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 
 from ssg.build_cpe import ProductCPEs
 import ssg.build_yaml
+import ssg.entities.common
 from ssg.constants import XCCDF12_NS, cpe_language_namespace, xhtml_namespace
 from ssg.yaml import open_raw
 
@@ -363,9 +364,9 @@ def test_platform_as_dict(product_cpes):
 
 
 def test_derive_id_from_file_name():
-    assert ssg.build_yaml.derive_id_from_file_name("rule.yml") == "rule"
-    assert ssg.build_yaml.derive_id_from_file_name("id.with.dots.yaml") == "id.with.dots"
-    assert ssg.build_yaml.derive_id_from_file_name("my_id") == "my_id"
+    assert ssg.entities.common.derive_id_from_file_name("rule.yml") == "rule"
+    assert ssg.entities.common.derive_id_from_file_name("id.with.dots.yaml") == "id.with.dots"
+    assert ssg.entities.common.derive_id_from_file_name("my_id") == "my_id"
 
 
 def test_rule_triage_policy_files():

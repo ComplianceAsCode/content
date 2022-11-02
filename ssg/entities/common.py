@@ -1,10 +1,63 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import os.path
+import os
 import yaml
+from collections import defaultdict
+from copy import deepcopy
 
+from ..xml import ElementTree as ET, add_xhtml_namespace
+from ..constants import xhtml_namespace
 from ..yaml import DocumentationNotComplete, open_and_macro_expand
+from ..shims import unicode_func
+
+from ..constants import (
+    XCCDF_REFINABLE_PROPERTIES,
+    XCCDF12_NS,
+    OSCAP_VALUE,
+)
+
+
+def add_sub_element(parent, tag, ns, data):
+    """
+    Creates a new child element under parent with tag tag, and sets
+    data as the content under the tag. In particular, data is a string
+    to be parsed as an XML tree, allowing sub-elements of children to be
+    added.
+
+    If data should not be parsed as an XML tree, either escape the contents
+    before passing into this function, or use ElementTree.SubElement().
+
+    Returns the newly created subelement of type tag.
+    """
+    namespaced_data = add_xhtml_namespace(data)
+    # This is used because our YAML data contain XML and XHTML elements
+    # ET.SubElement() escapes the < > characters by &lt; and &gt;
+    # and therefore it does not add child elements
+    # we need to do a hack instead
+    # TODO: Remove this function after we move to Markdown everywhere in SSG
+    ustr = unicode_func('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
+        tag, namespaced_data, xhtml_namespace, ns)
+
+    try:
+        element = ET.fromstring(ustr.encode("utf-8"))
+    except Exception:
+        msg = ("Error adding subelement to an element '{0}' from string: '{1}'"
+               .format(parent.tag, ustr))
+        raise RuntimeError(msg)
+
+    # Apart from HTML and XML elements the rule descriptions and similar
+    # also contain <xccdf:sub> elements, where we need to add the prefix
+    # to create a full reference.
+    for x in element.findall(".//{%s}sub" % XCCDF12_NS):
+        x.set("idref", OSCAP_VALUE + x.get("idref"))
+        x.set("use", "legacy")
+    parent.append(element)
+    return element
+
+
+def derive_id_from_file_name(filename):
+    return os.path.splitext(filename)[0]
 
 
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
@@ -101,7 +154,7 @@ class XCCDFEntity(object):
         - `definition_location` as the original location whenre the entity got defined.
         """
         file_basename = os.path.basename(yaml_file)
-        entity_id = os.path.splitext(file_basename)[0]
+        entity_id = derive_id_from_file_name(file_basename)
         if file_basename == cls.GENERIC_FILENAME:
             entity_id = os.path.basename(os.path.dirname(yaml_file))
 
@@ -175,3 +228,84 @@ class XCCDFEntity(object):
 
     def to_xml_element(self):
         raise NotImplementedError()
+
+    def to_file(self, file_name):
+        root = self.to_xml_element()
+        tree = ET.ElementTree(root)
+        tree.write(file_name)
+
+
+class SelectionHandler(object):
+    def __init__(self):
+        self.refine_rules = defaultdict(list)
+        self.variables = dict()
+        self.unselected = []
+        self.unselected_groups = []
+        self.selected = []
+
+    @property
+    def selections(self):
+        selections = []
+        for item in self.selected:
+            selections.append(str(item))
+        for item in self.unselected:
+            selections.append("!"+str(item))
+        for varname in self.variables.keys():
+            selections.append(varname+"="+self.variables.get(varname))
+        for rule, refinements in self.refine_rules.items():
+            for prop, val in refinements:
+                selections.append("{rule}.{property}={value}"
+                                  .format(rule=rule, property=prop, value=val))
+        return selections
+
+    @selections.setter
+    def selections(self, entries):
+        for item in entries:
+            self.apply_selection(item)
+
+    def apply_selection(self, item):
+        if "." in item:
+            rule, refinement = item.split(".", 1)
+            property_, value = refinement.split("=", 1)
+            if property_ not in XCCDF_REFINABLE_PROPERTIES:
+                msg = ("Property '{property_}' cannot be refined. "
+                       "Rule properties that can be refined are {refinables}. "
+                       "Fix refinement '{rule_id}.{property_}={value}' in profile '{profile}'."
+                       .format(property_=property_, refinables=XCCDF_REFINABLE_PROPERTIES,
+                               rule_id=rule, value=value, profile=self.id_)
+                       )
+                raise ValueError(msg)
+            self.refine_rules[rule].append((property_, value))
+        elif "=" in item:
+            varname, value = item.split("=", 1)
+            self.variables[varname] = value
+        elif item.startswith("!"):
+            self.unselected.append(item[1:])
+        else:
+            self.selected.append(item)
+
+    def _subtract_refinements(self, extended_refinements):
+        """
+        Given a dict of rule refinements from the extended profile,
+        "undo" every refinement prefixed with '!' in this profile.
+        """
+        for rule, refinements in list(self.refine_rules.items()):
+            if rule.startswith("!"):
+                for prop, val in refinements:
+                    extended_refinements[rule[1:]].remove((prop, val))
+                del self.refine_rules[rule]
+        return extended_refinements
+
+    def update_with(self, rhs):
+        extended_selects = set(rhs.selected)
+        extra_selections = extended_selects.difference(set(self.selected))
+        self.selected.extend(list(extra_selections))
+
+        updated_variables = dict(rhs.variables)
+        updated_variables.update(self.variables)
+        self.variables = updated_variables
+
+        extended_refinements = deepcopy(rhs.refine_rules)
+        updated_refinements = self._subtract_refinements(extended_refinements)
+        updated_refinements.update(self.refine_rules)
+        self.refine_rules = updated_refinements
