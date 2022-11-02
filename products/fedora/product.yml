@@ -38,12 +38,14 @@ cpes:
   - fedora_36:
       name: "cpe:/o:fedoraproject:fedora:36"
       title: "Fedora 36"
-      check_id: installed_OS_is_fedora
+      conditional:
+        oval_id: installed_OS_is_fedora
 
   - fedora_35:
       name: "cpe:/o:fedoraproject:fedora:35"
       title: "Fedora 35"
-      check_id: installed_OS_is_fedora
+      conditional:
+        oval_id: installed_OS_is_fedora
 
 # Retrieve the fingerprint as follows:
 #   gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-primary" | grep '^fpr' | cut -d ":" -f 10
