@@ -11,6 +11,7 @@ import ssg.utils
 import ssg.yaml
 import ssg.build_yaml
 import ssg.build_remediations
+import ssg.remediations
 import ssg.environment
 
 COMMENTS_TO_PARSE = ["strategy", "complexity", "disruption"]
@@ -129,7 +130,7 @@ class PlaybookBuilder():
 
         with open(snippet_path, "r") as snippet_file:
             snippet_str = snippet_file.read()
-        fix = ssg.build_remediations.split_remediation_content_and_metadata(snippet_str)
+        fix = ssg.remediations.split_remediation_content_and_metadata(snippet_str)
         snippet_yaml = ssg.yaml.ordered_load(fix.contents)
 
         play_tasks, play_vars = self.get_data_from_snippet(
