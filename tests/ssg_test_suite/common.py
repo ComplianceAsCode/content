@@ -441,7 +441,7 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
 
 
 def fetch_templated_tests_paths(
-        rule_namedtuple, template_builder, product_yaml):
+        rule_namedtuple, product_yaml):
     rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
         return dict()
@@ -492,7 +492,7 @@ def get_all_tests(rule_template):
 
 
 def load_templated_tests(
-        templated_tests_paths, template_builder, template, local_env_yaml):
+        templated_tests_paths, template, local_env_yaml):
     templated_tests = dict()
     for path in templated_tests_paths:
         test = get_test(path, template, local_env_yaml)
