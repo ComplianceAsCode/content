@@ -117,13 +117,13 @@ def main():
     deltas = list()
     missing_in_disa = list()
     missing_in_cac = list()
-    for cci in (cac_set - disa_set):
-        cci = cci.replace('\n', '').strip()
-        missing_in_disa.append(f"{cci} - {cce_rule_id_dict[cci]}")
+    for cce in (cac_set - disa_set):
+        cce = cce.replace('\n', '').strip()
+        missing_in_disa.append(f"{cce} - {cce_rule_id_dict[cce]}")
 
-    for cci in (disa_set - cac_set):
-        cci = cci.replace('\n', '').strip()
-        missing_in_cac.append(f"{cci} - {cce_rule_id_dict[cci]}")
+    for cce in (disa_set - cac_set):
+        cce = cce.replace('\n', '').strip()
+        missing_in_cac.append(f"{cce} - {cce_rule_id_dict[cce]}")
 
     for cce in common_set:
         disa = disa_cce_dict[cce]
