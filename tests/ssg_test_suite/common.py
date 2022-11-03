@@ -445,7 +445,7 @@ def fetch_templated_tests_paths(
     rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
         return dict()
-    tests_paths = get_all_tests(rule.template)
+    tests_paths = fetch_all_templated_tests_paths(rule.template)
     test_config = get_test_dir_config(rule_namedtuple.directory, product_yaml)
     allowed_tests_paths = select_templated_tests(
         test_config, tests_paths.keys())
@@ -454,7 +454,7 @@ def fetch_templated_tests_paths(
     return templated_test_scenarios
 
 
-def get_all_tests(rule_template):
+def fetch_all_templated_tests_paths(rule_template):
     """
     Builds a dictionary of a test case relative path -> test case absolute path mapping.
 
@@ -495,13 +495,13 @@ def load_templated_tests(
         templated_tests_paths, template, local_env_yaml):
     templated_tests = dict()
     for path in templated_tests_paths:
-        test = get_test(path, template, local_env_yaml)
+        test = load_test(path, template, local_env_yaml)
         basename = os.path.basename(path)
         templated_tests[basename] = test
     return templated_tests
 
 
-def get_test(absolute_path, rule_template, local_env_yaml):
+def load_test(absolute_path, rule_template, local_env_yaml):
     template_name = rule_template['name']
     template_vars = rule_template['vars']
     # Load template parameters and apply it to the test case.
