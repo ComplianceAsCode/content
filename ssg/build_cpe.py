@@ -146,7 +146,9 @@ class CPEItem(XCCDFEntity):
     KEYS = dict(
         name=lambda: "",
         title=lambda: "",
-        conditional=lambda: {},
+        check_id=lambda: "",
+        bash_conditional=lambda: "",
+        ansible_conditional=lambda: "",
         template=lambda: {},
         is_product_cpe=lambda: False,
         args=lambda: {},
@@ -172,7 +174,7 @@ class CPEItem(XCCDFEntity):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.conditional.get('oval_id', self.id_)
+        cpe_item_check.text = self.check_id
         return cpe_item
 
     @classmethod
@@ -255,7 +257,12 @@ class CPEALFactRef(Symbol):
 
     def get_remediation_conditional(self, language, product_cpes, conditionals_path, env_yaml):
         cpe = product_cpes.get_cpe(self.as_id())
-        cond = cpe.conditional.get(language, "")
+        if language == "bash":
+            cond = cpe.bash_conditional
+        elif language == "ansible":
+            cond = cpe.ansible_conditional
+        else:
+            raise KeyError("Invalid language {0} supplied for remediation conditional".format(language))
         if cond:
             return remediations.parse_from_string_with_jinja(cond, env_yaml)
         elif conditionals_path is not None:
