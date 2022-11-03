@@ -12,22 +12,26 @@ import ssg.jinja
 from utils.srg_utils import *
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
+BUILD_ROOT = os.path.join(SSG_ROOT, "build")
+OUTPUT_PATH = os.path.join(BUILD_ROOT, "srg_diff.html")
+RULES_JSON = os.path.join(BUILD_ROOT, "rule_dirs.json")
 
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--disa', '-d', help="The file submitted to DISA, in xlsx format",
+    parser.add_argument('--base', '-b', help="The file to compare to, usually the file from the"
+                                             " latest build of CaC, in xlsx format.",
                         required=True)
-    parser.add_argument('--cac', '-c', help="The latest file from CaC, in xlsx format",
+    parser.add_argument('--target', '-t', help="The file with the changes, usually the file "
+                                               "modified by external parities, in xlsx format.",
                         required=True)
     parser.add_argument('--changed-name', '-n', type=str, action="store",
                         help="The name that DISA uses for the product. Defaults to RHEL 9",
                         default="RHEL 9")
     parser.add_argument('--product', '-p', type=str, action="store", required=True,
                         help="The product")
-    parser.add_argument('--output', '-o', type=str, action="store",
-                        help="What file to output the diff to")
+    parser.add_argument('--output', '-o', type=str, action="store", default=OUTPUT_PATH,
+                        help=f"What file to output the diff to. Defaults to {OUTPUT_PATH}")
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
     parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
@@ -114,37 +118,39 @@ def get_requirements_with_no_cces(sheet: Worksheet, end_row: int) -> list:
 
 def main():
     args = _parse_args()
-    disa_path = args.disa
-    cac_path = args.cac
-    disa_wb = load_workbook(disa_path)
-    cac_wb = load_workbook(cac_path)
-    disa_set = get_stigid_set(disa_wb['Sheet'], args.end_row)
-    cac_sheet = cac_wb['Sheet']
-    disa_sheet = disa_wb['Sheet']
-    cac_set = get_stigid_set(cac_sheet, args.end_row)
+    base_path = args.base
+    target_path = args.target
+    base_wb = load_workbook(base_path)
+    target_wb = load_workbook(target_path)
+    base_set = get_stigid_set(base_wb['Sheet'], args.end_row)
+    target_sheet = target_wb['Sheet']
+    base_sheet = base_wb['Sheet']
+    target_set = get_stigid_set(target_sheet, args.end_row)
     full_name = get_full_name(args.root, args.product)
 
-    cac_missing_cces = get_requirements_with_no_cces(cac_sheet, args.end_row)
-    disa_missing_cces = get_requirements_with_no_cces(disa_sheet, args.end_row)
-
-    cac_cce_dict = get_cce_dict_to_row_dict(cac_sheet, full_name, args.changed_name, args.end_row)
-    disa_cce_dict = get_cce_dict_to_row_dict(disa_sheet, full_name, args.changed_name,
+    cac_cce_dict = get_cce_dict_to_row_dict(target_sheet, full_name, args.changed_name,
+                                            args.end_row)
+    disa_cce_dict = get_cce_dict_to_row_dict(base_sheet, full_name, args.changed_name,
                                              args.end_row)
-    common_set = cac_set - (cac_set - disa_set)
+
+    base_missing_stig_ids = get_requirements_with_no_cces(base_sheet, args.end_row)
+    target_missing_stig_ids = get_requirements_with_no_cces(target_sheet, args.end_row)
+
+    common_set = target_set - (target_set - base_set)
 
     rule_dir_json = get_rule_dir_json(args.json)
     cce_rule_id_dict = get_cce_dict(rule_dir_json, args.product)
 
     deltas = list()
-    missing_in_disa = list()
-    missing_in_cac = list()
-    for cce in (cac_set - disa_set):
+    missing_in_base = list()
+    missing_in_target = list()
+    for cce in (target_set - base_set):
         cce = cce.replace('\n', '').strip()
-        missing_in_disa.append(f"{cce} - {cce_rule_id_dict[cce]}")
+        missing_in_base.append(f"{cce} - {cce_rule_id_dict[cce]}")
 
-    for cce in (disa_set - cac_set):
+    for cce in (base_set - target_set):
         cce = cce.replace('\n', '').strip()
-        missing_in_cac.append(f"{cce} - {cce_rule_id_dict[cce]}")
+        missing_in_target.append(f"{cce} - {cce_rule_id_dict[cce]}")
 
     for cce in common_set:
         disa = disa_cce_dict[cce]
@@ -152,13 +158,14 @@ def main():
         delta = _get_delta(cac, disa, cce, cce_rule_id_dict)
         deltas.append(delta)
 
-    title = f"{disa_path} vs {cac_path}"
+    title = f"{base_path} vs {target_path}"
 
     template = _create_template(args.root)
-    output = template.render(missing_in_disa=missing_in_disa, deltas=deltas,
-                             missing_in_cac=missing_in_cac, title=title,
-                             cac_missing_cces=cac_missing_cces,
-                             disa_missing_cces=disa_missing_cces)
+    output = template.render(missing_in_base=missing_in_base, deltas=deltas,
+                             missing_in_target=missing_in_target, title=title,
+                             base_missing_stig_ids=base_missing_stig_ids,
+                             target_missing_stig_ids=target_missing_stig_ids)
+
     with open(args.output, 'w') as f:
         f.write(output)
 

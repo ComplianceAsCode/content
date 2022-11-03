@@ -16,31 +16,31 @@
 </head>
 <body>
 <h1>{{ title }}</h1>
-<h2>Missing in DISA</h2>
+<h2>Missing in Base</h2>
 <ul>
-    {% for rule in missing_in_disa %}
+    {% for rule in missing_in_base %}
         <li>{{ rule }}</li>
     {% endfor %}
 </ul>
-<h2>Missing in CaC</h2>
+<h2>Missing in Target</h2>
 <ul>
-    {% for rule in missing_in_cac %}
+    {% for rule in missing_in_target %}
         <li>{{ rule }}</li>
     {% endfor %}
 </ul>
-{% if disa_missing_cces %}
-<h2>Requirements Missing CCE in DISA</h2>
+{% if base_missing_cces %}
+<h2>Rows Missing STIG IDs in Base</h2>
 <ul>
-    {% for requirement in disa_missing_cces %}
+    {% for requirement in base_missing_stig_ids %}
         <li>{{ requirement }}</li>
     {% endfor %}
 </ul>
 {% endif %}
 
-{% if cac_missing_cces %}
-<h2>Requirements Missing CCE in CaC</h2>
+{% if target_missing_cces %}
+<h2>Rows Missing STIG IDs in Target</h2>
 <ul>
-    {% for requirement in cac_missing_cces %}
+    {% for requirement in target_missing_stig_ids %}
         <li>{{ requirement }}</li>
     {% endfor %}
 </ul>
