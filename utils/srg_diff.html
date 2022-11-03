@@ -28,6 +28,24 @@
         <li>{{ rule }}</li>
     {% endfor %}
 </ul>
+{% if disa_missing_cces %}
+<h2>Requirements Missing CCE in DISA</h2>
+<ul>
+    {% for requirement in disa_missing_cces %}
+        <li>{{ requirement }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if cac_missing_cces %}
+<h2>Requirements Missing CCE in CaC</h2>
+<ul>
+    {% for requirement in cac_missing_cces %}
+        <li>{{ requirement }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <h2>Deltas</h2>
 {% for delta in deltas %}
     {% if delta.should_display() %}

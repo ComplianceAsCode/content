@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import argparse
 import difflib
 import os.path
@@ -94,6 +96,22 @@ def _create_template(root_path: str) -> jinja2.Template:
     return template
 
 
+def get_requirements_with_no_cces(sheet: Worksheet, end_row: int) -> list:
+    result = list()
+    for i in range(2, end_row):
+        requirement = sheet[f'F{i}'].value
+        if requirement is None or requirement.strip() == "":
+            continue
+        cce = sheet[f'D{i}'].value
+        if cce is not None and cce.startswith('CCE-') and requirement.strip() != "":
+            continue
+        status = sheet[f'I{i}'].value
+        if status is not None and status.strip() == 'Applicable - Configurable':
+            srgs_ids = sheet[f'C{i}'].value
+            result.append(f'{requirement.strip()} - {srgs_ids}')
+    return result
+
+
 def main():
     args = _parse_args()
     disa_path = args.disa
@@ -105,6 +123,9 @@ def main():
     disa_sheet = disa_wb['Sheet']
     cac_set = get_stigid_set(cac_sheet, args.end_row)
     full_name = get_full_name(args.root, args.product)
+
+    cac_missing_cces = get_requirements_with_no_cces(cac_sheet, args.end_row)
+    disa_missing_cces = get_requirements_with_no_cces(disa_sheet, args.end_row)
 
     cac_cce_dict = get_cce_dict_to_row_dict(cac_sheet, full_name, args.changed_name, args.end_row)
     disa_cce_dict = get_cce_dict_to_row_dict(disa_sheet, full_name, args.changed_name,
@@ -135,7 +156,9 @@ def main():
 
     template = _create_template(args.root)
     output = template.render(missing_in_disa=missing_in_disa, deltas=deltas,
-                             missing_in_cac=missing_in_cac, title=title)
+                             missing_in_cac=missing_in_cac, title=title,
+                             cac_missing_cces=cac_missing_cces,
+                             disa_missing_cces=disa_missing_cces)
     with open(args.output, 'w') as f:
         f.write(output)
 
