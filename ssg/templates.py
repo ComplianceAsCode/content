@@ -147,53 +147,6 @@ class Builder(object):
 
         return filled_template
 
-    def get_all_tests(self, rule_template):
-        """
-        Builds a dictionary of a test case relative path -> test case absolute path mapping.
-
-        Here, we want to know what the relative path on disk (under the tests/
-        subdirectory) is (such as "installed.pass.sh"), along with the actual
-        absolute path.
-        """
-        template_name = rule_template['name']
-
-        base_dir = os.path.abspath(os.path.join(self.templates_dir, template_name, "tests"))
-        results = dict()
-
-        # If no test cases exist, return an empty dictionary.
-        if not os.path.exists(base_dir):
-            return results
-
-        # Walk files; note that we don't need to do anything about directories
-        # as only files are recorded in the mapping; directories can be
-        # inferred from the path.
-        for dirpath, _, filenames in os.walk(base_dir):
-            if not filenames:
-                continue
-
-            for filename in filenames:
-                if filename.endswith(".swp"):
-                    continue
-
-                # Relative path to the file becomes our results key.
-                absolute_path = os.path.abspath(os.path.join(dirpath, filename))
-                relative_path = os.path.relpath(absolute_path, base_dir)
-
-                # Save the results under the relative path.
-                results[relative_path] = absolute_path
-        return results
-
-    def get_test(self, absolute_path, rule_template, local_env_yaml):
-        template_name = rule_template['name']
-        template_vars = rule_template['vars']
-        # Load template parameters and apply it to the test case.
-        template_parameters = templates[template_name].preprocess(
-            template_vars, "tests")
-        jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
-        filled_template = ssg.jinja.process_file_with_macros(
-            absolute_path, jinja_dict)
-        return filled_template
-
     def build_lang(
             self, rule_id, template_name, template_vars, lang, local_env_yaml, platforms=None):
         """
