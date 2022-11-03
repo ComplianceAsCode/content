@@ -242,7 +242,7 @@ class CPEALFactRef(Symbol):
     def add_enriched_cpe_items(self, product_cpes):
         old_cpe_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
         # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
-        not_templated_keys = ["conditional"]
+        not_templated_keys = ["bash_conditional", "ansible_conditional"]
         new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
         new_cpe_dict["id_"] = self.as_id()
         new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
