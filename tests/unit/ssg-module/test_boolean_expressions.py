@@ -48,11 +48,8 @@ def test_id(expression1):
     assert str(expression1.as_id()) == 'apple_and_banana_or_oranges_eq_2.0_or_not_pie'
 
 
-def test_cnf(algebra, expression1):
+def test_expression1_cnf_dnf(algebra, expression1):
     assert str(algebra.cnf(expression1)) == '(apple|~pie)&(banana|oranges==2.0|~pie)'
-
-
-def test_dnf(algebra, expression1):
     assert str(algebra.dnf(expression1)) == '(apple&banana)|(apple&oranges==2.0)|~pie'
 
 
