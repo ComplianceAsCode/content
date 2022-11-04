@@ -255,12 +255,12 @@ selections:
   #### 5.5 Extensible Admission Control
   # 5.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller
     - general_configure_imagepolicywebhook
-  #### 5.6 General Policies
-  # 5.6.1 Create administrative boundaries between resources using namespaces (info)
+  #### 5.7 General Policies
+  # 5.7.1 Create administrative boundaries between resources using namespaces (info)
     - general_namespaces_in_use
-  # 5.6.2 Ensure Seccomp Profile Pod Definitions (info)
+  # 5.7.2 Ensure Seccomp Profile Pod Definitions (info)
     - general_default_seccomp_profile
-  # 5.6.3 Apply Security Context to your Pods and Containers (info)
+  # 5.7.3 Apply Security Context to your Pods and Containers (info)
     - general_apply_scc
-  # 5.6.4 The Default Namespace should not be used (info)
+  # 5.7.4 The Default Namespace should not be used (info)
     - general_default_namespace_use
