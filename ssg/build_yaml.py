@@ -1582,6 +1582,10 @@ class LinearLoader(object):
 
 
 class Platform(XCCDFEntity):
+    """
+    This class represents CPE applicability language platform.
+    Each platform has at least one CPE logical test.
+    """
 
     KEYS = dict(
         name=lambda: "",
@@ -1639,8 +1643,6 @@ class Platform(XCCDFEntity):
     def get_remediation_conditional(self, language):
         return self.conditional.get(language, '')
 
-
-
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, conditionals_path=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
@@ -1655,7 +1657,6 @@ class Platform(XCCDFEntity):
                 'ansible': platform.test.get_remediation_conditional(
                     "ansible", product_cpes, conditionals_path, env_yaml)
             }
-
         return platform
 
     def __eq__(self, other):

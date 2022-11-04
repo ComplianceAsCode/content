@@ -26,16 +26,16 @@ class CPEDoesNotExist(Exception):
 
 class ProductCPEs(object):
     """
-    Reads from the disk all the yaml CPEs related to a product
-    and provides them in a structured way.
+    This class serves as a structure for CPE items during the build process.
+    It allows adding and retrieving of items.
     """
 
     def __init__(self):
 
-        self.cpes_by_id = {}
-        self.cpes_by_name = {}
-        self.product_cpes = {}
-        self.platforms = {}
+        self.cpes_by_id = {} # CPE items indexed by internal ID
+        self.cpes_by_name = {} # CPE items indexed by CPE name
+        self.product_cpes = {} # CPE items which define applicability of a product indexed by internal ID
+        self.platforms = {} # CPE AL platforms indexed by internal ID
         self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
 
     def load_product_cpes(self, env_yaml):
@@ -185,6 +185,12 @@ class CPEItem(XCCDFEntity):
         return cpe_item
 
 class CPEALLogicalTest(Function):
+    """
+    This class represents the logical-test element of CPE applicability language
+    Each test must contain at least one test or fact-ref.
+    This class inherits from boolean_expression.Function because it also represents boolean function when handling logical expressions of CPE AL.
+    """
+
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
@@ -230,6 +236,13 @@ class CPEALLogicalTest(Function):
 
 
 class CPEALFactRef(Symbol):
+    """
+    This class represents the fact-ref element of CPE applicability language.
+    Each fact-ref points to particular CPE item.
+    If a Platform (defined in build_yaml.py) receives some kind of parameters
+    such as package[chrony], then application of those parameters to the resulting CPE item happens here.
+    This class inherits from boolean_expression.Symbol because it also represents symbol in a boolean expression when handling logical expressions of CPE AL.
+    """
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
