@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Ensure shadow group is empty'
+
+description: |-
+    The shadow group allows system programs which require access the ability 
+    to read the /etc/shadow file. No users should be assigned to the shadow group.
+
+rationale: |-
+    Any users assigned to the shadow group would be granted read access to the 
+    /etc/shadow file. If attackers can gain read access to the /etc/shadow file, 
+    they can easily run a password cracking program against the hashed passwords 
+    to break them. Other security information that is stored in the /etc/shadow 
+    file (such as expiration) could also be useful to subvert additional user 
+    accounts.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92213-8
+    cce@sle15: CCE-91344-2
+
+references:
+    cis@sle12: 6.2.18
+    cis@sle15: 6.2.18
+    pcidss: Req-8.2.1
+
+ocil_clause: 'shadow group is not empty' 
+
+ocil: |-
+    Run the following commands and verify no results are returned:
+    <per>
+    grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group
+    awk -F: '($4 == "<shadow-gid>") { print }' /etc/passwd
+    </per>
+
