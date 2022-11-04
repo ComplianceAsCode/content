@@ -16,6 +16,7 @@ from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
 from .entities.common import XCCDFEntity, RemediationObject
 from .yaml import convert_string_to_bool
+from .jinja import process_string_with_macros
 
 from . import remediations
 
@@ -213,13 +214,12 @@ class CPEALLogicalTest(Function):
 
     def get_remediation_conditional(self, language, product_cpes, conditionals_path, env_yaml):
         contents = ''
-        config = defaultdict(lambda: None)
         op = " "
         child_condlines = []
         for a in self.args:
             r = a.get_remediation_conditional(language, product_cpes, conditionals_path, env_yaml)
             if r is not None:
-                cont = r.contents.strip()
+                cont = r.strip()
                 if cont:
                     child_condlines.append(cont)
         if child_condlines:
@@ -232,7 +232,7 @@ class CPEALLogicalTest(Function):
                 op = " " + CONDITIONAL_OPERATORS[language]["and"] + " "
             contents += op.join(child_condlines)
             contents += " )"
-        return RemediationObject(contents=contents, config=config)
+        return contents
 
 
 class CPEALFactRef(Symbol):
@@ -277,14 +277,16 @@ class CPEALFactRef(Symbol):
         else:
             raise KeyError("Invalid language {0} supplied for remediation conditional".format(language))
         if cond:
-            return remediations.parse_from_string_with_jinja(cond, env_yaml)
+            return process_string_with_macros(cond, env_yaml)
         elif conditionals_path is not None:
             templated_conditional_file = os.path.join(
                                                       conditionals_path, language, self.as_id() +
                                                       remediations.REMEDIATION_TO_EXT_MAP[language]
                                                       )
             if os.path.exists(templated_conditional_file):
-                return remediations.parse_from_file_without_jinja(templated_conditional_file)
+                with open(templated_conditional_file, "r") as f:
+                    templated_cond = f.read()
+                return templated_cond
         return None
 
 def extract_subelement(objects, sub_elem_type):

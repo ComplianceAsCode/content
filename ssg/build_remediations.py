@@ -88,7 +88,7 @@ class Remediation(object):
         for p in cpe_platform_names:
             conditional = cpe_platforms[p].get_remediation_conditional(language)
             if conditional is not None:
-                stripped_conditional = conditional.contents.strip()
+                stripped_conditional = conditional.strip()
                 if stripped_conditional:
                     stripped_conditionals.append(stripped_conditional)
         return stripped_conditionals
