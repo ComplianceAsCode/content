@@ -164,7 +164,11 @@
 
   <ind:yamlfilecontent_state id="state_ocp4_on_{{{ network|lower }}}" version="1">
       <ind:value datatype="record">
+{{% if network == "OpenShiftOVN" %}}
+          <field name="#" datatype="string" operation="pattern match">^(OpenShiftOVN|OVNKubernetes)$</field>
+{{% else %}}
           <field name="#" datatype="string" operation="pattern match">^{{{ network }}}$</field>
+{{% endif %}}
       </ind:value>
   </ind:yamlfilecontent_state>
 {{% endfor %}}
