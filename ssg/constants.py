@@ -41,6 +41,7 @@ SSG_REF_URIS = {
 product_directories = [
     'alinux2',
     'alinux3',
+    'anolis8',
     'chromium',
     'debian10', 'debian11',
     'example',
@@ -194,6 +195,7 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 2": "alinux2",
     "Alibaba Cloud Linux 3": "alinux3",
+    "Anolis OS 8": "anolis8",
     "Chromium": "chromium",
     "Debian 10": "debian10",
     "Debian 11": "debian11",
@@ -263,10 +265,11 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos"]
+                       "example", "eks", "alinux", "uos", "anolis"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
+    "multi_platform_anolis": ["anolis8"],
     "multi_platform_debian": ["debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
@@ -430,6 +433,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
     'alinux': 'Alibaba Cloud Linux',
+    'anolis': 'Anolis OS',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
