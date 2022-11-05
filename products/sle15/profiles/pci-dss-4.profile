@@ -94,6 +94,7 @@ selections:
     -  service_cups_disabled
     -  service_rpcbind_disabled
     -  service_rsyncd_disabled
+    -  set_ipv6_loopback_traffic
     -  sshd_disable_empty_passwords
     -  sshd_disable_rhosts
     -  sshd_disable_root_login

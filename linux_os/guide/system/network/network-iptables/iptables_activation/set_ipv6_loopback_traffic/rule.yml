@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Set configuration for IPv6 loopback traffic' 
+
+description: |-
+    Configure the loopback interface to accept traffic. 
+    Configure all other interfaces to deny traffic to the loopback 
+    network (::1).
+
+rationale: |-
+    Loopback traffic is generated between processes on machine and is 
+    typically critical to operation of the system. The loopback interface 
+    is the only place that loopback network (::1) traffic should be seen, 
+    all other interfaces should ignore traffic on this network as an
+    anti-spoofing measure.
+   
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92214-6
+    cce@sle15: CCE-91345-9
+
+references:
+    cis@sle15: 3.5.3.3.2
+    pcidss: Req-1.4.1
+
+warnings:
+    - general: |-
+    Changing firewall settings while connected over network can 
+    result in being locked out of the system.
+
+ocil_clause: 'ipv6 loopback traffic is not configured'
+
+ocil: |-
+
+    Verify that the loopback interface is configured:
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
+    iif "lo" accept
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+    ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop
+
+    If IPv6 is enabled, verify that the IPv6 loopback interface is configured:
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+    ip6 saddr ::1 counter packets 0 bytes 0 drop
+
