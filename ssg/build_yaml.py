@@ -1637,11 +1637,13 @@ class Platform(XCCDFEntity):
     def to_xml_element(self):
         return self.xml_content
 
-    def to_bash_conditional(self):
-        return self.bash_conditional
-
-    def to_ansible_conditional(self):
-        return self.ansible_conditional
+    def get_remediation_conditional(self, language):
+        if language == "bash":
+            return self.bash_conditional
+        elif language == "ansible":
+            return self.ansible_conditional
+        else:
+            raise AttributeError("Invalid remediation language {0} specified.".format(language))
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
