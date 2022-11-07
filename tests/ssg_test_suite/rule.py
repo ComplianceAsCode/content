@@ -219,15 +219,6 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _rule_template_been_tested(self, rule, tested_templates):
-        if rule.template is None:
-            return False
-        if self.test_env.duplicate_templates:
-            return False
-        if rule.template in tested_templates:
-            return True
-        tested_templates.add(rule.template)
-        return False
 
     def _rule_matches_rule_spec(self, rule_short_id):
         rule_id = OSCAP_RULE + rule_short_id
@@ -380,7 +371,7 @@ class RuleChecker(oscap.Checker):
 
         for filename in local_tests_paths:
             templated_tests_paths.pop(filename, None)
-        if self.target_type != "template":
+        if self.target_type != "template" and not self.test_env.duplicate_templates:
             for filename in self.used_templated_test_scenarios[rule.template]:
                 templated_tests_paths.pop(filename, None)
             self.used_templated_test_scenarios[rule.template] |= set(
