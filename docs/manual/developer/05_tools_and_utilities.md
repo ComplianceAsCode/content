@@ -583,15 +583,16 @@ This script will output an HTML page that compares two SRG exports.
 This script should help with reviewing changes created by `utils/import_srg_spreadsheet.py` script.
 This script assumes that the STIG ID columns are compatible.
 This script needs the project built for the given product and `utils/rule_dir_json.py` ran.
-The help report has the following sections:
 
-- Missing in DISA: These are rules that in the DISA spreadsheet but are not in the ComplianceAsCode/content spreadsheet'
-- Missing in CaC : These are rules that in the ComplianceAsCode/content but not in the DISA spreadsheet
-- Delta: If section of rules is not the same a diff will appear; DISA content is on the left.
+The report has the following sections:
+
+- Missing in base/target: These sections list rules are not in the other spreadsheet
+- Rows Missing STIG ID in base/target: These section list the requirement and SRG IDs of rows that do not have an STIG ID defined in the STIG ID and have a status of "Applicable - Configurable".
+- Delta: If a rule is not the same an HTML diff will appear; base content is on the left.
 
 Example:
 
 ```bash
-    $ ./utils/srg_diff.py --disa submission.xlsx --cac build/cac_stig_output.xlsx --output build/diff.html -p rhel9
+    $ ./utils/srg_diff.py --target submission.xlsx --base build/cac_stig_output.xlsx --output build/diff.html -p rhel9
     Wrote output to build/diff.html.
 ```
