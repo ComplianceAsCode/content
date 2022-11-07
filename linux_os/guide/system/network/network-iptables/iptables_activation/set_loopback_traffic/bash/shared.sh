@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform: multi_platform_sle
+# platform = multi_platform_sle
 
 # Implement the loopback rules:
 nft add rule inet filter input iif lo accept

@@ -26,12 +26,12 @@ references:
 
 warnings:
     - general: |-
-    Changing firewall settings while connected over network can
-    result in being locked out of the system.
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
 
 ocil_clause: 'ipv6 loopback traffic is not configured'
 
-ocil -|:
+ocil: |-
     Verify that the ipv6 loopback interface has required rules in order:
     <pre>$ iptables -L INPUT -v -n</pre>
 
