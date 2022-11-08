@@ -50,7 +50,7 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
-    # - var_sshd_set_keepalive=0
+    - var_sshd_set_keepalive=1
     - sshd_approved_macs=stig
     - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
@@ -174,7 +174,7 @@ selections:
     # they still need to be selected so it follows exactly what STIG
     # states.
     # RHEL-08-010200
-    - sshd_set_keepalive_0
+    - sshd_set_keepalive
     # RHEL-08-010201
     - sshd_set_idle_timeout
 
