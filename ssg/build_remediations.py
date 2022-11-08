@@ -139,11 +139,10 @@ class Remediation(object):
     def get_rule_specific_cpe_platform_names(self):
         rule_specific_cpe_platform_names = set()
         inherited_cpe_platform_names = self.get_inherited_cpe_platform_names()
-        if self.associated_rule:
-            if self.associated_rule.cpe_platform_names is not None:
-                rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names
-                    if p not in inherited_cpe_platform_names}
+        if self.associated_rule and self.associated_rule.cpe_platform_names is not None:
+            rule_specific_cpe_platform_names = {
+                p for p in self.associated_rule.cpe_platform_names
+                if p not in inherited_cpe_platform_names}
         return rule_specific_cpe_platform_names
 
     def get_stripped_conditionals(self, language, cpe_platform_names, cpe_platforms):
