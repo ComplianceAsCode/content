@@ -52,3 +52,9 @@ ocil: |-
     <tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.
     To see the owner of a given log file, run the following command:
     <pre>$ ls -l <i>LOGFILE</i></pre>
+
+template:
+  name: rsyslog_logfiles_attributes_modify
+  vars:
+    file_param_cmd: "chown"
+    file_param_argument: file_owner_logfiles_value
