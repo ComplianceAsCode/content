@@ -69,10 +69,10 @@ cat <<EOF > "$kube_apipath/$storageclass_apipath"
                 "uid": "ef333e5a-0429-4494-a419-1398636e1c64"
             },
             "parameters": {
-                "encrypted": "false",
+                "encrypted": "true",
                 "type": "gp2"
             },
-            "provisioner": "kubernetes.io/aws-ebs",
+            "provisioner": "ebs.csi.aws.com",
             "reclaimPolicy": "Delete",
             "volumeBindingMode": "WaitForFirstConsumer"
         },
@@ -110,3 +110,4 @@ filteredpath="$kube_apipath/$storageclass_apipath#$(echo -n "$storageclass_apipa
 
 # populate filtered path with jq-filtered result
 jq "$jq_filter" "$kube_apipath/$storageclass_apipath" > "$filteredpath"
+
