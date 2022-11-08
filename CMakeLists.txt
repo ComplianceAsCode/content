@@ -132,6 +132,7 @@ find_python_module(pytest_cov)
 find_python_module(json2html)
 find_python_module(yamlpath)
 find_python_module(mypy)
+find_python_module(openpyxl)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -234,6 +235,7 @@ message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
 message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")
 message(STATUS "python sphinx_rtd_theme module (optional): ${PY_SPHINX_RTD_THEME}")
 message(STATUS "python myst-parser module (optional): ${PY_MYST_PARSER}")
+message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
 message(STATUS " ")
 
 message(STATUS "Build options:")

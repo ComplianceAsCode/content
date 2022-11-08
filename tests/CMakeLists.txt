@@ -150,3 +150,13 @@ if (PY_MYPY)
         COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py"
      )
 endif()
+
+if (PY_OPENPYXL)
+    add_test(
+        NAME "srg-export-rhel9"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format xlsx --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+    )
+    set_tests_properties("srg-export-rhel9" PROPERTIES LABELS quick)
+    set_tests_properties("srg-export-rhel9" PROPERTIES DEPENDS "test-rule-dir-json")
+
+endif()
