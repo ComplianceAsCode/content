@@ -60,7 +60,7 @@ jobs:
       - name: Install Deps
         run: apt-get install -y ansible-lint bats check cmake expat libopenscap8 libxml2-utils ninja-build python3-github python3-jinja2 python3-setuptools python3-pip python3-pytest python3-pytest-cov xsltproc
       - name: Install deps python
-        run: pip3 install ruamel.yaml yamlpath pyyaml==5.4.1 openpyxl
+        run: pip3 install ruamel.yaml yamlpath pyyaml==5.4.1 openpyxl pandas
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -112,7 +112,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git python3-mypy python3-lxml
       - name: Install deps python
-        run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML xmldiff openpyxl
+        run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML xmldiff openpyxl pandas
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -160,7 +160,7 @@ jobs:
       -   name: Install Deps
           run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck python-mypy
       -   name: Install deps python
-          run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML openpyxl
+          run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML openpyxl pandas
       -   name: Checkout
           uses: actions/checkout@v2
       -   name: Build
