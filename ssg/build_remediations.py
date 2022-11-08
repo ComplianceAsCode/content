@@ -35,6 +35,7 @@ REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
                            'strategy']
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
+RemediationObject = namedtuple('remediation', ['contents', 'config'])
 
 def is_supported_filename(remediation_type, filename):
     """
@@ -73,8 +74,7 @@ def split_remediation_content_and_metadata(fix_file):
         remediation_contents.append(line)
 
     contents = "\n".join(remediation_contents)
-    remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(contents=contents, config=config)
+    return RemediationObject(contents=contents, config=config)
 
 
 def parse_from_file_with_jinja(file_path, env_yaml):
@@ -224,8 +224,7 @@ class BashRemediation(Remediation):
                 "    >&2 echo 'Remediation is not applicable, nothing was done'")
             wrapped_fix_text.append("fi")
 
-            remediation = namedtuple('remediation', ['contents', 'config'])
-            result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
+            result = RemediationObject(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
 
