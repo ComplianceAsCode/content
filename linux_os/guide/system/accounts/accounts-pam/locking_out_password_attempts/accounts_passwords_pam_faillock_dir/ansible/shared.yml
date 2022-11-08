@@ -26,10 +26,11 @@
   ansible.builtin.command:
     cmd: semanage fcontext -a -t faillog_t "{{ var_accounts_passwords_pam_faillock_dir }}(/.*)?"
   register: result_accounts_passwords_pam_faillock_dir_semanage
+  ignore_errors: yes
   changed_when:
     - result_accounts_passwords_pam_faillock_dir_semanage.rc == 0
 
 - name: '{{{ rule_title }}} - Ensure SELinux file context is applied'
   ansible.builtin.command:
-    cmd: restorecon -R -v "{{ var_accounts_passwords_pam_faillock_dir }}"
+    cmd: restorecon -R "{{ var_accounts_passwords_pam_faillock_dir }}"
   register: result_accounts_passwords_pam_faillock_dir_restorecon
