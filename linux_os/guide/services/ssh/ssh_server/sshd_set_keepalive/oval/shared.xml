@@ -49,7 +49,7 @@
   <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{%- if sshd_distributed_config == "true" %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
