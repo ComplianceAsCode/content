@@ -1,7 +1,7 @@
 title: DISA STIG for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R7.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R8.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R7
+    version: V1R8
     SMEs:
     - mab879
     - ggbecker
