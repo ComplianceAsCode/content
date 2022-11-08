@@ -159,4 +159,10 @@ if (PY_OPENPYXL)
     set_tests_properties("srg-export-rhel9" PROPERTIES LABELS quick)
     set_tests_properties("srg-export-rhel9" PROPERTIES DEPENDS "test-rule-dir-json")
 
+    add_test(
+        NAME "srg-diff-rhel9"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/srg_diff.py" --base "${CMAKE_SOURCE_DIR}/tests/data/utils/rhel9_stig_diff_base.xlsx" --target "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --product rhel9
+    )
+    set_tests_properties("srg-diff-rhel9" PROPERTIES LABELS quick)
+    set_tests_properties("srg-diff-rhel9" PROPERTIES DEPENDS "srg-export-rhel9")
 endif()
