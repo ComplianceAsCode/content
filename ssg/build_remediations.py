@@ -37,6 +37,7 @@ REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
 RemediationObject = namedtuple('remediation', ['contents', 'config'])
 
+
 def is_supported_filename(remediation_type, filename):
     """
     Checks if filename has a supported extension for remediation_type.
@@ -166,7 +167,6 @@ class Remediation(object):
     def get_inherited_conditionals(self, language, cpe_platforms):
         cpe_platform_names = self.get_inherited_cpe_platform_names()
         return self.get_stripped_conditionals(language, cpe_platform_names, cpe_platforms)
-
 
 
 def process(remediation, env_yaml, cpe_platforms):
