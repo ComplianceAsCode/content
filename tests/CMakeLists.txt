@@ -166,3 +166,10 @@ if (PY_OPENPYXL)
     set_tests_properties("srg-diff-rhel9" PROPERTIES LABELS quick)
     set_tests_properties("srg-diff-rhel9" PROPERTIES DEPENDS "srg-export-rhel9")
 endif()
+
+file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
+add_test(
+    NAME "test-compare_ds"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
+)
+set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
