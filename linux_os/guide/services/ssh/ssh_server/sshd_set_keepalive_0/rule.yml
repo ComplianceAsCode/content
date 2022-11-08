@@ -10,10 +10,10 @@ description: |-
     during a SSH session and waits for a response from the SSH client.
     The option <tt>ClientAliveInterval</tt> configures timeout after
     each <tt>ClientAliveCountMax</tt> message. If the SSH server does not
-    receive a response from the client, then the connection is considered idle
+    receive a response from the client, then the connection is considered unresponsive
     and terminated.
 
-    To ensure the SSH idle timeout occurs precisely when the
+    To ensure the SSH timeout occurs precisely when the
     <tt>ClientAliveInterval</tt> is set, set the <tt>ClientAliveCountMax</tt> to
     value of <tt>0</tt> in
     {{{ sshd_config_file() }}}
@@ -73,7 +73,7 @@ ocil: |-
     If properly configured, the output should be:
     <pre>ClientAliveCountMax 0</pre>
 
-    In this case, the SSH idle timeout occurs precisely when
+    In this case, the SSH timeout occurs precisely when
     the <tt>ClientAliveInterval</tt> is set.
 
 template:
