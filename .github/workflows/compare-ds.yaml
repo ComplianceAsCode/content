@@ -47,7 +47,7 @@ jobs:
       - name: Get product attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: product
-        uses: notiz-dev/github-action-json-property@release
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
           path: 'output.json'
           prop_path: 'product'
