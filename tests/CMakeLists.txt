@@ -160,7 +160,7 @@ if (PY_MYPY)
      )
 endif()
 
-if (PY_OPENPYXL)
+if (PY_OPENPYXL AND PY_PANDAS AND PYTHON3_EXECUTABLE)
     add_test(
         NAME "srg-export-rhel9"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format xlsx --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
@@ -179,9 +179,12 @@ if (PY_OPENPYXL)
     set_tests_properties("srg-diff-rhel9" PROPERTIES DEPENDS "srg-export-rhel9")
 endif()
 
+
+if (PYTHON3_EXECUTABLE)
 file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
 add_test(
     NAME "test-compare_ds"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
 )
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
+endif()
