@@ -1610,6 +1610,7 @@ class Platform(XCCDFEntity):
         id = test.as_id()
         platform = cls(id)
         platform.test = test
+        platform.test.pass_parameters(product_cpes)
         platform.test.enrich_with_cpe_info(product_cpes)
         platform.name = id
         platform.original_expression = expression
