@@ -1,12 +1,12 @@
 documentation_complete: true
 
-prodtype: ol8,ol9,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhel8,rhel9
 
 title: 'Lock Accounts Must Persist'
 
 description: |-
     This rule ensures that the system lock out accounts using <tt>pam_faillock.so</tt> persist
-    after system reboot. From "Pam_Faillock" man pages:
+    after system reboot. From "pam_faillock" man pages:
     <pre>Note that the default directory that "pam_faillock" uses is usually cleared on system
     boot so the access will be reenabled after system reboot. If that is undesirable, a different
     tally directory must be set with the "dir" option.</pre>
@@ -23,19 +23,23 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-86067-6
+    cce@rhel9: CCE-86068-4
+
 references:
     disa: CCI-000044,CCI-002238
     nist: AC-7(b),AC-7(a),AC-7.1(ii)
     srg: SRG-OS-000021-GPOS-00005,SRG-OS-000329-GPOS-00128
     stigid@ol8: OL08-00-020016
-    stigid@rhel8: RHEL-08-020016
+    stigid@rhel8: RHEL-08-020017
 
-ocil_clause: 'dir is not set or is set to /var/run/faillock'
+ocil_clause: 'the "dir" option is not set to a non-default documented tally log directory, is missing or commented out'
 
 ocil: |-
     To ensure the tally directory is configured correctly, run the following command:
-    <pre>$ grep 'dir =' /etc/security/faillock.conf</pre>
-    The output should show that dir is set to something different to "/var/run/faillock"
+    <pre>$ sudo grep 'dir =' /etc/security/faillock.conf</pre>
+    The output should show that dir is set to something other than "/var/run/faillock"
 
 fixtext: |-
     To configure {{{ full_name }}} to persist locked out accounts after reboot using
@@ -44,9 +48,11 @@ fixtext: |-
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     add, uncomment or edit the following line:
-    <pre>dir = /var/log/faillock</pre>
+    <pre>dir = {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</pre>
 
 platform: pam
+
+srg_requirement: '{{{ full_name }}} must ensure account lockouts persist.'
 
 warnings:
     - general: |-
