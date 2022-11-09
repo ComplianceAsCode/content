@@ -6,3 +6,31 @@
 
 {{{ ansible_pam_faillock_enable() }}}
 {{{ ansible_pam_faillock_parameter_value("dir", "var_accounts_passwords_pam_faillock_dir") }}}
+
+- name: '{{{ rule_title }}} - Ensure necessary SELinux packages are installed'
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-libselinux
+    - python3-policycoreutils
+    - policycoreutils-python-utils
+
+- name: '{{{ rule_title }}} - Create the tally directory if it does not exist'
+  ansible.builtin.file:
+    path: "{{ var_accounts_passwords_pam_faillock_dir }}"
+    state: directory
+    setype: 'faillog_t'
+
+- name: '{{{ rule_title }}} - Ensure SELinux file context is permanently set'
+  ansible.builtin.command:
+    cmd: semanage fcontext -a -t faillog_t "{{ var_accounts_passwords_pam_faillock_dir }}(/.*)?"
+  register: result_accounts_passwords_pam_faillock_dir_semanage
+  ignore_errors: yes
+  changed_when:
+    - result_accounts_passwords_pam_faillock_dir_semanage.rc == 0
+
+- name: '{{{ rule_title }}} - Ensure SELinux file context is applied'
+  ansible.builtin.command:
+    cmd: restorecon -R "{{ var_accounts_passwords_pam_faillock_dir }}"
+  register: result_accounts_passwords_pam_faillock_dir_restorecon
