@@ -1,7 +1,7 @@
 # platform = multi_platform_all
 
 if 
-    rpm -qa | grep NetworkManager
+    rpm -q NetworkManager
 then
     nmcli radio all off
 else
