@@ -442,7 +442,7 @@ And this is the respective PR where the `highlight` label is set:
 [https://github.com/ComplianceAsCode/content/pull/9462](https://github.com/ComplianceAsCode/content/pull/9462)
 
 ##### Agreements
-* We avoid hard problems by not removing anything from DS whenever we want to rename, split or deprecate a rule.
+* We avoid hard problems by not removing anything from data stream whenever we want to rename, split or deprecate a rule.
 * Obsolete rules should have “deprecated_by” warnings for the transitional period.
 * We keep the “obsolete” rule in the DataStream (DS) for some time, usually while the applicable products are still active.
     * If an obsolete rule is removed in a tailoring file, the tailoring file likely have to be updated to also remove the new rule.
