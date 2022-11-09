@@ -103,7 +103,7 @@ cat <<EOF > "$kube_apipath/$storageclass_apipath"
 }
 EOF
 
-jq_filter='[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)'
+jq_filter='[.items[] | select (.provisioner == "kubernetes.io/aws-ebs" or .provisioner == "ebs.csi.aws.com")] | map(.parameters.encrypted)'
 
 # Get filtered path. This will actually be read by the scan
 filteredpath="$kube_apipath/$storageclass_apipath#$(echo -n "$storageclass_apipath$jq_filter" | sha256sum | awk '{print $1}')"
