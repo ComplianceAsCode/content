@@ -436,7 +436,7 @@ The purpose of the 'highlight' label is to ensure that this PR is highlighted in
 Regarding the warning message, to make it easier for developers and to maintain the standard, the `warning_rule_deprecated_by(rule, release='')` macro was created.
 
 As a reference, here is an example where this macro is used:
-[account_passwords_pam_faillock_dir](https://github.com/ComplianceAsCode/content/blob/master/linux_os/guide/system/accounts/accounts-pam/locking_out_password_attempts/account_passwords_pam_faillock_dir/rule.yml#L40-L41)
+[account_passwords_pam_faillock_dir](https://github.com/ComplianceAsCode/content/blob/9e0c6ac6eec596b0662d5672e4d3081523afdc9d/linux_os/guide/system/accounts/accounts-pam/locking_out_password_attempts/account_passwords_pam_faillock_dir/rule.yml#L40-L41)
 
 And this is the respective PR where the `highlight` label is set:
 [https://github.com/ComplianceAsCode/content/pull/9462](https://github.com/ComplianceAsCode/content/pull/9462)
