@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Set strong key exchange algorithm'
+
+description: |-
+    Key exchange is any method in cryptography by which cryptographic 
+    keys are exchanged between two parties, allowing use of a cryptographic 
+    algorithm. If the sender and receiver wish to exchange encrypted messages, 
+    each must be equipped to encrypt messages to be sent and decrypt messages received
+
+rationale: |-
+    Key exchange methods that are considered weak should be removed. A key exchange
+    method may be weak because too few bits are used, or the hashing algorithm is considered
+    too weak. Using weak algorithms could expose connections to man-in-the-middle attacks
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92223-7
+    cce@sle15: CCE-91347-5
+
+references:
+    cis@sle15: 5.2.15
+
+ocil_clause: 'Weak Key Exchange Algorithm is being used'
+
+ocil: |-
+    The following should not be used
+
+    Only FIPS ciphers should be used. To verify that only FIPS-approved
+    ciphers are in use, run the following command:
+    <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
+    The output should contain only those ciphers which are FIPS-approved.
+
+warnings:
+    - general: |-
+        Some organizations may have stricter requirements for approved Key exchange
+        algorithms. Ensure that Key exchange algorithms used are in compliance with site
+        policy.
+        The only Key Exchange Algorithms currently FIPS 140-2 approved are: 
+        ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,
+        diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,
+        diffie-hellman-group18-sha512,diffie-hellman-group14-sha256
+
+
