@@ -31,6 +31,7 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
 )
 set_tests_properties("test-rule-dir-json" PROPERTIES LABELS quick)
+set_tests_properties("test-rule-dir-json" PROPERTIES FIXTURES_SETUP "rule-dir-json")
 
 add_test(
     NAME "validate-parse-affected"
@@ -80,6 +81,7 @@ add_test(
 )
 set_tests_properties("fix_rules-empty_identifiers" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-empty_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-empty_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-invalid_identifiers"
@@ -87,6 +89,7 @@ add_test(
 )
 set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-int_identifiers"
@@ -94,6 +97,7 @@ add_test(
 )
 set_tests_properties("fix_rules-int_identifiers" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-int_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-int_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-empty_references"
@@ -101,6 +105,7 @@ add_test(
 )
 set_tests_properties("fix_rules-empty_references" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-empty_references" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-empty_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-int_references"
@@ -108,6 +113,7 @@ add_test(
 )
 set_tests_properties("fix_rules-int_references" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-int_references" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-int_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-duplicate_subkeys"
@@ -115,6 +121,7 @@ add_test(
 )
 set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-sort_subkeys"
@@ -122,6 +129,7 @@ add_test(
 )
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-sort_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 add_test(
     NAME "fix_rules-sort_prodtypes"
@@ -129,6 +137,7 @@ add_test(
 )
 set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 if (PY_YAMLPATH)
     if (PY_PYTEST)
@@ -157,6 +166,8 @@ if (PY_OPENPYXL)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format xlsx --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
     )
     set_tests_properties("srg-export-rhel9" PROPERTIES LABELS quick)
+    set_tests_properties("srg-export-rhel9" PROPERTIES FIXTURES_SETUP "rhel9-cac-xlsx")
+    set_tests_properties("srg-export-rhel9" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
     set_tests_properties("srg-export-rhel9" PROPERTIES DEPENDS "test-rule-dir-json")
 
     add_test(
@@ -164,6 +175,7 @@ if (PY_OPENPYXL)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/srg_diff.py" --base "${CMAKE_SOURCE_DIR}/tests/data/utils/rhel9_stig_diff_base.xlsx" --target "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --product rhel9
     )
     set_tests_properties("srg-diff-rhel9" PROPERTIES LABELS quick)
+    set_tests_properties("srg-diff-rhel9" PROPERTIES FIXTURES_REQUIRED "rhel9-cac-xlsx")
     set_tests_properties("srg-diff-rhel9" PROPERTIES DEPENDS "srg-export-rhel9")
 endif()
 
