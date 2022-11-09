@@ -81,6 +81,11 @@ def test_underscores_and_dashes_in_name(algebra):
     exp = algebra.parse(u'not_s390x_arch and dashed-name')
     assert exp(**{'not_s390x_arch': True, 'dashed-name': True})
 
+def test_expression_with_parameter(algebra):
+    exp = algebra.parse(u'package[test] and os_release[rhel]')
+    assert exp(**{"package[test]": True, "os_release[rhel]": True})
+
+
 
 def test_evaluate_simple_boolean_ops(algebra):
     exp = algebra.parse(u'(oranges | banana) and not not apple or !pie')
@@ -108,3 +113,25 @@ def test_evaluate_advanced_version_ops(algebra):
     assert not exp(**{'oranges': '0.9.999'})
     assert not exp(**{'oranges': '0.9.999_beta_2'})
     assert not exp(**{'oranges': '2.6.0'})
+
+def test_as_id(algebra):
+    exp1 = algebra.parse(u'package')
+    exp2 = algebra.parse(u'package[test]')
+    assert exp1.as_id() == "package"
+    assert exp2.as_id() == "package_test"
+
+def test_as_dict(algebra):
+    exp1 = algebra.parse(u'package')
+    exp1_dict = {
+        "arg": "",
+        "id": "package",
+        "name": "package"
+    }
+    exp2 = algebra.parse(u'package[test]')
+    exp2_dict = {
+        "arg": "test",
+        "id": "package_test",
+        "name": "package"
+    }
+    assert exp1.as_dict() == exp1_dict
+    assert exp2.as_dict() == exp2_dict
