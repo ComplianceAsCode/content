@@ -46,7 +46,7 @@ jobs:
       - name: Get product attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: product
-        uses: notiz-dev/github-action-json-property@release
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
           path: 'output.json'
           prop_path: 'product'
@@ -102,28 +102,28 @@ jobs:
       - name: Get rule ids to be tested
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: rules
-        uses: notiz-dev/github-action-json-property@release
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
           path: 'output.json'
           prop_path: 'rules'
       - name: Get product attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: product
-        uses: notiz-dev/github-action-json-property@release
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
           path: 'output.json'
           prop_path: 'product'
       - name: Get bash attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: bash
-        uses: notiz-dev/github-action-json-property@release
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
           path: 'output.json'
           prop_path: 'bash'
       - name: Get ansible attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: ansible
-        uses: notiz-dev/github-action-json-property@release
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
           path: 'output.json'
           prop_path: 'ansible'
