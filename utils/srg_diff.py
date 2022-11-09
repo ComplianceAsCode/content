@@ -58,6 +58,9 @@ class SrgDiffResult:
     def __repr__(self):
         return f'SrgDiffResult({self.cci}, {self.rule_id})'
 
+    def __lt__(self, other):
+        return self.cci < other.cci
+
 
 def word_by_word_diff(original: str, edited: str) -> str:
     if original is None or edited is None:
@@ -119,7 +122,8 @@ def get_requirements_with_no_cces(sheet: Worksheet, end_row: int) -> list:
     return result
 
 
-def get_deltas(cac_cce_dict, cce_rule_id_dict, common_set, disa_cce_dict):
+def get_deltas(cac_cce_dict: dict, cce_rule_id_dict: dict, common_set: set, disa_cce_dict: dict) \
+        -> list:
     deltas = list()
     for cce in common_set:
         disa = disa_cce_dict[cce]
