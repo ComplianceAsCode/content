@@ -371,7 +371,7 @@ selections:
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
-- sshd_set_keepalive_0
+- sshd_set_keepalive
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification
@@ -441,6 +441,7 @@ selections:
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
+- var_sshd_set_keepalive=1
 - sshd_approved_macs=stig
 - sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
