@@ -1,0 +1,58 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get audit log files
+  command: grep -iw ^log_file /etc/audit/auditd.conf
+  failed_when: false
+  register: log_file_exists
+
+- name: Parse log file line
+  command: awk -F '=' '/^log_file/ {print $2}' /etc/audit/auditd.conf
+  register: log_file_line
+  when: (log_file_exists.stdout | length > 0)
+
+- name: Set default log_file if not set
+  set_fact:
+    log_file: "/var/log/audit/audit.log"
+  when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+
+- name: Set default log_file if not set
+  set_fact:
+    log_file: "{{ log_file_line.stdout | trim }}"
+  when: (log_file_line.stdout | length > 0)
+
+{{% if product not in ["ol8"] and "rhel" not in product %}}
+- name: Get log files group
+  command: grep -m 1 ^log_group /etc/audit/auditd.conf
+  failed_when: false
+  register: log_group_line
+
+- name: Parse log group line
+  command: awk -F '=' '/log_group/ {print $2}' /etc/audit/auditd.conf
+  register: log_group
+  when: (log_group_line.stdout | length > 0)
+
+- name: Apply mode to log file when group root
+  command: chmod {{ item }}
+  failed_when: false
+  with_items:
+    - "0600 {{ log_file }}"
+    - "0400 {{ log_file }}.*"
+  when: ( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' )
+
+- name: Apply mode to log file when group not root
+  command: chmod {{ item }}
+  failed_when: false
+  with_items:
+    - "0640 {{ log_file }}"
+    - "0440 {{ log_file }}.*"
+  when:  ( log_group is undefined ) or ( ( log_group.stdout | trim ) != 'root')
+
+{{% else %}}
+- name: Apply mode to log file
+  command: chmod 0600 {{ log_file }}
+  failed_when: false
+{{% endif %}}
