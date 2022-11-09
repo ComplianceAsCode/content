@@ -60,7 +60,7 @@ jobs:
       - name: Install Deps
         run: apt-get install -y ansible-lint bats check cmake expat libopenscap8 libxml2-utils ninja-build python3-github python3-jinja2 python3-setuptools python3-pip python3-pytest python3-pytest-cov xsltproc
       - name: Install deps python
-        run: pip3 install ruamel.yaml yamlpath pyyaml==5.4.1 openpyxl pandas
+        run: pip3 install ruamel.yaml yamlpath pyyaml==5.4.1
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
