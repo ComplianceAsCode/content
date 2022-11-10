@@ -367,6 +367,17 @@ def test_platform_get_invalid_conditional_language(product_cpes):
     with pytest.raises(AttributeError):
         assert platform.get_remediation_conditional("foo")
 
+def test_parametrized_platform(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("package[test]", product_cpes)
+    assert platform.test.cpe_name != "cpe:/a:{arg}"
+    assert platform.test.cpe_name == "cpe:/a:test"
+    cpe_item = product_cpes.get_cpe(platform.test.cpe_name)
+    assert cpe_item.name == "cpe:/a:test"
+    assert cpe_item.title == "Package test is installed"
+    assert cpe_item.check_id == "installed_env_has_test_package"
+
+
+
 
 def test_derive_id_from_file_name():
     assert ssg.entities.common.derive_id_from_file_name("rule.yml") == "rule"

@@ -6,12 +6,14 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
+import re
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
-from .utils import required_key
+from .utils import required_key, apply_formatting_on_dict_values
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
+from .boolean_expression import get_base_name_of_parametrized_platform
 from .entities.common import XCCDFEntity
 from .yaml import convert_string_to_bool
 
@@ -82,11 +84,16 @@ class ProductCPEs(object):
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
+    def _is_parametrized(self, ref):
+        return re.search(r'^\w+\[\w+\]$', ref)
+
     def get_cpe(self, ref):
         try:
             if self._is_name(ref):
                 return self.cpes_by_name[ref]
             else:
+                if self._is_parametrized(ref):
+                    ref = get_base_name_of_parametrized_platform(ref)
                 return self.cpes_by_id[ref]
         except KeyError:
             raise CPEDoesNotExist("CPE %s is not defined" % (ref))
@@ -177,6 +184,7 @@ class CPEItem(XCCDFEntity):
             cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
         return cpe_item
 
+
 class CPEALLogicalTest(Function):
 
     prefix = "cpe-lang"
@@ -197,6 +205,10 @@ class CPEALLogicalTest(Function):
     def enrich_with_cpe_info(self, cpe_products):
         for arg in self.args:
             arg.enrich_with_cpe_info(cpe_products)
+
+    def pass_parameters(self, product_cpes):
+        for arg in self.args:
+            arg.pass_parameters(product_cpes)
 
     def to_bash_conditional(self):
         child_bash_conds = [
@@ -257,10 +269,20 @@ class CPEALFactRef (Symbol):
         self.ansible_conditional = cpe_products.get_cpe(self.cpe_name).ansible_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
 
+    def pass_parameters(self, product_cpes):
+        if self.arg:
+            associated_cpe_item_as_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
+            new_associated_cpe_item_as_dict = apply_formatting_on_dict_values(
+                associated_cpe_item_as_dict, self.as_dict())
+            new_associated_cpe_item_as_dict["id_"] = self.as_id()
+            new_associated_cpe_item = CPEItem.get_instance_from_full_dict(
+                new_associated_cpe_item_as_dict)
+            product_cpes.add_cpe_item(new_associated_cpe_item)
+            self.cpe_name = new_associated_cpe_item.name
+
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
         cpe_factref.set('name', self.cpe_name)
-
         return cpe_factref
 
     def to_bash_conditional(self):
