@@ -13,7 +13,7 @@ class PlatformFunction(boolean_expression.Function):
 
 class PlatformSymbol(boolean_expression.Symbol):
     def as_cpe_lang_xml(self):
-        return '<cpe-lang:fact-ref name="cpe:/a:' + self.name + ':' + ':'.join([v for (op, v) in self.specs]) + '"/>'
+        return '<cpe-lang:fact-ref name="cpe:/a:' + self.name + ':' + ':'.join([v for (op, v) in self.version_definitions]) + '"/>'
 
 
 class PlatformAlgebra(boolean_expression.Algebra):

@@ -69,17 +69,17 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = pkg_resources.Requirement.parse(obj)
-        self.obj = self.spec
+        self.requirement = pkg_resources.Requirement.parse(obj)
+        self.obj = self.requirement
 
     def __call__(self, **kwargs):
         full_name = self.name
-        if self.spec.extras:
-            full_name += '[' + self.spec.extras[0] + ']'
+        if self.arg:
+            full_name += '[' + self.arg + ']'
         val = kwargs.get(full_name, False)
-        if len(self.spec.specs):
+        if len(self.version_definitions):
             if type(val) is str:
-                return val in self.spec
+                return val in self.requirement
             return False
         return bool(val)
 
@@ -88,29 +88,29 @@ class Symbol(boolean.Symbol):
 
     def as_id(self):
         id_str = self.name
-        for (op, ver) in self.spec.specs:
+        for (op, ver) in self.version_definitions:
             id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
-        if self.spec.extras:
-            id_str += '_' + self.spec.extras[0]
+        if self.arg:
+            id_str += '_' + self.arg
         return id_str
 
     def as_dict(self):
         res = {'id': self.as_id(), 'name': self.name, 'arg': ''}
-        if self.spec.extras:
-            res['arg'] = self.spec.extras[0]
+        if self.arg:
+            res['arg'] = self.arg
         return res
 
     @property
     def arg(self):
-        return self.spec.extras[0] if self.spec.extras else None
+        return self.requirement.extras[0] if self.requirement.extras else None
 
     @property
-    def specs(self):
-        return self.spec.specs
+    def version_definitions(self):
+        return self.requirement.specs
 
     @property
     def name(self):
-        return self.spec.project_name
+        return self.requirement.project_name
 
 
 class Algebra(boolean.BooleanAlgebra):
