@@ -6,15 +6,16 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
+import re
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import required_key, apply_formatting_on_dict_values
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
+from .boolean_expression import get_base_name_of_parametrized_platform
 from .entities.common import XCCDFEntity
 from .yaml import convert_string_to_bool
-import pkg_resources
 
 
 class CPEDoesNotExist(Exception):
@@ -83,14 +84,16 @@ class ProductCPEs(object):
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
+    def _is_parametrized(self, ref):
+        return re.search(r'^\w+\[\w+\]$', ref)
+
     def get_cpe(self, ref):
         try:
             if self._is_name(ref):
                 return self.cpes_by_name[ref]
             else:
-                # in case we get parametrized item in form ref[parameter]
-                # get only the ref part
-                ref = pkg_resources.Requirement.parse(ref).project_name
+                if self._is_parametrized(ref):
+                    ref = get_base_name_of_parametrized_platform(ref)
                 return self.cpes_by_id[ref]
         except KeyError:
             raise CPEDoesNotExist("CPE %s is not defined" % (ref))
