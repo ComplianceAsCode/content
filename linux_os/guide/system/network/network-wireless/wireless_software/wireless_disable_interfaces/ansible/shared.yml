@@ -4,5 +4,17 @@
 # complexity = low
 # disruption = medium
 
+- name: Check if NetworkManager is installed
+  ansible.builtin.package_facts:
+    manager: "auto"
+
+- name: Error message when NetworkManager not installed
+  fail:
+    msg: "NetworkManager package not installed"
+  when: "'NetworkManager' not in ansible_facts.packages"
+
 - name: Deactivate Wireless Network Interfaces
   command: nmcli radio wifi off
+  when: "'NetworkManager' in ansible_facts.packages"
+
+
