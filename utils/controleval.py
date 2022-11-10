@@ -105,7 +105,6 @@ def count_implicit_status(ctrls, status_count):
     inherently_met = status_count[controls.Status.INHERENTLY_MET]
     manual = status_count[controls.Status.MANUAL]
     not_applicable = status_count[controls.Status.NOT_APPLICABLE]
-    partial = status_count[controls.Status.PARTIAL]
     pending = status_count[controls.Status.PENDING]
 
     status_count['all'] = len(ctrls)
@@ -113,7 +112,6 @@ def count_implicit_status(ctrls, status_count):
     status_count['assessed'] = status_count['applicable'] - pending
     status_count['not assessed'] = status_count['applicable'] - status_count['assessed']
     status_count['full coverage'] = automated + documentation + inherently_met + manual
-    status_count['partial coverage'] = status_count['full coverage'] + partial
     return status_count
 
 
@@ -130,8 +128,6 @@ def create_implicit_control_lists(ctrls, control_list):
     control_list['assessed'] = control_list['applicable'] - pending
     control_list['not assessed'] = control_list['applicable'] - control_list['assessed']
     control_list['full coverage'] = ctrls - does_not_meet - not_applicable - partial\
-        - pending - planned - supported
-    control_list['partial coverage'] = ctrls - does_not_meet - not_applicable\
         - pending - planned - supported
     return control_list
 
