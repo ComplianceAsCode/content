@@ -132,6 +132,8 @@ find_python_module(pytest_cov)
 find_python_module(json2html)
 find_python_module(yamlpath)
 find_python_module(mypy)
+find_python_module(openpyxl)
+find_python_module(pandas)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -201,6 +203,7 @@ find_program(GREP_EXECUTABLE NAMES grep)
 find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
 find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
+find_program(PYTHON3_EXECUTABLE NAMES python3)
 
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
@@ -234,6 +237,8 @@ message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
 message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")
 message(STATUS "python sphinx_rtd_theme module (optional): ${PY_SPHINX_RTD_THEME}")
 message(STATUS "python myst-parser module (optional): ${PY_MYST_PARSER}")
+message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
+message(STATUS "python pandas module (optional): ${PY_PANDAS}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
