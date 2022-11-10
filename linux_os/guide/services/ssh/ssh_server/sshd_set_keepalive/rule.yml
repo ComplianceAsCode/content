@@ -7,14 +7,15 @@ description: |-
     during a SSH session and waits for a response from the SSH client.
     The option <tt>ClientAliveInterval</tt> configures timeout after
     each <tt>ClientAliveCountMax</tt> message. If the SSH server does not
-    receive a response from the client, then the connection is considered idle
+    receive a response from the client, then the connection is considered unresponsive
     and terminated.
     For SSH earlier than v8.2, a <tt>ClientAliveCountMax</tt> value of <tt>0</tt>
-    causes an idle timeout precisely when the <tt>ClientAliveInterval</tt> is set.
+    causes a timeout precisely when the <tt>ClientAliveInterval</tt> is set.
     Starting with v8.2, a value of <tt>0</tt> disables the timeout functionality
     completely. If the option is set to a number greater than <tt>0</tt>, then
-    the idle session will be disconnected after
-    <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds.
+    the session will be disconnected after
+    <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds without receiving
+    a keep alive message.
 
 rationale: |-
     This ensures a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
@@ -55,6 +56,7 @@ references:
     pcidss: Req-8.1.8
     srg: SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109
     stigid@ol7: OL07-00-040340
+    stigid@rhel8: RHEL-08-010200
     stigid@sle12: SLES-12-030191
     stigid@ubuntu2004: UBTU-20-010036
     vmmsrg: SRG-OS-000480-VMM-002000
@@ -69,8 +71,8 @@ ocil: |-
     <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
     <pre>ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}</pre>
-    For SSH earlier than v8.2, a <tt>ClientAliveCountMax</tt> value of <tt>0</tt> causes an idle timeout precisely when
+    For SSH earlier than v8.2, a <tt>ClientAliveCountMax</tt> value of <tt>0</tt> causes a timeout precisely when
     the <tt>ClientAliveInterval</tt> is set.  Starting with v8.2, a value of <tt>0</tt> disables the timeout
     functionality completely.
-    If the option is set to a number greater than <tt>0</tt>, then the idle session will be disconnected after
-    <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds.
+    If the option is set to a number greater than <tt>0</tt>, then the session will be disconnected after
+    <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds witout receiving a keep alive message.
