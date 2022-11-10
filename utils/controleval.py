@@ -26,6 +26,7 @@ The 'ssg' package from within this repository must be discoverable before
 invoking this script. Make sure the top-level directory of the
 ComplianceAsCode/content repository is available in the PYTHONPATH environment
 variable (example: $ export PYTHONPATH=($pwd)).
+HINT: $ source .pyenv.sh
 """
         raise RuntimeError(msg) from e
     raise
