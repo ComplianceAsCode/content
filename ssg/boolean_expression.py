@@ -136,3 +136,10 @@ class Algebra(boolean.BooleanAlgebra):
         super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS+SPEC_SYMBOLS,
                                       Symbol_class=symbol_cls,
                                       NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)
+
+def get_base_name_of_parametrized_platform(name):
+    """
+    If given a parametrized platform name such as package[test],
+    it returns the package part only.
+    """
+    return pkg_resources.Requirement.parse(name).project_name
