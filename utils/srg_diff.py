@@ -55,6 +55,12 @@ class SrgDiffResult:
         return self.Requirement != "" or self.Vul_Discussion != "" or self.Status != "" or \
                 self.Check != "" or self.Fix != "" or self.Severity != ""
 
+    def __repr__(self):
+        return f'SrgDiffResult({self.cci}, {self.rule_id})'
+
+    def __lt__(self, other):
+        return self.cci < other.cci
+
 
 def word_by_word_diff(original: str, edited: str) -> str:
     if original is None or edited is None:
@@ -116,15 +122,37 @@ def get_requirements_with_no_cces(sheet: Worksheet, end_row: int) -> list:
     return result
 
 
+def get_deltas(cac_cce_dict: dict, cce_rule_id_dict: dict, common_set: set, disa_cce_dict: dict) \
+        -> list:
+    deltas = list()
+    for cce in common_set:
+        disa = disa_cce_dict[cce]
+        cac = cac_cce_dict[cce]
+        delta = _get_delta(cac, disa, cce, cce_rule_id_dict)
+        deltas.append(delta)
+    return deltas
+
+
+def get_worksheet(path: str) -> Worksheet:
+    wb = load_workbook(path)
+    return wb['Sheet']
+
+
+def get_missing_in(in_set: set, cce_rule_id_dict: dict) -> list:
+    result = list()
+    for cce in in_set:
+        cce = cce.replace('\n', '').strip()
+        result.append(f"{cce} - {cce_rule_id_dict[cce]}")
+    return result
+
+
 def main():
     args = _parse_args()
     base_path = args.base
     target_path = args.target
-    base_wb = load_workbook(base_path)
-    target_wb = load_workbook(target_path)
-    base_set = get_stigid_set(base_wb['Sheet'], args.end_row)
-    target_sheet = target_wb['Sheet']
-    base_sheet = base_wb['Sheet']
+    target_sheet = get_worksheet(base_path)
+    base_sheet = get_worksheet(target_path)
+    base_set = get_stigid_set(base_sheet, args.end_row)
     target_set = get_stigid_set(target_sheet, args.end_row)
     full_name = get_full_name(args.root, args.product)
 
@@ -141,26 +169,19 @@ def main():
     rule_dir_json = get_rule_dir_json(args.json)
     cce_rule_id_dict = get_cce_dict(rule_dir_json, args.product)
 
-    deltas = list()
-    missing_in_base = list()
-    missing_in_target = list()
-    for cce in (target_set - base_set):
-        cce = cce.replace('\n', '').strip()
-        missing_in_base.append(f"{cce} - {cce_rule_id_dict[cce]}")
+    missing_in_base = get_missing_in((target_set - base_set), cce_rule_id_dict)
+    missing_in_target = get_missing_in((base_set - target_set), cce_rule_id_dict)
 
-    for cce in (base_set - target_set):
-        cce = cce.replace('\n', '').strip()
-        missing_in_target.append(f"{cce} - {cce_rule_id_dict[cce]}")
-
-    for cce in common_set:
-        disa = disa_cce_dict[cce]
-        cac = cac_cce_dict[cce]
-        delta = _get_delta(cac, disa, cce, cce_rule_id_dict)
-        deltas.append(delta)
+    deltas = get_deltas(cac_cce_dict, cce_rule_id_dict, common_set, disa_cce_dict)
 
     title = f"{base_path} vs {target_path}"
 
     template = _create_template(args.root)
+    missing_in_base.sort()
+    missing_in_target.sort()
+    deltas.sort()
+    base_missing_stig_ids.sort()
+    target_missing_stig_ids.sort()
     output = template.render(missing_in_base=missing_in_base, deltas=deltas,
                              missing_in_target=missing_in_target, title=title,
                              base_missing_stig_ids=base_missing_stig_ids,
