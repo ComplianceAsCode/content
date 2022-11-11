@@ -1144,6 +1144,36 @@ macro(ssg_build_html_stig_tables PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
+macro(rule_dir_json)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/rule_dirs.json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_BINARY_DIR}/rule_dirs.json" --quiet
+        COMMENT "[rule-dir-json] creating build/rule_dirs.json"
+    )
+    add_custom_target(
+        rule_dir_json
+        DEPENDS "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+    )
+endmacro()
+
+
+macro(ssg_build_xlsx_srg_export PRODUCT CONTROL)
+    rule_dir_json()
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/${PRODUCT}_${CONTROL}_srg_export.xlsx"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/rule_dirs.json"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/${CONTROL}.yml" --product "${PRODUCT}" --out-format xlsx --output "${CMAKE_BINARY_DIR}/${PRODUCT}/${PRODUCT}_${CONTROL}_srg_export.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+        COMMENT "[${PRODUCT}-tables] generating XLSX SRG Export"
+    )
+    add_custom_target(
+        generate-${PRODUCT}_${CONTROL}_srg_export
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/${PRODUCT}_${CONTROL}_srg_export.xlsx"
+    )
+    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}_${CONTROL}_srg_export)
+endmacro()
+
 macro(ssg_build_html_stig_tables_per_profile PRODUCT STIG_PROFILE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html"

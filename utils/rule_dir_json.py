@@ -8,6 +8,7 @@ import sys
 from collections import defaultdict
 
 import json
+from typing import TextIO
 
 import ssg.build_yaml
 import ssg.oval
@@ -27,7 +28,8 @@ def parse_args():
                    help="Path to SSG root directory (defaults to %s)" % SSG_ROOT)
     parser.add_argument("-o", "--output", type=str, action="store", default=BUILD_OUTPUT,
                    help="File to write json output to (defaults to build/rule_dirs.json)")
-    parser.add_argument("-q", "--quiet", action="store_true", help="Hides output from the script, just creates the file.")
+    parser.add_argument("-q", "--quiet", action="store_true",
+                        help="Hides output from the script, just creates the file.")
 
     return parser.parse_args()
 
@@ -207,8 +209,7 @@ def main():
                 all_ovals = ','.join(oval_products[key])
                 msg = "Product {0} has multiple ovals in rule {1}: {2}"
                 msg = msg.format(key, rule_id, all_ovals)
-                if not args.quiet:
-                    print(msg, file=sys.stderr)
+                quiet_print(msg, args.quiet, sys.stderr)
 
         rule_obj['oval_products'] = oval_products
 
@@ -222,8 +223,7 @@ def main():
                     msg = "Product {0} has multiple remediations of the same type "
                     msg += "in rule {1}: {2}"
                     msg = msg.format(key, rule_id, all_fixes)
-                    if not args.quiet:
-                        print(msg, file=sys.stderr)
+                    quiet_print(msg, args.quiet, sys.stderr)
 
         rule_obj['remediation_products'] = r_products
 

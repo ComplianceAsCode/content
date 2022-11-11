@@ -54,6 +54,7 @@ option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
 option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
+option(SSG_SRG_XLSX_EXPORT "If enabled, an XLSX of SRG Export will be ceated." FALSE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products
