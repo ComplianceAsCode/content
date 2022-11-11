@@ -17,8 +17,6 @@
     cmd: rpm -qV pam
   register: result_altered_authselect
   ignore_errors: yes
-  args:
-    warn: False
   when:
     - result_authselect_select is failed
 
