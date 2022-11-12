@@ -80,9 +80,9 @@ done
 # match only "logfile" expression
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
-	ACTION_OMFILE_LINES=$(grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" ${LOG_FILE})
-	OMFILE_LINES=$(echo ${ACTION_OMFILE_LINES}| grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
-	LOG_FILE_PATHS+=($(echo ${OMFILE_LINES}| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\""))
+	ACTION_OMFILE_LINES=$(grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
+	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
+	LOG_FILE_PATHS+=($(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\""))
 done
 
 # Correct the form o
