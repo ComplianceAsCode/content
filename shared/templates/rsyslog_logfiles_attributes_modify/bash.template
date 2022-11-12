@@ -1,5 +1,6 @@
 # platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 
+
 {{{ bash_instantiate_variables(FILE_PARAM_ARGUMENT) }}}
 
 # List of log file paths to be inspected for correct permissions
@@ -72,6 +73,18 @@ do
 		unset ARRAY_FOR_LOG_FILE
 	fi
 done
+
+# Check for RainerScript action log format which might be also multiline so grep regex is a bit curly
+# extract possibly multiline action omfile expressions
+# extract file="logfile" expression
+# match only "logfile" expression
+for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
+do
+	ACTION_OMFILE_LINES=$(grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" ${LOG_FILE})
+	OMFILE_LINES=$(echo ${ACTION_OMFILE_LINES}| grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
+	LOG_FILE_PATHS+=($(echo ${OMFILE_LINES}| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\""))
+done
+
 # Correct the form o
 for LOG_FILE_PATH in "${LOG_FILE_PATHS[@]}"
 do

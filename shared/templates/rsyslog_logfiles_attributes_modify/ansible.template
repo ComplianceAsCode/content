@@ -40,13 +40,28 @@
   failed_when: False
   changed_when: False
 
-- name: "Extract log files"
+- name: "Extract log files old format"
   shell: |
     set -o pipefail
     grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item }}  |awk '{print $NF}'|sed -e 's/^-//' || true
   loop: "{{ rsyslog_config_files.results|map(attribute='stdout_lines')|list|flatten|unique + [ rsyslog_etc_config ] }}"
-  register: log_files
+  register: log_files_old
   changed_when: False
+
+- name: "Extract log files new format"
+  shell: |
+    set -o pipefail
+    grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item }} | grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)"|grep -oE "\"([/[:alnum:][:punct:]]*)\"" |tr -d "\""|| true
+  loop: "{{ rsyslog_config_files.results|map(attribute='stdout_lines')|list|flatten|unique + [ rsyslog_etc_config ] }}"
+  register: log_files_new
+  changed_when: False
+
+- name: "Sum all log files found"
+  shell: |
+    set -o pipefail
+    eval printf '%s\\n' {{ item }}
+  register: log_files
+  loop: "{{ log_files_new.stdout_lines + log_files_old.stdout_lines }}"
 
 - name: "Setup log files permissions"
   ignore_errors: yes
