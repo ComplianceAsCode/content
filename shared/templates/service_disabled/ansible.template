@@ -3,17 +3,33 @@
 # strategy = disable
 # complexity = low
 # disruption = low
+{{%- if init_system == "systemd" %}}
 - name: Disable service {{{ SERVICENAME }}}
   block:
-  - name: Gather the package facts
-    package_facts:
-      manager: auto
-
   - name: Disable service {{{ SERVICENAME }}}
-    service:
-      name: "{{{ DAEMONNAME }}}"
+    systemd:
+      name: "{{{ DAEMONNAME }}}.service"
       enabled: "no"
       state: "stopped"
       masked: "yes"
-    when:
-    - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'
+    ignore_errors: 'yes'
+
+- name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
+  command: systemctl list-unit-files {{{ DAEMONNAME }}}.socket
+  args:
+    warn: False
+  register: socket_file_exists
+  changed_when: False
+  ignore_errors: True
+  check_mode: False
+
+- name: Disable socket {{{ SERVICENAME }}}
+  systemd:
+    name: "{{{ DAEMONNAME }}}.socket"
+    enabled: "no"
+    state: "stopped"
+    masked: "yes"
+  when: '"{{{ DAEMONNAME }}}.socket" in socket_file_exists.stdout_lines[1]'
+{{%- else %}}
+JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
+{{%- endif %}}
