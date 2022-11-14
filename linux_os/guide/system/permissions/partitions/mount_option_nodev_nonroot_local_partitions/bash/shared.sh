@@ -2,7 +2,7 @@
 
 MOUNT_OPTION="nodev"
 # Create array of local non-root partitions
-readarray -t partitions_records < <(findmnt --mtab --raw --evaluate | grep "^/\w" | grep "\s/dev/\w")
+findmnt --mtab --raw --evaluate | grep "^/\w" | grep "\s/dev/\w" | readarray -t partitions_records
 
 for partition_record in "${partitions_records[@]}"; do
     # Get all important information for fstab
