@@ -1,4 +1,3 @@
-#!/bin/bash
 # platform = multi_platform_sle
 
 # Implement the loopback rules:
