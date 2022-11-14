@@ -138,6 +138,8 @@
           <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                     test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
 {{% endif %}}
+          <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/local/lib/sysctl.d/*.conf"
+                    test_ref="test_{{{ rule_id }}}_static_usr_local_lib_sysctld"/>
         </criteria>
         <criterion comment="Check that {{{ SYSCTLID }}} is defined in at least one file" test_ref="test_{{{ rule_id }}}_not_defined"
                    negate="true"/>
@@ -181,6 +183,13 @@
   </ind:textfilecontent54_test>
 {{% endif %}}
 
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_usr_local_lib_sysctld" version="1"
+                          check_existence="any_exist"
+                          check="all"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/local/lib/sysctl.d/*.conf" state_operator="OR">
+    {{{ state_static_sysctld("usr_local_lib_sysctld") }}}
+  </ind:textfilecontent54_test>
+
   <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_{{{ rule_id }}}" version="1">
     <object_component object_ref="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" item_field="filepath" />
   </local_variable>
@@ -190,7 +199,7 @@
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" version="1">
     <set>
       <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
-      <object_reference>object_static_run_usr_sysctls_{{{ rule_id }}}</object_reference>
+      <object_reference>object_static_run_usr_local_sysctls_{{{ rule_id }}}</object_reference>
     </set>
   </ind:textfilecontent54_object>
 
@@ -198,6 +207,13 @@
     <set>
       <object_reference>object_static_sysctl_{{{ rule_id }}}</object_reference>
       <object_reference>object_static_etc_sysctld_{{{ rule_id }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_usr_local_sysctls_{{{ rule_id }}}" version="1">
+    <set>
+      <object_reference>object_static_usr_local_lib_sysctld_{{{ rule_id }}}</object_reference>
+      <object_reference>object_static_run_usr_sysctls_{{{ rule_id }}}</object_reference>
     </set>
   </ind:textfilecontent54_object>
 
@@ -223,6 +239,12 @@
 
   <ind:textfilecontent54_object id="object_static_run_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/run/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{{ sysctl_match() }}}
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_usr_local_lib_sysctld_{{{ rule_id }}}" version="1">
+    <ind:path>/usr/local/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
