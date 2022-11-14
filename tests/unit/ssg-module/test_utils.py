@@ -12,7 +12,7 @@ def test_is_applicable():
 
     assert not ssg.utils.is_applicable('fedora,multi_platform_ubuntu', 'rhel7')
     assert not ssg.utils.is_applicable('ol7', 'rhel7')
-    assert not ssg.utils.is_applicable('alinux2,alinux3,fedora,debian10,debian11,uos20',
+    assert not ssg.utils.is_applicable('alinux2,alinux3,anolis8,fedora,debian10,debian11,uos20',
                                        'rhel7')
 
 
