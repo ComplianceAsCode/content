@@ -8,7 +8,6 @@ import sys
 from collections import defaultdict
 
 import json
-from typing import TextIO
 
 import ssg.build_yaml
 import ssg.oval
