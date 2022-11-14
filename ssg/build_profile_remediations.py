@@ -5,8 +5,7 @@ import os
 import sys
 from collections import namedtuple
 
-from .ansible import add_minimum_version, remove_multiple_blank_lines, \
-                     remove_trailing_whitespace
+from .ansible import add_minimum_version, remove_trailing_whitespace
 from .shims import subprocess_check_output, Queue
 from .build_guides import _is_blacklisted_profile
 from .xccdf import get_profile_short_id
