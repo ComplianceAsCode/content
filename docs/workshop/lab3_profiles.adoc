@@ -6,7 +6,6 @@
 
 // Variables
 :container_name: fedora_container
-:cpe_identifier: cpe:/o:fedoraproject:fedora:34
 
 == Introduction
 
@@ -647,7 +646,7 @@ You also add arguments to turn on full reporting, which generates XML and HTML r
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             --logdir profile-log \
             travel
 ----

@@ -70,7 +70,8 @@ def parse_args():
             "--add-platform",
             metavar="<CPE REGEX>",
             default=None,
-            help="Find all CPEs that are present in local OpenSCAP's CPE dictionary "
+            help="DEPRECATED: Use --remove-platforms instead; "
+            "Find all CPEs that are present in local OpenSCAP's CPE dictionary "
             "that match the provided regex, "
             "and add them as platforms to all datastream benchmarks. "
             "If the regex doesn't match anything, it will be treated "
@@ -81,6 +82,14 @@ def parse_args():
             default=None,
             help="Add installed_OS_is_$product extend_definition to the "
             "installed_OS_is_FIPS_certified OVAL criteria definition.")
+    common_parser.add_argument(
+            "--remove-platforms",
+            default=False,
+            action="store_true",
+            help="Remove any platforms from the Benchmark XML elements and Profile "
+            "XML elements, essentially making the content applicable to any platform. "
+            "Although more low level platforms such as packages or container/machine "
+            "CPE are still applicable.")
     common_parser.add_argument(
             "--remove-machine-only",
             default=False,
@@ -484,6 +493,8 @@ def main():
         options.datastream = stashed_datastream
 
         with xml_operations.datastream_root(stashed_datastream, stashed_datastream) as root:
+            if options.remove_platforms:
+                xml_operations.remove_platforms(root)
             if options.remove_machine_only:
                 xml_operations.remove_machine_platform(root)
                 xml_operations.remove_machine_remediation_condition(root)

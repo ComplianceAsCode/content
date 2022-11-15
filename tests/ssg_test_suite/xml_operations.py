@@ -81,13 +81,19 @@ def datastream_root(ds_location, save_location=None):
             tree.write(save_location)
 
 
-def remove_platforms_from_element(root, element_spec, platforms):
-    query = BENCHMARK_QUERY + "//{0}".format(element_spec)
-    elements = root.findall(query, PREFIX_TO_NS)
+def find_elements(root, element_spec=None):
+    query = BENCHMARK_QUERY
+    if element_spec is not None:
+        query = query + "//{0}".format(element_spec)
+    return root.findall(query, PREFIX_TO_NS)
+
+
+def remove_platforms_from_element(root, element_spec=None, platforms=None):
+    elements = find_elements(root, element_spec)
     for el in elements:
         platforms_xml = el.findall("./xccdf-1.2:platform", PREFIX_TO_NS)
         for p in platforms_xml:
-            if instance_in_platforms(p, platforms):
+            if platforms is None or instance_in_platforms(p, platforms):
                 el.remove(p)
 
 
@@ -101,6 +107,11 @@ def remove_machine_platform(root):
     remove_platforms_from_element(root, "xccdf-1.2:Group", "cpe:/a:machine")
     remove_platforms_from_element(root, "xccdf-1.2:Rule", "#machine")
     remove_platforms_from_element(root, "xccdf-1.2:Group", "#machine")
+
+
+def remove_platforms(root):
+    remove_platforms_from_element(root)
+    remove_platforms_from_element(root, "xccdf-1.2:Profile")
 
 
 def remove_ocp4_platforms(root):
