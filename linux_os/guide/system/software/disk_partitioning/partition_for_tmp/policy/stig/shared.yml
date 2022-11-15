@@ -7,12 +7,13 @@ vuldiscussion: |-
     restrictive mount options, which can help protect programs which use it.
 
 checktext: |-
-    Verify that a separate file system/partition has been created for  /tmp  with the following command:
+    Verify that a separate file system/partition has been created for "/tmp" with the following command:
 
-     $ mountpoint /tmp
+    $ mount | grep /tmp
 
+    tmpfs /tmp tmpfs noatime,mode=1777 0 0
 
-    If "/tmp is is not a mountpoint" is returned, then this is a finding.
+    If a separate entry for "/tmp" is not in use, this is a finding.
 
 fixtext: |-
     Migrate the "/tmp" path onto a separate file system.

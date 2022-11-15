@@ -9,12 +9,13 @@ vuldiscussion: |-
     world-writable directories installed by other software packages.
 
 checktext: |-
-    Verify that a separate file system/partition has been created for  /var  with the following command:
+    Verify that a separate file system/partition has been created for "/var" with the following command:
 
-     $ mountpoint /var
+    $ mount | grep /var
 
+    UUID=c274f65f-c5b5-4481-b007-bee96feb8b05 /var xfs noatime,nobarrier 1 2
 
-    If "/var is is not a mountpoint" is returned, then this is a finding.
+    If a separate entry for "/var" is not in use, this is a finding.
 
 fixtext: |-
     Migrate the "/var" path onto a separate file system.

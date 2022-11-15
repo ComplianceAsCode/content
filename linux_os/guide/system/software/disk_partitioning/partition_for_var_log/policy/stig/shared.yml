@@ -7,12 +7,13 @@ vuldiscussion: |-
     and other files in "/var/".
 
 checktext: |-
-    Verify that a separate file system/partition has been created for  /var/log  with the following command:
+    Verify that a separate file system/partition has been created for "/var/log" with the following command:
 
-     $ mountpoint /var/log
+    $ mount | grep /var/log
 
+    UUID=c274f65f-c5b5-4486-b021-bee96feb8b21 /var/log xfs noatime,nobarrier 1 2
 
-    If "/var/log is is not a mountpoint" is returned, then this is a finding.
+    If a separate entry for "/var/log" is not in use, this is a finding.
 
 fixtext: |-
     Migrate the "/var/log" path onto a separate file system.
