@@ -12,11 +12,13 @@ checktext: |-
     Verify that {{{ full_name }}} has the tmux package installed with the following command:
 
     $ sudo dnf list --installed tmux
-    tmux.x86_64  3.2a-4.el9
 
-    If the tmux package is not installed, this is a finding.
+    tmux.x86_64          3.2a-4.el9
+
+    If the "tmux" package is not installed, this is a finding.
 
 fixtext: |-
     The tmux package can be installed with the following command:
 
     $ sudo dnf install tmux
+
