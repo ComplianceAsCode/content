@@ -9,15 +9,19 @@ vuldiscussion: |-
 checktext: |-
     Verify that the {{{ full_name }}} cryptography policy has been configured correctly with the following commands:
 
-    $ update-crypto-policies --show
+    $ sudo update-crypto-policies --show
 
     FIPS
 
-    $ update-crypto-policies --is-applied
+    If the cryptography is not set to "FIPS" and is not applied, this is a finding.
+
+    $ sudo update-crypto-policies --check
 
     The configured policy is applied.
 
-    If the cryptography is not set to "FIPS" and is not applied, this is a finding.
+    If the command does not return "The configured policy is applied.", this is a finding.
+
+
 
 fixtext: |-
     Configure the operating system to implement FIPS mode with the following command

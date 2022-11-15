@@ -11,19 +11,19 @@ vuldiscussion: |-
     The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssl.config file.
 
 checktext: |-
-    Verify that {{{ full_name }}} OpenSSL library is configured to use only ciphers employing FIPS 140-3-approved algorithms:
-
-    Verify that system-wide crypto policies are in effect:
+    Verify that {{{ full_name }}} OpenSSL library is configured to use only ciphers employing FIPS 140-3 approved algorithms with the following command:
 
     $ sudo grep -i opensslcnf.config /etc/pki/tls/openssl.cnf
 
-    .include /etc/crypto-policies/back-ends/opensslcnf.config
+    .include = /etc/crypto-policies/back-ends/opensslcnf.config
 
     If the "opensslcnf.config" is not defined in the "/etc/pki/tls/openssl.cnf" file, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} OpenSSL library to use only ciphers employing FIPS 140-3-approved algorithms with the following command:
+    Configure the {{{ full_name }}} OpenSSL library to use the system cryptograhpic policy.
 
-    $ sudo fips-mode-setup --enable
+    Edit the "/etc/pki/tls/openssl.cnf" and add or modify the following line:
+    .include = /etc/crypto-policies/back-ends/opensslcnf.config
+
 
     A reboot is required for the changes to take effect.
