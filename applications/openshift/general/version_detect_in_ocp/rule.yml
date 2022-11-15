@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'This is a helper rule to fetch the required api resource for detecting OCP version'
+
+{{% set custom_jqfilter = '{{.ocp_version_yaml_path}}' %}}
+{{% set custom_api_path = '{{.ocp_version_api_path}}' %}}
+{{% set default_api_path = '/ocp/version' %}}
+{{% set dump_path = default_api_path ~ ',' ~ custom_jqfilter %}}
+
+description: |-
+    no description
+
+rationale: |-
+    no rationale
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_version({custom_api_path: dump_path}) | indent(4) }}}

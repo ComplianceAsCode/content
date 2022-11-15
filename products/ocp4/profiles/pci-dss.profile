@@ -22,3 +22,7 @@ extends: cis
 
 selections:
     - pcidss_ocp4:all:base
+  ### Helper Rules
+  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift
