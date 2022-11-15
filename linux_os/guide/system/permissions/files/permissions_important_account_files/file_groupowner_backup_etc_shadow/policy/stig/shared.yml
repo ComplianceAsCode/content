@@ -7,14 +7,15 @@ vuldiscussion: |-
     Protection of this file is critical for system security.
 
 checktext: |-
-    To check the group ownership of /etc/shadow- ,
-    run the command:
-     $ sudo stat -c "%G %n" /etc/shadow-
-    If properly configured, the output should indicate the following group-owner:
-     root
+    Verify the group ownership of the "/etc/shadow-" file with the following command:
 
-    If /etc/shadow- does not have a group owner of root, then this is a finding.
+    $ sudo stat -c "%G %n" /etc/shadow-
+
+    root /etc/shadow-
+
+    If "/etc/shadow-" file does not have a group owner of "root", this is a finding.
 
 fixtext: |-
     Change the group of the file /etc/shadow- to root by running the following command:
+
     $ sudo chgrp root /etc/shadow-

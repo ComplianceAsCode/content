@@ -9,14 +9,15 @@ vuldiscussion: |-
     which could weaken the system security posture.
 
 checktext: |-
-    To check the ownership of /etc/shadow ,
-    run the command:
-     $ sudo stat -c "%U %n" /etc/shadow
-    If properly configured, the output should indicate the following owner:
+    Verify the ownership of the "/etc/shadow" file with the following command:
+
+    $ sudo stat -c "%U %n" /etc/shadow
+
     root /etc/shadow
 
-    If /etc/shadow does not have an owner of root, then this is a finding.
+    If "/etc/shadow" file does not have an owner of "root", this is a finding.
 
 fixtext: |-
     Change the owner of the file /etc/shadow to root by running the following command:
+
     $ sudo chown root /etc/shadow
