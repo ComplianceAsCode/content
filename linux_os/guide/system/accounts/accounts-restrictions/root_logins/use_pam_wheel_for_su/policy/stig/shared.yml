@@ -7,12 +7,13 @@ vuldiscussion: |-
     access to such command is considered a good security practice.
 
 checktext: |-
-    Run the following command to check if the line is present:
-     grep pam_wheel /etc/pam.d/su
-    The output should contain the following line:
-     auth             required        pam_wheel.so use_uid
+    Verify that {{{ full_name }}} requires uses to be members of the "wheel" group with the following command:
 
-    If the line is not in the file or it is commented, then this is a finding.
+    $grep pam_wheel /etc/pam.d/su
+
+    auth             required        pam_wheel.so use_uid
+
+    If a line for "pam_wheel.so" does not exist, or is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to require users to be in the "wheel" group to run "su" command.
