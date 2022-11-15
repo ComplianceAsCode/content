@@ -9,11 +9,12 @@ vuldiscussion: |-
     This requirement applies to each audit data storage repository (i.e., distinct information system component where audit records are stored), the centralized audit storage capacity of organizations (i.e., all audit data storage repositories combined), or both.
 
 checktext: |-
-    Find the list of alias maps used by the Postfix mail server for root.
+    Verify that {{{ full_name }}} is configured to notify the appropraite interactive users in the event of an audit processing failure.
 
     Find the alias maps that are being used with the following command:
 
     $ postconf alias_maps
+
     alias_maps = hash:/etc/aliases
 
     Query the Postfix alias maps for an alias for the root user with the following command:
@@ -21,7 +22,7 @@ checktext: |-
     $ postmap -q root hash:/etc/aliases
     isso
 
-    If an alias is not set, then this is a finding.
+    If an alias is not set, this is a finding.
 
 fixtext: |-
     Edit the aliases map file (by default /etc/aliases) used by Postfix and configure a root alias (using the user ISSO as an example):
