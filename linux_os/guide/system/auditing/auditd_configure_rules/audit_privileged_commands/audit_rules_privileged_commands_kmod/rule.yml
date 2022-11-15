@@ -1,7 +1,5 @@
-{{%- if product in ["rhel8", "rhel9"] %}}
+{{%- if product in ["rhel7", "rhel8", "rhel9"] %}}
     {{%- set kmod_audit="-a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged" %}}
-{{%- elif product in ["rhel7"] %}}
-    {{%- set kmod_audit="-w /usr/bin/kmod -p x -F auid!=unset -k module-change" %}}
 {{%- elif product in ["ubuntu2004", "ubuntu2204"] %}}
     {{%- set kmod_audit="-w /bin/kmod -p x -k modules" %}}
 {{%- elif product in ["ol7"] %}}
