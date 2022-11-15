@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must enable the Pluggable Authenitcation Module interface for SSHD.
+    {{{ full_name }}} must enable the Pluggable Authenitcation Module (PAM) interface for SSHD.
 
 vuldiscussion: |-
     When UsePAM is set to yes, PAM runs through account and session types properly. This is
@@ -8,7 +8,7 @@ vuldiscussion: |-
     on login or disallow access to the server.
 
 checktext: |-
-    Verify the {{{ full_name }}} SSHD is configure to allow for the UsePAM interface with the following command:
+    Verify the RHEL9 SSHD is configured to allow for the UsePAM interface with the following command:
 
     $ sudo grep -i usepam /etc/ssh/sshd_config
 
@@ -17,7 +17,7 @@ checktext: |-
     If the "UsePAM" keyword is set to "no", is missing, or is commented out, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} SSHD to use the UsePAM interface add or modify the following line in "/etc/ssh/sshd_config".
+    Configure the RHEL9 SSHD to use the UsePAM interface add or modify the following line in "/etc/ssh/sshd_config".
 
     UsePAM yes
 
