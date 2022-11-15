@@ -13,27 +13,9 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} allocates a sufficient audit_backlog_limit to capture processes that start prior to the audit daemon with the following commands:
 
-    First check if the GRUB recovery is enabled:
-
-    $ sudo grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub
-
-    GRUB_DISABLE_RECOVERY="true"
-
-    If this option is set to true, then check that a line is output by the following command:
-
-    $ sudo grep 'GRUB_CMDLINE_LINUX_DEFAULT.*audit_backlog_limit=8192.*' /etc/default/grub
-
-    If the option is set to false, then check that a line is output by the following command:
-
-    $ sudo grep 'GRUB_CMDLINE_LINUX.*audit_backlog_limit=8192.*' /etc/default/grub
-
-    If 'audit_backlog_limit' is not set to '8192' or greater, or the option is missing, this is a finding.
-
-    Additionally command line parameters for currently installed kernels must be checked as well with the following command:
-
      $ sudo grubby --info=ALL | grep args | grep -v 'audit_backlog_limit=8192'
 
-    If the command return any outputs and audit_backlog_limit is less than 8182, this is a finding.
+    If the command return any outputs and audit_backlog_limit is less than "8192", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to allocate sufficient audit_backlog_limit to capture processes that start prior to the audit daemon with the following command:
