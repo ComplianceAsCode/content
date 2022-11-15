@@ -14,7 +14,7 @@ checktext: |-
 
     Check the value of the "icmp_echo_ignore_broadcasts" variable with the following command:
 
-    $ sudo sysctl net.ipv4.icmp_echo_ignore_broadcasts
+    $ sysctl net.ipv4.icmp_echo_ignore_broadcasts
 
     net.ipv4.icmp_echo_ignore_broadcasts = 1
 
@@ -33,7 +33,7 @@ fixtext: |-
 
     Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
 
-    net.ipv4.icmp_echo_ignore_broadcasts=1
+    net.ipv4.icmp_echo_ignore_broadcasts = 1
 
     Load settings from all system configuration files with the following command:
 

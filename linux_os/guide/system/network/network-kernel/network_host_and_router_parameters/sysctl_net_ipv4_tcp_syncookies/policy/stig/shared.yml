@@ -19,7 +19,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $ {  sudo /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv4.tcp_syncookies | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.tcp_syncookies | tail -1
     net.ipv4.tcp_syncookies = 1
 
     If the network parameter "ipv4.tcp_syncookies" is not equal to "1" or nothing is returned, this is a finding.

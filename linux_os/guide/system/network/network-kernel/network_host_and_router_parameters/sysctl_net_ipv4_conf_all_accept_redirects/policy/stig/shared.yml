@@ -16,7 +16,7 @@ checktext: |-
 
     Check the value of the all "accept_redirects" variables with the following command:
 
-    $ sudo sysctl net.ipv4.conf.all.accept_redirects
+    $ sysctl net.ipv4.conf.all.accept_redirects
 
     net.ipv4.conf.all.accept_redirects = 0
 
@@ -24,7 +24,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F net.ipv4.conf.all.accept_redirects | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.conf.all.accept_redirects | tail -1
 
     net.ipv4.conf.all.accept_redirects = 0
 

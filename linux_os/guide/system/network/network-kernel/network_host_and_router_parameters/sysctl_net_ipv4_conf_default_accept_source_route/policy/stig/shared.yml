@@ -1,0 +1,43 @@
+srg_requirement: |-
+    {{{ full_name }}} must not forward IPv4 source-routed packets by default.
+
+vuldiscussion: |-
+    Source-routed packets allow the source of the packet to suggest routers
+    forward the packet along a different path than configured on the router,
+    which can be used to bypass network security measures.
+
+
+    Accepting source-routed packets in the IPv4 protocol has few legitimate
+    uses. It should be disabled unless it is absolutely required, such as when
+    IPv4 forwarding is enabled and the system is legitimately functioning as a
+    router.
+
+checktext: |-
+    Verify {{{ full_name }}} does not accept IPv4 source-routed packets by default.
+
+    Check the value of the accept source route variable with the following command:
+
+    $ sysctl net.ipv4.conf.default.accept_source_route
+
+    net.ipv4.conf.default.accept_source_route = 0
+
+    If the returned line does not have a value of "0", a line is not returned, or the line is commented out, this is a finding.
+
+    Check that the configuration files are present to enable this network parameter.
+
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.conf.default.accept_source_route | tail -1
+
+    net.ipv4.conf.default.accept_source_route = 0
+
+    If "net.ipv4.conf.default.accept_source_route" is not set to "0" or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not forward IPv4 source-routed packets by default.
+
+    Add or edit the following line in a single system configuration file, in the "/etc/sysctl.d/" directory:
+
+    net.ipv4.conf.default.accept_source_route = 0
+
+    Load settings from all system configuration files with the following command:
+
+    $ sudo sysctl --system
