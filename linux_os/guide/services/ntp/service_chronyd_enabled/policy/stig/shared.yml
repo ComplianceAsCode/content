@@ -1,17 +1,19 @@
 srg_requirement: |-
-    The {{{ full_name }}} service chronyd must be enabled.
+    The {{{ full_name }}} chronyd service must be enabled.
 
 vuldiscussion: |-
-    If chrony is in use on the system proper configuration is vital to ensuring time
-    synchronization is working properly.
+    Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
+
+    Synchronizing internal information system clocks provides uniformity of time stamps for information systems with multiple system clocks and systems connected over a network.
 
 checktext: |-
-    Run the following command to determine the current status of the
-     chronyd service:
-     $ sudo systemctl is-active chronyd
-    If the service is running, it should return the following: active
+    Verify the chronyd service is active with the following command:
 
-    If the chronyd process is not running, then this is a finding.
+    $ systemctl is-active chronyd
+
+    active
+
+    If the chronyd service is not active, this is a finding.
 
 fixtext: |-
     To enable the chronyd service run the following command:

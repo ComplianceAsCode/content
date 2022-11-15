@@ -6,7 +6,13 @@ vuldiscussion: |-
     multifactor authentication using smartcards.
 
 checktext: |-
-    Verify that {{{ full_name }}} has the pcsc-lite package installed with the following command:$sudo dnf list --installed pcsc-litepcsc-lite.x86_641.9.4-1.el9If a pcsc-lite package is not installed, this is a finding.
+    Verify that {{{ full_name }}} has the pcsc-lite package installed with the following command:
+
+    $sudo dnf list --installed pcsc-lite
+
+    pcsc-lite.x86_64        1.9.4-1.el9
+
+    If the "pcsc-lite" package is not installed, this is a finding.
 
 fixtext: |-
     The  pcsc-lite  package can be installed with the following command:
