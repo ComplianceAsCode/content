@@ -5,13 +5,13 @@ vuldiscussion: |-
     Misuse of the shutdown command may cause availability issues for the system.
 
 checktext: |-
-    Verify that an audit event is generated for any successful/unsuccessful use of the shutdown command by performing the following command to check the file system rules in "/etc/audit/audit.rules":
+    Verify that {{{ full_name }}} is configured to audit the execution of the "shutdown" command with the following command:
 
-    $ sudo grep -w shutdown /etc/audit/audit.rules
+    $ sudo auditctl -l | grep shutdown
 
-    -a always,exit -F path=/usr/sbin/shutdown -F perm=x -F auid>=1000 -F auid!=unset -k privileged-shutdown
+    -a always,exit -F path=/usr/sbin/shutdown -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-shutdown
 
-    If the command does not return a line, or the line is commented out, then this is a finding.
+    If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "shutdown" command by adding or updating the following rule in the "/etc/audit/rules.d/audit.rules" file:
