@@ -23,7 +23,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $  {  sudo /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.dmesg_restrict | tail -1
+    $  sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.dmesg_restrict | tail -1
     kernel.dmesg_restrict = 1
 
     If "kernel.dmesg_restrict" is not set to "1" or is missing this is a finding.

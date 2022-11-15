@@ -6,14 +6,13 @@ vuldiscussion: |-
 
 checktext: |-
     Verify the runtime status of the kernel.kptr_restrict kernel parameter with the following command:
-
-    $ sudo sysctl kernel.kptr_restrict
+    $ sysctl kernel.kptr_restrict
 
     kernel.kptr_restrict = 1
 
     Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.kptr_restrict | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F kernel.kptr_restrict | tail -1
 
     kernel.kptr_restrict =1
 
