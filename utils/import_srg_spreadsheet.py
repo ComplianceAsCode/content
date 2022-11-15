@@ -11,8 +11,8 @@ from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import read_file_list
-from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, get_cce_dict, \
-    get_rule_dir_json
+from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, \
+    get_cce_dict, get_rule_dir_json
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
@@ -24,7 +24,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument('--changed', '-c', help="The file with changes, in xlsx", required=True)
     parser.add_argument('--current', '-b', help="The latest file from CaC, in xlsx", required=True)
     parser.add_argument('--changed-name', '-n', type=str, action="store",
-                        help="The name that DISA uses for the producut. Defaults to RHEL 9",
+                        help="The name that DISA uses for the product. Defaults to RHEL 9",
                         default="RHEL 9")
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
@@ -86,11 +86,12 @@ def write_output(path: str, result: tuple) -> None:
             f.write('\n')
 
 
-def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
+def replace_yaml_section(section: str, replacement: str, rule_dir: dict,
+                         changed_name: str) -> None:
     path = create_output(rule_dir['dir'])
 
     lines = read_file_list(path)
-    replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
+    replacement = replacement.replace(changed_name, '{{{ full_name }}}')
     replacement = replacement.replace('<', '&lt').replace('>', '&gt')
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
@@ -137,9 +138,9 @@ def update_severity(changed, current, rule_dir_json):
         replace_yaml_key('severity', cac_severity, rule_dir_json)
 
 
-def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
+def update_row(changed: str, current: str, rule_dir_json: dict, section: str, changed_name: str):
     if changed != current and changed:
-        replace_yaml_section(section, changed, rule_dir_json)
+        replace_yaml_section(section, changed, rule_dir_json, changed_name)
 
 
 def main() -> None:
@@ -165,15 +166,15 @@ def main() -> None:
         rule_id = cce_rule_id_dict[cce]
         rule_obj = rule_dir_json[rule_id]
 
-        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement')
+        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement', args.changed_name)
 
-        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion')
+        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion', args.changed_name)
 
         cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
-        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext')
+        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext', args.changed_name)
 
         cleand_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
-        update_row(changed.Fix, cleand_current_fix, rule_obj, 'fixtext')
+        update_row(changed.Fix, cleand_current_fix, rule_obj, 'fixtext', args.changed_name)
 
         update_severity(changed, current, rule_obj)
 
