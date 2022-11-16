@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Set configuration for IPv6 loopback traffic'
+
+description: |-
+    Configure the loopback interface to accept traffic.
+    Configure all other interfaces to deny traffic to the loopback
+    network.
+
+rationale: |-
+    Loopback traffic is generated between processes on machine and is
+    typically critical to operation of the system. The loopback interface
+    is the only place that loopback network traffic should be seen,
+    all other interfaces should ignore traffic on this network as an
+    anti-spoofing measure.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92215-3
+    cce@sle15: CCE-91346-7
+
+references:
+    cis@sle12: 3.5.3.1
+    cis@sle15: 3.5.3.2.2 
+    pcidss: Req-1.4.1
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
+
+ocil_clause: 'ipv6 loopback traffic is not configured'
+
+ocil: |-
+    Verify that the ipv6 loopback interface has required rules in order:
+    <pre>$ iptables -L INPUT -v -n</pre>
+

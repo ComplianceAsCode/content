@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_anolis8" version="1">
+    <metadata>
+      <title>Anolis OS 8</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:Anolis OS:8" source="CPE" />
+      <description>The operating system installed on the system is Anolis OS 8</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Anolis OS 8 is installed" test_ref="test_anolis8" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="anolis-release is version 8" id="test_anolis8" version="1">
+    <linux:object object_ref="obj_anolis8" />
+    <linux:state state_ref="state_anolis8" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_anolis8" version="1">
+    <linux:version operation="pattern match">^8.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_anolis8" version="1">
+    <linux:name>anolis-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>

@@ -24,3 +24,7 @@ filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platfo
 
 selections:
     - srg_ctr:all
+  ### Helper Rules
+  ### This is a helper rule to fetch the required api resource for detecting OCP version
+    - version_detect_in_ocp
+    - version_detect_in_hypershift
