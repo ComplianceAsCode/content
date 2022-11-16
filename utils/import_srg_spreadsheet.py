@@ -86,12 +86,10 @@ def write_output(path: str, result: tuple) -> None:
             f.write('\n')
 
 
-def replace_yaml_section(section: str, replacement: str, rule_dir: dict,
-                         changed_name: str) -> None:
+def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
     path = create_output(rule_dir['dir'])
 
     lines = read_file_list(path)
-    replacement = replacement.replace(changed_name, '{{{ full_name }}}')
     replacement = replacement.replace('<', '&lt').replace('>', '&gt')
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
@@ -138,9 +136,13 @@ def update_severity(changed, current, rule_dir_json):
         replace_yaml_key('severity', cac_severity, rule_dir_json)
 
 
-def update_row(changed: str, current: str, rule_dir_json: dict, section: str, changed_name: str):
+def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
     if changed != current and changed:
-        replace_yaml_section(section, changed, rule_dir_json, changed_name)
+        replace_yaml_section(section, changed, rule_dir_json)
+
+
+def fix_changed_text(replacement: str, changed_name: str):
+    return replacement.replace(changed_name, '{{{ full_name }}}')
 
 
 def main() -> None:
@@ -166,17 +168,20 @@ def main() -> None:
         rule_id = cce_rule_id_dict[cce]
         rule_obj = rule_dir_json[rule_id]
 
-        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement',
-                   args.changed_name)
+        cleaned_changed_requirement = fix_changed_text(changed.Requirement, args.changed_name)
+        update_row(cleaned_changed_requirement, current.Requirement, rule_obj, 'srg_requirement')
 
-        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion',
-                   args.changed_name)
+        cleaned_changed_vuln_discussion = fix_changed_text(changed.Vul_Discussion,
+                                                           args.changed_name)
+        update_row(cleaned_changed_vuln_discussion, current.Vul_Discussion, rule_obj,
+                   'vuldiscussion')
 
         cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
-        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext', args.changed_name)
+        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext')
 
-        cleand_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
-        update_row(changed.Fix, cleand_current_fix, rule_obj, 'fixtext', args.changed_name)
+        cleaned_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
+        cleaned_changed_fix = fix_changed_text(changed.Fix, args.changed_name)
+        update_row(cleaned_changed_fix, cleaned_current_fix, rule_obj, 'fixtext')
 
         update_severity(changed, current, rule_obj)
 
