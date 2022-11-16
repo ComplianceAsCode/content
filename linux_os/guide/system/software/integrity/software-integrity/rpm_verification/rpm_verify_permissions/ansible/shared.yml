@@ -5,8 +5,6 @@
 # disruption = medium
 - name: "Read list of files with incorrect permissions"
   command: rpm -Va --nodeps --nosignature --nofiledigest --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect permissions using rpm module
   register: files_with_incorrect_permissions
   failed_when: files_with_incorrect_permissions.rc > 1
   changed_when: False
@@ -14,8 +12,6 @@
 
 - name: Create list of packages
   command: rpm -qf "{{ item }}"
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect permissions using rpm module
   with_items: "{{ files_with_incorrect_permissions.stdout_lines | map('regex_findall', '^[.]+[M]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
@@ -24,7 +20,5 @@
 
 - name: "Correct file permissions with RPM"
   command: "rpm --setperms '{{ item }}'"
-  args:
-    warn: False # Ignore ANSIBLE0006, we can't correct permissions using rpm module
   with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
   when: (files_with_incorrect_permissions.stdout_lines | length > 0)
