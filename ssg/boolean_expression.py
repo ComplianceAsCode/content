@@ -12,15 +12,6 @@ SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
 
 VERSION_SYMBOLS = ['.', '-', '_', '*']
 
-SPEC_OP_ID_TRANSLATION = {
-    '==': 'eq',
-    '!=': 'ne',
-    '>': 'gt',
-    '<': 'le',
-    '>=': 'gt_or_eq',
-    '<=': 'le_or_eq',
-}
-
 
 class Function(boolean.Function):
     """
@@ -32,7 +23,7 @@ class Function(boolean.Function):
     Provides `is_and`, `is_or` and `is_not` methods to distinguish instances
     between different boolean functions.
 
-    The `as_id` method will generate an unique string identifier usable as
+    The `as_id` method will generate a unique string identifier usable as
     an XML id based on the properties of the entity.
     """
 
@@ -63,7 +54,7 @@ class Symbol(boolean.Symbol):
     Sub-class it and pass to the `Algebra` as `symbol_cls` to enrich
     expression elements with domain-specific methods.
 
-    The `as_id` method will generate an unique string identifier usable as
+    The `as_id` method will generate a unique string identifier usable as
     an XML id based on the properties of the entity.
     """
 
@@ -77,10 +68,6 @@ class Symbol(boolean.Symbol):
         if self.arg:
             full_name += '[' + self.arg + ']'
         val = kwargs.get(full_name, False)
-        if len(self.version_definitions):
-            if type(val) is str:
-                return val in self.requirement
-            return False
         return bool(val)
 
     def __lt__(self, other):
@@ -88,8 +75,6 @@ class Symbol(boolean.Symbol):
 
     def as_id(self):
         id_str = self.name
-        for (op, ver) in self.version_definitions:
-            id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
         if self.arg:
             id_str += '_' + self.arg
         return id_str
@@ -103,10 +88,6 @@ class Symbol(boolean.Symbol):
     @property
     def arg(self):
         return self.requirement.extras[0] if self.requirement.extras else None
-
-    @property
-    def version_definitions(self):
-        return self.requirement.specs
 
     @property
     def name(self):
