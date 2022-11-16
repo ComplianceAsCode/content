@@ -166,9 +166,11 @@ def main() -> None:
         rule_id = cce_rule_id_dict[cce]
         rule_obj = rule_dir_json[rule_id]
 
-        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement', args.changed_name)
+        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement',
+                   args.changed_name)
 
-        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion', args.changed_name)
+        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion',
+                   args.changed_name)
 
         cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
         update_row(changed.Check, cleand_current_check, rule_obj, 'checktext', args.changed_name)
