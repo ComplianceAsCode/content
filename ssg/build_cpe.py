@@ -84,15 +84,12 @@ class ProductCPEs(object):
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
-    def _is_parametrized(self, ref):
-        return re.search(r'^\w+\[\w+\]$', ref)
-
     def get_cpe(self, ref):
         try:
             if self._is_name(ref):
                 return self.cpes_by_name[ref]
             else:
-                if self._is_parametrized(ref):
+                if Symbol._is_parametrized(ref):
                     ref = get_base_name_of_parametrized_platform(ref)
                 return self.cpes_by_id[ref]
         except KeyError:
