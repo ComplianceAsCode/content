@@ -13,7 +13,7 @@ checktext: |-
 
     Note: The example is for a system that is configured to create users home directories in the "/home" directory.
 
-    # grep -ri umask /home/
+    $ sudo grep -ir ^umask --exclude=.bash_history /home
 
     /home/smithj/.bash_history:grep -i umask /etc/bashrc /etc/csh.cshrc /etc/profile
     /home/smithj/.bash_history:grep -i umask /etc/login.defs
