@@ -333,7 +333,16 @@ def enum(*args):
     return type('Enum', (), enums)
 
 
-def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=frozenset()):
+def recurse_or_substitute_or_do_nothing(v, string_dict, ignored_keys):
+    if isinstance(v, dict):
+        return apply_formatting_on_dict_values(v, string_dict, ignored_keys)
+    elif isinstance(v, str):
+        return v.format(**string_dict)
+    else:
+        return v
+
+
+def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=None):
     """
     Uses Python built-in string replacement.
     It replaces strings marked by {token} if "token" is a key in the string_dict parameter.
@@ -342,13 +351,9 @@ def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=froze
     """
     new_dict = {}
     for k, v in source_dict.items():
-        if k not in ignored_keys:
-            if isinstance(v, dict):
-                new_dict[k] = apply_formatting_on_dict_values(v, string_dict, ignored_keys)
-            elif isinstance(v, str):
-                new_dict[k] = v.format(**string_dict)
-            else:
-                new_dict[k] = v
+        if ignored_keys is None or k not in ignored_keys:
+            new_dict[k] = recurse_or_substitute_or_do_nothing(
+                v, string_dict, ignored_keys)
         else:
             new_dict[k] = v
     return new_dict
