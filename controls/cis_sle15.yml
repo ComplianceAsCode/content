@@ -1776,6 +1776,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual # rule missing
+    rules:
+      - sshd_set_exchange_algo
 
   - id: 5.2.16
     title: Ensure SSH Idle Timeout Interval is configured (Automated)
