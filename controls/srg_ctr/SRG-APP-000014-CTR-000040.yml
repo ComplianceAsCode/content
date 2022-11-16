@@ -7,8 +7,6 @@ controls:
   - fips_mode_enabled_on_all_nodes
   rules:
   - api_server_tls_security_profile
-  - api_server_tls_security_profile_not_old
-  - api_server_tls_security_profile_custom_min_tls_version
   status: manual
   check: |-
     Verify that the TLS Security Profile is not set to old, or a custom
