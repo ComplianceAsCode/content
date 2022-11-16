@@ -33,7 +33,7 @@ identifiers:
     cce@ocp4: CCE-86231-8
 
 references:
-    nist: CM-6
+    nist: SC-8,SC-8(1)
     srg: SRG-APP-000014-CTR-000040
 
 ocil_clause: 'insecure TLS version configured in the Custom tlsSecurityProfile used for accessing external services'
@@ -56,6 +56,5 @@ template:
         yamlpath: ".spec.tlsSecurityProfile.custom.minTLSVersion"
         check_existence: "any_exist"
         values: 
-            - value: "VersionTLS12"
-              type: "string"
-              operation: "equals"
+            - value: "^(?!VersionTLS10|VersionTLS11)"
+              operation: "pattern match"
