@@ -1,9 +1,17 @@
 <def-group>
-  <definition class="compliance" id="accounts_tmout" version="3">
+  <definition class="compliance" id="accounts_tmout" version="4">
     {{{ oval_metadata("Checks interactive shell timeout") }}}
-    <criteria operator="OR">
-      <criterion comment="TMOUT value in /etc/profile &lt;= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
-      <criterion comment="TMOUT value in /etc/profile.d/*.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
+    <criteria operator="AND">
+      <criteria operator="OR">
+         <criterion comment="TMOUT value in /etc/profile &lt;= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
+         <criterion comment="TMOUT value in /etc/profile.d/*.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
+         <criterion comment="TMOUT value in /etc/bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />
+      </criteria>
+      <criteria operator="AND">
+         <criterion comment="no TMOUT value in /etc/profile &gt; var_accounts_tmout" test_ref="test_etc_profile_tmout_conflicting" />
+         <criterion comment="no TMOUT value in /etc/profile.d/*.sh &gt; var_accounts_tmout" test_ref="test_etc_profiled_tmout_conflicting" />
+         <criterion comment="no TMOUT value in /etc/bashrc &gt; var_accounts_tmout" test_ref="test_etc_bashrc_tmout_conflicting" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -11,6 +19,10 @@
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="TMOUT in {{{ files }}}" id="test_{{{ test_stem }}}" version="2">
     <ind:object object_ref="object_{{{ test_stem }}}" />
     <ind:state state_ref="state_etc_profile_tmout" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no conflicting TMOUT in {{{ files }}}" id="test_{{{ test_stem }}}_conflicting" version="1">
+    <ind:object object_ref="object_{{{ test_stem }}}_conflicting" />
   </ind:textfilecontent54_test>
   {{% endmacro %}}
 
@@ -32,13 +44,23 @@
     {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  {{% endmacro %}}
 
+  <ind:textfilecontent54_object id="object_{{{ test_stem }}}_conflicting" version="1">
+    <set>
+      <object_reference>object_{{{ test_stem  }}}</object_reference>
+      <filter action="exclude">state_etc_profile_tmout</filter>
+    </set>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+  
   {{{ test_tmout(  test_stem="etc_profile_tmout", files="/etc/profile") }}}
   {{{ object_tmout(test_stem="etc_profile_tmout", filepath="/etc/profile") }}}
 
   {{{ test_tmout(  test_stem="etc_profiled_tmout", files="/etc/profile.d/*.sh") }}}
   {{{ object_tmout(test_stem="etc_profiled_tmout", path="/etc/profile.d", filename="^.*\.sh$") }}}
+
+  {{{ test_tmout(  test_stem="etc_bashrc_tmout", files="/etc/bashrc") }}}
+  {{{ object_tmout(test_stem="etc_bashrc_tmout", filepath="/etc/bashrc") }}}
 
   <ind:textfilecontent54_state id="state_etc_profile_tmout" version="2">
     <ind:subexpression datatype="int" operation="less than or equal" var_check="all" var_ref="var_accounts_tmout" />
