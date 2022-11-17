@@ -205,9 +205,9 @@ A rule itself contains these attributes:
 
 A rule may contain those reference-type attributes:
 
--   `identifiers`: This is related to products that the rule applies to;
-    this is a dictionary. Currently, only the Common Configuration
-    Enumeration or CCE identifier is supported. Other identifiers can be
+-   `identifiers`: This is related to products that the rule applies to.
+    This attribute is a dictionary. Currently, only the Common Configuration
+    Enumeration or CCE identifier are supported. Other identifiers can be
     added as well. Contributions to add these other identifiers are
     welcomed. The table below shows a list of common identifiers and
     their current support in a rule:
@@ -425,6 +425,30 @@ on their basename. Therefore, the rule `sshd_print_last_log` has a
 `shared/fixes/bash/sshd_print_last_log.sh`. As there is an Ansible
 playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has
 also an Ansible fix associated.
+
+#### Rule Deprecation
+As the project and products evolve, it is natural for some rules to become obsolete, split, or even replaced by others that take a different approach.
+When situations like this happen, it's important to make it clear that a rule is obsolete so users can evaluate and use the alternative as quickly as possible.
+
+This is done by including a deprecation warning message in the warning section of the rule and setting the `highlight` label for the PR.
+The purpose of the 'highlight' label is to ensure that this PR is highlighted in the release notes and is therefore more visible and transparent to the public.
+
+Regarding the warning message, to make it easier for developers and to maintain the standard, the `warning_rule_deprecated_by(rule, release='')` macro was created.
+
+As a reference, here is an example where this macro is used:
+[account_passwords_pam_faillock_dir](https://github.com/ComplianceAsCode/content/blob/9e0c6ac6eec596b0662d5672e4d3081523afdc9d/linux_os/guide/system/accounts/accounts-pam/locking_out_password_attempts/account_passwords_pam_faillock_dir/rule.yml#L40-L41)
+
+And this is the respective PR where the `highlight` label is set:
+[https://github.com/ComplianceAsCode/content/pull/9462](https://github.com/ComplianceAsCode/content/pull/9462)
+
+##### Agreements
+* We avoid hard problems by not removing anything from data stream whenever we want to rename, split or deprecate a rule.
+* Obsolete rules should have "deprecated_by" warnings for the transitional period.
+* We keep the "obsolete" rule in the data stream for some time, usually while the applicable products are still active.
+    * If an obsolete rule is removed in a tailoring file, the tailoring file likely have to be updated to also remove the new rule.
+    * The administrators should assess each situation in their tailoring files.
+* It is imperative that we document those changes in release notes.
+* Changes like in the PR [Rename account_passwords_pam_faillock_audit #9462](https://github.com/ComplianceAsCode/content/pull/9462) are worth doing because it improves consistency in the project.
 
 ### Rule Directories
 
