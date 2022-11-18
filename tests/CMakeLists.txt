@@ -187,4 +187,11 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
 )
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
+
+
+add_test(
+    NAME "test-generate_contributors"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
+)
+set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
 endif()
