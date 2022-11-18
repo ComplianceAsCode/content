@@ -18,7 +18,7 @@ BuildRequires:	expat
 BuildRequires:	openscap-scanner >= 1.2.5
 BuildRequires:	cmake >= 2.8
 # To get python3 inside the buildroot require its path explicitly in BuildRequires
-BuildRequires: /usr/bin/python3
+BuildRequires:	/usr/bin/python3
 BuildRequires:	python%{python3_pkgversion}
 BuildRequires:	python%{python3_pkgversion}-jinja2
 BuildRequires:	python%{python3_pkgversion}-PyYAML
