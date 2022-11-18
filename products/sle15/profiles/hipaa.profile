@@ -142,7 +142,6 @@ selections:
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption
     - ensure_gpgcheck_local_packages
-    - ensure_redhat_gpgkey_installed
     - grub2_disable_interactive_boot
     - libreswan_approved_tunnels
     - package_rsh-server_removed
