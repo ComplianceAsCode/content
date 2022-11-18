@@ -122,13 +122,13 @@ fi
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
-  {{% set value = '%s' % value.replace("$", "\\$") %}}
+    {{% set value = '%s' % value.replace("$", "\\$") %}}
   {{% endif %}}
 {{%- else -%}}
   {{% if "$" in value %}}
-  {{% set value = '\\"%s\\"' % value.replace("$", "\\$") %}}
+    {{% set value = '\\"%s\\"' % value.replace("$", "\\$") %}}
   {{% else %}}
-  {{% set value = "'%s'" % value %}}
+    {{% set value = "'%s'" % value %}}
   {{% endif %}}
 {{%- endif -%}}
 {{{ set_config_file(
@@ -140,7 +140,7 @@ fi
         insert_before="^#\s*" ~ parameter,
         insensitive=false,
         separator="=",
-        separator_regex="=",
+        separator_regex="\s*=\s*",
         prefix_regex="^\s*")
     }}}
 {{%- endmacro -%}}

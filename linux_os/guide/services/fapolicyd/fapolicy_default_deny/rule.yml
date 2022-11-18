@@ -39,9 +39,15 @@ ocil: |-
 
     permissive = 0
 
-    Check that fapolicyd employs a deny-all policy on system mounts with the following command:
+    Check that fapolicyd employs a deny-all policy on system mounts with the following commands:
 
+    {{%- if product in ["rhel8"] %}}
+    For RHEL 8.5 systems and older:
     $ sudo tail /etc/fapolicyd/fapolicyd.rules
+
+    For RHEL 8.6 systems and newer:
+    {{%- endif %}}
+    $ sudo tail /etc/fapolicyd/compiled.rules
 
     allow exe=/usr/bin/python3.7 : ftype=text/x-python
     deny_audit perm=any pattern=ld_so : all
@@ -54,7 +60,13 @@ fixtext: |-
 
     permissive = 1
 
+    {{%- if product in ["rhel8"] %}}
+    For RHEL 8.5 systems and older:
     Build the whitelist in the "/etc/fapolicyd/fapolicyd.rules" file ensuring the last rule is "deny perm=any all : all".
+
+    For RHEL 8.6 systems and newer:
+    {{%- endif %}}
+    Build the whitelist in a file within the "/etc/fapolicyd/rules.d" directory ensuring the last rule is "deny perm=any all : all".
 
     Once it is determined the whitelist is built correctly, set the fapolicyd to enforcing mode by editing the "permissive" line in the /etc/fapolicyd/fapolicyd.conf file.
 
