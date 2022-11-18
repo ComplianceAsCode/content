@@ -158,7 +158,7 @@ jobs:
       image: fedora:rawhide
     steps:
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck python-mypy
+          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck python-mypy git
       -   name: Install deps python
           run: pip install ruamel.yaml yamlpath types-openpyxl types-PyYAML openpyxl pandas
       -   name: Checkout
