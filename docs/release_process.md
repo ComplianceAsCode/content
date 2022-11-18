@@ -15,14 +15,15 @@ and ultimately allows the release process to happen while development continues 
 
 ### Updating Contributors List
 
-- Update the contributors list by accessing the root folder of Content repository, in the
-**stabilization** branch, and executing the following command:
+- Update the contributors list before creating the new **stabilization** branch. So, make sure
+there is enough time to review and merge the PR before starting the **stabilization** phase.
+- Update the contributors list by accessing the root folder of `content` repository and executing the following command:
     ```
     PYTHONPATH=. utils/generate_contributors.py
     ```
     - De-duplicate names if necessary.
-    - Make a commit send the a PR.
-    - Reference: https://github.com/ComplianceAsCode/content/pull/9601
+    - Make a commit send a PR to the `master` branch.
+    - Reference: https://github.com/ComplianceAsCode/content/pull/9843
 
 ### Creating the Stabilization Branch
 
