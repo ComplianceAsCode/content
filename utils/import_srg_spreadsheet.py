@@ -99,6 +99,7 @@ def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None
         end_line = section_ranges[0].end
         for line in lines[end_line:]:
             result = [*result, line]
+        result = [*result, '\n']
     else:
         result = lines
         result = (*result, f"\n{section}: |-")
@@ -147,6 +148,29 @@ def fix_changed_text(replacement: str, changed_name: str):
         .replace(no_space_name, '{{{ full_name }}}')
 
 
+def get_last_content_index(lines):
+    last_content_index = len(lines)
+    lines.reverse()
+    for line in lines:
+        if line == '\n':
+            last_content_index -= 1
+        else:
+            break
+    lines.reverse()
+    return last_content_index
+
+
+def cleanup_end_of_file(rule_dir: str) -> None:
+    path = create_output(rule_dir)
+    with open(path, 'r') as f:
+        lines = f.readlines()
+    last_content_index = get_last_content_index(lines)
+    lines = lines[:last_content_index]
+
+    with open(path, 'w') as f:
+        f.writelines(lines)
+
+
 def main() -> None:
     args = _parse_args()
     full_name = get_full_name(args.root, args.product)
@@ -187,6 +211,8 @@ def main() -> None:
         update_row(cleaned_changed_fix, cleaned_current_fix, rule_obj, 'fixtext')
 
         update_severity(changed, current, rule_obj)
+
+        cleanup_end_of_file(rule_obj['dir'])
 
 
 if __name__ == "__main__":
