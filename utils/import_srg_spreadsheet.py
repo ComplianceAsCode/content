@@ -178,8 +178,9 @@ def main() -> None:
         update_row(cleaned_changed_vuln_discussion, current.Vul_Discussion, rule_obj,
                    'vuldiscussion')
 
-        cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
-        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext')
+        cleaned_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
+        cleaned_current_check = fix_changed_text(cleaned_current_check, args.changed_name)
+        update_row(cleaned_current_check, changed.Check, rule_obj, 'checktext')
 
         cleaned_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
         cleaned_changed_fix = fix_changed_text(changed.Fix, args.changed_name)
