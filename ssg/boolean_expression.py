@@ -94,8 +94,8 @@ class Symbol(boolean.Symbol):
         return self.requirement.project_name
 
     @staticmethod
-    def _is_parametrized(ref):
-        return re.search(r'^\w+\[\w+\]$', ref)
+    def reference_is_parametrized(reference):
+        return re.search(r'^\w+\[\w+\]$', reference)
 
 
 class Algebra(boolean.BooleanAlgebra):

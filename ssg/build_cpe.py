@@ -89,7 +89,7 @@ class ProductCPEs(object):
             if self._is_name(ref):
                 return self.cpes_by_name[ref]
             else:
-                if Symbol._is_parametrized(ref):
+                if Symbol.reference_is_parametrized(ref):
                     ref = get_base_name_of_parametrized_platform(ref)
                 return self.cpes_by_id[ref]
         except KeyError:
