@@ -179,9 +179,9 @@ if (PY_OPENPYXL AND PY_PANDAS AND PYTHON3_EXECUTABLE)
     set_tests_properties("srg-diff-rhel9" PROPERTIES DEPENDS "srg-export-rhel9")
 endif()
 
+file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
 
 if (PYTHON3_EXECUTABLE)
-file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
 add_test(
     NAME "test-compare_ds"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
@@ -195,4 +195,14 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
 )
 set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
+endif()
+
+if (PYTHON3_EXECUTABLE)
+add_test(
+        NAME "test-create_scap_delta_tailoring"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" -p rhel8 -m  "${RHEL8_DISA_STIG_REF}"
+)
+set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES LABELS quick)
+set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
