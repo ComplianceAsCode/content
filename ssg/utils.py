@@ -343,7 +343,7 @@ def recurse_or_substitute_or_do_nothing(
         return v
 
 
-def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=None):
+def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=frozenset()):
     """
     Uses Python built-in string replacement.
     It replaces strings marked by {token} if "token" is a key in the string_dict parameter.
@@ -351,8 +351,6 @@ def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=None)
     This works only for dictionaries whose values are dicts or strings
     """
     new_dict = {}
-    if ignored_keys is None:
-        ignored_keys = []
     for k, v in source_dict.items():
         if k not in ignored_keys:
             new_dict[k] = recurse_or_substitute_or_do_nothing(
