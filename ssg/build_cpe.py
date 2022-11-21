@@ -89,7 +89,7 @@ class ProductCPEs(object):
             if self._is_name(cpe_id_or_name):
                 return self.cpes_by_name[cpe_id_or_name]
             else:
-                if Symbol.reference_is_parametrized(cpe_id_or_name):
+                if Symbol.cpe_id_is_parametrized(cpe_id_or_name):
                     cpe_id_or_name = get_base_name_of_parametrized_platform(
                         cpe_id_or_name)
                 return self.cpes_by_id[cpe_id_or_name]
