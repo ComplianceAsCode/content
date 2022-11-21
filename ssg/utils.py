@@ -333,7 +333,8 @@ def enum(*args):
     return type('Enum', (), enums)
 
 
-def recurse_or_substitute_or_do_nothing(v, string_dict, ignored_keys):
+def recurse_or_substitute_or_do_nothing(
+        v, string_dict, ignored_keys=frozenset()):
     if isinstance(v, dict):
         return apply_formatting_on_dict_values(v, string_dict, ignored_keys)
     elif isinstance(v, str):
