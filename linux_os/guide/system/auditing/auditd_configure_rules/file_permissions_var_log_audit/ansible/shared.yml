@@ -36,23 +36,28 @@
   when: (log_group_line.stdout | length > 0)
 
 - name: Apply mode to log file when group root
-  command: chmod {{ item }}
+  file:
+    path: "{{ log_file }}"
+    mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' )) | ternary( '0600', '0640')
   failed_when: false
-  with_items:
-    - "0600 {{ log_file }}"
-    - "0400 {{ log_file }}.*"
-  when: ( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' )
+
+- name: List all log file backups
+  find:
+    path: "{{ log_file | dirname }}"
+    patterns: "{{ log_file | basename }}.*"
+  register: backup_files
 
 - name: Apply mode to log file when group not root
-  command: chmod {{ item }}
+  file:
+    path: "{{ item }}"
+    mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' ))  | ternary( '0400', '0440')
+  loop: "{{ backup_files.files| map(attribute='path') | list }}"
   failed_when: false
-  with_items:
-    - "0640 {{ log_file }}"
-    - "0440 {{ log_file }}.*"
-  when:  ( log_group is undefined ) or ( ( log_group.stdout | trim ) != 'root')
 
 {{% else %}}
 - name: Apply mode to log file
-  command: chmod 0600 {{ log_file }}
+  file:
+    path: {{ log_file }}
+    mode: 0600
   failed_when: false
 {{% endif %}}
