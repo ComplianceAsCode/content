@@ -1,7 +1,7 @@
 # platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 
 
-{{{ bash_instantiate_variables(FILE_PARAM_ARGUMENT) }}}
+{{{ bash_instantiate_variables(PARAMETER) }}}
 
 # List of log file paths to be inspected for correct permissions
 # * Primarily inspect log file paths listed in /etc/rsyslog.conf
@@ -85,6 +85,20 @@ do
 	LOG_FILE_PATHS+=($(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\""))
 done
 
+FILE_CMD=""
+case "{{{ ATTRIBUTE }}}" in
+     "groupowner")
+        FILE_CMD=$(which chgrp)
+        ;;
+     "owner")
+        FILE_CMD=$(which chown)
+        ;;
+      *)
+        echo -n "Not supported file attribute! "
+        exit 1
+      ;;
+esac
+
 # Correct the form o
 for LOG_FILE_PATH in "${LOG_FILE_PATHS[@]}"
 do
@@ -94,5 +108,5 @@ do
 		continue
 	fi
 
-	{{{ FILE_PARAM_CMD }}} ${{{ FILE_PARAM_ARGUMENT }}} "$LOG_FILE_PATH"
+	$FILE_CMD ${{{ PARAMETER }}} "$LOG_FILE_PATH"
 done

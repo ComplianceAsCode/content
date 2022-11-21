@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{{ ansible_instantiate_variables(FILE_PARAM_ARGUMENT) }}}
+{{{ ansible_instantiate_variables(PARAMETER) }}}
 
 - name: "Set rsyslog logfile configuration facts"
   set_fact:
@@ -55,10 +55,13 @@
 
 - name: "Sum all log files found"
   set_fact:
-    log_files: "{{ log_files_new.stdout_lines + log_files_old.stdout_lines }}"
+    log_files: "{{ {{ log_files_new.results|map(attribute='stdout_lines')|list|flatten|unique + log_files_old.results|map(attribute='stdout_lines')|list|flatten|unique  }}"
 
-- name: "Setup log files permissions"
+- name: "Setup log files attribute"
   ignore_errors: yes
-  ansible.builtin.command:
-    cmd: {{{ FILE_PARAM_CMD }}} {{ {{{ FILE_PARAM_ARGUMENT }}} }} "{{ item }}"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: '{{ ( "{{{ ATTRIBUTE }}}" is match("owner")) | ternary({{{ PARAMETER }}}, omit) }}'
+    group: '{{ ( "{{{ ATTRIBUTE }}}" is match("groupowner")) | ternary({{{ PARAMETER }}} , omit) }}'
+    state: file
   loop: "{{ log_files | list | flatten |unique }}"
