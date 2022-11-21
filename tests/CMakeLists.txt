@@ -188,3 +188,11 @@ add_test(
 )
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
 endif()
+
+if (PYTHON3_EXECUTABLE AND GIT_EXECUTABLE)
+add_test(
+    NAME "test-generate_contributors"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
+)
+set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
+endif()
