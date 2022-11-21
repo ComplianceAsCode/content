@@ -197,12 +197,22 @@ add_test(
 set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
 endif()
 
-if (PYTHON3_EXECUTABLE)
+
+if (SSG_PRODUCT_RHEL8 AND PYTHON3_EXECUTABLE)
 add_test(
         NAME "test-create_scap_delta_tailoring"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" -p rhel8 -m  "${RHEL8_DISA_STIG_REF}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
 )
 set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES LABELS quick)
 set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 set_tests_properties("test-create_scap_delta_tailoring" PROPERTIES DEPENDS "test-rule-dir-json")
+
+
+add_test(
+        NAME "test-create_scap_delta_tailoring_resolved"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --resolved-rules-dir --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
+)
+set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES LABELS quick)
+set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
