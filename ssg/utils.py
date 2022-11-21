@@ -351,8 +351,10 @@ def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=None)
     This works only for dictionaries whose values are dicts or strings
     """
     new_dict = {}
+    if ignored_keys is None:
+        ignored_keys = []
     for k, v in source_dict.items():
-        if ignored_keys is None or k not in ignored_keys:
+        if k not in ignored_keys:
             new_dict[k] = recurse_or_substitute_or_do_nothing(
                 v, string_dict, ignored_keys)
         else:
