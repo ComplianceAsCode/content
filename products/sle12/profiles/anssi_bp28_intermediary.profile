@@ -23,3 +23,6 @@ description: |-
 
 selections:
   - anssi:all:intermediary
+  - file_owner_logfiles_value=root
+  - file_groupowner_logfiles_value=root
+
