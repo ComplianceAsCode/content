@@ -142,7 +142,9 @@ def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
 
 
 def fix_changed_text(replacement: str, changed_name: str):
-    return replacement.replace(changed_name, '{{{ full_name }}}')
+    no_space_name = changed_name.replace(' ', '')
+    return replacement.replace(changed_name, '{{{ full_name }}}')\
+        .replace(no_space_name, '{{{ full_name }}}')
 
 
 def main() -> None:
