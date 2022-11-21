@@ -5,7 +5,8 @@
 %global _default_patch_fuzz 2
 
 Name:		scap-security-guide
-Version:	0.1.60
+# Version placeholder. Copr build version is determined by utils/version.sh. See .packit.yaml config
+Version:	0.0.1
 Release:	0%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 License:	BSD-3-Clause
