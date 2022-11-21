@@ -84,16 +84,17 @@ class ProductCPEs(object):
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
-    def get_cpe(self, ref):
+    def get_cpe(self, cpe_id_or_name):
         try:
-            if self._is_name(ref):
-                return self.cpes_by_name[ref]
+            if self._is_name(cpe_id_or_name):
+                return self.cpes_by_name[cpe_id_or_name]
             else:
-                if Symbol.reference_is_parametrized(ref):
-                    ref = get_base_name_of_parametrized_platform(ref)
-                return self.cpes_by_id[ref]
+                if Symbol.reference_is_parametrized(cpe_id_or_name):
+                    cpe_id_or_name = get_base_name_of_parametrized_platform(
+                        cpe_id_or_name)
+                return self.cpes_by_id[cpe_id_or_name]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" % (ref))
+            raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
 
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)
