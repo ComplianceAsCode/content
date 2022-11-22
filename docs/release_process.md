@@ -63,7 +63,7 @@ Milestone must be updated to refer the next release.
 - Open a PR to bump the version of `CMakeLists.txt` on the **master** branch.
     - For example, when the `stabilization-v0.1.65` is created, the line `set(SSG_PATCH_VERSION 65)`
     must be updated to `set(SSG_PATCH_VERSION 66)` in the `CMakeLists.txt` file
-    - Reference: https://github.com/ComplianceAsCode/content/pull/9600
+    - Reference: https://github.com/ComplianceAsCode/content/pull/9857
 
 ### Announcing the Start of Stabilization Period
 
