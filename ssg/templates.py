@@ -35,11 +35,11 @@ TEMPLATE_YAML_FILE_NAME = "template.yml"
 
 
 class Template:
-    def __init__(self, template_root_directory, name):
+    def __init__(self, templates_root_directory, name):
         self.langs = []
-        self.template_root_directory = template_root_directory
+        self.templates_root_directory = templates_root_directory
         self.name = name
-        self.template_path = os.path.join(self.template_root_directory, self.name)
+        self.template_path = os.path.join(self.templates_root_directory, self.name)
         self.template_yaml_path = os.path.join(self.template_path, TEMPLATE_YAML_FILE_NAME)
         self.preprocessing_file_path = os.path.join(self.template_path, PREPROCESSING_FILE_NAME)
 
@@ -71,11 +71,15 @@ class Template:
             self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
-        # If no template.py file exists, skip this preprocessing part
+        parameters = self._preprocess_with_template_module(parameters, lang)
+        # TODO: Remove this right after the variables in templates are renamed to lowercase
+        parameters = {k.upper(): v for k, v in parameters.items()}
+        return parameters
+
+    def _preprocess_with_template_module(self, parameters, lang):
         if self.preprocessing_file_path is not None:
             unique_dummy_module_name = "template_" + self.name
-            preprocess_mod = imp.load_source(
-                unique_dummy_module_name, self.preprocessing_file_path)
+            preprocess_mod = imp.load_source(unique_dummy_module_name, self.preprocessing_file_path)
             if not hasattr(preprocess_mod, "preprocess"):
                 msg = (
                     "The '{name}' template's preprocessing file {preprocessing_file} "
@@ -84,17 +88,12 @@ class Template:
                 )
                 raise ValueError(msg)
             parameters = preprocess_mod.preprocess(parameters.copy(), lang)
-        # TODO: Remove this right after the variables in templates are renamed
-        # to lowercase
-        uppercases = dict()
-        for k, v in parameters.items():
-            uppercases[k.upper()] = v
-        return uppercases
+        return parameters
 
     def _looks_like_template(self):
-        if not os.path.isdir(self.template_root_directory):
+        if not os.path.isdir(self.template_path):
             return False
-        if os.path.islink(self.template_root_directory):
+        if os.path.islink(self.template_path):
             return False
         template_sources = sorted(glob.glob(os.path.join(self.template_path, "*.template")))
         if not os.path.isfile(self.template_yaml_path) and not template_sources:
@@ -112,10 +111,8 @@ class Builder(object):
     output directory for remediations into the constructor. Then, call the
     method build() to perform a build.
     """
-    def __init__(
-            self, env_yaml, resolved_rules_dir, templates_dir,
-            remediations_dir, checks_dir, platforms_dir, cpe_items_dir):
-        self.templates = dict()
+    def __init__(self, env_yaml, resolved_rules_dir, templates_dir,
+                 remediations_dir, checks_dir, platforms_dir, cpe_items_dir):
         self.env_yaml = env_yaml
         self.resolved_rules_dir = resolved_rules_dir
         self.templates_dir = templates_dir
@@ -124,6 +121,19 @@ class Builder(object):
         self.platforms_dir = platforms_dir
         self.cpe_items_dir = cpe_items_dir
         self.output_dirs = dict()
+        self.templates = dict()
+        self._init_lang_output_dirs()
+        self._init_and_load_templates()
+        self.product_cpes = ProductCPEs()
+        self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
+
+    def _init_and_load_templates(self):
+        for item in sorted(os.listdir(self.templates_dir)):
+            maybe_template = Template.load_template(self.templates_dir, item)
+            if maybe_template is not None:
+                self.templates[item] = maybe_template
+
+    def _init_lang_output_dirs(self):
         for lang_name, lang in languages.items():
             lang_dir = lang.lang_specific_dir
             if lang.template_type == template_type.check:
@@ -132,18 +142,11 @@ class Builder(object):
                 output_dir = self.remediations_dir
             dir_ = os.path.join(output_dir, lang_dir)
             self.output_dirs[lang_name] = dir_
-        # Scan directory structure and dynamically create list of templates
-        for item in sorted(os.listdir(self.templates_dir)):
-            maybe_template = Template.load_template(templates_dir, item)
-            if maybe_template is not None:
-                self.templates[item] = maybe_template
-        self.product_cpes = ProductCPEs()
-        self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
 
-    def get_langs_to_generate(self, id_, template):
+    def get_template_backend_langs(self, template, rule_id):
         """
-        For a given rule returns list of languages that should be generated
-        from templates. This is controlled by "template_backends" in rule.yml.
+        Returns list of languages that should be generated from a template
+        configuration, controlled by backends.
         """
         if "backends" in template:
             backends = template["backends"]
@@ -151,7 +154,7 @@ class Builder(object):
                 if lang not in languages.keys():
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
-                        "from a template.".format(id_, lang)
+                        "from a template.".format(rule_id, lang)
                     )
             langs_to_generate = []
             for lang_name, lang in languages.items():
@@ -182,13 +185,13 @@ class Builder(object):
     def get_resolved_langs_to_generate(self, rule):
         """
         Given a specific Rule instance, determine which languages are
-        generated by the combination of the rule's template_backends AND
-        the rule's template keys.
+        generated by the combination of the rule's template supported_languages AND
+        the rule's template configuration backends.
         """
         if rule.template is None:
             return None
 
-        rule_langs = set(self.get_langs_to_generate(rule.id_, rule.template))
+        rule_langs = set(self.get_template_backend_langs(rule.template, rule.id_))
         template_name = self.get_template_name(rule.template, rule.id_)
         template_langs = set(self.templates[template_name].langs)
         return rule_langs.intersection(template_langs)
@@ -219,7 +222,6 @@ class Builder(object):
         template_file_name = lang.name + ".template"
         template_file_path = os.path.join(self.templates_dir, template_name, template_file_name)
         template_parameters = self.templates[template_name].preprocess(template_vars, lang.name)
-        local_env_yaml["products"] = self.env_yaml["product"]
         env_yaml = self.env_yaml.copy()
         env_yaml.update(local_env_yaml)
         jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
@@ -247,8 +249,10 @@ class Builder(object):
         # definition ID so that the build system matches the generated
         # check with the rule.
         template_vars["_rule_id"] = rule_id
+
         # Checks and remediations are processed with a custom YAML dict
-        local_env_yaml = {"rule_id": rule_id, "rule_title": rule_title}
+        local_env_yaml = {"rule_id": rule_id, "rule_title": rule_title,
+                          "products": self.env_yaml["product"]}
         if extra_env is not None:
             local_env_yaml.update(extra_env)
 
@@ -259,11 +263,9 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
-
         filled_template = self.get_lang_contents(rule_id, rule_title, template, lang, extra_env)
 
-        ext = lang.file_extension
-        output_file_name = rule_id + ext
+        output_file_name = rule_id + lang.file_extension
         output_filepath = os.path.join(self.output_dirs[lang.name], output_file_name)
 
         with open(output_filepath, "w") as f:
@@ -278,11 +280,9 @@ class Builder(object):
         if rule.identifiers is not None:
             extra_env["cce_identifiers"] = rule.identifiers
 
-        langs_to_generate = self.get_langs_to_generate(rule.id_, rule.template)
-        for lang in langs_to_generate:
-            if lang not in self.templates[rule.template["name"]].langs or lang.name == "sce-bash":
-                continue
-            self.build_lang(rule.id_, rule.title, rule.template, lang, extra_env)
+        for lang in self.get_resolved_langs_to_generate(rule):
+            if lang.name != "sce-bash":
+                self.build_lang(rule.id_, rule.title, rule.template, lang, extra_env)
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
@@ -309,7 +309,6 @@ class Builder(object):
         Builds all templated content for all languages, writing
         the output to the correct build directories.
         """
-
         for dir_ in self.output_dirs.values():
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
