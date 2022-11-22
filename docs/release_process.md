@@ -74,6 +74,7 @@ Milestone must be updated to refer the next release.
         - scap-security-guide@lists.fedorahosted.org
     - Github Discussion
         - https://github.com/ComplianceAsCode/content/discussions/new?category=announcements
+        - Reference: https://github.com/ComplianceAsCode/content/discussions/9859
     - Here is an example message that could be used as reference:
     ```
     Subject: stabilization of v0.1.65
