@@ -18,7 +18,7 @@ and ultimately allows the release process to happen while development continues 
 - Update the contributors list by accessing the root folder of Content repository, in the
 **stabilization** branch, and executing the following command:
     ```
-    PYTHONPATH=. utils/generate_contributors.py`
+    PYTHONPATH=. utils/generate_contributors.py
     ```
     - De-duplicate names if necessary.
     - Make a commit send the a PR.
