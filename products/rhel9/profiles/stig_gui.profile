@@ -43,3 +43,6 @@ selections:
     # SRG-OS-000480-GPOS-00227
     - '!package_gdm_removed'
     - '!package_xorg-x11-server-common_removed'
+
+    # SRG-OS-000095-GPOS-00049
+    - '!package_nfs-utils_removed'
