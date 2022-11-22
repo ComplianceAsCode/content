@@ -5,6 +5,7 @@ import os
 import argparse
 import json
 
+from ssg.build_cpe import ProductCPEs
 import ssg.build_profile
 import ssg.build_yaml
 import ssg.controls
@@ -63,11 +64,15 @@ def load_for_product(rule_obj, product, env_yaml=None):
 def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, reference,
                     profiles_root, controls_manager=None):
     profile = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(profile_path, env_yaml)
+    product_cpes = ProductCPEs()
+    product_cpes.load_product_cpes(env_yaml)
+    product_cpes.load_content_cpes(env_yaml)
 
     if controls_manager:
         profile_files = ssg.products.get_profile_files_from_root(env_yaml, product_yaml)
-        all_profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml)
-        profile.resolve(all_profiles, controls_manager)
+        all_profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml,
+                                                                      product_cpes)
+        profile.resolve(all_profiles, rule_dirs, controls_manager)
 
     ok = True
     for rule_id in profile.selected + profile.unselected:
