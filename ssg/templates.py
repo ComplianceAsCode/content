@@ -151,19 +151,11 @@ class Builder(object):
         if "backends" in template:
             backends = template["backends"]
             for lang in backends:
-                if lang not in languages.keys():
-                    raise RuntimeError(
-                        "Rule {0} wants to generate unknown language '{1}"
-                        "from a template.".format(rule_id, lang)
-                    )
-            langs_to_generate = []
-            for lang_name, lang in languages.items():
-                backend = backends.get(lang_name, "on")
-                if backend == "on":
-                    langs_to_generate.append(lang)
-            return langs_to_generate
-        else:
-            return languages.values()
+                if lang not in languages:
+                    raise RuntimeError("Rule {0} wants to generate unknown language '{1}"
+                                       "from a template.".format(rule_id, lang))
+            return [lang for name, lang in languages.items() if backends.get(name, "on") == "on"]
+        return languages.values()
 
     def get_template_name(self, template, rule_id):
         """
