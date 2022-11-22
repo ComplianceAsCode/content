@@ -80,12 +80,9 @@ class ProductCPEs(object):
         if cpe_item.is_product_cpe:
             self.product_cpes[cpe_item.id_] = cpe_item
 
-    def _is_name(self, ref):
-        return ref.startswith("cpe:")
-
     def get_cpe(self, cpe_id_or_name):
         try:
-            if self._is_name(cpe_id_or_name):
+            if Symbol.is_cpe_name(cpe_id_or_name):
                 return self.cpes_by_name[cpe_id_or_name]
             else:
                 if Symbol.cpe_id_is_parametrized(cpe_id_or_name):
