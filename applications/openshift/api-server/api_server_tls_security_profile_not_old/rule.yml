@@ -17,6 +17,7 @@ description: |-
     {{% raw %}}<pre>oc patch apiservers.config.openshift.io cluster --type 'json' --patch '[{"op": "add", "path": "/spec/tlsSecurityProfile/intermediate", "value": {}}, {"op": "replace", "path": "/spec/tlsSecurityProfile/type", "value": "Intermediate"}, {"op": "remove", "path": "/spec/tlsSecurityProfile/old"}]'</pre>{{% endraw %}}
 
     For more information, follow
+    OpenShift documentation:
     {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/tls-security-profiles.html",
                 text="the relevant documentation") }}}.
 
@@ -41,7 +42,8 @@ ocil_clause: 'insecure tlsSecurityProfile is configured for accessing external s
 ocil: |-
     To check for the configured tlsSecurityProfile use below command:
     <tt>$ oc get apiservers.config.openshift.io cluster -o jsonpath='{.spec.tlsSecurityProfile.type}{"\n"}'</tt>
-    The output shows the tlsSecurityProfile configured for API Server.
+    The output shows the tlsSecurityProfile configured for API Server, and
+    TLS security profile configured should not be "old".
 
 warnings:
     - general: |-
