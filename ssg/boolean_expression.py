@@ -93,6 +93,14 @@ class Symbol(boolean.Symbol):
     def name(self):
         return self.requirement.project_name
 
+    @staticmethod
+    def cpe_id_is_parametrized(cpe_id):
+        return re.search(r'^\w+\[\w+\]$', cpe_id)
+
+    @staticmethod
+    def is_cpe_name(cpe_id_or_name):
+        return cpe_id_or_name.startswith("cpe:")
+
 
 class Algebra(boolean.BooleanAlgebra):
     """

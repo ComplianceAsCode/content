@@ -6,7 +6,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
-import re
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
@@ -81,22 +80,17 @@ class ProductCPEs(object):
         if cpe_item.is_product_cpe:
             self.product_cpes[cpe_item.id_] = cpe_item
 
-    def _is_name(self, ref):
-        return ref.startswith("cpe:")
-
-    def _is_parametrized(self, ref):
-        return re.search(r'^\w+\[\w+\]$', ref)
-
-    def get_cpe(self, ref):
+    def get_cpe(self, cpe_id_or_name):
         try:
-            if self._is_name(ref):
-                return self.cpes_by_name[ref]
+            if Symbol.is_cpe_name(cpe_id_or_name):
+                return self.cpes_by_name[cpe_id_or_name]
             else:
-                if self._is_parametrized(ref):
-                    ref = get_base_name_of_parametrized_platform(ref)
-                return self.cpes_by_id[ref]
+                if Symbol.cpe_id_is_parametrized(cpe_id_or_name):
+                    cpe_id_or_name = get_base_name_of_parametrized_platform(
+                        cpe_id_or_name)
+                return self.cpes_by_id[cpe_id_or_name]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" % (ref))
+            raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
 
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)

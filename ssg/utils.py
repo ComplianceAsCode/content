@@ -333,6 +333,16 @@ def enum(*args):
     return type('Enum', (), enums)
 
 
+def recurse_or_substitute_or_do_nothing(
+        v, string_dict, ignored_keys=frozenset()):
+    if isinstance(v, dict):
+        return apply_formatting_on_dict_values(v, string_dict, ignored_keys)
+    elif isinstance(v, str):
+        return v.format(**string_dict)
+    else:
+        return v
+
+
 def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=frozenset()):
     """
     Uses Python built-in string replacement.
@@ -343,12 +353,8 @@ def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=froze
     new_dict = {}
     for k, v in source_dict.items():
         if k not in ignored_keys:
-            if isinstance(v, dict):
-                new_dict[k] = apply_formatting_on_dict_values(v, string_dict, ignored_keys)
-            elif isinstance(v, str):
-                new_dict[k] = v.format(**string_dict)
-            else:
-                new_dict[k] = v
+            new_dict[k] = recurse_or_substitute_or_do_nothing(
+                v, string_dict, ignored_keys)
         else:
             new_dict[k] = v
     return new_dict
