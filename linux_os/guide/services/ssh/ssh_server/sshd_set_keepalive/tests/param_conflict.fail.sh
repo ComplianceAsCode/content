@@ -1,4 +1,5 @@
 #!/bin/bash
+# variables = var_sshd_set_keepalive=1
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
