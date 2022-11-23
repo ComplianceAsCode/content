@@ -7,5 +7,6 @@ truncate -s 0 /etc/security/pwquality.conf
 
 echo "{{{ VARIABLE }}} = {{{ TEST_CORRECT_VALUE }}}" >> /etc/security/pwquality.conf
 
-echo "{{{ VARIABLE }}} = {{{ TEST_CORRECT_VALUE }}}" \
->> /etc/security/pwquality.conf.d/test_file.conf
+config_dir="/etc/security/pwquality.conf.d"
+mkdir -p $config_dir
+echo "{{{ VARIABLE }}} = {{{ TEST_CORRECT_VALUE }}}" >> $config_dir/test_file.conf
