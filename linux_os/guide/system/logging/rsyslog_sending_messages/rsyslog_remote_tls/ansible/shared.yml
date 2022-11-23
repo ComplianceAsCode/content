@@ -5,21 +5,27 @@
 # disruption = low
 {{{ ansible_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
-- name: "Get omfwd configuration directive"
-  shell: sed -e '/^action\s*(\s*type\s*=\s*"omfwd"/,/)/!d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf || true
-  register: include_omfwd_config_output
+- name: "{{{ rule_title }}}: Find all files matching /etc/rsyslog.d/*.conf"
+  find:
+    paths: "/etc/rsyslog.d/"
+    pattern: "*.conf"
+  register: rsyslog_includes
 
-- name: "Get include files directives"
-  shell: >
-    set -o pipefail
-    echo \"{{ include_omfwd_config_output.stdout }}\"|grep  'StreamDriver=\"gtls\"'
-  register: include_omfwd_gtls_config_output
-  when: (include_omfwd_config_output.stdout_lines| length > 0)
+- name: "{{{ rule_title }}}: Retrieve list of Rsyslog config files"
+  set_fact:
+    rsyslog_files: "{{ rsyslog_includes.files | map(attribute='path') | list + ['/etc/rsyslog.conf'] }}"
 
-- name: "Set rsyslog omfwd to use TLS"
+- name: "{{{ rule_title }}}: Fix existing omfwd directives"
+  replace:
+    path: "{{ item }}"
+    regexp: '^(action\s*\(\s*type\s*=\s*"omfwd"(.*(?!.*StreamDriver\s*=\s*"gtls".*)))\)$'
+    replace: '\1 StreamDriver="gtls")'
+  register: existing_directive_fixed
+  loop: "{{ rsyslog_files }}"
+
+- name: "{{{ rule_title }}}: Add missing rsyslog directive"
   lineinfile:
     dest: /etc/rsyslog.conf
     line: "action(type=\"omfwd\" protocol=\"tcp\" Target=\"{{ rsyslog_remote_loghost_address }}\" port=\"6514\" StreamDriver=\"gtls\" StreamDriverMode=\"1\" StreamDriverAuthMode=\"x509/name\" streamdriver.CheckExtendedKeyPurpose=\"on\")"
     create: yes
-  when: (include_omfwd_gtls_config_output is skipped ) or
-        ("gtls" not in include_omfwd_gtls_config_output.stdout)
+  when: not existing_directive_fixed.changed
