@@ -1,10 +1,21 @@
 # Products
 
 /products/rhel*/product.yml @ComplianceAsCode/red-hatters
+/products/ol*/product.yml @ComplianceAsCode/oracle-maintainers
+/products/sle*/product.yml @ComplianceAsCode/suse-maintainers
+/products/ubuntu*/product.yml @ComplianceAsCode/ubuntu-maintainers
 
 # Product Specific Profiles
 
 /products/rhel*/profiles/ @ComplianceAsCode/red-hatters
+/products/ol*/profiles/ @ComplianceAsCode/oracle-maintainers
+/products/sle*/profiles/ @ComplianceAsCode/suse-maintainers
+/products/ubuntu*/profiles/ @ComplianceAsCode/ubuntu-maintainers
+
+# Product Specific Control Files
+
 /controls/cis_rhel7.yml @ComplianceAsCode/red-hatters
 /controls/cis_rhel8.yml @ComplianceAsCode/red-hatters
 /controls/stig_rhel8.yml @ComplianceAsCode/red-hatters
+/controls/cis_sle12.yml @ComplianceAsCode/suse-maintainers
+/controls/cis_sle_15.yml @ComplianceAsCode/suse-maintainers

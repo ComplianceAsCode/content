@@ -333,7 +333,7 @@ def enum(*args):
     return type('Enum', (), enums)
 
 
-def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=[]):
+def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=frozenset()):
     """
     Uses Python built-in string replacement.
     It replaces strings marked by {token} if "token" is a key in the string_dict parameter.

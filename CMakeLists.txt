@@ -206,6 +206,7 @@ find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
 find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
 find_program(PYTHON3_EXECUTABLE NAMES python3)
+find_program(GIT_EXECUTABLE NAMES git)
 
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 

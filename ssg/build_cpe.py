@@ -253,7 +253,7 @@ class CPEALLogicalTest(Function):
         return cond
 
 
-class CPEALFactRef (Symbol):
+class CPEALFactRef(Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
