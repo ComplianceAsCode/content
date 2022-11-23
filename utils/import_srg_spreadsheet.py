@@ -11,8 +11,8 @@ from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import read_file_list
-from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, get_cce_dict, \
-    get_rule_dir_json
+from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, \
+    get_cce_dict, get_rule_dir_json
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
@@ -24,7 +24,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument('--changed', '-c', help="The file with changes, in xlsx", required=True)
     parser.add_argument('--current', '-b', help="The latest file from CaC, in xlsx", required=True)
     parser.add_argument('--changed-name', '-n', type=str, action="store",
-                        help="The name that DISA uses for the producut. Defaults to RHEL 9",
+                        help="The name that DISA uses for the product. Defaults to RHEL 9",
                         default="RHEL 9")
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
@@ -90,7 +90,6 @@ def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None
     path = create_output(rule_dir['dir'])
 
     lines = read_file_list(path)
-    replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
     replacement = replacement.replace('<', '&lt').replace('>', '&gt')
     section_ranges = find_section_lines(lines, section)
     if section_ranges:
@@ -100,6 +99,7 @@ def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None
         end_line = section_ranges[0].end
         for line in lines[end_line:]:
             result = [*result, line]
+        result = [*result, '\n']
     else:
         result = lines
         result = (*result, f"\n{section}: |-")
@@ -142,6 +142,35 @@ def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
         replace_yaml_section(section, changed, rule_dir_json)
 
 
+def fix_changed_text(replacement: str, changed_name: str):
+    no_space_name = changed_name.replace(' ', '')
+    return replacement.replace(changed_name, '{{{ full_name }}}')\
+        .replace(no_space_name, '{{{ full_name }}}')
+
+
+def get_last_content_index(lines):
+    last_content_index = len(lines)
+    lines.reverse()
+    for line in lines:
+        if line == '\n':
+            last_content_index -= 1
+        else:
+            break
+    lines.reverse()
+    return last_content_index
+
+
+def cleanup_end_of_file(rule_dir: str) -> None:
+    path = create_output(rule_dir)
+    with open(path, 'r') as f:
+        lines = f.readlines()
+    last_content_index = get_last_content_index(lines)
+    lines = lines[:last_content_index]
+
+    with open(path, 'w') as f:
+        f.writelines(lines)
+
+
 def main() -> None:
     args = _parse_args()
     full_name = get_full_name(args.root, args.product)
@@ -165,17 +194,25 @@ def main() -> None:
         rule_id = cce_rule_id_dict[cce]
         rule_obj = rule_dir_json[rule_id]
 
-        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement')
+        cleaned_changed_requirement = fix_changed_text(changed.Requirement, args.changed_name)
+        update_row(cleaned_changed_requirement, current.Requirement, rule_obj, 'srg_requirement')
 
-        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion')
+        cleaned_changed_vuln_discussion = fix_changed_text(changed.Vul_Discussion,
+                                                           args.changed_name)
+        update_row(cleaned_changed_vuln_discussion, current.Vul_Discussion, rule_obj,
+                   'vuldiscussion')
 
-        cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
-        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext')
+        cleaned_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
+        cleaned_current_check = fix_changed_text(cleaned_current_check, args.changed_name)
+        update_row(cleaned_current_check, changed.Check, rule_obj, 'checktext')
 
-        cleand_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
-        update_row(changed.Fix, cleand_current_fix, rule_obj, 'fixtext')
+        cleaned_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
+        cleaned_changed_fix = fix_changed_text(changed.Fix, args.changed_name)
+        update_row(cleaned_changed_fix, cleaned_current_fix, rule_obj, 'fixtext')
 
         update_severity(changed, current, rule_obj)
+
+        cleanup_end_of_file(rule_obj['dir'])
 
 
 if __name__ == "__main__":
