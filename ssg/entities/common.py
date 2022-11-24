@@ -399,7 +399,7 @@ class Templatable(object):
         #       A better name is '_entity_id' (as in XCCDF Entity).
         template_vars["_rule_id"] = self.id_
 
-        return make_items_product_specific(template_vars, env_yaml["product"])
+        return make_items_product_specific(template_vars, env_yaml["product"], allow_overwrites=True)
 
     def get_template_backend_langs(self):
         """

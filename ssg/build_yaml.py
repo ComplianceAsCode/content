@@ -12,7 +12,7 @@ import glob
 
 
 import ssg.build_remediations
-from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef, ProductCPEs
+from .build_cpe import CPEALLogicalTest, CPEALFactRef, ProductCPEs
 from .constants import (XCCDF12_NS,
                         OSCAP_BENCHMARK,
                         OSCAP_GROUP,
@@ -40,8 +40,7 @@ from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
-from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
-from .shims import unicode_func
+from .xml import ElementTree as ET, register_namespaces, parse_file
 import ssg.build_stig
 
 from .entities.common import add_sub_element, make_items_product_specific, \
@@ -280,7 +279,7 @@ class Benchmark(XCCDFEntity):
         return data
 
     def represent_as_dict(self):
-        data = super(Benchmark, cls).represent_as_dict()
+        data = super(Benchmark, self).represent_as_dict()
         data["rear-matter"] = data["rear_matter"]
         del data["rear_matter"]
 
@@ -678,9 +677,9 @@ class Rule(XCCDFEntity, Templatable):
         inherited_cpe_platform_names=lambda: set(),
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
-        ** XCCDFEntity.KEYS,
-        ** Templatable.KEYS
+        **XCCDFEntity.KEYS
     )
+    KEYS.update(**Templatable.KEYS)
 
     MANDATORY_KEYS = {
         "title",
