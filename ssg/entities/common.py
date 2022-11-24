@@ -81,6 +81,7 @@ class XCCDFEntity(object):
     """
     KEYS = dict(
             id_=lambda: "",
+            title=lambda: "",
             definition_location=lambda: "",
     )
 
@@ -309,3 +310,16 @@ class SelectionHandler(object):
         updated_refinements = self._subtract_refinements(extended_refinements)
         updated_refinements.update(self.refine_rules)
         self.refine_rules = updated_refinements
+
+
+class Templatable(object):
+
+    KEYS = dict(
+        template=lambda: None,
+    )
+
+    def __init__(self):
+        pass
+
+    def is_templated(self):
+        return isinstance(self.template, dict)

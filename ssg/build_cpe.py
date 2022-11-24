@@ -140,7 +140,6 @@ class CPEItem(XCCDFEntity):
 
     KEYS = dict(
         name=lambda: "",
-        title=lambda: "",
         check_id=lambda: "",
         bash_conditional=lambda: "",
         ansible_conditional=lambda: "",

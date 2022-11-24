@@ -187,7 +187,6 @@ class Value(XCCDFEntity):
     """Represents XCCDF Value
     """
     KEYS = dict(
-        title=lambda: "",
         description=lambda: "",
         type=lambda: "",
         operator=lambda: "equals",
@@ -260,7 +259,6 @@ class Benchmark(XCCDFEntity):
     """Represents XCCDF Benchmark
     """
     KEYS = dict(
-        title=lambda: "",
         status=lambda: "",
         description=lambda: "",
         notice_id=lambda: "",
@@ -480,7 +478,6 @@ class Group(XCCDFEntity):
 
     KEYS = dict(
         prodtype=lambda: "all",
-        title=lambda: "",
         description=lambda: "",
         warnings=lambda: list(),
         requires=lambda: list(),
@@ -697,7 +694,6 @@ class Rule(XCCDFEntity):
     """
     KEYS = dict(
         prodtype=lambda: "all",
-        title=lambda: "",
         description=lambda: "",
         rationale=lambda: "",
         severity=lambda: "",
@@ -718,12 +714,12 @@ class Rule(XCCDFEntity):
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
         inherited_platforms=lambda: set(),
-        template=lambda: None,
         cpe_platform_names=lambda: set(),
         inherited_cpe_platform_names=lambda: set(),
         bash_conditional=lambda: None,
         fixes=lambda: dict(),
-        ** XCCDFEntity.KEYS
+        ** XCCDFEntity.KEYS,
+        ** Templatable.KEYS
     )
 
     MANDATORY_KEYS = {
