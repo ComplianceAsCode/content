@@ -101,6 +101,9 @@ Milestone must be updated to refer the next release.
 - Run whatever extra tests you have and report bugs as Upstream issues using the
 [General Issue](https://github.com/ComplianceAsCode/content/issues/new?assignees=&labels=&template=general_issue.md) template.
 - Propose bug fixes by targeting PRs to the **stabilization** branch. e.g. `stabilization-v0.1.65`
+  - For easier identification, it is a good practice to prefix PRs for the **stabilization**
+  branch by `Stabilization: `.
+      - Reference: https://github.com/ComplianceAsCode/content/pull/9877
   - Once the PR is **merged** in the **stabilization** branch, make a PR with the same fix to the **master** branch.
 
   _NOTE: There are different ways how to port commits from one branch to another._
