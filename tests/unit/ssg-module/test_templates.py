@@ -27,6 +27,11 @@ def test_render_extra_ovals():
     declaration_path = os.path.join(builder.templates_dir, "extra_ovals.yml")
     declaration = ssg.yaml.open_raw(declaration_path)
     for oval_def_id, template in declaration.items():
-        oval_content = builder.get_lang_contents(oval_def_id, oval_def_id, template,
-                                                 ssg.templates.languages["oval"])
+        rule = ssg.build_yaml.Rule.get_instance_from_full_dict({
+            "id_": oval_def_id,
+            "title": oval_def_id,
+            "template": template,
+        })
+        oval_content = builder.get_templatable_lang_contents(rule,
+                                                             ssg.templates.LANGUAGES["oval"])
         assert "<title>%s</title>" % (oval_def_id,) in oval_content

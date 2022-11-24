@@ -363,6 +363,59 @@ class Templatable(object):
     def is_templated(self):
         return isinstance(self.template, dict)
 
+    def get_template_context(self, env_yaml):
+        # TODO: The first two variables, 'rule_id' and 'rule_title' are expected by some
+        #       templates and macros even if they are not rendered in a rule context.
+        #       Better name for these variables are 'entity_id' and 'entity_title'.
+        return {
+            "rule_id": self.id_,
+            "rule_title": self.title,
+            "products": env_yaml["product"],
+        }
+
+    def get_template_name(self):
+        """
+        Given a template dictionary from a Rule instance, determine the name
+        of the template (from templates) this rule uses.
+        """
+        try:
+            template_name = self.template["name"]
+        except KeyError:
+            raise ValueError(
+                "Templatable {0} is missing template name under template key".format(self))
+        return template_name
+
+    def get_template_vars(self, env_yaml):
+        if "vars" not in self.template:
+            raise ValueError(
+                "Templatable {0} does not contain mandatory 'vars:' key under "
+                "'template:' key.".format(self))
+        template_vars = self.template["vars"]
+
+        # Add the rule ID which will be used in template preprocessors (template.py)
+        # as a unique sub-element for a variety of composite IDs.
+        # TODO: The name _rule_id is a legacy from the era when rule was the only
+        #       context for a template. Preprocessors implicitly depend on this name.
+        #       A better name is '_entity_id' (as in XCCDF Entity).
+        template_vars["_rule_id"] = self.id_
+
+        return make_items_product_specific(template_vars, env_yaml["product"])
+
+    def get_template_backend_langs(self):
+        """
+        Returns list of languages that should be generated from a template
+        configuration, controlled by backends.
+        """
+        from ..templates import LANGUAGES
+        if "backends" in self.template:
+            backends = self.template["backends"]
+            for lang in backends:
+                if lang not in LANGUAGES:
+                    raise RuntimeError("Templatable {0} wants to generate unknown language '{1}"
+                                       .format(self, lang))
+            return [lang for name, lang in LANGUAGES.items() if backends.get(name, "on") == "on"]
+        return LANGUAGES.values()
+
     def make_template_product_specific(self, product):
         if not self.is_templated():
             return

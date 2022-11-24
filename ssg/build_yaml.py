@@ -850,6 +850,11 @@ class Rule(XCCDFEntity, Templatable):
                 env_yaml, policy_specific_content_files)
         self.policy_specific_content = policy_specific_content
 
+    def get_template_context(self, env_yaml):
+        ctx = super(Rule, self).get_template_context(env_yaml)
+        if self.identifiers:
+            ctx["cce_identifiers"] = self.identifiers
+        return ctx
 
     def make_refs_and_identifiers_product_specific(self, product):
         product_suffix = "@{0}".format(product)

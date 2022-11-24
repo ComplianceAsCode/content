@@ -166,8 +166,8 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
 
                 # While we don't _write_ it, we still need to parse SCE
                 # metadata from the templated content. Render it internally.
-                raw_sce_content = template_builder.get_lang_contents(
-                    rule_id, rule.title, rule.template, langs['sce-bash'])
+                raw_sce_content = template_builder.get_templatable_lang_contents(rule,
+                                                                                 langs['sce-bash'])
 
                 ext = '.sh'
                 filename = rule_id + ext
