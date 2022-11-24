@@ -44,49 +44,9 @@ from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, pa
 from .shims import unicode_func
 import ssg.build_stig
 
-from .entities.common import (
-    XCCDFEntity,
-    add_sub_element,
-)
+from .entities.common import add_sub_element, make_items_product_specific, \
+                             XCCDFEntity, Templatable
 from .entities.profile import Profile, ProfileWithInlinePolicies
-
-
-def add_sub_element(parent, tag, ns, data):
-    """
-    Creates a new child element under parent with tag tag, and sets
-    data as the content under the tag. In particular, data is a string
-    to be parsed as an XML tree, allowing sub-elements of children to be
-    added.
-
-    If data should not be parsed as an XML tree, either escape the contents
-    before passing into this function, or use ElementTree.SubElement().
-
-    Returns the newly created subelement of type tag.
-    """
-    namespaced_data = add_xhtml_namespace(data)
-    # This is used because our YAML data contain XML and XHTML elements
-    # ET.SubElement() escapes the < > characters by &lt; and &gt;
-    # and therefore it does not add child elements
-    # we need to do a hack instead
-    # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns="{3}" xmlns:xhtml="{2}">{1}</{0}>').format(
-        tag, namespaced_data, xhtml_namespace, ns)
-
-    try:
-        element = ET.fromstring(ustr.encode("utf-8"))
-    except Exception:
-        msg = ("Error adding subelement to an element '{0}' from string: '{1}'"
-               .format(parent.tag, ustr))
-        raise RuntimeError(msg)
-
-    # Apart from HTML and XML elements the rule descriptions and similar
-    # also contain <xccdf:sub> elements, where we need to add the prefix
-    # to create a full reference.
-    for x in element.findall(".//{%s}sub" % XCCDF12_NS):
-        x.set("idref", OSCAP_VALUE + x.get("idref"))
-        x.set("use", "legacy")
-    parent.append(element)
-    return element
 
 
 def reorder_according_to_ordering(unordered, ordering, regex=None):
@@ -689,7 +649,7 @@ def rule_filter_from_def(filterdef):
     return filterfunc
 
 
-class Rule(XCCDFEntity):
+class Rule(XCCDFEntity, Templatable):
     """Represents XCCDF Rule
     """
     KEYS = dict(
@@ -733,7 +693,6 @@ class Rule(XCCDFEntity):
     ID_LABEL = "rule_id"
 
     PRODUCT_REFERENCES = ("stigid", "cis",)
-    GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
 
     def __init__(self, id_):
         super(Rule, self).__init__(id_)
@@ -891,21 +850,6 @@ class Rule(XCCDFEntity):
                 env_yaml, policy_specific_content_files)
         self.policy_specific_content = policy_specific_content
 
-    def make_template_product_specific(self, product):
-        product_suffix = "@{0}".format(product)
-
-        if not self.template:
-            return
-
-        not_specific_vars = self.template.get("vars", dict())
-        specific_vars = self._make_items_product_specific(
-            not_specific_vars, product_suffix, True)
-        self.template["vars"] = specific_vars
-
-        not_specific_backends = self.template.get("backends", dict())
-        specific_backends = self._make_items_product_specific(
-            not_specific_backends, product_suffix, True)
-        self.template["backends"] = specific_backends
 
     def make_refs_and_identifiers_product_specific(self, product):
         product_suffix = "@{0}".format(product)
@@ -929,7 +873,7 @@ class Rule(XCCDFEntity):
         )
         for name, (dic, allow_overwrites) in to_set.items():
             try:
-                new_items = self._make_items_product_specific(
+                new_items = make_items_product_specific(
                     dic, product_suffix, allow_overwrites)
             except ValueError as exc:
                 msg = (
@@ -945,43 +889,6 @@ class Rule(XCCDFEntity):
         self.references.update(product_references)
 
         self._verify_stigid_format(product)
-
-    def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
-        new_items = dict()
-        for full_label, value in items_dict.items():
-            if "@" not in full_label and full_label not in new_items:
-                new_items[full_label] = value
-                continue
-
-            label = full_label.split("@")[0]
-
-            # this test should occur before matching product_suffix with the product qualifier
-            # present in the reference, so it catches problems even for products that are not
-            # being built at the moment
-            if label in Rule.GLOBAL_REFERENCES:
-                msg = (
-                    "You cannot use product-qualified for the '{item_u}' reference. "
-                    "Please remove the product-qualifier and merge values with the "
-                    "existing reference if there is any. Original line: {item_q}: {value_q}"
-                    .format(item_u=label, item_q=full_label, value_q=value)
-                )
-                raise ValueError(msg)
-
-            if not full_label.endswith(product_suffix):
-                continue
-
-            if label in items_dict and not allow_overwrites and value != items_dict[label]:
-                msg = (
-                    "There is a product-qualified '{item_q}' item, "
-                    "but also an unqualified '{item_u}' item "
-                    "and those two differ in value - "
-                    "'{value_q}' vs '{value_u}' respectively."
-                    .format(item_q=full_label, item_u=label,
-                            value_q=value, value_u=items_dict[label])
-                )
-                raise ValueError(msg)
-            new_items[label] = value
-        return new_items
 
     def validate_identifiers(self, yaml_file):
         if self.identifiers is None:
