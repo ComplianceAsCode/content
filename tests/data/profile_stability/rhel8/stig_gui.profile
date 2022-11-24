@@ -353,6 +353,7 @@ selections:
 - security_patches_up_to_date
 - selinux_policytype
 - selinux_state
+- selinux_user_login_roles
 - service_auditd_enabled
 - service_autofs_disabled
 - service_debug-shell_disabled
