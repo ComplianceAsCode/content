@@ -363,6 +363,12 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         prefix_regex=prefix_regex)
     }}}
 {{%- else %}}
+{{% if product in ["ol8", "ol9"] %}}
+included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/Include\s*//')
+for included_file in ${included_files} ; do
+    {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true) | indent(4) }}}
+done
+{{% endif %}}
 {{{ bash_sshd_config_set(parameter=parameter, value=value) }}}
 {{%- endif %}}
 {{%- endmacro %}}

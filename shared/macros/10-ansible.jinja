@@ -194,6 +194,21 @@ value: :code:`Setting={{ varname1 }}`
 {{% set config_dir = "/etc/ssh/sshd_config.d" %}}
 {{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_dir~"/"~config_basename, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="^[#\s]*Match") }}}
 {{%- else %}}
+{{% if product in ["ol8", "ol9"] %}}
+- name: "Find sshd_config included files"
+  shell: |-
+    included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/Include\s*//')
+    [[ -n $included_files ]] && ls $included_files || true
+  register: sshd_config_included_files
+
+- name: "Comment conf from included files"
+  replace:
+    path: '{{ item }}'
+    regexp: '^(\s*{{{ parameter }}}.*)$'
+    replace: '# \1'
+  loop: "{{ sshd_config_included_files.stdout_lines }}"
+
+{{% endif %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
 {{%- endif %}}
 {{%- endmacro %}}

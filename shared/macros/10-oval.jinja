@@ -107,18 +107,23 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_parameter_pass: bool
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
+:param avoid_conflicting: If true, the check will only pass in case all (if any) configurations found are compliant
+:type avoid_conflicting: bool
 
 #}}
-{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='') -%}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='', avoid_conflicting=false) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- set prefix_text = "Check the" -%}}
+{{%- set suffix_text = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
+{{%- elif avoid_conflicting -%}}
+{{%- set suffix_text = "if any" -%}}
 {{%- endif %}}
 {{%- if not comment -%}}
-{{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path -%}}
+{{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path ~ suffix_text -%}}
 {{%- endif -%}}
 <criterion comment="{{{ comment }}}"
   test_ref="test_{{{ id_stem }}}{{{ suffix_id }}}" />
@@ -137,13 +142,18 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type id_stem: str
 
 #}}
-{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='') -%}}
+{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='', avoid_conflicting=false) -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
+{{%- set suffix_text = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
 {{%- set prefix_text = "absence" -%}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
+{{%- elif  avoid_conflicting -%}}
+{{%- set check_existence = "any_exist" -%}}
+{{%- set prefix_text = "value" -%}}
+{{%- set suffix_text = "if any" -%}}
 {{%- else %}}
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "value" -%}}
@@ -258,12 +268,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </ind:textfilecontent54_state>
 {{%- endmacro %}}
 
-{{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
-{{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") -}}}
+{{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
+{{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) -}}}
 {{%- endmacro %}}
 
-{{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false) -%}}
-{{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") }}}
+{{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
+{{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) }}}
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
@@ -879,42 +889,76 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
           definition_ref="sshd_required_or_unset" />
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
-        <criteria comment="sshd is configured correctly" operator="OR">
-          {{{- oval_line_in_file_criterion(sshd_config_path, parameter) | indent(8) }}}
-          {{%- if missing_parameter_pass %}}
-          <criteria comment="sshd is not configured incorrectly" operator="AND">
-          {{{- oval_line_in_file_criterion(sshd_config_path, parameter, missing_parameter_pass) | indent(10)}}}
-          {{%- if config_is_distributed == "true" %}}
-          {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, missing_parameter_pass) | indent(10) }}}
-          {{%- endif %}}
+        <criteria comment="sshd is configured correctly" operator="AND">
+          <criteria comment="the configuration is correct if it exists" operator="AND">
+            {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true) | indent(10)}}}
+            {{%- if config_is_distributed == "true" %}}
+            {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, avoid_conflicting=true) | indent(10) }}}
+            {{%- endif %}}
+            {{% if product in ["ol8", "ol9"] %}}
+            {{{- oval_line_in_file_criterion("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true) | indent(10)}}}
+            {{% endif %}}
           </criteria>
-          {{%- endif %}}
-          {{%- if config_is_distributed == "true" %}}
-          {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
-          {{%- endif %}}
+          {{%- if not missing_parameter_pass %}}
+          <criterion comment="the configuraton exists" test_ref="test_{{{ parameter }}}_present_{{{ rule_id }}}" />
+          {{% endif %}}
         </criteria>
       </criteria>
     </criteria>
   </definition>
-  {{{ oval_line_in_file_test(sshd_config_path, parameter) | indent (2) }}}
+
+  {{% if product in ["ol8", "ol9"] %}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter="include", id_stem="sshd_include_value_" ~ rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
+  <local_variable id="var_sshd_config_included_files_{{{ rule_id }}}" datatype="string" version="1"
+  comment="Include value converted to regex">
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression" object_ref="obj_sshd_include_value_{{{ rule_id }}}" />
+      </glob_to_regex>
+    </unique>
+  </local_variable>
+
+  {{{ oval_line_in_file_test("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true ) | indent (2) }}}
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_sshd_included_files" version="1">
+    <ind:filepath operation="pattern match" var_ref="var_sshd_config_included_files_{{{ rule_id }}}" />
+    <ind:pattern operation="pattern match">^[ \t]*(?i){{{ parameter }}}(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  {{{ oval_line_in_file_state(value, id_stem=rule_id ~ "_sshd_included_files") | indent (2) }}}
+
+  {{% endif %}}
+
+  {{{ oval_line_in_file_test(sshd_config_path, parameter, avoid_conflicting=true ) | indent (2) }}}
   {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, ** case_insensitivity_kwargs)| indent (2) }}}
   {{{ oval_line_in_file_state(value) | indent (2) }}}
 
-  {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_file_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
-  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
-  {{%- endif %}}
-
   {{%- if config_is_distributed == "true" %}}
-  {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, avoid_conflicting=true) | indent (2) }}}
   {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
+  {{%- endif %}}
 
-  {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, missing_parameter_pass) | indent(2) }}}
-  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
-  {{%- endif %}}
-  {{%- endif %}}
+  {{% if not missing_parameter_pass %}}
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
+    <set>
+      <object_reference>obj_{{{ rule_id }}}</object_reference>
+      {{%- if config_is_distributed == "true" %}}
+      <object_reference>obj_{{{ rule_id }}}_config_dir</object_reference>
+      {{% elif product in ["ol8", "ol9"] %}}
+      <object_reference>obj_{{{ rule_id }}}_sshd_included_files</object_reference>
+      {{%- endif %}}
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ parameter }}}_present_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Verify that the value of {{{ parameter }}} is present">
+    <ind:object object_ref="obj_collection_obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  {{% endif %}}
 </def-group>
 {{%- endmacro %}}
 
