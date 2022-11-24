@@ -192,7 +192,8 @@ controls:
             SSH traffic are terminated at the end of the session or after 10 minutes of inactivity,
             except to fulfill documented and validated mission requirements.
         rules:
-            - sshd_set_keepalive_0
+            - sshd_set_keepalive
+            - var_sshd_set_keepalive=1
         status: automated
     -   id: RHEL-08-010210
         levels:
