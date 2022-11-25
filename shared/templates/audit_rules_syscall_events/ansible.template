@@ -9,7 +9,13 @@
 #
 - name: Set architecture for audit {{{ ATTR }}} tasks
   set_fact:
-    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+    audit_arch: "b64"
+  when:
+  - ansible_architecture == "aarch64" or
+    ansible_architecture == "ppc64" or
+    ansible_architecture == "ppc64le" or
+    ansible_architecture == "s390x" or
+    ansible_architecture == "x86_64"
 
 #
 # Inserts/replaces the rule in /etc/audit/rules.d
@@ -34,29 +40,29 @@
       - "{{ find_{{{ ATTR }}}.files | map(attribute='path') | list | first }}"
   when: find_{{{ ATTR }}}.matched is defined and find_{{{ ATTR }}}.matched > 0
 
-- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86
+- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on 32bit
   lineinfile:
     path: "{{ all_files[0] }}"
     line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     create: yes
 
-- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86_64
+- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on 64bit
   lineinfile:
     path: "{{ all_files[0] }}"
     line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     create: yes
   when: audit_arch is defined and audit_arch == 'b64'
-#   
+#
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
-- name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/rules.d/audit.rules when on x86
+- name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/rules.d/audit.rules when on 32bit
   lineinfile:
     line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     state: present
     dest: /etc/audit/rules.d/audit.rules
     create: yes
 
-- name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/rules.d/audit.rules when on x86_64
+- name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/rules.d/audit.rules when on 64bit
   lineinfile:
     line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     state: present
