@@ -22,7 +22,7 @@ from ..constants import (
 def make_items_product_specific(items_dict, product_suffix, allow_overwrites=False):
     new_items = dict()
     for full_label, value in items_dict.items():
-        if "@" not in full_label and full_label not in new_items:
+        if "@" not in full_label:
             new_items[full_label] = value
             continue
 
@@ -53,6 +53,7 @@ def make_items_product_specific(items_dict, product_suffix, allow_overwrites=Fal
                         value_q=value, value_u=items_dict[label])
             )
             raise ValueError(msg)
+
         new_items[label] = value
     return new_items
 
