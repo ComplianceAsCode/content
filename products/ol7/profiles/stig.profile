@@ -47,6 +47,7 @@ selections:
     - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
     - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
     - rpm_verify_permissions
     - rpm_verify_ownership
     - rpm_verify_hashes
@@ -248,7 +249,6 @@ selections:
     - sshd_use_priv_separation
     - sshd_disable_compression
     - chronyd_or_ntpd_set_maxpoll
-    - configure_firewalld_rate_limiting
     - service_firewalld_enabled
     - display_login_attempts
     - no_user_host_based_files
@@ -262,6 +262,7 @@ selections:
     - sysctl_net_ipv4_conf_all_send_redirects
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_tcp_invalid_ratelimit
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
