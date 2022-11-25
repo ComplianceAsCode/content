@@ -250,6 +250,7 @@ selections:
     - sshd_disable_compression
     - chronyd_or_ntpd_set_maxpoll
     - service_firewalld_enabled
+    - package_firewalld_installed
     - display_login_attempts
     - no_user_host_based_files
     - no_host_based_files
