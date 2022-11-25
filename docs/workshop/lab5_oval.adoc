@@ -6,7 +6,6 @@
 
 // Variables
 :container_name: fedora_container
-:cpe_identifier: cpe:/o:fedoraproject:fedora:34
 
 
 == Introduction
@@ -277,7 +276,7 @@ With that in mind, execute the test suite:
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +
@@ -307,7 +306,7 @@ The alternative mode is `profile` mode, which is simpler--there are no test scen
 
 * Finally, you specify what to test--a rule regular expression: `accounts_tmout` or `^accounts_tmout$`.
 
-* Other parameters are also used for supporting running tests in this kind of environment. For example, you use `--add-platform "{cpe_identifier}"` to make the RHEL8 content applicable to Fedora images.
+* Other parameters are also used for supporting running tests in this kind of environment. For example, you use `--remove-platforms` to make the RHEL8 content applicable to Fedora images.
 ====
 
 The output tells you the following:
@@ -433,7 +432,7 @@ TIP: You can use the `Up` arrow key to browse the command history so you do not 
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +
@@ -573,7 +572,7 @@ This way, you do not have to worry about possibly introducing those link:https:/
             --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +
@@ -656,7 +655,7 @@ fi
             --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +
@@ -705,7 +704,7 @@ This time, when rebuilt and executed again, the tests pass:
             --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +
@@ -757,7 +756,7 @@ Execute the test suite again and expect the `ERROR - Script correct_value.pass.s
             --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +
@@ -804,7 +803,7 @@ The non-capturing group that consists of `export` followed by at least one white
             --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "{cpe_identifier}" \
+            --remove-platforms \
             accounts_tmout
 ----
 +

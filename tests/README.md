@@ -398,7 +398,7 @@ Using Podman:
 ```
 
 or just call the `test_rule_in_container.sh` script that passes the backend options for you
-in addition to `--remove-machine-only` and `--add-platform`
+in addition to `--remove-machine-only` and `--remove-platforms`
 that remove some testing limitations of the container backend.
 
 Using Docker:
