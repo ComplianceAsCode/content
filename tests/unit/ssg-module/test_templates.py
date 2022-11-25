@@ -1,12 +1,13 @@
 import os
 
-import ssg.templates as tpl
-from ssg.environment import open_environment
 import ssg.utils
 import ssg.products
-from ssg.yaml import ordered_load
 import ssg.build_yaml
 import ssg.build_cpe
+import ssg.templates as tpl
+
+from ssg.environment import open_environment
+from ssg.yaml import ordered_load
 
 
 ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))

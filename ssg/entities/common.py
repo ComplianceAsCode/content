@@ -7,11 +7,11 @@ from collections import defaultdict
 from copy import deepcopy
 
 from ..xml import ElementTree as ET, add_xhtml_namespace
-from ..constants import xhtml_namespace
 from ..yaml import DocumentationNotComplete, open_and_macro_expand
 from ..shims import unicode_func
 
 from ..constants import (
+    xhtml_namespace,
     XCCDF_REFINABLE_PROPERTIES,
     XCCDF12_NS,
     OSCAP_VALUE,

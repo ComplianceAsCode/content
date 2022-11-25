@@ -5,13 +5,14 @@ import os
 import imp
 import glob
 
-import ssg.build_yaml
+from collections import namedtuple
+
 import ssg.utils
 import ssg.yaml
 import ssg.jinja
-from ssg.build_cpe import ProductCPEs
-from collections import namedtuple
+import ssg.build_yaml
 
+from ssg.build_cpe import ProductCPEs
 
 TemplatingLang = namedtuple(
     "templating_language_attributes",
@@ -45,8 +46,8 @@ class Template:
         self.preprocessing_file_path = os.path.join(self.template_path, PREPROCESSING_FILE_NAME)
 
     @classmethod
-    def load_template(cls, template_root_directory, name):
-        maybe_template = cls(template_root_directory, name)
+    def load_template(cls, templates_root_directory, name):
+        maybe_template = cls(templates_root_directory, name)
         if maybe_template._looks_like_template():
             maybe_template._load()
             return maybe_template
@@ -80,7 +81,8 @@ class Template:
     def _preprocess_with_template_module(self, parameters, lang):
         if self.preprocessing_file_path is not None:
             unique_dummy_module_name = "template_" + self.name
-            preprocess_mod = imp.load_source(unique_dummy_module_name, self.preprocessing_file_path)
+            preprocess_mod = imp.load_source(unique_dummy_module_name,
+                                             self.preprocessing_file_path)
             if not hasattr(preprocess_mod, "preprocess"):
                 msg = (
                     "The '{name}' template's preprocessing file {preprocessing_file} "
@@ -185,7 +187,8 @@ class Builder(object):
         # Checks and remediations are processed with a custom YAML dict
         local_env_yaml = templatable.get_template_context(self.env_yaml)
         try:
-            return self.process_template_lang_file(template_name, template_vars, language, local_env_yaml)
+            return self.process_template_lang_file(template_name, template_vars,
+                                                   language, local_env_yaml)
         except Exception as e:
             raise RuntimeError("Unable to generate {0} template language for Templatable {1}: {2}"
                                .format(language.name, templatable, e))
