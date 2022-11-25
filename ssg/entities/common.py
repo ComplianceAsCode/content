@@ -352,6 +352,15 @@ class SelectionHandler(object):
 
 
 class Templatable(object):
+    """
+    The Templatable is a mix-in sidekick for XCCDFEntity-based classes
+    that have templates. It contains methods used by the template Builder
+    class.
+
+    Methods `get_template_context` and `get_template_vars` are subject for
+    overloading by XCCDFEntity subclasses that want to customize template
+    input.
+    """
 
     KEYS = dict(
         template=lambda: None,
@@ -363,6 +372,15 @@ class Templatable(object):
     def is_templated(self):
         return isinstance(self.template, dict)
 
+    def get_template_name(self):
+        if not self.is_templated():
+            return None
+        try:
+            return self.template["name"]
+        except KeyError:
+            raise ValueError(
+                "Templatable {0} is missing template name under template key".format(self))
+
     def get_template_context(self, env_yaml):
         # TODO: The first two variables, 'rule_id' and 'rule_title' are expected by some
         #       templates and macros even if they are not rendered in a rule context.
@@ -372,18 +390,6 @@ class Templatable(object):
             "rule_title": self.title,
             "products": env_yaml["product"],
         }
-
-    def get_template_name(self):
-        """
-        Given a template dictionary from a Rule instance, determine the name
-        of the template (from templates) this rule uses.
-        """
-        try:
-            template_name = self.template["name"]
-        except KeyError:
-            raise ValueError(
-                "Templatable {0} is missing template name under template key".format(self))
-        return template_name
 
     def get_template_vars(self, env_yaml):
         if "vars" not in self.template:
@@ -399,22 +405,26 @@ class Templatable(object):
         #       A better name is '_entity_id' (as in XCCDF Entity).
         template_vars["_rule_id"] = self.id_
 
-        return make_items_product_specific(template_vars, env_yaml["product"], allow_overwrites=True)
+        return make_items_product_specific(template_vars, env_yaml["product"],
+                                           allow_overwrites=True)
 
-    def get_template_backend_langs(self):
+    def extract_configured_backend_lang(self, avail_langs):
         """
-        Returns list of languages that should be generated from a template
-        configuration, controlled by backends.
+        Returns list of languages that should be generated
+        based on the Templatable's template option `template.backends`.
         """
-        from ..templates import LANGUAGES
+        if not self.is_templated():
+            return []
+
         if "backends" in self.template:
             backends = self.template["backends"]
             for lang in backends:
-                if lang not in LANGUAGES:
+                if lang not in avail_langs:
                     raise RuntimeError("Templatable {0} wants to generate unknown language '{1}"
                                        .format(self, lang))
-            return [lang for name, lang in LANGUAGES.items() if backends.get(name, "on") == "on"]
-        return LANGUAGES.values()
+            return [lang for name, lang in avail_langs.items() if backends.get(name, "on") == "on"]
+
+        return avail_langs.values()
 
     def make_template_product_specific(self, product):
         if not self.is_templated():
