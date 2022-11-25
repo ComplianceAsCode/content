@@ -32,6 +32,6 @@ def test_render_extra_ovals():
             "title": oval_def_id,
             "template": template,
         })
-        oval_content = builder.get_templatable_lang_contents(rule,
-                                                             ssg.templates.LANGUAGES["oval"])
+        oval_content = builder.get_lang_contents_for_templatable(rule,
+                                                                 ssg.templates.LANGUAGES["oval"])
         assert "<title>%s</title>" % (oval_def_id,) in oval_content

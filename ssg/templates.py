@@ -178,7 +178,7 @@ class Builder(object):
         jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
         return ssg.jinja.process_file_with_macros(template_file_path, jinja_dict)
 
-    def get_templatable_lang_contents(self, templatable, language):
+    def get_lang_contents_for_templatable(self, templatable, language):
         """
         For the specified Templatable, build and return only the specified language content.
         """
@@ -193,19 +193,19 @@ class Builder(object):
             raise RuntimeError("Unable to generate {0} template language for Templatable {1}: {2}"
                                .format(language.name, templatable, e))
 
-    def write_templatable_lang_contents(self, filled_template, lang, templatable):
+    def write_lang_contents_for_templatable(self, filled_template, lang, templatable):
         output_file_name = templatable.id_ + lang.file_extension
         output_filepath = os.path.join(self.output_dirs[lang.name], output_file_name)
         with open(output_filepath, "w") as f:
             f.write(filled_template)
 
-    def build_templatable_lang(self, templatable, lang):
+    def build_lang_for_templatable(self, templatable, lang):
         """
         Builds templated content of a given Templatable for a selected language,
         writing the output to the correct build directories.
         """
-        filled_template = self.get_templatable_lang_contents(templatable, lang)
-        self.write_templatable_lang_contents(filled_template, lang, templatable)
+        filled_template = self.get_lang_contents_for_templatable(templatable, lang)
+        self.write_lang_contents_for_templatable(filled_template, lang, templatable)
 
     def build_rule(self, rule):
         """
@@ -214,7 +214,7 @@ class Builder(object):
         """
         for lang in self.get_resolved_langs_to_generate(rule):
             if lang.name != "sce-bash":
-                self.build_templatable_lang(rule, lang)
+                self.build_lang_for_templatable(rule, lang)
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
@@ -228,7 +228,7 @@ class Builder(object):
                 "title": oval_def_id,
                 "template": template,
             })
-            self.build_templatable_lang(rule, LANGUAGES["oval"])
+            self.build_lang_for_templatable(rule, LANGUAGES["oval"])
 
     def build_all_rules(self):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
