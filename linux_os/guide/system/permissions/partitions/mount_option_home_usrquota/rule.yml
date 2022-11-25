@@ -33,15 +33,13 @@ fixtext: '{{{ fixtext_mount_option("/home", "usrquota") }}}'
 
 srg_requirement: '{{{ srg_requirement_mount_option("/home", "usrquota") }}}'
 
-{{% if "ol" not in product %}}
-template:
-    name: mount_option
-    vars:
-        mountpoint: /home
-        mountoption: usrquota
-        mount_has_to_exist: 'yes'
-{{% else %}}
 warnings:
+    - general: |-
+        The quota options for XFS file systems can only be activated when mounting the partition.
+        It is not possible to enable them by remounting an already mounted partition. Therefore,
+        if the desired options were not defined before mounting the partition, dismount and mount
+        it again to apply the quota options.
+{{% if "ol" in product %}}
     - functionality: |-
         OVAL looks for partitions whose mount point is a substring of any interactive user's home
         directory and validates that usrquota option is there. Because of this, there could be
@@ -52,8 +50,18 @@ warnings:
         Bash remediation uses the <tt>df</tt> command to find out the partition where the home
         directory is mounted. However, if the directory doesn't exist the remediation won't be
         applied.
+{{% endif %}}
+
+{{% if "ol" in product %}}
 template:
     name: mount_option_home
     vars:
         mountoption: usrquota
+{{% else %}}
+template:
+    name: mount_option
+    vars:
+        mountpoint: /home
+        mountoption: usrquota
+        mount_has_to_exist: 'yes'
 {{% endif %}}
