@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,rhel7,sle15
+prodtype: ol7,rhel7,sle12,sle15
 
 title: 'Use Only Strong Ciphers'
 
@@ -24,9 +24,12 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-82363-3
+    cce@sle12: CCE-92279-9
+    cce@sle15: CCE-91395-4
 
 references:
     cis@debian: 9.3.11
+    cis@sle12: 5.2.13
     cis@sle15: 5.2.13
 
 ocil_clause: 'ciphers are not configured or not using strong ciphers'
