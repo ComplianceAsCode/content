@@ -1339,6 +1339,8 @@ controls:
       - l2_server
       - l2_workstation
     status: manual # missing rule for sudoers scope
+    rules:
+      - audit_rules_sysadmin_actions
 
   - id: 4.1.15
     title: Ensure system administrator actions (sudolog) are collected (Automated)
