@@ -19,6 +19,32 @@ from ..constants import (
 )
 
 
+def extract_reference_from_product_specific_label(items_dict, full_label, value, allow_overwrites):
+    label = full_label.split("@")[0]
+
+    if label in GLOBAL_REFERENCES:
+        msg = (
+            "You cannot use product-qualified for the '{item_u}' reference. "
+            "Please remove the product-qualifier and merge values with the "
+            "existing reference if there is any. Original line: {item_q}: {value_q}"
+            .format(item_u=label, item_q=full_label, value_q=value)
+        )
+        raise ValueError(msg)
+
+    if not allow_overwrites and label in items_dict and value != items_dict[label]:
+        msg = (
+            "There is a product-qualified '{item_q}' item, "
+            "but also an unqualified '{item_u}' item "
+            "and those two differ in value - "
+            "'{value_q}' vs '{value_u}' respectively."
+            .format(item_q=full_label, item_u=label,
+                    value_q=value, value_u=items_dict[label])
+        )
+        raise ValueError(msg)
+
+    return label
+
+
 def make_items_product_specific(items_dict, product_suffix, allow_overwrites=False):
     new_items = dict()
     for full_label, value in items_dict.items():
@@ -26,33 +52,14 @@ def make_items_product_specific(items_dict, product_suffix, allow_overwrites=Fal
             new_items[full_label] = value
             continue
 
-        label = full_label.split("@")[0]
-
-        # This test should occur before matching product_suffix with the product qualifier
+        # This procedure should occur before matching product_suffix with the product qualifier
         # present in the reference, so it catches problems even for products that are not
         # being built at the moment
-        if label in GLOBAL_REFERENCES:
-            msg = (
-                "You cannot use product-qualified for the '{item_u}' reference. "
-                "Please remove the product-qualifier and merge values with the "
-                "existing reference if there is any. Original line: {item_q}: {value_q}"
-                .format(item_u=label, item_q=full_label, value_q=value)
-            )
-            raise ValueError(msg)
+        label = extract_reference_from_product_specific_label(items_dict, full_label, value,
+                                                              allow_overwrites)
 
         if not full_label.endswith(product_suffix):
             continue
-
-        if label in items_dict and not allow_overwrites and value != items_dict[label]:
-            msg = (
-                "There is a product-qualified '{item_q}' item, "
-                "but also an unqualified '{item_u}' item "
-                "and those two differ in value - "
-                "'{value_q}' vs '{value_u}' respectively."
-                .format(item_q=full_label, item_u=label,
-                        value_q=value, value_u=items_dict[label])
-            )
-            raise ValueError(msg)
 
         new_items[label] = value
     return new_items
