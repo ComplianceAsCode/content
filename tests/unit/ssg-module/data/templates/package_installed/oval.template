@@ -1,0 +1,11 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}"
+  version="1">
+    {{{ oval_metadata("The " + pkg_system|upper + " package " + PKGNAME + " should be installed.", affected_platforms=["multi_platform_all"]) }}}
+    <criteria>
+      <criterion comment="package {{{ PKGNAME }}} is installed"
+      test_ref="test_package_{{{ PKGNAME }}}_installed" />
+    </criteria>
+  </definition>
+{{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
+</def-group>

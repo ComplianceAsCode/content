@@ -454,6 +454,8 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'eks': 'Amazon Elastic Kubernetes Service',
 }
 
+# References that can not be used with product-qualifiers
+GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
 
 # Application constants
 DEFAULT_GID_MIN = 1000
