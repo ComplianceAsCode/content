@@ -218,10 +218,10 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        inherited_conditionals = super(
-            BashRemediation, self).get_inherited_conditionals("bash", cpe_platforms)
-        rule_specific_conditionals = super(
-            BashRemediation, self).get_rule_specific_conditionals("bash", cpe_platforms)
+        inherited_conditionals = sorted(super(
+            BashRemediation, self).get_inherited_conditionals("bash", cpe_platforms))
+        rule_specific_conditionals = sorted(super(
+            BashRemediation, self).get_rule_specific_conditionals("bash", cpe_platforms))
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
 
@@ -361,10 +361,10 @@ class AnsibleRemediation(Remediation):
 
     def update_when_from_rule(self, to_update, cpe_platforms):
         additional_when = []
-        inherited_conditionals = super(
-            AnsibleRemediation, self).get_inherited_conditionals("ansible", cpe_platforms)
-        rule_specific_conditionals = super(
-            AnsibleRemediation, self).get_rule_specific_conditionals("ansible", cpe_platforms)
+        inherited_conditionals = sorted(super(
+            AnsibleRemediation, self).get_inherited_conditionals("ansible", cpe_platforms))
+        rule_specific_conditionals = sorted(super(
+            AnsibleRemediation, self).get_rule_specific_conditionals("ansible", cpe_platforms))
         # Remove conditionals related to package CPEs if the updated task collects package facts
         if "package_facts" in to_update:
             inherited_conditionals = filter(
