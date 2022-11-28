@@ -6,17 +6,17 @@
 {{{ ansible_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
 - name: "{{{ rule_title }}}: Find all files matching /etc/rsyslog.d/*.conf"
-  find:
+  ansible.builtin.find:
     paths: "/etc/rsyslog.d/"
     pattern: "*.conf"
   register: rsyslog_includes
 
 - name: "{{{ rule_title }}}: Retrieve list of Rsyslog config files"
-  set_fact:
+  ansible.builtin.set_fact:
     rsyslog_files: "{{ rsyslog_includes.files | map(attribute='path') | list + ['/etc/rsyslog.conf'] }}"
 
 - name: "{{{ rule_title }}}: Fix existing omfwd directives"
-  replace:
+  ansible.builtin.replace:
     path: "{{ item }}"
     regexp: '^(action\s*\(\s*type\s*=\s*"omfwd"(.*(?!.*StreamDriver\s*=\s*"gtls".*)))\)$'
     replace: '\1 StreamDriver="gtls")'
@@ -24,7 +24,7 @@
   loop: "{{ rsyslog_files }}"
 
 - name: "{{{ rule_title }}}: Add missing rsyslog directive"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/rsyslog.conf
     line: "action(type=\"omfwd\" protocol=\"tcp\" Target=\"{{ rsyslog_remote_loghost_address }}\" port=\"6514\" StreamDriver=\"gtls\" StreamDriverMode=\"1\" StreamDriverAuthMode=\"x509/name\" streamdriver.CheckExtendedKeyPurpose=\"on\")"
     create: yes
