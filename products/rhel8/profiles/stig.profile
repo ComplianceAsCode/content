@@ -1207,5 +1207,8 @@ selections:
     # RHEL-08-040390
     - package_tuned_removed
 
+    # RHEL-08-040400
+    - selinux_user_login_roles
+
     # RHEL-08-010163
     - package_krb5-server_removed
