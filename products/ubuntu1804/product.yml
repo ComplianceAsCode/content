@@ -27,6 +27,7 @@ cpes:
       check_id: installed_OS_is_ubuntu1804
 
 platform_package_overrides:
+  audit: auditd
   gdm: gdm3
   grub2: grub2-common
   net-snmp: snmp
@@ -34,6 +35,7 @@ platform_package_overrides:
   pam: libpam-runtime
   shadow: login
   sssd: sssd-common
+  openssl-pkcs11: libpam-pkcs11
 
 reference_uris:
   cis: 'https://www.cisecurity.org/benchmark/ubuntu_linux/'
