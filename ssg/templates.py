@@ -207,6 +207,18 @@ class Builder(object):
         filled_template = self.get_lang_contents_for_templatable(templatable, lang)
         self.write_lang_contents_for_templatable(filled_template, lang, templatable)
 
+    def build_platform(self, platform):
+        """
+        Builds templated content of a given Platform (all CPEs/Symbols) for all available
+        languages, writing the output to the correct build directories.
+        """
+        for symbol in platform.test.get_symbols():
+            platform.test.pass_parameters(self.product_cpes)
+            cpe = self.product_cpes.get_cpe(symbol.as_id())
+            if cpe.is_templated():
+                for lang in self.get_resolved_langs_to_generate(cpe):
+                    self.build_lang_for_templatable(cpe, lang)
+
     def build_rule(self, rule):
         """
         Builds templated content of a given Rule for all available languages,
@@ -230,6 +242,13 @@ class Builder(object):
             })
             self.build_lang_for_templatable(rule, LANGUAGES["oval"])
 
+    def build_all_platforms(self):
+        for platform_file in sorted(os.listdir(self.platforms_dir)):
+            platform_path = os.path.join(self.platforms_dir, platform_file)
+            platform = ssg.build_yaml.Platform.from_yaml(platform_path, self.env_yaml,
+                                                         self.product_cpes)
+            self.build_platform(platform)
+
     def build_all_rules(self):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
@@ -252,3 +271,4 @@ class Builder(object):
 
         self.build_extra_ovals()
         self.build_all_rules()
+        self.build_all_platforms()

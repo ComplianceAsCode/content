@@ -13,7 +13,7 @@ from .utils import required_key, apply_formatting_on_dict_values
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
 from .boolean_expression import get_base_name_of_parametrized_platform
-from .entities.common import XCCDFEntity
+from .entities.common import XCCDFEntity, Templatable
 from .yaml import convert_string_to_bool
 
 
@@ -133,7 +133,7 @@ class CPEList(object):
         tree.write(file_name, encoding="utf-8")
 
 
-class CPEItem(XCCDFEntity):
+class CPEItem(XCCDFEntity, Templatable):
     """
     Represents the cpe-item element from the CPE standard.
     """
@@ -144,8 +144,10 @@ class CPEItem(XCCDFEntity):
         bash_conditional=lambda: "",
         ansible_conditional=lambda: "",
         is_product_cpe=lambda: False,
+        args=lambda: {},
         ** XCCDFEntity.KEYS
     )
+    KEYS.update(**Templatable.KEYS)
 
     MANDATORY_KEYS = [
         "name",
@@ -264,10 +266,15 @@ class CPEALFactRef(Symbol):
 
     def pass_parameters(self, product_cpes):
         if self.arg:
-            associated_cpe_item_as_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
+            cpe = product_cpes.get_cpe(self.cpe_name)
+            parameters = cpe.args[self.arg]
+            parameters.update(self.as_dict())
+            associated_cpe_item_as_dict = cpe.represent_as_dict()
             new_associated_cpe_item_as_dict = apply_formatting_on_dict_values(
-                associated_cpe_item_as_dict, self.as_dict())
+                associated_cpe_item_as_dict, parameters)
             new_associated_cpe_item_as_dict["id_"] = self.as_id()
+            if cpe.is_templated():
+                new_associated_cpe_item_as_dict["template"]["vars"] = parameters
             new_associated_cpe_item = CPEItem.get_instance_from_full_dict(
                 new_associated_cpe_item_as_dict)
             product_cpes.add_cpe_item(new_associated_cpe_item)

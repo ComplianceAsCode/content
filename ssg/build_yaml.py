@@ -1512,14 +1512,13 @@ class Platform(XCCDFEntity):
     def from_text(cls, expression, product_cpes):
         if not product_cpes:
             return None
-        test = product_cpes.algebra.parse(
-            expression, simplify=True)
-        id = test.as_id()
-        platform = cls(id)
+        test = product_cpes.algebra.parse(expression, simplify=True)
+        id_ = test.as_id()
+        platform = cls(id_)
         platform.test = test
         platform.test.pass_parameters(product_cpes)
         platform.test.enrich_with_cpe_info(product_cpes)
-        platform.name = id
+        platform.name = id_
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
         platform.bash_conditional = platform.test.to_bash_conditional()
@@ -1529,8 +1528,8 @@ class Platform(XCCDFEntity):
     def get_xml(self):
         cpe_platform = ET.Element("{%s}platform" % Platform.ns)
         cpe_platform.set('id', self.name)
-        # in case the platform contains only single CPE name, fake the logical test
-        # we have to athere to CPE specification
+        # In case the platform contains only single CPE name, fake the logical test
+        # we have to adhere to CPE specification
         if isinstance(self.test, CPEALFactRef):
             cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
             cpe_test.set('operator', 'AND')
@@ -1557,11 +1556,10 @@ class Platform(XCCDFEntity):
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
         platform.xml_content = ET.fromstring(platform.xml_content)
-        # if we did receive a product_cpes, we can restore also the original test object
+        # If we received a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
-            platform.test = product_cpes.algebra.parse(
-                platform.original_expression, simplify=True)
+            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
         return platform
 
     def __eq__(self, other):
