@@ -57,7 +57,7 @@
 {{% else %}}
 - name: Apply mode to log file
   file:
-    path: {{ log_file }}
+    path: "{{ log_file }}"
     mode: 0600
   failed_when: false
 {{% endif %}}
