@@ -19,10 +19,10 @@
     log_file: "/var/log/audit/audit.log"
   when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
 
-- name: Set default log_file if not set
+- name: Set log_file from log_file_line if not set already
   set_fact:
     log_file: "{{ log_file_line.stdout | trim }}"
-  when: (log_file_line.stdout | length > 0)
+  when: (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
 
 {{% if product not in ["ol8"] and "rhel" not in product %}}
 - name: Get log files group
