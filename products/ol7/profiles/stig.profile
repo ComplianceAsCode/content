@@ -33,6 +33,7 @@ selections:
     - var_removable_partition=dev_cdrom
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
+    - var_auditd_space_left_percentage=25pc
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
@@ -46,6 +47,7 @@ selections:
     - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
     - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_tcp_invalid_ratelimit_value=five_hundred
     - rpm_verify_permissions
     - rpm_verify_ownership
     - rpm_verify_hashes
@@ -159,7 +161,7 @@ selections:
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
     - auditd_name_format
-    - auditd_data_retention_space_left
+    - auditd_data_retention_space_left_percentage
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
     - audit_rules_dac_modification_chown
@@ -248,8 +250,8 @@ selections:
     - sshd_use_priv_separation
     - sshd_disable_compression
     - chronyd_or_ntpd_set_maxpoll
-    - configure_firewalld_rate_limiting
     - service_firewalld_enabled
+    - package_firewalld_installed
     - display_login_attempts
     - no_user_host_based_files
     - no_host_based_files
@@ -262,6 +264,7 @@ selections:
     - sysctl_net_ipv4_conf_all_send_redirects
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_tcp_invalid_ratelimit
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
