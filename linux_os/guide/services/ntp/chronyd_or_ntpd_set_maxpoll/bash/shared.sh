@@ -10,10 +10,12 @@ pof="/usr/sbin/pidof"
 {{% endif %}}
 
 CONFIG_FILES="/etc/ntp.conf"
+SERVICE="ntpd"
 $pof ntpd || {
     CHRONY_NAME={{{ chrony_conf_path }}}
     CHRONY_PATH=${CHRONY_NAME%%.*}
     CONFIG_FILES=$(find ${CHRONY_PATH}.* -type f -name '*.conf')
+    SERVICE="chronyd"
 }
 
 # get list of ntp files
@@ -32,3 +34,7 @@ for config_file in $CONFIG_FILES; do
         sed -i "s/$line/& maxpoll $var_time_service_set_maxpoll/" "$config_file"
     done
 done
+
+{{% if init_system == "systemd" %}}
+/usr/bin/systemctl restart $SERVICE
+{{% endif %}}
