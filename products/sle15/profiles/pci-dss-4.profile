@@ -22,6 +22,7 @@ selections:
     -  accounts_umask_etc_bashrc
     -  accounts_umask_etc_login_defs
     -  accounts_umask_etc_profile
+    -  audit_rules_sysadmin_actions
     -  coredump_disable_backtraces
     -  coredump_disable_storage
     -  cracklib_accounts_password_pam_dcredit
