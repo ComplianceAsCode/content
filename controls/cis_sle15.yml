@@ -1135,7 +1135,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing / difficult to automate
+    status: partially # rule missing / difficult to automate
+    rules:
+      - ensure_firewall_rules_for_open_ports
 
   - id: 3.5.3.3.1
     title: Ensure IPv6 default deny firewall policy (Automated)
