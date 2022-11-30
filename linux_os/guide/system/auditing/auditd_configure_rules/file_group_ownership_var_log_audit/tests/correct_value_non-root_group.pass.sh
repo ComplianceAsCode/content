@@ -1,9 +1,5 @@
 #!/bin/bash
-{{% if "ubuntu" in product %}}
-# packages = auditd
-{{% else %}}
 # packages = audit
-{{% endif %}}
 # platform = multi_platform_rhel
 
 if grep -iwq "log_file" /etc/audit/auditd.conf; then
