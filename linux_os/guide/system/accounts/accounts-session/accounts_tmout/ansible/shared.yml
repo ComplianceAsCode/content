@@ -5,4 +5,6 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_tmout") }}}
 
+{{{ ansible_lineinfile("", "/etc/bashrc", regex='TMOUT=', create='no', state='absent') }}}
+{{{ ansible_lineinfile("", "/etc/profile", regex='TMOUT=', create='no', state='absent') }}}
 {{{ ansible_only_lineinfile(path='/etc/profile.d/tmout.sh', line_regex='TMOUT=', new_line='declare -xr TMOUT={{ var_accounts_tmout }}', create='yes') }}}
