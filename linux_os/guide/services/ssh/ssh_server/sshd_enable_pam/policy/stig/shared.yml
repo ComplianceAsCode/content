@@ -8,7 +8,7 @@ vuldiscussion: |-
     on login or disallow access to the server.
 
 checktext: |-
-    Verify the RHEL9 SSHD is configured to allow for the UsePAM interface with the following command:
+    Verify the {{{ full_name }}} SSHD is configured to allow for the UsePAM interface with the following command:
 
     $ sudo grep -i usepam /etc/ssh/sshd_config
 
@@ -17,7 +17,7 @@ checktext: |-
     If the "UsePAM" keyword is set to "no", is missing, or is commented out, this is a finding.
 
 fixtext: |-
-    Configure the RHEL9 SSHD to use the UsePAM interface add or modify the following line in "/etc/ssh/sshd_config".
+    Configure the {{{ full_name }}} SSHD to use the UsePAM interface add or modify the following line in "/etc/ssh/sshd_config".
 
     UsePAM yes
 
