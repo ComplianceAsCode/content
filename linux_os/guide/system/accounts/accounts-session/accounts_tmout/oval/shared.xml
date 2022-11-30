@@ -1,14 +1,14 @@
 <def-group>
   <definition class="compliance" id="accounts_tmout" version="3">
     {{{ oval_metadata("Checks interactive shell timeout") }}}
-    <criteria operator="OR">
+    <criteria operator="AND">
       <criterion comment="TMOUT value in /etc/profile &lt;= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
       <criterion comment="TMOUT value in /etc/profile.d/*.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
     </criteria>
   </definition>
 
   {{% macro test_tmout(test_stem, files) %}}
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="TMOUT in {{{ files }}}" id="test_{{{ test_stem }}}" version="2">
+  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="TMOUT in {{{ files }}}" id="test_{{{ test_stem }}}" version="2">
     <ind:object object_ref="object_{{{ test_stem }}}" />
     <ind:state state_ref="state_etc_profile_tmout" />
   </ind:textfilecontent54_test>
