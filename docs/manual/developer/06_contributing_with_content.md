@@ -1150,31 +1150,41 @@ At the moment, only the CPE mechanism is supported.
 ### Applicability by CPE
 
 The CPEs defined by the project are declared in
-`shared/applicability/cpes.yml`.
+`shared/applicability/*.yml`, one CPE per file.
+
+The id of the CPE is inferred from the file name.
 
 Syntax is as follows (using examples of existing CPEs):
 
-    cpes:
-      - machine:                                  ## The id of the CPE
+       machine.yml:                               ## The id of the CPE is 'machine'
           name: "cpe:/a:machine"                  ## The CPE Name as defined by the CPE standard
           title: "Bare-metal or Virtual Machine"  ## Human readable title for the CPE
           check_id: installed_env_is_a_machine    ## ID of OVAL implementing the applicability check
-      - gdm:
-          name: "cpe:/a:gdm"
-          title: "Package gdm is installed"
-          check_id: installed_env_has_gdm_package
 
-The first entry above defines a CPE whose `id` is `machine`, this CPE
+       package.yml:
+          name: "cpe:/a:{arg}"
+          title: "Package {pkgname} is installed"
+          check_id: cond_package_{arg}
+          bash_conditional: {{{ bash_pkg_conditional("{pkgname}") }}}         ## The conditional expression for Bash remediations
+          ansible_conditional: {{{ ansible_pkg_conditional("{pkgname}") }}}   ## The conditional expression for Ansible remediations
+          template:                                                           ## Instead of static OVAL checks a CPE can use templates
+             name: cond_package                                               ## Name of the template with OVAL applicability check
+          args:                                                               ## CPEs can be parametrized: 'package[*]'.
+             ntp:                                                             ## This is the map of substitution values for 'package[ntp]'
+                pkgname: ntp                                                  ## "Package {pkgname} is installed" -> "Package ntp is installed"
+                title: NTP daemon and utilities
+
+The first file above defines a CPE whose `id` is `machine`, this CPE
 is used for rules not applicable to containers.
 A rule or profile with `platform: machine` will be evaluated only if the
 targeted scan environment is either bare-metal or virtual machine.
 
-The second entry defines a CPE for GDM.
-By setting the `platform` to `gdm`, the rule will have its applicability
-restricted to only environments which have `gdm` package installed.
+The second entry defines a CPE for NTP.
+By setting the `platform` to `package[ntp]`, the rule will have its applicability
+restricted to only environments which have `ntp` package installed.
 
 The OVAL checks for the CPE need to be of `inventory` class, and must be
-under `shared/checks/oval/`.
+under `shared/checks/oval/` or have a template under `shared/templates/`.
 
 #### Setting a product's default CPE
 
