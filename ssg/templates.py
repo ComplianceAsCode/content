@@ -207,6 +207,10 @@ class Builder(object):
         filled_template = self.get_lang_contents_for_templatable(templatable, lang)
         self.write_lang_contents_for_templatable(filled_template, lang, templatable)
 
+    def build_cpe(self, cpe):
+        for lang in self.get_resolved_langs_to_generate(cpe):
+            self.build_lang_for_templatable(cpe, lang)
+
     def build_platform(self, platform):
         """
         Builds templated content of a given Platform (all CPEs/Symbols) for all available
@@ -215,8 +219,7 @@ class Builder(object):
         for fact_ref in platform.test.get_symbols():
             cpe = self.product_cpes.get_cpe_for_fact_ref(fact_ref)
             if cpe.is_templated():
-                for lang in self.get_resolved_langs_to_generate(cpe):
-                    self.build_lang_for_templatable(cpe, lang)
+                self.build_cpe(cpe)
 
     def build_rule(self, rule):
         """

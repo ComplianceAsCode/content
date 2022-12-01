@@ -13,7 +13,7 @@ from ssg.yaml import ordered_load
 ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 templates_dir = os.path.join(DATADIR, "templates")
-platforms_dir = os.path.join(DATADIR)
+platforms_dir = os.path.join(DATADIR, ".")
 cpe_items_dir = os.path.join(DATADIR, "applicability")
 
 build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
@@ -34,8 +34,10 @@ def test_render_extra_ovals():
             "title": oval_def_id,
             "template": template,
         })
+
         oval_content = builder.get_lang_contents_for_templatable(
             rule, ssg.templates.LANGUAGES["oval"])
+
         assert 'id="package_%s_installed"' % (rule.template['vars']['pkgname']) \
                in oval_content
 
@@ -51,14 +53,13 @@ def test_platform_templates():
     platform_path = os.path.join(builder.platforms_dir, "package_ntp.yml")
     platform = ssg.build_yaml.Platform.from_yaml(platform_path, builder.env_yaml,
                                                  builder.product_cpes)
-        if cpe.is_templated():
-            oval_content = builder.get_lang_contents_for_templatable(
-                cpe, ssg.templates.LANGUAGES["oval"])
-
-            assert 'id="package_%s"' % (cpe.template['vars']['pkgname']) \
-                   in oval_content
-
-            assert "<title>Package %s is installed</title>" % (cpe.template['vars']['pkgname'],) \
-                   in oval_content
     for fact_ref in platform.test.get_symbols():
         cpe = builder.product_cpes.get_cpe_for_fact_ref(fact_ref)
+        oval_content = builder.get_lang_contents_for_templatable(
+            cpe, ssg.templates.LANGUAGES["oval"])
+
+        assert 'id="package_%s"' % (cpe.template['vars']['pkgname']) \
+               in oval_content
+
+        assert "<title>Package %s is installed</title>" % (cpe.template['vars']['pkgname'],) \
+               in oval_content
