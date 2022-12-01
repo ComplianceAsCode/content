@@ -312,6 +312,7 @@ class CPEALFactRef(Symbol):
     def get_base_name_of_parametrized_cpe_id(cpe_id):
         return Symbol.get_base_of_parametrized_name(cpe_id)
 
+
 def extract_subelement(objects, sub_elem_type):
     """
     From a collection of element objects, return the value of
