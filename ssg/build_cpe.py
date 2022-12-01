@@ -91,6 +91,17 @@ class ProductCPEs(object):
         except KeyError:
             raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
 
+    def add_resolved_cpe_items_from_platform(self, platform):
+        for symbol in platform.test.get_symbols():
+            if symbol.arg:
+                cpe = self.get_cpe(symbol.cpe_name)
+                new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(symbol)
+                self.add_cpe_item(new_cpe)
+                symbol.cpe_name = new_cpe.name
+
+    def get_cpe_for_fact_ref(self, fact_ref):
+        return self.get_cpe(fact_ref.as_id())
+
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)
         return cpe.name
@@ -178,6 +189,25 @@ class CPEItem(XCCDFEntity, Templatable):
             cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
         return cpe_item
 
+    def set_template_variables(self, *sources):
+        if self.is_templated():
+            self.template["vars"] = {}
+            for source in sources:
+                self.template["vars"].update(source)
+
+    def create_resolved_cpe_item_for_fact_ref(self, fact_ref):
+        resolved_parameters = self.args[fact_ref.arg]
+        resolved_parameters.update(fact_ref.as_dict())
+        cpe_item_as_dict = self.represent_as_dict()
+        cpe_item_as_dict["args"] = None
+        cpe_item_as_dict["id_"] = fact_ref.as_id()
+        new_associated_cpe_item_as_dict = apply_formatting_on_dict_values(
+            cpe_item_as_dict, resolved_parameters)
+        new_associated_cpe_item = CPEItem.get_instance_from_full_dict(
+            new_associated_cpe_item_as_dict)
+        new_associated_cpe_item.set_template_variables(resolved_parameters)
+        return new_associated_cpe_item
+
     @staticmethod
     def is_cpe_name(cpe_id_or_name):
         return cpe_id_or_name.startswith("cpe:")
@@ -203,10 +233,6 @@ class CPEALLogicalTest(Function):
     def enrich_with_cpe_info(self, cpe_products):
         for arg in self.args:
             arg.enrich_with_cpe_info(cpe_products)
-
-    def pass_parameters(self, product_cpes):
-        for arg in self.args:
-            arg.pass_parameters(product_cpes)
 
     def to_bash_conditional(self):
         child_bash_conds = [
@@ -266,22 +292,6 @@ class CPEALFactRef(Symbol):
         self.bash_conditional = cpe_products.get_cpe(self.cpe_name).bash_conditional
         self.ansible_conditional = cpe_products.get_cpe(self.cpe_name).ansible_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
-
-    def pass_parameters(self, product_cpes):
-        if self.arg:
-            cpe = product_cpes.get_cpe(self.cpe_name)
-            parameters = cpe.args[self.arg]
-            parameters.update(self.as_dict())
-            associated_cpe_item_as_dict = cpe.represent_as_dict()
-            new_associated_cpe_item_as_dict = apply_formatting_on_dict_values(
-                associated_cpe_item_as_dict, parameters)
-            new_associated_cpe_item_as_dict["id_"] = self.as_id()
-            if cpe.is_templated():
-                new_associated_cpe_item_as_dict["template"]["vars"] = parameters
-            new_associated_cpe_item = CPEItem.get_instance_from_full_dict(
-                new_associated_cpe_item_as_dict)
-            product_cpes.add_cpe_item(new_associated_cpe_item)
-            self.cpe_name = new_associated_cpe_item.name
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)

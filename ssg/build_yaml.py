@@ -1428,6 +1428,8 @@ class LinearLoader(object):
         self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):
+        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
+
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
 
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
@@ -1442,8 +1444,6 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
-
-        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
@@ -1516,7 +1516,7 @@ class Platform(XCCDFEntity):
         id_ = test.as_id()
         platform = cls(id_)
         platform.test = test
-        platform.test.pass_parameters(product_cpes)
+        product_cpes.add_resolved_cpe_items_from_platform(platform)
         platform.test.enrich_with_cpe_info(product_cpes)
         platform.name = id_
         platform.original_expression = expression
@@ -1560,6 +1560,7 @@ class Platform(XCCDFEntity):
         # it can be later used e.g. for comparison
         if product_cpes:
             platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+            product_cpes.add_resolved_cpe_items_from_platform(platform)
         return platform
 
     def __eq__(self, other):

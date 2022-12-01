@@ -212,9 +212,8 @@ class Builder(object):
         Builds templated content of a given Platform (all CPEs/Symbols) for all available
         languages, writing the output to the correct build directories.
         """
-        for symbol in platform.test.get_symbols():
-            platform.test.pass_parameters(self.product_cpes)
-            cpe = self.product_cpes.get_cpe(symbol.as_id())
+        for fact_ref in platform.test.get_symbols():
+            cpe = self.product_cpes.get_cpe_for_fact_ref(fact_ref)
             if cpe.is_templated():
                 for lang in self.get_resolved_langs_to_generate(cpe):
                     self.build_lang_for_templatable(cpe, lang)

@@ -51,9 +51,6 @@ def test_platform_templates():
     platform_path = os.path.join(builder.platforms_dir, "package_ntp.yml")
     platform = ssg.build_yaml.Platform.from_yaml(platform_path, builder.env_yaml,
                                                  builder.product_cpes)
-    for symbol in platform.test.get_symbols():
-        platform.test.pass_parameters(builder.product_cpes)
-        cpe = builder.product_cpes.get_cpe(symbol.as_id())
         if cpe.is_templated():
             oval_content = builder.get_lang_contents_for_templatable(
                 cpe, ssg.templates.LANGUAGES["oval"])
@@ -63,3 +60,5 @@ def test_platform_templates():
 
             assert "<title>Package %s is installed</title>" % (cpe.template['vars']['pkgname'],) \
                    in oval_content
+    for fact_ref in platform.test.get_symbols():
+        cpe = builder.product_cpes.get_cpe_for_fact_ref(fact_ref)
