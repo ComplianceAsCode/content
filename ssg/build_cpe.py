@@ -92,12 +92,12 @@ class ProductCPEs(object):
             raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
 
     def add_resolved_cpe_items_from_platform(self, platform):
-        for symbol in platform.test.get_symbols():
-            if symbol.arg:
-                cpe = self.get_cpe(symbol.cpe_name)
-                new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(symbol)
+        for fact_ref in platform.test.get_symbols():
+            if fact_ref.arg:
+                cpe = self.get_cpe(fact_ref.cpe_name)
+                new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(fact_ref)
                 self.add_cpe_item(new_cpe)
-                symbol.cpe_name = new_cpe.name
+                fact_ref.cpe_name = new_cpe.name
 
     def get_cpe_for_fact_ref(self, fact_ref):
         return self.get_cpe(fact_ref.as_id())
