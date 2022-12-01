@@ -220,6 +220,8 @@ def parse_args():
     parser.add_argument('-B', '--build-root', type=str, default=SSG_BUILD_ROOT,
                         help="The root of the CMake working directory, "
                              "defaults to {ssg_build_root}".format(ssg_build_root=SSG_BUILD_ROOT))
+    parser.add_argument("-d", "--dry-run", action="store_true",
+                        help="If set the script will not output.")
     return parser.parse_args()
 
 
@@ -236,6 +238,9 @@ def main():
         sys.stderr.write("Unable to find version from file name.\n")
         sys.stderr.write("The string v[NUM]r[NUM] must be in the filename.\n")
         exit(1)
+
+    if args.dry_run:
+        return 0
 
     if args.output:
         out = os.path.join(args.output)
