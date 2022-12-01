@@ -20,6 +20,7 @@
         <criterion comment="SLE 15 Desktop is installed" test_ref="test_sle15_desktop" />
         <criterion comment="SLE 15 Server is installed" test_ref="test_sle15_server" />
 	<criterion comment="SLES 15 for SAP Applications is installed" test_ref="test_sles_15_for_sap" />
+	<criterion comment="SUSE Manager 4 is installed" test_ref="test_suma_4" />
       </criteria>
     </criteria>
   </definition>
@@ -64,6 +65,17 @@
   </linux:rpminfo_state>
   <linux:rpminfo_object id="obj_sles_15_for_sap" version="1">
     <linux:name>SLES_SAP-release</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="SUMA is version 4" id="test_suma_4" version="1">
+    <linux:object object_ref="obj_suma_4" />
+    <linux:state state_ref="state_suma_4" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_suma_4" version="1">
+    <linux:version operation="pattern match">^4.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_suma_4" version="1">
+    <linux:name>SUSE-Manager-Server-release</linux:name>
   </linux:rpminfo_object>
 
 </def-group>
