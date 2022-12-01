@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} disables storing core dumps with the following commands:
 
-    $ sudo sysctl kernel.core_pattern
+    $ sysctl kernel.core_pattern
 
     kernel.core_pattern = |/bin/false
 
@@ -17,7 +17,7 @@ checktext: |-
 
     Check that the configuration files are present to disable core dump storage.
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | egrep -v '^(#|$)' | grep -F kernel.core_pattern | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.core_pattern | tail -1
 
     kernel.core_pattern = |/bin/false
 

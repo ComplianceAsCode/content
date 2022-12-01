@@ -7,10 +7,9 @@ vuldiscussion: |-
     correct access rights to prevent unauthorized changes.
 
 checktext: |-
-    To check the permissions of the cron directories,
-    run the command:
-     $ find /etc/cron* -type d | xargs stat -c "%a %n"
-    If properly configured, the output should indicate the following permissions:
+    Verify the permissions of the cron directories with the following command:
+
+    $ find /etc/cron* -type d | xargs stat -c "%a %n"
 
     700 /etc/cron.d
     700 /etc/cron.daily
@@ -18,8 +17,7 @@ checktext: |-
     700 /etc/cron.monthly
     700 /etc/cron.weekly
 
-
-    If any cron configuration directory is more permissive than 700, then this is a finding.
+    If any cron configuration directory is more permissive than 700, this is a finding.
 
 fixtext: |-
     Configure any {{{ full_name }}} cron configration directory with a mode more permissive than 0700 as follows:

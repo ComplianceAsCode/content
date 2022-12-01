@@ -6,12 +6,13 @@ vuldiscussion: |-
     makes the system less prone to dictionary attacks.
 
 checktext: |-
-    To check if pam_pwhistory.so is enabled in system-auth, run the following command:
-     $ grep pam_pwquality /etc/pam.d/system-auth
-    The output should be similar to the following:
-     password requisite pam_pwquality.so
+    Verify {{{ full_name }}} uses "pwquality" to enforce the password complexity rules in the system-auth file with the following command:
 
-    If pam_pwquality.so is not enabled in system-auth, then this is a finding.
+    $ cat /etc/pam.d/system-auth | grep pam_pwquality
+
+    password required pam_pwquality.so
+
+    If the command does not return a line containing the value "pam_pwquality.so", or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to use "pwquality" to enforce password complexity rules.

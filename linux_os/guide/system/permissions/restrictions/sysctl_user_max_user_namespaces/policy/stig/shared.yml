@@ -10,11 +10,18 @@ checktext: |-
 
     Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is not applicable.
 
-    $ sudo sysctl user.max_user_namespaces
+    $ sysctl user.max_user_namespaces
 
     user.max_user_namespaces = 0
 
     If the returned line does not have a value of "0", or a line is not returned, this is a finding.
+
+    Check that the configuration files are present to enable this kernel parameter.
+
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F user.max_user_namespaces | tail -1
+    user.max_user_namespaces = 0
+
+    If the network parameter "user.max_user_namespaces" is not equal to "0" or nothing is returned, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to disable the use of user namespaces by adding the following line to a file, in the "/etc/sysctl.d" directory:

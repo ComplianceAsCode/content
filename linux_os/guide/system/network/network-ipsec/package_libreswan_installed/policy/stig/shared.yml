@@ -11,11 +11,11 @@ checktext: |-
 
     Check that the libreswan service package is installed with the following command:
 
-    $ dnf list --installed libreswan
+    $ sudo dnf list --installed libreswan
 
     libreswan.x86_64     4.6-3.el9
 
-    If the libreswan package is not installed, this is a finding.
+    If the "libreswan" package is not installed, this is a finding.
 
 fixtext: |-
     Install the libreswan service (if it is not already installed) with the following command:

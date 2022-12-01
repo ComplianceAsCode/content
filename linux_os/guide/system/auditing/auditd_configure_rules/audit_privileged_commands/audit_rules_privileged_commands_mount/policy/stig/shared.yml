@@ -13,7 +13,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep /usr/bin/mount
 
-    -a always,exit -F path=/usr/bin/mount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-mount
+    -a always,exit -F path=/usr/bin/mount -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-mount
 
     If the command does not return a line, or the line is commented out, this is a finding.
 

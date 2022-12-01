@@ -1,21 +1,18 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Prevent Program Execution In Accordance With Local Policies Regarding Software Program Usage And Restrictions And/Or Rules Authorizing The Terms And Conditions Of Software Program Usage.
+    {{{ full_name }}} must mount /boot with the nodev option.
 
 vuldiscussion: |-
     The only legitimate location for device files is the "/dev" directory
     located on the root partition. The only exception to this is chroot jails.
 
 checktext: |-
-    To verify the "nodev" option is configured for the "/boot" mount point,
+    Verify that the "/boot" mount point has the "nodev" option is with the following command:
 
-    This control is not applicable to {{{ full_name }}} system booted UEFI.
+    Note: This control is not applicable to {{{ full_name }}} system booted UEFI.
 
-    Run the following
+    $ sudo mount | grep '\s/boot\s'
 
-    $ sudo mount | grep '\s/boot\
-
-    The output should show the corresponding mount point along with the "nodev" setting in parentheses.
-
+    /dev/sda1 on /boot type xfs (rw,nodev,relatime,seclabel,attr2)
 
     If the "/boot" file system does not have the "nodev" option set, this is a finding.
 

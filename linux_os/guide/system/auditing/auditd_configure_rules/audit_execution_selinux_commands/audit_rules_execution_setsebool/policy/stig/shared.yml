@@ -15,13 +15,14 @@ checktext: |-
 
     $ sudo auditctl -l | grep setsebool
 
-     -a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+     -a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt=1000 -F auid!=unset -F key=privileged
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate an audit event for any successful/unsuccessful use of the "setsebool " command by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
 
-    -a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+    -a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt=1000 -F auid!=unset -F key=privileged
 
     The audit daemon must be restarted for the changes to take effect.
+

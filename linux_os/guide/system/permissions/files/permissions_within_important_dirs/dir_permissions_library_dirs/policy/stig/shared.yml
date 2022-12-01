@@ -13,17 +13,14 @@ vuldiscussion: |-
     of initiating changes, including upgrades and modifications.
 
 checktext: |-
-    Shared libraries are stored in the following directories:
-     /lib
-    /lib64
-    /usr/lib
-    /usr/lib64
+    Verify that {{{ full_name }}} library directories have a mode of 755 or less with the following commands:
 
-    To find shared libraries that are group-writable or world-writable,
-    run the following command for each directory DIR which contains shared libraries:
-     $ sudo find -L DIR -perm /022 -type d
+     $ sudo find -L /lib -perm /022 -type d
+     $ sudo find -L /lib64 -perm /022 -type d
+     $ sudo find -L /usr/lib -perm /022 -type d
+     $ sudo find -L /usr/lib64 -perm /022 -type d
 
-    If any of these files are group-writable or world-writable, then this is a finding.
+    If any of these directories are group-writable or world-writable, this is a finding
 
 fixtext: |-
     Configure the {{{ full_name }}} library directories to be protected from unauthorized access. Run the following command, replacing "[DIRECTORY]" with any library directory with a mode more permissive than 755.

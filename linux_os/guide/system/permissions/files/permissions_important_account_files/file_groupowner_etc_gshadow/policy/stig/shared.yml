@@ -6,14 +6,15 @@ vuldiscussion: |-
     is critical for system security.
 
 checktext: |-
-    To check the group ownership of /etc/gshadow ,
-    run the command:
-     $ sudo stat -c "%G %n" /etc/gshadow
-    If properly configured, the output should indicate the following group-owner:
-     root /etc/gshadow
+    Verify the group ownership of the "/etc/gshadow" file with the following command:
 
-    If /etc/gshadow does not have a group owner of root, then this is a finding.
+    $ sudo stat -c "%G %n" /etc/gshadow
+
+    root /etc/gshadow
+
+    If "/etc/gshadow" file does not have a group owner of "root", this is a finding.
 
 fixtext: |-
     Change the group of the file /etc/gshadow to root by running the following command:
+
     $ sudo chgrp root /etc/gshadow

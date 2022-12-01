@@ -16,5 +16,3 @@
 - name: Deactivate Wireless Network Interfaces
   command: nmcli radio wifi off
   when: "'NetworkManager' in ansible_facts.packages"
-
-

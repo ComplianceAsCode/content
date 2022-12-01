@@ -11,14 +11,15 @@ vuldiscussion: |-
     mechanisms, and audit storage capacity being reached or exceeded.
 
 checktext: |-
-   Verify that the administrators are notified in the event of an audit processing failure.
+    Verify that the administrators are notified in the event of an audit processing failure.
 
-    Check that the "/etc/aliases" file has a defined value for "root".
+     Check that the "/etc/aliases" file has a defined value for "root".
 
-    $ sudo grep "postmaster:\s*root$" /etc/aliases
+     $ sudo grep "postmaster:\s*root$" /etc/aliases
 
-    If the command does not return a line, or the line is commented out, ask the system administrator to indicate how they and the ISSO are notified of an audit process failure.
-    If there is no evidence of the proper personnel being notified of an audit processing failure, this is a finding.
+     If the command does not return a line, or the line is commented out, ask the system administrator to indicate how they and the ISSO are notified of an audit process failure.
+     If there is no evidence of the proper personnel being notified of an audit processing failure, this is a finding.
+
 
 fixtext: |-
     Configure a valid email address as an alias for the root account.

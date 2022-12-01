@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+    {{{ full_name }}} system accounts must not have have login shell.
 
 vuldiscussion: |-
     Ensuring shells are not given to system accounts upon login makes it more
@@ -9,20 +9,34 @@ checktext: |-
     To obtain a listing of all users, their UIDs, and their shells, run the
     command:
 
+    This requirement is Not Applicable for system accounts that require a shell for mission applications.
+
     $ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd
+    root:0:/bin/bash
+    bin:1:/sbin/nologin
+    daemon:2:/sbin/nologin
+    adm:3:/sbin/nologin
+    lp:4:/sbin/nologin
+
+
 
     Identify the system accounts from this listing. These will primarily be the accounts
     with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
     directive is set in /etc/login.defs configuration file. In the default
     configuration UID_MIN is set to 1000.
 
-    If any system account (other than root) has a login shell, then this is a finding.
+    If any system account (other than root) has a login shell and it is not docmented with the Information System Security Officer (ISSO)., this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} so that all non-interactive accounts on the system have no interactive shell assigned to them.
+    Configure {{{ full_name }}} so that all non-interactive accounts on the system do not have an interactive shell assigned to them.
+
+    If the system account needs a shell assigned for mission operations, doucment the need with the Information System Security Officer (ISSO).
 
     Run the following command to disable the interactive shell for a specific non-interactive user account:
 
-    $ sudo usermod --shell /sbin/nologin nobody
+    Replace &ltuser&gt with the user that has a login shell.
 
-    Do not perform the steps in this section on the root account. Doing so mightcause the system to become inaccessible.
+    $ sudo usermod --shell /sbin/nologin &ltuser&gt
+
+    Do not perform the steps in this section on the root account. Doing so will cause the system to become inaccessible.
+

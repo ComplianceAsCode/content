@@ -7,9 +7,7 @@ vuldiscussion: |-
     Virtual Syscalls provide an opportunity of attack for a user who has control of the return instruction pointer.  Disabling vsyscalls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns. If the system intends to run containers based on RHEL 6 components, then virtual syscalls will need enabled so the components function properly.
 
 checktext: |-
-    Verify that GRUB 2 is configured to disable vsyscalls .
-
-    Check that the current GRUB 2 configuration disables vsyscalls with the following command:
+    Verify the current GRUB 2 configuration disables vsyscalls with the following command:
 
     $ sudo grubby --info=ALL | grep args | grep -v 'vsyscall=none'
 

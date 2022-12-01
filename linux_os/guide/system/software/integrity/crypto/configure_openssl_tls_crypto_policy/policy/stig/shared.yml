@@ -11,15 +11,7 @@ vuldiscussion: |-
     The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssl.config file.
 
 checktext: |-
-    Verify that {{{ full_name }}} OpenSSL library is configured to use  TLS 1.2 encryption or stronger.
-
-    Determine the version of crypto-policies that is installed on the system with the following command:
-
-    $ sudo dnf list --installed crypto-policies
-
-    crpyto-policies.noarch                20220223-1.git5203b41.el9_0.1
-
-    For version crypto-policies-20210617-1.gitc776d3e.el8.noarch and newer:
+    Verify that {{{ full_name }}} OpenSSL library is configured to use TLS 1.2 encryption or stronger with following command:
 
     $ grep -i  minprotocol /etc/crypto-policies/back-ends/opensslcnf.config
 
@@ -29,9 +21,13 @@ checktext: |-
     If the "TLS.MinProtocol" is set to anything older than "TLSv1.2" or the "DTLS.MinProtocol" is set to anything older than DTLSv1.2, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} OpenSSL library to use only DoD-approved TLS encryption by editing the following line in the "/etc/crypto-policies/back-ends/opensslcnf.config" file:
+    Reinstall the crypto-policies package to remove any modifications.
 
-    TLS.MinProtocol = TLSv1.2
-    DTLS.MinProtocol = DTLSv1.2
+    $ sudo dnf reinstall crypto-policies
 
+    Then ensure that FIPS mode is setup with the following command:
+
+    $ sudo fips-mode-setup --enable
+
+    The system must be rebooted for the changes to take effect.
     A reboot is required for the changes to take effect.

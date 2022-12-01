@@ -15,6 +15,13 @@ checktext: |-
 
     If the returned line does not have a value of "2", or a line is not returned, this is a finding.
 
+    Check that the configuration files are present to enable this kernel parameter.
+
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.core.bpf_jit_harden | tail -1
+    net.core.bpf_jit_harden = 2
+
+    If the network parameter "net.core.bpf_jit_harden" is not equal to "2" or nothing is returned, this is a finding.
+
 fixtext: |-
     Configure {{{ full_name }}} to enable hardening for the BPF JIT compiler by adding the following line to a file, in the "/etc/sysctl.d" directory:
 
