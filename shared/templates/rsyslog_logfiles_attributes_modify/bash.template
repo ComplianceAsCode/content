@@ -82,11 +82,12 @@ for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
 	ACTION_OMFILE_LINES=$(grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
 	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
-	LOG_FILE_PATHS+=($(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\""))
+	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"")")
 done
 
+FILE_PARAM="{{{ ATTRIBUTE }}}"
 FILE_CMD=""
-case "{{{ ATTRIBUTE }}}" in
+case "$FILE_PARAM" in
      "groupowner")
         FILE_CMD=$(which chgrp)
         ;;
@@ -108,5 +109,5 @@ do
 		continue
 	fi
 
-	$FILE_CMD ${{{ PARAMETER }}} "$LOG_FILE_PATH"
+	$FILE_CMD "${{{ PARAMETER }}}" "$LOG_FILE_PATH"
 done
