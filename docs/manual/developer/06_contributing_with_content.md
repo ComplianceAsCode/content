@@ -1179,7 +1179,11 @@ is used for rules not applicable to containers.
 A rule or profile with `platform: machine` will be evaluated only if the
 targeted scan environment is either bare-metal or virtual machine.
 
-The second entry defines a CPE for NTP.
+The second file defines a parametrized CPE. This allows us to define multiple
+similar CPEs that differ in their argument. In our example, we define
+the `package` CPE. Within the `args` key we configure a set of its possible
+arguments and their values. In our example, there is a single possible value: `ntp`.
+
 By setting the `platform` to `package[ntp]`, the rule will have its applicability
 restricted to only environments which have `ntp` package installed.
 
