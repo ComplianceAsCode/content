@@ -12,7 +12,6 @@ from .constants import PREFIX_TO_NS
 from .utils import required_key, apply_formatting_on_dict_values
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
-from .boolean_expression import get_base_name_of_parametrized_platform
 from .entities.common import XCCDFEntity, Templatable
 from .yaml import convert_string_to_bool
 
@@ -82,11 +81,11 @@ class ProductCPEs(object):
 
     def get_cpe(self, cpe_id_or_name):
         try:
-            if Symbol.is_cpe_name(cpe_id_or_name):
+            if CPEItem.is_cpe_name(cpe_id_or_name):
                 return self.cpes_by_name[cpe_id_or_name]
             else:
-                if Symbol.cpe_id_is_parametrized(cpe_id_or_name):
-                    cpe_id_or_name = get_base_name_of_parametrized_platform(
+                if CPEALFactRef.cpe_id_is_parametrized(cpe_id_or_name):
+                    cpe_id_or_name = CPEALFactRef.get_base_name_of_parametrized_cpe_id(
                         cpe_id_or_name)
                 return self.cpes_by_id[cpe_id_or_name]
         except KeyError:
@@ -178,6 +177,10 @@ class CPEItem(XCCDFEntity, Templatable):
         if cpe_item.is_product_cpe:
             cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
         return cpe_item
+
+    @staticmethod
+    def is_cpe_name(cpe_id_or_name):
+        return cpe_id_or_name.startswith("cpe:")
 
 
 class CPEALLogicalTest(Function):
@@ -291,6 +294,13 @@ class CPEALFactRef(Symbol):
     def to_ansible_conditional(self):
         return self.ansible_conditional
 
+    @staticmethod
+    def cpe_id_is_parametrized(cpe_id):
+        return Symbol.is_parametrized(cpe_id)
+
+    @staticmethod
+    def get_base_name_of_parametrized_cpe_id(cpe_id):
+        return Symbol.get_base_of_parametrized_name(cpe_id)
 
 def extract_subelement(objects, sub_elem_type):
     """
