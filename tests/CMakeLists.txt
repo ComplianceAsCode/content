@@ -215,7 +215,7 @@ set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES FIXT
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
 
-if (PYTHON3_EXECUTABLE)
+if (PYTHON3_EXECUTABLE AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "test-controleval-directory"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/controls" "stats" "--level" "medium" "--product" "rhel9" "--id" "srg_gpos"
