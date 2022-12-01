@@ -46,10 +46,29 @@ def extract_reference_from_product_specific_label(items_dict, full_label, value,
 
 
 def make_items_product_specific(items_dict, product_suffix, allow_overwrites=False):
+    """
+    Function will normalize dictionary values for a specific product, by either
+    removing product qualifier from the key (reference@product: value -> reference: value),
+    or by dropping irrelevant entries (reference@other_product: value).
+
+    Qualified entries always take precedence over generic ones.
+
+    In case when `allow_overwrites` is set to False even qualified entry won't be allowed
+    to replace generic one and Exception will be thrown.
+
+    :param items_dict: Input dictionary.
+    :param product_suffix: The product to be normalized against.
+    :param allow_overwrites: Controls if the function should replace value from a non-qualified
+                             label with a qualified one.
+    :return: New, normalized dictionary.
+    """
     new_items = dict()
     for full_label, value in items_dict.items():
         if "@" not in full_label:
-            new_items[full_label] = value
+            # Current full_label is a generic reference, and we should NEVER overwrite an entry
+            # that came from a product-qualified reference earlier.
+            if full_label not in new_items:
+                new_items[full_label] = value
             continue
 
         # This procedure should occur before matching product_suffix with the product qualifier
