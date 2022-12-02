@@ -1,0 +1,63 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get audit log files
+  command: grep -iw ^log_file /etc/audit/auditd.conf
+  failed_when: false
+  register: log_file_exists
+
+- name: Parse log file line
+  command: awk -F '=' '/^log_file/ {print $2}' /etc/audit/auditd.conf
+  register: log_file_line
+  when: (log_file_exists.stdout | length > 0)
+
+- name: Set default log_file if not set
+  set_fact:
+    log_file: "/var/log/audit/audit.log"
+  when: (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+
+- name: Set log_file from log_file_line if not set already
+  set_fact:
+    log_file: "{{ log_file_line.stdout | trim }}"
+  when: (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
+
+{{% if product not in ["ol8"] and "rhel" not in product %}}
+- name: Get log files group
+  command: grep -m 1 ^log_group /etc/audit/auditd.conf
+  failed_when: false
+  register: log_group_line
+
+- name: Parse log group line
+  command: awk -F '=' '/log_group/ {print $2}' /etc/audit/auditd.conf
+  register: log_group
+  when: (log_group_line.stdout | length > 0)
+
+- name: Apply mode to log file when group root
+  file:
+    path: "{{ log_file }}"
+    mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' )) | ternary( '0600', '0640')
+  failed_when: false
+
+- name: List all log file backups
+  find:
+    path: "{{ log_file | dirname }}"
+    patterns: "{{ log_file | basename }}.*"
+  register: backup_files
+
+- name: Apply mode to log file when group not root
+  file:
+    path: "{{ item }}"
+    mode: (( log_group is defined ) and ( ( log_group.stdout | trim ) == 'root' ))  | ternary( '0400', '0440')
+  loop: "{{ backup_files.files| map(attribute='path') | list }}"
+  failed_when: false
+
+{{% else %}}
+- name: Apply mode to log file
+  file:
+    path: "{{ log_file }}"
+    mode: 0600
+  failed_when: false
+{{% endif %}}
