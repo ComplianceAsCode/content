@@ -94,12 +94,16 @@ class Symbol(boolean.Symbol):
         return self.requirement.project_name
 
     @staticmethod
-    def cpe_id_is_parametrized(cpe_id):
-        return re.search(r'^\w+\[\w+\]$', cpe_id)
+    def is_parametrized(name):
+        return bool(pkg_resources.Requirement.parse(name).extras)
 
     @staticmethod
-    def is_cpe_name(cpe_id_or_name):
-        return cpe_id_or_name.startswith("cpe:")
+    def get_base_of_parametrized_name(name):
+        """
+        If given a parametrized platform name such as package[test],
+        it returns the package part only.
+        """
+        return pkg_resources.Requirement.parse(name).project_name
 
 
 class Algebra(boolean.BooleanAlgebra):
@@ -125,11 +129,3 @@ class Algebra(boolean.BooleanAlgebra):
         super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS+SPEC_SYMBOLS,
                                       Symbol_class=symbol_cls,
                                       NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)
-
-
-def get_base_name_of_parametrized_platform(name):
-    """
-    If given a parametrized platform name such as package[test],
-    it returns the package part only.
-    """
-    return pkg_resources.Requirement.parse(name).project_name

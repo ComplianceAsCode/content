@@ -1428,6 +1428,8 @@ class LinearLoader(object):
         self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):
+        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
+
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
 
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
@@ -1442,8 +1444,6 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
-
-        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
@@ -1512,14 +1512,13 @@ class Platform(XCCDFEntity):
     def from_text(cls, expression, product_cpes):
         if not product_cpes:
             return None
-        test = product_cpes.algebra.parse(
-            expression, simplify=True)
-        id = test.as_id()
-        platform = cls(id)
+        test = product_cpes.algebra.parse(expression, simplify=True)
+        id_ = test.as_id()
+        platform = cls(id_)
         platform.test = test
-        platform.test.pass_parameters(product_cpes)
+        product_cpes.add_resolved_cpe_items_from_platform(platform)
         platform.test.enrich_with_cpe_info(product_cpes)
-        platform.name = id
+        platform.name = id_
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
         platform.bash_conditional = platform.test.to_bash_conditional()
@@ -1529,8 +1528,8 @@ class Platform(XCCDFEntity):
     def get_xml(self):
         cpe_platform = ET.Element("{%s}platform" % Platform.ns)
         cpe_platform.set('id', self.name)
-        # in case the platform contains only single CPE name, fake the logical test
-        # we have to athere to CPE specification
+        # In case the platform contains only single CPE name, fake the logical test
+        # we have to adhere to CPE specification
         if isinstance(self.test, CPEALFactRef):
             cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
             cpe_test.set('operator', 'AND')
@@ -1557,11 +1556,11 @@ class Platform(XCCDFEntity):
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
         platform.xml_content = ET.fromstring(platform.xml_content)
-        # if we did receive a product_cpes, we can restore also the original test object
+        # If we received a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
-            platform.test = product_cpes.algebra.parse(
-                platform.original_expression, simplify=True)
+            platform.test = product_cpes.algebra.parse(platform.original_expression, simplify=True)
+            product_cpes.add_resolved_cpe_items_from_platform(platform)
         return platform
 
     def __eq__(self, other):

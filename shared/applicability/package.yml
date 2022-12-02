@@ -1,10 +1,11 @@
 name: "cpe:/a:{arg}"
 title: "Package {pkgname} is installed"
 bash_conditional: {{{ bash_pkg_conditional("{pkgname}") }}}
-check_id: installed_env_has_{arg}_package
+ansible_conditional: {{{ ansible_pkg_conditional("{pkgname}") }}}
+check_id: platform_package_{arg}
 template:
-  name: package_installed
+  name: platform_package
 args:
   ntp:
     pkgname: ntp
-    title: NTP
+    title: NTP daemon and utilities

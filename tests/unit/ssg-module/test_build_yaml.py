@@ -362,21 +362,22 @@ def test_platform_as_dict(product_cpes):
     assert d["bash_conditional"] == "( rpm --quiet -q chrony )"
     assert "xml_content" in d
 
+
 def test_platform_get_invalid_conditional_language(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
     with pytest.raises(AttributeError):
         assert platform.get_remediation_conditional("foo")
 
+
 def test_parametrized_platform(product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("package[test]", product_cpes)
+    platform = ssg.build_yaml.Platform.from_text("package[ntp]", product_cpes)
     assert platform.test.cpe_name != "cpe:/a:{arg}"
-    assert platform.test.cpe_name == "cpe:/a:test"
+    assert platform.test.cpe_name == "cpe:/a:ntp"
     cpe_item = product_cpes.get_cpe(platform.test.cpe_name)
-    assert cpe_item.name == "cpe:/a:test"
-    assert cpe_item.title == "Package test is installed"
-    assert cpe_item.check_id == "installed_env_has_test_package"
-
-
+    assert cpe_item.id_ == "package_ntp"
+    assert cpe_item.name == "cpe:/a:ntp"
+    assert cpe_item.title == "Package ntp is installed"
+    assert cpe_item.check_id == "installed_env_has_ntp_package"
 
 
 def test_derive_id_from_file_name():
