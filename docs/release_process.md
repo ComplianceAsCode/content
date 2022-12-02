@@ -267,11 +267,153 @@ git push upstream --delete stabilization-vX.Y.Z
     Regards,
     ```
 
-# Downstream Build (Fedora)
+# Downstream Build
 
-## Fedora Builds
+It is good for the community when the packages are also updated and released with the latest
+stable release. In this section there is information about how to update the packages in specific
+distros.
+## Fedora
 
-To submit Fedora updates, check:
-- [Package Maintenance Guide](https://fedoraproject.org/wiki/Package_maintenance_guide)
+To update a Fedora package it is ultimately necessary to be approved as a Fedora Packager.
+There are some ways to get this approval and more details are found here:
+- [Joining the Package Maintainers](https://docs.fedoraproject.org/en-US/package-maintainers/Joining_the_Package_Maintainers/)
 
-- [Package Update How To](https://fedoraproject.org/wiki/Package_update_HOWTO)
+However, if you are not yet a Fedora Packager, it is still possible to propose updates.
+In this case, a current maintainer will review it and guide the contributions to a good shape.
+
+### Preparation
+The first step to prepare an update is to be conscious about the [Fedora Package Guidelines](https://docs.fedoraproject.org/en-US/packaging-guidelines/).
+
+> **_NOTE:_** Even if you are an experienced Fedora packager, it is recommended to review the
+the Guidelines since some changes might be important for the package.
+
+#### Install the required tools
+```bash
+sudo dnf install fedora-packager fedora-review
+```
+- Ensure your system user is included in the `mock` group. This is useful when testing the package
+changes.
+```bash
+sudo usermod -a -G mock <username>
+```
+
+#### Get familiar with the tools
+Most of the needed commands are well documented in the [Package Maintenance Guide](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Maintenance_Guide).
+- Please, check this guide if you are not an experienced Fedora Packager.
+- If you are an experienced Fedora Packager, it is also recommended to quickly take a look in case
+something new was included.
+
+#### Get a token for authenticated commands
+Make sure you have a valid kerberos token.
+It will be necessary to upload the new source files later and the commands require authentication:
+```bash
+fkinit -u <your_fas_id>
+```
+> **_NOTE:_**  You need OTP configured in your Fedora account.
+
+### Package Upadate
+This section covers the usual updates in the `scap-security-guide.spec` file.
+
+#### Fork the repository
+You can skip this step if you already did it in the past. Otherwise:
+- Create a fork from https://src.fedoraproject.org/rpms/scap-security-guide
+    - It can be done via Web UI or using the following command:
+```bash
+fedpkg clone scap-security-guide
+cd scap-security-guide
+fedpkg fork
+```
+- If you forked it via Web UI, clone your fork using `fedpkg`. e.g.:
+```
+fedpkg clone --anonymous forks/<your fedora id>/rpms/scap-security-guide
+cd scap-security-guide
+```
+More information about using `fedpkg` anonymously is found in [Fedora Package Tools](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Maintenance_Guide/#using_fedpkg_anonymously).
+
+It is preferred to update the `scap-security-guide.spec` file via PR instead of [committing directly](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Maintenance_Guide/#typical_fedpkg_session),
+even if you are the a maintainer of the `scap-security-guide` package.
+This ensures that at least two maintainers are involved in the process and makes it much less
+prone to human errors.
+
+#### Update the spec file
+Usually the changes are straightforward in the `scap-security-guide.spec` file.
+It will be necessary to update the `Version:` line with the new version. e.g.:
+```
+Version:	0.1.65
+```
+This should be the only line to be changed in most cases. But your should review the file
+completely and propose improvements if any opportunity is found. Updates regarding [Package Maintenance Guide](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Maintenance_Guide)
+or new features for `spec` files might be welcome.
+
+Once the Version is updated and the `scap-security-guide.spec` file is reviewed, it is necessary
+to append the `%changelog` section. For reference, this was included when the package was rebased
+to `0.1.65`:
+```
+%changelog
+* Tue Dec 06 2022 Marcus Burghardt <maburgha@redhat.com> - 0.1.65-1
+- Update to latest upstream SCAP-Security-Guide-0.1.65 release:
+  https://github.com/ComplianceAsCode/content/releases/tag/v0.1.65
+```
+These changes should be enough for most cases. Save the file and proceed to the next steps.
+
+> **_HINT:_** You can use `rpmdev-bumpspec` command to automatically update the version and create
+an initial `%changelog` entry. e.g.: `rpmdev-bumpspec -n 0.1.65 scap-security-guide.spec`
+
+#### Update the source
+When the `Version:` line is updated in the `scap-security-guide.spec` file, the `Source0` line is
+also impacted.
+- Ensure the sources are downloaded locally:
+```bash
+fedpkg sources
+```
+- Check the new sources and ensure they are correct.
+- To ensure the `scratch build` doesn't fail due to an "Invalid Source", ensure the new sources
+are uploaded to the [lookaside_cache](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Maintenance_Guide/#_upload_new_source_files_to_the_lookaside_cache):
+```bash
+fedpkg new-sources
+```
+- This command will change the `source` and `.gitignore` files. Please, check the changes.
+
+### Package Tests
+- Check if the changes work as expected:
+```bash
+fedpkg mockbuild
+fedpkg diff
+fedpkg lint
+```
+- Check and fix whatever is necessary before proceeding to the next step.
+- If you confirm everything is fine, create a new branch to use in the Pull Request:
+```
+git checkout -b release-0.1.65_rawhide
+git status
+git add -u
+git commit
+git push -u origin release-0.1.65_rawhide
+```
+- Continue the steps via src.fedoraproject.org web UI. Here is an example of a resulting PR:
+    - https://src.fedoraproject.org/rpms/scap-security-guide/pull-request/16
+- Follow the CI tests and fix whatever is necessary.
+- Repeat this process for all other relevant branches, usually branches not in End-Of-Life (EOL).
+    - You can use the `fedpkg switch-branch` command to change the branches. e.g.:
+```bash
+fedpkg switch-branch <f35,f36,f37>
+```
+
+### Create the new Builds
+Once the PRs are merged, it is time to create the new builds.
+- This example would create the build for `rawhide`:
+```bash
+fedpkg switch-branch rawhide
+fedpkg build
+```
+- Follow the builds status in the following links:
+    - [Updates Status](https://bodhi.fedoraproject.org/updates/?packages=scap-security-guide)
+    - [Builds Status](https://koji.fedoraproject.org/koji/packageinfo?packageID=17182)
+    - [Package Overview](https://src.fedoraproject.org/rpms/scap-security-guide)
+
+In general, the new builds will enter in a `testing` state for 7 days. After these 7 days or when
+the builds receive 3 positive "karmas" they are moved to `stable` state and become available to be
+updated in the systems.
+
+### More information
+- [Package Update Guide](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Update_Guide/)
