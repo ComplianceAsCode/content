@@ -163,9 +163,11 @@ Make sure that all these tests are passing before moving on with the release pro
 ## Checklist
 
 - Double check the version in `CMakeLists.txt` is correct.
+    - https://github.com/ComplianceAsCode/content/blob/036e790b9160ebe253e8069732f53363edbb2452/CMakeLists.txt#L35
     - The version should correspond to an unreleased version number.
 - Make sure the relevant labels are defined in the `.github/workflows/release-changelog.json`
 configuration file.
+    - https://github.com/ComplianceAsCode/content/blob/master/.github/workflows/release-changelog.json
 
 ## Triggering the Release Process
 
