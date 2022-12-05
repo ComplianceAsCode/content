@@ -214,3 +214,23 @@ add_test(
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
+
+if (PYTHON3_EXECUTABLE AND PYTHON_VERSION_MINOR GREATER 6)
+    add_test(
+        NAME "test-controleval-directory"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "high" "--product" "rhel9" "--id" "qrst-levels"
+    )
+    set_tests_properties("test-controleval-directory" PROPERTIES LABELS quick)
+
+    add_test(
+        NAME "test-controleval-onefile"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "low" "--product" "rhel8" "--id" "abcd-levels"
+    )
+    set_tests_properties("test-controleval-onefile" PROPERTIES LABELS quick)
+
+    add_test(
+        NAME "test-controleval-json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "medium" "--product" "rhel8" "--id" "qrst-levels" "--output-format" "json"
+    )
+    set_tests_properties("test-controleval-json" PROPERTIES LABELS quick)
+endif()
