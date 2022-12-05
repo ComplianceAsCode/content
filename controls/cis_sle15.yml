@@ -571,11 +571,11 @@ controls:
     levels:
       - l1_server
       - l2_workstation
-    automated: partially
-    notes: >-
-      Rule for package removal is missing!
+    status: automated
     rules:
       - service_avahi-daemon_disabled
+      - package_avahi_removed
+      - package_avahi-autoipd_removed
 
   - id: 2.2.4
     title: Ensure CUPS is not installed (Automated)
