@@ -11,7 +11,7 @@ import sys
 import string
 
 import yaml
-from typing.io import TextIO
+from typing import TextIO
 import xml.etree.ElementTree as ET
 
 import convert_srg_export_to_xlsx
