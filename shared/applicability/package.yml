@@ -6,6 +6,12 @@ versioned: true
 template:
   name: platform_package
 args:
+  audit:
+    {{% if 'ubuntu' in product or 'debian' in product %}}
+    pkgname: auditd
+    {{% else %}}
+    pkgname: audit
+    {{% endif %}}
   ntp:
     pkgname: ntp
     title: NTP daemon and utilities
