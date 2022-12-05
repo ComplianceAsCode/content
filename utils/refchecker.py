@@ -17,19 +17,22 @@ import ssg.yaml
 import ssg.utils
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
+BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
+CONTROLS_DIR = os.path.join(SSG_ROOT, "controls")
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Check all rule.yml referenced in a given"
                                      "profile for a required reference identifier")
     parser.add_argument("-j", "--json", type=str, action="store",
-                        default="build/rule_dirs.json", help="File to read "
+                        default=RULES_JSON, help="File to read "
                         "json output of rule_dir_json from (defaults to "
                         "build/rule_dirs.json")
-    parser.add_argument("-c", "--build-config-yaml", default="build/build_config.yml",
+    parser.add_argument("-c", "--build-config-yaml", default=BUILD_CONFIG,
                         help="YAML file with information about the build configuration. "
                         "Defaults to build/build_config.yml")
-    parser.add_argument("--controls", default="controls",
+    parser.add_argument("--controls", default=CONTROLS_DIR,
                         help="Directory that contains control files with policy controls.")
     parser.add_argument("-p", "--profiles-root",
                         help="Override where to look for profile files.")
