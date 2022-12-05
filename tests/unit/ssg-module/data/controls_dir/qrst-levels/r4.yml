@@ -1,0 +1,21 @@
+controls:
+    -   id: R4
+        title: Configure authentication
+        levels:
+            - high
+        description: >-
+            Ensure authentication methods are functional to prevent
+            unauthorized access to the system.
+        controls:
+            -   id: R4.a
+                title: Disable administrator accounts
+                automated: yes
+                rules:
+                    - accounts_passwords_pam_faillock_deny_root
+            -   id: R4.b
+                title: Enforce password quality standards
+                automated: yes
+                rules:
+                    - accounts_password_pam_minlen
+                    - accounts_password_pam_ocredit
+                    - var_password_pam_ocredit=1
