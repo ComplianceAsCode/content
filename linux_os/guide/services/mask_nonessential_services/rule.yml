@@ -24,7 +24,7 @@ severity: low
 
 identifiers:
     cce@sle12: CCE-92227-8
-    cce@sle15: CCE-91349-1
+    cce@sle15: CCE-92463-9
 
 references:
     cis@sle12: 2.4
@@ -35,7 +35,7 @@ ocil_clause: 'nonessential service is present and unmasked'
 
 ocil: |-
     Run the following command:
-    # lsof -i -P -n | grep -v "(ESTABLISHED)"
+    <pre># lsof -i -P -n | grep -v "(ESTABLISHED)"</pre>
     Review the output to ensure that all services listed are required 
     on the system. If a listed service is not required, remove the 
     package containing the service. If the package containing the 
