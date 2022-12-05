@@ -559,6 +559,34 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
 
+#### param_value_in_file
+Checks if a given param and value are configured in a file.
+
+The check passes if the file has multiple occurences of `param` as long as they all
+have the same value `value`. If multiple occurences of `param` have conflicting values,
+the check will evaluate to fail.
+
+When the remediation is applied duplicate occurrences of `param` are removed.
+
+-   Parameters:
+
+    - **path** - path to the file to check.
+
+    - **prefix_regex** - optional, default is `^\s*`. Regular expression describing characters
+      allowed before `param`.
+
+    - **param** - name of the parameter to check and remediate.
+
+    - **sep** - optional, default is `=`. The separator between `param` and `value`.
+
+    - **sep_regex** - optional, default is `\s*=\s*`. Set this if you set `sep`. The regular
+      expression should match the separator `sep`.
+
+    - **value** - the value the parameter should have in the specified path
+
+    - **app** - optional. If not set the check will use the default text `The respective application or service`.
+      If set, the `app` is used within sentences like: "`application` is configured correctly and configuration file exists"
+
 #### pam_options
 -   Checks if the parameters or arguments of a given Linux-PAM (Pluggable
     Authentication Modules) module in a given PAM configuration file
