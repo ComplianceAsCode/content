@@ -192,8 +192,10 @@ The general rule is that the PR Titles will compose the body of the changelog.
 git tag vX.Y.Z stabilization-vX.Y.Z
 git push --tags
 ```
-- Wait for the release action to finish.
+- Wait for the release action to finish. You can follow the Workflow runs in this link:
+    - https://github.com/ComplianceAsCode/content/actions/workflows/release.yaml
 - Check the release draft and update the release notes if necessary.
+    - https://github.com/ComplianceAsCode/content/releases
 
 - Publish the release.
 
@@ -208,8 +210,15 @@ git checkout stable
 git merge stabilization-vX.Y.Z
 ```
 - Make sure any conflicts are solved.
+- Push the changes:
+```
+git push
+```
 
 - Delete the **stabilization-vX.Y.Z** branch.
+```
+git push upstream --delete stabilization-vX.Y.Z
+```
 
 # Announce It!
 
