@@ -5,7 +5,7 @@
 # if 0, no occurence of tmout found, if 1, occurence found
 tmout_found=0
 
-{{%- if product in ["rhel7"] %}}
+{{%- if product in ["ol7", "rhel7"] %}}
 for f in /etc/profile /etc/profile.d/*.sh /etc/bashrc; do
 {{% else %}}
 for f in /etc/profile /etc/profile.d/*.sh; do

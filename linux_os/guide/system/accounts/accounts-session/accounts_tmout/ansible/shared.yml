@@ -5,7 +5,7 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_tmout") }}}
 
-{{% if product in ["rhel7"] %}}
+{{% if product in ["ol7", "rhel7"] %}}
 - name: Correct any occurrence of TMOUT in /etc/bashrc
   replace:
     path: /etc/bashrc
@@ -23,4 +23,4 @@
   register: profile_replaced
 
 {{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", regex='TMOUT=', new_line='declare -xr TMOUT={{ var_accounts_tmout }}',
-    create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ['rhel7']) }}}
+    create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ["ol7", "rhel7"]) }}}
