@@ -15,9 +15,10 @@ and ultimately allows the release process to happen while development continues 
 
 ### Updating Contributors List
 
-- Update the contributors list before creating the new **stabilization** branch. So, make sure
-there is enough time to review and merge the PR before starting the **stabilization** phase.
-- Update the contributors list by accessing the root folder of `content` repository and executing the following command:
+- Update the contributors list before creating the new **stabilization-vX.Y.Z** branch. So, make
+sure there is enough time to review and merge the PR before starting the **stabilization** phase.
+- Update the contributors list by accessing the root folder of `content` repository and executing
+the following command:
     ```
     PYTHONPATH=. utils/generate_contributors.py
     ```
@@ -100,11 +101,13 @@ Milestone must be updated to refer the next release.
 ### Bug Fixes
 - Run whatever extra tests you have and report bugs as Upstream issues using the
 [General Issue](https://github.com/ComplianceAsCode/content/issues/new?assignees=&labels=&template=general_issue.md) template.
-- Propose bug fixes by targeting PRs to the **stabilization** branch. e.g. `stabilization-v0.1.65`
-  - For easier identification, it is a good practice to prefix PRs for the **stabilization**
-  branch by `Stabilization: `.
+- Propose bug fixes by targeting PRs to the **stabilization-vX.Y.Z** branch.
+e.g. `stabilization-v0.1.65`
+  - For easier identification, it is a good practice to prefix PRs for the
+  **stabilization-vX.Y.Z** branch by `Stabilization: `.
       - Reference: https://github.com/ComplianceAsCode/content/pull/9877
-  - Once the PR is **merged** in the **stabilization** branch, make a PR with the same fix to the **master** branch.
+  - Once the PR is **merged** in the **stabilization-vX.Y.Z** branch, make a PR with the same fix
+  to the **master** branch.
 
   _NOTE: There are different ways how to port commits from one branch to another._
   _Below are listed a few approaches how to do it._
@@ -132,7 +135,8 @@ Milestone must be updated to refer the next release.
     ```
 
   - Alternatively, you can create a fix branch that can be used to create both PRs.
-    The branch needs to be created from the merge base of **master** and **stabilization**.
+    The branch needs to be created from the merge base of **master** and
+    **stabilization-vX.Y.Z** branches.
     This approach only works if the relevant files did not diverge in a way that causes conflicts.
     Example commands:
     ```
@@ -154,8 +158,8 @@ changes are still "fresh".
 
 ### Tests
 
-There is a GitHub Action hooked up with **stabilization** branch that will run a set of tests on
-every push.
+There is a GitHub Action hooked up with **stabilization-vX.Y.Z** branch that will run a set of
+tests on every push.
 Make sure that all these tests are passing before moving on with the release process.
 
 # Release
@@ -171,13 +175,13 @@ configuration file.
 
 ## Triggering the Release Process
 
-Everything necessary for the release is built by the release GitHub Action,
-which is triggered when a tag **v\*.\*.\*** is pushed to the repository. This tag
-should point to the **stabilization** branch that is ready to be released.
+Everything necessary for the release is built by the release GitHub Action, which is triggered
+when a tag **v\*.\*.\*** is pushed to the repository. This tag should point to the
+**stabilization-vX.Y.Z** branch that is ready to be released.
 
-This action will also create a release draft with release notes automatically
-generated. The way in which the action will categorize and break down changes is
-controlled by the `.github/workflows/release-changelog.json` configuration file.
+This action will also create a release draft with release notes automatically generated.
+The way in which the action will categorize and break down changes is controlled by the
+`.github/workflows/release-changelog.json` configuration file.
 
 The general rule is that the PR Titles will compose the body of the changelog.
 
@@ -205,7 +209,7 @@ git merge stabilization-vX.Y.Z
 ```
 - Make sure any conflicts are solved.
 
-- Delete the **stabilization** branch.
+- Delete the **stabilization-vX.Y.Z** branch.
 
 # Announce It!
 
