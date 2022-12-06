@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Uninstall rsync Package'
+
+description: |-
+    The rsyncd service can be used to synchronize files between systems over network links.
+    {{{ describe_package_remove(package="rsync") }}}
+
+rationale: |-
+    The rsyncd service presents a security risk as it uses unencrypted protocols for
+    communication.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92313-6
+    cce@sle15: CCE-92468-8
+
+references:
+    cis@sle12: 2.2.17
+    cis@sle15: 2.2.17
+
+{{{ complete_ocil_entry_package(package="rsync") }}}
+
+fixtext: '{{{ fixtext_package_removed("rsync") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: rsync
