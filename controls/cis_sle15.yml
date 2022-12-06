@@ -580,11 +580,10 @@ controls:
     title: Ensure CUPS is not installed (Automated)
     levels:
       - l1_server
-    automated: partially
-    notes: >-
-      Rule for package removal is missing!
-    related_rules:
+    status: automated
+    rules:
       - service_cups_disabled
+      - package_cups_removed
 
   - id: 2.2.5
     title: Ensure DHCP Server is not installed (Automated)
