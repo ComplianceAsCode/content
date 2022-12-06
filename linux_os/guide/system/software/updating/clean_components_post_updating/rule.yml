@@ -98,5 +98,5 @@ srg_requirement: |-
 platform: zypper
 {{% elif 'ubuntu' in product %}}
 {{% else %}}
-platform: yum
+platform: package[yum]
 {{% endif %}}

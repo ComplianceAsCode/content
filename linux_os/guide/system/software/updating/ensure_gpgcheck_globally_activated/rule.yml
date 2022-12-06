@@ -81,7 +81,7 @@ ocil: |-
 {{% if 'sle' in product %}}
 platform: zypper
 {{% else %}}
-platform: yum
+platform: package[yum]
 {{% endif %}}
 
 fixtext: |-
