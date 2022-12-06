@@ -7,7 +7,7 @@ metadata:
     complianceascode.io/node-role: "{{.var_role_worker}}"
 spec:
   kubeletConfig:
-    tlsMinVersion: VersionTLS12
+    tlsMinVersion: "{{.var_kubelet_tls_min_version}}"
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
@@ -16,4 +16,4 @@ metadata:
     complianceascode.io/node-role: "{{.var_role_master}}"
 spec:
   kubeletConfig:
-    tlsMinVersion: VersionTLS12
+    tlsMinVersion: "{{.var_kubelet_tls_min_version}}"

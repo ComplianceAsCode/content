@@ -45,11 +45,13 @@ description: |-
                   - ECDHE-RSA-CHACHA20-POLY1305
                   - ECDHE-RSA-AES128-GCM-SHA256
                   - ECDHE-ECDSA-AES128-GCM-SHA256
-                  minTLSVersion: VersionTLS12
+                  minTLSVersion: {{{ xccdf_value("var_kubelet_tls_min_version") }}}
           machineConfigPoolSelector:
               matchLabels:
                   pools.operator.machineconfiguration.openshift.io/$pool_name: ""
       </pre>
+    In order to configure this rule to check for an alternate TLS version, both var_kubelet_tls_min_version_regex
+    and var_kubelet_tls_min_version should be updated.
     </p>
 
     <p>
@@ -67,9 +69,6 @@ rationale: |-
     transmission secure protocol, cipher and algorithms must be used.
 
 severity: medium
-
-identifiers:
-    cce@ocp4: CCE-86723-4
 
 references:
     nist: SC-8,SC-8(1)
@@ -94,6 +93,5 @@ template:
         filepath: '/kubeletconfig/role'
         filepath_suffix: var_role_master
         yamlpath: ".tlsMinVersion"
-        values:
-            - value: "^(?!VersionTLS10|VersionTLS11)"
-              operation: "pattern match"
+        xccdf_variable: var_kubelet_tls_min_version_regex
+        regex_data: true
