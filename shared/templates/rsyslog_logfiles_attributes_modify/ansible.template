@@ -58,13 +58,13 @@
 
 - name: "Sum all log files found"
   set_fact:
-    log_files: "{{ {{ log_files_new.results|map(attribute='stdout_lines')|list|flatten|unique + log_files_old.results|map(attribute='stdout_lines')|list|flatten|unique  }}"
+    log_files: "{{ log_files_new.results|map(attribute='stdout_lines')|list|flatten|unique + log_files_old.results|map(attribute='stdout_lines')|list|flatten|unique  }}"
 
 - name: "Setup log files attribute"
-  ignore_errors: yes
+  failed_when: false
   ansible.builtin.file:
     path: "{{ item }}"
     owner: '{{ ( "{{{ ATTRIBUTE }}}" is match("owner")) | ternary({{{ PARAMETER }}}, omit) }}'
     group: '{{ ( "{{{ ATTRIBUTE }}}" is match("groupowner")) | ternary({{{ PARAMETER }}} , omit) }}'
     state: file
-  loop: "{{ log_files | list | flatten |unique }}"
+  loop: "{{ log_files | list | flatten | unique }}"
