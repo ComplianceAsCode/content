@@ -38,7 +38,7 @@ ocil: |-
     <pre>$ sudo grep -PR '^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,!\n][^,\n]+,)*\s*(?:\([^\)]+\))?\s*(?!\s*\()(!\S+).*' /etc/sudoers /etc/sudoers.d/</pre>
     The command should return no output.
 
-platform: sudo
+platform: package[sudo]
 
 warnings:
   - general:
