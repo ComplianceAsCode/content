@@ -1,5 +1,5 @@
 # platform = multi_platform_sle
 
-iptables -A INPUT -i lo -j ACCEPT
-iptables -A OUTPUT -o lo -j ACCEPT
-iptables -A INPUT -s 127.0.0.0/8 -j DROP
+ip6tables -A INPUT -i lo -j ACCEPT
+ip6tables -A OUTPUT -o lo -j ACCEPT
+ip6tables -A INPUT -s ::1 -j DROP 
