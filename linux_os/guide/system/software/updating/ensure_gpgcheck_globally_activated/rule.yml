@@ -79,7 +79,7 @@ ocil: |-
     If "gpgcheck" is not set to "1", or if the option is missing or commented out, ask the System Administrator how the certificates for patches and other operating system components are verified.
 
 {{% if 'sle' in product %}}
-platform: zypper
+platform: package[zypper]
 {{% else %}}
 platform: package[yum]
 {{% endif %}}
