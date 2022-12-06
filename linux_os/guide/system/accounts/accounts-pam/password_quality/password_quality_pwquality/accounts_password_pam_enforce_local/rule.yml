@@ -34,7 +34,7 @@ ocil: |-
     <pre>$ grep local_users_only /etc/security/pwquality.conf</pre>
     The output should return <tt>local_users_only</tt> uncommented.
 
-platform: pam
+platform: package[pam]
 
 warnings:
     - management: |-

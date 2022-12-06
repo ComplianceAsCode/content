@@ -40,7 +40,7 @@ ocil: |-
     <pre>$ grep -i enforcing /etc/security/pwquality.conf</pre>
     The output should return <tt>enforcing = 1</tt> uncommented.
 
-platform: pam
+platform: package[pam]
 
 template:
     name: "lineinfile"

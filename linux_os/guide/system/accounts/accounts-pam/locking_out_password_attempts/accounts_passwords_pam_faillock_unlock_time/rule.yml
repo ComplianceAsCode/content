@@ -54,7 +54,7 @@ references:
     stigid@rhel8: RHEL-08-020016
     vmmsrg: SRG-OS-000329-VMM-001180
 
-platform: pam
+platform: package[pam]
 
 ocil_clause: |-
     the "unlock_time" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}",

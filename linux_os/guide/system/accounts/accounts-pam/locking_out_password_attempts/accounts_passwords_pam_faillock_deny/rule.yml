@@ -54,7 +54,7 @@ references:
     stigid@rhel8: RHEL-08-020010
     vmmsrg: SRG-OS-000021-VMM-000050
 
-platform: pam
+platform: package[pam]
 
 ocil_clause: |-
     the "deny" option is not set to "{{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}"

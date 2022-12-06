@@ -37,3 +37,9 @@ args:
   ntp:
     pkgname: ntp
     title: NTP daemon and utilities
+  pam:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: pam
+    {{% else %}}
+      pkgname: libpam-runtime
+    {{% endif %}}

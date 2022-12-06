@@ -50,7 +50,7 @@ fixtext: |-
     add, uncomment or edit the following line:
     <pre>dir = {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</pre>
 
-platform: pam
+platform: package[pam]
 
 srg_requirement: '{{{ full_name }}} must ensure account lockouts persist.'
 
