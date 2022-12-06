@@ -22,6 +22,12 @@ args:
     {{% endif %}}
   libuser:
     pkgname: libuser
+  net-snmp:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: net-snmp
+    {{% else %}}
+      pkgname: snmp
+    {{% endif %}}
   ntp:
     pkgname: ntp
     title: NTP daemon and utilities
