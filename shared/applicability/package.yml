@@ -47,3 +47,9 @@ args:
     pkgname: polkit
   postfix:
     pkgname: postfix
+  sssd:
+    {{% if product in ["sle12", "sle15"] %}}
+      pkgname: sssd
+    {{% else %}}
+      pkgname: sssd-common
+    {{% endif %}}
