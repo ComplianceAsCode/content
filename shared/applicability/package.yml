@@ -28,6 +28,12 @@ args:
     {{% else %}}
       pkgname: snmp
     {{% endif %}}
+  nss-pam-ldapd:
+    {{% if pkg_system == "rpm" %}}
+      pkgname: nss-pam-ldapd
+    {{% else %}}
+      pkgname: libpam-ldapd
+    {{% endif %}}
   ntp:
     pkgname: ntp
     title: NTP daemon and utilities
