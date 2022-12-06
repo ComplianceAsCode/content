@@ -1,0 +1,19 @@
+# platform = multi_platform_sle
+
+- name: Allow incoming traffic on the loopback interface
+  ansible.builtin.iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+
+- name: Allow outgoing traffic on the loopback interface
+  ansible.builtin.iptables:
+    chain: OUTPUT
+    out_interface: lo
+    jump: ACCEPT
+
+- name: Drop incoming traffic from the localhost
+  ansible.builtin.iptables:
+    chain: INPUT
+    source: "127.0.0.0/8"
+    jump: DROP
