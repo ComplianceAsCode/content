@@ -1018,7 +1018,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - package_firewalld_removed
 
   - id: 3.5.2.3
     title: Ensure iptables are flushed (Manual)
