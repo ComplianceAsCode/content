@@ -1020,6 +1020,7 @@ controls:
     status: automated
     rules:
       - package_firewalld_removed
+      - service_firewalld_disabled
 
   - id: 3.5.2.3
     title: Ensure iptables are flushed (Manual)
@@ -1104,6 +1105,7 @@ controls:
     status: automated
     rules:
       - package_firewalld_removed    
+      - firewalld_service_disabled
 
   - id: 3.5.3.2.1
     title: Ensure default deny firewall policy (Automated)
