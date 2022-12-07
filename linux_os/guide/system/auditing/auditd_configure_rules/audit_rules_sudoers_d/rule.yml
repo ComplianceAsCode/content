@@ -38,7 +38,7 @@ references:
 ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    Verify RHEL 9 generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers.d/" with the following command:
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers.d/" with the following command:
 
     $ sudo auditctl -l | grep/etc/sudoers.d
 

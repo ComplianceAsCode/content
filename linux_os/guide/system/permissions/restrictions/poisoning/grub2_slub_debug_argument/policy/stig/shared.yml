@@ -25,7 +25,7 @@ checktext: |-
     If "slub_debug" is not set to "P", is missing or commented out, this is a finding.
 
 fixtext: |-
-    Configure RHEL  to enable poisoning of SLUB/SLAB objects with the following commands:
+    Configure {{{ full_name }}} to enable poisoning of SLUB/SLAB objects with the following commands:
 
     $ sudo grubby --update-kernel=ALL --args="slub_debug=P"
 

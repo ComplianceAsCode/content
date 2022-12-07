@@ -215,6 +215,7 @@ set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES FIXT
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
 
+
 if (PYTHON3_EXECUTABLE AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "test-controleval-directory"
@@ -233,4 +234,29 @@ if (PYTHON3_EXECUTABLE AND PYTHON_VERSION_MINOR GREATER 6)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "medium" "--product" "rhel8" "--id" "qrst-levels" "--output-format" "json"
     )
     set_tests_properties("test-controleval-json" PROPERTIES LABELS quick)
+endif()
+
+macro(ssg_refcheck_test PRODUCT PROFILE KEY)
+    add_test(
+        NAME "refchecker-${PRODUCT}-${PROFILE}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/refchecker.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "${PRODUCT}" "${PROFILE}" "${KEY}"
+    )
+    set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES DEPENDS "test-rule-dir-json")
+    set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
+endmacro()
+
+if (PYTHON3_EXECUTABLE AND SSG_PRODUCT_RHEL8)
+    ssg_refcheck_test("rhel8" "cis_workstation_l1" "cis")
+    ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
+    ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
+    ssg_refcheck_test("rhel8" "cis" "cis")
+endif()
+
+
+if (PYTHON3_EXECUTABLE AND SSG_PRODUCT_RHEL7)
+    ssg_refcheck_test("rhel7" "cis_workstation_l1" "cis")
+    ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
+    ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
+    ssg_refcheck_test("rhel7" "cis" "cis")
 endif()
