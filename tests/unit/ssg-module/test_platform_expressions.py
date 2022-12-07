@@ -79,13 +79,19 @@ def test_as_dict(algebra):
     exp1_dict = {
         "arg": "",
         "id": "package",
-        "name": "package"
+        "name": "package",
+        'ver_cpe': '',
+        'ver_specs': [],
+        'ver_title': ''
     }
     exp2 = algebra.parse(u'package[test]')
     exp2_dict = {
         "arg": "test",
         "id": "package_test",
-        "name": "package"
+        "name": "package",
+        'ver_cpe': '',
+        'ver_specs': [],
+        'ver_title': ''
     }
     assert exp1.as_dict() == exp1_dict
     assert exp2.as_dict() == exp2_dict

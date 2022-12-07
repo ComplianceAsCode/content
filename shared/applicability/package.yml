@@ -2,7 +2,7 @@ name: "cpe:/a:{arg}"
 title: "Package {pkgname} is installed"
 bash_conditional: {{{ bash_pkg_conditional("{pkgname}") }}}
 ansible_conditional: {{{ ansible_pkg_conditional("{pkgname}") }}}
-check_id: platform_package_{arg}
+check_id: "platform_{id}"
 template:
   name: platform_package
 args:

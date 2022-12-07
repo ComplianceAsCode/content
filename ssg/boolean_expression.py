@@ -1,4 +1,5 @@
 from .ext.boolean import boolean
+import ssg.utils
 
 # Monkey-patch pkg_resources.safe_name function to keep underscores intact
 # Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
@@ -13,11 +14,72 @@ SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
 VERSION_SYMBOLS = ['.', '-', '_', '*']
 
 
+def _evr_from_tuple(version_tuple):
+    # This is a version tuple from setuptools 0.9.8
+    # 1.22.33-444 -> '00000011', '00000022', '00000033', '*final-', '00000444', '*final')
+    if isinstance(version_tuple, tuple):
+        # TODO: We do not support `epoch` at this moment, it is always 0
+        evr = {'epoch': '0', 'version': None, 'release': '0'}
+        component = 'version'
+        elements = []
+        for el in version_tuple:
+            if el.startswith('*'):
+                evr[component] = '.'.join(elements if elements else '0')
+                elements = []
+                if el.endswith('final-'):
+                    component = 'release'
+                    continue
+                if el.endswith('final'):
+                    break
+            elements.append(str(int(el)))
+        return evr
+
+
+def _evr_from_version_object(version_object):
+    if isinstance(version_object, pkg_resources.packaging.version.Version):
+        # TODO: We do not support `epoch` at this moment, it is always 0
+        return {'epoch': '0',
+                'version': version_object.base_version,
+                'release': str(version_object.post) if version_object.post else '0'}
+    raise ValueError('Invalid version object: %s, '
+                     'expected: pkg_resources.packaging.version.Version' % repr(version_object))
+
+
+def _get_evr(version_something):
+    # Function should be redefined in accordance with setuptools behaviour. See below.
+    raise Exception("No EVR parser defined!")
+
+
+try:
+    from pkg_resources import packaging
+    # We are using modern setuptools, packaging.version.Version is available
+    # and is used as the result of parse_version() function.
+    _get_evr = _evr_from_version_object
+except ImportError:
+    # We are using old setuptools (Python 2.7 / 0.9.8) the parse_version() function
+    # returns a tuple object.
+    _get_evr = _evr_from_tuple
+
+
+def _parse_version_into_evr(version):
+    ver = pkg_resources.parse_version(version)
+    return _get_evr(ver)
+
+
+def _version_specifier_to_id(spec):
+    op, ver = spec
+    return '{0}_{1}'.format(ssg.utils.escape_comparison(op), ssg.utils.escape_id(ver))
+
+
+def _evr_to_str(evr):
+    return '{epoch}:{version}-{release}'.format(**evr)
+
+
 class Function(boolean.Function):
     """
     Base class for boolean functions
 
-    Sub-class it and pass to the `Algebra` as `function_cls` to enrich
+    Subclass it and pass to the `Algebra` as `function_cls` to enrich
     expression elements with domain-specific methods.
 
     Provides `is_and`, `is_or` and `is_not` methods to distinguish instances
@@ -51,7 +113,7 @@ class Symbol(boolean.Symbol):
     """
     Base class for boolean symbols
 
-    Sub-class it and pass to the `Algebra` as `symbol_cls` to enrich
+    Subclass it and pass to the `Algebra` as `symbol_cls` to enrich
     expression elements with domain-specific methods.
 
     The `as_id` method will generate a unique string identifier usable as
@@ -68,7 +130,17 @@ class Symbol(boolean.Symbol):
         if self.arg:
             full_name += '[' + self.arg + ']'
         val = kwargs.get(full_name, False)
+        if self.ver_specs:
+            if type(val) is str:
+                return val in self.requirement
+            return False
         return bool(val)
+
+    def __hash__(self):
+        return hash(self.as_id())
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
 
     def __lt__(self, other):
         return self.as_id() < other.as_id()
@@ -77,13 +149,42 @@ class Symbol(boolean.Symbol):
         id_str = self.name
         if self.arg:
             id_str += '_' + self.arg
+        for spec in sorted(self.ver_specs):
+            id_str += '_' + _version_specifier_to_id(spec)
         return id_str
 
     def as_dict(self):
-        res = {'id': self.as_id(), 'name': self.name, 'arg': ''}
+        res = {'id': self.as_id(), 'name': self.name, 'arg': '',
+               'ver_title': '', 'ver_cpe': '', 'ver_specs': []}
+
         if self.arg:
             res['arg'] = self.arg
+
+        if self.ver_specs:
+            res['ver_title'] = ' and '.join(['{0} {1}'.format(
+                ssg.utils.comparison_to_oval(op), ver)
+                for op, ver in self.ver_specs])
+
+            res['ver_cpe'] = ':'.join(['{0}:{1}'.format(
+                ssg.utils.escape_comparison(op), ver)
+                for op, ver in self.ver_specs])
+
+            for spec in self.ver_specs:
+                op, ver = spec
+                evr = _parse_version_into_evr(ver)
+                res['ver_specs'].append({
+                    'id': _version_specifier_to_id(spec),
+                    'op': op,
+                    'ver': ver,
+                    'evr_op': ssg.utils.comparison_to_oval(op),
+                    'evr_ver': _evr_to_str(evr)
+                })
+
         return res
+
+    @property
+    def ver_specs(self):
+        return self.requirement.specs
 
     @property
     def arg(self):

@@ -88,6 +88,7 @@ def test_subset_dict():
     assert ssg.utils.subset_dict(_dict, [1, "red fish"]) == _dict
     assert ssg.utils.subset_dict(_dict, []) == dict()
 
+
 def test_apply_formatting_on_dict_values():
     embedded_dict = {
         "nothing to replace": "test",
@@ -122,5 +123,11 @@ def test_apply_formatting_on_dict_values():
     assert res_embedded_dict["replace"] == "some text replaced"
 
 
+def test_comparison_conversions():
+    assert ssg.utils.comparison_to_oval('!=') == 'not equal'
+    with pytest.raises(KeyError):
+        assert ssg.utils.comparison_to_oval('~')
 
-
+    assert ssg.utils.escape_comparison('!=') == 'ne'
+    with pytest.raises(KeyError):
+        assert ssg.utils.escape_comparison('~')

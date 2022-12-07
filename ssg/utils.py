@@ -277,6 +277,29 @@ def escape_yaml_key(text):
     return re.sub(r'([A-Z^])', '^\\1', text).lower()
 
 
+def _map_comparison_op(op, table):
+    if op not in table:
+        raise KeyError("Invalid comparison operator: %s (expected one of: %s)",
+                       op, ', '.join(table.keys()))
+    return table[op]
+
+
+def escape_comparison(op):
+    return _map_comparison_op(op, {
+        '==': 'eq',       '!=': 'ne',
+        '>': 'gt',        '<': 'le',
+        '>=': 'gt_or_eq', '<=': 'le_or_eq',
+    })
+
+
+def comparison_to_oval(op):
+    return _map_comparison_op(op, {
+        '==': 'equals',                '!=': 'not equal',
+        '>': 'greater than',           '<': 'less than',
+        '>=': 'greater than or equal', '<=': 'less than or equal',
+    })
+
+
 def sha256(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
