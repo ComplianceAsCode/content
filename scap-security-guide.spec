@@ -63,19 +63,28 @@ present in %{name} package.
 
 mkdir -p build
 %build
-%if 0%{?centos} == 8
+%if 0%{?centos} == 7 || 0%{?centos} == 8
 cd build
 %cmake %{cmake_defines_common} %{cmake_defines_specific} ../
 %else
 %cmake %{cmake_defines_common} %{cmake_defines_specific}
 %endif
+
+%if 0%{?centos} == 7
+make %{?_smp_mflags}
+%else
 %cmake_build
+%endif
 
 %install
-%if 0%{?centos} == 8
+%if 0%{?centos} == 7 || 0%{?centos} == 8
 cd build
 %endif
+%if 0%{?centos} == 7
+%make_install
+%else
 %cmake_install
+%endif
 rm %{buildroot}/%{_docdir}/%{name}/README.md
 rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 
