@@ -6,7 +6,7 @@
 
 set_grub_uefi_root
 
-# make the check applicable since it tries to detect this directory first
-# mkdir -p /sys/firmware/efi
-
-set_root_unquoted "'usb0,msdos1'"
+echo "menuentry 'System setup' {
+        fwsetup
+        set root=(usb0,msdos1')
+}" >> "$GRUB_CFG_ROOT"/grub.cfg
