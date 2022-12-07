@@ -1102,7 +1102,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - package_firewalld_removed    
 
   - id: 3.5.3.2.1
     title: Ensure default deny firewall policy (Automated)
