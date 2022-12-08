@@ -58,14 +58,19 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_accounts_tmout_partial_tmout_instances" version="1">
-  {{% else %}}
-  <ind:textfilecontent54_object id="object_accounts_tmout_all_tmout_instances" version="1">
-  {{% endif %}}
     <set>
       <object_reference>object_etc_profile_tmout</object_reference>
       <object_reference>object_etc_profiled_tmout</object_reference>
     </set>
   </ind:textfilecontent54_object>
+  {{% else %}}
+  <ind:textfilecontent54_object id="object_accounts_tmout_all_tmout_instances" version="1">
+    <set>
+      <object_reference>object_etc_profile_tmout</object_reference>
+      <object_reference>object_etc_profiled_tmout</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 
   <local_variable id="variable_count_of_tmout_instances" comment="Count of TMOUT instances" datatype="int" version="1">
     <count>
