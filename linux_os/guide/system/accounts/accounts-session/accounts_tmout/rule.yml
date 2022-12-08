@@ -14,6 +14,12 @@ description: |-
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     readonly TMOUT
     export TMOUT
+    {{% elif "ubuntu" in product %}}
+    setting in a file loaded by <tt>/etc/profile</tt>, e.g.
+    <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    readonly TMOUT
+    export TMOUT
     {{% else %}}
     setting in a file loaded by <tt>/etc/profile</tt>
     {{{- "or <tt>/etc/bashrc</tt>" if product in ["ol7", "rhel7"] }}}, e.g.
@@ -74,12 +80,14 @@ ocil: |-
     on the system:
     {{% if product in ["sle12", "sle15"] %}}
     <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
+    {{% elif "ubuntu" in product %}}
+    <pre>$ sudo grep TMOUT /etc/bash.bashrc /etc/profile /etc/profile.d/*.sh</pre>
     {{% else %}}
     <pre>$ sudo grep TMOUT /etc/profile /etc/profile.d/*.sh</pre>
     {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15",  "ubuntu2004", "ubuntu2204"] %}}
     readonly TMOUT
     export TMOUT
     {{% endif %}}

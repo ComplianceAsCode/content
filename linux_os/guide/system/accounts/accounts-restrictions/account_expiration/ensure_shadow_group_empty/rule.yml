@@ -5,15 +5,15 @@ prodtype: sle12,sle15,ubuntu2204
 title: 'Ensure shadow group is empty'
 
 description: |-
-    The shadow group allows system programs which require access the ability 
+    The shadow group allows system programs which require access the ability
     to read the /etc/shadow file. No users should be assigned to the shadow group.
 
 rationale: |-
-    Any users assigned to the shadow group would be granted read access to the 
-    /etc/shadow file. If attackers can gain read access to the /etc/shadow file, 
-    they can easily run a password cracking program against the hashed passwords 
-    to break them. Other security information that is stored in the /etc/shadow 
-    file (such as expiration) could also be useful to subvert additional user 
+    Any users assigned to the shadow group would be granted read access to the
+    /etc/shadow file. If attackers can gain read access to the /etc/shadow file,
+    they can easily run a password cracking program against the hashed passwords
+    to break them. Other security information that is stored in the /etc/shadow
+    file (such as expiration) could also be useful to subvert additional user
     accounts.
 
 severity: medium
