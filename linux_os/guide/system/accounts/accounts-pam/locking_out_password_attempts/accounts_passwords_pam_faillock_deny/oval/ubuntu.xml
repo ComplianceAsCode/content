@@ -1,0 +1,159 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Lockout account after failed login attempts") }}}
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
+        <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+             as reference for the correct position of pam_faillock.so in auth section. If the
+             system is properly configured, it must appear only once in auth section. -->
+        <criterion test_ref="test_accounts_passwords_pam_faillock_deny_common_pam_unix_auth"
+            comment="pam_unix.so appears only once in auth section of common-auth"/>
+        <criterion test_ref="test_accounts_passwords_pam_faillock_deny_common_pam_faillock_auth"
+            comment="pam_faillock.so is properly defined in auth section of common-auth"/>
+        <criterion test_ref="test_accounts_passwords_pam_faillock_deny_common_pam_faillock_account"
+            comment="pam_faillock.so is properly defined in common-account"/>
+      </criteria>
+      <criteria operator="AND"
+          comment="Check expected pam_faillock.so deny parameter in faillock.conf">
+        <criterion test_ref="test_accounts_passwords_pam_faillock_deny_parameter_no_pamd_common"
+            comment="Check the deny parameter is not present in common-auth file"/>
+        <criterion  test_ref="test_accounts_passwords_pam_faillock_deny_parameter_faillock_conf"
+            comment="Ensure the deny parameter is present in /etc/security/faillock.conf"/>
+        </criteria>
+    </criteria>
+  </definition>
+
+  <!-- The following tests demand complex regex which are necessary more than once.
+       These variables make simpler the usage of regex patterns. -->
+  <constant_variable id="var_accounts_passwords_pam_faillock_deny_pam_unix_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_unix.so in auth section of pam files">
+    <value>^\s*auth.*pam_unix\.so</value>
+  </constant_variable>
+
+  <constant_variable id="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*\n^\s*auth.*pam_unix\.so.*\n^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*\n^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc.*$</value>
+  </constant_variable>
+
+  <constant_variable id="var_accounts_passwords_pam_faillock_deny_pam_faillock_account_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entry in account section of pam files">
+    <value>^\s*account\s+required\s+pam_faillock\.so$</value>
+  </constant_variable>
+
+  <constant_variable
+              id="var_accounts_passwords_pam_faillock_deny_pam_faillock_deny_parameter_regex"
+              datatype="string" version="1"
+              comment="regex to identify pam_faillock.so deny entry in auth section of pam files">
+    <value>^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*deny=([0-9]+)</value>
+  </constant_variable>
+
+  <constant_variable
+              id="var_accounts_passwords_pam_faillock_deny_faillock_conf_deny_parameter_regex"
+              datatype="string" version="1"
+              comment="regex to identify deny entry in /etc/security/faillock.conf">
+    <value>^[\s]*deny[\s]*=[\s]*([0-9]+)</value>
+  </constant_variable>
+
+  <!-- Check occurrences of pam_unix.so in auth section in common-auth -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_common_pam_unix_auth"
+        comment="No more than one pam_unix.so is expected in auth section of common-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_common_pam_unix_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_common_pam_unix_auth"
+        comment="Get the second and subsequent occurrences of pam_unix.so in auth section of common-auth">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_unix_regex"/>
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check common definition of pam_faillock.so in common-auth -->
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_common_pam_faillock_auth"
+        comment="One and only one occurrence is expected in auth section of common-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_deny_common_pam_faillock_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_common_pam_faillock_auth"
+        comment="Check common definition of pam_faillock.so in auth section of common-auth">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check account definition of pam_faillock.so in common-account -->
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_common_pam_faillock_account"
+        comment="One and only one occurrence is expected in common-account">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_deny_common_pam_faillock_account"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_common_pam_faillock_account"
+        comment="Check common definition of pam_faillock.so in account section of common-auth">
+    <ind:filepath>/etc/pam.d/common-account</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_account_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- boundaries to test the parameter value -->
+  <!-- Specify the required external variable & create corresponding state from it -->
+  <external_variable id="var_accounts_passwords_pam_faillock_deny" datatype="int"
+                     comment="number of failed login attempts allowed" version="1"/>
+
+  <ind:textfilecontent54_state version="1"
+        id="state_accounts_passwords_pam_faillock_deny_parameter_upper_bound">
+    <ind:subexpression datatype="int" operation="less than or equal"
+                       var_ref="var_accounts_passwords_pam_faillock_deny"/>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state version="1"
+        id="state_accounts_passwords_pam_faillock_deny_parameter_lower_bound">
+    <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <!-- Check the pam_faillock.so no deny parameter in common-auth -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_parameter_no_pamd_common"
+        comment="Check the absence of deny parameter in common-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_parameter_pamd_common"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_parameter_pamd_common"
+        comment="Get the pam_faillock.so deny parameter from common-auth file">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_deny_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check pam_faillock.so deny parameter in /etc/security/faillock.conf -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_parameter_faillock_conf"
+        comment="Check the expected deny value in in /etc/security/faillock.conf">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_parameter_faillock_conf"/>
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_deny_parameter_upper_bound"/>
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_deny_parameter_lower_bound"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object version="1"
+      id="object_accounts_passwords_pam_faillock_deny_parameter_faillock_conf"
+      comment="Check the expected pam_faillock.so deny parameter in /etc/security/faillock.conf">
+    <ind:filepath>/etc/security/faillock.conf</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_faillock_conf_deny_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
