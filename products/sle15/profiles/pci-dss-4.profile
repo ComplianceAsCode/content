@@ -106,6 +106,7 @@ selections:
     -  sshd_enable_pam
     -  sshd_enable_warning_banner
     -  sshd_limit_user_access
+    -  sshd_set_exchange_algo
     -  sshd_set_loglevel_verbose
     -  sshd_set_max_auth_tries
     -  sshd_set_max_sessions
