@@ -1,3 +1,6 @@
 #!/bin/bash
 
-sed -i "/{{{ PARAM }}}/d" "{{{ PATH }}}" || true
+mkdir -p $(dirname {{{ PATH }}})
+touch {{{ PATH }}}
+
+sed -i "/{{{ PARAM }}}/d" "{{{ PATH }}}"
