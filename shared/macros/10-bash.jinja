@@ -1002,6 +1002,23 @@ authselect enable-feature {{{ feature }}}
     This option is only recommended when authselect tool is not available for the system.
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
+{{% if 'ubuntu' in product %}}
+pam_file="/etc/pam.d/common-auth"
+if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
+    sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
+fi
+if ! grep -qE '^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$' "$pam_file" ; then
+    sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/a auth        [default=die]      pam_faillock.so authfail' "$pam_file"
+fi
+if ! grep -qE '^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc.*$' "$pam_file" ; then
+    sed -i --follow-symlinks '/^auth.*pam_faillock\.so.*authfail.*/a auth        sufficient      pam_faillock.so authsucc' "$pam_file"
+fi
+
+pam_file="/etc/pam.d/common-account"
+if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
+    echo 'account   required     pam_faillock.so' >> "$pam_file"
+fi
+{{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 for pam_file in "${AUTH_FILES[@]}"
 do
@@ -1012,6 +1029,7 @@ do
     fi
     sed -Ei 's/(auth.*)(\[default=die\])(.*pam_faillock\.so)/\1required     \3/g' "$pam_file"
 done
+{{% endif %}}
 {{%- endmacro -%}}
 
 {{%- macro bash_pam_faillock_enable() -%}}
@@ -1030,11 +1048,11 @@ fi
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
 :param value: value of option
-:param authfail: check the pam_faillock.so conf line with authfail 
+:param authfail: check the pam_faillock.so conf line with authfail
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth" "/etc/pam.d/common-auth")
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
     {{%- if value == '' %}}
@@ -1055,7 +1073,9 @@ if [ -f $FAILLOCK_CONF ]; then
     {{%- endif %}}
     for pam_file in "${AUTH_FILES[@]}"
     do
-        {{{ bash_remove_pam_module_option_configuration("$pam_file",'auth','','pam_faillock.so', option ) | indent(8) }}}
+        if [ -f $pam_file ]; then
+            {{{ bash_remove_pam_module_option_configuration("$pam_file",'auth','','pam_faillock.so', option ) | indent(8) }}}
+        fi
     done
 else
     for pam_file in "${AUTH_FILES[@]}"
