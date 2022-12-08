@@ -7,6 +7,9 @@
   <definition class="compliance" id="accounts_tmout" version="3">
     {{{ oval_metadata("Checks interactive shell timeout") }}}
     <criteria operator="AND">
+      {{% if "ubuntu" in product %}}
+      <criterion comment="TMOUT value in /etc/bash.bashrc &lt;= var_accounts_tmout" test_ref="test_etc_bashrc_tmout" />
+      {{% endif %}}
       <criterion comment="TMOUT value in /etc/profile &lt;= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
       <criterion comment="TMOUT value in /etc/profile.d/*.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
       <criterion comment="At least one config file has TMOUT defined" test_ref="test_accounts_tmout_defined" />
@@ -34,7 +37,7 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
-    {{% if product in ['sle12', 'sle15'] %}}
+    {{% if product in ['sle12', 'sle15'] or "ubuntu" in product %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*declare[\s]+-xr[\s]+TMOUT=([\w$]+).*$</ind:pattern>
@@ -42,6 +45,11 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}
+
+  {{% if 'ubuntu' in product %}}
+  {{{ test_tmout(  test_stem="etc_bashrc_tmout", files="/etc/bash.bashrc") }}}
+  {{{ object_tmout(test_stem="etc_bashrc_tmout", filepath="/etc/bash.bashrc") }}}
+  {{% endif %}}
 
   {{{ test_tmout(  test_stem="etc_profile_tmout", files="/etc/profile") }}}
   {{{ object_tmout(test_stem="etc_profile_tmout", filepath="/etc/profile") }}}
