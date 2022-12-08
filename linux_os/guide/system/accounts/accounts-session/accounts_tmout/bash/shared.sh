@@ -1,11 +1,16 @@
 # platform = multi_platform_all
+{{% set system_configuration_using_etc_bashrc_expected = false -%}}
+
+{{% if product in ["ol7", "rhel7"] %}}
+  {{% set system_configuration_using_etc_bashrc_expected = true -%}}
+{{%- endif -%}}
 
 {{{ bash_instantiate_variables("var_accounts_tmout") }}}
 
 # if 0, no occurence of tmout found, if 1, occurence found
 tmout_found=0
 
-{{%- if product in ["ol7", "rhel7"] %}}
+{{% if system_configuration_using_etc_bashrc_expected %}}
 for f in /etc/profile /etc/profile.d/*.sh /etc/bashrc; do
 {{% else %}}
 for f in /etc/profile /etc/profile.d/*.sh; do

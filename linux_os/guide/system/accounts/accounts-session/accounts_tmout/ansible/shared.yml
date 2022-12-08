@@ -3,16 +3,21 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
 {{{ ansible_instantiate_variables("var_accounts_tmout") }}}
 
+{{% set system_configuration_using_etc_bashrc_expected = false %}}
 {{% if product in ["ol7", "rhel7"] %}}
+  {{% set system_configuration_using_etc_bashrc_expected = true %}}
+{{% endif %}}
+
+{{% if system_configuration_using_etc_bashrc_expected %}}
 - name: Correct any occurrence of TMOUT in /etc/bashrc
   replace:
     path: /etc/bashrc
     regexp: '^[^#].*TMOUT=.*'
     replace: declare -xr TMOUT={{ var_accounts_tmout }}
   register: bashrc_replaced
-
 {{% endif %}}
 
 - name: Correct any occurrence of TMOUT in /etc/profile
