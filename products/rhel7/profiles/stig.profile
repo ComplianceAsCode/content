@@ -185,6 +185,10 @@ selections:
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
+    - auditd_audispd_remote_daemon_activated
+    - auditd_audispd_remote_daemon_direction
+    - auditd_audispd_remote_daemon_path
+    - auditd_audispd_remote_daemon_type
     - auditd_data_retention_space_left_action
     - auditd_data_retention_space_left_percentage
     - auditd_data_retention_action_mail_acct
