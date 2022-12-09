@@ -74,7 +74,7 @@
     <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
   </linux:inetlisteningservers_state>
 
-  <local_variable id="var_firewalld_active_zones" version="1" comment="Firewalled ports according to firewalld configuration" datatype="int">
+  <local_variable id="var_firewalld_active_zones" version="1" comment="Firewalled ports according to firewalld configuration" datatype="string">
     <object_component object_ref="object_active_firewalld_zone_cfgs" item_field="filename"/>
   </local_variable>
 
