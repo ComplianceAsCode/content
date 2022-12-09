@@ -57,7 +57,8 @@ Milestone must be updated to refer the next release.
     - For example, if the Milestone `0.1.66` was just created, the Milestone `0.1.65` should be closed.
     - This makes the Milestone less visible and reduces the chance of PRs and Issues being
     accidentally added to it.
-    _NOTE: It is still possible to add items to the closed Milestone. Just select it in the `closed` tab._
+> **_NOTE:_** It is still possible to add items to the closed Milestone. Just select it in the
+`closed` tab.
 
 ### Bumping the Version
 
@@ -102,15 +103,15 @@ Milestone must be updated to refer the next release.
 - Run whatever extra tests you have and report bugs as Upstream issues using the
 [General Issue](https://github.com/ComplianceAsCode/content/issues/new?assignees=&labels=&template=general_issue.md) template.
 - Propose bug fixes by targeting PRs to the **stabilization-vX.Y.Z** branch.
-e.g. `stabilization-v0.1.65`
+e.g.: `stabilization-v0.1.65`
   - For easier identification, it is a good practice to prefix PRs for the
   **stabilization-vX.Y.Z** branch by `Stabilization: `.
       - Reference: https://github.com/ComplianceAsCode/content/pull/9877
   - Once the PR is **merged** in the **stabilization-vX.Y.Z** branch, make a PR with the same fix
   to the **master** branch.
 
-  _NOTE: There are different ways how to port commits from one branch to another._
-  _Below are listed a few approaches how to do it._
+> **_NOTE:_** There are different ways how to port commits from one branch to another.
+Below are listed a few approaches how to do it.
 
   - Cherry pick individually each of the fixing commits from one branch to another:
     For example:
@@ -146,15 +147,14 @@ e.g. `stabilization-v0.1.65`
     # One PR should targeting **master** and the other targeting the **stabilization** branch.
     ```
 
-_Historic note_:
-In the past, to ensure that all fixes pushed to the stabilization branch were also included in the
-master branch, every Friday during the stabilization phase, a PR was created to merge the
-stabilization changes into the master branch. However, this approach was prone to conflicts that
-could be complex to be solved after one week of asynchronous contributions on master branch.
-Therefore, since the `0.1.63` release, a simpler and more reliable process has been adopted where
-the authors themselves ensure that the fixes are merged into each branch at almost the same time.
-This reduces the risk of conflicts and also makes it easier for authors to resolve them as the
-changes are still "fresh".
+> **_NOTE:_** In the past, to ensure that all fixes pushed to the stabilization branch were also
+included in the master branch, every Friday during the stabilization phase, a PR was created to
+merge the stabilization changes into the master branch. However, this approach was prone to
+conflicts that could be complex to be solved after one week of asynchronous contributions on
+master branch. Therefore, since the `0.1.63` release, a simpler and more reliable process has been
+adopted where the authors themselves ensure that the fixes are merged into each branch at almost
+the same time. This reduces the risk of conflicts and also makes it easier for authors to resolve
+them as the changes are still "fresh".
 
 ### Tests
 
@@ -199,8 +199,8 @@ git push --tags
 
 - Publish the release.
 
-_NOTE: In case there is a need to run the job again, delete the release
-draft and run the GitHb Action again._
+> **_NOTE:_** In case there is a need to run the job again, delete the release draft and run the
+GitHb Action again.
 
 # Clean Up
 
