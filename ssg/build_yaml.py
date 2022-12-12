@@ -1542,7 +1542,7 @@ class Platform(XCCDFEntity):
         return xmlstr
 
     def to_xml_element(self):
-        return self.xml_content
+        return ET.fromstring(self.xml_content)
 
     def get_remediation_conditional(self, language):
         if language == "bash":
@@ -1555,7 +1555,6 @@ class Platform(XCCDFEntity):
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        platform.xml_content = ET.fromstring(platform.xml_content)
         # If we received a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
