@@ -60,4 +60,6 @@ fixtext: |-
 
     Defaults timestamp_timeout={{{ xccdf_value("var_sudo_timestamp_timeout") }}}
 
+    Remove any duplicate or conflicting lines from /etc/sudoers and /etc/sudoers.d/ files. 
+
 srg_requirement: '{{{ full_name }}} must require re-authentication when using the "sudo" command.'
