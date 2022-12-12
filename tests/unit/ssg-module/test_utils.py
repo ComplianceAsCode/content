@@ -1,32 +1,32 @@
 import pytest
 
-import ssg.utils
+from ssg import utils
 
 
 def test_is_applicable():
-    assert ssg.utils.is_applicable('all', 'rhel7')
-    assert ssg.utils.is_applicable('multi_platform_all', 'rhel7')
-    assert ssg.utils.is_applicable('rhel7', 'rhel7')
-    assert ssg.utils.is_applicable('multi_platform_rhel', 'rhel7')
-    assert ssg.utils.is_applicable('Red Hat Enterprise Linux 7', 'rhel7')
+    assert utils.is_applicable('all', 'rhel7')
+    assert utils.is_applicable('multi_platform_all', 'rhel7')
+    assert utils.is_applicable('rhel7', 'rhel7')
+    assert utils.is_applicable('multi_platform_rhel', 'rhel7')
+    assert utils.is_applicable('Red Hat Enterprise Linux 7', 'rhel7')
 
-    assert not ssg.utils.is_applicable('fedora,multi_platform_ubuntu', 'rhel7')
-    assert not ssg.utils.is_applicable('ol7', 'rhel7')
-    assert not ssg.utils.is_applicable('alinux2,alinux3,anolis8,fedora,debian10,debian11,uos20',
+    assert not utils.is_applicable('fedora,multi_platform_ubuntu', 'rhel7')
+    assert not utils.is_applicable('ol7', 'rhel7')
+    assert not utils.is_applicable('alinux2,alinux3,anolis8,fedora,debian10,debian11,uos20',
                                        'rhel7')
 
 
 def test_is_applicable_for_product():
-    assert ssg.utils.is_applicable_for_product("multi_platform_all", "rhel7")
-    assert ssg.utils.is_applicable_for_product("multi_platform_rhel", "rhel7")
-    assert ssg.utils.is_applicable_for_product("multi_platform_rhel,multi_platform_ol", "rhel7")
-    assert ssg.utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel7")
-    assert not ssg.utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel8")
-    assert not ssg.utils.is_applicable_for_product("multi_platform_ol", "rhel7")
+    assert utils.is_applicable_for_product("multi_platform_all", "rhel7")
+    assert utils.is_applicable_for_product("multi_platform_rhel", "rhel7")
+    assert utils.is_applicable_for_product("multi_platform_rhel,multi_platform_ol", "rhel7")
+    assert utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel7")
+    assert not utils.is_applicable_for_product("Red Hat Enterprise Linux 7", "rhel8")
+    assert not utils.is_applicable_for_product("multi_platform_ol", "rhel7")
 
 
 def test_map_name():
-    mn = ssg.utils.map_name
+    mn = utils.map_name
 
     assert mn('multi_platform_rhel') == 'Red Hat Enterprise Linux'
     assert mn('rhel') == 'Red Hat Enterprise Linux'
@@ -40,7 +40,7 @@ def test_map_name():
 
 
 def test_parse_name():
-    pn = ssg.utils.parse_name
+    pn = utils.parse_name
 
     n, v = pn("rhel7")
     assert n == "rhel"
@@ -55,7 +55,7 @@ def test_merge_dicts():
     left = {1: 2}
     right = {"red fish": "blue fish"}
     merged_expected = {1: 2, "red fish": "blue fish"}
-    merged_actual = ssg.utils.merge_dicts(left, right)
+    merged_actual = utils.merge_dicts(left, right)
 
     assert merged_actual == merged_expected
     assert 1 in left
@@ -65,7 +65,7 @@ def test_merge_dicts():
 
 
 def test_required_key():
-    rk = ssg.utils.required_key
+    rk = utils.required_key
     _dict = {'something': 'some_value',
              'something_else': 'other_value'}
 
@@ -80,13 +80,13 @@ def test_subset_dict():
     _dict = {1: 2, "red fish": "blue fish"}
 
     _keys = [1]
-    assert ssg.utils.subset_dict(_dict, _keys) == {1: 2}
+    assert utils.subset_dict(_dict, _keys) == {1: 2}
     assert _keys == [1]
     assert _dict == {1: 2, "red fish": "blue fish"}
 
-    assert ssg.utils.subset_dict(_dict, ["red fish"]) == {"red fish": "blue fish"}
-    assert ssg.utils.subset_dict(_dict, [1, "red fish"]) == _dict
-    assert ssg.utils.subset_dict(_dict, []) == dict()
+    assert utils.subset_dict(_dict, ["red fish"]) == {"red fish": "blue fish"}
+    assert utils.subset_dict(_dict, [1, "red fish"]) == _dict
+    assert utils.subset_dict(_dict, []) == dict()
 
 
 def test_apply_formatting_on_dict_values():
@@ -109,7 +109,7 @@ def test_apply_formatting_on_dict_values():
         "arg": "replaced"
     }
     ignored_keys = ["ignored key"]
-    result = ssg.utils.apply_formatting_on_dict_values(source_dict, dict_with_replacements, ignored_keys)
+    result = utils.apply_formatting_on_dict_values(source_dict, dict_with_replacements, ignored_keys)
     assert result["nothing to replace"] == "test"
     assert result["replace everything"] == "replaced"
     assert result["replace only part"] == "replaced and some text"
@@ -124,10 +124,10 @@ def test_apply_formatting_on_dict_values():
 
 
 def test_comparison_conversions():
-    assert ssg.utils.comparison_to_oval('!=') == 'not equal'
+    assert utils.comparison_to_oval('!=') == 'not equal'
     with pytest.raises(KeyError):
-        assert ssg.utils.comparison_to_oval('~')
+        assert utils.comparison_to_oval('~')
 
-    assert ssg.utils.escape_comparison('!=') == 'ne'
+    assert utils.escape_comparison('!=') == 'ne'
     with pytest.raises(KeyError):
-        assert ssg.utils.escape_comparison('~')
+        assert utils.escape_comparison('~')
