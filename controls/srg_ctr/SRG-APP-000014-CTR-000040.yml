@@ -31,7 +31,7 @@ controls:
 
     If any of the above returns a TLS profile of "Custom" and the minTLSVersion
     is not set to "VersionTLS12" or greater, this is a finding.
-  fixtest: |-
+  fixtext: |-
     Edit each resource and set the TLS Security Profile to Intermediate
 
     > oc edit ingresscontroller <NAME> -n <NAMESPACE>
