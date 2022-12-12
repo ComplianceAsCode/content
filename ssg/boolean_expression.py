@@ -1,78 +1,9 @@
-from .ext.boolean import boolean
-import ssg.utils
-
-# Monkey-patch pkg_resources.safe_name function to keep underscores intact
-# Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
-import pkg_resources
-import re
-pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
-
+from ssg.ext.boolean import boolean
+from ssg import requirement_specs
 
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
 SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
-
-VERSION_SYMBOLS = ['.', '-', '_', '*']
-
-
-def _evr_from_tuple(version_tuple):
-    # This is a version tuple from setuptools 0.9.8
-    # 1.22.33-444 -> '00000011', '00000022', '00000033', '*final-', '00000444', '*final')
-    if isinstance(version_tuple, tuple):
-        # TODO: We do not support `epoch` at this moment, it is always 0
-        evr = {'epoch': '0', 'version': None, 'release': '0'}
-        component = 'version'
-        elements = []
-        for el in version_tuple:
-            if el.startswith('*'):
-                evr[component] = '.'.join(elements if elements else '0')
-                elements = []
-                if el.endswith('final-'):
-                    component = 'release'
-                    continue
-                if el.endswith('final'):
-                    break
-            elements.append(str(int(el)))
-        return evr
-
-
-def _evr_from_version_object(version_object):
-    if isinstance(version_object, pkg_resources.packaging.version.Version):
-        # TODO: We do not support `epoch` at this moment, it is always 0
-        return {'epoch': '0',
-                'version': version_object.base_version,
-                'release': str(version_object.post) if version_object.post else '0'}
-    raise ValueError('Invalid version object: %s, '
-                     'expected: pkg_resources.packaging.version.Version' % repr(version_object))
-
-
-def _get_evr(version_something):
-    # Function should be redefined in accordance with setuptools behaviour. See below.
-    raise Exception("No EVR parser defined!")
-
-
-try:
-    from pkg_resources import packaging
-    # We are using modern setuptools, packaging.version.Version is available
-    # and is used as the result of parse_version() function.
-    _get_evr = _evr_from_version_object
-except ImportError:
-    # We are using old setuptools (Python 2.7 / 0.9.8) the parse_version() function
-    # returns a tuple object.
-    _get_evr = _evr_from_tuple
-
-
-def _parse_version_into_evr(version):
-    ver = pkg_resources.parse_version(version)
-    return _get_evr(ver)
-
-
-def _version_specifier_to_id(spec):
-    op, ver = spec
-    return '{0}_{1}'.format(ssg.utils.escape_comparison(op), ssg.utils.escape_id(ver))
-
-
-def _evr_to_str(evr):
-    return '{epoch}:{version}-{release}'.format(**evr)
+VERSION_SYMBOLS = ['.', '-', '_']
 
 
 class Function(boolean.Function):
@@ -122,7 +53,7 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.requirement = pkg_resources.Requirement.parse(obj)
+        self.requirement = requirement_specs.Requirement(obj)
         self.obj = self.requirement
 
     def __call__(self, **kwargs):
@@ -130,7 +61,7 @@ class Symbol(boolean.Symbol):
         if self.arg:
             full_name += '[' + self.arg + ']'
         val = kwargs.get(full_name, False)
-        if self.ver_specs:
+        if self.requirement.has_version_specs():
             if type(val) is str:
                 return val in self.requirement
             return False
@@ -149,62 +80,55 @@ class Symbol(boolean.Symbol):
         id_str = self.name
         if self.arg:
             id_str += '_' + self.arg
-        for spec in sorted(self.ver_specs):
-            id_str += '_' + _version_specifier_to_id(spec)
+        if self.requirement.has_version_specs():
+            id_str += '_' + self.requirement.ver_specs.oval_id
         return id_str
 
     def as_dict(self):
-        res = {'id': self.as_id(), 'name': self.name, 'arg': '',
-               'ver_title': '', 'ver_cpe': '', 'ver_specs': []}
+        res = {
+            'id': self.as_id(),
+            'name': self.name,
+            'arg': self.arg,
+            'ver_specs': [],
+            'ver_specs_id': '',
+            'ver_specs_cpe': '',
+            'ver_specs_title': '',
+        }
 
-        if self.arg:
-            res['arg'] = self.arg
-
-        if self.ver_specs:
-            res['ver_title'] = ' and '.join(['{0} {1}'.format(
-                ssg.utils.comparison_to_oval(op), ver)
-                for op, ver in self.ver_specs])
-
-            res['ver_cpe'] = ':'.join(['{0}:{1}'.format(
-                ssg.utils.escape_comparison(op), ver)
-                for op, ver in self.ver_specs])
-
-            for spec in self.ver_specs:
-                op, ver = spec
-                evr = _parse_version_into_evr(ver)
+        if self.requirement.has_version_specs():
+            for ver_spec in sorted(self.requirement.ver_specs):
                 res['ver_specs'].append({
-                    'id': _version_specifier_to_id(spec),
-                    'op': op,
-                    'ver': ver,
-                    'evr_op': ssg.utils.comparison_to_oval(op),
-                    'evr_ver': _evr_to_str(evr)
+                    'id': ver_spec.oval_id,
+                    'op': ver_spec.op,
+                    'ver': ver_spec.ver,
+                    'evr_op': ver_spec.evr_op,
+                    'evr_ver': ver_spec.evr_ver
                 })
+            res['ver_specs_id'] = self.requirement.ver_specs.oval_id
+            res['ver_specs_cpe'] = self.requirement.ver_specs.cpe_id
+            res['ver_specs_title'] = self.requirement.ver_specs.title
 
         return res
 
     @property
-    def ver_specs(self):
-        return self.requirement.specs
-
-    @property
     def arg(self):
-        return self.requirement.extras[0] if self.requirement.extras else None
+        return self.requirement.arg or ''
 
     @property
     def name(self):
-        return self.requirement.project_name
+        return self.requirement.name
+
+    @property
+    def ver_specs(self):
+        return self.requirement.ver_specs
 
     @staticmethod
     def is_parametrized(name):
-        return bool(pkg_resources.Requirement.parse(name).extras)
+        return requirement_specs.Requirement.is_parametrized(name)
 
     @staticmethod
     def get_base_of_parametrized_name(name):
-        """
-        If given a parametrized platform name such as package[test],
-        it returns the package part only.
-        """
-        return pkg_resources.Requirement.parse(name).project_name
+        return requirement_specs.Requirement.get_base_for_parametrized(name)
 
 
 class Algebra(boolean.BooleanAlgebra):
@@ -220,7 +144,7 @@ class Algebra(boolean.BooleanAlgebra):
     - no white space is allowed inside specifier expressions;
     - ~= specifier operator is not supported.
 
-    For example: "(oranges>=2.0.8,<=5 | banana) and ~apple + !pie"
+    For example: "(oranges>=2.0.8,<=5 | fried[banana]) and !pie[apple]"
     """
 
     def __init__(self, symbol_cls, function_cls):

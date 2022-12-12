@@ -131,3 +131,52 @@ def test_comparison_conversions():
     assert utils.escape_comparison('!=') == 'ne'
     with pytest.raises(KeyError):
         assert utils.escape_comparison('~')
+
+
+def test_ver_spec_evr_dict_to_str():
+    v = utils.VersionSpecifier.evr_dict_to_str(
+        {'epoch': '0', 'version': '1.22.333', 'release': '4444'}
+    )
+    assert v == '0:1.22.333-4444'
+
+    v = utils.VersionSpecifier.evr_dict_to_str(
+        {'epoch': None, 'version': '1.22.333', 'release': None},
+        True
+    )
+    assert v == '0:1.22.333-0'
+
+    v = utils.VersionSpecifier.evr_dict_to_str(
+        {'epoch': None, 'version': '1.22.333', 'release': None},
+        False
+    )
+    assert v == '1.22.333'
+
+    with pytest.raises(KeyError):
+        v = utils.VersionSpecifier.evr_dict_to_str({'version': '1.22.333'})
+
+
+def test_ver_specs():
+    evr123 = {'epoch': None, 'version': '1.2.3', 'release': None}
+    evr20 = {'epoch': None, 'version': '2.0', 'release': None}
+
+    vs_set1 = utils.VersionSpecifierSet([utils.VersionSpecifier('>=', evr123),
+                                             utils.VersionSpecifier('<', evr20),
+                                             utils.VersionSpecifier('<', evr20)])
+    vs_set2 = utils.VersionSpecifierSet([utils.VersionSpecifier('<', evr20),
+                                             utils.VersionSpecifier('>=', evr123)])
+
+    assert vs_set1 == vs_set2
+    assert vs_set1.title == vs_set2.title
+    assert vs_set1.cpe_id == vs_set2.cpe_id
+    assert vs_set1.oval_id == vs_set2.oval_id
+
+    assert vs_set1.title == 'less than 2.0 and greater than or equal 1.2.3'
+    assert vs_set2.title == 'less than 2.0 and greater than or equal 1.2.3'
+    assert vs_set1.cpe_id == 'le:2.0:gt_or_eq:1.2.3'
+    assert vs_set2.cpe_id == 'le:2.0:gt_or_eq:1.2.3'
+    assert vs_set1.oval_id == 'le_2_0_gt_or_eq_1_2_3'
+    assert vs_set2.oval_id == 'le_2_0_gt_or_eq_1_2_3'
+
+    # We support only VersionSpecifier objects as members of VersionSpecifierSet
+    with pytest.raises(ValueError):
+        utils.VersionSpecifierSet([utils.VersionSpecifier('>=', evr123), '1.2.3'])
