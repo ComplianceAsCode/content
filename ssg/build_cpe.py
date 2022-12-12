@@ -161,8 +161,6 @@ class CPEItem(XCCDFEntity, Templatable):
 
     MANDATORY_KEYS = [
         "name",
-        "title",
-        "check_id"
     ]
 
     prefix = "cpe-dict"
@@ -179,7 +177,7 @@ class CPEItem(XCCDFEntity, Templatable):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id
+        cpe_item_check.text = self.check_id or self.id_
         return cpe_item
 
     @classmethod
