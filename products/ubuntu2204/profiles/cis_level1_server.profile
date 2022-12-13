@@ -139,7 +139,7 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     ### 1.5.2 Ensure prelink is disabled (Automated)
-    - disable_prelink
+    - package_prelink_removed
 
     ### 1.5.3 Ensure Automatic Error Reporting is not enabled (Automated)
     - service_apport_disabled
