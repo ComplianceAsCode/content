@@ -92,7 +92,7 @@ class ProductCPEs(object):
             raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
 
     def add_resolved_cpe_items_from_platform(self, platform):
-        for fact_ref in platform.test.get_symbols():
+        for fact_ref in platform.get_fact_refs():
             if fact_ref.arg:
                 cpe = self.get_cpe(fact_ref.cpe_name)
                 new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(fact_ref)
@@ -220,7 +220,7 @@ class CPEALLogicalTest(Function):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
         cpe_test.set('operator', ('OR' if self.is_or() else 'AND'))
         cpe_test.set('negate', ('true' if self.is_not() else 'false'))
-        # logical tests must go first, therefore we separate tests and factrefs
+        # Logical tests must go first, therefore we separate tests and factrefs
         tests = [t for t in self.args if isinstance(t, CPEALLogicalTest)]
         factrefs = [f for f in self.args if isinstance(f, CPEALFactRef)]
         for obj in tests + factrefs:
@@ -308,6 +308,10 @@ class CPEALFactRef(Symbol):
 
     @staticmethod
     def get_base_name_of_parametrized_cpe_id(cpe_id):
+        """
+        If given a parametrized platform name such as package[test],
+        it returns the package part only.
+        """
         return Symbol.get_base_of_parametrized_name(cpe_id)
 
 

@@ -1563,6 +1563,9 @@ class Platform(XCCDFEntity):
             product_cpes.add_resolved_cpe_items_from_platform(platform)
         return platform
 
+    def get_fact_refs(self):
+        return self.test.get_symbols()
+
     def __eq__(self, other):
         if not isinstance(other, Platform):
             return False

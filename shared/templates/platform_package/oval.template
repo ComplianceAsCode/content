@@ -1,7 +1,12 @@
 <def-group>
   <definition class="inventory" id="{{{ _RULE_ID }}}"
   version="1">
-    {{{ oval_metadata("The " + pkg_system|upper + " package " + PKGNAME + " should be installed.", affected_platforms=["multi_platform_all"]) }}}
+    {{%- if VER_SPECS_TITLE -%}}
+      {{%- set entity =  " package " + PKGNAME + " version " + VER_SPECS_TITLE -%}}
+    {{%- else -%}}
+      {{%- set entity = " package " + PKGNAME -%}}
+    {{%- endif -%}}
+    {{{ oval_metadata("The " + pkg_system|upper + entity + " should be installed.", affected_platforms=["multi_platform_all"]) }}}
     <criteria>
     {{% for spec in VER_SPECS %}}
       <criterion comment="Platform package {{{ PKGNAME }}} of version {{{ spec.evr_op }}} {{{ spec.ver }}} is installed"
