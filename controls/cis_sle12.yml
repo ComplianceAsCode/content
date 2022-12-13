@@ -732,11 +732,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
-    notes: >-
-      Package removal not covered by this rule
+    status: automated
     rules:
       - service_rsyncd_disabled
+      - package_rsync_removed
 
   - id: 2.2.18
     title: Ensure NIS server is not installed (Automated)
