@@ -381,6 +381,8 @@ fedpkg mockbuild
 fedpkg diff
 fedpkg lint
 ```
+> **_NOTE:_** Alternatively one can test the package build in Koji with `fekpkg scratch-build --srpm`.
+
 - Check and fix whatever is necessary before proceeding to the next step.
 - If you confirm everything is fine, create a new branch to use in the Pull Request:
 ```
