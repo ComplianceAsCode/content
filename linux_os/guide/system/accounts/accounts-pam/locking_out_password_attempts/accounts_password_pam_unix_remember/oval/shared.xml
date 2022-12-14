@@ -1,17 +1,21 @@
 <def-group>
-  <definition class="compliance" id="accounts_password_pam_unix_remember" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
-    <criteria comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly" operator="OR">
-      <criterion comment="remember parameter of pam_unix.so is set correctly" test_ref="test_accounts_password_pam_unix_remember" />
-      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember" />
+    <criteria operator="OR"
+      comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly">
+      <criterion test_ref="test_accounts_password_pam_unix_remember"
+        comment="remember parameter of pam_unix.so is set correctly"/>
+      <criterion test_ref="test_accounts_password_pam_pwhistory_remember"
+        comment="remember parameter of pam_pwhistory.so is set correctly"/>
     </criteria>
   </definition>
 
   <!-- Check the pam_unix.so remember case -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember" check="all" check_existence="all_exist"
-  comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth" version="1">
-    <ind:object object_ref="object_accounts_password_pam_unix_remember" />
-    <ind:state state_ref="state_accounts_password_pam_unix_remember" />
+  <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember" version="1"
+    check="all" check_existence="all_exist"
+    comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth">
+    <ind:object object_ref="object_accounts_password_pam_unix_remember"/>
+    <ind:state state_ref="state_accounts_password_pam_unix_remember"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember" version="1">
@@ -21,8 +25,9 @@
   </ind:textfilecontent54_object>
 
   <!-- Check the pam_pwhistory.so remember case -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember" check="all" check_existence="all_exist"
-  comment="Test if remember attribute of pam_pwhistory.so is set correctly in /etc/pam.d/system-auth" version="1">
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember" version="1"
+    check="all" check_existence="all_exist"
+    comment="Test if remember attribute of pam_pwhistory.so is set correctly in /etc/pam.d/system-auth">
     <ind:object object_ref="object_accounts_password_pam_pwhistory_remember" />
     <ind:state state_ref="state_accounts_password_pam_unix_remember" />
   </ind:textfilecontent54_test>
@@ -39,9 +44,10 @@
 
   <!-- Common state - shared by both of 'remember' tests above -->
   <ind:textfilecontent54_state id="state_accounts_password_pam_unix_remember" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_password_pam_unix_remember" />
+    <ind:subexpression datatype="int" operation="greater than or equal"
+      var_ref="var_password_pam_unix_remember"/>
   </ind:textfilecontent54_state>
 
-  <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_unix_remember" version="1" />
-
+  <external_variable id="var_password_pam_unix_remember" version="1"
+    datatype="int" comment="number of passwords that should be remembered"/>
 </def-group>
