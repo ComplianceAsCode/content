@@ -208,7 +208,14 @@ class Builder(object):
 
     def build_cpe(self, cpe):
         for lang in self.get_resolved_langs_to_generate(cpe):
-            self.build_lang_for_templatable(cpe, lang)
+            filled_template = self.build_lang_for_templatable(cpe, lang)
+            if lang.template_type == TemplateType.REMEDIATION:
+                cpe.set_conditional(lang.name, filled_template)
+            if lang.template_type == TemplateType.CHECK:
+                self.write_lang_contents_for_templatable(filled_template, lang, cpe)
+        self.product_cpes.add_cpe_item(cpe)
+        cpe_path = os.path.join(self.cpe_items_dir, cpe.id_+".yml")
+        cpe.dump_yaml(cpe_path)
 
     def build_platform(self, platform):
         """
