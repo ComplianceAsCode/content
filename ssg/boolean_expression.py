@@ -118,10 +118,6 @@ class Symbol(boolean.Symbol):
     def name(self):
         return self.requirement.name
 
-    @property
-    def ver_specs(self):
-        return self.requirement.ver_specs
-
     @staticmethod
     def is_parametrized(name):
         return requirement_specs.Requirement.is_parametrized(name)
