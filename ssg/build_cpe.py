@@ -154,6 +154,7 @@ class CPEItem(XCCDFEntity, Templatable):
         bash_conditional=lambda: "",
         ansible_conditional=lambda: "",
         is_product_cpe=lambda: False,
+        versioned=lambda: False,
         args=lambda: {},
         ** XCCDFEntity.KEYS
     )
@@ -185,6 +186,8 @@ class CPEItem(XCCDFEntity, Templatable):
         cpe_item = super(CPEItem, cls).from_yaml(yaml_file, env_yaml, product_cpes)
         if cpe_item.is_product_cpe:
             cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
+        if cpe_item.versioned:
+            cpe_item.versioned = convert_string_to_bool(cpe_item.versioned)
         return cpe_item
 
     def set_template_variables(self, *sources):
@@ -194,6 +197,10 @@ class CPEItem(XCCDFEntity, Templatable):
                 self.template["vars"].update(source)
 
     def create_resolved_cpe_item_for_fact_ref(self, fact_ref):
+        if fact_ref.has_version_specs():
+            if not self.versioned:
+                raise ValueError("CPE entity '{0}' does not support version specifiers: "
+                                 "{1}".format(self.id_, fact_ref.cpe_name))
         resolved_parameters = self.args[fact_ref.arg]
         resolved_parameters.update(fact_ref.as_dict())
         cpe_item_as_dict = self.represent_as_dict()

@@ -110,6 +110,9 @@ class Symbol(boolean.Symbol):
 
         return res
 
+    def has_version_specs(self):
+        return self.requirement.has_version_specs()
+
     @property
     def arg(self):
         return self.requirement.arg or ''
