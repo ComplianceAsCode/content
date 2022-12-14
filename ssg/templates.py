@@ -220,12 +220,21 @@ class Builder(object):
     def build_platform(self, platform):
         """
         Builds templated content of a given Platform (all CPEs/Symbols) for all available
-        languages, writing the output to the correct build directories.
+        languages, writing the output to the correct build directories
+        and updating the platform it self.
         """
+        langs_affecting_this_platform = set()
         for fact_ref in platform.test.get_symbols():
             cpe = self.product_cpes.get_cpe_for_fact_ref(fact_ref)
             if cpe.is_templated():
                 self.build_cpe(cpe)
+                langs_affecting_this_platform.update(
+                    self.get_resolved_langs_to_generate(cpe))
+        for lang in langs_affecting_this_platform:
+            if lang.template_type == TemplateType.REMEDIATION:
+                platform.update_conditional_from_cpe_items(lang.name, self.product_cpes)
+        platform_path = os.path.join(self.platforms_dir, platform.id_+".yml")
+        platform.dump_yaml(platform_path)
 
     def build_rule(self, rule):
         """
