@@ -226,6 +226,15 @@ class CPEItem(XCCDFEntity, Templatable):
     def is_cpe_name(cpe_id_or_name):
         return cpe_id_or_name.startswith("cpe:")
 
+    def set_conditional(self, language, content):
+        if language == "ansible":
+            self.ansible_conditional = content
+        elif language == "bash":
+            self.bash_conditional = content
+        else:
+            raise RuntimeError(
+                "The language {0} is not supported as conditional for CPE".format(language))
+
 
 class CPEALLogicalTest(Function):
 
