@@ -407,13 +407,26 @@ fedpkg switch-branch rawhide
 fedpkg build
 ```
 - Follow the builds status in the following links:
-    - [Updates Status](https://bodhi.fedoraproject.org/updates/?packages=scap-security-guide)
     - [Builds Status](https://koji.fedoraproject.org/koji/packageinfo?packageID=17182)
-    - [Package Overview](https://src.fedoraproject.org/rpms/scap-security-guide)
 
-In general, the new builds will enter in a `testing` state for 7 days. After these 7 days or when
-the builds receive 3 positive "karmas" they are moved to `stable` state and become available to be
-updated in the systems.
+### Submit Fedora updates
+After the build is done an update must be submitted to Bodhi.
+Updates for `rawhide` builds are submitted automatically,
+but updates for any branched version needs to be submitted manually.
+One can do so via command line:
+```bash
+fedpkg update
+```
+Or via web interface on [Bodhi](https://bodhi.fedoraproject.org).
+
+The new updates enter in `testing` state and are moved to stable after 7 day, or sooner
+if it receives 3 positive "karmas".
+After moving to `stable` state the update is signed and awaits to be pushed to
+the repositories by the Release Engineering Team.
+
+- Check the package update status in the following links:
+    - [Updates Status](https://bodhi.fedoraproject.org/updates/?packages=scap-security-guide)
+    - [Package Overview](https://src.fedoraproject.org/rpms/scap-security-guide)
 
 ### More information
 - [Package Update Guide](https://docs.fedoraproject.org/en-US/package-maintainers/Package_Update_Guide/)
