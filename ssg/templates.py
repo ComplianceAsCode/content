@@ -201,11 +201,10 @@ class Builder(object):
 
     def build_lang_for_templatable(self, templatable, lang):
         """
-        Builds templated content of a given Templatable for a selected language,
-        writing the output to the correct build directories.
+        Builds templated content of a given Templatable for a selected language
+        returning the filled template.
         """
-        filled_template = self.get_lang_contents_for_templatable(templatable, lang)
-        self.write_lang_contents_for_templatable(filled_template, lang, templatable)
+        return self.get_lang_contents_for_templatable(templatable, lang)
 
     def build_cpe(self, cpe):
         for lang in self.get_resolved_langs_to_generate(cpe):
@@ -228,7 +227,8 @@ class Builder(object):
         """
         for lang in self.get_resolved_langs_to_generate(rule):
             if lang.name != "sce-bash":
-                self.build_lang_for_templatable(rule, lang)
+                filled_template = self.build_lang_for_templatable(rule, lang)
+                self.write_lang_contents_for_templatable(filled_template, lang, rule)
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
@@ -242,7 +242,8 @@ class Builder(object):
                 "title": oval_def_id,
                 "template": template,
             })
-            self.build_lang_for_templatable(rule, LANGUAGES["oval"])
+            filled_template = self.build_lang_for_templatable(rule, LANGUAGES["oval"])
+            self.write_lang_contents_for_templatable(filled_template, LANGUAGES["oval"], rule)
 
     def build_all_platforms(self):
         for platform_file in sorted(os.listdir(self.platforms_dir)):
