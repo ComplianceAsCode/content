@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 
 mkdir /etc/rsyslog.d
 cat >> /etc/rsyslog.d/test.conf <<EOF
