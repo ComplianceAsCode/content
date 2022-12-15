@@ -7,4 +7,3 @@
 {{% else %}}
 {{{ bash_ensure_pam_module_configuration('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwhistory.so', 'remember', "$var_password_pam_unix_remember", '^password.*requisite.*pam_pwquality\.so') }}}
 {{% endif %}}
-{{{ bash_ensure_pam_module_configuration('/etc/pam.d/password-auth', 'password', 'requisite', 'pam_pwhistory.so', 'remember', "$var_password_pam_unix_remember", '^password.*requisite.*pam_pwquality\.so') }}}
