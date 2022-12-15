@@ -33,7 +33,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember" version="1">
-{{% if product in [ "sle15" ] %}}
+{{% if product in [ "sle12", "sle15" ] %}}
     <ind:filepath>/etc/pam.d/common-password</ind:filepath>
 {{% else %}}
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
