@@ -1,28 +1,34 @@
 <def-group>
-  <definition class="compliance" id="accounts_password_pam_pwhistory_remember_system_auth" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
-    <criteria comment="remember parameter of pam_pwhistory.so is set correctly" operator="AND">
-      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember_system_auth" />
+    <criteria operator="AND" comment="remember parameter of pam_pwhistory.so is set correctly">
+      <criterion test_ref="test_accounts_password_pam_pwhistory_remember_system_auth"
+        comment="remember parameter of pam_pwhistory.so is set correctly"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="check the configuration of /etc/pam.d/system-auth" id="test_accounts_password_pam_pwhistory_remember_system_auth" version="1">
-    <ind:object object_ref="obj_accounts_password_pam_pwhistory_remember_system_auth" />
-    <ind:state state_ref="state_accounts_password_pam_pwhistory_remember_system_auth" />
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_system_auth"
+    check="all" comment="check the configuration of /etc/pam.d/system-auth" version="1">
+    <ind:object object_ref="obj_accounts_password_pam_pwhistory_remember_system_auth"/>
+    <ind:state state_ref="state_accounts_password_pam_pwhistory_remember_system_auth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_accounts_password_pam_pwhistory_remember_system_auth" version="1">
+  <ind:textfilecontent54_object id="obj_accounts_password_pam_pwhistory_remember_system_auth"
+    version="1">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern var_ref="pwhistory_line_regex_system_auth" var_check="at least one"
-    operation="pattern match" />
+    <ind:pattern var_ref="pwhistory_line_regex_system_auth"
+      var_check="at least one" operation="pattern match"/>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_accounts_password_pam_pwhistory_remember_system_auth" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_password_pam_remember" />
+  <ind:textfilecontent54_state id="state_accounts_password_pam_pwhistory_remember_system_auth"
+    version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal"
+      var_ref="var_password_pam_remember"/>
   </ind:textfilecontent54_state>
 
-  <local_variable id="pwhistory_line_regex_system_auth" datatype="string" comment="The regex of the directive" version="1">
+  <local_variable id="pwhistory_line_regex_system_auth" version="1"
+    datatype="string" comment="The regex of the directive">
     <concat>
       <literal_component>^\s*password\s+(?:</literal_component>
       <variable_component var_ref="var_possible_control_flags_system_auth"/>
@@ -30,12 +36,15 @@
     </concat>
   </local_variable>
 
- <local_variable id="var_possible_control_flags_system_auth" datatype="string" comment="All accepted control flags" version="1">
-  <split delimiter=",">
+  <local_variable id="var_possible_control_flags_system_auth" version="1"
+    datatype="string" comment="All accepted control flags">
+    <split delimiter=",">
       <variable_component var_ref="var_password_pam_remember_control_flag"/>
-  </split> 
+    </split>
   </local_variable>
 
-  <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_remember" version="1" />
-  <external_variable comment="control flag for pwhistory module" datatype="string" id="var_password_pam_remember_control_flag" version="1" />
+  <external_variable id="var_password_pam_remember" version="1"
+    datatype="int" comment="number of passwords that should be remembered"/>
+  <external_variable id="var_password_pam_remember_control_flag" version="1"
+    datatype="string" comment="control flag for pwhistory module"/>
 </def-group>
