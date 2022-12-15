@@ -160,7 +160,7 @@ selections:
     # Needs rule
 
     #### 1.7.1.2 Ensure AppArmor is enabled in the bootloader configuration (Automated)
-    # Needs rule
+    - grub2_enable_apparmor
 
     #### 1.7.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
     # Needs variable
