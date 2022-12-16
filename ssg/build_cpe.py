@@ -92,7 +92,7 @@ class ProductCPEs(object):
             raise CPEDoesNotExist("CPE %s is not defined" % cpe_id_or_name)
 
     def add_resolved_cpe_items_from_platform(self, platform):
-        for fact_ref in platform.test.get_symbols():
+        for fact_ref in platform.get_fact_refs():
             if fact_ref.arg:
                 cpe = self.get_cpe(fact_ref.cpe_name)
                 new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(fact_ref)
@@ -154,6 +154,7 @@ class CPEItem(XCCDFEntity, Templatable):
         bash_conditional=lambda: "",
         ansible_conditional=lambda: "",
         is_product_cpe=lambda: False,
+        versioned=lambda: False,
         args=lambda: {},
         ** XCCDFEntity.KEYS
     )
@@ -161,8 +162,6 @@ class CPEItem(XCCDFEntity, Templatable):
 
     MANDATORY_KEYS = [
         "name",
-        "title",
-        "check_id"
     ]
 
     prefix = "cpe-dict"
@@ -179,7 +178,7 @@ class CPEItem(XCCDFEntity, Templatable):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id
+        cpe_item_check.text = self.check_id or self.id_
         return cpe_item
 
     @classmethod
@@ -187,6 +186,8 @@ class CPEItem(XCCDFEntity, Templatable):
         cpe_item = super(CPEItem, cls).from_yaml(yaml_file, env_yaml, product_cpes)
         if cpe_item.is_product_cpe:
             cpe_item.is_product_cpe = convert_string_to_bool(cpe_item.is_product_cpe)
+        if cpe_item.versioned:
+            cpe_item.versioned = convert_string_to_bool(cpe_item.versioned)
         return cpe_item
 
     def set_template_variables(self, *sources):
@@ -196,6 +197,10 @@ class CPEItem(XCCDFEntity, Templatable):
                 self.template["vars"].update(source)
 
     def create_resolved_cpe_item_for_fact_ref(self, fact_ref):
+        if fact_ref.has_version_specs():
+            if not self.versioned:
+                raise ValueError("CPE entity '{0}' does not support version specifiers: "
+                                 "{1}".format(self.id_, fact_ref.cpe_name))
         resolved_parameters = self.args[fact_ref.arg]
         resolved_parameters.update(fact_ref.as_dict())
         cpe_item_as_dict = self.represent_as_dict()
@@ -222,7 +227,7 @@ class CPEALLogicalTest(Function):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
         cpe_test.set('operator', ('OR' if self.is_or() else 'AND'))
         cpe_test.set('negate', ('true' if self.is_not() else 'false'))
-        # logical tests must go first, therefore we separate tests and factrefs
+        # Logical tests must go first, therefore we separate tests and factrefs
         tests = [t for t in self.args if isinstance(t, CPEALLogicalTest)]
         factrefs = [f for f in self.args if isinstance(f, CPEALFactRef)]
         for obj in tests + factrefs:
@@ -310,6 +315,10 @@ class CPEALFactRef(Symbol):
 
     @staticmethod
     def get_base_name_of_parametrized_cpe_id(cpe_id):
+        """
+        If given a parametrized platform name such as package[test],
+        it returns the package part only.
+        """
         return Symbol.get_base_of_parametrized_name(cpe_id)
 
 
