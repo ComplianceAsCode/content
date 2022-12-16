@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora,multi_platform_ubuntu
 
 if grep -q 'OPTIONS=.*' /etc/sysconfig/ntpd; then
 	# trying to solve cases where the parameter after OPTIONS
