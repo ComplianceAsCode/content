@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure all AppArmor Profiles are in enforce or complain mode'
+
+description: |-
+    AppArmor profiles define what resources applications are able to access.
+
+rationale: |-
+    Security configuration requirements vary from site to site. Some sites
+    may mandate a policy that is stricter than the default policy, which is
+    perfectly acceptable. This item is intended to ensure that any policies
+    that exist on the system are activated.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 1.7.1.3
+    cis@ubuntu2204: 1.6.1.3
+
