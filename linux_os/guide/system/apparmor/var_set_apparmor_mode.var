@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Select AppArmor mode for rule ensure_apparmor_enforce_or_complain'
+
+description: |-
+    Rule ensure_apparmor_enforce_or_complain will select which AppArmor mode will be set based
+    on this variable value.
+    default - Default sets mode to complain.
+    <br />enforce - AppArmor mode set to Enforce.
+    <br />complain - AppArmor mode set to Complain.
+
+type: boolean
+
+operator: equals
+
+interactive: false
+
+options:
+    default: "complain"
+    "enforce": "enforce"
+    "complain": "complain"
+
