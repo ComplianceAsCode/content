@@ -1,0 +1,15 @@
+name: "cpe:/o:{arg}"
+title: "Operating System is {arg}"
+check_id: platform_os_linux_{arg}
+versioned: false
+template:
+    name: platform_os_linux
+args:
+    rhel:
+        os_name: "Red Hat Enterprise Linux"
+        os_id: 'rhel'
+        os_id_ansible: "RedHat"
+    fedora:
+        os_name: "Fedora"
+        os_id: 'fedora'
+        os_id_ansible: "Fedora"

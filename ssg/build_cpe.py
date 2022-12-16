@@ -93,11 +93,20 @@ class ProductCPEs(object):
 
     def add_resolved_cpe_items_from_platform(self, platform):
         for fact_ref in platform.get_fact_refs():
-            if fact_ref.arg:
-                cpe = self.get_cpe(fact_ref.cpe_name)
-                new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(fact_ref)
-                self.add_cpe_item(new_cpe)
-                fact_ref.cpe_name = new_cpe.name
+            if fact_ref.arg:  # the CPE item is parametrized
+                try:
+                    # if there already exists a CPE item with factref's ID
+                    # we can just use it right away, no new CPE items need to be created
+                    cpe = self.get_cpe_for_fact_ref(fact_ref)
+                    fact_ref.cpe_name = cpe.name
+                except CPEDoesNotExist:
+                    # if the CPE item with factref's ID does not exist
+                    # it means that we need to create a new CPE item
+                    # which will have parameters in place
+                    cpe = self.get_cpe(fact_ref.cpe_name)
+                    new_cpe = cpe.create_resolved_cpe_item_for_fact_ref(fact_ref)
+                    self.add_cpe_item(new_cpe)
+                    fact_ref.cpe_name = new_cpe.name
 
     def get_cpe_for_fact_ref(self, fact_ref):
         return self.get_cpe(fact_ref.as_id())
@@ -216,6 +225,15 @@ class CPEItem(XCCDFEntity, Templatable):
     @staticmethod
     def is_cpe_name(cpe_id_or_name):
         return cpe_id_or_name.startswith("cpe:")
+
+    def set_conditional(self, language, content):
+        if language == "ansible":
+            self.ansible_conditional = content
+        elif language == "bash":
+            self.bash_conditional = content
+        else:
+            raise RuntimeError(
+                "The language {0} is not supported as conditional for CPE".format(language))
 
 
 class CPEALLogicalTest(Function):

@@ -1521,8 +1521,8 @@ class Platform(XCCDFEntity):
         platform.name = id_
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
-        platform.bash_conditional = platform.test.to_bash_conditional()
-        platform.ansible_conditional = platform.test.to_ansible_conditional()
+        platform.update_conditional_from_cpe_items("bash", product_cpes)
+        platform.update_conditional_from_cpe_items("ansible", product_cpes)
         return platform
 
     def get_xml(self):
@@ -1542,7 +1542,7 @@ class Platform(XCCDFEntity):
         return xmlstr
 
     def to_xml_element(self):
-        return self.xml_content
+        return ET.fromstring(self.xml_content)
 
     def get_remediation_conditional(self, language):
         if language == "bash":
@@ -1555,7 +1555,6 @@ class Platform(XCCDFEntity):
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        platform.xml_content = ET.fromstring(platform.xml_content)
         # If we received a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
@@ -1565,6 +1564,16 @@ class Platform(XCCDFEntity):
 
     def get_fact_refs(self):
         return self.test.get_symbols()
+
+    def update_conditional_from_cpe_items(self, language, product_cpes):
+        self.test.enrich_with_cpe_info(product_cpes)
+        if language == "bash":
+            self.bash_conditional = self.test.to_bash_conditional()
+        elif language == "ansible":
+            self.ansible_conditional = self.test.to_ansible_conditional()
+        else:
+            raise RuntimeError(
+                "Platform remediations do not support the {0} language".format(language))
 
     def __eq__(self, other):
         if not isinstance(other, Platform):
