@@ -2128,7 +2128,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - accounts_users_netrc_file_permissions
 
   - id: 6.2.12
     title: Ensure no users have .rhosts files (Automated)

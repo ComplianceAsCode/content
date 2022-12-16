@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: "Ensure users' .netrc Files are not group or world accessible"
+
+description: |-
+    While the system administrator can establish secure permissions for users' .netrc files, the
+    users can easily override these.
+
+    This rule ensures every file or directory under the home directory related
+    to an interactive user is group-owned by an interactive user.
+
+rationale: |-
+    .netrc files may contain unencrypted passwords that may be used to attack other systems.
+    Note: While the complete removal of .netrc files is recommended if any are required on the
+          system secure permissions must be applied.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92446-4
+    cce@sle15: CCE-92697-2
+
+references:
+    cis@sle12: 6.2.11
+    cis@sle15: 6.2.11
+
+ocil_clause: 'the group ownership is incorrect'
+
+ocil: |-
+    To verify .netrc file  in interactive user home directory is
+    group-owned by a group the user is a member of, run the
+    following command:
+    <pre>$ sudo ls -lLR /home/<i>USER</i>/.netrc</pre>
+
+warnings:
+    - general: |-
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the group-ownership
+       of folders or files in their respective home directories.
