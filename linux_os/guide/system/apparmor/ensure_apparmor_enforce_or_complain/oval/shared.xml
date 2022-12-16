@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="ensure_apparmor_enforce_or_complain" version="1">
+    {{{ oval_metadata("Ensure all AppArmor Profiles are in var_set_apparmor_mode") }}}
+    <criteria comment="Either all profiles are set to complain or enforce" operator="OR">
+      <criterion comment="All profiles are set to complain mode" test_ref="test_profiles_in_complain_mode" />
+      <criterion comment="All profiles are set to enforce mode" test_ref="test_profiles_in_enforce_mode" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_profiles_in_complain_mode" check="all" version="1"
+  comment="Check for complain in /sys/kernel/security/apparmor/profiles">
+    <ind:object object_ref="object_profiles_complain_mode" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_profiles_complain_mode" version="1">
+    <ind:filepath>/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\s+\(complain\)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_profiles_in_enforce_mode" check="all" version="1"
+  comment="Check for complain in /sys/kernel/security/apparmor/profiles">
+    <ind:object object_ref="object_profiles_enforce_mode" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_profiles_enforce_mode" version="1">
+    <ind:filepath>/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\s+\(enforce\)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
