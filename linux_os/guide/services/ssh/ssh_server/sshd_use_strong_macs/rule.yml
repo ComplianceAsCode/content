@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,rhel7,sle15
+prodtype: ol7,rhel7,sle12,sle15
 
 title: 'Use Only Strong MACs'
 
@@ -21,8 +21,11 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-82364-1
+    cce@sle12: CCE-92280-7
+    cce@sle15: CCE-91396-2
 
 references:
+    cis@sle12: 5.2.14
     cis@sle15: 5.2.14
 
 ocil_clause: 'MACs option is commented out or not using strong hash algorithms'

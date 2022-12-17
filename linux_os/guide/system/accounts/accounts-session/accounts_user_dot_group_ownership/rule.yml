@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle15,ubuntu2004,ubuntu2204
+prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'User Initialization Files Must Be Group-Owned By The Primary User'
 
@@ -22,11 +22,14 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80526-7
+    cce@sle12: CCE-92295-5
+    cce@sle15: CCE-91408-5
 
 references:
+    cis@sle12: 6.2.8
     cis@sle15: 6.2.8
     cis@ubuntu2004: 6.2.7
-    cis@ubuntu2204: 6.2.7
+    cis@ubuntu2204: 6.2.17
     disa: CCI-000366
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-020700

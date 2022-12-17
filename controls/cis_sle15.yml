@@ -1,7 +1,7 @@
 policy: 'CIS benchmark for SUSE Linux Enterprise 15'
 title: 'CIS benchmark for SUSE Linux Enterprise 15'
 id: cis_sle15
-version: '1.1.0'
+version: '1.1.1'
 source: https://www.cisecurity.org/cis-benchmarks/#suse_linux
 levels:
   - id: l1_server
@@ -34,8 +34,9 @@ controls:
       - l2_workstation
     status: automated
     rules:
+      - kernel_module_cramfs_disabled
       - kernel_module_squashfs_disabled
-
+      
   - id: 1.1.1.2
     title: Ensure mounting of udf filesystems is disabled (Automated)
     levels:
@@ -46,13 +47,13 @@ controls:
       - kernel_module_udf_disabled
 
   - id: 1.1.1.3
-    title: Ensure mounting of FAT filesystems is disabled (Manual)
+    title: Ensure mounting of FAT filesystems is limited (Automated)
     levels:
-      - l1_server
-      - l1_workstation
-    notes: <-
-      FAT filesystems support is required for UEFI secure booting.
-    status: manual
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_vfat_disabled  
 
   - id: 1.1.2
     title: Ensure /tmp is configured (Automated)
@@ -95,7 +96,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: manual # rule is missing
 
   - id: 1.1.7
     title: Ensure noexec option set on /dev/shm partition (Automated)
@@ -249,20 +250,21 @@ controls:
     status: automated
     rules:
       - service_autofs_disabled
+      - kernel_module_usb-storage_disabled
 
   - id: 1.2.1
     title: Ensure GPG keys are configured (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual  # rule is missing
 
   - id: 1.2.2
     title: Ensure package manager repositories are configured (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 1.2.3
     title: Ensure gpgcheck is globally activated (Automated)
@@ -299,8 +301,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - sudo_custom_logfile
       - var_sudo_logfile=var_log_sudo_log
+      - sudo_custom_logfile
 
   - id: 1.4.1
     title: Ensure AIDE is installed (Automated)
@@ -390,9 +392,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
-    notes: >-
-      The rule to remove prelink package is missing.
+    status: automated
     rules:
       - disable_prelink
 
@@ -410,21 +410,23 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # Rule Missing!
+    status: automated
+    rules:
+      - apparmor_configured
 
   - id: 1.7.1.3
     title: Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 1.7.1.4
     title: Ensure all AppArmor Profiles are enforcing (Automated)
     levels:
-      - l1_server
-      - l1_workstation
-    status: manual # Rules Missing
+      - l2_server
+      - l2_workstation
+    status: manual # # rule is missing
 
   - id: 1.8.1.1
     title: Ensure message of the day is configured properly (Automated)
@@ -451,7 +453,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - banner_etc_issue_net
+      - login_banner_text=cis_banners
 
   - id: 1.8.1.4
     title: Ensure permissions on /etc/motd are configured (Automated)
@@ -480,19 +485,24 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - file_groupowner_etc_issue_net
+      - file_owner_etc_issue_net
+      - file_permissions_etc_issue_net
 
   - id: 1.9
     title: Ensure updates, patches, and additional security software are installed (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 1.10
     title: Ensure GNOME Display Manager is removed (Automated)
     levels:
-      - l2_server
+      - l1_server
+      - l1_workstation      
     status: manual # Rule is missing: https://github.com/ComplianceAsCode/content/issues/7225
 
   - id: 1.10
@@ -514,6 +524,7 @@ controls:
     status: automated
     rules:
       - package_xinetd_removed
+      - service_xinetd_disabled
 
   - id: 2.2.1.1
     title: Ensure time synchronization is in use (Automated)
@@ -529,9 +540,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially # Missing Rules
+    status: automated
     rules:
-      - service_chronyd_enabled
+      - service_timesyncd_enabled
 
   - id: 2.2.1.3
     title: Ensure chrony is configured (Automated)
@@ -551,6 +562,7 @@ controls:
     notes: >-
       The rule also configures correct run level to prevent unbootable system.
     rules:
+      - package_xorg-x11-server-common_removed
       - xwindows_remove_packages
 
   - id: 2.2.3
@@ -582,6 +594,7 @@ controls:
     status: automated
     rules:
       - package_dhcp_removed
+      - service_dhcpd_disabled
 
   - id: 2.2.6
     title: Ensure LDAP server is not installed (Automated)
@@ -599,6 +612,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_nfs_disabled
       - package_nfs-utils_removed
 
   - id: 2.2.8
@@ -619,6 +633,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_named_disabled
       - package_bind_removed
 
   - id: 2.2.10
@@ -628,6 +643,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_vsftpd_disabled
       - package_vsftpd_removed
 
   - id: 2.2.11
@@ -639,6 +655,7 @@ controls:
     notes: >-
       Only httpd/apache2 is currently covered by this rule.
     rules:
+      - service_httpd_disabled
       - package_httpd_removed
 
   - id: 2.2.12
@@ -648,6 +665,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_dovecot_disabled
       - package_dovecot_removed
 
   - id: 2.2.13
@@ -657,6 +675,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_smb_disabled
       - package_samba_removed
 
   - id: 2.2.14
@@ -666,6 +685,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_squid_disabled
       - package_squid_removed
 
   - id: 2.2.15
@@ -675,6 +695,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - service_snmpd_disabled
       - package_net-snmp_removed
 
   - id: 2.2.16
@@ -692,11 +713,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
-    notes: >-
-      Package removal not covered by this rule
+    status: automated
     rules:
       - service_rsyncd_disabled
+      - package_rsync_removed
 
   - id: 2.2.18
     title: Ensure NIS server is not installed (Automated)
@@ -766,10 +786,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual 
 
   - id: 3.1.1
-    title: Disable IPv6 (Manual)
+    title: Disable IPv6 (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -951,10 +971,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.1.3
-    title: Ensure FirewallD is enabled and running (Automated)
+    title: Ensure firewalld service is enabled and running (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -971,40 +991,56 @@ controls:
     rules:
       - set_firewalld_default_zone
 
+  - id: 3.5.1.5
+    title: Ensure network interfaces are assigned to appropriate zone (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual # rule is missing
+
+  - id: 3.5.1.6
+    title: Ensure unnecessary services and ports are not accepted (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual # rule is missing
+
   - id: 3.5.2.1
     title: Ensure nftables is installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.2
     title: Ensure firewalld is not installed or stopped and masked (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: automated
+    rules:
+      - package_firewalld_removed
 
   - id: 3.5.2.3
     title: Ensure iptables are flushed (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.4
     title: Ensure a table exists (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.5
     title: Ensure base chains exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.6
     title: Ensure loopback traffic is configured (Automated)
@@ -1020,28 +1056,28 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.8
     title: Ensure default deny firewall policy (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.9
     title: Ensure nftables service is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.2.10
     title: Ensure nftables rules are permanent (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.3.1.1
     title: Ensure iptables package is installed (Automated)
@@ -1051,20 +1087,23 @@ controls:
     status: automated
     rules:
       - package_iptables_installed
+      - service_iptables_enabled
 
   - id: 3.5.3.1.2
     title: Ensure nftables is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual # rule is missing
 
   - id: 3.5.3.1.3
     title: Ensure firewalld is not installed or stopped and masked (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: automated
+    rules:
+      - package_firewalld_removed    
 
   - id: 3.5.3.2.1
     title: Ensure default deny firewall policy (Automated)
@@ -1079,13 +1118,13 @@ controls:
       - set_iptables_default_rule_forward
 
   - id: 3.5.3.2.2
-    title: Ensure iptables loopback traffic is configured (Automated)
+    title: Ensure loopback traffic is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: automated
     rules:
-      - set_ipv6_loopback_traffic
+      - set_loopback_traffic
 
   - id: 3.5.3.2.3
     title: Ensure outbound and established connections are configured (Manual)
@@ -1099,7 +1138,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing / difficult to automate
+    status: partial
+    rules:
+      - ensure_firewall_rules_for_open_ports
 
   - id: 3.5.3.3.1
     title: Ensure IPv6 default deny firewall policy (Automated)
@@ -1117,7 +1158,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - set_ipv6_loopback_traffic
 
   - id: 3.5.3.3.3
     title: Ensure IPv6 outbound and established connections are configured (Manual)
@@ -1339,15 +1382,13 @@ controls:
       - l2_server
       - l2_workstation
     status: manual # missing rule for sudoers scope
-    rules:
-      - audit_rules_sysadmin_actions
 
   - id: 4.1.15
     title: Ensure system administrator actions (sudolog) are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: manual # missing rule
+    status: automated
     related_rules:
       - audit_rules_sysadmin_actions
 
@@ -1363,6 +1404,7 @@ controls:
       - audit_rules_privileged_commands_modprobe
       - audit_rules_kernel_module_loading_delete
       - audit_rules_kernel_module_loading_init
+      - audit_rules_kernel_module_loading
 
   - id: 4.1.17
     title: Ensure the audit configuration is immutable (Automated)
@@ -1396,14 +1438,18 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules: 
+      - rsyslog_files_permissions
+      - rsyslog_files_ownership
+      - rsyslog_files_groupownership
 
   - id: 4.2.1.4
     title: Ensure logging is configured (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: manual 
 
   - id: 4.2.1.5
     title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
@@ -1451,7 +1497,7 @@ controls:
       - journald_storage
 
   - id: 4.2.3
-    title: Ensure permissions on all logfiles are configured (Manual)
+    title: Ensure permissions on all logfiles are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -1485,6 +1531,7 @@ controls:
     status: automated
     rules:
       - service_cron_enabled
+      - service_crond_enabled
 
   - id: 5.1.2
     title: Ensure permissions on /etc/crontab are configured (Automated)
@@ -1614,7 +1661,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - sshd_limit_user_access
 
   - id: 5.2.5
     title: Ensure SSH LogLevel is appropriate (Automated)
@@ -1705,6 +1754,7 @@ controls:
     rules:
       - sshd_approved_ciphers=cis_sle15
       - sshd_use_approved_ciphers
+      - sshd_use_strong_ciphers
 
   - id: 5.2.14
     title: Ensure only strong MAC algorithms are used (Automated)
@@ -1717,6 +1767,7 @@ controls:
     rules:
       - sshd_approved_macs=cis_sle15
       - sshd_use_approved_macs
+      - sshd_use_strong_macs
 
   - id: 5.2.15
     title: Ensure only strong Key Exchange algorithms are used (Automated)
@@ -1813,6 +1864,11 @@ controls:
       - var_password_pam_minlen=14
       - cracklib_accounts_password_pam_retry
       - var_password_pam_retry=3
+      - accounts_password_pam_minlen
+      - accounts_password_pam_lcredit
+      - accounts_password_pam_ucredit
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_ocredit
 
   - id: 5.3.2
     title: Ensure lockout for failed password attempts is configured (Automated)
@@ -1970,6 +2026,9 @@ controls:
       - file_groupowner_etc_passwd
       - file_owner_etc_passwd
       - file_permissions_etc_passwd
+      - file_permissions_etc_gshadow
+      - file_groupowner_etc_gshadow
+      - file_owner_etc_gshadow
 
   - id: 6.1.3
     title: Ensure permissions on /etc/shadow are configured (Automated)
@@ -2003,6 +2062,9 @@ controls:
       - file_groupowner_backup_etc_passwd
       - file_owner_backup_etc_passwd
       - file_permissions_backup_etc_passwd
+      - file_permissions_backup_etc_gshadow
+      - file_groupowner_backup_etc_gshadow
+      - file_owner_backup_etc_gshadow
 
   - id: 6.1.6
     title: Ensure permissions on /etc/shadow- are configured (Automated)
@@ -2085,7 +2147,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - no_legacy_plus_entries_etc_passwd
+      - no_legacy_plus_entries_etc_shadow
 
   - id: 6.2.3
     title: Ensure root is the only UID 0 account (Automated)
@@ -2111,8 +2176,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # we have a rule, but no check or remediations
-    related_rules:
+    status: automated 
+    rules:
       - accounts_user_interactive_home_directory_exists
 
   - id: 6.2.6
@@ -2120,9 +2185,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing checks and remediations
-    related_rules:
+    status: automated
+    rules:
       - file_permissions_home_directories
+      - accounts_users_home_files_permissions
 
   - id: 6.2.7
     title: Ensure users own their home directories (Automated)
@@ -2229,4 +2295,6 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated 
+    rules:
+      - ensure_shadow_group_empty

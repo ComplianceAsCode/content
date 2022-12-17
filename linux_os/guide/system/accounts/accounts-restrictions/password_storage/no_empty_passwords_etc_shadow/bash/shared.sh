@@ -1,4 +1,4 @@
-# platform = multi_platform_ol,multi_platform_sle
+# platform = multi_platform_ol,multi_platform_sle,multi_platform_ubuntu
 
 readarray -t users_with_empty_pass < <(sudo awk -F: '!$2 {print $1}' /etc/shadow)
 

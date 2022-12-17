@@ -69,9 +69,11 @@ def test_expression_with_parameter(algebra):
 
 def test_as_id(algebra):
     exp1 = algebra.parse(u'package')
-    exp2 = algebra.parse(u'package[test]')
     assert exp1.as_id() == "package"
+    exp2 = algebra.parse(u'package[test]')
     assert exp2.as_id() == "package_test"
+    exp3 = algebra.parse(u'package[test]>=1.0,<1.2.0-3')
+    assert exp3.as_id() == "package_test_le_1_2_0_3_gt_or_eq_1_0"
 
 
 def test_as_dict(algebra):
@@ -79,13 +81,36 @@ def test_as_dict(algebra):
     exp1_dict = {
         "arg": "",
         "id": "package",
-        "name": "package"
+        "name": "package",
+        'ver_specs': [],
+        'ver_specs_cpe': '',
+        'ver_specs_id': '',
+        'ver_specs_title': ''
     }
+    assert exp1.as_dict() == exp1_dict
     exp2 = algebra.parse(u'package[test]')
     exp2_dict = {
         "arg": "test",
         "id": "package_test",
-        "name": "package"
+        "name": "package",
+        'ver_specs': [],
+        'ver_specs_cpe': '',
+        'ver_specs_id': '',
+        'ver_specs_title': '',
     }
-    assert exp1.as_dict() == exp1_dict
     assert exp2.as_dict() == exp2_dict
+    exp3 = algebra.parse(u'package[test]>1.0')
+    exp3_dict = {
+        "arg": "test",
+        "id": "package_test_gt_1_0",
+        "name": "package",
+        'ver_specs': [{'evr_op': 'greater than',
+                       'evr_ver': '0:1.0-0',
+                       'id': 'gt_1_0',
+                       'op': '>',
+                       'ver': '1.0'}],
+        'ver_specs_cpe': 'gt:1.0',
+        'ver_specs_id': 'gt_1_0',
+        'ver_specs_title': 'greater than 1.0',
+    }
+    assert exp3.as_dict() == exp3_dict

@@ -201,25 +201,40 @@ class Builder(object):
 
     def build_lang_for_templatable(self, templatable, lang):
         """
-        Builds templated content of a given Templatable for a selected language,
-        writing the output to the correct build directories.
+        Builds templated content of a given Templatable for a selected language
+        returning the filled template.
         """
-        filled_template = self.get_lang_contents_for_templatable(templatable, lang)
-        self.write_lang_contents_for_templatable(filled_template, lang, templatable)
+        return self.get_lang_contents_for_templatable(templatable, lang)
 
     def build_cpe(self, cpe):
         for lang in self.get_resolved_langs_to_generate(cpe):
-            self.build_lang_for_templatable(cpe, lang)
+            filled_template = self.build_lang_for_templatable(cpe, lang)
+            if lang.template_type == TemplateType.REMEDIATION:
+                cpe.set_conditional(lang.name, filled_template)
+            if lang.template_type == TemplateType.CHECK:
+                self.write_lang_contents_for_templatable(filled_template, lang, cpe)
+        self.product_cpes.add_cpe_item(cpe)
+        cpe_path = os.path.join(self.cpe_items_dir, cpe.id_+".yml")
+        cpe.dump_yaml(cpe_path)
 
     def build_platform(self, platform):
         """
         Builds templated content of a given Platform (all CPEs/Symbols) for all available
-        languages, writing the output to the correct build directories.
+        languages, writing the output to the correct build directories
+        and updating the platform it self.
         """
+        langs_affecting_this_platform = set()
         for fact_ref in platform.test.get_symbols():
             cpe = self.product_cpes.get_cpe_for_fact_ref(fact_ref)
             if cpe.is_templated():
                 self.build_cpe(cpe)
+                langs_affecting_this_platform.update(
+                    self.get_resolved_langs_to_generate(cpe))
+        for lang in langs_affecting_this_platform:
+            if lang.template_type == TemplateType.REMEDIATION:
+                platform.update_conditional_from_cpe_items(lang.name, self.product_cpes)
+        platform_path = os.path.join(self.platforms_dir, platform.id_+".yml")
+        platform.dump_yaml(platform_path)
 
     def build_rule(self, rule):
         """
@@ -228,7 +243,8 @@ class Builder(object):
         """
         for lang in self.get_resolved_langs_to_generate(rule):
             if lang.name != "sce-bash":
-                self.build_lang_for_templatable(rule, lang)
+                filled_template = self.build_lang_for_templatable(rule, lang)
+                self.write_lang_contents_for_templatable(filled_template, lang, rule)
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
@@ -242,7 +258,8 @@ class Builder(object):
                 "title": oval_def_id,
                 "template": template,
             })
-            self.build_lang_for_templatable(rule, LANGUAGES["oval"])
+            filled_template = self.build_lang_for_templatable(rule, LANGUAGES["oval"])
+            self.write_lang_contents_for_templatable(filled_template, LANGUAGES["oval"], rule)
 
     def build_all_platforms(self):
         for platform_file in sorted(os.listdir(self.platforms_dir)):

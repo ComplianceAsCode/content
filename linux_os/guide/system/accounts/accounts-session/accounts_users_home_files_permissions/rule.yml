@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle15
+prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15
 
 title: 'All User Files and Directories In The Home Directory Must Have Mode 0750 Or Less Permissive'
 
@@ -19,8 +19,11 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80535-8
     cce@rhel8: CCE-85888-6
+    cce@sle12: CCE-92290-6
+    cce@sle15: CCE-91403-6
 
 references:
+    cis@sle12: 6.2.6
     cis@sle15: 6.2.6
     disa: CCI-000366
     srg: SRG-OS-000480-GPOS-00227

@@ -216,9 +216,9 @@ class XCCDFEntity(object):
         that defines the instance to be created.
         This wraps :meth:`process_input_dict` and it adds generic keys on the top:
 
-        - `id_` as the entity ID that is deduced either from thefilename,
+        - `id_` as the entity ID that is deduced either from the file name,
           or from the parent directory name.
-        - `definition_location` as the original location whenre the entity got defined.
+        - `definition_location` is the original location where the entity got defined.
         """
         file_basename = os.path.basename(yaml_file)
         entity_id = derive_id_from_file_name(file_basename)

@@ -160,7 +160,7 @@ if (PY_MYPY)
      )
 endif()
 
-if (PY_OPENPYXL AND PY_PANDAS AND PYTHON3_EXECUTABLE)
+if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
         NAME "srg-export-rhel9"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format xlsx --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
@@ -181,7 +181,7 @@ endif()
 
 file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
 
-if (PYTHON3_EXECUTABLE)
+if (PYTHON_VERSION_MAJOR GREATER 2)
 add_test(
     NAME "test-compare_ds"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
@@ -189,7 +189,7 @@ add_test(
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
 endif()
 
-if (PYTHON3_EXECUTABLE AND GIT_EXECUTABLE)
+if (PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE)
 add_test(
     NAME "test-generate_contributors"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
@@ -198,7 +198,7 @@ set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
 endif()
 
 
-if (SSG_PRODUCT_RHEL8 AND PYTHON3_EXECUTABLE)
+if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
 add_test(
         NAME "test-create_scap_delta_tailoring"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --dry-run --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
@@ -215,7 +215,8 @@ set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES FIXT
 set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
 
-if (PYTHON3_EXECUTABLE AND PYTHON_VERSION_MINOR GREATER 6)
+
+if (PYTHON_VERSION_MAJOR GREATER 2  AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "test-controleval-directory"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "high" "--product" "rhel9" "--id" "qrst-levels"
@@ -233,4 +234,29 @@ if (PYTHON3_EXECUTABLE AND PYTHON_VERSION_MINOR GREATER 6)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "medium" "--product" "rhel8" "--id" "qrst-levels" "--output-format" "json"
     )
     set_tests_properties("test-controleval-json" PROPERTIES LABELS quick)
+endif()
+
+macro(ssg_refcheck_test PRODUCT PROFILE KEY)
+    add_test(
+        NAME "refchecker-${PRODUCT}-${PROFILE}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/refchecker.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "${PRODUCT}" "${PROFILE}" "${KEY}"
+    )
+    set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES DEPENDS "test-rule-dir-json")
+    set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
+endmacro()
+
+if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
+    ssg_refcheck_test("rhel8" "cis_workstation_l1" "cis")
+    ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
+    ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
+    ssg_refcheck_test("rhel8" "cis" "cis")
+endif()
+
+
+if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
+    ssg_refcheck_test("rhel7" "cis_workstation_l1" "cis")
+    ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
+    ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
+    ssg_refcheck_test("rhel7" "cis" "cis")
 endif()

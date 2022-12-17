@@ -1,0 +1,30 @@
+# platform = multi_platform_sle
+
+- name: Check if IPv6 is enabled
+  command: sysctl -n net.ipv6.conf.all.disable_ipv6
+  register: ipv6_status
+  failed_when: ipv6_status.stdout != "0"
+
+- name: Allow incoming traffic on the loopback interface
+  ansible.builtin.iptables:
+    ipv6: yes
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+  when: "{{ ipv6_status.stdout == '0' }}"
+
+- name: Allow outgoing traffic on the loopback interface
+  ansible.builtin.iptables:
+    ipv6: yes
+    chain: OUTPUT
+    out_interface: lo
+    jump: ACCEPT
+  when: "{{ ipv6_status.stdout == '0' }}"
+
+- name: Drop incoming traffic from the localhost
+  ansible.builtin.iptables:
+    ipv6: yes
+    chain: INPUT
+    source: "::1"
+    jump: DROP
+  when: "{{ ipv6_status.stdout == '0' }}"

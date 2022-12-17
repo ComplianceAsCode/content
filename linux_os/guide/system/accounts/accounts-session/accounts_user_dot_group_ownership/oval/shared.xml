@@ -10,11 +10,17 @@
   <unix:password_object id="object_accounts_user_dot_group_ownership_objects" version="1">
     <unix:username datatype="string" operation="not equal">nobody</unix:username>
     <filter action="include">state_accounts_user_dot_group_ownership_interactive_gids</filter>
+    <filter action="exclude">state_accounts_user_dot_group_ownership_nobody</filter>
   </unix:password_object>
 
   <unix:password_state id="state_accounts_user_dot_group_ownership_interactive_gids" version="1">
     <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
   </unix:password_state>
+
+  <unix:password_state id="state_accounts_user_dot_group_ownership_nobody" version="1">
+    <unix:group_id datatype="int" operation="equals">{{{ nobody_gid }}}</unix:group_id>
+  </unix:password_state>
+
 
   <local_variable id="var_accounts_user_dot_group_ownership_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">

@@ -21,6 +21,86 @@ class SSGError(RuntimeError):
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
 
+class VersionSpecifierSet(set):
+    def __init__(self, s=()):
+        for el in s:
+            if not isinstance(el, VersionSpecifier):
+                raise ValueError('VersionSpecifierSet can only work with VersionSpecifier objects,'
+                                 ' invalid object: {0}'.format(repr(el)))
+        super(VersionSpecifierSet, self).__init__(s)
+
+    @property
+    def title(self):
+        return ' and '.join([ver_spec.title for ver_spec in sorted(self)])
+
+    @property
+    def cpe_id(self):
+        return ':'.join([ver_spec.cpe_id for ver_spec in sorted(self)])
+
+    @property
+    def oval_id(self):
+        return '_'.join([ver_spec.oval_id for ver_spec in sorted(self)])
+
+
+class VersionSpecifier:
+    def __init__(self, op, evr_ver_dict):
+        self._evr_ver_dict = evr_ver_dict
+        self.op = op
+
+    def __str__(self):
+        return '{0} {1}'.format(self.op, self.ver)
+
+    def __repr__(self):
+        return '<VersionSpecifier({0},{1})>'.format(self.op, self.ver)
+
+    def __hash__(self):
+        return hash(self.op + self.ver)
+
+    def __eq__(self, other):
+        return self.op+self.ver == other.op+other.ver
+
+    def __lt__(self, other):
+        return self.op+self.ver < other.op+other.ver
+
+    @property
+    def evr_op(self):
+        return comparison_to_oval(self.op)
+
+    @property
+    def ver(self):
+        return VersionSpecifier.evr_dict_to_str(self._evr_ver_dict)
+
+    @property
+    def evr_ver(self):
+        return VersionSpecifier.evr_dict_to_str(self._evr_ver_dict, True)
+
+    @property
+    def title(self):
+        return '{0} {1}'.format(comparison_to_oval(self.op), self.ver)
+
+    @property
+    def cpe_id(self):
+        return '{0}:{1}'.format(escape_comparison(self.op), self.ver)
+
+    @property
+    def oval_id(self):
+        return '{0}_{1}'.format(escape_comparison(self.op), escape_id(self.ver))
+
+    @staticmethod
+    def evr_dict_to_str(evr, fully_formed_evr_string=False):
+        res = ''
+        if evr['epoch'] is not None:
+            res += evr['epoch'] + ':'
+        elif fully_formed_evr_string:
+            res += '0:'
+        res += evr['version']
+        if evr['release'] is not None:
+            res += '-' + evr['release']
+        elif fully_formed_evr_string:
+            res += '-0'
+        return res
+
+
 def map_name(version):
     """Maps SSG Makefile internal product name to official product name"""
 
@@ -275,6 +355,29 @@ def escape_yaml_key(text):
     # them with '^' symbol.
     # myCamelCase^Key -> my^camel^case^^^key
     return re.sub(r'([A-Z^])', '^\\1', text).lower()
+
+
+def _map_comparison_op(op, table):
+    if op not in table:
+        raise KeyError("Invalid comparison operator: %s (expected one of: %s)",
+                       op, ', '.join(table.keys()))
+    return table[op]
+
+
+def escape_comparison(op):
+    return _map_comparison_op(op, {
+        '==': 'eq',       '!=': 'ne',
+        '>': 'gt',        '<': 'le',
+        '>=': 'gt_or_eq', '<=': 'le_or_eq',
+    })
+
+
+def comparison_to_oval(op):
+    return _map_comparison_op(op, {
+        '==': 'equals',                '!=': 'not equal',
+        '>': 'greater than',           '<': 'less than',
+        '>=': 'greater than or equal', '<=': 'less than or equal',
+    })
 
 
 def sha256(text):
