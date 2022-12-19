@@ -1,41 +1,148 @@
 <def-group>
-  <definition class="compliance" id="accounts_password_pam_pwhistory_remember_password_auth" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
-    <criteria comment="remember parameter of pam_pwhistory.so is set correctly in password-auth" operator="AND">
-      <criterion comment="remember parameter of pam_pwhistory.so is set correctly in password-auth" test_ref="test_accounts_password_pam_pwhistory_remember_password_auth" />
+    <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
+      <!--
+        pam_pwhistory.so parameters can be defined directly in pam files or, in newer versions,
+        in /etc/security/pwhistory.conf. The last is the recommended option when available. Also,
+        is the option used by auselect tool. However, regardless the approach, a minimal
+        declaration is common in pam files. -->
+      <criterion test_ref="test_accounts_password_pam_pwhistory_remember_password_auth"
+        comment="pam_pwhistory.so is properly defined in password section of password-auth"/>
+
+      <!--
+        pam_pwhistory.so parameters should be defined in /etc/security/pwhistory.conf whenever
+        possible. But due to backwards compatibility, they are also allowed in pam files directly.
+        In case they are defined in both places, pam files have precedence and this may confuse
+        the assessment. The following tests ensure only one option is used. Note that if
+        pwhistory.conf is available, authselect tool will preserve PAM files from parameters
+        definitions in favor of /etc/security/pwhistory.conf. -->
+      <criteria operator="OR"
+        comment="Check the expected value for pam_pwhistory.so remember parameter">
+        <criteria operator="AND"
+          comment="Check the pam_pwhistory.so remember parameter is only in password-auth file">
+          <criterion
+            test_ref="test_accounts_password_pam_pwhistory_remember_password_auth_pamd"
+            comment="Check the remember parameter in password section of password-auth file"/>
+          <criterion
+            test_ref="test_accounts_password_pam_pwhistory_remember_password_auth_no_pwhistory_conf"
+            comment="Check the pam_pwhistory.so remember parameter is absent in pwhistory.conf"/>
+        </criteria>
+        <criteria operator="AND"
+          comment="Check the pam_pwhistory.so remember parameter is only in pwhistory.conf file">
+          <criterion
+            test_ref="test_accounts_password_pam_pwhistory_remember_password_auth_no_pamd"
+            comment="Check the pam_pwhistory.so remember parameter is absent in password-auth file"/>
+          <criterion
+            test_ref="test_accounts_password_pam_pwhistory_remember_password_auth_pwhistory_conf"
+            comment="Check the remember parameter in /etc/security/pwhistory.conf"/>
+        </criteria>
+      </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="check the configuration of /etc/pam.d/password-auth" id="test_accounts_password_pam_pwhistory_remember_password_auth" version="1">
-    <ind:object object_ref="obj_accounts_password_pam_pwhistory_remember_password_auth" />
-    <ind:state state_ref="state_accounts_password_pam_pwhistory_remember_password_auth" />
+  <!-- is pam_pwhistory.so enabled? -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_password_auth"
+    check="all" version="1" comment="Check pam_pwhistory.so presence in /etc/pam.d/password-auth">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_password_auth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_accounts_password_pam_pwhistory_remember_password_auth" version="1">
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_password_auth"
+    version="1">
     <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
-    <ind:pattern var_ref="pwhistory_line_regex_password_auth" var_check="at least one"
-    operation="pattern match" />
+    <ind:pattern var_ref="var_accounts_password_pam_pwhistory_remember_password_auth_module_regex"
+      var_check="at least one" operation="pattern match"/>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_accounts_password_pam_pwhistory_remember_password_auth" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_password_pam_remember" />
+  <!-- is the pam_pwhistory.so remember parameter correctly defined only in PAM files? -->
+  <ind:textfilecontent54_test
+    id="test_accounts_password_pam_pwhistory_remember_password_auth_pamd" check="all" version="1"
+    comment="Check remember parameter is present and correct in /etc/pam.d/password-auth">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_password_auth_pamd"/>
+    <ind:state state_ref="state_accounts_password_pam_pwhistory_remember_password_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+    id="object_accounts_password_pam_pwhistory_remember_password_auth_pamd" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern var_check="at least one" operation="pattern match"
+      var_ref="var_accounts_password_pam_pwhistory_remember_password_auth_pam_param_regex"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state
+    id="state_accounts_password_pam_pwhistory_remember_password_auth" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal"
+      var_ref="var_password_pam_remember"/>
   </ind:textfilecontent54_state>
 
-  <local_variable id="pwhistory_line_regex_password_auth" datatype="string" comment="The regex of the directive" version="1">
+  <external_variable id="var_password_pam_remember" version="1"
+    datatype="int" comment="number of passwords that should be remembered"/>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+    id="test_accounts_password_pam_pwhistory_remember_password_auth_no_pwhistory_conf"
+    comment="Check the absence of remember parameter in /etc/security/pwhistory.conf">
+    <ind:object
+      object_ref="object_accounts_password_pam_pwhistory_remember_password_auth_param_conf"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+    id="object_accounts_password_pam_pwhistory_remember_password_auth_param_conf" version="1"
+    comment="Collect the pam_pwhistory.so remember parameter from /etc/security/pwhistory.conf">
+    <ind:filepath operation="pattern match">^/etc/security/pwhistory.conf$</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_accounts_password_pam_pwhistory_remember_password_auth_conf_param_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- is the pam_pwhistory.so remember parameter correctly defined only in pwhistory.conf? -->
+  <ind:textfilecontent54_test
+    id="test_accounts_password_pam_pwhistory_remember_password_auth_no_pamd" version="1"
+    check="all" check_existence="none_exist"
+    comment="Check remember parameter is absent in /etc/pam.d/password-auth">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_password_auth_pamd"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test
+    id="test_accounts_password_pam_pwhistory_remember_password_auth_pwhistory_conf" version="1"
+    check="all" check_existence="all_exist"
+    comment="Check remember parameter is present and correct in /etc/security/pwhistory.conf">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_password_auth_param_conf"/>
+    <ind:state state_ref="state_accounts_password_pam_pwhistory_remember_password_auth"/>
+  </ind:textfilecontent54_test>
+
+  <!-- variables used to check the module implementation -->
+  <local_variable id="var_accounts_password_pam_pwhistory_remember_password_auth_module_regex"
+    datatype="string" version="1"
+    comment="The regex is to confirm the pam_pwhistory.so module is enabled">
     <concat>
       <literal_component>^\s*password\s+(?:</literal_component>
       <variable_component var_ref="var_possible_control_flags_password_auth"/>
-      <literal_component>)\s+pam_pwhistory\.so.*remember=([0-9]*).*$</literal_component>
+      <literal_component>)\s+pam_pwhistory\.so.*$</literal_component>
     </concat>
   </local_variable>
 
-  <local_variable id="var_possible_control_flags_password_auth" datatype="string" comment="All accepted control flags" version="1">
-  <split delimiter=",">
+  <local_variable id="var_possible_control_flags_password_auth" version="1"
+    datatype="string" comment="All accepted control flags">
+    <split delimiter=",">
       <variable_component var_ref="var_password_pam_remember_control_flag"/>
-  </split> 
+    </split>
   </local_variable>
 
-  <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_remember" version="1" />
-  <external_variable comment="control flag for pwhistory module" datatype="string" id="var_password_pam_remember_control_flag" version="1" />
+  <external_variable id="var_password_pam_remember_control_flag" version="1"
+    datatype="string" comment="control flag for pwhistory module"/>
+
+  <!-- variables used to collect the remember parameter value -->
+  <local_variable id="var_accounts_password_pam_pwhistory_remember_password_auth_pam_param_regex"
+    datatype="string" version="1"
+    comment="The regex is to collect the pam_pwhistory.so remember paramerter from PAM files">
+    <literal_component>^\s*password\b.*\bpam_pwhistory\.so\b.*\bremember=([0-9]*).*$</literal_component>
+  </local_variable>
+
+  <local_variable id="var_accounts_password_pam_pwhistory_remember_password_auth_conf_param_regex"
+    datatype="string" version="1"
+    comment="The regex is to collect the pam_pwhistory.so remember paramerter in pwhistory.conf">
+    <literal_component>^\s*remember\s*=\s*([0-9]+)</literal_component>
+  </local_variable>
 </def-group>
