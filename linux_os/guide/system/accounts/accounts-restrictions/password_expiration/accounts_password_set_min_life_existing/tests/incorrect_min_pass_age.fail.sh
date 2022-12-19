@@ -4,10 +4,6 @@
 
 BAD_PAS_AGE=-1
 
-# Configure the OS to enforce a password age < 1 of each accout  
+useradd testuser_123
 
-system_users=( $(awk -F: '{print $1}' /etc/shadow) )
-for i in ${system_users[@]}; 
-do 
-  passwd -n $BAD_PAS_AGE $i
-done
+passwd -n $BAD_PAS_AGE testuser_123
