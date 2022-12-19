@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# platform = multi_platform_sle
-
 SECURE_MIN_PASS_AGE=1
 
-usrs_min_pass_age=( $(awk -F: '$4 < SECURE_MIN_PASS_AGE || $4 == "" {print $1}' /etc/shadow) )
+usrs_min_pass_age=( $(awk -v min="$SECURE_MIN_PASS_AGE" -F: '(/^[^:]+:[^!*]/ && ($4 < min || $4 == "")) {print $1}' /etc/shadow) )
 for i in ${usrs_min_pass_age[@]};
 do
-  passwd -n $SECURE_MIN_PASS_AGE $i
+  chage -m $SECURE_MIN_PASS_AGE $i
 done

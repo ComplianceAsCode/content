@@ -52,7 +52,7 @@ ocil: |-
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
 
-    $ sudo passwd -n {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}} [user]
+    $ sudo chage -m {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}} [user]
 
 srg_requirement: |-
     {{{ full_name }}} passwords must have a 24 hours/1 day minimum password lifetime restriction in /etc/shadow.
