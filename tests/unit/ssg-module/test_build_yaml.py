@@ -379,6 +379,10 @@ def test_parametrized_platform(product_cpes):
     assert cpe_item.title == "Package ntp is installed"
     assert cpe_item.check_id == "installed_env_has_ntp_package"
 
+def test_parametrized_platform_with_invalid_argument(product_cpes):
+    with pytest.raises(KeyError):
+        platform = ssg.build_yaml.Platform.from_text("package[nonexisting_argument]", product_cpes)
+
 
 def test_derive_id_from_file_name():
     assert ssg.entities.common.derive_id_from_file_name("rule.yml") == "rule"
