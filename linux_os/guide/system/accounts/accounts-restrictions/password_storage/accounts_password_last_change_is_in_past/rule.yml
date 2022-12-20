@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Ensure all users last password change date is in the past'
+
+description: |-
+    All users should have a password change date in the past.
+rationale: |-
+    If a users recorded password change date is in the future then they could
+    bypass any set password expiration.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92330-0
+    cce@sle15: CCE-92504-0
+
+references:
+    cis@sle12: 5.4.1.6
+    cis@sle15: 5.4.1.6
+
+
+ocil_clause: 'any interactive user password that has last change time in the future'
+
+ocil: |-
+    Verify that the interactive user account passwords last change time is not in the future
+
+    The following command should return no output
+
+    <pre>$ sudo for usr in $(cut -d: -f1 /etc/shadow); do
+       [[ $(chage --list $usr | grep '^Last password change' | cut -d: -f2) > $(date) ]] \
+       && echo "$usr :$(chage --list $usr | grep '^Last password change' | cut -d: -f2)";
+       done
+     </pre>
+
+fixtext: |-
+    Forcibly expire account is one possible solution to make sure that the policy will be followed
