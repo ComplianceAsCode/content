@@ -210,7 +210,13 @@ class CPEItem(XCCDFEntity, Templatable):
             if not self.versioned:
                 raise ValueError("CPE entity '{0}' does not support version specifiers: "
                                  "{1}".format(self.id_, fact_ref.cpe_name))
-        resolved_parameters = self.args[fact_ref.arg]
+        try:
+            resolved_parameters = self.args[fact_ref.arg]
+        except KeyError:
+            raise KeyError(
+                "The {0} CPE item does not support the argument {1}. "
+                "Following arguments are supported: {2}".format(
+                    self.id_, fact_ref.arg, [a for a in self.args.keys()]))
         resolved_parameters.update(fact_ref.as_dict())
         cpe_item_as_dict = self.represent_as_dict()
         cpe_item_as_dict["args"] = None
