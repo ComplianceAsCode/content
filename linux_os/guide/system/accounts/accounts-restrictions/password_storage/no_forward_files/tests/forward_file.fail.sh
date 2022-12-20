@@ -2,4 +2,5 @@
 #
 # remediation = none
 
-touch /home/.forward
+useradd -m testForwardUser1
+touch /home/testForwardUser1/.forward
