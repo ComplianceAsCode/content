@@ -8,6 +8,7 @@ controls:
   rules:
   - api_server_tls_security_profile
   - ingress_controller_tls_security_profile
+  - kubelet_configure_tls_min_version
   status: manual
   check: |-
     Verify that the TLS Security Profile is not set to old, or a custom

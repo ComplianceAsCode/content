@@ -1,0 +1,19 @@
+---
+# platform = multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  annotations:
+    complianceascode.io/node-role: "{{.var_role_worker}}"
+spec:
+  kubeletConfig:
+    tlsMinVersion: "{{.var_kubelet_tls_min_version}}"
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  annotations:
+    complianceascode.io/node-role: "{{.var_role_master}}"
+spec:
+  kubeletConfig:
+    tlsMinVersion: "{{.var_kubelet_tls_min_version}}"
