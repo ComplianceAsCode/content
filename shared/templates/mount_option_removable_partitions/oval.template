@@ -27,7 +27,7 @@
 
   <!-- If specified removable partition represents CD / DVD drive, create a variable
        holding also alternative names for CD / DVD block special device as used by udev -->
-  <constant_variable id="variable_cd_dvd_drive_alternative_names_{{{ MOUNTOPTION }}}" datatype="string" comment="CD/DVD drive alternative names whitelist" version="1">
+  <constant_variable id="variable_cd_dvd_drive_alternative_names_{{{ MOUNTOPTION }}}" datatype="string" comment="CD/DVD drive allowed alternative names" version="1">
     <value>/dev/cdrom</value>
     <value>/dev/dvd</value>
     <value>/dev/scd0</value>
