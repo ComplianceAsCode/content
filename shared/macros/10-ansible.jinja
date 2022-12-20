@@ -819,6 +819,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   ansible.builtin.command:
     cmd: authselect list-features minimal
   register: result_authselect_available_features
+  changed_when: false
   when:
     - result_authselect_present.stat.exists
 
@@ -835,7 +836,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', 'password', control, 'pam_pwhistory.so', after_match) | indent(4) }}}
   when: >
     (result_authselect_available_features.stdout is defined and result_authselect_available_features.stdout is not search("with-pwhistory"))
-    or not result_authselect_present.stat.exists
+    or result_authselect_available_features is not defined
 {{%- endmacro -%}}
 
 {{#
