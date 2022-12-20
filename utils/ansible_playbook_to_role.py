@@ -54,12 +54,12 @@ yaml.add_representer(collections.OrderedDict, dict_representer)
 yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
-PRODUCT_WHITELIST = set([
+PRODUCT_ALLOWLIST = set([
     "rhel7",
     "rhel8",
 ])
 
-PROFILE_WHITELIST = set([
+PROFILE_ALLOWLIST = set([
     "anssi_nt28_enhanced",
     "anssi_nt28_high",
     "anssi_nt28_intermediary",
@@ -260,7 +260,7 @@ class PlaybookToRoleConverter():
     def platform_version(self):
         platform = self.product
         # Check to see if this is RHEL product
-        if platform in PRODUCT_WHITELIST:
+        if platform in PRODUCT_ALLOWLIST:
             # For RHEL, we can get what version
             if 'rhel' in platform:
                 return platform[len(platform)-1]
@@ -489,11 +489,11 @@ def parse_args():
         help="Name of the Github organization")
     parser.add_argument(
         "--profile", "-p", default=[], action="append",
-        metavar="PROFILE", choices=PROFILE_WHITELIST,
+        metavar="PROFILE", choices=PROFILE_ALLOWLIST,
         help="What profiles to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--product", "-r", default=[], action="append",
-        metavar="PRODUCT", choices=PRODUCT_WHITELIST,
+        metavar="PRODUCT", choices=PRODUCT_ALLOWLIST,
         help="What products to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--tag-release", "-n", default=False, action="store_true",
@@ -516,7 +516,7 @@ def locally_clone_and_init_repositories(organization, repo_list):
         shutil.rmtree(temp_dir)
 
 
-def select_roles_to_upload(product_whitelist, profile_whitelist,
+def select_roles_to_upload(product_allowlist, profile_allowlist,
                            build_playbooks_dir):
     selected_roles = dict()
     for filename in sorted(os.listdir(build_playbooks_dir)):
@@ -524,7 +524,7 @@ def select_roles_to_upload(product_whitelist, profile_whitelist,
         if ext == ".yml":
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
-            if product in product_whitelist and profile in profile_whitelist:
+            if product in product_allowlist and profile in profile_allowlist:
                 role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
     return selected_roles
@@ -533,21 +533,21 @@ def select_roles_to_upload(product_whitelist, profile_whitelist,
 def main():
     args = parse_args()
 
-    product_whitelist = set(PRODUCT_WHITELIST)
-    profile_whitelist = set(PROFILE_WHITELIST)
+    product_allowlist = set(PRODUCT_ALLOWLIST)
+    profile_allowlist = set(PROFILE_ALLOWLIST)
 
     potential_roles = {
         ("ansible-role-%s-%s" % (product, profile))
-        for product in product_whitelist for profile in profile_whitelist
+        for product in product_allowlist for profile in profile_allowlist
     }
 
     if args.product:
-        product_whitelist &= set(args.product)
+        product_allowlist &= set(args.product)
     if args.profile:
-        profile_whitelist &= set(args.profile)
+        profile_allowlist &= set(args.profile)
 
     selected_roles = select_roles_to_upload(
-        product_whitelist, profile_whitelist, args.build_playbooks_dir
+        product_allowlist, profile_allowlist, args.build_playbooks_dir
     )
 
     if args.dry_run:

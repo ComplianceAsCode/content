@@ -7,7 +7,7 @@ from collections import namedtuple
 
 from .ansible import add_minimum_version, remove_trailing_whitespace
 from .shims import subprocess_check_output, Queue
-from .build_guides import _is_blacklisted_profile
+from .build_guides import _is_skipped_profile
 from .xccdf import get_profile_short_id
 from .constants import OSCAP_PATH, OSCAP_DS_STRING, ansible_system
 
@@ -62,7 +62,7 @@ def _get_filename(path_base, extension, profile_id, benchmark_id, benchmarks,
 def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
                      output_dir, template):
     """
-    Returns a list of output filenames for each non-blacklisted profile in
+    Returns a list of output filenames for each non-skipped profile in
     the benchmark.
     """
     paths = []
@@ -72,7 +72,7 @@ def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
         if not profile_id:
             continue
 
-        if _is_blacklisted_profile(profile_id):
+        if _is_skipped_profile(profile_id):
             continue
 
         filename = _get_filename(path_base, extension, profile_id,
@@ -99,7 +99,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
         if not profile_id:
             continue
 
-        if _is_blacklisted_profile(profile_id):
+        if _is_skipped_profile(profile_id):
             continue
 
         filename = _get_filename(path_base, extension, profile_id,
