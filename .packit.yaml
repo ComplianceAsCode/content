@@ -6,6 +6,9 @@ actions:
   get-current-version:
   - bash utils/version.sh
 
+srpm_build_deps:
+  - bash
+
 jobs:
 - job: copr_build
   trigger: pull_request
