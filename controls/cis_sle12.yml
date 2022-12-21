@@ -1775,20 +1775,22 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated # missing rule for checking of /etc/shadow
+    status: automated 
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
+      - accounts_password_set_max_life_existing
 
   - id: 5.4.1.3
     title: Ensure minimum days between password changes is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: automated 
     rules:
       - accounts_minimum_age_login_defs
       - var_accounts_minimum_age_login_defs=1
+      - accounts_password_set_min_life_existing
 
   - id: 5.4.1.4
     title: Ensure password expiration warning days is 7 or more (Automated)
