@@ -1043,13 +1043,18 @@ fi
 {{%- endmacro -%}}
 
 {{#
-    Validate an authselect custom profile.
-    This sequence of commands is used in multiple places. This macro avoids duplicated code.
+    Validate an authselect custom profile integrity and ensures the correct file path is defined
+    in the "PAM_FILE_PATH" variable. The macros which change PAM files are the same regardless of
+    using authselect or not. The only change is the file path. However, this file path can change
+    depending on the custom profile name used in the system. So, based on the informed PAM file,
+    the macro will properly locate the correct profile and file to be edited in the authselect
+    context. This sequence of commands is used in multiple PAM related macros.
 
     :param pam_file:    PAM config file.
 #}}
-{{%- macro bash_validate_authselect_custom_profile(pam_file) -%}}
+{{%- macro bash_ensure_pam_variables_and_authselect_profile(pam_file) -%}}
 {{{ bash_check_authselect_integrity() }}}
+{{# the following macro ensures the CURRENT_PROFILE variable is properly set #}}
 {{{ bash_ensure_authselect_custom_profile() }}}
 PAM_FILE_NAME=$(basename "{{{ pam_file }}}")
 PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
@@ -1074,7 +1079,8 @@ if [ -f /usr/bin/authselect ]; then
     if authselect list-features minimal | grep -q with-pwhistory; then
         {{{ bash_enable_authselect_feature('with-pwhistory') | indent(8) }}}
     else
-        {{{ bash_validate_authselect_custom_profile(pam_file) | indent(8) }}}
+        {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
         {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", 'password', control, 'pam_pwhistory.so', after_match) | indent(8) }}}
     fi
 else
@@ -1115,7 +1121,8 @@ if [ -f $PWHISTORY_CONF ]; then
 else
     PAM_FILE_PATH="{{{ pam_file }}}"
     if [ -f /usr/bin/authselect ]; then
-        {{{ bash_validate_authselect_custom_profile(pam_file) | indent(8) }}}
+        {{# the following macro updates the PAM_FILE_PATH variable in aligment to the authselect profile #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
     fi
     {{{ bash_ensure_pam_module_option("$PAM_FILE_PATH", 'password', 'requisite', 'pam_pwhistory.so', option, value, '') | indent(4) }}}
     if [ -f /usr/bin/authselect ]; then
@@ -2112,7 +2119,8 @@ fi
     If the system already uses a custom authselect profile, no action is necessary. Otherwise, a
     new custom profile will be created based on the current profile and preserving the already
     enabled features. Custom profiles are only recommeded if an authselect feature for the same
-    purpose is not available.
+    purpose is not available. In any case, this macro will also set the "CURRENT_PROFILE" variable
+    which is also used in the "bash_ensure_pam_variables_and_authselect_profile" macro.
 #}}
 {{% macro bash_ensure_authselect_custom_profile() -%}}
 CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
@@ -2149,7 +2157,8 @@ fi
 if [ -e "{{{ pam_file }}}" ] ; then
     PAM_FILE_PATH="{{{ pam_file }}}"
     if [ -f /usr/bin/authselect ]; then
-        {{{ bash_validate_authselect_custom_profile(pam_file) | indent(8) }}}
+        {{# the following macro updates the PAM_FILE_PATH variable in aligment to the authselect profile #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
     fi
     {{%- if option == '' %}}
     {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", group, control, module, after_match) }}}
@@ -2180,7 +2189,8 @@ fi
 if [ -e "{{{ pam_file }}}" ] ; then
     PAM_FILE_PATH="{{{ pam_file }}}"
     if [ -f /usr/bin/authselect ]; then
-        {{{ bash_validate_authselect_custom_profile(pam_file) | indent(8) }}}
+        {{# the following macro updates the PAM_FILE_PATH variable in aligment to the authselect profile #}}
+        {{{ bash_ensure_pam_variables_and_authselect_profile(pam_file) | indent(8) }}}
     fi
     {{{ bash_remove_pam_module_option("$PAM_FILE_PATH", group, control, module, option) }}}
     if [ -f /usr/bin/authselect ]; then
