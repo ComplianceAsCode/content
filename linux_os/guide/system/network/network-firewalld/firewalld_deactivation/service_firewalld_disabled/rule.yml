@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Verify firewalld service disabled'
+
+description: |-
+    Firewalld (Dynamic Firewall Manager) provides a dynamically managed firewall with
+    support for network/firewall “zones” to assign a level of trust to a network and its
+    associated connections, interfaces or sources. It has support for IPv4, IPv6, Ethernet
+    bridges and also for IPSet firewall settings. There is a separation of the runtime and
+    permanent configuration options.
+    {{{ describe_service_disable(service="firewalld") }}}
+
+rationale: |-
+    Running Firewalld along other service with the same functionality may lead to conflict 
+    and unexpected results.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92472-0
+
+references:
+    cis@sle15: 3.5.2.2,3.5.3.1.3
+
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="firewalld") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="firewalld") }}}
+
+fixtext: '{{{ fixtext_service_disabled("firewalld") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_disabled("firewalld") }}}'
+
+platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: firewalld
+        packagename: firewalld
