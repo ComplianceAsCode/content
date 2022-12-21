@@ -1051,9 +1051,10 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    automated: partially # we do not check for audit-libs package
+    status: automated 
     rules:
       - package_audit_installed
+      - package_audit-libs_installed
 
   - id: 4.1.1.2
     title: Ensure auditd service is enabled and running (Automated)
