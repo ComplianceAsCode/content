@@ -1052,7 +1052,11 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
-AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth" "/etc/pam.d/common-auth")
+{{% if 'ubuntu' in product %}}
+AUTH_FILES=("/etc/pam.d/common-auth" "/etc/pam.d/password-auth")
+{{% else %}}
+AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+{{% endif %}}
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
     {{%- if value == '' %}}
@@ -1073,9 +1077,7 @@ if [ -f $FAILLOCK_CONF ]; then
     {{%- endif %}}
     for pam_file in "${AUTH_FILES[@]}"
     do
-        if [ -f $pam_file ]; then
-            {{{ bash_remove_pam_module_option_configuration("$pam_file",'auth','','pam_faillock.so', option ) | indent(8) }}}
-        fi
+        {{{ bash_remove_pam_module_option_configuration("$pam_file",'auth','','pam_faillock.so', option ) | indent(8) }}}
     done
 else
     for pam_file in "${AUTH_FILES[@]}"
