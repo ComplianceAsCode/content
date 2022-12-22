@@ -14,3 +14,5 @@ else
     sed -i --follow-symlinks "s/\(.*pam_pwhistory\.so.*remember=\)[[:digit:]]\+\s\(.*\)/\1$remember_cnt \2/g" $CUSTOM_SYSTEM_AUTH
 fi
 authselect apply-changes -b
+
+> /etc/security/pwhistory.conf
