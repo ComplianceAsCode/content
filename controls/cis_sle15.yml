@@ -1939,10 +1939,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially # we do not check /et/shadow
+    status: automated
     rules:
       - account_disable_post_pw_expiration
       - var_account_disable_post_pw_expiration=30
+      - accounts_set_post_pw_existing
+   
 
   - id: 5.4.1.6
     title: Ensure all users last password change date is in the past (Automated)

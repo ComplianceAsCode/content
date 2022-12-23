@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("Set existing passwords a period of inactivity before they been locked") }}}
+    <criteria >
+      <criterion comment="Passwords must be configured to the appropriate period of inactivity for existing accounts." test_ref="test_password_post_pw_existing" />
+    </criteria>      
+  </definition>
+
+  <!-- Define 1st test for the shadow file for non-system accounts to look for INACTIVE parameter  . -->
+  <unix:shadow_test id="test_password_post_pw_existing" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Password INACTIVE parameter is no more than 30 days.">
+    <unix:object object_ref="object_shadow_password_users_post_pw_existing"/>
+    <unix:state state_ref="inactive_param_for_passwords_change"/>
+  </unix:shadow_test>
+
+
+  <unix:shadow_object id="object_shadow_password_users_post_pw_existing" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+  </unix:shadow_object>
+  
+  <unix:shadow_state id="inactive_param_for_passwords_change" version="1"
+    comment="change INACTIVE parameter for passwords to the recommended value">
+    <unix:exp_inact operation="less than or equal" datatype="int"
+      var_ref="var_account_disable_post_pw_expiration"/>
+  </unix:shadow_state>
+
+
+  <!-- this external variable is defined at the group level,
+       reusing the account-level definitions. -->
+  <external_variable id="var_account_disable_post_pw_expiration" datatype="int" version="1"
+                     comment="Number of days after an user account that has been inactive can be automatically disabled"/>
+</def-group>

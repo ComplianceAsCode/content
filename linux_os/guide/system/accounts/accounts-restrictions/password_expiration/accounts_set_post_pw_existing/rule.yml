@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Set existing passwords a period of inactivity before they been locked'
+
+description: |-
+    Configure user accounts that have been inactive for over a given period of time 
+    to be automatically disabled by running the following command:
+    <pre>$ sudo chage --inactive 30<i>USER</i></pre>
+
+
+rationale: |-
+    Inactive accounts pose a threat to system security since the users are not logging in to
+    notice failed login attempts or other anomalies.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92322-7
+    cce@sle15: CCE-92480-3
+
+references:
+    cis@sle12: 5.4.1.5
+    cis@sle15: 5.4.1.5
+    cis@ubuntu2004: 5.4.1.4
+    cis@ubuntu2204: 5.5.1.4
+    cobit5: DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.5.6
+    disa: CCI-000017,CCI-000795
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 6.2'
+    iso27001-2013: A.12.4.1,A.12.4.3,A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.1.3,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3
+    nist: IA-4(e),AC-2(3),CM-6(a)
+    nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7
+    pcidss: Req-8.1.4
+    srg: SRG-OS-000118-GPOS-00060
+
+
+ocil_clause: 'the value of INACTIVE is greater than the expected value or is -1'
+
+ocil: |-
+    Verify that {{{ full_name }}} 's INACTIVE conforms to site policy (no more than 30 days) with the following command:
+
+    $ sudo awk -F: '$7 &gt; 30 {print $1 " " $7}' /etc/shadow
+
+fixtext: |-
+    Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
+
+    $ sudo chage --inactive {{{ xccdf_value("var_account_disable_post_pw_expiration") }}} [user]
