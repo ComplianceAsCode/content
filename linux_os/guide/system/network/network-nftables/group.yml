@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'nftables'
+
+description: |-
+    <tt>If firewalld or iptables are being used in your environment, please follow the guidance in their
+    respective section and pass-over the guidance in this section.</tt>
+    <br /><br />
+    nftables is a subsystem of the Linux kernel providing filtering and classification of network
+    packets/datagrams/frames and is the successor to iptables. The biggest change with the
+    successor nftables is its simplicity. With iptables, we have to configure every single rule and
+    use the syntax which can be compared with normal commands. With nftables, the simpler
+    syntax, much like BPF (Berkely Packet Filter) means shorter lines and less repetition.
+    Support for nftables should also be compiled into the kernel, together with the related
+    nftables modules.
+    <br /><br /> 
+    It is available in Linux kernels >= 3.13. <b>Please ensure that your kernel
+    supports nftables before choosing this option.</b>
