@@ -1,6 +1,9 @@
 #!/bin/bash
 
-mkdir /etc/rsyslog.d
+if [ ! -d /etc/rsyslog.d/ ]; then
+    mkdir /etc/rsyslog.d
+fi
+
 cat >> /etc/rsyslog.d/test.conf <<EOF
 action(type="omfwd"
        protocol="tcp"
