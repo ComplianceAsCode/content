@@ -389,6 +389,7 @@ selections:
 - sshd_set_keepalive
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
+- ssh_keys_passphrase_protected
 - sssd_certificate_verification
 - sssd_enable_certmap
 - sssd_enable_smartcards

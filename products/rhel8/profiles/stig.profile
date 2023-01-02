@@ -120,6 +120,7 @@ selections:
     # RHEL-08-010090
 
     # RHEL-08-010100
+    - ssh_keys_passphrase_protected
 
     # RHEL-08-010110
     - set_password_hashing_algorithm_logindefs
