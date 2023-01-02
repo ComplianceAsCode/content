@@ -128,7 +128,8 @@ class Builder(object):
         self._init_lang_output_dirs()
         self._init_and_load_templates()
         self.product_cpes = ProductCPEs()
-        self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
+        if cpe_items_dir is not None:
+            self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
 
     def _init_and_load_templates(self):
         for item in sorted(os.listdir(self.templates_dir)):
