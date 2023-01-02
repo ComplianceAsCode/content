@@ -7,10 +7,10 @@ template:
   name: platform_package
 args:
   audit:
-    {{% if 'ubuntu' in product or 'debian' in product %}}
-    pkgname: auditd
-    {{% else %}}
+    {{% if pkg_system == "rpm" %}}
     pkgname: audit
+    {{% else %}}
+    pkgname: auditd
     {{% endif %}}
   chrony:
     pkgname: chrony
