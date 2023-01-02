@@ -7,7 +7,7 @@ import json
 import sys
 
 from .build_yaml import Rule, DocumentationNotComplete
-from .constants import MULTI_PLATFORM_LIST
+from .constants import MULTI_PLATFORM_LIST, OSCAP_VALUE
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
@@ -32,21 +32,33 @@ def load_sce_and_metadata_parsed(raw_content):
     metadata = dict()
     sce_content = []
 
+    keywords = ['platform', 'check-import', 'check-export', 'complex-check']
     for line in raw_content.split("\n"):
         found_metadata = False
-        keywords = ['platform', 'check-import', 'check-export', 'complex-check']
         for keyword in keywords:
-            if line.startswith('# ' + keyword + ' = '):
-                # Strip off the initial comment marker
-                _, value = line[2:].split('=', maxsplit=1)
-                values = value.strip()
-                if ',' in values:
-                    values.split(',')
-                metadata[keyword] = values
-                found_metadata = True
-                break
+            if not line.startswith('# ' + keyword + ' = '):
+                continue
+
+            found_metadata = True
+
+            # Strip off the initial comment marker
+            _, value = line[2:].split('=', maxsplit=1)
+            metadata[keyword] = value.strip()
+
         if not found_metadata:
             sce_content.append(line)
+
+    if 'check-export' in metadata:
+        # Special case for the variables exposed to the SCE script: prepend
+        # the OSCAP_VALUE prefix to reference the variable
+        new_variables = []
+        for value in metadata['check-export'].split(','):
+            k, v = value.split('=', maxsplit=1)
+            new_variables.append(k+'='+OSCAP_VALUE+v)
+        metadata['check-export'] = new_variables
+
+    if 'platform' in metadata:
+        metadata['platform'] = metadata['platform'].split(',')
 
     return "\n".join(sce_content), metadata
 
