@@ -2765,7 +2765,9 @@ controls:
         levels:
             - high
         title: RHEL 8 must not allow blank or null passwords in the password-auth file.
-        status: pending
+        rules:
+          - accounts_passwords_pam_disable_nullok
+        status: automated
     -   id: RHEL-08-030181
         levels:
             - medium

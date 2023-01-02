@@ -647,6 +647,7 @@ selections:
     - no_empty_passwords
 
     # RHEL-08-020332
+    - accounts_passwords_pam_disable_nullok
 
     # RHEL-08-020340
     - display_login_attempts

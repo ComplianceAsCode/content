@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Disallow blank or null passwords in the PAM password-auth file'
+
+description: |-
+    Remove any instances of the <tt>nullok</tt> option in the
+    <tt>/etc/pam.d/password-auth</tt> file to prevent logons with empty passwords.
+    Note: Manual changes to the listed file may be overwritten by the
+    <tt>authselect</tt> program.
+
+rationale: |-
+    If an account has an empty password, anyone could log on and run commands
+    with the privileges of that account.
+    Accounts with empty passwords should never be used in operational environments.
+
+severity: high
+
+references:
+    disa: CCI-000366
+    stigid@rhel8: RHEL-08-020332
+
+ocil_clause: 'null password are authorized'
+
+ocil: |-
+    To verify that null passwords cannot be used, run the following command:
+
+    <pre># grep -i nullok /etc/pam.d/password-auth</pre>
+
+    If output is produced, this is a finding.
