@@ -2,12 +2,6 @@ documentation_complete: true
 
 title: 'Record Attempts to Alter Logon and Logout Events'
 
-{{% if product in ["rhel8", "rhel9"] %}}
-{{% set faillock_path = "/var/log/faillock" %}}
-{{% else %}}
-{{% set faillock_path = "/var/run/faillock" %}}
-{{% endif %}}
-
 description: |-
     The audit system already collects login information for all users
     and root. If the <tt>auditd</tt> daemon is configured to use the
