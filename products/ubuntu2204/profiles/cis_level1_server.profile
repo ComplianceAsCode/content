@@ -157,7 +157,8 @@ selections:
     # NEEDS RULE
 
     #### 1.6.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
-    # NEEDS RULE
+    - var_set_apparmor_mode=complain
+    - ensure_apparmor_enforce_or_complain
 
     #### 1.6.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
     # Skip due to being Level 2
