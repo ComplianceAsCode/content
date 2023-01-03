@@ -154,7 +154,7 @@ selections:
     - package_apparmor_installed
 
     #### 1.6.1.2 Ensure AppArmor is enabled in the bootloader configuration (Automated)
-    # NEEDS RULE
+    - grub2_enable_apparmor
 
     #### 1.6.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
     # NEEDS RULE
