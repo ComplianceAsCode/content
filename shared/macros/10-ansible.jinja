@@ -849,7 +849,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :param pwhistory_var_name:  Literal variable name.
 
 #}}
-{{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_value_var='') -%}}
+{{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_var_name='') -%}}
 - name: '{{{ rule_title }}} - Check the presence of /etc/security/pwhistory.conf file'
   ansible.builtin.stat:
     path: /etc/security/pwhistory.conf
@@ -865,7 +865,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         line: {{{ parameter }}}
         {{%- else %}}
         regexp: ^\s*{{{ parameter }}}\s*=
-        line: {{{ parameter }}} = {{{ pwhistory_value_var }}}
+        line: {{{ parameter }}} = {{{ pwhistory_var_name }}}
         {{%- endif %}}
         state: present
 
@@ -878,7 +878,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 - name: '{{{ rule_title }}} - pam_pwhistory.so parameters are configured in PAM files'
   block:
     {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
-    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'password', 'requisite', 'pam_pwhistory.so', parameter, pwhistory_value_var, '') | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'password', 'requisite', 'pam_pwhistory.so', parameter, pwhistory_var_name, '') | indent(4) }}}
     {{{ ansible_apply_authselect_changes() | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
