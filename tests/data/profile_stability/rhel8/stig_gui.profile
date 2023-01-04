@@ -1,4 +1,3 @@
-title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
     DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R8.
@@ -439,7 +438,7 @@ selections:
 - var_accounts_minimum_age_login_defs=1
 - var_accounts_max_concurrent_login_sessions=10
 - var_password_pam_remember=5
-- var_password_pam_remember_control_flag=required
+- var_password_pam_remember_control_flag=requisite
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_password_pam_unix_rounds=5000
@@ -482,4 +481,5 @@ platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
+title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 documentation_complete: true
