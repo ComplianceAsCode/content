@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R8.
+    DISA STIG for Oracle Linux V2R9.
 
 selections:
     - login_banner_text=dod_banners
@@ -323,3 +323,8 @@ selections:
     - no_empty_passwords_etc_shadow
     - audit_rules_privileged_commands_kmod
     - passwd_system-auth_substack
+    - audit_rules_kernel_module_loading_create
+    - auditd_audispd_remote_daemon_activated
+    - auditd_audispd_remote_daemon_direction
+    - auditd_audispd_remote_daemon_path
+    - auditd_audispd_remote_daemon_type
