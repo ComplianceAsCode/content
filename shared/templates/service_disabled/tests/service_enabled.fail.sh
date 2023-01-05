@@ -4,13 +4,13 @@
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 # Some services use <name>@.service style that is not meant to be activated at all,
 # and only used via socket activation.
-if "$SYSTEMCTL_EXEC" list-unit-files '{{{ DAEMONNAME }}}.service' | grep -q '^{{{ DAEMONNAME }}}.service'; then
+if "$SYSTEMCTL_EXEC" -q list-unit-files '{{{ DAEMONNAME }}}.service'; then
     "$SYSTEMCTL_EXEC" unmask '{{{ DAEMONNAME }}}.service'
     "$SYSTEMCTL_EXEC" start '{{{ DAEMONNAME }}}.service'
     "$SYSTEMCTL_EXEC" enable '{{{ DAEMONNAME }}}.service'
 fi
-# Disable socket activation if we have a unit file for it
-if "$SYSTEMCTL_EXEC" list-unit-files '{{{ DAEMONNAME }}}.socket' | grep -q '^{{{ DAEMONNAME }}}.socket'; then
+# Enable socket activation if we have a unit file for it
+if "$SYSTEMCTL_EXEC" -q list-unit-files '{{{ DAEMONNAME }}}.socket'; then
     "$SYSTEMCTL_EXEC" unmask '{{{ DAEMONNAME }}}.socket'
     "$SYSTEMCTL_EXEC" start '{{{ DAEMONNAME }}}.socket'
 fi
