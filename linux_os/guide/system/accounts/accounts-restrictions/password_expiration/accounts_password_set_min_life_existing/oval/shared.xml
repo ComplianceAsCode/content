@@ -26,11 +26,11 @@
 
   <unix:shadow_object id="object_shadow_password_users_min_life_existing" version="1">
     <unix:username operation="pattern match">.*</unix:username>
-    <filter action="include">non_system_accounts_min_life</filter>
+    <filter action="include">filter_no_passwords_or_locked_accounts_min_life</filter>
   </unix:shadow_object>
 
-  <unix:shadow_state id="non_system_accounts_min_life" version="1">
-      <unix:password operation="pattern match">[^\!\*]</unix:password>
+  <unix:shadow_state id="filter_no_passwords_or_locked_accounts_min_life" version="1">
+      <unix:password operation="pattern match">^[^\!\*]+$</unix:password>
   </unix:shadow_state>
 
   <unix:shadow_state id="max_min_password_change_interval" version="1" comment="change passwords every maximum interval or less">
