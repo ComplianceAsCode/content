@@ -33,13 +33,18 @@ def parse_args():
         help="Directory to store intermediate built OVAL files."
     )
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
-    p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
-                   help="Shared directory(ies) from which we will collect "
-                   "OVAL definitions to combine. Order matters, latter "
-                   "directories override former. These will be overwritten "
-                   "by OVALs in the product_yaml['guide'] directory (which "
-                   "in turn preference oval/{{{ product }}}.xml over "
-                   "oval/shared.xml for a given rule.")
+    p.add_argument(
+        "--include-benchmark", action="store_true",
+        help="Include OVAL checks from rule directories in the benchmark "
+        "directory tree which is specified by product.yml "
+        "in the `benchmark_root` key.")
+    p.add_argument(
+        "ovaldirs", metavar="OVAL_DIR", nargs="+",
+        help="Shared directory(ies) from which we will collect OVAL "
+        "definitions to combine. Order matters, latter directories override "
+        "former. If --include-benchmark is provided, these will be "
+        "overwritten by OVALs in the rule directory (which in turn preference "
+        "oval/{{{ product }}}.xml over oval/shared.xml for a given rule.")
 
     return p.parse_args()
 
@@ -62,6 +67,7 @@ def main():
         args.product_yaml,
         ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         args.ovaldirs,
+        args.include_benchmark,
         args.build_ovals_dir)
 
     # parse new file(string) as an ssg.xml.ElementTree, so we can reorder elements

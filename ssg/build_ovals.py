@@ -357,7 +357,9 @@ def get_checks_from_directories(oval_dirs, env_yaml, already_loaded, oval_versio
     return oval_checks
 
 
-def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
+def checks(
+        env_yaml, yaml_path, oval_version, oval_dirs, include_benchmark,
+        build_ovals_dir=None):
     """
     Concatenate all XML files in the oval directory, to create the document
     body. Then concatenates this with all XML files in the guide directories,
@@ -369,10 +371,11 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
     """
 
     already_loaded = dict()  # filename -> oval_version
-    checks_from_benchmark = get_checks_from_benchmark(
-        env_yaml, yaml_path, already_loaded, oval_version, build_ovals_dir)
-    checks_from_directories = get_checks_from_directories(
+    all_checks = []
+    if include_benchmark:
+        all_checks += get_checks_from_benchmark(
+            env_yaml, yaml_path, already_loaded, oval_version, build_ovals_dir)
+    all_checks += get_checks_from_directories(
         oval_dirs, env_yaml, already_loaded, oval_version)
-    all_checks = checks_from_benchmark + checks_from_directories
     document_body = "".join(all_checks)
     return document_body
