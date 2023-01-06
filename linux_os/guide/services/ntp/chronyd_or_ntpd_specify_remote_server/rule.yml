@@ -86,7 +86,7 @@ rationale: |-
 
 severity: medium
 
-platform: machine and (chrony or ntp)  # The check uses service_... extended definition, which doesnt support offline mode
+platform: machine and (package[chrony] or package[ntp])  # The check uses service_... extended definition, which doesn't support offline mode
 
 identifiers:
     cce@rhcos4: CCE-82683-4

@@ -95,8 +95,8 @@ srg_requirement: |-
     {{{ full_name }}} must remove all software components after updated versions have been installed.
 
 {{% if 'sle' in product %}}
-platform: zypper
+platform: package[zypper]
 {{% elif 'ubuntu' in product %}}
 {{% else %}}
-platform: yum
+platform: package[yum]
 {{% endif %}}

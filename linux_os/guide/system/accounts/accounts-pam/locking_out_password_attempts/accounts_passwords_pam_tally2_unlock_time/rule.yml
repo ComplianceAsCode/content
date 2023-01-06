@@ -47,7 +47,7 @@ fixtext: |-
     Modify the content of both <tt>/etc/pam.d/common-auth</tt>, like this:
     <pre>auth required pam_tally2.so deny={{{ xccdf_value("var_accounts_passwords_pam_tally2_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_tally2_unlock_time") }}}</tt> </pre>
 
-platform: pam
+platform: package[pam]
 
 srg_requirement: |-
         {{{ full_name }}} must automatically lock an account until the locked account is released by an administrator.

@@ -53,7 +53,7 @@ ocil: |-
 
     maxrepeat = {{{ xccdf_value("var_password_pam_maxrepeat") }}}</pre>
 
-platform: pam
+platform: package[pam]
 
 template:
     name: accounts_password

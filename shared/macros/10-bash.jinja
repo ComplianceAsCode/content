@@ -1872,7 +1872,7 @@ Part of the grub2_bootloader_argument_absent template.
   If the package is installed, the Bash remediation will be applied.
   The macro respects `platform_package_overrides` variable.
 #}}
-{{%- macro bash_pkg_conditional(package) -%}}
+{{%- macro bash_pkg_conditional(package, escape=False) -%}}
 {{%- if package in platform_package_overrides -%}}
   {{%- set package = platform_package_overrides[package] -%}}
 {{%- endif -%}}
@@ -1880,7 +1880,7 @@ Part of the grub2_bootloader_argument_absent template.
     {{%- if pkg_system == "rpm" -%}}
         {{{ bash_pkg_conditional_rpm(package) }}}
     {{%- elif pkg_system == "dpkg" -%}}
-        {{{ bash_pkg_conditional_dpkg(package) }}}
+        {{{ bash_pkg_conditional_dpkg(package, escape) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
     {{%- endif -%}}
@@ -1898,8 +1898,12 @@ rpm --quiet -q {{{ package }}}
 {{#
   This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
 #}}
-{{%- macro bash_pkg_conditional_dpkg (package) -%}}
+{{%- macro bash_pkg_conditional_dpkg (package, escape=False) -%}}
+{{%- if escape -%}}
+dpkg-query --show --showformat='${{db:Status-Status}}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+{{%- else -%}}
 dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+{{%- endif -%}}
 {{%- endmacro -%}}
 
 {{#

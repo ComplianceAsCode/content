@@ -79,7 +79,7 @@ srg_requirement: '{{{ srg_requirement_service_enabled("auditd") }}}'
 {{% endif %}}
 
 
-platform: audit
+platform: package[audit]
 
 template:
     name: service_enabled

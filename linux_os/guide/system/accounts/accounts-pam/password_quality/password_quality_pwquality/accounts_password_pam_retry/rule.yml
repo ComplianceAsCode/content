@@ -75,7 +75,7 @@ ocil: |-
     <pre>password required pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}</pre>
     {{% endif %}}
 
-platform: pam
+platform: package[pam]
 
 fixtext: |-
     Configure {{{ full_name }}} to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.

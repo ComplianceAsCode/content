@@ -6,6 +6,9 @@ from ssg import utils
 # Monkey-patch pkg_resources.safe_name function to keep underscores intact
 # Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
 pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
+# Monkey-patch pkg_resources.safe_extras function to keep dashes intact
+# Setuptools recognize the issue: https://github.com/pypa/setuptools/pull/732
+pkg_resources.safe_extra = lambda extra: re.sub('[^A-Za-z0-9.-]+', '_', extra).lower()
 
 
 def _add_version_element(elements, el):

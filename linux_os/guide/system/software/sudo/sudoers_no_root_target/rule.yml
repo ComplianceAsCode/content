@@ -39,7 +39,7 @@ ocil: |-
     <pre>$ sudo grep -PR '^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)' /etc/sudoers /etc/sudoers.d/</pre>
     Both commands should return no output.
 
-platform: sudo
+platform: package[sudo]
 
 warnings:
   - general: This rule doesn't come with a remediation, as the exact requirement allows exceptions, and removing lines from the sudoers file can make the system non-administrable.

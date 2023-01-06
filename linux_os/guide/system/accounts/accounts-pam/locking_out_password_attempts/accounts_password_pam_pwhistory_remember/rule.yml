@@ -47,7 +47,7 @@ ocil: |-
     <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt>, or is missing the
     "use_authtok" keyword, this is a finding.
 
-platform: pam
+platform: package[pam]
 
 template:
     name: pam_options

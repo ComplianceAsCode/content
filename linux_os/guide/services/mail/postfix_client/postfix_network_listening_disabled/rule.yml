@@ -49,4 +49,4 @@ ocil: |-
     <pre>$ grep inet_interfaces /etc/postfix/main.cf</pre>
     If properly configured, the output should show only <tt>{{{ xccdf_value("var_postfix_inet_interfaces") }}}</tt>.
 
-platform: postfix
+platform: package[postfix]
