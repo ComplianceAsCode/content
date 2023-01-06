@@ -4,13 +4,13 @@
 # complexity = low
 # disruption = low
 
-- name: Collect users with not correct minimum time period between password changes  
+- name: Collect users with not correct minimum time period between password changes
   command: >
-    awk -F: '$4 < 1 || $4 == "" {print $1}' /etc/shadow
+    awk -F: '(/^[^:]+:[^!*]/ && ($4 < 1 || $4 == "")) {print $1}' /etc/shadow
   register: user_names
-  
-- name: Change the minimum time period between password changes 
+
+- name: Change the minimum time period between password changes
   command: >
-    passwd -n 1 {{ item }}
+    chage -m 1 {{ item }}
   with_items: "{{ user_names.stdout_lines }}"
   when: user_names.stdout_lines | length > 0

@@ -9,26 +9,32 @@
 
   <!-- Define a test for the shadow file for accounts with passwords to look for the minimum password change interval. -->
   <unix:shadow_test
-      id="test_password_min_life_existing" 
+      id="test_password_min_life_existing"
       check="all"
-      check_existence="at_least_one_exists"
-      version="1" 
+      check_existence="any_exist"
+      version="1"
       comment="Password minimum lifetime for existing accounts is at least what is defined by policy.">
     <unix:object object_ref="object_shadow_password_users_min_life_existing"/>
     <unix:state state_ref="min_password_change_interval"/>
   </unix:shadow_test>
 
   <!-- Define a second test to ensure the minimum password life is at less than the defined maximum. -->
-  <unix:shadow_test id="test_password_min_life_existing_maximum"  check="all" check_existence="at_least_one_exists" version="1" comment="Password minimum life entry is at mosta defined maximum">
+  <unix:shadow_test id="test_password_min_life_existing_maximum"  check="all" check_existence="any_exist" version="1" comment="Password minimum life entry is at mosta defined maximum">
     <unix:object object_ref="object_shadow_password_users_min_life_existing"/>
     <unix:state state_ref="max_min_password_change_interval"/>
   </unix:shadow_test>
 
   <unix:shadow_object id="object_shadow_password_users_min_life_existing" version="1">
     <unix:username operation="pattern match">.*</unix:username>
+    <filter action="include">filter_no_passwords_or_locked_accounts_min_life</filter>
   </unix:shadow_object>
 
+  <unix:shadow_state id="filter_no_passwords_or_locked_accounts_min_life" version="1">
+      <unix:password operation="pattern match">^[^\!\*]+$</unix:password>
+  </unix:shadow_state>
+
   <unix:shadow_state id="max_min_password_change_interval" version="1" comment="change passwords every maximum interval or less">
+    <unix:password operation="pattern match" mask="true">.*</unix:password>
     <unix:chg_allow
       operation="less than or equal"
       datatype="int"
@@ -36,6 +42,7 @@
   </unix:shadow_state>
 
   <unix:shadow_state id="min_password_change_interval" version="1" comment="change passwords at at the recommended interval or more">
+    <unix:password operation="pattern match" mask="true">.*</unix:password>
     <unix:chg_allow
       operation="greater than or equal"
       datatype="int"
