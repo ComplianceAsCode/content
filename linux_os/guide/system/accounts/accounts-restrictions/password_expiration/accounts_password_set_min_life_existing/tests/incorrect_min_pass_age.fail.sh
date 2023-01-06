@@ -1,8 +1,11 @@
 #!/bin/bash
-BAD_PAS_AGE=-1
+# variables = var_accounts_minimum_age_login_defs=1
+# packages = passwd
 
-USERNAME="testuser_123"
-useradd $USERNAME
-echo "cac_test_pass" | passwd --stdin $USERNAME
-
-passwd -n $BAD_PAS_AGE $USERNAME
+# make existing entries pass
+for acct in $(awk -F: '(/^[^:]+:[^!*]/ && ($4 < 1 || $4 == "")) {print $1}' /etc/shadow ); do
+    chage -m 1 -d $(date +%Y-%m-%d) $acct
+done
+# add a failing entry
+echo 'max-test-user:$1$q.YkdxU1$ADmXcU4xwPrM.Pc.dclK81:18648:0:60::::' >> /etc/shadow
+echo "max-test-user:x:50000:1000::/:/usr/bin/bash" >> /etc/passwd
