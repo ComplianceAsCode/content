@@ -1074,7 +1074,7 @@ PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
                         the beginning of the file: "BOF"
 
 #}}
-{{%- macro bash_pam_pwhistory_enable(pam_file, control, module, after_match='') -%}}
+{{%- macro bash_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
     if authselect list-features minimal | grep -q with-pwhistory; then
         {{{ bash_enable_authselect_feature('with-pwhistory') | indent(8) }}}
