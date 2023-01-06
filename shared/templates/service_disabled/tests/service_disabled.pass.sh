@@ -2,11 +2,15 @@
 # packages = {{{ PACKAGENAME }}}
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
-"$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
-"$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'
-"$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.service'
+# Some services use <name>@.service style that is not meant to be activated at all,
+# and only used via socket activation.
+if "$SYSTEMCTL_EXEC" -q list-unit-files '{{{ DAEMONNAME }}}.service'; then
+    "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
+    "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'
+    "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.service'
+fi
 # Disable socket activation if we have a unit file for it
-if "$SYSTEMCTL_EXEC" list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'; then
+if "$SYSTEMCTL_EXEC" -q list-unit-files '{{{ DAEMONNAME }}}.socket'; then
     "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.socket'
     "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.socket'
 fi
