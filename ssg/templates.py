@@ -25,6 +25,7 @@ LANGUAGES = {
     "ansible": TemplatingLang("ansible", ".yml",        TemplateType.REMEDIATION, "ansible"),
     "bash": TemplatingLang("bash", ".sh",               TemplateType.REMEDIATION, "bash"),
     "blueprint": TemplatingLang("blueprint", ".toml",   TemplateType.REMEDIATION, "blueprint"),
+    "cpe-oval": TemplatingLang("cpe-oval", ".xml",      TemplateType.CHECK, "cpe-oval"),
     "ignition": TemplatingLang("ignition", ".yml",      TemplateType.REMEDIATION, "ignition"),
     "kubernetes": TemplatingLang("kubernetes", ".yml",  TemplateType.REMEDIATION, "kubernetes"),
     "oval": TemplatingLang("oval", ".xml",              TemplateType.CHECK,       "oval"),
