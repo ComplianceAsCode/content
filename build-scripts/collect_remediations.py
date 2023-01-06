@@ -111,8 +111,14 @@ def collect_remediations(
         if fix_path is None:
             # neither static nor templated remediation found
             continue
-        process_remediation(
-            rule, fix_path, lang, output_dirs, expected_file_name, env_yaml, cpe_platforms)
+        try:
+            process_remediation(
+                rule, fix_path, lang, output_dirs, expected_file_name, env_yaml, cpe_platforms)
+        except Exception as exc:
+            msg = (
+                "Failed to dispatch {lang} remediation for {rule_id}: {error}"
+                .format(lang=lang, rule_id=rule.id_, error=str(exc)))
+            raise RuntimeError(msg)
 
 
 def main():
