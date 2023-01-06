@@ -260,30 +260,19 @@ def _check_rule_id(oval_file_tree, rule_id):
     return False
 
 
-def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
-    """
-    Concatenate all XML files in the oval directory, to create the document
-    body. Then concatenates this with all XML files in the guide directories,
-    preferring {{{ product }}}.xml to shared.xml.
-
-    oval_dirs: list of directory with oval files (later has higher priority)
-
-    Return: The document body
-    """
-
-    body = []
+def get_checks_from_benchmark(
+        env_yaml, product_yaml_path, already_loaded, oval_version,
+        build_ovals_dir):
+    oval_checks = []
     product = utils.required_key(env_yaml, "product")
-    included_checks_count = 0
-    reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
-    already_loaded = dict()  # filename -> oval_version
-    local_env_yaml = dict()
-    local_env_yaml.update(env_yaml)
-
-    product_dir = os.path.dirname(yaml_path)
+    product_dir = os.path.dirname(product_yaml_path)
     relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
     guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
     additional_content_directories = env_yaml.get("additional_content_directories", [])
-    add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+    add_content_dirs = [
+        os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+    local_env_yaml = dict()
+    local_env_yaml.update(env_yaml)
 
     if build_ovals_dir:
         # Create output directory if it doesn't yet exist.
@@ -303,7 +292,7 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
 
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
-        local_env_yaml['products'] = prodtypes # default is all
+        local_env_yaml['products'] = prodtypes  # default is all
 
         for _path in get_rule_dir_ovals(_dir_path, product):
             # To be compatible with the later checks, use the rule_id
@@ -333,10 +322,15 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
             if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                 continue
 
-            body.append(xml_content)
-            included_checks_count += 1
+            oval_checks.append(xml_content)
             already_loaded[filename] = oval_version
+    return oval_checks
 
+
+def get_checks_from_directories(oval_dirs, env_yaml, already_loaded, oval_version):
+    product = utils.required_key(env_yaml, "product")
+    reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
+    oval_checks = []
     for oval_dir in reversed_dirs:
         if not os.path.isdir(oval_dir):
             continue
@@ -358,8 +352,27 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
             oval_file_tree = _create_oval_tree_from_string(xml_content)
             if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                 continue
-            body.append(xml_content)
-            included_checks_count += 1
+            oval_checks.append(xml_content)
             already_loaded[filename] = oval_version
+    return oval_checks
 
-    return "".join(body)
+
+def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
+    """
+    Concatenate all XML files in the oval directory, to create the document
+    body. Then concatenates this with all XML files in the guide directories,
+    preferring {{{ product }}}.xml to shared.xml.
+
+    oval_dirs: list of directory with oval files (later has higher priority)
+
+    Return: The document body
+    """
+
+    already_loaded = dict()  # filename -> oval_version
+    checks_from_benchmark = get_checks_from_benchmark(
+        env_yaml, yaml_path, already_loaded, oval_version, build_ovals_dir)
+    checks_from_directories = get_checks_from_directories(
+        oval_dirs, env_yaml, already_loaded, oval_version)
+    all_checks = checks_from_benchmark + checks_from_directories
+    document_body = "".join(all_checks)
+    return document_body
