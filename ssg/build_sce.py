@@ -237,7 +237,6 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
 
 
 # Retrieve the SCE checks and return a list of path to each check script.
-# Used in build-scripts/compose_ds.py and in the tests
 def collect_sce_checks(datastreamtree):
     checklists = datastreamtree.find(
         ".//{%s}checklists" % datastream_namespace)
