@@ -7,7 +7,10 @@ import json
 import sys
 
 from .build_yaml import Rule, DocumentationNotComplete
-from .constants import MULTI_PLATFORM_LIST, OSCAP_VALUE
+from .constants import (
+    MULTI_PLATFORM_LIST, OSCAP_VALUE, datastream_namespace,
+    xlink_namespace, XCCDF12_NS, SCE_SYSTEM
+)
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
@@ -231,3 +234,30 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
     json.dump(already_loaded, open(metadata_path, 'w'))
 
     return already_loaded
+
+
+# Retrieve the SCE checks and return a list of path to each check script.
+# Used in build-scripts/compose_ds.py and in the tests
+def collect_sce_checks(datastreamtree):
+    checklists = datastreamtree.find(
+        ".//{%s}checklists" % datastream_namespace)
+    checklists_component_ref = checklists.find(
+        "{%s}component-ref" % datastream_namespace)
+    # The component ID is the component-ref href without leading '#'
+    checklist_component_id = checklists_component_ref.get('{%s}href' % xlink_namespace)[1:]
+
+    checks_xpath = str.format(
+        ".//{{{ds_ns}}}component[@id='{cid}']/"
+        "{{{xccdf_ns}}}Benchmark//"
+        "{{{xccdf_ns}}}Rule/"
+        "{{{xccdf_ns}}}check[@system='{sce_sys}']/"
+        "{{{xccdf_ns}}}check-content-ref",
+        ds_ns=datastream_namespace,
+        xccdf_ns=XCCDF12_NS,
+        cid=checklist_component_id,
+        sce_sys=SCE_SYSTEM
+    )
+
+    checks = datastreamtree.findall(checks_xpath)
+    # Extract the file paths of the SCE checks
+    return [check.get('href') for check in checks]
