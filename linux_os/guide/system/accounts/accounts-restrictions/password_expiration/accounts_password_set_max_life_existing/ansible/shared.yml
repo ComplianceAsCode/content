@@ -7,7 +7,7 @@
 
 - name: Collect users with not correct maximum time period between password changes
   ansible.builtin.command:
-    cmd: awk -F':' '$5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "" {print $1}' /etc/shadow
+    cmd: awk -F':' '(/^[^:]+:[^!*]/ && ($5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "")) {print $1}' /etc/shadow
   register: user_names
 
 - name: Change the maximum time period between password changes
