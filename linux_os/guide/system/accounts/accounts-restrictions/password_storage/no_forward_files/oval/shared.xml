@@ -23,12 +23,12 @@
 
   <unix:file_object id="object_accounts_users_home_forward_file_existance" version="1">
     <unix:path var_ref="var_accounts_users_home_forward_file_existance_dirs" var_check="at least one"/>
-    <unix:filename operation="pattern match">\.forward</unix:filename>
+    <unix:filename operation="pattern match">\.forward$</unix:filename>
   </unix:file_object>
 
   <unix:file_test id="test_accounts_users_home_forward_file_existance" check="all"
                   check_existence="at_least_one_exists" version="1"
-                  comment=".netrc files are not group or world accessible">
+                  comment=".forward files are not group or world accessible">
     <unix:object object_ref="object_accounts_users_home_forward_file_existance"/>
   </unix:file_test>
 </def-group>
