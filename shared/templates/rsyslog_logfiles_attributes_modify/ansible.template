@@ -7,31 +7,31 @@
 {{{ ansible_instantiate_variables(PARAMETER) }}}
 
 - name: "Set rsyslog logfile configuration facts"
-  set_fact:
+  ansible.builtin.set_fact:
     rsyslog_etc_config: "/etc/rsyslog.conf"
 
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
 - name: "Get IncludeConfig directive"
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -e '$IncludeConfig' {{ rsyslog_etc_config }} | cut -d ' ' -f 2 || true
   register: rsyslog_old_inc
   changed_when: False
 
 - name: "Get include files directives"
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -oP '^\s*include\s*\(\s*file.*' {{ rsyslog_etc_config }} |cut  -d"\"" -f 2 || true
   register: rsyslog_new_inc
   changed_when: False
 
 - name: "Aggregate rsyslog includes"
-  set_fact:
+  ansible.builtin.set_fact:
     include_config_output: "{{ rsyslog_old_inc.stdout_lines + rsyslog_new_inc.stdout_lines }}"
 
 - name: "List all config files"
-  find:
+  ansible.builtin.find:
         paths: "{{ include_config_output | list | map('dirname') }}"
         patterns: "{{ include_config_output | list | map('basename') }}"
         hidden: no
@@ -41,7 +41,7 @@
   changed_when: False
 
 - name: "Extract log files old format"
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item }}  |awk '{print $NF}'|sed -e 's/^-//' || true
   loop: "{{ rsyslog_config_files.files|map(attribute='path')|list|flatten|unique + [ rsyslog_etc_config ] }}"
@@ -49,7 +49,7 @@
   changed_when: False
 
 - name: "Extract log files new format"
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item }} | grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)"|grep -oE "\"([/[:alnum:][:punct:]]*)\"" |tr -d "\""|| true
   loop: "{{ rsyslog_config_files.files|map(attribute='path')|list|flatten|unique + [ rsyslog_etc_config ] }}"
@@ -57,7 +57,7 @@
   changed_when: False
 
 - name: "Sum all log files found"
-  set_fact:
+  ansible.builtin.set_fact:
     log_files: "{{ log_files_new.results|map(attribute='stdout_lines')|list|flatten|unique + log_files_old.results|map(attribute='stdout_lines')|list|flatten|unique  }}"
 
 - name: "Setup log files attribute"
