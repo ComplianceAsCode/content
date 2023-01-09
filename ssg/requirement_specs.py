@@ -94,8 +94,13 @@ except ImportError:
 
 
 def _parse_version_into_evr(version):
-    ver = pkg_resources.parse_version(version)
-    return _get_evr(ver)
+    evr = {"epoch": None, "version": None, "release": None}
+    match_version = re.match(r'^(\d[\d\.]*)(?:-(\d*))?$', version)
+    if not match_version:
+        raise ValueError("Invalid version specifier {0}".format(version))
+    evr["version"] = match_version.groups()[0]
+    evr["release"] = match_version.groups()[1]
+    return evr
 
 
 def _spec_to_version_specifier(spec):
