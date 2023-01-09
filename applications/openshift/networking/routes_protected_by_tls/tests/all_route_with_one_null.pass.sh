@@ -85,7 +85,6 @@ cat <<EOF > "$kube_apipath$routes_apipath"
                     "targetPort": "8080-tcp"
                 },
                 "tls": {
-                    "insecureEdgeTerminationPolicy": "Allow",
                     "termination": "passthrough"
                 },
                 "to": {
