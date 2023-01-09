@@ -35,7 +35,7 @@
 
   <unix:shadow_object id="object_accounts_password_all_chage_in_past" version="1">
     <unix:username operation="pattern match">.*</unix:username>
-    <filter action="exclude">state_accounts_password_all_shadowed_has_no_password</filter>
+    <filter action="exclude">state_accounts_password_all_chage_past_has_no_password</filter>
   </unix:shadow_object>
   <unix:shadow_state id="state_accounts_password_all_chage_past_has_no_password" version="1">
       <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked)$</unix:password>
