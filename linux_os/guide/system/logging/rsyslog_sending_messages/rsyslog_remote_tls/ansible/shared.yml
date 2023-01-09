@@ -19,7 +19,7 @@
     contains: '^\s*action\s*\(\s*type\s*=\s*"omfwd".*'
   register: rsyslog_main_file_with_directive
 
-- name: "{{{ rule_title }}}: declare Rsyslog option parameters to be inserted inf entirely missing"
+- name: "{{{ rule_title }}}: declare Rsyslog option parameters to be inserted if entirely missing"
   ansible.builtin.set_fact:
     rsyslog_parameters_to_add_if_missing:
       - "protocol"
@@ -69,7 +69,7 @@
       ansible.builtin.replace:
         path: "{{ item[0] }}"
         regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"[\s\S]*)({{ item[1][0] | regex_escape() }}\s*=\s*"\S*")([\s\S]*\))$'
-        replace: '\1 {{ item[1][0] }}="{{ item[1][1] }}"\3'
+        replace: '\1{{ item[1][0] }}="{{ item[1][1] }}"\3'
       register: existing_directive_value_fixed
       loop: "{{ rsyslog_files | product (rsyslog_parameters_to_replace_if_wrong_value | zip(rsyslog_values_to_replace_if_wrong_value)) | list }}"
 
