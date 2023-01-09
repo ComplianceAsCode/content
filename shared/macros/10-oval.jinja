@@ -911,17 +911,22 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{{ oval_line_in_file_object(sshd_config_path, parameter="include", id_stem="sshd_include_value_" ~ rule_id, ** case_insensitivity_kwargs)| indent (2) }}}
   <local_variable id="var_sshd_config_included_files_{{{ rule_id }}}" datatype="string" version="1"
   comment="Include value converted to regex">
-    <unique>
-      <glob_to_regex>
-        <object_component item_field="subexpression" object_ref="obj_sshd_include_value_{{{ rule_id }}}" />
-      </glob_to_regex>
-    </unique>
+    <concat>
+      <literal_component>^(/etc/ssh/(?!/))?</literal_component>
+      <substring substring_start="2" substring_length="-1">
+        <unique>
+          <glob_to_regex>
+            <object_component item_field="subexpression" object_ref="obj_sshd_include_value_{{{ rule_id }}}" />
+          </glob_to_regex>
+        </unique>
+      </substring>
+    </concat>
   </local_variable>
 
   {{{ oval_line_in_file_test("sshd_config included", parameter, id_stem=rule_id ~ "_sshd_included_files", avoid_conflicting=true ) | indent (2) }}}
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_sshd_included_files" version="1">
-    <ind:filepath operation="pattern match" var_ref="var_sshd_config_included_files_{{{ rule_id }}}" />
+    <ind:filepath operation="pattern match" var_ref="var_sshd_config_included_files_{{{ rule_id }}}" var_check="at least one"/>
     <ind:pattern operation="pattern match">^[ \t]*(?i){{{ parameter }}}(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
