@@ -70,7 +70,6 @@
         path: "{{ item[0] }}"
         regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"[\s\S]*)({{ item[1][0] | regex_escape() }}\s*=\s*"\S*")([\s\S]*\))$'
         replace: '\1{{ item[1][0] }}="{{ item[1][1] }}"\3'
-      register: existing_directive_value_fixed
       loop: "{{ rsyslog_files | product (rsyslog_parameters_to_replace_if_wrong_value | zip(rsyslog_values_to_replace_if_wrong_value)) | list }}"
 
     - name: "{{{ rule_title }}}: Fix existing omfwd directives by adding parameter and value"
@@ -78,10 +77,8 @@
         path: "{{ item[0] }}"
         regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"(?:[\s\S](?!{{ item[1][0] | regex_escape() }}))*.)(\))$'
         replace: '\1 {{ item[1][0] }}="{{ item[1][1] }}" \2'
-      register: existing_directive_fixed
       loop: "{{ rsyslog_files | product (rsyslog_parameters_to_add_if_missing | zip(rsyslog_values_to_add_if_missing)) | list }}"
   when: rsyslog_includes_with_directive.matched or rsyslog_main_file_with_directive.matched
-
 
 - name: "{{{ rule_title }}}: Add missing rsyslog directive"
   ansible.builtin.lineinfile:
