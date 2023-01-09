@@ -17,7 +17,7 @@ def _add_version_element(elements, el):
 
 def _add_version_elements_to_evr_component(evr, elements, component):
     evr[component] = '.'.join(elements if elements else ['0'])
-    elements.clear()
+    elements = []
 
 
 def _select_next_component(el):
