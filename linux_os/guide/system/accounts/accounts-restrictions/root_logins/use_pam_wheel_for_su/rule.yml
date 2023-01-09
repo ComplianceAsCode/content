@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Enforce usage of pam_wheel for su authentication'
 
@@ -8,7 +8,7 @@ description: |-
     To ensure that only users who are members of the <tt>wheel</tt> group can
     run commands with altered privileges through the <tt>su</tt> command, make
     sure that the following line exists in the file <tt>/etc/pam.d/su</tt>:
-    <pre>auth             required        pam_wheel.so use_uid</pre>
+    <pre>auth required pam_wheel.so use_uid</pre>
 
 rationale: |-
     The <tt>su</tt> program allows to run commands with a substitute user and
@@ -29,6 +29,8 @@ references:
     cis@alinux3: "5.8"
     cis@rhel7: "5.7"
     cis@rhel8: 5.3.7
+    cis@sle12: "5.6"
+    cis@sle15: "5.6"
     cis@ubuntu2004: "5.6"
     cis@ubuntu2204: "5.6"
     ospp: FMT_SMF_EXT.1.1
@@ -41,14 +43,14 @@ ocil: |-
     Run the following command to check if the line is present:
     <pre>grep pam_wheel /etc/pam.d/su</pre>
     The output should contain the following line:
-    <pre>auth             required        pam_wheel.so use_uid</pre>
+    <pre>auth required pam_wheel.so use_uid</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to require users to be in the "wheel" group to run "su" command.
 
     In file "/etc/pam.d/su", uncomment the following line:
 
-    "#auth    required    pam_wheel.so use_uid"
+    "#auth required pam_wheel.so use_uid"
 
     $ sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\+required[[:space:]]\+pam_wheel\.so[[:space:]]\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su
 
