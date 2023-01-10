@@ -1707,14 +1707,16 @@ controls:
       - journald_forward_to_syslog
 
   # NEEDS RULE
-  # The rsyslog_files_permissions rule is not sufficient
+  # The rsyslog_files_permissions rule is not sufficient. Needs check for $FileCreateMode.
   # https://github.com/ComplianceAsCode/content/issues/7332
   - id: 4.2.1.4
     title: Ensure rsyslog default file permissions configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    rules:
+      - rsyslog_files_permissions
 
   - id: 4.2.1.5
     title: Ensure logging is configured (Manual)
@@ -1732,13 +1734,15 @@ controls:
     related_rules:
       - rsyslog_remote_loghost
 
-  # NEEDS RULE
   - id: 4.2.1.7
     title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: partial
+    rules:
+      - rsyslog_nolisten
+      # This rule should be extended to consider rainerscript syntax
 
   # NEEDS RULE
   - id: 4.2.2.1.1
