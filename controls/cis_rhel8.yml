@@ -1950,17 +1950,19 @@ controls:
       - file_permissions_sshd_config
 
   # NEEDS RULE
-  # The file_permissions_sshd_private_key rule is not aligned with the benchmark
+  # Missing rules for owner and group-owner.
   # https://github.com/ComplianceAsCode/content/issues/7334
   - id: 5.2.2
     title: Ensure permissions on SSH private host key files are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    rules:
+      - file_permissions_sshd_private_key
 
   # TODO
-  # Check owner of public keys in /etc/ssh is root:root
+  # Missing rules for owner and group-owner.
   - id: 5.2.3
     title: Ensure permissions on SSH public host key files are configured (Automated)
     levels:
@@ -1977,7 +1979,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
+    related_rules:
+      - sshd_limit_user_access
+      # Missing OVAL
 
   - id: 5.2.5
     title: Ensure SSH LogLevel is appropriate (Automated)
@@ -2082,8 +2087,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    related_rules:
+    status: partial
+    rules:
       - sshd_enable_warning_banner
 
   - id: 5.2.16
