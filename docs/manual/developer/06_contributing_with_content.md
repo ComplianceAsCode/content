@@ -1236,7 +1236,7 @@ included in the dictionary.
 Allows the construction of logical expressions involving CPEs.
 
 CPEs can be combined to form an applicability statement.
-The `platfrom` property of a rule (or a group) can contain a [Boolean expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
+The `platform` property of a rule (or a group) can contain a [Boolean expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
 that describes the relationship of a set of individual CPEs (symbols), which would later be converted
 by the build system into the CPE AL definition in the XCCDF document.
 
