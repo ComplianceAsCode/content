@@ -5,21 +5,84 @@
 # disruption = low
 {{{ ansible_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
-- name: "Get omfwd configuration directive"
-  shell: sed -e '/^action\s*(\s*type\s*=\s*"omfwd"/,/)/!d' /etc/rsyslog.conf /etc/rsyslog.d/*.conf || true
-  register: include_omfwd_config_output
+- name: "{{{ rule_title }}}: search for omfwd action directive in rsyslog include files"
+  ansible.builtin.find:
+    paths: "/etc/rsyslog.d/"
+    pattern: "*.conf"
+    contains: '^\s*action\s*\(\s*type\s*=\s*"omfwd".*'
+  register: rsyslog_includes_with_directive
 
-- name: "Get include files directives"
-  shell: >
-    set -o pipefail
-    echo \"{{ include_omfwd_config_output.stdout }}\"|grep  'StreamDriver=\"gtls\"'
-  register: include_omfwd_gtls_config_output
-  when: (include_omfwd_config_output.stdout_lines| length > 0)
+- name: "{{{ rule_title }}}: search for omfwd action directive in rsyslog main config file"
+  ansible.builtin.find:
+    paths: "/etc"
+    pattern: "rsyslog.conf"
+    contains: '^\s*action\s*\(\s*type\s*=\s*"omfwd".*'
+  register: rsyslog_main_file_with_directive
 
-- name: "Set rsyslog omfwd to use TLS"
-  lineinfile:
+- name: "{{{ rule_title }}}: declare Rsyslog option parameters to be inserted if entirely missing"
+  ansible.builtin.set_fact:
+    rsyslog_parameters_to_add_if_missing:
+      - "protocol"
+      - "target"
+      - "port"
+      - "StreamDriver"
+      - "StreamDriverMode"
+      - "StreamDriverAuthMode"
+      - "streamdriver.CheckExtendedKeyPurpose"
+
+- name: "{{{ rule_title }}}: declare Rsyslog option values to be inserted if entirely missing"
+  ansible.builtin.set_fact:
+    rsyslog_values_to_add_if_missing:
+      - "tcp"
+      - "{{ rsyslog_remote_loghost_address }}"
+      - "6514"
+      - "gtls"
+      - "1"
+      - "x509/name"
+      - "on"
+
+- name: "{{{ rule_title }}}: declare Rsyslog option parameters to be replaced if defined with wrong values"
+  ansible.builtin.set_fact:
+    rsyslog_parameters_to_replace_if_wrong_value:
+      - "protocol"
+      - "StreamDriver"
+      - "StreamDriverMode"
+      - "StreamDriverAuthMode"
+      - "streamdriver.CheckExtendedKeyPurpose"
+
+- name: "{{{ rule_title }}}: declare Rsyslog option values to be replaced when having wrong value"
+  ansible.builtin.set_fact:
+    rsyslog_values_to_replace_if_wrong_value:
+      - "tcp"
+      - "gtls"
+      - "1"
+      - "x509/name"
+      - "on"
+
+- name: "{{{ rule_title }}}: assemble list of files with existing directives"
+  ansible.builtin.set_fact:
+    rsyslog_files: "{{ rsyslog_includes_with_directive.files | map(attribute='path') | list + rsyslog_main_file_with_directive.files | map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}}: try to fix existing directives"
+  block:
+    - name: "{{{ rule_title }}}: Fix existing omfwd directives by adjusting the value"
+      ansible.builtin.replace:
+        path: "{{ item[0] }}"
+        regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"[\s\S]*)({{ item[1][0] | regex_escape() }}\s*=\s*"\S*")([\s\S]*\))$'
+        replace: '\1{{ item[1][0] }}="{{ item[1][1] }}"\3'
+      loop: "{{ rsyslog_files | product (rsyslog_parameters_to_replace_if_wrong_value | zip(rsyslog_values_to_replace_if_wrong_value)) | list }}"
+
+    - name: "{{{ rule_title }}}: Fix existing omfwd directives by adding parameter and value"
+      ansible.builtin.replace:
+        path: "{{ item[0] }}"
+        regexp: '(?i)^(\s*action\s*\(\s*type\s*=\s*"omfwd"(?:[\s\S](?!{{ item[1][0] | regex_escape() }}))*.)(\))$'
+        replace: '\1 {{ item[1][0] }}="{{ item[1][1] }}" \2'
+      loop: "{{ rsyslog_files | product (rsyslog_parameters_to_add_if_missing | zip(rsyslog_values_to_add_if_missing)) | list }}"
+  when: rsyslog_includes_with_directive.matched or rsyslog_main_file_with_directive.matched
+
+- name: "{{{ rule_title }}}: Add missing rsyslog directive"
+  ansible.builtin.lineinfile:
     dest: /etc/rsyslog.conf
-    line: "action(type=\"omfwd\" protocol=\"tcp\" Target=\"{{ rsyslog_remote_loghost_address }}\" port=\"6514\" StreamDriver=\"gtls\" StreamDriverMode=\"1\" StreamDriverAuthMode=\"x509/name\" streamdriver.CheckExtendedKeyPurpose=\"on\")"
+    line: 'action(type="omfwd" protocol="tcp" Target="{{ rsyslog_remote_loghost_address }}" port="6514" StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")'
     create: yes
-  when: (include_omfwd_gtls_config_output is skipped ) or
-        ("gtls" not in include_omfwd_gtls_config_output.stdout)
+  when: not rsyslog_includes_with_directive.matched and not rsyslog_main_file_with_directive.matched
