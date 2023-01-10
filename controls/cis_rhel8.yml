@@ -481,7 +481,7 @@ controls:
       - var_selinux_policy_name=targeted
       - selinux_policytype
 
-  # NEEDS RULE
+  # NEEDS RULE - The selinux_state could be extended
   - id: 1.6.1.4
     title: Ensure the SELinux mode is not disabled (Automated)
     levels:
@@ -593,6 +593,8 @@ controls:
     levels:
       - l2_server
     status: manual
+    related_rules:
+      - package_gdm_removed
 
   - id: 1.8.2
     title: Ensure GDM login banner is configured (Automated)
