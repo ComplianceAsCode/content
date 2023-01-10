@@ -713,13 +713,14 @@ controls:
     related_rules:
       - service_cups_disabled
 
-  # NEEDS RULE
   - id: 2.2.5
     title: Ensure DHCP Server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_dhcp_removed
     related_rules:
       - service_dhcpd_disabled
 
