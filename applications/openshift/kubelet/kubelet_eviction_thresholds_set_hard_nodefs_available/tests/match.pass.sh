@@ -256,7 +256,7 @@ cat << EOF > $kube_apipath$api_path_worker
     "imagefs.available": "10%",
     "imagefs.inodesfree": "5%",
     "memory.available": "200Mi",
-    "nodefs.available": "5%",
+    "nodefs.available": "10%",
     "nodefs.inodesFree": "4%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
@@ -401,7 +401,7 @@ cat << EOF > $kube_apipath$api_path_master
     "imagefs.available": "10%",
     "imagefs.inodesfree": "5%",
     "memory.available": "200Mi",
-    "nodefs.available": "5%",
+    "nodefs.available": "10%",
     "nodefs.inodesFree": "4%"
   },
   "evictionPressureTransitionPeriod": "5m0s",

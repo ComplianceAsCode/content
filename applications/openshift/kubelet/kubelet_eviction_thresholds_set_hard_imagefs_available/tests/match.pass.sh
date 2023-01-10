@@ -253,7 +253,7 @@ cat << EOF > $kube_apipath$api_path_worker
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
   "evictionHard": {
-    "imagefs.available": "10%",
+    "imagefs.available": "15%",
     "memory.available": "100Mi",
     "nodefs.available": "15%",
     "nodefs.inodesFree": "5%"
@@ -397,7 +397,7 @@ cat << EOF > $kube_apipath$api_path_master
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
   "evictionHard": {
-    "imagefs.available": "10%",
+    "imagefs.available": "15%",
     "memory.available": "100Mi",
     "nodefs.available": "15%",
     "nodefs.inodesFree": "5%"

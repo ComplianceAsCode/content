@@ -222,7 +222,7 @@ cat << EOF > $kube_apipath$api_path_worker
   "clusterDNS": [
     "172.30.0.10"
   ],
-  "streamingConnectionIdleTimeout": "5m0s",
+  "streamingConnectionIdleTimeout": "4h0m0s",
   "nodeStatusUpdateFrequency": "10s",
   "nodeStatusReportFrequency": "5m0s",
   "nodeLeaseDurationSeconds": 40,
