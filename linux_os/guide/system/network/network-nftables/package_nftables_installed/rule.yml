@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: rhel8,rhel9,sle15
 
 title: 'Install nftables Package'
 
@@ -19,9 +19,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-86376-1
+    cce@rhel9: CCE-86378-7
     cce@sle15: CCE-92469-6
 
 references:
+    cis@rhel8: 3.4.2.1
     cis@sle15: 3.5.2.1
 
 ocil_clause: 'the package is not installed'
