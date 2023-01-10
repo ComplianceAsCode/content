@@ -20,3 +20,20 @@ def test_parse_version_into_evr():
     # We do not support epoch at this moment, this version string is invalid.
     with pytest.raises(ValueError):
         v = requirement_specs._parse_version_into_evr('1:1.0.0')
+
+    # we do not support letters anywhere for now
+
+    with pytest.raises(ValueError):
+        v = requirement_specs._parse_version_into_evr('1.0.0-r2')
+    with pytest.raises(ValueError):
+        v = requirement_specs._parse_version_into_evr('b1')
+
+    # some more tests to ensure that the regex is correct
+    with pytest.raises(ValueError):
+        v = requirement_specs._parse_version_into_evr('0:')
+    with pytest.raises(ValueError):
+        v = requirement_specs._parse_version_into_evr('-1')
+    with pytest.raises(ValueError):
+        v = requirement_specs._parse_version_into_evr(':')
+    with pytest.raises(ValueError):
+        v = requirement_specs._parse_version_into_evr('-')
