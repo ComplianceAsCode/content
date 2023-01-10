@@ -1631,13 +1631,14 @@ controls:
     rules:
       - audit_rules_execution_setfacl
 
-  # NEEDS RULE
   - id: 4.1.3.17
     title: Ensure successful and unsuccessful attempts to use the chacl command are recorded (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - audit_rules_execution_chacl
 
   # NEEDS RULE
   - id: 4.1.3.18
