@@ -189,6 +189,12 @@ A rule itself contains these attributes:
     but only if there is no *shadow-utils* or *ssh* package installed.
 
     Some platforms can also define applicability based on the version of the entity they check.
+    Please note that this feature is not yet consistently implemented.
+    Read the following before using it.
+    If the version specification is used, it is correctly rendered into appropriate OVAL check which is later used when deciding on applicability of a rule.
+    However, conditionals used to limit applicability of Bash and Ansible remediations are currently not generated correctly in this case; the version specification is not taken into account.
+    Therefore, the build will be interrupted in case you try to use a platform with version specification which influences Bash or Ansible remediation.
+
     Version specifiers notation loosely follows [PEP440](https://peps.python.org/pep-0440/#version-specifiers),
     most notably not supporting *wildcard*, *epoch* and *non-numeric* suffixes.
 
