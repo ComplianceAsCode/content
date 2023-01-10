@@ -264,6 +264,7 @@ endif()
 if (PYTHON_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "test-compare-disa-xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_disa_xml.py" "${CMAKE_SOURCE_DIR}/shared/references/disa-stig-rhel8-v1r8-xccdf-manual.xml" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_disa_xml.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
     )
+    set_tests_properties("test-compare-disa-xml" PROPERTIES LABELS quick)
 endif()
