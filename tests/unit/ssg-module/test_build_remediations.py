@@ -25,6 +25,10 @@ def cpe_platforms(env_yaml):
     platforms[platform.name] = platform
     return platforms
 
+@pytest.fixture
+def cpe_platforms_with_version_comparison(env_yaml):
+    
+
 
 def test_is_supported_file_name():
     assert sbr.is_supported_filename('bash', 'something.sh')
