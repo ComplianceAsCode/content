@@ -163,9 +163,9 @@ A rule itself contains these attributes:
     means it will be evaluated only if the targeted scan environment is either
     bare-metal or virtual
     machine. Also, it can restrict applicability on higher software
-    layers. By setting to `shadow-utils`, the rule will have its
+    layers. By setting to `package[audit]`, the rule will have its
     applicability restricted to only environments which have
-    `shadow-utils` package installed.
+    `audit` package installed.
 
     The available options can be found
     in the file &lt;product&gt;/cpe/&lt;product&gt;-cpe-dictionary.xml
