@@ -7,7 +7,7 @@
 
 {{% if product == "ol8" %}}
 - name: {{{ rule_title }}} - Find pwquality.conf.d files
-  ansible.builtin.find::
+  ansible.builtin.find:
     paths: /etc/security/pwquality.conf.d/
     patterns: "*.conf"
   register: pwquality_conf_d_files
