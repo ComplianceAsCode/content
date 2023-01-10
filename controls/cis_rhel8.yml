@@ -1150,6 +1150,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    related_rules:
+      - firewalld_sshd_port_enabled
 
   - id: 3.4.1.7
     title: Ensure firewalld drops unnecessary services and ports (Manual)
@@ -1158,13 +1160,14 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
   - id: 3.4.2.1
     title: Ensure nftables is installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - package_nftables_installed
 
   # NEEDS RULE
   - id: 3.4.2.2
@@ -1180,7 +1183,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 3.4.2.4
     title: Ensure iptables are flushed with nftables (Manual)
