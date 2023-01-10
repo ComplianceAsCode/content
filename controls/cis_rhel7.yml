@@ -644,7 +644,9 @@ controls:
     title: Ensure CUPS is not installed (Automated)
     levels:
     - l1_server
-    automated: no # rule for package removal is missing
+    status: automated
+    rules:
+      - package_cups_removed
 
   - id: 2.2.5
     title: Ensure DHCP Server is not installed (Automated)

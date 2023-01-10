@@ -702,13 +702,14 @@ controls:
     related_rules:
       - service_avahi-daemon_disabled
 
-  # NEEDS RULE
   - id: 2.2.4
     title: Ensure CUPS is not installed (Automated)
     levels:
       - l1_server
       - l2_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_cups_removed
     related_rules:
       - service_cups_disabled
 
