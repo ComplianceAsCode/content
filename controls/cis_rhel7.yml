@@ -782,7 +782,9 @@ controls:
     - l1_workstation
     status: automated
     rules:
-    - service_rsyncd_disabled
+      - package_rsync_removed
+    related_rules:
+      - service_rsyncd_disabled
 
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)

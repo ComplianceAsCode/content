@@ -863,14 +863,14 @@ controls:
     related_rules:
       - service_rpcbind_disabled
 
-  # NEEDS RULE
   - id: 2.2.20
     title:  Ensure rsync is not installed or the rsyncd service is masked (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    # Needs rule to remove rsync or mask rsyncd
+    status: automated
+    rules:
+      - package_rsync_removed
     related_rules:
       - service_rsyncd_disabled
 
