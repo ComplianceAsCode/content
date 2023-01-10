@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Uninstall CUPS Package'
 
@@ -14,11 +14,16 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel7: CCE-86295-3
+    cce@rhel8: CCE-86299-5
+    cce@rhel9: CCE-86300-1
     cce@sle12: CCE-92311-0
     cce@sle15: CCE-92466-2
 
 references:
     cis-csc: 11,14,3,9
+    cis@rhel7: 2.2.4
+    cis@rhel8: 2.2.4
     cis@sle12: 2.2.4
     cis@sle15: 2.2.4
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
