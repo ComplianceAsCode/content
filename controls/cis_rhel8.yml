@@ -1486,9 +1486,10 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: partial  # The CAC rule audit_rules_time_settimeofday uses additional parameters compared to the CIS benchmark and so is not used here. As a result, automated coverage is only partial for this control.
+    status: automated
     rules:
       - audit_rules_time_adjtimex
+      - audit_rules_time_settimeofday
       - audit_rules_time_clock_settime
       - audit_rules_time_stime
       - audit_rules_time_watch_localtime
