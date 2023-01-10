@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Uninstall rsync Package'
 
@@ -15,10 +15,15 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-86334-0
+    cce@rhel8: CCE-86335-7
+    cce@rhel9: CCE-86336-5
     cce@sle12: CCE-92313-6
     cce@sle15: CCE-92468-8
 
 references:
+    cis@rhel7: 2.2.19
+    cis@rhel8: 2.2.20
     cis@sle12: 2.2.17
     cis@sle15: 2.2.17
 
