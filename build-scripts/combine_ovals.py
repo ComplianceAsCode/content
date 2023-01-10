@@ -62,13 +62,12 @@ def main():
         ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         ssg.utils.required_key(env_yaml, "ssg_version"))
 
-    body = ssg.build_ovals.checks(
+    oval_builder = ssg.build_ovals.OVALBuilder(
         env_yaml,
         args.product_yaml,
-        ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         args.ovaldirs,
-        args.include_benchmark,
         args.build_ovals_dir)
+    body = oval_builder.build_shorthand(args.include_benchmark)
 
     # parse new file(string) as an ssg.xml.ElementTree, so we can reorder elements
     # appropriately
