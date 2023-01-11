@@ -2188,13 +2188,14 @@ controls:
     rules:
       - sudo_require_reauthentication
 
-  # NEEDS RULE
   - id: 5.3.6
     title: Ensure sudo authentication timeout is configured correctly (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - sudo_require_reauthentication
 
   - id: 5.3.7
     title: Ensure access to the su command is restricted (Automated)
