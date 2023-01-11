@@ -2332,7 +2332,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   # NEEDS RULE
   # We are missing the component of this control which locks non-root system accounts
@@ -2345,13 +2345,16 @@ controls:
     status: partial
     rules:
       - no_shelllogin_for_systemaccounts
+    related_rules:
+      - no_password_auth_for_systemaccounts
+      # This rule needs OVAL and remediation
 
   - id: 5.6.3
     title: Ensure default user shell timeout is 900 seconds or less (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The remediation for this rule does not implement the "TMOUT" variable as readonly so does not align fully with the benchmark
+    status: automated
     rules:
       - accounts_tmout
       - var_accounts_tmout=15_min
