@@ -243,7 +243,7 @@ selections:
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
-    # Needs rule: package_cups_removed
+    - package_cups_removed
 
     ### 2.2.5 Ensure DHCP Server is not installed (Automated)
     - package_dhcp_removed
