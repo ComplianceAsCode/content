@@ -399,7 +399,7 @@ selections:
 
     ### 3.5.2 Configure nftables
     #### 3.5.2.1 Ensure nftables is installed (Automated)
-    # Needs rule
+    - package_nftables_installed
 
     #### 3.5.2.2 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
     # Needs rule
