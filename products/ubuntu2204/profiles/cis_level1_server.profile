@@ -429,7 +429,7 @@ selections:
 
     ### 3.5.2 Configure nftables ###
     #### 3.5.2.1 Ensure nftables is installed (Automated)
-    # NEEDS RULE
+    - package_nftables_installed
 
     #### 3.5.2.2 Ensure ufw is uninstalled or disabled with nftables (Automated)
     # NEEDS RULE
