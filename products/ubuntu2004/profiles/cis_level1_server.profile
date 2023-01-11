@@ -279,7 +279,7 @@ selections:
     # Needs rule
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
-    # Needs rule: package_rsync_removed
+    - package_rsync_removed
 
     ### 2.2.17 Ensure NIS Server is not installed (Automated)
     - package_nis_removed
