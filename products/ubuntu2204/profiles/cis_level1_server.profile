@@ -311,7 +311,7 @@ selections:
     - postfix_network_listening_disabled
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
-    # NEEDS RULE
+    - package_rsync_removed
 
     ## 2.3 Service Clients ##
     ### 2.3.1 Ensure NIS Client is not installed (Automated)
