@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Uninstall rcpbind Package'
+
+description: |-
+    The rpcbind utility maps RPC services to the ports on which they listen.
+    RPC processes notify rpcbind when they start, registering the ports they
+    are listening on and the RPC program numbers they expect to serve. The
+    rpcbind service redirects the client to the proper port number so it can
+    communicate with the requested service. If the system does not require RPC
+    (such as for NFS servers) then this service should be disabled.
+    {{{ describe_package_remove(package="rcpbind") }}}
+
+rationale: |-
+    If the system does not require rpc based services, it is recommended that
+    rpcbind be disabled to reduce the attack surface.
+
+severity: low
+
+identifiers:
+    cce@sle12: CCE-92312-8
+    cce@sle15: CCE-92467-0
+
+references:
+    cis@sle12: 2.2.8
+    cis@sle15: 2.2.8
+
+{{{ complete_ocil_entry_package(package="rcpbind") }}}
+
+fixtext: '{{{ fixtext_package_removed("rcpbind") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: rcpbind
