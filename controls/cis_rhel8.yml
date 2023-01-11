@@ -487,7 +487,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: planned
 
   - id: 1.6.1.5
     title: Ensure the SELinux mode is enforcing (Automated)
@@ -858,7 +858,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
     # Needs rule to remove or mask rpcbind
     related_rules:
       - service_rpcbind_disabled
@@ -1509,7 +1509,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: planned
     related_rules:
       # The rule below is almost correct but cannot be used as it does not set the perm=x flag.
       - audit_rules_privileged_commands
@@ -1771,7 +1771,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: planned
 
   - id: 4.2.2.2
     title: Ensure journald service is enabled (Automated)
@@ -2663,7 +2663,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 6.2.15
     title: Ensure no users have .netrc files (Automated)
