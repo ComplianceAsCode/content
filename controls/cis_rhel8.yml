@@ -2202,11 +2202,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     notes: |-
-      The recommendation states the the members of the "wheel" group should be checked and match the
-      site policy. But the site policy may allow or require different users for the group, so the
-      members of the "wheel" group need to be checked manually.
+      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
+      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
+      use of "sudo" for privileged access. Therefore, members of these groups should be manually
+      checked or a different group should be informed.
     rules:
       - use_pam_wheel_for_su
 
