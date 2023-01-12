@@ -163,9 +163,9 @@ A rule itself contains these attributes:
     means it will be evaluated only if the targeted scan environment is either
     bare-metal or virtual
     machine. Also, it can restrict applicability on higher software
-    layers. By setting to `shadow-utils`, the rule will have its
+    layers. By setting to `package[audit]`, the rule will have its
     applicability restricted to only environments which have
-    `shadow-utils` package installed.
+    `audit` package installed.
 
     The available options can be found
     in the file &lt;product&gt;/cpe/&lt;product&gt;-cpe-dictionary.xml
@@ -189,6 +189,12 @@ A rule itself contains these attributes:
     but only if there is no *shadow-utils* or *ssh* package installed.
 
     Some platforms can also define applicability based on the version of the entity they check.
+    Please note that this feature is not yet consistently implemented.
+    Read the following before using it.
+    If the version specification is used, it is correctly rendered into appropriate OVAL check which is later used when deciding on applicability of a rule.
+    However, conditionals used to limit applicability of Bash and Ansible remediations are currently not generated correctly in this case; the version specification is not taken into account.
+    Therefore, the build will be interrupted in case you try to use a platform with version specification which influences Bash or Ansible remediation.
+
     Version specifiers notation loosely follows [PEP440](https://peps.python.org/pep-0440/#version-specifiers),
     most notably not supporting *wildcard*, *epoch* and *non-numeric* suffixes.
 
@@ -1230,7 +1236,7 @@ included in the dictionary.
 Allows the construction of logical expressions involving CPEs.
 
 CPEs can be combined to form an applicability statement.
-The `platfrom` property of a rule (or a group) can contain a [Boolean expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
+The `platform` property of a rule (or a group) can contain a [Boolean expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
 that describes the relationship of a set of individual CPEs (symbols), which would later be converted
 by the build system into the CPE AL definition in the XCCDF document.
 
