@@ -5,36 +5,14 @@ prodtype: alinux2,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle15
 title: 'Disable telnet Service'
 
 description: |-
-    The <tt>telnet</tt> service configuration file <tt>/etc/xinetd.d/telnet</tt>
-    is not created automatically. If it was created manually, check the
-    <tt>/etc/xinetd.d/telnet</tt> file and ensure that <tt>disable = no</tt>
-    is changed to read <tt>disable = yes</tt> as follows below:
-    <pre>
-    # description: The telnet server serves telnet sessions; it uses \\
-    #       unencrypted username/password pairs for authentication.
-    service telnet
-    {
-            flags           = REUSE
-            socket_type     = stream
-
-            wait            = no
-            user            = root
-            server          = /usr/sbin/in.telnetd
-            log_on_failure  += USERID
-            disable         = yes
-    }
-    </pre>
-    If the <tt>/etc/xinetd.d/telnet</tt> file does not exist, make sure that
-    the activation of the <tt>telnet</tt> service on system boot is disabled
-    via the following command:
-    {{{ describe_socket_disable(socket="rexec") }}}
+    Make sure that the activation of the <tt>telnet</tt> service on system boot is disabled.
+    {{{ describe_socket_disable(socket="telnet") }}}
 
 rationale: |-
-    The telnet protocol uses unencrypted network communication, which
-    means that data from the login session, including passwords and
-    all other information transmitted during the session, can be
-    stolen by eavesdroppers on the network. The telnet protocol is also
-    subject to man-in-the-middle attacks.
+    The telnet protocol uses unencrypted network communication, which means that data from the
+    login session, including passwords and all other information transmitted during the session,
+    can be stolen by eavesdroppers on the network. The telnet protocol is also subject to
+    man-in-the-middle attacks.
 
 severity: high
 
@@ -61,7 +39,14 @@ references:
 
 platform: machine
 
+warnings:
+    - general: |-
+       If the system relies on <tt>xinetd</tt> to manage telnet sessions, ensure the telnet service
+       is disabled by the following line: <tt>disable = yes</tt>. Note that the xinetd file for
+       telnet is not created automatically, therefore it might have different names.
+
 template:
     name: service_disabled
     vars:
         servicename: telnet
+        packagename: telnet-server
