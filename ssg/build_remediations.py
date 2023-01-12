@@ -169,9 +169,10 @@ class Remediation(object):
             platform = cpe_platforms[p]
             if self._check_if_platform_uses_version_comparison(platform, language):
                 raise ValueError(
-                    "Platforms using version comparison are currently not producing consistent "
-                    "results when used with {0} remediations. Therefore the platform defined as "
-                    "{1} can't be used.".format(language, platform.original_expression))
+                    "The platform definition you are trying to use uses version comparison. "
+                    "Remediation conditionals for such platforms are currently not implemented "
+                    "for {0} remediations. {1} can't be used.".format(
+                        language, platform.original_expression))
             conditional = platform.get_remediation_conditional(language)
             if conditional is not None:
                 stripped_conditional = conditional.strip()
