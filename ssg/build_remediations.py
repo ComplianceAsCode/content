@@ -154,6 +154,25 @@ class Remediation(object):
                     return True
         return False
 
+    def _get_stripped_conditional(self, language, platform):
+        # if a platform uses specification of versions as an applicability criteria
+        # it is currently correctly used in OVAL checks
+        # but it is not implemented in conditionals, therefore creating inconsitency
+        # we prevent building content which uses
+        # such a platform with a remediation conditional specified
+        if self._check_if_platform_uses_version_comparison(platform, language):
+            raise ValueError(
+                "The platform definition you are trying to use uses version comparison. "
+                "Remediation conditionals for such platforms are currently not implemented "
+                "for {0} remediations. {1} can't be used.".format(
+                    language, platform.original_expression))
+        conditional = platform.get_remediation_conditional(language)
+        if conditional is not None:
+            stripped_conditional = conditional.strip()
+            if stripped_conditional:
+                return stripped_conditional
+        return None
+
     def get_stripped_conditionals(self, language, cpe_platform_names, cpe_platforms):
         """
         collect conditionals of platforms defined by cpe_platform_names
@@ -161,23 +180,10 @@ class Remediation(object):
         """
         stripped_conditionals = []
         for p in cpe_platform_names:
-            # if a platform uses specification of versions as an applicability criteria
-            # it is currently correctly used in OVAL checks
-            # but it is not implemented in conditionals, therefore creating inconsitency
-            # we prevent building content which uses
-            # such a platform with a remediation conditional specified
             platform = cpe_platforms[p]
-            if self._check_if_platform_uses_version_comparison(platform, language):
-                raise ValueError(
-                    "The platform definition you are trying to use uses version comparison. "
-                    "Remediation conditionals for such platforms are currently not implemented "
-                    "for {0} remediations. {1} can't be used.".format(
-                        language, platform.original_expression))
-            conditional = platform.get_remediation_conditional(language)
-            if conditional is not None:
-                stripped_conditional = conditional.strip()
-                if stripped_conditional:
-                    stripped_conditionals.append(stripped_conditional)
+            maybe_stripped_conditional = self._get_stripped_conditional(language, platform)
+            if maybe_stripped_conditional is not None:
+                stripped_conditionals.append(maybe_stripped_conditional)
         return stripped_conditionals
 
     def get_rule_specific_conditionals(self, language, cpe_platforms):
