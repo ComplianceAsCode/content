@@ -1,3 +1,9 @@
+{{% if product in ['rhel8', 'rhel9'] -%}}
+{{% set pkg='rsync-daemon' %}}
+{{% else %}}
+{{% set pkg='rsync' %}}
+{{% endif %}}
+
 documentation_complete: true
 
 prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
@@ -6,7 +12,7 @@ title: 'Uninstall rsync Package'
 
 description: |-
     The rsyncd service can be used to synchronize files between systems over network links.
-    {{{ describe_package_remove(package="rsync") }}}
+    {{{ describe_package_remove(package=pkg) }}}
 
 rationale: |-
     The rsyncd service presents a security risk as it uses unencrypted protocols for
@@ -29,11 +35,11 @@ references:
     cis@ubuntu2004: 2.2.16
     cis@ubuntu2204: 2.2.16
 
-{{{ complete_ocil_entry_package(package="rsync") }}}
+{{{ complete_ocil_entry_package(package=pkg) }}}
 
-fixtext: '{{{ fixtext_package_removed("rsync") }}}'
+fixtext: '{{{ fixtext_package_removed(pkg) }}}'
 
 template:
     name: package_removed
     vars:
-        pkgname: rsync
+        pkgname: {{{ pkg }}}
