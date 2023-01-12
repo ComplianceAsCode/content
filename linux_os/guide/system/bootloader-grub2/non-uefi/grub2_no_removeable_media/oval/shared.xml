@@ -1,1 +1,74 @@
-{{{ oval_check_config_file(path=grub2_boot_path ~ '/grub.cfg', prefix_regex='^[ \\t]*', parameter='set root', separator_regex='=', value="['|\(](?!fd)(?!cd)(?!usb).*['|\)]", missing_parameter_pass=false, missing_config_file_fail=true) }}}
+<def-group>
+  <definition class="compliance" id="grub2_no_removeable_media" version="1">
+    {{{ oval_metadata("Ensure the system is not configured to use a boot loader on removable media.") }}}
+    <criteria comment="Do not allow removable media to be used as the boot loader" operator="OR">
+      <criteria comment="All menuentry entries have a set root setting" operator="AND">
+        <criterion comment="Check the set root in {{{ grub2_boot_path }}}/grub.cfg" test_ref="test_grub2_no_removeable_media" />
+        <criterion comment="Check the set root in {{{ grub2_boot_path }}}/grub.cfg for every menuentry" 
+          test_ref="test_grub2_no_removeable_media_count" />
+      </criteria>
+      {{{ oval_file_absent_criterion(grub2_boot_path ~ "/grub.cfg") }}}
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of set root setting in the {{{ grub2_boot_path }}}/grub.cfg file"
+  id="test_grub2_no_removeable_media" version="1">
+  <ind:object object_ref="obj_grub2_no_removeable_media" />
+  <ind:state state_ref="state_grub2_no_removeable_media" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_grub2_no_removeable_media" version="1">
+    <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*set root=(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_grub2_menuentry" version="1">
+    <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^menuentry</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_grub2_set_root_count"
+      datatype="int" version="1"
+      comment="Variable to hold the number of set root settings in {{{ grub2_boot_path }}}/grub.cfg">
+      <count>
+          <object_component item_field="filepath"
+              object_ref="obj_grub2_no_removeable_media"/>
+      </count>
+  </local_variable>
+
+  <local_variable id="var_grub2_menuentry_count"
+      datatype="int" version="1"
+      comment="Variable to hold the number of menu entries in {{{ grub2_boot_path }}}/grub.cfg">
+      <count>
+          <object_component item_field="filepath"
+              object_ref="obj_grub2_menuentry"/>
+      </count>
+  </local_variable>
+
+  <ind:variable_object id="obj_grub2_menuentry_count"
+      version="1">
+      <ind:var_ref>var_grub2_menuentry_count</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_grub2_set_root_count"
+      version="1">
+      <ind:value datatype="int" operation="equals" var_check="all"
+          var_ref="var_grub2_set_root_count"/>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_grub2_no_removeable_media_count"
+      check="all" check_existence="all_exist" version="1"
+      comment="The number of menuentry entries matches the number of set root settings">
+      <ind:object object_ref="obj_grub2_menuentry_count"/>
+      <ind:state state_ref="state_grub2_set_root_count"/>
+  </ind:variable_test>
+
+  <ind:textfilecontent54_state id="state_grub2_no_removeable_media" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)]$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  {{{ oval_file_absent(grub2_boot_path ~ "/grub.cfg") }}}
+</def-group>
