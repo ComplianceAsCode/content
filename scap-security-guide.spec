@@ -14,16 +14,11 @@ URL:		https://github.com/ComplianceAsCode/content/
 Source0:	https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
 BuildArch:	noarch
 
-BuildRequires:	libxslt
-BuildRequires:	expat
-BuildRequires:	openscap-scanner >= 1.2.5
-BuildRequires:	cmake >= 2.8
-# To get python3 inside the buildroot require its path explicitly in BuildRequires
-BuildRequires: /usr/bin/python3
-BuildRequires:	python%{python3_pkgversion}
-BuildRequires:	python%{python3_pkgversion}-jinja2
-BuildRequires:	python%{python3_pkgversion}-PyYAML
-BuildRequires:	python%{python3_pkgversion}-setuptools
+%if 0%{?centos} == 7
+BuildRequires:  libxslt, expat, openscap-scanner >= 1.2.5, cmake >= 2.8, python, python-jinja2, PyYAML, python-setuptools
+%else
+BuildRequires:  libxslt, expat, openscap-scanner >= 1.2.5, cmake >= 2.8, /usr/bin/python3, python%{python3_pkgversion}, python%{python3_pkgversion}-jinja2, python%{python3_pkgversion}-PyYAML, python%{python3_pkgversion}-setuptools
+%endif
 Requires:	xml-common, openscap-scanner >= 1.2.5
 
 %description
@@ -63,19 +58,28 @@ present in %{name} package.
 
 mkdir -p build
 %build
-%if 0%{?centos} == 8
+%if 0%{?centos} == 7 || 0%{?centos} == 8
 cd build
 %cmake %{cmake_defines_common} %{cmake_defines_specific} ../
 %else
 %cmake %{cmake_defines_common} %{cmake_defines_specific}
 %endif
+
+%if 0%{?centos} == 7
+make %{?_smp_mflags}
+%else
 %cmake_build
+%endif
 
 %install
-%if 0%{?centos} == 8
+%if 0%{?centos} == 7 || 0%{?centos} == 8
 cd build
 %endif
+%if 0%{?centos} == 7
+%make_install
+%else
 %cmake_install
+%endif
 rm %{buildroot}/%{_docdir}/%{name}/README.md
 rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 
