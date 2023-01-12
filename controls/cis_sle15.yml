@@ -1779,7 +1779,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule missing
+    status: automated
+    rules:
+      - sshd_use_strong_kex
 
   - id: 5.2.16
     title: Ensure SSH Idle Timeout Interval is configured (Automated)
