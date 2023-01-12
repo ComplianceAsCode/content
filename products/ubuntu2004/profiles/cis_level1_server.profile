@@ -301,7 +301,7 @@ selections:
     - package_openldap-clients_removed
 
     ### 2.3.6 Ensure RPC is not installed (Automated)
-    # Needs rule: package_rpcbind_removed
+    - package_rpcbind_removed
 
     ## 2.4 Ensure nonessential services are removed or masked (Manual)
     # Skip due to being a manual test
