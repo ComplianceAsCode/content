@@ -58,6 +58,12 @@ fixtext: |-
 
 srg_requirement: '{{{ full_name }}} Must Require Users To Re-Authenticate For Privilege Escalation.'
 
+warnings:
+    - general: |-
+        Members of "wheel" or GID 0 groups are checked by default if the group option is not set
+        for pam_wheel.so module. Therefore, members of these groups should be manually checked or
+        a different group should be informed according to the site policy.
+
 vuldiscussion: |-
     Without re-authentication, users may access resources or perform tasks for which they do not have authorization.
     When operating systems provide the capability to escalate a functional capability, it is critical the user re-authenticate.
