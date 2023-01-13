@@ -1,0 +1,15 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = medium
+# disruption = low
+
+- name: Restore Prelinked Binaries
+  ansible.builtin.shell:
+    cmd: prelink -ua
+
+- name: Ensure prelink is removed
+  ansible.builtin.package:
+    name: "prelink"
+    state: absent
+

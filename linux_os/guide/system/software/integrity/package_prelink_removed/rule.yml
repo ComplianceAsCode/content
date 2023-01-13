@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Package "prelink" Must not be Installed'
+
+description: |-
+   {{{ describe_package_remove(package="prelink") }}}
+
+
+rationale: |-
+    The use of the <tt>prelink</tt> package can interfere with the operation of AIDE since it binaries.
+    Prelinking can also increase damage caused by vulnerability in a common library like libc.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86562-6
+
+references:
+    cis@rhel7: 1.5.4
+
+template:
+    name: package_removed
+    vars:
+        pkgname: prelink
+
