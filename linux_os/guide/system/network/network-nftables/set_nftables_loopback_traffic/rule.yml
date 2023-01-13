@@ -18,7 +18,7 @@ severity: medium
 
 identifiers:
     cce@sle12: CCE-92215-3
-    cce@sle15: CCE-91346-7 # Need new ones? These are the ones for iptables
+    cce@sle15: CCE-91346-7 # Need new ones - These are the ones for iptables
 
 references:
     cis@sle12: 3.5.2.1
@@ -30,10 +30,14 @@ warnings:
         Changing firewall settings while connected over network can
         result in being locked out of the system.
 
-ocil_clause: 'nftables loopback traffic is not configured'
+ocil_clause: 'loopback traffic is not configured' # Should I change the clause to be unique (add nftables) or does this have to be the same as the iptables one, since it's the same cis item?
 
-ocil: |- # Is this correct?
-    Verify that the ipv6 loopback interface has required rules in order:
-    <pre> nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept' </pre>
-    <pre> nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr' </pre>
-
+ocil: |-
+    Verify that the loopback interface is configured:
+    <pre>
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+    </pre>
+    If IPv6 is enabled, verify that the IPv6 loopback interface is configured:
+    <pre>
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+    </pre>

@@ -33,11 +33,5 @@ warnings:
 ocil_clause: 'loopback traffic is not configured'
 
 ocil: |-
-    Verify that the loopback interface is configured:
-    <pre>
-    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
-    </pre>
-    If IPv6 is enabled, verify that the IPv6 loopback interface is configured:
-    <pre>
-    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
-    </pre>
+    Verify that the loopback interface has required rules in order:
+    <pre>$ iptables -L INPUT -v -n</pre>
