@@ -1,6 +1,5 @@
 name: "cpe:/a:{arg}:{ver_specs_cpe}"
 title: "Package {pkgname} is installed"
-ansible_conditional: {{{ ansible_pkg_conditional("{pkgname}") }}}
 versioned: true
 template:
   name: platform_package

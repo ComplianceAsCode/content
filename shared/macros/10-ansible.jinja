@@ -715,12 +715,20 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   This macro creates an Ansible snipped which is used in `when` clause to determine applicability of a task.
   If the package passed as a parameter is installed, the task is applicable.
   The macro respects `platform_package_overrides` variable.
+
+:param package: package name
+:param ver: package version (optional argument, use together with "op")
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
-{{%- macro ansible_pkg_conditional(package) -%}}
+{{%- macro ansible_pkg_conditional(package, ver=None, op=None) -%}}
 {{%- if package in platform_package_overrides -%}}
   {{%- set package = platform_package_overrides[package] -%}}
 {{%- endif -%}}
+{{%- if ver -%}}
+"{{{ package }}}" in ansible_facts.packages and (ansible_facts.packages["{{{ package }}}"] | last)["version"] is version("{{{ ver }}}", "{{{ op }}}")
+{{%- else -%}}
 '"{{{ package }}}" in ansible_facts.packages'
+{{%- endif -%}}
 {{%- endmacro -%}}
 
 
