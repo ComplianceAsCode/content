@@ -434,7 +434,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: manual # # rule is missing
+    status: automated
+    rules:
+      - all_apparmor_profiles_enforced
 
   - id: 1.8.1.1
     title: Ensure message of the day is configured properly (Automated)
