@@ -1,0 +1,36 @@
+# platform = multi_platform_sle
+
+- name: Implement loopback rules
+  command: nft add rule inet filter input iif lo accept
+
+- name: Create rule to drop input IP address from loopback
+  command: nft create rule inet filter input ip saddr 127.0.0.0/8 counter drop
+
+- name: Check if IPv6 is disabled
+  shell: "[ -n "$passing" ] && passing=""; [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ] && passing="true""
+  register: ipv6_status
+
+- name: Check if net.ipv6.conf.all.disable_ipv6 is set to 1
+  shell: grep -Eq "^\s*net\.ipv6\.conf\.all\.disable_ipv6\s*=\s*1\b(\s+#.*)?$" /etc/sysctl.conf /etc/sysctl.d/*.conf
+  register: disable_ipv6_all
+
+- name: Check if net.ipv6.conf.default.disable_ipv6 is set to 1
+  shell: grep -Eq "^\s*net\.ipv6\.conf\.default\.disable_ipv6\s*=\s*1\b(\s+#.*)?$" /etc/sysctl.conf /etc/sysctl.d/*.conf
+  register: disable_ipv6_default
+
+- name: Check sysctl value of net.ipv6.conf.all.disable_ipv6
+  shell: sysctl net.ipv6.conf.all.disable_ipv6
+  register: sysctl_ipv6_all
+
+- name: Check sysctl value of net.ipv6.conf.default.disable_ipv6
+  shell: sysctl net.ipv6.conf.default.disable_ipv6
+  register: sysctl_ipv6_default
+
+- name: Check if IPv6 is Disabled
+  set_fact:
+    passing: "true"
+  when: ipv6_status.rc == 0 and disable_ipv6_all.rc == 0 and disable_ipv6_default.rc == 0 and sysctl_ipv6_all.stdout|grep -Eq "^\s*net\.ipv6\.conf\.all\.disable_ipv6\s*=\s*1\b(\s+#.*)?$" and sysctl_ipv6_default.stdout|grep -Eq "^\s*net\.ipv6\.conf\.default\.disable_ipv6\s*=\s*1\b(\s+#.*)?$"
+
+- name: Implement IPv6 loopback rules
+  command: nft add rule inet filter input ip6 saddr ::1 counter drop
+  when: passing == "false"
