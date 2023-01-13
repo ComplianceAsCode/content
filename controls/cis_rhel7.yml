@@ -771,9 +771,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial
+    status: automated
     rules:
-    - service_rpcbind_disabled
+    - package_rpcbind_removed
 
   - id: 2.2.19
     title: Ensure rsync is not installed or the rsyncd service is masked (Automated)

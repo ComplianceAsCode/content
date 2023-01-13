@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Uninstall rpcbind Package'
 
@@ -20,10 +20,15 @@ rationale: |-
 severity: low
 
 identifiers:
+    cce@rhel7: CCE-86644-2
+    cce@rhel8: CCE-86645-9
+    cce@rhel9: CCE-86646-7
     cce@sle12: CCE-92312-8
     cce@sle15: CCE-92467-0
 
 references:
+    cis@rhel7: 2.2.18
+    cis@rhel8: 2.2.19
     cis@sle12: 2.2.8
     cis@sle15: 2.2.8
     cis@ubuntu2004: 2.3.6
