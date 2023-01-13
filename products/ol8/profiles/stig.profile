@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R3
+    version: V1R4
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R3.
+    DISA STIG for Oracle Linux 8 V1R4.
 
 selections:
     ### Variables
@@ -369,7 +369,6 @@ selections:
     - partition_for_tmp.severity=medium
 
     # OL08-00-010544
-    ### NOTE: Will probably show up in V1R3 - Q3 of 21'
     - partition_for_var_tmp
 
     # OL08-00-010550
