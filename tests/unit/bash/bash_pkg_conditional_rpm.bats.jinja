@@ -1,0 +1,29 @@
+#!/bin/bash
+
+@test "test package presence" {
+    if ! rpm -q bash ; then
+        skip "RPM package 'bash' isn't installed"
+    fi
+
+    {{{ bash_pkg_conditional_rpm("bash") | indent(4) }}}
+}
+
+@test "test package version" {
+    if ! rpm -q bash ; then
+        skip "RPM package 'bash' isn't installed"
+    fi
+
+    {{{ bash_pkg_conditional_rpm("bash", "999.9", "<") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("bash", "999.9", "<=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("bash", "999.9", ">") | indent(4) }}} || true
+    {{{ bash_pkg_conditional_rpm("bash", "999.9", ">=") | indent(4) }}} || true
+    {{{ bash_pkg_conditional_rpm("bash", "999.9-8", "<") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("bash", "999.9", "!=") | indent(4) }}}
+
+    {{{ bash_pkg_conditional_rpm("bash", "0.1", "<") | indent(4) }}} || true
+    {{{ bash_pkg_conditional_rpm("bash", "0.1", "<=") | indent(4) }}} || true
+    {{{ bash_pkg_conditional_rpm("bash", "0.1", ">") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("bash", "0.1", ">=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("bash", "0.1-2", ">") | indent(4) }}}
+}
