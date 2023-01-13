@@ -7,7 +7,9 @@
   command: nft create rule inet filter input ip saddr 127.0.0.0/8 counter drop
 
 - name: Check if IPv6 is disabled
-  shell: "[ -n "$passing" ] && passing=""; [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ] && passing="true""
+  shell: |
+    [ -n "$passing" ] && passing=""
+    [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ] && passing="true"
   register: ipv6_status
 
 - name: Check if net.ipv6.conf.all.disable_ipv6 is set to 1
