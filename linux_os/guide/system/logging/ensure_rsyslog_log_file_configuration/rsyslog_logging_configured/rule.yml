@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Ensure logging is configured'
+
+description: |-
+    The <tt>/etc/rsyslog.conf</tt> and <tt>/etc/rsyslog.d/*.conf</tt> files
+    specifies rules for logging and which files are to be used to log certain
+    classes of messages.
+
+rationale: |-
+    A great deal of important security-related information is sent via
+    rsyslog (e.g., successful and failed su attempts, failed login attempts,
+    root login attempts, etc.).
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92379-7
+    cce@sle15: CCE-92497-7
+
+references:
+    cis@sle12: 4.2.1.4
+    cis@sle15: 4.2.1.4
+
+ocil_clause: 'no logging is configured'
+
+ocil: |-
+    Review the contents of the <tt>/etc/rsyslog.conf</tt> and <tt>/etc/rsyslog.d/*.conf</tt>
+    files to ensure appropriate logging is set. In addition, run the following command:
+    <pre>ls -l /var/log/</pre>
+    and verify that the log files are logging information
+
+fixtext: |-
+    Configure logging with selectors covering each priority
