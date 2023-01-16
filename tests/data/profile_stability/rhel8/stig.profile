@@ -172,6 +172,7 @@ selections:
 - configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
+- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - coredump_disable_backtraces
 - coredump_disable_storage
