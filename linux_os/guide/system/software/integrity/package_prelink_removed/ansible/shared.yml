@@ -4,11 +4,18 @@
 # complexity = medium
 # disruption = low
 
+- name: Check If Prelinked Is Installed
+  ansible.builtin.stat:
+      path: /usr/sbin/prelink
+      get_checksum: no
+  register: prelink
+
 - name: Restore Prelinked Binaries
   ansible.builtin.shell:
     cmd: prelink -ua
+  when: prelink.stat.exists
 
-- name: Ensure prelink is removed
+- name: Ensure prelink is Removed
   ansible.builtin.package:
     name: "prelink"
     state: absent
