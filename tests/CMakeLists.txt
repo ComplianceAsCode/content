@@ -268,3 +268,10 @@ if (PYTHON_VERSION_MAJOR GREATER 2)
     )
     set_tests_properties("test-compare-disa-xml" PROPERTIES LABELS quick)
 endif()
+
+if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
+    add_test(
+        NAME "test-count_oval_objects"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/count_oval_objects.py" "${CMAKE_BINARY_DIR}/ssg-rhel8-ds.xml"
+    )
+endif()
