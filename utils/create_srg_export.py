@@ -272,6 +272,8 @@ class DisaStatus:
             return DisaStatus.INHERENTLY_MET
         elif source == ssg.controls.Status.DOES_NOT_MEET:
             return DisaStatus.DOES_NOT_MEET
+        elif source == ssg.controls.Status.NOT_APPLICABLE:
+            return DisaStatus.NOT_APPLICABLE
         elif source == ssg.controls.Status.AUTOMATED or ssg.controls.Status.MANUAL:
             return DisaStatus.AUTOMATED
         return source
