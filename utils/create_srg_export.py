@@ -14,9 +14,8 @@ import yaml
 from typing import TextIO
 import xml.etree.ElementTree as ET
 
-import convert_srg_export_to_xlsx
-import convert_srg_export_to_html
-import convert_srg_export_to_md
+from utils.srg_export import convert_srg_export_to_xlsx, convert_srg_export_to_md, \
+    convert_srg_export_to_html
 
 try:
     import ssg.build_stig
