@@ -427,7 +427,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules: 
+      - all_apparmor_profiles_in_enforce_complain_mode
+      - var_apparmor_mode=complain
 
   - id: 1.7.1.4
     title: Ensure all AppArmor Profiles are enforcing (Automated)

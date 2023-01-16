@@ -1,0 +1,68 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("All AppArmor Profiles are in enforce or complain mode") }}}
+    <criteria comment="Ensure all AppArmor Profiles are in enforce or complain mode" operator="AND">
+      <criterion comment="Apparmor profiles are loaded" test_ref="verify_that_apparmor_profiles_are_loaded" />
+      <criteria comment="All AppArmor Profiles are in enforce or complain mode" operator="OR">
+            <criterion comment="There are AppArmor profiles in enforce mode." test_ref="test_apparmor_profiles_are_in_enforce_mode" />
+            <criterion comment="There are AppArmor profiles in complain mode." test_ref="test_apparmor_profiles_are_in_complain_mode" />
+      </criteria>         
+      <criterion comment="No processes which are unconfined." test_ref="test_no_processes_are_unconfined" />
+    </criteria>      
+  </definition>
+
+    <!-- Define 1st test for all apparmor profiles. -->
+  <linux:apparmorstatus_test id="verify_that_apparmor_profiles_are_loaded" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that profiles are loaded" >
+    <linux:object object_ref="apparmor_exists_on_our_system" /> 
+    <linux:state state_ref="apparmor_profiles_are_loaded_on_our_system" />
+  </linux:apparmorstatus_test>
+
+  <!-- Define 2nd test for some of apparmor profiles. -->
+  <linux:apparmorstatus_test id="test_apparmor_profiles_are_in_enforce_mode" version="1"
+    check="all" check_existence="any_exist"
+    comment="There are some profiles in enforce mode" >
+    <linux:object object_ref="apparmor_exists_on_our_system" /> 
+    <linux:state state_ref="there_are_apparmor_profiles_in_enforce_mode" />
+  </linux:apparmorstatus_test>
+
+  <!-- Define 2nd test for some of apparmor profiles. -->
+  <linux:apparmorstatus_test id="test_apparmor_profiles_are_in_complain_mode" version="1"
+    check="all" check_existence="any_exist"
+    comment="There are some profiles in complain mode" >
+    <linux:object object_ref="apparmor_exists_on_our_system" /> 
+    <linux:state state_ref="there_are_apparmor_profiles_in_complain_mode" />
+  </linux:apparmorstatus_test>
+
+  <!-- Define "4rd" test for processes. -->
+  <linux:apparmorstatus_test id="test_no_processes_are_unconfined" version="1"
+    check="all" check_existence="any_exist"
+    comment="Zero processes are unconfined" >
+    <linux:object object_ref="apparmor_exists_on_our_system" /> 
+    <linux:state state_ref="no_processes_which_are_unconfined" />
+  </linux:apparmorstatus_test>
+
+  <linux:apparmorstatus_object id="apparmor_exists_on_our_system" version="1" />
+    
+  <linux:apparmorstatus_state id="apparmor_profiles_are_loaded_on_our_system" version="1"
+    comment="Apparmor profiles are loaded">
+    <linux:loaded_profiles_count operation="greater than" datatype="int">0</linux:loaded_profiles_count>
+  </linux:apparmorstatus_state>
+
+  <linux:apparmorstatus_state id="there_are_apparmor_profiles_in_enforce_mode" version="1"
+    comment="No loaded profiles in complain mode">
+    <linux:enforce_mode_profiles_count operation="greater than" datatype="int">0</linux:enforce_mode_profiles_count>
+  </linux:apparmorstatus_state>
+
+  <linux:apparmorstatus_state id="there_are_apparmor_profiles_in_complain_mode" version="1"
+    comment="No loaded profiles in complain mode">
+    <linux:complain_mode_profiles_count operation="greater than" datatype="int">0</linux:complain_mode_profiles_count>
+  </linux:apparmorstatus_state>
+
+  <linux:apparmorstatus_state id="no_processes_which_are_unconfined" version="1"
+    comment="No unconfined processes">
+    <linux:unconfined_processes_with_profiles_count operation="equals" datatype="int">0</linux:unconfined_processes_with_profiles_count>
+  </linux:apparmorstatus_state>
+
+</def-group>
