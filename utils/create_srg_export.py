@@ -14,6 +14,7 @@ import yaml
 from typing import TextIO
 import xml.etree.ElementTree as ET
 
+from utils.srg_export import html, md, xlsx
 from utils.srg_export import convert_srg_export_to_xlsx, convert_srg_export_to_md, \
     convert_srg_export_to_html
 
@@ -541,7 +542,7 @@ def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
-    convert_srg_export_to_xlsx.handle_dict(results, output, f'{product} SRG Mapping')
+    xlsx.handle_dict(results, output, f'{product} SRG Mapping')
     return output
 
 
@@ -549,7 +550,7 @@ def handle_html_output(output: str, product: str, results: list) -> str:
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
     output = output.replace('.csv', '.html')
-    convert_srg_export_to_html.handle_dict(results, output, f'{product} SRG Mapping')
+    html.handle_dict(results, output, f'{product} SRG Mapping')
     return output
 
 
@@ -557,7 +558,7 @@ def handle_md_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.md')
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
-    convert_srg_export_to_md.handle_dict(results, output, f'{product} SRG Mapping')
+    md.handle_dict(results, output, f'{product} SRG Mapping')
     return output
 
 
