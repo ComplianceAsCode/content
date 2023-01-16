@@ -63,15 +63,14 @@ class DisaStatus:
 
     @staticmethod
     def from_string(source: str) -> str:
-        if source == ssg.controls.Status.INHERENTLY_MET:
-            return DisaStatus.INHERENTLY_MET
-        elif source == ssg.controls.Status.DOES_NOT_MEET:
-            return DisaStatus.DOES_NOT_MEET
-        elif source == ssg.controls.Status.NOT_APPLICABLE:
-            return DisaStatus.NOT_APPLICABLE
-        elif source == ssg.controls.Status.AUTOMATED or ssg.controls.Status.MANUAL:
-            return DisaStatus.AUTOMATED
-        return source
+        data = {
+            ssg.controls.Status.INHERENTLY_MET: DisaStatus.INHERENTLY_MET,
+            ssg.controls.Status.DOES_NOT_MEET: DisaStatus.DOES_NOT_MEET,
+            ssg.controls.Status.NOT_APPLICABLE: DisaStatus.NOT_APPLICABLE,
+            ssg.controls.Status.AUTOMATED: DisaStatus.AUTOMATED,
+            ssg.controls.Status.MANUAL: DisaStatus.AUTOMATED
+        }
+        return data.get(source, source)
 
     STATUSES = {AUTOMATED, INHERENTLY_MET, DOES_NOT_MEET, NOT_APPLICABLE}
 
