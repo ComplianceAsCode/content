@@ -6,6 +6,7 @@ controls:
             availability is an overriding concern).
         rules:
             - audit_rules_system_shutdown
+            - var_audit_failure_mode=panic
             - auditd_data_disk_error_action_stig
             - var_auditd_disk_error_action=halt
             - auditd_data_disk_full_action_stig
