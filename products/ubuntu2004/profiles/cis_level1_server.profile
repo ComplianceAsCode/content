@@ -148,7 +148,7 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     ### 1.6.3 Ensure prelink is disabled (Automated)
-    - disable_prelink
+    - package_prelink_removed
 
     ### 1.6.4 Ensure core dumps are restricted (Automated)
     - disable_users_coredumps
