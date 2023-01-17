@@ -329,3 +329,4 @@ selections:
     - auditd_audispd_remote_daemon_direction
     - auditd_audispd_remote_daemon_path
     - auditd_audispd_remote_daemon_type
+    - account_emergency_expire_date
