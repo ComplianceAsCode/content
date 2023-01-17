@@ -965,6 +965,16 @@ controls:
     rules:
       - package_firewalld_installed
 
+  - id: 3.5.1.2
+    title: Ensure nftables is not installed or stopped and masked (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_nftables_removed
+      - service_nftables_disabled
+
   - id: 3.5.2.1
     title: Ensure nftables is installed (Automated)
     levels:
