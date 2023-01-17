@@ -721,7 +721,7 @@ selections:
     - audit_rules_immutable
 
     # RHEL-08-030122
-    - audit_immutable_login_uids
+    - audit_rules_immutable_login_uids
 
     # RHEL-08-030130
     - audit_rules_usergroup_modification_shadow

@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check if system is configured to make login UIDs immutable") }}}
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="check that --loginuid-immutable is set in /etc/audit/rules.d/*.rules" test_ref="test_augen_immutable_login_uids" />
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="test that --loginuid-immutable is set in /etc/audit/audit.rules" test_ref="test_auditctl_immutable_login_uids" />
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="test presence of --loginuid-immutable in some file in /etc/audit/rules.d/*.rules"
+  id="test_augen_immutable_login_uids" version="1">
+  <ind:object object_ref="obj_augen_immutable_login_uids" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_augen_immutable_login_uids" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*--loginuid-immutable\s*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all"
+  comment="test presence of --loginuid-immutable in some file in /etc/audit/audit.rules"
+  id="test_auditctl_immutable_login_uids" version="1">
+  <ind:object object_ref="obj_auditctl_immutable_login_uids" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_auditctl_immutable_login_uids" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*--loginuid-immutable\s*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
