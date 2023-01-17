@@ -30,14 +30,16 @@ warnings:
         Changing firewall settings while connected over network can
         result in being locked out of the system.
 
-ocil_clause: 'loopback traffic is not configured' # Should I change the clause to be unique (add nftables) or does this have to be the same as the iptables one, since it's the same cis item?
+ocil_clause: 'nftables loopback traffic is not configured'
 
 ocil: |-
     Verify that the loopback interface is configured:
     <pre>
-    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
     </pre>
+    iif "lo" accept
     If IPv6 is enabled, verify that the IPv6 loopback interface is configured:
     <pre>
     # nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
     </pre>
+    ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop
