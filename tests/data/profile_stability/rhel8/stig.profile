@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R8.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R9.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -22,7 +22,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R8
+    version: V1R9
     SMEs:
     - mab879
     - ggbecker
@@ -78,7 +78,6 @@ selections:
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
-
 - audit_rules_dac_modification_chmod
 - audit_rules_dac_modification_chown
 - audit_rules_dac_modification_fchmod
