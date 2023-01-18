@@ -338,3 +338,6 @@ selections:
     - selinux_context_elevation_for_sudo
     - audit_rules_kernel_module_loading_create
     - account_emergency_expire_date
+    - package_screen_installed
+    - sysctl_kernel_dmesg_restrict
+    - aide_build_database
