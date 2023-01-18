@@ -31,7 +31,6 @@ selections:
     - var_accounts_user_umask=077
     - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
-    - var_sshd_disable_compression=no
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
@@ -347,9 +346,6 @@ selections:
 
     # RHEL-08-010500
     - sshd_enable_strictmodes
-
-    # RHEL-08-010510
-    - sshd_disable_compression
 
     # RHEL-08-010520
     - sshd_disable_user_known_hosts
