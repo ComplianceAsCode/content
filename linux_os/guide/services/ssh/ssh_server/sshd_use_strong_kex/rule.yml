@@ -8,7 +8,7 @@ description: |-
     Limit the Key Exchange to strong algorithms.
     The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use
     of those:
-    <pre>KexAlgorithms {{{ sshd_strong_kex }}}</pre>
+    <pre>KexAlgorithms {{{ xccdf_value("sshd_strong_kex") }}}</pre>
 
 rationale: |-
     Key exchange is any method in cryptography by which cryptographic keys are exchanged
@@ -33,5 +33,4 @@ ocil: |-
     KexAlgorithms are in use, run the following command:
     <pre>$ sudo grep -i kexalgorithms /etc/ssh/sshd_config</pre>
     The output should contain only those KexAlgorithms which are strong, namely,
-    ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,
-    diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256
+    {{{ xccdf_value("sshd_strong_kex") }}}
