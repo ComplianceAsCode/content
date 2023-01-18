@@ -596,3 +596,18 @@ Example:
     $ ./utils/srg_diff.py --target submission.xlsx --base build/cac_stig_output.xlsx --output build/diff.html -p rhel9
     Wrote output to build/diff.html.
 ```
+
+### Convert shorthand OVAL to a full OVAL - `utils/shorthand_to_oval.py`
+
+This script converts (resolved) shorthand OVAL files to a valid OVAL file.
+
+It can be useful for example when creating minimal bug reproducers.
+If you know that a problem is located in OVAL for a specific rule, you can use it to convert a resolved shorthand OVAL files from the `build/product/checks/oval` directory to a standalone valid OVAL file that you can then pass to `oscap`.
+
+Example:
+
+```bash
+$ ./build_product rhel9
+$ utils/shorthand_to_oval.py build/rhel9/checks/oval/accounts_tmout.xml oval.xml
+$ oscap oval eval oval.xml
+```
