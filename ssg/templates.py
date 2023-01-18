@@ -29,7 +29,7 @@ LANGUAGES = {
     "kubernetes": TemplatingLang("kubernetes", ".yml",  TemplateType.REMEDIATION, "kubernetes"),
     "oval": TemplatingLang("oval", ".xml",              TemplateType.CHECK,       "oval"),
     "puppet": TemplatingLang("puppet", ".pp",           TemplateType.REMEDIATION, "puppet"),
-    "sce-bash": TemplatingLang("sce-bash", ".sh",       TemplateType.REMEDIATION, "sce")
+    "sce-bash": TemplatingLang("sce-bash", ".sh",       TemplateType.CHECK,       "sce")
 }
 
 PREPROCESSING_FILE_NAME = "template.py"
@@ -128,7 +128,8 @@ class Builder(object):
         self._init_lang_output_dirs()
         self._init_and_load_templates()
         self.product_cpes = ProductCPEs()
-        self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
+        if cpe_items_dir is not None:
+            self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
 
     def _init_and_load_templates(self):
         for item in sorted(os.listdir(self.templates_dir)):

@@ -75,6 +75,7 @@ xlink_namespace = "http://www.w3.org/1999/xlink"
 xhtml_namespace = "http://www.w3.org/1999/xhtml"
 xsi_namespace = "http://www.w3.org/2001/XMLSchema-instance"
 cat_namespace = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
+sce_namespace = "http://open-scap.org/page/SCE_xccdf_stream"
 ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 xccdf_header = xml_version + "<xccdf>"
 xccdf_footer = "</xccdf>"
@@ -140,6 +141,7 @@ PREFIX_TO_NS = {
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,
     "cpe-lang": "http://cpe.mitre.org/language/2.0",
+    "sce": sce_namespace,
 }
 
 FIX_TYPE_TO_SYSTEM = {

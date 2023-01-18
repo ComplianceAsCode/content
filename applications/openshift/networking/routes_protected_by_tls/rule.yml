@@ -20,6 +20,8 @@ rationale: |-
 identifiers:
   cce@ocp4: CCE-84225-2
 
+{{% set jqfilter = '[.items[] | select(.spec.tls.insecureEdgeTerminationPolicy != null) | select(.spec.tls.insecureEdgeTerminationPolicy | test("^(^$|None|Redirect)$"; "") | not) | .metadata.name]' %}}
+
 references:
   nerc-cip: CIP-003-8 R4,CIP-003-8 R4.2,CIP-003-8 R5,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R7.1
   nist: AC-4,AC-4(21),AC-17(3),SC-8,SC-8(1),SC-8(2),SI-4
@@ -38,17 +40,16 @@ severity: medium
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/route.openshift.io/v1/routes?limit=500") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/route.openshift.io/v1/routes': jqfilter}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
-    ocp_data: "true"
-    filepath: /apis/route.openshift.io/v1/routes?limit=500
-    yamlpath: ".items[:].spec.tls.insecureEdgeTerminationPolicy"
-    check_existence_yamlpath: ".items[:].spec.host"
-    entity_check: "all"
-    check_existence: "all_exist"
-    values:
-      - value: "^(None|Redirect)$"
-        operation: "pattern match"
+      ocp_data: "true"
+      filepath: "{{{ openshift_filtered_path('/apis/route.openshift.io/v1/routes', jqfilter) }}}"
+      yamlpath: "[:]"
+      check_existence: "none_exist"
+      entity_check: "all"
+      values:
+        - value: "(.*?)"
+          operation: "pattern match"

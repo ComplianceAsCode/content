@@ -89,7 +89,6 @@ selections:
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
-- audit_immutable_login_uids
 - audit_rules_dac_modification_chmod
 - audit_rules_dac_modification_chown
 - audit_rules_dac_modification_fchmod
@@ -115,6 +114,7 @@ selections:
 - audit_rules_file_deletion_events_unlink
 - audit_rules_file_deletion_events_unlinkat
 - audit_rules_immutable
+- audit_rules_immutable_login_uids
 - audit_rules_kernel_module_loading_delete
 - audit_rules_kernel_module_loading_finit
 - audit_rules_kernel_module_loading_init
@@ -183,6 +183,7 @@ selections:
 - configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
+- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - coredump_disable_backtraces
 - coredump_disable_storage
