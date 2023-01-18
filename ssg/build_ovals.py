@@ -13,11 +13,54 @@ from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
+from .id_translate import IDTranslator
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
 from . import utils
-from .xml import ElementTree
+from .xml import ElementTree, oval_generated_header
+
+
+def expand_shorthand(shorthand_path, oval_path, env_yaml):
+    shorthand_file_content = process_file_with_macros(shorthand_path, env_yaml)
+    wrapped_shorthand = (oval_header + shorthand_file_content + oval_footer)
+    shorthand_tree = ElementTree.fromstring(wrapped_shorthand.encode("utf-8"))
+
+    definitions = ElementTree.Element("{%s}definitions" % oval_ns)
+    tests = ElementTree.Element("{%s}tests" % oval_ns)
+    objects = ElementTree.Element("{%s}objects" % oval_ns)
+    states = ElementTree.Element("{%s}states" % oval_ns)
+    variables = ElementTree.Element("{%s}variables" % oval_ns)
+    for childnode in shorthand_tree.findall(".//{%s}def-group/*" % oval_ns):
+        if childnode.tag is ElementTree.Comment:
+            continue
+        elif childnode.tag.endswith("definition"):
+            append(definitions, childnode)
+        elif childnode.tag.endswith("_test"):
+            append(tests, childnode)
+        elif childnode.tag.endswith("_object"):
+            append(objects, childnode)
+        elif childnode.tag.endswith("_state"):
+            append(states, childnode)
+        elif childnode.tag.endswith("_variable"):
+            append(variables, childnode)
+        else:
+            sys.stderr.write(
+                "Warning: Unknown element '%s'\n" % (childnode.tag))
+
+    header = oval_generated_header("test", "5.11", "1.0")
+    skeleton = header + oval_footer
+    root = ElementTree.fromstring(skeleton.encode("utf-8"))
+    root.append(definitions)
+    root.append(tests)
+    root.append(objects)
+    root.append(states)
+    if list(variables):
+        root.append(variables)
+    id_translator = IDTranslator("test")
+    root_translated = id_translator.translate(root)
+
+    ElementTree.ElementTree(root_translated).write(oval_path)
 
 
 def _check_is_applicable_for_product(oval_check_def, product):
