@@ -240,6 +240,7 @@ selections:
 
     # OL08-00-010359
     - package_aide_installed
+    - aide_build_database
 
     # OL08-00-010360
     - aide_scan_notification

@@ -85,6 +85,7 @@ selections:
 - accounts_users_home_files_groupownership
 - accounts_users_home_files_permissions
 - agent_mfetpd_running
+- aide_build_database
 - aide_check_audit_tools
 - aide_scan_notification
 - aide_verify_acls
