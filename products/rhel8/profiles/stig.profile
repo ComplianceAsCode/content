@@ -529,6 +529,7 @@ selections:
 
     # RHEL-08-020040
     - configure_tmux_lock_command
+    - configure_tmux_lock_keybinding
 
     # RHEL-08-020041
     - configure_bashrc_exec_tmux
