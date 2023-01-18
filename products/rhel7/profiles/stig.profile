@@ -182,6 +182,7 @@ selections:
     - package_telnet-server_removed
     - service_auditd_enabled
     - audit_rules_system_shutdown
+    - var_audit_failure_mode=panic
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action

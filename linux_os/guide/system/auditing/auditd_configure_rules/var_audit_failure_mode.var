@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Audit failure mode'
+
+description: |-
+    This variable is the setting for the -f option in Audit configuration which sets the failure mode of audit.
+    This option lets you determine how you want the kernel to handle critical errors.
+    Possible values are: 0=silent, 1=printk, 2=panic.
+    If the value is set to "2", the system is configured to panic (shut down) in the event of an auditing failure.
+    If the value is set to "1", the system is configured to only send information to the kernel log regarding the failure.
+
+type: string
+
+interactive: true
+
+options:
+    default: 2
+    silent: 0
+    printk: 1
+    panic: 2
