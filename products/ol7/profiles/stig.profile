@@ -159,7 +159,7 @@ selections:
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
     - audit_rules_system_shutdown
-    - var_audit_failure_mode=panic
+    - var_audit_failure_mode=printk
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
