@@ -21,42 +21,28 @@ from . import utils
 from .xml import ElementTree, oval_generated_header
 
 
+def _create_subtree(shorthand_tree, category):
+    parent_tag = "{%s}%ss" % (oval_ns, category)
+    parent = ElementTree.Element(parent_tag)
+    for node in shorthand_tree.findall(".//{%s}def-group/*" % oval_ns):
+        if node.tag is ElementTree.Comment:
+            continue
+        elif node.tag.endswith(category):
+            append(parent, node)
+    return parent
+
+
 def expand_shorthand(shorthand_path, oval_path, env_yaml):
     shorthand_file_content = process_file_with_macros(shorthand_path, env_yaml)
     wrapped_shorthand = (oval_header + shorthand_file_content + oval_footer)
     shorthand_tree = ElementTree.fromstring(wrapped_shorthand.encode("utf-8"))
-
-    definitions = ElementTree.Element("{%s}definitions" % oval_ns)
-    tests = ElementTree.Element("{%s}tests" % oval_ns)
-    objects = ElementTree.Element("{%s}objects" % oval_ns)
-    states = ElementTree.Element("{%s}states" % oval_ns)
-    variables = ElementTree.Element("{%s}variables" % oval_ns)
-    for childnode in shorthand_tree.findall(".//{%s}def-group/*" % oval_ns):
-        if childnode.tag is ElementTree.Comment:
-            continue
-        elif childnode.tag.endswith("definition"):
-            append(definitions, childnode)
-        elif childnode.tag.endswith("_test"):
-            append(tests, childnode)
-        elif childnode.tag.endswith("_object"):
-            append(objects, childnode)
-        elif childnode.tag.endswith("_state"):
-            append(states, childnode)
-        elif childnode.tag.endswith("_variable"):
-            append(variables, childnode)
-        else:
-            sys.stderr.write(
-                "Warning: Unknown element '%s'\n" % (childnode.tag))
-
     header = oval_generated_header("test", "5.11", "1.0")
     skeleton = header + oval_footer
     root = ElementTree.fromstring(skeleton.encode("utf-8"))
-    root.append(definitions)
-    root.append(tests)
-    root.append(objects)
-    root.append(states)
-    if list(variables):
-        root.append(variables)
+    for category in ["definition", "test", "object", "state", "variable"]:
+        subtree = _create_subtree(shorthand_tree, category)
+        if list(subtree):
+            root.append(subtree)
     id_translator = IDTranslator("test")
     root_translated = id_translator.translate(root)
 
