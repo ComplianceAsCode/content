@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Ensure updates, patches, and additional security software are installed'
+
+description: |-
+    Periodically patches are released for included software either due to security flaws or to
+    include additional functionality.
+    <tt>Note:Site policy may mandate a testing period before install onto production systems for
+    available updates.</tt>
+
+rationale: |-
+    Newer patches may contain security enhancements that would not be available through the
+    latest full update. As a result, it is recommended that the latest software patches be used to
+    take advantage of the latest functionality. As with any software installation, organizations
+    need to determine if a given update meets their requirements and verify the compatibility
+    and supportability of any additional software against the update revision that is selected.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92361-5
+    cce@sle15: CCE-92511-5
+
+references:
+    cis@sle12: "1.9"
+    cis@sle15: "1.9"
+
+ocil_clause: 'Your system is not updated according to site policy'
+
+ocil: |-
+    To verify there are no updates or patches to install run the following command: 
+    <pre>$ sudo zypper list-updates</pre>
+    If your have to update all packages on the system according to site policy, the following 
+    command will install them: 
+    <pre>$ sudo zypper update</pre>

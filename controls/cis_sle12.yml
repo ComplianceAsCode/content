@@ -497,7 +497,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing
+    status: manual 
+    notes: >- 
+       The control cannot be automated, 
+       and should be addressed manually. 
+    rules:
+      - ensure_updates_are_installed
 
   - id: 1.10
     title: Ensure GNOME Display Manager is removed (Automated)
