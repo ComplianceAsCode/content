@@ -11,7 +11,7 @@
   register: prelink
 
 - name: Restore Prelinked Binaries
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: prelink -ua
   when: prelink.stat.exists
 
