@@ -377,6 +377,7 @@ selections:
 - sshd_rekey_limit
 - sshd_set_idle_timeout
 - sshd_set_keepalive
+- sshd_use_approved_kex_ordered_stig
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification

@@ -1195,6 +1195,9 @@ selections:
     # RHEL-08-040341
     - sshd_x11_use_localhost
 
+    # RHEL-08-040342
+    - sshd_use_approved_kex_ordered_stig
+
     # RHEL-08-040350
     - tftpd_uses_secure_mode
 
