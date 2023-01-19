@@ -1,19 +1,23 @@
 documentation_complete: true
 
 metadata:
-    version: 1.0.1
+    version: 1.0.0
     SMEs:
+        - marcusburghardt
         - vojtapolasek
         - yuumasato
 
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
-title: '[DRAFT] CIS Red Hat Enterprise Linux 9 Benchmark for Level 2 - Server'
+title: 'CIS Red Hat Enterprise Linux 9 Benchmark for Level 2 - Server'
 
 description: |-
-    This is a draft profile based on its RHEL8 version for experimental purposes.
-    It is not based on the CIS benchmark for RHEL9, because this one was not available at time of
-    the release.
+    This profile defines a baseline that aligns to the "Level 2 - Server"
+    configuration from the Center for Internet Security® Red Hat Enterprise
+    Linux 9 Benchmark™, v1.0.0, released 2022-11-28.
+
+    This profile includes Center for Internet Security®
+    Red Hat Enterprise Linux 9 CIS Benchmarks™ content.
 
 selections:
-    - cis_rhel8:all:l2_server
+    - cis_rhel9:all:l2_server
