@@ -333,3 +333,4 @@ selections:
     - auditd_audispd_remote_daemon_type
     - account_emergency_expire_date
     - package_screen_installed
+    - sysctl_kernel_dmesg_restric
