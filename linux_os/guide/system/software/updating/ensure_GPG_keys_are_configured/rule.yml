@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Ensure GPG keys are configured'
+
+description: |-
+    Most packages managers implement GPG key signing to verify package integrity during
+    installation.
+
+rationale: |-
+    It is important to ensure that updates are obtained from a valid source to protect 
+    against spoofing that could lead to the inadvertent installation of malware on the system.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92384-7
+    cce@sle15: CCE-92542-0
+
+references:
+    cis@sle12: 1.2.1
+    cis@sle15: 1.2.1
+
+
+ocil_clause: 'Your package manager GPG keys are not configured in accordance with site policy'
+
+ocil: |-
+    To verify GPG keys are configured correctly for your package manager, 
+    one of the following command groups may provide the needed information
+    depending on the package manager in use: 
+    <pre>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'</pre>
+    If GPG keys are not configured correctly, you have to update 
+    your package GPS keys in accorance with site policy.  
