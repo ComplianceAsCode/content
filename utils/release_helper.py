@@ -19,6 +19,7 @@ import os.path
 import re
 import subprocess
 
+
 def get_parameter_from_ini(config_file, section, parameter) -> str:
     config = configparser.ConfigParser()
     try:
@@ -99,7 +100,7 @@ def get_old_stabilization_branch(repo) -> object:
 
 def remove_old_stabilization_branch(repo, branch) -> None:
     if get_confirmation(f'Are you sure about removing the "{branch.name}" branch?'):
-        #https://github.com/PyGithub/PyGithub/issues/1570
+        # https://github.com/PyGithub/PyGithub/issues/1570
         try:
             branch_ref = repo.get_git_ref(f'heads/{branch.name}')
             branch_ref.delete()
@@ -161,16 +162,21 @@ def is_contributors_list_updated(date_string) -> bool:
 
 
 def update_contributors():
-    root_dir = os.path.dirname(os.path.dirname(__file__))
-    contributors_script = os.path.join(root_dir, "utils/generate_contributors.py")
-    subprocess.run([f'PYTHONPATH=. {contributors_script}'], shell=True)
-    subprocess.run(['git', 'diff'])
-    print('Please, review the changes and propose a PR to "master" branch.')
+    last_update = get_contributors_last_update()
+    if is_contributors_list_updated(last_update):
+        print(f'It is all fine, the contributors list was updated in {last_update}')
+    else:
+        print(f'Contributors list last update was in {last_update}. I can update it for you.')
+        root_dir = os.path.dirname(os.path.dirname(__file__))
+        contributors_script = os.path.join(root_dir, "utils/generate_contributors.py")
+        subprocess.run([f'PYTHONPATH=. {contributors_script}'], shell=True)
+        subprocess.run(['git', 'diff'])
+        print('Please, review the changes and propose a PR to "master" branch.')
 
 
 # Repository Milestones
 def has_milestone_version_format(milestone) -> bool:
-    regex = re.compile('\d\.\d\.\d')
+    regex = re.compile(r'\d\.\d\.\d')
     return regex.match(milestone.title)
 
 
@@ -207,14 +213,25 @@ def get_version_milestone(repo, version) -> object:
 
 
 def close_milestone(milestone) -> None:
-    try:
-        milestone.edit(state="closed")
-    except Exception as e:
-        print(f'Error: {e}')
-        exit(1)
+    if milestone.state == "closed":
+        print(f'Nice. The "{milestone}" milestone is already closed.')
+        return
+
+    if get_confirmation(f'The "{milestone}" milestone should be closed. Ok?'):
+        try:
+            milestone.edit(state="closed")
+        except Exception as e:
+            print(f'Error: {e}')
+            exit(1)
+    else:
+        print(f'Aborted! {milestone} milestone not closed.')
 
 
 def create_repo_milestone(repo, name) -> None:
+    if get_version_milestone(name):
+        print(f'Great. The "{name}" milestone is already created.')
+        return
+
     latest_release = get_latest_release(repo)
     estimated_release_date = get_next_release_date(latest_release.published_at)
     if get_confirmation(f'Are you sure about creating the "{name}" milestone?'):
@@ -328,6 +345,23 @@ def get_next_stabilization_branch(repo) -> str:
 
 
 # Communication
+def get_communication_channels(phase='release') -> None:
+    gitter_lnk = 'https://gitter.im/Compliance-As-Code-The/content'
+    ghd_lnk = 'https://github.com/ComplianceAsCode/content/discussions/new?category=announcements'
+    twitter_lnk = 'https://twitter.com/openscap'
+    ssg_mail = 'scap-security-guide@lists.fedorahosted.org'
+    openscap_mail = 'open-scap-list@redhat.com'
+
+    print('Please, share the following message in:\n'
+          f'* Gitter ({gitter_lnk})\n'
+          f'* Github Discussion ({ghd_lnk})\n'
+          f'* SCAP Security Guide Mail List ({ssg_mail})')
+
+    if phase == "finish":
+        print(f'* OpenSCAP Mail List ({openscap_mail})\n'
+              f'* Twitter ({twitter_lnk})')
+
+
 def get_date_for_message(date) -> datetime:
     return date.strftime("%B %d, %Y")
 
@@ -366,8 +400,8 @@ def get_release_start_message(repo) -> str:
         As part of the release process, a stabilization branch was created.
         Issues and PRs that were not solved were moved to the {future_version} milestone.
 
-        Any bug fixes you would like to include in release {next_release_version} should be proposed
-        for the *{branch}* and *master* branches as a measure to avoid
+        Any bug fixes you would like to include in release {next_release_version} should be
+        proposed for the *{branch}* and *master* branches as a measure to avoid
         potential conflicts between these branches.
 
         The next version, {future_version}, is scheduled to be released on {future_date},
@@ -381,7 +415,8 @@ def get_release_end_message(repo) -> str:
     latest_release = get_latest_release(repo)
     latest_release_url = latest_release.html_url
     highlights = get_release_highlights(latest_release)
-    new_contributors = get_new_contributors(get_contributors_last_commit())
+    last_commit = get_contributors_last_commit()
+    new_contributors = get_new_contributors(last_commit)
     released_version = get_latest_version(repo)
 
     for asset in latest_release.get_assets():
@@ -398,7 +433,7 @@ def get_release_end_message(repo) -> str:
     # It would be more readable if this multiline string would be indented. However, this makes
     # the final text weird, after the "format" substitutions, when highlights and new_contributors
     # have multilines too. So, the readability was compromised in favor of simplicity and user
-    # experience. This way, the user only needs to copy and paste, without removing leading spaces.
+    # experience. The user only needs to copy and paste, without removing leading spaces.
     template = f'''
 Subject: ComplianceAsCode/content v{released_version}
 
@@ -431,9 +466,9 @@ Regards,'''
 def filter_items_outdated_milestone(objects_list, milestone) -> list:
     items_old_milestone = []
     for item in objects_list:
-        if has_milestone_version_format(item.milestone):
-            if item.milestone.title != milestone.title:
-                items_old_milestone.append(item)
+        if has_milestone_version_format(item.milestone) and \
+                item.milestone.title != milestone.title:
+            items_old_milestone.append(item)
     return items_old_milestone
 
 
@@ -445,7 +480,8 @@ def filter_outdated_items(repo, objects_list, type) -> list:
         print(f'The following {count} {type}(s) have an outdated milestone:')
         for item in items_to_update:
             print(f'{item.number:5} - {item.url:65} - {item.milestone.title} - {item.title}')
-        if get_confirmation(f'Are you sure about updating the milestone in {count} Open {type}s?'):
+        if get_confirmation(
+                f'Are you sure about updating the milestone in {count} Open {type}s?'):
             return items_to_update
         else:
             print(f'Aborted! {type}(s) milestones not updated.')
@@ -559,8 +595,8 @@ def print_next_release_stats(data):
     next_release_date = data['next_release_date']
     next_release_days = data['next_release_remaining_days']
     next_release_state = data['next_release_state']
-    next_stabilization_date = data['next_stabilization_date']
-    next_stabilization_days = data['next_stabilization_remaining_days']
+    next_stab_date = data['next_stabilization_date']
+    next_stab_days = data['next_stabilization_remaining_days']
     closed_issues = data["active_milestone_closed_issues"]
     total_issues = data["active_milestone_total_issues"]
 
@@ -568,7 +604,7 @@ def print_next_release_stats(data):
     print(f'Next Version:\t\t {next_release_version}\n'
           f'Current State:\t\t {next_release_state}\n'
           f'Estimated Release Date:\t {next_release_date} ({next_release_days} remaining days)\n'
-          f'Stabilization Date:\t {next_stabilization_date} ({next_stabilization_days} remaining days)\n'
+          f'Stabilization Date:\t {next_stab_date} ({next_stab_days} remaining days)\n'
           f'Working Milestone:\t {milestone}')
 
     print_specific_stat("Closed Issues/PRs", closed_issues, total_issues)
@@ -591,17 +627,8 @@ def cleanup(repo, args) -> None:
 
 
 def release_prep(repo, args) -> None:
-    if get_old_stabilization_branch(repo):
-        print('Ops. There is an old branch to be removed. Please, check branch cleanup.')
-        exit(1)
-
     if args.contributors:
-        last_update = get_contributors_last_update()
-        if is_contributors_list_updated(last_update):
-            print(f'It is all fine, the contributors list was updated in {last_update}')
-        else:
-            print(f'Contributors list last update was in {last_update}. I can update it for you.')
-            update_contributors()
+        update_contributors()
 
     stab_branch_name = get_next_stabilization_branch(repo)
     if args.branch:
@@ -613,26 +640,12 @@ def release_prep(repo, args) -> None:
     if args.milestone:
         if is_next_release_in_progress(repo):
             stab_milestone = get_latest_version_milestone(repo)
-            if stab_milestone.state == "open":
-                if get_confirmation(f'The "{stab_milestone}" milestone should be closed. Ok?'):
-                    close_milestone(stab_milestone)
-                else:
-                    print(f'Aborted! {stab_milestone} milestone not closed.')
-            else:
-                print(f'Nice. The "{stab_milestone}" milestone is already closed.')
-
             next_release_version = get_next_release_version(repo)
             new_milestone = bump_version(next_release_version, 'minor')
-            if not get_version_milestone(new_milestone):
-                if get_confirmation(f'The "{new_milestone}" milestone should be created. Ok?'):
-                    create_repo_milestone(repo, new_milestone)
-                else:
-                    print(f'Aborted! {new_milestone} milestone not created!')
-            else:
-                print(f'Great. The "{new_milestone}" milestone is already created.')
+            close_milestone(stab_milestone)
+            create_repo_milestone(repo, new_milestone)
         else:
-            print(f'Before managing milestones, ensure the "{stab_branch_name}" branch is created.')
-        exit()
+            print(f'Milestones can be managed after the "{stab_branch_name}" branch is created.')
 
     if args.issues:
         issues_list = get_open_issues_with_milestone(repo)
@@ -649,17 +662,14 @@ def release(repo, args) -> None:
             next_version = get_next_release_version(repo)
             tag_name = f'v{next_version}'
             stab_branch = get_next_stabilization_branch(repo)
-            print('Release process starts when a version tag is added to the stabilization branch.\n'
+            print('Release process starts when a version tag is added to the branch.\n'
                   'It is better to do it manually. But here are the commands you need:\n')
             print(f'git tag {tag_name} {stab_branch}\n'
                   'git push --tags')
 
         if args.message:
             message = get_release_start_message(repo)
-            print('Please, share the following message in:\n'
-                  '* Gitter (https://gitter.im/Compliance-As-Code-The/content)\n'
-                  '* SCAP Security Guide Mail List (scap-security-guide@lists.fedorahosted.org)\n'
-                  '* Github Discussion (https://github.com/ComplianceAsCode/content/discussions/new?category=announcements)')
+            get_communication_channels('release')
             print(message)
 
         if args.bump_version:
@@ -676,12 +686,7 @@ def finish(repo, args) -> None:
     if not is_next_release_in_progress(repo):
         if args.message:
             message = get_release_end_message(repo)
-            print('Please, share the following message in:\n'
-                  '* Gitter (https://gitter.im/Compliance-As-Code-The/content)\n'
-                  '* SCAP Security Guide Mail List (scap-security-guide@lists.fedorahosted.org)\n'
-                  '* OpenSCAP Mail List (open-scap-list@redhat.com)\n'
-                  '* Github Discussion (https://github.com/ComplianceAsCode/content/discussions/new?category=announcements)\n'
-                  '* Twitter (https://twitter.com/openscap)')
+            get_communication_channels('finish')
             print(message)
     else:
         print('Please, ensure the all steps in the Release process are concluded.')
@@ -765,6 +770,9 @@ def main():
         cleanup(repo, args)
 
     if args.subcmd == "release_prep":
+        if get_old_stabilization_branch(repo):
+            print('Ops. There is an old branch to be removed. Please, check branch cleanup.')
+            exit(1)
         release_prep(repo, args)
 
     if args.subcmd == "release":
