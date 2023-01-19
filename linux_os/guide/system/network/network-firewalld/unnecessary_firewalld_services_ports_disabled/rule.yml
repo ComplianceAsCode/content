@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure unnecessary services and ports are not accepted'
+
+description: |-
+    Services and ports can be accepted or explicitly rejected or dropped by a zone.
+    For every zone, you can set a default behavior that handles incoming traffic that is not
+    further specified. Such behavior is defined by setting the target of the zone. There are three
+    options - default, ACCEPT, REJECT, and DROP.
+    - <tt>ACCEPT</tt> - you accept all incoming packets except those disabled by a specific rule.
+    - <tt>REJECT</tt> - you disable all incoming packets except those that you have allowed in
+       specific rules and the source machine is informed about the rejection.
+    - <tt>DROP</tt> - you disable all incoming packets except those that you have allowed in
+       specific rules and no information sent to the source machine.
+
+rationale: |-
+    To reduce the attack surface of a system, all services and ports should be blocked unless
+    required
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92552-9
+
+references:
+    cis@sle15: 1.5.1.6
+
+ocil_clause: 'Your system accepts all incoming packets for unnecessary services and ports'
+
+ocil: |-
+    To review and to ensure that listed services and ports follow site policy run the 
+    following command: 
+    <pre>$ sudo firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do
+    firewall-cmd --list-all --zone=$ZN; done</pre>
+    If your have to remove an unnecessary service run the following command: 
+    <pre>$ sudo firewall-cmd --remove-service=<service></pre>
+    If you have to remove an unnecessary port run the following command:
+    <pre>$ sudo firewall-cmd --remove-port=<port-number>/<port-type></pre>
