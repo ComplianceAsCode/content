@@ -2352,6 +2352,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    rules:
       - no_empty_passwords_etc_shadow
     related_rules:
       - no_empty_passwords
@@ -2455,8 +2456,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    related_rules:
+    status: partial
+    rules:
       - no_netrc_files
 
   # NEEDS RULE
