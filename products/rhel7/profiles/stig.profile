@@ -127,6 +127,7 @@ selections:
     - package_ypserv_removed
     - selinux_user_login_roles
     - package_aide_installed
+    - aide_build_database
     - aide_periodic_cron_checking
     - aide_scan_notification
     - ensure_gpgcheck_globally_activated

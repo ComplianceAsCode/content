@@ -248,6 +248,7 @@ selections:
 
     # RHEL-08-010359
     - package_aide_installed
+    - aide_build_database
 
     # RHEL-08-010360
     - aide_scan_notification
