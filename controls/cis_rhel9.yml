@@ -353,7 +353,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - aide_use_fips_hashes
 
   - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
@@ -580,14 +582,22 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=5_seconds
 
   - id: 1.8.5
     title: Ensure GDM screen locks cannot be overridden (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_session_idle_user_locks
+      - dconf_gnome_screensaver_user_locks
 
   - id: 1.8.6
     title: Ensure GDM automatic mounting of removable media is disabled (Automated)
@@ -604,21 +614,28 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
 
   - id: 1.8.8
     title: Ensure GDM autorun-never is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_disable_autorun
 
   - id: 1.8.9
     title: Ensure GDM autorun-never is not overridden (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - dconf_gnome_disable_autorun
 
   - id: 1.8.10
     title: Ensure XDMCP is not enabled (Automated)
@@ -796,7 +813,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 2.2.15
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
@@ -872,7 +889,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)
@@ -901,7 +918,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - kernel_module_tipc_disabled
 
   - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
@@ -1043,13 +1062,14 @@ controls:
     rules:
       - package_nftables_installed
 
+  # Missing a rule to check if nftables service is disabled.
   - id: 3.4.1.2
     title: Ensure a single firewall configuration utility is in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    related_rules:
+    status: partial
+    rules:
       - service_firewalld_enabled
 
   - id: 3.4.2.1
@@ -1085,7 +1105,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: planned
 
   - id: 3.4.2.5
     title: Ensure firewalld drops unnecessary services and ports (Manual)
@@ -1093,6 +1113,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    related_rules:
+      - configure_firewalld_ports
 
   - id: 3.4.2.6
     title: Ensure nftables established connections are configured (Manual)
@@ -1410,70 +1432,88 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_permissions_var_log_audit
 
   - id: 4.1.4.2
     title: Ensure only authorized users own audit log files (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_ownership_var_log_audit_stig
 
   - id: 4.1.4.3
     title: Ensure only authorized groups are assigned ownership of audit log files (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_group_ownership_var_log_audit
 
   - id: 4.1.4.4
     title: Ensure the audit log directory is 0750 or more restrictive (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - directory_permissions_var_log_audit
 
   - id: 4.1.4.5
     title: Ensure audit configuration files are 640 or more restrictive (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: planned
 
   - id: 4.1.4.6
     title: Ensure audit configuration files are owned by root (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_ownership_audit_configuration
 
   - id: 4.1.4.7
     title: Ensure audit configuration files belong to group root (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_groupownership_audit_configuration
 
   - id: 4.1.4.8
     title: Ensure audit tools are 755 or more restrictive (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_permissions_audit_binaries
 
   - id: 4.1.4.9
     title: Ensure audit tools are owned by root (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_ownership_audit_binaries
 
   - id: 4.1.4.10
     title: Ensure audit tools belong to group root (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: pending
+    status: automated
+    rules:
+      - file_groupownership_audit_binaries
 
   - id: 4.2.1.1
     title: Ensure rsyslog is installed (Automated)
@@ -2182,7 +2222,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - no_empty_passwords_etc_shadow
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
@@ -2341,10 +2383,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    related_rules:
-      - no_empty_passwords_etc_shadow
-      - no_empty_passwords
+    status: automated
+    rules:
+      - accounts_password_all_shadowed
 
   - id: 6.2.2
     title: Ensure /etc/shadow password fields are not empty (Automated)
