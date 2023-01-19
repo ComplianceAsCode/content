@@ -262,9 +262,14 @@ controls:
   - id: 1.2.2
     title: Ensure package manager repositories are configured (Manual)
     levels:
-      - l1_server
-      - l1_workstation
-    status: manual # rule is missing
+    - l1_server
+    - l1_workstation
+    status: manual 
+    notes: >- 
+       The control cannot be automated, 
+       and should be addressed manually. 
+    rules:
+    - ensure_package_repositories_are_configured
 
   - id: 1.2.3
     title: Ensure gpgcheck is globally activated (Automated)
