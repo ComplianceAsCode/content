@@ -32,7 +32,7 @@ identifiers:
     cce@sle15: CCE-85764-9
 
 references:
-    cis@rhel8: 5.3.6
+    cis@rhel8: 5.3.5,5.3.6
     cis@rhel9: 5.3.5,5.3.6
     cis@ubuntu2204: 5.3.6
     disa: CCI-002038
@@ -62,6 +62,6 @@ fixtext: |-
 
     Defaults timestamp_timeout={{{ xccdf_value("var_sudo_timestamp_timeout") }}}
 
-    Remove any duplicate or conflicting lines from /etc/sudoers and /etc/sudoers.d/ files. 
+    Remove any duplicate or conflicting lines from /etc/sudoers and /etc/sudoers.d/ files.
 
 srg_requirement: '{{{ full_name }}} must require re-authentication when using the "sudo" command.'
