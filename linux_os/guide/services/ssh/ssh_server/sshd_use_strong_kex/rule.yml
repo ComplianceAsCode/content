@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Use Only Strong Key Exchange algorithms'
+
+description: |-
+    Limit the Key Exchange to strong algorithms.
+    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use
+    of those:
+    <pre>KexAlgorithms {{{ xccdf_value("sshd_strong_kex") }}}</pre>
+
+rationale: |-
+    Key exchange is any method in cryptography by which cryptographic keys are exchanged
+    between two parties, allowing use of a cryptographic algorithm. If the sender and receiver
+    wish to exchange encrypted messages, each must be equipped to encrypt messages to be
+    sent and decrypt messages received
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92339-1
+    cce@sle15: CCE-92626-1
+
+references:
+    cis@sle12: 5.2.15
+    cis@sle15: 5.2.15
+
+ocil_clause: 'KexAlgorithms option is commented out or not using strong hash algorithms'
+
+ocil: |-
+    Only strong KEX algorithms should be used. To verify that only strong
+    KexAlgorithms are in use, run the following command:
+    <pre>$ sudo grep -i kexalgorithms /etc/ssh/sshd_config</pre>
+    The output should contain only those KexAlgorithms which are strong, namely,
+    {{{ xccdf_value("sshd_strong_kex") }}}
