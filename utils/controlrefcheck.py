@@ -116,8 +116,6 @@ def main():
                 print(f"{rule_object.id_} {args.reference}@{args.product} "
                       f"{rule_object.references[args.reference]} does not match the control id "
                       f"{control.id}")
-            if not rule_object:
-                print(f"Unable to find rule: {control_rule} from {control.id}")
 
     if not ok:
         exit(1)
