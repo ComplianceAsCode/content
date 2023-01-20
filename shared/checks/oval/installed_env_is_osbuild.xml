@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory" id="installed_env_is_osbuild" version="2">
+    <metadata>
+      <title>Check if the environment is a OSBuild pipeline</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+       </affected>
+      <description>Check the value of environment variable container.</description>
+      <reference ref_id="cpe:/a:osbuild" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Check the value of container variable" test_ref="test_installed_env_is_osbuild" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_test check="all" check_existence="all_exist"
+    comment="environment variable container is set to bwrap-osbuild"
+    id="test_installed_env_is_osbuild" version="1">
+    <ind:object object_ref="object_installed_env_is_osbuild" />
+    <ind:state state_ref="state_installed_env_is_osbuild" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_object 
+    id="object_installed_env_is_osbuild" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>container</ind:name>
+  </ind:environmentvariable58_object>
+
+  <ind:environmentvariable58_state
+    id="state_installed_env_is_osbuild" version="1">
+    <ind:value>bwrap-osbuild</ind:value>
+  </ind:environmentvariable58_state>
+</def-group>
