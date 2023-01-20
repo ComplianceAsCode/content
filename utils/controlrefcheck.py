@@ -62,7 +62,7 @@ def check_files(json_path: str, controls_dir: str) -> None:
         exit(5)
 
 
-def get_rule_object(all_rules, args, control_rule, env_yaml):
+def get_rule_object(all_rules, args, control_rule, env_yaml) -> ssg.build_yaml.Rule:
     rule_dict = all_rules.get(control_rule)
     rule_path = os.path.join(rule_dict['dir'], 'rule.yml')
     rule_obj = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml=env_yaml)
@@ -88,6 +88,10 @@ def main():
     ok = True
     for control in controls_manager.get_all_controls(args.control):
         for control_rule in control.selected:
+            if all_rules.get(control_rule) is None:
+                print(f'Rule {control_rule} was not found in the project.')
+                ok = False
+                continue
             rule_object = get_rule_object(all_rules, args, control_rule, env_yaml)
             control_id = str(control.id)
             if args.reference == 'cis' and not re.match(r"\d(\.\d+){0,3}", control_id):
