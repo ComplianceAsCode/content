@@ -29,9 +29,7 @@ selections:
     - service_cron_enabled
     - service_ntp_enabled
     - service_rsyslog_enabled
-    - file_owner_logfiles_value=adm
     - rsyslog_files_ownership
-    - file_groupowner_logfiles_value=adm
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
     - ensure_logrotate_activated

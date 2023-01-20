@@ -4,8 +4,6 @@
 # complexity = low
 # disruption = medium
 
-{{{ ansible_instantiate_variables(PARAMETER) }}}
-
 - name: '{{{ rule_title }}} - Set rsyslog logfile configuration facts'
   ansible.builtin.set_fact:
     rsyslog_etc_config: "/etc/rsyslog.conf"
@@ -63,8 +61,8 @@
 - name: '{{{ rule_title }}} -Setup log files attribute'
   ansible.builtin.file:
     path: "{{ item }}"
-    owner: '{{ ( "{{{ ATTRIBUTE }}}" is match("owner")) | ternary({{{ PARAMETER }}}, omit) }}'
-    group: '{{ ( "{{{ ATTRIBUTE }}}" is match("groupowner")) | ternary({{{ PARAMETER }}} , omit) }}'
+    owner: '{{ ( "{{{ ATTRIBUTE }}}" is match("owner")) | ternary({{{ VALUE }}}, omit) }}'
+    group: '{{ ( "{{{ ATTRIBUTE }}}" is match("groupowner")) | ternary({{{ VALUE }}} , omit) }}'
     state: file
   loop: "{{ log_files | list | flatten | unique }}"
   failed_when: false

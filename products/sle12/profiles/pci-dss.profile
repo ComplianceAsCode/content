@@ -13,6 +13,4 @@ description: |-
 
 selections:
     - pcidss_3:all:base
-    - file_owner_logfiles_value=root
-    - file_groupowner_logfiles_value=root
 

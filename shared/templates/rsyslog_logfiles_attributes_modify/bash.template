@@ -1,7 +1,5 @@
 # platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
 
-{{{ bash_instantiate_variables(PARAMETER) }}}
-
 # List of log file paths to be inspected for correct permissions
 # * Primarily inspect log file paths listed in /etc/rsyslog.conf
 RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
@@ -108,5 +106,5 @@ do
 		continue
 	fi
 
-	$FILE_CMD "${{{ PARAMETER }}}" "$LOG_FILE_PATH"
+	$FILE_CMD "+${{{ VALUE }}}" "$LOG_FILE_PATH"
 done
