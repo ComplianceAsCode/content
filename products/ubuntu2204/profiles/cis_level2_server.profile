@@ -81,7 +81,7 @@ selections:
     - audit_rules_sysadmin_actions
 
     #### 4.1.3.2 Ensure actions as another user are always logged (Automated)
-    # NEEDS RULE
+    - audit_rules_suid_privilege_function
 
     #### 4.1.3.3 Ensure events that modify the sudo log file are collected (Automated)
     # NEEDS RULE
