@@ -1,0 +1,20 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check if tmux is configured to be launched at the end of bashrc.") }}}
+    <criteria comment="Check tmux is configured to be launched at the end of bashrc" operator="AND">
+      <criterion comment="check tmux is configured to be launched on the last line of /etc/bashrc"
+        test_ref="test_configure_bashrc_tmux" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="check tmux is configured to be launched on the last line of /etc/bashrc"
+    id="test_configure_bashrc_tmux" version="1">
+    <ind:object object_ref="obj_configure_bashrc_tmux" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_configure_bashrc_tmux" version="1">
+    <ind:behaviors singleline="true" multiline="false" />
+    <ind:filepath operation="pattern match">^/etc/bashrc$|^/etc/profile\.d/.*$</ind:filepath>
+    <ind:pattern operation="pattern match">if \[ "\$PS1" \]; then\n\s+parent=\$\(ps -o ppid= -p \$\$\)\n\s+name=\$\(ps -o comm= -p \$parent\)\n\s+case "\$name" in sshd\|login\) tmux ;; esac\nfi</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
