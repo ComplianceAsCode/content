@@ -360,7 +360,6 @@ selections:
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - set_password_hashing_min_rounds_logindefs
-- sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -425,7 +424,6 @@ selections:
 - var_accounts_user_umask=077
 - var_password_pam_difok=8
 - var_password_pam_maxrepeat=3
-- var_sshd_disable_compression=no
 - var_password_hashing_algorithm=SHA512
 - var_password_pam_maxclassrepeat=4
 - var_password_pam_minclass=4
