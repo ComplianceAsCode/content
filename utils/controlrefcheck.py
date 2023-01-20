@@ -70,6 +70,24 @@ def get_rule_object(all_rules, args, control_rule, env_yaml) -> ssg.build_yaml.R
     return rule_obj
 
 
+def get_controls_env(args):
+    product_base = os.path.join(SSG_ROOT, "products", args.product)
+    product_yaml = os.path.join(product_base, "product.yml")
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
+    controls_manager = ssg.controls.ControlsManager(args.controls, env_yaml)
+    controls_manager.load()
+    return controls_manager, env_yaml
+
+
+def check_cis(reference: str, control_id: str) -> bool:
+    return reference == 'cis' and not re.match(r"\d(\.\d+){0,3}", control_id)
+
+
+def check_reference(reference: str, rule_object: ssg.build_yaml.Rule, control_id: str) -> bool:
+    return reference in rule_object.references and control_id not in \
+        rule_object.references[reference].split(',')
+
+
 def main():
     args = parse_args()
 
@@ -78,12 +96,7 @@ def main():
     rule_dir_json = open(args.json, 'r')
     all_rules = json.load(rule_dir_json)
 
-    product_base = os.path.join(SSG_ROOT, "products", args.product)
-    product_yaml = os.path.join(product_base, "product.yml")
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
-
-    controls_manager = ssg.controls.ControlsManager(args.controls, env_yaml)
-    controls_manager.load()
+    controls_manager, env_yaml = get_controls_env(args)
 
     ok = True
     for control in controls_manager.get_all_controls(args.control):
@@ -94,12 +107,11 @@ def main():
                 continue
             rule_object = get_rule_object(all_rules, args, control_rule, env_yaml)
             control_id = str(control.id)
-            if args.reference == 'cis' and not re.match(r"\d(\.\d+){0,3}", control_id):
+            if check_cis(args.reference, control_id):
                 # Skip control ids that in this control for technical reasons.
                 print(f"Skipping {control_id} as it does not match a CIS id.")
                 continue
-            if args.reference in rule_object.references and control_id \
-                    not in rule_object.references[args.reference].split(','):
+            if check_reference(args.reference, rule_object, control_id):
                 ok = False
                 print(f"{rule_object.id_} {args.reference}@{args.product} "
                       f"{rule_object.references[args.reference]} does not match the control id "
