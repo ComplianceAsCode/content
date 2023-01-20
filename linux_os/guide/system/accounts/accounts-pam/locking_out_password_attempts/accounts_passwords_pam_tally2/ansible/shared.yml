@@ -1,69 +1,11 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_ubuntu
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = low
 
-- name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-auth
-  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-auth || true
-  register: check_pam_tally2_result
+{{{ ansible_instantiate_variables("var_password_pam_tally2")  }}}
 
-- name: Configure pam_tally2.so module in /etc/pam.d/common-auth
-  lineinfile:
-    path: /etc/pam.d/common-auth
-    line: 'auth required pam_tally2.so'
-    state: present
-  when: '"pam_tally2" not in check_pam_tally2_result.stdout'
-
-- name: Check to see if 'onerr' parameter is present
-  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sonerr=.*' /etc/pam.d/common-auth || true
-  register: check_onerr_result
-
-- name: Make sure pam_tally2.so has 'onerr' parameter set 'fail'
-  replace:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*)(onerr=[A-Za-z]+)([^A-Za-z]?.*)
-    replace: '\1onerr=fail\3'
-  register: onerr_update_result
-  when: '"onerr=" in check_onerr_result.stdout'
-
-- name: Add 'onerr' parameter for pam_tally2.so module in /etc/pam.d/common-auth
-  lineinfile:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so)((\s+\S+)*\s*(\\)*$)
-    line: '\1 onerr=fail\2'
-    backrefs: yes
-    state: present
-  when: '"onerr=" not in check_onerr_result.stdout'
-
-- name: Check to see if 'deny' parameter is present
-  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sdeny=.*' /etc/pam.d/common-auth || true
-  register: check_deny_result
-
-- name: Make sure pam_tally2.so has 'deny' parameter set to less than 4
-  replace:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*)deny=([4-9]|[1-9][0-9]+)(\s*.*)
-    replace: '\1deny=3\3'
-
-  when: '"deny=" in check_deny_result.stdout'
-
-- name: Add 'deny' parameter for pam_tally2.so module in /etc/pam.d/common-auth
-  lineinfile:
-    path: /etc/pam.d/common-auth
-    regexp: ^(\s*auth\s+required\s+pam_tally2\.so)((\s+\S+)*\s*(\\)*$)
-    line: '\1 deny=3\2'
-    backrefs: yes
-    state: present
-  when: '"deny=" not in check_deny_result.stdout'
-
-- name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-account
-  shell: grep -e '^\s*account\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-account || true
-  register: check_account_pam_tally2_result
-
-- name: Configure pam_tally2.so module in /etc/pam.d/common-account
-  lineinfile:
-    path: /etc/pam.d/common-account
-    line: 'account required pam_tally2.so'
-    state: present
-  when: '"pam_tally2" not in check_account_pam_tally2_result.stdout'
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/common-auth', 'auth', 'required', 'pam_tally2.so', 'deny', "{{ var_password_pam_tally2 }}", '') }}}
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/common-auth', 'auth', 'required', 'pam_tally2.so', 'onerr', 'fail', '(fail)') }}}
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/common-account', 'account', 'required', 'pam_tally2.so', '', '', '') }}}
