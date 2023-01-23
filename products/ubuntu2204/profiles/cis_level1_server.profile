@@ -487,7 +487,7 @@ selections:
 
     #### 3.5.3.3 Configure IPv6 ip6tables ####
     ##### 3.5.3.3.1 Ensure ip6tables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_ip6tables_default_rule
 
     # 3.5.3.3.2 Ensure ip6tables loopback traffic is configured (Automated)
     # NEEDS RULE
