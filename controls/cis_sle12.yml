@@ -1013,7 +1013,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule missing
+    status: automated 
+    rules: 
+    - set_iptables_default_rule
 
   - id: 3.5.3.1
     title: Ensure IPv6 loopback traffic is configured (Automated)
