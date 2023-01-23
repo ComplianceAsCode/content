@@ -432,7 +432,7 @@ selections:
     #### 3.5.3.1 Configure software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
-    - service_iptables_enabled
+    - package_iptables-persistent_installed
 
     ###### 3.5.3.1.2 Ensure nftables is not installed (Automated)
     - service_nftables_disabled
