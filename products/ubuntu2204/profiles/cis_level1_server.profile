@@ -474,7 +474,7 @@ selections:
 
     #### 3.5.3.2 Configure IPv4 iptables ####
     ##### 3.5.3.2.1 Ensure iptables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_iptables_default_rule
 
     ##### 3.5.3.2.2 Ensure iptables loopback traffic is configured (Automated)
     # NEEDS RULE
