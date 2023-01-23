@@ -2,6 +2,8 @@ import re
 
 import create_srg_export
 
+import utils.srg_export.data
+
 
 def get_heading(row: dict) -> str:
     if row['STIGID'] != '':
@@ -41,7 +43,7 @@ def handle_dict(data: list, output_path: str, title: str) -> None:
         heading = get_heading(row)
         output.append(f'# {heading}')
         output.append('')
-        for _, header in create_srg_export.COLUMN_MAPPINGS.items():
+        for _, header in utils.srg_export.data.COLUMN_MAPPINGS.items():
             output.append(f'## {header}')
             content = get_content(header, row)
             output.append(content)

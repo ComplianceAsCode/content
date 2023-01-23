@@ -7,6 +7,8 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.styles.colors import Color
 import create_srg_export
 
+import utils.srg_export.data
+
 MICRO_COLUMN_SIZE = 8
 SMALL_COLUMN_SIZE = 17
 MEDIUM_COLUMN_SIZE = SMALL_COLUMN_SIZE*1.5
@@ -34,12 +36,12 @@ COLUMN_SIZES = {
 
 
 def setup_sheet(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
-    for column, header in create_srg_export.COLUMN_MAPPINGS.items():
+    for column, header in utils.srg_export.data.COLUMN_MAPPINGS.items():
         sheet.column_dimensions[f'{column}'].width = COLUMN_SIZES[header]
 
 
 def setup_headers(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
-    for column, header in create_srg_export.COLUMN_MAPPINGS.items():
+    for column, header in utils.srg_export.data.COLUMN_MAPPINGS.items():
         sheet[f'{column}1'] = header
     for cell in list(sheet.iter_rows(max_row=1))[0]:
         cell.font = Font(bold=True, name='Calibri')
@@ -52,7 +54,7 @@ def format_cells(sheet: openpyxl.worksheet.worksheet.Worksheet):
 
 
 def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num: int) -> None:
-    for column, header in create_srg_export.COLUMN_MAPPINGS.items():
+    for column, header in utils.srg_export.data.COLUMN_MAPPINGS.items():
         sheet[f'{column}{row_num}'] = row[header]
     sheet.row_dimensions[row_num].height = 130
     if row_num > 1 and ('Fix' not in row or not row['Fix']):
