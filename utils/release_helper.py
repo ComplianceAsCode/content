@@ -163,6 +163,8 @@ def is_contributors_list_updated(date_string) -> bool:
 
 def update_contributors():
     last_update = get_contributors_last_update()
+    # Currently, this script considers contributors lists is already updated if not
+    # older than 2 weeks.
     if is_contributors_list_updated(last_update):
         print(f'It is all fine, the contributors list was updated in {last_update}')
     else:
@@ -345,23 +347,6 @@ def get_next_stabilization_branch(repo) -> str:
 
 
 # Communication
-def get_communication_channels(phase='release') -> None:
-    gitter_lnk = 'https://gitter.im/Compliance-As-Code-The/content'
-    ghd_lnk = 'https://github.com/ComplianceAsCode/content/discussions/new?category=announcements'
-    twitter_lnk = 'https://twitter.com/openscap'
-    ssg_mail = 'scap-security-guide@lists.fedorahosted.org'
-    openscap_mail = 'open-scap-list@redhat.com'
-
-    print('Please, share the following message in:\n'
-          f'* Gitter ({gitter_lnk})\n'
-          f'* Github Discussion ({ghd_lnk})\n'
-          f'* SCAP Security Guide Mail List ({ssg_mail})')
-
-    if phase == "finish":
-        print(f'* OpenSCAP Mail List ({openscap_mail})\n'
-              f'* Twitter ({twitter_lnk})')
-
-
 def get_date_for_message(date) -> datetime:
     return date.strftime("%B %d, %Y")
 
@@ -451,15 +436,32 @@ For full release notes, please have a look at:
 {latest_release_url}
 
 Pre-built content: {prebuild_zip}
-SHA-512 hash: {source_tarball_hash}
+SHA-512 hash: {prebuild_zip_hash}
 
 Source tarball: {source_tarball}
-SHA-512 hash: {prebuild_zip_hash}
+SHA-512 hash: {source_tarball_hash}
 
 Thank you to everyone who contributed!
 
 Regards,'''
     return template
+
+
+def print_communication_channels(phase='release') -> None:
+    gitter_lnk = 'https://gitter.im/Compliance-As-Code-The/content'
+    ghd_lnk = 'https://github.com/ComplianceAsCode/content/discussions/new?category=announcements'
+    twitter_lnk = 'https://twitter.com/openscap'
+    ssg_mail = 'scap-security-guide@lists.fedorahosted.org'
+    openscap_mail = 'open-scap-list@redhat.com'
+
+    print('Please, share the following message in:\n'
+          f'* Gitter ({gitter_lnk})\n'
+          f'* Github Discussion ({ghd_lnk})\n'
+          f'* SCAP Security Guide Mail List ({ssg_mail})')
+
+    if phase == "finish":
+        print(f'* OpenSCAP Mail List ({openscap_mail})\n'
+              f'* Twitter ({twitter_lnk})')
 
 
 # Issues and PRs
@@ -669,7 +671,7 @@ def release(repo, args) -> None:
 
         if args.message:
             message = get_release_start_message(repo)
-            get_communication_channels('release')
+            print_communication_channels('release')
             print(message)
 
         if args.bump_version:
@@ -679,17 +681,17 @@ def release(repo, args) -> None:
             subprocess.run(['git', 'diff'])
             print('\nPlease, review the changes and propose a PR to "master" branch.')
     else:
-        print('Please, ensure the all steps in the Release Preparation are concluded.')
+        print('Please, ensure that all steps in the Release Preparation are concluded.')
 
 
 def finish(repo, args) -> None:
     if not is_next_release_in_progress(repo):
         if args.message:
             message = get_release_end_message(repo)
-            get_communication_channels('finish')
+            print_communication_channels('finish')
             print(message)
     else:
-        print('Please, ensure the all steps in the Release process are concluded.')
+        print('Please, ensure that all steps in the Release process are concluded.')
 
 
 def parse_arguments():
