@@ -459,7 +459,7 @@ selections:
     - set_ip6tables_default_rule
 
     # 3.5.3.3.2 Ensure IPv6 loopback traffic is configured (Automated)
-    # Needs rules
+    - set_ipv6_loopback_traffic
 
     # 3.5.3.3.3 Ensure IPv6 outbound and established connections are configured (Manual)
     # Skip due to being a manual test
