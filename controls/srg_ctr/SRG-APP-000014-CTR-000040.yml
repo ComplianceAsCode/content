@@ -9,7 +9,7 @@ controls:
   - api_server_tls_security_profile
   - ingress_controller_tls_security_profile
   - kubelet_configure_tls_min_version
-  status: manual
+  status: automated
   check: |-
     Verify that the TLS Security Profile is not set to old, or a custom
     profile that does not enforce TLS 1.2 or above.
@@ -71,6 +71,3 @@ controls:
       tlsSecurityProfile:
         intermediate: {} 
         type: Intermediate
-  notes:
-    Creating an automated rule is being tracked with
-    https://issues.redhat.com/browse/CMP-1389
