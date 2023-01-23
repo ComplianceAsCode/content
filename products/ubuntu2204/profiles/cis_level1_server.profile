@@ -477,7 +477,7 @@ selections:
     - set_iptables_default_rule
 
     ##### 3.5.3.2.2 Ensure iptables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_loopback_traffic
 
     ##### 3.5.3.2.3 Ensure iptables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
