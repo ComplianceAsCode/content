@@ -1039,7 +1039,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: manual 
+    notes: >- 
+       The control cannot be automated, 
+       and should be addressed manually. 
+    rules:
+      - ensure_iptables_are_flushed
 
   - id: 3.5.2.4
     title: Ensure a table exists (Automated)
