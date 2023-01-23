@@ -411,7 +411,7 @@ selections:
     - package_ufw_installed
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed with ufw (Automated)
-    # NEEDS RULE
+    - package_iptables-persistent_removed
 
     #### 3.5.1.3 Ensure ufw service is enabled (Automated)
     - service_ufw_enabled
