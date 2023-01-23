@@ -446,7 +446,7 @@ selections:
     - set_iptables_default_rule
 
     ###### 3.5.3.2.2 Ensure loopback traffic is configured (Automated)
-    # Needs rules
+    - set_loopback_traffic
 
     ##### 3.5.3.2.3 Ensure outbound and established connections are configured (Manual)
     # Skip due to being a manual test
