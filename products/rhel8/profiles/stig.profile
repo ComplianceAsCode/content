@@ -492,17 +492,16 @@ selections:
     # RHEL-08-020012, RHEL-08-020013
     - accounts_passwords_pam_faillock_interval
 
-    # RHEL-08-020014, RHEL-08-020016, RHEL-08-020017
+    # RHEL-08-020014, RHEL-08-020015
     - accounts_passwords_pam_faillock_unlock_time
 
-    # RHEL-08-020015
+    # RHEL-08-020016, RHEL-08-020017
+    - accounts_passwords_pam_faillock_dir
 
-    # RHEL-08-020018, RHEL-08-020019
-    - accounts_passwords_pam_faillock_deny
+    # # RHEL-08-020018, RHEL-08-020019
+    - accounts_passwords_pam_faillock_silent
 
-    # RHEL-08-020020
-
-    # RHEL-08-020021
+    # RHEL-08-020020, RHEL-08-020021
     - accounts_passwords_pam_faillock_audit
 
     # RHEL-08-020022, RHEL-08-020023
@@ -510,6 +509,9 @@ selections:
 
     # RHEL-08-020024
     - accounts_max_concurrent_login_sessions
+
+    # RHEL-08-020027, RHEL-08-020028
+    - account_password_selinux_faillock_dir
 
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
@@ -1064,6 +1066,9 @@ selections:
 
     # RHEL-08-040136
     - service_fapolicyd_enabled
+
+    # RHEL-08-040137
+    - fapolicy_default_deny
 
     # RHEL-08-040139
     - package_usbguard_installed

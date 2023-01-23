@@ -30,6 +30,7 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 selections:
 - account_disable_post_pw_expiration
 - account_emergency_expire_date
+- account_password_selinux_faillock_dir
 - account_temp_expire_date
 - account_unique_id
 - accounts_authorized_local_users
@@ -60,7 +61,9 @@ selections:
 - accounts_passwords_pam_faillock_audit
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_deny_root
+- accounts_passwords_pam_faillock_dir
 - accounts_passwords_pam_faillock_interval
+- accounts_passwords_pam_faillock_silent
 - accounts_passwords_pam_faillock_unlock_time
 - accounts_umask_etc_bashrc
 - accounts_umask_etc_csh_cshrc
@@ -208,6 +211,7 @@ selections:
 - ensure_gpgcheck_local_packages
 - ensure_gpgcheck_never_disabled
 - ensure_redhat_gpgkey_installed
+- fapolicy_default_deny
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
 - file_audit_tools_permissions
