@@ -380,7 +380,7 @@ selections:
     # Needs rule
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed (Automated)
-    # Needs rule
+    - package_iptables-persistent_removed
 
     #### 3.5.1.3 Ensure ufw service is enabled (Automated)
     # Needs rule
