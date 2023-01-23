@@ -433,7 +433,7 @@ selections:
     - package_nftables_installed
 
     #### 3.5.2.2 Ensure ufw is uninstalled or disabled with nftables (Automated)
-    # NEEDS RULE
+    - package_ufw_removed
 
     #### 3.5.2.3 Ensure iptables are flushed with nftables (Manual)
     # Skip due to being a manual test
@@ -469,7 +469,7 @@ selections:
     - packages_nftables_removed
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
-    # NEEDS RULE
+    - package_ufw_removed
 
     #### 3.5.3.2 Configure IPv4 iptables ####
     ##### 3.5.3.2.1 Ensure iptables default deny firewall policy (Automated)
