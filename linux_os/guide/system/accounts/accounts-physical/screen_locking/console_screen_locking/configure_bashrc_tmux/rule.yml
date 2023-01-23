@@ -75,5 +75,4 @@ srg_requirement: '{{{ full_name }}} must ensure session control is automatically
 warnings:
     - general: |-
         This rule configures Tmux to be executed in a way that exiting Tmux
-        drops an user into a regular shell instead of logging them out. This
-        allows an user to circumvent the session locking mechanism in this way.
+        drops the user into a regular shell instead of logging them out, therefore the session locking mechanism is not enforced on the user.
