@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
+prodtype: rhel8
 
-title: 'Support session locking with tmux'
+title: 'Support session locking with tmux (not enforcing)'
 
 description: |-
     The <tt>tmux</tt> terminal multiplexer is used to implement
@@ -20,14 +20,13 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel8: CCE-82266-8
-    cce@rhel9: CCE-90586-9
+    cce@rhel8: CCE-90782-4
+
 
 references:
     disa: CCI-000056,CCI-000058
-    ospp: FMT_SMF_EXT.1,FMT_MOF_EXT.1,FTA_SSL.1
     srg: SRG-OS-000031-GPOS-00012,SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
-    stigid@ol8: OL08-00-020041
+    stigid@rhel8: RHEL-08-020041
 
 platform: package[tmux]
 
@@ -40,7 +39,7 @@ ocil: |-
 
     <pre>$ sudo grep tmux /etc/bashrc /etc/profile.d/*
 
-    /etc/profile.d/tmux.sh:  case "$name" in (sshd|login) exec tmux ;; esac</pre>
+    /etc/profile.d/tmux.sh:  case "$name" in (sshd|login) tmux ;; esac</pre>
 
     Review the tmux script by using the following example:
 
@@ -49,7 +48,7 @@ ocil: |-
     if [ "$PS1" ]; then
     parent=$(ps -o ppid= -p $$)
     name=$(ps -o comm= -p $parent)
-    case "$name" in (sshd|login) exec tmux ;; esac
+    case "$name" in (sshd|login) tmux ;; esac
     fi</pre>
 
     If the shell file is not configured as the example above, is commented out, or is missing, this is a finding.
@@ -64,7 +63,7 @@ fixtext: |-
     if [ "$PS1" ]; then
         parent=$(ps -o ppid= -p $$)
         name=$(ps -o comm= -p $parent)
-        case "$name" in sshd|login) exec tmux ;; esac
+        case "$name" in sshd|login) tmux ;; esac
     fi
 
     Then, ensure a correct mode of /etc/profile.d/tmux.sh using this command:
@@ -72,3 +71,8 @@ fixtext: |-
     $ sudo chmod 0644 /etc/profile.d/tmux.sh
 
 srg_requirement: '{{{ full_name }}} must ensure session control is automatically started at shell initialization.'
+
+warnings:
+    - general: |-
+        This rule configures Tmux to be executed in a way that exiting Tmux
+        drops the user into a regular shell instead of logging them out, therefore the session locking mechanism is not enforced on the user.

@@ -164,7 +164,7 @@ selections:
 - chronyd_or_ntpd_set_maxpoll
 - chronyd_server_directive
 - clean_components_post_updating
-- configure_bashrc_exec_tmux
+- configure_bashrc_tmux
 - configure_bind_crypto_policy
 - configure_crypto_policy
 - configure_firewalld_ports
