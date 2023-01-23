@@ -402,7 +402,7 @@ selections:
     - package_nftables_installed
 
     #### 3.5.2.2 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
-    # Needs rule
+    - package_ufw_removed
 
     #### 3.5.2.3 Ensure iptables are flushed (Manual)
     # Skip due to being a manual test
@@ -439,7 +439,7 @@ selections:
     - package_nftables_removed
 
     ###### 3.5.3.1.3 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
-    # - package_ufw_removed # (Duplicate of above)
+    - package_ufw_removed
 
     #### 3.5.3.2 Configure IPv4 iptables ####
     ###### 3.5.3.2.1 Ensure default deny firewall policy (Automated)
