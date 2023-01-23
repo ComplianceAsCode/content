@@ -490,7 +490,7 @@ selections:
     - set_ip6tables_default_rule
 
     # 3.5.3.3.2 Ensure ip6tables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_ipv6_loopback_traffic
 
     # 3.5.3.3.3 Ensure ip6tables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
