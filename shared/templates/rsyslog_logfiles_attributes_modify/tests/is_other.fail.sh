@@ -5,7 +5,7 @@
 
 source $SHARED/rsyslog_log_utils.sh
 
-{{% if ATTRIBUTE == "groupowner" %}}
+{{% if ATTRIBUTE == "owner" %}}
 ADDCOMMAND="useradd"
 CHATTR="chown"
 {{% else %}}
