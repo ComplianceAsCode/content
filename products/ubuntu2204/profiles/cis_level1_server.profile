@@ -626,7 +626,7 @@ selections:
     ### 4.2.1 Configure journald ###
     #### 4.2.1.1 Ensure journald is configured to send logs to a remote log host ####
     ##### 4.2.1.1.1 Ensure systemd-journal-remote is installed (Automated)
-    # NEEDS RULE
+    - package_systemd-journal-remote_installed
 
     ##### 4.2.1.1.2 Ensure systemd-journal-remote is configured (Manual)
     # Skip due to being a manual test
