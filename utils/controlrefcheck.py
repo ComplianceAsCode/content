@@ -58,7 +58,7 @@ def check_files(json_path: str, controls_dir: str) -> None:
         sys.stderr.write(f"Controls directory {controls_dir} was not found.\n")
         exit(4)
     if not os.path.isdir(controls_dir):
-        sys.stderr.write("Given controls directory {controls_dir} is not a directory.\n")
+        sys.stderr.write(f"Given controls directory {controls_dir} is not a directory.\n")
         exit(5)
 
 
@@ -83,9 +83,35 @@ def check_cis(reference: str, control_id: str) -> bool:
     return reference == 'cis' and not re.match(r"\d(\.\d+){0,3}", control_id)
 
 
-def check_reference(reference: str, rule_object: ssg.build_yaml.Rule, control_id: str) -> bool:
-    return reference in rule_object.references and control_id not in \
-        rule_object.references[reference].split(',')
+def should_rule_be_checked(reference: str, control_id: str) -> bool:
+    if check_cis(reference, control_id):
+        print(f'Skipping {control_id} as it does not match a CIS id.')
+        return False
+    return True
+
+
+def does_rule_exist(all_rules: dict, control_rule: str) -> bool:
+    if all_rules.get(control_rule) is None:
+        print(f'{control_rule} was not found in the project.')
+        return False
+    return True
+
+
+def check_reference(reference: str, rule_object: ssg.build_yaml.Rule, control_id: str,
+                    product: str) -> bool:
+    if reference in rule_object.references and control_id \
+            not in rule_object.references[reference].split(','):
+        print(f"{rule_object.id_} {reference}@{product} "
+              f"{rule_object.references[reference]} does not match the control id "
+              f"{control_id}")
+        return False
+    return True
+
+
+def downgrade_bool(current: bool, target: bool) -> bool:
+    if not current or not target:
+        return False
+    return True
 
 
 def main():
@@ -101,21 +127,13 @@ def main():
     ok = True
     for control in controls_manager.get_all_controls(args.control):
         for control_rule in control.selected:
-            if all_rules.get(control_rule) is None:
-                print(f'Rule {control_rule} was not found in the project.')
-                ok = False
-                continue
-            rule_object = get_rule_object(all_rules, args, control_rule, env_yaml)
             control_id = str(control.id)
-            if check_cis(args.reference, control_id):
-                # Skip control ids that in this control for technical reasons.
-                print(f"Skipping {control_id} as it does not match a CIS id.")
-                continue
-            if check_reference(args.reference, rule_object, control_id):
-                ok = False
-                print(f"{rule_object.id_} {args.reference}@{args.product} "
-                      f"{rule_object.references[args.reference]} does not match the control id "
-                      f"{control.id}")
+            exists = does_rule_exist(all_rules, control_rule)
+            ok = downgrade_bool(ok, exists)
+            if should_rule_be_checked(args.reference, control_id):
+                rule_object = get_rule_object(all_rules, args, control_rule, env_yaml)
+                check_ok = check_reference(args.reference, rule_object, control_id, args.product)
+                ok = downgrade_bool(ok, check_ok)
 
     if not ok:
         exit(1)
