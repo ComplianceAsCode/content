@@ -24,7 +24,7 @@ ocil_clause: 'All nftables rules for established incoming, and for new and outbo
 ocil: |-
     To verify that all nftables rules on your system for established incoming connections match site policy,
     run the following command:
-    <pre>$ sudo  # nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'</pre>
+    <pre>$ sudo  nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'</pre>
     Output should be similar to:
     <tt>
       ip protocol tcp ct state established accept
@@ -33,7 +33,7 @@ ocil: |-
     </tt>
     To verify that all nftables rules for new and established outbound connections match site policy,
     run:
-    <pre>nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'</pre>
+    <pre>$ sudo nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'</pre>
     and output should be similar to:
     <tt>
       ip protocol tcp ct state established,related,new accept
