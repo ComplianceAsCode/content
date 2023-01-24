@@ -7,7 +7,7 @@
 source $SHARED/rsyslog_log_utils.sh
 
 
-{{% if ATTRIBUTE == "groupowner" %}}
+{{% if ATTRIBUTE == "owner" %}}
 CHATTR="chown"
 {{% else %}}
 CHATTR="chgrp"
