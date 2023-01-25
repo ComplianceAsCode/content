@@ -527,6 +527,7 @@ selections:
 
     # OL08-00-020040
     - configure_tmux_lock_command
+    - configure_tmux_lock_keybinding
 
     # OL08-00-020041
     - configure_bashrc_tmux
