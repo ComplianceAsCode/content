@@ -13,11 +13,40 @@ from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
+from .id_translate import IDTranslator
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
 from . import utils
-from .xml import ElementTree
+from .xml import ElementTree, oval_generated_header
+
+
+def _create_subtree(shorthand_tree, category):
+    parent_tag = "{%s}%ss" % (oval_ns, category)
+    parent = ElementTree.Element(parent_tag)
+    for node in shorthand_tree.findall(".//{%s}def-group/*" % oval_ns):
+        if node.tag is ElementTree.Comment:
+            continue
+        elif node.tag.endswith(category):
+            append(parent, node)
+    return parent
+
+
+def expand_shorthand(shorthand_path, oval_path, env_yaml):
+    shorthand_file_content = process_file_with_macros(shorthand_path, env_yaml)
+    wrapped_shorthand = (oval_header + shorthand_file_content + oval_footer)
+    shorthand_tree = ElementTree.fromstring(wrapped_shorthand.encode("utf-8"))
+    header = oval_generated_header("test", "5.11", "1.0")
+    skeleton = header + oval_footer
+    root = ElementTree.fromstring(skeleton.encode("utf-8"))
+    for category in ["definition", "test", "object", "state", "variable"]:
+        subtree = _create_subtree(shorthand_tree, category)
+        if list(subtree):
+            root.append(subtree)
+    id_translator = IDTranslator("test")
+    root_translated = id_translator.translate(root)
+
+    ElementTree.ElementTree(root_translated).write(oval_path)
 
 
 def _check_is_applicable_for_product(oval_check_def, product):
