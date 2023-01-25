@@ -529,7 +529,7 @@ selections:
     - configure_tmux_lock_command
 
     # OL08-00-020041
-    - configure_bashrc_exec_tmux
+    - configure_bashrc_tmux
 
     # OL08-00-020042
     - no_tmux_in_shells
