@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Verify nftables Service is Enabled'
+
+description: |-
+    The nftables service allows for the loading of nftables rulesets during boot, 
+    or starting on the nftables service
+    {{{ describe_service_enable(service="nftables") }}}
+
+rationale: |-
+    The nftables service restores the nftables rules from the rules files referenced 
+    in the <tt>/etc/sysconfig/nftables.conf</tt> file during boot or the starting of 
+    the nftables service
+
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92560-2
+
+references:
+    cis@sle15: 3.5.2.9
+
+
+ocil_clause: '{{{ ocil_clause_service_enabled("nftables") }}}'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="nftables") }}}
+
+fixtext: |-
+    {{{ fixtext_service_enabled("nftables") }}}
+
+template:
+    name: service_enabled
+    vars:
+        servicename: nftables

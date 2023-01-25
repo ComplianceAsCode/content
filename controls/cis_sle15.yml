@@ -1088,7 +1088,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - service_nftables_enabled
 
   - id: 3.5.2.10
     title: Ensure nftables rules are permanent (Automated)
