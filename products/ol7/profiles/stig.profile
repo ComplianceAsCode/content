@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R9.
+    DISA STIG for Oracle Linux V2R10.
 
 selections:
     - login_banner_text=dod_banners
@@ -159,7 +159,7 @@ selections:
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
     - audit_rules_system_shutdown
-    - var_audit_failure_mode=panic
+    - var_audit_failure_mode=printk
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
@@ -332,3 +332,5 @@ selections:
     - auditd_audispd_remote_daemon_path
     - auditd_audispd_remote_daemon_type
     - account_emergency_expire_date
+    - package_screen_installed
+    - sysctl_kernel_dmesg_restric

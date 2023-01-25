@@ -53,6 +53,8 @@ ocil: |-
 
 {{% if product == "rhel7" %}}
 platform: rhel7_older_than_7_4
+{{% elif product == "ol7" %}}
+platform: ol7_older_than_7_4
 {{% endif %}}
 
 fixtext: '{{{ fixtext_sshd_lineinfile("Compression", xccdf_value("var_sshd_disable_compression"), no) }}}'
