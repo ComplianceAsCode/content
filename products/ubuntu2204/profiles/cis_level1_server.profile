@@ -411,7 +411,7 @@ selections:
     - package_ufw_installed
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed with ufw (Automated)
-    # NEEDS RULE
+    - package_iptables-persistent_removed
 
     #### 3.5.1.3 Ensure ufw service is enabled (Automated)
     - service_ufw_enabled
@@ -433,7 +433,7 @@ selections:
     - package_nftables_installed
 
     #### 3.5.2.2 Ensure ufw is uninstalled or disabled with nftables (Automated)
-    # NEEDS RULE
+    - package_ufw_removed
 
     #### 3.5.2.3 Ensure iptables are flushed with nftables (Manual)
     # Skip due to being a manual test
@@ -463,20 +463,21 @@ selections:
     #### 3.5.3.1 Configure iptables software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
+    - package_iptables-persistent_installed
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
     - service_nftables_disabled
     - packages_nftables_removed
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
-    # NEEDS RULE
+    - package_ufw_removed
 
     #### 3.5.3.2 Configure IPv4 iptables ####
     ##### 3.5.3.2.1 Ensure iptables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_iptables_default_rule
 
     ##### 3.5.3.2.2 Ensure iptables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_loopback_traffic
 
     ##### 3.5.3.2.3 Ensure iptables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
@@ -486,10 +487,10 @@ selections:
 
     #### 3.5.3.3 Configure IPv6 ip6tables ####
     ##### 3.5.3.3.1 Ensure ip6tables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_ip6tables_default_rule
 
     # 3.5.3.3.2 Ensure ip6tables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_ipv6_loopback_traffic
 
     # 3.5.3.3.3 Ensure ip6tables outbound and established connections are configured (Manual)
     # Skip due to being a manual test

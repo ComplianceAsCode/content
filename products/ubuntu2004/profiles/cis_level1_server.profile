@@ -380,7 +380,7 @@ selections:
     # Needs rule
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed (Automated)
-    # Needs rule
+    - package_iptables-persistent_removed
 
     #### 3.5.1.3 Ensure ufw service is enabled (Automated)
     # Needs rule
@@ -402,7 +402,7 @@ selections:
     - package_nftables_installed
 
     #### 3.5.2.2 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
-    # Needs rule
+    - package_ufw_removed
 
     #### 3.5.2.3 Ensure iptables are flushed (Manual)
     # Skip due to being a manual test
@@ -432,21 +432,21 @@ selections:
     #### 3.5.3.1 Configure software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
-    - service_iptables_enabled
+    - package_iptables-persistent_installed
 
     ###### 3.5.3.1.2 Ensure nftables is not installed (Automated)
     - service_nftables_disabled
     - package_nftables_removed
 
     ###### 3.5.3.1.3 Ensure Uncomplicated Firewall is not installed or disabled (Automated)
-    # - package_ufw_removed # (Duplicate of above)
+    - package_ufw_removed
 
     #### 3.5.3.2 Configure IPv4 iptables ####
     ###### 3.5.3.2.1 Ensure default deny firewall policy (Automated)
     - set_iptables_default_rule
 
     ###### 3.5.3.2.2 Ensure loopback traffic is configured (Automated)
-    # Needs rules
+    - set_loopback_traffic
 
     ##### 3.5.3.2.3 Ensure outbound and established connections are configured (Manual)
     # Skip due to being a manual test
@@ -459,7 +459,7 @@ selections:
     - set_ip6tables_default_rule
 
     # 3.5.3.3.2 Ensure IPv6 loopback traffic is configured (Automated)
-    # Needs rules
+    - set_ipv6_loopback_traffic
 
     # 3.5.3.3.3 Ensure IPv6 outbound and established connections are configured (Manual)
     # Skip due to being a manual test

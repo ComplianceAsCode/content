@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Remove iptables-persistent Package'
+
+description: |-
+    {{{ describe_package_remove(package="iptables-persistent") }}}
+
+rationale: |-
+    Running both <tt>ufw</tt> and the services included in the
+    <tt>iptables-persistent</tt> package may lead to conflict.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 3.5.1.2
+    cis@ubuntu2204: 3.5.1.2
+
+ocil_clause: 'the package is installed'
+
+ocil: '{{{ ocil_package(package="iptables-persistent") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: iptables-persisten
+
+fixtext: |-
+    {{{ describe_package_remove(package="iptables-persistent") }}}

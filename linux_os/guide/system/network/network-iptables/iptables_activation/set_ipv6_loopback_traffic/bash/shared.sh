@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_ubuntu
 
 if [ "$(sysctl -n net.ipv6.conf.all.disable_ipv6)" -eq 0 ]; then
   # IPv6 is not disabled, so run the script

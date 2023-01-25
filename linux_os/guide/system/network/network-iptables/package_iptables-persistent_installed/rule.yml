@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Install iptables-persistent Package'
+
+description: |-
+    {{{ describe_package_install(package="iptables-persistent") }}}
+
+rationale: |-
+    A method of configuring and maintaining firewall rules is
+    necessary to configure a Host Based Firewall.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 3.5.3.1.1
+    cis@ubuntu2204: 3.5.3.1.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="iptables-persistent") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: iptables-persistent
+
+fixtext: |-
+    {{{ describe_package_install(package="iptables-persistent") }}}
