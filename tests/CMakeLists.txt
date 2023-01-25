@@ -51,6 +51,12 @@ add_test(
 set_tests_properties("stable-profile-ids" PROPERTIES LABELS quick)
 
 add_test(
+    NAME "shorthand-to-oval"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/shorthand_to_oval.py" "${CMAKE_CURRENT_SOURCE_DIR}/data/utils/shorthand_oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval.xml"
+)
+set_tests_properties("shorthand-to-oval" PROPERTIES LABELS quick)
+
+add_test(
     NAME "stable-profiles"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_profile_stability.py" "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/data/profile_stability"
 )
