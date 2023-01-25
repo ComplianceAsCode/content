@@ -611,3 +611,16 @@ $ ./build_product rhel9
 $ utils/shorthand_to_oval.py build/rhel9/checks/oval/accounts_tmout.xml oval.xml
 $ oscap oval eval oval.xml
 ```
+
+### Ensure Control Files and Rules Are Consistent - `utils/controlrefcheck.py`
+
+This script helps ensure that control files and rules files are in sync.
+The script takes in what product, control, and reference you are looking for.
+The script loops over every rule in each control; the script then checks if the control's id is in the rule's reference that passed to the script.
+If a control's ID does not match or rule does not exist in the project the script will exit with a non-zero status.
+If the reference you are looking for is `cis` the script will not attempt to match anything that does not match a CIS section number.
+
+To execute:
+```bash
+$ ./utils/controlrefcheck.py rhel9 cis_rhel9 cis
+```
