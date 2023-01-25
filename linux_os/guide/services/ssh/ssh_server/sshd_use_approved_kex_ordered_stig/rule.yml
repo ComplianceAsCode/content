@@ -57,6 +57,10 @@ ocil: |-
 warnings:
     - general: |-
         The system needs to be rebooted for these changes to take effect.
+    {{% if product in ['ol8', 'rhel8']  %}}
+    - general: |-
+        This rule doesn't come with a remediation, automatically changing the crypto-policies may be too disruptive.
+    {{% endif %}}
     - regulatory: |-
         System crypto modules must be provided by a vendor that undergoes
         FIPS-140 certifications.
