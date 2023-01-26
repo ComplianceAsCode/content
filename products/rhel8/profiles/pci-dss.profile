@@ -17,6 +17,7 @@ selections:
     - var_accounts_passwords_pam_faillock_deny=6
     - var_accounts_passwords_pam_faillock_unlock_time=1800
     - sshd_idle_timeout_value=15_minutes
+    - var_logind_session_timeout=15_minutes
     - var_password_pam_minlen=7
     - var_password_pam_minclass=2
     - var_accounts_maximum_age_login_defs=90
@@ -109,6 +110,7 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
     - sshd_set_idle_timeout
+    - logind_session_timeout
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
     - accounts_password_pam_minlen
