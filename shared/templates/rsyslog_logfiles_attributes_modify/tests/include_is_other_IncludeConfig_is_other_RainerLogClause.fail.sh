@@ -7,12 +7,15 @@
 source $SHARED/rsyslog_log_utils.sh
 
 {{% if ATTRIBUTE == "owner" %}}
+ADDCOMMAND="useradd"
 CHATTR="chown"
 {{% else %}}
+ADDCOMMAND="groupadd"
 CHATTR="chgrp"
 {{% endif %}}
 
 USER_TEST=testssg
+$ADDCOMMAND $USER_TEST
 
 USER=root
 
