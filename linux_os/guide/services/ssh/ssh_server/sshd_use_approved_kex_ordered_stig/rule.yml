@@ -1,0 +1,80 @@
+{{% if product in ['ol8','rhel8'] %}}
+{{% set path='/etc/crypto-policies/back-ends/opensshserver.config' %}}
+{{% set conf="CRYPTO_POLICY='-oKexAlgorithms=ecdh-sha2-nistp256,ecdh-sha2-nistp384" ~
+             ",ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" ~
+             ",diffie-hellman-group14-sha256,diffie-hellman-group16-sha512" ~
+             ",diffie-hellman-group18-sha512'" %}}
+{{% elif product in ['ol7','rhel7'] %}}
+{{% set path='/etc/ssh/sshd_config' %}}
+{{% set conf="KexAlgorithms ecdh-sha1-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" ~
+             ",diffie-hellman-group-exchange-sha256"  %}}
+{{% endif %}}
+
+documentation_complete: true
+
+prodtype: ol7,ol8,rhel7,rhel8
+
+title: 'Use Only FIPS 140-2 Validated Key Exchange Algorithms'
+
+description: |-
+    Limit the key exchange algorithms to those  which are FIPS-approved.
+    Add or modify the following line in <tt>{{{ path }}}</tt>
+    <pre>{{{ conf }}}</pre>
+    This rule ensures that only the key exchange algorithms mentioned
+    above (or their subset) are configured for use, keeping the given
+    order of algorithms.
+
+rationale: |-
+    DoD information systems are required to use FIPS-approved key exchange algorithms.
+    The system will attempt to use the first algorithm presented by the client that matches
+    the server list. Listing the values "strongest to weakest" is a method to ensure the use
+    of the strongest algorithm available to secure the SSH connection.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86061-9
+    cce@rhel8: CCE-86059-3
+
+references:
+    disa: CCI-001453
+    nist: AC-17(2)
+    srg: SRG-OS-000250-GPOS-00093
+    stigid@ol7: OL07-00-040712
+    stigid@ol8: OL08-00-040342
+    stigid@rhel7: RHEL-07-040712
+    stigid@rhel8: RHEL-08-040342
+
+ocil_clause: 'KexAlgorithms option is commented out, contains non-approved algorithms, or the FIPS-approved algorithms are not in the exact order'
+
+ocil: |-
+    Only FIPS-approved key exchange algorithms must be used. To verify that only FIPS-approved
+    key exchange algorithms are in use, run the following command:
+    <pre>$ sudo grep -i kexalgorithms {{{ path }}}</pre>
+    The output should contain only following algorithms (or a subset) in the exact order:
+    <pre>{{{ conf }}}</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    {{% if product in ['ol8', 'rhel8']  %}}
+    - general: |-
+        This rule doesn't come with a remediation, automatically changing the crypto-policies may be too disruptive.
+    {{% endif %}}
+    - regulatory: |-
+        System crypto modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this requirements, the system has to have cryptographic software
+        provided by a vendor that has undergone this certification. This means
+        providing documentation, test results, design information, and independent
+        third party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.

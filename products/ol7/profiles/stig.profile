@@ -226,6 +226,7 @@ selections:
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
     - sshd_use_approved_ciphers_ordered_stig
+    - sshd_use_approved_kex_ordered_stig
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls

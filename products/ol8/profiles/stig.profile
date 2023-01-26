@@ -1195,6 +1195,9 @@ selections:
     # OL08-00-040341
     - sshd_x11_use_localhost
 
+    # OL08-00-040342
+    - sshd_use_approved_kex_ordered_stig
+
     # OL08-00-040350
     - tftpd_uses_secure_mode
     - tftpd_uses_secure_mode.severity=medium
