@@ -1008,7 +1008,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: manual 
+    notes: >- 
+       The control cannot be automated, 
+       and should be addressed manually.     
+    rules:
+      - set_firewalld_appropriate_zone
 
   - id: 3.5.1.6
     title: Ensure unnecessary services and ports are not accepted (Manual)

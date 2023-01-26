@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure network interfaces are assigned to appropriate zone'
+
+description: |-
+    Firewall zones define the trust level of network connections or interfaces.
+    Note: Changing firewall settings while connected over network can result in 
+    being locked out of the system.
+
+rationale: |-
+    A network interface not assigned to the appropriate zone can allow unexpected or
+    undesired network traffic to be accepted on the interface.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92556-0
+
+references:
+    cis@sle15: 3.5.1.5
+
+ocil_clause: 'Your system accepts all incoming packets for unnecessary services and ports'
+
+ocil: |-
+    To verify that the interface(s) follow site policy for zone assignment run the 
+    following command: 
+    <pre>$ sudo nmcli -t connection show | awk -F: '{if($4){print $4}}' | while read INT;
+    do firewall-cmd --get-active-zones | grep -B1 $INT; done</pre>
+    If your have to assign an interface to the appropriate zone run the following command: 
+    <pre>$ sudo firewall-cmd --zone=<Zone NAME> --change-interface=<INTERFACE NAME></pre>
