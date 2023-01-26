@@ -49,7 +49,7 @@
 - name: '{{{ rule_title }}} - Extract log files new format'
   ansible.builtin.shell: |
     set -o pipefail
-    grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item }} | grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)"|grep -oE "\"([/[:alnum:][:punct:]]*)\"" |tr -d "\""|| true
+    grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item }} | grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)"|grep -oE "\"([/[:alnum:][:punct:]]*)\"" |tr -d "\""|| true
   loop: "{{ rsyslog_config_files.files|map(attribute='path')|list|flatten|unique + [ rsyslog_etc_config ] }}"
   register: log_files_new
   changed_when: False

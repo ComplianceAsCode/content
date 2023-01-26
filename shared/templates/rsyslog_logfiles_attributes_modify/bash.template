@@ -73,12 +73,12 @@ done
 
 # Check for RainerScript action log format which might be also multiline so grep regex is a bit curly
 # extract possibly multiline action omfile expressions
-# extract file="logfile" expression
+# extract File="logfile" expression
 # match only "logfile" expression
 for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
 	ACTION_OMFILE_LINES=$(grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" "${LOG_FILE}")
-	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -aoP "file\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
+	OMFILE_LINES=$(echo "${ACTION_OMFILE_LINES}"| grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)")
 	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"")")
 done
 
