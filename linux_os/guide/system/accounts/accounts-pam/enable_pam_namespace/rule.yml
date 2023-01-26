@@ -18,8 +18,6 @@ rationale: |-
 
 severity: low
 
-platform: not osbuild
-
 identifiers:
   cce@rhel7: CCE-83743-5
   cce@rhel8: CCE-83744-3
@@ -38,4 +36,4 @@ ocil: |-
   The output should return the following uncommented:
   <pre>session    required     pam_namespace.so</pre>
 
-platform: package[pam]
+platform: package[pam] and not osbuild
