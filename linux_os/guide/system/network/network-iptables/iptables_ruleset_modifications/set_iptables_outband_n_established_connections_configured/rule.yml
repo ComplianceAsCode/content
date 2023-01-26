@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Ensure outbound and established connections are configured'
+
+description: |-
+    Configure the firewall rules for new outbound, and established connections.
+
+rationale: |-
+    If rules are not in place for new outbound, and established connections all packets will
+    be dropped by the default policy preventing network usage.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92343-3
+    cce@sle15: CCE-92531-3
+
+references:
+    cis@sle15: 3.5.2.3,3.5.3.2
+    cis@sle15: 3.5.3.2.3,3.5.3.3.3
+
+ocil_clause: 'there are no rules configuring outband or established connections'
+
+ocil: |-
+    Inspect the output of commands:
+    <pre>$ iptables -L -v -n</pre>
+    , or for IPv6
+    <pre>$ ip6tables -L -v -n</pre>
+    , to inspect that rules for new outbound, and established connections match site policy
+
+fixtext: |-
+    Configure iptables in accordance with site policy. The following commands will implement
+    a policy to allow all outbound connections and all established connections:
+      <pre>
+      # iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT
+      # iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
+      # iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT
+      # iptables -A INPUT -p tcp -m state --state ESTABLISHED -j ACCEPT
+      # iptables -A INPUT -p udp -m state --state ESTABLISHED -j ACCEPT
+      # iptables -A INPUT -p icmp -m state --state ESTABLISHED -j ACCEPT
+      </pre>
+      ,use ip6tables in case of IPv6 is enabled and IPv6 rules need to be configured
+
+      Note: Changing firewall settings while connected over network can result in being locked out
+      of the system.
