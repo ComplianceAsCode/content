@@ -7,10 +7,10 @@
 {{{ ansible_instantiate_variables("var_nftables_family") }}}
 {{{ ansible_instantiate_variables("var_nftables_table") }}}
 
-- name: Collect existing nftables 
-  ansible.builtin.shell: nft list tables
+- name: Collect Existing Nftables 
+  ansible.builtin.command: nft list tables
   register: existing_nftables
 
-- name: Set nftable table
-  ansible.builtin.shell: nft create table {{ var_nftables_family }} {{ var_nftables_table }}
+- name: Set Nftable Table
+  ansible.builtin.command: nft create table {{ var_nftables_family }} {{ var_nftables_table }}
   when: existing_nftables.stdout_lines | length == 0
