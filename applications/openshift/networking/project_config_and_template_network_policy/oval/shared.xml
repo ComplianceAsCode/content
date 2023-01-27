@@ -1,0 +1,10 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="project_config_and_template_network_policy" version="1">
+    {{{ oval_metadata("A project template with NetworkPolicies must be created and referenced from the cluster project config") }}}
+
+    <criteria operator="AND">
+      <extend_definition comment="project template with NetworkPolicies set" definition_ref="project_template_network_policy" />
+      <extend_definition comment="cluster project config references project template" definition_ref="project_config_network_policy" />
+    </criteria>
+  </definition>
+</def-group>
