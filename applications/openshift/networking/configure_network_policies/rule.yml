@@ -21,7 +21,7 @@ ocil_clause: 'Support for Network Policies needs review'
 
 ocil: |-
     Verify that your CNI plugin supports NetworkPolicies:
-    <pre>$ oc get network cluster -oyaml -ojsonpath='{.spec.networkType}'</pre>
+    <pre>$ oc get network cluster -ojsonpath='{.spec.networkType}'</pre>
     The result should list a CNI plugin that supports NetworkPolicies,
     currently the plugins in the rule's pass list are OpenShiftSDN, OVN
     and Calico.
