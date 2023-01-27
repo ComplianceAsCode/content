@@ -20,7 +20,7 @@
 - name: '{{{ rule_title }}} - Get include files directives'
   ansible.builtin.shell: |
     set -o pipefail
-    grep -oP '^\s*include\s*\(\s*file.*' {{ rsyslog_etc_config }} |cut  -d"\"" -f 2 || true
+    awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' {{ rsyslog_etc_config }} || true
   register: rsyslog_new_inc
   changed_when: False
 
