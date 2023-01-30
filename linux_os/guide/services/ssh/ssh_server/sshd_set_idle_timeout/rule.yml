@@ -24,6 +24,11 @@ rationale: |-
 
 severity: medium
 
+{{% if "rhel" in product %}}
+platforms:
+    - rhel_less_equal_8_5
+{{% endif %}}
+
 identifiers:
     cce@rhcos4: CCE-82549-7
     cce@rhel7: CCE-27433-2
