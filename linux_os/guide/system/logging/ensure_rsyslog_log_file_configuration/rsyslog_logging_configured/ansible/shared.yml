@@ -1,0 +1,12 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "Set rsyslog remote loghost"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: "^\\*\\.\\*"
+    line: "*.* /var/log/messages"
+    create: yes

@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="rsyslog_logging_configured" version="1">
+    {{{ oval_metadata("Syslog logs should be configured") }}}
+
+    <criteria operator="AND">
+      {{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804"] %}}
+      <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
+      {{% endif %}}
+      <criteria operator="OR">
+        <criterion comment="Logging configured within /etc/rsyslog.conf" test_ref="test_logging_configured_rsyslog_conf" />
+        <criterion comment="Remote logging set within /etc/rsyslog.d" test_ref="test_logging_configured_rsyslog_d" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensures system logging configured in main conf file"
+  id="test_logging_configured_rsyslog_conf" version="1">
+    <ind:object object_ref="object_logging_configured_rsyslog_conf" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensures system logging_configured in .d files"
+  id="test_logging_configured_rsyslog_d" version="1">
+    <ind:object object_ref="object_logging_configured_rsyslog_d" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_logging_configured_rsyslog_conf" version="1">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+(\:\w+\:\S*|-?(\/+[^:;\s]+);*\.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_logging_configured_rsyslog_d" version="1">
+    <ind:path>/etc/rsyslog.d</ind:path>
+    <ind:filename operation="pattern match">^.+\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+(\:\w+\:\S*|-?(\/+[^:;\s]+);*\.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

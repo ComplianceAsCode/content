@@ -22,9 +22,7 @@ selections:
     - sshd_allow_only_protocol2
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
-    - file_owner_logfiles_value=adm
     - rsyslog_files_ownership
-    - file_groupowner_logfiles_value=adm
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
     - "!rsyslog_remote_loghost"

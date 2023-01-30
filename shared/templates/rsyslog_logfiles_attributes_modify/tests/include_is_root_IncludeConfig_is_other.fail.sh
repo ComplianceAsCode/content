@@ -2,19 +2,30 @@
 # platform = Red Hat Enterprise Linux 8,multi_platform_fedora,Oracle Linux 8,multi_platform_sle
 
 # Check rsyslog.conf with root user log from rules and
-# root user log from include() passes.
+# non root user log from include() fails.
 
 source $SHARED/rsyslog_log_utils.sh
 
-USER=root
+{{% if ATTRIBUTE == "owner" %}}
+ADDCOMMAND="useradd"
+CHATTR="chown"
+{{% else %}}
+ADDCOMMAND="groupadd"
+CHATTR="chgrp"
+{{% endif %}}
+
+USER_ROOT=root
+
+USER_TEST=testssg
+$ADDCOMMAND $USER_TEST
 
 # setup test data
 create_rsyslog_test_logs 3
 
 # setup test log files ownership
-chown $USER ${RSYSLOG_TEST_LOGS[0]}
-chown $USER ${RSYSLOG_TEST_LOGS[1]}
-chown $USER ${RSYSLOG_TEST_LOGS[2]}
+$CHATTR $USER_ROOT ${RSYSLOG_TEST_LOGS[0]}
+$CHATTR $USER_ROOT ${RSYSLOG_TEST_LOGS[1]}
+$CHATTR $USER_TEST ${RSYSLOG_TEST_LOGS[2]}
 
 # create test configuration file
 test_conf=${RSYSLOG_TEST_DIR}/test1.conf

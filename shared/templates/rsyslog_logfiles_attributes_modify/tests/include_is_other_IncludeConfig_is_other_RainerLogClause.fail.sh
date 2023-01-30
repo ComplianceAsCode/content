@@ -1,23 +1,31 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8,multi_platform_fedora,Oracle Linux 8,multi_platform_sle
 
-# Check rsyslog.conf with root group-owner log from rules and
-# non root group-owner log from include() fails.
+# Check rsyslog.conf with root user log from rules and
+# root user log from include() passes.
 
 source $SHARED/rsyslog_log_utils.sh
 
-GROUP_ROOT=root
+{{% if ATTRIBUTE == "owner" %}}
+ADDCOMMAND="useradd"
+CHATTR="chown"
+{{% else %}}
+ADDCOMMAND="groupadd"
+CHATTR="chgrp"
+{{% endif %}}
 
-GROUP_TEST=testssg
-groupadd $GROUP_TEST
+USER_TEST=testssg
+$ADDCOMMAND $USER_TEST
+
+USER=root
 
 # setup test data
 create_rsyslog_test_logs 3
 
 # setup test log files ownership
-chgrp $GROUP_ROOT ${RSYSLOG_TEST_LOGS[0]}
-chgrp $GROUP_ROOT ${RSYSLOG_TEST_LOGS[1]}
-chgrp $GROUP_TEST ${RSYSLOG_TEST_LOGS[2]}
+$CHATTR $USER_TEST ${RSYSLOG_TEST_LOGS[0]}
+$CHATTR $USER_TEST ${RSYSLOG_TEST_LOGS[1]}
+$CHATTR $USER_TEST ${RSYSLOG_TEST_LOGS[2]}
 
 # create test configuration file
 test_conf=${RSYSLOG_TEST_DIR}/test1.conf
@@ -31,13 +39,25 @@ EOF
 
 # create test2 configuration file
 test_conf2=${RSYSLOG_TEST_DIR}/test2.conf
+{{% if ATTRIBUTE == "owner" %}}
 cat << EOF > ${test_conf2}
 # rsyslog configuration file
 
 #### RULES ####
 
-*.*     ${RSYSLOG_TEST_LOGS[2]}
+
+*.*     action(type="omfile" FileCreateMode="0640" fileOwner="$USER_TEST" fileGroup="root" File="${RSYSLOG_TEST_LOGS[2]}")
 EOF
+{{% else %}}
+cat << EOF > ${test_conf2}
+# rsyslog configuration file
+
+#### RULES ####
+
+
+*.*     action(type="omfile" FileCreateMode="0640" fileOwner="root" fileGroup="$USER_TEST" File="${RSYSLOG_TEST_LOGS[2]}")
+EOF
+{{% endif %}}
 
 # create rsyslog.conf configuration file
 cat << EOF > $RSYSLOG_CONF

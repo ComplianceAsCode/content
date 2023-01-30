@@ -31,9 +31,7 @@ selections:
     - sshd_disable_empty_passwords
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive
-    - file_owner_logfiles_value=syslog
     - rsyslog_files_ownership
-    - file_groupowner_logfiles_value=adm
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
     - "!rsyslog_remote_loghost"
