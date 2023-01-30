@@ -124,8 +124,10 @@
     <unix:type operation="equals">regular</unix:type>
     {{% if ATTRIBUTE == "groupowner" %}}
     <unix:group_id datatype="int">{{{ VALUE }}}</unix:group_id>
-    {{% else %}}
+    {{% elif ATTRIBUTE == "owner" %}}
     <unix:user_id datatype="int">{{{ VALUE }}}</unix:user_id>
+    {{% else %}}
+    {{{ STATEMODE | indent(4) }}}
    {{% endif %}}
   </unix:file_state>
 </def-group>

@@ -91,6 +91,9 @@ case "$FILE_PARAM" in
      "owner")
         FILE_CMD=$(which chown)
         ;;
+	 "permissions")
+        FILE_CMD=$(which chmod)
+        ;;
       *)
         echo -n "Not supported file attribute! "
         exit 1
@@ -106,5 +109,5 @@ do
 		continue
 	fi
 
-	$FILE_CMD "+{{{ VALUE }}}" "$LOG_FILE_PATH"
+	$FILE_CMD "{{{ VALUE }}}" "$LOG_FILE_PATH"
 done
