@@ -6,11 +6,14 @@ source $SHARED/rsyslog_log_utils.sh
 
 {{% if ATTRIBUTE == "owner" %}}
 CHATTR="chown"
-{{% else %}}
+ATTR_VALUE="root"
+{{% elif ATTRIBUTE == "groupowner" %}}
 CHATTR="chgrp"
+ATTR_VALUE="root"
+{{% else %}}
+CHATTR="chmod"
+ATTR_VALUE="0600"
 {{% endif %}}
-
-ATTR_VALUE=root
 
 # create three test log file
 create_rsyslog_test_logs 3
