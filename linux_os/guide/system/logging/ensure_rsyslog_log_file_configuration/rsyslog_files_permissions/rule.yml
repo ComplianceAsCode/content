@@ -52,3 +52,9 @@ ocil: |-
     file, run the following command:
     <pre>$ ls -l <i>LOGFILE</i></pre>
     The permissions should be 600, or more restrictive.
+
+template:
+  name: rsyslog_logfiles_attributes_modify
+  vars:
+    attribute: permissions
+    value: '0600'
