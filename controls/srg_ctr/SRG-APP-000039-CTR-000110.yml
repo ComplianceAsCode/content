@@ -5,11 +5,10 @@ controls:
   title: {{{ full_name }}} must enforce approved authorizations for controlling
     the flow of information between interconnected systems and services based on organization-defined
     information flow control policies.
-  rules:
-  - configure_network_policies_namespaces
-  - routes_protected_by_tls
   related_rules:
   - configure_network_policies
+  - configure_network_policies_namespaces
+  - routes_protected_by_tls
   status: automated
   check: |-
     Verify that a default project template is defined
