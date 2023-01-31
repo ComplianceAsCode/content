@@ -1,0 +1,4 @@
+name: "cpe:/o:rhel:le:8:4"
+title: "Operating System is RHEL and version is less than or equal to 8.4"
+check_id: rhel8_less_equal_8_4
+ansible_conditional: ansible_distribution == "RedHat" and ansible_distribution_version is version("8.4", "<=")
