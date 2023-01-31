@@ -1,0 +1,29 @@
+srg_requirement: |-
+    {{{ full_name }}} must use TLS 1.2 or greater for secure container
+    image transport from trusted sources.
+
+vuldiscussion: |-
+    The authenticity and integrity of the container image during the
+    container image lifecycle is part of the overall security posture of
+    the container platform. This begins with the container image creation
+    and pull of a base image from a trusted source for child container
+    image creation and the instantiation of the new image into a running
+    service. If an insecure protocol is used during transmission of
+    container images at any step of the lifecycle, a bad actor may inject
+    nefarious code into the container image. The container image, when
+    instantiated, then becomes a security risk to the container platform,
+    the host server, and other containers within the container platform. To
+    thwart the injection of code during transmission, a secure protocol
+    (TLS 1.2 or newer) must be used. Further guidance on secure transport
+    protocols can be found in NIST SP 800-52.
+
+checktext: |-
+   Verify that no insecure registries are configured:
+
+   $ oc get image.config.openshift.io/cluster -o json | jq '.spec | (.allowedRegistriesForImport[])? | select(.insecure==true)'
+
+   If the command produces any output, this is a finding.
+
+fixtext: |-
+  Remove any insecureRegistries configured using the following command by editing the registry configuration:
+  $ oc edit image.config.openshift.io/cluster

@@ -6,29 +6,7 @@ controls:
     transport from trusted sources.
   related_rules:
     - fips_mode_enabled_on_all_nodes
-  status: manual
-  check: |-
-    Verify that no insecure registries configured:
-
-    $ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.allowedRegistriesForImport}'
-
-    If any registries set the "insecure: true" flag, this is a finding
-
-    Also check:
-
-    $ oc get image.config.openshift.io/cluster -ojsonpath='{.spec.registrySources}'
-
-    If the results contain any "insecureRegistrySources", this is a finding
-  fixtext: |-
-    Remove insecure registries from the cluster's image registry configuration
-
-    $ oc edit image.config.openshift.io/cluster
-
-    Edit or remove any registries where insecure is set to true, or are listed under insecureRegistries.
-
-    Refer to https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html for more details on configuring registries in OpenShift
-  notes: |-
-    Creating an automated rule is being tracked with https://issues.redhat.com/browse/CMP-1353
+  status: automated
   rules:
   - ocp_insecure_registries
   - ocp_insecure_allowed_registries_for_import
