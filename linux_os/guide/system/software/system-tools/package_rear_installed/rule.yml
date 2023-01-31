@@ -22,12 +22,9 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="rear") }}}'
 
-# The package is not available for s309x on RHEL<8.5
-# platform: not_s390x_arch
 
-{{%- if product in ["ol9", "rhel9"] %}}
-platform: not_aarch64_arch
-{{%- endif %}}
+platforms:
+    - not ((s390x_arch and rhel_less_equal_8_4) or (rhel_greater_equal_9_0 and aarch64_arch) or (ol_greater_equal_9_0 and aarch64_arch))
 
 template:
     name: package_installed
