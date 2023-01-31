@@ -344,3 +344,4 @@ selections:
     - package_screen_installed
     - sysctl_kernel_dmesg_restrict
     - aide_build_database
+    - authconfig_config_files_symlinks
