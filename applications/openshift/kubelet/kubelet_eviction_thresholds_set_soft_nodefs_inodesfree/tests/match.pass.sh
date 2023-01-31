@@ -252,26 +252,12 @@ cat << EOF > $kube_apipath$api_path_worker
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
-  "evictionHard": {
-    "imagefs.available": "10%",
-    "imagefs.inodesFree": "5%",
-    "memory.available": "200Mi",
-    "nodefs.available": "5%",
-    "nodefs.inodesFree": "4%"
-  },
   "evictionSoft": {
-    "imagefs.available": "15%",
-    "imagefs.inodesFree": "10%",
+    "imagefs.available": "20%",
+    "imagefs.inodesfree": "15%",
     "memory.available": "500Mi",
-    "nodefs.available": "10%",
-    "nodefs.inodesFree": "5%"
-  },
-  "evictionSoftGracePeriod": {
-    "imagefs.available": "1m30s",
-    "imagefs.inodesFree": "1m30s",
-    "memory.available": "1m30s",
-    "nodefs.available": "1m30s",
-    "nodefs.inodesFree": "1m30s"
+    "nodefs.available": "15%",
+    "nodefs.inodesFree": "10%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,
@@ -411,26 +397,12 @@ cat << EOF > $kube_apipath$api_path_master
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
   "serializeImagePulls": false,
-  "evictionHard": {
-    "imagefs.available": "10%",
-    "imagefs.inodesFree": "5%",
-    "memory.available": "200Mi",
-    "nodefs.available": "5%",
-    "nodefs.inodesFree": "4%"
-  },
   "evictionSoft": {
-    "imagefs.available": "15%",
-    "imagefs.inodesFree": "10%",
+    "imagefs.available": "20%",
+    "imagefs.inodesfree": "15%",
     "memory.available": "500Mi",
-    "nodefs.available": "10%",
-    "nodefs.inodesFree": "5%"
-  },
-  "evictionSoftGracePeriod": {
-    "imagefs.available": "1m30s",
-    "imagefs.inodesFree": "1m30s",
-    "memory.available": "1m30s",
-    "nodefs.available": "1m30s",
-    "nodefs.inodesFree": "1m30s"
+    "nodefs.available": "15%",
+    "nodefs.inodesFree": "10%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,

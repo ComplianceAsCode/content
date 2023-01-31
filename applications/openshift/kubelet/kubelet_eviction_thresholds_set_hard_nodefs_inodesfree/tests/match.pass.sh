@@ -257,7 +257,7 @@ cat << EOF > $kube_apipath$api_path_worker
     "imagefs.inodesfree": "5%",
     "memory.available": "200Mi",
     "nodefs.available": "5%",
-    "nodefs.inodesFree": "4%"
+    "nodefs.inodesFree": "5%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,
@@ -402,7 +402,7 @@ cat << EOF > $kube_apipath$api_path_master
     "imagefs.inodesfree": "5%",
     "memory.available": "200Mi",
     "nodefs.available": "5%",
-    "nodefs.inodesFree": "4%"
+    "nodefs.inodesFree": "5%"
   },
   "evictionPressureTransitionPeriod": "5m0s",
   "enableControllerAttachDetach": true,

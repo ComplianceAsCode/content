@@ -66,7 +66,7 @@ ocil_clause: '<tt>memory.available</tt> is not set in <tt>evictionHard</tt> sect
 ocil: |-
   Run the following command on the kubelet node(s):
   <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .evictionHard."memory.available"'; done</pre>
-  and make sure it outputs {{.var_kubelet_evictionhard_memory_available}}.
+  and make sure it outputs a value.
 
 warnings:
 - general: |-

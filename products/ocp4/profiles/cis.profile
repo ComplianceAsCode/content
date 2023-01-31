@@ -118,16 +118,10 @@ selections:
     - api_server_tls_cipher_suites
   #### 1.3 Controller Manager
   # 1.3.1 Ensure that garbage collection is configured as appropriate
-    - kubelet_eviction_thresholds_set_soft_memory_available
-    - kubelet_eviction_thresholds_set_soft_nodefs_available
-    - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
-    - kubelet_eviction_thresholds_set_soft_imagefs_available
-    - kubelet_eviction_thresholds_set_soft_imagefs_inodesfree
     - kubelet_eviction_thresholds_set_hard_memory_available
     - kubelet_eviction_thresholds_set_hard_nodefs_available
     - kubelet_eviction_thresholds_set_hard_nodefs_inodesfree
     - kubelet_eviction_thresholds_set_hard_imagefs_available
-    - kubelet_eviction_thresholds_set_hard_imagefs_inodesfree
   # 1.3.2 Ensure that controller manager healthz endpoints are protected by RBAC. (Automated)
     - rbac_debug_role_protects_pprof
   # 1.3.3 Ensure that the --use-service-account-credentials argument is set to true
