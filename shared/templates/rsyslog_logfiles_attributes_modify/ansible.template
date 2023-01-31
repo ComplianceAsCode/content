@@ -61,9 +61,9 @@
 - name: '{{{ rule_title }}} -Setup log files attribute'
   ansible.builtin.file:
     path: "{{ item }}"
-    owner: '{{ ( "{{{ ATTRIBUTE }}}" is match("owner")) | ternary("{{{ VALUE }}}", omit) }}'
-    group: '{{ ( "{{{ ATTRIBUTE }}}" is match("groupowner")) | ternary("{{{ VALUE }}}" , omit) }}'
-    mode: '{{ ( "{{{ ATTRIBUTE }}}" is match("permissions")) | ternary("{{{ VALUE }}}" , omit) }}'
+    {{{ 'owner: ' ~ VALUE if ATTRIBUTE == "owner" }}}
+    {{{- 'group: ' ~ VALUE if ATTRIBUTE == "groupowner" }}}
+    {{{- 'mode: ' ~ VALUE if ATTRIBUTE == "permissions" }}}
     state: file
   loop: "{{ log_files | list | flatten | unique }}"
   failed_when: false
