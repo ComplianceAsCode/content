@@ -69,6 +69,11 @@ def get_repo_object(session, repo_id) -> object:
     return session.get_repo(repo_id)
 
 
+def show_git_diff():
+    subprocess.run(['git', 'diff'])
+    print('\nPlease, review the changes and propose a PR to "master" branch.')
+
+
 # Repository Branches
 def filter_repo_branch_by_name(branches, name) -> object:
     return [branch for branch in branches if branch.name == name]
@@ -172,8 +177,7 @@ def update_contributors():
         root_dir = os.path.dirname(os.path.dirname(__file__))
         contributors_script = os.path.join(root_dir, "utils/generate_contributors.py")
         subprocess.run([f'PYTHONPATH=. {contributors_script}'], shell=True)
-        subprocess.run(['git', 'diff'])
-        print('Please, review the changes and propose a PR to "master" branch.')
+        show_git_diff()
 
 
 # Repository Milestones
@@ -285,7 +289,10 @@ def bump_version(current_version, bump_position) -> str:
     return ".".join(split_version)
 
 
-def bump_master_version(old_version, new_version):
+def bump_master_version(repo):
+    content_changed = False
+    old_version = get_next_release_version(repo)
+    new_version = bump_version(old_version, 'minor')
     old_minor_version = old_version.split('.')[2]
     new_minor_version = new_version.split('.')[2]
     root_dir = os.path.dirname(os.path.dirname(__file__))
@@ -295,9 +302,12 @@ def bump_master_version(old_version, new_version):
     for ln, line in enumerate(content):
         if f'set(SSG_PATCH_VERSION {old_minor_version}' in line:
             content[ln] = content[ln].replace(old_minor_version, new_minor_version)
+            content_changed = True
 
-    with open(os.path.join(root_dir, "CMakeLists.txt"), mode='w', encoding='utf-8') as file:
-        file.writelines(content)
+    if content_changed:
+        with open(os.path.join(root_dir, "CMakeLists.txt"), mode='w', encoding='utf-8') as file:
+            file.writelines(content)
+        show_git_diff()
 
 
 def get_friday(date) -> datetime:
@@ -657,6 +667,9 @@ def release_prep(repo, args) -> None:
         prs_list = get_open_prs_with_milestone(repo)
         update_milestone_in_prs(repo, prs_list)
 
+    if args.bump_version:
+        bump_master_version(repo)
+
 
 def release(repo, args) -> None:
     if not is_next_release_in_progress(repo):
@@ -673,13 +686,6 @@ def release(repo, args) -> None:
             message = get_release_start_message(repo)
             print_communication_channels('release')
             print(message)
-
-        if args.bump_version:
-            current_version = get_next_release_version(repo)
-            new_version = bump_version(current_version, 'minor')
-            bump_master_version(current_version, new_version)
-            subprocess.run(['git', 'diff'])
-            print('\nPlease, review the changes and propose a PR to "master" branch.')
     else:
         print('Please, ensure that all steps in the Release Preparation are concluded.')
 
@@ -734,6 +740,9 @@ def parse_arguments():
     release_prep_parser.add_argument(
         '-p', '--prs', action='store_true',
         help="Move Open PRs with a milestone to the new milestone.")
+    release_prep_parser.add_argument(
+        '-v', '--bump-version', action='store_true',
+        help="Bump the project version in *master* branch.")
 
     release_parser = subparsers.add_parser(
         'release', help="Tasks to be done during the stabilization phase.")
@@ -743,9 +752,6 @@ def parse_arguments():
     release_parser.add_argument(
         '-m', '--message', action='store_true',
         help="Prepare a message to communicate the stabilization process has started.")
-    release_parser.add_argument(
-        '-b', '--bump-version', action='store_true',
-        help="Bump the project version in *master* branch.")
 
     finish_parser = subparsers.add_parser(
         'finish', help="Tasks to be done when the release is out.")
