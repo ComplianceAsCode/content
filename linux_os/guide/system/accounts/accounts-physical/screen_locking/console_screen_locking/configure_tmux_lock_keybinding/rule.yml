@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel8
+prodtype: fedora,ol8,rhel8
 
 title: 'Configure the tmux lock session key binding'
 
@@ -25,14 +25,15 @@ identifiers:
 references:
     disa: CCI-000056
     srg: SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
+    stigid@ol8: OL08-00-020040
     stigid@rhel8: RHEL-08-020040
 
-ocil_clause: 'the "lock-session" is not bound to the X key'
+ocil_clause: 'the "lock-session" is not bound to a specific key'
 
 ocil: |-
     Verify {{{ full_name }}} enables the user to initiate a session lock trhough key bindings with the following commands:
 
-    <pre>$ grep "bind X lock-session" /etc/tmux.conf</pre>
+    <pre>$ grep "lock-session" /etc/tmux.conf</pre>
 
     <pre>bind X lock-session</pre>
 
