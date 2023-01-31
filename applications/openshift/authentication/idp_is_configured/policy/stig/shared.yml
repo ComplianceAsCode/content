@@ -1,0 +1,133 @@
+srg_requirement: |-
+  {{{ full_name }}} must use a centralized user management solution to
+  support account management functions.
+
+vuldiscussion: |-
+  OpenShift supports several different types of identity providers.
+  In order to add users and grant access to OpenShift, an identity provider
+  needs to be configured. Some of the identity provider types, such as
+  HTPassword, only provide simple user management and are not intended
+  for production. Other types are public services, like GitHub. These
+  provider types may not be appropriate as they are managed by public
+  service providers and therefore are unable to enforce the organizations
+  account management requirements.
+
+  After a new install, the default authentication uses kubeadmin as the
+  default cluster-admin account.  This default account needs to be disabled,
+  and another user account should be given cluster-admin rights.
+
+checktext: |-
+  Verify that the authentication operator is configure to use either an
+  LDAP or a OpenIDConnect or an approved identity provider:
+
+  > oc get oauth cluster -o
+  jsonpath="{.spec.identityProviders[*].type}{'\n'}"
+
+  If the output doesn't list an IdP, this is a finding.
+
+fixtext: |-
+  Configure OpenShift to use an appropriate Identity Provider. Do not use
+  HTPasswd. Use either LDAP(AD), OpenIDConnect or an approved identity
+  provider.
+
+  Steps to configure LDAP provider:
+
+    1. Create Secret for BIND DN password
+
+    > oc create secret generic ldap-secret --from-literal=bindPassword=<secret> \
+    -n openshift-config
+
+    2. Create config map for LDAP Trust CA
+
+    > oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n \
+    openshift-config
+
+    3. Create LDAP Auth Config Resource YAML
+
+    Using your preferred text editor, create a file named ldapidp.yaml using
+    the example content (replacing config values as appropriate):
+
+    apiVersion: config.openshift.io/v1 kind: OAuth metadata:
+      name: cluster
+    spec:
+      identityProviders:
+      - name: ldapidp
+        mappingMethod: claim
+        type: LDAP
+        ldap:
+          attributes:
+            id:
+            - dn
+              email:
+            - mail
+              name:
+            - cn
+              preferredUsername:
+            - uid
+          bindDN: ""
+          bindPassword:
+            name: ldap-secret
+          ca:
+            name: ca-config-map
+          insecure: false
+          url: "ldaps://ldap.example.com/ou=users,dc=acme,dc=com?uid"
+
+      4. Apply LDAP config to cluster
+
+      > oc apply -f ldapidp.yaml
+
+      For more information on configuring an
+      LDAP provider refer to the documentation:
+      https://docs.openshift.com/container-platform/4.8/authentication/identity_providers/configuring-ldap-identity-provider.html
+
+  Steps to configure OpenID provider:
+
+    1. Create Secret for Client Secret
+
+    > oc create secret generic <secret_name> \
+    --from-literal=clientSecret=<secret> -n openshift-config
+
+    2. Create config map for OpenID Trust CA
+
+    > oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca \
+    -n openshift-config
+
+    3. Create OpenID Auth Config Resource YAML
+
+    Using your preferred text editor, create a file named oidcidp.yaml using
+    the example content (replacing config values as appropriate):
+
+    apiVersion: config.openshift.io/v1 kind: OAuth metadata:
+      name: cluster
+    spec:
+      identityProviders:
+      - name: ldapidp
+        mappingMethod: claim
+        type: LDAP
+        ldap:
+          attributes:
+            id:
+            - dn
+            email:
+            - mail
+            name:
+            - cn
+            preferredUsername:
+            - uid
+          bindDN: ""
+          bindPassword:
+            name: ldap-secret
+          ca:
+            name: ca-config-map
+          insecure: false
+          url:
+          "ldaps://ldap.example.com/ou=users,dc=acme,dc=com?uid"
+
+
+      4. Apply OpenID config to cluster
+
+      > oc apply -f ldapidp.yaml
+
+      For more information on configuring an
+      OpenID provider refer to the documentation:
+      https://docs.openshift.com/container-platform/latest/authentication/identity_providers/configuring-oidc-identity-provider.html
