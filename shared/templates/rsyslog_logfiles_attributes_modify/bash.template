@@ -86,13 +86,13 @@ FILE_PARAM="{{{ ATTRIBUTE }}}"
 FILE_CMD=""
 case "$FILE_PARAM" in
      "groupowner")
-        FILE_CMD=$(which chgrp)
+        FILE_CMD="chgrp"
         ;;
      "owner")
-        FILE_CMD=$(which chown)
+        FILE_CMD="chown"
         ;;
 	 "permissions")
-        FILE_CMD=$(which chmod)
+        FILE_CMD="chmod"
         ;;
       *)
         echo -n "Not supported file attribute! "
