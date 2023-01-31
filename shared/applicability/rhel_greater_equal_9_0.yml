@@ -1,0 +1,4 @@
+name: "cpe:/o:rhel:ge:9:0"
+title: "Operating System is RHEL and version is greater than or equal to 9.0"
+check_id: rhel9_greater_equal_9_0
+ansible_conditional: ansible_distribution == "RedHat" and ansible_distribution_version is version("9.0", ">=")
