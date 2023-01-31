@@ -355,7 +355,6 @@ selections:
 - service_fapolicyd_enabled
 - service_firewalld_enabled
 - service_kdump_disabled
-- service_rngd_enabled
 - service_rsyslog_enabled
 - service_sshd_enabled
 - service_systemd-coredump_disabled
