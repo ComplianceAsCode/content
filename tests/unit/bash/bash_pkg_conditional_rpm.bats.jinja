@@ -1,6 +1,6 @@
 #!/bin/bash
 
-@test "test package presence" {
+@test "bash_pkg_conditional_rpm - test package presence" {
     if ! rpm -q bash ; then
         skip "RPM package 'bash' isn't installed"
     fi
@@ -8,7 +8,7 @@
     {{{ bash_pkg_conditional_rpm("bash") | indent(4) }}}
 }
 
-@test "test package version" {
+@test "bash_pkg_conditional_rpm - test package version" {
     if ! rpm -q bash ; then
         skip "RPM package 'bash' isn't installed"
     fi
