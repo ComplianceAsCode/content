@@ -1,11 +1,11 @@
 #!/bin/bash
-# platform = multi_platform_all
+# platform = multi_platform_sle,multi_platform_ubuntu
 
 # Declare variables used for the tests and define the create_rsyslog_test_logs function
 source $SHARED/rsyslog_log_utils.sh
 
 CHATTR="chmod"
-ATTR_VALUE="0400"
+ATTR_VALUE="0640"
 
 # create three test log file
 create_rsyslog_test_logs 2
