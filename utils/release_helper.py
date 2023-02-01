@@ -768,7 +768,7 @@ def main():
     try:
         repo = get_repo_object(ghs, args.repository)
     except Exception as e:
-        print(f'Error: {e}')
+        print(f'Error when getting the repository {args.repository}: {e}')
         exit(1)
 
     if args.subcmd == "stats":
