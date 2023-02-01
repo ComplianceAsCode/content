@@ -4,8 +4,9 @@ title: 'Ensure all users last password change date is in the past'
 
 description: |-
     All users should have a password change date in the past.
+
 rationale: |-
-    If a users recorded password change date is in the future then they could
+    If a user recorded password change date is in the future then they could
     bypass any set password expiration.
 
 severity: medium
@@ -17,7 +18,6 @@ identifiers:
 references:
     cis@sle12: 5.4.1.6
     cis@sle15: 5.4.1.6
-
 
 ocil_clause: 'any interactive user password that has last change time in the future'
 
