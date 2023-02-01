@@ -48,7 +48,8 @@ do
 	# * Strip quotes and closing brackets from paths.
 	# * Ignore paths that match /dev|/etc.*\.conf, as those are paths, but likely not log files
 	# * From the remaining valid rows select only fields constituting a log file path
-	# Text file column is understood to represent a log file path if and only if all of the following are met:
+	# Text file column is understood to represent a log file path if and only if all of the
+	# following are met:
 	# * it contains at least one slash '/' character,
 	# * it is preceded by space
 	# * it doesn't contain space (' '), colon (':'), and semicolon (';') characters
@@ -60,8 +61,8 @@ do
 		FILTERED_PATHS=$(awk '{if(NF>=2&&($NF~/^\//||$NF~/^-\//)){sub(/^-\//,"/",$NF);print $NF}}' <<< "${LINES_WITH_PATHS}")
 		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
 		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
-		# Since above sed command might return more than one item (delimited by newline), split the particular
-		# matches entries into new array specific for this log file
+		# Since above sed command might return more than one item (delimited by newline), split
+		# the particular matches entries into new array specific for this log file
 		readarray -t ARRAY_FOR_LOG_FILE <<< "$MATCHED_ITEMS"
 		# Concatenate the two arrays - previous content of $LOG_FILE_PATHS array with
 		# items from newly created array for this log file
@@ -71,7 +72,8 @@ do
 	fi
 done
 
-# Check for RainerScript action log format which might be also multiline so grep regex is a bit curly
+# Check for RainerScript action log format which might be also multiline so grep regex is a bit
+# curly:
 # extract possibly multiline action omfile expressions
 # extract File="logfile" expression
 # match only "logfile" expression
@@ -82,25 +84,10 @@ do
 	LOG_FILE_PATHS+=("$(echo "${OMFILE_LINES}"| grep -oE "\"([/[:alnum:][:punct:]]*)\""|tr -d "\"")")
 done
 
-FILE_PARAM="{{{ ATTRIBUTE }}}"
-FILE_CMD=""
-case "$FILE_PARAM" in
-     "groupowner")
-        FILE_CMD="chgrp"
-        ;;
-     "owner")
-        FILE_CMD="chown"
-        ;;
-	 "permissions")
-        FILE_CMD="chmod"
-        ;;
-      *)
-        echo -n "Not supported file attribute! "
-        exit 1
-      ;;
-esac
-
-# Correct the form o
+# Ensure the correct attribute if file exists
+{{{ 'FILE_CMD="chown"' if ATTRIBUTE == "owner" }}}
+{{{- 'FILE_CMD="chgrp"' if ATTRIBUTE == "groupowner" }}}
+{{{- 'FILE_CMD="chmod"' if ATTRIBUTE == "permissions" }}}
 for LOG_FILE_PATH in "${LOG_FILE_PATHS[@]}"
 do
 	# Sanity check - if particular $LOG_FILE_PATH is empty string, skip it from further processing
@@ -108,6 +95,5 @@ do
 	then
 		continue
 	fi
-
 	$FILE_CMD "{{{ VALUE }}}" "$LOG_FILE_PATH"
 done
