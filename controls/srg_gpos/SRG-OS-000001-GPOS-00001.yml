@@ -36,3 +36,32 @@ controls:
             {{{ full_name }}} does not support this requirement.
             This is an applicable-does not meet finding.
         status: does not meet
+
+        status@rhcos4: not applicable
+        fixtext@rhcos4: ""
+        check@rhcos4: ""
+        mitigation@rhcos4: ""
+        status_justification@rhcos4: |-
+          Red Hat Enterprise Linux CoreOS (RHCOS) is a single-purpose
+          container operating system. RHCOS is only supported as a component
+          of the OpenShift Container Platform. RHCOS is based on RHEL OS,
+          but is designed to be managed more tightly, with controlled
+          immutability, limiting the number of system settings that may
+          be modified. Direct modification of the RHCOS configuration
+          should not be done. Instead, management of RHCOS is therefore
+          done using the OpenShift Container Platform's machine config
+          management API and ignition configs as appropriate.
+
+          For additional information about the RHCOS architecture see:
+          https://docs.openshift.com/container-platform/latest/architecture/architecture-rhcos.html
+
+          User account management is performed by the Identity Provider
+          configured at the OpenShift Platform level. RHCOS includes
+          a single user account (core) in addition to the root(0)
+          account. Both accounts have no password, which prevents password
+          based authentication. The core account is intended for debugging
+          and troubleshooting purposes only. Automated account management
+          of RHCOS is delegated to the platform level, without traditional
+          Linux user logins on the RHCOS system. Checks to ensure that
+          account management is not performed at the RHCOS level include
+          (ref to SSHD_DISABLE) and (ref to SSSD_NO_AUTH_BACKEND).
