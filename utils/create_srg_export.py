@@ -215,8 +215,39 @@ def get_policy_specific_content(key: str, rule_object: ssg.build_yaml.Rule) -> s
     return stig.get(key, "")
 
 
+def filter_selection_by_product(control: ssg.controls.Control,
+                                product: str,
+                                rule_json: dict) -> list:
+    filtered_selection = list()
+    for selection in control.selections:
+        if selection not in control.selected:
+            # Variables, just append them
+            filtered_selection.append(selection)
+
+        rule = rule_json.get(selection)
+        if rule is None:
+            continue
+
+        if product not in rule["products"]:
+            continue
+        filtered_selection.append(selection)
+    return filtered_selection
+
+
+def set_per_product_selection(control: ssg.controls.Control, product: str, rule_json: dict):
+    """
+    The control.selection setter works a bit odd in the way it mostly appends. Force re-setting
+    the selection and appending the filtered selection
+    """
+    sel = filter_selection_by_product(control, product, rule_json)
+    control.selections = []
+    control.selections = sel
+
+
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
                    rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
+    set_per_product_selection(control, product, rule_json)
+
     if len(control.selections) > 0:
         rows = list()
         for selection in control.selections:

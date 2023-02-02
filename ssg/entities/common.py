@@ -304,6 +304,9 @@ class XCCDFEntity(object):
 
 class SelectionHandler(object):
     def __init__(self):
+        self._empty_selection()
+
+    def _empty_selection(self):
         self.refine_rules = defaultdict(list)
         self.variables = dict()
         self.unselected = []
@@ -327,6 +330,10 @@ class SelectionHandler(object):
 
     @selections.setter
     def selections(self, entries):
+        if len(self.selected) > 0 and len(entries) == 0:
+            self._empty_selection()
+            return
+
         for item in entries:
             self.apply_selection(item)
 
