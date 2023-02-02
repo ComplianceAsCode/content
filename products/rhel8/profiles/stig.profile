@@ -335,7 +335,7 @@ selections:
     - no_user_host_based_files
 
     # RHEL-08-010471
-    - service_rngd_enabled
+    # currently there is not a relevant rule which would improve RNG for RHEL in this context
 
     # RHEL-08-010472
     - package_rng-tools_installed
