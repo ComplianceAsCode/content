@@ -95,18 +95,32 @@ class Control(ssg.entities.common.SelectionHandler):
 
     @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
+        product = None
+        product_dir = None
+        benchmark_root = None
+        if env_yaml:
+            product = env_yaml.get('product', None)
+            product_dir = env_yaml.get('product_dir', None)
+            benchmark_root = env_yaml.get('benchmark_root', None)
+            content_dir = os.path.join(product_dir, benchmark_root)
+
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
         control.rationale = control_dict.get("rationale")
-        control.status = Status.from_control_info(control.id, control_dict.get("status", None))
+        control.status = Status.from_control_info(control.id,
+                                                  ssg.yaml.product_get(control_dict,
+                                                                       product,
+                                                                       "status"))
         control.automated = control_dict.get("automated", "no")
-        control.status_justification = control_dict.get('status_justification')
+        control.status_justification = ssg.yaml.product_get(control_dict,
+                                                            product,
+                                                            'status_justification')
         control.artifact_description = control_dict.get('artifact_description')
-        control.mitigation = control_dict.get('mitigation')
-        control.fixtext = control_dict.get('fixtext')
-        control.check = control_dict.get('check')
+        control.mitigation = ssg.yaml.product_get(control_dict, product, 'mitigation')
+        control.fixtext = ssg.yaml.product_get(control_dict, product, 'fixtext')
+        control.check = ssg.yaml.product_get(control_dict, product, 'check')
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
@@ -117,16 +131,7 @@ class Control(ssg.entities.common.SelectionHandler):
             raise ValueError(msg)
         control.levels = control_dict.get("levels", default_level)
         control.notes = control_dict.get("notes", "")
-        selections = control_dict.get("rules", {})
-
-        product = None
-        product_dir = None
-        benchmark_root = None
-        if env_yaml:
-            product = env_yaml.get('product', None)
-            product_dir = env_yaml.get('product_dir', None)
-            benchmark_root = env_yaml.get('benchmark_root', None)
-            content_dir = os.path.join(product_dir, benchmark_root)
+        selections = ssg.yaml.product_get(control_dict, product, 'rules', {})
 
         control.selections = selections
 

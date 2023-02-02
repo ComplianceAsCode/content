@@ -225,3 +225,15 @@ def convert_string_to_bool(string):
     else:
         raise ValueError(
                     "Invalid value %s while expecting boolean string" % string)
+
+
+def product_get(raw_dict, product, key, default=None):
+    if product is None:
+        return raw_dict.get(key, default)
+
+    product_key = "%s@%s" % (key, product)
+    product_val = raw_dict.get(product_key, None)
+    if product_val is not None:
+        return product_val
+
+    return raw_dict.get(key, default)
