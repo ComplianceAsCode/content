@@ -48,6 +48,8 @@ export -f rpm
     {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-9", ">") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-1", ">") | indent(4) }}}
 
+    {{{ bash_pkg_conditional_rpm("coconut", "4.5", ">=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.4.99", ">=") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-7", ">=") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "4.5.16-1", ">=") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-9", ">=") | indent(4) }}}
