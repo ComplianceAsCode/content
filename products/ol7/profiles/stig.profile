@@ -335,3 +335,4 @@ selections:
     - account_emergency_expire_date
     - package_screen_installed
     - sysctl_kernel_dmesg_restric
+    - authconfig_config_files_symlinks
