@@ -10,4 +10,8 @@ controls:
             - banner_etc_issue
             - dconf_gnome_banner_enabled
             - dconf_gnome_login_banner_text
+        # We override the rules for this control because while for most rules we are able to
+        # filter out based on products, some of the rules in this control have no prodtype
+        rules@rhcos4:
+            - banner_etc_issue
         status: automated

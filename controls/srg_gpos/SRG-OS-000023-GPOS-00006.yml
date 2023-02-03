@@ -9,4 +9,9 @@ controls:
             - banner_etc_issue
             - dconf_gnome_banner_enabled
             - dconf_gnome_login_banner_text
+        # We override the rules for this because while the sshd_enable_warning_banner is in
+        # general applicable to RHCOS (NIST moderate and high) and RHEL, STIG takes a different
+        # approach and disables SSH instead
+        rules@rhcos4:
+            - banner_etc_issue
         status: automated
