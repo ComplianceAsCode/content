@@ -176,16 +176,10 @@
     </local_variable>
 
     <ind:xmlfilecontent_object id="object_firewalld_sshd_port_enabled_zone_files_etc" version="1">
-        <ind:filepath operation="equals" var_check="at least one"
-            var_ref="var_firewalld_sshd_port_enabled_custom_zone_files"/>
+        <ind:path>/etc/firewalld/zones</ind:path>
+        <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
         <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
     </ind:xmlfilecontent_object>
-
-    <local_variable id="var_firewalld_sshd_port_enabled_custom_zone_files" version="1"
-        datatype="string" comment="all zone files present in /etc/firewalld/zones.">
-        <object_component item_field="filepath"
-            object_ref="object_firewalld_sshd_port_enabled_custom_zone_files"/>
-    </local_variable>
 
     <ind:variable_state id="state_firewalld_sshd_port_enabled_custom_zone_files_count"
         version="1">
