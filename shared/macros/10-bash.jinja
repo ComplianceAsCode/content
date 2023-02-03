@@ -1940,7 +1940,15 @@ https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-orderi
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
 {{%- macro bash_compare_version_rpm(package, ver, op) -%}}
-{ real=$({{{ bash_get_rpm_package_version(package) }}}); ver={{{ ver }}};
+{ real=$({{{ bash_get_rpm_package_version(package) }}}); ver={{{ ver }}}; {{{ bash_compare_version(op) }}}; }
+{{%- endmacro -%}}
+
+{{#
+This macro generates comparison code based on the operator.
+
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+#}}
+{{%- macro bash_compare_version(op) -%}}
 {{%- if op == "<" -%}}
 [[ "$real" != "$ver" ]] && printf "%s\n%s" "$real" "$ver" | sort -VC
 {{%- elif op == "<=" -%}}
@@ -1954,7 +1962,6 @@ printf "%s\n%s" "$real" "$ver" | sort -VC
 {{%- elif op == ">=" -%}}
 printf "%s\n%s" "$ver" "$real" | sort -VC
 {{%- endif -%}}
-; }
 {{%- endmacro -%}}
 
 {{#
