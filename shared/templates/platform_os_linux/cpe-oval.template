@@ -1,9 +1,18 @@
 <def-group>
-  <definition class="inventory" id="platform_{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("The installed operating system is " + OS_NAME, affected_platforms=["multi_platform_all"]) }}}
+  <definition class="inventory" id="{{{ _RULE_ID }}}" version="1">
+    {{%- if VER_SPECS_TITLE -%}}
+      {{%- set description = "The installed operating system is " + OS_NAME -%}}
+    {{%- else -%}}
+      {{%- set description = "The installed operating system is " + OS_NAME + " version " + VER_SPECS_TITLE -%}}
+    {{%- endif -%}}
+    {{{ oval_metadata(description, affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="AND">
       <criterion comment="The operating system installed on the system is {{{ OS_NAME }}}"
       test_ref="test_os_id_is_{{{ ID }}}" />
+      {{% for spec in VER_SPECS %}}
+        <criterion comment="The operating system {{{ OS_NAME }}} of version {{{ spec.evr_op }}} {{{ spec.ver }}} is installed"
+        test_ref="test_{{{ _RULE_ID }}}" />
+      {{% endfor %}}
     </criteria>
   </definition>
 
@@ -21,5 +30,22 @@
   <ind:textfilecontent54_state id="state_os_id_is_{{{ ID }}}" version="1">
     <ind:subexpression operation="pattern match">{{{ OS_ID }}}</ind:subexpression>
   </ind:textfilecontent54_state>
+
+{{% for spec in VER_SPECS %}}
+  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is {{{ spec.ver }}}" id="test_{{{ _RULE_ID }}}" version="1">
+    <ind:object object_ref="obj_{{{ _RULE_ID }}}" />
+    <ind:state state_ref="state_{{{ _RULE_ID }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ _RULE_ID }}}" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION_ID=[&quot;&apos;]?(\w+)[&quot;&apos;]?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ _RULE_ID }}}" version="1">
+    <ind:subexpression operation="{{{ spec.evr_op }}}" datatype="version">{{{ spec.ver }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endfor %}}
 
 </def-group>
