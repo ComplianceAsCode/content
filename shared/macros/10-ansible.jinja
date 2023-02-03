@@ -349,6 +349,37 @@ value: :code:`Setting={{ varname1 }}`
 {{{ ansible_deregexify_banner_backslash() }}} |
 wordwrap() }}
 {{%- endmacro %}}
+{{#
+  Formats a banner regex for use in :code:`/etc/motd`
+
+:param banner_var_name: name of ansible variable with the banner regex
+:type banner_var_name: str
+#}}
+{{% macro ansible_deregexify_banner_etc_motd(banner_var_name) -%}}
+{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
+{{{ ansible_deregexify_multiple_banners() }}} |
+{{{ ansible_deregexify_banner_space() }}} |
+{{{ ansible_deregexify_banner_newline("\\n") }}} |
+{{{ ansible_deregexify_banner_backslash() }}} |
+wordwrap() }}
+{{%- endmacro %}}
+
+{{#
+  Formats a banner regex for use in :code:`/etc/issue.net`
+
+:param banner_var_name: name of ansible variable with the banner regex
+:type banner_var_name: str
+#}}
+{{% macro ansible_deregexify_banner_etc_issue_net(banner_var_name) -%}}
+{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
+{{{ ansible_deregexify_multiple_banners() }}} |
+{{{ ansible_deregexify_banner_space() }}} |
+{{{ ansible_deregexify_banner_newline("\\n") }}} |
+{{{ ansible_deregexify_banner_backslash() }}} |
+wordwrap() }}
+{{%- endmacro %}}
 
 
 {{#
