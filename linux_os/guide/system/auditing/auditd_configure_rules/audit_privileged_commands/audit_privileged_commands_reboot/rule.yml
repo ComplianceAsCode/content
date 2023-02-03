@@ -27,9 +27,11 @@ references:
     nist: AU-12(c)
     srg: SRG-OS-000477-GPOS-00222
 
-{{{ ocil_fix_srg_privileged_command("reboot", "/usr/sbin/") }}}
+{{{ ocil_fix_srg_privileged_command("reboot") }}}
 
 template:
     name: audit_rules_privileged_commands
     vars:
         path: /usr/sbin/reboot
+        path@sle12: /sbin/reboot
+        path@sle15: /sbin/reboot
