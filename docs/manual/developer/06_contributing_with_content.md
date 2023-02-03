@@ -1240,6 +1240,27 @@ The `platform` property of a rule (or a group) can contain a [Boolean expression
 that describes the relationship of a set of individual CPEs (symbols), which would later be converted
 by the build system into the CPE AL definition in the XCCDF document.
 
+#### Package CPEs
+
+Package CPEs are used to define rule applicability based on presence of a package or of a specific version of the package.
+
+The `package` platform is defined in `shared/applicability/package.yml`.
+To add a new package-based CPE, simply create a new entry in this file.
+The platform is using the `platform_package` template which is defined in `shared/templates/platform_package`.
+
+The package platform supports version checking.
+That allows you to define a platform for specific version.
+For example, to make a rule applicable only on systems with `systemd` newer than version 250, add the following to the `rule.yml`:
+
+    platform: package[systemd]>250
+
+We recommend to use sharp inequality (`>` and `<` instead of `>=` and `<=`), otherwise you would have to use distribution specific versions in rules eg. `251.10-588.el9`.
+
+In general, we can use standard RPM or DEB package versions in these expressions.
+There are some exceptions where the behavior of OVAL check isn't consistent with Ansible and Bash behavior.
+- Epoch isn't supported.
+- Release part overrides the distribution part in the Bash conditionals therefore we don't recommend using distribution-specific versions.
+
 ## Tests (ctest)
 
 ComplianceAsCode uses ctest to orchestrate testing upstream. To run the
