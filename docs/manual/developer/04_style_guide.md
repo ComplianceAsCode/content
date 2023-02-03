@@ -110,7 +110,7 @@ and keep these guidelines in mind when writing new code.
 ### Python
 
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
-    * We use [PEP 8 Speaks](https://pep8speaks.com/) and it leaves a comment on PR if you have PEP8 issues in the Python file(s) you touched
+    * We use [Code Climate](https://codeclimate.com/quality) to help automate the checking for PEP 8 issues.
     * We do make one change from PEP 8; our maximum line length is 99 characters
 * Methods should be defined before they are called
 * The files in the build system shall be Python 2.7 and Python 3 compatible
