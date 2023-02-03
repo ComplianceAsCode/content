@@ -34,7 +34,7 @@ controls:
     - l2_workstation
     status: automated
     rules:
-    - kernel_module_cramfs_disabled 
+    - kernel_module_cramfs_disabled
     - kernel_module_squashfs_disabled
 
   - id: 1.1.1.2
@@ -250,10 +250,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual  
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually. 
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
       - ensure_GPG_keys_are_configured
 
@@ -262,10 +262,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual 
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually. 
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
     - ensure_package_repositories_are_configured
 
@@ -433,7 +433,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules: 
+    rules:
       - all_apparmor_profiles_in_enforce_complain_mode
       - var_apparmor_mode=complain
 
@@ -454,7 +454,7 @@ controls:
     status: automated
     rules:
       - banner_etc_motd
-      - login_banner_text=cis_banners
+      - motd_banner_text=cis_banners
 
   - id: 1.8.1.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -474,7 +474,7 @@ controls:
     status: automated
     rules:
       - banner_etc_issue_net
-      - login_banner_text=cis_banners 
+      - remote_login_banner_text=cis_banners
 
   - id: 1.8.1.4
     title: Ensure permissions on /etc/motd are configured (Automated)
@@ -518,7 +518,20 @@ controls:
     related_rules:
     - security_patches_up_to_date
 
-  - id: "1.10"
+  - id: 1.10
+    title: Ensure GNOME Display Manager is removed (Automated)
+    levels:
+    - l2_server
+    status: manual
+
+  - id: 1.10
+    title: Ensure GNOME Display Manager is removed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual # Rule is missing: https://github.com/ComplianceAsCode/content/issues/7225
+
+  - id: 1.10
     title: Ensure GDM login banner is configured (Automated)
     levels:
       - l1_server
@@ -1029,8 +1042,8 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated 
-    rules: 
+    status: automated
+    rules:
     - set_iptables_default_rule
 
   - id: 3.5.3.1
@@ -1038,8 +1051,8 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated 
-    rules: 
+    status: automated
+    rules:
     - set_ipv6_loopback_traffic
 
   - id: 3.5.3.2
@@ -1070,7 +1083,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: automated 
+    status: automated
     rules:
       - package_audit_installed
       - package_audit-libs_installed
@@ -1177,7 +1190,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    status: automated 
+    status: automated
     rules:
     - audit_rules_mac_modification
     - audit_rules_mac_modification_usr_share
@@ -1331,7 +1344,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules: 
+    rules:
       - rsyslog_files_permissions
       - rsyslog_files_ownership
       - rsyslog_files_groupownership
@@ -1796,7 +1809,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
@@ -1807,7 +1820,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_minimum_age_login_defs
       - var_accounts_minimum_age_login_defs=1
@@ -2073,7 +2086,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_user_interactive_home_directory_exists
 
@@ -2196,6 +2209,6 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - ensure_shadow_group_empty
