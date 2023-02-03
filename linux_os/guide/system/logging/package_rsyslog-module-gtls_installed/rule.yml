@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Ensure rsyslog-module-gtls is installed'
+
+description: |-
+    TLS protocol support for rsyslog is installed.
+    {{{ describe_package_install(package="rsyslog-module-gtls") }}}
+
+rationale: |-
+    The rsyslog-module-gtls package provides Transport Layer Security (TLS) support
+    for the rsyslog daemon, which enables secure remote logging.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-91512-4
+    cce@sle15: CCE-91199-0
+
+references:
+    anssi: BP28(R43)
+    disa: CCI-000366
+    ospp: FTP_ITC_EXT.1.1
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000120-GPOS-00061
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="rsyslog-module-gtls") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: rsyslog-module-gtls
+
+fixtext: |-
+    {{{ describe_package_install("rsyslog-module-gtls") }}}
+
+srg_requirement:
+  {{{ full_name }}} must have the packages required for encrypting offloaded audit logs installed.
