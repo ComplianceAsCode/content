@@ -112,6 +112,7 @@ selections:
     -  sshd_set_maxstartups
     -  sshd_use_approved_ciphers
     -  sshd_use_approved_macs
+    -  sshd_use_strong_kex
     -  sudo_add_use_pty
     -  sudo_custom_logfile
     -  sysctl_fs_suid_dumpable
