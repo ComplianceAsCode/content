@@ -133,9 +133,10 @@
          OVAL resources in order to detect and assess only active zone, which are zones with at
          least one NIC assigned to it. Since it was possible to easily have the list of active
          zones, it was cumbersome to use that list in other OVAL objects without introduce a high
-         level of complexity to make sure environments with multiple NICs and multiple zones are
-         in use. So, in favor of simplicity and readbility it was decided to work with a static
-         list. It means that, in the future, it is possible this list needs to be updated. -->
+         level of complexity to ensure proper assessment in environments where multiple NICs and
+         multiple zones are in use. So, in favor of simplicity and readbility it was decided to
+         work with a static list. It means that, in the future, it is possible this list needs to
+         be updated. -->
     <local_variable id="var_firewalld_sshd_port_enabled_default_zones" version="1"
         datatype="string"
         comment="Regex containing the list of zones files delivered in the firewalld package">
@@ -145,23 +146,62 @@
     <!-- If any default zone is modified by the administrator, the respective zone file is placed
          in the /etc/firewalld/zones dir in order to override the default zone settings. The same
          directory is applicable for new zones created by the administrator. Therefore, all files
-         in this directory should also allow SSH. -->
-    <ind:xmlfilecontent_test id="test_firewalld_sshd_port_enabled_zone_ssh_enabled_etc"
+         in this directory should also allow SSH.
+         This test was updated in a reaction to https://github.com/OpenSCAP/openscap/issues/1923,
+         which changed the behaviour of xmlfilecontent probe in OpenSCAP 1.3.7. Currently, a
+         variable test is the simplest way to check if all custom zones are allowing ssh, but have
+         an impact in transparency since the objects are not shown in reports. The transparency
+         impact can be workarounded by using other OVAL objects, but this would impact in
+         readability and would increase complexity. This solution is in favor of simplicity. -->
+    <ind:variable_test id="test_firewalld_sshd_port_enabled_zone_ssh_enabled_etc"
         check="all" check_existence="at_least_one_exists" version="1"
         comment="SSH service is defined in all zones created or modified by the administrator">
-      <ind:object object_ref="object_firewalld_sshd_port_enabled_zone_files_etc"/>
-      <ind:state state_ref="state_firewalld_sshd_port_enabled_zone_files_etc"/>
-    </ind:xmlfilecontent_test>
+        <ind:object
+            object_ref="object_firewalld_sshd_port_enabled_custom_zone_files_with_ssh_count"/>
+        <ind:state state_ref="state_firewalld_sshd_port_enabled_custom_zone_files_count"/>
+    </ind:variable_test>
+
+    <ind:variable_object id="object_firewalld_sshd_port_enabled_custom_zone_files_with_ssh_count"
+        version="1">
+      <ind:var_ref>var_firewalld_sshd_port_enabled_custom_zone_files_with_ssh_count</ind:var_ref>
+    </ind:variable_object>
+
+    <local_variable id="var_firewalld_sshd_port_enabled_custom_zone_files_with_ssh_count"
+        datatype="int" version="1"
+        comment="Variable including number of custom zone files allowing ssh">
+        <count>
+            <object_component item_field="filepath"
+                object_ref="object_firewalld_sshd_port_enabled_zone_files_etc"/>
+        </count>
+    </local_variable>
 
     <ind:xmlfilecontent_object id="object_firewalld_sshd_port_enabled_zone_files_etc" version="1">
-      <ind:path>/etc/firewalld/zones</ind:path>
-      <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
-      <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
+        <ind:path>/etc/firewalld/zones</ind:path>
+        <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
+        <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
     </ind:xmlfilecontent_object>
 
-    <ind:xmlfilecontent_state id="state_firewalld_sshd_port_enabled_zone_files_etc" version="1">
-      <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
-    </ind:xmlfilecontent_state>
+    <ind:variable_state id="state_firewalld_sshd_port_enabled_custom_zone_files_count"
+        version="1">
+        <ind:value datatype="int" operation="equals" var_check="at least one"
+            var_ref="var_firewalld_sshd_port_enabled_custom_zone_files_count"/>
+    </ind:variable_state>
+
+    <local_variable id="var_firewalld_sshd_port_enabled_custom_zone_files_count"
+        datatype="int" version="1"
+        comment="Variable including number of custom zone files present in /etc/firewalld/zones">
+        <count>
+            <object_component item_field="filepath"
+                object_ref="object_firewalld_sshd_port_enabled_custom_zone_files"/>
+        </count>
+    </local_variable>
+
+    <unix:file_object id="object_firewalld_sshd_port_enabled_custom_zone_files" version="1">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1"
+            recurse_file_system="local"/>
+        <unix:path>/etc/firewalld/zones</unix:path>
+        <unix:filename operation="pattern match">^.*\.xml$</unix:filename>
+    </unix:file_object>
 
     <!-- SSH service is configured as expected -->
     <!-- The firewalld package brings many services already defined out-of-box, including SSH.
