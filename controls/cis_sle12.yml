@@ -87,7 +87,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+    - partition_for_dev_shm
 
   - id: 1.1.7
     title: Ensure noexec option set on /dev/shm partition (Automated)
