@@ -24,6 +24,9 @@ filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platfo
 
 selections:
     - srg_ctr:all
+  # Special case: This rule covers SRG-OS-000046-GPOS-00022 but needs to be included
+  # here because SRG-OS can only contain linux_os rules
+    - audit_error_alert_exists
   ### Helper Rules
   ### This is a helper rule to fetch the required api resource for detecting OCP version
     - version_detect_in_ocp
