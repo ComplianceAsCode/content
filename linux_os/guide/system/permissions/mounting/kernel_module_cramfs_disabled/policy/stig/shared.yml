@@ -20,4 +20,5 @@ checktext: |-
 fixtext: |-
     To configure the system to prevent the cramfs kernel module from being loaded, add the following line to the file /etc/modprobe.d/blacklist.conf (or create blacklist.conf if it does not exist):
 
+    install tipc /bin/false
     blacklist cramfs
