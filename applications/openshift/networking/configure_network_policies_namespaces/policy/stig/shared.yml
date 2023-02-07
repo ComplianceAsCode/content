@@ -1,0 +1,61 @@
+checktext: |-
+  Verify that each user namespace has a Network Policy
+
+  1. Get a list of existing projects(namespaces), exclude default, kube-*, openshift-*
+
+  > oc get namespaces -ojson | jq -r '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.name]'
+
+  2. Get a list of namespaces, excluding default, kube-* and openshift-* that contain
+  a NetworkPolicy object.
+
+  > oc get NetworkPolicy -A -ojson | jq -r '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique'
+
+  If the two lists do not match, in other words, if a project does not
+  have any NetworkPolicy definitions, this is a finding.
+fixtext: |-
+  Configure a default network policy as necessary to protect the flow of
+  information by performing the following steps.
+
+  1. Create a networkpolicy.yaml file with the NetworkPolicy object
+  definitions desired. For example, the following section defines two
+  policies one to allow requests from the same namespace, the other to
+  allow from the openshift ingress routing service.
+
+  apiVersion: v1
+  kind: List
+  items:
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-same-namespace
+    spec:
+      podSelector:
+      ingress:
+      - from:
+        - podSelector: {}
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-openshift-ingress
+    spec:
+      ingress:
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+      podSelector: {}
+      policyTypes:
+      - Ingress
+
+  3. Apply the NetworkPolicy object to the appropriate namespaces by
+  running the following command:
+
+  > oc apply -f networkpolicy.yaml -n <PROJECT>
+
+  For additional information regarding network policies, see
+  https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
+
+srg_requirement: |-
+  Red Hat OpenShift Container Platform 4 must enforce approved authorizations
+  for controlling the flow of information within Red Hat OpenShift Container
+  Platform 4 based on organization-defined information flow control policies.
