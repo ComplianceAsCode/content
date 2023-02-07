@@ -1,5 +1,6 @@
 #!/bin/bash
 # remediation = none
+# packages = passwd
 
 TEST_USER="testUserChage1"
 
