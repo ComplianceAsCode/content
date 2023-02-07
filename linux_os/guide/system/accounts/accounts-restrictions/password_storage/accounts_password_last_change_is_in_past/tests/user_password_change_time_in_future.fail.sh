@@ -4,7 +4,7 @@
 TEST_USER="testUserChage1"
 
 useradd $TEST_USER
-echo -e "testpass\ntestpass" | passwd $TEST_USER
+echo "testpass" | passwd --stdin $TEST_USER
 
 TODAY="$(($(date +%s)/86400))"
 TOMORROW="$(( TODAY + 1 ))"
