@@ -22,6 +22,6 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "passwd" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-passwd
+    -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-passwd
 
     The audit daemon must be restarted for the changes to take effect.
