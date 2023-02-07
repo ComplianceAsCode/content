@@ -1,4 +1,5 @@
 #!/bin/bash
+# remediation = none
 
 TEST_USER="testUserChage1"
 
