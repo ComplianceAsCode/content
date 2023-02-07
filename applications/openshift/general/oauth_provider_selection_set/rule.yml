@@ -1,0 +1,41 @@
+prodtype: ocp4
+
+title: Ensure that the OpenShift OAuth provider selection is set
+
+description: |-
+  Custom login pages can be helpful to show users a branded page that they
+  trust and expect before being redirected to the authentication provider.
+  <br/>
+
+  This is achievable via the OAuth object by creating a custom login template,
+  storing it in a Kubernetes Secret and referencing it in the appropriate
+  field as
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/web_console/customizing-the-web-console.html#customizing-the-login-page_customizing-web-console",
+              text="described in the documentation") }}}
+
+rationale: |-
+  Displays to users organization-defined IdP selection
+
+identifiers:
+  cce@ocp4: CCE-90666-9
+
+severity: medium
+
+references:
+  nist: AC-8
+  srg: SRG-APP-000068-CTR-000120,SRG-APP-000069-CTR-000125
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/config.openshift.io/v1/oauths/cluster
+    yamlpath: ".spec.templates.providerSelection.name"
+    values:
+    - value: ".+"
+      operation: "pattern match"
+      type: "string"
