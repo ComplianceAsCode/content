@@ -19,10 +19,7 @@ checktext: |-
 
     If "Include /etc/crypto-policies/back-ends/openssh.config" or "Include /etc/ssh/ssh_config.d/*.conf" are not included in the system ssh client config or the file "/etc/ssh/ssh_config.d/50-redhat.conf" is missing, this is a finding.
 
-
 fixtext: |-
     Configure the {{{ full_name }}} SSH daemon to use system-wide crypto policies by running the following commands:
 
     $ sudo dnf reinstall openssh-clients
-
-    A reboot is required for the changes to take effect.
