@@ -31,15 +31,16 @@ ocil: |-
 fixtext: |-
     Configure iptables in accordance with site policy. The following commands will implement
     a policy to allow all outbound connections and all established connections:
-      <pre>
-      # iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT
-      # iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
-      # iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT
-      # iptables -A INPUT -p tcp -m state --state ESTABLISHED -j ACCEPT
-      # iptables -A INPUT -p udp -m state --state ESTABLISHED -j ACCEPT
-      # iptables -A INPUT -p icmp -m state --state ESTABLISHED -j ACCEPT
-      </pre>
-      ,use ip6tables in case of IPv6 is enabled and IPv6 rules need to be configured
+    <pre>
+    # iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT
+    # iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
+    # iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT
+    # iptables -A INPUT -p tcp -m state --state ESTABLISHED -j ACCEPT
+    # iptables -A INPUT -p udp -m state --state ESTABLISHED -j ACCEPT
+    # iptables -A INPUT -p icmp -m state --state ESTABLISHED -j ACCEPT
+    </pre>
+    ,use ip6tables in case of IPv6 is enabled and IPv6 rules need to be configured
 
-      Note: Changing firewall settings while connected over network can result in being locked out
-      of the system.
+warnings: |- 
+    Changing firewall settings while connected over network can result in being locked out of
+    the system.
