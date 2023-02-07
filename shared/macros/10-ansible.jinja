@@ -727,7 +727,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- if ver -%}}
 "{{{ package }}}" in ansible_facts.packages and (ansible_facts.packages["{{{ package }}}"] | last)["version"] is version("{{{ ver }}}", "{{{ op }}}")
 {{%- else -%}}
-'"{{{ package }}}" in ansible_facts.packages'
+"{{{ package }}}" in ansible_facts.packages
 {{%- endif -%}}
 {{%- endmacro -%}}
 
