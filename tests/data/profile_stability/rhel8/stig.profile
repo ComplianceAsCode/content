@@ -363,6 +363,7 @@ selections:
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - set_password_hashing_min_rounds_logindefs
+- ssh_keys_passphrase_protected
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -418,7 +419,6 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
 - sysctl_user_max_user_namespaces
-- ssh_keys_passphrase_protected
 - tftpd_uses_secure_mode
 - usbguard_generate_policy
 - wireless_disable_interfaces
