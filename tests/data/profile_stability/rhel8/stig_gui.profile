@@ -373,6 +373,7 @@ selections:
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - set_password_hashing_min_rounds_logindefs
+- ssh_keys_passphrase_protected
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
@@ -389,7 +390,6 @@ selections:
 - sshd_use_approved_kex_ordered_stig
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
-- ssh_keys_passphrase_protected
 - sssd_certificate_verification
 - sssd_enable_certmap
 - sssd_enable_smartcards
