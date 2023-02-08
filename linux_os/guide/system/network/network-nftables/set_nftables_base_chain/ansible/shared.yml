@@ -1,0 +1,76 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+#Name of the table
+{{{ ansible_instantiate_variables("var_nftables_table") }}}
+#Familiy of the table 
+{{{ ansible_instantiate_variables("var_nftables_family") }}}
+#Number of base chains
+{{{ ansible_instantiate_variables("var_nftables_base_chain_number") }}}
+#Name(s) of base chain
+{{{ ansible_instantiate_variables("var_nftables_base_chain_names") }}}
+#Type(s) of base chain
+{{{ ansible_instantiate_variables("var_nftables_base_chain_types") }}}
+# Hooks for base chain
+{{{ ansible_instantiate_variables("var_nftables_base_chain_hooks") }}}
+#Priority
+{{{ ansible_instantiate_variables("var_nftables_base_chain_priorities") }}}
+#Policy 
+{{{ ansible_instantiate_variables("var_nftables_base_chain_policies") }}}
+
+- name: {{{ rule_title }}} - Remove file for remediation
+  ansible.builtin.file:
+    path: ~/set_nftables_base_chain.sh
+    state: absent
+
+- name: {{{ rule_title }}} - Generation of script for remediation
+  ansible.builtin.copy:
+    dest: "~/set_nftables_base_chain.sh"
+    content: |
+      #!/bin/bash
+      
+      var_nftables_table='{{var_nftables_table}}'
+      var_nftables_family='{{var_nftables_family}}'
+      var_nftables_base_chain_number='{{var_nftables_base_chain_number}}'
+      var_nftables_base_chain_names={{var_nftables_base_chain_names}}
+      var_nftables_base_chain_types={{var_nftables_base_chain_types}}
+      var_nftables_base_chain_hooks={{var_nftables_base_chain_hooks}}
+      var_nftables_base_chain_priorities={{var_nftables_base_chain_priorities}}
+      var_nftables_base_chain_policies={{var_nftables_base_chain_policies}}
+        
+      IS_TABLE=$(nft list tables)
+      if [ -z "$IS_TABLE" ]
+      then
+        nft create table "$var_nftables_family" "$var_nftables_table"
+      fi  
+        
+      for ((i=0; i < $((var_nftables_base_chain_number)); i++)) 
+      do
+        is_chain_exist=`nft list ruleset | grep 'hook ${var_nftables_base_chain_hooks[$i]}'`
+        if [ -z "$is_chain_exist"] 
+        then  
+           chain_to_add="add chain $var_nftables_family $var_nftables_table ${var_nftables_base_chain_names[$i]} \
+           { type ${var_nftables_base_chain_types[$i]} hook ${var_nftables_base_chain_hooks[$i]} \
+           priority ${var_nftables_base_chain_priorities[$i]} ; \
+           policy ${var_nftables_base_chain_policies[$i]}; }"
+           mycommand="nft '$chain_to_add'"
+           eval $mycommand
+        fi     
+      done 
+        
+- name: {{{ rule_title }}} - Change mode of file for remediation 
+  ansible.builtin.file:
+    path: ~/set_nftables_base_chain.sh
+    state: touch
+    mode: u=rwx,g=rx,o=rx
+    
+- name: {{{ rule_title }}} - Apply remediation 
+  ansible.builtin.command: sh ~/set_nftables_base_chain.sh
+
+- name: {{{ rule_title }}} - Remove file for remediation
+  ansible.builtin.file:
+    path: ~/set_nftables_base_chain.sh
+    state: absent
