@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure SELinux State is Enforcing'
+
+description: |-
+    The SELinux state should be set to <tt>{{{ xccdf_value("var_selinux_state") }}}</tt> at
+    system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
+    following line to configure the system to boot into enforcing mode:
+    <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
+
+rationale: |-
+    Setting the SELinux state to enforcing ensures SELinux is able to confine
+    potentially compromised processes to the security policy, which is designed to
+    prevent them from causing damage to the system or further elevating their
+    privileges.
+
+severity: high
+
+ocil_clause: 'SELINUX is not set to enforcing'
+
+ocil: |-
+    Ensure that {{{ full_name }}} verifies correct operation of security functions.
+
+    Check if "SELinux" is active and in "{{{ xccdf_value("var_selinux_state") }}}" mode with the following command:
+
+    $ sudo getenforce
+    {{{ xccdf_value("var_selinux_state") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to verify correct operation of security functions.
+
+    Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
+    <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
+
+    A reboot is required for the changes to take effect.
+
+srg_requirement: |-
+    {{{ full_name }}} must use a Linux Security Module configured to enforce limits on system services.
