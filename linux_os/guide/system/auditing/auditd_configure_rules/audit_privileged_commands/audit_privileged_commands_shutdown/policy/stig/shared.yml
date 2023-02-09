@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep shutdown
 
-    -a always,exit -F path=/usr/sbin/shutdown -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-shutdown
+    -a always,exit -F path=/usr/sbin/shutdown -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-shutdown
 
     If the command does not return a line, or the line is commented out, this is a finding.
 

@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep reboot
 
-    -a always,exit -F path=/usr/sbin/reboot -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-reboot
+    -a always,exit -F path=/usr/sbin/reboot -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-reboot
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
