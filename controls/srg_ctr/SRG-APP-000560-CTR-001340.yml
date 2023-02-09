@@ -5,5 +5,9 @@ controls:
   title: {{{ full_name }}} must prohibit communication using TLS versions 1.0
     and 1.1, and SSL 2.0 and 3.0.
   rules:
+  - api_server_tls_security_profile
+  - kubelet_configure_tls_min_version
+  - ingress_controller_tls_security_profile
+  related_rules:
   - fips_mode_enabled_on_all_nodes
   status: automated
