@@ -3,7 +3,6 @@
 
 . $SHARED/setup_config_files.sh
 setup_correct_sssd_config
-
-systemctl enable sssd
+enable_and_start_service
 
 sed -i 's/ldap_id_use_start_tls = true/ldap_id_use_start_tls = false/I' /etc/sssd/sssd.conf
