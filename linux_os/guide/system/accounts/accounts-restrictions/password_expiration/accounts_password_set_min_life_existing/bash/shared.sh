@@ -8,7 +8,7 @@
 
 {{% if product in ["sle12", "sle15"] %}}
 usrs_min_pass_age=( $(awk -F: '$4 < $var_accounts_minimum_age_login_defs || $4 == "" {print $1}' /etc/shadow) )
-for i in ${usrs_min_pass_age[@]};
+for i in ${usrs_min_pass_age[@]}
 do
   passwd -q -n $((var_accounts_minimum_age_login_defs)) $i
 done
