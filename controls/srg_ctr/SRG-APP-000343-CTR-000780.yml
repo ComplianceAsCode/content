@@ -3,8 +3,23 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must audit the execution of privileged functions.
-  rules:
-  - directory_access_var_log_kube_audit
-  - directory_access_var_log_oauth_audit
-  - directory_access_var_log_ocp_audit
   status: inherently met
+  status_justification: |-
+    All interactions with OpenShift take place by way of the API. By default, OpenShift logs all requests made to the API server, this is defined in the OpenShift Audit Log Policy. A cluster administrator may change this behavior to increase the amount of data that is logged by changing the value of the `spec.audit.profile` key to one of three options [Default, WriteRequestBodies, AllRequestBodies].
+
+    Check the current state of the Audit Log Policy:
+    > oc edit apiserver cluster
+    Inspect the `spec.audit.profile` key.
+
+    To inspect the audit logs run the following commands:
+    Select a log to inspect by listing them first:
+    > oc adm node-logs --role=master --path=openshift-api/server`
+
+    View a specific API server log by providing the node name and the log name:
+    > oc adm node-logs <node_name> --path=openshift-apiserver/<log_name>`
+
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/security/audit-log-policy-config.html#audit-log-policy-config
+    https://docs.openshift.com/container-platform/latest/security/audit-log-view.html
