@@ -74,6 +74,8 @@ def word_by_word_diff(original: str, edited: str) -> str:
 
 def clean_lines(lines: str) -> str:
     result = list()
+    lines = lines.replace('>', '&gt;')
+    lines = lines.replace('<', '&lt;')
     for line in lines.split('\n'):
         result.append(line.rstrip())
     return '\n'.join(result)
