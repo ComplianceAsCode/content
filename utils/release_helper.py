@@ -622,7 +622,7 @@ def print_next_release_stats(data):
 
 
 # Functions to specific phases of the process
-def stats(repo):
+def stats(repo, args):
     try:
         rel_data = collect_release_info(repo)
         print_last_release_stats(rel_data)
@@ -764,6 +764,13 @@ def parse_arguments():
 
 
 def main():
+    subcmds = dict(
+        stats=stats,
+        cleanup=cleanup,
+        release_prep=release_prep,
+        release=release,
+        finish=finish)
+
     args = parse_arguments()
 
     try:
@@ -773,23 +780,7 @@ def main():
         print(f'Error when getting the repository {args.repository}: {e}')
         exit(1)
 
-    if args.subcmd == "stats":
-        stats(repo)
-
-    if args.subcmd == "cleanup":
-        cleanup(repo, args)
-
-    if args.subcmd == "release_prep":
-        if get_old_stabilization_branch(repo):
-            print('Ops. There is an old branch to be removed. Please, check branch cleanup.')
-            exit(1)
-        release_prep(repo, args)
-
-    if args.subcmd == "release":
-        release(repo, args)
-
-    if args.subcmd == "finish":
-        finish(repo, args)
+    subcmds[args.subcmd](repo, args)
 
 
 if __name__ == "__main__":
