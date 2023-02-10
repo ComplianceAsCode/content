@@ -69,8 +69,17 @@ def get_repo_object(session, repo_id) -> object:
     return session.get_repo(repo_id)
 
 
+def get_repo_root_path() -> str:
+    root_path = get_script_path()
+    return os.path.dirname(root_path)
+
+
+def get_script_path() -> str:
+    return os.path.dirname(os.path.realpath(__file__))
+
+
 def show_git_diff():
-    subprocess.run(['git', 'diff'])
+    subprocess.run(['git', 'diff'], cwd=get_repo_root_path())
     print('\nPlease, review the changes and propose a PR to "master" branch.')
 
 
@@ -119,14 +128,14 @@ def remove_old_stabilization_branch(repo, branch) -> None:
 def get_contributors_commit_diff(commit) -> str:
     commit_diff = subprocess.run(
         ['git', 'show', '--word-diff', commit, 'Contributors.md'],
-        capture_output=True, text=True)
+        capture_output=True, text=True, cwd=get_repo_root_path())
     return commit_diff.stdout
 
 
 def get_contributors_last_commit() -> str:
     last_commit = subprocess.run(
         ['git', 'log', '--pretty=format:%h', '-1', '--', 'Contributors.md'],
-        capture_output=True, text=True)
+        capture_output=True, text=True, cwd=get_repo_root_path())
     return last_commit.stdout
 
 
@@ -173,9 +182,10 @@ def update_contributors():
         print(f'It is all fine, the contributors list was updated in {last_update}')
     else:
         print(f'Contributors list last update was in {last_update}. I can update it for you.')
-        root_dir = os.path.dirname(os.path.dirname(__file__))
-        contributors_script = os.path.join(root_dir, "utils/generate_contributors.py")
-        subprocess.run([f'PYTHONPATH=. {contributors_script}'], shell=True)
+        utils_scripts_path = get_script_path()
+        contributors_script = os.path.join(utils_scripts_path, 'generate_contributors.py')
+        subprocess.run(
+            [f'PYTHONPATH=. {contributors_script}'], shell=True, cwd=get_repo_root_path())
         show_git_diff()
 
 
@@ -294,8 +304,8 @@ def bump_master_version(repo):
     new_version = bump_version(old_version, 'minor')
     old_minor_version = old_version.split('.')[2]
     new_minor_version = new_version.split('.')[2]
-    root_dir = os.path.dirname(os.path.dirname(__file__))
-    with open(os.path.join(root_dir, "CMakeLists.txt"), mode='r', encoding='utf-8') as file:
+    repo_root = get_repo_root_path()
+    with open(os.path.join(repo_root, "CMakeLists.txt"), mode='r', encoding='utf-8') as file:
         content = file.readlines()
 
     for ln, line in enumerate(content):
@@ -304,7 +314,7 @@ def bump_master_version(repo):
             content_changed = True
 
     if content_changed:
-        with open(os.path.join(root_dir, "CMakeLists.txt"), mode='w', encoding='utf-8') as file:
+        with open(os.path.join(repo_root, "CMakeLists.txt"), mode='w', encoding='utf-8') as file:
             file.writelines(content)
         show_git_diff()
 
