@@ -36,7 +36,7 @@ references:
 ocil_clause: 'the package is not installed'
 
 {{% if 'sle' not in product %}}
-{{{ complete_ocil_entry_package(package="gnutls") }}}
+{{{ complete_ocil_entry_package(package="rsyslog-gnutls") }}}
 {{% else %}}
 {{{ complete_ocil_entry_package(package="rsyslog-module-gtls") }}}
 {{% endif %}}
@@ -50,7 +50,7 @@ template:
 
 fixtext: |-
     {{% if 'sle' not in product %}}
-    {{{ describe_package_install(package="rsyslog-module-gnutls") }}}
+    {{{ describe_package_install(package="rsyslog-gnutls") }}}
     {{% else %}}
     {{{ describe_package_install(package="rsyslog-module-gtls") }}}
     {{% endif %}}
