@@ -1,6 +1,5 @@
 #!/bin/bash
 # remediation = none
-# packages = passwd
 
 # create valid testuser
 echo 'testuservalid:$6$rounds=65536$exIFis0tobKRcGBk$b.UR.Z8h96FdxJ1bgA/vhdnp0Lsm488swdILNguQX/5qH5hdmClyYb5xk3TpELXWzr4JOiTlHfRkPsXSjMPjv0:19396:1:60:7:35::' >> /etc/shadow
