@@ -88,14 +88,6 @@ def filter_repo_branch_by_name(branches, name) -> object:
     return [branch for branch in branches if branch.name == name]
 
 
-def get_repo_branch(repo, branch_name) -> object:
-    try:
-        return repo.get_branch(branch_name)
-    except Exception as e:
-        print(f'Error: {e}')
-        exit(1)
-
-
 def get_repo_branches(repo) -> list:
     return repo.get_branches()
 
