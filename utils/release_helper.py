@@ -26,8 +26,7 @@ def get_parameter_from_ini(config_file, section, parameter) -> str:
         config.read(config_file)
         return config[section][parameter]
     except Exception as e:
-        print(f'{e} entry was not found - Information cannot be retrieved!')
-        exit(1)
+        print(f'Error: {e} entry was not found!')
 
 
 def create_ini_file_template(creds_file):
@@ -40,7 +39,6 @@ def create_ini_file_template(creds_file):
         print(f'Great! {new_creds_file} was created! Edit it to include your personal token.')
     except Exception as e:
         print(f'Error: {e}')
-        exit(1)
 
 
 def get_github_token(creds_file) -> str:
@@ -50,11 +48,13 @@ def get_github_token(creds_file) -> str:
         print(f'{creds_file} file was not found!')
         if get_confirmation(f'Would you like to create the "{creds_file}" file?'):
             create_ini_file_template(creds_file)
-        exit(1)
 
 
-def create_github_session(args) -> object:
-    return Github(get_github_token(args.creds_file))
+def create_github_session(creds_file) -> object:
+    token = get_github_token(creds_file)
+    if not token:
+        print('WARNING: No token found. The API queries are very limited without a token.\n')
+    return Github(token)
 
 
 def get_confirmation(question) -> bool:
@@ -111,7 +111,6 @@ def remove_old_stabilization_branch(repo, branch) -> None:
             branch_ref.delete()
         except Exception as e:
             print(f'Error: {e}')
-            exit(1)
     else:
         print(f'Aborted! {branch.name} branch not removed.')
 
@@ -624,9 +623,12 @@ def print_next_release_stats(data):
 
 # Functions to specific phases of the process
 def stats(repo):
-    rel_data = collect_release_info(repo)
-    print_last_release_stats(rel_data)
-    print_next_release_stats(rel_data)
+    try:
+        rel_data = collect_release_info(repo)
+        print_last_release_stats(rel_data)
+        print_next_release_stats(rel_data)
+    except Exception as e:
+        print(f'Error: {e}')
 
 
 def cleanup(repo, args) -> None:
@@ -763,9 +765,9 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    ghs = create_github_session(args)
 
     try:
+        ghs = create_github_session(args.creds_file)
         repo = get_repo_object(ghs, args.repository)
     except Exception as e:
         print(f'Error when getting the repository {args.repository}: {e}')
