@@ -5,7 +5,12 @@ title: 'Ensure rsyslog-gnutls is installed'
 
 description: |-
     TLS protocol support for rsyslog is installed.
+    {{% if 'sle' not in product %}}
     {{{ describe_package_install(package="rsyslog-gnutls") }}}
+    {{% else %}}
+    {{{ describe_package_install(package="rsyslog-module-gtls") }}}
+    {{% endif %}}
+
 
 rationale: |-
     The rsyslog-gnutls package provides Transport Layer Security (TLS) support
@@ -30,7 +35,11 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="rsyslog-gnutls") }}}'
+{{% if 'sle' not in product %}}
+{{{ complete_ocil_entry_package(package="gnutls") }}}
+{{% else %}}
+{{{ complete_ocil_entry_package(package="rsyslog-module-gtls") }}}
+{{% endif %}}
 
 template:
     name: package_installed
@@ -40,7 +49,11 @@ template:
         pkgname@sle15: rsyslog-module-gtls
 
 fixtext: |-
-    {{{ describe_package_install("rsyslog-gnutls") }}}
+    {{% if 'sle' not in product %}}
+    {{{ describe_package_install(package="rsyslog-module-gnutls") }}}
+    {{% else %}}
+    {{{ describe_package_install(package="rsyslog-module-gtls") }}}
+    {{% endif %}}
 
 srg_requirement:
   {{{ full_name }}} must have the packages required for encrypting offloaded audit logs installed.
