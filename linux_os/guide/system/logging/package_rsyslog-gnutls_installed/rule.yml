@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhel7,rhel8,rhel9
+prodtype: fedora,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15
 title: 'Ensure rsyslog-gnutls is installed'
 
 description: |-
@@ -17,6 +17,8 @@ identifiers:
     cce@rhel7: CCE-86724-2
     cce@rhel8: CCE-82859-0
     cce@rhel9: CCE-83987-8
+    cce@sle12: CCE-91512-4
+    cce@sle15: CCE-91199-0
 
 references:
     anssi: BP28(R43)
@@ -34,8 +36,8 @@ template:
     name: package_installed
     vars:
         pkgname: rsyslog-gnutls
-        pkgname@sle12: rsyslog-module-gtls 
-        pkgname@sle15: rsyslog-module-gtls 
+        pkgname@sle12: rsyslog-module-gtls
+        pkgname@sle15: rsyslog-module-gtls
 
 fixtext: |-
     {{{ describe_package_install("rsyslog-gnutls") }}}
