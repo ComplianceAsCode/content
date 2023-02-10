@@ -1,0 +1,30 @@
+# platform = multi_platform_ol
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+- (xccdf-var var_secure_mode_insmod)
+
+- name: {{{ rule_title }}} - Ensure libsemanage-python installed
+  ansible.builtin.package:
+    name: libsemanage-python
+    state: present
+
+- name: {{{ rule_title }}} - Set SELinux boolean secure_mode_insmod accordingly
+  ansible.posix.seboolean:
+    name: secure_mode_insmod
+    state: "{{ var_secure_mode_insmod }}"
+    persistent: yes
+
+# Preload vfat in initramfs, otherwise the system fails to reboot
+- name: {{{ rule_title }}} - Add vfat to static kernel module list
+  ansible.builtin.lineinfile:
+      create: yes
+      dest: /etc/modules-load.d/vfat.conf
+      regexp: ^\s*\bvfat\b
+      line: "vfat"
+
+- name: {{{ rule_title }}} - Regenerate initramfs
+  ansible.builtin.command:
+    cmd: dracut -f --regenerate-all
