@@ -3,9 +3,9 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-{{{ ansible_instantiate_variables("remote_login_banner_text") }}}
+{{{ ansible_instantiate_variables("motd_banner_text") }}}
 
 - name: "{{{ rule_title }}} - ensure correct banner"
   copy:
     dest: /etc/motd
-    content: '{{{ ansible_deregexify_banner_etc_issue_net("remote_login_banner_text") }}}'
+    content: '{{{ ansible_deregexify_banner_etc_issue("motd_banner_text") }}}'
