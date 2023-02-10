@@ -1,11 +1,39 @@
 <def-group>
   <definition class="compliance" id="prefer_64bit_os" version="1">
     {{{ oval_metadata("Check if the system supports a 64-bit Operating System") }}}
-    <criteria comment="Either the OS is 64-bit, or the CPU doesn't support 64-bit (it is 32 or 16 bit)" operator="OR">
-      <criterion comment="Check if OS is 64-bit" test_ref="test_proc_sys_kernel_osrelease_64_bit" />
-      <criterion comment="Check if CPU is not 64-bit" test_ref="test_proc_cpuinfo_64_bit" negate="true" />
+    <criteria
+        comment="Either the OS is 64-bit, or the CPU doesn't support 64-bit (it is 32 or 16 bit)"
+        operator="OR">
+      <criteria comment="Either check osrelease in procfs, or kernel package arch parameter"
+                operator="OR">
+        <criterion comment="Check if OS is 64-bit"
+                   test_ref="test_proc_sys_kernel_osrelease_64_bit"/>
+        <criterion comment="Check kernel rpm is x86_64"
+                   test_ref="test_package_kernel_x64" />
+      </criteria>
+      <criterion comment="Check if CPU is not 64-bit" test_ref="test_proc_cpuinfo_64_bit"
+                 negate="true" />
     </criteria>
   </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_kernel_x64" version="1"
+  comment="Package kernel arch is x64">
+    <linux:object object_ref="obj_package_kernel" />
+    <linux:state state_ref="state_installed_arch_of_kernel_package" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_installed_arch_of_kernel_package" version="1">
+    <linux:arch>x86_64</linux:arch>
+  </linux:rpminfo_state>
+
+  <linux:rpminfo_object id="obj_package_kernel" version="1">
+    {{% if 'sle' in product %}}
+    <linux:name>kernel-default</linux:name>
+    {{% else %}}
+    <linux:name>kernel</linux:name>
+    {{% endif %}}
+  </linux:rpminfo_object>
 
   <ind:textfilecontent54_test id="test_proc_cpuinfo_64_bit"
   comment="Check for CPU flag lm" check="all" version="1">
