@@ -6,13 +6,13 @@ vuldiscussion: |-
     file should not have any access privileges anyway.
 
 checktext: |-
-    Verify the ownership of the "/boot/grub2/grub.cfg" file with the following command:
+    Verify the group ownership of the "/boot/grub2/grub.cfg" file with the following command:
 
-    $ sudo stat -c "%U %n" /boot/grub2/grub.cfg
+    $ sudo stat -c "%G %n" /boot/grub2/grub.cfg
 
     root /boot/grub2/grub.cfg
 
-    If "/boot/grub2/grub.cfg" file does not have an owner of "root", this is a finding.
+    If "/boot/grub2/grub.cfg" file does not have a group owner of "root", this is a finding.
 
 fixtext: |-
     Change the group of the file /boot/grub2/grub.cfg to root by running the following command:
