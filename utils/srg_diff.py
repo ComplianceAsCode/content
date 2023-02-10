@@ -86,17 +86,20 @@ def _get_delta(cac: Row, disa: Row, cce: str, cce_rule_id_dict: dict) -> SrgDiff
     delta.cci = cce
     delta.rule_id = cce_rule_id_dict[cce]
     if clean_lines(disa.Requirement) != cac.Requirement:
-        delta.Requirement = word_by_word_diff(disa.Requirement, cac.Requirement)
-    if clean_lines(disa.Vul_Discussion) != cac.Vul_Discussion:
-        delta.Vul_Discussion = word_by_word_diff(disa.Vul_Discussion, cac.Vul_Discussion)
-    if clean_lines(disa.Status) != cac.Status:
-        delta.Status = word_by_word_diff(disa.Status, cac.Status)
-    if clean_lines(disa.Check) != cac.Check:
-        delta.Check = word_by_word_diff(disa.Check, cac.Check)
-    if clean_lines(disa.Fix) != cac.Fix and cac.Fix is not None and disa.Fix is not None:
-        delta.Fix = word_by_word_diff(disa.Fix, cac.Fix)
+        delta.Requirement = word_by_word_diff(clean_lines(disa.Requirement),
+                                              clean_lines(cac.Requirement))
+    if clean_lines(disa.Vul_Discussion) != clean_lines(cac.Vul_Discussion):
+        delta.Vul_Discussion = word_by_word_diff(clean_lines(disa.Vul_Discussion),
+                                                 clean_lines(cac.Vul_Discussion))
+    if clean_lines(disa.Status) != clean_lines(cac.Status):
+        delta.Status = word_by_word_diff(clean_lines(disa.Status), clean_lines(cac.Status))
+    if clean_lines(disa.Check) != clean_lines(cac.Check):
+        delta.Check = word_by_word_diff(clean_lines(disa.Check), clean_lines(cac.Check))
+    if clean_lines(disa.Fix) != clean_lines(cac.Fix) and cac.Fix is not None and \
+            disa.Fix is not None:
+        delta.Fix = word_by_word_diff(clean_lines(disa.Fix), clean_lines(cac.Fix))
     if clean_lines(disa.Severity) != cac.Severity:
-        disa.Severity = word_by_word_diff(disa.Severity, cac.Severity)
+        disa.Severity = word_by_word_diff(clean_lines(disa.Severity), clean_lines(cac.Severity))
     return delta
 
 
