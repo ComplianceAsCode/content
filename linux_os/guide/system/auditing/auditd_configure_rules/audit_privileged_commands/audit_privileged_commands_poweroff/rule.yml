@@ -27,11 +27,15 @@ references:
     nist: AU-12(c)
     srg: SRG-OS-000477-GPOS-00222
 
-{{{ ocil_fix_srg_privileged_command("poweroff") }}}
+{{% if 'sle' not in product %}}
+{{{ ocil_fix_srg_privileged_command("poweroff","/usr/sbin/") }}}
+{{% else %}}
+{{{ ocil_fix_srg_privileged_command("poweroff","/sbin/") }}}
+{{% endif %}}
 
 template:
     name: audit_rules_privileged_commands
     vars:
         path: /usr/sbin/poweroff
-        path@sle12: /sbin/poweroffs
+        path@sle12: /sbin/poweroff
         path@sle15: /sbin/poweroff
