@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Ensure all users last password change date is in the past'
+
+description: |-
+    All users should have a password change date in the past.
+
+rationale: |-
+    If a user recorded password change date is in the future then they could
+    bypass any set password expiration.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92330-0
+    cce@sle15: CCE-92504-0
+
+references:
+    cis@sle12: 5.4.1.6
+    cis@sle15: 5.4.1.6
+
+ocil_clause: 'any interactive user password that has last change time in the future'
+
+ocil: |-
+    Verify that the interactive user account passwords last change time is not in the future
+    The following command should return no output
+    <pre>$ sudo expiration=$(cat /etc/shadow|awk -F ':' '{print $3}');
+    for edate in ${expiration[@]}; do if [[ $edate > $(( $(date +%s)/86400 )) ]];
+    then echo "Expiry date in future";
+    fi; done </pre>
+
+fixtext: |-
+    Forcibly expire account is one possible solution to make sure that the policy will be followed.
+    One possible approach to that automatically is:
+    <pre>
+          $ lines=$(cat /etc/shadow);
+          $ for line in ${lines[@]}; do
+             edate=$(echo $line|awk -F ':' '{print $3}');
+             if [[ $edate > $(( $(date +%s)/86400 )) ]];then
+               user=$(echo $line|awk -F ':' '{print $1}');
+               sudo passwd -e ${user};
+             fi;
+           done
+    </pre>
+
+warnings:
+    - general: |-
+        Automatic remediation is not available, in order to avoid any system disruption.

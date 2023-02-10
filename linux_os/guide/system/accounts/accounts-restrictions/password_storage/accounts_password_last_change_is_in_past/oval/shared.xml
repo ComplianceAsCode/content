@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("All password change date is in the past.") }}}
+    <criteria>
+      <criterion comment="passward last change was in the past"
+                 test_ref="test_accounts_password_last_change_time_secs"/>
+    </criteria>
+  </definition>
+
+  <local_variable id="var_accounts_password_last_change_time_secs" datatype="int" version="1"
+                  comment="last change component of password entry">
+    <arithmetic arithmetic_operation="multiply">
+      <object_component object_ref="object_accounts_password_all_chage_in_past"
+                        item_field="chg_lst"/>
+      <literal_component datatype="int">86400</literal_component>
+      </arithmetic>
+  </local_variable>
+
+  <local_variable id="var_accounts_password_last_change_time_diff" datatype="int" version="1"
+                  comment="last change component of password entry compared to current time">
+    <time_difference format_2="seconds_since_epoch">
+        <variable_component var_ref="var_accounts_password_last_change_time_secs"/>
+    </time_difference>
+  </local_variable>
+
+  <ind:variable_object  id="object_accounts_password_last_change_time_diff" version="1">
+     <ind:var_ref>var_accounts_password_last_change_time_diff</ind:var_ref>
+   </ind:variable_object>
+
+   <ind:variable_state id="state_accounts_password_last_change_time_diff" version="1">
+      <!-- With negative time I actually get very big number so instead
+           of checking greater than zero I am checking if less than 1000 years -->
+     <ind:value datatype="int" operation="less than or equal">86400000</ind:value>
+ </ind:variable_state>
+
+ <ind:variable_test check="all" check_existence="all_exist"
+                    id="test_accounts_password_last_change_time_secs" version="1"
+                    comment="Check if the password chage time is less than equal than today.">
+    <ind:object object_ref="object_accounts_password_last_change_time_diff"/>
+    <ind:state state_ref="state_accounts_password_last_change_time_diff"/>
+   </ind:variable_test>
+
+  <unix:shadow_object id="object_accounts_password_all_chage_in_past" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+    <filter action="exclude">state_accounts_password_all_chage_past_has_no_password</filter>
+  </unix:shadow_object>
+  <unix:shadow_state id="state_accounts_password_all_chage_past_has_no_password" version="1">
+      <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked)$</unix:password>
+  </unix:shadow_state>
+
+</def-group>
