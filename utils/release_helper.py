@@ -420,11 +420,10 @@ def get_release_end_message(repo) -> str:
             source_tarball = asset.browser_download_url
         elif asset.content_type == 'application/zip':
             prebuild_zip = asset.browser_download_url
+        elif '.tar.bz2.sha512' in asset.name:
+            source_tarball_hash = asset.browser_download_url
         else:
-            if '.tar.bz2.sha512' in asset.name:
-                source_tarball_hash = asset.browser_download_url
-            else:
-                prebuild_zip_hash = asset.browser_download_url
+            prebuild_zip_hash = asset.browser_download_url
 
     # It would be more readable if this multiline string would be indented. However, this makes
     # the final text weird, after the "format" substitutions, when highlights and new_contributors
