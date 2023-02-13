@@ -236,7 +236,7 @@ def close_milestone(milestone) -> None:
 
 def create_repo_milestone(repo, name) -> None:
     if get_version_milestone(name):
-        print(f'Great. The "{name}" milestone is already created.')
+        print(f'Great! The "{name}" milestone is already created.')
         return
 
     latest_release = get_latest_release(repo)
@@ -309,6 +309,8 @@ def bump_master_version(repo):
         with open(os.path.join(repo_root, "CMakeLists.txt"), mode='w', encoding='utf-8') as file:
             file.writelines(content)
         show_git_diff()
+    else:
+        print('Great! The version in CMakeLists.txt file is already updated.')
 
 
 def get_friday(date) -> datetime:
@@ -498,7 +500,7 @@ def filter_outdated_items(repo, objects_list, type) -> list:
         else:
             print(f'Aborted! {type}(s) milestones not updated.')
     else:
-        print(f'Great. There is no {type} with an outdated milestone.')
+        print(f'Great! There is no {type} with an outdated milestone.')
         return []
 
 
@@ -638,7 +640,7 @@ def cleanup(repo, args) -> None:
         if branch_to_remove:
             remove_old_stabilization_branch(branch_to_remove)
         else:
-            print('Great. There is no branch to be removed.')
+            print('Great! There is no branch to be removed.')
 
 
 def release_prep(repo, args) -> None:
@@ -750,11 +752,11 @@ def parse_arguments():
     release_parser = subparsers.add_parser(
         'release', help="Tasks to be done during the stabilization phase.")
     release_parser.add_argument(
-        '-t', '--tag', action='store_true',
-        help="Show commands to properly tag the branch and start the release.")
-    release_parser.add_argument(
         '-m', '--message', action='store_true',
         help="Prepare a message to communicate the stabilization process has started.")
+    release_parser.add_argument(
+        '-t', '--tag', action='store_true',
+        help="Show commands to properly tag the branch and start the release.")
 
     finish_parser = subparsers.add_parser(
         'finish', help="Tasks to be done when the release is out.")
