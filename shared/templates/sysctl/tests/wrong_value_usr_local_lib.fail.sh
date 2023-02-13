@@ -4,6 +4,7 @@
 {{% endif %}}
 
 # Clean sysctl config directories
+{{% if product not in ["sle12","sle15"] %}}
 rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
 
 sed -i "/{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf
@@ -12,3 +13,4 @@ echo "{{{ SYSCTLVAR }}} = {{{ SYSCTL_WRONG_VALUE }}}" >> /usr/local/lib/sysctl.d
 
 # Setting correct runtime value
 sysctl -w {{{ SYSCTLVAR }}}="{{{ SYSCTL_CORRECT_VALUE }}}"
+{{% endif %}}
