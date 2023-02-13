@@ -45,7 +45,6 @@ template:
     vars:
         mountpoint: /var/log
         mountoption: noexec
-        mount_has_to_exist: 'yes'
 
 fixtext: |-
     {{{ fixtext_mount_option("/var/log", "noexec") }}}

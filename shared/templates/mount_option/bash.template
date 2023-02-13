@@ -2,7 +2,7 @@
 # reboot = false
 
 function perform_remediation {
-    {{% if MOUNT_HAS_TO_EXIST != "no" %}}
+    {{% if MOUNT_HAS_TO_EXIST %}}
         {{{ bash_assert_mount_point_in_fstab( MOUNTPOINT ) | indent(4) }}}
     {{% endif %}}
 

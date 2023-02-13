@@ -46,7 +46,6 @@ template:
     vars:
         mountpoint: /var/log
         mountoption: nosuid
-        mount_has_to_exist: 'yes'
 
 fixtext: |-
     {{{ fixtext_mount_option("/var/log", "nosuid") }}}
