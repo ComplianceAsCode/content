@@ -1,0 +1,19 @@
+# platform = sle15
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{% set nftables_family_names = ['bridge', 'arp', 'inet'] %}}
+{{{ ansible_instantiate_variables("var_nftable_master_config_file") }}}
+
+- name: Check the top-level configuration file exists
+  stat:
+    path: "{{ var_nftable_master_config_file }}"
+
+{{% for family in nftables_family_names %}}
+- name: Check the {{{ family }}} relevant file is included configuration
+  lineinfile:
+    path: "{{ var_nftable_master_config_file }}"
+    line: 'include "/etc/nftables/{{{ family }}}-filter"'
+    create: yes
+{{% endfor %}}
