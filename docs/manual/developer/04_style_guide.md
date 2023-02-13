@@ -345,7 +345,9 @@ Value must be low, medium, or high.
 ### Ansible
 
 * Shall follow all the rules in the [YAML](#yaml) section
-* Should prefer using Ansible modules over just calling system commands
+* Shall use fully-qualified collection names [(FQCN)](https://ansible-lint.readthedocs.io/rules/fqcn/). e.g. use `ansible.builtin.lineinfile:` instead of only `lineinfile:`
+* Shall use specific Ansible modules whenever possible instead of just calling system commands with `command`, `shell` or `raw` modules
+    * When no specific Ansible module is available, `command` module should be preferred instead of `shell` or `raw` modules
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
 * Task names should be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - ensure correct banner"`
 
