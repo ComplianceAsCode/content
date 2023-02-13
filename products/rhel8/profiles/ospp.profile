@@ -300,8 +300,6 @@ selections:
     ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
     - sshd_idle_timeout_value=14_minutes
     - sshd_set_idle_timeout
-    - logind_session_timeout
-    - var_logind_session_timeout=14_minutes
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
