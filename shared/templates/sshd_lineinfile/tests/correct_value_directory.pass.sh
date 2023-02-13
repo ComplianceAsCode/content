@@ -9,4 +9,4 @@ touch /etc/ssh/sshd_config.d/nothing
 {{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s") }}}
 {{% endif %}}
 
-{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=true) -}}}
+{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config) -}}}
