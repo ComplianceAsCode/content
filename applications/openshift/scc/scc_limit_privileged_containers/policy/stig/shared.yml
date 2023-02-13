@@ -1,43 +1,7 @@
-documentation_complete: true
-
-prodtype: ocp4
-
-title: 'Limit Container Running As Root User'
-
-description: |-
-    Containers should run as a random non-privileged user.
-    To prevent containers from running as root user,
-    the appropriate Security Context Constraints (SCCs) should set
-    <tt>.runAsUser.type</tt> to <tt>MustRunAsRange</tt>.
-
-rationale: |-
-    It is strongly recommended that containers running on OpenShift
-    should support running as any arbitrary UID. OpenShift will then assign
-    a random, non-privileged UID to the running container instance. This
-    avoids the risk from containers running with specific uids that could
-    map to host service accounts, or an even greater risk of running as root
-    level service.  OpenShift uses the default security context constraints
-    (SCC), restricted, to prevent containers from running as root or other
-    privileged user ids. Pods may be configured to use an scc policy
-    that allows the container to run as a specific uid, including root(0)
-    when approved. Only a cluster administrator may grant the change of
-    an scc policy.
-
-severity: medium
-
-references:
-    cis@ocp4: 5.2.6
-    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
-    nist: CM-6,CM-6(1)
-    pcidss: Req-2.2
-    srg: SRG-APP-000342-CTR-000775
-
-ocil_clause: 'runAsUser.type usage in SCCs needs review'
-
-ocil: |-
+checktext: |-
     Inspect each SCC and the users and groups allowed to use it returned
     from running the following command:
-    <pre>oc get scc -ojson | jq '.items[]|select(.runAsUser.type != "MustRunAsRange" )|.metadata.name,{"Group:":.groups},{"User":.users}'</pre>
+    <pre>oc get scc -ojson | jq '.items[]|select(.allowPrivilegedContainer)|.metadata.name,{"Group:":.groups},{"User":.users}'</pre>
 
     The group "system:authenticated" is the default group for any
     authenticated user, this group should only be associated with the
@@ -78,3 +42,34 @@ ocil: |-
     </pre>
 
     Excluding any platform namespaces (kube-*,openshift-*), if there are any rolebindings to roles that are not permitted, this is a finding.
+
+fixtext: |-
+   For users and groups that are defined in the SCC policy, remove the users or groups by editing the corresponding SCC policy.
+
+   > oc edit scc <SCC>
+
+   The following instructions will remove the user or group from the cluster role binding for the SCC policy.
+
+   Remove user from the SCC Policy binding:
+
+   > oc adm policy remove-scc-from-user <SCC> <USER>
+
+   Remove a group from the SCC Policy binding:
+
+   > oc adm policy remove-scc-from-group <SCC> <GROUP>
+
+   Remove service account from the SCC Policy binding:
+
+   > oc project <SERVICE_ACC_PROJECT>
+   > oc adm policy remove-scc-from-user <SCC> -z <SERVICE_ACC>
+
+   Finally, remove any roles that allows use of non-permitted SCC policies (excluding platform defined roles)
+
+   > oc delete clusterrole.rbac <ROLE>
+
+   or
+
+   > oc delete role.rbac <ROLE> -n <NAMESPACE>  
+
+srg_requirement: |-
+   Container images instantiated by the container platform must execute using least privileges.
