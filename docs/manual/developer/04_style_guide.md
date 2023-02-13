@@ -351,6 +351,8 @@ Value must be low, medium, or high.
 * Shall define short and objective task names that reflect the end state of a machine
 * Task names shall be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - Ensure Correct Banner"`
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
+* Shall use `true` for booleans values instead `True`, `yes` or `1`
+* Shall use `false` for booleans values instead `False`, `no` or `0`
 
 ### Bash
 
