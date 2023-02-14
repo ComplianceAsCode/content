@@ -365,7 +365,7 @@ Instead of:
 - name: "{{{ rule_title }}} - Ensure httpd Service is Started"
   ansible.builtin.service: name=httpd state=started enabled=yes
 ```
-* Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
+* Shall be written to pass [ansible-lint](https://github.com/ansible-community/ansible-lint)
 * Shall use `true` for booleans values instead `True`, `yes` or `1`
 * Shall use `false` for booleans values instead `False`, `no` or `0`
 
