@@ -349,6 +349,7 @@ Value must be low, medium, or high.
 * Shall use specific Ansible modules whenever possible instead of just calling system commands with `command`, `shell` or `raw` modules
     * When no specific Ansible module is available, `command` module shall be used instead of `shell` or `raw` modules when the `command` module is sufficient.
 * Shall define short and objective task names that reflect the end state of a machine
+* Task names must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
 * Task names shall be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - Ensure Correct Banner"`
 * Shall use [Native YAML Syntax](https://www.ansible.com/blog/ansible-best-practices-essentials) instead of `key=value` pairs shorthand. e.g.:
 
