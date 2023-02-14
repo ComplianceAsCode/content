@@ -7,13 +7,13 @@ vuldiscussion: |-
     Limits are imposed by locking the account.
 
 checktext: |-
-    verify {{{ full_name }}} is configured to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
+    Verify {{{ full_name }}} is configured to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
 
     $ grep 'unlock_time =' /etc/security/faillock.conf
 
     unlock_time = 0
 
-    if the "unlock_time" option is not set to "0", the line is missing, or commented out, this is a finding.
+    If the "unlock_time" option is not set to "0", the line is missing, or commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
