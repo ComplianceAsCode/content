@@ -19,8 +19,8 @@
   register: path_exists
   loop: '{{ local_users }}'
   when:
-    - item.value[2]|int >= {{{ gid_min }}}
-    - item.value[2]|int != {{{ nobody_gid }}}
+    - item.value[1]|int >= {{{ uid_min }}}
+    - item.value[1]|int != {{{ nobody_uid }}}
 
 - name: Ensure interactive local users are the group-owners of their respective home directories
   ansible.builtin.file:
