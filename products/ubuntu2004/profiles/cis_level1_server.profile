@@ -35,13 +35,13 @@ selections:
     - partition_for_tmp
 
     ### 1.1.3 Ensure nodev option set on /tmp partition (Automated)
-    # Needs rule
+    - mount_option_tmp_nodev
 
     ### 1.1.4 Ensure nosuid option set on /tmp partition (Automated)
-    # Needs rule
+    - mount_option_tmp_nosuid
 
     ### 1.1.5 Ensure noexec option set on /tmp partition (Automated)
-    # Needs rule
+    - mount_option_tmp_noexec
 
     ### 1.1.6 Ensure /dev/shm is configured (Automated)
     # Skip due to being handled by systemd and ensured by follow-on tests
@@ -63,13 +63,13 @@ selections:
     # partition_for_var_tmp
 
     ### 1.1.12 Ensure nodev option set on /var/tmp partition (Automated)
-    # Needs rule
+    - mount_option_var_tmp_nodev
 
     ### 1.1.13 Ensure nosuid option set on /var/tmp partition (Automated)
-    # Needs rule
+    - mount_option_var_tmp_nosuid
 
     ### 1.1.14 Ensure noexec option set on /var/tmp partition (Automated)
-    # Needs rule
+    - mount_option_var_tmp_noexec
 
     ### 1.1.15 Ensure separate partition exists for /var/log (Automated)
     # Skip due to being Level 2
@@ -82,7 +82,7 @@ selections:
     # partition_for_home
 
     ### 1.1.18 Ensure nodev option set on /home partition (Automated)
-    # Needs rule
+    - mount_option_home_nodev
 
     ### 1.1.19 Ensure nodev option set on removable media partitions (Manual)
     # Skip due to being a manual test
@@ -157,7 +157,7 @@ selections:
     ## 1.7 Mandatory Access Control ##
     ### 1.7.1 Configure AppArmor ###
     #### 1.7.1.1 Ensure AppArmor is installed (Automated)
-    # Needs rule
+    - package_apparmor_installed
 
     #### 1.7.1.2 Ensure AppArmor is enabled in the bootloader configuration (Automated)
     - grub2_enable_apparmor
@@ -175,10 +175,11 @@ selections:
     # Needs rule
 
     #### 1.8.1.2 Ensure local login warning banner is configured properly (Automated)
-    # Needs rule
+    - login_banner_text=cis_default
+    - banner_etc_issue
 
     #### 1.8.1.3 Ensure remote login warning banner is configured properly (Automated)
-    # Needs rule
+    - banner_etc_issue_net
 
     #### 1.8.1.4 Ensure permissions on /etc/motd are configured (Automated)
     - file_permissions_etc_motd
@@ -191,7 +192,9 @@ selections:
     - file_groupowner_etc_issue
 
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Automated)
-    # Needs rules
+    - file_permissions_etc_issue_net
+    - file_owner_etc_issue_net
+    - file_groupowner_etc_issue_net
 
     ## 1.9 Ensure updates, patches, and additional security software are installed (Manual)
     # Manual rule; security_patches_up_to_date
@@ -276,7 +279,8 @@ selections:
     - package_net-snmp_removed
 
     ### 2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)
-    # Needs rule
+    - var_postfix_inet_interfaces=loopback-only
+    - postfix_network_listening_disabled
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
     - package_rsync_removed
@@ -377,13 +381,13 @@ selections:
     ## 3.5 Firewall Configuration
     ### 3.5.1 Configure Uncomplicated Firewall
     #### 3.5.1.1 Ensure Uncomplicated Firewall is installed (Automated)
-    # Needs rule
+    - package_ufw_installed
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed (Automated)
     - package_iptables-persistent_removed
 
     #### 3.5.1.3 Ensure ufw service is enabled (Automated)
-    # Needs rule
+    - service_ufw_enabled
 
     #### 3.5.1.4 Ensure loopback traffic is configured (Automated)
     # Needs rule
@@ -549,7 +553,7 @@ selections:
     # Skip due to being a manual test
 
     #### 4.2.1.4 Ensure rsyslog default file permissions configured (Automated)
-    # Needs rules: rsyslog_filecreatemode
+    - rsyslog_files_permissions
 
     #### 4.2.1.5 Ensure rsyslog is configured to send logs to a remote log host (Automated)
     - rsyslog_remote_loghost
@@ -559,16 +563,16 @@ selections:
 
     ## 4.2.2 Configure journald ##
     #### 4.2.2.1 Ensure journald is configured to send logs to rsyslog (Automated)
-    # Needs rule: forward_to_syslog
+    - journald_forward_to_syslog
 
     #### 4.2.2.2 Ensure journald is configured to compress large log files (Automated)
-    # Needs rule: compress_large_logs
+    - journald_compress
 
     #### 4.2.2.3 Ensure journald is configured to write logfiles to persistent disk (Automated)
-    # Needs rule: persistent_storage
+    - journald_storage
 
     ### 4.2.3 Ensure permissions on all logfiles are configured (Automated)
-    # Needs rule: all_logfile_permissions
+    - permissions_local_var_log
 
     ## 4.3 Ensure logrotate is configured (Manual)
     # Skip due to being a manual test
@@ -668,8 +672,8 @@ selections:
     - sshd_use_approved_macs
 
     ### 5.2.14 Ensure only strong Key Exchange algorithms are used (Automated)
-    # Needs variable
-    # Needs rule
+    - sshd_strong_kex=cis_ubuntu2004
+    - sshd_use_strong_kex
 
     ### 5.2.15 Ensure SSH Idle Timeout Interval is configured (Automated)
     - sshd_idle_timeout_value=5_minutes
@@ -678,23 +682,24 @@ selections:
     - sshd_set_keepalive
 
     ### 5.2.16 Ensure SSH LoginGraceTime is set to one minute or less (Automated)
-    # Needs variable
-    # Needs rule
+    - var_sshd_set_login_grace_time=60
+    - sshd_set_login_grace_time
 
     ### 5.2.17 Ensure SSH access is limited (Automated)
     # Needs rules
 
     ### 5.2.18 Ensure SSH warning banner is configured (Automated)
-    # Needs rule
+    - sshd_enable_warning_banner_net
 
     ### 5.2.19 Ensure SSH PAM is enabled (Automated)
-    # Needs rule
+    - sshd_enable_pam
 
     ### 5.2.20 Ensure SSH AllowTcpForwarding is disabled (Automated)
     # Skip due to being Level 2
 
     ### 5.2.21 Ensure SSH MaxStartups is configured (Automated)
-    # Needs rule
+    - var_sshd_set_maxstartups=10:30:60
+    - sshd_set_maxstartups
 
     ### 5.2.22 Ensure SSH MaxSessions is limited (Automated)
     - var_sshd_max_sessions=10
@@ -720,10 +725,11 @@ selections:
 
     ### 5.3.2 Ensure lockout for failed password attempts is configured (Automated)
     # Needs variable: var_accounts_passwords_pam_tally2_deny=5
+    - var_password_pam_tally2=5
     - accounts_passwords_pam_tally2
 
     ### 5.3.3 Ensure password reuse is limited (Automated)
-    # Needs variable
+    - var_password_pam_remember=5
     - accounts_password_pam_pwhistory_remember
 
     ### 5.3.4 Ensure password hashing algorithm is SHA-512 (Automated)
@@ -758,9 +764,10 @@ selections:
     - no_shelllogin_for_systemaccounts
 
     ### 5.4.3 Ensure default group for the root account is GID 0 (Automated)
-    # Needs rule: accounts_no_gid_except_zero
+    - accounts_root_gid_zero
 
     ### 5.4.4 Ensure default user umask is 027 or more restrictive (Automated)
+    - var_accounts_user_umask=027
     - accounts_umask_etc_csh_cshrc
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
@@ -768,6 +775,7 @@ selections:
     - accounts_umask_interactive_users
 
     ### 5.4.5 Ensure default user shell timeout is 900 seconds or less (Automated)
+    - var_accounts_tmout=15_min
     - accounts_tmout
 
     ## 5.5 Ensure root login is restricted to system console (Manual)
@@ -830,7 +838,7 @@ selections:
 
     ### 6.1.12 Ensure no ungrouped files or directories exist (Automated)
     # Needs variable
-    # Needs rule: no_ungrouped_files_or_dirs
+    - file_permissions_ungroupowned
 
     ### 6.1.13 Audit SUID executables (Manual)
     # Skip due to being a manual test
@@ -858,7 +866,8 @@ selections:
     # Needs rule: useradd_home_directories_umask
 
     ### 6.2.6 Ensure users own their home directories (Automated)
-    # Needs rule: accounts_users_own_home_directories
+    - file_ownership_home_directories
+    - file_groupownership_home_directories
 
     ### 6.2.7 Ensure users' dot files are not group or world writable (Automated)
     - accounts_user_dot_user_ownership
@@ -866,8 +875,7 @@ selections:
     # Needs rule: no_group_world_readable_dot_files
 
     ### 6.2.8 Ensure no users have .forward files (Automated)
-    # Needs variable
-    # Needs rule: no_forward_files
+    - no_forward_files
 
     ### 6.2.9 Ensure no users have .netrc files (Automated)
     # Needs variable
@@ -880,19 +888,19 @@ selections:
     - no_rsh_trust_files
 
     ### 6.2.12 Ensure all groups in /etc/passwd exist in /etc/group (Automated)
-    # Needs rule: all_etc_passwd_groups_exist_in_etc_group
+    - gid_passwd_group_same
 
     ### 6.2.13 Ensure no duplicate UIDs exist (Automated)
-    # Needs rule: no_duplicate_uids
+    - account_unique_id
 
     ### 6.2.14 Ensure no duplicate GIDs exist (Automated)
-    # Needs rule: no_duplicate_gids
+    - group_unique_id
 
     ### 6.2.15 Ensure no duplicate user names exist (Automated)
-    # Needs rule: no_duplicate_user_names
+    - account_unique_name
 
     ### 6.2.16 Ensure no duplicate group names exist (Automated)
-    # Needs rule: no_duplicate_group_names
+    - group_unique_name
 
     ### 6.2.17 Ensure shadow group is empty (Automated)
-    # Needs rule: ensure_shadow_group_empty
+    - ensure_shadow_group_empty
