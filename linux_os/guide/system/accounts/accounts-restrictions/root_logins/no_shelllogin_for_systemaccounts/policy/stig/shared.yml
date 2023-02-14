@@ -6,26 +6,19 @@ vuldiscussion: |-
     difficult for attackers to make use of system accounts.
 
 checktext: |-
-    To obtain a listing of all users, their UIDs, and their shells, run the
-    command:
+    Verify that system accounts must not have an interactive login shell with the following command:
 
-    This requirement is Not Applicable for system accounts that require a shell for mission applications.
+    $ awk -F: '($3&lt;1000){print $1 ":" $3 ":" $7}' /etc/passwd
 
-    $ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd
     root:0:/bin/bash
     bin:1:/sbin/nologin
     daemon:2:/sbin/nologin
     adm:3:/sbin/nologin
     lp:4:/sbin/nologin
 
+    Identify the system accounts from this listing that do not have a nologin shell.
 
-
-    Identify the system accounts from this listing. These will primarily be the accounts
-    with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
-    directive is set in /etc/login.defs configuration file. In the default
-    configuration UID_MIN is set to 1000.
-
-    If any system account (other than root) has a login shell and it is not docmented with the Information System Security Officer (ISSO)., this is a finding.
+    If any system account (other than the root account) has a login shell and it is not documented with the Information System Security Officer (ISSO), this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} so that all non-interactive accounts on the system do not have an interactive shell assigned to them.
