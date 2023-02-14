@@ -1,4 +1,3 @@
-# platform = sle15
 {{% set nftables_family_names = ['bridge', 'arp', 'inet'] %}}
 
 # make sure file starts from empty

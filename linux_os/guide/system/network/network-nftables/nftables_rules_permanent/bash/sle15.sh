@@ -8,7 +8,7 @@
 
 {{{ bash_instantiate_variables("var_nftable_master_config_file") }}}
 
-if [! -f "${var_nftable_master_config_file}"]; then
+if [ ! -f "${var_nftable_master_config_file}" ]; then
     touch "${var_nftable_master_config_file}"
 fi
 
