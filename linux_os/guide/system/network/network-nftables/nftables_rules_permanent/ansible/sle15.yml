@@ -1,4 +1,4 @@
-# platform = sle15
+# platform = SUSE Linux Enterprise 15
 # reboot = false
 # strategy = restrict
 # complexity = low
