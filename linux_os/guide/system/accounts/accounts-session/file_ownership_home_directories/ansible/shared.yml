@@ -13,7 +13,7 @@
   ansible.builtin.set_fact:
     local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
 
-- name: Test for existence home directories to avoid creating them, but only fixing ownership
+- name: Test for existence of home directories to avoid creating them, but only fixing ownership
   ansible.builtin.stat:
     path: '{{ item.value[4] }}'
   register: path_exists

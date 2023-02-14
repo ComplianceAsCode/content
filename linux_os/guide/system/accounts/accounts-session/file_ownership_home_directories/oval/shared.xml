@@ -13,31 +13,8 @@
     </criteria>
   </definition>
 
-  <!-- 
-    Extract a list composed of password objects filtered by UIDs starting in {{{ uid_min }}} and
-    not equal to "nobody". Most of (if not all) distros have the special user "nobody" with uid
-    65354. Despite it be technically classified as an interactive user, it is a special case with
-    very limited access. So, we ignore it. The resulted password object will be further used to
-    create local variables composed by UIDs e Home Dirs.
-  -->
-  <unix:password_object id="object_file_ownership_home_directories_objects" version="1">
-    <unix:username datatype="string" operation="pattern match">.*</unix:username>
-    <filter action="include">state_file_ownership_home_directories_interactive_uids</filter>
-    <filter action="exclude">state_file_ownership_home_directories_user_list</filter>
-  </unix:password_object>
-
-  <!--
-    In distros which uses PAM (almost all), by default, the uid of interactive users and groups
-    starts at 1000. We use this information to make sure this password_state object will be
-    composed only with objects related to interactive users.
-  -->
-  <unix:password_state id="state_file_ownership_home_directories_interactive_uids" version="1">
-    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
-  </unix:password_state>
-
-  <unix:password_state id="state_file_ownership_home_directories_user_list" version="1">
-    <unix:username datatype="string" operation="pattern match">^{{{ user_list }}}$</unix:username>
-  </unix:password_state>
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object) }}}
 
   <!-- 
     #### prepare for test_file_groupownership_home_directories ####
@@ -45,7 +22,7 @@
   -->
   <local_variable id="var_file_ownership_home_directories_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
-    <object_component item_field="home_dir" object_ref="object_file_ownership_home_directories_objects"/>
+    <object_component item_field="home_dir" object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <!-- 
@@ -53,7 +30,7 @@
   -->
   <local_variable id="var_file_ownership_home_directories_uids" datatype="int" version="1"
                   comment="List of interactive users uids">
-    <object_component item_field="user_id" object_ref="object_file_ownership_home_directories_objects"/>
+    <object_component item_field="user_id" object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <!-- 
