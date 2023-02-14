@@ -345,9 +345,32 @@ Value must be low, medium, or high.
 ### Ansible
 
 * Shall follow all the rules in the [YAML](#yaml) section
-* Should prefer using Ansible modules over just calling system commands
-* Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
-* Task names should be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - ensure correct banner"`
+* Shall use fully-qualified collection names [(FQCN)](https://ansible-lint.readthedocs.io/rules/fqcn/). e.g. use `ansible.builtin.lineinfile:` instead of only `lineinfile:`
+* Shall use specific Ansible modules whenever possible instead of just calling system commands with `command`, `shell` or `raw` modules
+    * When no specific Ansible module is available, `command` module shall be used instead of `shell` or `raw` modules when the `command` module is sufficient.
+* Shall define short and objective task names that reflect the end state of a machine
+* Task names must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
+* Task names shall be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - Ensure Correct Banner"`
+* Shall use [Native YAML Syntax](https://www.ansible.com/blog/ansible-best-practices-essentials) instead of `key=value` pairs shorthand. e.g.:
+
+Use:
+```yaml
+- name: "{{{ rule_title }}} - Ensure httpd Service is Started"
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes
+```
+Instead of:
+```yaml
+- name: "{{{ rule_title }}} - Ensure httpd Service is Started"
+  ansible.builtin.service: name=httpd state=started enabled=yes
+```
+* Shall be written to pass [ansible-lint](https://github.com/ansible-community/ansible-lint)
+* Shall use `true` for booleans values instead `True`, `yes` or `1`
+* Shall use `false` for booleans values instead `False`, `no` or `0`
+* Consider to use explicit parameters when reasonable in order to improve readability
+    * While the default values for some modules are more intuitive, others are less used and hard to remember. In these cases, the reader will need to consult the current documentation to check the default values in order to better understand the task.
 
 ### Bash
 
