@@ -18,3 +18,12 @@ fixtext: |-
     Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to 5000
 
     password sufficient pam_unix.so sha512 rounds=5000'
+
+checktext: |-
+    Verify the number of rounds for the password hashing algorithm is configured with the following command:
+
+    $ sudo grep rounds /etc/pam.d/system-auth
+
+    password sufficient pam_unix.so sha512 rounds=5000
+
+    If a matching line is not returned or "rounds" is less than 5000, this a finding.
