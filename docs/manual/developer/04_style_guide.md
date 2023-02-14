@@ -368,6 +368,8 @@ Instead of:
 * Shall be written to pass [ansible-lint](https://github.com/ansible-community/ansible-lint)
 * Shall use `true` for booleans values instead `True`, `yes` or `1`
 * Shall use `false` for booleans values instead `False`, `no` or `0`
+* Consider to use explicit parameters when reasonable in order to improve readability
+    * While the default values for some modules are more intuitive, others are less used and hard to remember. In these cases, the reader will need to consult the current documentation to check the default values in order to better understand the task.
 
 ### Bash
 
