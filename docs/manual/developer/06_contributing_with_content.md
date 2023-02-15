@@ -1254,12 +1254,9 @@ For example, to make a rule applicable only on systems with `systemd` newer than
 
     platform: package[systemd]>250
 
-We recommend to use sharp inequality (`>` and `<` instead of `>=` and `<=`), otherwise you would have to use distribution specific versions in rules eg. `251.10-588.el9`.
-
-In general, we can use standard RPM or DEB package versions in these expressions.
-There are some exceptions where the behavior of OVAL check isn't consistent with Ansible and Bash behavior.
-- Epoch isn't supported.
-- Release part overrides the distribution part in the Bash conditionals therefore we don't recommend using distribution-specific versions.
+Only numeric versions are allowed, versions containing letters can't be used in the expressions.
+Epoch isn't supported.
+We recommend to use sharp inequality (`>` and `<` instead of `>=` and `<=`) in the expressions.
 
 ## Tests (ctest)
 
