@@ -1908,7 +1908,7 @@ This macro generates code that gets version of an installed RPM package.
 :param package: package name
 #}}
 {{%- macro bash_get_rpm_package_version(package) -%}}
-rpm -q --queryformat '%{VERSION}-%{RELEASE}' {{{ package }}}
+rpm -q --queryformat '%{VERSION}' {{{ package }}}
 {{%- endmacro -%}}
 
 {{#
@@ -1985,7 +1985,8 @@ This macro generates code that gets version of an installed DEB package.
 :param package: package name
 #}}
 {{%- macro bash_get_dpkg_package_version(package) -%}}
-dpkg-query -f='${Version}\n' --show {{{ package }}}
+{{# We don't take the "release" part into account. #}}
+dpkg-query -f='${Version}\n' --show {{{ package }}} | cut -f1 -d-
 {{%- endmacro -%}}
 
 {{#

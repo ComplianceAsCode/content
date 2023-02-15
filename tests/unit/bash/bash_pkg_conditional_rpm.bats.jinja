@@ -8,8 +8,8 @@ function rpm()
 {
     if [[ "$*" == "--quiet -q coconut" ]] ; then
         return 0
-    elif [[ "$*" ==  "-q --queryformat %{VERSION}-%{RELEASE} coconut" ]] ; then
-        echo "4.5.17-8"
+    elif [[ "$*" ==  "-q --queryformat %{VERSION} coconut" ]] ; then
+        echo "4.5.17"
         return 0
     else
         echo "BATS mock for rpm doesn't support this command"
@@ -25,53 +25,30 @@ export -f rpm
 @test "bash_pkg_conditional_rpm - test package version" {
     {{{ bash_pkg_conditional_rpm("coconut", "5", "<") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "5.0", "<") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "5.0.0-1", "<") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "5.0.0-1", "<") | indent(4) }}}
 
     {{{ bash_pkg_conditional_rpm("coconut", "5", "<=") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "5.0", "<=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "5.0.0-1", "<=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "5.0.0-1", "<=") | indent(4) }}}
 
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-9", "<") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-10", "<") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.18-1", "<") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.18-12", "<") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.5.18", "<") | indent(4) }}}
 
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-9", "<=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-10", "<=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.18-1", "<=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.18-12", "<=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17", "<=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.5.18", "<=") | indent(4) }}}
 
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-7", ">") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.16-1", ">") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-9", ">") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-1", ">") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.5.16", ">") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.1.1", ">") | indent(4) }}}
 
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5", ">=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.4.99", ">=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-7", ">=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.16-1", ">=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-9", ">=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.1.1-1", ">=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.5.16", ">=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "4.1.1", ">=") | indent(4) }}}
 
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", "<=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", "==") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", ">=") | indent(4) }}}
-    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", "!=") | indent(4) }}} )
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.17", "!=") | indent(4) }}} )
 
-    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", "==") | indent(4) }}} )
-    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.17", "==") | indent(4) }}} )
-
-    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", "!=") | indent(4) }}} )
-    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.17-8", "==") | indent(4) }}} )
+    ! ( {{{ bash_pkg_conditional_rpm("coconut", "4.5.18", "==") | indent(4) }}} )
 
     {{{ bash_pkg_conditional_rpm("coconut", "3", ">") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "3.0", ">") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "3.0.0-1", ">") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "3.0.0-1", ">") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "3.0.0", ">") | indent(4) }}}
 
     {{{ bash_pkg_conditional_rpm("coconut", "3", ">") | indent(4) }}}
     {{{ bash_pkg_conditional_rpm("coconut", "3.0", ">=") | indent(4) }}}
-    {{{ bash_pkg_conditional_rpm("coconut", "3.0.0-1", ">=") | indent(4) }}}
+    {{{ bash_pkg_conditional_rpm("coconut", "3.0.0", ">=") | indent(4) }}}
 }
