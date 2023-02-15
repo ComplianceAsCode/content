@@ -1258,6 +1258,12 @@ Only numeric versions are allowed, versions containing letters can't be used in 
 Epoch isn't supported.
 We recommend to use sharp inequality (`>` and `<` instead of `>=` and `<=`) in the expressions.
 
+The package CPEs might seem a go-to approach for most of the applicability problems.
+But, in general, we recommend to derive rule applicability from operating system release version instead of basing that on a version of a specific package.
+The packages in Linux distributions might be patched, bug fixes sometimes get backported to older stable versions, so the behavior of the software might differ from upstream release behavior.
+If the check would be based on operating system version, you can track what packages are distributed there and what patches they contain.
+For example, you can use something like `os_linux[rhel]>8.6` instead of `package[foo]>1.2.3`, if you know that an up-to-date RHEL 8.6 and later comes with `foo` that contains the feature that you are interested in.
+
 ## Tests (ctest)
 
 ComplianceAsCode uses ctest to orchestrate testing upstream. To run the
