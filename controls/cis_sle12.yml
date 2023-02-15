@@ -1013,16 +1013,16 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+    - set_iptables_outbound_n_established_connections_configured
 
   - id: 3.5.2.3
     title: Ensure firewall rules exist for all open ports (Automated)
     levels:
     - l1_server
     - l1_workstation
-    status: automated
-    rules:
-    - set_iptables_outband_n_established_connections_configured
+    status: manual # rule is missing
 
   - id: 3.5.2.4
     title: Ensure default deny firewall policy (Automated)
@@ -1049,7 +1049,7 @@ controls:
     - l1_workstation
     status: automated
     rules:
-    - set_iptables_outband_n_established_connections_configured
+    - set_iptables_outbound_n_established_connections_configured
 
   - id: 3.5.3.3
     title: Ensure IPv6 firewall rules exist for all open ports (Automated)
