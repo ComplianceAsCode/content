@@ -1908,16 +1908,15 @@ This macro generates code that gets version of an installed RPM package.
 :param package: package name
 #}}
 {{%- macro bash_get_rpm_package_version(package) -%}}
-rpm -q --queryformat '%{VERSION}' {{{ package }}}
+$(rpm -q --queryformat '%{VERSION}' {{{ package }}})
 {{%- endmacro -%}}
 
 {{#
-This macro creates a Bash conditional that compares version of the RPM package
+This macro creates a Bash conditional that compares version of the package
 with a given version.
 
 Description of the algorithm:
-1. Get the actual version of the given package using the `rpm` command
-   and store it in `real`.
+1. Get the actual version of the given package and store it in `real`.
 2. Store the expected version in `ver`.
 3. Perform the comparison and return the result.
    Comparison method is different based on the comparison operator. The method
@@ -1935,12 +1934,12 @@ Description of the algorithm:
 The implementation uses the GNU `sort` version ordering, which is described at:
 https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-ordering
 
-:param package: package name
-:param ver: package version
+:param real: real package version
+:param expected: expected package version
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
-{{%- macro bash_compare_version_rpm(package, ver, op) -%}}
-{ real=$({{{ bash_get_rpm_package_version(package) }}}); ver={{{ ver }}}; {{{ bash_compare_version(op) }}}; }
+{{%- macro bash_pkg_conditional_compare(real, expected, op) -%}}
+{ real={{{ real }}}; ver={{{ expected }}}; {{{ bash_compare_version(op) }}}; }
 {{%- endmacro -%}}
 
 {{#
@@ -1973,7 +1972,7 @@ This macro creates a Bash conditional which uses rpm to check if a package passe
 #}}
 {{%- macro bash_pkg_conditional_rpm(package, ver=None, op=None) -%}}
 {{%- if ver -%}}
-rpm --quiet -q {{{ package }}} && {{{ bash_compare_version_rpm(package, ver, op) }}}
+rpm --quiet -q {{{ package }}} && {{{ bash_pkg_conditional_compare(bash_get_rpm_package_version(package), ver, op) }}}
 {{%- else -%}}
 rpm --quiet -q {{{ package }}}
 {{%- endif -%}}
