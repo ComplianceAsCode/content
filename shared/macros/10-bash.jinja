@@ -1908,7 +1908,7 @@ This macro generates code that gets version of an installed RPM package.
 :param package: package name
 #}}
 {{%- macro bash_get_rpm_package_version(package) -%}}
-$(rpm -q --queryformat '%{VERSION}' {{{ package }}})
+$(epoch=$(rpm -q --queryformat '%{EPOCH}' {{{ package }}}); version=$(rpm -q --queryformat '%{VERSION}' {{{ package }}}); [ "$epoch" = "(none)" ] && echo "0:$version" || echo "$epoch:$version")
 {{%- endmacro -%}}
 
 {{#
@@ -1939,7 +1939,7 @@ https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-orderi
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
 {{%- macro bash_pkg_conditional_compare(real, expected, op) -%}}
-{ real={{{ real }}}; ver={{{ expected }}}; {{{ bash_compare_version(op) }}}; }
+{ real="{{{ real }}}"; ver="{{{ expected }}}"; {{{ bash_compare_version(op) }}}; }
 {{%- endmacro -%}}
 
 {{#

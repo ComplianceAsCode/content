@@ -2,7 +2,7 @@ import re
 
 
 def preprocess(data, lang):
-    pattern = r"^\d+(?:\.\d+(?:\.\d+)?)?$"
+    pattern = r"^(?:\d+:)?\d+(?:\.\d+(?:\.\d+)?)?$"
     for ver_spec in data["ver_specs"]:
         version = ver_spec["ver"]
         if not re.match(pattern, version):

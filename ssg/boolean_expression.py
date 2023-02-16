@@ -3,7 +3,7 @@ from ssg import requirement_specs
 
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
 SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
-VERSION_SYMBOLS = ['.', '-', '_']
+VERSION_SYMBOLS = ['.', '-', '_', ":"]
 
 
 class Function(boolean.Function):
@@ -102,7 +102,8 @@ class Symbol(boolean.Symbol):
                     'op': ver_spec.op,
                     'ver': ver_spec.ver,
                     'evr_op': ver_spec.evr_op,
-                    'evr_ver': ver_spec.evr_ver
+                    'evr_ver': ver_spec.evr_ver,
+                    'ev_ver': ver_spec.ev_ver
                 })
             res['ver_specs_id'] = self.requirement.ver_specs.oval_id
             res['ver_specs_cpe'] = self.requirement.ver_specs.cpe_id

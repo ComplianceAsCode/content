@@ -1255,7 +1255,8 @@ For example, to make a rule applicable only on systems with `systemd` newer than
     platform: package[systemd]>250
 
 Only numeric versions are allowed, versions containing letters can't be used in the expressions.
-Epoch isn't supported.
+Versions with epochs are supported.
+It isn't mandatory to put a 0 epoch if the package doesn't have epoch.
 We recommend to use sharp inequality (`>` and `<` instead of `>=` and `<=`) in the expressions.
 
 The package CPEs might seem a go-to approach for most of the applicability problems.

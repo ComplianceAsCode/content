@@ -727,8 +727,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- if ver -%}}
 {{# For RPM packages, Ansible splits the package version into "epoch", "version" and "release" keys. For DEB packages, Ansible provides only "version" key. We don't take the "release" part into account. #}}
 {{%- if pkg_system == "rpm" -%}}
-{{# We don't support RPM epoch at this moment. #}}
-"{{{ package }}}" in ansible_facts.packages and (ansible_facts.packages["{{{ package }}}"] | last)["version"] is version("{{{ ver }}}", "{{{ op }}}")
+"{{{ package }}}" in ansible_facts.packages and (((((ansible_facts.packages["{{{ package }}}"] | last)["epoch"]) != None) | ternary((ansible_facts.packages["{{{ package }}}"] | last)["epoch"] ~ ":", "0:")) + ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first)) is version("{{{ ver }}}", "{{{ op }}}")
 {{%- else -%}}
 "{{{ package }}}" in ansible_facts.packages and ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first) is version("{{{ ver }}}", "{{{ op }}}")
 {{%- endif -%}}

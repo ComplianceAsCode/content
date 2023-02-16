@@ -1,5 +1,5 @@
 {{%- for spec in VER_SPECS -%}}
-{{{ bash_pkg_conditional(PKGNAME, ver=spec.ver, op=spec.op) | trim }}}
+{{{ bash_pkg_conditional(PKGNAME, ver=spec.ev_ver, op=spec.op) | trim }}}
 {{%- if not loop.last %}} && {{% endif -%}}
 {{%- else -%}}
 {{{ bash_pkg_conditional(PKGNAME) }}}

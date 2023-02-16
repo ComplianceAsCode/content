@@ -13,11 +13,12 @@ pkg_resources.safe_extra = lambda extra: re.sub('[^A-Za-z0-9.-]+', '_', extra).l
 
 def _parse_version_into_evr(version):
     evr = {"epoch": None, "version": None, "release": None}
-    match_version = re.match(r'^(\d[\d\.]*)(?:-(\d*))?$', version)
+    match_version = re.match(r'^(?:(\d+):)?(\d[\d\.]*)(?:-(\d*))?$', version)
     if not match_version:
         raise ValueError("Invalid version specifier {0}".format(version))
-    evr["version"] = match_version.groups()[0]
-    evr["release"] = match_version.groups()[1]
+    evr["epoch"] = match_version.groups()[0]
+    evr["version"] = match_version.groups()[1]
+    evr["release"] = match_version.groups()[2]
     return evr
 
 
