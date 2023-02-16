@@ -4,7 +4,7 @@ oval_check_config_file(
 	prefix_regex="^[ \\t]*",
 	parameter="smtpd_client_restrictions",
 	separator_regex=' = ',
-	value="permit_mynetworks,reject",
+	value="permit_mynetworks[ \\t]*[, \\t][ \\t]*reject",
 	missing_parameter_pass=false,
 	application="mail",
 	multi_value=false,
