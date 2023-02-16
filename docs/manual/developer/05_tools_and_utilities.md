@@ -29,7 +29,7 @@ remediations, run this command:
 
 Note: There is an automated job which provides latest statistics from
 all products and all profiles, you can view it here:
-[Statistics](https://jenkins.complianceascode.io/job/scap-security-guide-stats/)
+[Statistics](https://complianceascode.github.io/content-pages/statistics/index.html)
 
 The tool also can subtract rules between YAML profiles.
 
