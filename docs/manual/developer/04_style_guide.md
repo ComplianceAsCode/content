@@ -52,6 +52,63 @@ Noteworthy additions to these principles:
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
 * Should use the GitHub Web UI to document and ensure code reviews are done correctly
 
+### Commit Messages
+
+These guidelines are based on the [*How to write a commit message*](https://cbea.ms/git-commit/) post by cbeams.
+
+* Limit the subject line (first line) to 50 characters
+    * This is not a hard limit
+    * Keeping subject lines at this length ensures that they
+      are readable, and forces the author to think for a moment about the most concise way
+      to explain what’s going on
+    * If you’re having a hard time summarizing, you might be committing too many changes at once
+* Separate subject from body with a blank line
+    * Not every commit requires both a subject and a body.
+      Sometimes a single line is fine, especially when the change
+      is so simple that no further context is necessary
+* Capitalize the subject line
+* Do not end the subject line with a `.` (period)
+    * Trailing punctuation is unnecessary in subject lines
+* Use the imperative mood in the subject line
+    * Verbs like "fix", "update", "refactor", "remove" instead of "fixed", "updated", "refactors", and "removes"
+    * This convention matches up with commit messages generated
+      by commands like `git merge` and `git revert`
+* Wrap the body at 72 characters
+* Use the body to explain what and why instead of how
+    * In most cases, you can leave out details about **how** a change has been made
+      (other contributors can use `git show` or just look at the code for that)
+    * Focus on making clear the reasons **why** you made the change — the way things worked before the change
+      (and what was wrong with that), the way they work now, and why it was decided to solve it the way it was solved
+
+This is an example of an ideal commit message:
+
+```
+Summarize changes in around 50 characters or less
+
+More detailed explanatory text, if necessary. Wrap it to about 72
+characters or so. In some contexts, the first line is treated as the
+subject of the commit and the rest of the text as the body. The
+blank line separating the summary from the body is critical (unless
+you omit the body entirely); various tools like `log`, `shortlog`
+and `rebase` can get confused if you run the two together.
+
+Explain the problem that this commit is solving. Focus on why you
+are making this change as opposed to how (the code explains that).
+Are there side effects or other unintuitive consequences of this
+change? Here's the place to explain them.
+
+Further paragraphs come after blank lines.
+
+ - Bullet points are okay, too
+ - Typically a hyphen or asterisk is used for the bullet, preceded
+   by a single space
+
+Put references to issues at the bottom, like this:
+
+Resolves: #123
+See also: #456, #789
+```
+
 ## General Coding Style
 
 Prioritize the human-readability of code to its machine efficiency.
