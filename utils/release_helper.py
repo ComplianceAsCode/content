@@ -583,7 +583,7 @@ def collect_release_info(repo) -> dict:
 def print_specific_stat(status, current, total) -> None:
     if current > 0:
         percent = round((current / total) * 100.00, 2)
-        print(f'{status:21} {current:6} / {total:3} = {percent:4}%')
+        print(f'{status:23.23} {current} / {total} = {percent}%')
 
 
 def print_last_release_stats(data):
@@ -595,11 +595,11 @@ def print_last_release_stats(data):
     total_issues = data["previous_milestone_total_issues"]
 
     print('Information based on the latest published release:')
-    print(f'Current Version:\t {version}\n'
-          f'Created at:\t\t {created_at}\n'
-          f'Published at:\t\t {published_at}\n'
-          f'Release Notes:\t\t {url_download}')
-    print_specific_stat("Closed Issues/PRs", closed_issues, total_issues)
+    print(f'Current Version:        {version}')
+    print(f'Created at:             {created_at}')
+    print(f'Published at:           {published_at}')
+    print(f'Release Notes:          {url_download}')
+    print_specific_stat("Closed Issues/PRs:", closed_issues, total_issues)
 
 
 def print_next_release_stats(data):
@@ -615,13 +615,13 @@ def print_next_release_stats(data):
     total_issues = data["active_milestone_total_issues"]
 
     print(f'\nNext release information in {now}:')
-    print(f'Next Version:\t\t {next_release_version}\n'
-          f'Current State:\t\t {next_release_state}\n'
-          f'Estimated Release Date:\t {next_release_date} ({next_release_days} remaining days)\n'
-          f'Stabilization Date:\t {next_stab_date} ({next_stab_days} remaining days)\n'
-          f'Working Milestone:\t {milestone}')
+    print(f'Next Version:           {next_release_version}')
+    print(f'Current State:          {next_release_state}')
+    print(f'Estimated Release Date: {next_release_date} ({next_release_days} remaining days)')
+    print(f'Stabilization Date:     {next_stab_date} ({next_stab_days} remaining days)')
+    print(f'Working Milestone:      {milestone}')
 
-    print_specific_stat("Closed Issues/PRs", closed_issues, total_issues)
+    print_specific_stat("Closed Issues/PRs:", closed_issues, total_issues)
 
 
 # Functions to specific phases of the process
