@@ -61,6 +61,24 @@
       </ind:value>
   </ind:yamlfilecontent_state>
 
+
+  <ind:yamlfilecontent_test id="test_hypershift_version" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_hypershift_version"/>
+      <ind:state state_ref="state_hypershift_version"/>
+  </ind:yamlfilecontent_test>
+
+
+  <ind:yamlfilecontent_object id="object_hypershift_version" version="1">
+      <ind:filepath var_ref="ocp4_hypershift_dump_location"/>
+      <ind:yamlpath>[:]</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  <ind:yamlfilecontent_state id="state_hypershift_version" version="1">
+      <ind:value datatype="record">
+          <field name="#" datatype="string" operation="pattern match">4\..*</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+
 {{% for minorversion in range(6, 19) %}}
   <!-- Check for OpenShift Container Platform 4.{{{ minorversion }}} -->
   <definition class="inventory" id="installed_app_is_ocp4_{{{ minorversion }}}" version="1">
@@ -76,7 +94,7 @@
       <criteria operator="AND">
         <criterion comment="cluster is OpenShift 4.{{{ minorversion }}}" test_ref="test_ocp4_{{{ minorversion }}}" />
         <criterion comment="Make sure OCP4 clusteroperators file is present" test_ref="test_file_for_ocp4"/>
-        <criterion negate="true" comment="Make sure HyperShift OCP4 clusteroperators file is not present" test_ref="test_hypershift_file_for_ocp4"/>
+        <criterion negate="true" comment="HyperShift cluster should not have version" test_ref="test_hypershift_version" />
       </criteria>
       <criteria operator="AND">
         <criterion comment="cluster is OpenShift 4.{{{ minorversion }}}" test_ref="test_hypershift_ocp4_{{{ minorversion }}}" />
