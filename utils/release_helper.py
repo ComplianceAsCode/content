@@ -313,23 +313,30 @@ def bump_master_version(repo):
         print('Great! The version in CMakeLists.txt file is already updated.')
 
 
-def get_friday(date) -> datetime:
-    return date + timedelta((4-date.weekday()) % 7)
+def describe_next_release_state(repo) -> str:
+    if is_next_release_in_progress(repo):
+        return 'In Stabilization Phase'
+    else:
+        return 'Scheduled'
 
 
-def get_monday(date) -> datetime:
-    return date + timedelta((0-date.weekday()) % 7)
+def get_friday_that_follows(date) -> datetime:
+    return date + timedelta((4 - date.weekday()) % 7)
+
+
+def get_monday_that_follows(date) -> datetime:
+    return date + timedelta((0 - date.weekday()) % 7)
 
 
 def get_next_stabilization_date(release_date) -> datetime:
     two_weeks_before = release_date - timedelta(weeks=2)
-    stabilization_monday = get_monday(two_weeks_before)
+    stabilization_monday = get_monday_that_follows(two_weeks_before)
     return stabilization_monday.date()
 
 
 def get_next_release_date(latest_release_date) -> datetime:
     two_months_ahead = latest_release_date + timedelta(days=60)
-    return get_friday(two_months_ahead)
+    return get_friday_that_follows(two_months_ahead)
 
 
 def is_next_release_in_progress(repo) -> bool:
@@ -339,13 +346,6 @@ def is_next_release_in_progress(repo) -> bool:
         return True
     else:
         return False
-
-
-def get_next_release_state(repo) -> str:
-    if is_next_release_in_progress(repo):
-        return 'In Stabilization Phase'
-    else:
-        return 'Scheduled'
 
 
 def get_next_release_version(repo) -> str:
@@ -557,7 +557,7 @@ def collect_release_info(repo) -> dict:
     next_release_remaining_days = next_release_date - datetime.today()
     data["next_release_date"] = next_release_date
     data["next_release_remaining_days"] = next_release_remaining_days.days
-    data["next_release_state"] = get_next_release_state(repo)
+    data["next_release_state"] = describe_next_release_state(repo)
     data["next_release_version"] = get_next_release_version(repo)
     next_stabilization_date = get_next_stabilization_date(next_release_date)
     next_stabilization_remaining_days = next_stabilization_date - datetime.today().date()
