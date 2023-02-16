@@ -32,13 +32,10 @@
       <unix:object object_ref="object_file_for_ocp4"/>
   </unix:file_test>
 
-  <unix:file_test id="test_hypershift_file_for_ocp4" check="only one" comment="Find the actual file to be scanned for hypershift." version="1">
-      <unix:object object_ref="object_hypershift_file_for_ocp4"/>
-  </unix:file_test>
-
-  <unix:file_object id="object_hypershift_file_for_ocp4" version="1">
-      <unix:filepath var_ref="ocp4_hypershift_dump_location"/>
-  </unix:file_object>
+  <ind:yamlfilecontent_test id="test_hypershift_file_for_ocp4" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_hypershift_ocp4"/>
+      <ind:state state_ref="state_ocp4"/>
+  </ind:yamlfilecontent_test>
 
   <ind:yamlfilecontent_object id="object_hypershift_ocp4" version="1">
       <ind:filepath var_ref="ocp4_hypershift_dump_location"/>
