@@ -27,7 +27,7 @@ Putting these arguments together, a properly formatted command would be:
 $ sudo oscap xccdf eval --profile stig \
 --results /tmp/results.xml \
 --report /tmp/report.html \
-/usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+/usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml
 ```
 
 While the scan is running, you will see output similar to the following on your screen:
@@ -35,22 +35,22 @@ While the scan is running, you will see output similar to the following on your 
 ```
 Title   Install AIDE
 Rule    package_aide_installed
-Ident   CCE-27024-9
+Ident   CCE-83457-2
 Result  fail
 
 Title   Configure Periodic Execution of AIDE
 Rule    aide_periodic_cron_checking
-Ident   CCE-27222-9
+Ident   CCE-83437-4
 Result  notchecked
 
 Title   Verify File Permissions with RPM
 Rule    rpm_verify_permissions
-Ident   CCE-26731-0
+Ident   CCE-90840-0
 Result  fail
 
 Title   Verify File Hashes with RPM
 Rule    rpm_verify_hashes
-Ident   CCE-27223-7
+Ident   CCE-90841-8
 Result  pass
 ```
 
@@ -65,22 +65,22 @@ Just open the `/tmp/report.html` file in your favorite browser.
 Looking at the `/tmp/results.xml` file, you will notice lines similar to those below:
 
 ```xml
-    <rule-result idref="ensure_gpgcheck_globally_activated" time="2013-10-22T10:03:43" severity="high" weight="1.000000">
+    <rule-result idref="ensure_gpgcheck_globally_activated" time="2023-02-16T10:03:43" severity="high" weight="1.000000">
       <result>pass</result>
-      <ident system="http://cce.mitre.org">CCE-26709-6</ident>
+      <ident system="http://cce.mitre.org">CCE-83457-2</ident>
       <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
-        <check-content-ref name="oval:ssg:def:413" href="ssg-rhel6-oval.xml"/>
+        <check-content-ref name="oval:ssg:def:413" href="ssg-rhel9-oval.xml"/>
       </check>
     </rule-result>
     ......
-    <rule-result idref="package_aide_installed" time="2013-10-22T10:03:43" severity="medium" weight="1.000000">
+    <rule-result idref="package_aide_installed" time="2023-02-16T10:03:43" severity="medium" weight="1.000000">
       <result>pass</result>
-      <ident system="http://cce.mitre.org">CCE-27024-9</ident>
+      <ident system="http://cce.mitre.org">CCE-90843-4</ident>
       <fix xmlns:xhtml="http://www.w3.org/1999/xhtml" system="urn:xccdf:fix:script:sh">
         yum -y install aide
       </fix>
       <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
-        <check-content-ref name="oval:ssg:def:245" href="ssg-rhel6-oval.xml"/>
+        <check-content-ref name="oval:ssg:def:245" href="ssg-rhel9-oval.xml"/>
       </check>
     </rule-result>
 ```
