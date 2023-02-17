@@ -635,7 +635,7 @@ selections:
     # Skip due to being a manual test
 
     ##### 4.2.1.1.4 Ensure journald is not configured to receive logs from a remote client (Automated)
-    - service_systemd-journal-remote_disabled
+    - socket_systemd-journal-remote_disabled
 
     #### 4.2.1.2 Ensure journald service is enabled (Automated)
     - service_systemd-journald_enabled
