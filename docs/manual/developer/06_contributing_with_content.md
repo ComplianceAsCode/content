@@ -1257,13 +1257,25 @@ For example, to make a rule applicable only on systems with `systemd` newer than
 Only numeric versions are allowed, versions containing letters can't be used in the expressions.
 Versions with epochs are supported.
 It isn't mandatory to put a 0 epoch if the package doesn't have epoch.
-We recommend to use sharp inequality (`>` and `<` instead of `>=` and `<=`) in the expressions.
+We don't support using the release component (eg. `-1` or `-1.el8`) in the version expressions.
 
-The package CPEs might seem a go-to approach for most of the applicability problems.
+> **NOTE**: It's tricky to create a correct version expression due to existence of epoch and release components of the version in the rpm or deb package versions.
+For example, upstream package `foo` version `1.2.3` can be packaged in RHEL 8 as `foo-1.2.3-1.el8`.
+Imagine that you create a rule for a feature that has been introduced in upstream version `1.2.4` of this software.
+You would like to make the rule applicable if the `1.2.4` version or newer is installed.
+You would expect tha the rule will not be applicable if `foo-1.2.3-1.el8` (or older) is installed.
+However, in this example, the expression `package[foo]>1.2.3` will be evaluated as *true* because `1.2.3-1.el8` is greater than `1.2.3` using the `rpmvercmp` algorithm that is used by OVAL.
+That means that a correct expression in this example is `package[foo]>=1.2.4`.
+In general, find the first version where the feature you want is present and use the `>=` operator.
+On contrary, if you want to make some rule not applicable starting some version, use the `<` operator with that version.
+
+> **NOTE**: The package CPEs might seem a go-to approach for most of the applicability problems.
 But, in general, we recommend to derive rule applicability from operating system release version instead of basing that on a version of a specific package.
-The packages in Linux distributions might be patched, bug fixes sometimes get backported to older stable versions, so the behavior of the software might differ from upstream release behavior.
+The reason for this recommendation is that packages in Linux distributions might be patched, bug fixes and features sometimes get backported to older stable versions, so the behavior of the software might differ from upstream release behavior.
 If the check would be based on operating system version, you can track what packages are distributed there and what patches they contain.
-For example, you can use something like `os_linux[rhel]>8.6` instead of `package[foo]>1.2.3`, if you know that an up-to-date RHEL 8.6 and later comes with `foo` that contains the feature that you are interested in.
+Examine the actual contents and changelog of the rpm/deb pakcage in the specific product.
+Then, use the `os_linux` platform instead of `package` platform.
+For example, use `os_linux[rhel]>=8.6` instead of `package[foo]>=1.2.4`, if you know that an up-to-date RHEL 8.6 and later comes with `foo` that contains the feature that you are interested in.
 
 ## Tests (ctest)
 
