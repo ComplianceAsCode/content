@@ -262,11 +262,11 @@ The audit daemon must be restarted for the changes to take effect.
 
 #}}
 {{%- macro fixtext_service_disabled(service) -%}}
-To disable the {{{ service }}} service run the following command:
+    To disable the {{{ service }}} service run the following command:
 
-$ sudo systemctl disable --now {{{ service }}}
+    $ sudo systemctl disable --now {{{ service }}}
 
-$ sudo systemctl mask --now {{{ service }}}
+    $ sudo systemctl mask --now {{{ service }}}
 {{%- endmacro -%}}
 
 
