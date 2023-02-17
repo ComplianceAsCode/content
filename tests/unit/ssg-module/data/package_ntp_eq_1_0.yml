@@ -7,5 +7,4 @@ bash_conditional: rpm --quiet -q ntp && { real=$(rpm -q --queryformat '%{VERSION
 ansible_conditional: '"ntp" in ansible_facts.packages and (ansible_facts.packages["ntp"]
     | last)["version"] is version("1.0", "==")'
 title: ''
-definition_location: /home/vojta/repos/upstream/content/build/rhel7/platforms/package_ntp_eq_1_0.yml
 documentation_complete: true
