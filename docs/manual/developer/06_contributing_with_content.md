@@ -1250,9 +1250,9 @@ The platform is using the `platform_package` template which is defined in `share
 
 The package platform supports version checking.
 That allows you to define a platform for specific version.
-For example, to make a rule applicable only on systems with `systemd` newer than version 250, add the following to the `rule.yml`:
+For example, to make a rule applicable only on systems with `systemd` version 250 and newer, add the following to the `rule.yml`:
 
-    platform: package[systemd]>250
+    platform: package[systemd]>=250
 
 Only numeric versions are allowed, versions containing letters can't be used in the expressions.
 Versions with epochs are supported.
