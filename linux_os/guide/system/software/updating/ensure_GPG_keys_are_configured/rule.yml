@@ -5,6 +5,14 @@ prodtype: sle12,sle15
 title: 'Ensure GPG keys are configured'
 
 description: |-
+    Most distributions use a package manager such as yum, apt, or zypper to install and 
+    update software packages. Patch management procedures may vary widely between enterprises.
+    Updates can be performed automatically or manually, depending on the site's policy for 
+    patch management. Many large enterprises prefer to test patches on a non-production 
+    system before rolling out to production. The main reasons for that are two: very complex 
+    heterogenous environments which combine IT products from different vendors, and  
+    potential high risk of impact on runing business processes.    
+
     Most packages managers implement GPG key signing to verify package integrity during
     installation.
 
