@@ -61,7 +61,7 @@ template:
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '.apiServerArguments["audit-log-maxsize"][:]'
     values:
-    - value: '100'
-      operation: "pattern match"
-      type: "string"
+    - value: 100
+      operation: "greater than or equal"
+      type: "int"
       entity_check: "at least one"
