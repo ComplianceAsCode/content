@@ -1368,9 +1368,10 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    status: partial # rule for checking audit watch on /usr/share/selinux is missing
+    status: automated
     rules:
     - audit_rules_mac_modification
+    - audit_rules_mac_modification_usr_share
 
   - id: 4.1.7
     title: Ensure login and logout events are collected (Automated)
