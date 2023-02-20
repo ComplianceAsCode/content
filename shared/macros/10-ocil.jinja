@@ -1217,3 +1217,24 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
     -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
     -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro %}}
+
+{{# OpenShift Logging Macros #}}
+
+{{#
+    OCIL for how to check RBAC permissions for cluster logging
+
+:param verb: The RBAC verb to check
+:type file: str
+
+#}}
+{{%- macro ocil_cluster_logging_rbac_review(verb) -%}}
+Perform a check to list the users and groups who have permission to {{{ verb }}} the cluster logging configuration by running the following two commands.
+
+> oc policy who-can {{{ verb }}} ClusterLogging -n openshift-logging
+
+> oc policy who-can {{{ verb }}} ClusterLoggingForwarder -n openshift-logging
+
+Review the list of users and groups who have {{{ verb }}} access to the cluster logging resources.
+If any user or group listed should not have access to {{{ verb }}} the cluster logging resources, this is a finding.
+{{%- endmacro %}}
+
