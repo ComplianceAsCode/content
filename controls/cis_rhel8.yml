@@ -692,13 +692,15 @@ controls:
     rules:
       - package_xorg-x11-server-common_removed
 
-  # NEEDS RULE
   - id: 2.2.3
     title: Ensure Avahi Server is not installed (Automated)
     levels:
       - l1_server
-      - l1_workstation
-    status: planned
+      - l2_workstation
+    status: automated
+    rules:
+      - package_avahi_removed
+      - package_avahi-autoipd_removed
     related_rules:
       - service_avahi-daemon_disabled
 
