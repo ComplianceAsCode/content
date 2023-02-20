@@ -12,7 +12,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sudo_timestamp_timeout" version="1">
-    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/*)?$</ind:filepath>  
+    <ind:filepath operation="pattern match">^\/etc\/(sudoers|sudoers\.d\/*)$</ind:filepath>  
     <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout[\s]*=\s*[0-9]+$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
