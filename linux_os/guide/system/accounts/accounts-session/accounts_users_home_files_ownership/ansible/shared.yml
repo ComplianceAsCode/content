@@ -12,15 +12,18 @@
 - name: Create local_users variable from the getent output
   ansible.builtin.set_fact:
     local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
+    # Creates a dictionary where the key is the first field of the /etc/passwd file, the username.
+    # The list of values are the next 6 fields from /etc/passwd. Example for the root entry:
+    # The "root" key would have these values: ["x", "0", "0", "root", "/root", "/bin/bash"]
 
-- name: Test for existence home directories to avoid creating them, but only fixing ownership
+- name: Test for existence of home directories to avoid creating them, but only fixing ownership
   ansible.builtin.stat:
     path: '{{ item.value[4] }}'
   register: path_exists
   loop: '{{ local_users }}'
   when:
     - item.value[1]|int >= {{{ uid_min }}}
-    - item.value[1]|int != 65534
+    - item.value[1]|int != {{{ nobody_uid }}}
 
 - name: Ensure interactive local users are the owners of their respective home directories
   ansible.builtin.file:
