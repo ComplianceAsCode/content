@@ -506,24 +506,17 @@ controls:
     status: manual # rule is missing
 
   - id: 1.10
-    title: Ensure GNOME Display Manager is removed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation      
-    status: automated
-    rules:
-      - package_gdm_removed
-
-  - id: 1.10
     title: Ensure GDM login banner is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      The idea of the requirement is to have either package_gdm_removed rule
+      or the rest of the rules as they are mutually exclusive.
     rules:
+      - package_gdm_removed
       - enable_dconf_user_profile
-      - dconf_gnome_disable_user_list
-      - login_banner_text=cis_default
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
       - login_banner_text=cis_default
