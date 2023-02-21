@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# packages = passwd
-
 BAD_INACTIVE=60
 
 # Configure the OS to disable INACTIVE setting of each accout  
