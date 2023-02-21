@@ -2320,14 +2320,14 @@ controls:
       - account_disable_post_pw_expiration
       - var_account_disable_post_pw_expiration=30
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5537
   - id: 5.6.1.5
     title: Ensure all users last password change date is in the past (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - accounts_password_last_change_is_in_past
 
   # NEEDS RULE
   # We are missing the component of this control which locks non-root system accounts

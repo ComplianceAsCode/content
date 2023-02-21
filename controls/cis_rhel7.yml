@@ -2024,7 +2024,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - accounts_password_last_change_is_in_past
 
   - id: 5.5.2
     title: Ensure system accounts are secured (Automated)
