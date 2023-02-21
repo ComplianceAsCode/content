@@ -417,7 +417,7 @@ selections:
     - service_ufw_enabled
 
     #### 3.5.1.4 Ensure ufw loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_ufw_loopback_traffic
 
     #### 3.5.1.5 Ensure ufw outbound connections are configured (Manual)
     # Skip due to being a manual test
