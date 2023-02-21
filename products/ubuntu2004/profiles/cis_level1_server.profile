@@ -414,7 +414,9 @@ selections:
     # Skip due to being a manual test
 
     #### 3.5.2.4 Ensure a table exists (Automated)
-    # Needs rule
+    - var_nftables_family=inet
+    - var_nftables_table=filter
+    - set_nftables_table
 
     #### 3.5.2.5 Ensure base chains exist (Automated)
     # Needs rule
