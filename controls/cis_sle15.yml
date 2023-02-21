@@ -510,7 +510,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation      
-    status: manual # Rule is missing: https://github.com/ComplianceAsCode/content/issues/7225
+    status: automated
+    rules:
+      - package_gdm_removed
 
   - id: 1.10
     title: Ensure GDM login banner is configured (Automated)
@@ -519,6 +521,9 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - enable_dconf_user_profile
+      - dconf_gnome_disable_user_list
+      - login_banner_text=cis_default
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
       - login_banner_text=cis_default
