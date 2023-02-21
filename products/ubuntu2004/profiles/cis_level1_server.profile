@@ -429,7 +429,7 @@ selections:
     # Needs rule
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
-    # Needs rule
+    - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
     # Needs rule
