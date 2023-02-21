@@ -1665,15 +1665,15 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5523
   - id: 4.2.3
     title: Ensure all logfiles have appropriate permissions and ownership (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
+      - rsyslog_files_groupownership
+      - rsyslog_files_ownership
       - rsyslog_files_permissions
 
   - id: 4.3
