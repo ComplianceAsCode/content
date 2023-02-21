@@ -1,10 +1,10 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_ubuntu
 
 #Set nftables family name
 {{{ bash_instantiate_variables("var_nftables_family") }}}
 
 #Set nftables table name
-{{{ bash_instantiate_variables("var_nftables_table") }}} 
+{{{ bash_instantiate_variables("var_nftables_table") }}}
 
 IS_TABLE=$(nft list tables)
 if [ -z "$IS_TABLE" ]
