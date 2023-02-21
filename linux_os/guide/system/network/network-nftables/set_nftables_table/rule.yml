@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15,ubuntu2004,ubuntu2204
+prodtype: rhel7,rhel8,rhel9,sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure a Table Exists for Nftables'
 
@@ -16,9 +16,15 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-86161-7
+    cce@rhel8: CCE-86162-5
+    cce@rhel9: CCE-86163-3
     cce@sle15: CCE-92569-3
 
 references:
+    cis@rhel7: 3.5.2.5
+    cis@rhel8: 3.4.2.5
+    cis@rhel9: 3.4.2.2
     cis@sle15: 3.5.2.4
     cis@ubuntu2004: 3.5.2.4
     cis@ubuntu2204: 3.5.2.4

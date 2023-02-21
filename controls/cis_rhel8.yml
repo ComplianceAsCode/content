@@ -1194,14 +1194,19 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5244
   - id: 3.4.2.5
     title: Ensure an nftables table exists (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    notes:
+       The audit (OVAL check) cannot be automated,
+       and should be addressed manually.
+    rules:
+      - set_nftables_table
+      - var_nftables_family=inet
+      - var_nftables_table=filter
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5245
