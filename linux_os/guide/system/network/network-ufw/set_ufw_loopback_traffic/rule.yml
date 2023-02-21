@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Set UFW Loopback Traffic'
+
+description: |-
+    Configure the loopback interface to accept traffic.
+    Configure all other interfaces to deny traffic to the loopback
+    network.
+
+rationale: |-
+    Loopback traffic is generated between processes on machine and is
+    typically critical to operation of the system. The loopback interface
+    is the only place that loopback network traffic should be seen, all
+    other interfaces should ignore traffic on this network as an
+    anti-spoofing measure.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 3.5.1.4
+    cis@ubuntu2204: 3.5.1.4
+
+ocil_clause: 'loopback traffic is not configured'
+
+ocil: |-
+    Run the following commands to implement the loopback rules:
+    <pre>
+    # ufw allow in on lo
+    </pre>
+    <pre>
+    # ufw allow out on lo
+    </pre>
+    <pre>
+    # ufw deny in from 127.0.0.0/8
+    </pre>
+    <pre>
+    # ufw deny in from ::1
+    </pre>
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
