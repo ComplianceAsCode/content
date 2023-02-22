@@ -677,7 +677,8 @@ selections:
     - rsyslog_remote_loghost
 
     #### 4.2.2.7 Ensure rsyslog is not configured to receive logs from a remote client (Automated)
-    # NEEDS RULE
+    # This rule should be extended to consider rainerscript syntax
+    - rsyslog_nolisten
 
     ### 4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)
     - permissions_local_var_log
