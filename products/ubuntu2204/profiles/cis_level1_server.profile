@@ -239,7 +239,7 @@ selections:
     - chronyd_run_as_chrony_user
 
     #### 2.1.2.3 Ensure chrony is enabled and running (Automated)
-    # NEEDS RULE
+    - service_chronyd_enabled
 
     ### 2.1.3 Configure systemd-timesyncd ###
     #### 2.1.3.1 Ensure systemd-timesyncd configured with autorized timeserver (Manual)
