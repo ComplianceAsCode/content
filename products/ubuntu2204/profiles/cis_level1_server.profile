@@ -423,7 +423,7 @@ selections:
     # Skip due to being a manual test
 
     #### 3.5.1.6 Ensure ufw firewall rules exist for all open ports (Automated)
-    # NEEDS RULE
+    - ufw_rules_for_open_ports
 
     #### 3.5.1.7 Ensure ufw default deny firewall policy (Automated)
     # NEEDS RULE
