@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure nftables default deny firewall policy'
+
+description: |-
+   Base chain policy is the default verdict that will be applied to packets reaching the end of
+   the chain.
+
+rationale: |-
+    There are two policies: accept (Default) and drop. If the policy is set to accept, the
+    firewall will accept any packet that is not configured to be denied and the packet will
+    continue traversing the network stack. It is easier to allow acceptable usage than to block
+    unacceptable usage.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92507-3
+
+references:
+    cis@sle15: 3.5.2.8
+
+ocil_clause: 'default policy is not set for nftables rules'
+
+warnings:
+   - general: |-
+       Changing firewall settings while connected over network can result in being locked out
+       of the system.
+
+ocil: |-
+    Run the following commands and verify that base chains contain a policy of DROP:
+    <pre>$ sudo nft list ruleset | grep 'hook input' </pre>
+    Output should include a list of nftables similar to:
+    <tt>type filter hook input priority 0; policy drop; </tt>
+    Same goes not only for <tt>hook input</tt>, but also <tt>output</tt> and <tt>forward</tt>
