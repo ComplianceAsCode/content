@@ -680,7 +680,7 @@ selections:
     # NEEDS RULE
 
     ### 4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)
-    # NEEDS RULE
+    - permissions_local_var_log
 
     # 5 Access, Authentication and Authorization #
     ## 5.1 Configure time-based job schedulers ##
