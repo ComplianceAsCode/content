@@ -390,7 +390,7 @@ selections:
     - service_ufw_enabled
 
     #### 3.5.1.4 Ensure loopback traffic is configured (Automated)
-    # Needs rule
+    - set_ufw_loopback_traffic
 
     #### 3.5.1.5 Ensure outbound connections are configured (Manual)
     # Skip due to being a manual test
