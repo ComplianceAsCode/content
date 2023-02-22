@@ -1713,9 +1713,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial
-    rules:
-      - rsyslog_files_permissions
+    status: planned
 
   - id: 4.2.1.5
     title: Ensure logging is configured (Manual)
@@ -1820,14 +1818,12 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5523
   - id: 4.2.3
     title: Ensure permissions on all logfiles are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - rsyslog_files_permissions
 
