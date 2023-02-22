@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure ufw Default Deny Firewall Policy'
+
+description: |-
+    A default deny policy on connections ensures that any unconfigured
+    network usage will be rejected.
+
+    Note: Any port or protocol without a explicit allow before the default
+    deny will be blocked.
+
+rationale: |-
+    With a default accept policy the firewall will accept any packet that
+    is not configured to be denied. It is easier to allow acceptable
+    usage than to block unacceptable usage.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 3.5.1.7
+    cis@ubuntu2204: 3.5.1.7
+
+ocil_clause: |-
+    the default policy for the incoming, outgoing and routed is not set to deny,
+    reject or disabled
+
+ocil: |-
+    Run the following command and verify that the default policy for incoming,
+    outgoing, and routed directions is deny, reject, or disabled:
+    <pre># ufw status verbose | grep Default:</pre>
+    Example output:
+    <pre>Default: deny (incoming), deny (outgoing), disabled (routed)</pre>
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
