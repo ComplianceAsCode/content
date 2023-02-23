@@ -214,7 +214,7 @@ apt-get install python3-mypy
 #### Type stubs
 
 ```bash
-pip install types-openpyxl types-PyYAML
+pip install types-openpyxl types-PyYAML openpyxl-stubs
 ```
 ## Downloading the source code
 

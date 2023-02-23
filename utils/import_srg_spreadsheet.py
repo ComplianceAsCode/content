@@ -5,6 +5,7 @@ import argparse
 import os
 import re
 from pathlib import Path
+from typing import cast
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
@@ -176,8 +177,8 @@ def main() -> None:
     full_name = get_full_name(args.root, args.product)
     changed_wb = load_workbook(args.changed)
     current_wb = load_workbook(args.current)
-    current_sheet = current_wb['Sheet']
-    changed_sheet = changed_wb['Sheet']
+    current_sheet = cast(Worksheet, current_wb['Sheet'])
+    changed_sheet = cast(Worksheet, changed_wb['Sheet'])
     common_set = get_common_set(changed_sheet, current_sheet, args.end_row)
 
     cac_cce_dict = get_cce_dict_to_row_dict(current_sheet, full_name, args.changed_name,
