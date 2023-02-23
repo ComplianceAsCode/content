@@ -1,0 +1,10 @@
+checktext: |-
+  Run the following command to retrieve the Cluster Version objects in the system:
+  > oc get clusterversion version
+  Make sure the Cluster Version Operator is installed and the AVAILABLE is True.
+
+fixtext: |-
+  By default, the integrity of RH CoreOS is checked by cluster version operator on OpenShift platform. If the integrity is not verified, reinstall of the cluster may be necessary.
+
+srg_requirement: |-
+  {{{ full_name }}} must prevent the installation of patches, service packs, device drivers, or operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.
