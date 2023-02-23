@@ -803,7 +803,9 @@ dconf update
 # The service may not be running because it has been started and failed,
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
-/usr/bin/systemctl reset-failed "{{{ service }}}"
+if /usr/bin/systemctl --failed | grep -q "{{{ service }}}"; then
+    /usr/bin/systemctl reset-failed "{{{ service }}}"
+fi
 {{%- endif -%}}
 
 {{%- if xinetd != "" -%}}
