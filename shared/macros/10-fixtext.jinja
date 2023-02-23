@@ -539,3 +539,27 @@ Fixtext for having a mount point on another partition
 {{% macro fixtext_separate_partition(part) -%}}
 Migrate the "{{{ part }}}" path onto a separate file system.
 {{%- endmacro %}}
+
+{{#
+Fixtext for how to restrict RBAC permissions for cluster logging
+
+:param verb: The RBAC verb to restrict
+
+#}}
+{{% macro fix_openshift_logging_rbac(verb) -%}}
+Remove {{{ verb }}} permissions from any unauthorized user or group by performing one or more of the following commands:
+
+* Remove role from user
+> oc adm policy remove-role-from-user ROLE USER -n openshift-logging
+
+* Remove role from group
+> oc adm policy remove-role-from-group ROLE GROUP -n openshift-logging
+
+* Remove cluster role from user
+> oc adm policy remove-cluster-role-from-user CLUSTER_ROLE USER -n openshift-logging
+
+* Remove cluster role from group
+> oc adm policy remove-cluster-role-from-group CLUSTER_ROLE GROUP -n openshift-logging
+
+Where ROLE/CLUSTER_ROLE is the role granting user {{{ verb }}} permission to resources in openshift-logging namespace.
+{{%- endmacro %}}
