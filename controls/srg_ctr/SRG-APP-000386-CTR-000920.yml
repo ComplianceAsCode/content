@@ -6,3 +6,13 @@ controls:
     (whitelist) policy to allow only authorized container images in the container
     platform.
   status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  status_justification: |-
+    The OpenShift Container Platform uses an extensive RBAC policy
+    to determine if a user is allowed to perform a given action. The RBAC model defines
+    a resource and a verb (or action) to be permitted. If an action is not explicitly
+    allowed, it is denied by default.  See https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+    for more information.
