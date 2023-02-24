@@ -9,7 +9,7 @@ description: |-
     to receive number of days or more, according to the days specified with the variable   
     var_accounts_password_warn_age_login_defs, an advance warning that a password will 
     be expiring by running the following command:
-    <pre>$ sudo chage --warndays $var_accounts_password_warn_age_login_defs <i>USER</i></pre>
+    <pre>$ sudo chage --warndays {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} <i>USER</i></pre>
 
 rationale: |-
     Providing an advance warning that a password will be expiring gives users 
@@ -40,8 +40,8 @@ ocil: |-
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
-    usrs_pass_warn_age=( $(awk -F: '$6 < $var_accounts_password_warn_age_login_defs || $6 == "" {print $1}' /etc/shadow) )
+    usrs_pass_warn_age=( $(awk -F: '$6 < ${{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow) )
     for i in ${usrs_pass_warn_age[@]};
     do
-       chage --warndays $var_accounts_password_warn_age_login_defs $i
+       chage --warndays {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} $i
     done
