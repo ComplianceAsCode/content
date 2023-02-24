@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Configure the OpenShift API Server Maximum Retained Audit Logs'
 
+{{% set custom_jqfilter = '.data."{{.var_openshift_apiserver_config_data_name}}" | fromjson' %}}
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_apiserver_namespace}}/configmaps/{{.var_openshift_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To configure how many rotations of audit logs are retained,
     edit the <tt>openshift-apiserver</tt> configmap
@@ -45,16 +51,17 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     entity_check: "at least one"
-    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["audit-log-maxbackup"][:]'
     values:
-    - value: '"apiServerArguments":{.*"audit-log-maxbackup":\["10"\]'
+    - value: '10'
       operation: "pattern match"
       type: "string"
+      entity_check: "at least one"
