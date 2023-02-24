@@ -50,7 +50,7 @@
       for ((i=0; i < $((var_nftables_base_chain_number)); i++)) 
       do
         is_chain_exist=`nft list ruleset | grep 'hook ${var_nftables_base_chain_hooks[$i]}'`
-        if [ -z "$is_chain_exist"] 
+        if [ -z "$is_chain_exist" ] 
         then  
            chain_to_add="add chain $var_nftables_family $var_nftables_table ${var_nftables_base_chain_names[$i]} \
            { type ${var_nftables_base_chain_types[$i]} hook ${var_nftables_base_chain_hooks[$i]} \
