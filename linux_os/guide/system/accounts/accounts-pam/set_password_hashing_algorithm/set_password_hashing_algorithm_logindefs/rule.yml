@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set Password Hashing Algorithm in /etc/login.defs'
 
 description: |-
     In <tt>/etc/login.defs</tt>, add or correct the following line to ensure
-    the system will use SHA-512 as the hashing algorithm:
-    <pre>ENCRYPT_METHOD SHA512</pre>
+    the system will use {{{ xccdf_value("var_password_hashing_algorithm") }}} as the hashing algorithm:
+    <pre>ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}</pre>
 
 rationale: |-
     Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
@@ -30,6 +30,7 @@ references:
     cis-csc: 1,12,15,16,5
     cis@sle12: 5.4.1.1
     cis@sle15: 5.4.1.1
+    cis@ubuntu2204: 5.4.4
     cjis: 5.6.2.2
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.13.11
@@ -50,7 +51,7 @@ references:
     stigid@sle15: SLES-15-010260
     stigid@ubuntu2004: UBTU-20-010404
 
-ocil_clause: 'ENCRYPT_METHOD is not set to SHA512'
+ocil_clause: 'ENCRYPT_METHOD is not set to {{{ xccdf_value("var_password_hashing_algorithm") }}}'
 
 ocil: |-
     {{% if product in ['rhel9'] -%}}
@@ -63,7 +64,7 @@ ocil: |-
 
     $ sudo grep -i ENCRYPT_METHOD /etc/login.defs
 
-    ENCRYPT_METHOD SHA512
+    ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}
 
 {{% if product in ['rhel9'] -%}}
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
@@ -76,4 +77,4 @@ fixtext: |-
 
     Add or update the following line in the "/etc/login.defs" file:
 
-    ENCRYPT_METHOD SHA512
+    ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}

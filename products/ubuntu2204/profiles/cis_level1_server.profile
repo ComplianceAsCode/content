@@ -861,7 +861,8 @@ selections:
     - accounts_password_pam_pwhistory_remember
 
     ### 5.4.4 Ensure password hashing algorithm is up to date with the latest standards (Automated)
-    # NEEDS RULE
+    - var_password_hashing_algorithm=yescrypt
+    - set_password_hashing_algorithm_logindefs
 
     ### 5.4.5 Ensure all current passwords uses the configured hashing algorithm (Manual)
     # Skip due to being a manual test
