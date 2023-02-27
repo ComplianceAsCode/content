@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure rsyslog Default File Permissions Configured'
+
+description: |-
+    rsyslog will create logfiles that do not already exist on the system.
+    This settings controls what permissions will be applied to these newly
+    created files.
+
+rationale: |-
+    It is important to ensure that log files have the correct permissions
+    to ensure that sensitive data is archived and protected.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 4.2.1.4
+    cis@ubuntu2204: 4.2.2.4
+
+ocil_clause: '$FileCreateMode is not set or more permissive than 0640'
+
+ocil: |-
+    Run the following command:
+    <pre># grep ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
+    Verify the output matches:
+    <pre>$FileCreateMode 0640</pre>
+    Should a site policy dictate less restrictive permissions, ensure to follow
+    said policy.
+
+fixtext: |-
+    Edit either `/etc/rsyslog.conf` or a dedicated .conf file in `/etc/rsyslog.d/`
+    and set $FileCreateMode to 0640 or more restrictive:
+    $FileCreateMode 0640
+    Restart the service:
+    # systemctl restart rsyslog
