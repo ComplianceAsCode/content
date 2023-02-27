@@ -5,11 +5,12 @@ prodtype: sle12,sle15
 title: "Set Existing Passwords Warning Age"
 
 description: |-
-    Configure non-compliant accounts, and to give users time of think of a secure password,
-    to receive number of days or more, according to the days specified with the variable   
-    var_accounts_password_warn_age_login_defs, an advance warning that a password will 
-    be expiring by running the following command:
-    <pre>$ sudo chage --warndays {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} <i>USER</i></pre>
+    Configure non-compliant accounts, and give users time to come up with a secure password, 
+    warning them in advance about the expiration of their current password. The variable 
+    <tt>var_accounts_password_warn_age_login_defs={{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>,
+    defines how many days the user's password will remain valid, and he/she will receive 
+    a warning notification about.  The next command set ups this for not-compliant user's account:       
+    <pre>$ sudo chage --warndays $var_accounts_password_warn_age_login_defs <i>USER</i></pre>
 
 rationale: |-
     Providing an advance warning that a password will be expiring gives users 
