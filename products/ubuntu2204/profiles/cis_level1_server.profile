@@ -483,7 +483,7 @@ selections:
     # Skip due to being a manual test
 
     ##### 3.5.3.2.4 Ensure iptables firewall rules exist for all open ports (Automated)
-    # not manual anymore
+    - iptables_rules_for_open_ports
 
     #### 3.5.3.3 Configure IPv6 ip6tables ####
     ##### 3.5.3.3.1 Ensure ip6tables default deny firewall policy (Automated)
@@ -496,8 +496,7 @@ selections:
     # Skip due to being a manual test
 
     # 3.5.3.3.4 Ensure ip6tables firewall rules exist for all open ports (Automated)
-    # not manual anymore
-    # NEEDS RULE
+    - ip6tables_rules_for_open_ports
 
     # 4 Logging and Auditing #
     ## 4.1 Configure System Accounting (auditd) ##
