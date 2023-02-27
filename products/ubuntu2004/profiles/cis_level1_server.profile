@@ -553,7 +553,7 @@ selections:
     # Skip due to being a manual test
 
     #### 4.2.1.4 Ensure rsyslog default file permissions configured (Automated)
-    - rsyslog_files_permissions
+    - rsyslog_filecreatemode
 
     #### 4.2.1.5 Ensure rsyslog is configured to send logs to a remote log host (Automated)
     - rsyslog_remote_loghost
