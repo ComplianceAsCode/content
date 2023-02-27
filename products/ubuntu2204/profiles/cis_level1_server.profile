@@ -666,8 +666,7 @@ selections:
     # Skip due to being a manual test
 
     #### 4.2.2.4 Ensure rsyslog default file permissions are configured (Automated)
-    # not manual anymore
-    # NEEDS RULE
+    - rsyslog_filecreatemode
 
     #### 4.2.2.5 Ensure logging is configured (Manual)
     # Skip due to being a manual test
