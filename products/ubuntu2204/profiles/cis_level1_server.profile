@@ -239,7 +239,7 @@ selections:
     - chronyd_run_as_chrony_user
 
     #### 2.1.2.3 Ensure chrony is enabled and running (Automated)
-    # NEEDS RULE
+    - service_chronyd_enabled
 
     ### 2.1.3 Configure systemd-timesyncd ###
     #### 2.1.3.1 Ensure systemd-timesyncd configured with autorized timeserver (Manual)
@@ -677,10 +677,11 @@ selections:
     - rsyslog_remote_loghost
 
     #### 4.2.2.7 Ensure rsyslog is not configured to receive logs from a remote client (Automated)
-    # NEEDS RULE
+    # This rule should be extended to consider rainerscript syntax
+    - rsyslog_nolisten
 
     ### 4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)
-    # NEEDS RULE
+    - permissions_local_var_log
 
     # 5 Access, Authentication and Authorization #
     ## 5.1 Configure time-based job schedulers ##

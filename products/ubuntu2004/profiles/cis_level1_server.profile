@@ -220,7 +220,7 @@ selections:
     # Needs variable: var_time_synchronization_daemon=chrony
     - package_chrony_installed
     # Needs rule: package_ntp_removed
-    - service_chronyd_or_ntpd_enabled
+    - service_chronyd_enabled
 
     #### 2.2.1.2 Ensure systemd-timesyncd is configured (Manual)
     # Needs rule: package_chrony_removed
