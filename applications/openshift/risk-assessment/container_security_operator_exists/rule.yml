@@ -1,0 +1,61 @@
+prodtype: ocp4
+
+title: "Make sure the Container Security Operator is installed"
+
+description: |-
+    <p>
+    Using the Red Hat Quay Container Security Operator, you can access
+    vulnerability scan results from the OpenShift Container Platform web
+    console for container images used in active pods on the cluster. The
+    Red Hat Quay Container Security Operator:
+    </p>
+    <ul>
+      <li>Watches containers associated with pods on all or specified namespaces</li>
+      <li>Queries the container registry where the containers came from
+      for vulnerability information, provided an image’s registry is
+      running image scanning (such as Quay.io or a Red Hat Quay registry
+      with Clair scanning)</li>
+      <li>Exposes vulnerabilities via the ImageManifestVuln object in the
+      Kubernetes API</li>
+    </ul>
+    <p>
+    For more information on the Container Security Operator, follow the
+    OpenShift documentation:
+      {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/pod-vulnerability-scan.html") }}}
+    </p>
+
+rationale: |-
+  Vulnerabilities in software packages can be exploited by hackers or malicious
+  users to obtain unauthorized access to resources.
+
+references:
+  nist: CM-6(b)
+  srg: SRG-APP-000516-CTR-001335
+
+identifiers:
+  cce@ocp4: CCE-90613-1
+
+ocil_clause: 'the container security operator is not installed'
+
+ocil: |-
+  To check if the Container Security Operator is installed, run the following command:
+  <pre>oc get sub -nopenshift-operators container-security-operator -ojsonpath='{.status.installedCSV}'</pre>
+  the output should return the version of the CSV that represents the installed
+  operator.
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/openshift-operators/subscriptions/container-security-operator") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: '/apis/operators.coreos.com/v1alpha1/namespaces/openshift-operators/subscriptions/container-security-operator'
+        yamlpath: ".status.installedCSV"
+        check_existence: "only_one_exists"
+        values:
+          - value: "container-security-operator.*"
+            operation: "pattern match"
