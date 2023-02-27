@@ -5,3 +5,17 @@ controls:
   title: {{{ full_name }}} registry must prohibit installation or modification
     of container images without explicit privileged status.
   status: inherently met
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+
+    https://docs.openshift.com/container-platform/latest/openshift_images/managing_images/managing-images-overview.html
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  status_justification: |-
+    User's of the OpenShift platform allows users with the appropriate
+    roles and permissions to create images, or request existing images. OpenShift
+    maintains and internal registry that is stricted from general users through RBAC
+    policy.  Instead, user's with the appropriate permissions will manage images through
+    the API. Most often this is done indirectly through image streams.  Refer to the
+    following documentation for more details:
+    https://docs.openshift.com/container-platform/latest/openshift_images/managing_images/managing-images-overview.html
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
