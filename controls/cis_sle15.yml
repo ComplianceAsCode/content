@@ -498,14 +498,16 @@ controls:
       - file_owner_etc_issue_net
       - file_permissions_etc_issue_net
 
-  - id: 1.9
+  - id: "1.9"
     title: Ensure updates, patches, and additional security software are installed (Manual)
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: manual 
+    related_rules:
+      - security_patches_up_to_date
 
-  - id: 1.10
+  - id: "1.10"
     title: Ensure GDM login banner is configured (Automated)
     levels:
       - l1_server
