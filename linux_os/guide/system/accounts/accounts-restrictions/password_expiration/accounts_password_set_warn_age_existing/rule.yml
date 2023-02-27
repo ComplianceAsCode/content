@@ -36,11 +36,11 @@ ocil: |-
     is number of days or greater, according to the days specified with the variable 
     var_accounts_password_warn_age_login_defs,  with the following command:
 
-    $ sudo awk -F: '$6 < ${{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow
+    $ sudo awk -F: '$6 < {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
-    usrs_pass_warn_age=( $(awk -F: '$6 < ${{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow) )
+    usrs_pass_warn_age=( $(awk -F: '$6 < {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow) )
     for i in ${usrs_pass_warn_age[@]};
     do
        chage --warndays {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} $i
