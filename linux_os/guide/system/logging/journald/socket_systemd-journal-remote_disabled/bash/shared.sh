@@ -1,4 +1,11 @@
-# platform = multi_platform_all
+# platform = multi_platform_ubuntu
 
-{{{ bash_service_command("disable", "systemd-journal-remote.socket") }}}
+{{{ bash_package_install("systemd-journal-remote") }}}
 
+SOCKET_NAME="systemd-journal-remote.socket"
+SYSTEMCTL_EXEC='/usr/bin/systemctl'
+
+if "$SYSTEMCTL_EXEC" -q list-unit-files "$SOCKET_NAME"; then
+    "$SYSTEMCTL_EXEC" stop "$SOCKET_NAME"
+    "$SYSTEMCTL_EXEC" unmask "$SOCKET_NAME"
+fi
