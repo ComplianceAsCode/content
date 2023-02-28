@@ -269,6 +269,20 @@ The audit daemon must be restarted for the changes to take effect.
     $ sudo systemctl mask --now {{{ service }}}
 {{%- endmacro -%}}
 
+{{#
+    Describe how to disable a socket
+
+:param parameter: socket to be disabled
+:type parameter: str
+
+#}}
+{{%- macro fixtext_socket_disabled(socket) -%}}
+    To disable the {{{ socket }}} socket run the following command:
+
+    $ sudo systemctl disable --now {{{ socket }}}
+
+    $ sudo systemctl mask --now {{{ socket }}}
+{{%- endmacro -%}}
 
 {{#
     Macro describing fix for sysctl rules.
