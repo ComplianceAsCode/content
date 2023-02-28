@@ -390,7 +390,7 @@ selections:
     - service_ufw_enabled
 
     #### 3.5.1.4 Ensure loopback traffic is configured (Automated)
-    # Needs rule
+    - set_ufw_loopback_traffic
 
     #### 3.5.1.5 Ensure outbound connections are configured (Manual)
     # Skip due to being a manual test
@@ -399,7 +399,7 @@ selections:
     # Skip due to being a manual test
 
     #### 3.5.1.7 Ensure default deny firewall policy (Automated)
-    # Needs rule
+    - set_ufw_default_rule
 
     ### 3.5.2 Configure nftables
     #### 3.5.2.1 Ensure nftables is installed (Automated)

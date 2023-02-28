@@ -417,16 +417,16 @@ selections:
     - service_ufw_enabled
 
     #### 3.5.1.4 Ensure ufw loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_ufw_loopback_traffic
 
     #### 3.5.1.5 Ensure ufw outbound connections are configured (Manual)
     # Skip due to being a manual test
 
     #### 3.5.1.6 Ensure ufw firewall rules exist for all open ports (Automated)
-    # NEEDS RULE
+    - ufw_rules_for_open_ports
 
     #### 3.5.1.7 Ensure ufw default deny firewall policy (Automated)
-    # NEEDS RULE
+    - set_ufw_default_rule
 
     ### 3.5.2 Configure nftables ###
     #### 3.5.2.1 Ensure nftables is installed (Automated)

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure ufw Firewall Rules Exist for All Open Ports'
+
+description: |-
+    Any ports that have been opened on non-loopback addresses
+    need firewall rules to govern traffic.
+
+rationale: |-
+    Without a firewall rule configured for open ports default
+    firewall policy will drop all packets to these ports.
+
+severity: medium
+
+references:
+    cis@ubuntu2204: 3.5.1.6
+
+ocil_clause: 'open ports are denied connection'
+
+ocil: |-
+    Run the following command to determine open ports:
+    <pre># ss -tuln</pre>
+    Run the following command to determine firewall rules:
+    <pre># ufw status verbose</pre>
+    For each port identified in the audit which does not have a firewall
+    rule, add rule for accepting or denying inbound connections
+    <pre># ufw allow in <port>/<tcp or udp protocol></pre>
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
