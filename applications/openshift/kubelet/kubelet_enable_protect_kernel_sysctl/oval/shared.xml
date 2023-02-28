@@ -1,7 +1,7 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="kubelet_enable_protect_kernel_sysctl" version="1">
     {{{ oval_metadata("The sysctl parameter needs to be set before enabling kernel protection") }}}
-
+  <criteria operator="OR">
     <criteria operator="AND">
       <extend_definition comment="sysctl file exist" definition_ref="kubelet_enable_protect_kernel_sysctl_file_exist" />
       <extend_definition comment="sysctl kernel_panic" definition_ref="kubelet_enable_protect_kernel_sysctl_kernel_panic" />
@@ -11,6 +11,9 @@
       <extend_definition comment="sysctl vm_overcommit_memory" definition_ref="kubelet_enable_protect_kernel_sysctl_vm_overcommit_memory" />
       <extend_definition comment="sysctl vm_panic_on_oom" definition_ref="kubelet_enable_protect_kernel_sysctl_vm_panic_on_oom" />
     </criteria>
+     <extend_definition comment="protect kernel default" definition_ref="kubelet_enable_protect_kernel_defaults" />
+  </criteria>
+
 
   </definition>
 </def-group>
