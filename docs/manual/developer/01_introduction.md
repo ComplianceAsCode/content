@@ -101,7 +101,7 @@ The pull request removing the product should include the removal of
     1. the product from all `prodtype`
     1. any product specific checks or remediatons
     1. any product specific templates
-4. The removal must be documented in the [user guide](../user/30_content_notes.md#deprecated-content).
+1. The removal must be documented in the [user guide](../user/30_content_notes.md#deprecated-content).
 
 All issues and pull requests for product removal must use the [product-removal](https://github.com/ComplianceAsCode/content/labels/product-removal) label.
 
