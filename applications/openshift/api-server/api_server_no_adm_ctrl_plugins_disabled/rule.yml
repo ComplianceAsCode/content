@@ -6,7 +6,7 @@ title: 'Ensure all admission control plugins are enabled'
 
 {{% set custom_jqfilter = '[.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
-{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/{{.var_openshift_kube_apiserver_config}}{{else}}/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 

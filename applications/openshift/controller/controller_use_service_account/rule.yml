@@ -6,7 +6,7 @@ title: 'Ensure that use-service-account-credentials is enabled'
 
 {{% set custom_jqfilter = '{{.var_kube_controller_manager_use_service_account_filter}}' %}}
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["use-service-account-credentials"][]=="true" then true else false end]' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/pods?labelSelector=app%3Dkube-controller-manager{{else}}{{.var_kube_controller_manager_config_filepath}}{{end}}' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager{{else}}{{.var_kube_controller_manager_config_filepath}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 

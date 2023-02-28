@@ -6,7 +6,7 @@ title: 'Disable etcd Peer Self-Signed Certificates'
 
 {{% set custom_jqfilter = '{{.var_etcd_argument_filter}}' %}}
 {{% set default_jqfilter = '[.data."pod.yaml"]' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/pods?labelSelector=app%3Detcd{{else}}{{.var_etcd_filepath}}{{end}}' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Detcd{{else}}{{.var_etcd_filepath}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
