@@ -889,7 +889,7 @@ selections:
     - account_disable_post_pw_expiration
 
     #### 5.5.1.5 Ensure all users last password change date is in the past (Automated)
-    # NEEDS RULE
+    - accounts_password_last_change_is_in_past
 
     ### 5.5.2 Ensure system accounts are secured (Automated)
     - no_shelllogin_for_systemaccounts
