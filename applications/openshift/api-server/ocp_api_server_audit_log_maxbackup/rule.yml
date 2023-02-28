@@ -4,9 +4,9 @@ prodtype: ocp4
 
 title: 'Configure the OpenShift API Server Maximum Retained Audit Logs'
 
-{{% set custom_jqfilter = '.data."{{.var_openshift_apiserver_config_data_name}}" | fromjson' %}}
+{{% set custom_jqfilter = '{{.var_openshift_apiserver_filter}}' %}}
 {{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
-{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_apiserver_namespace}}/configmaps/{{.var_openshift_apiserver_config}}' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/{{.var_openshift_apiserver_config}}{{else}}/api/v1/namespaces/{{.var_openshift_apiserver_namespace}}/configmaps/{{.var_openshift_apiserver_config}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-apiserver/configmaps/config' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
