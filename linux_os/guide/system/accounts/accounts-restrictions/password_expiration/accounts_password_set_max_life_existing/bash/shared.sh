@@ -10,7 +10,7 @@
 while IFS= read -r line; do
     user=$(echo "$line" | cut -d ":" -f 1)
     cur_max_age=$(echo "$line" | cut -d ":" -f 5)
-    if [ -z "$cur_max_age" ] || [ $((cur_max_age)) >  $((var_accounts_maximum_age_login_defs)) ]
+    if [ -z "$cur_max_age" ] || [ $((cur_max_age)) -gt  $((var_accounts_maximum_age_login_defs)) ]
     then
        passwd -q -x $var_accounts_maximum_age_login_defs $user
     fi

@@ -10,7 +10,7 @@
 while IFS= read -r line; do
     user=$(echo "$line" | cut -d ":" -f 1)
     cur_min_age=$(echo "$line" | cut -d ":" -f 4)
-    if [ -z "$cur_min_age" ] || [ $((var_accounts_minimum_age_login_defs)) > $((cur_min_age))  ]
+    if [ -z "$cur_min_age" ] || [ $((var_accounts_minimum_age_login_defs)) -gt $((cur_min_age))  ]
     then
        passwd -q -n $var_accounts_minimum_age_login_defs $user
     fi
