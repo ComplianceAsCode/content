@@ -21,7 +21,7 @@ checktext: |-
 
     If "dmesg" does not show "NX (Execute Disable) protection" active, check the cpuinfo settings with the following command:
 
-    $ sudo less /proc/cpuinfo | grep -i flags
+    $ sudo grep -i flags /proc/cpuinfo
     flags : fpu vme de pse tsc ms nx rdtscp lm constant_tsc
 
     If "flags" does not contain the "nx" flag, this is a finding.
