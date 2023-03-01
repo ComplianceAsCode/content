@@ -2650,14 +2650,14 @@ controls:
     related_rules:
       - no_netrc_files
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5505
   - id: 6.2.14
     title: Ensure no users have .forward files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - no_forward_files
 
   - id: 6.2.15
     title: Ensure no users have .netrc files (Automated)

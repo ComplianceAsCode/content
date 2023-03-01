@@ -2349,7 +2349,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - no_forward_files
 
   - id: 6.2.16
     title: Ensure no users have .netrc files (Automated)
