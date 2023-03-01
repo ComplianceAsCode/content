@@ -778,7 +778,8 @@ selections:
     - sshd_use_approved_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
-    # NEEDS RULE
+    - sshd_strong_kex=cis_ubuntu2004
+    - sshd_use_strong_kex
 
     ### 5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)
     # Skip due to being Level 2
