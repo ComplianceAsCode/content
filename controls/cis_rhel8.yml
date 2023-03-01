@@ -2212,6 +2212,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    rules:
+      - no_empty_passwords
 
   - id: 5.4.2
     title: Ensure authselect includes with-faillock (Automated)
@@ -2535,8 +2537,6 @@ controls:
     status: automated
     rules:
       - no_empty_passwords_etc_shadow
-    related_rules:
-      - no_empty_passwords
 
   - id: 6.2.2
     title: Ensure all groups in /etc/passwd exist in /etc/group (Automated)
