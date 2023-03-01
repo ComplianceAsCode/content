@@ -15,8 +15,8 @@ checktext: |-
 
     $ sudo auditctl -l | grep chmod
 
-    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_mod
-    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_mod
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -F auid!=unset -k perm_mod
+    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -F auid!=unset -k perm_mod
 
     If both the "b32" and "b64" audit rules are not defined for the "chmod", "fchmod", and "fchmodat" syscalls, this is a finding.
 
@@ -25,8 +25,8 @@ fixtext: |-
 
     Add or update the following rules in "/etc/audit/rules.d/audit.rules":
 
-    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_mod
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -F auid!=unset -k perm_mod
 
-    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_mod
+    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -F auid!=unset -k perm_mod
 
     The audit daemon must be restarted for the changes to take effect.

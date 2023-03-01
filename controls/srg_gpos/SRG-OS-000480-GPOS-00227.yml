@@ -82,11 +82,9 @@ controls:
             - package_sendmail_removed
             - package_tftp-server_removed
             - package_quagga_removed
-            - xwindows_remove_packages
             - package_gssproxy_removed
             - package_iprutils_removed
             - package_tuned_removed
-            - package_gdm_removed
             - package_xorg-x11-server-common_removed
 
             # package installed
@@ -99,6 +97,7 @@ controls:
             - package_gnutls-utils_installed
             - package_rng-tools_installed
             - package_MFEhiplsm_installed
+            - package_nss-tools_installed
             - package_policycoreutils-python-utils_installed
             - package_policycoreutils_installed
 
@@ -107,7 +106,6 @@ controls:
             - mount_option_noexec_remote_filesystems
             - mount_option_nosuid_remote_filesystems
             - mount_option_boot_nosuid
-            - mount_option_boot_efi_nosuid
             - mount_option_home_noexec
             - mount_option_home_nosuid
             - mount_option_nodev_nonroot_local_partitions
@@ -149,9 +147,7 @@ controls:
             - sysctl_net_ipv4_conf_default_accept_source_route
             - sysctl_net_ipv4_conf_all_rp_filter
             - sysctl_net_ipv4_conf_default_rp_filter
-            - sysctl_net_ipv4_conf_all_secure_redirects
             - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-            - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
             - sysctl_net_ipv4_tcp_syncookies
             - sysctl_net_ipv4_conf_all_send_redirects
             - sysctl_net_ipv4_conf_default_accept_redirects

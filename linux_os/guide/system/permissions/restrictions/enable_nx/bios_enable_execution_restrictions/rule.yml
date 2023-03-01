@@ -61,13 +61,6 @@ ocil: |-
 
     The output should contain the "nx" flag.
 
-    Then, verify that there are no log messsages stating that NX is disabled in the system log. Run the following command:
-    $ sudo grep -P "^.+protection: disabled.+" /var/log/dmesg
-    The output should be empty.
-
-    Then, check that NX is not disabled in the kernel command line.
-    $ sudo grep -P ".+noexec[0-9]*=off.+" /proc/cmdline
-    The output should be empty.
 
 ocil_clause: NX is disabled
 

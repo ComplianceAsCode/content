@@ -16,4 +16,5 @@ checktext: |-
 fixtext: |-
     To configure the system to prevent the  usb-storage kernel module from being loaded, add the following line to the file  /etc/modprobe.d/usb-storage.conf (or create usb-storage.conf if it does not exist):
 
+    install usb-storage /bin/false
     blacklist usb-storage

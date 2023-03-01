@@ -73,7 +73,7 @@ ocil: |-
     <pre>$ grep sha512 /etc/pam.d/password-auth</pre>
 
 {{% if product in ['rhel9'] %}}
-srg_requirement: 'The RHEL 9 pam_unix.so module must be configured in the password-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
+srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the password-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
 
 fixtext: |-
     Configure {{{ full_name }}}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.

@@ -9,10 +9,11 @@ vuldiscussion: |-
     Verifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This verifies the software has not been tampered with and that it has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. The operating system should not have to verify the software again. This requirement does not mandate DoD certificates for this purpose; however, the certificate used to verify the software must be from Red Hat.
 
 checktext: |-
-    To ensure that the GPG key is installed, run:
+    Verify that the GPG key is installed with the following command:
+
      $ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey
-    The command should return the string below:
-     gpg(Red Hat, Inc. (release key 2)  &ltsecurity@redhat.com&gt
+
+     gpg(Red Hat, Inc. (release key 2)  &lt;security@redhat.com&gt;
 
     If the Red Hat GPG Key is not installed, this is a finding.
 

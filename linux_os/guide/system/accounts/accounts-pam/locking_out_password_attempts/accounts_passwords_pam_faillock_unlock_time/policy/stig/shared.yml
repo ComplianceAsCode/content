@@ -2,24 +2,24 @@ srg_requirement: |-
     {{{ full_name }}} must maintain an account lock until the locked account is released by an administrator.
 
 vuldiscussion: |-
-    by limiting the number of failed logon attempts the risk of unauthorized system
+    By limiting the number of failed logon attempts the risk of unauthorized system
     access via user password guessing, otherwise known as brute-forcing, is reduced.
-    limits are imposed by locking the account.
+    Limits are imposed by locking the account.
 
 checktext: |-
-    verify {{{ full_name }}} is configured to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
+    Verify {{{ full_name }}} is configured to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
 
     $ grep 'unlock_time =' /etc/security/faillock.conf
 
     unlock_time = 0
 
-    if the "unlock_time" option is not set to "0", the line is missing, or commented out, this is a finding.
+    If the "unlock_time" option is not set to "0", the line is missing, or commented out, this is a finding.
 
 fixtext: |-
-    configure {{{ full_name }}} to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
+    Configure {{{ full_name }}} to lock an account until released by an administrator after three unsuccessful logon attempts with the command:
 
     $ authselect enable-feature with-faillock
 
-    then edit the "/etc/security/faillock.conf" file as follows:
+    Then edit the "/etc/security/faillock.conf" file as follows:
 
     unlock_time = 0

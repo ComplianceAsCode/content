@@ -16,11 +16,12 @@ vuldiscussion: |-
     lack of prompt attention to patching could result in a system compromise.
 
 checktext: |-
-    Verify {{{ full_name }}} security patches and updates are installed and up to date.    Updates are required to be applied with a frequency determined by organizational policy.
+    Verify {{{ full_name }}} security patches and updates are installed and up to date.
+    Updates are required to be applied with a frequency determined by organizational policy.
 
     {{% if "Red Hat" in full_name or "ol" in product %}}
     Obtain the list of available package security updates from {{{ vendor }}}. The URL for updates
-    is {{{ url }}}.    It is important to note that updates provided by {{{ vendor }}} may not be
+    is {{{ url }}}. It is important to note that updates provided by {{{ vendor }}} may not be
     present on the system if the underlying packages are not installed.
     {{% endif %}}
 

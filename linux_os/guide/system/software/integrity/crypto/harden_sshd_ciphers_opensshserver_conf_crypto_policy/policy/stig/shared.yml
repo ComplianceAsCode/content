@@ -15,18 +15,13 @@ checktext: |-
 
     $ sudo grep -i ciphers /etc/crypto-policies/back-ends/opensshserver.config
 
-    Ciphers aes256-gcm@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
+    Ciphers aes256-ctr,aes192-ctr,aes128-ctr
 
-    If the cipher entries in the "opensshserver.config" file have any ciphers other than "aes256-gcm@openssh.com", "aes256-ctr", "aes128-gcm@openssh.com", "aes128-ctr", the order differs from the example above, they are missing, or commented out, this is a finding.
+    If the cipher entries in the "opensshserver.config" file have any ciphers other than "aes256-ctr,aes192-ctr,aes128-ctr", the order differs from the example above, they are missing, or commented out, this is a finding.
 
 fixtext: |-
-    Reinstall the crypto-policies package to remove any modifications.
+    Configure the {{{ full_name }}} SSH client to use only ciphers employing FIPS 140-3 approved algorithms by updating the "/etc/crypto-policies/back-ends/openssh.config" file with the following line:
 
-    $ sudo dnf reinstall crypto-policies
+    Ciphers aes256-ctr,aes192-ctr,aes128-ctr
 
-    Then ensure that FIPS mode is setup with the following command:
-
-    $ sudo fips-mode-setup --enable
-
-    The system must be rebooted for the changes to take effect.
     A reboot is required for the changes to take effect.

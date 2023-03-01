@@ -1,18 +1,20 @@
 srg_requirement: |-
-    {{{ full_name }}} SSH private host key files must have mode 0600 or less permissive.
+    {{{ full_name }}} SSH private host key files must have mode 0640 or less permissive.
 
 vuldiscussion: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
     impersonated.
 
 checktext: |-
-    Verify the SSH private host key files have mode "0640" or less permissive with the following command:
+    Verify the SSH private host key files have a mode of "0640" or less permissive with the following command:
 
-    $ sudo ls -alL /etc/ssh/ssh_host*key
+    $ sudo stat -c "%a %n" /etc/ssh/ssh_host*key
 
-    -rw-r----- 1 root {{{ dedicated_ssh_groupname }}} 668 Nov 28 06:43 ssh_host_dsa_key
-    -rw-r----- 1 root {{{ dedicated_ssh_groupname }}} 582 Nov 28 06:43 ssh_host_key
-    -rw-r----- 1 root {{{ dedicated_ssh_groupname }}} 887 Nov 28 06:43 ssh_host_rsa_key
+    640 /etc/ssh/ssh_host_dsa_key
+    640 /etc/ssh/ssh_host_ecdsa_key
+    640 /etc/ssh/ssh_host_ed25519_key
+    640 /etc/ssh/ssh_host_rsa_key
+
 
     If any private host key file has a mode more permissive than "0640", this is a finding.
 

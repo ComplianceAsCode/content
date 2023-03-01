@@ -21,6 +21,6 @@ checktext: |-
 fixtext: |-
     If an emergency account must be created configure the system to terminate the account after a 72
     hour time period with the following command to set an expiration date on it. Substitute
-    "temporary_account_name" with the account to be created.
+    "emergency_account_name" with the account to be created.
 
-    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` wmergency_account_name
+    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` emergency_account_name

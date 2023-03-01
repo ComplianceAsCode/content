@@ -12,11 +12,11 @@ checktext: |-
 
     Verify that {{{ full_name }}} has configured the minimum time period between password changes for each user account is one day or greater with the following command:
 
-    $ sudo awk -F: '$4 < 1 {print $1 " " $4}' /etc/shadow
+    $ sudo awk -F: '$4 &lt 1 {print $1 " " $4}' /etc/shadow
 
     If any results are returned that are not associated with a system account, this is a finding.
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
 
-    $ sudo chage -m 1 [user]
+    $ sudo passwd -n 1 [user]

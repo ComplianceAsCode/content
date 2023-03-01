@@ -17,11 +17,9 @@ checktext: |-
 
     $ sudo update-crypto-policies --check
 
-    The configured policy is applied.
+    The configured policy matches the generated policy
 
-    If the command does not return "The configured policy is applied.", this is a finding.
-
-
+    If the command does not return "The configured policy matches the generated policy", this is a finding.
 
 fixtext: |-
     Configure the operating system to implement FIPS mode with the following command

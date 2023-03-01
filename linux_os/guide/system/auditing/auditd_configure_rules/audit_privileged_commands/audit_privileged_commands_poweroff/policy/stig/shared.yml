@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep poweroff
 
-    -a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-poweroff
+    -a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-poweroff
 
     If the command does not return a line, or the line is commented out, this is a finding.
 

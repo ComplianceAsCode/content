@@ -11,18 +11,16 @@ vuldiscussion: |-
     {{{ full_name }}} incorporates system-wide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/opensshserver.config file.
 
 checktext: |-
-    Verify that system-wide crypto policies are in effect:
+    Verify that system-wide crypto policies are in effect with the following command:
 
-    $ sudo grep Include /etc/ssh/ssh_config  /etc/ssh/ssh_config.d/*
-    /etc/ssh/ssh_config:Include /etc/ssh/ssh_config.d/*.conf
-    /etc/ssh/ssh_config.d/50-redhat.conf:        Include /etc/crypto-policies/back-ends/openssh.config
+    $ sudo grep Include /etc/ssh/sshd_config  /etc/ssh/sshd_config.d/*
 
-    If "Include /etc/crypto-policies/back-ends/openssh.config" or "Include /etc/ssh/ssh_config.d/*.conf" are not included in the system ssh client config or the file "/etc/ssh/ssh_config.d/50-redhat.conf" is missing, this is a finding.
+    /etc/ssh/sshd_config:Include /etc/ssh/sshd_config.d/*.conf
+    /etc/ssh/sshd_config.d/50-redhat.conf:Include /etc/crypto-policies/back-ends/opensshserver.config
 
+    If "Include /etc/ssh/sshd_config.d/*.conf" or "Include /etc/crypto-policies/back-ends/opensshserver.config" are not included in the system sshd config or the file /etc/ssh/sshd_config.d/50-redhat.conf is missing, this is a finding.
 
 fixtext: |-
     Configure the {{{ full_name }}} SSH daemon to use system-wide crypto policies by running the following commands:
 
     $ sudo dnf reinstall openssh-clients
-
-    A reboot is required for the changes to take effect.

@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep init
 
-    -a always,exit -F path=/usr/sbin/init -F perm=x -F auid&gt=1000 -F auid!=unset -k privileged-init
+    -a always,exit -F path=/usr/sbin/init -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-init
 
     If the command does not return a line, or the line is commented out, this is a finding.
 

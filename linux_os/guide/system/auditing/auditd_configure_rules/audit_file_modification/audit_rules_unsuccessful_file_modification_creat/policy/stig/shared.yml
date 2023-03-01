@@ -15,11 +15,11 @@ checktext: |-
 
     $ sudo auditctl -l | grep'open\|truncate\|creat'
 
-    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid&gt=1000 -F auid!=unset -k perm_access
-    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid&gt=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -k perm_access
 
-    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid&gt=1000 -F auid!=unset -k perm_access
-    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid&gt=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -k perm_access
 
     If the output does not produce rules containing "-F exit=-EPERM", this is a finding.
     If the output does not produce rules containing "-F exit=-EACCES", this is a finding.
@@ -28,10 +28,10 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to generate an audit event for any successful/unsuccessful use of the "truncate", "ftruncate", "creat", "open", "openat", and "open_by_handle_at" system calls by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
 
-    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -k perm_access
-    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -k perm_access
 
-    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -k perm_access
-    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b32 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -k perm_access
+    -a always,exit -F arch=b64 -S truncate,ftruncate,creat,open,openat,open_by_handle_at -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -k perm_access
 
     The audit daemon must be restarted for the changes to take effect.
