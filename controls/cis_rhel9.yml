@@ -2499,14 +2499,12 @@ controls:
     rules:
       - file_permissions_home_directories
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5504
   - id: 6.2.13
     title: Ensure no local interactive user has .netrc files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - no_netrc_files
 
