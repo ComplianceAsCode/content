@@ -1,7 +1,5 @@
 # platform = multi_platform_ubuntu
 
-{{{ bash_package_install("systemd-journal-remote") }}}
-
 SOCKET_NAME="systemd-journal-remote.socket"
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 
