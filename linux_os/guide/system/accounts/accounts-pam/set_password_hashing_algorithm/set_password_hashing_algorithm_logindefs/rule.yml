@@ -70,7 +70,7 @@ ocil: |-
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
 {{%- endif %}}
 
-platform: login_defs
+platform: package[shadow-utils]
 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords.
