@@ -1,15 +1,15 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
 
 title: 'Uninstall openldap-servers Package'
 
 description: |-
-    {{% if product in ['sle12', 'sle15'] %}}
+    {{% if product in ["sle12", "sle15"] %}}
     The openldap2 package is not installed by default on a {{{ full_name }}}
-    {{% elif 'ubuntu' in product %}}
+    {{% elif "ubuntu" in product %}}
     The slapd package is not installed by default on a {{{ full_name }}}
-    {{% else %}} 
+    {{% else %}}
     The openldap-servers package is not installed by default on a {{{ full_name }}}
     {{% endif %}}
     system. It is needed only by the OpenLDAP server, not by the
@@ -44,16 +44,16 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-ocil_clause: 'it does not'
+ocil_clause: "it does not"
 
 ocil: |-
-    {{% if product in ['sle12','sle15'] %}}
+    {{% if product in ["sle12", "sle15"] %}}
     To verify the <tt>openldap-servers</tt> package is not installed, run the
     following command:
     <pre>$ rpm -q openldap2</pre>
     The output should show the following:
-    <pre>package openldap2 is not installed</pre>
-    {{% elif 'ubuntu' in product %}}
+    <pre>package openldap2 is not installed</pre>    
+    {{% elif "ubuntu" in product %}}
     To verify the <tt>slapd</tt> package is not installed, run the
     following command:
     <pre>$ dpkg -l slapd</pre>
