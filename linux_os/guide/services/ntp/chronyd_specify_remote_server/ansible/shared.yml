@@ -5,18 +5,41 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
 
-- name: "Detect if chrony is already configured with pools or servers"
-  find:
-    path: /etc
-    patterns: chrony.conf
-    contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
-  register: chrony_servers
+- name: {{{ rule_title }}} Remove file for remediation
+  ansible.builtin.file:
+    path: ~/set_time_servers.sh
+    state: absent
 
-- name: "Configure remote time servers"
-  lineinfile:
-    path: {{{ chrony_conf_path }}}
-    line: 'server {{ item }}'
-    state: present
-    create: True
-  loop: '{{ var_multiple_time_servers.split(",") }}'
-  when: chrony_servers.matched == 0
+- name: {{{ rule_title }}} Generation of script for remediation
+  ansible.builtin.copy:
+    dest: "~/set_time_servers.sh"
+    content: |
+      #!/bin/bash
+
+      var_multiple_time_servers='{{var_multiple_time_servers}}'
+      config_file="{{{ chrony_conf_path }}}"
+
+      IFS="," read -a SERVERS <<< $var_multiple_time_servers
+      for srv in "${SERVERS[@]}"
+      do
+        NTP_SRV=$(grep -w $srv $config_file)
+        if [[ ! "$NTP_SRV" == "server "* ]]
+        then
+          time_server="server $srv"
+          echo $time_server >> "$config_file"
+        fi
+      done
+
+- name: {{{ rule_title }}} - Change mode of file for remediation
+  ansible.builtin.file:
+    path: ~/set_time_servers.sh
+    state: touch
+    mode: u=rwx,g=rx,o=rx
+
+- name: {{{ rule_title }}} - Apply remediation
+  ansible.builtin.command: sh ~/set_time_servers.sh
+
+- name: {{{ rule_title }}} - Remove file for remediation
+  ansible.builtin.file:
+    path: ~/set_time_servers.sh
+    state: absent

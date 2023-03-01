@@ -23,4 +23,4 @@ description: |-
 
 selections:
   - anssi:all:intermediary
-
+  - var_multiple_time_servers=suse

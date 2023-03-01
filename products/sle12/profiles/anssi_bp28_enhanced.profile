@@ -23,3 +23,4 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - var_multiple_time_servers=suse

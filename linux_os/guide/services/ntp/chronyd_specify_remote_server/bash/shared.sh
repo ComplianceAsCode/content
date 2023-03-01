@@ -4,6 +4,13 @@
 
 config_file="{{{ chrony_conf_path }}}"
 
-if ! grep -q '^[\s]*(?:server|pool)[\s]+[\w]+' "$config_file" ; then
-  {{{ bash_ensure_there_are_servers_in_ntp_compatible_config_file("$config_file", "$var_multiple_time_servers") | indent(2) }}}
-fi
+IFS="," read -a SERVERS <<< $var_multiple_time_servers
+for srv in "${SERVERS[@]}"
+do
+   NTP_SRV=$(grep -w $srv $config_file)
+   if [[ ! "$NTP_SRV" == "server "* ]]
+   then
+     time_server="server $srv"
+     echo $time_server >> "$config_file"
+   fi
+done

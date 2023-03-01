@@ -13,6 +13,7 @@ description: |-
 
 selections:
     -  pcidss_3:all:base
+    -  var_multiple_time_servers=suse    
     -  account_unique_id
     -  coredump_disable_backtraces
     -  coredump_disable_storage
