@@ -2641,25 +2641,25 @@ controls:
     rules:
       - accounts_user_dot_no_world_writable_programs
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5504
   - id: 6.2.13
     title: Ensure users' .netrc Files are not group or world accessible (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: supported
+    notes: |-
+      It is not expected this requirement be automated in favor of 6.2.15.
     related_rules:
       - no_netrc_files
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5505
   - id: 6.2.14
     title: Ensure no users have .forward files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - no_forward_files
 
   - id: 6.2.15
     title: Ensure no users have .netrc files (Automated)
