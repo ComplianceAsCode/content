@@ -1,107 +1,57 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("rsyslog will create logfiles that do not already exist on the system. This setting controls what permissions will be applied to these newly created files.") }}}
-    <criteria operator="ONE">
-      <criteria operator="AND">
-        <criterion test_ref="tst_filecreatemode_for_rsyslog_conf" comment="rsyslog filecreatemode configured in /etc/rsyslog.conf" />
-        <criterion test_ref="tst_filecreatemode_valid_rsyslog_conf" comment="rsyslog filecreatemode from /etc/rsyslog.conf is valid" />
-      </criteria>
-      <criteria operator="AND">
-        <criterion test_ref="tst_filecreatemode_for_rsyslog_d" comment="rsyslog filecreatemode configured in /etc/rsyslog.d/*" />
-        <criterion test_ref="tst_filecreatemode_valid_rsyslog_d" comment="rsyslog filecreatemode from /etc/rsyslog.d/* is valid" />
-      </criteria>
+    {{{ oval_metadata("FileCreateMode setting controls permissions applied to newly created files.") }}}
+    <criteria operator="AND">
+      <criterion test_ref="tst_filecreatemode_declared"
+          comment="filecreatemode declared in either /etc/rsyslog.conf or /etc/rsyslog.d/*"/>
+      <criterion test_ref="tst_filecreatemode_valid"
+          comment="filecreatemode value is valid" />
     </criteria>
   </definition>
 
-  <!-- Test /etc/rsyslog.d/* -->
-  <ind:textfilecontent54_test check="all" id="tst_filecreatemode_for_rsyslog_conf" version="1"
-      comment="rsyslog filecreatemode configured in /etc/rsyslog.conf">
-    <ind:object object_ref="obj_filecreatemode_for_rsyslog_conf" />
+  <ind:textfilecontent54_test id="tst_filecreatemode_declared"
+      version="1" comment="rsyslog filecreatemode configured"
+      check="all" check_existence="only_one_exists">
+    <ind:object object_ref="obj_filecreatemode" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_filecreatemode_for_rsyslog_conf" version="1">
-    <ind:filepath datatype="string">/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">^\$FileCreateMode\s+(\d+)</ind:pattern>
+  <ind:textfilecontent54_object id="obj_filecreatemode" version="1">
+    <ind:filepath operation="pattern match">\/etc\/rsyslog(\.conf|\.d\/.*\.conf)</ind:filepath>
+    <ind:pattern operation="pattern match">^\$FileCreateMode\s+(\d+)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <local_variable id="var_filecreatemode_int_rsyslog_conf"
+  <local_variable id="var_filecreatemode_dec"
       comment="decimal conversion of octal filecreatemode"
       version="1" datatype="int">
     <arithmetic arithmetic_operation="add">
       <arithmetic arithmetic_operation="multiply">
         <literal_component datatype="int">64</literal_component>
         <regex_capture pattern="\d(\d)\d\d">
-          <object_component object_ref="obj_filecreatemode_for_rsyslog_conf" item_field="subexpression" />
+          <object_component object_ref="obj_filecreatemode" item_field="subexpression" />
         </regex_capture>
       </arithmetic>
       <arithmetic arithmetic_operation="multiply">
         <literal_component datatype="int">8</literal_component>
         <regex_capture pattern="\d\d(\d)\d">
-          <object_component object_ref="obj_filecreatemode_for_rsyslog_conf" item_field="subexpression" />
+          <object_component object_ref="obj_filecreatemode" item_field="subexpression" />
         </regex_capture>
       </arithmetic>
       <regex_capture pattern="\d\d\d(\d)">
-        <object_component object_ref="obj_filecreatemode_for_rsyslog_conf" item_field="subexpression" />
+        <object_component object_ref="obj_filecreatemode" item_field="subexpression" />
       </regex_capture>
     </arithmetic>
   </local_variable>
 
-  <ind:variable_test id="tst_filecreatemode_valid_rsyslog_conf" version="1"
-      comment="Test if filecreatemode from /etc/rsyslog.conf is valid" check="all">
-    <ind:object object_ref="obj_filecreatemode_int_rsyslog_conf" />
+  <ind:variable_test id="tst_filecreatemode_valid" version="1"
+      comment="Test if filecreatemode value is valid" check="all">
+    <ind:object object_ref="obj_filecreatemode_dec" />
     <ind:state state_ref="ste_correct_permissions" />
   </ind:variable_test>
 
-  <ind:variable_object id="obj_filecreatemode_int_rsyslog_conf" version="1">
-    <ind:var_ref>var_filecreatemode_int_rsyslog_conf</ind:var_ref>
+  <ind:variable_object id="obj_filecreatemode_dec" version="1">
+    <ind:var_ref>var_filecreatemode_dec</ind:var_ref>
   </ind:variable_object>
-
-  <!-- Test /etc/rsyslog.d/* -->
-  <ind:textfilecontent54_test check="all" id="tst_filecreatemode_for_rsyslog_d" version="1"
-      comment="rsyslog filecreatemode configured in /etc/rsyslog.d/*">
-    <ind:object object_ref="obj_filecreatemode_for_rsyslog_d" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_filecreatemode_for_rsyslog_d" version="1">
-    <ind:path datatype="string">/etc/rsyslog.d/</ind:path>
-    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match" datatype="string">^\$FileCreateMode\s+(\d+)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <local_variable id="var_filecreatemode_int_rsyslog_d"
-      comment="decimal conversion of octal filecreatemode"
-      version="1" datatype="int">
-    <arithmetic arithmetic_operation="add">
-      <arithmetic arithmetic_operation="multiply">
-        <literal_component datatype="int">64</literal_component>
-        <regex_capture pattern="\d(\d)\d\d">
-          <object_component object_ref="obj_filecreatemode_for_rsyslog_d" item_field="subexpression" />
-        </regex_capture>
-      </arithmetic>
-      <arithmetic arithmetic_operation="multiply">
-        <literal_component datatype="int">8</literal_component>
-        <regex_capture pattern="\d\d(\d)\d">
-          <object_component object_ref="obj_filecreatemode_for_rsyslog_d" item_field="subexpression" />
-        </regex_capture>
-      </arithmetic>
-      <regex_capture pattern="\d\d\d(\d)">
-        <object_component object_ref="obj_filecreatemode_for_rsyslog_d" item_field="subexpression" />
-      </regex_capture>
-    </arithmetic>
-  </local_variable>
-
-  <ind:variable_test id="tst_filecreatemode_valid_rsyslog_d" version="1"
-      comment="Test if filecreatemode from /etc/rsyslog.d/* is valid" check="all">
-    <ind:object object_ref="obj_filecreatemode_int_rsyslog_d" />
-    <ind:state state_ref="ste_correct_permissions" />
-  </ind:variable_test>
-
-  <ind:variable_object id="obj_filecreatemode_int_rsyslog_d" version="1">
-    <ind:var_ref>var_filecreatemode_int_rsyslog_d</ind:var_ref>
-  </ind:variable_object>
-
 
   <!-- state to compare to -->
   <ind:variable_state id="ste_correct_permissions" version="1">
