@@ -1,3 +1,14 @@
+{{% if product in ["sle12", "sle15"] %}}
+{{% set package_name = "openldap2" %}}
+{{% set run_cmd = "$ rpm -q openldap2" %}}
+{{% elif "ubuntu" in product %}}
+{{% set package_name = "slapd" %}}
+{{% set run_cmd = "$ dpkg -l slapd" %}}
+{{% else %}}
+{{% set package_name = "openldap-servers" %}}
+{{% set run_cmd = "$ rpm -q openldap-servers" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
@@ -5,13 +16,7 @@ prodtype: rhel7,rhel8,rhel9,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2
 title: 'Uninstall openldap-servers Package'
 
 description: |-
-    {{% if product in ["sle12", "sle15"] %}}
-    The openldap2 package is not installed by default on a {{{ full_name }}}
-    {{% elif "ubuntu" in product %}}
-    The slapd package is not installed by default on a {{{ full_name }}}
-    {{% else %}}
-    The openldap-servers package is not installed by default on a {{{ full_name }}}
-    {{% endif %}}
+    The {{{ package_name }}} package is not installed by default on a {{{ full_name }}}
     system. It is needed only by the OpenLDAP server, not by the
     clients which use LDAP for authentication. If the system is not
     intended for use as an LDAP Server it should be removed.
@@ -47,25 +52,11 @@ references:
 ocil_clause: "it does not"
 
 ocil: |-
-    {{% if product in ["sle12", "sle15"] %}}
-    To verify the <tt>openldap-servers</tt> package is not installed, run the
+    To verify the <tt>{{{ package_name }}}</tt> package is not installed, run the
     following command:
-    <pre>$ rpm -q openldap2</pre>
+    <pre>{{{ run_cmd }}}</pre>
     The output should show the following:
-    <pre>package openldap2 is not installed</pre>    
-    {{% elif "ubuntu" in product %}}
-    To verify the <tt>slapd</tt> package is not installed, run the
-    following command:
-    <pre>$ dpkg -l slapd</pre>
-    The output should show the following:
-    <pre>package slapd is not installed</pre>
-    {{% else %}}
-    To verify the <tt>openldap-servers</tt> package is not installed, run the
-    following command:
-    <pre>$ rpm -q openldap-servers</pre>
-    The output should show the following:
-    <pre>package openldap-servers is not installed</pre>
-    {{% endif %}}
+    <pre>package {{{ package_name }}} is not installed</pre>    
 
 template:
     name: package_removed
