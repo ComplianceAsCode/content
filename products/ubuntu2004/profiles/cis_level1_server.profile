@@ -172,10 +172,10 @@ selections:
     ## 1.8 Warning Banners ##
     ### 1.8.1 Command Line Warning Banners ###
     #### 1.8.1.1 Ensure message of the day is configured properly (Automated)
-    # Needs rule
+    - login_banner_text=cis_default
+    - banner_etc_motd
 
     #### 1.8.1.2 Ensure local login warning banner is configured properly (Automated)
-    - login_banner_text=cis_default
     - banner_etc_issue
 
     #### 1.8.1.3 Ensure remote login warning banner is configured properly (Automated)
