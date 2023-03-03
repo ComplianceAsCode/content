@@ -42,6 +42,7 @@ def create_ini_file_template(creds_file):
 
 
 def get_github_token(creds_file) -> str:
+    creds_file = os.path.expanduser(creds_file)
     if os.path.exists(creds_file):
         return get_parameter_from_ini(creds_file, "DEFAULT", "github_token")
     else:
