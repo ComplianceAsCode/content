@@ -1611,13 +1611,14 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
   - id: 4.2.2.1.4
     title: Ensure journald is not configured to recieve logs from a remote client (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - socket_systemd-journal-remote_disabled
 
   - id: 4.2.2.2
     title: Ensure journald service is enabled (Automated)

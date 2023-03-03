@@ -1,4 +1,8 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
 
 SOCKET_NAME="systemd-journal-remote.socket"
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
