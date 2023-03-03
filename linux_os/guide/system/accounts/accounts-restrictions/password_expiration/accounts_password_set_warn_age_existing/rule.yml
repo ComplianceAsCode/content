@@ -1,15 +1,15 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: rhel7,rhel8,rhel9,sle12,sle15
 
 title: "Set Existing Passwords Warning Age"
 
 description: |-
-    To configure how many days prior to password expiration that a warning will be issued to users,
-    run the command
+    To configure how many days prior to password expiration that a warning will be issued to
+    users, run the command:
     <pre>$ sudo chage --warndays {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} <i>USER</i></pre>
     The DoD requirement is 7, and CIS recommendation is no less than 7 days.
-    The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
+    This profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
 
 rationale: |-
     Providing an advance warning that a password will be expiring gives users 
@@ -19,10 +19,16 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-86913-1
+    cce@rhel8: CCE-86914-9
+    cce@rhel9: CCE-86915-6
     cce@sle12: CCE-92321-9
     cce@sle15: CCE-92479-5
 
 references:
+    cis@rhel7: 5.5.1.3
+    cis@rhel8: 5.6.1.3
+    cis@rhel9: 5.6.1.3
     cis@sle12: 5.4.1.4
     cis@sle15: 5.4.1.4
     disa: CCI-000198
@@ -32,14 +38,15 @@ references:
 ocil_clause: 'any results are returned that are not associated with a system account'
 
 ocil: |-
-    Verify that {{{ full_name }}} has configured the warning that a password will be expiring for each user account 
-    is number of days or greater, according to the days specified with the variable 
-    var_accounts_password_warn_age_login_defs,  with the following command:
+    Verify that {{{ full_name }}} set the days of warning before a password expires to
+    {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} or more for users with a
+    password:
 
     $ sudo awk -F: '$6 < {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow
 
 fixtext: |-
-    Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
+    Configure non-compliant accounts to ensure the number of days of warning before password
+    expires is set to {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}:
     usrs_pass_warn_age=( $(awk -F: '$6 < {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}} || $6 == "" {print $1}' /etc/shadow) )
     for i in ${usrs_pass_warn_age[@]};
     do
