@@ -344,18 +344,23 @@ controls:
     # Ensure passwords with minimum of 18 characters
     - var_password_pam_minlen=18
     - accounts_password_pam_minlen
+    - cracklib_accounts_password_pam_minlen
     # Require at Least 1 Special Character in Password
     - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_ocredit
     # Require at Least 1 Numeric Character in Password
     - var_password_pam_dcredit=1
     - accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_dcredit
     # Require at Least 1 Uppercase Character in Password
     - var_password_pam_ucredit=1
     - accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_ucredit
     # Require at Least 1 Lowercase Character in Password
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_lcredit
 
     # Lock out users after 3 failed authentication attempts within 15 min
     - var_accounts_passwords_pam_faillock_fail_interval=900
