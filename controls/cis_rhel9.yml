@@ -2158,10 +2158,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The rule below does not validate whether all current users' PASS_WARN_AGE setting conforms to the control.
+    status: automated
     rules:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
+      - accounts_password_set_warn_age_existing
 
   - id: 5.6.1.4
     title: Ensure inactive password lock is 30 days or less (Automated)
