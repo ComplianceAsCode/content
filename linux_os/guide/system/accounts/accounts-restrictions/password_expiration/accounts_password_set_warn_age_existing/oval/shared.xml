@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("Set Existing Passwords Warning Age") }}}
+    <criteria>
+        <criterion test_ref="test_password_warn_age_existing"
+          comment="Passwords must be configured to the appropriate warn age for existing accounts."/>
+    </criteria>
+  </definition>
+
+  <!-- Define a test for the shadow file for non-system accounts to look for the warn age . -->
+  <unix:shadow_test id="test_password_warn_age_existing" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Password warn age for existing accounts is no less than number of days of warning before password expires.">
+    <unix:object object_ref="object_shadow_password_users_warn_age_existing"/>
+    <unix:state state_ref="warn_age_for_passwords_change"/>
+  </unix:shadow_test>
+
+  <unix:shadow_object id="object_shadow_password_users_warn_age_existing" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+  </unix:shadow_object>
+
+  <unix:shadow_state id="warn_age_for_passwords_change" version="1"
+    comment="change warn age for passwords to the recommended value ">
+    <unix:exp_warn operation="greater than or equal" datatype="int"
+      var_ref="var_accounts_password_warn_age_login_defs"/>
+  </unix:shadow_state>
+
+  <!-- this external variable is defined at the group level,
+       reusing the account-level definitions. -->
+  <external_variable id="var_accounts_password_warn_age_login_defs" datatype="int" version="1"
+                     comment="Warning days before password expires"/>
+</def-group>
