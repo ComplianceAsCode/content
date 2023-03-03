@@ -60,8 +60,8 @@ product_directories = [
     'uos20',
 ]
 
-JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros")
+JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros"))
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
