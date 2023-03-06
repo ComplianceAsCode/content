@@ -760,16 +760,15 @@ controls:
     rules:
       - package_tftp-server_removed
 
-  # NEEDS RULE
   - id: 2.2.8
     title: Ensure a web server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - package_httpd_removed
-      # Needs a rule to remove nginx
+      - package_nginx_removed
 
   # NEEDS RULE
   - id: 2.2.9
