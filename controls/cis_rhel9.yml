@@ -770,16 +770,15 @@ controls:
       - package_httpd_removed
       - package_nginx_removed
 
-  # NEEDS RULE
   - id: 2.2.9
     title: Ensure IMAP and POP3 server is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - package_dovecot_removed
-      # Needs a rule to remove cyrus-imapd
+      - package_cyrus-imapd_removed
 
   - id: 2.2.10
     title: Ensure Samba is not installed (Automated)
