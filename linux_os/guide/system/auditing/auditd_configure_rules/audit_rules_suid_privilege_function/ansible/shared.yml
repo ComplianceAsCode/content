@@ -4,6 +4,25 @@
 # complexity = low
 # disruption = low
 
+{{% if product != "ol8" %}}
+{{% set egid_arg = " -F egid=0" %}}
+{{% set euid_arg = " -F euid=0" %}}
+{{% endif %}}
+
+{{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
+{{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
+{{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
+
+{{% if product == "ol8" %}}
+{{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+" %}}
+{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+" %}}
+{{% else %}}
+{{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+-F[\s]+euid=0[\s]+" %}}
+{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+-F[\s]+egid=0[\s]+" %}}
+{{% endif %}}
+
+{{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
+
 - name: Service facts
   service_facts:
 
@@ -17,15 +36,20 @@
 - name: Set suid_audit_rules fact
   set_fact:
     suid_audit_rules:
-      - '-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid'
-      - '-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid'
-      - '-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid'
-      - '-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid'
+      - rule: '-a always,exit -F arch=b32 -S execve -C gid!=egid{{{ egid_arg }}} -k setgid'
+        regex: {{{ rx_beg + rx_b32 + rx_gid + rx_end }}}
+      - rule: '-a always,exit -F arch=b64 -S execve -C gid!=egid{{{ egid_arg }}} -k setgid'
+        regex: {{{ rx_beg + rx_b64 + rx_gid + rx_end }}}
+      - rule: '-a always,exit -F arch=b32 -S execve -C uid!=euid{{{ euid_arg }}} -k setuid'
+        regex: {{{ rx_beg + rx_b32 + rx_uid + rx_end }}}
+      - rule: '-a always,exit -F arch=b64 -S execve -C uid!=euid{{{ euid_arg }}} -k setuid'
+        regex: {{{ rx_beg + rx_b64 + rx_uid + rx_end }}}
 
 - name: Update /etc/audit/rules.d/privileged.rules to audit privileged functions
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/audit/rules.d/privileged.rules
-    line: "{{  item  }}"
+    line: "{{  item.rule  }}"
+    regexp: "{{ item.regex }}"
     create: yes
   when:
     - '"auditd.service" in ansible_facts.services'
@@ -34,9 +58,10 @@
   with_items: "{{ suid_audit_rules }}"
 
 - name: Update Update /etc/audit/audit.rules to audit privileged functions
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/audit/audit.rules
-    line: "{{  item  }}"
+    line: "{{  item.rule  }}"
+    regexp: "{{ item.regex }}"
     create: yes
   when:
     - '"auditd.service" in ansible_facts.services'

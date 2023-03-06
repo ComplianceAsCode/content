@@ -3,7 +3,7 @@
 {{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
 {{% if product == "ol8" %}}
 {{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+" %}}
-{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=guid[\s]+" %}}
+{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+" %}}
 {{% else %}}
 {{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+-F[\s]+euid=0[\s]+" %}}
 {{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+-F[\s]+egid=0[\s]+" %}}
