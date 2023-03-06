@@ -1,13 +1,22 @@
+{{% if product in ["sle12", "sle15"] %}}
+{{% set package_name = "openldap2-client" %}}
+{{% elif "ubuntu" in product %}}
+{{% set package_name = "lapd-utils" %}}
+{{% else %}}
+{{% set package_name = "openldap-clients" %}}
+{{% endif %}}
+
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: alinux2,alinux3,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
 
 title: 'Ensure LDAP client is not installed'
 
 description: |-
     The Lightweight Directory Access Protocol (LDAP) is a service that provides
     a method for looking up information from a central database.
-    {{{ describe_package_remove("openldap-clients") }}}
+    {{{ describe_package_remove( package_name ) }}}
+
 
 rationale:
     If the system does not need to act as an LDAP client, it is recommended that the software is
@@ -37,7 +46,7 @@ references:
 ocil_clause: 'the package is installed'
 
 ocil: |-
-    {{{ ocil_package("openldap-clients") }}}
+    {{{ ocil_package(package_name) }}}
 
 template:
     name: package_removed
