@@ -821,7 +821,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_dnsmasq_removed
+
 
   - id: 2.2.15
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
