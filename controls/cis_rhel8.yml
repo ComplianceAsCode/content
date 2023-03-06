@@ -2074,16 +2074,15 @@ controls:
     rules:
       - configure_ssh_crypto_policy
 
-  # NEEDS RULE
-  # The current sshd_enable_warning_banner rule uses /etc/issue instead
-  # of the /etc/issue.net that the benchmark expects.
   - id: 5.2.15
     title: Ensure SSH warning banner is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
+      - sshd_enable_warning_banner_net
+    related_rules:
       - sshd_enable_warning_banner
 
   - id: 5.2.16

@@ -1882,7 +1882,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # our rule configures /etc/issue, /etc/issue.net is required
+    status: automated
+    rules:
+      - sshd_enable_warning_banner_net
+    related_rules:
+      - sshd_enable_warning_banner
 
   - id: 5.3.19
     title: Ensure SSH PAM is enabled (Automated)
