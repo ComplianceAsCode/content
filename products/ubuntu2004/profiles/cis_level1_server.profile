@@ -265,6 +265,7 @@ selections:
 
     ### 2.2.10 Ensure HTTP server is not installed (Automated)
     - package_httpd_removed
+    - package_nginx_removed
 
     ### 2.2.11 Ensure IMAP and POP3 server are not installed (Automated)
     - package_dovecot_removed
