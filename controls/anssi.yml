@@ -338,11 +338,10 @@ controls:
     title: Disabling IPv6
     notes: >-
       When IPv6 is not in use, disable it. Otherwise secure the entire IPv6 as well.
-    status: partial
+    status: automated
     rules:
     - sysctl_net_ipv6_conf_all_disable_ipv6
-    # net.ipv6.conf.default.disable_ipv6=1
-    # TODO: Add rule
+    - sysctl_net_ipv6_conf_default_disable_ipv6
 
     related_rules: # Rules that can useful when securing the IPv6 stack.
 
