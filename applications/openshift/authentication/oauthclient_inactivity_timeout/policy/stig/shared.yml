@@ -1,0 +1,12 @@
+checktext: |-
+  Determine if the session token inactivity timeout is set on the oauthclients by running the following.
+  > oc get oauthclients -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.accessTokenInactivityTimeoutSeconds}{"\n"}'
+  The output will list each oauth client name followed by a number.  The number represents the timeout in seconds. If no number is displayed, or the timeout value is greater then the allowed idle timeout duration, this is a finding.
+
+fixtext: |-
+  For each oauth client that does not have the idle timeout set, or the timeout is set to the wrong duration, run the following command to set the idle timeout value to 10 minutes.
+  > oc patch oauthclient/<CLIENT_NAME> --type=merge -p '{"accessTokenInactivityTimeoutSeconds":600}'
+  where CLIENT_NAME is the name of the oauthclient identified in the check.
+
+srg_requirement: |-
+  The application must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity;
