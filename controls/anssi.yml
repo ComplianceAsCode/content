@@ -72,15 +72,27 @@ controls:
     title: UEFI Secure boot activation
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
-    status: documentation
+    notes: >-
+      Enabling Secure Boot requires one to navigate the BIOS, and we don't have
+      the means to automate it.
+    status: manual
 
   - id: R4
     levels:
     - intermediary
     title: Replacing of preloaded keys
     description: >-
-      It is recommended to apply replace the UEFI preloaded keys with new keys used to sign;
+      It is recommended to replace the UEFI preloaded keys with new keys used to sign;
       the bootloader and Linux kernel, or; the image of the Linux kernel in EFI format.
+    notes: >-
+      This requirement is not generally automatable. The Machine Owner Key (MOK) could
+      be used to add keys to the Secure Boot db key database but manual interaction is
+      required to navigate the UEFI console and input the key password.
+      On systems where MOK utility is not supported, one will need to access the UEFI
+      firmware interface to add new keys.
+      We have no automation support for UEFI interfaces and the steps for each hardware
+      manufacturer can vary.
+    status: manual
 
   - id: R5
     levels:
@@ -101,6 +113,12 @@ controls:
     description: >-
       It is recommended that UEFI Secure Boot is used to protect the Linux Kernel
       command line parameters during boot.
+    notes: >-
+      I believe this requirement can be satisfied by having GRUB verify the signature of config
+      through the 'verify' module. This may potentially require a standalone grub binary, not
+      totally sure though.
+      Reference https://ruderich.org/simon/notes/secure-boot-with-grub-and-signed-linux-and-initrd
+    status: manual
 
   - id: R7
     levels:
@@ -559,6 +577,9 @@ controls:
     levels:
     - enhanced
     title: Compile options for 32 bits architectures
+    notes: >-
+      Unless a X86 32bit kernel is explicity supported by one of products in the project, this
+      requirement is set to not applicable.
     status: not applicable
 
   - id: R25
@@ -579,6 +600,9 @@ controls:
     levels:
     - enhanced
     title: Compile options for ARM architectures
+    notes: >-
+      Unless a ARM 32bit kernel is explicity supported by one of products in the project, this
+      requirement is set to not applicable.
     status: not applicable
 
   - id: R27
@@ -774,8 +798,10 @@ controls:
     levels:
     - enhanced
     notes: >-
-      TODO
-    status: documentation
+      There is not an easy general way to assess if multi-factor authentication is configured.
+      The variety of smartcards, tokens and OTP devices makes it difficult to automate
+      compliance checking.
+    status: manual
 
   - id: R35
     title: Deactivation of service accounts
@@ -1039,7 +1065,8 @@ controls:
     levels:
     - intermediary
     title: Securing access for named sockets and pipes
-    # rules: TBD
+    notes: We cannot easily automate securing of named sockets and pipes in a general way.
+    status: manual
 
   - id: R55
     levels:
@@ -1234,8 +1261,10 @@ controls:
       Each component supporting the virtualization must be hardened, especially
       by applying technical measures to counter the exploit attempts.
     notes: >-
+      We cannot easily automate securing of virtualization technologies in a general way.
       It may be interesting to point out virtualization components that are installed and
       should be hardened.
+    status: manual
 
   - id: R69
     levels:
@@ -1250,7 +1279,8 @@ controls:
     title: Securing remote authentication by PAM
     levels:
     - intermediary
-    # rules: TBD
+    notes: We cannot automate securing of remote PAM authentication in a general way.
+    status: manual
 
   - id: R71
     levels:
@@ -1274,7 +1304,8 @@ controls:
     title: Securing access to remote user databases
     levels:
     - intermediary
-    # rules: TBD
+    notes: We cannot automate securing access to remote databases in a general way.
+    status: manual
 
   - id: R73
     title: Separation of System Accounts and Directory Administrator
