@@ -1931,8 +1931,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial # rule checking for retry needs modification and we are missing rule for try_first_pass
+    status: automated
     notes: <-
+      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
+      module. However, the pam_pwquality.so module, by default, is always the first module from in
+      the PAM password stack. Therefore, the option is useless and not necessary. It was already
+      proposed to update the requirement in the next CIS version.
       There are two ways how to check this control.
       One way is to check for minclass, this is currently selected.
       Another way is to check for dcredit, lcredit,ocredit, ucredit, this is shown in rleated_rules.

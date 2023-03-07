@@ -2222,15 +2222,17 @@ controls:
     rules:
       - accounts_passwords_pam_faillock_deny
 
-  # NEEDS RULE
-  # try_first_pass
-  # https://github.com/ComplianceAsCode/content/issues/5533
   - id: 5.5.1
     title: Ensure password creation requirements are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
+    notes: |-
+      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
+      module. However, the pam_pwquality.so module, by default, is always the first module from in
+      the PAM password stack. Therefore, the option is useless and not necessary. It was already
+      proposed to update the requirement in the next CIS version.
     rules:
       - accounts_password_pam_minclass
       - accounts_password_pam_minlen
