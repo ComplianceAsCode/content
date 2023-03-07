@@ -18,7 +18,7 @@ levels:
 controls:
   - id: R1
     levels:
-    - intermediary
+    - enhanced
     title: Hardware Support
     description: >-
       It is recommended to apply the configuration recommendations for Hardware suppport
@@ -68,7 +68,7 @@ controls:
 
   - id: R3
     levels:
-    - minimal
+    - intermediary
     title: UEFI Secure boot activation
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
@@ -79,7 +79,7 @@ controls:
 
   - id: R4
     levels:
-    - intermediary
+    - high
     title: Replacing of preloaded keys
     description: >-
       It is recommended to replace the UEFI preloaded keys with new keys used to sign;
@@ -108,7 +108,7 @@ controls:
 
   - id: R6
     levels:
-    - intermediary
+    - high
     title: Protecting kernel command line parameters
     description: >-
       It is recommended that UEFI Secure Boot is used to protect the Linux Kernel
@@ -125,7 +125,7 @@ controls:
 
   - id: R7
     levels:
-    - high
+    - enhanced
     title: IOMMU Configuration Guidelines
     description: >-
       The iommu = force directive must be added to the list of kernel parameters
@@ -256,7 +256,7 @@ controls:
 
   - id: R11
     levels:
-    - enhanced
+    - intermediary
     title: Yama module sysctl configuration
     description: >-
       It is recommended to load the Yama security module at startup (by example
@@ -453,7 +453,7 @@ controls:
 
   - id: R15
     levels:
-    - enhanced
+    - high
     title: Compile options for memory management
     status: partial
     rules:
@@ -482,7 +482,7 @@ controls:
 
   - id: R16
     levels:
-    - enhanced
+    - high
     title: Compile options for kernel data structures
     status: automated
     rules:
@@ -494,7 +494,7 @@ controls:
 
   - id: R17
     levels:
-    - enhanced
+    - high
     title: Compile options for the memory allocator
     status: automated
     rules:
@@ -509,7 +509,7 @@ controls:
 
   - id: R18
     levels:
-    - enhanced
+    - high
     title: Compile options for the management of kernel module
     status: automated
     rules:
@@ -523,7 +523,7 @@ controls:
 
   - id: R19
     levels:
-    - enhanced
+    - high
     title: Compile options for abnormal situations
     status: automated
     rules:
@@ -533,7 +533,7 @@ controls:
 
   - id: R20
     levels:
-    - enhanced
+    - high
     title: Compile options for kernel security functions
     status: automated
     rules:
@@ -545,7 +545,7 @@ controls:
 
   - id: R21
     levels:
-    - enhanced
+    - high
     title: Compile options for the compiler plugins
     status: automated
     rules:
@@ -557,7 +557,7 @@ controls:
 
   - id: R22
     levels:
-    - enhanced
+    - high
     title: Compile options for of the IP stack
     status: automated
     rules:
@@ -566,7 +566,7 @@ controls:
 
   - id: R23
     levels:
-    - enhanced
+    - high
     title: Compile options for various kernel behaviors
     status: partial
     rules:
@@ -579,7 +579,7 @@ controls:
 
   - id: R24
     levels:
-    - enhanced
+    - high
     title: Compile options for 32 bits architectures
     notes: >-
       Unless a X86 32bit kernel is explicity supported by one of products in the project, this
@@ -588,7 +588,7 @@ controls:
 
   - id: R25
     levels:
-    - enhanced
+    - high
     title: Compile options for x86_64 architectures
     status: automated
     rules:
@@ -601,7 +601,7 @@ controls:
 
   - id: R26
     levels:
-    - enhanced
+    - high
     title: Compile options for ARM architectures
     notes: >-
       Unless a ARM 32bit kernel is explicity supported by one of products in the project, this
@@ -610,7 +610,7 @@ controls:
 
   - id: R27
     levels:
-    - enhanced
+    - high
     title: Compile options for ARM 64 architectures
     status: partial
     rules:
@@ -843,7 +843,7 @@ controls:
 
   - id: R37
     levels:
-    - high
+    - enhanced
     title: Using access control features
     description: >-
       It is recommended to use the mandatory access control (MAC) features in
@@ -859,7 +859,7 @@ controls:
 
   - id: R38
     levels:
-    - intermediary
+    - enhanced
     title: Group dedicated to the use of sudo
     description: >-
       A group dedicated to the use of sudo must be created, and only members of this
@@ -955,7 +955,7 @@ controls:
 
   - id: R46
     levels:
-    - enhanced
+    - high
     title: Activage SELinux with the Targeted Policy
     description: >-
       It is recommended to enable the targeted policy when the distribution
@@ -967,7 +967,7 @@ controls:
 
   - id: R47
     levels:
-    - enhanced
+    - high
     title: Containment of unprivileged interactive users
     description: >-
       Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
@@ -1115,7 +1115,7 @@ controls:
 
   - id: R58
     levels:
-    - intermediary
+    - minimal
     title: Installation of packages reduced to the bare necessities
     description: >-
       The selection of packages installed should be as small as possible,
@@ -1231,7 +1231,7 @@ controls:
 
   - id: R65
     levels:
-    - intermediary
+    - enhanced
     title: Services partitioning
     notes: >-
       Using automation to restrict access and chroot services is not generally reliable.
@@ -1239,7 +1239,7 @@ controls:
 
   - id: R66
     levels:
-    - enhanced
+    - high
     title: Virtualization components hardening
     description: >-
       Each component supporting the virtualization must be hardened, especially
@@ -1329,7 +1329,7 @@ controls:
 
   - id: R72
     levels:
-    - intermediary
+    - enhanced
     title: Service Activity Logs
     description: >-
       Each service must have a dedicated event logging journal on the system.
@@ -1462,7 +1462,7 @@ controls:
 
   - id: R78
     levels:
-    - intermediary
+    - enhanced
     title: Network services partitioning
     description: >-
       Network services should as much as possible be hosted on isolated environments.
