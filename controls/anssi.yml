@@ -777,7 +777,7 @@ controls:
       The semantics of "ClientAliveCountMax 0" has changed from "disconnect on first timeout" to
       "don't disconnect network inactive sessions". The server either probes for the client liveness
       or keeps inactive sessions connected.
-    status: automated
+    status: supported
     rules:
     - accounts_tmout
     - var_accounts_tmout=10_min
@@ -841,7 +841,7 @@ controls:
       The different values are set in a conditional clause in a shell script
       (e.g. /etc/profile or /etc/bashrc).
       The current implementation checks and fixes both umask to the same value.
-    status: automated
+    status: supported
     rules:
     - var_accounts_user_umask=077
     - accounts_umask_etc_login_defs
@@ -1266,7 +1266,7 @@ controls:
     description: Any password must be protected by cryptographic mechanisms.
     notes: >-
       The selection of rules doesn't cover the use of hardware devices to protect the passwords.
-    status: automated
+    status: supported
     rules:
     # ENCRYPT_METHOD, system default is SHA512
     - set_password_hashing_algorithm_systemauth
