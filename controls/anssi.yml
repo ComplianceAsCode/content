@@ -55,7 +55,7 @@ controls:
       ANSSI DAT-24.
     notes: >-
       Configurations recommended for this requirement are to be performed at the BIOS level.
-    status: documentation
+    status: manual
     #rules:
     # From ANSSI DAT-24
     # R11 Password protect the BIOS
@@ -699,7 +699,7 @@ controls:
       whose owners don't use the system anymore, or users created by services
       or applications that should not be used.
       Automation by itself cannot discern which accounts are used or not.
-    status: documentation
+    status: manual
 
   - id: R31
     levels:
@@ -812,7 +812,7 @@ controls:
       UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
       are not enforced by the OS and can be changed over time.
       Assisting rules could list users which are not disabled for manual review.
-    status: documentation
+    status: manual
 
   - id: R36
     levels:
@@ -824,7 +824,7 @@ controls:
       It is not trivial to identify whether a user account is a service account.
       UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
       are not enforced by the OS and can be changed over time.
-    status: documentation
+    status: manual
 
   - id: R37
     levels:
@@ -928,7 +928,7 @@ controls:
     notes: >-
       Human review is required to assess if the set of commands requiring EXEC is minimal.
       An auxiliary rule could list rules containing EXEC tag, for analysis.
-    status: documentation
+    status: manual
     automated: no
 
   - id: R44
@@ -958,7 +958,7 @@ controls:
       for this requirement is to ensure that sudoedit is the only text editor allowed.
       But it is difficult to ensure that allowed binaries aren't text editors without human
       review.
-    status: documentation
+    status: manual
     automated: no
 
   - id: R47
@@ -988,7 +988,7 @@ controls:
     description: >-
       Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
     notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
-    status: documentation
+    status: manual
 
   - id: R50
     levels:
@@ -1127,7 +1127,7 @@ controls:
       When only administrators are expected to execute them, these special rights should
       be removed and prefer them commands like su or sudo, which can be monitored
     notes: There could be rules to list all executables with setuid root or setgid root rights.
-    status: documentation
+    status: manual
 
   - id: R60
     levels:
@@ -1139,7 +1139,7 @@ controls:
     notes: >-
       It is not possible to automatically decide in general way if a package is required or not for given system.
       As a future improvement, there could be rules assisting assessment by listing the installed packages.
-    status: documentation
+    status: manual
 
   - id: R61
     levels:
@@ -1151,7 +1151,7 @@ controls:
       We cannot draw conclusions from the repo name or URL of the repo (as they can be arbitrary or behind a proxy).
       One approach to check the origin of installed packages is to check the signature of the packages.
       If the public key of a repository is not installed, the repo is not trusted.
-    status: documentation
+    status: partial
     rules:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_globally_activated
@@ -1194,7 +1194,7 @@ controls:
       Only the components strictly necessary to the service provided by the system should
       be installed.
       Those whose presence can not be justified should be disabled, removed or deleted.
-    status: documentation # The list of essential services is not objective.
+    status: manual # The list of essential services is not objective.
     notes: >-
       Performing a minimal install is a good starting point, but doesn't provide any assurance
       over any package installed later.
@@ -1227,7 +1227,7 @@ controls:
       minimum.
     notes: >-
       Define a list of most problematic components or features to be hardened or restricted.
-    status: documentation
+    status: manual
 
   - id: R66
     levels:
@@ -1251,7 +1251,7 @@ controls:
     title: Services partitioning
     notes: >-
       Using automation to restrict access and chroot services is not generally reliable.
-    status: documentation
+    status: manual
 
   - id: R68
     levels:
@@ -1273,7 +1273,7 @@ controls:
     notes: >-
       Manual review is necessary to decide if the list of applications using PAM is minimal.
       Asssising rules could be created to list all applications using PAM for manual review.
-    status: documentation
+    status: manual
 
   - id: R70
     title: Securing remote authentication by PAM
@@ -1311,7 +1311,7 @@ controls:
     title: Separation of System Accounts and Directory Administrator
     levels:
     - intermediary
-    status: documentation
+    status: manual
 
   - id: R74
     levels:
@@ -1496,7 +1496,7 @@ controls:
     notes: >-
       Manual analysis is required to determine if services are hosted appropriately in
       separate or isolated system while maintaining functionality.
-    status: documentation
+    status: manual
 
   - id: R82
     levels:
@@ -1522,4 +1522,4 @@ controls:
     notes: >-
       Manual review is necessary to decide if the list of resident daemons is minimal.
       Asssising rules could be created to list sevices listening on the network for manual review.
-    status: documentation
+    status: manual
