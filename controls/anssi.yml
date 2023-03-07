@@ -1449,9 +1449,11 @@ controls:
     levels:
     - intermediary
     title: Messaging Aliases for Service Accounts
-    status: partial # it is hard to define what are "service accounts"
+    status: automated #semi-automated
     notes: >-
-      Only the alias for root user is currently covered.
+      Only the alias for root user is covered by the rule.
+      The other services cannot be reliably covered, as there is no simple way
+      of determining what is a service account.
     rules:
     - postfix_client_configure_mail_alias
 
