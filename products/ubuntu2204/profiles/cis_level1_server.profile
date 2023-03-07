@@ -294,6 +294,7 @@ selections:
 
     ### 2.2.10 Ensure IMAP and POP3 server are not installed (Automated)
     - package_dovecot_removed
+    - package_cyrus-imapd_removed
 
     ### 2.2.11 Ensure Samba is not installed (Automated)
     - package_samba_removed
