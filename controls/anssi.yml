@@ -764,7 +764,7 @@ controls:
     levels:
     - intermediary
     title: Sudo configuration guidelines
-    status: partial
+    status: automated
     rules:
     - sudo_add_noexec
     - sudo_add_requiretty
@@ -776,7 +776,8 @@ controls:
     - sudo_add_passwd_timeout
     - var_sudo_passwd_timeout=1_minute
     # timestamp_timeout=15
-    # TODO: add rule
+    - sudo_require_reauthentication
+    - var_sudo_timestamp_timeout=15_minutes
 
   - id: R41
     levels:
