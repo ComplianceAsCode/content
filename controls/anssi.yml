@@ -35,15 +35,15 @@ controls:
     # R3 If using 32 bit OS, PAE mode should be enabled
     - install_PAE_kernel_on_x86-32
     # R5 It is recommended to use hardware and OS that support SMEP
-    # TODO: Check that 'nosmep' is not in kernel boot parameters
+    - grub2_nosmep_argument_absent
     # R6 It is recommended to use hardware and OS that support SMAP
-    # TODO: Check that 'nosmap' is not in kernel boot parameters
+    - grub2_nosmap_argument_absent
     # R7 It is recommended to use hardware and OS that support AES-NI
     - package_dracut-fips-aesni_installed
 
     # R8 It is recommended to use hardware with support for hardware random number generator
     # R9 Disable VT-x AMD-V technologies
-    # TODO: We can check cpuinfo flags for suppport
+    # TODO: can we reliably check cpuinfo flags?
     # R10 IOMMU must enabled if the hardware supports it
 
   - id: R2
