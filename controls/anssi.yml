@@ -139,11 +139,12 @@ controls:
     notes: >-
       This would use grub argument template to add kernel arguments.
       There are rules for some of the items, others are missing rule.
-    status: partial
+    status: automated
     rules:
     # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerabilyt, or
     # l1tf=off to maximize performance, when system is not a hypervisor or VMs are trusted
-    # TODO: add rule
+    - grub2_l1tf_argument
+    - var_l1tf_options=full_force
 
     # page_poison=on: activate the poisoning of the pages of the page allocator (buddy allocator)
     - grub2_page_poison_argument
@@ -157,29 +158,32 @@ controls:
     - grub2_slab_nomerge_argument
 
     # slub_debug=F,Z,P: activate certain options for checking slabs caches (dynamic memory allocation)
-    # TODO: Add variable to set F and Z options too
     - grub2_slub_debug_argument
+    - var_slub_debug_options=FZP
 
     # spec_store_bypass_disable=seccomp: force the system to use the default countermeasure
     # (on an x86 system supporting seccomp) for the Specter v4 (Speculative Store Bypass) vulnerability
-    # TODO: add rule
+    - grub2_spec_store_bypass_disable_argument
+    - var_spec_store_bypass_disable_options=seccomp
 
     # spectre_v2=on: force the system to use a countermeasure for the Specter v2 (Branch Target Injection) vulnerability.
-    # TODO: add rule
+    - rub2_spectre_v2_argument
 
     # mds=full,nosmt: force the system to use Microarchitectural Data Sampling (MDS) to mitigate
     # the vulnerabilities of Intel processors.
-    # TODO: add rule
+    - grub2_mds_argument
+    - var_grub2_mds_options=full_nomst
 
     # mce=0: force a kernel panic on uncorrected errors reported by Machine Check support.
     - grub2_mce_argument
 
     # page_alloc.shuffle=1: enables Page allocator randomization
-    # TODO: add rule
+    - grub2_page_alloc_shuffle_argument
 
     # rng_core.default_quality=512: increase confidence in TPM's HWRNG for robust and fast Linux
     # CSPRNG initialization by crediting half of the entropy it provides.
-    # TODO: add rule
+    - grub2_rng_core_default_quality_argument
+    - var_rng_core_default_quality=512
 
     # Forbidden to map memory in low addresses (0)
     # vm.mmap_min_addr = 65536
