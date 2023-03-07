@@ -797,16 +797,6 @@ controls:
     - audit_rules_privileged_commands_sudo
 
   - id: R34
-    title: Multi-factor authentication for system administration actions
-    levels:
-    - enhanced
-    notes: >-
-      There is not an easy general way to assess if multi-factor authentication is configured.
-      The variety of smartcards, tokens and OTP devices makes it difficult to automate
-      compliance checking.
-    status: manual
-
-  - id: R35
     title: Deactivation of service accounts
     levels:
     - intermediary
@@ -817,7 +807,7 @@ controls:
       Assisting rules could list users which are not disabled for manual review.
     status: manual
 
-  - id: R36
+  - id: R35
     levels:
     - intermediary
     title: Uniqueness and exclusivity of system service accounts
@@ -829,7 +819,7 @@ controls:
       are not enforced by the OS and can be changed over time.
     status: manual
 
-  - id: R37
+  - id: R36
     levels:
     - enhanced
     title: umask value
@@ -851,7 +841,7 @@ controls:
     - accounts_umask_etc_profile
     - accounts_umask_etc_bashrc
 
-  - id: R38
+  - id: R37
     levels:
     - high
     title: Using access control features
@@ -867,7 +857,7 @@ controls:
     - selinux_state
     - var_selinux_state=enforcing
 
-  - id: R39
+  - id: R38
     levels:
     - intermediary
     title: Group dedicated to the use of sudo
@@ -882,7 +872,7 @@ controls:
     - sudo_dedicated_group
     - var_sudo_dedicated_group=sudogrp
 
-  - id: R40
+  - id: R39
     levels:
     - intermediary
     title: Sudo configuration guidelines
@@ -901,7 +891,7 @@ controls:
     - sudo_require_reauthentication
     - var_sudo_timestamp_timeout=15_minutes
 
-  - id: R41
+  - id: R40
     levels:
     - minimal
     title: User authentication running sudo
@@ -912,16 +902,7 @@ controls:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
 
-  - id: R42
-    levels:
-    - intermediary
-    title: Privileges of target sudo users
-    description: The targeted users of a rule should be, as much as possible, non privileged users.
-    status: automated
-    rules:
-    - sudoers_no_root_target
-
-  - id: R43
+  - id: R41
     levels:
     - enhanced
     title: Limiting the number of commands requiring the use of the EXEC option
@@ -934,7 +915,7 @@ controls:
     status: manual
     automated: no
 
-  - id: R44
+  - id: R42
     levels:
     - intermediary
     title: Good use of negation in a sudoers file
@@ -943,7 +924,7 @@ controls:
     rules:
     - sudoers_no_command_negation
 
-  - id: R45
+  - id: R43
     levels:
     - intermediary
     title: Explicit arguments in sudo specifications
@@ -951,7 +932,7 @@ controls:
     rules:
     - sudoers_explicit_command_args
 
-  - id: R46
+  - id: R44
     levels:
     - intermediary
     title: Editing files with sudo
@@ -964,7 +945,7 @@ controls:
     status: manual
     automated: no
 
-  - id: R47
+  - id: R45
     levels:
     - enhanced
     title: Enable AppArmor security profiles
@@ -972,7 +953,7 @@ controls:
       All AppArmor security profiles on the system must be enabled by default.
     status: not applicable
 
-  - id: R48
+  - id: R46
     levels:
     - enhanced
     title: Activage SELinux with the Targeted Policy
@@ -984,7 +965,7 @@ controls:
     - selinux_policytype
     - var_selinux_policy_name=targeted
 
-  - id: R49
+  - id: R47
     levels:
     - enhanced
     title: Containment of unprivileged interactive users
@@ -993,7 +974,7 @@ controls:
     notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
     status: manual
 
-  - id: R50
+  - id: R48
     levels:
     - high
     title: Setting SELinux booleans
@@ -1020,7 +1001,7 @@ controls:
     - sebool_secure_mode_insmod
     - sebool_ssh_sysadm_login
 
-  - id: R51
+  - id: R49
     levels:
     - high
     title: Uninstalling SELinux Policy Debugging Tools
@@ -1033,7 +1014,7 @@ controls:
     - package_setroubleshoot-server_removed
     - package_setroubleshoot-plugins_removed
 
-  - id: R52
+  - id: R50
     title: Rights to access sensitive files and directories
     levels:
     - intermediary
@@ -1047,7 +1028,7 @@ controls:
     - file_permissions_etc_group
     - file_permissions_sshd_private_key
 
-  - id: R53
+  - id: R51
     levels:
     - enhanced
     title: Sensitive and trusted files
@@ -1064,14 +1045,14 @@ controls:
       known passwords.
     status: documentation
 
-  - id: R54
+  - id: R52
     levels:
     - intermediary
     title: Securing access for named sockets and pipes
     notes: We cannot easily automate securing of named sockets and pipes in a general way.
     status: manual
 
-  - id: R55
+  - id: R53
     levels:
     - minimal
     title: Files or directories without a known user or group
@@ -1080,7 +1061,7 @@ controls:
     - file_permissions_ungroupowned
     - no_files_unowned_by_user
 
-  - id: R56
+  - id: R54
     levels:
     - minimal
     title: Sticky bit and write access rights
@@ -1090,7 +1071,7 @@ controls:
     - dir_perms_world_writable_root_owned
     - file_permissions_unauthorized_world_writable
 
-  - id: R57
+  - id: R55
     levels:
     - intermediary
     title: Temporary directories dedicated to accounts
@@ -1106,7 +1087,7 @@ controls:
     - var_polyinstantiation_enabled=on
     - sebool_polyinstantiation_enabled
 
-  - id: R58
+  - id: R56
     levels:
     - minimal
     title: Executables with setuid and setgid bits
@@ -1121,7 +1102,7 @@ controls:
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_sgid
 
-  - id: R59
+  - id: R57
     levels:
     - enhanced
     title: Executable with special rights setuid root and setgid root
@@ -1132,7 +1113,7 @@ controls:
     notes: There could be rules to list all executables with setuid root or setgid root rights.
     status: manual
 
-  - id: R60
+  - id: R58
     levels:
     - intermediary
     title: Installation of packages reduced to the bare necessities
@@ -1144,7 +1125,7 @@ controls:
       As a future improvement, there could be rules assisting assessment by listing the installed packages.
     status: manual
 
-  - id: R61
+  - id: R59
     levels:
     - minimal
     title: Official package repositories
@@ -1162,7 +1143,7 @@ controls:
     - ensure_redhat_gpgkey_installed
     - ensure_oracle_gpgkey_installed
 
-  - id: R62
+  - id: R60
     levels:
     - enhanced
     title: Hardened package repositories
@@ -1174,7 +1155,7 @@ controls:
       (at compilation, installation, or default configuration) must be preferred.
     status: not applicable
 
-  - id: R63
+  - id: R61
     levels:
     - minimal
     title: Regular updates
@@ -1189,7 +1170,7 @@ controls:
     # Configure dnf-automatic to Install Only Security Updates
     - dnf-automatic_security_updates_only
 
-  - id: R64
+  - id: R62
     levels:
     - minimal
     title: Minimization of installed services
@@ -1219,7 +1200,7 @@ controls:
     - package_ypbind_removed
     - package_ypserv_removed
 
-  - id: R65
+  - id: R63
     levels:
     - intermediary
     title: Minimization of services configuration
@@ -1232,7 +1213,7 @@ controls:
       Define a list of most problematic components or features to be hardened or restricted.
     status: manual
 
-  - id: R66
+  - id: R64
     levels:
     - enhanced
     title: Least privilege for the services
@@ -1248,7 +1229,7 @@ controls:
     - selinux_policytype
     - var_selinux_policy_name=targeted
 
-  - id: R67
+  - id: R65
     levels:
     - intermediary
     title: Services partitioning
@@ -1256,7 +1237,7 @@ controls:
       Using automation to restrict access and chroot services is not generally reliable.
     status: manual
 
-  - id: R68
+  - id: R66
     levels:
     - enhanced
     title: Virtualization components hardening
@@ -1269,23 +1250,14 @@ controls:
       should be hardened.
     status: manual
 
-  - id: R69
-    levels:
-    - minimal
-    title: Applications using PAM
-    notes: >-
-      Manual review is necessary to decide if the list of applications using PAM is minimal.
-      Asssising rules could be created to list all applications using PAM for manual review.
-    status: manual
-
-  - id: R70
+  - id: R67
     title: Securing remote authentication by PAM
     levels:
     - intermediary
     notes: We cannot automate securing of remote PAM authentication in a general way.
     status: manual
 
-  - id: R71
+  - id: R68
     levels:
     - minimal
     title: Protecting stored passwords
@@ -1303,20 +1275,20 @@ controls:
     - accounts_password_pam_unix_rounds_system_auth
     - accounts_password_pam_unix_rounds_password_auth
 
-  - id: R72
+  - id: R69
     title: Securing access to remote user databases
     levels:
     - intermediary
     notes: We cannot automate securing access to remote databases in a general way.
     status: manual
 
-  - id: R73
+  - id: R70
     title: Separation of System Accounts and Directory Administrator
     levels:
     - intermediary
     status: manual
 
-  - id: R74
+  - id: R71
     levels:
     - enhanced
     title: Implementation of a logging system
@@ -1355,7 +1327,7 @@ controls:
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
 
-  - id: R75
+  - id: R72
     levels:
     - intermediary
     title: Service Activity Logs
@@ -1365,7 +1337,7 @@ controls:
       editable or deletable by the service directly.
     status: documentation # How to enable syslog for each service installed in the system
 
-  - id: R76
+  - id: R73
     levels:
     - enhanced
     title: Logging activity by auditd
@@ -1436,7 +1408,7 @@ controls:
 
     - audit_rules_immutable
 
-  - id: R77
+  - id: R74
     levels:
     - intermediary
     title: Configuring the local messaging service
@@ -1444,7 +1416,7 @@ controls:
     rules:
     - postfix_network_listening_disabled
 
-  - id: R78
+  - id: R75
     levels:
     - intermediary
     title: Messaging Aliases for Service Accounts
@@ -1456,7 +1428,7 @@ controls:
     rules:
     - postfix_client_configure_mail_alias
 
-  - id: R79
+  - id: R76
     levels:
     - high
     title: Sealing and integrity of files
@@ -1475,7 +1447,7 @@ controls:
     - aide_verify_acls
     - aide_verify_ext_attributes
 
-  - id: R80
+  - id: R77
     levels:
     - high
     title: Protection of the seals database
@@ -1488,7 +1460,7 @@ controls:
       https://aide.github.io/doc/#signing
     status: does not meet
 
-  - id: R81
+  - id: R78
     levels:
     - intermediary
     title: Network services partitioning
@@ -1501,7 +1473,7 @@ controls:
       separate or isolated system while maintaining functionality.
     status: manual
 
-  - id: R82
+  - id: R79
     levels:
     - intermediary
     title: Hardening and monitoring of exposed services
@@ -1517,7 +1489,7 @@ controls:
     - package_aide_installed
     - aide_build_database
 
-  - id: R83
+  - id: R80
     levels:
     - minimal
     title: Minimization of network services
