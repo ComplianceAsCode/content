@@ -27,7 +27,7 @@ controls:
       This requirement can be checked, but remediation requires manual reinstall of the OS.
       The content automation cannot really configure the BIOS, but can in some cases,
       check settings that are visible to the OS. Like for example the NX/DX setting.
-    status: partial
+    status: automated
     rules:
     # From ANSSI DAT-24
     # R1 and R2 Prefer 64 bit OS
@@ -455,14 +455,15 @@ controls:
     levels:
     - high
     title: Compile options for memory management
-    status: partial
+    status: automated
+    notes: >-
+      The special case of direct access to physical memory is not handled.
     rules:
     - kernel_config_strict_kernel_rwx
     - kernel_config_debug_wx
     - kernel_config_debug_fs
     - kernel_config_stackprotector
     - kernel_config_stackprotector_strong
-    # CONFIG_DEVMEM=y|n this needs clarification
     - kernel_config_sched_stack_end_check
     - kernel_config_hardened_usercopy
     - kernel_config_hardened_usercopy_fallback
@@ -568,14 +569,17 @@ controls:
     levels:
     - high
     title: Compile options for various kernel behaviors
-    status: partial
+    notes: >-
+      As R18 configures hardened management of kernel modules we don't check nor remediate
+      for CONFIG_MODULES=n
+    status: automated
     rules:
     - kernel_config_kexec
     - kernel_config_hibernation
     - kernel_config_binfmt_misc
     - kernel_config_legacy_ptys
-    related_rules
-    # CONFIG_MODULES=y
+    related_rules:
+    # CONFIG_MODULES=n
 
   - id: R24
     levels:
@@ -592,6 +596,8 @@ controls:
     title: Compile options for x86_64 architectures
     status: automated
     rules:
+    # TODO: add support for variable for config_default_mmap_min_addr
+    # CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
     - kernel_config_default_mmap_min_addr
     - kernel_config_randomize_base
     - kernel_config_randomize_memory
@@ -612,9 +618,10 @@ controls:
     levels:
     - high
     title: Compile options for ARM 64 architectures
-    status: partial
+    status: automated
     rules:
     # CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
+    - kernel_config_randomize_base
     - kernel_config_arm64_sw_ttbr0_pan
     - kernel_config_unmap_kernel_at_el0
 
@@ -1130,7 +1137,7 @@ controls:
       We cannot draw conclusions from the repo name or URL of the repo (as they can be arbitrary or behind a proxy).
       One approach to check the origin of installed packages is to check the signature of the packages.
       If the public key of a repository is not installed, the repo is not trusted.
-    status: partial
+    status: automated
     rules:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_globally_activated
