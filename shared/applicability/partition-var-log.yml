@@ -1,0 +1,5 @@
+name: "cpe:/a:partition-var-log"
+title: "There is a /var/log partition"
+check_id: installed_env_mounts_var_log
+bash_conditional: {{{ bash_partition_conditional("/var/log") }}}
+ansible_conditional: {{{ ansible_partition_conditional("/var/log") }}}

@@ -1,0 +1,10 @@
+<def-group>
+  <definition class="inventory" id="installed_env_mounts_var_log" version="1">
+    {{{ oval_metadata("", title="Partition /var/log exists", affected_platforms=[full_name]) }}}
+    <criteria>
+       {{{ partition_exists_criterion("/var/log") }}}
+    </criteria>
+  </definition>
+
+  {{{ partition_exists_test_object("/var/log") }}}
+</def-group>
