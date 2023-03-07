@@ -455,8 +455,6 @@ controls:
     status: partial
     rules:
     - kernel_config_strict_kernel_rwx
-    # CONFIG_ARCH_OPTIONAL_KERNEL_RWX is a dependency
-    # CONFIG_ARCH_HAS_STTRICT_KERNEL_RWX is a dependency
     - kernel_config_debug_wx
     - kernel_config_debug_fs
     - kernel_config_stackprotector
@@ -498,7 +496,6 @@ controls:
     status: automated
     rules:
     - kernel_config_slab_freelist_random
-    # CONFIG_SLAB - is it a security requirement? CONFIG_SLUB also satisfies dependency
     - kernel_config_slab_freelist_hardened
     - kernel_config_slab_merge_default
     - kernel_config_slub_debug
@@ -513,7 +510,6 @@ controls:
     title: Compile options for the management of kernel module
     status: automated
     rules:
-    # CONFIG_MODULES=y conflicts witn R23, and is it a security requirement?
     - kernel_config_strict_module_rwx
     - kernel_config_module_sig
     - kernel_config_module_sig_force
@@ -550,7 +546,6 @@ controls:
     title: Compile options for the compiler plugins
     status: automated
     rules:
-    # CONFIG_GCC_PLUGINS is it a security requirement? Or just a dep for other configs
     - kernel_config_gcc_plugin_latent_entropy
     - kernel_config_gcc_plugin_stackleak
     - kernel_config_gcc_plugin_structleak
@@ -570,12 +565,14 @@ controls:
     levels:
     - enhanced
     title: Compile options for various kernel behaviors
-    status: supported
+    status: partial
     rules:
     - kernel_config_kexec
     - kernel_config_hibernation
     - kernel_config_binfmt_misc
     - kernel_config_legacy_ptys
+    related_rules
+    # CONFIG_MODULES=y
 
   - id: R24
     levels:
@@ -592,7 +589,6 @@ controls:
     title: Compile options for x86_64 architectures
     status: automated
     rules:
-    # CONFIG_X86_64 is it a security setting?
     - kernel_config_default_mmap_min_addr
     - kernel_config_randomize_base
     - kernel_config_randomize_memory
