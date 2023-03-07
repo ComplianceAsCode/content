@@ -180,10 +180,10 @@ controls:
     # page_alloc.shuffle=1: enables Page allocator randomization
     - grub2_page_alloc_shuffle_argument
 
-    # rng_core.default_quality=512: increase confidence in TPM's HWRNG for robust and fast Linux
+    # rng_core.default_quality=500: increase confidence in TPM's HWRNG for robust and fast Linux
     # CSPRNG initialization by crediting half of the entropy it provides.
     - grub2_rng_core_default_quality_argument
-    - var_rng_core_default_quality=512
+    - var_rng_core_default_quality=500
 
     # Forbidden to map memory in low addresses (0)
     # vm.mmap_min_addr = 65536
