@@ -114,10 +114,13 @@ controls:
       It is recommended that UEFI Secure Boot is used to protect the Linux Kernel
       command line parameters during boot.
     notes: >-
-      I believe this requirement can be satisfied by having GRUB verify the signature of config
-      through the 'verify' module. This may potentially require a standalone grub binary, not
-      totally sure though.
-      Reference https://ruderich.org/simon/notes/secure-boot-with-grub-and-signed-linux-and-initrd
+      To protect the Linux Kernel command line one needs to create an Unified Kernel Image and use
+      it with the UEFI Secure Boot mechanism.
+      To check if the Kernel image contains the kernel command one needs to inspect the binary, on
+      the command line one can use the objdump command. But unfortunately OVAL is not able to
+      inspect kernel images.
+      Also, it it is not trivial or to automate creation of such image or configuration of the
+      Secure Boot mechanism.
     status: manual
 
   - id: R7
