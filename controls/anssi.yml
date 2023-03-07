@@ -402,7 +402,7 @@ controls:
     title: File system configuration options
     notes: >-
       The rule for the /proc file system is not implemented
-    status: partial
+    status: automated
     rules:
     # Disable coredump creation for setuid executables
     - sysctl_fs_suid_dumpable
@@ -411,9 +411,9 @@ controls:
     # opening FIFOs and "regular" files that are not owned by the user
     # in sticky folders for everyone to write.
     # fs.protected_fifos=2
-    # TODO: Add rule
+    - sysctl_fs_protected_fifos
     # fs.protected_regular=2
-    # TODO: Add rule
+    - sysctl_fs_protected_regular
 
     # Restrict the creation of symbolic links to files that the user owns.
     - sysctl_fs_protected_symlinks
