@@ -172,7 +172,7 @@ controls:
     levels:
     - intermediary
     title: Kernel configuration options
-    status: partial
+    status: automated
     rules:
     # Restrict access to the dmesg buffer (equivalent to
     # CONFIG_SECURITY_DMESG_RESTRICT=y)
@@ -180,8 +180,8 @@ controls:
 
     # Hide kernel addresses in /proc and various other interfaces,
     # including from privileged users
-    # TODO: add variable and set value to 2
     - sysctl_kernel_kptr_restrict
+    - sysctl_kernel_kptr_restrict_value=2
 
     # Explicitly specify the process id space supported by the kernel,
     # 65536 being an example value
@@ -214,7 +214,7 @@ controls:
     # Completely shut down the system if the Linux kernel behaves
     # unexpectedly
     # kernel.panic_on_oops=1
-    # TODO: new rules for kernel.panic_on_oops=1
+    - sysctl_kernel_panic_on_oops
 
   - id: R10
     levels:
