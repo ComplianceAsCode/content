@@ -882,14 +882,9 @@ controls:
     - sudo_add_requiretty
     - sudo_add_use_pty
     - sudo_add_umask
-    - var_sudo_umask=0027
+    - var_sudo_umask=0077
     - sudo_add_ignore_dot
     - sudo_add_env_reset
-    - sudo_add_passwd_timeout
-    - var_sudo_passwd_timeout=1_minute
-    # timestamp_timeout=15
-    - sudo_require_reauthentication
-    - var_sudo_timestamp_timeout=15_minutes
 
   - id: R40
     levels:
