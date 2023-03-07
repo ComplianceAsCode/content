@@ -55,6 +55,7 @@ controls:
       ANSSI DAT-24.
     notes: >-
       Configurations recommended for this requirement are to be performed at the BIOS level.
+    status: documentation
     #rules:
     # From ANSSI DAT-24
     # R11 Password protect the BIOS
@@ -71,6 +72,7 @@ controls:
     title: UEFI Secure boot activation
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
+    status: documentation
 
   - id: R4
     levels:
@@ -580,6 +582,8 @@ controls:
       The definition of unused user accounts is broad. It can include accounts
       whose owners don't use the system anymore, or users created by services
       or applications that should not be used.
+      Automation by itself cannot discern which accounts are used or not.
+    status: documentation
 
   - id: R31
     levels:
@@ -664,7 +668,9 @@ controls:
       Users will first login, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
-    status: partial
+      Nonetheless, the content automation cannot ensure that each administrator was given a
+      nominative administation account separate from his normal user account.
+    status: automated
     rules:
     - no_direct_root_logins
     - sshd_disable_root_login
@@ -677,6 +683,7 @@ controls:
     - enhanced
     notes: >-
       TODO
+    status: documentation
 
   - id: R35
     title: Deactivation of service accounts
@@ -687,6 +694,7 @@ controls:
       UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
       are not enforced by the OS and can be changed over time.
       Assisting rules could list users which are not disabled for manual review.
+    status: documentation
 
   - id: R36
     levels:
@@ -698,6 +706,7 @@ controls:
       It is not trivial to identify whether a user account is a service account.
       UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
       are not enforced by the OS and can be changed over time.
+    status: documentation
 
   - id: R37
     levels:
@@ -714,7 +723,7 @@ controls:
       The different values are set in a conditional clause in a shell script
       (e.g. /etc/profile or /etc/bashrc).
       The current implementation checks and fixes both umask to the same value.
-    status: partial
+    status: automated
     rules:
     - var_accounts_user_umask=077
     - accounts_umask_etc_login_defs
@@ -732,7 +741,7 @@ controls:
     notes: >-
       Other partitioning mechanisms can include chroot and containers and are not contemplated
       in this requirement.
-    status: partial
+    status: automated
     rules:
     - selinux_state
     - var_selinux_state=enforcing
@@ -839,6 +848,7 @@ controls:
     title: Enable AppArmor security profiles
     description: >-
       All AppArmor security profiles on the system must be enabled by default.
+    status: not applicable
 
   - id: R48
     levels:
@@ -930,6 +940,7 @@ controls:
       The second involves removal of any default secret or trusted element
       configured by the operating system during install process, e.g. default
       known passwords.
+    status: documentation
 
   - id: R54
     levels:
@@ -996,7 +1007,7 @@ controls:
       When only administrators are expected to execute them, these special rights should
       be removed and prefer them commands like su or sudo, which can be monitored
     notes: There could be rules to list all executables with setuid root or setgid root rights.
-    # rules: TBD
+    status: documentation
 
   - id: R60
     levels:
@@ -1008,6 +1019,7 @@ controls:
     notes: >-
       It is not possible to automatically decide in general way if a package is required or not for given system.
       As a future improvement, there could be rules assisting assessment by listing the installed packages.
+    status: documentation
 
   - id: R61
     levels:
@@ -1019,7 +1031,7 @@ controls:
       We cannot draw conclusions from the repo name or URL of the repo (as they can be arbitrary or behind a proxy).
       One approach to check the origin of installed packages is to check the signature of the packages.
       If the public key of a repository is not installed, the repo is not trusted.
-    status: partial
+    status: documentation
     rules:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_globally_activated
@@ -1062,7 +1074,7 @@ controls:
       Only the components strictly necessary to the service provided by the system should
       be installed.
       Those whose presence can not be justified should be disabled, removed or deleted.
-    status: partial  # The list of essential services is not objective.
+    status: documentation # The list of essential services is not objective.
     notes: >-
       Performing a minimal install is a good starting point, but doesn't provide any assurance
       over any package installed later.
@@ -1095,6 +1107,7 @@ controls:
       minimum.
     notes: >-
       Define a list of most problematic components or features to be hardened or restricted.
+    status: documentation
 
   - id: R66
     levels:
@@ -1105,7 +1118,9 @@ controls:
       strict minimum, especially when it comes to files, processes or network.
     notes: >-
       SELinux policies limit the privileges of services and daemons just to those which are required.
-    status: partial
+      The policies should be enough to restrict the services' privileges to its essentials, but the
+      automated content cannot assess whether they are the minimum required for the deployment.
+    status: automated
     rules:
     - selinux_policytype
     - var_selinux_policy_name=targeted
@@ -1116,6 +1131,7 @@ controls:
     title: Services partitioning
     notes: >-
       Using automation to restrict access and chroot services is not generally reliable.
+    status: documentation
 
   - id: R68
     levels:
@@ -1135,6 +1151,7 @@ controls:
     notes: >-
       Manual review is necessary to decide if the list of applications using PAM is minimal.
       Asssising rules could be created to list all applications using PAM for manual review.
+    status: documentation
 
   - id: R70
     title: Securing remote authentication by PAM
@@ -1170,7 +1187,7 @@ controls:
     title: Separation of System Accounts and Directory Administrator
     levels:
     - intermediary
-    # rules: TBD
+    status: documentation
 
   - id: R74
     levels:
@@ -1219,7 +1236,7 @@ controls:
       Each service must have a dedicated event logging journal on the system.
       This log must only be accessible by the syslog server, and must not be readable,
       editable or deletable by the service directly.
-    # rules: TBD
+    status: documentation # How to enable syslog for each service installed in the system
 
   - id: R76
     levels:
@@ -1292,6 +1309,7 @@ controls:
     notes: >-
       Manual analysis is required to determine if services are hosted appropriately in
       separate or isolated system while maintaining functionality.
+    status: documentation
 
   - id: R82
     levels:
@@ -1317,3 +1335,4 @@ controls:
     notes: >-
       Manual review is necessary to decide if the list of resident daemons is minimal.
       Asssising rules could be created to list sevices listening on the network for manual review.
+    status: documentation
