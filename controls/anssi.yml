@@ -82,7 +82,7 @@ controls:
 
   - id: R5
     levels:
-    - enhanced
+    - intermediary
     title: Boot loader password
     description: >-
       A boot loader to protect the password boot must be to be privileged.
@@ -559,7 +559,7 @@ controls:
 
   - id: R30
     levels:
-    - enhanced
+    - minimal
     title: Removal of unused user accounts
     description: >-
       Unused user accounts must be deleted from the system.
@@ -619,7 +619,7 @@ controls:
 
   - id: R32
     levels:
-    - enhanced
+    - intermediary
     title: User session timeout
     description: >-
       Remote user sessions (shell access, graphical clients) must be closed
@@ -661,7 +661,7 @@ controls:
   - id: R34
     title: Multi-factor authentication for system administration actions
     levels:
-    - intermediary
+    - enhanced
     notes: >-
       TODO
 
@@ -677,7 +677,7 @@ controls:
 
   - id: R36
     levels:
-    - enhanced
+    - intermediary
     title: Uniqueness and exclusivity of system service accounts
     description: >-
       Each service must have its own system account and be dedicated to it exclusively.
@@ -822,7 +822,7 @@ controls:
 
   - id: R47
     levels:
-    - high
+    - enhanced
     title: Enable AppArmor security profiles
     description: >-
       All AppArmor security profiles on the system must be enabled by default.
@@ -846,10 +846,11 @@ controls:
     description: >-
       Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
     notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
+    status: documentation
 
   - id: R50
     levels:
-    - enhanced
+    - high
     title: Setting SELinux booleans
     description: >-
       It is recommended to set the following Booleans:
@@ -925,7 +926,7 @@ controls:
 
   - id: R55
     levels:
-    - intermediary
+    - minimal
     title: Files or directories without a known user or group
     status: automated
     rules:
@@ -934,7 +935,7 @@ controls:
 
   - id: R56
     levels:
-    - intermediary
+    - minimal
     title: Sticky bit and write access rights
     status: automated
     rules:
@@ -1268,7 +1269,7 @@ controls:
 
   - id: R81
     levels:
-    - enhanced
+    - intermediary
     title: Network services partitioning
     description: >-
       Network services should as much as possible be hosted on isolated environments.
