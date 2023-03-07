@@ -503,9 +503,7 @@ controls:
     levels:
     - intermediary
     title: Partitioning type
-    notes: >-
-      The rule for the /proc file system is not implemented
-    status: partial
+    status: automated
     rules:
     # this covers nodev options
     - mount_option_nodev_nonroot_local_partitions
@@ -538,7 +536,8 @@ controls:
     - mount_option_home_noexec
 
     # /proc hidepid = 2 Contains process information and the system
-    # TODO: add rule
+    - mount_option_proc_hidepid
+    - var_mount_option_proc_hidepid=2
 
     # /usr nodev Contains the majority of utilities and system files
     - partition_for_usr
