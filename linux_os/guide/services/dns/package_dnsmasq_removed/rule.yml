@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Uninstall dnsmasq Package'
+
+description: |-
+    dnsmasq is a lightweight tool that provides DNS caching, DNS forwarding and
+    DHCP (Dynamic Host Configuration Protocol) services.
+    <br />
+    {{{ describe_package_remove(package="dnsmasq") }}}
+
+rationale: |-
+    Unless a system is specifically designated to act as a DNS
+    caching, DNS forwarding and/or DHCP server, it is recommended that the
+    package be removed to reduce the potential attack surface.
+
+severity: low
+
+identifiers:
+    cce@rhel9: CCE-86063-5
+
+references:
+    cis@rhel9: 2.2.14
+
+{{{ complete_ocil_entry_package(package="dnsmasq") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: dnsmasq
