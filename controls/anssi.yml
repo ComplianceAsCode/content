@@ -136,7 +136,7 @@ controls:
 
     # slab_nomerge=yes (equivalent to CONFIG_SLAB_MERGE_DEFAULT=n): disables the merging of slab
     # caches (dynamic memory allocations) of identical size.
-    # TODO: add rule
+    - grub2_slab_nomerge_argument
 
     # slub_debug=F,Z,P: activate certain options for checking slabs caches (dynamic memory allocation)
     # TODO: Add variable to set F and Z options too
@@ -154,7 +154,7 @@ controls:
     # TODO: add rule
 
     # mce=0: force a kernel panic on uncorrected errors reported by Machine Check support.
-    # TODO: add rule
+    - grub2_mce_argument
 
     # page_alloc.shuffle=1: enables Page allocator randomization
     # TODO: add rule
