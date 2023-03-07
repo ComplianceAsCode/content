@@ -430,79 +430,166 @@ controls:
     levels:
     - enhanced
     title: Compile options for memory management
-    status: supported
+    status: partial
+    rules:
+    - kernel_config_strict_kernel_rwx
+    # CONFIG_ARCH_OPTIONAL_KERNEL_RWX is a dependency
+    # CONFIG_ARCH_HAS_STTRICT_KERNEL_RWX is a dependency
+    - kernel_config_debug_wx
+    - kernel_config_debug_fs
+    - kernel_config_stackprotector
+    - kernel_config_stackprotector_strong
+    # CONFIG_DEVMEM=y|n this needs clarification
+    - kernel_config_sched_stack_end_check
+    - kernel_config_hardened_usercopy
+    - kernel_config_hardened_usercopy_fallback
+    - kernel_config_vmap_stack
+    - kernel_config_refcount_full
+    - kernel_config_fortify_source
+    - kernel_config_acpi_custom_method
+    - kernel_config_devkmem
+    - kernel_config_proc_kcore
+    - kernel_config_compat_vdso
+    - kernel_config_dmesg_restrict
+    - kernel_config_retpoline
+    - kernel_config_vsyscall_none
+    - kernel_config_vsyscall_emulate
+    - kernel_config_vsyscall_xonly
+    - kernel_config_x86_vsyscall_emulation
 
   - id: R16
     levels:
     - enhanced
     title: Compile options for kernel data structures
-    status: supported
+    status: automated
+    rules:
+    - kernel_config_debug_credentials
+    - kernel_config_debug_notifiers
+    - kernel_config_debug_list
+    - kernel_config_debug_sg
+    - kernel_config_bug_on_data_corruption
 
   - id: R17
     levels:
     - enhanced
     title: Compile options for the memory allocator
-    status: supported
+    status: automated
+    rules:
+    - kernel_config_slab_freelist_random
+    # CONFIG_SLAB - is it a security requirement? CONFIG_SLUB also satisfies dependency
+    - kernel_config_slab_freelist_hardened
+    - kernel_config_slab_merge_default
+    - kernel_config_slub_debug
+    - kernel_config_page_poisoning
+    - kernel_config_page_poisoning_no_sanity
+    - kernel_config_page_poisoning_zero
+    - kernel_config_compat_brk
 
   - id: R18
     levels:
     - enhanced
     title: Compile options for the management of kernel module
-    status: supported
+    status: automated
+    rules:
+    # CONFIG_MODULES=y conflicts witn R23, and is it a security requirement?
+    - kernel_config_strict_module_rwx
+    - kernel_config_module_sig
+    - kernel_config_module_sig_force
+    - kernel_config_module_sig_all
+    - kernel_config_module_sig_sha512
+    - kernel_config_module_sig_hash
+    - kernel_config_module_sig_key
 
   - id: R19
     levels:
     - enhanced
     title: Compile options for abnormal situations
-    status: supported
+    status: automated
+    rules:
+    - kernel_config_bug
+    - kernel_config_panic_on_oops
+    - kernel_config_panic_timeout
 
   - id: R20
     levels:
     - enhanced
     title: Compile options for kernel security functions
-    status: supported
+    status: automated
+    rules:
+    - kernel_config_seccomp
+    - kernel_config_seccomp_filter
+    - kernel_config_security
+    - kernel_config_security_yama
+    - kernel_config_security_writable_hooks
 
   - id: R21
     levels:
     - enhanced
     title: Compile options for the compiler plugins
-    status: supported
+    status: automated
+    rules:
+    # CONFIG_GCC_PLUGINS is it a security requirement? Or just a dep for other configs
+    - kernel_config_gcc_plugin_latent_entropy
+    - kernel_config_gcc_plugin_stackleak
+    - kernel_config_gcc_plugin_structleak
+    - kernel_config_gcc_plugin_structleak_byref_all
+    - kernel_config_gcc_plugin_randstruct
 
   - id: R22
     levels:
     - enhanced
     title: Compile options for of the IP stack
-    status: supported
+    status: automated
+    rules:
+    - kernel_config_ipv6
+    - kernel_config_syn_cookies
 
   - id: R23
     levels:
     - enhanced
     title: Compile options for various kernel behaviors
     status: supported
+    rules:
+    - kernel_config_kexec
+    - kernel_config_hibernation
+    - kernel_config_binfmt_misc
+    - kernel_config_legacy_ptys
 
   - id: R24
     levels:
     - enhanced
     title: Compile options for 32 bits architectures
-    status: supported
+    status: not applicable
 
   - id: R25
     levels:
     - enhanced
     title: Compile options for x86_64 architectures
-    status: supported
+    status: automated
+    rules:
+    # CONFIG_X86_64 is it a security setting?
+    - kernel_config_default_mmap_min_addr
+    - kernel_config_randomize_base
+    - kernel_config_randomize_memory
+    - kernel_config_page_table_isolation
+    - kernel_config_ia32_emulation
+    - kernel_config_modify_ldt_syscall
 
   - id: R26
     levels:
     - enhanced
     title: Compile options for ARM architectures
-    status: supported
+    status: not applicable
 
   - id: R27
     levels:
     - enhanced
     title: Compile options for ARM 64 architectures
-    status: supported
+    status: partial
+    rules:
+    # CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
+    - kernel_config_arm64_sw_ttbr0_pan
+    - kernel_config_unmap_kernel_at_el0
 
   - id: R28
     levels:
