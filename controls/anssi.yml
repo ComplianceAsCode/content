@@ -245,7 +245,7 @@ controls:
     levels:
     - intermediary
     title: IPv4 configuration options
-    status: partial
+    status: automated
     rules:
     # Mitigation of the dispersion effect of the kernel JIT at the cost of a
     # compromise on  the associated performance.
@@ -259,7 +259,7 @@ controls:
     # Consider as invalid the packets received from outside whose source
     # is the 127/8 network.
     # net.ipv4.conf.all.accept_local=0
-    # TODO: add rules
+    - sysctl_net_ipv4_conf_all_accept_local
 
     # Deny receipt of ICMP redirect packets
     # net.ipv4.conf.all.accept_redirects = 0
@@ -276,9 +276,11 @@ controls:
     - sysctl_net_ipv4_conf_default_secure_redirects
 
     # net.ipv4.conf. all.shared_media=0
-    # TODO: add rules
-    # net.ipv4.conf.default.shared_media=0
-    # TODO: add rules
+    - sysctl_net_ipv4_conf_all_shared_media
+    - sysctl_net_ipv4_conf_all_shared_media_value=disabled
+
+    - sysctl_net_ipv4_conf_default_shared_media
+    - sysctl_net_ipv4_conf_default_shared_media_value=disabled
 
     # Deny the source routing header information supplied by the
     # packet to determine its route.
@@ -288,19 +290,23 @@ controls:
     - sysctl_net_ipv4_conf_default_accept_source_route
 
     # Prevent the Linux kernel from handling the ARP table globally.
+    - sysctl_net_ipv4_conf_all_arp_filter
+
+    # Respond to ARP requests only if the source and destination address are on the
+    # same network and come from the same interface on which the packet was received.
     # Note that the configuration of this option is to be studied according to the
     # use case.
-    # net.ipv4.conf.all.arp_ignore=2
-    # TODO: add rules
+    - sysctl_net_ipv4_conf_all_arp_ignore
+    - sysctl_net_ipv4_conf_all_arp_ignore_value=2
 
     # Refuse the routing of packets whose source or destination address is that
     # of the local loopback.
     # net.ipv4.conf.all.route_localnet=0
-    # TODO: add rules
+    - sysctl_net_ipv4_conf_all_route_localnet
 
     # Ignore gratuitous ARP requests.
     # net.ipv4.conf.all.drop_gratuitous_arp=1
-    # TODO: add rules
+    - sysctl_net_ipv4_conf_all_drop_gratuitous_arp
 
     # Check that the source address of packets received on a given interface
     # would have been contacted via this same interface.
