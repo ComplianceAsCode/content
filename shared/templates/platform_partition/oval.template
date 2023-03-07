@@ -1,0 +1,11 @@
+<def-group>
+  <definition class="inventory" id="installed_env_{{{ _RULE_ID }}}"
+  version="1">
+    {{{ oval_metadata("", title="Partition " + MOUNTPOINT + " exists", affected_platforms=[full_name]) }}}
+    <criteria>
+       {{{ partition_exists_criterion(MOUNTPOINT) }}}
+    </criteria>
+  </definition>
+
+  {{{ partition_exists_test_object(MOUNTPOINT) }}}
+</def-group>
