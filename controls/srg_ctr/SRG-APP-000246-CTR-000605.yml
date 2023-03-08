@@ -5,6 +5,7 @@ controls:
   title: {{{ full_name }}} must restrict individuals' ability to launch organizationally
     defined denial-of-service (DoS) attacks against other information systems.
   rules:
-  - resource_requests_quota
+  - project_config_and_template_resource_quota
+  - resource_requests_quota_per_project
   - routes_rate_limit
   status: automated
