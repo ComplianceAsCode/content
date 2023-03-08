@@ -61,7 +61,7 @@ controls:
     # R11 Password protect the BIOS
     # R12 Deactivate peripherals not needed
     # R13 The boot order list should give highest preference to component on which final OS is installed
-    # R14 Enabhe NX/XD bit
+    # R14 Enable NX/XD bit
     # - bios_enable_execution_restrictions # Doesn't have check
     # R15 Disable VT-x/AMD-V functionality
     # R16 Enable IOMMU
@@ -99,7 +99,7 @@ controls:
     - intermediary
     title: Boot loader password
     description: >-
-      A boot loader to protect the password boot must be to be privileged.
+      A password protecting the boot loader must exist.
       This password must prevent any user from changing their configuration options.
     status: automated
     rules:
@@ -119,7 +119,7 @@ controls:
       To check if the Kernel image contains the kernel command one needs to inspect the binary, on
       the command line one can use the objdump command. But unfortunately OVAL is not able to
       inspect kernel images.
-      Also, it it is not trivial or to automate creation of such image or configuration of the
+      Also, it is not trivial to automate creation of such image or configuration of the
       Secure Boot mechanism.
     status: manual
 
@@ -139,9 +139,6 @@ controls:
     levels:
     - intermediary
     title: Memory configuration options
-    notes: >-
-      This would use grub argument template to add kernel arguments.
-      There are rules for some of the items, others are missing rule.
     status: automated
     rules:
     # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerabilyt, or
@@ -170,7 +167,7 @@ controls:
     - var_spec_store_bypass_disable_options=seccomp
 
     # spectre_v2=on: force the system to use a countermeasure for the Specter v2 (Branch Target Injection) vulnerability.
-    - rub2_spectre_v2_argument
+    - grub2_spectre_v2_argument
 
     # mds=full,nosmt: force the system to use Microarchitectural Data Sampling (MDS) to mitigate
     # the vulnerabilities of Intel processors.
@@ -247,7 +244,7 @@ controls:
     title: Disabling the loading of kernel modules
     description: >-
       The loading of the kernel modules can be blocked by the activation of the
-      sysctl kernel.modules_disabledconf:
+      sysctl kernel.modules_disabled:
       Prohibition of loading modules (except those already loaded to this point)
       kernel.modules_disabled = 1
     status: automated
@@ -374,8 +371,8 @@ controls:
     - sysctl_net_ipv6_conf_all_disable_ipv6
     - sysctl_net_ipv6_conf_default_disable_ipv6
 
-    related_rules: # Rules that can useful when securing the IPv6 stack.
-
+    related_rules:
+    # Rules that can be useful when securing the IPv6 stack.
     # Disable support for "router solicitations"
     # net.ipv6.conf.all.router_solicitations = 0
     # net.ipv6.conf.default.router_solicitations = 0
@@ -474,11 +471,11 @@ controls:
     - kernel_config_devkmem
     - kernel_config_proc_kcore
     - kernel_config_compat_vdso
-    - kernel_config_dmesg_restrict
+    - kernel_config_security_dmesg_restrict
     - kernel_config_retpoline
-    - kernel_config_vsyscall_none
-    - kernel_config_vsyscall_emulate
-    - kernel_config_vsyscall_xonly
+    - kernel_config_legacy_vsyscall_none
+    - kernel_config_legacy_vsyscall_emulate
+    - kernel_config_legacy_vsyscall_xonly
     - kernel_config_x86_vsyscall_emulation
 
   - id: R16
@@ -559,7 +556,7 @@ controls:
   - id: R22
     levels:
     - high
-    title: Compile options for of the IP stack
+    title: Compile options for the IP stack
     status: automated
     rules:
     - kernel_config_ipv6
@@ -578,15 +575,14 @@ controls:
     - kernel_config_hibernation
     - kernel_config_binfmt_misc
     - kernel_config_legacy_ptys
-    related_rules:
-    # CONFIG_MODULES=n
+
 
   - id: R24
     levels:
     - high
-    title: Compile options for 32 bits architectures
+    title: Compile options for 32-bit architectures
     notes: >-
-      Unless a X86 32bit kernel is explicity supported by one of products in the project, this
+      Unless a X86 32bit kernel is explicitly supported by one of products in the project, this
       requirement is set to not applicable.
     status: not applicable
 
@@ -610,7 +606,7 @@ controls:
     - high
     title: Compile options for ARM architectures
     notes: >-
-      Unless a ARM 32bit kernel is explicity supported by one of products in the project, this
+      Unless a ARM 32bit kernel is explicitly supported by one of products in the project, this
       requirement is set to not applicable.
     status: not applicable
 
@@ -791,11 +787,11 @@ controls:
     title: Use of dedicated administration accounts
     notes: >-
       By disabling direct root logins proper accountability is ensured.
-      Users will first login, then escalate to privileged (root) access.
+      Users will login first, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
       Nonetheless, the content automation cannot ensure that each administrator was given a
-      nominative administation account separate from his normal user account.
+      nominative administration account separate from his normal user account.
     status: automated
     rules:
     - no_direct_root_logins
@@ -915,7 +911,6 @@ controls:
       Human review is required to assess if the set of commands requiring EXEC is minimal.
       An auxiliary rule could list rules containing EXEC tag, for analysis.
     status: manual
-    automated: no
 
   - id: R42
     levels:
@@ -945,7 +940,6 @@ controls:
       But it is difficult to ensure that allowed binaries aren't text editors without human
       review.
     status: manual
-    automated: no
 
   - id: R45
     levels:
@@ -958,10 +952,10 @@ controls:
   - id: R46
     levels:
     - high
-    title: Activage SELinux with the Targeted Policy
+    title: Activate SELinux with the Targeted Policy
     description: >-
       It is recommended to enable the targeted policy when the distribution
-      support it and that it does not operate another security module than SELinux.
+      supports it and that it does not operate another security module than SELinux.
     status: automated
     rules:
     - selinux_policytype
@@ -1498,5 +1492,5 @@ controls:
     description: All network services must be listening on the correct network intefaces.
     notes: >-
       Manual review is necessary to decide if the list of resident daemons is minimal.
-      Asssising rules could be created to list sevices listening on the network for manual review.
+      Assisting rules could be created to list sevices listening on the network for manual review.
     status: manual
