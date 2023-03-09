@@ -65,10 +65,9 @@
   <!-- The intention of the first test is to ensure that exists at one rule for each privileged
     command found in the system. Therefore, a list of objects will be extracted from auditd rules
     and compared to the previous object. -->
-
   <local_variable id="var_audit_rules_privileged_commands_rule_regex" version="1"
     datatype="string" comment="Regex for auditd rule.">
-    <literal_component>^[\s]*-a always,exit (?:-F path=([\S]+) )+-F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</literal_component>
+    <literal_component>^[\s]*-a always,exit (?:-F path=([\S]+))+(?: -F perm=x)? -F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</literal_component>
   </local_variable>
 
   <ind:textfilecontent54_state id="state_not_relevant_cmds" version="1">
