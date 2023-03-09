@@ -17,9 +17,9 @@ levels:
 
 controls:
   - id: R1
+    title: Hardware Support
     levels:
     - enhanced
-    title: Hardware Support
     description: >-
       It is recommended to apply the configuration recommendations for Hardware suppport
       mentioned in ANSSI DAT-24.
@@ -47,9 +47,9 @@ controls:
     # R10 IOMMU must enabled if the hardware supports it
 
   - id: R2
+    title: Hardware configuration
     levels:
     - intermediary
-    title: Hardware configuration
     description: >-
       It is recommended to apply the configuration recommendations for BIOS/UEFI mentioned in
       ANSSI DAT-24.
@@ -67,9 +67,9 @@ controls:
     # R16 Enable IOMMU
 
   - id: R3
+    title: UEFI Secure boot activation
     levels:
     - intermediary
-    title: UEFI Secure boot activation
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
     notes: >-
@@ -78,9 +78,9 @@ controls:
     status: manual
 
   - id: R4
+    title: Replacing of preloaded keys
     levels:
     - high
-    title: Replacing of preloaded keys
     description: >-
       It is recommended to replace the UEFI preloaded keys with new keys used to sign;
       the bootloader and Linux kernel, or; the image of the Linux kernel in EFI format.
@@ -95,9 +95,9 @@ controls:
     status: manual
 
   - id: R5
+    title: Boot loader password
     levels:
     - intermediary
-    title: Boot loader password
     description: >-
       A password protecting the boot loader must exist.
       This password must prevent any user from changing their configuration options.
@@ -107,9 +107,9 @@ controls:
     - grub2_uefi_password
 
   - id: R6
+    title: Protecting kernel command line parameters
     levels:
     - high
-    title: Protecting kernel command line parameters
     description: >-
       It is recommended that UEFI Secure Boot is used to protect the Linux Kernel
       command line parameters during boot.
@@ -124,9 +124,9 @@ controls:
     status: manual
 
   - id: R7
+    title: IOMMU Configuration Guidelines
     levels:
     - enhanced
-    title: IOMMU Configuration Guidelines
     description: >-
       The iommu = force directive must be added to the list of kernel parameters
       during startup in addition to those already present in the configuration
@@ -136,9 +136,9 @@ controls:
     - grub2_enable_iommu_force
 
   - id: R8
+    title: Memory configuration options
     levels:
     - intermediary
-    title: Memory configuration options
     status: automated
     rules:
     # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerabilyt, or
@@ -191,9 +191,9 @@ controls:
 
 
   - id: R9
+    title: Kernel configuration options
     levels:
     - intermediary
-    title: Kernel configuration options
     status: automated
     rules:
     # Restrict access to the dmesg buffer (equivalent to
@@ -239,9 +239,9 @@ controls:
     - sysctl_kernel_panic_on_oops
 
   - id: R10
+    title: Disabling the loading of kernel modules
     levels:
     - enhanced
-    title: Disabling the loading of kernel modules
     description: >-
       The loading of the kernel modules can be blocked by the activation of the
       sysctl kernel.modules_disabled:
@@ -252,9 +252,9 @@ controls:
     - sysctl_kernel_modules_disabled
 
   - id: R11
+    title: Yama module sysctl configuration
     levels:
     - intermediary
-    title: Yama module sysctl configuration
     description: >-
       It is recommended to load the Yama security module at startup (by example
       passing the security = yama argument to the kernel) and configure the
@@ -264,9 +264,9 @@ controls:
     - sysctl_kernel_yama_ptrace_scope
 
   - id: R12
+    title: IPv4 configuration options
     levels:
     - intermediary
-    title: IPv4 configuration options
     status: automated
     rules:
     # Mitigation of the dispersion effect of the kernel JIT at the cost of a
@@ -361,9 +361,9 @@ controls:
     - sysctl_net_ipv4_tcp_syncookies
 
   - id: R13
+    title: Disabling IPv6
     levels:
     - intermediary
-    title: Disabling IPv6
     notes: >-
       When IPv6 is not in use, disable it. Otherwise secure the entire IPv6 as well.
     status: automated
@@ -424,9 +424,9 @@ controls:
     - sysctl_net_ipv6_conf_default_max_addresses
 
   - id: R14
+    title: File system configuration options
     levels:
     - intermediary
-    title: File system configuration options
     notes: >-
       The rule for the /proc file system is not implemented
     status: automated
@@ -449,9 +449,9 @@ controls:
     - sysctl_fs_protected_hardlinks
 
   - id: R15
+    title: Compile options for memory management
     levels:
     - high
-    title: Compile options for memory management
     status: automated
     notes: >-
       The special case of direct access to physical memory is not handled.
@@ -479,9 +479,9 @@ controls:
     - kernel_config_x86_vsyscall_emulation
 
   - id: R16
+    title: Compile options for kernel data structures
     levels:
     - high
-    title: Compile options for kernel data structures
     status: automated
     rules:
     - kernel_config_debug_credentials
@@ -491,9 +491,9 @@ controls:
     - kernel_config_bug_on_data_corruption
 
   - id: R17
+    title: Compile options for the memory allocator
     levels:
     - high
-    title: Compile options for the memory allocator
     status: automated
     rules:
     - kernel_config_slab_freelist_random
@@ -506,9 +506,9 @@ controls:
     - kernel_config_compat_brk
 
   - id: R18
+    title: Compile options for the management of kernel module
     levels:
     - high
-    title: Compile options for the management of kernel module
     status: automated
     rules:
     - kernel_config_strict_module_rwx
@@ -520,9 +520,9 @@ controls:
     - kernel_config_module_sig_key
 
   - id: R19
+    title: Compile options for abnormal situations
     levels:
     - high
-    title: Compile options for abnormal situations
     status: automated
     rules:
     - kernel_config_bug
@@ -530,9 +530,9 @@ controls:
     - kernel_config_panic_timeout
 
   - id: R20
+    title: Compile options for kernel security functions
     levels:
     - high
-    title: Compile options for kernel security functions
     status: automated
     rules:
     - kernel_config_seccomp
@@ -542,9 +542,9 @@ controls:
     - kernel_config_security_writable_hooks
 
   - id: R21
+    title: Compile options for the compiler plugins
     levels:
     - high
-    title: Compile options for the compiler plugins
     status: automated
     rules:
     - kernel_config_gcc_plugin_latent_entropy
@@ -554,18 +554,18 @@ controls:
     - kernel_config_gcc_plugin_randstruct
 
   - id: R22
+    title: Compile options for the IP stack
     levels:
     - high
-    title: Compile options for the IP stack
     status: automated
     rules:
     - kernel_config_ipv6
     - kernel_config_syn_cookies
 
   - id: R23
+    title: Compile options for various kernel behaviors
     levels:
     - high
-    title: Compile options for various kernel behaviors
     notes: >-
       As R18 configures hardened management of kernel modules we don't check nor remediate
       for CONFIG_MODULES=n
@@ -578,18 +578,18 @@ controls:
 
 
   - id: R24
+    title: Compile options for 32-bit architectures
     levels:
     - high
-    title: Compile options for 32-bit architectures
     notes: >-
       Unless a X86 32bit kernel is explicitly supported by one of products in the project, this
       requirement is set to not applicable.
     status: not applicable
 
   - id: R25
+    title: Compile options for x86_64 architectures
     levels:
     - high
-    title: Compile options for x86_64 architectures
     status: automated
     rules:
     # TODO: add support for variable for config_default_mmap_min_addr
@@ -602,18 +602,18 @@ controls:
     - kernel_config_modify_ldt_syscall
 
   - id: R26
+    title: Compile options for ARM architectures
     levels:
     - high
-    title: Compile options for ARM architectures
     notes: >-
       Unless a ARM 32bit kernel is explicitly supported by one of products in the project, this
       requirement is set to not applicable.
     status: not applicable
 
   - id: R27
+    title: Compile options for ARM 64 architectures
     levels:
     - high
-    title: Compile options for ARM 64 architectures
     status: automated
     rules:
     # CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
@@ -622,9 +622,9 @@ controls:
     - kernel_config_unmap_kernel_at_el0
 
   - id: R28
+    title: Partitioning type
     levels:
     - intermediary
-    title: Partitioning type
     status: automated
     rules:
     # this covers nodev options
@@ -681,9 +681,9 @@ controls:
     - var_mount_option_proc_hidepid=2
 
   - id: R29
+    title: Access Restrictions on /boot
     levels:
     - enhanced
-    title: Access Restrictions on /boot
     description: >-
       When possible, the /boot partition should not be mounted. In any case, access to
       the /boot directory must only be allowed to the root user.
@@ -695,9 +695,9 @@ controls:
     #- mount_option_boot_noauto
 
   - id: R30
+    title: Removal of unused user accounts
     levels:
     - minimal
-    title: Removal of unused user accounts
     description: >-
       Unused user accounts must be deleted from the system.
     notes: >-
@@ -708,9 +708,9 @@ controls:
     status: manual
 
   - id: R31
+    title: User password strength
     levels:
     - minimal
-    title: User password strength
     notes: >-
       The rules selected below establish a general password strength baseline of 100 bits,
       inspired by DAT-NT-001 and the "Password Strenght Calculator"
@@ -757,9 +757,9 @@ controls:
     - accounts_password_pam_unix_remember
 
   - id: R32
+    title: User session timeout
     levels:
     - intermediary
-    title: User session timeout
     description: >-
       Remote user sessions (shell access, graphical clients) must be closed
       after a certain period of inactivity.
@@ -782,9 +782,9 @@ controls:
     - sshd_set_keepalive
 
   - id: R33
+    title: Use of dedicated administration accounts
     levels:
     - intermediary
-    title: Use of dedicated administration accounts
     notes: >-
       By disabling direct root logins proper accountability is ensured.
       Users will login first, then escalate to privileged (root) access.
@@ -811,9 +811,9 @@ controls:
     status: manual
 
   - id: R35
+    title: Uniqueness and exclusivity of system service accounts
     levels:
     - intermediary
-    title: Uniqueness and exclusivity of system service accounts
     description: >-
       Each service must have its own system account and be dedicated to it exclusively.
     notes: >-
@@ -823,9 +823,9 @@ controls:
     status: manual
 
   - id: R36
+    title: umask value
     levels:
     - enhanced
-    title: umask value
     description: >-
       The system umask must be set to 0027 (by default, any created file can
       only be read by the user and his group, and be editable only by his owner).
@@ -845,9 +845,9 @@ controls:
     - accounts_umask_etc_bashrc
 
   - id: R37
+    title: Using access control features
     levels:
     - enhanced
-    title: Using access control features
     description: >-
       It is recommended to use the mandatory access control (MAC) features in
       addition to the traditional Unix user model (DAC), or possibly combine
@@ -861,9 +861,9 @@ controls:
     - var_selinux_state=enforcing
 
   - id: R38
+    title: Group dedicated to the use of sudo
     levels:
     - enhanced
-    title: Group dedicated to the use of sudo
     description: >-
       A group dedicated to the use of sudo must be created, and only members of this
       group are allowed to execute sudo.
@@ -876,9 +876,9 @@ controls:
     - var_sudo_dedicated_group=sudogrp
 
   - id: R39
+    title: Sudo configuration guidelines
     levels:
     - intermediary
-    title: Sudo configuration guidelines
     status: automated
     rules:
     - sudo_add_noexec
@@ -890,9 +890,9 @@ controls:
     - sudo_add_env_reset
 
   - id: R40
+    title: User authentication running sudo
     levels:
     - minimal
-    title: User authentication running sudo
     description: >-
       The calling user must be authenticated before running any command with sudo.
     status: automated
@@ -901,9 +901,9 @@ controls:
     - sudo_remove_no_authenticate
 
   - id: R41
+    title: Limiting the number of commands requiring the use of the EXEC option
     levels:
     - enhanced
-    title: Limiting the number of commands requiring the use of the EXEC option
     description: >-
       The commands requiring the execution of sub-processes (EXEC tag) must be
       explicitly listed and their use should be reduced to a strict minimum.
@@ -913,26 +913,26 @@ controls:
     status: manual
 
   - id: R42
+    title: Good use of negation in a sudoers file
     levels:
     - intermediary
-    title: Good use of negation in a sudoers file
     description: The sudoers configuration rules should not involve negation.
     status: automated
     rules:
     - sudoers_no_command_negation
 
   - id: R43
+    title: Explicit arguments in sudo specifications
     levels:
     - intermediary
-    title: Explicit arguments in sudo specifications
     status: automated
     rules:
     - sudoers_explicit_command_args
 
   - id: R44
+    title: Editing files with sudo
     levels:
     - intermediary
-    title: Editing files with sudo
     description: A file requiring sudo to be edited, must be edited through the sudoedit command.
     notes: >-
       In R62 we established that the sudoers files should not use negations, thus the approach
@@ -942,17 +942,17 @@ controls:
     status: manual
 
   - id: R45
+    title: Enable AppArmor security profiles
     levels:
     - enhanced
-    title: Enable AppArmor security profiles
     description: >-
       All AppArmor security profiles on the system must be enabled by default.
     status: not applicable
 
   - id: R46
+    title: Activate SELinux with the Targeted Policy
     levels:
     - high
-    title: Activate SELinux with the Targeted Policy
     description: >-
       It is recommended to enable the targeted policy when the distribution
       supports it and that it does not operate another security module than SELinux.
@@ -962,18 +962,18 @@ controls:
     - var_selinux_policy_name=targeted
 
   - id: R47
+    title: Containment of unprivileged interactive users
     levels:
     - high
-    title: Containment of unprivileged interactive users
     description: >-
       Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
     notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
     status: manual
 
   - id: R48
+    title: Setting SELinux booleans
     levels:
     - high
-    title: Setting SELinux booleans
     description: >-
       It is recommended to set the following Booleans:
       allow_execheap to off, forbids processes to make their heap executable;
@@ -998,9 +998,9 @@ controls:
     - sebool_ssh_sysadm_login
 
   - id: R49
+    title: Uninstalling SELinux Policy Debugging Tools
     levels:
     - high
-    title: Uninstalling SELinux Policy Debugging Tools
     description: >-
       SELinux policy manipulation and debugging tools should not be installed
       on a machine in production.
@@ -1025,9 +1025,9 @@ controls:
     - file_permissions_sshd_private_key
 
   - id: R51
+    title: Sensitive and trusted files
     levels:
     - enhanced
-    title: Sensitive and trusted files
     description: >-
       All sensitive files and those contributing to the authentication mechanisms
       must be set up as soon as the system is installed. If default secrets are
@@ -1042,25 +1042,25 @@ controls:
     status: documentation
 
   - id: R52
+    title: Securing access for named sockets and pipes
     levels:
     - intermediary
-    title: Securing access for named sockets and pipes
     notes: We cannot easily automate securing of named sockets and pipes in a general way.
     status: manual
 
   - id: R53
+    title: Files or directories without a known user or group
     levels:
     - minimal
-    title: Files or directories without a known user or group
     status: automated
     rules:
     - file_permissions_ungroupowned
     - no_files_unowned_by_user
 
   - id: R54
+    title: Sticky bit and write access rights
     levels:
     - minimal
-    title: Sticky bit and write access rights
     status: automated
     rules:
     - dir_perms_world_writable_sticky_bits
@@ -1068,9 +1068,9 @@ controls:
     - file_permissions_unauthorized_world_writable
 
   - id: R55
+    title: Temporary directories dedicated to accounts
     levels:
     - intermediary
-    title: Temporary directories dedicated to accounts
     description: >-
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
@@ -1084,9 +1084,9 @@ controls:
     - sebool_polyinstantiation_enabled
 
   - id: R56
+    title: Executables with setuid and setgid bits
     levels:
     - minimal
-    title: Executables with setuid and setgid bits
     notes: >-
       Only programs specifically designed to be used with setuid or setgid bits can have these privilege bits set.
       This requirement considers apropriate for setuid and setgid bits the binaries that are installed from
@@ -1099,9 +1099,9 @@ controls:
     - file_permissions_unauthorized_sgid
 
   - id: R57
+    title: Executable with special rights setuid root and setgid root
     levels:
     - enhanced
-    title: Executable with special rights setuid root and setgid root
     description: >-
       The executables with setuid executables root and setgid root special rights should be as few as possible.
       When only administrators are expected to execute them, these special rights should
@@ -1110,9 +1110,9 @@ controls:
     status: manual
 
   - id: R58
+    title: Installation of packages reduced to the bare necessities
     levels:
     - minimal
-    title: Installation of packages reduced to the bare necessities
     description: >-
       The selection of packages installed should be as small as possible,
       limiting itself to select only what is required.
@@ -1122,9 +1122,9 @@ controls:
     status: manual
 
   - id: R59
+    title: Official package repositories
     levels:
     - minimal
-    title: Official package repositories
     description: Only up-to-date official repositories of the distribution must be used.
     notes: >-
       It is not trivial to distinguish an official repository from an unofficial one.
@@ -1140,9 +1140,9 @@ controls:
     - ensure_oracle_gpgkey_installed
 
   - id: R60
+    title: Hardened package repositories
     levels:
     - enhanced
-    title: Hardened package repositories
     description: >-
       When the distribution provides several types of repositories, preference
       should be given to those containing packages subject to additional
@@ -1152,9 +1152,9 @@ controls:
     status: not applicable
 
   - id: R61
+    title: Regular updates
     levels:
     - minimal
-    title: Regular updates
     notes: Check the vendor CVE feed and configure automatic install of security related updates.
     status: automated
     rules:
@@ -1167,9 +1167,9 @@ controls:
     - dnf-automatic_security_updates_only
 
   - id: R62
+    title: Minimization of installed services
     levels:
     - minimal
-    title: Minimization of installed services
     description: >-
       Only the components strictly necessary to the service provided by the system should
       be installed.
@@ -1197,9 +1197,9 @@ controls:
     - package_ypserv_removed
 
   - id: R63
+    title: Minimization of services configuration
     levels:
     - intermediary
-    title: Minimization of services configuration
     description: >-
       Services are often installed with default configurations that enable features potentially
       problematic from a security point of view.
@@ -1210,9 +1210,9 @@ controls:
     status: manual
 
   - id: R64
+    title: Least privilege for the services
     levels:
     - enhanced
-    title: Least privilege for the services
     description: >-
       The deployed services must have their access restricted to the system
       strict minimum, especially when it comes to files, processes or network.
@@ -1226,17 +1226,17 @@ controls:
     - var_selinux_policy_name=targeted
 
   - id: R65
+    title: Services partitioning
     levels:
     - enhanced
-    title: Services partitioning
     notes: >-
       Using automation to restrict access and chroot services is not generally reliable.
     status: manual
 
   - id: R66
+    title: Virtualization components hardening
     levels:
     - high
-    title: Virtualization components hardening
     description: >-
       Each component supporting the virtualization must be hardened, especially
       by applying technical measures to counter the exploit attempts.
@@ -1254,9 +1254,9 @@ controls:
     status: manual
 
   - id: R68
+    title: Protecting stored passwords
     levels:
     - minimal
-    title: Protecting stored passwords
     description: Any password must be protected by cryptographic mechanisms.
     notes: >-
       The selection of rules doesn't cover the use of hardware devices to protect the passwords.
@@ -1285,9 +1285,9 @@ controls:
     status: manual
 
   - id: R71
+    title: Implementation of a logging system
     levels:
     - enhanced
-    title: Implementation of a logging system
     description: >-
       The configuration of the service must be performed according to the
       'Security Recommendations for the implementation of a logging system' (DAT-NT-012) accessible on the ANSSI website.
@@ -1324,9 +1324,9 @@ controls:
     - rsyslog_files_permissions
 
   - id: R72
+    title: Service Activity Logs
     levels:
     - enhanced
-    title: Service Activity Logs
     description: >-
       Each service must have a dedicated event logging journal on the system.
       This log must only be accessible by the syslog server, and must not be readable,
@@ -1334,9 +1334,9 @@ controls:
     status: documentation # How to enable syslog for each service installed in the system
 
   - id: R73
+    title: Logging activity by auditd
     levels:
     - enhanced
-    title: Logging activity by auditd
     description: >-
       The logging of the system activity must be done through the auditd service.
     status: automated
@@ -1405,17 +1405,17 @@ controls:
     - audit_rules_immutable
 
   - id: R74
+    title: Configuring the local messaging service
     levels:
     - intermediary
-    title: Configuring the local messaging service
     status: automated
     rules:
     - postfix_network_listening_disabled
 
   - id: R75
+    title: Messaging Aliases for Service Accounts
     levels:
     - intermediary
-    title: Messaging Aliases for Service Accounts
     status: automated #semi-automated
     notes: >-
       Only the alias for root user is covered by the rule.
@@ -1425,9 +1425,9 @@ controls:
     - postfix_client_configure_mail_alias
 
   - id: R76
+    title: Sealing and integrity of files
     levels:
     - high
-    title: Sealing and integrity of files
     description: >-
       Any file that is not transient (such as temporary files, databases, etc.)
       must be monitored by a sealing program.
@@ -1444,9 +1444,9 @@ controls:
     - aide_verify_ext_attributes
 
   - id: R77
+    title: Protection of the seals database
     levels:
     - high
-    title: Protection of the seals database
     description: >-
       The sealing database must be protected from malicious access by
       cryptographic signature mechanisms (with the key used for the signature
@@ -1457,9 +1457,9 @@ controls:
     status: does not meet
 
   - id: R78
+    title: Network services partitioning
     levels:
     - enhanced
-    title: Network services partitioning
     description: >-
       Network services should as much as possible be hosted on isolated environments.
       This avoids having other potentially affected services if one of them gets
@@ -1470,9 +1470,9 @@ controls:
     status: manual
 
   - id: R79
+    title: Hardening and monitoring of exposed services
     levels:
     - intermediary
-    title: Hardening and monitoring of exposed services
     notes: >-
       SELinux can provide confinement and monitoring of services, and AIDE provides
       basic integrity checking. System logs are configured as part of R43.
@@ -1486,9 +1486,9 @@ controls:
     - aide_build_database
 
   - id: R80
+    title: Minimization of network services
     levels:
     - minimal
-    title: Minimization of network services
     description: All network services must be listening on the correct network intefaces.
     notes: >-
       Manual review is necessary to decide if the list of resident daemons is minimal.
