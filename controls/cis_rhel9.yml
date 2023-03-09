@@ -902,7 +902,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_ftp_removed
 
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)

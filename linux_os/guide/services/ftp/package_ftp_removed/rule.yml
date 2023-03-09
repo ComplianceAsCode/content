@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Remove ftp Package'
+
+description: |-
+    FTP (File Transfer Protocol) is a traditional and widely used standard tool for
+    transferring files between a server and clients over a network, especially where no
+    authentication is necessary (permits anonymous users to connect to a server).
+    <br/>
+    {{{ describe_package_remove(package="ftp") }}}
+
+rationale: |-
+    FTP does not protect the confidentiality of data or authentication credentials. It
+    is recommended SFTP be used if file transfer is required. Unless there is a need
+    to run the system as a FTP server (for example, to allow anonymous downloads), it is
+    recommended that the package be removed to reduce the potential attack surface.
+
+severity: low
+
+identifiers:
+    cce@rhel9: CCE-86075-9
+
+references:
+    cis@rhel9: 2.3.4
+
+ocil: '{{{ describe_package_remove(package="ftp") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: ftp
