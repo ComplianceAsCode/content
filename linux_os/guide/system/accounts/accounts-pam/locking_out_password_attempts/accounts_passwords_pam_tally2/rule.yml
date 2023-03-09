@@ -66,3 +66,5 @@ ocil: |-
     account required pam_tally2.so deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
 
     If the account option is missing, or commented out, this is a finding.
+
+platform: package[pam]
