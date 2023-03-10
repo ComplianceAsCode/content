@@ -1,5 +1,8 @@
-#!/bin/bash
 # platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
 
 readarray -t targets < <(grep -H '^\s*$FileCreateMode' /etc/rsyslog.conf /etc/rsyslog.d/*)
 
@@ -13,7 +16,7 @@ elif [ "${#targets[@]}" -eq 1 ]; then
     filename=$(echo "${targets[0]}" | cut -d':' -f1)
     value=$(echo "${targets[0]}" | cut -d' ' -f2)
     #convert to decimal and bitwise or operation
-    result=$((8#"$value" | 416))
+    result=$((8#$value | 416))
     # if more permissive than expected, then set it to 0640
     if [ $result -ne 416 ]; then
         # if value is wrong remove it
