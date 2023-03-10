@@ -1,0 +1,59 @@
+prodtype: ocp4
+
+title: "Configure ImagePruner so that images that are no longer needed are automatically removed"
+
+description: |-
+  <p>
+  Images from the internal registry that are no longer required by the system due to age, status,
+  or exceed limits are automatically pruned. Cluster administrators can configure the Pruning Custom Resource, or suspend it. 
+  </p>
+  <p>
+  For more information on configuring the ImagePruner, consult the
+  OpenShift documentation:
+  {{{ weblink(link="https://access.redhat.com/documentation/en-us/openshift_container_platform/latest/html/building_applications/pruning-objects") }}}
+  </p>
+
+
+rationale: |-
+  <p>
+  Obsolete and stale images need to be removed from the registry to ensure
+  the container platform maintains a secure posture. While the storing of
+  these images does not directly pose a threat, they do increase the likelihood
+  of these images being deployed.
+  </p>
+  <p>
+  Removing stale or obsolete images and only keeping the most recent versions
+  of those that are still in use removes any possibility of vulnerable images being deployed.
+  </p>
+
+identifiers:
+  cce@ocp4: CCE-86480-1
+
+references:
+  nist: SI-2(6)
+  srg: SRG-APP-000454-CTR-001110,SRG-APP-000454-CTR-001115
+
+ocil_clause: 'ImagePruner is not active'
+
+ocil: |-
+  Ensure that the imagepruner is configured and is not in a suspended state.
+  <pre>oc get imagepruners.imageregistry.operator.openshift.io/cluster -o jsonpath='{.spec}{"\n"}'</pre
+  The output should be non-empty and the <tt>.spec.suspend</tt> field should not be set to false.
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/imageregistry.operator.openshift.io/v1/imagepruners/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: 'true'
+    filepath: /apis/imageregistry.operator.openshift.io/v1/imagepruners/cluster
+    yamlpath: ".spec.suspend"
+    check_existence: "any_exist"
+    values:
+    - value: true
+      type: boolean
+      operation: "not equal"
