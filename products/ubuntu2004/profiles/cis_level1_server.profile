@@ -760,7 +760,7 @@ selections:
     - account_disable_post_pw_expiration
 
     #### 5.4.1.5 Ensure all users last password change date is in the past (Automated)
-    # Needs rule: last_change_date_in_past
+    - accounts_password_last_change_is_in_past
 
     ### 5.4.2 Ensure system accounts are secured (Automated)
     - no_shelllogin_for_systemaccounts
