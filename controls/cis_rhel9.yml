@@ -1266,15 +1266,13 @@ controls:
     rules:
       - audit_rules_networkconfig_modification
 
-  # NEEDS RULE
   - id: 4.1.3.6
     title: Ensure use of privileged commands is collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: planned
-    related_rules:
-      # The rule below is almost correct but cannot be used as it does not set the perm=x flag.
+    status: automated
+    rules:
       - audit_rules_privileged_commands
 
   - id: 4.1.3.7
