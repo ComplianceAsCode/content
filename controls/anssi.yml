@@ -719,6 +719,9 @@ controls:
       The baseline should be reviewed and tailored to the system's use case and needs.
     status: automated
     rules:
+    # enable authselect to support following rules
+    - enable_authselect
+
     # Renew passwords every 90 days
     - var_accounts_maximum_age_login_defs=90
     - accounts_maximum_age_login_defs
