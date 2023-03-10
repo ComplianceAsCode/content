@@ -1703,15 +1703,14 @@ controls:
     rules:
       - journald_forward_to_syslog
 
-  # NEEDS RULE
-  # The rsyslog_files_permissions rule is not sufficient. Needs check for $FileCreateMode.
-  # https://github.com/ComplianceAsCode/content/issues/7332
   - id: 4.2.1.4
     title: Ensure rsyslog default file permissions configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - rsyslog_filecreatemode
 
   - id: 4.2.1.5
     title: Ensure logging is configured (Manual)
