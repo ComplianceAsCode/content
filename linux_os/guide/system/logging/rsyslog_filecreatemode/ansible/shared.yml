@@ -1,0 +1,52 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Search for $FileCreateMode Parameter in rsyslog Main Config File"
+  ansible.builtin.find:
+    paths: "/etc"
+    pattern: "rsyslog.conf"
+    contains: '^\s*\$FileCreateMode\s*\d+'
+  register: rsyslog_main_file_with_filecreatemode
+
+- name: "{{{ rule_title }}} - Search for $FileCreateMode Parameter in rsyslog Include Files"
+  ansible.builtin.find:
+    paths: "/etc/rsyslog.d/"
+    pattern: "*.conf"
+    contains: '^\s*\$FileCreateMode\s*\d+'
+  register: rsyslog_includes_with_filecreatemode
+
+- name: "{{{ rule_title }}} - Assemble List of rsyslog Configuration Files with $FileCreateMode Parameter"
+  ansible.builtin.set_fact:
+    rsyslog_filecreatemode_files: "{{ rsyslog_main_file_with_filecreatemode.files | map(attribute='path') | list
+      + rsyslog_includes_with_filecreatemode.files | map(attribute='path') | list }}"
+
+- name: "{{{ rule_title }}} - Remove $FileCreateMode Parameter from Multiple Files to Avoid Conflicts"
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    regexp: '\$FileCreateMode.*'
+    state: absent
+  register: result_rsyslog_filecreatemode_removed
+  loop: "{{ rsyslog_filecreatemode_files }}"
+  when:
+    - rsyslog_filecreatemode_files | length > 1
+
+- name: "{{{ rule_title }}} - Add $FileCreateMode Parameter and Expected Value"
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.d/99-rsyslog_filecreatemode.conf
+    line: '$FileCreateMode 0640'
+    mode: 0640
+    create: true
+  when:
+    - rsyslog_filecreatemode_files | length == 0 or result_rsyslog_filecreatemode_removed is not skipped
+
+- name: "{{{ rule_title }}} - Ensure Correct Value of Existing $FileCreateMode Parameter"
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    regexp: '^\$FileCreateMode'
+    line: $FileCreateMode 0640
+  loop: "{{ rsyslog_filecreatemode_files }}"
+  when:
+    - rsyslog_filecreatemode_files | length == 1
