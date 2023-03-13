@@ -1257,6 +1257,8 @@ For example, to make a rule applicable only on systems with `systemd` version 25
 Only numeric versions are allowed, versions containing letters can't be used in the expressions.
 Versions with epochs are supported.
 It isn't mandatory to put a 0 epoch if the package doesn't have epoch.
+The 0 epoch will be prepended automatically by the build system in order to normalize the comparison.
+The generated OVAL, Bash and Ansible code will always contain epoch string.
 We don't support using the release component (eg. `-1` or `-1.el8`) in the version expressions.
 
 > **NOTE**: It's tricky to create a correct version expression due to existence of epoch and release components of the version in the rpm or deb package versions.

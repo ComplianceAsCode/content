@@ -1970,6 +1970,7 @@ This macro creates a Bash conditional which uses rpm to check if a package passe
 
 :param package: package name
 :param ver: package version (optional argument, use together with "op")
+    The version always needs to contain epoch. If the package has no epoch, please prepend "0:".
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
 {{%- macro bash_pkg_conditional_rpm(package, ver=None, op=None) -%}}
