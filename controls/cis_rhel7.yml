@@ -1521,7 +1521,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - rsyslog_filecreatemode
 
   - id: 4.2.1.4
     title: Ensure logging is configured (Manual)
