@@ -1939,27 +1939,29 @@ https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-orderi
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
 {{%- macro bash_pkg_conditional_compare(real, expected, op) -%}}
-{ real="{{{ real }}}"; ver="{{{ expected }}}"; {{{ bash_compare_version(op) }}}; }
+{ real="{{{ real }}}"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", "$expected", op) }}}; }
 {{%- endmacro -%}}
 
 {{#
 This macro generates comparison code based on the operator.
 
+:param real: real package version
+:param expected: expected package version
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 #}}
-{{%- macro bash_compare_version(op) -%}}
+{{%- macro bash_compare_version(real, expected, op) -%}}
 {{%- if op == "<" -%}}
-[[ "$real" != "$ver" ]] && printf "%s\n%s" "$real" "$ver" | sort -VC
+[[ "{{{ real }}}" != "{{{ expected }}}" ]] && printf "%s\n%s" "{{{ real }}}" "{{{ expected }}}" | sort -VC
 {{%- elif op == "<=" -%}}
-printf "%s\n%s" "$real" "$ver" | sort -VC
+printf "%s\n%s" "{{{ real }}}" "{{{ expected }}}" | sort -VC
 {{%- elif op == "==" -%}}
-[[ "$real" == "$ver" ]]
+[[ "{{{ real }}}" == "{{{ expected }}}" ]]
 {{%- elif op == "!=" -%}}
-[[ "$real" != "$ver" ]]
+[[ "{{{ real }}}" != "{{{ expected }}}" ]]
 {{%- elif op == ">" -%}}
-[[ "$real" != "$ver" ]] && printf "%s\n%s" "$ver" "$real" | sort -VC
+[[ "{{{ real }}}" != "{{{ expected }}}" ]] && printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
 {{%- elif op == ">=" -%}}
-printf "%s\n%s" "$ver" "$real" | sort -VC
+printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
 {{%- endif -%}}
 {{%- endmacro -%}}
 
