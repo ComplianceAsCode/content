@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Mock the "rpm" command
-# mocked package: coconut-4.5.17-8
+# mocked package: coconut-4.5.17
 # The mock is used to avoid the need to have a specific RPM package in a
 # specific version installed on the system where this test is run.
 function rpm()
@@ -61,4 +61,18 @@ export -f rpm
     ! ( {{{ bash_pkg_conditional_rpm("coconut", "1:4.5.17", "==") | indent(4) }}} )
     ! ( {{{ bash_pkg_conditional_rpm("coconut", "1:4.5", ">") | indent(4) }}} )
     ! ( {{{ bash_pkg_conditional_rpm("coconut", "1:6.7", ">") | indent(4) }}} )
+}
+
+@test "bash_compare_version - test basic version comparison algorithm" {
+    {{{ bash_compare_version("0:0.1.2", "0:1.2", "<") }}}
+    {{{ bash_compare_version("0:2.3", "0:0.2.3", ">") }}}
+    {{{ bash_compare_version("1:2.3", "0:3.2", ">") }}}
+    {{{ bash_compare_version("0:2.3", "1:1.0", "<") }}}
+    {{{ bash_compare_version("0:1.0", "0:1.0", "==") }}}
+    {{{ bash_compare_version("0:1.0", "1:1.0", "!=") }}}
+    ! ({{{ bash_compare_version("0:1.0", "1:1.0", "==") }}} )
+    {{{ bash_compare_version("2:17.15.4.5", "2:17.15.4.6", "<") }}}
+    {{{ bash_compare_version("2:17.15.4.5", "2:17.15.4.6", "<=") }}}
+    {{{ bash_compare_version("2:17.15.4.9", "2:17.15.4.7", ">") }}}
+    {{{ bash_compare_version("2:17.15.4.9", "2:17.15.4.7", ">=") }}}
 }
