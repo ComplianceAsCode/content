@@ -1149,6 +1149,8 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    rules:
+      - set_firewalld_appropriate_zone
     related_rules:
       - firewalld_sshd_port_enabled
 
