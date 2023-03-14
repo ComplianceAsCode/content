@@ -21,24 +21,33 @@
 #Policy 
 {{{ bash_instantiate_variables("var_nftables_base_chain_policies") }}}
 
-#We add a table if ti does not exist
+#Transfer some of strings to arrays
+IFS="," read -r -a  arr_chnames <<< "$var_nftables_base_chain_names"
+IFS="," read -r -a  arr_chtypes <<< "$var_nftables_base_chain_types"
+IFS="," read -r -a  arr_chhooks <<< "$var_nftables_base_chain_hooks"
+IFS="," read -r -a  arr_chpriorities <<< "$var_nftables_base_chain_priorities"
+IFS="," read -r -a  arr_chpolicies <<< "$var_nftables_base_chain_policies"
+
+#We add a table if it does not exist
 IS_TABLE=$(nft list tables)
 if [ -z "$IS_TABLE" ]
 then
   nft create table "$var_nftables_family" "$var_nftables_table"
 fi
 
+
+##
+# nft add chain [<family>] <table_name> <chain_name> { type <type> hook <hook> priority <value> \; [policy <policy> \;] [comment \"text comment\" \;] }
+# example:  nft 'add chain inet filter output { type filter hook output priority 0 ; policy accept; }'
+##
 #We add base chains
-for ((i=0; i < $((var_nftables_base_chain_number)); i++)) 
+for ((i=0; i < $((var_nftables_base_chain_number)); i++))
 do
-   is_chain_exist=`nft list ruleset | grep 'hook ${var_nftables_base_chain_hooks[$i]}'`
-   if [ -z "$is_chain_exist" ]
+   IS_CHAIN_EXIST=$(nft list ruleset | grep "hook ${arr_chhooks[$i]}")
+   if [ -z "$IS_CHAIN_EXIST" ]
    then
-      chain_to_add="add chain $var_nftables_family $var_nftables_table ${var_nftables_base_chain_names[$i]} \
-      { type ${var_nftables_base_chain_types[$i]} hook ${var_nftables_base_chain_hooks[$i]} \
-      priority ${var_nftables_base_chain_priorities[$i]} ; \
-      policy ${var_nftables_base_chain_policies[$i]}; }"
+      chain_to_add="add chain $var_nftables_family $var_nftables_table ${arr_chnames[$i]} { type ${arr_chtypes[$i]} hook ${arr_chhooks[$i]} priority ${arr_chpriorities[$i]} ; policy ${arr_chpolicies[$i]} ; }"
       mycommand="nft '$chain_to_add'"
       eval $mycommand
    fi
-done 
+done
