@@ -291,9 +291,6 @@ message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
 
 
-
-
-
 message(STATUS " ")
 
 # Remove this option when we would like to run ansible-lint and yamllint against our playbooks by default.
