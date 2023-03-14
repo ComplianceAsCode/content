@@ -1,4 +1,3 @@
-
 listening_ports() {
     protocol=$1
 
