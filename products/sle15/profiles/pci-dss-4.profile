@@ -12,7 +12,7 @@ description: |-
     Ensures PCI-DSS v4 security configuration settings are applied.
 
 selections:
-    -  pcidss_3:all:base
+    -  pcidss_4:all:base
     -  account_unique_id
     -  accounts_minimum_age_login_defs
     -  accounts_no_uid_except_zero
