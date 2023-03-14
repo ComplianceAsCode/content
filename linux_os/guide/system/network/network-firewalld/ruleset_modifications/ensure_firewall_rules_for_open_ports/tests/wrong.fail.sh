@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = firewalld
+
 source common.sh
 
 # check if ssh started
