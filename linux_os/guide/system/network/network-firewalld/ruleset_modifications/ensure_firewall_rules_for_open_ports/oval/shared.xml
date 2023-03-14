@@ -3,6 +3,8 @@
     {{{ oval_metadata("Make sure firewall rules exist for all open network ports, listening on non-loopback interfaces.") }}}
     <criteria operator="AND">
       <criteria operator="OR">
+        <criterion comment="Check if any service is listening on tcp"
+                   test_ref="test_listening_fw_inet_ports_tcp_exist" />
         <criteria operator="AND">
           <criterion comment="Check there are defined tcp service ports in firewall"
                      test_ref="test_var_firewalled_tcp_ports_exists" />
@@ -17,6 +19,8 @@
         </criteria>
       </criteria>
       <criteria operator="OR">
+        <criterion comment="Check if any service is listening on udp"
+                   test_ref="test_listening_fw_inet_ports_udp_exist" />
         <criteria operator="AND">
           <criterion comment="Check there are defined udp service ports in firewall"
                      test_ref="test_var_firewalled_udp_ports_exists" />
@@ -67,7 +71,7 @@
                                     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
     <linux:foreign_port datatype="int" operation="not equal">0</linux:foreign_port>
   </linux:inetlisteningservers_state>
-  
+
   <linux:inetlisteningservers_test id="test_listening_fw_inet_service_ports_tcp_test" version="1"
                                    check="at least one"
                                    comment="Check all listening ports defined directly are firewalled">
@@ -105,6 +109,12 @@
     <linux:local_port datatype="int" operation="equals"  var_ref="var_firewalled_direct_tcp_ports"
                       var_check="at least one"/>
   </linux:inetlisteningservers_state>
+
+  <linux:inetlisteningservers_test id="test_listening_fw_inet_ports_tcp_exist" version="1" check="all"
+                                   check_existence="none_exist"
+                                   comment="Check if any service is listening on tcp ports">
+    <linux:object object_ref="obj_listening_inet_tcp_ports" />
+  </linux:inetlisteningservers_test>
 
   <linux:inetlisteningservers_object id="obj_listening_inet_tcp_ports" version="2"
                                      comment="Represents a listening services on the system.">
@@ -247,7 +257,13 @@
     <linux:foreign_port datatype="int" operation="equals">0</linux:foreign_port>
     </linux:inetlisteningservers_state>
 
-    <linux:inetlisteningservers_object id="obj_listening_inet_udp_ports" version="2"
+    <linux:inetlisteningservers_test id="test_listening_fw_inet_ports_udp_exist" version="1" check="all"
+                                     check_existence="none_exist"
+                                     comment="Check if any service is listening on udp ports">
+    <linux:object object_ref="obj_listening_inet_udp_ports" />
+  </linux:inetlisteningservers_test>
+
+  <linux:inetlisteningservers_object id="obj_listening_inet_udp_ports" version="2"
                                        comment="This object represents a listening services on the system.">
       <linux:protocol operation="equals">udp</linux:protocol>
       <linux:local_address operation="not equal">^.*$</linux:local_address>
