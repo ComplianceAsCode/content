@@ -24,6 +24,16 @@
     <ind:object object_ref="object_{{{ rule_id }}}_file" />
     <ind:state state_ref="state_{{{ rule_id }}}_{{{ family }}}_contents" />
   </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_{{{ family }}}_contents" version="1">
+    <ind:subexpression datatype="string" operation="pattern match" var_check="at least one"
+                       var_ref="var_{{{ rule_id }}}_required_{{{ family }}}_files"/>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="var_{{{ rule_id }}}_required_{{{ family }}}_files" version="1"
+                  comment="Pattern to match all required families files" datatype="string">
+    <literal_component>/etc/nftables/{{{ family }}}-filter</literal_component>
+  </local_variable>
 {{% endfor %}}
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_file" version="1">
     <ind:filepath operation="equals" var_ref="var_nftable_master_config_file"/>
@@ -36,16 +46,4 @@
     comment="File paths of all needed families part of the permanent configuration">
     <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_file" />
   </local_variable>
-{{% for family in nftables_family_names %}}
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_{{{ family }}}_contents" version="1">
-    <ind:subexpression datatype="string" operation="pattern match" var_check="at least one"
-                       var_ref="var_{{{ rule_id }}}_required_{{{ family }}}_files"/>
-  </ind:textfilecontent54_state>
-{{% endfor %}}
-{{% for family in nftables_family_names %}}
-  <local_variable id="var_{{{ rule_id }}}_required_{{{ family }}}_files" version="1"
-                  comment="Pattern to match all required families files" datatype="string">
-    <literal_component>/etc/nftables/{{{ family }}}-filter</literal_component>
-  </local_variable>
-{{% endfor %}}
 </def-group>
