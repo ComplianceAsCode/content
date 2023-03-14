@@ -124,7 +124,7 @@ def main():
     product_yaml = ssg.products.load_product_yaml(args.product_yaml)
     product = product_yaml["product"]
     newovalfile = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
-    newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
+    newovalfile = newovalfile.replace("cpe-oval-unlinked", "cpe-oval")
     ssg.xml.ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
 
     # Lets scrape the shorthand for the list of platforms referenced

@@ -101,7 +101,8 @@ def main():
     root.append(definitions)
     root.append(tests)
     root.append(objects)
-    root.append(states)
+    if list(states):
+        root.append(states)
     if list(variables):
         root.append(variables)
 
