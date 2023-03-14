@@ -151,7 +151,6 @@
       <filter action="include">state_udp_listening_inet_ports</filter>
   </linux:inetlisteningservers_object>
 
-
   <linux:inetlisteningservers_state id="state_udp_listening_inet_ports" version="1" comment="Checks local address is udp." xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
     <linux:protocol operation="equals">udp</linux:protocol>
     <linux:local_address operation="pattern match">^.*$</linux:local_address>
