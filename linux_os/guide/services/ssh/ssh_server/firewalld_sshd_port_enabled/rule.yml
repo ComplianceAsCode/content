@@ -56,3 +56,12 @@ warnings:
         the respective file. If the default SSH port is modified, it is on the administrator
         responsibility to ensure the firewalld customizations in the service port level are
         properly configured.
+{{% if product in [ 'rhel9' ] %}}
+    - management: |-
+        {{{ full_name }}} prefers and recommends to use NetworkManager keyfiles instead of the
+        <tt>ifcfg</tt> files stored in <tt>/etc/sysconfig/network-scripts</tt>. Therefore, if the
+        system was upgraded from a previous release, make sure the NIC configuration files are
+        properly migrated from <tt>ifcfg</tt> format to NetworkManager keyfiles. Otherwise, this
+        rule won't be able to check the configuration. The migration can be accomplished by
+        <tt>nmcli connection migrate</tt> command.
+{{% endif %}}
