@@ -2,10 +2,12 @@ prodtype: ocp4
 
 title: Ensure authorization-mode RBAC is configured
 
-{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
 {{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/{{.var_openshift_kube_apiserver_config}}{{else}}/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '.data."config.json" | fromjson' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-

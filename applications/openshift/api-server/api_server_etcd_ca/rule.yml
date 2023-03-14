@@ -4,10 +4,12 @@ prodtype: ocp4
 
 title: 'Configure the etcd Certificate Authority for the API Server'
 
-{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
-{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/{{.var_openshift_kube_apiserver_config}}{{else}}/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}{{end}}' %}}
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | select(.apiServerArguments["etcd-cafile"]) | .apiServerArguments["etcd-cafile"][] | select(test("{{.var_apiserver_etcd_ca}}"))]' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_jqfilter = '[.data."config.json" | fromjson | select(.apiServerArguments["etcd-cafile"]) | .apiServerArguments["etcd-cafile"][] | select(test("/etc/kubernetes/certs/etcd-ca/ca.crt"))]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
@@ -58,15 +60,13 @@ warnings:
         {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(8) }}}
 
 template:
-    name: yamlfile_value
-    vars:
-        ocp_data: "true"
-        filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-        yamlpath: '.apiServerArguments["etcd-cafile"][:]'
-        entity_check: "all"
-        xccdf_variable: var_apiserver_etcd_ca
-        embedded_data: "true"
-        values:
-            - value: '(.+)'
-              operation: "pattern match"
-              type: "string"
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "at_least_one_exists"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"
