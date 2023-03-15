@@ -4,7 +4,7 @@
 <!-- Constants are called variables in XSLT.  At this point this is not a surprise. -->
 
 <!-- abbreviated as idents in the XCCDF-->
-<xsl:variable name="cceuri">https://nvd.nist.gov/cce/index.cfm</xsl:variable>
+<xsl:variable name="cceuri">https://ncp.nist.gov/cce</xsl:variable>
 
 <!-- abbreviated as references in the XCCDF-->
 <xsl:variable name="anssiuri">http://www.ssi.gouv.fr/administration/bonnes-pratiques/</xsl:variable>
