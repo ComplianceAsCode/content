@@ -163,8 +163,8 @@ selections:
     - grub2_enable_apparmor
 
     #### 1.7.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
-    # Needs variable
-    # Needs rule
+    - var_apparmor_mode=complain
+    - all_apparmor_profiles_in_enforce_complain_mode
 
     #### 1.7.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
     # Skip due to being Level 2
