@@ -1279,6 +1279,21 @@ Examine the actual contents and changelog of the rpm/deb pakcage in the specific
 Then, use the `os_linux` platform instead of `package` platform.
 For example, use `os_linux[rhel]>=8.6` instead of `package[foo]>=1.2.4`, if you know that an up-to-date RHEL 8.6 and later comes with `foo` that contains the feature that you are interested in.
 
+#### OS Linux CPEs
+
+OS Linux CPEs are used to define rule applicability based on the operating system and its version.
+The platform name is `os_linux`.
+To limit the applicability of a rule to a specific version of the operating system, use this platform in the `platform` key in the `rule.yml` file.
+The platform supports versioned expressions.
+
+For example, if you want to make the rule applicable only on RHEL 8.6 and newer, add the following line to the `rule.yml`:
+
+   platform: os_linux[rhel]>=8.6
+
+The `os_linux` platform is defined in `shared/applicability/os_linux.yml`.
+To add a new CPE based on the OS type, add a new entry there.
+The platform is implemented using the `platform_os_linux` template which is defined in `shared/templates/platform_os_linux`.
+
 ## Tests (ctest)
 
 ComplianceAsCode uses ctest to orchestrate testing upstream. To run the
