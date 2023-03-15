@@ -1,3 +1,15 @@
+{{% if product in ["sle12", "sle15"] %}}
+{{% set product_names = "SUSE Linux distributions" %}}
+{{% set pub_key_import = "$ sudo rpm --import package-signing-key-5-12-6.pub"%}}
+{{% elif "ubuntu" in product %}}
+{{% set product_names = "Debian, Ubuntu OSes Linux distributions" %}}
+{{% set pub_key_import = "$ sudo gpg --import package-signing-key-5-12-6.pub"%}}
+{{% else %}}
+{{% set product_names = "RedHat,Fedora,CentOs Linux distributions" %}}
+{{% set pub_key_import = "$ sudo rpm --import package-signing-key-5-12-6.pub"%}}
+{{% endif %}}
+
+
 documentation_complete: true
 
 prodtype: sle12,sle15
@@ -5,16 +17,10 @@ prodtype: sle12,sle15
 title: 'Ensure GPG keys are configured'
 
 description: |-
-    Most distributions use a package manager such as yum, apt, or zypper to install and 
-    update software packages. They use their own GPG keys directly or at least ship them
-    installed with the minimal system.  But third party packages signed by a different 
-    GPG key need manual handling. The operation system or installed application can be 
+    The operation system or installed application can be 
     successfully bootstrapped without the GPG key being trusted. However, you cannot 
     install new packages or update them until the keys are trusted.
     <br /><br /> 
-    Trusting a GPG key is important for security on operating systems or applications. 
-    It is the task of the administrator to decide which keys are needed and can be trusted.
-    <br /><br />
     Most packages managers implement GPG key signing to verify package integrity during
     installation.
     <br /><br />
@@ -22,36 +28,26 @@ description: |-
     one of the following command groups may provide the needed information
     depending on the package manager in use. 
     <br /><br />
-    In RedHat,Fedora,CentOs, and SUSE Linux distributions, the administrators have to 
-    follow the next steps: <br />
+    In {{{ product_names }}}, the administrators have to follow the next steps: <br />
     1. Log on to the system as a user with administrator rights.<br />
     2. Locate and download package, for example zoom_x86_64.rpm<br />
     3. Locate and download the public key (GPG) from the software download site, for example 
     the key for zoom package is package-signing-key-5-12-6.pub<br />
     4. Import the key public key: <br />
-    <tt>$ sudo rpm --import package-signing-key-5-12-6.pub</tt><br />
+    <tt> {{{ pub_key_import }}}</tt><br />
+    {{% if product in ["sle12", "sle15"] %}}
     5. List the keys, for example the comman d<br /> 
     <tt>$ sudo rpm -qa gpg-pubkey*</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502</tt><br />
     6. Get more details about the key, via the command: <br />
     <tt>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</tt><br />
-    7. Check the GPG key, for example the command: <br />
-    <tt>$ sudo rpm --checksig zoom_x86_64.rpm</tt><br />
-    will provide: <br />
-    <tt>zoom_x86_64.rpm: digests signatures OK</tt><br />
-    8. Check the GPG key in another way, for example the command: <br /> 
+    7. Check the GPG key, for example the command: <br /> 
     <tt>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</tt><br />
     <br /><br />
-    In Debian, Ubuntu OSes Linux distributions, the administrators have to follow the next steps: <br />
-    1. Log on to the system as a user with administrator rights. <br />
-    2. Locate and download package, for example zoom_x86_64.deb <br />
-    3. Locate and download the public key (GPG) from the software download site, for example 
-    the key for zoom package is package-signing-key-5-12-6.pub <br />
-    4. Import the public key:<br />
-    <tt>$ sudo gpg --import package-signing-key-5-12-6.pub</tt><br />
+    {{% else %}}
     5. Veirify the signature, for example the command:<br />
     <tt>$ dpkg-sig -c zoom_amd64.deb</tt><br />
     will provide:<br />
@@ -60,7 +56,8 @@ description: |-
     or will provide:<br />
     <tt>Processing PACKAGE_NAME.deb...</tt><br />
     <tt>NOSIG</tt><br />
-    when the package is not signed with a GPG key<br />    
+    when the package is not signed with a GPG key<br />
+    {{% endif %}}    
 
 rationale: |-
     It is important to ensure that updates are obtained from a valid source to protect 
@@ -83,42 +80,34 @@ ocil: |-
     To verify GPG keys are configured correctly for your package manager, 
     one of the following command groups may provide the needed information
     depending on the package manager in use. 
-    
-    In RedHat/Fedora/CentOs/SUSE Linux distributions, the administrators have to follow the next steps:
-    1. Log on to the system as a user with administrator rights.
-    2. Locate and download package, for example zoom_x86_64.rpm
-    3. Locate and download the public key (GPG) from the software download site, for example 
-    the key for zoom package is package-signing-key-5-12-6.pub
-    4. Import the key public key:
-    <pre>$ sudo rpm --import package-signing-key-5-12-6.pub</pre>
-    5. List the keys, for example the command 
-    <pre>$ sudo rpm -qa gpg-pubkey*</pre>
-    will provide:
-    <pre>gpg-pubkey-dd79b481-62fe7502</pre>
-    6. Get more details about the key, via the command:
-    <pre>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</pre>
-    7. Check the GPG key, for example the command:
-    <pre>$ sudo rpm --checksig zoom_x86_64.rpm</pre>
-    will provide:
-    <pre>zoom_x86_64.rpm: digests signatures OK</pre>
-    8. Check the GPG key in another way, for example the command: 
-    <pre>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</pre>
-    will provide:
-    <pre>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</pre>
 
-    In Debian/Ubuntu OSes Linux distributions, the administrators have to follow the next steps:
-    1. Log on to the system as a user with administrator rights.
-    2. Locate and download package, for example zoom_x86_64.deb
+    In {{{ product_names }}}, the administrators have to follow the next steps: <br />
+    1. Log on to the system as a user with administrator rights.<br />
+    2. Locate and download package, for example zoom_x86_64.rpm<br />
     3. Locate and download the public key (GPG) from the software download site, for example 
-    the key for zoom package is package-signing-key-5-12-6.pub
-    4. Import the public key:
-    <pre>$ sudo gpg --import package-signing-key-5-12-6.pub</pre>
-    5. Veirify the signature, for example the command:
-    <pre>$ dpkg-sig -c zoom_amd64.deb</pre>
-    will provide:
-    <pre>Processing zoom_amd64.deb...</pre>
-    <pre>GOODSIG _gpgbuilder 59C86188E22ABB19BD5540477B04A1B8DD79B481 1675664804</pre>
-    or will provide:
-    <pre>Processing &lt;Package_Name.deb&gt;...</pre>
-    <pre>NOSIG</pre>
-    when the package is not signed with a GPG key
+    the key for zoom package is package-signing-key-5-12-6.pub<br />
+    4. Import the key public key: <br />
+    <tt> {{{ pub_key_import }}}</tt><br />
+    {{% if product in ["sle12", "sle15"] %}}
+    5. List the keys, for example the comman d<br /> 
+    <tt>$ sudo rpm -qa gpg-pubkey*</tt><br />
+    will provide:<br />
+    <tt>gpg-pubkey-dd79b481-62fe7502</tt><br />
+    6. Get more details about the key, via the command: <br />
+    <tt>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</tt><br />
+    7. Check the GPG key, for example the command: <br /> 
+    <tt>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</tt><br />
+    will provide:<br />
+    <tt>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</tt><br />
+    <br /><br />
+    {{% else %}}
+    5. Veirify the signature, for example the command:<br />
+    <tt>$ dpkg-sig -c zoom_amd64.deb</tt><br />
+    will provide:<br />
+    <tt>Processing zoom_amd64.deb...</tt>
+    <tt>GOODSIG _gpgbuilder 59C86188E22ABB19BD5540477B04A1B8DD79B481 1675664804</tt><br /> 
+    or will provide:<br />
+    <tt>Processing PACKAGE_NAME.deb...</tt><br />
+    <tt>NOSIG</tt><br />
+    when the package is not signed with a GPG key<br />
+    {{% endif %}}    
