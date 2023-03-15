@@ -470,7 +470,7 @@ selections:
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
     - service_nftables_disabled
-    - packages_nftables_removed
+    - package_nftables_removed
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
     - package_ufw_removed
