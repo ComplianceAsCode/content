@@ -5,41 +5,11 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
 
-- name: {{{ rule_title }}} Remove file for remediation
-  ansible.builtin.file:
-    path: ~/set_time_servers.sh
-    state: absent
-
-- name: {{{ rule_title }}} Generation of script for remediation
-  ansible.builtin.copy:
-    dest: "~/set_time_servers.sh"
-    content: |
-      #!/bin/bash
-
-      var_multiple_time_servers='{{var_multiple_time_servers}}'
-      config_file="{{{ chrony_conf_path }}}"
-
-      IFS="," read -a SERVERS <<< $var_multiple_time_servers
-      for srv in "${SERVERS[@]}"
-      do
-        NTP_SRV=$(grep -w $srv $config_file)
-        if [[ ! "$NTP_SRV" == "server "* ]]
-        then
-          time_server="server $srv"
-          echo $time_server >> "$config_file"
-        fi
-      done
-
-- name: {{{ rule_title }}} - Change mode of file for remediation
-  ansible.builtin.file:
-    path: ~/set_time_servers.sh
-    state: touch
-    mode: u=rwx,g=rx,o=rx
-
-- name: {{{ rule_title }}} - Apply remediation
-  ansible.builtin.command: sh ~/set_time_servers.sh
-
-- name: {{{ rule_title }}} - Remove file for remediation
-  ansible.builtin.file:
-    path: ~/set_time_servers.sh
-    state: absent
+- name: {{{ rule_title }}} - Add missing / update wrong records for time servers
+  ansible.builtin.lineinfile:
+    path: {{{ chrony_conf_path }}}
+    regexp: '^\s*\bserver\b\s*\b{{ item }}\b$'
+    state: present
+    line: 'server {{ item }}'
+  with_items: 
+    - '{{ var_multiple_time_servers.split(",") }}'
