@@ -717,10 +717,10 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   The macro respects `platform_package_overrides` variable.
 
 :param package: package name
-:param ver: package version (optional argument, use together with "op")
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param ver: package version (optional argument, use together with "op")
 #}}
-{{%- macro ansible_pkg_conditional(package, ver=None, op=None) -%}}
+{{%- macro ansible_pkg_conditional(package, op=None, ver=None) -%}}
 {{%- if package in platform_package_overrides -%}}
   {{%- set package = platform_package_overrides[package] -%}}
 {{%- endif -%}}
