@@ -137,7 +137,8 @@ def wait_vm_not_running(domain):
     try:
         while True:
             time.sleep(5)
-            if subprocess.getoutput("virsh domstate {0}".format(domain)).rstrip() != "running":
+            cmd = ["virsh", "domstate", domain]
+            if subprocess.getoutput(cmd).rstrip() != "running":
                 return
             if time.time() >= end_time:
                 print("Timeout reached: {0} VM failed to shutdown, cancelling wait."
@@ -260,11 +261,11 @@ nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
         print("\nThe following command would be used for the VM installation:")
         print(command)
     else:
-        os.system(command)
+        subprocess.call(command)
         if data.console:
-            os.system("unbuffer virsh console {0}".format(data.domain))
+            subprocess.call(["unbuffer", "virsh", "console", data.domain])
             wait_vm_not_running(data.domain)
-            os.system("virsh start {0}".format(data.domain))
+            subprocess.call(["virsh", "start", data.domain])
 
     print("\nTo determine the IP address of the {0} VM use:".format(data.domain))
     if data.libvirt == "qemu:///system":
