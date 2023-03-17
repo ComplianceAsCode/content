@@ -264,7 +264,7 @@ class PlaybookToRoleConverter():
         if platform in PRODUCT_ALLOWLIST:
             # For RHEL, we can get what version
             if 'rhel' in platform:
-                return platform[len(platform)-1]
+                return platform[-1]
             return "7\n    - 8"
         return "TBD"
 
