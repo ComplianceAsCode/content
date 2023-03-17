@@ -89,7 +89,7 @@ class StandardContentDiffer(object):
         for remediation_type in FIX_TYPE_TO_SYSTEM.keys():
             self.compare_remediations(old_rule, new_rule, remediation_type, identifier)
 
-    def _get_list_of_platforms(self, cpe_platforms):
+    def _get_list_of_platforms(self, cpe_platforms, idref):
         cpe_list = []
         if len(cpe_platforms) == 0:
             print("Platform {0} not defined in platform specification".format(idref))
@@ -120,7 +120,7 @@ class StandardContentDiffer(object):
                 idref = platform.get("idref")
                 if idref.startswith("#"):
                     cpe_platforms = entry["benchmark"].find_all_cpe_platforms(idref)
-                    entry["cpe"] += self._get_list_of_platforms(cpe_platforms)
+                    entry["cpe"] += self._get_list_of_platforms(cpe_platforms, idref)
                 else:
                     entry["cpe"].append(idref)
 
