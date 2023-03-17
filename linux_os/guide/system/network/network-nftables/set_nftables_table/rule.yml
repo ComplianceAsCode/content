@@ -1,11 +1,11 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure a Table Exists for Nftables'
 
 description: |-
-   Tables in nftables hold chains. Each table only has one address family and only applies 
+   Tables in nftables hold chains. Each table only has one address family and only applies
    to packets of this family. Tables can have one of six families.
 
 rationale: |-
@@ -20,6 +20,8 @@ identifiers:
 
 references:
     cis@sle15: 3.5.2.4
+    cis@ubuntu2004: 3.5.2.4
+    cis@ubuntu2204: 3.5.2.4
 
 ocil_clause: 'a nftables table does not exist'
 

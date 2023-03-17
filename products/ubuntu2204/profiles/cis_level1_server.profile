@@ -442,7 +442,9 @@ selections:
     # Skip due to being a manual test
 
     #### 3.5.2.4 Ensure a nftables table exists (Automated)
-    # NEEDS RULE
+    - var_nftables_family=inet
+    - var_nftables_table=filter
+    - set_nftables_table
 
     #### 3.5.2.5 Ensure nftables base chains exist (Automated)
     # NEEDS RULE
@@ -457,7 +459,7 @@ selections:
     # NEEDS RULE
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
-    # NEEDS RULE
+    - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
     # NEEDS RULE
