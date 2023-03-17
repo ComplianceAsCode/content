@@ -16,7 +16,7 @@ import yaml
 import collections
 
 try:
-    from github import Github, InputGitAuthor
+    from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
     sys.stderr.write("Please install PyGithub, on Fedora it's in the "
                      "python-PyGithub package.\n")
