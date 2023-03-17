@@ -166,7 +166,7 @@ def main():
     json_file = open(args.json, 'r')
     known_rules = json.load(json_file)
 
-    if not args.rule_id in known_rules:
+    if args.rule_id not in known_rules:
         print("Error: rule_id:%s is not known!" % args.rule_id, file=sys.stderr)
         print("If you think this is an error, try regenerating the JSON.", file=sys.stderr)
         sys.exit(1)
