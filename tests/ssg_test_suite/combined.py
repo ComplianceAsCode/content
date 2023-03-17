@@ -88,8 +88,8 @@ class CombinedChecker(rule.RuleChecker):
         if len(self.rules_not_tested_yet) != 0:
             not_tested = sorted(list(self.rules_not_tested_yet))
             logging.info("The following rule(s) were not tested:")
-            for rule in not_tested:
-                logging.info("{0}".format(rule))
+            for rule_ in not_tested:
+                logging.info("{0}".format(rule_))
 
     def test_rule(self, state, rule, scenarios):
         super(CombinedChecker, self).test_rule(state, rule, scenarios)
