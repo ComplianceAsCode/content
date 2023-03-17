@@ -428,10 +428,6 @@ class XMLOcilQuestionnaire(XMLComponent):
         return self.root.find(
             "ocil:actions/ocil:test_action_ref", self.ns)
 
-    def get_test_action_ref_element(self):
-        return self.root.find(
-            "ocil:actions/ocil:test_action_ref", self.ns)
-
 
 class XMLOcilTestAction(XMLComponent):
     def __init__(self, root):
