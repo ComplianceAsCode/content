@@ -231,7 +231,7 @@ def createFunc(args):
         if len(url_part) > 0 and '/api' in url_part:
             url = url_part
 
-    if url == None:
+    if url is None:
         print('there was a problem finding the URL from the oc debug output. Hint: override this automatic check with --url')
         return 1
 
@@ -322,7 +322,7 @@ def clusterTestFunc(args):
             break
         time.sleep(2)
 
-    if scan_result == None:
+    if scan_result is None:
         print('ERROR: Timeout waiting for scan to finish')
         return 1
 
