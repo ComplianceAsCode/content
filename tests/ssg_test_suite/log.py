@@ -52,8 +52,8 @@ class LogHelper(object):
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(cls.FORMATTER)
         console_handler.setLevel(level)
-        print('Setting console output to log level {0}'.format(level,
-                                                               sys.stderr))
+        print('Setting console output to log level {0}'.format(level),
+              file=sys.stderr)
         logger.addHandler(console_handler)
 
     @classmethod
