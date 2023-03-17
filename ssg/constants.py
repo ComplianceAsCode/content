@@ -34,8 +34,6 @@ SSG_REF_URIS = {
     'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
     # The following reference URIs were not defined in the XSLT constants
     'ism': '',
-    'vmmsrg': '',
-    'vsrg': '',  # From the references, it looks like vsrg and vmmsrg are meant to be the same
 }
 
 product_directories = [
@@ -457,7 +455,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 }
 
 # References that can not be used with product-qualifiers
-GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
+GLOBAL_REFERENCES = ("srg", "disa", "cis-csc",)
 
 # Application constants
 DEFAULT_GID_MIN = 1000
