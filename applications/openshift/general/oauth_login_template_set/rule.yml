@@ -33,6 +33,15 @@ references:
   nist: AC-8
   srg: SRG-APP-000068-CTR-000120
 
+ocil_clause: 'login template is not set'
+
+ocil: |-
+  To verify that login template is properly set, do the following:
+  <pre>$ oc get oauths cluster</pre>
+  make sure that the login template is set in 
+  the path <tt>.spec.templates.login.name</tt>, and references a valid
+  secret.
+
 warnings:
 - general: |-
     {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
