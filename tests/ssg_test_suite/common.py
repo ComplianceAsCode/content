@@ -435,7 +435,7 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
         msg = (
             "Test directory configuration contain inconsistencies: {allowed_and_denied} "
             "scenarios are both allowed and denied."
-            .format(test_dir_config=test_dir_config, allowed_and_denied=allowed_and_denied)
+            .format(allowed_and_denied=allowed_and_denied)
         )
         raise ValueError(msg)
     return available_scenarios_basenames

@@ -143,7 +143,7 @@ def main():
             "changes propagate to derived profiles. "
             "If those changes are unwanted, you have to supress them "
             "using explicit selections or !unselections in derived profiles."
-            .format(test_root=args.test_data_root, fixes="\n".join(fix_commands)))
+            .format(fixes="\n".join(fix_commands)))
         print(msg, file=sys.stderr)
     sys.exit(bool(fix_commands))
 

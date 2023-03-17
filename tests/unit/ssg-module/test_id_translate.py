@@ -180,7 +180,7 @@ def test_idtranslator_translate_oval_xmldiff(idtranslator, oval_tree):
     uacrittref = xmldiff_actions.UpdateAttrib(
         node=(
             '/{o}:oval_definitions/{o}:definitions/{o}:definition/'
-            '{o}:criteria/{o}:criterion[1]'.format(ou=ou, o=o)),
+            '{o}:criteria/{o}:criterion[1]'.format(o=o)),
         name='test_ref',
         value='oval:ssg-test_kerberos_disable_no_keytab:tst:1')
     assert uacrittref in diff
