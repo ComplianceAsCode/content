@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-- name: disable core dumps with limits
+- name: Disable core dumps with limits
   lineinfile:
     dest: /etc/security/limits.conf
     regexp: '^[^#].*core'

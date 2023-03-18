@@ -8,14 +8,14 @@
   package_facts:
     manager: auto
 
-- name: get rules groups
+- name: Get rules groups
   shell: |
     set -o pipefail
     LC_ALL=C grep "^[A-Z][A-Za-z_]*" /etc/aide.conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u || true
   when: "'aide' in ansible_facts.packages"
   register: find_rules_groups_results
 
-- name: ensure the acl rule is present when aide is installed.
+- name: Ensure the acl rule is present when aide is installed.
   replace:
     path: /etc/aide.conf
     regexp: (^\s*{{ item }}\s*=\s*)(?!.*acl)([^\s]*)
