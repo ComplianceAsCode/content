@@ -145,8 +145,10 @@ controls:
         networks.'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - set_ipv6_loopback_traffic
+        - set_loopback_traffic
 
     - id: Req-1.4.2
       title: '1.4.2 Inbound traffic from untrusted networks to trusted networks is restricted
@@ -277,8 +279,30 @@ controls:
         system component.'
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - package_bind_removed
+        - package_dhcp_removed
+        - package_httpd_removed
+        - package_net-snmp_removed
+        - package_nfs-utils_removed
+        - package_openldap-servers_removed
+        - package_openldapclients_removed
+        - package_rsh_removed
+        - package_samba_removed
+        - package_talk_removed
+        - package_telnet_removed
+        - package_telnetserver_removed
+        - package_vsftpd_removed
+        - package_xinetd_removed
+        - package_ypbind_removed
+        - package_ypserv_removed
+        - postfix_network_listening_disabled
+        - service_avahi-daemon_disabled
+        - service_cups_disabled
+        - service_rpcbind_disabled
+        - service_rsyncd_disabled
+
 
     - id: Req-2.2.5
       title: '2.2.5 If any insecure services, protocols, or daemons are present'
@@ -293,8 +317,41 @@ controls:
         configuration.'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - file_at_deny_not_exist
+        - file_cron_deny_not_exist
+        - file_groupowner_at_allow
+        - file_owner_at_allow
+        - file_groupowner_cron_allow
+        - file_permissions_at_allow
+        - file_permissions_cron_allow
+        - file_permissions_cron_d
+        - file_permissions_cron_daily
+        - file_permissions_cron_hourly
+        - file_permissions_cron_monthly
+        - file_permissions_cron_weekly
+        - file_permissions_crontab
+        - file_permissions_sshd_config
+        - file_permissions_sshd_private_key
+        - file_permissions_sshd_pub_key
+        - file_permissions_unauthorized_world_writable
+        - file_permissions_ungroupowned
+        - no_files_unowned_by_user
+        - service_cron_enabled
+        - sshd_disable_empty_passwords
+        - sshd_disable_rhosts
+        - sshd_disable_root_login
+        - sshd_disable_tcp_forwarding
+        - sshd_disable_x11_forwarding
+        - sshd_do_not_permit_user_env
+        - sshd_enable_pam
+        - sshd_enable_warning_banner
+        - sshd_limit_user_access
+        - sshd_set_loglevel_verbose
+        - sshd_set_max_auth_tries
+        - sshd_set_max_sessions
+        - sshd_set_maxstartups
 
     - id: Req-2.2.7
       title: '2.2.7 All non-console administrative access is encrypted using strong
@@ -303,8 +360,11 @@ controls:
         via browser-based interfaces and application programming interfaces (APIs).'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - sshd_use_approved_ciphers
+        - sshd_use_approved_macs
+        - sshd_use_strong_kex
 
   - id: Req-2.3
     title: '2.3 Wireless environments are configured and managed securely.'
@@ -387,7 +447,7 @@ controls:
         through 3.3.1.3.'
       levels:
         - base
-      status: pending
+      status: partial
       controls:
       - id: Req-3.3.1.1
         title: '3.3.1.1 The full contents of any track are not retained upon completion of the
@@ -396,8 +456,12 @@ controls:
           the track may need to be retained'
         levels:
           - base
-        status: pending
-        rules: []
+        status: partial
+        rules:
+          - coredump_disable_backtraces
+          - coredump_disable_storage
+          - disable_users_coredumps
+          - sysctl_fs_suid_dumpable
 
       - id: Req-3.3.1.2
         title: '3.3.1.2 The card verification code is not retained upon completion of the
@@ -407,8 +471,12 @@ controls:
           transactions.'
         levels:
           - base
-        status: pending
-        rules: []
+        status: partial
+        rules:
+          - coredump_disable_backtraces
+          - coredump_disable_storage
+          - disable_users_coredumps
+          - sysctl_fs_suid_dumpable
 
       - id: Req-3.3.1.3
         title: '3.3.1.3 The personal identification number (PIN) and the PIN block are not
@@ -419,8 +487,12 @@ controls:
           the authorization process.'
         levels:
           - base
-        status: pending
-        rules: []
+        status: partial
+        rules:
+          - coredump_disable_backtraces
+          - coredump_disable_storage
+          - disable_users_coredumps
+          - sysctl_fs_suid_dumpable
 
     - id: Req-3.3.2
       title: '3.3.2 SAD that is stored electronically prior to completion of authorization is
@@ -1239,6 +1311,15 @@ controls:
         - file_permissions_etc_group
         - file_permissions_etc_shadow
         - file_groupowner_etc_shadow
+        - file_groupowner_backup_etc_group
+        - file_groupowner_backup_etc_passwd
+        - file_groupowner_backup_etc_shadow
+        - file_owner_backup_etc_group
+        - file_owner_backup_etc_passwd
+        - file_owner_backup_etc_shadow
+        - file_permissions_backup_etc_group
+        - file_permissions_backup_etc_passwd
+        - file_permissions_backup_etc_shadow
 
   - id: Req-7.3
     title: '7.3 Access to system components and data is managed via an access control
@@ -1304,7 +1385,7 @@ controls:
       strictly managed throughout an account’s lifecycle.'
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: Req-8.2.1
       title: '8.2.1 All users are assigned a unique ID before access to system components or
@@ -1315,8 +1396,12 @@ controls:
         terminals).'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - account_unique_id
+        - accounts_root_gid_zero
+        - group_unique_id
+        - group_unique_name
 
     - id: Req-8.2.2
       title: '8.2.2 Group, shared, or generic accounts, or other shared authentication
@@ -1326,6 +1411,17 @@ controls:
       status: partial
       rules:
         - gid_passwd_group_same
+        - accounts_no_uid_except_zero
+
+    - id: Req-8.2.3
+      title: '8.2.3 Additional requirement for service providers only: Service providers with
+        remote access to customer premises use unique authentication factors for each customer
+        premises.'
+      levels:
+        - base
+      status: partial
+      rules:
+        - accounts_no_uid_except_zero
 
     - id: Req-8.2.4
       title: '8.2.4 Addition, deletion, and modification of user IDs, authentication factors,
@@ -1396,8 +1492,9 @@ controls:
         authenticated.'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - disable_host_auth
 
     - id: Req-8.3.2
       title: '8.3.2 Strong cryptography is used to render all authentication factors
@@ -1413,6 +1510,7 @@ controls:
         - set_password_hashing_algorithm_logindefs
         - set_password_hashing_algorithm_libuserconf
         - accounts_password_all_shadowed
+        - ensure_shadow_group_empty
 
     - id: Req-8.3.3
       title: '8.3.3 User identity is verified before modifying any authentication
@@ -1434,7 +1532,8 @@ controls:
         - accounts_passwords_pam_faillock_unlock_time
         - accounts_passwords_pam_tally2_unlock_time
         - var_accounts_passwords_pam_tally2_unlock_time=1800
-
+        - cracklib_accounts_password_pam_retry
+        
     - id: Req-8.3.5
       title: '8.3.5 If passwords/passphrases are used as authentication factors to meet
         Requirement 8.3.1, they are set and reset for each user'
@@ -1461,6 +1560,11 @@ controls:
         - accounts_password_pam_lcredit
         - no_empty_passwords
         - accounts_password_pam_minlen
+        - cracklib_accounts_password_pam_dcredit
+        - cracklib_accounts_password_pam_lcredit
+        - cracklib_accounts_password_pam_minlen
+        - cracklib_accounts_password_pam_ocredit
+        - cracklib_accounts_password_pam_ucredit
 
     - id: Req-8.3.7
       title: '8.3.7 Individuals are not allowed to submit a new password/passphrase that is
@@ -1498,6 +1602,8 @@ controls:
         - accounts_password_pam_lcredit
         - no_empty_passwords
         - accounts_password_pam_minlen
+        - accounts_minimum_age_login_defs
+        - accounts_password_warn_age_login_defs
 
     - id: Req-8.3.10.1
       title: '8.3.10.1 Additional requirement for service providers only: If
@@ -1565,15 +1671,21 @@ controls:
       is strictly managed.'
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: Req-8.6.1
       title: '8.6.1 If accounts used by systems or applications can be used for interactive
         login, they are managed as follows'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - accounts_tmout
+        - accounts_umask_etc_bashrc
+        - accounts_umask_etc_login_defs
+        - accounts_umask_etc_profile
+        - no_direct_root_logins
+        - securetty_root_login_console_only
 
     - id: Req-8.6.2
       title: '8.6.2 Passwords/passphrases for any application and system accounts that can be
@@ -1900,7 +2012,8 @@ controls:
         - base
       status: automated
       rules:
-       - service_auditd_enabled
+        - package_audit_installed
+        - service_auditd_enabled
       controls:
       - id: Req-10.2.1.1
         title: '10.2.1.1 Audit logs capture all individual user access to cardholder
@@ -1981,6 +2094,10 @@ controls:
         - audit_rules_usergroup_modification_passwd
         - audit_rules_usergroup_modification_group
         - audit_rules_usergroup_modification_shadow
+        - audit_rules_sysadmin_actions
+        - package_sudo_installed
+        - sudo_add_use_pty
+        - sudo_custom_logfile
 
       - id: Req-10.2.1.6
         title: '10.2.1.6 Audit logs capture the initialization of new audit logs, and starting,
@@ -2014,8 +2131,9 @@ controls:
       title: '10.2.2 Audit logs record the following details for each auditable event'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - audit_rules_sysadmin_actions
 
   - id: Req-10.3
     title: '10.3 Audit logs are protected from destruction and unauthorized modifications.'
@@ -2183,6 +2301,7 @@ controls:
       rules:
       - service_chronyd_or_ntpd_enabled
       - ntpd_specify_remote_server
+      - package_chrony_installed
 
     - id: Req-10.6.2
       title: '10.6.2 Systems are configured to the correct and consistent time'
