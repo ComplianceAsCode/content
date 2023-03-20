@@ -365,14 +365,10 @@ controls:
     levels:
     - intermediary
     notes: >-
-      When IPv6 is not in use, disable it. Otherwise secure the entire IPv6 as well.
+      When IPv6 is not in use, disable it, otherwise secure the IPv6 stack.
+      This control hardens the IPv6 stack, to disable it use the related rules instead.
     status: automated
     rules:
-    - sysctl_net_ipv6_conf_all_disable_ipv6
-    - sysctl_net_ipv6_conf_default_disable_ipv6
-
-    related_rules:
-    # Rules that can be useful when securing the IPv6 stack.
     # Disable support for "router solicitations"
     # net.ipv6.conf.all.router_solicitations = 0
     # net.ipv6.conf.default.router_solicitations = 0
@@ -422,6 +418,11 @@ controls:
     # net.ipv6.conf.default.max_addresses = 1
     - sysctl_net_ipv6_conf_all_max_addresses
     - sysctl_net_ipv6_conf_default_max_addresses
+
+    related_rules:
+    # Rules to select when disabling the IPv6 stack.
+    - sysctl_net_ipv6_conf_all_disable_ipv6
+    - sysctl_net_ipv6_conf_default_disable_ipv6
 
   - id: R14
     title: File system configuration options
@@ -557,10 +558,13 @@ controls:
     title: Compile options for the IP stack
     levels:
     - high
+    notes: >-
+      This control doesn't disable the IPv6 stack, to disable it select the related rule.
     status: automated
     rules:
-    - kernel_config_ipv6
     - kernel_config_syn_cookies
+    related_rules:
+    - kernel_config_ipv6
 
   - id: R23
     title: Compile options for various kernel behaviors
