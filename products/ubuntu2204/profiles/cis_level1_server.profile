@@ -230,7 +230,9 @@ selections:
     ## 2.1 Configure Time Synchronization ##
     ### 2.1.1 Ensure time synchronization is in use ###
     #### 2.1.1.1 Ensure a single time synchronization is in use (Automated)
-    - package_chrony_installed
+    - '!package_chrony_installed'
+    - '!package_ntp_installed'
+    - package_timesyncd_installed
 
     ### 2.1.2 Configure chrony ###
     #### 2.1.2.1 Ensure chrony is configured with autorized timeserver (Manual)
@@ -247,22 +249,20 @@ selections:
     # Skip due to being a manual test
 
     #### 2.1.3.2 Ensure systemd-timesyncd is enabled and running (Automated)
-    # - service_timesyncd_enabled
+    - service_timesyncd_enabled
 
     ### 2.1.4 Configure ntp ###
     #### 2.1.4.1 Ensure ntp access control is configured (Automated)
-    #- ntpd_configure_restrictions
+    - ntpd_configure_restrictions
 
     #### 2.1.4.2 Ensure ntp is configured with authorized timeserver (Manual)
     # Skip due to being a manual test
 
     #### 2.1.4.3 Ensure ntp is running as user ntp (Automated)
-    #- ntpd_run_as_ntp_user
+    - ntpd_run_as_ntp_user
 
     #### 2.1.4.4 Ensure ntp is enabled and running (Automated)
-    #- package_ntp_installed
-    #- package_chrony_removed
-    #- service_ntp_enabled
+    - service_ntp_enabled
 
     ## 2.2 Special Purpose Services ##
     ### 2.2.1 Ensure X Window System is not installed (Automated)
