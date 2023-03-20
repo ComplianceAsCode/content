@@ -4,10 +4,12 @@ prodtype: ocp4
 
 title: Ensure that the port parameter is zero
 
-{{% set custom_jqfilter = '{{.var_scheduler_argument_filter}}' %}}
-{{% set default_jqfilter = '[.data."pod.yaml"]' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-scheduler{{else}}{{.var_scheduler_filepath}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod' %}}
+{{% set default_jqfilter = '[.data."pod.yaml"]' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-scheduler' %}}
+{{% set hypershift_jqfilter = '[.items[0].spec.containers[0].args | join(" ")]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
