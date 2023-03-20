@@ -20,6 +20,8 @@ rationale: |-
 
 severity: high
 
+platform: not package[chrony] and not package[ntp]
+
 identifiers:
     cce@sle12: CCE-91659-3
     cce@sle15: CCE-91296-4
@@ -48,5 +50,3 @@ template:
     vars:
         servicename: systemd-timesyncd
         packagename: systemd
-        packagename@ubuntu2004: systemd-timesyncd
-        packagename@ubuntu2204: systemd-timesyncd
