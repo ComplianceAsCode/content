@@ -43,7 +43,9 @@
 - name: '{{{ rule_title }}} - Extract log files old format'
   ansible.builtin.shell: |
     set -o pipefail
-    grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item.1.path }}  |awk '{print $NF}'|sed -e 's/^-//' || true
+    grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item.1.path }} | \
+    awk '{print $NF}' | \
+    sed -e 's/^-//' || true
   loop: "{{ rsyslog_config_files.results | subelements('files') }}"
   register: log_files_old
   changed_when: False
@@ -51,14 +53,21 @@
 - name: '{{{ rule_title }}} - Extract log files new format'
   ansible.builtin.shell: |
     set -o pipefail
-    grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)"|grep -oE "\"([/[:alnum:][:punct:]]*)\"" |tr -d "\""|| true
+    grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | \
+    grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
+    grep -oE "\"([/[:alnum:][:punct:]]*)\"" | \
+    tr -d "\""|| true
   loop: "{{ rsyslog_config_files.results | subelements('files') }}"
   register: log_files_new
   changed_when: False
 
 - name: '{{{ rule_title }}} - Sum all log files found'
   ansible.builtin.set_fact:
-    log_files: "{{ log_files_new.results|map(attribute='stdout_lines')|list|flatten|unique + log_files_old.results|map(attribute='stdout_lines')|list|flatten|unique  }}"
+    log_files: >-
+      {{ log_files_new.results | map(attribute='stdout_lines')
+      | list | flatten | unique + log_files_old.results
+      | map(attribute='stdout_lines') | list | flatten | unique
+      }}
 
 - name: '{{{ rule_title }}} -Setup log files attribute'
   ansible.builtin.file:
