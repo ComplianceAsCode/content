@@ -77,3 +77,33 @@ controls:
       - file_permissions_efi_grub2_cfg
       - file_permissions_efi_user_cfg
       - grub2_uefi_password # only check
+
+  - id: 3.2
+    title: Software updates
+    description: >-
+      Users should apply updates from the GNOME Software application at least once per day.
+    status: manual
+  
+  - id: 3.3
+    title: Filesystem configuration
+    description: >-
+      AUTOMATIC /home (-noexec), /tmp, /var, /var/tmp and /var/log mount option configuration
+    status: partial
+    rules:
+      - mount_option_home_nodev
+      - mount_option_home_nosuid
+      - mount_option_tmp_nodev
+      - mount_option_tmp_nosuid
+      - mount_option_tmp_noexec
+      - mount_option_var_nodev
+      - mount_option_var_nosuid
+      - mount_option_var_noexec
+      - mount_option_var_tmp_nodev
+      - mount_option_var_tmp_nosuid
+      - mount_option_var_tmp_noexec
+      - mount_option_var_log_nodev
+      - mount_option_var_log_nosuid
+      - mount_option_var_log_noexec
+      - kernel_module_cramfs_disabled
+      - kernel_module_squashfs_disabled
+      - kernel_module_udf_disabled
