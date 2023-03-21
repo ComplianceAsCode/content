@@ -282,7 +282,7 @@ selections:
     - package_openldap-servers_removed
 
     ### 2.2.6 Ensure NFS is not installed (Automated)
-    # NEEDS RULE
+    - package_nfs-kernel-server_removed
 
     ### 2.2.7 Ensure DNS Server is not installed (Automated)
     - package_bind_removed
