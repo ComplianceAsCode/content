@@ -1,3 +1,8 @@
+# Offline mode disables installation of requirements.yml and schema refreshing
+# We can run parallel and runs can take long time, so avoid timeouts and failed
+# tests.
+offline: true
+
 skip_list:
   - '204' # Lines should be no longer than 160 chars
   - '301' # Commands should not change things if nothing needs doing
