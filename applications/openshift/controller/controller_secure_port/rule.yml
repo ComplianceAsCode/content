@@ -4,11 +4,14 @@ prodtype: ocp4
 
 title: 'Ensure Controller secure-port argument is set'
 
-{{% set custom_jqfilter = '{{.var_kube_controller_manager_secure_port_filter}}' %}}
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["secure-port"][]=="10257" then true else false end]' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager{{else}}{{.var_kube_controller_manager_config_filepath}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--secure-port=10257") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 
 description: |-
     To ensure the Controller Manager service is bound to secure loopback

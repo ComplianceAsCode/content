@@ -4,10 +4,12 @@ prodtype: ocp4
 
 title: 'Enable The Client Certificate Authentication'
 
-{{% set custom_jqfilter = '{{.var_etcd_argument_filter}}' %}}
-{{% set default_jqfilter = '[.data."pod.yaml"]' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Detcd{{else}}{{.var_etcd_filepath}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod' %}}
+{{% set default_jqfilter = '[.data."pod.yaml"]' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Detcd' %}}
+{{% set hypershift_jqfilter = '[.items[0].spec.containers[0].command | join(" ")]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-

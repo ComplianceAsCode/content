@@ -5,6 +5,14 @@ title: Ensure TLS v1.2 is minimum for Openshift APIServer
 description: |-
   Verify tls version for the openshift APIServer.
 
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-apiserver/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/openshift-apiserver' %}}
+{{% set hypershift_jqfilter = '.data."config.yaml"' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 rationale: |-
   Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
   protect data. The system must implement cryptographic modules adhering to the higher
@@ -29,13 +37,16 @@ severity: medium
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
-    yamlpath: ".data['config.yaml']"
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath:  '.servingInfo["minTLSVersion"]'
     values:
-      - value: "VersionTLS1[2-9]{1}"
-        operation: "pattern match"
+    - value: 'VersionTLS1[2-9]{1}'
+      operation: "pattern match"
+      type: "string"
