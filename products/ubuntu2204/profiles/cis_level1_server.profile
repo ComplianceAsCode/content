@@ -270,6 +270,7 @@ selections:
 
     ### 2.2.2 Ensure Avahi Server is not installed (Automated)
     - service_avahi-daemon_disabled
+    - package_avahi_removed
 
     ### 2.2.3 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
