@@ -8,8 +8,10 @@
       test_ref="test_logrotate_conf_daily_setting" />
       <criterion comment="check that there is no weekly/monthly/yearly keyword in logrotate.conf"
       test_ref="test_logrotate_conf_no_other_keyword" />
-      <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)"
-      test_ref="test_cron_daily_logrotate_existence" />
+      <criteria comment="Check if either logrotate timer or cron job is enabled" operator="OR">
+        <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)" test_ref="test_cron_daily_logrotate_existence" />
+        <extend_definition comment="Check if logrotate timer is being enabled" definition_ref="timer_logrotate_enabled" />
+      </criteria>
     </criteria>
   </definition>
 
