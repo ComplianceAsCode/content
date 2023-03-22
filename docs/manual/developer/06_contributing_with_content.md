@@ -341,7 +341,7 @@ A rule may contain those reference-type attributes:
     <td><p>CCI-000018,CCI-000172,CCI-001403</p></td>
     </tr>
     <tr class="odd">
-    <td><p>srg, vmmsrg, etc.</p></td>
+    <td><p>srg, etc.</p></td>
     <td><p>DISA Security Requirements Guide (catalog identifier)</p></td>
     <td><p>0-to-many</p></td>
     <td><p>SRG-OS-000003-GPOS-00004</p></td>

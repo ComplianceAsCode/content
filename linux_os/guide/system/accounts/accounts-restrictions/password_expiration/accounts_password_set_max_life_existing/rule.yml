@@ -42,7 +42,6 @@ references:
     stigid@rhel8: RHEL-08-020210
     stigid@sle12: SLES-12-010290
     stigid@sle15: SLES-15-020230
-    vmmsrg: SRG-OS-000076-VMM-000430
 
 ocil_clause: 'any results are returned that are not associated with a system account'
 
@@ -62,7 +61,7 @@ fixtext: |-
     for i in "${usrs_max_pass_age[@]}"
     do
         passwd -q -x $((var_accounts_maximum_age_login_defs)) $i
-    done    
+    done
     {{% endif %}}
 
 srg_requirement: |-

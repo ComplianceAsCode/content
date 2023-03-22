@@ -4,10 +4,12 @@ prodtype: ocp4
 
 title: 'Ensure that use-service-account-credentials is enabled'
 
-{{% set custom_jqfilter = '{{.var_kube_controller_manager_use_service_account_filter}}' %}}
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["use-service-account-credentials"][]=="true" then true else false end]' %}}
-{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager{{else}}{{.var_kube_controller_manager_config_filepath}}{{end}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-controller-manager' %}}
+{{% set hypershift_jqfilter = '[[.items[0].spec.containers[0].args[] | select(. | match("--use-service-account-credentials=true") )] | length | if . ==1 then true else false end]' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-

@@ -157,7 +157,8 @@ selections:
     - grub2_enable_apparmor
 
     #### 1.6.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)
-    # NEEDS RULE
+    - var_apparmor_mode=complain
+    - all_apparmor_profiles_in_enforce_complain_mode
 
     #### 1.6.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
     # Skip due to being Level 2
@@ -441,7 +442,9 @@ selections:
     # Skip due to being a manual test
 
     #### 3.5.2.4 Ensure a nftables table exists (Automated)
-    # NEEDS RULE
+    - var_nftables_family=inet
+    - var_nftables_table=filter
+    - set_nftables_table
 
     #### 3.5.2.5 Ensure nftables base chains exist (Automated)
     # NEEDS RULE
@@ -456,7 +459,7 @@ selections:
     # NEEDS RULE
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
-    # NEEDS RULE
+    - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
     # NEEDS RULE
@@ -469,7 +472,7 @@ selections:
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
     - service_nftables_disabled
-    - packages_nftables_removed
+    - package_nftables_removed
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
     - package_ufw_removed
@@ -778,7 +781,8 @@ selections:
     - sshd_use_approved_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
-    # NEEDS RULE
+    - sshd_strong_kex=cis_ubuntu2004
+    - sshd_use_strong_kex
 
     ### 5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)
     # Skip due to being Level 2

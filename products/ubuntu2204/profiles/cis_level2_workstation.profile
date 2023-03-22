@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'CIS Ubuntu 20.04 Level 2 Workstation Benchmark'
+title: 'CIS Ubuntu 22.04 Level 2 Workstation Benchmark'
 
 description: |-
     This baseline aligns to the Center for Internet Security
-    Ubuntu 20.04 LTS Benchmark, v1.0.0, released 07-21-2020.
+    Ubuntu 22.04 LTS Benchmark, v1.0.0, released 08-30-2022.
 
 extends: cis_level1_workstation
 

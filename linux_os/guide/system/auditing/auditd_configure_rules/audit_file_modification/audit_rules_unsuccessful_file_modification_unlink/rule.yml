@@ -24,11 +24,11 @@ description: |-
     -a always,exit -F arch=b64 -S unlink -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-delete</pre>
     {{% else %}}
     The operating system must generate audit records for all uses of the <tt>unlink</tt> system call.
-    Without generating audit records specific to the security and mission needs of the organization, it would be 
+    Without generating audit records specific to the security and mission needs of the organization, it would be
     difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
     Audit records can be generated from various components within the information system (e.g., module or policy filter).
-    Add or update the following lines to <tt>/etc/audit/rules.d/audit.rules</tt> to configure the operating system to generate 
-    an audit record for all uses of the <tt>unlink</tt> system call:  
+    Add or update the following lines to <tt>/etc/audit/rules.d/audit.rules</tt> to configure the operating system to generate
+    an audit record for all uses of the <tt>unlink</tt> system call:
     <pre>
     -a always,exit -F arch=b32 -S unlink -F auid>=1000 -F auid!=-1 -k perm_mod
     -a always,exit -F arch=b64 -S unlink -F auid>=1000 -F auid!=-1 -k perm_mod </pre>
@@ -65,7 +65,6 @@ references:
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000468-GPOS-00212
     stigid@sle12: SLES-12-020411
     stigid@sle15: SLES-15-030740
-    vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
 ocil: |-
     {{{ ocil_audit_rules_unsuccessful_file_modification("unlink", "unsuccessful-delete") | indent(4) }}}
@@ -89,7 +88,7 @@ warnings:
         <pre>
         -a always,exit -F arch=b32 -S unlink -F auid>=1000 -F auid!=4294967295 -k perm_mod
         -a always,exit -F arch=b64 -S unlink -F auid>=1000 -F auid!=4294967295 -k perm_mod</pre>
-        {{% endif %}} 
+        {{% endif %}}
 
 template:
     name: audit_rules_unsuccessful_file_modification

@@ -34,8 +34,6 @@ SSG_REF_URIS = {
     'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
     # The following reference URIs were not defined in the XSLT constants
     'ism': '',
-    'vmmsrg': '',
-    'vsrg': '',  # From the references, it looks like vsrg and vmmsrg are meant to be the same
 }
 
 product_directories = [
@@ -86,7 +84,7 @@ kubernetes_system = "urn:xccdf:fix:script:kubernetes"
 blueprint_system = "urn:redhat:osbuild:blueprint"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
-cce_uri = "https://nvd.nist.gov/cce/index.cfm"
+cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
@@ -457,7 +455,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 }
 
 # References that can not be used with product-qualifiers
-GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
+GLOBAL_REFERENCES = ("srg", "disa", "cis-csc",)
 
 # Application constants
 DEFAULT_GID_MIN = 1000

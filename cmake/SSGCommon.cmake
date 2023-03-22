@@ -259,7 +259,7 @@ endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks_from_templates")
-    set(OVAL_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
+    set(OVAL_COMBINE_PATHS "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --include-benchmark --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" --build-ovals-dir "${CMAKE_CURRENT_BINARY_DIR}/checks/oval" ${OVAL_COMBINE_PATHS}
@@ -270,6 +270,20 @@ macro(ssg_build_oval_unlinked PRODUCT)
     add_custom_target(
         generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+    )
+endmacro()
+
+macro(ssg_build_cpe_oval_unlinked PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml" --build-ovals-dir "${CMAKE_CURRENT_BINARY_DIR}/checks/oval" "${CMAKE_CURRENT_BINARY_DIR}/checks_from_templates/cpe-oval" "${SSG_SHARED}/checks/oval" "${SSG_SHARED}/applicability/oval"
+        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml"
+        DEPENDS generate-internal-templated-content-${PRODUCT}
+        COMMENT "[${PRODUCT}-content] generating cpe-oval-unlinked.xml"
+    )
+    add_custom_target(
+        generate-internal-${PRODUCT}-cpe-oval-unlinked.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml"
     )
 endmacro()
 
@@ -327,11 +341,11 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/cpe_generate.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/cpe_generate.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         DEPENDS generate-${PRODUCT}-xccdf-oval-ocil
-        DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
+        DEPENDS generate-internal-${PRODUCT}-cpe-oval-unlinked.xml
         DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
     )
@@ -522,7 +536,7 @@ macro(ssg_build_sds PRODUCT)
         set_tests_properties("missing-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
 
     endif()
-    if(("${PRODUCT}" MATCHES "ubuntu2004" OR "${PRODUCT}" MATCHES "rhel8") AND SSG_SCE_ENABLED)
+    if(("${PRODUCT}" MATCHES "ubuntu2" OR "${PRODUCT}" MATCHES "rhel8") AND SSG_SCE_ENABLED)
         add_test(
             NAME "ds-sce-${PRODUCT}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/test_ds_sce.py" "${CMAKE_BINARY_DIR}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -687,6 +701,7 @@ macro(ssg_build_product PRODUCT)
         )
     endif()
     ssg_build_oval_unlinked(${PRODUCT})
+    ssg_build_cpe_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})

@@ -116,6 +116,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON"
         run: |-
           ./build_product \
               ubuntu2004 \

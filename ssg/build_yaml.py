@@ -12,7 +12,7 @@ import glob
 
 
 import ssg.build_remediations
-from .build_cpe import CPEALLogicalTest, CPEALFactRef, ProductCPEs
+from .build_cpe import CPEALLogicalTest, CPEALCheckFactRef, ProductCPEs
 from .constants import (XCCDF12_NS,
                         OSCAP_BENCHMARK,
                         OSCAP_GROUP,
@@ -1530,7 +1530,7 @@ class Platform(XCCDFEntity):
         cpe_platform.set('id', self.name)
         # In case the platform contains only single CPE name, fake the logical test
         # we have to adhere to CPE specification
-        if isinstance(self.test, CPEALFactRef):
+        if isinstance(self.test, CPEALCheckFactRef):
             cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
             cpe_test.set('operator', 'AND')
             cpe_test.set('negate', 'false')
