@@ -3,7 +3,7 @@
     {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
     <criteria operator="AND">
       <extend_definition comment="check /etc/system-fips exists" definition_ref="etc_system_fips_exists" />
-      <extend_definition comment="check sysctl crypto.fips_enabled = 1" definition_ref="proc_sys_crypto_fips_enabled" />
+      <extend_definition comment="check sysctl crypto.fips_enabled = 1" definition_ref="sysctl_crypto_fips_enabled" />
       <extend_definition comment="system cryptography policy is configured" definition_ref="configure_crypto_policy" />
       <criterion comment="check if system crypto policy selection in var_system_crypto_policy in the profile is set to FIPS" test_ref="test_system_crypto_policy_value" />
     </criteria>

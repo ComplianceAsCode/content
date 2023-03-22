@@ -425,9 +425,10 @@ class OVALBuilder:
             (os.path.dirname(os.path.dirname(file_path))))
         self._store_intermediate_file(rule_id, xml_content)
         if not _check_rule_id(oval_file_tree, rule_id):
-            msg = "OVAL definition in '%s' doesn't match rule ID '%s'." % (
+            msg = "ERROR: OVAL definition in '%s' doesn't match rule ID '%s'." % (
                 file_path, rule_id)
             print(msg, file=sys.stderr)
+            sys.exit(1)
 
     def _get_context(self, directory, from_benchmark):
         if from_benchmark:
