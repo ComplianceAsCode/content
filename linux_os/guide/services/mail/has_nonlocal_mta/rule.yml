@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure Mail Transfer Agent is not Listening on any non-loopback Address'
+
+description: |-
+    Mail Transfer Agents (MTA), such as sendmail and Postfix, are used to
+    listen for incoming mail and transfer the messages to the appropriate
+    user or mail server. If the system is not intended to be a mail server,
+    it is recommended that the MTA be configured to only process local mail.
+
+rationale: |-
+    The software for all Mail Transfer Agents is complex and most have a
+    long history of security issues. While it is important to ensure that
+    the system can process local mail messages, it is not necessary to have
+    the MTA's daemon listening on a port unless the server is intended to
+    be a mail server that receives and processes mail from other systems.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 2.2.15
+    cis@ubuntu2204: 2.2.15
+
+ocil_clause: 'MTA is listening on any non-loopback address'
+
+ocil: |-
+    Run the following command to verify that the MTA is not listening on
+    any non-loopback address (127.0.0.1 or ::1).
+    <pre># ss -lntu | grep -E ':25\s' | grep -E -v '\s(127.0.0.1|::1):25\s'</pre>
+    Nothing should be returned
