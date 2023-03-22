@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Install GNOME software'
+
+description: |-
+    {{{ describe_package_install(package="gnome-software") }}}
+
+rationale: 'The GNOME software package must be installed so that it can be used for software and firmware updates.'
+
+severity: medium
+
+references:
+    cusp_fedora: 3.2
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="gnome-software") }}}'
+
+fixtext: |-
+    {{{ describe_package_install("gnome-software") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: gnome-software

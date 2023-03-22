@@ -82,7 +82,9 @@ controls:
     title: Software updates
     description: >-
       Users should apply updates from the GNOME Software application at least once per day.
-    status: manual
+    status: partial
+    rules:
+      - package_gnome_software_installed
   
   - id: 3.3
     title: Filesystem configuration
