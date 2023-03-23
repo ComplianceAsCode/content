@@ -16,6 +16,8 @@ selections:
     -  sshd_strong_kex=default
     -  sshd_approved_macs=cis_sle15
     -  sshd_approved_ciphers=cis_sle15 
+    -  var_multiple_time_servers=suse
+    -  var_multiple_time_pools=suse      
     -  '!service_ntp_enabled'
     -  '!service_ntpd_enabled'
     -  '!service_timesyncd_enabled'

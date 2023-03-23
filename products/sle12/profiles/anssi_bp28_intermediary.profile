@@ -22,4 +22,6 @@ description: |-
     Manual review is required to assess if the installed services are minimal.
 
 selections:
-    - anssi:all:intermediary
+  - anssi:all:intermediary
+  - var_multiple_time_servers=suse
+  - var_multiple_time_pools=suse  

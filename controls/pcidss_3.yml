@@ -2020,10 +2020,12 @@ controls:
     status: automated
     rules:
       - var_multiple_time_servers=suse
+      - var_multiple_time_pools=suse
       - ntpd_specify_remote_server
       - ntpd_specify_multiple_servers
       - chronyd_specify_remote_server
       - chronyd_or_ntpd_specify_multiple_servers
+      - chronyd_configures_time_sources
 
 - id: Req-10.5
   title: 10.5 Secure audit trails so they cannot be altered.
