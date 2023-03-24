@@ -624,3 +624,14 @@ To execute:
 ```bash
 $ ./utils/controlrefcheck.py rhel9 cis_rhel9 cis
 ```
+
+### Ensure Files Follow EOF Style - `utils/check_eof.py`
+
+This script checks files of specific extensions (see `EXTENSIONS` in the script for the full list) to ensure that the files end with new line as required by the [style guide](https://complianceascode.readthedocs.io/en/latest/manual/developer/04_style_guide.html).
+This script can be used to fix files that don't have a newline at the end if the `--fix` flag is passed to the script.
+By default, the script just outputs a list of files are non-compliant.
+
+ To execute:
+ ```bash
+ $ ./utils/check_eof.py ssg linux_os utils tests products shared docs apple_os applications build-scripts cmake Dockerfiles
+ ```
