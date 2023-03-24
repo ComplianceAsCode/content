@@ -21,6 +21,7 @@ from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml, is_rule_dir
 from ssg.rule_yaml import parse_prodtype
+from ssg.utils import mkdir_p
 from ssg_test_suite.log import LogHelper
 
 import ssg.templates
@@ -346,7 +347,7 @@ def create_tarball(test_content_by_rule_id):
     for rule_id, test_content in test_content_by_rule_id.items():
         short_rule_id = rule_id.replace(OSCAP_RULE, "")
         rule_dir = os.path.join(tmpdir, short_rule_id)
-        os.mkdir(rule_dir)
+        mkdir_p(rule_dir)
         write_rule_test_content_to_dir(rule_dir, test_content)
 
     try:
@@ -434,7 +435,7 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
         msg = (
             "Test directory configuration contain inconsistencies: {allowed_and_denied} "
             "scenarios are both allowed and denied."
-            .format(test_dir_config=test_dir_config, allowed_and_denied=allowed_and_denied)
+            .format(allowed_and_denied=allowed_and_denied)
         )
         raise ValueError(msg)
     return available_scenarios_basenames

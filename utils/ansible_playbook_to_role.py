@@ -16,7 +16,7 @@ import yaml
 import collections
 
 try:
-    from github import Github, InputGitAuthor
+    from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
     sys.stderr.write("Please install PyGithub, on Fedora it's in the "
                      "python-PyGithub package.\n")
@@ -25,6 +25,7 @@ except ImportError:
 
 import ssg.ansible
 import ssg.yaml
+from ssg.utils import mkdir_p
 
 
 def memoize(f):
@@ -263,7 +264,7 @@ class PlaybookToRoleConverter():
         if platform in PRODUCT_ALLOWLIST:
             # For RHEL, we can get what version
             if 'rhel' in platform:
-                return platform[len(platform)-1]
+                return platform[-1]
             return "7\n    - 8"
         return "TBD"
 
@@ -394,7 +395,7 @@ class PlaybookToRoleConverter():
         print("Converting Ansible Playbook {} to Ansible Role {}".format(self._local_playbook_filename, os.path.join(directory, self.name)))
         for filename in self.PRODUCED_FILES:
             abs_path = os.path.join(directory, self.name, filename)
-            ssg.utils.mkdir_p(os.path.dirname(abs_path))
+            mkdir_p(os.path.dirname(abs_path))
             open(abs_path, 'wb').write(self.file(filename).encode("utf-8"))
 
 

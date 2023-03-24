@@ -325,11 +325,16 @@ def write_list_file(path, contents):
 
 # Taken from https://stackoverflow.com/a/600612/592892
 def mkdir_p(path):
+    if os.path.isdir(path):
+        return False
+    # Python >=3.4.1
+    # os.makedirs(path, exist_ok=True)
     try:
         os.makedirs(path)
+        return True
     except OSError as exc:  # Python >2.5
         if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
+            return False
         else:
             raise
 
@@ -339,7 +344,7 @@ def escape_regex(text):
     # In python 3.7 the set of charaters escaped by re.escape is reasonable, so lets mimic it.
     # See https://docs.python.org/3/library/re.html#re.sub
     # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
-    return re.sub(r"([#$&*+-.^`|~:()])", r"\\\1", text)
+    return re.sub(r"([#$&*+.^`|~:()-])", r"\\\1", text)
 
 
 def escape_id(text):

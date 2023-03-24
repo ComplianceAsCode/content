@@ -68,8 +68,6 @@ def test_parse_from_file_with_jinja():
 def test_process_fix(env_yaml, cpe_platforms):
     remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
 
-    fixes = {}
-
     remediation_obj = remediation_cls(rhel_bash)
     result = sbr.process(remediation_obj, env_yaml, cpe_platforms)
 

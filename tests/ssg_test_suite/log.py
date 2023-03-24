@@ -4,6 +4,9 @@ import os
 import os.path
 import sys
 
+from ssg.utils import mkdir_p
+
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
@@ -49,8 +52,8 @@ class LogHelper(object):
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(cls.FORMATTER)
         console_handler.setLevel(level)
-        print('Setting console output to log level {0}'.format(level,
-                                                               sys.stderr))
+        print('Setting console output to log level {0}'.format(level),
+              file=sys.stderr)
         logger.addHandler(console_handler)
 
     @classmethod
@@ -59,7 +62,7 @@ class LogHelper(object):
 
         Also sets LOG_DIR and LOG_FILE
         """
-        os.makedirs(_dirname)
+        mkdir_p(_dirname)
         logfile = os.path.join(_dirname, 'test_suite.log')
 
         file_handler = logging.FileHandler(logfile)

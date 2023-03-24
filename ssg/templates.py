@@ -8,6 +8,7 @@ import glob
 from collections import namedtuple
 
 import ssg.utils
+from ssg.utils import mkdir_p
 import ssg.yaml
 import ssg.jinja
 import ssg.build_yaml
@@ -287,8 +288,7 @@ class Builder(object):
         writing the output to the correct build directories.
         """
         for dir_ in self.output_dirs.values():
-            if not os.path.exists(dir_):
-                os.makedirs(dir_)
+            mkdir_p(dir_)
 
         self.build_extra_ovals()
         self.build_all_rules()

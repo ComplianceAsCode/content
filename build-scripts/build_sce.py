@@ -28,12 +28,12 @@ will fail to interpret (thinking it is XML)!
 
 from __future__ import print_function
 
-import os
 import argparse
 
 import ssg.build_sce
 import ssg.environment
 import ssg.templates
+from ssg.utils import mkdir_p
 
 
 def parse_args():
@@ -66,8 +66,7 @@ if __name__ == "__main__":
     args = parse_args()
 
     # Create output directory if it doesn't yet exist.
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
+    mkdir_p(args.output)
 
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)

@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 
 import difflib
-import os
 import re
 import sys
 import xml.etree.ElementTree as ET
 
 import ssg.xml
 from ssg.constants import FIX_TYPE_TO_SYSTEM, XCCDF12_NS
+from ssg.utils import mkdir_p
 
 
 class StandardContentDiffer(object):
@@ -34,12 +34,11 @@ class StandardContentDiffer(object):
             self._ensure_output_dir_exists()
 
     def _ensure_output_dir_exists(self):
-        if os.path.exists(self.output_dir):
-            if not os.path.isdir(self.output_dir):
-                print("Output path '%s' exists and it is not a directory." % self.output_dir)
-                sys.exit(1)
-        else:
-            os.mkdir(self.output_dir)
+        try:
+            mkdir_p(self.output_dir)
+        except OSError:
+            print("Output path '%s' exists and it is not a directory." % self.output_dir)
+            sys.exit(1)
 
     def output_diff(self, identifier, diff, mode="a"):
         if not diff:
@@ -90,7 +89,7 @@ class StandardContentDiffer(object):
         for remediation_type in FIX_TYPE_TO_SYSTEM.keys():
             self.compare_remediations(old_rule, new_rule, remediation_type, identifier)
 
-    def _get_list_of_platforms(self, cpe_platforms):
+    def _get_list_of_platforms(self, cpe_platforms, idref):
         cpe_list = []
         if len(cpe_platforms) == 0:
             print("Platform {0} not defined in platform specification".format(idref))
@@ -121,7 +120,7 @@ class StandardContentDiffer(object):
                 idref = platform.get("idref")
                 if idref.startswith("#"):
                     cpe_platforms = entry["benchmark"].find_all_cpe_platforms(idref)
-                    entry["cpe"] += self._get_list_of_platforms(cpe_platforms)
+                    entry["cpe"] += self._get_list_of_platforms(cpe_platforms, idref)
                 else:
                     entry["cpe"].append(idref)
 

@@ -340,7 +340,7 @@ class Benchmark(XCCDFEntity):
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set(
             'xsi:schemaLocation',
-            'http://checklists.nist.gov/xccdf/1.2 xccdf-1.2.4.xsd')
+            'http://checklists.nist.gov/xccdf/1.2 xccdf-1.2.xsd')
         root.set('style', 'SCAP_1.2')
         root.set('resolved', 'true')
         root.set('xml:lang', 'en-US')

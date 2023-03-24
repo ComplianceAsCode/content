@@ -252,12 +252,12 @@ def main():
                 # in a list
                 ref_href_list = [ref.get("href") for ref in refs]
                 # print warning if rule does not have a NIST reference
-                if (not nist_ref_href in ref_href_list) and options.rules_without_nistrefs:
+                if (nist_ref_href not in ref_href_list) and options.rules_without_nistrefs:
                     print("ERROR: No valid NIST reference in XCCDF Rule: " +
                           rule.get("id"))
                     exit_value = 1
                 # print warning if rule does not have a DISA reference
-                if (not disa_ref_href in ref_href_list) and options.rules_without_disarefs:
+                if (disa_ref_href not in ref_href_list) and options.rules_without_disarefs:
                     print("ERROR: No valid DISA CCI reference in XCCDF Rule: " +
                           rule.get("id"))
                     exit_value = 1

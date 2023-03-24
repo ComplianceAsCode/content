@@ -18,6 +18,7 @@ from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
 from . import utils
+from .utils import mkdir_p
 from .xml import ElementTree, oval_generated_header
 
 
@@ -289,11 +290,6 @@ def _check_rule_id(oval_file_tree, rule_id):
     return False
 
 
-def _create_output_directory(directory_path=None):
-    if directory_path and not os.path.exists(directory_path):
-        os.makedirs(directory_path)
-
-
 def _list_full_paths(directory):
     full_paths = [os.path.join(directory, x) for x in os.listdir(directory)]
     return sorted(full_paths)
@@ -313,7 +309,8 @@ class OVALBuilder:
         self.product = utils.required_key(env_yaml, "product")
 
     def build_shorthand(self, include_benchmark):
-        _create_output_directory(self.build_ovals_dir)
+        if self.build_ovals_dir:
+            mkdir_p(self.build_ovals_dir)
         all_checks = []
         if include_benchmark:
             all_checks += self._get_checks_from_benchmark()
