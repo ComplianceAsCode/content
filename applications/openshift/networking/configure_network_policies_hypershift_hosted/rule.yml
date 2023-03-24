@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure that HyperShift Hosted Namespaces have Network Policies defined.'
+
+{{% set default_jqfilter = '[.items[] | .metadata.name]' %}}
+{{% set default_api_path = '/apis/networking.k8s.io/v1/namespaces/networkpolicies' %}}
+{{% set hypershift_path = '/apis/networking.k8s.io/v1/namespaces/clusters-{{.hypershift_cluster}}/networkpolicies' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ default_jqfilter %}}
+
+description: |-
+    Use network policies to isolate traffic in your cluster network.
+
+rationale: |-
+    Running different applications on the same Kubernetes cluster creates a risk of one
+    compromised application attacking a neighboring application. Network segmentation is
+    important to ensure that containers can communicate only with those they are supposed
+    to. When a network policy is introduced to a given namespace, all traffic not allowed
+    by the policy is denied. However, if there are no network policies in a namespace all
+    traffic will be allowed into and out of the pods in that namespace.
+
+severity: high
+
+identifiers:
+  cce@ocp4: CCE-86104-7
+
+references:
+    cis@ocp4: 5.3.2
+    pcidss: Req-1.1.4,Req-1.2,Req-1.2.1,Req-1.3.1,Req-1.3.2,Req-2.2
+
+platform: ocp4-on-hypershift
+
+ocil_clause: 'Hosted Control Plane namespace Network Policies needs review'
+
+ocil: |-
+    Verify that the HyperShift hosted control plane namespace has an appropriate
+    NetworkPolicy.
+    To get NetworkPolicy for hosted control plane namespace run the following command:
+    <pre>$ oc get networkpolicies -n clusters-{{.hypershift_cluster}} -o yaml</pre>
+    Make sure that the namespaces displayed in the commands of the commands match.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({hypershift_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "at_least_one_exists"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"

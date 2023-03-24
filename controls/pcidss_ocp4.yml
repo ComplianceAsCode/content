@@ -83,6 +83,7 @@ controls:
     rules:
       - configure_network_policies
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.1.5
     title: 1.1.5 Description of groups, roles, and responsibilities for management of
@@ -150,6 +151,7 @@ controls:
     status: partial
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.2.2
     title: 1.2.2 Secure and synchronize router configuration files.
@@ -200,6 +202,7 @@ controls:
     # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.3.2
     title: 1.3.2 Limit inbound Internet traffic to IP addresses within the DMZ.
@@ -214,6 +217,7 @@ controls:
     # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.3.3
     title: >-
@@ -278,6 +282,7 @@ controls:
     # TODO(jaosorior): Add rules to check for egress policies and ingress configurations
     rules:
       - configure_network_policies_namespaces
+      - configure_network_policies_hypershift_hosted
 
   - id: Req-1.3.7
     title: >-
@@ -2583,6 +2588,7 @@ controls:
     status: automated
     rules:
       - audit_log_forwarding_enabled
+      - audit_log_forwarding_webhook
       - partition_for_var_log_kube_apiserver
       - partition_for_var_log_oauth_apiserver
       - partition_for_var_log_openshift_apiserver
@@ -2600,6 +2606,7 @@ controls:
     status: automated
     rules:
       - audit_log_forwarding_enabled
+      - audit_log_forwarding_webhook
       - partition_for_var_log_kube_apiserver
       - partition_for_var_log_oauth_apiserver
       - partition_for_var_log_openshift_apiserver

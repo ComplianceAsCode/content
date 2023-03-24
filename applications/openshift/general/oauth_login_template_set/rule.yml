@@ -2,6 +2,14 @@ prodtype: ocp4
 
 title: Ensure that the OpenShift OAuth login template is set
 
+{{% set default_jqfilter = '.spec' %}}
+{{% set default_api_path = '/apis/config.openshift.io/v1/oauths/cluster' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_jqfilter = '.spec.configuration.oauth' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
   A legal notice can be configured via a customized login template.
   <br/>
@@ -27,14 +35,14 @@ references:
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /apis/config.openshift.io/v1/oauths/cluster
-    yamlpath: ".spec.templates.login.name"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: ".templates.login.name"
     values:
     - value: ".+"
       operation: "pattern match"

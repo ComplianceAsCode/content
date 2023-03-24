@@ -85,6 +85,7 @@ selections:
     - openshift_api_server_audit_log_path
   # 1.2.23 Ensure that the audit logs are forwarded off the cluster for retention
     - audit_log_forwarding_enabled
+    - audit_log_forwarding_webhook
   # 1.2.24 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate
     - api_server_audit_log_maxbackup
     - ocp_api_server_audit_log_maxbackup
@@ -245,6 +246,7 @@ selections:
     - configure_network_policies
   # 5.3.2 Ensure that all Namespaces have Network Policies defined
     - configure_network_policies_namespaces
+    - configure_network_policies_hypershift_hosted
   #### 5.4 Secrets Management
   # 5.4.1 Prefer using secrets as files over secrets as environment variables (info)
     - secrets_no_environment_variables

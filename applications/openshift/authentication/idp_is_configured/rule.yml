@@ -1,5 +1,13 @@
 prodtype: ocp4
 
+{{% set default_jqfilter = '.spec' %}}
+{{% set default_api_path = '/apis/config.openshift.io/v1/oauths/cluster' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_jqfilter = '.spec.configuration.oauth' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 title: "Configure An Identity Provider"
 
 # NOTE(jaosorior): this required a remediation that's written in go as opposed
@@ -73,7 +81,7 @@ severity: medium
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 # NOTE(jaosorior): Here we're testing that ANYTHING has been set in
 # the identityProvidres section. We only care that it has been
@@ -82,8 +90,8 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: 'true'
-    filepath: /apis/config.openshift.io/v1/oauths/cluster
-    yamlpath: ".spec.identityProviders[:].type"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: ".identityProviders[:].type"
     entity_check: "at least one"
     values:
     - value: ".*"
