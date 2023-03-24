@@ -217,25 +217,22 @@ selections:
     ## 2.2 Special Purpose Services ##
     ### 2.2.1 Time Synchronization ###
     #### 2.2.1.1 Ensure time synchronization is in use (Automated)
-    # Needs variable: var_time_synchronization_daemon=chrony
+    - '!package_ntp_installed'
+    - '!package_timesyncd_installed'
     - package_chrony_installed
-    # Needs rule: package_ntp_removed
-    - service_chronyd_enabled
 
     #### 2.2.1.2 Ensure systemd-timesyncd is configured (Manual)
-    # Needs rule: package_chrony_removed
-    # Needs rule: package_ntp_removed
-    # '!package_timesyncd_installed'
-    # '!service_timesyncd_enabled'
+    - service_timesyncd_enabled
 
     #### 2.2.1.3 Ensure chrony is configured (Automated)
+    - service_chronyd_enabled
     - chronyd_run_as_chrony_user
     - chronyd_specify_remote_server
 
     #### 2.2.1.4 Ensure ntp is configured (Automated)
-    - package_ntp_installed
-    # Needs rule: package_chrony_removed
     - service_ntp_enabled
+    - ntpd_configure_restrictions
+    - ntpd_run_as_ntp_user
 
     ### 2.2.2 Ensure X Window System is not installed (Automated)
     - package_xorg-x11-server-common_removed
