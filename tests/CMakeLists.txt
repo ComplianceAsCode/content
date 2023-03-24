@@ -159,12 +159,18 @@ if (PY_YAMLPATH)
     set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 endif()
 
-if (PY_MYPY)
-    add_test(
-        NAME "test-mypy"
-        COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py"
-    )
-endif()
+macro(mypy_test SCRIPT)
+    if (PY_MYPY)
+        add_test(
+            NAME "test-mypy-${SCRIPT}"
+            COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/${SCRIPT}"
+        )
+        set_tests_properties("test-mypy-${SCRIPT}" PROPERTIES LABELS quick)
+        set_tests_properties("test-mypy-${SCRIPT}" PROPERTIES LABELS mypy)
+    endif()
+endmacro()
+
+mypy_test("utils/import_srg_spreadsheet.py")
 
 if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
