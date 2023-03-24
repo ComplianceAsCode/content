@@ -863,7 +863,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_file_permissions(file, perms) -%}}
     To check the permissions of <code>{{{ file }}}</code>,
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     you'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
     Then,
@@ -900,7 +900,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_file_owner(file, owner) -%}}
     To check the ownership of <code>{{{ file }}}</code>,
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     you'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
     Then,
@@ -937,7 +937,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_file_group_owner(file, group) -%}}
     To check the group ownership of <code>{{{ file }}}</code>,
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     you'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
     Then,

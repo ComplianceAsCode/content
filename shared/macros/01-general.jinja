@@ -824,7 +824,7 @@ substituting the correct package management software.
 
 #}}
 {{% macro partition_description(part) -%}}
-    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    {{% if product in ["ocp4", "rhcos4"] -%}}
     <p>
     Partitioning Red Hat CoreOS is a Day 1 operation and cannot
     be changed afterwards. For documentation on how to add a
