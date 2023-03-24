@@ -2,7 +2,6 @@
 import argparse
 import os
 import pathlib
-import sys
 
 EXTENSIONS = ['yml', 'yaml', 'md', 'py', 'rst', 'adoc']
 
@@ -17,21 +16,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def get_files(path: pathlib.Path) -> list[pathlib.Path]:
+def get_files(path: pathlib.Path) -> list:
     files = list()
     for ext in EXTENSIONS:
         files.extend(list(path.glob(f"**/*.{ext}")))
     return files
 
 
-def get_all_files(paths: list) -> list[pathlib.Path]:
+def get_all_files(paths: list) -> list:
     files = list()
     for path in paths:
         files.extend(get_files(pathlib.Path(path)))
     return files
 
 
-def get_files_with_no_newline(files: list[pathlib.Path]) -> list[pathlib.Path]:
+def get_files_with_no_newline(files: list) -> list:
     bad_files = list()
     for file in files:
         with open(file.absolute(), 'rb') as f:
