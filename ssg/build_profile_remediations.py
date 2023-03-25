@@ -7,6 +7,7 @@ from collections import namedtuple
 
 from .ansible import (
     add_minimum_version,
+    remove_too_many_blank_lines,
     remove_trailing_whitespace,
     strip_eof,
 )
@@ -137,6 +138,7 @@ def builder(queue):
             if extension == "yml" and \
                template == "urn:xccdf:fix:script:ansible":
                 src = add_minimum_version(src)
+                src = remove_too_many_blank_lines(src)
                 src = remove_trailing_whitespace(src)
                 src = strip_eof(src)
             with open(path, "wb") as _file:
