@@ -1,5 +1,8 @@
 #!/bin/bash
 # packages = nfs-utils
+#   This test fails under podman as there seems to be problems setupping nfs
+#   server, nfsd kernel module might not be loaded and so on
+# skip_test_env = podman-based
 
 mkdir -p /tmp/testdir/testdir2
 mkdir /tmp/testmount
