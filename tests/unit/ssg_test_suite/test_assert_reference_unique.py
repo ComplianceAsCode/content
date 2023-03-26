@@ -4,7 +4,12 @@ import subprocess
 import sys
 
 if sys.version_info < (3, 0):
-    pytest.skip("requires python3", allow_module_level=True)
+    try:
+        # pytest v4.6 has allow_module_level
+        pytest.skip("requires python3", allow_module_level=True)
+    except TypeError:
+        # older pytest v2.7 does not have it and it is implied
+        pytest.skip("requires python3")
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 CMD = os.path.abspath(
