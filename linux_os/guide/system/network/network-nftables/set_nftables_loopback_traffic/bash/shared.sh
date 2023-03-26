@@ -2,7 +2,7 @@
 
 # Implement the loopback rules:
 nft add rule inet filter input iif lo accept
-nft create rule inet filter input ip saddr 127.0.0.0/8 counter drop
+nft insert rule inet filter input ip saddr 127.0.0.0/8 counter drop
 
 # Check IPv6 is disabled, if false implement IPv6 loopback rules
 [ -n "$passing" ] && passing=""
