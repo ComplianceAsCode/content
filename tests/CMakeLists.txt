@@ -224,7 +224,7 @@ add_test(
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
 endif()
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE)
+if (PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 add_test(
     NAME "test-generate_contributors"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
