@@ -22,6 +22,16 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.con
   fi
 done
 
+#
+# Set sysctl config file which to save the desired value
+#
+{{% if product in [ "sle12", "sle15"] %}}
+SYSCONFIG_VAR="{{{ SYSCTLVAR }}}"
+SYSCONFIG_FILE=/etc/sysctl.d/"${SYSCONFIG_VAR//./_}".conf
+{{% else %}}
+SYSCONFIG_FILE="/etc/sysctl.conf"
+{{% endif %}}
+
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
 {{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
 
@@ -34,7 +44,11 @@ done
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
 #	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
 #
-{{{ bash_replace_or_append('/etc/sysctl.conf', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
+{{% if product in [ "sle12", "sle15"] %}}
+sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
+{{% endif %}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
+
 {{%- else %}}
 
 #
@@ -46,5 +60,8 @@ done
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
 #	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
 #
-{{{ bash_replace_or_append('/etc/sysctl.conf', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}
+{{% if product in [ "sle12", "sle15"] %}}
+sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
+{{% endif %}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}
 {{%- endif %}}
