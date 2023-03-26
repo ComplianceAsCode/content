@@ -1,6 +1,10 @@
 import os
 import pytest
 import subprocess
+import sys
+
+if sys.version_info < (3, 0):
+    pytest.skip("requires python3", allow_module_level=True)
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 CMD = os.path.abspath(
