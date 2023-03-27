@@ -3,12 +3,6 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-{{% if product in ["sle12", "sle15"] %}}
-if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/50-blacklist.conf ; then
-        echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/50-blacklist.conf
-        echo "blacklist {{{ KERNMODULE }}}" >> /etc/modprobe.d/50-blacklist.conf
-fi
-{{% else %}}
 if LC_ALL=C grep -q -m 1 "^install {{{ KERNMODULE }}}" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
 	{{% if '#' in KERNMODULE %}}
 	{{{ raise("KERNMODULE (" + KERNMODULE + ") uses sed path separator (#) in " + rule_id) }}}
@@ -18,9 +12,8 @@ else
 	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 	echo "install {{{ KERNMODULE }}} /bin/true" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 fi
-{{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
+{{% if product in ["ol7", "ol8", "sle12", "sle15"] or 'rhel' in product %}}
 if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
 	echo "blacklist {{{ KERNMODULE }}}" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 fi
-{{% endif %}}
 {{% endif %}}

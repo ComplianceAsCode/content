@@ -3,10 +3,7 @@
   id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
-      {{% if product in ["sle12", "sle15"] %}}
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
-      comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
-      {{% elif product in ["ol7", "ol8", "rhcos4"] or 'rhel' in product %}}
+      {{% if product in ["ol7", "ol8", "rhcos4", "sle12", "sle15"] or 'rhel' in product %}}
       <criteria operator="AND">
         <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
         comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
@@ -24,7 +21,6 @@
     </criteria>
   </definition>
 
-{{% if product not in ["sle12", "sle15"] %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_disabled" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} disabled">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_disabled" />
@@ -47,7 +43,6 @@
     <value>/usr/lib/modprobe.d</value>
     <value>/usr/lib/modules-load.d</value>
   </constant_variable>
-{{% endif %}}
 
 {{% if product in ["ol7", "ol8", "rhcos4", "sle12", "sle15"]  or 'rhel' in product %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
@@ -57,12 +52,8 @@
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_blacklisted"
   version="1" comment="kernel module {{{ KERNMODULE }}} blacklisted">
-    {{% if product in ["sle12", "sle15"] %}}
-    <ind:filepath>/etc/modprobe.d/50-blacklist.conf</ind:filepath>
-    {{% else %}}
     <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one" />
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    {{% endif %}}
     <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

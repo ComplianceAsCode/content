@@ -3,26 +3,17 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-{{% if product in ["sle12", "sle15"] %}}
-- name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
-  lineinfile:
-    create: yes
-    dest: "/etc/modprobe.d/50-blacklist.conf"
-    regexp: '^blacklist {{{ KERNMODULE }}}$'
-    line: "blacklist {{{ KERNMODULE }}}"
-{{% else %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
   lineinfile:
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
     regexp: 'install\s+{{{ KERNMODULE }}}'
     line: "install {{{ KERNMODULE }}} /bin/true"
-{{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
+{{% if product in ["ol7", "ol8", "sle12", "sle15"] or 'rhel' in product %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is blacklisted
   lineinfile:
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
     regexp: '^blacklist {{{ KERNMODULE }}}$'
     line: "blacklist {{{ KERNMODULE }}}"
-{{% endif %}}
 {{% endif %}}
