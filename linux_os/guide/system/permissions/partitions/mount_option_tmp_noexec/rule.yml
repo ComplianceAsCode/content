@@ -49,14 +49,13 @@ references:
     stigid@ol8: OL08-00-040125
     stigid@rhel8: RHEL-08-040125
 
-platform: machine and partition-tmp
+platform: machine
 
 template:
     name: mount_option
     vars:
         mountpoint: /tmp
         mountoption: noexec
-        mount_has_to_exist: 'yes'
 # Note that /tmp on RHEL systems is not tmpfs
 
 fixtext: |-

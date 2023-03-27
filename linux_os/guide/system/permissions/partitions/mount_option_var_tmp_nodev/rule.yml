@@ -44,14 +44,13 @@ references:
     stigid@rhel8: RHEL-08-040132
 
 platforms:
-  - machine and partition-var-tmp
+  - machine
 
 template:
     name: mount_option
     vars:
         mountpoint: /var/tmp
         mountoption: nodev
-        mount_has_to_exist: 'yes'
 
 fixtext: |-
     {{{ fixtext_mount_option("/var/tmp", "nodev") }}}

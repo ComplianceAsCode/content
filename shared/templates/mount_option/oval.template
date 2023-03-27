@@ -1,32 +1,70 @@
 <def-group>
+  {{%- set local_id = POINTID ~ "_partition_" ~ MOUNTOPTIONID ~ "_" ~ ("optional" if MOUNT_HAS_TO_EXIST else "expected") -%}}
+  <!-- The test will check if correct option is present in both active (/proc/mounts) and
+       configured (/etc/fstab) mount points. It won't fail if the mount point is not currently
+       active, but will consider absence of the mount point configuration as a failure unless
+       MOUNT_HAS_TO_EXIST is set to `true` (the name is a bit controversial: it means that
+       the mount point has to exist in the configuration file to be checked, and we don't care
+       about it if it is not configured). -->
+
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata(MOUNTPOINT ~ " should be mounted with mount option " ~ MOUNTOPTION ~ ".") }}}
-    <criteria operator="OR">
-      <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}"
-        test_ref="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
-    {{% if MOUNT_HAS_TO_EXIST == "no" %}}
-      <criterion comment="{{{ MOUNTPOINT }}} does not exist"
-        test_ref="test_{{{ POINTID }}}_no_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"
-        negate="true" />
+    <criteria operator="AND">
+      <criteria operator="OR">
+         <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}"
+           test_ref="test_{{{ local_id }}}"/>
+         <criterion comment="{{{ MOUNTPOINT }}} does not exist"
+           test_ref="test_{{{ local_id }}}_exist"
+           negate="true" />
+      </criteria>
+      <criteria operator="OR">
+         <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} in /etc/fstab"
+           test_ref="test_{{{ local_id }}}_in_fstab"/>
+    {{% if MOUNT_HAS_TO_EXIST %}}
+         <criterion comment="{{{ MOUNTPOINT }}} does not exist in /etc/fstab"
+           test_ref="test_{{{ local_id }}}_exist_in_fstab"
+           negate="true" />
     {{% endif %}}
+      </criteria>
     </criteria>
   </definition>
 
+
   <linux:partition_object version="1"
-    id="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
+    id="object_{{{ local_id }}}">
     <linux:mount_point>{{{ MOUNTPOINT }}}</linux:mount_point>
   </linux:partition_object>
 
+  <ind:textfilecontent54_object version="1"
+    id="object_{{{ local_id }}}_in_fstab">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*[\S]+[\s]+{{{ POINTREGEX }}}[\s]+[\S]+[\s]+([\S]+)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
   <linux:partition_state version="1"
-    id="state_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
+    id="state_{{{ local_id }}}">
 {{% if not MOUNTOPTION_ARG_VAR %}}
     <linux:mount_options datatype="string" entity_check="at least one" operation="equals">{{{ MOUNTOPTION }}}</linux:mount_options>
-  </linux:partition_state>
 {{% else %}}
     <linux:mount_options datatype="string" entity_check="at least one" operation="equals"
       var_ref="local_var_mountoption_{{{ MOUNTOPTION }}}_with_value"/>
+{{% endif %}}
   </linux:partition_state>
 
+  <ind:textfilecontent54_state version="1"
+    id="state_{{{ local_id }}}_in_fstab">
+    <ind:instance datatype="int">1</ind:instance>
+{{% if not MOUNTOPTION_ARG_VAR %}}
+    <ind:subexpression entity_check="at least one" operation="pattern match">{{{ MOUNTOPTION }}}</ind:subexpression>
+{{% else %}}
+    <ind:subexpression entity_check="at least one" operation="pattern match"
+       var_ref="local_var_mountoption_{{{ MOUNTOPTION }}}_with_value"/>
+{{% endif %}}
+  </ind:textfilecontent54_state>
+
+{{% if MOUNTOPTION_ARG_VAR %}}
   <external_variable datatype="string" id="{{{ MOUNTOPTION_ARG_VAR }}}" version="1"
                      comment="Variable defining the value the argument should have"/>
 
@@ -40,18 +78,33 @@
   </local_variable>
 {{% endif %}}
 
+
   <linux:partition_test check="all" check_existence="all_exist" version="2"
-    comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} optional {{{ MOUNT_HAS_TO_EXIST }}}"
-    id="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
-    <linux:object object_ref="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
-    <linux:state state_ref="state_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
+    comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} {{{ existenceid }}}"
+    id="test_{{{ local_id }}}">
+    <linux:object object_ref="object_{{{ local_id }}}"/>
+    <linux:state state_ref="state_{{{ local_id }}}"/>
   </linux:partition_test>
 
-  {{% if MOUNT_HAS_TO_EXIST == "no" %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+    comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} {{{ existenceid }}} in /etc/fstab"
+    id="test_{{{ local_id }}}_in_fstab">
+    <ind:object object_ref="object_{{{ local_id }}}_in_fstab" />
+    <ind:state state_ref="state_{{{ local_id }}}_in_fstab" />
+  </ind:textfilecontent54_test>
+
+
   <linux:partition_test check="all" check_existence="all_exist" version="1"
     comment="{{{ MOUNTPOINT }}} exists"
-    id="test_{{{ POINTID }}}_no_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
-    <linux:object object_ref="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
+    id="test_{{{ local_id }}}_exist">
+    <linux:object object_ref="object_{{{ local_id }}}"/>
   </linux:partition_test>
-  {{% endif %}}
+
+{{% if MOUNT_HAS_TO_EXIST %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+    comment="{{{ MOUNTPOINT }}} exists in /etc/fstab"
+    id="test_{{{ local_id }}}_exist_in_fstab">
+    <ind:object object_ref="object_{{{ local_id }}}_in_fstab" />
+  </ind:textfilecontent54_test>
+{{% endif %}}
 </def-group>
