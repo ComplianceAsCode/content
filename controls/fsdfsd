@@ -1,0 +1,14 @@
+ def get_rules_id(node, rules_list)
+   current_id = node['id']
+   if node['rules'].nil? or node['rules'].empty?
+     return if node['controls'].nil? or node['controls'].empty?
+     node['controls'].each do |control|
+       get_rules_id(control, rules_list)
+     end
+   else
+     node['rules'].each do |rule|
+       rules_list[rule] = [] if rules_list[rule].nil?
+       rules_list[rule].push(current_id)
+     end
+   end
+ end
