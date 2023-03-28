@@ -2,10 +2,7 @@
 
 {{{ bash_instantiate_variables("var_pam_wheel_group_for_su") }}}
 
-GRP_FILE=/etc/group
-
-grep -q ^${var_pam_wheel_group_for_su}:[^:]*:[^:]*:[^:]* /etc/group
-if [ $? -ne 0 ]; then
+if ! grep -q "^${var_pam_wheel_group_for_su}:[^:]*:[^:]*:[^:]*" /etc/group; then
     groupadd ${var_pam_wheel_group_for_su}
 fi
 
