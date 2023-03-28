@@ -2,12 +2,13 @@
 import argparse
 import os
 import pathlib
+import sys
 
 EXTENSIONS = ['yml', 'yaml', 'md', 'py', 'rst', 'adoc']
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Print and fix the files that don't end "
+    parser = argparse.ArgumentParser(description="Print and fix files that don't end "
                                                  "in a new line")
     parser.add_argument("paths", type=str, nargs="+")
     parser.add_argument("--fix", action="store_true",
@@ -26,7 +27,11 @@ def get_files(path: pathlib.Path) -> list:
 def get_all_files(paths: list) -> list:
     files = list()
     for path in paths:
-        files.extend(get_files(pathlib.Path(path)))
+        p = pathlib.Path(path)
+        if not p.exists():
+            sys.stderr.write(f"The path {p.absolute()} does not exist!\n")
+            exit(3)
+        files.extend(get_files(p))
     return files
 
 
@@ -51,7 +56,6 @@ def fix_file(file: pathlib.Path):
 def main():
     args = parse_args()
     files = get_all_files(args.paths)
-    print(len(files))
     bad_files = get_files_with_no_newline(files)
     count = len(bad_files)
     for bad_file in bad_files:
@@ -59,7 +63,7 @@ def main():
         if args.fix:
             fix_file(bad_file)
 
-    print(f"{count} files do not have the correct ending.")
+    print(f"{count} of {len(files)} files do not have the correct ending.")
     if count != 0:
         exit(1)
 
