@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Only members of the group set in variable 'var_pam_wheel_group_for_su' should be able to authenticate through the su command.") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_use_pam_wheel_group_for_su" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+      comment="check /etc/pam.d/su for correct setting"
+      id="test_use_pam_wheel_group_for_su" version="1">
+    <ind:object object_ref="object_use_pam_wheel_group_for_su" />
+    <ind:state state_ref="state_use_pam_wheel_group_for_su" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="check /etc/pam.d/su for correct setting"
+      id="object_use_pam_wheel_group_for_su" version="1">
+    <ind:filepath>/etc/pam.d/su</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth\s+required\s+pam_wheel\.so\s+(?=[^#]*\buse_uid\b)[^#]*\bgroup=([_a-z][-0-9_a-z]*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state comment="group name must be valid"
+      id="state_use_pam_wheel_group_for_su" version="1">
+    <ind:subexpression operation="equals" datatype="string"
+          var_ref="var_pam_wheel_group_for_su" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="Name of the allowed su group"
+      datatype="string" id="var_pam_wheel_group_for_su" version="1" />
+</def-group>
