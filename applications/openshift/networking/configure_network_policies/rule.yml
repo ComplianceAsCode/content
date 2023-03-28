@@ -17,6 +17,15 @@ rationale: |-
 
 severity: high
 
+references:
+    cis@ocp4: 5.3.1
+    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+    nist: CM-6,CM-6(1)
+    pcidss: Req-1.1.4,Req-1.2,Req-2.2
+    srg: SRG-APP-000038-CTR-000105
+
+platform: not ocp4-on-hypershift
+
 ocil_clause: 'Support for Network Policies needs review'
 
 ocil: |-
@@ -28,13 +37,6 @@ ocil: |-
 
 {{% set api_path = '/apis/operator.openshift.io/v1/networks/cluster' %}}
 {{% set jqfilter = '[.spec.defaultNetwork.type]' %}}
-
-references:
-    cis@ocp4: 5.3.1
-    nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
-    nist: CM-6,CM-6(1)
-    pcidss: Req-1.1.4,Req-1.2,Req-2.2
-    srg: SRG-APP-000038-CTR-000105
 
 warnings:
 - general: |-

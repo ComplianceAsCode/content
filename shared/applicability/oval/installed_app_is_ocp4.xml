@@ -233,37 +233,8 @@
       <description>The application installed installed on the system is OpenShift 4 on HyperShift.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="cluster is OpenShift 4" test_ref="test_ocp4_hypershift" />
-      <criterion comment="Make sure OCP4 clusteroperators file is present" test_ref="test_file_for_ocp4_hypershift"/>
+      <criterion comment="Make sure there is version for HyperShift HostedCluster" test_ref="test_hypershift_version"/>
     </criteria>
   </definition>
-
-  <ind:yamlfilecontent_test id="test_ocp4_hypershift" check="at least one" comment="Find one match" version="1">
-      <ind:object object_ref="object_ocp4_hypershift"/>
-      <ind:state state_ref="state_ocp4_hypershift"/>
-  </ind:yamlfilecontent_test>
-
-  <local_variable id="hypershift_hosted_cluster_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
-    <literal_component>/kubernetes-api-resources/apis/apiextensions.k8s.io/v1/customresourcedefinitions/hostedclusters.hypershift.openshift.io</literal_component>
-  </local_variable>
-
-  <unix:file_test id="test_file_for_ocp4_hypershift" check="only one" comment="Find the actual file to be scanned." version="1">
-      <unix:object object_ref="object_file_for_ocp4_hypershift"/>
-  </unix:file_test>
-
-  <unix:file_object id="object_file_for_ocp4_hypershift" version="1">
-      <unix:filepath var_ref="hypershift_hosted_cluster_location"/>
-  </unix:file_object>
-
-  <ind:yamlfilecontent_object id="object_ocp4_hypershift" version="1">
-      <ind:filepath var_ref="hypershift_hosted_cluster_location"/>
-      <ind:yamlpath>.status.acceptedNames.kind</ind:yamlpath>
-  </ind:yamlfilecontent_object>
-
-  <ind:yamlfilecontent_state id="state_ocp4_hypershift" version="1">
-      <ind:value datatype="record">
-          <field name="#" datatype="string" operation="pattern match">HostedCluster</field>
-      </ind:value>
-  </ind:yamlfilecontent_state>
 
 </def-group>

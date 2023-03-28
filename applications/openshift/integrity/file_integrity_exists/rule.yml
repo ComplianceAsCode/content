@@ -13,6 +13,8 @@ description: |-
 rationale: |-
   File integrity scanning able to detect potential and unauthorised access.
 
+severity: medium
+
 identifiers:
   cce@ocp4: CCE-83657-7
 
@@ -22,6 +24,8 @@ references:
   pcidss: Req-10.5.5,Req-11.5
   srg: SRG-APP-000472-CTR-001170,SRG-APP-000473-CTR-001175,SRG-APP-000474-CTR-001180
 
+platform: not ocp4-on-hypershift
+
 ocil_clause: 'File integrity Operator is not installed'
 
 ocil: |-
@@ -29,9 +33,6 @@ ocil: |-
     <pre>$ oc get fileintegrities --all-namespaces</pre>
     Make sure the File Integrity Operator is installed and there exists
     at least one active FileIntegrity object in the cluster.
-
-severity: medium
-
 
 warnings:
 - general: |-

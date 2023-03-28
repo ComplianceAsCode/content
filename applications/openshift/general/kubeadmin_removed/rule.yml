@@ -17,10 +17,10 @@ rationale: |-
   and a self-signed certificate, and has effectively <pre>cluster-admin</pre>
   permissions; therefore, it's considered a security liability.
 
+severity: medium
+
 identifiers:
   cce@ocp4: CCE-90387-2
-
-severity: medium
 
 references:
   cis@ocp4: 3.1.1,5.1.1
@@ -28,6 +28,8 @@ references:
   nist: AC-2(2),AC-2(7),AC-2(9),AC-2(10),AC-12(1),IA-2(5),MA-4,SC-12(1)
   pcidss: Req-2.1
   srg: SRG-APP-000023-CTR-000055
+
+platform: not ocp4-on-hypershift
 
 ocil_clause: 'the kubeadmin secret has not been deleted'
 
