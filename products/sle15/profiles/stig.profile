@@ -245,7 +245,6 @@ selections:
     - smartcard_configure_ca
     - smartcard_configure_cert_checking
     - smartcard_pam_enabled
-    - sshd_disable_compression
     - sshd_disable_empty_passwords
     - sshd_disable_root_login
     - sshd_disable_user_known_hosts
