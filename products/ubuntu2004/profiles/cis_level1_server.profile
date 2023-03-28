@@ -783,7 +783,9 @@ selections:
     # Skip due to being a manual test
 
     ## 5.6 Ensure access to the su command is restricted (Automated)
-    - use_pam_wheel_for_su
+    - var_pam_wheel_group_for_su=cis
+    - use_pam_wheel_group_for_su
+    - ensure_pam_wheel_group_empty
 
     # 6 System Maintenance #
     ## 6.1 System File Permissions ##
