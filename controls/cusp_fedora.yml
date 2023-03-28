@@ -185,3 +185,20 @@ controls:
       - sysctl_kernel_randomize_va_space
       - sysctl_kernel_exec_shield
       - sysctl_kernel_kptr_restrict
+
+  - id: 3.8
+    title: GUI configuration
+    description: >-
+      
+    status: automated
+    rules: 
+      - dconf_gnome_disable_user_list
+      - gnome_gdm_disable_xdmcp
+      - gdm_disable_automatic_login
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - dconf_gnome_screensaver_lock_enabled
+      - dconf_gnome_screensaver_user_locks
+      - dconf_gnome_session_idle_user_locks
+ 
+      
