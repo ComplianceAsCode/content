@@ -4,7 +4,8 @@ import os
 import pathlib
 import sys
 
-EXTENSIONS = ['yml', 'yaml', 'md', 'py', 'rst', 'adoc']
+EXTENSIONS = ['adoc', 'anaconda', 'conf', 'html', 'json', 'md', 'pp', 'profile', 'py', 'rb',
+              'rst', 'rules', 'sh', 'template', 'toml', 'var', 'xml', 'yaml', 'yml']
 
 
 def parse_args() -> argparse.Namespace:
