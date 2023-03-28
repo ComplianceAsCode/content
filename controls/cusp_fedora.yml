@@ -175,3 +175,13 @@ controls:
       - file_groupownership_home_directories
       - file_permissions_home_directories
       - user_dot_no_world_writable_programs
+
+  - id: 3.7
+    title: Memory protection
+    description: >-
+      enable ASLR and ExecShield, restrict exposed kernel pointer
+    status: automated
+    rules: 
+      - sysctl_kernel_randomize_va_space
+      - sysctl_kernel_exec_shield
+      - sysctl_kernel_kptr_restrict
