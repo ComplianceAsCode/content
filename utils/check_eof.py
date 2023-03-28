@@ -7,6 +7,8 @@ import sys
 EXTENSIONS = ['adoc', 'anaconda', 'conf', 'html', 'json', 'md', 'pp', 'profile', 'py', 'rb',
               'rst', 'rules', 'sh', 'template', 'toml', 'var', 'xml', 'yaml', 'yml']
 
+EXCLUSIONS = ['/shared/references/']
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Print and fix files that don't end "
@@ -36,9 +38,20 @@ def get_all_files(paths: list) -> list:
     return files
 
 
+def should_skip_file(file: pathlib.Path):
+    skip = False
+    for exclude in EXCLUSIONS:
+        if exclude in str(file.absolute()):
+            skip = True
+            break
+    return skip
+
+
 def get_files_with_no_newline(files: list) -> list:
     bad_files = list()
     for file in files:
+        if should_skip_file(file):
+            continue
         with open(file.absolute(), 'rb') as f:
             if not f.seekable() or file.stat().st_size < 2:
                 continue
