@@ -160,7 +160,7 @@ class RuleResult(object):
 
     def __eq__(self, other):
         return (self.success == other.success
-                and tuple(self.passed_stages) == tuple(self.passed_stages))
+                and tuple(self.passed_stages) == tuple(other.passed_stages))
 
     def __lt__(self, other):
         return self.passed_stages_count > other.passed_stages_count
