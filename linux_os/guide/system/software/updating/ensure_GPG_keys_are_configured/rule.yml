@@ -21,15 +21,15 @@ description: |-
     2. Locate and download package, for example zoom_x86_64.rpm<br />
     3. Locate and download the public key (GPG) from the software download site, for 
     example the key for zoom package is package-signing-key-5-12-6.pub<br />
-    4. Import the key public key: <br />
+    4. Import the key public key:<br />
     <tt>$ sudo rpm --import package-signing-key-5-12-6.pub</tt><br />
-    5. List the keys, for example the comman d<br /> 
+    5. List the keys, for example the command:<br /> 
     <tt>$ sudo rpm -qa gpg-pubkey*</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502</tt><br />
-    6. Get more details about the key, via the command: <br />
+    6. Get more details about the key, via the command:<br />
     <tt>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</tt><br />
-    7. Check the GPG key, for example the command: <br /> 
+    7. Check the GPG key, for example the command:<br /> 
     <tt>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</tt><br />
@@ -62,15 +62,15 @@ ocil: |-
     2. Locate and download package, for example zoom_x86_64.rpm<br />
     3. Locate and download the public key (GPG) from the software download site, for example 
     the key for zoom package is package-signing-key-5-12-6.pub<br />
-    4. Import the key public key: <br />
+    4. Import the key public key:<br />
     <tt>set pub_key_import = "$ sudo rpm --import package-signing-key-5-12-6.pub</tt><br />
-    5. List the keys, for example the comman d<br /> 
+    5. List the keys, for example the command:<br /> 
     <tt>$ sudo rpm -qa gpg-pubkey*</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502</tt><br />
-    6. Get more details about the key, via the command: <br />
+    6. Get more details about the key, via the command:<br />
     <tt>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</tt><br />
-    7. Check the GPG key, for example the command: <br /> 
+    7. Check the GPG key, for example the command:<br /> 
     <tt>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</tt><br />
