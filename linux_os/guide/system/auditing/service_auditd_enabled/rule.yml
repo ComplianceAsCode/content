@@ -92,3 +92,5 @@ template:
         packagename@ubuntu1804: auditd
         packagename@ubuntu2004: auditd
         packagename@ubuntu2204: auditd
+        # Testing needs CAP_AUDIT_* and those are not available under podman
+        skip_test_env: podman-based
