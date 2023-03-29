@@ -43,3 +43,5 @@ template:
     name: service_enabled
     vars:
         servicename: psacct
+        # needs CAP_SYS_PACCT, as podman is run using normal user, there seems to be no way to elevate
+        skip_test_env: podman-based
