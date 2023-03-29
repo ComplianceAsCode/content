@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,ubuntu2004,ubuntu2204
+prodtype: rhel7,sle12,sle15,ubuntu2004,ubuntu2204
 
-title: 'Ensure shadow group is empty'
+title: 'Ensure shadow Group is Empty'
 
 description: |-
     The shadow group allows system programs which require access the ability
@@ -19,10 +19,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-86818-2
     cce@sle12: CCE-92213-8
     cce@sle15: CCE-91344-2
 
 references:
+    cis@rhel7: 6.2.4
     cis@sle12: 6.2.18
     cis@sle15: 6.2.18
     cis@ubuntu2004: 6.2.17
@@ -34,8 +36,13 @@ ocil_clause: 'shadow group is not empty'
 
 ocil: |-
     Run the following commands and verify no results are returned:
-    <per>
+    <pre>
     grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group
     awk -F: '($4 == "<shadow-gid>") { print }' /etc/passwd
-    </per>
+    </pre>
 
+warnings:
+    - general: |-
+       This rule remediation will ensure the group membership is empty in /etc/group. To avoid any
+       disruption the remediation won't change the primary group of users in /etc/passwd if any
+       user has the shadow GID as primary group.

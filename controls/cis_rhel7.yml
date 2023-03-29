@@ -2291,7 +2291,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - ensure_shadow_group_empty
 
   - id: 6.2.5
     title: Ensure no duplicate user names exist (Automated)

@@ -1,4 +1,4 @@
 #!/bin/bash
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_all
 
 sed -i '/^shadow:[^:]*:[^:]*:.*/d' /etc/group
