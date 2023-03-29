@@ -68,12 +68,12 @@ set(SSG_HTML_TABLE_FILE_LIST "")
 # that the one that is picked by the build system.
 macro(define_validate_product PRODUCT)
     set(VALIDATE_PRODUCT TRUE)
-    if ("${OSCAP_VERSION}" VERSION_LESS "1.4.0")
-        if ("${PRODUCT}" MATCHES "^(ocp4|eks|ANOTHER_PROBLEMATIC_PRODUCT)$")
+    if("${OSCAP_VERSION}" VERSION_LESS "1.4.0")
+        if("${PRODUCT}" MATCHES "^(ocp4|eks|ANOTHER_PROBLEMATIC_PRODUCT)$")
             message(STATUS "Won't validate ${PRODUCT}, as it requires the OpenSCAP scanner that is capable of the validation.")
             set(VALIDATE_PRODUCT FALSE)
-        endif ()
-    endif ()
+        endif()
+    endif()
 endmacro()
 
 macro(ssg_build_man_page)
@@ -100,7 +100,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
         COMMENT "[${PRODUCT}-content] compiling product yaml"
     )
 
-    if (STIG_REFERENCE_FILE STREQUAL "not-found")
+    if(STIG_REFERENCE_FILE STREQUAL "not-found")
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -183,7 +183,7 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         generate-internal-${PRODUCT}-all-fixes
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
-    if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
+    if(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
         add_test(
             NAME "${PRODUCT}-bash-shellcheck"
         COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
@@ -225,38 +225,38 @@ macro(ssg_build_remediations PRODUCT)
 
     ssg_collect_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
-    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+    if("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
         # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
-        if (SSG_ANSIBLE_PLAYBOOKS_ENABLED AND ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+        if(SSG_ANSIBLE_PLAYBOOKS_ENABLED AND ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
                 NAME "ansible-playbook-syntax-check-${PRODUCT}"
                 COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
             )
         endif()
-        if (ANSIBLE_CHECKS)
-            if (SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
-                if (ANSIBLE_LINT_EXECUTABLE)
+        if(ANSIBLE_CHECKS)
+            if(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
+                if(ANSIBLE_LINT_EXECUTABLE)
                     add_test(
                         NAME "ansible-playbook-per-rule-ansible-lint-check-${PRODUCT}"
                         COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
                     )
                 endif()
-                if (YAMLLINT_EXECUTABLE)
+                if(YAMLLINT_EXECUTABLE)
                     add_test(
                         NAME "ansible-playbook-per-rule-yamllint-check-${PRODUCT}"
                         COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
                     )
                 endif()
             endif()
-            if (SSG_ANSIBLE_PLAYBOOKS_ENABLED)
-                if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+            if(SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+                if(ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
                     add_test(
                         NAME "ansible-playbook-per-profile-ansible-lint-check-${PRODUCT}"
                         COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml" "${PRODUCT}"
                     )
                 endif()
-                if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                if(YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
                     add_test(
                         NAME "ansible-playbook-per-profile-yamllint-check-${PRODUCT}"
                         COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml" "${PRODUCT}"
@@ -309,7 +309,7 @@ macro(ssg_build_sce PRODUCT)
     # in the combine paths below.
     set(SCE_COMBINE_PATHS "${SSG_SHARED}/checks/sce" "${CMAKE_CURRENT_SOURCE_DIR}/checks/sce")
 
-    if (SSG_SCE_ENABLED)
+    if(SSG_SCE_ENABLED)
         # Unlike build_oval_unlinked, we don't depend on templated content yet.
         #
         # This is for two reasons:
@@ -366,7 +366,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
     )
     define_validate_product("${PRODUCT}")
-    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+    if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
             NAME "validate-ssg-${PRODUCT}-cpe-dictionary.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
@@ -408,7 +408,7 @@ macro(ssg_build_oval_final PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
     )
     define_validate_product("${PRODUCT}")
-    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+    if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
             NAME "validate-ssg-${PRODUCT}-oval.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -498,7 +498,7 @@ macro(ssg_build_sds PRODUCT)
     endif()
 
     define_validate_product("${PRODUCT}")
-    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+    if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
             NAME "validate-ssg-${PRODUCT}-ds.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -698,7 +698,7 @@ macro(ssg_build_product PRODUCT)
     get_filename_component(EXPECTED_CMAKELISTS "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/CMakeLists.txt" ABSOLUTE)
     get_filename_component(ACTUAL_CMAKELISTS "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt" ABSOLUTE)
 
-    if (NOT "${ACTUAL_CMAKELISTS}" STREQUAL "${EXPECTED_CMAKELISTS}")
+    if(NOT "${ACTUAL_CMAKELISTS}" STREQUAL "${EXPECTED_CMAKELISTS}")
         message(FATAL_ERROR "Expected ${PRODUCT}'s CMakeLists.txt to be at ${EXPECTED_CMAKELISTS}. Instead it's at ${ACTUAL_CMAKELISTS}. Please move it to the correct location.")
     endif()
 
@@ -720,7 +720,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_templated_content(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
 
-    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
+    if("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
         ssg_build_ansible_playbooks(${PRODUCT})
         add_dependencies(
             ${PRODUCT}-content
@@ -750,7 +750,7 @@ macro(ssg_build_product PRODUCT)
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
-    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+    if("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
         ssg_build_profile_playbooks(${PRODUCT})
         add_custom_target(
             ${PRODUCT}-profile-playbooks
@@ -760,7 +760,7 @@ macro(ssg_build_product PRODUCT)
         add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
     endif()
 
-    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
+    if("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
         ssg_build_profile_bash_scripts(${PRODUCT})
         add_custom_target(
             ${PRODUCT}-profile-bash-scripts
@@ -807,14 +807,14 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(html-stats ${PRODUCT}-html-stats)
     add_dependencies(html-profile-stats ${PRODUCT}-html-profile-stats)
 
-    if (SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(7|8)")
+    if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(7|8)")
         ssg_build_disa_delta(${PRODUCT} "stig")
         add_dependencies(${PRODUCT} generate-ssg-delta-${PRODUCT}-stig)
     endif()
 
     add_dependencies(man_page ${PRODUCT})
 
-    if (SSG_SEPARATE_SCAP_FILES_ENABLED)
+    if(SSG_SEPARATE_SCAP_FILES_ENABLED)
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
             DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -932,7 +932,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
     )
 
-    if (SSG_BUILD_SCAP_12_DS)
+    if(SSG_BUILD_SCAP_12_DS)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml" "${CMAKE_CURRENT_BINARY_DIR}/product.yml" ${DERIVATIVE} --id-name ssg --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items"
@@ -948,12 +948,12 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     endif()
 
     define_validate_product("${PRODUCT}")
-    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+    if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
             NAME "validate-ssg-${DERIVATIVE}-ds.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         )
-        if (SSG_BUILD_SCAP_12_DS)
+        if(SSG_BUILD_SCAP_12_DS)
             add_test(
                 NAME "validate-ssg-${DERIVATIVE}-ds-1.2.xml"
                 COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
@@ -970,7 +970,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-xccdf.xml
         generate-ssg-${DERIVATIVE}-ds.xml
     )
-    if (SSG_BUILD_SCAP_12_DS)
+    if(SSG_BUILD_SCAP_12_DS)
         add_dependencies(${DERIVATIVE}-content generate-ssg-${DERIVATIVE}-ds-1.2.xml)
     endif()
 
@@ -978,7 +978,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     ssg_build_html_guides(${DERIVATIVE})
 
-    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
+    if("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
         ssg_build_profile_bash_scripts(${DERIVATIVE})
         add_custom_target(
             ${DERIVATIVE}-profile-bash-scripts
@@ -987,7 +987,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
     endif()
 
-    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+    if("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
         ssg_build_profile_playbooks(${DERIVATIVE})
         add_custom_target(
             ${DERIVATIVE}-profile-playbooks
@@ -1002,7 +1002,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-guides)
 
-    if (SSG_SEPARATE_SCAP_FILES_ENABLED)
+    if(SSG_SEPARATE_SCAP_FILES_ENABLED)
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
             DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     endif()
@@ -1260,7 +1260,7 @@ macro(ssg_build_html_stig_tables_per_profile PRODUCT STIG_PROFILE)
 endmacro()
 
 macro(ssg_define_guide_and_table_tests)
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+    if(SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
         add_test(
             NAME "linkchecker-ssg-guides"
             COMMAND "${LINKCHECKER_EXECUTABLE}" --config "${CMAKE_SOURCE_DIR}/tests/linkcheckerrc" --check-extern ${SSG_HTML_GUIDE_FILE_LIST}
@@ -1272,7 +1272,7 @@ macro(ssg_define_guide_and_table_tests)
         )
     endif()
 
-    if (GREP_EXECUTABLE)
+    if(GREP_EXECUTABLE)
         foreach(TABLE_FILE ${SSG_HTML_TABLE_FILE_LIST})
             string(REPLACE "${CMAKE_BINARY_DIR}/tables/" "" TEST_NAME "${TABLE_FILE}")
             # -z treats newlines as regular chars so we can match multi-line
@@ -1285,7 +1285,7 @@ macro(ssg_define_guide_and_table_tests)
         endforeach()
     endif()
 
-    if (PYTHON_VERSION_MAJOR GREATER 2)
+    if(PYTHON_VERSION_MAJOR GREATER 2)
         add_test(
             NAME "unique-cces"
             COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.py" "${CMAKE_SOURCE_DIR}" "cce"

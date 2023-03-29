@@ -80,10 +80,10 @@ if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
   # See http://wiki.debian.org/Multiarch
   if(CMAKE_SYSTEM_NAME MATCHES "Linux"
       AND NOT CMAKE_CROSSCOMPILING)
-    if (EXISTS "/etc/debian_version") # is this a debian system ?
+    if(EXISTS "/etc/debian_version") # is this a debian system ?
       if(CMAKE_LIBRARY_ARCHITECTURE)
         set(_LIBDIR_DEFAULT "lib/${CMAKE_LIBRARY_ARCHITECTURE}")
-    endif()
+      endif()
     else() # not debian, rely on CMAKE_SIZEOF_VOID_P:
       if(NOT DEFINED CMAKE_SIZEOF_VOID_P)
         message(AUTHOR_WARNING

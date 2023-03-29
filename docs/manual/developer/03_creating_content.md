@@ -334,13 +334,13 @@ message(STATUS "JBoss EAP 6: ${SSG_PRODUCT_EAP6}")
 </pre>
 <pre>
 ...
-if (SSG_PRODUCT_DEBIAN11)
+if(SSG_PRODUCT_DEBIAN11)
     add_subdirectory("products/debian11")
 endif()
-<b>if (SSG_PRODUCT_CUSTOM6)
+<b>if(SSG_PRODUCT_CUSTOM6)
       add_subdirectory("products/custom6")
 endif()</b>
-if (SSG_PRODUCT_EAP6)
+if(SSG_PRODUCT_EAP6)
     add_subdirectory("products/eap6")
 endif()
 ...
@@ -414,7 +414,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 ```
 cat << EOF >  $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
-if ("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
+if("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
 endif()
 
