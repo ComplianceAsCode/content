@@ -19,7 +19,7 @@
   register: path_exists
   loop: '{{ local_users }}'
   when:
-    - item.value[2]|int >= {{{ gid_min }}}
+    - item.value[1]|int >= {{{ uid_min }}}
     - item.value[1]|int != 65534
 
 - name: Ensure group and world cannot access respective .netrc files
