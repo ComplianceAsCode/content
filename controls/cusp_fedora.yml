@@ -383,3 +383,40 @@ controls:
       - use_pam_wheel_for_su
       - sudoers_default_includedir
       
+  - id: 4.3
+    title: SSH Server
+    description: >-
+      secure ssh server configuration
+    status: automated
+    rules:
+      - file_groupowner_sshd_config
+      - file_owner_sshd_config
+      - file_permissions_sshd_config
+      - file_permissions_sshd_private_key
+      - file_permissions_sshd_pub_key
+      - sshd_limit_user_access
+      - sshd_set_loglevel_verbose
+      - sshd_enable_pam
+      - sshd_disable_root_login
+      - disable_host_auth
+      - sshd_disable_empty_passwords
+      - sshd_do_not_permit_user_env
+      - sshd_disable_rhosts
+      - sshd_disable_x11_forwarding
+      - sshd_disable_tcp_forwarding
+      - sshd_max_auth_tries_value=4
+      - sshd_set_max_auth_tries
+      - sshd_set_maxstartups
+      - var_sshd_set_maxstartups=10:30:60
+      - sshd_set_max_sessions
+      - var_sshd_max_sessions=10
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
+      - sshd_idle_timeout_value=15_minutes
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - var_sshd_set_keepalive=0
+      - sshd_x11_use_localhost
+      - sshd_disable_kerb_auth
+      - sshd_disable_gssapi_auth
+      - sshd_enable_strictmodes
