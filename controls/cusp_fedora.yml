@@ -140,6 +140,7 @@ controls:
       - var_auditd_max_log_file=6
       - auditd_data_retention_max_log_file_action
       - var_auditd_max_log_file_action=rotate
+      - audit_rules_immutable
       # auditd rules
       - audit_rules_sysadmin_actions
       - audit_rules_suid_privilege_function
@@ -198,7 +199,8 @@ controls:
       - audit_rules_privileged_commands_insmod
       - audit_rules_privileged_commands_modprobe
       - audit_rules_privileged_commands_rmmod
-      - audit_rules_immutable
+      - audit_rules_sudoers
+      - audit_rules_sudoers_d
       # journald config
       - socket_systemd-journal-remote_disabled
       - service_systemd-journald_enabled
@@ -366,4 +368,18 @@ controls:
       - var_password_pam_remember=5
       - accounts_password_pam_difok
       - var_password_pam_difok=8
+      
+  - id: 4.2
+    title: Sudo
+    description: >-
+      secure sudo configuration
+    status: automated
+    rules:
+      - package_sudo_installed
+      - sudo_add_use_pty
+      - sudo_custom_logfile
+      - sudo_require_authentication
+      - sudo_require_reauthentication
+      - use_pam_wheel_for_su
+      - sudoers_default_includedir
       
