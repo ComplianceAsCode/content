@@ -17,10 +17,6 @@ def test_parse_version_into_evr():
     with pytest.raises(ValueError):
         v = requirement_specs._parse_version_into_evr('')
 
-    # We do not support epoch at this moment, this version string is invalid.
-    with pytest.raises(ValueError):
-        v = requirement_specs._parse_version_into_evr('1:1.0.0')
-
     # we do not support letters anywhere for now
 
     with pytest.raises(ValueError):

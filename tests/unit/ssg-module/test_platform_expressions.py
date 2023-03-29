@@ -106,6 +106,7 @@ def test_as_dict(algebra):
         "name": "package",
         'ver_specs': [{'evr_op': 'greater than',
                        'evr_ver': '0:1.0-0',
+                       'ev_ver': '0:1.0',
                        'id': 'gt_1_0',
                        'op': '>',
                        'ver': '1.0'}],

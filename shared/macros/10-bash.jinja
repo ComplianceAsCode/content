@@ -1875,40 +1875,149 @@ Part of the grub2_bootloader_argument_absent template.
 {{% endmacro %}}
 
 {{#
-  This macro creates a bash conditional which is used to determine if a remediation is applicable.
-  The macro takes package as an argument and chooses appropriate package manager.
-  If the package is installed, the Bash remediation will be applied.
-  The macro respects `platform_package_overrides` variable.
+This macro creates a bash conditional which is used to determine if a
+remediation is applicable. The macro takes package as an argument and chooses
+appropriate package manager. If the package is installed and satisfies the
+optional version restricion, the Bash remediation will be applied. The macro
+respects `platform_package_overrides` variable.
+
+:param package: package name
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param ver: package version (optional argument, use together with "op")
 #}}
-{{%- macro bash_pkg_conditional(package, escape=False) -%}}
+{{%- macro bash_pkg_conditional(package, op=None, ver=None) -%}}
 {{%- if package in platform_package_overrides -%}}
   {{%- set package = platform_package_overrides[package] -%}}
 {{%- endif -%}}
   {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" -%}}
-        {{{ bash_pkg_conditional_rpm(package) }}}
+        {{{ bash_pkg_conditional_rpm(package, op, ver) }}}
     {{%- elif pkg_system == "dpkg" -%}}
-        {{{ bash_pkg_conditional_dpkg(package, escape) }}}
+        {{{ bash_pkg_conditional_dpkg(package, op, ver) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
     {{%- endif -%}}
 {{% endif %}}
 {{%- endmacro -%}}
 
+{{#
+This macro generates code that gets version of an installed RPM package.
+
+:param package: package name
+#}}
+{{%- macro bash_get_rpm_package_version(package) -%}}
+$(epoch=$(rpm -q --queryformat '%{EPOCH}' {{{ package }}}); version=$(rpm -q --queryformat '%{VERSION}' {{{ package }}}); [ "$epoch" = "(none)" ] && echo "0:$version" || echo "$epoch:$version")
+{{%- endmacro -%}}
 
 {{#
-  This macro creates a Bash conditional which uses rpm to check if a package passed as a parameter is installed.
+This macro creates a Bash conditional that compares version of the package
+with a given version.
+
+Description of the algorithm:
+1. Get the actual version of the given package and store it in `real`.
+2. Store the expected version in `ver`.
+3. Perform the comparison and return the result.
+   Comparison method is different based on the comparison operator. The method
+   code is chosen at the build time during Jinja expansion. Therefore, the
+   algorithm doesn't use the operator at all.
+   Based on the operator, these operations are performed:
+   a. "<": real != ver && is_sorted([real, ver])
+   b. "<=": is_sorted([real, ver])
+   c. "==": real == ver
+   d. "!=": real != ver
+   e. ">=" real != ver && is_sorted([ver, real])
+   f. ">" is_sorted([ver, real])
+   where is_sorted returns true if the given list parameter is a sorted list of version numbers.
+
+The implementation uses the GNU `sort` version ordering, which is described at:
+https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-ordering
+
+:param real: real package version
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param expected: expected package version
 #}}
-{{%- macro bash_pkg_conditional_rpm(package) -%}}
+{{%- macro bash_pkg_conditional_compare(real, op, expected) -%}}
+{ real="{{{ real }}}"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", op, "$expected") }}}; }
+{{%- endmacro -%}}
+
+{{#
+This macro generates comparison code based on the operator.
+
+Assumptions:
+- Version arguments are either literal, or they expand to versions (e.g. the argument is a deferenced variable)
+- Either all versions have epoch, or none of them has.
+  - Violation of this results in undefined behavior.
+  - If one has epoch e.g. 0, and the other one has no epoch, they will not be treated as equal.
+
+:param real: real package version
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param expected: expected package version
+#}}
+{{%- macro bash_compare_version(real, op, expected) -%}}
+{{%- if op == "<" -%}}
+[[ "{{{ real }}}" != "{{{ expected }}}" ]] && printf "%s\n%s" "{{{ real }}}" "{{{ expected }}}" | sort -VC
+{{%- elif op == "<=" -%}}
+printf "%s\n%s" "{{{ real }}}" "{{{ expected }}}" | sort -VC
+{{%- elif op == "==" -%}}
+[[ "{{{ real }}}" == "{{{ expected }}}" ]]
+{{%- elif op == "!=" -%}}
+[[ "{{{ real }}}" != "{{{ expected }}}" ]]
+{{%- elif op == ">" -%}}
+[[ "{{{ real }}}" != "{{{ expected }}}" ]] && printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
+{{%- elif op == ">=" -%}}
+printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+{{#
+This macro creates a Bash conditional which uses rpm to check if a package passed as a parameter is installed.
+
+:param package: package name
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param ver: package version (optional argument, use together with "op")
+    The version always needs to contain epoch. If the package has no epoch, please prepend "0:".
+#}}
+{{%- macro bash_pkg_conditional_rpm(package, op=None, ver=None) -%}}
+{{%- if ver -%}}
+rpm --quiet -q {{{ package }}} && {{{ bash_pkg_conditional_compare(bash_get_rpm_package_version(package), op, ver) }}}
+{{%- else -%}}
 rpm --quiet -q {{{ package }}}
+{{%- endif -%}}
 {{%- endmacro %}}
 
 {{#
-  This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
+This macro generates code that gets version of an installed DEB package.
+
+:param package: package name
 #}}
-{{%- macro bash_pkg_conditional_dpkg (package, escape=False) -%}}
-{{%- if escape -%}}
-dpkg-query --show --showformat='${{db:Status-Status}}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+{{%- macro bash_get_dpkg_package_version(package) -%}}
+{{# We don't take the "release" part into account. #}}
+dpkg-query -f='${Version}\n' --show {{{ package }}} | cut -f1 -d-
+{{%- endmacro -%}}
+
+{{#
+This macro creates a Bash conditional that compares version of the DEB package
+with a given version.
+
+:param package: package name
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param ver: package version (optional argument, use together with "op")
+#}}
+{{%- macro bash_compare_version_dpkg(package, op, ver) -%}}
+{{%- set op_codes = ({"<":"lt", "<=":"le", "==":"eq", "!=":"ne", ">":"gt", ">=":"ge"}) -%}}
+{ real="$({{{ bash_get_dpkg_package_version(package) }}})"; ver="{{{ ver }}}"; dpkg --compare-versions "$real" "{{{ op_codes[op] }}}" "$ver"; }
+{{%- endmacro -%}}
+
+{{#
+This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
+
+:param package: package name
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param ver: package version (optional argument, use together with "op")
+#}}
+{{%- macro bash_pkg_conditional_dpkg(package, op=None, ver=None) -%}}
+{{%- if ver -%}}
+dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed && {{{ bash_compare_version_dpkg(package, op, ver) }}}
 {{%- else -%}}
 dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
 {{%- endif -%}}

@@ -715,12 +715,25 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   This macro creates an Ansible snipped which is used in `when` clause to determine applicability of a task.
   If the package passed as a parameter is installed, the task is applicable.
   The macro respects `platform_package_overrides` variable.
+
+:param package: package name
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param ver: package version (optional argument, use together with "op")
 #}}
-{{%- macro ansible_pkg_conditional(package) -%}}
+{{%- macro ansible_pkg_conditional(package, op=None, ver=None) -%}}
 {{%- if package in platform_package_overrides -%}}
   {{%- set package = platform_package_overrides[package] -%}}
 {{%- endif -%}}
-'"{{{ package }}}" in ansible_facts.packages'
+{{%- if ver -%}}
+{{# For RPM packages, Ansible splits the package version into "epoch", "version" and "release" keys. For DEB packages, Ansible provides only "version" key. We don't take the "release" part into account. #}}
+{{%- if pkg_system == "rpm" -%}}
+"{{{ package }}}" in ansible_facts.packages and (((((ansible_facts.packages["{{{ package }}}"] | last)["epoch"]) != None) | ternary((ansible_facts.packages["{{{ package }}}"] | last)["epoch"] ~ ":", "0:")) + ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first)) is version("{{{ ver }}}", "{{{ op }}}")
+{{%- else -%}}
+"{{{ package }}}" in ansible_facts.packages and ((ansible_facts.packages["{{{ package }}}"] | last)["version"] | split("-") | first) is version("{{{ ver }}}", "{{{ op }}}")
+{{%- endif -%}}
+{{%- else -%}}
+"{{{ package }}}" in ansible_facts.packages
+{{%- endif -%}}
 {{%- endmacro -%}}
 
 
