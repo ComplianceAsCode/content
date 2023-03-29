@@ -35,7 +35,6 @@ then
   nft create table "$var_nftables_family" "$var_nftables_table"
 fi
 
-
 ##
 # nft add chain [<family>] <table_name> <chain_name> { type <type> hook <hook> priority <value> \; [policy <policy> \;] [comment \"text comment\" \;] }
 # example:  nft 'add chain inet filter output { type filter hook output priority 0 ; policy accept; }'
