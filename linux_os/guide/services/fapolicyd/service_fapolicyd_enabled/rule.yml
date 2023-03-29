@@ -41,3 +41,5 @@ template:
     name: service_enabled
     vars:
         servicename: fapolicyd
+        # needs CAP_DAC_OVERRIDE,CAP_SETGID,CAP_SETUID,CAP_SYS_PTRACE,CAP_SYS_ADMIN,CAP_SYS_NICE,CAP_SYS_RESOURCE,CAP_AUDIT_WRITE, as podman is run using normal user, there seems to be no way to elevate
+        skip_test_env: podman-based
