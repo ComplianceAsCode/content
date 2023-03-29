@@ -1,3 +1,3 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_all
 
 sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/\1/' /etc/group
