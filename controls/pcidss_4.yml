@@ -7,14 +7,14 @@ levels:
 - id: base
 
 controls:
-  - id: Req-1.1
+  - id: 1.1
     title: '1.1 Processes and mechanisms for installing and maintaining network security
       controls are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-1.1.1
+    - id: 1.1.1
       title: '1.1.1 All security policies and operational procedures that are identified in
         Requirement 1'
       levels:
@@ -22,7 +22,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-1.1.2
+    - id: 1.1.2
       title: '1.1.2 Roles and responsibilities for performing activities in Requirement 1 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 1 are allocated. Personnel are accountable for
@@ -32,20 +32,20 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-1.2
+  - id: 1.2
     title: '1.2 Network security controls (NSCs) are configured and maintained.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-1.2.1
+    - id: 1.2.1
       title: '1.2.1 Configuration standards for NSC rulesets'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-1.2.2
+    - id: 1.2.2
       title: '1.2.2 All changes to network connections and to configurations of NSCs are
         approved and managed in accordance with the change control process defined at
         Requirement 6.5.1.Changes to network connections and NSCs cannot result in
@@ -59,7 +59,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-1.2.3
+    - id: 1.2.3
       title: '1.2.3 An accurate network diagram(s) is maintained that shows all connections
         between the CDE and other networks, including any wireless networks.A
         representation of the boundaries between the CDE, all trusted networks, and all
@@ -71,14 +71,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-1.2.4
+    - id: 1.2.4
       title: '1.2.4 An accurate data-flow diagram(s) is maintained'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-1.2.6
+    - id: 1.2.6
       title: '1.2.6 Security features are defined and implemented for all services, protocols,
         and ports that are in use and considered to be insecure, such that the risk is
         mitigated.The specific risks associated with the use of insecure services,
@@ -88,7 +88,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-1.2.7
+    - id: 1.2.7
       title: '1.2.7 Configurations of NSCs are reviewed at least once every six months to
         confirm they are relevant and effective.NSC configurations that allow or
         restrict access to trusted networks are verified periodically to ensure that
@@ -98,34 +98,34 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-1.2.8
+    - id: 1.2.8
       title: '1.2.8 Configuration files for NSCs'
       levels:
         - base
       status: pending
       rules: []
 
-  - id: Req-1.3
+  - id: 1.3
     title: '1.3 Network access to and from the cardholder data environment is restricted.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-1.3.1
+    - id: 1.3.1
       title: '1.3.1 Inbound traffic to the CDE is restricted as follows'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-1.3.2
+    - id: 1.3.2
       title: '1.3.2 Outbound traffic from the CDE is restricted as follows'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-1.3.3
+    - id: 1.3.3
       title: '1.3.3 NSCs are installed between all wireless networks and the CDE, regardless
         of whether the wireless network is a CDE.'
       levels:
@@ -133,13 +133,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-1.4
+  - id: 1.4
     title: '1.4 Network connections between trusted and untrusted networks are controlled.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-1.4.1
+    - id: 1.4.1
       title: '1.4.1 NSCs are implemented between trusted and untrusted networks.Unauthorized
         traffic cannot traverse network boundaries between trusted and untrusted
         networks.'
@@ -151,7 +151,7 @@ controls:
         - set_loopback_traffic
         - set_ip6tables_default_rule
 
-    - id: Req-1.4.2
+    - id: 1.4.2
       title: '1.4.2 Inbound traffic from untrusted networks to trusted networks is restricted'
       levels:
         - base
@@ -167,7 +167,7 @@ controls:
         - sysctl_net_ipv4_conf_all_send_redirects
         - sysctl_net_ipv4_conf_default_send_redirects
 
-    - id: Req-1.4.3
+    - id: 1.4.3
       title: '1.4.3 Anti-spoofing measures are implemented to detect and block forged source
         IP addresses from entering the trusted network.Packets with forged IP source
         addresses cannot enter a trusted network.'
@@ -185,7 +185,7 @@ controls:
         - sysctl_net_ipv4_conf_all_rp_filter
         - sysctl_net_ipv4_conf_all_secure_redirects
 
-    - id: Req-1.4.4
+    - id: 1.4.4
       title: '1.4.4 System components that store cardholder data are not directly accessible
         from untrusted networks.Stored cardholder data cannot be accessed from untrusted
         networks.This requirement is not intended to apply to storage of account data in
@@ -198,7 +198,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-1.4.5
+    - id: 1.4.5
       title: '1.4.5 The disclosure of internal IP addresses and routing information is limited
         to only authorized parties.Internal network information is protected from
         unauthorized disclosure.'
@@ -207,14 +207,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-1.5
+  - id: 1.5
     title: '1.5 Risks to the CDE from computing devices that are able to connect to both
       untrusted networks and the CDE are mitigated.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-1.5.1
+    - id: 1.5.1
       title: '1.5.1 Security controls are implemented on any computing devices, including
         company- and employee-owned devices, that connect to both untrusted networks
         (including the Internet) and the CDE'
@@ -226,14 +226,14 @@ controls:
         - ensure_firewall_rules_for_open_ports
 
 
-  - id: Req-2.1
+  - id: 2.1
     title: '2.1 Processes and mechanisms for applying secure configurations to all system
       components are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-2.1.1
+    - id: 2.1.1
       title: '2.1.1 All security policies and operational procedures that are identified in
         Requirement 2'
       levels:
@@ -241,7 +241,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-2.1.2
+    - id: 2.1.2
       title: '2.1.2 Roles and responsibilities for performing activities in Requirement 2 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 2 are allocated. Personnel are accountable for
@@ -251,7 +251,7 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-2.2
+  - id: 2.2
     title: '2.2 System components are configured and managed securely.'
     levels:
       - base
@@ -261,7 +261,7 @@ controls:
       - configure_ssh_crypto_policy
       - configure_openssl_crypto_policy
     controls:
-    - id: Req-2.2.1
+    - id: 2.2.1
       title: '2.2.1 Configuration standards are developed, implemented, and maintained to cover
         all system components'
       levels:
@@ -271,14 +271,14 @@ controls:
         - bios_enable_execution_restrictions
         - install_PAE_kernel_on_x86
 
-    - id: Req-2.2.2
+    - id: 2.2.2
       title: '2.2.2 Vendor default accounts are managed as follows'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-2.2.3
+    - id: 2.2.3
       title: '2.2.3 Primary functions requiring different security levels are managed'
       levels:
         - base
@@ -286,7 +286,7 @@ controls:
       rules:
         - sysctl_kernel_randomize_va_space
 
-    - id: Req-2.2.4
+    - id: 2.2.4
       title: '2.2.4 Only necessary services, protocols, daemons, and functions are enabled,
         and all unnecessary functionality is removed or disabled.System components
         cannot be compromised by exploiting unnecessary functionality present in the
@@ -319,14 +319,14 @@ controls:
         - mask_nonessential_services
 
 
-    - id: Req-2.2.5
+    - id: 2.2.5
       title: '2.2.5 If any insecure services, protocols, or daemons are present'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-2.2.6
+    - id: 2.2.6
       title: '2.2.6 System security parameters are configured to prevent misuse.System
         components cannot be compromised because of incorrect security parameter
         configuration.'
@@ -368,7 +368,7 @@ controls:
         - sshd_set_max_sessions
         - sshd_set_maxstartups
 
-    - id: Req-2.2.7
+    - id: 2.2.7
       title: '2.2.7 All non-console administrative access is encrypted using strong
         cryptography.Cleartext administrative authorization factors cannot be read or
         intercepted from any network transmissions.This includes administrative access
@@ -381,13 +381,13 @@ controls:
         - sshd_use_approved_macs
         - sshd_use_strong_kex
 
-  - id: Req-2.3
+  - id: 2.3
     title: '2.3 Wireless environments are configured and managed securely.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-2.3.1
+    - id: 2.3.1
       title: '2.3.1 For wireless environments connected to the CDE or transmitting account
         data, all wireless vendor defaults are changed at installation or are confirmed
         to be secure.'
@@ -396,7 +396,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-2.3.2
+    - id: 2.3.2
       title: '2.3.2 For wireless environments connected to the CDE or transmitting account
         data, wireless encryption keys are changed'
       levels:
@@ -404,14 +404,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-3.1
+  - id: 3.1
     title: '3.1 Processes and mechanisms for protecting stored account data are defined and
       understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-3.1.1
+    - id: 3.1.1
       title: '3.1.1 All security policies and operational procedures that are identified in
         Requirement 3'
       levels:
@@ -419,7 +419,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.1.2
+    - id: 3.1.2
       title: '3.1.2 Roles and responsibilities for performing activities in Requirement 3 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 3 are allocated. Personnel are accountable for
@@ -429,13 +429,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-3.2
+  - id: 3.2
     title: '3.2 Storage of account data is kept to a minimum.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-3.2.1
+    - id: 3.2.1
       title: '3.2.1 Account data storage is kept to a minimum through implementation of data
         retention and disposal policies, procedures, and processes that include at least
         the following'
@@ -444,13 +444,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-3.3
+  - id: 3.3
     title: '3.3 Sensitive authentication data (SAD) is not stored after authorization.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-3.3.1
+    - id: 3.3.1
       title: '3.3.1 SAD is not retained after authorization, even if encrypted. All sensitive
         authentication data received is rendered unrecoverable upon completion of the
         authorization process.This requirement is not eligible for the customized
@@ -464,7 +464,7 @@ controls:
         - base
       status: partial
       controls:
-      - id: Req-3.3.1.1
+      - id: 3.3.1.1
         title: '3.3.1.1 The full contents of any track are not retained upon completion of the
           authorization process.This requirement is not eligible for the customized
           approach.In the normal course of business, the following data elements from
@@ -478,7 +478,7 @@ controls:
           - disable_users_coredumps
           - sysctl_fs_suid_dumpable
 
-      - id: Req-3.3.1.2
+      - id: 3.3.1.2
         title: '3.3.1.2 The card verification code is not retained upon completion of the
           authorization process.This requirement is not eligible for the customized
           approach.The card verification code is the three- or four-digit number printed
@@ -493,7 +493,7 @@ controls:
           - disable_users_coredumps
           - sysctl_fs_suid_dumpable
 
-      - id: Req-3.3.1.3
+      - id: 3.3.1.3
         title: '3.3.1.3 The personal identification number (PIN) and the PIN block are not
           retained upon completion of the authorization process.This requirement is not
           eligible for the customized approach.PIN blocks are encrypted during the
@@ -509,7 +509,7 @@ controls:
           - disable_users_coredumps
           - sysctl_fs_suid_dumpable
 
-    - id: Req-3.3.2
+    - id: 3.3.2
       title: '3.3.2 SAD that is stored electronically prior to completion of authorization is
         encrypted using strong cryptography.This requirement is not eligible for the
         customized approach.Whether SAD is permitted to be stored prior to authorization
@@ -530,7 +530,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.3.3
+    - id: 3.3.3
       title: '3.3.3 Additional requirement for issuers and companies that support issuing
         services and store sensitive authentication data: Any storage of sensitive
         authentication data'
@@ -539,13 +539,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-3.4
+  - id: 3.4
     title: '3.4 Access to displays of full PAN and ability to copy PAN is restricted.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-3.4.1
+    - id: 3.4.1
       title: '3.4.1 PAN is masked when displayed (the BIN and last four digits are the maximum
         number of digits to be displayed), such that only personnel with a legitimate
         business need can see more than the BIN and last four digits of the PAN.PAN
@@ -561,7 +561,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.4.2
+    - id: 3.4.2
       title: '3.4.2 When using remote-access technologies, technical controls prevent copy
         and/or relocation of PAN for all personnel, except for those with documented,
         explicit authorization and a legitimate, defined business need.PAN cannot be
@@ -575,20 +575,20 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-3.5
+  - id: 3.5
     title: '3.5 Primary account number (PAN) is secured wherever it is stored.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-3.5.1
+    - id: 3.5.1
       title: '3.5.1 PAN is rendered unreadable anywhere it is stored by using any of the
         following approaches'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-3.5.1.1
+      - id: 3.5.1.1
         title: '3.5.1.1 Hashes used to render PAN unreadable (per the first bullet of
           Requirement 3.5.1) are keyed cryptographic hashes of the entire PAN, with
           associated key-management processes and procedures in accordance with
@@ -605,7 +605,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-3.5.1.2
+      - id: 3.5.1.2
         title: '3.5.1.2 If disk-level or partition-level encryption (rather than file-,
           column-, or field-level database encryption) is used to render PAN unreadable,
           it is implemented only'
@@ -614,7 +614,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-3.5.1.3
+      - id: 3.5.1.3
         title: '3.5.1.3 If disk-level or partition-level encryption is used (rather than
           file-, column-, or field--level database encryption) to render PAN unreadable,
           it is managed'
@@ -623,20 +623,20 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-3.6
+  - id: 3.6
     title: '3.6 Cryptographic keys used to protect stored account data are secured.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-3.6.1
+    - id: 3.6.1
       title: '3.6.1 Procedures are defined and implemented to protect cryptographic keys used
         to protect stored account data against disclosure and misuse that include'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-3.6.1.1
+      - id: 3.6.1.1
         title: '3.6.1.1 Additional requirement for service providers only: A documented
           description of the cryptographic architecture is maintained that includes'
         levels:
@@ -644,7 +644,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-3.6.1.2
+      - id: 3.6.1.2
         title: '3.6.1.2 Secret and private keys used to encrypt/decrypt stored account data
           are stored in one (or more) of the following forms at all times:  •  Encrypted
           with a key-encrypting key that is at least as strong as the data-encrypting
@@ -664,7 +664,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-3.6.1.3
+      - id: 3.6.1.3
         title: '3.6.1.3 Access to cleartext cryptographic key components is restricted to the
           fewest number of custodians necessary.Access to cleartext cryptographic key
           components is restricted to necessary personnel.'
@@ -673,7 +673,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-3.6.1.4
+      - id: 3.6.1.4
         title: '3.6.1.4 Cryptographic keys are stored in the fewest possible
           locations.Cryptographic keys are retained only where necessary.'
         levels:
@@ -681,7 +681,7 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-3.7
+  - id: 3.7
     title: '3.7 Where cryptography is used to protect stored account data, key management
       processes and procedures covering all aspects of the key lifecycle are defined and
       implemented.'
@@ -689,7 +689,7 @@ controls:
       - base
     status: pending
     controls:
-    - id: Req-3.7.1
+    - id: 3.7.1
       title: '3.7.1 Key-management policies and procedures are implemented to include
         generation of strong cryptographic keys used to protect stored account
         data.Strong cryptographic keys are generated.'
@@ -698,7 +698,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.2
+    - id: 3.7.2
       title: '3.7.2 Key-management policies and procedures are implemented to include secure
         distribution of cryptographic keys used to protect stored account
         data.Cryptographic keys are secured during distribution.'
@@ -707,7 +707,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.3
+    - id: 3.7.3
       title: '3.7.3 Key-management policies and procedures are implemented to include secure
         storage of cryptographic keys used to protect stored account data.Cryptographic
         keys are secured when stored.'
@@ -716,7 +716,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.4
+    - id: 3.7.4
       title: '3.7.4 Key management policies and procedures are implemented for cryptographic
         key changes for keys that have reached the end of their cryptoperiod, as defined
         by the associated application vendor or key owner, and based on industry best
@@ -726,7 +726,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.5
+    - id: 3.7.5
       title: '3.7.5 Key management policies procedures are implemented to include the
         retirement, replacement, or destruction of keys used to protect stored account
         data, as deemed necessary when'
@@ -735,7 +735,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.6
+    - id: 3.7.6
       title: '3.7.6 Where manual cleartext cryptographic key-management operations are
         performed by personnel, key-management policies and procedures are implemented
         include managing these operations using split knowledge and dual
@@ -750,7 +750,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.8
+    - id: 3.7.8
       title: '3.7.8 Key management policies and procedures are implemented to include that
         cryptographic key custodians formally acknowledge (in writing or electronically)
         that they understand and accept their key-custodian responsibilities.Key
@@ -761,7 +761,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-3.7.9
+    - id: 3.7.9
       title: '3.7.9 Additional requirement for service providers only: Where a service
         provider shares cryptographic keys with its customers for transmission or
         storage of account data, guidance on secure transmission, storage and updating
@@ -774,7 +774,7 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-4.1
+  - id: 4.1
     title: '4.1 Processes and mechanisms for protecting cardholder data with strong
       cryptography during transmission over open, public networks are defined and
       documented.'
@@ -782,7 +782,7 @@ controls:
       - base
     status: pending
     controls:
-    - id: Req-4.1.1
+    - id: 4.1.1
       title: '4.1.1 All security policies and operational procedures that are identified in
         Requirement 4'
       levels:
@@ -790,7 +790,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-4.1.2
+    - id: 4.1.2
       title: '4.1.2 Roles and responsibilities for performing activities in Requirement 4 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 4 are allocated. Personnel are accountable for
@@ -800,13 +800,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-4.2
+  - id: 4.2
     title: '4.2 PAN is protected with strong cryptography during transmission.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-4.2.1
+    - id: 4.2.1
       title: '4.2.1 Strong cryptography and security protocols are implemented as follows to
         safeguard PAN during transmission over open, public networks'
       levels:
@@ -816,7 +816,7 @@ controls:
         - package_strongswan_installed
         - package_libreswan_installed
       controls:
-      - id: Req-4.2.1.1
+      - id: 4.2.1.1
         title: '4.2.1.1 An inventory of the entity’s trusted keys and certificates used to
           protect PAN during transmission is maintained.All keys and certificates used
           to protect PAN during transmission are identified and confirmed as
@@ -827,7 +827,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-4.2.1.2
+      - id: 4.2.1.2
         title: '4.2.1.2 Wireless networks transmitting PAN or connected to the CDE use
           industry best practices to implement strong cryptography for authentication
           and transmission.Cleartext PAN cannot be read or intercepted from wireless
@@ -837,7 +837,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-4.2.2
+    - id: 4.2.2
       title: '4.2.2 PAN is secured with strong cryptography whenever it is sent via end-user
         messaging technologies.Cleartext PAN cannot be read or intercepted from
         transmissions using end-user messaging technologies.This requirement also
@@ -853,14 +853,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-5.1
+  - id: 5.1
     title: '5.1 Processes and mechanisms for protecting all systems and networks from
       malicious software are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-5.1.1
+    - id: 5.1.1
       title: '5.1.1 All security policies and operational procedures that are identified in
         Requirement 5'
       levels:
@@ -868,7 +868,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-5.1.2
+    - id: 5.1.2
       title: '5.1.2 Roles and responsibilities for performing activities in Requirement 5 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 5 are allocated. Personnel are accountable for
@@ -878,13 +878,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-5.2
+  - id: 5.2
     title: '5.2 Malicious software (malware) is prevented, or detected and addressed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-5.2.1
+    - id: 5.2.1
       title: '5.2.1 An anti-malware solution(s) is deployed on all system components, except
         for those system components identified in periodic evaluations per Requirement
         5.2.3 that concludes the system components are not at risk from
@@ -895,21 +895,21 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-5.2.2
+    - id: 5.2.2
       title: '5.2.2 The deployed anti-malware solution(s)'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-5.2.3
+    - id: 5.2.3
       title: '5.2.3 Any system components that are not at risk for malware are evaluated
         periodically to include the following'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-5.2.3.1
+      - id: 5.2.3.1
         title: '5.2.3.1 The frequency of periodic evaluations of system components identified
           as not at risk for malware is defined in the entity’s targeted risk analysis,
           which is performed according to all elements specified in Requirement
@@ -922,13 +922,13 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-5.3
+  - id: 5.3
     title: '5.3 Anti-malware mechanisms and processes are active, maintained, and monitored.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-5.3.1
+    - id: 5.3.1
       title: '5.3.1 The anti-malware solution(s) is kept current via automatic
         updates.Anti-malware mechanisms can detect and address the latest malware
         threats.'
@@ -937,13 +937,13 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-5.3.2
+    - id: 5.3.2
       title: '5.3.2 The anti-malware solution(s)'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-5.3.2.1
+      - id: 5.3.2.1
         title: '5.3.2.1 If periodic malware scans are performed to meet Requirement 5.3.2, the
           frequency of scans is defined in the entity’s targeted risk analysis, which is
           performed according to all elements specified in Requirement 12.3.1.Scans by
@@ -957,14 +957,14 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-5.3.3
+    - id: 5.3.3
       title: '5.3.3 For removable electronic media, the anti-malware solution(s)'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-5.3.4
+    - id: 5.3.4
       title: '5.3.4 Audit logs for the anti-malware solution(s) are enabled and retained in
         accordance with Requirement 10.5.1.Historical records of anti-malware actions
         are immediately available and retained for at least 12 months.'
@@ -973,7 +973,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-5.3.5
+    - id: 5.3.5
       title: '5.3.5 Anti-malware mechanisms cannot be disabled or altered by users, unless
         specifically documented, and authorized by management on a case-by-case basis
         for a limited time period.Anti-malware mechanisms cannot be modified by
@@ -988,13 +988,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-5.4
+  - id: 5.4
     title: '5.4 Anti-phishing mechanisms protect users against phishing attacks.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-5.4.1
+    - id: 5.4.1
       title: '5.4.1 Processes and automated mechanisms are in place to detect and protect
         personnel against phishing attacks.Mechanisms are in place to protect against
         and mitigate risk posed by phishing attacks.This requirement applies to the
@@ -1013,14 +1013,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-6.1
+  - id: 6.1
     title: '6.1 Processes and mechanisms for developing and maintaining secure systems and
       software are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-6.1.1
+    - id: 6.1.1
       title: '6.1.1 All security policies and operational procedures that are identified in
         Requirement 6'
       levels:
@@ -1028,7 +1028,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.1.2
+    - id: 6.1.2
       title: '6.1.2 Roles and responsibilities for performing activities in Requirement 6 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 6 are allocated. Personnel are accountable for
@@ -1038,20 +1038,20 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-6.2
+  - id: 6.2
     title: '6.2 Bespoke and custom software are developed securely.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-6.2.1
+    - id: 6.2.1
       title: '6.2.1 Bespoke and custom software are developed securely.'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-6.2.2
+    - id: 6.2.2
       title: '6.2.2 Software development personnel working on bespoke and custom software are
         trained at least once every 12 months'
       levels:
@@ -1059,7 +1059,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.2.3
+    - id: 6.2.3
       title: '6.2.3 Bespoke and custom software is reviewed prior to being released into
         production or to customers, to identify and correct potential coding
         vulnerabilities.'
@@ -1067,7 +1067,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-6.2.3.1
+      - id: 6.2.3.1
         title: '6.2.3.1 If manual code reviews are performed for bespoke and custom software
           prior to release to production.'
         levels:
@@ -1075,7 +1075,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-6.2.4
+    - id: 6.2.4
       title: '6.2.4 Software engineering techniques or other methods are defined and in use by
         software development personnel to prevent or mitigate common software attacks
         and related vulnerabilities in bespoke and custom software, including but not
@@ -1085,20 +1085,20 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-6.3
+  - id: 6.3
     title: '6.3 Security vulnerabilities are identified and addressed.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-6.3.1
+    - id: 6.3.1
       title: '6.3.1 Security vulnerabilities are identified and managed'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-6.3.2
+    - id: 6.3.2
       title: '6.3.2 An inventory of bespoke and custom software, and third-party software
         components incorporated into bespoke and custom software is maintained to
         facilitate vulnerability and patch management.Known vulnerabilities in
@@ -1110,7 +1110,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.3.3
+    - id: 6.3.3
       title: '6.3.3 All system components are protected from known vulnerabilities by
         installing applicable security patches/updates'
       levels:
@@ -1123,13 +1123,13 @@ controls:
         - ensure_gpgcheck_never_disabled
         - security_patches_up_to_date
 
-  - id: Req-6.4
+  - id: 6.4
     title: '6.4 Public-facing web applications are protected against attacks.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-6.4.1
+    - id: 6.4.1
       title: '6.4.1 For public-facing web applications, new threats and vulnerabilities are
         addressed on an ongoing basis and these applications are protected against known
         attacks as follows: •  Reviewing public-facing web applications via manual or
@@ -1146,7 +1146,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.4.2
+    - id: 6.4.2
       title: '6.4.2 For public-facing web applications, an automated technical solution is
         deployed that continually detects and prevents web-based attacks, with at least
         the following'
@@ -1155,7 +1155,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.4.3
+    - id: 6.4.3
       title: '6.4.3 All payment page scripts that are loaded and executed in the consumer’s
         browser are managed as follows'
       levels:
@@ -1163,13 +1163,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-6.5
+  - id: 6.5
     title: '6.5 Changes to all system components are managed securely.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-6.5.1
+    - id: 6.5.1
       title: '6.5.1 Changes to all system components in the production environment are made
         according to established procedures that include'
       levels:
@@ -1177,7 +1177,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.5.2
+    - id: 6.5.2
       title: '6.5.2 Upon completion of a significant change, all applicable PCI DSS
         requirements are confirmed to be in place on all new or changed systems and
         networks, and documentation is updated as applicable.All system components are
@@ -1189,7 +1189,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.5.3
+    - id: 6.5.3
       title: '6.5.3 Pre-production environments are separated from production environments and
         the separation is enforced with access controls.Pre-production environments
         cannot introduce risks and vulnerabilities into production environments.'
@@ -1198,7 +1198,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.5.4
+    - id: 6.5.4
       title: '6.5.4 Roles and functions are separated between production and pre-production
         environments to provide accountability such that only reviewed and approved
         changes are deployed.Job roles and accountability that differentiate between
@@ -1215,7 +1215,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.5.5
+    - id: 6.5.5
       title: '6.5.5 Live PANs are not used in pre-production environments, except where those
         environments are included in the CDE and protected in accordance with all
         applicable PCI DSS requirements.Live PANs cannot be present in pre-production
@@ -1225,7 +1225,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-6.5.6
+    - id: 6.5.6
       title: '6.5.6 Test data and test accounts are removed from system components before the
         system goes into production.Test data and test accounts cannot exist in
         production environments.'
@@ -1234,14 +1234,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-7.1
+  - id: 7.1
     title: '7.1 Processes and mechanisms for restricting access to system components and
       cardholder data by business need to know are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-7.1.1
+    - id: 7.1.1
       title: '7.1.1 All security policies and operational procedures that are identified in
         Requirement 7'
       levels:
@@ -1249,7 +1249,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-7.1.2
+    - id: 7.1.2
       title: '7.1.2 Roles and responsibilities for performing activities in Requirement 7 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 7 are allocated. Personnel are accountable for
@@ -1259,27 +1259,27 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-7.2
+  - id: 7.2
     title: '7.2 Access to system components and data is appropriately defined and assigned.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-7.2.1
+    - id: 7.2.1
       title: '7.2.1 An access control model is defined and includes granting access'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-7.2.2
+    - id: 7.2.2
       title: '7.2.2 Access is assigned to users, including privileged users, based on'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-7.2.3
+    - id: 7.2.3
       title: '7.2.3 Required privileges are approved by authorized personnel.Access privileges
         cannot be granted to users without appropriate, documented authorization.'
       levels:
@@ -1287,7 +1287,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-7.2.4
+    - id: 7.2.4
       title: '7.2.4 All user accounts and related access privileges, including
         third-party/vendor accounts, are reviewed'
       levels:
@@ -1295,14 +1295,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-7.2.5
+    - id: 7.2.5
       title: '7.2.5 All application and system accounts and related access privileges are
         assigned and managed'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-7.2.5.1
+      - id: 7.2.5.1
         title: '7.2.5.1 All access by application and system accounts and related access
           privileges are reviewed as follows'
         levels:
@@ -1310,7 +1310,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-7.2.6
+    - id: 7.2.6
       title: '7.2.6 All user access to query repositories of stored cardholder data is
         restricted'
       levels:
@@ -1336,14 +1336,14 @@ controls:
         - file_permissions_backup_etc_passwd
         - file_permissions_backup_etc_shadow
 
-  - id: Req-7.3
+  - id: 7.3
     title: '7.3 Access to system components and data is managed via an access control
       system(s).'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-7.3.1
+    - id: 7.3.1
       title: '7.3.1 An access control system(s) is in place that restricts access based on a
         user’s need to know and covers all system components.Access rights and
         privileges are managed via mechanisms intended for that purpose.'
@@ -1352,7 +1352,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-7.3.2
+    - id: 7.3.2
       title: '7.3.2 The access control system(s) is configured to enforce permissions assigned
         to individuals, applications, and systems based on job classification and
         function.Individual account access rights and privileges to systems,
@@ -1362,7 +1362,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-7.3.3
+    - id: 7.3.3
       title: '7.3.3 The access control system(s) is set to “deny all” by default.Access rights
         and privileges are prohibited unless expressly permitted.'
       levels:
@@ -1370,14 +1370,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-8.1
+  - id: 8.1
     title: '8.1 Processes and mechanisms for identifying users and authenticating access to
       system components are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-8.1.1
+    - id: 8.1.1
       title: '8.1.1 All security policies and operational procedures that are identified in
         Requirement 8'
       levels:
@@ -1385,7 +1385,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.1.2
+    - id: 8.1.2
       title: '8.1.2 Roles and responsibilities for performing activities in Requirement 8 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 8 are allocated. Personnel are accountable for
@@ -1395,14 +1395,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-8.2
+  - id: 8.2
     title: '8.2 User identification and related accounts for users and administrators are
       strictly managed throughout an account’s lifecycle.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-8.2.1
+    - id: 8.2.1
       title: '8.2.1 All users are assigned a unique ID before access to system components or
         cardholder data is allowed.All actions by all users are attributable to an
         individual.This requirement is not intended to apply to user accounts within
@@ -1419,7 +1419,7 @@ controls:
         - group_unique_name
         - account_unique_name
 
-    - id: Req-8.2.2
+    - id: 8.2.2
       title: '8.2.2 Group, shared, or generic accounts, or other shared authentication
         credentials are only used when necessary on an exception basis, and are managed'
       levels:
@@ -1429,7 +1429,7 @@ controls:
         - gid_passwd_group_same
         - accounts_no_uid_except_zero
 
-    - id: Req-8.2.3
+    - id: 8.2.3
       title: '8.2.3 Additional requirement for service providers only: Service providers with
         remote access to customer premises use unique authentication factors for each customer
         premises.'
@@ -1439,7 +1439,7 @@ controls:
       rules:
         - accounts_no_uid_except_zero
 
-    - id: Req-8.2.4
+    - id: 8.2.4
       title: '8.2.4 Addition, deletion, and modification of user IDs, authentication factors,
         and other identifier objects are managed'
       levels:
@@ -1447,7 +1447,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.2.5
+    - id: 8.2.5
       title: '8.2.5 Access for terminated users is immediately revoked.The accounts of
         terminated users cannot be used.'
       levels:
@@ -1455,7 +1455,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.2.6
+    - id: 8.2.6
       title: '8.2.6 Inactive user accounts are removed or disabled within 90 days of
         inactivity.Inactive user accounts cannot be used.'
       levels:
@@ -1465,7 +1465,7 @@ controls:
         - var_account_disable_post_pw_expiration=90
         - account_disable_post_pw_expiration
 
-    - id: Req-8.2.7
+    - id: 8.2.7
       title: '8.2.7 Accounts used by third parties to access, support, or maintain system
         components via remote access are managed'
       levels:
@@ -1473,7 +1473,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.2.8
+    - id: 8.2.8
       title: '8.2.8 If a user session has been idle for more than 15 minutes, the user is
         required to re-authenticate to re-activate the terminal or session.A user
         session cannot be used except by the authorized user.This requirement is not
@@ -1497,13 +1497,13 @@ controls:
         - dconf_gnome_screensaver_mode_blank
         - sshd_set_keepalive_0
 
-  - id: Req-8.3
+  - id: 8.3
     title: '8.3 Strong authentication for users and administrators is established and managed.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-8.3.1
+    - id: 8.3.1
       title: '8.3.1 All user access to system components for users and administrators is
         authenticated.'
       levels:
@@ -1512,7 +1512,7 @@ controls:
       rules:
         - disable_host_auth
 
-    - id: Req-8.3.2
+    - id: 8.3.2
       title: '8.3.2 Strong cryptography is used to render all authentication factors
         unreadable during transmission and storage on all system components.Cleartext
         authentication factors cannot be obtained, derived, or reused from the
@@ -1528,7 +1528,7 @@ controls:
         - accounts_password_all_shadowed
         - ensure_shadow_group_empty
 
-    - id: Req-8.3.3
+    - id: 8.3.3
       title: '8.3.3 User identity is verified before modifying any authentication
         factor.Unauthorized individuals cannot gain system access by impersonating the
         identity of an authorized user.'
@@ -1537,7 +1537,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.3.4
+    - id: 8.3.4
       title: '8.3.4 Invalid authentication attempts are limited'
       levels:
         - base
@@ -1550,7 +1550,7 @@ controls:
         - var_accounts_passwords_pam_tally2_unlock_time=1800
         - cracklib_accounts_password_pam_retry
         
-    - id: Req-8.3.5
+    - id: 8.3.5
       title: '8.3.5 If passwords/passphrases are used as authentication factors to meet
         Requirement 8.3.1, they are set and reset for each user'
       levels:
@@ -1558,7 +1558,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.3.6
+    - id: 8.3.6
       title: '8.3.6 If passwords/passphrases are used as authentication factors to meet
         Requirement 8.3.1, they meet the following minimum level of complexity:  •  A
         minimum length of 12 characters (or IF the system does not support 12
@@ -1582,7 +1582,7 @@ controls:
         - cracklib_accounts_password_pam_ocredit
         - cracklib_accounts_password_pam_ucredit
 
-    - id: Req-8.3.7
+    - id: 8.3.7
       title: '8.3.7 Individuals are not allowed to submit a new password/passphrase that is
         the same as any of the last four passwords/passphrases used.A previously used
         password cannot be used to gain access to an account for at least 12 months.This
@@ -1596,7 +1596,7 @@ controls:
         - var_password_pam_unix_remember=4
         - accounts_password_pam_unix_remember
 
-    - id: Req-8.3.8
+    - id: 8.3.8
       title: '8.3.8 Authentication policies and procedures are documented and communicated to
         all users including'
       levels:
@@ -1604,7 +1604,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.3.9
+    - id: 8.3.9
       title: '8.3.9 If passwords/passphrases are used as the only authentication factor for
         user access (i.e., in any single-factor authentication implementation) then
         either'
@@ -1621,7 +1621,7 @@ controls:
         - accounts_minimum_age_login_defs
         - accounts_password_warn_age_login_defs
 
-    - id: Req-8.3.10.1
+    - id: 8.3.10.1
       title: '8.3.10.1 Additional requirement for service providers only: If
         passwords/passphrases are used as the only authentication factor for customer
         user access (i.e., in any single-factor authentication implementation) then
@@ -1631,7 +1631,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.3.11
+    - id: 8.3.11
       title: '8.3.11 Where authentication factors such as physical or logical security tokens,
         smart cards, or certificates are used'
       levels:
@@ -1639,7 +1639,7 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-8.4
+  - id: 8.4
     title: '8.4 Multi-factor authentication (MFA) is implemented to secure access into the CDE.'
     levels:
       - base
@@ -1652,7 +1652,7 @@ controls:
       - sssd_enable_smartcards
       - force_opensc_card_drivers
     controls:
-    - id: Req-8.4.2
+    - id: 8.4.2
       title: '8.4.2 MFA is implemented for all access into the CDE.Access into the CDE cannot
         be obtained by the use of a single authentication factor.This requirement does
         not apply to'
@@ -1661,7 +1661,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.4.3
+    - id: 8.4.3
       title: '8.4.3 MFA is implemented for all remote network access originating from outside
         the entity’s network that could access or impact the CDE'
       levels:
@@ -1669,27 +1669,27 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-8.5
+  - id: 8.5
     title: '8.5 Multi-factor authentication (MFA) systems are configured to prevent misuse.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-8.5.1
+    - id: 8.5.1
       title: '8.5.1 MFA systems are implemented'
       levels:
         - base
       status: pending
       rules: []
 
-  - id: Req-8.6
+  - id: 8.6
     title: '8.6 Use of application and system accounts and associated authentication factors
       is strictly managed.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-8.6.1
+    - id: 8.6.1
       title: '8.6.1 If accounts used by systems or applications can be used for interactive
         login, they are managed as follows'
       levels:
@@ -1705,7 +1705,7 @@ controls:
         - no_shelllogin_for_systemaccounts
         - use_pam_wheel_for_su
 
-    - id: Req-8.6.2
+    - id: 8.6.2
       title: '8.6.2 Passwords/passphrases for any application and system accounts that can be
         used for interactive login are not hard coded in scripts, configuration/property
         files, or bespoke and custom source code.Passwords/passphrases used by
@@ -1719,7 +1719,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-8.6.3
+    - id: 8.6.3
       title: '8.6.3 Passwords/passphrases for any application and system accounts are
         protected against misuse as follows'
       levels:
@@ -1727,14 +1727,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-9.1
+  - id: 9.1
     title: '9.1 Processes and mechanisms for restricting physical access to cardholder data
       are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-9.1.1
+    - id: 9.1.1
       title: '9.1.1 All security policies and operational procedures that are identified in
         Requirement 9'
       levels:
@@ -1742,7 +1742,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.1.2
+    - id: 9.1.2
       title: '9.1.2 Roles and responsibilities for performing activities in Requirement 9 are
         documented, assigned, and understood.Day-to-day responsibilities for performing
         all the activities in Requirement 9 are allocated. Personnel are accountable for
@@ -1752,14 +1752,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-9.2
+  - id: 9.2
     title: '9.2 Physical access controls manage entry into facilities and systems containing
       cardholder data.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-9.2.1
+    - id: 9.2.1
       title: '9.2.1 Appropriate facility entry controls are in place to restrict physical
         access to systems in the CDE.System components in the CDE cannot be physically
         accessed by unauthorized personnel.'
@@ -1767,7 +1767,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-9.2.1.1
+      - id: 9.2.1.1
         title: '9.2.1.1 Individual physical access to sensitive areas within the CDE is
           monitored with either video cameras or physical access control mechanisms (or
           both)'
@@ -1776,7 +1776,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-9.2.2
+    - id: 9.2.2
       title: '9.2.2 Physical and/or logical controls are implemented to restrict use of
         publicly accessible network jacks within the facility.Unauthorized devices
         cannot connect to the entity’s network from public areas within the facility.'
@@ -1785,7 +1785,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.2.3
+    - id: 9.2.3
       title: '9.2.3 Physical access to wireless access points, gateways,
         networking/communications hardware, and telecommunication lines within the
         facility is restricted.Physical networking equipment cannot be accessed by
@@ -1795,7 +1795,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.2.4
+    - id: 9.2.4
       title: '9.2.4 Access to consoles in sensitive areas is restricted via locking when not
         in use.Physical consoles within sensitive areas cannot be used by unauthorized
         personnel.'
@@ -1804,20 +1804,20 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-9.3
+  - id: 9.3
     title: '9.3 Physical access for personnel and visitors is authorized and managed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-9.3.1
+    - id: 9.3.1
       title: '9.3.1 Procedures are implemented for authorizing and managing physical access of
         personnel to the CDE.'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-9.3.1.1
+      - id: 9.3.1.1
         title: '9.3.1.1 Physical access to sensitive areas within the CDE for personnel is
           controlled'
         levels:
@@ -1825,7 +1825,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-9.3.2
+    - id: 9.3.2
       title: '9.3.2 Procedures are implemented for authorizing and managing visitor access to
         the CDE.'
       levels:
@@ -1833,7 +1833,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.3.3
+    - id: 9.3.3
       title: '9.3.3 Visitor badges or identification are surrendered or deactivated before
         visitors leave the facility or at the date of expiration.Visitor identification
         or badges cannot be reused after expiration.'
@@ -1842,7 +1842,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.3.4
+    - id: 9.3.4
       title: '9.3.4 A visitor log is used to maintain a physical record of visitor activity
         within the facility and within sensitive areas.'
       levels:
@@ -1850,21 +1850,21 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-9.4
+  - id: 9.4
     title: '9.4 Media with cardholder data is securely stored, accessed, distributed, and
       destroyed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-9.4.1
+    - id: 9.4.1
       title: '9.4.1 All media with cardholder data is physically secured.Media with cardholder
         data cannot be accessed by unauthorized personnel.'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-9.4.1.1
+      - id: 9.4.1.1
         title: '9.4.1.1 Offline media backups with cardholder data are stored in a secure
           location.Offline backups cannot be accessed by unauthorized personnel.'
         levels:
@@ -1872,7 +1872,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-9.4.1.2
+      - id: 9.4.1.2
         title: '9.4.1.2 The security of the offline media backup location(s) with cardholder
           data is reviewed at least once every 12 months.The security controls
           protecting offline backups are verified periodically by inspection.'
@@ -1881,7 +1881,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-9.4.2
+    - id: 9.4.2
       title: '9.4.2 All media with cardholder data is classified in accordance with the
         sensitivity of the data.Media are classified and protected appropriately.'
       levels:
@@ -1889,14 +1889,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.4.3
+    - id: 9.4.3
       title: '9.4.3 Media with cardholder data sent outside the facility is secured'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-9.4.4
+    - id: 9.4.4
       title: '9.4.4 Management approves all media with cardholder data that is moved outside
         the facility (including when media is distributed to individuals).Media cannot
         leave a facility without the approval of accountable personnel.Individuals
@@ -1908,14 +1908,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.4.5
+    - id: 9.4.5
       title: '9.4.5 Inventory logs of all electronic media with cardholder data are
         maintained.Accurate inventories of stored electronic media are maintained.'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-9.4.5.1
+      - id: 9.4.5.1
         title: '9.4.5.1 Inventories of electronic media with cardholder data are conducted at
           least once every 12 months.Media inventories are verified periodically.'
         levels:
@@ -1923,7 +1923,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-9.4.6
+    - id: 9.4.6
       title: '9.4.6 Hard-copy materials with cardholder data are destroyed when no longer
         needed for business or legal reasons.'
       levels:
@@ -1931,7 +1931,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-9.4.7
+    - id: 9.4.7
       title: '9.4.7 Electronic media with cardholder data is destroyed when no longer needed
         for business or legal reasons via one of the following'
       levels:
@@ -1939,14 +1939,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-9.5
+  - id: 9.5
     title: '9.5 Point-of-interaction (POI) devices are protected from tampering and
       unauthorized substitution.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-9.5.1
+    - id: 9.5.1
       title: '9.5.1 POI devices that capture payment card data via direct physical interaction
         with the payment card form factor are protected from tampering and unauthorized
         substitution, including the following'
@@ -1954,14 +1954,14 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-9.5.1.1
+      - id: 9.5.1.1
         title: '9.5.1.1 An up-to-date list of POI devices is maintained.'
         levels:
           - base
         status: pending
         rules: []
 
-      - id: Req-9.5.1.2
+      - id: 9.5.1.2
         title: '9.5.1.2 POI device surfaces are periodically inspected to detect tampering and
           unauthorized substitution.Point of Interaction Devices cannot be tampered
           with, substituted without authorization, or have skimming attachments
@@ -1970,7 +1970,7 @@ controls:
           - base
         status: pending
         controls:
-        - id: Req-9.5.1.2.1
+        - id: 9.5.1.2.1
           title: '9.5.1.2.1 The frequency of periodic POI device inspections and the type of
             inspections performed is defined in the entity’s targeted risk analysis,
             which is performed according to all elements specified in Requirement
@@ -1982,7 +1982,7 @@ controls:
           status: pending
           rules: []
 
-      - id: Req-9.5.1.3
+      - id: 9.5.1.3
         title: '9.5.1.3 Training is provided for personnel in POI environments to be aware of
           attempted tampering or replacement of POI devices.'
         levels:
@@ -1990,14 +1990,14 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-10.1
+  - id: 10.1
     title: '10.1 Processes and mechanisms for logging and monitoring all access to system
       components and cardholder data are defined and documented.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-10.1.1
+    - id: 10.1.1
       title: '10.1.1 All security policies and operational procedures that are identified in
         Requirement 10 are'
       levels:
@@ -2005,7 +2005,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-10.1.2
+    - id: 10.1.2
       title: '10.1.2 Roles and responsibilities for performing activities in Requirement 10
         are documented, assigned, and understood.Day-to-day responsibilities for
         performing all the activities in Requirement 10 are allocated. Personnel are
@@ -2015,14 +2015,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-10.2
+  - id: 10.2
     title: '10.2 Audit logs are implemented to support the detection of anomalies and
       suspicious activity, and the forensic analysis of events.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-10.2.1
+    - id: 10.2.1
       title: '10.2.1 Audit logs are enabled and active for all system components and
         cardholder data.Records of all activities affecting system components and
         cardholder data are captured.'
@@ -2033,7 +2033,7 @@ controls:
         - package_audit_installed
         - service_auditd_enabled
       controls:
-      - id: Req-10.2.1.1
+      - id: 10.2.1.1
         title: '10.2.1.1 Audit logs capture all individual user access to cardholder
           data.Records of all individual user access to cardholder data are captured.'
         levels:
@@ -2052,7 +2052,7 @@ controls:
           - audit_rules_unsuccessful_file_modification_unlinkat
           - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
-      - id: Req-10.2.1.2
+      - id: 10.2.1.2
         title: '10.2.1.2 Audit logs capture all actions taken by any individual with
           administrative access, including any interactive use of application or system
           accounts.Records of all actions performed by individuals with elevated
@@ -2064,7 +2064,7 @@ controls:
           - audit_rules_privileged_commands
           - audit_rules_sysadmin_actions
 
-      - id: Req-10.2.1.3
+      - id: 10.2.1.3
         title: '10.2.1.3 Audit logs capture all access to audit logs.Records of all access to
           audit logs are captured.'
         levels:
@@ -2079,7 +2079,7 @@ controls:
         - audit_rules_login_events
         - audit_rules_session_events
 
-      - id: Req-10.2.1.4
+      - id: 10.2.1.4
         title: '10.2.1.4 Audit logs capture all invalid logical access attempts.Records of all
           invalid access attempts are captured.'
         levels:
@@ -2099,7 +2099,7 @@ controls:
         - audit_rules_unsuccessful_file_modification_unlinkat
         - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
-      - id: Req-10.2.1.5
+      - id: 10.2.1.5
         title: '10.2.1.5 Audit logs capture all changes to identification and authentication
           credentials'
         levels:
@@ -2117,7 +2117,7 @@ controls:
         - sudo_add_use_pty
         - sudo_custom_logfile
 
-      - id: Req-10.2.1.6
+      - id: 10.2.1.6
         title: '10.2.1.6 Audit logs capture the initialization of new audit logs, and starting,
           stopping, or pausing of the existing audit logs.'
         levels:
@@ -2125,7 +2125,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-10.2.1.7
+      - id: 10.2.1.7
         title: '10.2.1.7 Audit logs capture all creation and deletion of system-level
           objects.Records of alterations that indicate a system has been modified from
           its intended functionality are captured.'
@@ -2145,7 +2145,7 @@ controls:
         - audit_rules_kernel_module_loading_finit
         - audit_rules_file_deletion_events_rename
 
-    - id: Req-10.2.2
+    - id: 10.2.2
       title: '10.2.2 Audit logs record the following details for each auditable event'
       levels:
         - base
@@ -2153,13 +2153,13 @@ controls:
       rules:
         - audit_rules_sysadmin_actions
 
-  - id: Req-10.3
+  - id: 10.3
     title: '10.3 Audit logs are protected from destruction and unauthorized modifications.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-10.3.1
+    - id: 10.3.1
       title: '10.3.1 Read access to audit logs files is limited to those with a job-related
         need.Stored activity records cannot be accessed by unauthorized personnel.'
       levels:
@@ -2172,7 +2172,7 @@ controls:
       - rsyslog_files_permissions
       - rsyslog_files_groupownership
 
-    - id: Req-10.3.2
+    - id: 10.3.2
       title: '10.3.2 Audit log files are protected to prevent modifications by
         individuals.Stored activity records cannot be modified by personnel.'
       levels:
@@ -2184,7 +2184,7 @@ controls:
       - rsyslog_files_groupownership
       - audit_rules_immutable
 
-    - id: Req-10.3.3
+    - id: 10.3.3
       title: '10.3.3 Audit log files, including those for external-facing technologies, are
         promptly backed up to a secure, central, internal log server(s) or other media
         that is difficult to modify.Stored activity records are secured and preserved in
@@ -2196,7 +2196,7 @@ controls:
       - auditd_audispd_syslog_plugin_activated
       - package_audit-audispd-plugins_installed
 
-    - id: Req-10.3.4
+    - id: 10.3.4
       title: '10.3.4 File integrity monitoring or change-detection mechanisms is used on audit
         logs to ensure that existing log data cannot be changed without generating
         alerts.Stored activity records cannot be modified without an alert being
@@ -2221,19 +2221,19 @@ controls:
       - audit_rules_mac_modification
       - audit_rules_dac_modification_fchmodat
 
-  - id: Req-10.4
+  - id: 10.4
     title: '10.4 Audit logs are reviewed to identify anomalies or suspicious activity.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-10.4.1
+    - id: 10.4.1
       title: '10.4.1 The following audit logs are reviewed at least once daily'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-10.4.1.1
+      - id: 10.4.1.1
         title: '10.4.1.1 Automated mechanisms are used to perform audit log
           reviews.Potentially suspicious or anomalous activities are identified via a
           repeatable and consistent mechanism.This requirement is a best practice until
@@ -2244,7 +2244,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-10.4.2
+    - id: 10.4.2
       title: '10.4.2 Logs of all other system components (those not specified in Requirement
         10.4.1) are reviewed periodically.Potentially suspicious or anomalous activities
         for other system components (not included in 10.4.1) are reviewed in accordance
@@ -2254,7 +2254,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-10.4.2.1
+      - id: 10.4.2.1
         title: '10.4.2.1 The frequency of periodic log reviews for all other system components
           (not defined in Requirement 10.4.1) is defined in the entity’s targeted risk
           analysis, which is performed according to all elements specified in
@@ -2267,7 +2267,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-10.4.3
+    - id: 10.4.3
       title: '10.4.3 Exceptions and anomalies identified during the review process are
         addressed.Suspicious or anomalous activities are addressed.'
       levels:
@@ -2275,13 +2275,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-10.5
+  - id: 10.5
     title: '10.5 Audit log history is retained and available for analysis.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-10.5.1
+    - id: 10.5.1
       title: '10.5.1 Retain audit log history for at least 12 months, with at least the most
         recent three months immediately available for analysis.Historical records of
         activity are available immediately to support incident response and are retained
@@ -2301,14 +2301,14 @@ controls:
       - auditd_data_retention_admin_space_left_action
       - auditd_data_retention_action_mail_acct
 
-  - id: Req-10.6
+  - id: 10.6
     title: '10.6 Time-synchronization mechanisms support consistent time settings across all
       systems.'
     levels:
       - base
     status: automated
     controls:
-    - id: Req-10.6.1
+    - id: 10.6.1
       title: '10.6.1 System clocks and time are synchronized using time-synchronization
         technology.Common time is established across all systems.Keeping
         time-synchronization technology current includes managing vulnerabilities and
@@ -2321,7 +2321,7 @@ controls:
       - ntpd_specify_remote_server
       - package_chrony_installed
 
-    - id: Req-10.6.2
+    - id: 10.6.2
       title: '10.6.2 Systems are configured to the correct and consistent time'
       levels:
         - base
@@ -2333,7 +2333,7 @@ controls:
       - chronyd_specify_remote_server
       - chronyd_or_ntpd_specify_multiple_servers
 
-    - id: Req-10.6.3
+    - id: 10.6.3
       title: '10.6.3 Time synchronization settings and data are protected'
       levels:
         - base
@@ -2346,14 +2346,14 @@ controls:
       - audit_rules_time_stime
       - audit_rules_time_adjtimex
 
-  - id: Req-10.7
+  - id: 10.7
     title: '10.7 Failures of critical security control systems are detected, reported, and
       responded to promptly.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-10.7.1
+    - id: 10.7.1
       title: '10.7.1 Additional requirement for service providers only: Failures of critical
         security control systems are detected, alerted, and addressed promptly,
         including but not limited to failure of the following critical security control
@@ -2363,7 +2363,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-10.7.2
+    - id: 10.7.2
       title: '10.7.2 Failures of critical security control systems are detected, alerted, and
         addressed promptly, including but not limited to failure of the following
         critical security control systems'
@@ -2372,7 +2372,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-10.7.3
+    - id: 10.7.3
       title: '10.7.3 Failures of any critical security controls systems are responded to
         promptly, including but not limited to'
       levels:
@@ -2380,14 +2380,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-11.1
+  - id: 11.1
     title: '11.1 Processes and mechanisms for regularly testing security of systems and
       networks are defined and understood.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-11.1.1
+    - id: 11.1.1
       title: '11.1.1 All security policies and operational procedures that are identified in
         Requirement 11 are'
       levels:
@@ -2395,7 +2395,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-11.1.2
+    - id: 11.1.2
       title: '11.1.2 Roles and responsibilities for performing activities in Requirement 11
         are documented, assigned, and understood.Day-to-day responsibilities for
         performing all the activities in Requirement 11 are allocated. Personnel are
@@ -2405,21 +2405,21 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-11.2
+  - id: 11.2
     title: '11.2 Wireless access points are identified and monitored, and unauthorized
       wireless access points are addressed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-11.2.1
+    - id: 11.2.1
       title: '11.2.1 Authorized and unauthorized wireless access points are managed'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-11.2.2
+    - id: 11.2.2
       title: '11.2.2 An inventory of authorized wireless access points is maintained,
         including a documented business justification.Unauthorized wireless access
         points are not  mistaken for authorized wireless access points.'
@@ -2428,20 +2428,20 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-11.3
+  - id: 11.3
     title: '11.3 External and internal vulnerabilities are regularly identified, prioritized,
       and addressed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-11.3.1
+    - id: 11.3.1
       title: '11.3.1 Internal vulnerability scans are performed as follows'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-11.3.1.1
+      - id: 11.3.1.1
         title: '11.3.1.1 All other applicable vulnerabilities (those not ranked as high-risk
           or critical per the entity’s vulnerability risk rankings defined at
           Requirement 6.3.1) are managed'
@@ -2450,14 +2450,14 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-11.3.1.2
+      - id: 11.3.1.2
         title: '11.3.1.2 Internal vulnerability scans are performed via authenticated scanning'
         levels:
           - base
         status: pending
         rules: []
 
-      - id: Req-11.3.1.3
+      - id: 11.3.1.3
         title: '11.3.1.3 Internal vulnerability scans are performed after any significant
           change'
         levels:
@@ -2465,13 +2465,13 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-11.3.2
+    - id: 11.3.2
       title: '11.3.2 External vulnerability scans are performed as follows'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-11.3.2.1
+      - id: 11.3.2.1
         title: '11.3.2.1 External vulnerability scans are performed after any significant
           change'
         levels:
@@ -2479,14 +2479,14 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-11.4
+  - id: 11.4
     title: '11.4 External and internal penetration testing is regularly performed, and
       exploitable vulnerabilities and security weaknesses are corrected.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-11.4.1
+    - id: 11.4.1
       title: '11.4.1 A penetration testing methodology is defined, documented, and implemented
         by the entity, and includes'
       levels:
@@ -2494,21 +2494,21 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-11.4.2
+    - id: 11.4.2
       title: '11.4.2 Internal penetration testing is performed'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-11.4.3
+    - id: 11.4.3
       title: '11.4.3 External penetration testing is performed'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-11.4.4
+    - id: 11.4.4
       title: '11.4.4 Exploitable vulnerabilities and security weaknesses found during
         penetration testing are corrected'
       levels:
@@ -2516,7 +2516,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-11.4.5
+    - id: 11.4.5
       title: '11.4.5 If segmentation is used to isolate the CDE from other networks,
         penetration tests are performed on segmentation controls'
       levels:
@@ -2524,7 +2524,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-11.4.6
+    - id: 11.4.6
       title: '11.4.6 Additional requirement for service providers only: If segmentation is
         used to isolate the CDE from other networks, penetration tests are performed on
         segmentation controls'
@@ -2533,7 +2533,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-11.4.7
+    - id: 11.4.7
       title: '11.4.7 Additional requirement for multi-tenant service providers only:
         Multi-tenant service providers support their customers for external penetration
         testing per Requirement 11.4.3 and 11.4.4.Multi-tenant service providers support
@@ -2544,7 +2544,7 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-11.5.1.1
+  - id: 11.5.1.1
     title: '11.5.1.1 Additional requirement for service providers only: Intrusion-detection
       and/or intrusion-prevention techniques detect, alert on/prevent, and address
       covert malware communication channels.Mechanisms are in place to detect and
@@ -2561,7 +2561,7 @@ controls:
     - package_MFEhiplsm_installed
     - install_hids
 
-  - id: Req-11.5.2
+  - id: 11.5.2
     title: '11.5.2 A change-detection mechanism (for example, file integrity monitoring tools)
       is deployed'
     levels:
@@ -2576,34 +2576,34 @@ controls:
     - rpm_verify_hashes
     - aide_build_database
 
-  - id: Req-11.6
+  - id: 11.6
     title: '11.6 Unauthorized changes on payment pages are detected and responded to.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-11.6.1
+    - id: 11.6.1
       title: '11.6.1 A change- and tamper-detection mechanism is deployed'
       levels:
         - base
       status: pending
       rules: []
 
-  - id: Req-12.1
+  - id: 12.1
     title: '12.1 A comprehensive information security policy that governs and provides
       direction for protection of the entity’s information assets is known and current.'
     levels:
       - base
     status: partial
     controls:
-    - id: Req-12.1.1
+    - id: 12.1.1
       title: '12.1.1 An overall information security policy'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-12.1.3
+    - id: 12.1.3
       title: '12.1.3 The security policy clearly defines information security roles and
         responsibilities for all personnel, and all personnel are aware of and
         acknowledge their information security responsibilities.Personnel understand
@@ -2613,7 +2613,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.1.4
+    - id: 12.1.4
       title: '12.1.4 Responsibility for information security is formally assigned to a Chief
         Information Security Officer or other information security knowledgeable member
         of executive management.A designated member of executive management is
@@ -2624,13 +2624,13 @@ controls:
       rules:
       - audit_profile_set
 
-  - id: Req-12.2
+  - id: 12.2
     title: '12.2 Acceptable use policies for end-user technologies are defined and implemented.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.2.1
+    - id: 12.2.1
       title: '12.2.1 Acceptable use policies for end-user technologies are documented and
         implemented, including'
       levels:
@@ -2638,14 +2638,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-12.3
+  - id: 12.3
     title: '12.3 Risks to the cardholder data environment are formally identified, evaluated,
       and managed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.3.1
+    - id: 12.3.1
       title: '12.3.1 Each PCI DSS requirement that provides flexibility for how frequently it
         is performed (for example, requirements to be performed periodically) is
         supported by a targeted risk analysis that is documented'
@@ -2654,7 +2654,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.3.2
+    - id: 12.3.2
       title: '12.3.2 A targeted risk analysis is performed for each PCI DSS requirement that
         the entity meets with the customized approach, to include'
       levels:
@@ -2662,7 +2662,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.3.3
+    - id: 12.3.3
       title: '12.3.3 Cryptographic cipher suites and protocols in use are documented and
         reviewed at least once every 12 months, including at least the following'
       levels:
@@ -2670,7 +2670,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.3.4
+    - id: 12.3.4
       title: '12.3.4 Hardware and software technologies in use are reviewed at least once
         every 12 months, including at least the following'
       levels:
@@ -2678,13 +2678,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-12.4
+  - id: 12.4
     title: '12.4 PCI DSS compliance is managed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.4.1
+    - id: 12.4.1
       title: '12.4.1 Additional requirement for service providers only: Responsibility is
         established by executive management for the protection of cardholder data and a
         PCI DSS compliance program to include'
@@ -2693,7 +2693,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.4.2
+    - id: 12.4.2
       title: '12.4.2 Additional requirement for service providers only: Reviews are performed
         at least once every three months to confirm that personnel are performing their
         tasks in accordance with all security policies and operational procedures.
@@ -2703,7 +2703,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-12.4.2.1
+      - id: 12.4.2.1
         title: '12.4.2.1 Additional requirement for service providers only: Reviews conducted
           in accordance with Requirement 12.4.2 are documented to include'
         levels:
@@ -2711,13 +2711,13 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-12.5
+  - id: 12.5
     title: '12.5 PCI DSS scope is documented and validated.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.5.1
+    - id: 12.5.1
       title: '12.5.1 An inventory of system components that are in scope for PCI DSS,
         including a description of function/use, is maintained and kept current.All
         system components in scope for PCI DSS are identified and known.'
@@ -2726,7 +2726,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.5.2
+    - id: 12.5.2
       title: '12.5.2 PCI DSS scope is documented and confirmed by the entity at least once
         every 12 months and upon significant change to the in-scope environment. At a
         minimum, the scoping validation includes'
@@ -2734,7 +2734,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-12.5.2.1
+      - id: 12.5.2.1
         title: '12.5.2.1 Additional requirement for service providers only: PCI DSS scope is
           documented and confirmed by the entity at least once every six months and upon
           significant change to the in-scope environment. At a minimum, the scoping
@@ -2749,7 +2749,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-12.5.3
+    - id: 12.5.3
       title: '12.5.3 Additional requirement for service providers only: Significant changes to
         organizational structure result in a documented (internal) review of the impact
         to PCI DSS scope and applicability of controls, with results communicated to
@@ -2762,13 +2762,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-12.6
+  - id: 12.6
     title: '12.6 Security awareness education is an ongoing activity.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.6.1
+    - id: 12.6.1
       title: '12.6.1 A formal security awareness program is implemented to make all personnel
         aware of the entity’s information security policy and procedures, and their role
         in protecting the cardholder data.Personnel are knowledgeable about the threat
@@ -2779,20 +2779,20 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.6.2
+    - id: 12.6.2
       title: '12.6.2 The security awareness program'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-12.6.3
+    - id: 12.6.3
       title: '12.6.3 Personnel receive security awareness training'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-12.6.3.1
+      - id: 12.6.3.1
         title: '12.6.3.1 Security awareness training includes awareness of threats and
           vulnerabilities that could impact the security of the CDE, including but not
           limited to'
@@ -2801,7 +2801,7 @@ controls:
         status: pending
         rules: []
 
-      - id: Req-12.6.3.2
+      - id: 12.6.3.2
         title: '12.6.3.2 Security awareness training includes awareness about the acceptable
           use of end-user technologies in accordance with Requirement 12.2.1.Personnel
           are knowledgeable about their responsibility for the security and operation of
@@ -2813,13 +2813,13 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-12.7
+  - id: 12.7
     title: '12.7 Personnel are screened to reduce risks from insider threats.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.7.1
+    - id: 12.7.1
       title: '12.7.1 Potential personnel who will have access to the CDE are screened, within
         the constraints of local laws, prior to hire to minimize the risk of attacks
         from internal sources.The risk related to allowing new members of staff access
@@ -2832,14 +2832,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-12.8
+  - id: 12.8
     title: '12.8 Risk to information assets associated with third-party service provider
       (TPSP) relationships is managed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.8.1
+    - id: 12.8.1
       title: '12.8.1 A list of all third-party service providers (TPSPs) with which account
         data is shared or that could affect the security of account data is maintained,
         including a description for each of the services provided.Records are maintained
@@ -2851,14 +2851,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.8.2
+    - id: 12.8.2
       title: '12.8.2 Written agreements with TPSPs are maintained'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-12.8.3
+    - id: 12.8.3
       title: '12.8.3 An established process is implemented for engaging TPSPs, including
         proper due diligence prior to engagement.The capability, intent, and resources
         of a prospective TPSP to adequately protect account data are assessed before the
@@ -2868,7 +2868,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.8.4
+    - id: 12.8.4
       title: '12.8.4 A program is implemented to monitor TPSPs’ PCI DSS compliance status at
         least once every 12 months.The PCI DSS compliance status of TPSPs is verified
         periodically.Where an entity has an agreement with a TPSP for meeting PCI DSS
@@ -2881,7 +2881,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.8.5
+    - id: 12.8.5
       title: '12.8.5 Information is maintained about which PCI DSS requirements are managed by
         each TPSP, which are managed by the entity, and any that are shared between the
         TPSP and the entity.Records detailing the PCI DSS requirements and related
@@ -2892,14 +2892,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-12.9
+  - id: 12.9
     title: '12.9 Third-party service providers (TPSPs) support their customers’ PCI DSS
       compliance.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.9.1
+    - id: 12.9.1
       title: '12.9.1 Additional requirement for service providers only: TPSPs acknowledge in
         writing to customers that they are responsible for the security of account data
         the TPSP possesses or otherwise stores, processes, or transmits on behalf of the
@@ -2915,7 +2915,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.9.2
+    - id: 12.9.2
       title: '12.9.2 Additional requirement for service providers only: TPSPs support their
         customers’ requests for information to meet Requirements 12.8.4 and 12.8.5 by
         providing the following upon customer request'
@@ -2924,14 +2924,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-12.10
+  - id: 12.10
     title: '12.10 Suspected and confirmed security incidents that could impact the CDE are
       responded to immediately.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-12.10.1
+    - id: 12.10.1
       title: '12.10.1 An incident response plan exists and is ready to be activated in the
         event of a suspected or confirmed security incident. The plan includes, but is
         not limited to'
@@ -2940,14 +2940,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.10.2
+    - id: 12.10.2
       title: '12.10.2 At least once every 12 months, the security incident response plan'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-12.10.3
+    - id: 12.10.3
       title: '12.10.3 Specific personnel are designated to be available on a 24/7 basis to
         respond to suspected or confirmed security incidents.Incidents are responded to
         immediately where appropriate.'
@@ -2956,7 +2956,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.10.4
+    - id: 12.10.4
       title: '12.10.4 Personnel responsible for responding to suspected and confirmed security
         incidents are appropriately and periodically trained on their incident response
         responsibilities.Personnel are knowledgeable about their role and
@@ -2966,7 +2966,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-12.10.4.1
+      - id: 12.10.4.1
         title: '12.10.4.1 The frequency of periodic training for incident response personnel
           is defined in the entity’s targeted risk analysis, which is performed
           according to all elements specified in Requirement 12.3.1.Incident response
@@ -2978,7 +2978,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-12.10.5
+    - id: 12.10.5
       title: '12.10.5 The security incident response plan includes monitoring and responding
         to alerts from security monitoring systems, including but not limited to'
       levels:
@@ -2986,7 +2986,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.10.6
+    - id: 12.10.6
       title: '12.10.6 The security incident response plan is modified and evolved according to
         lessons learned and to incorporate industry developments.The effectiveness and
         accuracy of the incident response plan is reviewed and updated after each
@@ -2996,7 +2996,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-12.10.7
+    - id: 12.10.7
       title: '12.10.7 Incident response procedures are in place, to be initiated upon the
         detection of stored PAN anywhere it is not expected.'
       levels:
@@ -3004,21 +3004,21 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-A1.1
+  - id: A1.1
     title: 'A1.1 Multi-tenant service providers protect and separate all customer environments
       and data.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A1.1.1
+    - id: A1.1.1
       title: 'A1.1.1 Logical separation is implemented as follows'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-A1.1.2
+    - id: A1.1.2
       title: 'A1.1.2 Controls are implemented such that each customer only has permission to
         access its own cardholder data and CDE.Customers cannot access other customers’
         environments.'
@@ -3027,7 +3027,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A1.1.3
+    - id: A1.1.3
       title: 'A1.1.3 Controls are implemented such that each customer can only access
         resources allocated to them.Customers cannot impact resources allocated to other
         customers.'
@@ -3036,7 +3036,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A1.1.4
+    - id: A1.1.4
       title: 'A1.1.4 The effectiveness of logical separation controls used to separate
         customer environments is confirmed at least once every six months via
         penetration testing.Segmentation of customer environments from other
@@ -3050,14 +3050,14 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-A1.2
+  - id: A1.2
     title: 'A1.2 Multi-tenant service providers facilitate logging and incident response for
       all customers.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A1.2.1
+    - id: A1.2.1
       title: 'A1.2.1 Audit log capability is enabled for each customer’s environment that is
         consistent with PCI DSS Requirement 10.'
       levels:
@@ -3065,7 +3065,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A1.2.2
+    - id: A1.2.2
       title: 'A1.2.2 Processes or mechanisms are implemented to support and/or facilitate
         prompt forensic investigations in the event of a suspected or confirmed security
         incident for any customer.Forensic investigation is readily available to all
@@ -3075,7 +3075,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A1.2.3
+    - id: A1.2.3
       title: 'A1.2.3 Processes or mechanisms are implemented for reporting and addressing
         suspected or confirmed security incidents and vulnerabilities.'
       levels:
@@ -3083,7 +3083,7 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-A2.1.2
+  - id: A2.1.2
     title: 'A2.1.2 Additional requirement for service providers only: All service providers
       with existing connection points to POS POI terminals that use SSL and/or early TLS
       as defined in A2.1 have a formal Risk Mitigation and Migration Plan in place that
@@ -3093,7 +3093,7 @@ controls:
     status: pending
     rules: []
 
-  - id: Req-A2.1.3
+  - id: A2.1.3
     title: 'A2.1.3 Additional requirement for service providers only: All service providers
       provide a secure service offering.This requirement is not eligible for the
       customized approach.This requirement applies only when the entity being assessed
@@ -3103,13 +3103,13 @@ controls:
     status: pending
     rules: []
 
-  - id: Req-A3.1
+  - id: A3.1
     title: 'A3.1 A PCI DSS compliance program is implemented.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A3.1.1
+    - id: A3.1.1
       title: 'A3.1.1 Responsibility is established by executive management for the protection
         of account data and a PCI DSS compliance program'
       levels:
@@ -3117,14 +3117,14 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A3.1.2
+    - id: A3.1.2
       title: 'A3.1.2 A formal PCI DSS compliance program is in place'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-A3.1.3
+    - id: A3.1.3
       title: 'A3.1.3 PCI DSS compliance roles and responsibilities are specifically defined
         and formally assigned to one or more personnel.'
       levels:
@@ -3132,7 +3132,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A3.1.4
+    - id: A3.1.4
       title: 'A3.1.4 Up-to-date PCI DSS and/or information security training is provided at
         least once every 12 months to personnel with PCI DSS compliance responsibilities
         (as identified in A3.1.3).'
@@ -3141,13 +3141,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-A3.2
+  - id: A3.2
     title: 'A3.2 PCI DSS scope is documented and validated.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A3.2.1
+    - id: A3.2.1
       title: 'A3.2.1 PCI DSS scope is documented and confirmed for accuracy at least once
         every three months and upon significant changes to the in-scope environment. At
         a minimum, the scoping validation includes'
@@ -3156,7 +3156,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A3.2.2
+    - id: A3.2.2
       title: 'A3.2.2 PCI DSS scope impact for all changes to systems or networks is
         determined, including additions of new systems and new network connections.
         Processes include'
@@ -3164,7 +3164,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-A3.2.2.1
+      - id: A3.2.2.1
         title: 'A3.2.2.1 Upon completion of a change, all relevant PCI DSS requirements are
           confirmed to be implemented on all new or changed systems and networks, and
           documentation is updated as applicable.'
@@ -3173,7 +3173,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-A3.2.3
+    - id: A3.2.3
       title: 'A3.2.3 Changes to organizational structure result in a formal (internal) review
         of the impact to PCI DSS scope and applicability of controls.'
       levels:
@@ -3181,27 +3181,27 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A3.2.4
+    - id: A3.2.4
       title: 'A3.2.4 If segmentation is used, PCI DSS scope is confirmed'
       levels:
         - base
       status: pending
       rules: []
 
-    - id: Req-A3.2.5
+    - id: A3.2.5
       title: 'A3.2.5 A data-discovery methodology is implemented that'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-A3.2.5.1
+      - id: A3.2.5.1
         title: 'A3.2.5.1 Data discovery methods are confirmed as follows'
         levels:
           - base
         status: pending
         rules: []
 
-      - id: Req-A3.2.5.2
+      - id: A3.2.5.2
         title: 'A3.2.5.2 Response procedures are implemented to be initiated upon the
           detection of cleartext PAN outside the CDE to include'
         levels:
@@ -3209,7 +3209,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-A3.2.6
+    - id: A3.2.6
       title: 'A3.2.6 Mechanisms are implemented for detecting and preventing cleartext PAN
         from leaving the CDE via an unauthorized channel, method, or process, including
         mechanisms that'
@@ -3217,7 +3217,7 @@ controls:
         - base
       status: pending
       controls:
-      - id: Req-A3.2.6.1
+      - id: A3.2.6.1
         title: 'A3.2.6.1 Response procedures are implemented to be initiated upon the
           detection of attempts to remove cleartext PAN from the CDE via an unauthorized
           channel, method, or process. Response procedures include'
@@ -3226,20 +3226,20 @@ controls:
         status: pending
         rules: []
 
-  - id: Req-A3.3
+  - id: A3.3
     title: 'A3.3 PCI DSS is incorporated into business-as-usual (BAU) activities.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A3.3.1
+    - id: A3.3.1
       title: 'A3.3.1 Failures of critical security control systems are detected, alerted, and
         addressed promptly.'
       levels:
         - base
       status: pending
       controls:
-      - id: Req-A3.3.1.2
+      - id: A3.3.1.2
         title: 'A3.3.1.2 Failures of any critical security control systems are responded to
           promptly. Processes for responding to failures in security control systems
           include'
@@ -3248,7 +3248,7 @@ controls:
         status: pending
         rules: []
 
-    - id: Req-A3.3.2
+    - id: A3.3.2
       title: 'A3.3.2 Hardware and software technologies are reviewed at least once every 12
         months to confirm whether they continue to meet the organization’s PCI DSS
         requirements.'
@@ -3257,7 +3257,7 @@ controls:
       status: pending
       rules: []
 
-    - id: Req-A3.3.3
+    - id: A3.3.3
       title: 'A3.3.3 Reviews are performed at least once every three months to verify BAU
         activities are being followed. Reviews are performed by personnel assigned to
         the PCI DSS compliance program (as identified in A3.1.3).'
@@ -3266,13 +3266,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-A3.4
+  - id: A3.4
     title: 'A3.4 Logical access to the cardholder data environment is controlled and managed.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A3.4.1
+    - id: A3.4.1
       title: 'A3.4.1 User accounts and access privileges to in-scope system components are
         reviewed at least once every six months to ensure user accounts and access
         privileges remain appropriate based on job function, and that all access is
@@ -3282,13 +3282,13 @@ controls:
       status: pending
       rules: []
 
-  - id: Req-A3.5
+  - id: A3.5
     title: 'A3.5 Suspicious events are identified and responded to.'
     levels:
       - base
     status: pending
     controls:
-    - id: Req-A3.5.1
+    - id: A3.5.1
       title: 'A3.5.1 A methodology is implemented for the prompt identification of attack
         patterns and undesirable behavior across systems'
       levels:
