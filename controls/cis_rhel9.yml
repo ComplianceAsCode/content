@@ -824,7 +824,6 @@ controls:
     rules:
       - package_dnsmasq_removed
 
-
   - id: 2.2.15
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
     levels:
@@ -834,6 +833,7 @@ controls:
     rules:
       - postfix_network_listening_disabled
       - var_postfix_inet_interfaces=loopback-only
+      - has_nonlocal_mta
 
   - id: 2.2.16
     title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
