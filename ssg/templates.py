@@ -273,12 +273,14 @@ class Builder(object):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
         declaration = ssg.yaml.open_raw(declaration_path)
         for oval_def_id, template in declaration.items():
+            # Allow to define title of the template
+            title = template.pop("title", oval_def_id)
             # Since OVAL definition ID in shorthand format is always the same
             # as rule ID, we can use it instead of the rule ID even if no rule
             # with that ID exists
             rule = ssg.build_yaml.Rule.get_instance_from_full_dict({
                 "id_": oval_def_id,
-                "title": oval_def_id,
+                "title": title,
                 "template": template,
             })
             filled_template = self.build_lang_for_templatable(rule, LANGUAGES["oval"])
