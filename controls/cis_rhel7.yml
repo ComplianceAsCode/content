@@ -1143,7 +1143,13 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    notes: |-
+      nftables can be a backend for firewalld but its service does not need to be running.
+      Otherwise, it will conflict with firewalld service. The preferred service to manage firewall
+      rules is firewalld. In addition, the default backend in RHEL7 is iptables.
+    status: automated
+    related_rules:
+      - service_nftables_enabled
 
   - id: 3.5.2.11
     title: Ensure nftables rules are permanent (Automated)

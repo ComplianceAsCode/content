@@ -1237,14 +1237,18 @@ controls:
       - l1_workstation
     status: pending
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5249
   - id: 3.4.2.10
     title: Ensure nftables service is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    notes: |-
+      nftables is actually the backend for firewalld but its service does not need to be running.
+      Otherwise, it will conflict with firewalld service. The preferred service to manage firewall
+      rules is firewalld.
+    status: automated
+    related_rules:
+      - service_nftables_enabled
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5250
