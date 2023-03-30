@@ -259,7 +259,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual  # rule is missing
+    status: manual  
+    notes: >- 
+       The control cannot be automated, 
+       and should be addressed manually. 
+    rules:
+      - ensure_GPG_keys_are_configured
 
   - id: 1.2.2
     title: Ensure package manager repositories are configured (Manual)
