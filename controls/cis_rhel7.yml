@@ -1193,7 +1193,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: partial
+    notes: |-
+      Currently the check is only available in SCE and an automated remediation is not expected.
+    rules:
+      - iptables_rules_for_open_ports
 
   - id: 3.5.3.2.4
     title: Ensure iptables default deny firewall policy (Automated)

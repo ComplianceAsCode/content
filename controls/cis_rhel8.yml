@@ -1296,14 +1296,16 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5255
   - id: 3.4.3.2.3
     title: Ensure iptables rules exist for all open ports (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    notes: |-
+      Currently the check is only available in SCE and an automated remediation is not expected.
+    rules:
+      - iptables_rules_for_open_ports
 
   - id: 3.4.3.2.4
     title: Ensure iptables default deny firewall policy (Automated)
