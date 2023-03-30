@@ -1,3 +1,5 @@
+include(FindPackageHandleStandardArgs)
+
 set(OPENSCAP_POSSIBLE_ROOT_DIRS
     "${OPENSCAP_ROOT_DIR}"
     "$ENV{OPENSCAP_ROOT_DIR}"
