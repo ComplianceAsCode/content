@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Verify MTA is not listening on any non-loopback address") }}}
+    <criteria>
+      <criterion test_ref="tst_nothing_listening_external_mta_port"
+            comment="mta is not listening on any non-loopbackaddress" />
+    </criteria>
+  </definition>
+  <linux:inetlisteningservers_object id="obj_listening_port_25" version="1">
+    <linux:protocol>tcp</linux:protocol>
+    <linux:local_address operation="not equal">127.0.0.1</linux:local_address>
+    <linux:local_port datatype="int">25</linux:local_port>
+    <filter action="exclude">ste_not_port_25</filter>
+    <filter action="exclude">ste_not_on_localhost</filter>
+  </linux:inetlisteningservers_object>
+  <linux:inetlisteningservers_state id="ste_not_port_25" version="1">
+    <linux:local_port datatype="int" operation="not equal">25</linux:local_port>
+  </linux:inetlisteningservers_state>
+  <linux:inetlisteningservers_state id="ste_not_on_localhost" version="1">
+    <linux:local_address operation="equals">::1</linux:local_address>
+  </linux:inetlisteningservers_state>
+  <linux:inetlisteningservers_test check="all" check_existence="none_exist"
+      id="tst_nothing_listening_external_mta_port" version="1"
+      comment="mta is not listening on any non-loopback address">
+    <linux:object object_ref="obj_listening_port_25" />
+  </linux:inetlisteningservers_test>
+</def-group>

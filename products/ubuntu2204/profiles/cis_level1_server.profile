@@ -313,6 +313,7 @@ selections:
     ### 2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)
     - var_postfix_inet_interfaces=loopback-only
     - postfix_network_listening_disabled
+    - has_nonlocal_mta
 
     ### 2.2.16 Ensure rsync service is not installed (Automated)
     - package_rsync_removed
