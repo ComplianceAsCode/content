@@ -11,4 +11,5 @@ type: string
 interactive: false
 
 options:
-    default: '(\.bashrc|\.zshrc|\.cshrc|\.profile|\.bash_login|\.bash_profile)'
+    default: '^(\.bashrc|\.zshrc|\.cshrc|\.profile|\.bash_login|\.bash_profile)$'
+    'all_dotfiles': '^\.[\w\- ]+$'
