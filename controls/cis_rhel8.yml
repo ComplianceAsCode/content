@@ -1349,14 +1349,16 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/7191
   - id: 3.4.3.3.3
     title: Ensure ip6tables firewall rules exist for all open ports (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: partial
+    notes: |-
+      Currently the check is only available in SCE and an automated remediation is not expected.
+    rules:
+      - ip6tables_rules_for_open_ports
 
   - id: 3.4.3.3.4
     title: Ensure ip6tables default deny firewall policy (Automated)
