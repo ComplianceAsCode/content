@@ -1076,15 +1076,15 @@ controls:
     rules:
       - package_nftables_installed
 
-  # Missing a rule to check if nftables service is disabled.
   - id: 3.4.1.2
     title: Ensure a single firewall configuration utility is in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - service_firewalld_enabled
+      - service_nftables_disabled
 
   - id: 3.4.2.1
     title: Ensure firewalld default zone is set (Automated)
