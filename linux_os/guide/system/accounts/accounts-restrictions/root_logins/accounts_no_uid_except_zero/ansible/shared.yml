@@ -4,12 +4,12 @@
 # complexity = low
 # disruption = low
 
-- name: get all /etc/passwd file entries
+- name: Get all /etc/passwd file entries
   getent:
     database: passwd
     split: ':'
 
-- name: lock the password of the user accounts other than root with uid 0
+- name: Lock the password of the user accounts other than root with uid 0
   command: passwd -l {{ item.key }}
   loop: "{{ getent_passwd | dict2items | rejectattr('key', 'search', 'root') | list }}"
   when: item.value.1  == '0'

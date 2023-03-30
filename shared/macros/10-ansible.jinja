@@ -641,14 +641,14 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 - name: "Test for id_provider different than Active Directory (ad)"
   command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
   register: test_id_provider
-  ignore_errors: yes
+  failed_when: test_id_provider.rc not in [0, 1]
   changed_when: False
   check_mode: no
 
 - name: "Test for domain group"
   command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
-  ignore_errors: yes
+  failed_when: test_grep_domain.rc not in [0, 1]
   changed_when: False
   check_mode: no
 
@@ -748,12 +748,12 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect check
   register: result_authselect_check_cmd
   changed_when: false
-  ignore_errors: yes
+  failed_when: result_authselect_check_cmd.rc not in [0, 3, 4]
 
 - name: '{{{ rule_title }}} - Informative message based on the authselect integrity check result'
   ansible.builtin.assert:
     that:
-      - result_authselect_check_cmd is success
+      - result_authselect_check_cmd.rc == 0
     fail_msg:
       - authselect integrity check failed. Remediation aborted!
       - This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
@@ -1278,10 +1278,12 @@ Part of the grub2_bootloader_argument_absent template.
         - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
 
     {{{ ansible_apply_authselect_changes() | indent(4) }}}
-      when: >
-        result_authselect_present is defined and result_authselect_present.stat.exists and
-        ((result_pam_module_add is defined and result_pam_module_add.changed)
-        or (result_pam_module_edit is defined and result_pam_module_edit.changed))
+      when:
+        - result_authselect_present is defined
+        - result_authselect_present.stat.exists
+        - >-
+          (result_pam_module_add is defined and result_pam_module_add.changed)
+           or (result_pam_module_edit is defined and result_pam_module_edit.changed)
   when:
     - result_pam_line_present.found is defined
     - result_pam_line_present.found == 0
@@ -1521,7 +1523,9 @@ Part of the grub2_bootloader_argument_absent template.
     {{{ ansible_apply_authselect_changes() | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
-        - (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed) or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
+        - >-
+          (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed)
+           or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
   when:
     - result_pam_file_present.stat.exists
 {{%- endmacro -%}}

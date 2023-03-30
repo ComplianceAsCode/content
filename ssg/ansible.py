@@ -40,11 +40,25 @@ def add_minimum_version(ansible_src):
     return ansible_src.replace(" - hosts: all", pre_task, 1)
 
 
+def remove_too_many_blank_lines(ansible_src):
+    """
+    Condenses three or more empty lines as two.
+    """
+    return re.sub(r'\n{4,}', '\n\n\n', ansible_src, 0, flags=re.M)
+
+
 def remove_trailing_whitespace(ansible_src):
     """
     Removes trailing whitespace in an Ansible script
     """
     return re.sub(r'[ \t]+$', '', ansible_src, 0, flags=re.M)
+
+
+def strip_eof(ansible_src):
+    """
+    Removes extra newlines at end of file
+    """
+    return ansible_src.rstrip() + "\n"
 
 
 def _strings_to_list(one_or_more_strings):

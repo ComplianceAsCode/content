@@ -4,5 +4,5 @@
 # strategy = configure
 # disruption = low
 
-{{{ ansible_lineinfile(msg='configure ipv4 restrictions for ntpd', path='/etc/ntp.conf', regex='', new_line='restrict -4 default kod nomodify notrap nopeer noquery', create='yes', state='present') }}}
-{{{ ansible_lineinfile(msg='configure ipv6 restrictions for ntpd', path='/etc/ntp.conf', regex='', new_line='restrict -6 default kod nomodify notrap nopeer noquery', create='yes', state='present') }}}
+{{{ ansible_lineinfile(msg='Configure ipv4 restrictions for ntpd', path='/etc/ntp.conf', regex='', new_line='restrict -4 default kod nomodify notrap nopeer noquery', create='yes', state='present') }}}
+{{{ ansible_lineinfile(msg='Configure ipv6 restrictions for ntpd', path='/etc/ntp.conf', regex='', new_line='restrict -6 default kod nomodify notrap nopeer noquery', create='yes', state='present') }}}

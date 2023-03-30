@@ -11,7 +11,7 @@
     chain: INPUT
     in_interface: lo
     jump: ACCEPT
-  when: "{{ ipv6_status.stdout == '0' }}"
+  when: ipv6_status.stdout == '0'
 
 - name: Allow outgoing traffic on the loopback interface
   ansible.builtin.iptables:
@@ -19,7 +19,7 @@
     chain: OUTPUT
     out_interface: lo
     jump: ACCEPT
-  when: "{{ ipv6_status.stdout == '0' }}"
+  when: ipv6_status.stdout == '0'
 
 - name: Drop incoming traffic from the localhost
   ansible.builtin.iptables:
@@ -27,4 +27,4 @@
     chain: INPUT
     source: "::1"
     jump: DROP
-  when: "{{ ipv6_status.stdout == '0' }}"
+  when: ipv6_status.stdout == '0'

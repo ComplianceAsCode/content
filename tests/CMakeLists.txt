@@ -224,7 +224,7 @@ add_test(
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
 endif()
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE)
+if (PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 add_test(
     NAME "test-generate_contributors"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
@@ -316,6 +316,12 @@ macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     endif()
 endmacro()
 
-ssg_controlrefcheck_test("rhel7" "cis_rhel7" "cis")
-ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
-ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
+if (SSG_PRODUCT_RHEL7)
+    ssg_controlrefcheck_test("rhel7" "cis_rhel7" "cis")
+endif()
+if (SSG_PRODUCT_RHEL8)
+    ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
+endif()
+if (SSG_PRODUCT_RHEL9)
+    ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
+endif()
