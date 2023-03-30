@@ -352,6 +352,9 @@ controls:
         - file_permissions_sshd_pub_key
         - file_permissions_unauthorized_world_writable
         - file_permissions_ungroupowned
+        - file_groupowner_grub2_cfg
+        - file_owner_cron_allow
+        - file_owner_grub2_cfg
         - no_files_unowned_by_user
         - service_cron_enabled
         - sshd_disable_empty_passwords
@@ -1628,8 +1631,10 @@ controls:
         either'
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - accounts_maximum_age_login_defs
+        - var_accounts_maximum_age_login_defs=90
 
     - id: 8.3.11
       title: 'Where authentication factors such as physical or logical security tokens,
@@ -2354,7 +2359,9 @@ controls:
       responded to promptly.'
     levels:
       - base
-    status: pending
+    status: partial
+    rules:
+    - grub2_audit_argument
     controls:
     - id: 10.7.1
       title: 'Additional requirement for service providers only: Failures of critical
