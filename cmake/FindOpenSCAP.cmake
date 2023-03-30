@@ -1,3 +1,6 @@
+# Keep filename as is
+# lint_cmake: -convention/filename, -package/consistency
+
 include(FindPackageHandleStandardArgs)
 
 set(OPENSCAP_POSSIBLE_ROOT_DIRS

@@ -2,6 +2,9 @@
 # Found at http://www.cmake.org/pipermail/cmake/2011-January/041666.html
 # To use do: find_python_module(PyQt4 REQUIRED)
 
+# Keep filename as is
+# lint_cmake: -convention/filename, -package/stdargs
+
 include(FindPackageHandleStandardArgs)
 
 function(find_python_module module)
