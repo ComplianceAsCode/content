@@ -19,27 +19,33 @@ env_yaml = open_environment(build_config_yaml, product_yaml)
 
 
 def test_render_extra_ovals():
-    builder = ssg.templates.Builder(
-        env_yaml, None, templates_dir,
-        missing_dir, missing_dir, None, cpe_items_dir)
+    class MockExtraOValsBuilder(ssg.templates.Builder):
+        # Ensure no modifications
+        def _write_template(self, filled_template, output_filepath):
+            self._called__write_template += 1
 
-    declaration_path = os.path.join(builder.templates_dir, "extra_ovals.yml")
-    declaration = ssg.yaml.open_raw(declaration_path)
-    for oval_def_id, template in declaration.items():
-        rule = ssg.build_yaml.Rule.get_instance_from_full_dict({
-            "id_": oval_def_id,
-            "title": oval_def_id,
-            "template": template,
-        })
+        def write_lang_contents_for_templatable(self, oval_content, lang, rule):
+            self._rule_count += 1
+            super(MockExtraOValsBuilder, self).write_lang_contents_for_templatable(
+                oval_content, lang, rule
+            )
 
-        oval_content = builder.get_lang_contents_for_templatable(
-            rule, ssg.templates.LANGUAGES["oval"])
+            assert (
+                'id="package_%s_installed"' % (rule.template["vars"]["pkgname"])
+                in oval_content
+            )
 
-        assert 'id="package_%s_installed"' % (rule.template['vars']['pkgname']) \
-               in oval_content
+            assert "<title>%s</title>" % (rule.title,) in oval_content
 
-        assert "<title>%s</title>" % (oval_def_id,) \
-               in oval_content
+    builder = MockExtraOValsBuilder(
+        env_yaml, None, templates_dir, missing_dir, missing_dir, None, cpe_items_dir
+    )
+    builder._rule_count = 0
+    builder._called__write_template = 0
+
+    builder.build_extra_ovals()
+    assert builder._called__write_template == builder._rule_count
+    assert builder._called__write_template > 0
 
     assert not os.path.exists(missing_dir)
 
