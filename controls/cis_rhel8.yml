@@ -838,6 +838,7 @@ controls:
     rules:
       - postfix_network_listening_disabled
       - var_postfix_inet_interfaces=loopback-only
+      - has_nonlocal_mta
 
   - id: 2.2.18
     title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
