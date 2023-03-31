@@ -1576,7 +1576,7 @@ passing result. So `e2e.yml` has the following content:
 
 Let's look at another example:
 
-For the `api_server_encryption_provider_config` we want to apply a
+For the `api_server_encryption_provider_cipher` we want to apply a
 remediation which cannot be applied via the `compliance-operator`. So
 we'll need a manual remediation for this.
 

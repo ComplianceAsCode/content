@@ -112,7 +112,6 @@ selections:
   # 1.2.32 Ensure that the --etcd-cafile argument is set as appropriate
     - api_server_etcd_ca
   # 1.2.33 Ensure that the --encryption-provider-config argument is set as appropriate
-    - api_server_encryption_provider_config
   # 1.2.34 Ensure that encryption providers are appropriately configured
     - api_server_encryption_provider_cipher
   # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers
