@@ -196,11 +196,31 @@ class Builder(object):
             raise RuntimeError("Unable to generate {0} template language for Templatable {1}: {2}"
                                .format(language.name, templatable, e))
 
+    # These file methods allows us to test write_lang_contents_for_templatable
+    def _write_template(self, filled_template, output_filepath):
+        with open(output_filepath, "w") as f:
+            f.write(filled_template)
+
+    def _read_template(self, output_filepath):
+        if not os.path.exists(output_filepath):
+            return None
+
+        with open(output_filepath, "r") as f:
+            return f.read()
+
+    def _compare_template_to_existing(self, filled_template, output_filepath, templatable):
+        old = self._read_template(output_filepath)
+        if old is not None and old != filled_template:
+            raise RuntimeError(
+                "Rule {0} template {1} differ '{2}' != '{3}'".format(
+                    templatable.id_, output_filepath, old, filled_template))
+
     def write_lang_contents_for_templatable(self, filled_template, lang, templatable):
         output_file_name = templatable.id_ + lang.file_extension
         output_filepath = os.path.join(self.output_dirs[lang.name], output_file_name)
-        with open(output_filepath, "w") as f:
-            f.write(filled_template)
+
+        self._compare_template_to_existing(filled_template, output_filepath, templatable)
+        self._write_template(filled_template, output_filepath)
 
     def build_lang_for_templatable(self, templatable, lang):
         """
