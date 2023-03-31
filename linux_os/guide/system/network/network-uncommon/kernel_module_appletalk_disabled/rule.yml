@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Appletalk protocol Support'
+
+description: |-
+    AppleTalk is the protocol that Apple computers can use to communicate on a network.
+    {{{ describe_module_disable(module="appletalk") }}}
+
+rationale: |-
+    Disabling Appletalk protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="appletalk") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("appletalk") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: appletalk
