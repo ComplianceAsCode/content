@@ -44,6 +44,7 @@ selections:
     - sysctl_user_max_user_namespaces
     - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_perf_event_paranoid_value=2
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
     - sysctl_kernel_core_pattern

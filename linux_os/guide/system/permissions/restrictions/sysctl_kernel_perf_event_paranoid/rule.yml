@@ -32,7 +32,9 @@ references:
 
 fixtext: |-
     Configure {{{ full_name }}} to only allow root to do kernel profiling.
-    {{{ fixtext_sysctl(sysctl="kernel.perf_event_paranoid", value="2") | indent(4) }}}
+    {{{ fixtext_sysctl(sysctl="kernel.perf_event_paranoid", value=xccdf_value("sysctl_kernel_perf_event_paranoid_value")) | indent(4) }}}
+    If value is "3" and supported by kernel version, then disallowed all
+    unprivileged perf event use.
 
 srg_requirement: '{{{ full_name }}} must prevent kernel profiling by unprivileged users.'
 
@@ -42,5 +44,8 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.perf_event_paranoid
-        sysctlval: '2'
+        sysctlval:
+            - '2'
+            - '3'
         datatype: int
+        wrong_sysctlval_for_testing: '0'
