@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: fedora,ol9,rhel9
+
+title: 'Configure kernel to zero freed pages and heap objects'
+
+description: |-
+    To enable initialize freed pages and heap objects with zeroes add
+    the argument <tt>init_on_free=1</tt> to the default GRUB 2 command line
+    for the Linux operating system.
+    {{{ describe_grub2_argument("init_on_free=1") | indent(4) }}}
+    This argument is meant to replace
+    <tt>slub_debug=P page_poison=1</tt>
+    when used with <tt>init_on_alloc=1</tt>.
+    Detailed information available at
+    {{{ weblink(link="https://github.com/torvalds/linux/commit/6471384af") }}}
+    and
+    {{{ weblink(link="https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings") }}}.
+
+rationale: |-
+    Initialize newly freed pages and heap objects with zeroes, so any
+    modification or reference to that page before being initialized will be
+    prevented. This prevents possible information leaks and make control-flow
+    bugs that depend on uninitialized values more deterministic.
+
+warnings:
+    - performance: |-
+          Enabling argument can have medium performance penalty, up to at least +25%.
+
+severity: medium
+
+ocil_clause: 'the kernel is not configured to zero out memory after free'
+
+ocil: |-
+    {{{ ocil_grub2_argument("init_on_free=1") | indent(4) }}}
+
+platform: grub2
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: init_on_free
+        arg_value: '1'
+
+fixtext: |-
+    {{{ describe_grub2_argument("init_on_free=1") | indent(4) }}}
