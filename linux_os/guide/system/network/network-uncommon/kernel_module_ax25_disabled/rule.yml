@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable AX.25 Level 2 protocol Support'
+
+description: |-
+    Amateur Radio AX.25 Level 2 protocol is the protocol used for computer communication over amateur radio.
+    {{{ describe_module_disable(module="ax25") }}}
+
+rationale: |-
+    Disabling Amateur Radio AX.25 Level 2 protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="ax25") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("ax25") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: ax25
