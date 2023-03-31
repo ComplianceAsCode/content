@@ -1,4 +1,6 @@
 import os
+import pytest
+import re
 
 import ssg
 import ssg.templates
@@ -46,6 +48,43 @@ def test_render_extra_ovals():
     builder.build_extra_ovals()
     assert builder._called__write_template == builder._rule_count
     assert builder._called__write_template > 0
+
+    assert not os.path.exists(missing_dir)
+
+
+def test_render_extra_ovals_fail():
+    class MockExtraOValsBuilder(ssg.templates.Builder):
+        # This should not be called
+        def _write_template(self, filled_template, output_filepath):  # pragma: no cover
+            self._called__write_template += 1
+
+        def _read_template(self, output_filepath):
+            return self._mock_oval_content
+
+        def write_lang_contents_for_templatable(self, oval_content, lang, rule):
+            self._rule_count += 1
+            changed_title = "<title>%s</title>" % (rule.id_)
+            # Break title if set
+            self._mock_oval_content = \
+                re.sub(r"<title>.*?</title>", changed_title, oval_content)
+            super(MockExtraOValsBuilder, self).write_lang_contents_for_templatable(
+                oval_content, lang, rule
+            )
+
+    builder = MockExtraOValsBuilder(
+        env_yaml, None, templates_dir, missing_dir, missing_dir, None, cpe_items_dir
+    )
+    builder._rule_count = 0
+    builder._called__write_template = 0
+
+    with pytest.raises(RuntimeError) as exc_info:
+        builder.build_extra_ovals()
+    assert exc_info.type is RuntimeError
+    # Only rule with title
+    assert exc_info.value.args[0].startswith("Rule package_prelink_installed template ")
+    # Error should always say difference in <title>
+    assert re.search(r"<title>", exc_info.value.args[0]) is not None
+    assert builder._called__write_template != builder._rule_count
 
     assert not os.path.exists(missing_dir)
 
