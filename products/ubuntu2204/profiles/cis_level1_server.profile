@@ -776,8 +776,7 @@ selections:
     - sshd_use_strong_ciphers
 
     ### 5.2.14 Ensure only strong MAC algorithms are used (Automated)
-    - sshd_approved_macs=cis_ubuntu
-    - sshd_use_approved_macs
+    - sshd_use_strong_macs
 
     ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
     - sshd_strong_kex=cis_ubuntu2004
