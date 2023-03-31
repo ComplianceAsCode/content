@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Restrict sshd User Access via AllowUsers, AllowGroups, DenyUsers or DenyGroups'
+
+description: |-
+    AllowUsers gives the system administrator the option of allowing
+    specific users to ssh into the system.
+    - The list consists of space separated user names
+    - Numeric user IDs are not recognized with this variable
+    - A system administrator may restrict user access further by only
+      allowing the allowed users to log in from a particular host by
+      specifying the entry as user@host.
+    AllowGroups gives the system administrator the option of allowing
+    specific groups to ssh into the system.
+    - The list consists of space separated group names
+    - Numeric group IDs are not recognized with this variable
+    DenyUsers gives the system administrator the option of denying
+    specific users to ssh into the system.
+    - The list consists of space separated user names
+    - Numeric user IDs are not recognized with this variable
+    - A system administrator may restrict user access further by only
+      allowing the allowed users to log in from a particular host by
+      specifying the entry as user@host.
+    DenyGroups gives the system administrator the option of denying
+    specific groups to ssh into the system.
+    - The list consists of space separated group names.
+    - Numeric group IDs are not recognized with this variable.
+
+rationale: |-
+    Restricting which users can remotely access the system via SSH will
+    help ensure that only authorized users access the system.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 5.2.17
+    cis@ubuntu2204: 5.2.4
+
+ocil: 'sshd does not limit the users who can log in'
+
+ocil: |-
+    To ensure sshd limits the users who can log in, run the following:
+    <pre>$ sudo grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*</pre>
+    If properly configured, the output should be a list of usernames
+    allowed to log in to this system.
