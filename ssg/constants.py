@@ -259,7 +259,7 @@ REFERENCES = dict(
         regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     pcidss4=Reference(
         id="pcidss4", name=REF_PREFIX_MAP["pcidss4"], url="",
-        regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     srg=Reference(
         id="srg", name="SRG", url="",
         regex_with_groups=r"(SRG-OS-\d+-GPOS-\d+)"
