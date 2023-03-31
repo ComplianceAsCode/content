@@ -67,7 +67,7 @@
   </ind:variable_object>
 
   <linux:inetlisteningservers_state id="state_inet_foreign_port_connected" version="1"
-                                    comment="Checks local address is udp."
+                                    comment="Checks this is a listening service not connected"
                                     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
     <linux:foreign_port datatype="int" operation="not equal">0</linux:foreign_port>
   </linux:inetlisteningservers_state>
@@ -119,22 +119,12 @@
   <linux:inetlisteningservers_object id="obj_listening_inet_tcp_ports" version="2"
                                      comment="Represents a listening services on the system.">
       <linux:protocol operation="equals">tcp</linux:protocol>
-      <linux:local_address operation="not equal">^.*$</linux:local_address>
+      <linux:local_address operation="pattern match">^.*$</linux:local_address>
       <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
       <filter action="exclude">state_ipv4_loopback_listening_inet_ports</filter>
       <filter action="exclude">state_ipv6_loopback_listening_inet_ports</filter>
       <filter action="exclude">state_inet_foreign_port_connected</filter>
-      <filter action="include">state_tcp_listening_inet_ports</filter>
   </linux:inetlisteningservers_object>
-
-  <linux:inetlisteningservers_state id="state_tcp_listening_inet_ports" version="1"
-                                    comment="Checks local address is tcp."
-                                    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
-    <linux:protocol operation="equals">tcp</linux:protocol>
-    <linux:local_address operation="pattern match">^.*$</linux:local_address>
-    <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
-  </linux:inetlisteningservers_state>
-
 
   <linux:inetlisteningservers_state id="state_ipv4_loopback_listening_inet_ports" version="1"
                                     comment="Checks local address is not ipv4 loopback."
@@ -266,21 +256,13 @@
   <linux:inetlisteningservers_object id="obj_listening_inet_udp_ports" version="2"
                                        comment="This object represents a listening services on the system.">
       <linux:protocol operation="equals">udp</linux:protocol>
-      <linux:local_address operation="not equal">^.*$</linux:local_address>
+      <linux:local_address operation="pattern match">^.*$</linux:local_address>
       <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
       <filter action="exclude">state_ipv4_loopback_listening_inet_ports</filter>
       <filter action="exclude">state_ipv6_loopback_listening_inet_ports</filter>
       <filter action="exclude">state_inet_foreign_port_connected</filter>
-      <filter action="include">state_udp_listening_inet_ports</filter>
   </linux:inetlisteningservers_object>
 
-  <linux:inetlisteningservers_state id="state_udp_listening_inet_ports" version="1"
-                                    comment="Checks local address is udp."
-                                    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
-    <linux:protocol operation="equals">udp</linux:protocol>
-    <linux:local_address operation="pattern match">^.*$</linux:local_address>
-    <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
-  </linux:inetlisteningservers_state>
 
   <ind:textfilecontent54_object id="object_firewalled_direct_udp_ports" version="1">
     <ind:path>/etc/firewalld/zones/</ind:path>
