@@ -42,7 +42,6 @@ selections:
     - package_xinetd_removed
     - disable_host_auth
     - sshd_allow_only_protocol2
-    - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
     - sshd_do_not_permit_user_env
