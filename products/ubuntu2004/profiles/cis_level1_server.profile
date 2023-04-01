@@ -239,7 +239,7 @@ selections:
 
     ### 2.2.3 Ensure Avahi Server is not installed (Automated)
     - service_avahi-daemon_disabled
-    # Needs rule: package_avahi-daemon_removed
+    - package_avahi_removed
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
