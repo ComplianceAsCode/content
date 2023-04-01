@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable DECnet protocol support'
+
+description: |-
+    DECnet protocol is the protocol used in many products made by Digital (now Compaq).
+    {{{ describe_module_disable(module="decnet") }}}
+
+rationale: |-
+    Disabling DECnet protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="decnet") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("decnet") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: decnet
