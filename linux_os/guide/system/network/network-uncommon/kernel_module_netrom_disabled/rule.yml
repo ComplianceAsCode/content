@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Amateur Radio NET/ROM protocol Support'
+
+description: |-
+    Amateur Radio NET/ROM protocol is network layer protocol on top of AX.25
+    useful for routing.
+    {{{ describe_module_disable(module="netrom") }}}
+
+rationale: |-
+    Disabling
+    Amateur Radio NET/ROM
+    protects the system against exploitation of any flaws in its
+    implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="netrom") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("netrom") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: netrom
