@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable 802.3 client Support'
+
+description: |-
+    802.3 data link hooks used for IPX 802.3.
+    {{{ describe_module_disable(module="p8023") }}}
+
+rationale: |-
+    Disabling
+    802.3 data link hooks used for IPX 802.3
+    protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="p8023") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("p8023") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: p8023
