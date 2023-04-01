@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Near Field Communication (NFC) devices support'
+
+description: |-
+    Near Field Communication (NFC) devices are used for short range communications.
+    {{{ describe_module_disable(module="nfc") }}}
+
+rationale: |-
+    Disabling Near Field Communication (NFC) devices
+    protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="nfc") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("nfc") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: nfc
