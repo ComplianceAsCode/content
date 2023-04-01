@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Econet network card support'
+
+description: |-
+    Econet is Acorn Computers's low-cost local area network system, intended
+    for use by schools and small businesses.
+    {{{ describe_module_disable(module="econet") }}}
+
+rationale: |-
+    Disabling Econet protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="econet") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("econet") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: econet
