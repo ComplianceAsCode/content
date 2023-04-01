@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Generic IEEE 802.15.4 Soft Networking Stack (mac802154) Support'
+
+description: |-
+    <tt>mac802154</tt> is hardware independent IEEE 802.15.4
+    networking stack for SoftMAC devices.
+    {{{ describe_module_disable(module="mac802154") }}}
+
+rationale: |-
+    Disabling
+    <tt>mac802154</tt>
+    protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="mac802154") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("mac802154") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: mac802154

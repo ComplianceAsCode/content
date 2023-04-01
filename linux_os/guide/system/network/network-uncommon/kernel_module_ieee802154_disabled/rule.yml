@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable IEEE Std 802.15.4 Low-Rate Wireless Personal Area Networks Support'
+
+description: |-
+    IEEE Std 802.15.4 defines a low data rate, low power and low
+    complexity short range wireless personal area networks.
+    {{{ describe_module_disable(module="ieee802154") }}}
+
+rationale: |-
+    Disabling
+    IEEE Std 802.15.4 Low-Rate Wireless Personal Area Networks support
+    protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="ieee802154") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("ieee802154") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: ieee802154

@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable old AF 802.15.4 Support'
+
+description: |-
+    AF 802.15.4 is old implementation of IEEE 802.15.4.
+    {{{ describe_module_disable(module="af_802154") }}}
+
+rationale: |-
+    Disabling
+    old IEEE 802.15.4 support
+    protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="af_802154") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("af_802154") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: af_802154
