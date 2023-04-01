@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable CCITT X.25 Packet Layer Support'
+
+description: |-
+    CCITT X.25 Packet Layer is a set of standardized network protocols.
+    {{{ describe_module_disable(module="x25") }}}
+
+rationale: |-
+    Disabling
+    X.25
+    protects the system against exploitation of any flaws in its
+    implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="x25") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("x25") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: x25
