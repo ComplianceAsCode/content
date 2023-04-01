@@ -37,7 +37,7 @@
     comment="kernel module {{{ KERNMODULE }}} disabled" version="1">
     <ind:path var_ref="var_{{{ local_id }}}_paths" var_check="at least one"/>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE_RX }}}\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -61,7 +61,7 @@
     comment="kernel module {{{ KERNMODULE }}} blacklisted" version="1">
     <ind:path var_ref="var_{{{ local_id }}}_paths" var_check="at least one"/>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
+    <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE_RX }}}$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
@@ -75,7 +75,7 @@
   <ind:textfilecontent54_object id="obj_{{{ local_id }}}_modprobeconf"
     comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}" version="1">
     <ind:filepath>/etc/modprobe.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE_RX }}}\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
