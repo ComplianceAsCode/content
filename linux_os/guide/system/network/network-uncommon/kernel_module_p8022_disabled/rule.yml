@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable 802.2 demultiplexing off Ethernet Support'
+
+description: |-
+    Ethernet 802.2 frame type is used by IPX/SPX on Novell NetWare 3.12 and 4.X
+    networks.
+    {{{ describe_module_disable(module="p8022") }}}
+
+rationale: |-
+    Disabling
+    Ethernet 802.2
+    support protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="p8022") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("p8022") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: p8022
