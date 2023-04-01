@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Amateur Radio X.25 PLP (Rose) protocol Support'
+
+description: |-
+    Amateur Radio X.25 Packet Layer Protocol (PLP) (Rose) protocol
+    is a way to route packets over X.25 connections in general and amateur
+    radio AX.25 connections in particular, essentially an alternative to
+    NET/ROM.
+    {{{ describe_module_disable(module="rose") }}}
+
+rationale: |-
+    Disabling Amateur Radio AX.25 Level 2 protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="rose") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("rose") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: rose
