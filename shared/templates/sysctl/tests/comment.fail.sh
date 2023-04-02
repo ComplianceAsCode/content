@@ -1,4 +1,5 @@
 #!/bin/bash
+# skip_test_env = {{{ SKIP_TEST_ENV }}}
 {{% if SYSCTLVAL == "" %}}
 # variables = sysctl_{{{ SYSCTLID }}}_value={{{ SYSCTL_CORRECT_VALUE }}}
 {{% endif %}}
