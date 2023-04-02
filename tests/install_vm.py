@@ -199,7 +199,11 @@ def main():
             content = content.replace(
                 "part /boot --fstype=xfs --size=512",
                 "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200"
+            ).replace(
+                "part biosboot ",
+                "# part biosboot "
             )
+
         if data.install_gui:
             gui_group="\n%packages\n@^graphical-server-environment\n"
             if data.distro == "fedora":
