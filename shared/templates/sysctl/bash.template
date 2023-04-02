@@ -26,8 +26,7 @@ done
 # Set sysctl config file which to save the desired value
 #
 {{% if product in [ "sle12", "sle15"] %}}
-SYSCONFIG_VAR="{{{ SYSCTLVAR }}}"
-SYSCONFIG_FILE=/etc/sysctl.d/"${SYSCONFIG_VAR//./_}".conf
+SYSCONFIG_FILE='/etc/sysctl.d/{{{ SYSCTLVAR | replace(".","_") }}}.conf'
 {{% else %}}
 SYSCONFIG_FILE="/etc/sysctl.conf"
 {{% endif %}}
