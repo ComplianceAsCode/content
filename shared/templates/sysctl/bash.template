@@ -25,7 +25,7 @@ done
 #
 # Set sysctl config file which to save the desired value
 #
-{{% if product in [ "sle12", "sle15"] %}}
+{{% if sysctl_remediate_drop_in_file == "true" %}}
 SYSCONFIG_FILE='/etc/sysctl.d/{{{ SYSCTLVAR | replace(".","_") }}}.conf'
 {{% else %}}
 SYSCONFIG_FILE="/etc/sysctl.conf"
@@ -43,7 +43,7 @@ SYSCONFIG_FILE="/etc/sysctl.conf"
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
 #	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
 #
-{{% if product in [ "sle12", "sle15"] %}}
+{{% if sysctl_remediate_drop_in_file == "true" %}}
 sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% endif %}}
 {{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
@@ -59,7 +59,7 @@ sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
 #	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
 #
-{{% if product in [ "sle12", "sle15"] %}}
+{{% if sysctl_remediate_drop_in_file == "true" %}}
 sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% endif %}}
 {{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}

@@ -98,6 +98,9 @@ def _get_implied_properties(existing_properties):
     if "faillock_path" not in existing_properties:
         result["faillock_path"] = DEFAULT_FAILLOCK_PATH
 
+    if "sysctl_remediate_drop_in_file" not in existing_properties:
+        result["sysctl_remediate_drop_in_file"] = DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE
+
     return result
 
 
