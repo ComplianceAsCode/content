@@ -38,7 +38,7 @@
   <ind:textfilecontent54_object version="1"
     id="object_{{{ local_id }}}_in_fstab">
     <ind:filepath>/etc/fstab</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*[\S]+[\s]+{{{ POINTREGEX }}}[\s]+[\S]+[\s]+([\S]+)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?!#)[\S]+[\s]+{{{ POINTREGEX }}}[\s]+[\S]+[\s]+([\S]+)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
