@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable SNAP data link layer Support'
+
+description: |-
+    Subnetwork Access Protocol (SNAP) is a mechanism for multiplexing, on
+    networks using IEEE 802.2 LLC.
+    {{{ describe_module_disable(module="psnap") }}}
+
+rationale: |-
+    Disabling
+    SNAP data link layer support
+    protects the system against exploitation of any flaws in its
+    implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="psnap") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("psnap") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: psnap
