@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable HDLC line discipline Support'
+
+description: |-
+    Allows synchronous HDLC communications with tty device drivers that support
+    synchronous HDLC such as the Microgate SyncLink adapter.
+    {{{ describe_module_disable(module="n_hdlc") }}}
+
+rationale: |-
+    HDLC line discipline support
+    protects the system against exploitation of any flaws in its
+    implementation.
+
+severity: medium
+
+{{{ complete_ocil_entry_module_disable(module="n_hdlc") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("n_hdlc") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: n_hdlc
