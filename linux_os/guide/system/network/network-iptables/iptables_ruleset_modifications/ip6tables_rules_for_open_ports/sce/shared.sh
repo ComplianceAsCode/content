@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_ubuntu
 # check-import = stdout
 
 result=$XCCDF_RESULT_PASS
