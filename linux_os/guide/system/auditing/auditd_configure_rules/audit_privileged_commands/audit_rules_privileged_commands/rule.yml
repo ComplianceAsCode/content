@@ -4,9 +4,9 @@ title: 'Ensure auditd Collects Information on the Use of Privileged Commands'
 
 description: |-
     The audit system should collect information about usage of privileged commands for all users.
-    These are commands with suid or sgid bits on and they are specially risky in partitions not
-    mounted with noexec and nosuid options. Therefore, these partitions should be first identified
-    by the following command:
+    These are commands with suid or sgid bits on and they are specially risky in local block
+    device partitions not mounted with noexec and nosuid options. Therefore, these partitions
+    should be first identified by the following command:
     <pre>findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,) | grep -Pv "noexec|nosuid"</pre>
 
     For all partitions listed by the previous command, it is necessary to search for
