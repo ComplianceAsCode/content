@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ds:data-stream-collection xmlns:ds="http://scap.nist.gov/schema/scap/source/1.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:cat="urn:oasis:names:tc:entity:xmlns:xml:catalog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="scap_org.open-scap_collection_from_xccdf_test_single_rule.xccdf.xml" schematron-version="1.3" xsi:schemaLocation="http://scap.nist.gov/schema/scap/source/1.2 https://scap.nist.gov/schema/scap/1.3/scap-source-data-stream_1.3.xsd">
+  <ds:data-stream id="scap_org.open-scap_datastream_simple" scap-version="1.3" use-case="OTHER">
+    <ds:checklists>
+      <ds:component-ref id="scap_org.open-scap_cref_test_single_rule.xccdf.xml" xlink:href="#scap_org.open-scap_comp_test_single_rule.xccdf.xml">
+        <cat:catalog>
+          <cat:uri name="test_single_rule.oval.xml" uri="#scap_org.open-scap_cref_test_single_rule.oval.xml"/>
+        </cat:catalog>
+      </ds:component-ref>
+    </ds:checklists>
+    <ds:checks>
+      <ds:component-ref id="scap_org.open-scap_cref_test_single_rule.oval.xml" xlink:href="#scap_org.open-scap_comp_test_single_rule.oval.xml"/>
+    </ds:checks>
+  </ds:data-stream>
+  <ds:component id="scap_org.open-scap_comp_test_single_rule.oval.xml" timestamp="2021-02-01T08:07:06+01:00">
+    <oval_definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd    http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd">
+      <generator>
+        <oval:schema_version>5.11.2</oval:schema_version>
+        <oval:timestamp>2021-02-01T08:07:06+01:00</oval:timestamp>
+      </generator>
+      <definitions>
+        <definition class="compliance" id="oval:x:def:1" version="1">
+          <metadata>
+            <title>PASS</title>
+            <description>pass</description>
+          </metadata>
+          <criteria>
+            <criterion comment="PASS test" test_ref="oval:x:tst:1"/>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <variable_test xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" id="oval:x:tst:1" check="all" comment="always pass" version="1">
+          <object object_ref="oval:x:obj:1"/>
+        </variable_test>
+      </tests>
+      <objects>
+        <variable_object xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" id="oval:x:obj:1" version="1" comment="x">
+          <var_ref>oval:x:var:1</var_ref>
+        </variable_object>
+      </objects>
+      <variables>
+        <constant_variable id="oval:x:var:1" version="1" comment="x" datatype="int">
+          <value>100</value>
+        </constant_variable>
+      </variables>
+    </oval_definitions>
+  </ds:component>
+  <ds:component id="scap_org.open-scap_comp_test_single_rule.xccdf.xml" timestamp="2021-02-01T08:07:06+01:00">
+    <Benchmark xmlns="http://checklists.nist.gov/xccdf/1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="xccdf_com.example.www_benchmark_dummy" xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd" resolved="false" xml:lang="en-US">
+      <status date="2021-01-21">accepted</status>
+      <title>Test Benchmark</title>
+      <description>Description</description>
+      <version>1.0</version>
+      <metadata>
+        <dc:contributor xmlns:dc="http://purl.org/dc/elements/1.1/">OpenSCAP</dc:contributor>
+        <dc:publisher xmlns:dc="http://purl.org/dc/elements/1.1/">OpenSCAP</dc:publisher>
+        <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">OpenSCAP</dc:creator>
+        <dc:source xmlns:dc="http://purl.org/dc/elements/1.1/">http://scap.nist.gov</dc:source>
+      </metadata>
+      <Profile id="xccdf_com.example.www_profile_test_single_rule">
+        <title>xccdf_test_profile</title>
+        <description>This profile is for testing.</description>
+        <select idref="xccdf_com.example.www_rule_test-pass" selected="true"/>
+      </Profile>
+      <Rule selected="true" id="xccdf_com.example.www_rule_test-pass">
+        <title>This rule always passes</title>
+        <description>Description</description>
+        <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+          <check-content-ref href="test_single_rule.oval.xml" name="oval:x:def:1"/>
+        </check>
+      </Rule>
+    </Benchmark>
+  </ds:component>
+</ds:data-stream-collection>
