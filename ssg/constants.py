@@ -24,6 +24,7 @@ SSG_REF_URIS = {
     'dcid': 'not_officially_available',
     'disa': 'https://public.cyber.mil/stigs/cci/',
     'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
+    'pcidss4': 'https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf',
     'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
     'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
     'ism': 'https://www.cyber.gov.au/acsc/view-all-content/ism',
@@ -228,6 +229,7 @@ REF_PREFIX_MAP = {
     "nist": "NIST-800-53",
     "cui": "NIST-800-171",
     "pcidss": "PCI-DSS",
+    "pcidss4": "PCI-DSSv4",
     "cjis": "CJIS",
     "stigid": "DISA-STIG",
 }
@@ -253,6 +255,9 @@ REFERENCES = dict(
     pcidss=Reference(
         id="pcidss", name=REF_PREFIX_MAP["pcidss"], url="",
         regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    pcidss4=Reference(
+        id="pcidss4", name=REF_PREFIX_MAP["pcidss4"], url="",
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     srg=Reference(
         id="srg", name="SRG", url="",
         regex_with_groups=r"(SRG-OS-\d+-GPOS-\d+)"
