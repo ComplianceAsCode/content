@@ -13,14 +13,19 @@ def test_xml_content():
     expected_component_refs = {
         "#scap_org.open-scap_comp_test_single_rule.oval.xml":
             "scap_org.open-scap_cref_test_single_rule.oval.xml",
+        "#scap_org.open-scap_comp_cpe.oval.xml":
+            "scap_org.open-scap_cref_cpe.oval.xml"
         }
     assert xml_content.component_refs == expected_component_refs
     expected_uris = {
         "#scap_org.open-scap_cref_test_single_rule.oval.xml":
             "test_single_rule.oval.xml",
+        "#scap_org.open-scap_cref_cpe.oval.xml":
+            "cpe.oval.xml"
         }
     assert xml_content.uris == expected_uris
     assert "OVAL" in xml_content.components
     assert "test_single_rule.oval.xml" in xml_content.components["OVAL"]
+    assert "cpe.oval.xml" in xml_content.components["OVAL"]
     xml_component = xml_content.components["OVAL"]["test_single_rule.oval.xml"]
     assert type(xml_component) is ssg.xml.XMLComponent

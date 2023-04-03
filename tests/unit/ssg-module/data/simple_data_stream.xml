@@ -5,14 +5,50 @@
       <ds:component-ref id="scap_org.open-scap_cref_test_single_rule.xccdf.xml" xlink:href="#scap_org.open-scap_comp_test_single_rule.xccdf.xml">
         <cat:catalog>
           <cat:uri name="test_single_rule.oval.xml" uri="#scap_org.open-scap_cref_test_single_rule.oval.xml"/>
+          <cat:uri name="cpe.oval.xml" uri="#scap_org.open-scap_cref_cpe.oval.xml"/>
         </cat:catalog>
       </ds:component-ref>
     </ds:checklists>
     <ds:checks>
       <ds:component-ref id="scap_org.open-scap_cref_test_single_rule.oval.xml" xlink:href="#scap_org.open-scap_comp_test_single_rule.oval.xml"/>
+      <ds:component-ref id="scap_org.open-scap_cref_cpe.oval.xml" xlink:href="#scap_org.open-scap_comp_cpe.oval.xml"/>
     </ds:checks>
   </ds:data-stream>
   <ds:component id="scap_org.open-scap_comp_test_single_rule.oval.xml" timestamp="2021-02-01T08:07:06+01:00">
+    <oval_definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd    http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd">
+      <generator>
+        <oval:schema_version>5.11.2</oval:schema_version>
+        <oval:timestamp>2021-02-01T08:07:06+01:00</oval:timestamp>
+      </generator>
+      <definitions>
+        <definition class="compliance" id="oval:x:def:1" version="1">
+          <metadata>
+            <title>PASS</title>
+            <description>pass</description>
+          </metadata>
+          <criteria>
+            <criterion comment="PASS test" test_ref="oval:x:tst:1"/>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <variable_test xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" id="oval:x:tst:1" check="all" comment="always pass" version="1">
+          <object object_ref="oval:x:obj:1"/>
+        </variable_test>
+      </tests>
+      <objects>
+        <variable_object xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" id="oval:x:obj:1" version="1" comment="x">
+          <var_ref>oval:x:var:1</var_ref>
+        </variable_object>
+      </objects>
+      <variables>
+        <constant_variable id="oval:x:var:1" version="1" comment="x" datatype="int">
+          <value>100</value>
+        </constant_variable>
+      </variables>
+    </oval_definitions>
+  </ds:component>
+  <ds:component id="scap_org.open-scap_comp_cpe.oval.xml" timestamp="2021-02-01T08:07:06+01:00">
     <oval_definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd    http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd">
       <generator>
         <oval:schema_version>5.11.2</oval:schema_version>
