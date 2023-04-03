@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
+import collections
 
 import platform
 import re
@@ -222,23 +223,20 @@ class XMLContent(XMLElement):
         return None
 
     def _find_all_component_contents(self):
-        component_doc_dict = dict()
+        component_doc_dict = collections.defaultdict(dict)
         for component in self.root.findall("ds:component", self.ns):
-            for check_spec in self.check_engines:
-                def_doc = component.find(check_spec[1], self.ns)
-                if def_doc is not None:
-                    def_doc_dict = dict()
-                    comp_id = component.get("id")
-                    comp_href = "#" + comp_id
-                    try:
-                        filename = self.uris["#" + self.component_refs[comp_href]]
-                    except KeyError:
-                        continue
-                    def_doc_dict[filename] = XMLComponent(def_doc)
-                    component_doc_dict[check_spec[0]] = def_doc_dict
-                    # This component matched one of the checking engines,
-                    # thre is no need to continue further
-                    break
+            for check_id, check_tag in self.check_engines:
+                def_doc = component.find(check_tag, self.ns)
+                if def_doc is None:
+                    continue
+                comp_id = component.get("id")
+                comp_href = "#" + comp_id
+                try:
+                    filename = self.uris["#" + self.component_refs[comp_href]]
+                except KeyError:
+                    continue
+                xml_component = XMLComponent(def_doc)
+                component_doc_dict[check_id][filename] = xml_component
         return component_doc_dict
 
 
