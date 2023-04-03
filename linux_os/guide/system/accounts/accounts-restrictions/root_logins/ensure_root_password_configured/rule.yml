@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ubuntu2004,ubuntu2204
+
+title: 'Ensure Authentication Required for Single User Mode'
+
+description: |-
+    Single user mode is used for recovery when the system detects an
+    issue during boot or by manual selection from the bootloader.
+
+rationale: |-
+    Requiring authentication in single user mode prevents an unauthorized
+    user from rebooting the system into single user to gain root privileges
+    without credentials.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 1.5.3
+    cis@ubuntu2204: 1.4.3
+
+ocil: 'root password is not set'
+
+ocil_clause: |-
+    Perform the following to determine if a password is set for the
+    root user:
+    <pre># grep -Eq '^root:\$[0-9]' /etc/shadow || echo "root is locked"</pre>
+    No results should be returned.
+    Otherwise, run the following command and follow the prompts to set a
+    password for the root user:
+    <pre># passwd root</pre>
