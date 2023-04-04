@@ -26,16 +26,20 @@ description: |-
                 text="the relevant documentation") }}}.
 
 rationale: |-
-    Where etcd encryption is used, it is important to ensure that the
-    appropriate set of encryption providers is used. Currently, aescbc, kms
-    and secretbox are likely to be appropriate options.
+    etcd is a highly available key-value store used by OpenShift deployments
+    for persistent storage of all REST API objects. These objects are
+    sensitive in nature and should be encrypted at rest to avoid any
+    disclosures. Where etcd encryption is used, it is important to ensure that the
+    appropriate set of encryption providers is used. Currently, <tt>aescbc</tt>
+    is the only type supported by OCP.
 
-    <tt>aescbc</tt> is the only type supported by OCP.
+identifiers:
+  cce@ocp4: CCE-83585-0
 
 severity: medium
 
 references:
-    cis@ocp4: 1.2.34
+    cis@ocp4: 1.2.33,1.2.34
     nerc-cip: CIP-003-8 R4.2
     nist: SC-28,SC-28(1)
     pcidss: Req-2.2
