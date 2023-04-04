@@ -641,15 +641,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 - name: "Test for id_provider different than Active Directory (ad)"
   command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
   register: test_id_provider
-  failed_when: test_id_provider.rc not in [0, 1]
-  changed_when: False
+  failed_when: false
+  changed_when: false
   check_mode: no
 
 - name: "Test for domain group"
   command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
-  failed_when: test_grep_domain.rc not in [0, 1]
-  changed_when: False
+  failed_when: false
+  changed_when: false
   check_mode: no
 
 - name: "Add default domain group and set {{{ parameter }}} in sssd configuration (if no domain there)"
