@@ -283,7 +283,7 @@ controls:
       - dconf_gnome_screensaver_user_locks
       - dconf_gnome_session_idle_user_locks
  
-    - id: 3.9
+  - id: 3.9
     title: Time and schedulers
     description: >-
       chrony and time-based scheduler security configuration
@@ -321,6 +321,40 @@ controls:
       - file_owner_at_allow
       - file_groupowner_at_allow
       - file_permissions_at_allow
+     
+  - id: 3.10
+    title: Service and package minimization
+    description: >-
+      The user should remove any services that are not necessary for normal system usage. 
+    status: partial
+    rules: 
+      - package_xinetd_removed
+      - package_dhcp_removed
+      - package_bind_removed
+      - package_vsftpd_removed
+      - package_tftp-server_removed
+      - package_tftp_removed
+      - package_httpd_removed
+      - package_nginx_removed
+      - package_cyrus-imapd_removed
+      - package_dovecot_removed
+      - package_samba_removed
+      - package_squid_removed
+      - package_net-snmp_removed
+      - package_ypserv_removed
+      - package_telnet_removed
+      - package_telnet-server_removed
+      - postfix_network_listening_disabled
+      - service_nfs_disabled
+      - service_rpcbind_disabled
+      - package_rsync_removed
+      - package_rsh_removed
+      - package_rsh-server_removed
+      - package_sendmail_removed
+      - package_ypbind_removed
+      - package_ypserv_removed
+      - package_talk-server_removed
+      - package_talk_removed
 ###
 ### 4. User access and control
 ###
