@@ -1,113 +1,187 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_privileged_commands" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Audit rules about the information on the use of privileged commands are enabled.") }}}
-
     <criteria operator="OR">
-
-      <!-- Test the augenrules case -->
       <criteria operator="AND">
-        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
-        <criterion comment="audit augenrules suid sgid" test_ref="test_arpc_suid_sgid_augenrules" />
-        <criterion comment="audit augenrules binaries count matches rules count" test_ref="test_arpc_bin_count_equals_rules_count_augenrules" />
+        <extend_definition definition_ref="audit_rules_augenrules"
+          comment="audit augenrules format is used"/>
+        <criterion test_ref="test_augenrules_all_priv_cmds_covered"
+          comment="augenrules cover all privileged commands on the system"/>
+        <criterion test_ref="test_augenrules_count_matches_system_priv_cmds"
+          comment="count of augenrules for priv cmds matches count of priv cmds in the system"/>
       </criteria>
 
-      <!-- Test the auditctl case -->
       <criteria operator="AND">
-        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-        <criterion comment="audit auditctl suid sgid" test_ref="test_arpc_suid_sgid_auditctl" />
-        <criterion comment="audit auditctl binaries count matches rules count" test_ref="test_arpc_bin_count_equals_rules_count_auditctl" />
+        <extend_definition definition_ref="audit_rules_auditctl"
+          comment="audit auditctl format is used"/>
+        <criterion test_ref="test_auditctl_all_priv_cmds_covered"
+          comment="auditctl covers all privileged commands on the system"/>
+        <criterion test_ref="test_auditctl_count_matches_system_priv_cmds"
+          comment="count of auditctl for priv cmds matches count of priv cmds in the system"/>
       </criteria>
-
     </criteria>
   </definition>
 
   <!-- First define OVAL entities that can be reused across tests below -->
-  <unix:file_object id="object_system_privileged_commands" comment="system files with setuid or setgid permission set" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" max_depth="-1" />
-    <unix:path operation="equals">/</unix:path>
-    <!-- [a-z]+ regex below is a workaround for OpenSCAP https://fedorahosted.org/openscap/ticket/457 bug -->
-    <unix:filename operation="pattern match">[a-z]+</unix:filename>
-    <filter action="include">state_setuid_or_setgid_set</filter>
-    <filter action="exclude">state_dev_proc_sys_dirs</filter>
-  </unix:file_object>
+  <linux:partition_state id="state_audit_rules_privileged_commands_dev_partitons" version="1">
+    <linux:device operation="pattern match">^/dev/.*$</linux:device>
+  </linux:partition_state>
 
-  <unix:file_state id="state_setuid_or_setgid_set" version="1" operator="OR">
+  <linux:partition_state id="state_audit_rules_privileged_commands_nosuid_partitons" version="1">
+    <linux:mount_options datatype="string" entity_check="at least one"
+      operation="equals">nosuid</linux:mount_options>
+  </linux:partition_state>
+
+<linux:partition_state id="state_audit_rules_privileged_commands_noexec_partitons" version="1">
+    <linux:mount_options datatype="string" entity_check="at least one"
+      operation="equals">noexec</linux:mount_options>
+  </linux:partition_state>
+
+  <!-- This object is created mainly to improve performance when collecting file objects.
+       Here all mount points are collected and filtered to include only devices under /dev in
+       order to ignore special file systems. Then, the mount options are checked to exclude
+       file systems mounted with nosuid or noexec. The privileged commands can't execute on these
+       file systems, so there is no reason to proble these file systems. -->
+  <linux:partition_object id="object_audit_rules_privileged_commands_exec_partitions" version="1">
+    <linux:mount_point operation="pattern match">^/.*$</linux:mount_point>
+    <filter action="include">state_audit_rules_privileged_commands_dev_partitons</filter>
+    <filter action="exclude">state_audit_rules_privileged_commands_nosuid_partitons</filter>
+    <filter action="exclude">state_audit_rules_privileged_commands_noexec_partitons</filter>
+  </linux:partition_object>
+
+  <local_variable id="var_audit_rules_privileged_commands_exec_mountpoints" version="1"
+    datatype="string" comment="Mount points where suid or sgid files can be executed">
+    <object_component item_field="mount_point"
+      object_ref="object_audit_rules_privileged_commands_exec_partitions"/>
+  </local_variable>
+
+  <unix:file_state id="state_setuid_or_setgid_set" operator="OR" version="1">
     <unix:suid datatype="boolean">true</unix:suid>
     <unix:sgid datatype="boolean">true</unix:sgid>
   </unix:file_state>
 
-  <unix:file_state id="state_dev_proc_sys_dirs" version="1">
-    <unix:filepath operation="pattern match">^\/(dev|proc|sys)\/.*$</unix:filepath>
-  </unix:file_state>
+  <!-- This file_object will only find privileged commands located only in file systems that allow
+       their execution. The recurse_file_system parameter is set to defined in order to make sure
+       the probe doesn't leave the scope of that mount point. For example, when probing "/", the
+       probe will ignore any child directory which is a mount point for any other partition.
+       This will ensure considerable performance improvement. -->
+  <unix:file_object id="object_audit_rules_privileged_commands" version="1"
+    comment="Files with setuid or setgid permission in file systems that allow their execution">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="var_audit_rules_privileged_commands_exec_mountpoints"/>
+    <unix:filename operation="pattern match">^\w+</unix:filename>
+    <filter action="include">state_setuid_or_setgid_set</filter>
+  </unix:file_object>
 
-  <local_variable id="variable_all_privileged_commands" comment="All privileged commands" datatype="string" version="1">
-    <object_component object_ref="object_system_privileged_commands" item_field="filepath" />
+  <local_variable id="var_audit_rules_privileged_commands_priv_cmds" version="1"
+    datatype="string" comment="Filepath of all privileged commands found in the system">
+    <object_component item_field="filepath" object_ref="object_audit_rules_privileged_commands"/>
   </local_variable>
 
-  <local_variable id="variable_count_of_suid_sgid_binaries_on_system" comment="count of suid / sgid binaries actually present on the system" datatype="int" version="1">
+  <local_variable id="var_audit_rules_privileged_commands_priv_cmds_count" version="1"
+    datatype="int" comment="Count all privileged commands present in the system">
     <count>
-      <object_component object_ref="object_system_privileged_commands" item_field="filepath" />
+      <object_component item_field="filepath"
+        object_ref="object_audit_rules_privileged_commands"/>
     </count>
   </local_variable>
 
-  <ind:variable_object id="object_count_of_suid_sgid_binaries_on_system" version="1">
-    <ind:var_ref>variable_count_of_suid_sgid_binaries_on_system</ind:var_ref>
+  <ind:variable_object id="object_audit_rules_privileged_commands_priv_cmds_count" version="1"
+    comment="Number of all privileged commands in the system, regardless of audit rules.">
+    <ind:var_ref>var_audit_rules_privileged_commands_priv_cmds_count</ind:var_ref>
   </ind:variable_object>
 
-  <ind:textfilecontent54_state id="state_proper_audit_rule_but_for_unprivileged_command" version="1">
-    <ind:subexpression operation="not equal" datatype="string" var_ref="variable_all_privileged_commands" var_check="all" />
+  <!-- The intention of the first test is to ensure that exists at least one rule for each
+       privileged command found in the system. Therefore, a list of objects will be extracted
+       from auditd rules and compared to privileged commands found in relevant partitions. -->
+  <local_variable id="var_audit_rules_privileged_commands_rule_regex" version="1"
+    datatype="string" comment="Regex for auditd rule">
+    <literal_component>^[\s]*-a always,exit (?:-F path=([\S]+))+(?: -F perm=x)? -F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</literal_component>
+  </local_variable>
+
+  <!-- This state is used to filter out all the auditd rules related to non privileged commands.
+       When collectiong the paths in the textfilecontent54_object objects below, this state will
+       ensure that the list is composed only by privileged commands present in the system. Other
+       paths values will be ignored. -->
+  <ind:textfilecontent54_state id="state_unprivileged_commands" version="1">
+    <ind:subexpression datatype="string" operation="not equal" var_check="all"
+      var_ref="var_audit_rules_privileged_commands_priv_cmds"/>
   </ind:textfilecontent54_state>
 
-  <ind:textfilecontent54_state id="state_audit_rules_privileged_commands" version="1">
-    <ind:subexpression operation="pattern match" datatype="string" var_ref="variable_all_privileged_commands" var_check="at least one"/>
-  </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit augenrules suid sgid" id="test_arpc_suid_sgid_augenrules" version="1">
-    <ind:object object_ref="object_arpc_suid_sgid_augenrules" />
-    <ind:state state_ref="state_audit_rules_privileged_commands" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arpc_suid_sgid_augenrules" version="1">
+  <!-- augenrules -->
+  <ind:textfilecontent54_object id="object_priv_cmds_from_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a always,exit (?:-F path=([\S]+) )+-F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex"/>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-    <filter action="exclude">state_proper_audit_rule_but_for_unprivileged_command</filter>
+    <filter action="exclude">state_unprivileged_commands</filter>
   </ind:textfilecontent54_object>
 
-  <local_variable id="variable_count_of_privileged_commands_having_audit_definition_augenrules" comment="count of suid / sgid binaries having full audit rule definition in some of /etc/audit/rules.d/*.rules files" datatype="int" version="1">
-    <count>
-      <object_component object_ref="object_arpc_suid_sgid_augenrules" item_field="subexpression" />
-    </count>
-  </local_variable>
-  <ind:variable_state id="state_count_of_privileged_commands_having_audit_definition_augenrules" version="1">
-    <ind:value operation="equals" datatype="int" var_ref="variable_count_of_privileged_commands_having_audit_definition_augenrules" var_check="at least one" />
-  </ind:variable_state>
-  <ind:variable_test check="all" check_existence="all_exist" id="test_arpc_bin_count_equals_rules_count_augenrules" comment="audit augenrules binaries count matches rules count" version="1">
-    <ind:object object_ref="object_count_of_suid_sgid_binaries_on_system" />
-    <ind:state state_ref="state_count_of_privileged_commands_having_audit_definition_augenrules" />
-  </ind:variable_test>
+  <ind:textfilecontent54_state id="state_priv_cmds_from_system" version="1">
+    <ind:subexpression datatype="string" operation="pattern match" var_check="at least one"
+      var_ref="var_audit_rules_privileged_commands_priv_cmds"/>
+  </ind:textfilecontent54_state>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit auditctl suid sgid" id="test_arpc_suid_sgid_auditctl" version="1">
-    <ind:object object_ref="object_arpc_suid_sgid_auditctl" />
-    <ind:state state_ref="state_audit_rules_privileged_commands" />
+  <ind:textfilecontent54_test id="test_augenrules_all_priv_cmds_covered" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one augenrules rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_augenrules" />
+    <ind:state state_ref="state_priv_cmds_from_system" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arpc_suid_sgid_auditctl" version="1">
-    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a always,exit (?:-F path=([\S]+) )+-F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-    <filter action="exclude">state_proper_audit_rule_but_for_unprivileged_command</filter>
-  </ind:textfilecontent54_object>
 
-  <local_variable id="variable_count_of_privileged_commands_having_audit_definition_auditctl" comment="count of suid / sgid binaries having full audit rule definition in /etc/audit/audit.rules file" datatype="int" version="1">
+  <local_variable id="var_priv_cmds_from_augenrules_count" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in augenrules format">
     <count>
-      <object_component object_ref="object_arpc_suid_sgid_auditctl" item_field="subexpression" />
+      <object_component item_field="subexpression" object_ref="object_priv_cmds_from_augenrules"/>
     </count>
   </local_variable>
-  <ind:variable_state id="state_count_of_privileged_commands_having_audit_definition_auditctl" version="1">
-    <ind:value operation="equals" datatype="int" var_ref="variable_count_of_privileged_commands_having_audit_definition_auditctl" var_check="at least one" />
+
+  <ind:variable_state id="state_priv_cmds_from_augenrules_count" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_augenrules_count"/>
   </ind:variable_state>
-  <ind:variable_test check="all" check_existence="all_exist" id="test_arpc_bin_count_equals_rules_count_auditctl" comment="audit auditctl binaries count matches rules count" version="1">
-    <ind:object object_ref="object_count_of_suid_sgid_binaries_on_system" />
-    <ind:state state_ref="state_count_of_privileged_commands_having_audit_definition_auditctl" />
+
+  <ind:variable_test id="test_augenrules_count_matches_system_priv_cmds" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of augenrules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count"/>
+    <ind:state state_ref="state_priv_cmds_from_augenrules_count"/>
   </ind:variable_test>
 
+  <!-- auditctl -->
+  <ind:textfilecontent54_object id="object_priv_cmds_from_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match"
+      var_ref="var_audit_rules_privileged_commands_rule_regex"/>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="exclude">state_unprivileged_commands</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_auditctl_all_priv_cmds_covered" version="1"
+    check="all" check_existence="all_exist"
+    comment="There is one auditctl rule for each privileged command on the system.">
+    <ind:object object_ref="object_priv_cmds_from_auditctl"/>
+    <ind:state state_ref="state_priv_cmds_from_system"/>
+  </ind:textfilecontent54_test>
+
+  <local_variable id="var_priv_cmds_from_auditctl_count" version="1"
+    datatype="int" comment="Count privileged commands found in audit rules in auditctl format">
+    <count>
+      <object_component object_ref="object_priv_cmds_from_auditctl" item_field="subexpression"/>
+    </count>
+  </local_variable>
+
+  <ind:variable_state id="state_priv_cmds_from_auditctl_count" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_priv_cmds_from_auditctl_count"/>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_auditctl_count_matches_system_priv_cmds" version="1"
+    check="all" check_existence="all_exist"
+    comment="Count of auditctl rules for priv cmds matches the count of priv cmds in the system">
+    <ind:object object_ref="object_audit_rules_privileged_commands_priv_cmds_count" />
+    <ind:state state_ref="state_priv_cmds_from_auditctl_count" />
+  </ind:variable_test>
 </def-group>

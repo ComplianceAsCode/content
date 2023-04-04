@@ -1452,7 +1452,9 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: no # we have audit_rules_privileged_commands, but it does not set perm=x
+    status: automated
+    rules:
+      - audit_rules_privileged_commands
 
   - id: 4.1.12
     title: Ensure successful file system mounts are collected (Automated)
