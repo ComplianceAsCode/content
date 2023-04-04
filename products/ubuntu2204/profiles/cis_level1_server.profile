@@ -132,7 +132,7 @@ selections:
     - file_permissions_grub2_cfg
 
     ### 1.4.3 Ensure authentication required for single user mode (Automated)
-    # NEEDS RULE
+    - ensure_root_password_configured
 
     ## 1.5 Additional Process Hardening ##
     ### 1.5.1 Ensure address space layout randomization (ASLR) is enabled (Automated)
