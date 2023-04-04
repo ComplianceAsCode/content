@@ -748,7 +748,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     cmd: authselect check
   register: result_authselect_check_cmd
   changed_when: false
-  failed_when: result_authselect_check_cmd.rc not in [0, 3, 4]
+  failed_when: false
 
 - name: '{{{ rule_title }}} - Informative message based on the authselect integrity check result'
   ansible.builtin.assert:
