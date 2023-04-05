@@ -227,7 +227,7 @@ def close_milestone(milestone) -> None:
 
     if get_confirmation(f'The "{milestone}" milestone should be closed. Ok?'):
         try:
-            milestone.edit(state="closed")
+            milestone.edit(milestone.title, state="closed")
         except Exception as e:
             print(f'Error: {e}')
             exit(1)
