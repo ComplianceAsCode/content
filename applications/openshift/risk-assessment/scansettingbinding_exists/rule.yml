@@ -3,13 +3,13 @@ prodtype: ocp4
 title: Ensure that Compliance Operator is scanning the cluster
 
 description: |-
-  {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/security/compliance_operator/compliance-operator-understanding.html#compliance-operator-understanding",
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/compliance-operator-understanding.html#compliance-operator-understanding",
               text="The Compliance Operator") }}}
   scans the hosts and the platform (OCP)
   configurations for software flaws and improper configurations according
   to different compliance benchmarks. It uses OpenSCAP as a backend,
   which is a known and certified tool to do such scans.
-  
+
 rationale: |-
   Vulnerability scanning and risk management are important detective controls
   for all systems, to detect potential flaws and unauthorised access.
@@ -21,13 +21,13 @@ references:
   nerc-cip: CIP-003-8 R1.3,CIP-003-8 R4.3,CIP-003-8 R6,CIP-004-6 4.1,CIP-004-6 4.2,CIP-004-6 R3,CIP-004-6 R4,CIP-004-6 R4.2,CIP-005-6 R1,CIP-005-6 R1.1,CIP-005-6 R1.2,CIP-007-3 R3,CIP-007-3 R3.1,CIP-007-3 R6.1,CIP-007-3 R8.4
   nist: CM-6,CM-6(1),RA-5,RA-5(5),SA-4(8)
   pcidss: Req-2.2.4
-  srg: SRG-APP-000516-CTR-001325
+  srg: SRG-APP-000472-CTR-001170
 
-ocil_clause: 'The proper audit profile is not set'
+ocil_clause: 'compliance operator is not scanning the cluster'
 
 ocil: |-
-    Run the following command to retrieve the compliancesuites in the system:
-    <pre>$ oc get compliancesuites --all-namespaces</pre>
+    Run the following command to retrieve the scansettingbindings in the system:
+    <pre>$ oc get scansettingbindings --all-namespaces</pre>
     Make sure the Compliance Operator is installed and there are
     scans running in the system.
 
@@ -36,13 +36,13 @@ severity: medium
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/compliance.openshift.io/v1alpha1/compliancesuites?limit=5") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/compliance.openshift.io/v1alpha1/scansettingbindings?limit=5") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /apis/compliance.openshift.io/v1alpha1/compliancesuites?limit=5
+    filepath: /apis/compliance.openshift.io/v1alpha1/scansettingbindings?limit=5
     yamlpath: ".items[:].metadata.name"
     entity_check: "at least one"
     values:

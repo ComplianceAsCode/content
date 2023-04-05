@@ -4972,7 +4972,7 @@ controls:
   - file_permissions_ip_allocations
   - file_owner_etcd_member
   - file_permissions_scheduler_kubeconfig
-  - compliancesuite_exists
+  - scansettingbinding_exists
   - general_default_seccomp_profile
   - file_owner_ip_allocations
   - file_permissions_ovn_cni_server_sock
@@ -5190,7 +5190,7 @@ controls:
   - file_permissions_ip_allocations
   - file_owner_etcd_member
   - file_permissions_scheduler_kubeconfig
-  - compliancesuite_exists
+  - scansettingbinding_exists
   - general_default_seccomp_profile
   - file_owner_ip_allocations
   - file_permissions_ovn_cni_server_sock
@@ -11337,7 +11337,7 @@ controls:
     systemic weaknesses or deficiences) are outside the scope
     of OpenShift configuration.
   rules:
-  - compliancesuite_exists
+  - scansettingbinding_exists
   description: "The organization:\n a. Scans for vulnerabilities in the information\
     \ system and hosted applications [Assignment: organization-defined frequency and/or\
     \ randomly in accordance with organization-defined process] and when new vulnerabilities\
@@ -11478,7 +11478,7 @@ controls:
     the OpenShift web application interface. For the OpenShift Compliance Operator, only OpenShift
     Cluster Administators are able to access and run the operator for compliance and vulnerability scans.
   rules:
-  - compliancesuite_exists
+  - scansettingbinding_exists
   description: "The information system implements privileged access authorization\
     \ to [Assignment: organization- identified information system components] for\
     \ selected [Assignment: organization-defined vulnerability scanning activities].\n\
@@ -11859,7 +11859,7 @@ controls:
     organization can deploy the Compliance Operator:
     https://access.redhat.com/documentation/en-us/openshift_container_platform/latest/html/security_and_compliance/compliance-operator#compliance-operator-installation
   rules:
-  - compliancesuite_exists
+  - scansettingbinding_exists
   description: |-
     The organization requires the developer of the information system, system component, or information system service to produce a plan for the continuous monitoring of security control effectiveness that contains [Assignment: organization-defined level of detail].
 
