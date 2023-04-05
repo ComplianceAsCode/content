@@ -833,7 +833,9 @@ selections:
     - sudo_require_reauthentication
 
     ### 5.3.7 Ensure access to the su command is restricted (Automated)
-    # NEEDS RULE
+    - var_pam_wheel_group_for_su=cis
+    - use_pam_wheel_group_for_su
+    - ensure_pam_wheel_group_empty
 
     ## 5.4 Configure PAM ##
     ### 5.4.1 Ensure password creation requirements are configured (Automated)
