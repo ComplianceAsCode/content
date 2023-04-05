@@ -92,7 +92,8 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 template:
-  name: lineinfile
+  name: sysctl
   vars:
-    path: /etc/sysctl.d/90-kubelet.conf
-    text: "vm.overcommit_memory=1"
+      sysctlvar: vm.overcommit_memory
+      sysctlval: '1'
+      datatype: int

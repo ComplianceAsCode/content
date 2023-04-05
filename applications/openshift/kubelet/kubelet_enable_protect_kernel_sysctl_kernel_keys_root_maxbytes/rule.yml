@@ -92,7 +92,8 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 template:
-  name: lineinfile
-  vars:
-    path: /etc/sysctl.d/90-kubelet.conf
-    text: "kernel.keys.root_maxbytes=25000000"
+    name: sysctl
+    vars:
+        sysctlvar: kernel.keys.root_maxbytes
+        sysctlval: '25000000'
+        datatype: int

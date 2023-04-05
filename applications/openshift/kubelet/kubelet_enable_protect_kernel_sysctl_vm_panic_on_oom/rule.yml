@@ -92,7 +92,8 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 template:
-  name: lineinfile
+  name: sysctl
   vars:
-    path: /etc/sysctl.d/90-kubelet.conf
-    text: "kernel.panic=10"
+      sysctlvar: vm.panic_on_oom
+      sysctlval: '0'
+      datatype: int

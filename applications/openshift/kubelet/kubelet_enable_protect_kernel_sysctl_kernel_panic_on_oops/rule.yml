@@ -92,7 +92,8 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 template:
-  name: lineinfile
-  vars:
-    path: /etc/sysctl.d/90-kubelet.conf
-    text: "kernel.panic_on_oops=1"
+    name: sysctl
+    vars:
+        sysctlvar: kernel.panic_on_oops
+        sysctlval: '1'
+        datatype: int
