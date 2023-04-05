@@ -10,7 +10,7 @@
   ansible.builtin.command:
     cmd: authselect select "{{ var_authselect_profile }}"
   register: result_authselect_select
-  failed_when: result_authselect_select.rc not in [0, 4]
+  failed_when: false
 
 - name: Verify if PAM has been altered
   ansible.builtin.command:
