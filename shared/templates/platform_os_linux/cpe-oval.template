@@ -11,7 +11,7 @@
       test_ref="test_os_id_is_{{{ ID }}}" />
       {{% for spec in VER_SPECS %}}
         <criterion comment="The operating system {{{ OS_NAME }}} of version {{{ spec.evr_op }}} {{{ spec.ver }}} is installed"
-        test_ref="test_{{{ _RULE_ID }}}" />
+        test_ref="test_{{{ _RULE_ID }}}_{{{ spec.id }}}" />
       {{% endfor %}}
     </criteria>
   </definition>
@@ -32,18 +32,18 @@
   </ind:textfilecontent54_state>
 
 {{% for spec in VER_SPECS %}}
-  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is {{{ spec.ver }}}" id="test_{{{ _RULE_ID }}}" version="1">
-    <ind:object object_ref="obj_{{{ _RULE_ID }}}" />
-    <ind:state state_ref="state_{{{ _RULE_ID }}}" />
+  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is {{{ spec.evr_op }}} {{{ spec.ver }}}" id="test_{{{ _RULE_ID }}}_{{{ spec.id }}}" version="1">
+    <ind:object object_ref="obj_{{{ _RULE_ID }}}_{{{ spec.id }}}" />
+    <ind:state state_ref="state_{{{ _RULE_ID }}}_{{{ spec.id }}}" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_{{{ _RULE_ID }}}" version="1">
+  <ind:textfilecontent54_object id="obj_{{{ _RULE_ID }}}_{{{ spec.id }}}" version="1">
     <ind:filepath>/etc/os-release</ind:filepath>
     <ind:pattern operation="pattern match">^VERSION_ID=[&quot;&apos;]?(\w+)[&quot;&apos;]?$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_{{{ _RULE_ID }}}" version="1">
+  <ind:textfilecontent54_state id="state_{{{ _RULE_ID }}}_{{{ spec.id }}}" version="1">
     <ind:subexpression operation="{{{ spec.evr_op }}}" datatype="version">{{{ spec.ver }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{% endfor %}}
