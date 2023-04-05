@@ -158,7 +158,7 @@ def get_new_contributors(commit) -> str:
 
 
 def is_contributors_list_updated(date_string) -> bool:
-    date = datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+    date = datetime.strptime(date_string[:16], '%Y-%m-%d %H:%M')
     # As a rule of thumbs, this function consider contributors list
     # updated if not older than 2 weeks.
     two_weeks_back = datetime.now() - timedelta(days=15)
