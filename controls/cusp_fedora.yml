@@ -508,3 +508,14 @@ controls:
       - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
       - sysctl_net_ipv4_tcp_syncookies
       - sysctl_net_ipv4_tcp_syncookies_value=enabled
+
+  - id: 5.2
+    title: Firewall configuration
+    description: >-
+      Users should ensure that all network interfaces are in the appropriate firewall zone and that ports and services allowed by the firewall are reduced to the necessary minimum.
+    status: partial
+    rules:
+      - package_firewalld_installed
+      - service_nftables_disabled
+      - service_firewalld_enabled
+ 
