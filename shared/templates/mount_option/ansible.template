@@ -55,7 +55,7 @@
     path: "{{{ MOUNTPOINT }}}"
     src: "{{ mount_info.source }}"
     opts: "{{ mount_info.options }}"
-    state: "present"
+    state: "mounted"
     fstype: "{{ mount_info.fstype }}"
   when:
     - (device_name.stdout is defined and (device_name.stdout | length > 0)) or ("{{{ TABFILE }}}" | length == 0)
