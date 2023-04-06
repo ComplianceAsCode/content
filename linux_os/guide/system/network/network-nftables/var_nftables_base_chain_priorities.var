@@ -40,7 +40,7 @@ operator: equals
 interactive: true
 
 options:
-    default: arr_chain_priorities
+    default: chain_priorities
     NF_IP_PRI_RAW_BEFORE_DEFRAG: -450
     NF_IP_PRI_CONNTRACK_DEFRAG: -400
     NF_IP_PRI_RAW: -300
@@ -60,4 +60,4 @@ options:
     NF_BR_PRI_NAT_DST_OTHER: 100
     NF_BR_PRI_FILTER_OTHER: 200
     NF_BR_PRI_NAT_SRC: 300 
-    arr_chain_priorities: "0,0,0"
+    chain_priorities: "0,0,0"
