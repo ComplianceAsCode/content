@@ -518,4 +518,20 @@ controls:
       - package_firewalld_installed
       - service_nftables_disabled
       - service_firewalld_enabled
- 
+###
+### 6. User applications
+###
+  - id: 6.1
+    title: Web browser
+    description: >-
+      
+    status: partial
+    rules:
+      - firefox_policy-autoplay_video
+      - firefox_policy-cryptomining
+      - firefox_policy-enhanced_tracking # locked = bad
+      - firefox_policy-fingerprinting_protection
+      - firefox_policy-javascript_window_changes # locked = bad
+      - firefox_policy-javascript_window_resizing # locked = bad
+      - firefox_policy-pop-up_windows # locked = bad
+      - firefox_policy-ssl_minimum_version
