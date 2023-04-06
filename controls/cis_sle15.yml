@@ -1138,7 +1138,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - var_nftable_master_config_file=sysconfig
+      - nftables_rules_permanent
 
   - id: 3.5.3.1.1
     title: Ensure iptables package is installed (Automated)

@@ -1,0 +1,48 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Ensure nftables rules are permanent'
+
+description: |-
+    nftables is a subsystem of the Linux kernel providing filtering and classification of
+    network packets/datagrams/frames. The nftables service reads the
+    {{{ xccdf_value("var_nftable_master_config_file") }}} file for a nftables file or files to
+    include in the nftables ruleset. A nftables ruleset containing the input, forward, and output
+    base chains allow network traffic to be filtered.
+
+rationale: |-
+    Changes made to nftables ruleset only affect the live system, you will also need to configure
+    the nftables ruleset to apply on boot
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92485-2
+
+references:
+    cis@sle15: 3.5.2.10
+
+ocil_clause: 'no nftables configuration exist'
+
+ocil: |-
+    Run the following commands to verify that input, forward, and output base chains are
+    configured to be applied to a nftables ruleset on boot.
+    Run the following command to verify the input base chain:
+    <pre>
+    # awk '/hook input/,/}/' $(awk '$1 ~ /^\s*include/ { gsub("\"","",$2);print $2 }' \
+    {{{ xccdf_value("var_nftable_master_config_file") }}})
+    </pre>
+    or for forward base chain:
+    <pre>
+    # awk '/hook forward/,/}/' $(awk '$1 ~ /^\s*include/ { gsub("\"","",$2);print $2 }' \
+    {{{ xccdf_value("var_nftable_master_config_file") }}})
+    </pre>
+    Review the base chains to ensure that they follow local site policy
+
+fixtext: |-
+    Edit the {{{ xccdf_value("var_nftable_master_config_file") }}} file and un-comment or add
+    a line with include absolute path to nftables rules file for each nftables file you want
+    included in the nftables ruleset on boot.
+    For example the  {{{ xccdf_value("var_nftable_master_config_file") }}} should contain
+    <pre>include "/etc/nftables/nftables.rules"</pre>
