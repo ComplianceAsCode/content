@@ -2216,8 +2216,8 @@ fi
 {{%- endmacro -%}}
 
 
-{{%- macro bash_partition_conditional(path) -%}}
-'findmnt --kernel "{{{ path }}}" > /dev/null'
+{{%- macro bash_mount_conditional(path) -%}}
+'findmnt --kernel "{{{ path }}}" > /dev/null || findmnt --fstab "{{{ path }}}" > /dev/null'
 {{%- endmacro -%}}
 
 
