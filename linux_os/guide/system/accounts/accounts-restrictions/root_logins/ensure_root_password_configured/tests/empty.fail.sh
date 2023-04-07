@@ -1,5 +1,6 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# packages = passwd
+# platform = multi_platform_all
 # remediation = None
 
 passwd -d root
