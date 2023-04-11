@@ -1106,7 +1106,13 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: supported
+    notes: |-
+      RHEL7 is not using nftables by default.
+    related_rules:
+      - set_nftables_table
+      - var_nftables_family=inet
+      - var_nftables_table=filter
 
   - id: 3.5.2.6
     title: Ensure nftables base chains exist (Automated)
