@@ -6,7 +6,7 @@
 
 {{{ ansible_instantiate_variables("var_authselect_profile") }}}
 
-- name: Select authselect profile
+- name: {{{ rule_title }}} - Select authselect profile
   ansible.builtin.command:
     cmd: authselect select "{{ var_authselect_profile }}"
   register: result_authselect_select
@@ -20,7 +20,7 @@
   # • 6: No configuration was detected.
   failed_when: false
 
-- name: Verify if PAM has been altered
+- name: {{{ rule_title }}} - Verify if PAM has been altered
   ansible.builtin.command:
     cmd: rpm -qV pam
   register: result_altered_authselect
@@ -32,14 +32,14 @@
   when:
     - result_authselect_select.rc != 0
 
-- name: Informative message based on the authselect integrity check
+- name: {{{ rule_title }}} - Informative message based on the authselect integrity check
   ansible.builtin.assert:
     that:
       - result_altered_authselect is skipped or result_altered_authselect.rc == 0
     fail_msg:
       - Files in the 'pam' package have been altered, so the authselect configuration won't be forced.
 
-- name: Force authselect profile select
+- name: {{{ rule_title }}} - Force authselect profile select
   ansible.builtin.command:
     cmd: authselect select --force "{{ var_authselect_profile }}"
   when:
