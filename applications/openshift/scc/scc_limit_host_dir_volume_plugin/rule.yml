@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Containers Ability to use the HostDir volume plugin'
+
+description: |-
+    Containers should be allowed to use the <tt>hostPath</tt> volume type unless
+    necessarry. To prevent containers from using the host filesystem
+    the appropriate Security Context Constraints (SCCs) should set
+    <tt>allowHostDirVolumePlugin</tt> to <tt>false</tt>.
+
+rationale: |-
+    <tt>hostPath</tt> volumes allow workloads to access the host filesystem
+    from the workload. Access to the host filesystem can be used to
+    escalate privileges and access resources such as keys or access
+    tokens.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-86255-7
+
+references:
+    cis@ocp4: 5.2.12
+    nist: AC-6,AC-6(1)
+    srg: SRG-APP-000142-CTR-000330
+
+ocil_clause: 'allowHostDirVolumePlugin usage in SCCs needs review'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC for those that have <tt>allowHostDirVolumePlugin</tt>
+    set to <tt>true</tt>.  Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that have <tt>allowHostDirVolumePlugin</tt>, examine the associated
+    rolebindings to account for the users that are bound to the role. Review the
+    account to determine if <tt>allowHostDirVolumePlugin</tt> is truly required.

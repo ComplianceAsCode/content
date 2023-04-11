@@ -1,0 +1,72 @@
+checktext: |-
+  Identify any SCC policy that allows containers to access the host ports by running the following command.
+
+  > oc get scc -ojson | jq '.items[]|select(.allowHostPorts)|.metadata.name,{"Group:":.groups},{"User":.users}'
+
+  For each SCC listed, if any of those users or groups are anything other than the following, this is a finding:
+
+    * system:cluster-admins
+    * system:nodes
+    * system:masters
+    * system:admin
+    * system:serviceaccount:openshift-infra:build-controller
+    * system:serviceaccount:openshift-infra:pv-recycler-controller
+    * system:serviceaccount:openshift-machine-api:machine-api-termination-handler
+
+  The group "system:authenticated" is the default group for any authenticated user, this group should only be associated with the restricted profile. If this group is listed under any other SCC Policy, or the restricted SCC policy has been altered to allow any of the non-permitted actions, this is a finding.
+
+  Next, determine if there are any cluster roles or local roles that allow the use of use of non-permitted SCC policies.  The following commands will print the Role's name and namespace, followed by a list of resource names and if that resource is an SCC.
+
+  > oc get clusterrole.rbac -ojson | jq -r '.items[]|select(.rules[]?|select( (.apiGroups[]? == ("security.openshift.io")) and (.resources[]? == ("securitycontextconstraints")) and (.verbs[]? == ("use"))))|.metadata.name,{"scc":(.rules[]?|select((.resources[]? == ("securitycontextconstraints"))).resourceNames[]?)}'
+
+  > oc get role.rbac --all-namespaces -ojson | jq -r '.items[]|select(.rules[]?|select( (.apiGroups[]? == ("security.openshift.io")) and (.resources[]? == ("securitycontextconstraints")) and (.verbs[]? == ("use"))))|.metadata.name,{"scc":(.rules[]?|select((.resources[]? == ("securitycontextconstraints"))).resourceNames[]?)}'
+
+  Excluding platform specific roles, identify any roles that allow use of non-permitted SCC policies for example the follow output shows that the role 'examplePrivilegedRole' allows use of the 'privileged' SCC.
+
+  examplePrivilegedRole
+  {
+    "scc": "privileged"
+  }
+
+  Finally, determine if there are any role bindings to cluster or local roles that allow use of non-permitted SCCs.
+
+  > oc get clusterrolebinding.rbac -ojson | jq -r '.items[]|select(.roleRef.kind == ("ClusterRole","Role") and .roleRef.name == (<CLUSTER_ROLE_LIST>))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
+
+  > oc get rolebinding.rbac --all-namespaces -ojson | jq -r '.items[]|select(.roleRef.kind == ("ClusterRole","Role") and .roleRef.name == (<LOCAL_ROLE_LIST>))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
+
+  Where <CLUSTER_ROLE_LIST> and <LOCAL_ROLE_LIST> are comma-separated lists of the roles allowing use of non-permitted SCC policies as identified above. For example:
+
+  ... .roleRef.name == ("system:openshift:scc:privileged","system:openshift:scc:hostnetwork","system:openshift:scc:hostaccess") ...
+
+  Excluding any platform namespaces (kube-*,openshift-*), if there are any rolebindings to roles that are not permitted, this is a finding.
+
+fixtext: |-
+  For users and groups that are defined in the SCC policy, remove the users or groups by editing the corresponding SCC policy.
+
+  > oc edit scc <SCC>
+
+  The following instructions will remove the user or group from the cluster role binding for the SCC policy.
+
+  Remove user from the SCC Policy binding:
+
+  > oc adm policy remove-scc-from-user <SCC> <USER>
+
+  Remove a group from the SCC Policy binding:
+
+  > oc adm policy remove-scc-from-group <SCC> <GROUP>
+
+  Remove service account from the SCC Policy binding:
+
+  > oc project <SERVICE_ACC_PROJECT>
+  > oc adm policy remove-scc-from-user <SCC> -z <SERVICE_ACC>
+
+  Finally, remove any roles that allows use of non-permitted SCC policies (excluding platform defined roles)
+
+  > oc delete clusterrole.rbac <ROLE>
+
+  or
+
+  > oc delete role.rbac <ROLE> -n <NAMESPACE>
+
+srg_requirement: |-
+  {{{ title }}} runtime must enforce the use of ports that are non-privileged.
