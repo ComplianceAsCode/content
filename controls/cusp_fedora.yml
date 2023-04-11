@@ -6,55 +6,55 @@ version: '1.0.0'
 source: TBD
 
 controls:
-###
-### 1. Hardware and its configuration
-###
+  ###
+  ### 1. Hardware and its configuration
+  ###
   - id: 1.1
     title: Protection of the BIOS or UEFI
     description: >-
       Users should protect their BIOS or UEFI with a password.
     status: manual
-    
+
   - id: 1.2
     title: Proper BIOS or UEFI configuration
     description: >-
       Users should disable features and devices in the BIOS or UEFI that are not in use and should only include trusted devices in the boot order.
     status: manual
-    
+
   - id: 1.3
     title: 64-bit OS
     description: >-
       When possible, users should use a 64-bit system and hardware that supports it.
     status: manual
- ###
- ### 2. System installation
- ###
+  ###
+  ### 2. System installation
+  ###
   - id: 2.1
     title: Security policy selection
     description: >-
       Users should apply the “Fedora Common User Security Policy” in the installer.
     status: manual
-    
+
   - id: 2.2
     title: Disk partitioning
     description: >-
       Users should put the /home, /tmp, /var, /var/tmp and /var/log directories on separate partitions.
-    status: manual 
-    
+    status: manual
+
   - id: 2.3
     title: Password security
     description: >-
       Users should ensure that all account passwords adhere to the password rules in rule 4.1.
     status: manual
-    
+
   - id: 2.4
     title: Disk encryption
     description: >-
       Users should encrypt their disk with a passphrase that adheres to the password rules in rule 4.1.
     status: manual
-###
-### 3. General system configuration
-###
+  ###
+  ### 3. General system configuration
+  ###
   - id: 3.1
     title: Bootloader security
     description: >-
@@ -68,7 +68,7 @@ controls:
       - file_owner_user_cfg
       - file_permissions_grub2_cfg
       - file_permissions_user_cfg
-      - grub2_password # only check
+      - grub2_password  # only check
       # UEFI
       - file_groupowner_efi_grub2_cfg
       - file_groupowner_efi_user_cfg
@@ -76,7 +76,7 @@ controls:
       - file_owner_efi_user_cfg
       - file_permissions_efi_grub2_cfg
       - file_permissions_efi_user_cfg
-      - grub2_uefi_password # only check
+      - grub2_uefi_password  # only check
 
   - id: 3.2
     title: Software updates
@@ -85,12 +85,12 @@ controls:
     status: partial
     rules:
       - package_gnome_software_installed
-  
+
   - id: 3.3
     title: Filesystem configuration
     description: >-
       /home (-noexec), /tmp, /var, /var/tmp and /var/log mount option configuration
-    status: automatic
+    status: automated
     rules:
       - mount_option_home_nodev
       - mount_option_home_nosuid
@@ -114,7 +114,7 @@ controls:
     title: Crypto policy
     description: >-
       system cryto policy configuation and ensuring it is not overridden in critical components
-    status: automatic
+    status: automated
     rules:
       - configure_crypto_policy
       - var_system_crypto_policy=default_policy
@@ -130,7 +130,7 @@ controls:
     description: >-
       auditd and journald configutation
     status: automated
-    rules: 
+    rules:
       # auditd config
       - package_audit_installed
       - service_auditd_enabled
@@ -207,18 +207,18 @@ controls:
       - journald_compress
       - journald_storage
 
-- id: 3.6
+  - id: 3.6
     title: Files, permissions, and ownership
     description: >-
-      user and critical system file permissions and ownership, user identifiers, 
+      user and critical system file permissions and ownership, user identifiers,
     status: partial
-    rules: 
-      # file config
+    rules:
+      #  file config
       - dir_perms_world_writable_sticky_bits
       - file_permissions_unauthorized_world_writable
       - no_files_unowned_by_user
       - file_permissions_ungroupowned
-      # permission and ownership of critical files
+      #  permission and ownership of critical files
       - file_groupowner_etc_passwd
       - file_owner_etc_passwd
       - file_permissions_etc_passwd
@@ -240,10 +240,10 @@ controls:
       - file_groupowner_backup_etc_group
       - file_owner_backup_etc_group
       - file_permissions_backup_etc_group
-      - file_groupowner_backup_etc_gshadow 
+      - file_groupowner_backup_etc_gshadow
       - file_owner_backup_etc_gshadow
       - file_permissions_backup_etc_gshadow
-      # user and group config
+      #  user and group config
       - no_empty_passwords_etc_shadow
       - gid_passwd_group_same
       - account_unique_id
@@ -263,7 +263,7 @@ controls:
     description: >-
       enable ASLR and ExecShield, restrict exposed kernel pointer
     status: automated
-    rules: 
+    rules:
       - sysctl_kernel_randomize_va_space
       - sysctl_kernel_exec_shield
       - sysctl_kernel_kptr_restrict
@@ -273,7 +273,7 @@ controls:
     description: >-
       do not show user list, disable xdmpc and auto login, set up idle lock and protect the settings
     status: automated
-    rules: 
+    rules:
       - dconf_gnome_disable_user_list
       - gnome_gdm_disable_xdmcp
       - gdm_disable_automatic_login
@@ -282,20 +282,20 @@ controls:
       - dconf_gnome_screensaver_lock_enabled
       - dconf_gnome_screensaver_user_locks
       - dconf_gnome_session_idle_user_locks
- 
+
   - id: 3.9
     title: Time and schedulers
     description: >-
       chrony and time-based scheduler security configuration
     status: automated
-    rules: 
-      # chrony
+    rules:
+      #  chrony
       - chronyd_client_only
       - chronyd_no_chronyc_network
       - chronyd_or_ntpd_set_maxpoll
       - chronyd_run_as_chrony_user
       - chronyd_specify_remote_server
-      # schedulers
+      #  schedulers
       - service_crond_enabled
       - file_owner_crontab
       - file_groupowner_crontab
@@ -321,13 +321,13 @@ controls:
       - file_owner_at_allow
       - file_groupowner_at_allow
       - file_permissions_at_allow
-     
+
   - id: 3.10
     title: Service minimization
     description: >-
-      The user should remove any services that are not necessary for normal system usage. 
+      The user should remove any services that are not necessary for normal system usage.
     status: partial
-    rules: 
+    rules:
       - package_xinetd_removed
       - package_dhcp_removed
       - package_bind_removed
@@ -355,9 +355,9 @@ controls:
       - package_ypserv_removed
       - package_talk-server_removed
       - package_talk_removed
-###
-### 4. User access and control
-###
+  ###
+  ### 4. User access and control
+  ###
   - id: 4.1
     title: Account protection
     description: >-
@@ -380,7 +380,7 @@ controls:
       - var_accounts_user_umask=027
       - account_password_selinux_faillock_dir
       - rule_enable_authselect
-      # password requirements
+      #  password requirements
       - accounts_password_pam_pwquality_password_auth
       - accounts_password_pam_pwquality_system_auth
       - accounts_password_pam_maxrepeat
@@ -389,20 +389,20 @@ controls:
       - accounts_password_pam_retry
       - var_password_pam_minclass=3
       - var_password_pam_minlen=15
-      # account lockout
+      #  account lockout
       - accounts_passwords_pam_faillock_dir
       - accounts_passwords_pam_faillock_deny
       - var_accounts_passwords_pam_faillock_deny=3
       - accounts_passwords_pam_faillock_unlock_time
       - var_accounts_passwords_pam_faillock_unlock_time=900
-      # password reuse
+      #  password reuse
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
       - var_password_pam_remember_control_flag=requisite_or_required
       - var_password_pam_remember=5
       - accounts_password_pam_difok
       - var_password_pam_difok=8
-      
+
   - id: 4.2
     title: Sudo
     description: >-
@@ -416,7 +416,7 @@ controls:
       - sudo_require_reauthentication
       - use_pam_wheel_for_su
       - sudoers_default_includedir
-      
+
   - id: 4.3
     title: SSH Server
     description: >-
@@ -455,12 +455,12 @@ controls:
       - sshd_disable_gssapi_auth
       - sshd_enable_strictmodes
       - sshd_rekey_limit
-      - var_rekey_limit_size='1G'
-      - var_rekey_limit_time='1h'
+      - var_rekey_limit_size=1G
+      - var_rekey_limit_time=1hour
       - sshd_use_strong_rng
-###
-### 5. Networking
-###
+  ###
+  ### 5. Networking
+  ###
   - id: 5.1
     title: General network configuration
     description: >-
@@ -518,9 +518,9 @@ controls:
       - package_firewalld_installed
       - service_nftables_disabled
       - service_firewalld_enabled
-###
-### 6. User applications
-###
+  ###
+  ### 6. User applications
+  ###
   - id: 6.1
     title: Web browser
     description: >-
@@ -529,11 +529,11 @@ controls:
     rules:
       - firefox_policy-autoplay_video
       - firefox_policy-cryptomining
-      - firefox_policy-enhanced_tracking # locked = bad
+      - firefox_policy-enhanced_tracking  # locked = bad
       - firefox_policy-fingerprinting_protection
-      - firefox_policy-javascript_window_changes # locked = bad
-      - firefox_policy-javascript_window_resizing # locked = bad
-      - firefox_policy-pop-up_windows # locked = bad
+      - firefox_policy-javascript_window_changes  # locked = bad
+      - firefox_policy-javascript_window_resizing  # locked = bad
+      - firefox_policy-pop-up_windows  # locked = bad
       - firefox_policy-ssl_minimum_version
       - firefox_policy-content_blocker
 
@@ -542,9 +542,9 @@ controls:
     description: >-
       Users should install the Bitwarden AppImage from the Bitwarden site and use it to generate and store passwords for online accounts.
     status: manual
-###
-### 7. Advanced security features
-###
+  ###
+  ### 7. Advanced security features
+  ###
   - id: 7.1
     title: Mandatory Access Control
     description: >-
