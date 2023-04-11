@@ -523,6 +523,19 @@ class RuleChecker(oscap.Checker):
         os.rename(temp_datastream, self.datastream)
         os.unlink(xslt_filename)
 
+    def _verify_rule_presence(self, rule_id, script, profiles):
+        for profile_id in profiles:
+            if profile_id == OSCAP_PROFILE_ALL_ID:
+                continue
+            rules_in_profile = xml_operations.get_all_rule_ids_in_profile(
+                self.datastream, self.benchmark_id, profile_id, logging)
+            short_rule_id = rule_id.replace(OSCAP_RULE, "")
+            if short_rule_id not in rules_in_profile:
+                logging.warning(
+                    "Rule {0} isn't part of profile {1} requested by "
+                    "script {2}.".format(rule_id, profile_id, script)
+                )
+
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
         if not _apply_script(
                 remote_rule_dir, self.test_env, scenario.script):
@@ -541,6 +554,7 @@ class RuleChecker(oscap.Checker):
         if scenario.script_params['profiles']:
             profiles = get_viable_profiles(
                 scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
+            self._verify_rule_presence(rule_id, scenario.script, profiles)
         else:
             # Special case for combined mode when scenario.script_params['profiles']
             # is empty which means scenario is not applicable on given profile.
