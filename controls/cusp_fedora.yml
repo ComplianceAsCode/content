@@ -524,7 +524,7 @@ controls:
   - id: 6.1
     title: Web browser
     description: >-
-      
+      The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application.
     status: partial
     rules:
       - firefox_policy-autoplay_video
@@ -535,3 +535,32 @@ controls:
       - firefox_policy-javascript_window_resizing # locked = bad
       - firefox_policy-pop-up_windows # locked = bad
       - firefox_policy-ssl_minimum_version
+      - firefox_policy-content_blocker
+
+  - id: 6.2
+    title: Password management
+    description: >-
+      Users should install the Bitwarden AppImage from the Bitwarden site and use it to generate and store passwords for online accounts.
+    status: manual
+###
+### 7. Advanced security features
+###
+  - id: 7.1
+    title: Mandatory Access Control
+    description: >-
+      The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application.
+    status: partial
+    rules:
+      - package_libselinux_installed
+      - grub2_enable_selinux
+      - selinux_policytype
+      - selinux_state
+      - mcstrans_removed
+      - sysctl_fs_protected_hardlinks
+      - sysctl_fs_protected_symlinks
+
+  - id: 7.2
+    title: Periodic compliance scans
+    description: >-
+      Users should perform periodic system scans and remediations with the Common User Security Profile by using the oscap tool or SCAP Workbench.
+    status: manual
