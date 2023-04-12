@@ -1,0 +1,60 @@
+checktext: |-
+  Review the cluster configuration to validate that all required security functions are being validated with the Compliance Operator.
+
+  To map the schedule of every profile through its ScanSettingBinding and output the schedules on which each Profile or TailoredProfile is run, execute the following commands:
+  > declare -A binding_profiles
+  > declare -A binding_schedule
+  > while read binding setting profiles; do binding_profiles[$binding]="$profiles"; binding_schedule[$binding]=$(oc get scansetting -n openshift-compliance $setting -ojsonpath='{.schedule}'); done < <(oc get scansettingbinding -n openshift-compliance -ojsonpath='{range .items[*]}{.metadata.name} {.settingsRef.name} {range .profiles[*]}{.name} {end}{"\n"}{end}')
+  > for binding in "${!binding_profiles[@]}"; do for profile in ${binding_profiles[$binding]}; do echo "$profile: ${binding_schedule[$binding]}"; done; done
+
+  If the profiles that are bound to schedules do not cover the organization-designed security functions, or if the schedules are not at least monthly or within the organization defined periodicity, this is a finding.
+
+  To determine which rules are enforced by the profiles that are currently bound to the scheduled periodicities, execute the following commands:
+  > for binding in "${!binding_profiles[@]}"; do for profile in ${binding_profiles[$binding]}; do for rule in $(oc get profile.compliance $profile -n openshift-compliance -ojsonpath='{range .rules[*]}{$}{"\n"}{end}'); do echo "$rule: ${binding_schedule[$binding]}"; done; done; done | sort -u
+
+fixtext: |-
+  The compliance operator can be leveraged to ensure that components are configured in alignment with the SSP at a desired schedule. To install the Compliance Operator, run the following command:
+
+  > oc apply -f - << 'EOF'
+  ---
+  apiVersion: project.openshift.io/v1
+  kind: Project
+  metadata:
+    labels:
+      kubernetes.io/metadata.name: openshift-compliance
+      openshift.io/cluster-monitoring: "true"
+    name: openshift-compliance
+  spec: {}
+  ...
+  ---
+  apiVersion: operators.coreos.com/v1
+  kind: OperatorGroup
+  metadata:
+    name: compliance-operator
+    namespace: openshift-compliance
+  spec:
+    targetNamespaces:
+    - openshift-compliance
+  ...
+  ---
+  apiVersion: operators.coreos.com/v1alpha1
+  kind: Subscription
+  metadata:
+    name: compliance-operator
+    namespace: openshift-compliance
+  spec:
+    channel: stable
+    installPlanApproval: Automatic
+    name: compliance-operator
+    source: redhat-operators
+    sourceNamespace: openshift-marketplace
+  ...
+  EOF
+
+  Following installation of the Compliance Operator, a ScanSettingBinding object that configures the Compliance Operator to use the desired scan cadence must be created. If you have the definition for your ScanSettingBinding in a YAML file named my-scansettingbinding.yml, you would apply that ScanSettingBinding with the following command:
+  > oc apply -f my-scansettingbinding.yml -n openshift-compliance
+
+  For more information about the compliance operator and its use, including the configurability of scheduling of scan cadence in ScanSetting resources and the Role-based access control requirements for manually triggered scans, please see the product documentation https://docs.openshift.com/container-platform/4.8/security/compliance_operator/compliance-operator-understanding.html
+
+srg_requirement: |-
+  The container platform must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
