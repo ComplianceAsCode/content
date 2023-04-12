@@ -26,22 +26,30 @@ IFS="," read -r -a  hooks <<< "$var_nftables_base_chain_hooks"
 IFS="," read -r -a  priorities <<< "$var_nftables_base_chain_priorities"
 IFS="," read -r -a  policies <<< "$var_nftables_base_chain_policies"
 
-#We add a table if it does not exist
-IS_TABLE=$(nft list tables)
-if [ -z "$IS_TABLE" ]
+IS_TABLE_EXIST=$(nft list tables)
+if [ -z "$IS_TABLE_EXIST" ]
 then
+  # We create a table and add chains to it 
   nft create table "$var_nftables_family" "$var_nftables_table"
+  num_of_chains=${#names[@]}
+  for ((i=0; i < num_of_chains; i++))
+  do
+   chain_to_add="add chain $var_nftables_family $var_nftables_table ${names[$i]} { type ${types[$i]} hook ${hooks[$i]} priority ${priorities[$i]} ; policy ${policies[$i]} ; }"
+   mycommand="nft '$chain_to_add'"
+   eval $mycommand
+  done    
+else
+  # We add missing chains to the existing table
+  EXISTING_TABLE=${IS_TABLE_EXIST#"table "}
+  num_of_chains=${#names[@]}
+  for ((i=0; i < num_of_chains; i++))
+  do
+    IS_CHAIN_EXIST=$(nft list $IS_TABLE_EXIST | grep "hook ${hooks[$i]}")
+    if [ -z "$IS_CHAIN_EXIST" ]
+      then
+        chain_to_add="add chain $EXISTING_TABLE ${names[$i]} { type ${types[$i]} hook ${hooks[$i]} priority ${priorities[$i]} ; policy ${policies[$i]} ; }"
+        mycommand="nft '$chain_to_add'"
+        eval $mycommand
+    fi
+  done 
 fi
-
-#We add base chains
-num_of_chains=${#names[@]}
-for ((i=0; i < num_of_chains; i++))
-do
-   IS_CHAIN_EXIST=$(nft list ruleset | grep "hook ${hooks[$i]}")
-   if [ -z "$IS_CHAIN_EXIST" ]
-   then
-      chain_to_add="add chain $var_nftables_family $var_nftables_table ${names[$i]} { type ${types[$i]} hook ${hooks[$i]} priority ${priorities[$i]} ; policy ${policies[$i]} ; }"
-      mycommand="nft '$chain_to_add'"
-      eval $mycommand
-   fi
-done
