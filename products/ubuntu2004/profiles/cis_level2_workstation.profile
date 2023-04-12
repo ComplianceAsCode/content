@@ -31,7 +31,8 @@ selections:
     - 'kernel_module_usb-storage_disabled'
 
     #### 1.7.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
-    # Needs variable; set above appropriately.
+    - var_apparmor_mode=enforce
+    - all_apparmor_profiles_enforced
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
     - service_cups_disabled
