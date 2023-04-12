@@ -2,6 +2,8 @@
 
 {{{ bash_instantiate_variables("var_apparmor_mode") }}}
 
+# make sure apparmor-utils is installed for aa-complain and aa-enforce
+{{{ bash_package_install("apparmor-utils") }}}
 
 # Reload all AppArmor profiles
 apparmor_parser -q -r /etc/apparmor.d/
@@ -21,8 +23,13 @@ then
   aa-complain /etc/apparmor.d/*
 fi
 
+{{% if 'ubuntu' in product %}}
+UNCONFINED=$(aa-status | grep "processes are unconfined" | awk '{print $1;}')
+if [ $UNCONFINED -ne 0 ];
+{{% else %}}
 UNCONFINED=$(aa-unconfined)
 if [ ! -z "$UNCONFINED" ]
+{{% endif %}}
 then
   echo -e "***WARNING***: There are some unconfined processes:"
   echo -e "----------------------------"
