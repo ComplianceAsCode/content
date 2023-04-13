@@ -20,8 +20,14 @@
 {{% set PERMS="\! -perm " + SEARCH_MODE %}}
 {{%- endif %}}
 
+{{%- if EXCLUDED_FILES %}}
+{{% set EXCLUDED_FILES_ARGS="! -name \"" + EXCLUDED_FILES|join("\" ! -name \"") + "\"" %}}
+{{%- else %}}
+{{% set EXCLUDED_FILES_ARGS="" %}}
+{{%- endif %}}
+
 - name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False
