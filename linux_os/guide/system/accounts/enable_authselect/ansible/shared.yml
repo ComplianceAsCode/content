@@ -6,37 +6,42 @@
 
 {{{ ansible_instantiate_variables("var_authselect_profile") }}}
 
-- name: Select authselect profile
+- name: {{{ rule_title }}} - Select authselect profile
   ansible.builtin.command:
     cmd: authselect select "{{ var_authselect_profile }}"
   register: result_authselect_select
+  # The authselect can return these exit codes:
+  # • 0: Success.
+  # • 1: Generic error.
+  # • 2: Profile or configuration was not found or the system was not configured with authselect.
+  # • 3: Current configuration is not valid, it was edited without authselect.
+  # • 4: System configuration must be overwritten to activate an authselect profile, --force parameter is needed.
+  # • 5: Executed command must be run as root.
+  # • 6: No configuration was detected.
   failed_when: false
 
-- name: Verify if PAM has been altered
+- name: {{{ rule_title }}} - Verify if PAM has been altered
   ansible.builtin.command:
     cmd: rpm -qV pam
   register: result_altered_authselect
-  ignore_errors: yes
   # return:
   # - 0 if no alterations
-  # - otherwise: number of failured packages
+  # - otherwise: number of failed packages
   #   We have 1 package here. So 1 it is.
-  failed_when: result_altered_authselect.rc not in [0, 1]
-  args:
-    warn: False
+  failed_when: false
   when:
-    - result_authselect_select is failed
+    - result_authselect_select.rc != 0
 
-- name: Informative message based on the authselect integrity check
+- name: {{{ rule_title }}} - Informative message based on the authselect integrity check
   ansible.builtin.assert:
     that:
-      - result_altered_authselect is success
+      - result_altered_authselect is skipped or result_altered_authselect.rc == 0
     fail_msg:
       - Files in the 'pam' package have been altered, so the authselect configuration won't be forced.
 
-- name: Force authselect profile select
+- name: {{{ rule_title }}} - Force authselect profile select
   ansible.builtin.command:
     cmd: authselect select --force "{{ var_authselect_profile }}"
   when:
-    - result_altered_authselect is success
-    - result_authselect_select is failed
+    - result_authselect_select.rc != 0
+    - result_altered_authselect is skipped or result_altered_authselect.rc == 0
