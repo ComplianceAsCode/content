@@ -748,7 +748,7 @@ selections:
     - file_permissions_sshd_pub_key
 
     ### 5.2.4 Ensure SSH access is limited (Automated)
-    # NEEDS RULE
+    - sshd_limit_user_access
 
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Automated)
     - sshd_set_loglevel_info
