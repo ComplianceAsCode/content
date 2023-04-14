@@ -49,7 +49,7 @@
   <ind:textfilecontent54_object comment="run aide with cron.(daily|weekly)" id="object_aide_crontabs_checking" version="1">
     <ind:path operation="pattern match">^/etc/cron.(daily|weekly)$</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[^#]*{{{ aide_bin_path | replace("/", "\/") }}}\s+\-\-check\s*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
