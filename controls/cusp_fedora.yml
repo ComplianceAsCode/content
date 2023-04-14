@@ -252,11 +252,11 @@ controls:
       - group_unique_name
       - accounts_root_path_dirs_no_write
       - accounts_no_uid_except_zero
-      - user_interactive_home_directory_exists
+      - accounts_user_interactive_home_directory_exists
       - file_ownership_home_directories
       - file_groupownership_home_directories
       - file_permissions_home_directories
-      - user_dot_no_world_writable_programs
+      - accounts_user_dot_no_world_writable_programs
 
   - id: 3.7
     title: Memory protection
@@ -276,7 +276,7 @@ controls:
     rules:
       - dconf_gnome_disable_user_list
       - gnome_gdm_disable_xdmcp
-      - gdm_disable_automatic_login
+      - gnome_gdm_disable_automatic_login
       - dconf_gnome_screensaver_idle_delay
       - dconf_gnome_screensaver_lock_delay
       - dconf_gnome_screensaver_lock_enabled
@@ -379,7 +379,7 @@ controls:
       - accounts_umask_etc_profile
       - var_accounts_user_umask=027
       - account_password_selinux_faillock_dir
-      - rule_enable_authselect
+      - enable_authselect
       #  password requirements
       - accounts_password_pam_pwquality_password_auth
       - accounts_password_pam_pwquality_system_auth
@@ -545,7 +545,7 @@ controls:
       - grub2_enable_selinux
       - selinux_policytype
       - selinux_state
-      - mcstrans_removed
+      - package_mcstrans_removed
       - sysctl_fs_protected_hardlinks
       - sysctl_fs_protected_symlinks
 
