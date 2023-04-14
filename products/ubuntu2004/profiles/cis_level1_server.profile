@@ -687,7 +687,7 @@ selections:
     - sshd_set_login_grace_time
 
     ### 5.2.17 Ensure SSH access is limited (Automated)
-    # Needs rules
+    - sshd_limit_user_access
 
     ### 5.2.18 Ensure SSH warning banner is configured (Automated)
     - sshd_enable_warning_banner_net
