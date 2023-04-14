@@ -1,33 +1,19 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("'Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout") }}}
-    <criteria comment="The timestamp_timeout should be configured" operator="AND">
+    <criteria comment="The timestamp_timeout should be configured" >
       <criterion comment="check configuration in /etc/sudoers" test_ref="test_sudo_timestamp_timeout" />
-      <criterion comment="check for +/- sign in configuration" test_ref="test_sudo_timestamp_timeout_no_signs" />
     </criteria>
   </definition>
 
-  <!-- Define 1st test for sudo timestamp. -->
+  <!-- Define test for sudo timestamp. -->
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="check correct configuration in /etc/sudoers" id="test_sudo_timestamp_timeout" version="1">
     <ind:object object_ref="obj_sudo_timestamp_timeout"/>
   </ind:textfilecontent54_test>
 
-  <!-- Define 2nd test for sudo timestamp. -->
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check correct configuration in /etc/sudoers" id="test_sudo_timestamp_timeout_no_signs" version="1">
-    <ind:object object_ref="obj_sudo_timestamp_timeout_no_signs"/>
-  </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="obj_sudo_timestamp_timeout" version="1">
     <ind:filepath operation="pattern match">^\/etc\/(sudoers|sudoers\.d\/.*)$</ind:filepath>  
-    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout[\s]*=\s*[0-9]+$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout[\s]*=\s*[+]?(\d*\.\d+|\d+\.\d*|\d+)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_object id="obj_sudo_timestamp_timeout_no_signs" version="1">
-    <ind:filepath operation="pattern match">^\/etc\/(sudoers|sudoers\.d\/.*)$</ind:filepath>  
-    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout[\s]*=\s*[\+|\-][\d]+$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
 </def-group>
-
