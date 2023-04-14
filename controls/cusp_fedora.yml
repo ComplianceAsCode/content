@@ -524,18 +524,8 @@ controls:
   - id: 6.1
     title: Web browser
     description: >-
-      The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application.
-    status: partial
-    rules:
-      - firefox_policy-autoplay_video
-      - firefox_policy-cryptomining
-      - firefox_policy-enhanced_tracking  # locked = bad
-      - firefox_policy-fingerprinting_protection
-      - firefox_policy-javascript_window_changes  # locked = bad
-      - firefox_policy-javascript_window_resizing  # locked = bad
-      - firefox_policy-pop-up_windows  # locked = bad
-      - firefox_policy-ssl_minimum_version
-      - firefox_policy-content_blocker
+      The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application. If the default Firefox application must be used, the user should apply the Common User Security Profile for Mozilla Firefox CaC profile.
+    status: manual
 
   - id: 6.2
     title: Password management

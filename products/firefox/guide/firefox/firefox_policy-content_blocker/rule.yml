@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: firefox,fedora
+prodtype: firefox
 
 title: 'Ensure the content blocker uBlock Origin is installed'
 
@@ -12,7 +12,7 @@ rationale: |-
     This may prevent malicious ads from confusing users and concealing the page contents, as well as the loading of content that may contain malware.
 severity: medium
 
-#references:
+# references:
 #    cusp_fedora: 6.1
 
 ocil: |-
@@ -30,4 +30,6 @@ template:
     vars:
         name: Ensure the content blocker uBlock Origin is installed 
         policies:
-          - {path: "ExtensionSettings", parameter: "uBlock0@raymondhill.net", value: '{"installation_mode":"normal_installed","install_url":"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi","updates_disabled":false}'}
+          - {path: "ExtensionSettings uBlock0@raymondhill.net", parameter: "installation_mode", value: "normal_installed"}
+          - {path: "ExtensionSettings uBlock0@raymondhill.net", parameter: "install_url", value: "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"}
+          - {path: "ExtensionSettings uBlock0@raymondhill.net", parameter: "updates_disabled", value: "false"}
