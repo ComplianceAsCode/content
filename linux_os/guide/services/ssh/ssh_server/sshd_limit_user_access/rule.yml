@@ -4,11 +4,29 @@ title: 'Limit Users'' SSH Access'
 
 description: |-
     By default, the SSH configuration allows any user with an account
-    to access the system. In order to specify the users that are allowed to login
-    via SSH and deny all other users, add or correct the following line in the
-    <tt>/etc/ssh/sshd_config</tt> file:
-    <pre>AllowUsers USER1 USER2</pre>
-    Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
+    to access the system. There are several options available to limit
+    which users and group can access the system via SSH. It is
+    recommended that at least one of the following options be leveraged:
+    - AllowUsers variable gives the system administrator the option of
+      allowing specific users to ssh into the system. The list consists of
+      space separated user names. Numeric user IDs are not recognized with
+      this variable. If a system administrator wants to restrict user
+      access further by specifically allowing a user's access only from a
+      particular host, the entry can be specified in the form of user@host.
+    - AllowGroups variable gives the system administrator the option of
+      allowing specific groups of users to ssh into the system. The list
+      consists of space separated group names. Numeric group IDs are not
+      recognized with this variable.
+    - DenyUsers variable gives the system administrator the option of
+      denying specific users to ssh into the system. The list consists of
+      space separated user names. Numeric user IDs are not recognized with
+      this variable. If a system administrator wants to restrict user
+      access further by specifically denying a user's access from a
+      particular host, the entry can be specified in the form of user@host.
+    - DenyGroups variable gives the system administrator the option of
+      denying specific groups of users to ssh into the system. The list
+      consists of space separated group names. Numeric group IDs are not
+      recognized with this variable.
 
 rationale: |-
     Specifying which accounts are allowed SSH access into the system reduces the
@@ -20,10 +38,9 @@ ocil_clause: 'sshd does not limit the users who can log in'
 
 ocil: |-
     To ensure sshd limits the users who can log in, run the following:
-    <pre>$ sudo grep AllowUsers /etc/ssh/sshd_config</pre>
-    If properly configured, the output should be a list of usernames allowed to log in
-    to this system.
-
+    pre>$ sudo grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*</pre>
+    If properly configured, the output should be a list of usernames and/or
+    groups allowed to log in to this system.
 
 identifiers:
     cce@rhcos4: CCE-82664-4
@@ -40,6 +57,8 @@ references:
     cis@rhel9: 5.2.4
     cis@sle12: 5.2.4
     cis@sle15: 5.2.4
+    cis@ubuntu2004: 5.2.17
+    cis@ubuntu2204: 5.2.4
     cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS06.03,DSS06.06
     cui: 3.1.12
     isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4
