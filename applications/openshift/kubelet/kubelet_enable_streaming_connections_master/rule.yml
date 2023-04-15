@@ -55,5 +55,7 @@ template:
         filepath: '/kubeletconfig/role'
         filepath_suffix: var_role_master
         yamlpath: ".streamingConnectionIdleTimeout"
-        check_existence: "all_exist"
-        xccdf_variable: var_streaming_connection_timeouts
+        check_existence: "any_exist"
+        values:
+        - value: "0s"   
+          operation: "not equal"
