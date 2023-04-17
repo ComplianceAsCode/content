@@ -26,6 +26,8 @@ args:
     {{% else %}}
       pkgname: snmp
     {{% endif %}}
+  nftables:
+      pkgname: nftables
   nss-pam-ldapd:
     {{% if pkg_system == "rpm" %}}
       pkgname: nss-pam-ldapd
@@ -69,6 +71,8 @@ args:
     pkgname: tftp-server
   tmux:
     pkgname: tmux
+  ufw:
+    pkgname: ufw
   usbguard:
     pkgname: usbguard
   yum:
