@@ -163,7 +163,7 @@ if (PY_MYPY)
     add_test(
         NAME "test-mypy"
         COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/utils/import_srg_spreadsheet.py"
-     )
+    )
 endif()
 
 if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
@@ -325,6 +325,7 @@ endif()
 if (SSG_PRODUCT_RHEL9)
     ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
 endif()
+
 if (PY_CMAKELINT)
     file(GLOB CMAKELINT_FILES "${CMAKE_SOURCE_DIR}/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/products/*/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/cmake/*.cmake")
     add_test(

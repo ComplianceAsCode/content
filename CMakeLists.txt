@@ -115,11 +115,11 @@ message(STATUS "")
 # discourage our users from using them
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
-       "$ cd content\n"
-       "$ rm CMakeCache.txt\n"
-       "$ cd build\n"
-       "$ cmake ../\n"
-       "$ make -j4"
+        "$ cd content\n"
+        "$ rm CMakeCache.txt\n"
+        "$ cd build\n"
+        "$ cmake ../\n"
+        "$ make -j4"
     )
 endif()
 
