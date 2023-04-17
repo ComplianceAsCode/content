@@ -248,10 +248,14 @@ Rules sections must be in the following order, if they are present.
     * All subsections are HTML-Like
     * If defined must have at least one of the following sub-sections:
         * `general`
-        * `dependency`
-        * `performance`
-        * `management`
         * `functionality`
+        * `performance`
+        * `hardware`
+        * `legal`
+        * `regulatory`
+        * `management`
+        * `audit`
+        * `dependency`
 * `conflicts`
     * Must be a valid rule id
 * `requires`
