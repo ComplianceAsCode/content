@@ -24,7 +24,7 @@
 
 - name: Ensure group and world cannot access respective .netrc files
   ansible.builtin.file:
-    path: '{{ item.value[4] }}/.netrc'
+    path: '{{ item.item.value[4] }}/.netrc'
     mode: '0600'
     state: file
   loop: '{{ path_exists.results }}'
