@@ -31,6 +31,8 @@ selections:
     - partition_for_home
 
     #### 1.6.1.4 Ensure all AppArmor Profiles are enforcing (Automated)
+    - var_apparmor_mode=enforce
+    - all_apparmor_profiles_enforced
 
     ### 1.8.1 Ensure GNOME Display Manager is removed (Automated)
     - package_gdm_removed
