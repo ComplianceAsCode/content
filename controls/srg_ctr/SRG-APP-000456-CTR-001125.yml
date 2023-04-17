@@ -5,4 +5,9 @@ controls:
   title: '{{{ full_name }}} registry must contain the latest images with most
     recent updates and execute within the container platform runtime as authorized
     by IAVM, CTOs, DTMs, and STIGs. '
-  status: pending
+  status: automated
+  rules:
+    - imagestream_sets_schedule
+    - ocp_allowed_registries
+    - ocp_allowed_registries_for_import
+
