@@ -328,7 +328,10 @@ Control sections must be in the following order, if they are present.
     * `notes`
         * Must be a block
     * `rules`
+        * Must be a list of valid rule ids
+    * `related_rules`
         * Must be a list of valid rule id
+
 
 ### Profile
 
