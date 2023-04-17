@@ -25,26 +25,25 @@
   </unix:file_object>
 
   <unix:file_state id="state_accounts_users_home_netrc_file_permissions_gread" version="1">
-    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gread datatype="boolean">false</unix:gread>
   </unix:file_state>
   <unix:file_state id="state_accounts_users_home_netrc_file_permissions_gwrite" version="1">
-    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
   </unix:file_state>
   <unix:file_state id="state_accounts_users_home_netrc_file_permissions_gexec" version="1">
-    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:gexec datatype="boolean">false</unix:gexec>
   </unix:file_state>
   <unix:file_state id="state_accounts_users_home_netrc_file_permissions_oread" version="1">
-    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:oread datatype="boolean">false</unix:oread>
   </unix:file_state>
   <unix:file_state id="state_accounts_users_home_netrc_file_permissions_owrite" version="1">
-    <unix:owrite datatype="boolean">true</unix:owrite>
+    <unix:owrite datatype="boolean">false</unix:owrite>
   </unix:file_state>
   <unix:file_state id="state_accounts_users_home_netrc_file_permissions_oexec" version="1">
-    <unix:oexec datatype="boolean">true</unix:oexec>
+    <unix:oexec datatype="boolean">false</unix:oexec>
   </unix:file_state>
 
-  <unix:file_test id="test_accounts_users_home_netrc_file_permissions" check="all"
-                  check_existence="any_exist" version="1"
+  <unix:file_test id="test_accounts_users_home_netrc_file_permissions" check="all" version="1"
                   comment=".netrc files are not group or world accessible">
     <unix:object object_ref="object_accounts_users_home_netrc_file_permissions"/>
     <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_gread" />
