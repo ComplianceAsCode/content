@@ -344,7 +344,6 @@ controls:
       - package_ypserv_removed
       - package_telnet_removed
       - package_telnet-server_removed
-      - postfix_network_listening_disabled
       - service_nfs_disabled
       - service_rpcbind_disabled
       - package_rsync_removed
@@ -370,7 +369,6 @@ controls:
       - set_password_hashing_algorithm_passwordauth
       - set_password_hashing_algorithm_logindefs
       - var_password_hashing_algorithm=SHA512
-      - no_password_auth_for_systemaccounts
       - accounts_tmout
       - var_accounts_tmout=15_min
       - accounts_root_gid_zero
@@ -428,7 +426,6 @@ controls:
       - file_permissions_sshd_config
       - file_permissions_sshd_private_key
       - file_permissions_sshd_pub_key
-      - sshd_limit_user_access
       - sshd_set_loglevel_verbose
       - sshd_enable_pam
       - sshd_disable_root_login
