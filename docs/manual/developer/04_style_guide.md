@@ -506,6 +506,12 @@ or
 
 * Must follow all the rules in the [Bash](#bash) section
 
+## CMake
+
+* Shall use 2-space indentation
+* Shall use lower case for commands
+* `endif`, `endforeach`, and similar commands shall not have any arguments
+
 ## Markup Languages
 
 * Shall have [one sentence per line](https://asciidoctor.org/docs/asciidoc-recommended-practices/#one-sentence-per-line)
