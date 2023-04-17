@@ -9,20 +9,13 @@
     </criteria>
   </definition>
 
-  <unix:password_object id="object_accounts_users_home_netrc_file_permissions_objects" version="1">
-    <unix:username datatype="string" operation="pattern match">.*</unix:username>
-    <filter action="include">state_{{{ rule_id }}}_interactive_uids</filter>
-  </unix:password_object>
-
-  <unix:password_state id="state_{{{ rule_id }}}_interactive_uids"
-                       version="1">
-    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
-  </unix:password_state>
+  {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
+  {{{ create_interactive_users_list_object(interactive_users_object) }}}
 
   <local_variable id="var_accounts_users_home_netrc_file_permissions_dirs" datatype="string"
                   version="1" comment="Variable including all home dirs from interactive users">
     <object_component item_field="home_dir"
-                      object_ref="object_accounts_users_home_netrc_file_permissions_objects"/>
+                      object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <unix:file_object id="object_accounts_users_home_netrc_file_permissions" version="1">
