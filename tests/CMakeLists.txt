@@ -325,3 +325,10 @@ endif()
 if (SSG_PRODUCT_RHEL9)
     ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
 endif()
+if (PY_CMAKELINT)
+    file(GLOB CMAKELINT_FILES "${CMAKE_SOURCE_DIR}/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/products/*/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/cmake/*.cmake")
+    add_test(
+        NAME "test-cmakelint"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "cmakelint" --config "${CMAKE_SOURCE_DIR}/.cmakelintrc" ${CMAKELINT_FILES}
+    )
+endif()

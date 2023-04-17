@@ -136,6 +136,7 @@ find_python_module(yamlpath)
 find_python_module(mypy)
 find_python_module(openpyxl)
 find_python_module(pandas)
+find_python_module(cmakelint)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
