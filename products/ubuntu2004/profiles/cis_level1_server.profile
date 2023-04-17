@@ -431,7 +431,8 @@ selections:
     - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
-    # Needs rule
+    - var_nftables_master_config_file=etc
+    - nftables_rules_permanent
 
     ### 3.5.3 Configure iptables ###
     #### 3.5.3.1 Configure software ####
