@@ -2360,3 +2360,46 @@ fi
 {{%- endmacro %}}
 
 
+{{#
+This macro creates a Bash conditional which is used to determine if a
+remediation is applicable. The condition compares the actual version of the
+operating system with the expected version using the given operator. The macro
+takes the operating system name ID as an argument. If the operating system
+conforms and satisfies the optional version restricion, the Bash remediation
+will be applied.
+
+:param os_id: OS name, value of the ID variable in /etc/os-release
+:param expected_ver: expected OS version, value of the VERSION_ID variable in /etc/os-release
+            (optional argument, use together with "op")
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param os_release_path: path to the os-release file, default: "/etc/os-release"
+#}}
+{{%- macro bash_os_linux_conditional(os_id, expected_ver=None, op=None, os_release_path="/etc/os-release") -%}}
+{{%- if expected_ver -%}}
+grep -qP "^ID=[\"']?{{{ os_id }}}[\"']?$" "{{{ os_release_path }}}" && {{{ bash_compare_version_os_linux(expected_ver, op, os_release_path) }}}
+{{%- else -%}}
+grep -qP "^ID=[\"']?{{{ os_id }}}[\"']?$" "{{{ os_release_path }}}"
+{{%- endif -%}}
+{{%- endmacro %}}
+
+{{#
+This macro generates bash condition that compares the actual version of the
+operating system with the expected version using the given operator.
+
+:param expected: expected OS version, value of the VERSION_ID variable in /etc/os-release
+:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:param os_release_path: path to the os-release file, default: "/etc/os-release"
+#}}
+{{%- macro bash_compare_version_os_linux(expected, op, os_release_path="/etc/os-release") -%}}
+{ real="$({{{ bash_get_version_os_linux(os_release_path) }}})"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", op, "$expected") }}}; }
+{{%- endmacro -%}}
+
+{{#
+This macro generates code that retrieves the operating system version
+from /etc/os-release from VERSION_ID variable.
+
+:param os_release_path: path to the os-release file, default: "/etc/os-release"
+#}}
+{{%- macro bash_get_version_os_linux(os_release_path="/etc/os-release") -%}}
+grep -P "^VERSION_ID=[\"']?[\w.]+[\"']?$" {{{ os_release_path }}} | sed "s/^VERSION_ID=[\"']\?\([^\"']\+\)[\"']\?$/\1/"
+{{%- endmacro -%}}

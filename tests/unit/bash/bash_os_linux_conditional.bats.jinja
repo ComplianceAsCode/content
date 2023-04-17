@@ -1,0 +1,87 @@
+#!/bin/bash
+
+@test "bash_os_linux_conditional - test OS release - RHEL" {
+    os_release_path="$(mktemp)"
+
+    cat << EOF > "$os_release_path"
+NAME="Red Hat Enterprise Linux"
+VERSION="9.2 (Plow)"
+ID="rhel"
+ID_LIKE="fedora"
+VERSION_ID="9.2"
+PLATFORM_ID="platform:el9"
+PRETTY_NAME="Red Hat Enterprise Linux 9.2 Beta (Plow)"
+ANSI_COLOR="0;31"
+LOGO="fedora-logo-icon"
+CPE_NAME="cpe:/o:redhat:enterprise_linux:9::baseos"
+HOME_URL="https://www.redhat.com/"
+DOCUMENTATION_URL="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9"
+BUG_REPORT_URL="https://bugzilla.redhat.com/"
+
+REDHAT_BUGZILLA_PRODUCT="Red Hat Enterprise Linux 9"
+REDHAT_BUGZILLA_PRODUCT_VERSION=9.2
+REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux"
+REDHAT_SUPPORT_PRODUCT_VERSION="9.2 Beta"
+EOF
+
+    {{{ bash_os_linux_conditional("rhel", os_release_path="$os_release_path") }}}
+    ! ( {{{ bash_os_linux_conditional("ubuntu", os_release_path="$os_release_path") }}} )
+
+    {{{ bash_os_linux_conditional("rhel", "9", ">", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.1", ">", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.1.4", ">", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.2", ">=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.2", "==", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.2", "<=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.4", "!=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.4", "<", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "9.2.7", "<", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "10", "<", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("rhel", "10.2", "<", "$os_release_path") }}}
+
+    ! ( {{{ bash_os_linux_conditional("fedora", "36", "==", "$os_release_path") }}} )
+    ! ( {{{ bash_os_linux_conditional("fedora", "9.2", "==", "$os_release_path") }}} )
+    ! ( {{{ bash_os_linux_conditional("fedora", "9.4", "<", "$os_release_path") }}} )
+
+    rm -rf "$os_release_path"
+}
+
+@test "bash_os_linux_conditional - test OS release - Ubuntu" {
+    os_release_path="$(mktemp)"
+
+    cat << EOF > "$os_release_path"
+PRETTY_NAME="Ubuntu 22.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="22.04"
+VERSION="22.04.1 LTS (Jammy Jellyfish)"
+VERSION_CODENAME=jammy
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=jammy
+EOF
+
+
+    {{{ bash_os_linux_conditional("ubuntu", os_release_path="$os_release_path") }}}
+    ! ( {{{ bash_os_linux_conditional("rhel", os_release_path="$os_release_path") }}} )
+
+    {{{ bash_os_linux_conditional("ubuntu", "20.10", ">", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.03", ">", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.04", ">=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.04", "==", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.04", "<=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.10", "!=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.10", "<=", "$os_release_path") }}}
+    {{{ bash_os_linux_conditional("ubuntu", "22.10", "<", "$os_release_path") }}}
+
+    ! ( {{{ bash_os_linux_conditional("ubuntu", "20.10", "<", "$os_release_path") }}} )
+    ! ( {{{ bash_os_linux_conditional("ubuntu", "22.10", ">", "$os_release_path") }}} )
+
+    ! ( {{{ bash_os_linux_conditional("fedora", "36", "==", "$os_release_path") }}} )
+    ! ( {{{ bash_os_linux_conditional("fedora", "22.10", "<", "$os_release_path") }}} )
+
+    rm -rf "$os_release_path"
+}
