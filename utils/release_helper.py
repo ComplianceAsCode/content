@@ -60,10 +60,7 @@ def create_github_session(creds_file) -> object:
 
 def get_confirmation(question) -> bool:
     answer = str(input(f'{question} (Y/N): ')).lower().strip()
-    if answer[:1] == 'y':
-        return True
-    else:
-        return False
+    return answer[:1] == 'y'
 
 
 def get_repo_object(session, repo_id) -> object:
