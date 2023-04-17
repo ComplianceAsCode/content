@@ -392,6 +392,7 @@ Shall be true if the system needs to be rebooted in order for the changes to tak
 Should be one of the following values:
 
 * configure
+* combination
 * disable
 * enable
 * patch
