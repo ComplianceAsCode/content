@@ -175,11 +175,20 @@ mypy_test("utils/check_eof.py")
 
 if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
+        NAME "srg-export-rhel9-xlsx"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format "xlsx" --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+    )
+    set_tests_properties("srg-export-rhel9-xlsx" PROPERTIES LABELS quick)
+    set_tests_properties("srg-export-rhel9-xlsx" PROPERTIES FIXTURES_SETUP "rhel9-cac-xlsx")
+    set_tests_properties("srg-export-rhel9-xlsx" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("srg-export-rhel9-xlsx" PROPERTIES DEPENDS "test-rule-dir-json")
+
+
+    add_test(
         NAME "srg-export-rhel9-md"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format "md" --output "${CMAKE_BINARY_DIR}/cac_stig_output.md" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
     )
     set_tests_properties("srg-export-rhel9-md" PROPERTIES LABELS quick)
-    set_tests_properties("srg-export-rhel9-md" PROPERTIES FIXTURES_SETUP "rhel9-cac-xlsx")
     set_tests_properties("srg-export-rhel9-md" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
     set_tests_properties("srg-export-rhel9-md" PROPERTIES DEPENDS "test-rule-dir-json")
 
@@ -189,7 +198,6 @@ if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format csv --output "${CMAKE_BINARY_DIR}/cac_stig_output.csv" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
     )
     set_tests_properties("srg-export-rhel9-csv" PROPERTIES LABELS quick)
-    set_tests_properties("srg-export-rhel9-csv" PROPERTIES FIXTURES_SETUP "rhel9-cac-xlsx")
     set_tests_properties("srg-export-rhel9-csv" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
     set_tests_properties("srg-export-rhel9-csv" PROPERTIES DEPENDS "test-rule-dir-json")
 
@@ -198,7 +206,6 @@ if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format html --output "${CMAKE_BINARY_DIR}/cac_stig_output.html" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
     )
     set_tests_properties("srg-export-rhel9-html" PROPERTIES LABELS quick)
-    set_tests_properties("srg-export-rhel9-html" PROPERTIES FIXTURES_SETUP "rhel9-cac-xlsx")
     set_tests_properties("srg-export-rhel9-html" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
     set_tests_properties("srg-export-rhel9-html" PROPERTIES DEPENDS "test-rule-dir-json")
 
