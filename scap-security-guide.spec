@@ -15,9 +15,9 @@ Source0:	https://github.com/ComplianceAsCode/content/releases/download/v%{versio
 BuildArch:	noarch
 
 %if 0%{?centos} == 7
-BuildRequires:  libxslt, expat, openscap-scanner >= 1.2.5, cmake >= 2.8, python, python-jinja2, PyYAML, python-setuptools
+BuildRequires:  libxslt, openscap-scanner >= 1.2.5, cmake >= 2.8, python, python-jinja2, PyYAML, python-setuptools
 %else
-BuildRequires:  libxslt, expat, openscap-scanner >= 1.2.5, cmake >= 2.8, /usr/bin/python3, python%{python3_pkgversion}, python%{python3_pkgversion}-jinja2, python%{python3_pkgversion}-PyYAML, python%{python3_pkgversion}-setuptools
+BuildRequires:  libxslt, openscap-scanner >= 1.2.5, cmake >= 2.8, /usr/bin/python3, python%{python3_pkgversion}, python%{python3_pkgversion}-jinja2, python%{python3_pkgversion}-PyYAML, python%{python3_pkgversion}-setuptools
 %endif
 Requires:	xml-common, openscap-scanner >= 1.2.5
 

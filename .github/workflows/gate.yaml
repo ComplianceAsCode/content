@@ -12,7 +12,7 @@ jobs:
       image: centos:7
     steps:
       - name: Install Deps
-        run: yum install -y cmake make openscap-utils PyYAML libxslt expat xml-common python-jinja2 python-setuptools
+        run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -40,7 +40,7 @@ jobs:
       image: opensuse/leap:15
     steps:
       - name: Install Deps
-        run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools libexpat1 libexpat-devel libexpat1 expat ShellCheck
+        run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -58,7 +58,7 @@ jobs:
       - name: Update the package repository
         run: apt-get update
       - name: Install Deps
-        run: apt-get install -y ansible-lint bats check cmake expat libopenscap8 libxml2-utils ninja-build python3-github python3-jinja2 python3-setuptools python3-pip python3-pytest python3-pytest-cov xsltproc
+        run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-jinja2 python3-setuptools python3-pip python3-pytest python3-pytest-cov xsltproc
       - name: Install deps python
         run: pip3 install ruamel.yaml yamlpath pyyaml==5.4.1
       - name: Checkout
@@ -79,7 +79,7 @@ jobs:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -112,7 +112,7 @@ jobs:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build

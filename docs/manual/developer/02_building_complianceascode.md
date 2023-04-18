@@ -48,7 +48,7 @@ On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
 installed:
 
 ```bash
-apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
+apt-get install cmake make libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
 ```
 
 IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
