@@ -1979,17 +1979,14 @@ controls:
     rules:
       - file_permissions_sshd_pub_key
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/7196
   - id: 5.2.4
     title: Ensure SSH access is limited (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - sshd_limit_user_access
-      # Missing OVAL
 
   - id: 5.2.5
     title: Ensure SSH LogLevel is appropriate (Automated)
