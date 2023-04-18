@@ -2656,11 +2656,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: supported
-    notes: |-
-      It is not expected this requirement be automated in favor of 6.2.15.
-    related_rules:
-      - no_netrc_files
+    status: automated
+    rules:
+      - accounts_users_netrc_file_permissions
 
   - id: 6.2.14
     title: Ensure no users have .forward files (Automated)
