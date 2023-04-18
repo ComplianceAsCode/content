@@ -216,6 +216,12 @@ apt-get install python3-mypy
 ```bash
 pip install types-openpyxl types-PyYAML openpyxl-stubs
 ```
+
+### cmakelint (Linting CMake Files)
+```bash
+pip install cmakelint
+```
+
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):

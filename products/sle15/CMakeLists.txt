@@ -11,4 +11,4 @@ ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-standard" "${PRODUCT}" "
 ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_stig_tables(${PRODUCT})
-ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig")
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig")

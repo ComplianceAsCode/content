@@ -69,7 +69,7 @@ set(SSG_HTML_TABLE_FILE_LIST "")
 macro(define_validate_product PRODUCT)
     set(VALIDATE_PRODUCT TRUE)
     if ("${OSCAP_VERSION}" VERSION_LESS "1.4.0")
-	    if ("${PRODUCT}" MATCHES "^(ocp4|eks|ANOTHER_PROBLEMATIC_PRODUCT)$")
+        if ("${PRODUCT}" MATCHES "^(ocp4|eks|ANOTHER_PROBLEMATIC_PRODUCT)$")
             message(STATUS "Won't validate ${PRODUCT}, as it requires the OpenSCAP scanner that is capable of the validation.")
             set(VALIDATE_PRODUCT FALSE)
         endif ()
@@ -159,7 +159,7 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     set(REMEDIATION_TYPE_OPTIONS "")
     foreach(LANGUAGE ${LANGUAGES})
         list(APPEND REMEDIATION_TYPE_OPTIONS "--remediation-type" "${LANGUAGE}")
-    endforeach(LANGUAGE ${LANGUAGES})
+    endforeach()
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/collect_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${REMEDIATION_TYPE_OPTIONS} --output-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes" --fixes-from-templates-dir "${BUILD_REMEDIATIONS_DIR}" --platforms-dir "${CMAKE_CURRENT_BINARY_DIR}/platforms" --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items"
@@ -176,7 +176,7 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
         add_test(
             NAME "${PRODUCT}-bash-shellcheck"
-	    COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+        COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
         )
         set_tests_properties("${PRODUCT}-bash-shellcheck" PROPERTIES LABELS quick)
     endif()
@@ -189,7 +189,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     set(ANSIBLE_PLAYBOOKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/playbooks")
     add_custom_command(
         OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
-	COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
         DEPENDS generate-internal-${PRODUCT}-all-fixes
         COMMENT "[${PRODUCT}-content] Generating Ansible Playbooks"
     )
@@ -434,7 +434,7 @@ macro(ssg_build_sds PRODUCT)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-	    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-12 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" ${COMPOSE_EXTRA_ARGS}
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compose_ds.py" --xccdf "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --cpe-dict "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" --cpe-oval "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" --output-12 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" --output-13 "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" ${COMPOSE_EXTRA_ARGS}
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
@@ -651,7 +651,7 @@ macro(ssg_build_disa_delta PRODUCT PROFILE)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir
             DEPENDS "${PRODUCT}-content"
             COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
-         )
+        )
 
         add_custom_target(generate-ssg-delta-${PRODUCT}-${PROFILE}
             DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
@@ -1018,7 +1018,7 @@ macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REFERENCES)
     set(OUTPUTS_LIST "")
     set(REFS_STR "")
     foreach(ref ${REFERENCES})
-        STRING(REPLACE "{ref_id}" "${ref}" "basename" "${OUTPUT_TEMPLATE}")
+        string(REPLACE "{ref_id}" "${ref}" "basename" "${OUTPUT_TEMPLATE}")
         list(APPEND OUTPUTS_LIST "${CMAKE_BINARY_DIR}/tables/${basename}.html")
         set(REFS_STR "${REFS_STR} ${ref}")
     endforeach()

@@ -24,8 +24,8 @@ ssg_build_html_cce_table(${PRODUCT})
 ssg_build_html_srgmap_tables(${PRODUCT})
 
 ssg_build_html_stig_tables(${PRODUCT})
-ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig")
-ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig_gui")
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig")
+ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig_gui")
 
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "centos7")
