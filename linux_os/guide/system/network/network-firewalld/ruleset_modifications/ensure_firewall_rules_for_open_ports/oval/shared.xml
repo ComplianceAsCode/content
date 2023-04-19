@@ -1,27 +1,20 @@
+{{% set inet_protos = ['tcp', 'udp'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Make sure firewall rules exist for all open network ports,listening on non-loopback interfaces.") }}}
     <criteria operator="AND">
+{{% for proto in inet_protos %}}
       <criteria operator="OR">
-        <criterion comment="Check if any service is listening on tcp"
-          test_ref="test_listening_inet_ports_tcp_exist" />
+        <criterion comment="Check if any service is listening on {{{ proto }}}"
+          test_ref="test_listening_inet_ports_{{{ proto }}}_exist" />
         <criteria operator="AND">
-          <criterion comment="Check there are tcp service ports in firewall"
-            test_ref="test_var_firewalled_tcp_ports_exists" />
-          <criterion comment="Check firewall rules for tcp listening ports"
-            test_ref="test_listening_fw_inet_ports_tcp_test" />
+          <criterion comment="Check there are {{{ proto }}} service ports in firewall"
+            test_ref="test_var_firewalled_{{{ proto }}}_ports_exists" />
+          <criterion comment="Check firewall rules for {{{ proto }}} listening ports"
+            test_ref="test_listening_fw_inet_ports_{{{ proto }}}_test" />
         </criteria>
       </criteria>
-      <criteria operator="OR">
-        <criterion comment="Check if any service is listening on udp"
-          test_ref="test_listening_inet_ports_udp_exist" />
-        <criteria operator="AND">
-          <criterion comment="Check there are defined udp ports in firewall"
-            test_ref="test_var_firewalled_udp_ports_exists" />
-          <criterion comment="Check firewall rules for udp listening ports"
-            test_ref="test_listening_fw_inet_ports_udp_test" />
-        </criteria>
-      </criteria>
+{{% endfor %}}
     </criteria>
   </definition>
 
@@ -56,7 +49,7 @@
   </ind:textfilecontent54_object>
 
   <local_variable id="var_firewalld_active_zones" version="1"
-    comment="Firewalled ports according to firewalld configuration" datatype="string">
+    comment="Firewalld zones configuration filenames" datatype="string">
     <object_component object_ref="object_active_firewalld_zone_cfgs" item_field="filename"/>
   </local_variable>
 
@@ -86,7 +79,6 @@
     </concat>
   </local_variable>
 
-{{% set inet_protos = ['tcp', 'udp'] %}}
 {{% for proto in inet_protos %}}
 
 <linux:inetlisteningservers_object id="obj_listening_inet_{{{ proto }}}_ports" version="2"
