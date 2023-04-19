@@ -97,3 +97,9 @@ warnings:
         <li><tt>audit_rules_privileged_commands_umount</tt></li>
         <li><tt>audit_rules_privileged_commands_passwd</tt></li>
         </ul>
+    - general: |-
+        Note that OVAL check and Bash / Ansible remediation of this rule
+        explicitly excludes file systems mounted at <pre>/proc</pre> directory
+        and its subdirectories. It is a virtual file system and it doesn't
+        contain executable applications. At the same time, interacting with this
+        file system during check or remediation caused undesirable errors.

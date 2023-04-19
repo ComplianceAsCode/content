@@ -11,7 +11,7 @@ KEY="privileged"
 SYSCALL_GROUPING=""
 
 FILTER_NODEV=$(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,)
-PARTITIONS=$(findmnt -n -l -k -it $FILTER_NODEV | grep -Pv "noexec|nosuid" | awk '{ print $1 }')
+PARTITIONS=$(findmnt -n -l -k -it $FILTER_NODEV | grep -Pv "noexec|nosuid|/proc($|/.*$)" | awk '{ print $1 }')
 for PARTITION in $PARTITIONS; do
   PRIV_CMDS=$(find "${PARTITION}" -xdev -perm /6000 -type f 2>/dev/null)
   for PRIV_CMD in $PRIV_CMDS; do

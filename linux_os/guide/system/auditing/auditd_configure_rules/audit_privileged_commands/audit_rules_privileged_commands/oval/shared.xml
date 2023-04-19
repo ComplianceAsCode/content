@@ -37,13 +37,14 @@
       operation="equals">noexec</linux:mount_options>
   </linux:partition_state>
 
+
   <!-- This object is created mainly to improve performance when collecting file objects.
        Here all mount points are collected and filtered to include only devices under /dev in
        order to ignore special file systems. Then, the mount options are checked to exclude
        file systems mounted with nosuid or noexec. The privileged commands can't execute on these
        file systems, so there is no reason to proble these file systems. -->
   <linux:partition_object id="object_audit_rules_privileged_commands_exec_partitions" version="1">
-    <linux:mount_point operation="pattern match">^/.*$</linux:mount_point>
+    <linux:mount_point operation="pattern match">^(?!/proc(/.*|$)).*$</linux:mount_point>
     <filter action="include">state_audit_rules_privileged_commands_dev_partitons</filter>
     <filter action="exclude">state_audit_rules_privileged_commands_nosuid_partitons</filter>
     <filter action="exclude">state_audit_rules_privileged_commands_noexec_partitons</filter>
