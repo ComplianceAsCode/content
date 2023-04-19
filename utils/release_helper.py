@@ -233,7 +233,7 @@ def close_milestone(milestone) -> None:
 
 
 def create_repo_milestone(repo, name) -> None:
-    if get_version_milestone(name):
+    if get_version_milestone(repo, name):
         print(f'Great! The "{name}" milestone is already created.')
         return
 
