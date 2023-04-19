@@ -533,13 +533,13 @@ def update_milestone(repo, object_list) -> None:
 def update_milestone_in_issues(repo, issues_list) -> None:
     outdate_issues = filter_outdated_items(repo, issues_list, "Issue")
     if outdate_issues:
-        update_milestone(outdate_issues)
+        update_milestone(repo, outdate_issues)
 
 
 def update_milestone_in_prs(repo, prs_list) -> None:
     outdate_prs = filter_outdated_items(repo, prs_list, 'PR')
     if outdate_prs:
-        update_milestone(outdate_prs)
+        update_milestone(repo, outdate_prs)
 
 
 # Repo Stats
