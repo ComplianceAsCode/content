@@ -240,6 +240,9 @@ selections:
     # OL08-00-010351
     - dir_group_ownership_library_dirs
 
+    # OL08-00-010358
+    - package_mailx_installed
+
     # OL08-00-010359
     - package_aide_installed
     - aide_build_database
