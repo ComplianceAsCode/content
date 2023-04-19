@@ -452,7 +452,7 @@ selections:
     # NEEDS RULE
 
     #### 3.5.2.6 Ensure nftables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_nftables_loopback_traffic
 
     #### 3.5.2.7 Ensure nftables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
