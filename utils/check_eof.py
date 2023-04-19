@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import typing
 import os
 import pathlib
 import sys
@@ -39,12 +40,14 @@ def get_all_files(paths: list) -> list:
 
 
 def should_skip_file(file: pathlib.Path):
-    skip = False
     for exclude in EXCLUSIONS:
         if exclude in str(file.absolute()):
-            skip = True
-            break
-    return skip
+            return True
+    return False
+
+
+def is_file_readable(file: pathlib.Path, f: typing.BinaryIO) -> bool:
+    return not f.seekable() or file.stat().st_size < 2
 
 
 def get_files_with_no_newline(files: list) -> list:
@@ -53,7 +56,7 @@ def get_files_with_no_newline(files: list) -> list:
         if should_skip_file(file):
             continue
         with open(file.absolute(), 'rb') as f:
-            if not f.seekable() or file.stat().st_size < 2:
+            if is_file_readable(file, f):
                 continue
             f.seek(-1, os.SEEK_END)
             data = f.read(1)
