@@ -11,7 +11,7 @@ For help on how to run the tests please review the test section from the [Buildi
 
 Some utility scripts in the project are type checked with [mypy](http://mypy-lang.org/).
 If you are writing a new Python file in the project you should consider using MyPy.
-Add to your script to be type checked add path to your file in the `test-mypy` test in `tests/CMakeLists.txt`.
+To add a script to be checked with mypy use the `mypy_test` macro in `tests/CMakeLists.txt`.
 
 ### Unit Tests
 
