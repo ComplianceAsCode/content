@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="accounts_umask_etc_profile" version="2">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The default umask for all users should be set correctly") }}}
     <criteria operator="AND">
       <extend_definition comment="Get value of var_accounts_user_umask variable as octal number"
@@ -10,7 +10,8 @@
 
   <ind:textfilecontent54_object id="obj_umask_from_etc_profile"
   comment="Umask value from /etc/profile" version="1">
-    <ind:filepath>/etc/profile</ind:filepath>
+    <ind:filepath operation="pattern match">^\/etc\/profile(?:\.d\/.*\.sh|\.d\/sh\.local)?$</ind:filepath>
+    <!-- <ind:filepath>/etc/profile</ind:filepath> -->
     <ind:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
