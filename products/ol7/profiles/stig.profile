@@ -336,3 +336,4 @@ selections:
     - package_screen_installed
     - sysctl_kernel_dmesg_restric
     - authconfig_config_files_symlinks
+    - ensure_oracle_gpgkey_installed
