@@ -484,21 +484,27 @@ def filter_items_outdated_milestone(objects_list, milestone) -> list:
     return items_old_milestone
 
 
-def filter_outdated_items(repo, objects_list, type) -> list:
+def show_outdated_items(items_to_update):
+    count = len(items_to_update)
+    print(f'{count} open issues have an outdated milestone. Here are their links:')
+    for item in items_to_update:
+        print(f'{item.number:5} - {item.html_url:65} - {item.milestone.title} - {item.title}')
+
+
+def filter_outdated_items(repo, objects_list) -> list:
     latest_milestone = get_latest_version_milestone(repo)
     items_to_update = filter_items_outdated_milestone(objects_list, latest_milestone)
+    print('INFO: Please, note that in Github API the Pull Requests are also Issues objects but '
+          'with some few differences in properties.')
     if items_to_update:
-        count = len(items_to_update)
-        print(f'The following {count} {type}(s) have an outdated milestone:')
-        for item in items_to_update:
-            print(f'{item.number:5} - {item.url:65} - {item.milestone.title} - {item.title}')
+        show_outdated_items(items_to_update)
         if get_confirmation(
-                f'Are you sure about updating the milestone in {count} Open {type}s?'):
+                'Are you sure about updating the milestone in these open issues?'):
             return items_to_update
         else:
-            print(f'Aborted! {type}(s) milestones not updated.')
+            print('Aborted! Milestones not updated in open issues.')
     else:
-        print(f'Great! There is no {type} with an outdated milestone.')
+        print('Great! There is no open issue with an outdated milestone.')
         return []
 
 
@@ -527,19 +533,12 @@ def update_milestone(repo, object_list) -> None:
             item.edit(milestone=milestone)
         except Exception as e:
             print(f'Error: {e}')
-            exit(1)
 
 
 def update_milestone_in_issues(repo, issues_list) -> None:
-    outdate_issues = filter_outdated_items(repo, issues_list, "Issue")
+    outdate_issues = filter_outdated_items(repo, issues_list)
     if outdate_issues:
         update_milestone(repo, outdate_issues)
-
-
-def update_milestone_in_prs(repo, prs_list) -> None:
-    outdate_prs = filter_outdated_items(repo, prs_list, 'PR')
-    if outdate_prs:
-        update_milestone(repo, outdate_prs)
 
 
 # Repo Stats
@@ -666,10 +665,6 @@ def release_prep(repo, args) -> None:
         issues_list = get_open_issues_with_milestone(repo)
         update_milestone_in_issues(repo, issues_list)
 
-    if args.prs:
-        prs_list = get_open_prs_with_milestone(repo)
-        update_milestone_in_prs(repo, prs_list)
-
     if args.bump_version:
         bump_master_version(repo)
 
@@ -739,10 +734,7 @@ def parse_arguments():
         help="Create the next milestone and close the current milestone.")
     release_prep_parser.add_argument(
         '-i', '--issues', action='store_true',
-        help="Move Open Issues with a milestone to the next milestone.")
-    release_prep_parser.add_argument(
-        '-p', '--prs', action='store_true',
-        help="Move Open PRs with a milestone to the new milestone.")
+        help="Move Open Issues and PRs with a milestone to the next milestone.")
     release_prep_parser.add_argument(
         '-v', '--bump-version', action='store_true',
         help="Bump the project version in *master* branch.")
