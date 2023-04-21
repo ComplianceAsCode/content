@@ -670,7 +670,7 @@ def release_prep(repo, args) -> None:
 
 
 def release(repo, args) -> None:
-    if not is_next_release_in_progress(repo):
+    if is_next_release_in_progress(repo):
         if args.tag:
             next_version = get_next_release_version(repo)
             tag_name = f'v{next_version}'
