@@ -272,7 +272,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>install {{{ module }}} /bin/true</pre>
-    {{% if product in ["ol7", "ol8", "rhel7", "rhel8"] %}}
+    {{% if "ol" in product or product in ["rhel7", "rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>blacklist {{{ module }}}</pre>
