@@ -864,7 +864,7 @@ selections:
 
     ### 5.4.3 Ensure password reuse is limited (Automated)
     - var_password_pam_remember=5
-    - accounts_password_pam_pwhistory_remember
+    - accounts_password_pam_unix_remember
 
     ### 5.4.4 Ensure password hashing algorithm is up to date with the latest standards (Automated)
     - var_password_hashing_algorithm=yescrypt
