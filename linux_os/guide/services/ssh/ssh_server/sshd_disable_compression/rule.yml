@@ -50,9 +50,9 @@ ocil: |-
     If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.
 
 {{% if product == "rhel7" %}}
-platform: rhel7_older_than_7_4
+platform: os_linux[rhel]<7.4
 {{% elif product == "ol7" %}}
-platform: ol7_older_than_7_4
+platform: os_linux[ol]<7.4
 {{% endif %}}
 
 fixtext: '{{{ fixtext_sshd_lineinfile("Compression", xccdf_value("var_sshd_disable_compression"), no) }}}'
