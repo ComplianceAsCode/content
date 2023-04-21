@@ -89,6 +89,7 @@ controls:
   - kubelet_eviction_thresholds_set_hard_memory_available
   - kubelet_eviction_thresholds_set_hard_nodefs_available
   - kubelet_eviction_thresholds_set_hard_nodefs_inodesfree
+  - file_integrity_exists
   - file_groupowner_cni_conf
   - file_groupowner_controller_manager_kubeconfig
   - file_groupowner_etcd_data_dir
@@ -161,7 +162,7 @@ controls:
   - rbac_limit_secrets_access
   - rbac_pod_creation_access
   - rbac_wildcard_use
-  - compliancesuite_exists
+  - scansettingbinding_exists
   - scc_drop_container_capabilities
   - scc_limit_container_allowed_capabilities
   - scc_limit_ipc_namespace

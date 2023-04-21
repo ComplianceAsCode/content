@@ -1,0 +1,56 @@
+prodtype: ocp4
+
+title: Ensure that Compliance Operator scans are running periodically
+
+description: |-
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/compliance-operator-understanding.html#compliance-operator-understanding",
+              text="The Compliance Operator") }}}
+  scans the hosts and the platform (OCP)
+  configurations for software flaws and improper configurations according
+  to different compliance benchmarks. Compliance Operator allows its
+  scans to be scheduled periodically using the <tt>ScanSetting</tt>
+  Custom Resource.
+
+rationale: |-
+  Without periodical scanning and verification, security functions may
+  not operate correctly and this failure may go unnoticed within the container platform.
+
+identifiers:
+  cce@ocp4: CCE-90762-6
+
+references:
+  nist: SI-6(b)
+  srg: SRG-APP-000473-CTR-001175
+
+{{% set api_path = '/apis/compliance.openshift.io/v1alpha1/scansettings' %}}
+{{% set jqfilter = '[.items[]] | map(.schedule != "" and .schedule != null)' %}}
+
+ocil_clause: 'compliance operator is not scanning the cluster periodically'
+
+ocil: |-
+    Run the following command to retrieve the scansettingbindings in the system:
+    <pre>oc get -nopenshift-compliance scansettings -ojson |  jq -r '{{{ jqfilter }}}'</pre>
+    If all scansettings that are defined set the schedule attribute, the above
+    filter will return 'true'. Run the following jq query to identify the non-compliance
+    scansettings objects:
+    <pre>oc get scansettings -ojson | jq -r '[.items[] | select(.schedule != "" and .schedule != null) | .metadata.name]'</pre>
+
+severity: medium
+
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({api_path: jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path(api_path, jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "all_exist"
+    entity_check: "all"
+    values:
+      - value: "true"
+        operation: "equals"
