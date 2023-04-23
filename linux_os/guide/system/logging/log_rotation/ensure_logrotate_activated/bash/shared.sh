@@ -1,7 +1,11 @@
 # platform = multi_platform_all
 
 LOGROTATE_CONF_FILE="/etc/logrotate.conf"
+{{% if 'sle' in product %}}
+SYSTEMCTL_EXEC='/usr/bin/systemctl'
+{{% else %}}
 CRON_DAILY_LOGROTATE_FILE="/etc/cron.daily/logrotate"
+{{% endif %}}
 
 # daily rotation is configured
 grep -q "^daily$" $LOGROTATE_CONF_FILE|| echo "daily" >> $LOGROTATE_CONF_FILE
@@ -11,7 +15,6 @@ sed -i '/^\s*\(weekly\|monthly\|yearly\).*$/d' $LOGROTATE_CONF_FILE
 
 {{% if 'sle' in product %}}
 # enable logrotate timer service
-SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" start 'logrotate.timer'
 "$SYSTEMCTL_EXEC" enable 'logrotate.timer'
 {{% else %}}
