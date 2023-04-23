@@ -9,8 +9,15 @@ grep -q "^daily$" $LOGROTATE_CONF_FILE|| echo "daily" >> $LOGROTATE_CONF_FILE
 # remove any line configuring weekly, monthly or yearly rotation
 sed -i '/^\s*\(weekly\|monthly\|yearly\).*$/d' $LOGROTATE_CONF_FILE
 
+{{% if 'sle' in product %}}
+# enable logrotate timer service
+SYSTEMCTL_EXEC='/usr/bin/systemctl'
+"$SYSTEMCTL_EXEC" start 'logrotate.timer'
+"$SYSTEMCTL_EXEC" enable 'logrotate.timer'
+{{% else %}}
 # configure cron.daily if not already
 if ! grep -q "^[[:space:]]*/usr/sbin/logrotate[[:alnum:][:blank:][:punct:]]*$LOGROTATE_CONF_FILE$" $CRON_DAILY_LOGROTATE_FILE; then
 	echo "#!/bin/sh" > $CRON_DAILY_LOGROTATE_FILE
 	echo "/usr/sbin/logrotate $LOGROTATE_CONF_FILE" >> $CRON_DAILY_LOGROTATE_FILE
 fi
+{{% endif %}}

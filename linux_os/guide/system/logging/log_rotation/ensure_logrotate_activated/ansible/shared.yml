@@ -18,6 +18,13 @@
     regexp: '^[\s]*(weekly|monthly|yearly)$'
     state: absent
 
+{{% if 'sle' in product %}}
+- name: Enable timer logrotate
+  systemd:
+    name: "logrotate.timer"
+    enabled: "yes"
+    state: "started"
+{{% else %}}
 - name: Configure cron.daily if not already
   block:
     - name: Add shebang
@@ -31,3 +38,4 @@
         path: "/etc/cron.daily/logrotate"
         line: '/usr/sbin/logrotate /etc/logrotate.conf'
         regexp: '^[\s]*/usr/sbin/logrotate[\s\S]*/etc/logrotate.conf$'
+{{% endif %}}
