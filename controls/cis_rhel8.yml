@@ -2377,13 +2377,12 @@ controls:
     rules:
       - accounts_root_gid_zero
 
-  # https://github.com/ComplianceAsCode/content/issues/5540
   - id: 5.6.5
     title: Ensure default user umask is 027 or more restrictive (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The rules below do not take /etc/profile.d/* into account so are not perfectly aligned with the benchmark
+    status: automated
     rules:
       - accounts_umask_etc_bashrc
       - accounts_umask_etc_login_defs
