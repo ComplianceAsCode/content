@@ -9,7 +9,7 @@ description: |-
     installed. If X Windows is not installed then the system cannot boot into graphical user mode.
     This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
     mode. To do so, run the following command:
-    {{%- if product in ['rhel8', 'rhel9', 'rhv4'] -%}}
+    {{%- if product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'rhv4'] -%}}
     <pre>$ sudo {{{ pkg_manager }}} groupremove base-x</pre>
     {{%- else %}}
     <pre>$ sudo {{{ pkg_manager }}} groupremove "X Window System"</pre>

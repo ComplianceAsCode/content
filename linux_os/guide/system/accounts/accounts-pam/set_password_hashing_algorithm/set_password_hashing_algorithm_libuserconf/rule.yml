@@ -53,7 +53,7 @@ references:
 ocil_clause: crypt_style is not set to sha512
 
 ocil: |-
-    {{% if product in ['rhel9'] -%}}
+    {{% if product in ['ol9', 'rhel9'] -%}}
     Verify that the libuser is set to encrypt password with a FIPS 140-3 approved cryptographic hashing algorithm.
     {{% else %}}
     Verify that the libuser is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
@@ -74,6 +74,6 @@ fixtext: |-
 
     crypt_style = sha512
 
-{{% if product in ['rhel9'] -%}}
+{{% if product in ['ol9', 'rhel9'] -%}}
 srg_requirement: '{{{ full_name }}} must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords.'
 {{%- endif %}}

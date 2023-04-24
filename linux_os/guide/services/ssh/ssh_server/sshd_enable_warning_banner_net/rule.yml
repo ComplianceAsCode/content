@@ -5,7 +5,7 @@ title: 'Enable SSH Warning Banner'
 description: |-
     To enable the warning banner and ensure it is consistent
     across the system, add or correct the following line in
-    {{% if product in ['fedora', 'rhel9'] %}}
+    {{% if product in ['fedora', 'ol9', 'rhel9'] %}}
     <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
     {{% else %}}
     <tt>/etc/ssh/sshd_config</tt>:
