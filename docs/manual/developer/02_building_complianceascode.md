@@ -29,29 +29,19 @@ less ~/OpenSCAP/STARTGUIDE.md
 
 ## Installing build dependencies
 
+The project uses [bindep](https://docs.opendev.org/opendev/bindep/latest/) to
+manage package dependencies. By default, the `bindep.txt` file is organized to
+emit only the packages necessary to build the project. We will add additional
+profiles to help maintain dependencies for development and testing in the
+future.
+
 ### Required Dependencies
-On *Red Hat Enterprise Linux 7* make sure the packages `cmake`, `openscap-utils`,
-`PyYAML`, `python-jinja2`, `python-setuptools` and their dependencies are installed:
+
+You can install the necessary dependencies to build the project using:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner PyYAML python-jinja2
+$ sudo [apt-get | yum] install $(bindep -b)
 ```
-
-On *Red Hat Enterprise Linux 8* and *Fedora* the package list is the same but python2 packages need to be replaced with python3 ones:
-
-```bash
-yum install cmake make openscap-utils openscap-scanner python3-pyyaml python3-jinja2 python3-setuptools
-```
-
-On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
-`libxml2-utils`, `python3-jinja2`, `python3-yaml`, `python3-setuptools`, `xsltproc` and their dependencies are
-installed:
-
-```bash
-apt-get install cmake make libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
-```
-
-IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
 
 ### Git (Clone the Repository)
 

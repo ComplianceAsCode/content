@@ -1,0 +1,21 @@
+# This file is meant to be used with bindep to help manage package
+# dependencies. Please refer to the bindep documentation for more
+# information:
+#  https://docs.opendev.org/opendev/bindep/latest/
+
+# The default profile installs only the packages necessary to build
+# the project.
+cmake
+make
+
+openscap-utils [platform:rpm]
+openscap-scanner [platform:rpm]
+openscap-common [platform:dpkg]
+# Required for RHEL-based systems with python2
+PyYAML [(platform:rpm platform:base-py2)]
+python3-PyYAML [(platform:rpm platform:base-py3)]
+python3-yaml [(platform:dpkg platform:base-py3)]
+python3-setuptools [platform:base-py3]
+python3-jinja2 [platform:base-py3]
+xsltproc [platform:dpkg]
+libxml2-utils [platform:dpkg]
