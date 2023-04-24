@@ -73,7 +73,7 @@ ocil: |-
     <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
     {{% endif %}}
 
-    <pre>password required pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}</pre>
+    <pre>password requisite pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}</pre>
     {{% endif %}}
 
 platform: package[pam]
@@ -91,7 +91,7 @@ fixtext: |-
     {{% else %}}
     Add the following line to the "/etc/pam.d/system-auth" file (or modify the line to have the required value):
     {{% endif %}}
-    password required pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}
+    password requisite pam_pwquality.so retry={{{ xccdf_value("var_password_pam_retry") }}}
     {{% endif %}}
 
 srg_requirement: |-
