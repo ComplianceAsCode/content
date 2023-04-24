@@ -30,8 +30,8 @@ references:
 ocil_clause: 'Alert receiver is not configured'
 
 ocil: |-
-    Run the following command to see if alert receiver has been configured to send alerts to a orgzinational defined external system:
-    <pre>$ oc -n openshift-monitoring get secret alertmanager-main --template='{{ index .data "alertmanager.yaml" }}' | base64 --decode</pre>
+    Run the following command to see if alert receiver has been configured to send alerts to a organizational defined external system:
+    <pre>$ oc -n openshift-monitoring get secret alertmanager-main -ojson | jq '.data."alertmanager.yaml"' -r | base64 --decode</pre>
     Make sure that alert receiver has configured to send alerts to at least one real time external notification system.
 
 severity: medium
