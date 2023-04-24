@@ -5,24 +5,37 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_user_umask") }}}
 
-- name: Check if umask is already set
-  ansible.builtin.lineinfile:
-    path: /etc/profile
-    regexp: (^[\s]*umask)\s+(\d+)
-    state: absent
-  check_mode: yes
-  changed_when: false
-  register: result_umask_is_set
+- name: '{{{ rule_title }}} - Locate profile configuration files where umask is defined'
+  ansible.builtin.find:
+    paths:
+      - /etc/profile.d
+    patterns:
+      - sh.local
+      - '*.sh'
+    contains: ^[\s]*umask\s+\d+
+  register: result_profile_d_files
 
-- name: Replace user umask in /etc/profile
+- name: '{{{ rule_title }}} - Replace existing umask value in files from /etc/profile.d'
+  ansible.builtin.replace:
+    path: '{{ item.path }}'
+    regexp: ^(\s*)umask\s+\d+
+    replace: \1umask {{ var_accounts_user_umask }}
+  loop: '{{ result_profile_d_files.files }}'
+  register: result_umask_replaced_profile_d
+  when: result_profile_d_files.matched
+
+- name: '{{{ rule_title }}} - Ensure umask is set in /etc/profile if not already set elsewhere'
+  ansible.builtin.lineinfile:
+    create: true
+    mode: 0644
+    path: /etc/profile
+    line: umask {{ var_accounts_user_umask }}
+  when:
+    - not result_profile_d_files.matched
+
+- name: '{{{ rule_title }}} - Ensure umask value for all existing umask definition in /etc/profile'
   ansible.builtin.replace:
     path: /etc/profile
     regexp: '^(\s*)umask\s+\d+'
     replace: '\1umask {{ var_accounts_user_umask }}'
-
-- name: Append user umask in /etc/profile
-  ansible.builtin.lineinfile:
-    create: yes
-    path: /etc/profile
-    line: "umask {{ var_accounts_user_umask }}"
-  when: result_umask_is_set.found == 0
+  register: result_umask_replaced_profile
