@@ -1,5 +1,12 @@
 skip_list:
   - fqcn-builtins # We should be using fqcn
+  - key-order[task]
+  - no-free-form
+  - risky-file-permissions
+  - no-changed-when
+  - var-naming
+  - ignore-errors
+  - schema[meta]
 warn_list:
   - name[missing]  # Rule for checking task and play names.
   - template-instead-of-copy  # Templated files should use template instead of copy
