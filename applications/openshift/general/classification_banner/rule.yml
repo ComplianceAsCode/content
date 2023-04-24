@@ -18,6 +18,13 @@ references:
     nist: AC-8
     srg: SRG-APP-000068-CTR-000120
 
+ocil_clause: 'classification banner is not set'
+
+ocil: |-
+  Verify that a <tt>ConsoleNotification</tt> object called
+  <tt>classification-banner</tt> exists and contains an appropriate
+  legal notice.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/apis/console.openshift.io/v1/consolenotifications/classification-banner") | indent(4) }}}
