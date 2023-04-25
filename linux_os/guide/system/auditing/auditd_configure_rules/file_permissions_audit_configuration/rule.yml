@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Audit Configuration Files Permissions are 640 or More Restrictive'
+
+description: |-
+    All audit configuration files permissions must be 640 or more restrictive.
+    <pre>chmod 0640 /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*</pre>
+
+rationale: |-
+    Without the capability to restrict which roles and individuals can
+    select which events are audited, unauthorized personnel may be able
+    to prevent the auditing of critical events.
+    Misconfigured audits may degrade the system's performance by
+    overwhelming the audit log. Misconfigured audits may also make it more
+    difficult to establish, correlate, and investigate the events relating
+    to an incident or identify those responsible for one.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-88002-1
+
+references:
+    cis@rhel9: 4.1.4.5
+
+ocil: |-
+    {{{ describe_file_permissions(file="/etc/audit/", perms="0640") }}}
+    {{{ describe_file_permissions(file="/etc/audit/rules.d/", perms="0640") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /etc/audit/
+            - /etc/audit/rules.d/
+        file_regex:
+            - .*audit\(\.rules\|d\.conf\)$
+            - .*\.rules$
+        allow_stricter_permissions: "true"
+        filemode: '0640'
