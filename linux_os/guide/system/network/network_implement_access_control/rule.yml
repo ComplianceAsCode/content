@@ -80,3 +80,9 @@ ocil: |-
     If "firewalld" is not active and configured, and the "hosts.allow" and
     "hosts.deny" files are empty, this is a finding.
 
+warnings:
+    - general: |-
+        This rule checks that either firewalld or tcpwrappers are being used
+        to restrict system access to some hosts and/or services. It does not
+        check for any specific hosts/services. Make sure that the allowed
+        hosts/services meet your operational needs.
