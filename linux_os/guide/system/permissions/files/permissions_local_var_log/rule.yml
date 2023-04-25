@@ -55,6 +55,9 @@ ocil: |-
 template:
     name: file_permissions
     vars:
-        filepath: /var/log/
+        excluded_files@sle15: ['*[bw]tmp', '*lastlog']
         file_regex: '.*'
         filemode: '0640'
+        filepath: /var/log/
+        recursive@sle12: 'true'
+        recursive@sle15: 'true'

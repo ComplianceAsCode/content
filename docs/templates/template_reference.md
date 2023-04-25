@@ -360,6 +360,10 @@ they must be of the same length.
         will also consider permissions stricter than **filemode** as compliant.
         Default value is `"true"`.
 
+    -   **excluded_files** - A list with files to be excluded. The file could
+        be also a pattern using the metacharacters `('*', '?', and '[ ]')`.
+        For example: `['*[bw]tmp', '*lastlog']`.
+
 -   Languages: Ansible, Bash, OVAL
 
 Note that the interaction between **filepath** and **file_regex** is as such:
