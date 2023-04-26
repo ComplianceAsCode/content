@@ -191,9 +191,6 @@ controls:
       - audit_rules_privileged_commands_usermod
       - audit_rules_kernel_module_loading_delete
       - audit_rules_kernel_module_loading_init
-      - audit_rules_privileged_commands_insmod
-      - audit_rules_privileged_commands_modprobe
-      - audit_rules_privileged_commands_rmmod
       - audit_rules_sudoers
       - audit_rules_sudoers_d
       # journald config
@@ -269,14 +266,8 @@ controls:
       do not show user list, disable xdmpc and auto login, set up idle lock and protect the settings
     status: automated
     rules:
-      - dconf_gnome_disable_user_list
       - gnome_gdm_disable_xdmcp
       - gnome_gdm_disable_automatic_login
-      - dconf_gnome_screensaver_idle_delay
-      - dconf_gnome_screensaver_lock_delay
-      - dconf_gnome_screensaver_lock_enabled
-      - dconf_gnome_screensaver_user_locks
-      - dconf_gnome_session_idle_user_locks
 
   - id: 3.9
     title: Time and schedulers
@@ -291,7 +282,6 @@ controls:
       - chronyd_run_as_chrony_user
       - chronyd_specify_remote_server
       #  schedulers
-      - service_crond_enabled
       - file_owner_crontab
       - file_groupowner_crontab
       - file_permissions_crontab
@@ -380,15 +370,7 @@ controls:
       - accounts_password_pam_retry
       - var_password_pam_minclass=3
       - var_password_pam_minlen=15
-      #  account lockout
-      - accounts_passwords_pam_faillock_dir
-      - accounts_passwords_pam_faillock_deny
-      - var_accounts_passwords_pam_faillock_deny=3
-      - accounts_passwords_pam_faillock_unlock_time
-      - var_accounts_passwords_pam_faillock_unlock_time=900
       #  password reuse
-      - accounts_password_pam_pwhistory_remember_password_auth
-      - accounts_password_pam_pwhistory_remember_system_auth
       - var_password_pam_remember_control_flag=requisite_or_required
       - var_password_pam_remember=5
       - accounts_password_pam_difok
@@ -448,6 +430,7 @@ controls:
       - var_rekey_limit_size=1G
       - var_rekey_limit_time=1hour
       - sshd_use_strong_rng
+      - sshd_set_keepalive_0
   ###
   ### 5. Networking
   ###
