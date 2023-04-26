@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = firewalld
+# remediation = none
 
 source common.sh
 
