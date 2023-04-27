@@ -40,7 +40,7 @@ yum install cmake make openscap-utils openscap-scanner PyYAML python-jinja2
 On *Red Hat Enterprise Linux 8* and *Fedora* the package list is the same but python2 packages need to be replaced with python3 ones:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner python3-pyyaml python3-jinja2 python3-setuptools
+yum install cmake make openscap-utils openscap-scanner python3 python3-pyyaml python3-jinja2 python3-setuptools
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
