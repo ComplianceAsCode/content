@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get all local users from /etc/passwd
+  ansible.builtin.getent:
+    database: passwd
+    split: ':'
+
+- name: Create local_users variable from the getent output
+  ansible.builtin.set_fact:
+    local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
+
+- name: Test for existence of .netrc file in home directories to avoid creating them, but only fixing permissions
+  ansible.builtin.stat:
+    path: '{{ item.value[4] }}/.netrc'
+  register: path_exists
+  loop: '{{ local_users }}'
+  when:
+    - item.value[1]|int >= {{{ uid_min }}}
+    - item.value[1]|int != 65534
+
+- name: Ensure group and world cannot access respective .netrc files
+  ansible.builtin.file:
+    path: '{{ item.item.value[4] }}/.netrc'
+    mode: '0600'
+    state: file
+  loop: '{{ path_exists.results }}'
+  when:
+    - item.stat is defined and item.stat.exists
