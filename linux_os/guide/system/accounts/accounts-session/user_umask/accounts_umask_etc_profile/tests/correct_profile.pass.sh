@@ -3,3 +3,5 @@
 
 sed -i '/umask/d' /etc/profile
 sed -i '/umask/d' /etc/profile.d/*
+echo "umask 027" >> /etc/profile
+umask 027

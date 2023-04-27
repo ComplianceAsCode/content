@@ -7,6 +7,10 @@ description: |-
     add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as follows:
     <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
+    Note that <tt>/etc/profile</tt> also reads scrips within <tt>/etc/profile.d</tt> directory.
+    These scripts are also valid files to set umask value. Therefore, they should also be
+    considered during the check and properly remediated, if necessary.
+
 rationale: |-
     The umask value influences the permissions assigned to files when they are created.
     A misconfigured umask value could result in files with excessive permissions that can be read or
@@ -52,24 +56,28 @@ ocil_clause: |-
 
 ocil: |-
     Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file
-    with the following command:
-    <pre>$ grep "umask" /etc/profile</pre>
+    or scripts within <tt>/etc/profile.d</tt> directory with the following command:
+    <pre>$ grep "umask" /etc/profile*</pre>
     <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to define default permissions for all authenticated users in such
     a way that the user can only read and modify their own files.
 
-    Add or edit the lines for the "umask" parameter in the "/etc/profile" file to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Edit the lines for the "umask" parameter in the "/etc/profile" file and any other script
+    within "/etc/profile.d" directory to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
 
+    If "umask" parameter is not yet defined in the "/etc/profile" file and any other script within
+    "/etc/profile.d" directory, add the above shown line at the end of "/etc/profile" file.
+
 checktext: |-
-    Verify the "umask" setting is configured correctly in the "/etc/profile" file with the
-    following command:
-    Note: If the value of the "umask" parameter is set to "000" in "/etc/profile" file, the
+    Verify the "umask" setting is configured correctly in the "/etc/profile" file or any scripts
+    within "/etc/profile.d" directory with the following command:
+    Note: If the value of the "umask" parameter is set to "000" in any of these files, the
     Severity is raised to a CAT I.
-    $ grep umask /etc/profile
+    $ grep -r umask /etc/profile*
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
     If the value for the <tt>umask</tt> parameter is not "{{{ xccdf_value("var_accounts_user_umask") }}}",
     or the "umask" parameter is missing or is commented out, this is a finding.
