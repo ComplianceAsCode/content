@@ -1,10 +1,51 @@
 How to Perform An Upstream Release (GitHub)
 ===========================================
 
+# Automation of Release Tasks
+
+In line with this release process documentation, there is a script designed to automate as much as possible the tasks described in this document. While any task can be performed manually, it is highly recommended to use the `release_helper.py` script during the release process in order to increase the efficiency and be less prone to errors.
+
+The script interacts with the Github API so an api token is necessary for most of the tasks. Instructions for generating a Github API token can be found directly on [Github documentation](https://docs.github.com/) but some hints are also provided by the script.
+
+The script interacts with the Github API, so an [API token](https://github.com/settings/tokens) is required for most tasks. Instructions for generating a Github API token can be found directly in the [Github documentation](https://docs.github.com/), but some hints are also provided by the script.
+
+The `release_helper.py` script can also be used to check the current status of the project regarding releases:
+
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content stats
+```
+
+Throughout the document, for each automated task it will be shown an example of the respective task using the script but here is a shortcut for quicker reference:
+
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --contributors
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --branch
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --milestone
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --issues
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --bump-version
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release --message
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release --tag
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content cleanup --branch
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content finish --message
+```
+
+## How to Contribute
+
+This script was created targeting automation of boring tasks and reduction of human errors while allowing release process to be executed much faster with a lower knowledge curve.
+
+There are still space for improvements and any contribution is welcome. Here are some ideas to start contributing:
+* Include an option to automate the process of updating the **stable** branch
+* Improve the messages to include the name of maintainer
+  * Thanks [Matthew](https://github.com/ComplianceAsCode/content/pull/10076#discussion_r1165956665) for this idea.
+* Introduce a checklist of steps during the release
+  * Something similar to **stats** but related to the steps in process.
+  * Some steps depend on other steps and may be concluded after some days. It would be great to know precisely in which step of the process we are.
+
+
 # Stabilization Phase
 
 Before each release we initiate a stabilization period which is typically two weeks long.
-A stabilization branch is branched from master and more extensive testing is done on the content.
+A stabilization branch is branched from master and more extensive tests are done on the content.
 The goal is to have space and time to find and fix issues before the release.
 Everyone is welcome to test the stabilization branch and propose fixes.
 
@@ -26,6 +67,11 @@ the following command:
     - Make a commit send a PR to the `master` branch.
     - Reference: https://github.com/ComplianceAsCode/content/pull/9843
 
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --contributors
+```
+
 ### Creating the Stabilization Branch
 
 - Create a new branch called **stabilization-vX.Y.Z** where **X.Y.Z** is the version of upstream
@@ -33,11 +79,21 @@ release to be created.
     - For example, if the last released version was **0.1.64**, the branch should be named as
     `stabilization-v0.1.65`
 
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --branch
+```
+
 ### Creating the New Milestone
 
 - Create a new Milestone called **X.Y.Z**, where **X.Y.Z** is the version of future upstream release.
     - For example, if you have just created the `stabilization-v0.1.65` branch in order to start
     the stabilization phase for **0.1.65**, the new Milestone should be `0.1.66`.
+
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --milestone
+```
 
 ### Updating Open PRs and Issues
 
@@ -60,12 +116,24 @@ Milestone must be updated to refer the next release.
 > **_NOTE:_** It is still possible to add items to the closed Milestone. Just select it in the
 `closed` tab.
 
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --issues
+```
+
 ### Bumping the Version
 
 - Open a PR to bump the version of `CMakeLists.txt` on the **master** branch.
     - For example, when the `stabilization-v0.1.65` is created, the line `set(SSG_PATCH_VERSION 65)`
     must be updated to `set(SSG_PATCH_VERSION 66)` in the `CMakeLists.txt` file
     - Reference: https://github.com/ComplianceAsCode/content/pull/9857
+
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --bump-version
+```
+
+## During the stabilization
 
 ### Announcing the Start of Stabilization Period
 
@@ -97,7 +165,10 @@ Milestone must be updated to refer the next release.
     Regards,
     ```
 
-## During the stabilization
+This message can be completely created using the `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release --message
+```
 
 ### Bug Fixes
 - Run whatever extra tests you have and report bugs as Upstream issues using the
@@ -202,7 +273,12 @@ git push --tags
 > **_NOTE:_** In case there is a need to run the job again, delete the release draft and run the
 GitHb Action again.
 
-# Clean Up
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release --tag
+```
+
+### Updating the *stable* branch
 
 - Update the **stable** branch to point to the new release:
 ```
@@ -215,9 +291,16 @@ git merge stabilization-vX.Y.Z
 git push
 ```
 
+# Clean Up
+
 - Delete the **stabilization-vX.Y.Z** branch.
 ```
 git push upstream --delete stabilization-vX.Y.Z
+```
+
+Using `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content cleanup --branch
 ```
 
 # Announce It!
@@ -266,6 +349,11 @@ git push upstream --delete stabilization-vX.Y.Z
 
     Regards,
     ```
+
+This message can be completely created using the `release_helper.py` script:
+```bash
+./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content finish --message
+```
 
 # Downstream Build
 
