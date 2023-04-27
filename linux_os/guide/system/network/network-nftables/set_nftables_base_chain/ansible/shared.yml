@@ -22,11 +22,12 @@
 - name: {{{ rule_title }}} - Collect Existing NFtables
   ansible.builtin.command: nft list table {{ var_nftables_family }} {{ var_nftables_table }}
   register: existing_nftables
-  ignore_errors: true
+  changed_when: false
+  failed_when: false
 
 - name: {{{ rule_title }}} - Set NFTable Table
   ansible.builtin.command: nft create table {{ var_nftables_family }} {{ var_nftables_table }}
-  when: existing_nftables.stdout_lines | length == 0
+  when: existing_nftables.rc > 0
 
 - name: {{{ rule_title }}} - Add Base Chains
   ansible.builtin.command: nft 'add chain {{ var_nftables_family }} {{ var_nftables_table }} {{ item.0 }} { type {{ item.1 }} hook {{ item.2 }} priority {{ item.3 }} ; policy {{ item.4 }} ; }'
