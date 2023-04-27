@@ -338,3 +338,4 @@ selections:
     - authconfig_config_files_symlinks
     - ensure_oracle_gpgkey_installed
     - dconf_gnome_disable_user_list
+    - package_mailx_installed
