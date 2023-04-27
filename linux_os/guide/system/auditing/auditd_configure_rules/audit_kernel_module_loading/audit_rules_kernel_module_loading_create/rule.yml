@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux3,ol7,rhel7
+prodtype: alinux3,ol7,rhel7,rhel8,rhel9
 
 title: 'Ensure auditd Collects Information on Kernel Module Unloading - create_module'
 
@@ -25,9 +25,13 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-86115-3
+    cce@rhel8: CCE-88435-3
+    cce@rhel9: CCE-88436-1
 
 references:
     cis@alinux3: 4.1.3.26
+    cis@rhel8: 4.1.3.19
+    cis@rhel9: 4.1.3.19
     disa: CCI-000172
     srg: SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222
     stigid@ol7: OL07-00-030819

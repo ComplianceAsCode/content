@@ -1412,19 +1412,19 @@ controls:
     rules:
       - audit_rules_privileged_commands_usermod
 
-  # NEEDS RULE
   - id: 4.1.3.19
     title: Ensure kernel module loading, unloading and modification is collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: partial
+    status: automated
     rules:
+      - audit_rules_kernel_module_loading_create
       - audit_rules_kernel_module_loading_delete
+      - audit_rules_kernel_module_loading_finit
       - audit_rules_kernel_module_loading_init
-      - audit_rules_privileged_commands_insmod
-      - audit_rules_privileged_commands_modprobe
-      - audit_rules_privileged_commands_rmmod
+      - audit_rules_kernel_module_loading_query
+      - audit_rules_privileged_commands_kmod
 
   - id: 4.1.3.20
     title: Ensure the audit configuration is immutable (Automated)

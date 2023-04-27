@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel8,rhel9
+
+title: 'Ensure auditd Collects Information on Kernel Module Loading and Unloading - query_module'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+    to read audit rules during daemon startup (the default), add the following lines to a file
+    with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+    loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S query_module -F auid>=1000 -F auid!=unset -F key=modules</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+    rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+    in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+    b64 as appropriate for your system:
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S query_module -F auid>=1000 -F auid!=unset -F key=modules</pre>
+
+rationale: |-
+    The addition/removal of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-88748-9
+    cce@rhel9: CCE-88749-7
+
+references:
+    cis@rhel8: 4.1.3.19
+    cis@rhel9: 4.1.3.19
+
+{{{ complete_ocil_entry_audit_syscall(syscall="query_module") }}}
+
+fixtext: |-
+    {{{ fixtext_audit_rules("query_module", "module_chng") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command("query_module") }}}'
