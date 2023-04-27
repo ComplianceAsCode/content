@@ -1,76 +1,175 @@
+{{% set inet_protos = ['tcp', 'udp'] %}}
 <def-group>
-  <definition class="compliance" id="ensure_firewall_rules_for_open_ports" version="1">
-    {{{ oval_metadata("Make sure firewall rules exist for all open network ports, listening on non-loopback interfaces.") }}}
-    <criteria>
-      <criterion comment="Check firewall rules for udp ipv4 listening ports" test_ref="test_listening_fw_inet_ports_test" />
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Make sure firewall rules exist for all open network ports,listening on non-loopback interfaces.") }}}
+    <criteria operator="AND">
+{{% for proto in inet_protos %}}
+      <criteria operator="OR">
+        <criterion comment="Check if any service is listening on {{{ proto }}}"
+          test_ref="test_listening_inet_ports_{{{ proto }}}_exist" />
+        <criteria operator="AND">
+          <criterion comment="Check there are {{{ proto }}} service ports in firewall"
+            test_ref="test_var_firewalled_{{{ proto }}}_ports_exists" />
+          <criterion comment="Check firewall rules for {{{ proto }}} listening ports"
+            test_ref="test_listening_fw_inet_ports_{{{ proto }}}_test" />
+        </criteria>
+      </criteria>
+{{% endfor %}}
     </criteria>
   </definition>
 
-  <local_variable id="var_firewalled_ports" version="1" comment="Firewalled ports according to firewalld configuration" datatype="int">
-    <object_component object_ref="object_firewalled_service_port" item_field="subexpression"/>
-  </local_variable>
-
-
-  <local_variable id="var_firewalled_services" version="1" comment="Firewalld service names" datatype="string">
-    <object_component object_ref="object_firewalled_service" item_field="subexpression"/>
-  </local_variable>
-
-  <local_variable id="var_all_firewalled_services_desc_filename" version="1" comment="Firewalld service file description" datatype="string">
-    <concat>
-      <variable_component var_ref="var_firewalled_services"/>
-      <literal_component>.xml</literal_component>
-    </concat>
-  </local_variable>
-
-
-  <linux:inetlisteningservers_test id="test_listening_fw_inet_ports_test" version="1"  check="at least one" comment="Check all listening ports are firewalled">
-    <linux:object object_ref="obj_listening_inet_ports" />
-    <linux:state state_ref="state_firewalled_listening_inet_ports" />
-  </linux:inetlisteningservers_test>
-
-  <linux:inetlisteningservers_state id="state_firewalled_listening_inet_ports" version="1" comment="Checks listen ports has rule in firewalld">
-      <linux:local_port datatype="int" operation="equals"  var_ref="var_firewalled_ports" var_check="at least one"/>
-    </linux:inetlisteningservers_state>
-
-  <linux:inetlisteningservers_object id="obj_listening_inet_ports" version="2" comment="This object represents a listening services on the system.">
-      <linux:protocol operation="pattern match">^.*$</linux:protocol>
-      <linux:local_address operation="not equal">^.*$</linux:local_address>
-      <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
-      <filter action="exclude">state_ipv4_loopback_listening_inet_ports</filter>
-      <filter action="exclude">state_ipv6_loopback_listening_inet_ports</filter>
-      <filter action="include">state_not_udp_or_tcp_listening_inet_ports</filter>
-  </linux:inetlisteningservers_object>
-
-  <linux:inetlisteningservers_state id="state_not_udp_or_tcp_listening_inet_ports" version="1" comment="Checks local address is either udp or tcp." xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
-    <linux:protocol operation="pattern match">^(tcp|udp)$</linux:protocol>
-    <linux:local_address operation="pattern match">^.*$</linux:local_address>
-    <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
-  </linux:inetlisteningservers_state>
-
-
-  <linux:inetlisteningservers_state id="state_ipv4_loopback_listening_inet_ports" version="1" comment="Checks local address is not ipv4 loopback." xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+<!-- States describing listening objects on loopback interface or established connections-->
+  <linux:inetlisteningservers_state id="state_ipv4_loopback_listening_inet_ports" version="1"
+    comment="Checks local address is not ipv4 loopback."
+    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
     <linux:protocol operation="pattern match">^.*$</linux:protocol>
     <linux:local_address operation="equals">127.0.0.1</linux:local_address>
     <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
   </linux:inetlisteningservers_state>
 
-  <linux:inetlisteningservers_state id="state_ipv6_loopback_listening_inet_ports" version="1" comment="Checks local address is not ipv6 loopback." xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+  <linux:inetlisteningservers_state id="state_ipv6_loopback_listening_inet_ports" version="1"
+    comment="Checks local address is not ipv6 loopback."
+    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
     <linux:protocol operation="pattern match">^.*$</linux:protocol>
     <linux:local_address operation="equals">::1</linux:local_address>
     <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
   </linux:inetlisteningservers_state>
+
+  <linux:inetlisteningservers_state id="state_inet_foreign_port_connected" version="1"
+    comment="Checks this is a listening service not connected">
+    <linux:foreign_port datatype="int" operation="not equal">0</linux:foreign_port>
+  </linux:inetlisteningservers_state>
+
+  <!-- Objects and variables describing the firewalld configuration -->
+  <ind:textfilecontent54_object id="object_active_firewalld_zone_cfgs" version="1">
+    <ind:path>/etc/firewalld/zones/</ind:path>
+    <ind:filename operation="pattern match">^.+\.xml$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*&lt;interface\s*name=.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_firewalld_active_zones" version="1"
+    comment="Firewalld zones configuration filenames" datatype="string">
+    <object_component object_ref="object_active_firewalld_zone_cfgs" item_field="filename"/>
+  </local_variable>
+
+  <ind:textfilecontent54_state id="state_firewalld_zones_with_interfaces" version="1"
+    comment="Consider only active zones (i.e. with interfaces assigned)" >
+    <ind:filename operation="equals" var_ref="var_firewalld_active_zones" var_check="at least one"/>
+  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_object id="object_firewalled_service" version="1">
     <ind:path>/etc/firewalld/zones/</ind:path>
     <ind:filename operation="pattern match">^.+\.xml$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*&lt;service name="(\S*)".*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="include">state_firewalld_zones_with_interfaces</filter>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_firewalled_service_port" version="1">
+  <local_variable id="var_firewalled_services" version="1"
+    comment="Firewalld service names" datatype="string">
+    <object_component object_ref="object_firewalled_service" item_field="subexpression"/>
+  </local_variable>
+
+  <local_variable id="var_all_firewalled_services_desc_filename" version="1"
+    comment="Firewalld service file description" datatype="string">
+    <concat>
+      <variable_component var_ref="var_firewalled_services"/>
+      <literal_component>.xml</literal_component>
+    </concat>
+  </local_variable>
+
+{{% for proto in inet_protos %}}
+
+<linux:inetlisteningservers_object id="obj_listening_inet_{{{ proto }}}_ports" version="2"
+    comment="Represents a listening services on the system.">
+    <linux:protocol operation="equals">{{{ proto }}}</linux:protocol>
+    <linux:local_address operation="pattern match">^.*$</linux:local_address>
+    <linux:local_port datatype="int" operation="greater than or equal">0</linux:local_port>
+    <filter action="exclude">state_ipv4_loopback_listening_inet_ports</filter>
+    <filter action="exclude">state_ipv6_loopback_listening_inet_ports</filter>
+    <filter action="exclude">state_inet_foreign_port_connected</filter>
+  </linux:inetlisteningservers_object>
+
+  <local_variable id="var_obj_listening_inet_{{{ proto }}}_ports" version="1"
+    comment="Variable with all firewalled ports" datatype="int">
+    <object_component object_ref="obj_listening_inet_{{{ proto }}}_ports" item_field="local_port"/>
+  </local_variable>
+
+  <ind:variable_object id="object_var_obj_listening_inet_{{{ proto }}}_ports" version="1">
+    <ind:var_ref>var_obj_listening_inet_{{{ proto }}}_ports</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:textfilecontent54_object id="object_firewalled_service_{{{ proto }}}_port" version="1">
     <ind:path>/usr/lib/firewalld/services/</ind:path>
-    <ind:filename operation="pattern match" var_ref="var_all_firewalled_services_desc_filename" var_check="at least one"/>
-    <ind:pattern operation="pattern match">port="(\d+)"</ind:pattern>
+    <ind:filename operation="pattern match" var_ref="var_all_firewalled_services_desc_filename"
+      var_check="at least one"/>
+    <ind:pattern operation="pattern match">\s*(?:(?:protocol="{{{ proto }}}")|)\s*port="(\d+)"\s*(?:(?:protocol="{{{ proto }}}")|)\s*</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <local_variable id="var_firewalled_service_{{{ proto }}}_ports" version="1"
+    comment="Firewalled ports according to firewalld configuration per service" datatype="int">
+    <object_component object_ref="object_firewalled_service_{{{ proto }}}_port" item_field="subexpression"/>
+  </local_variable>
+
+  <ind:variable_object id="object_var_firewalled_service_{{{ proto }}}_ports" version="1">
+    <ind:var_ref>var_firewalled_service_{{{ proto }}}_ports</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- States objects and variables describing the Firewalled ports stated with port numbers -->
+  <ind:textfilecontent54_object id="object_firewalled_direct_{{{ proto }}}_ports" version="1">
+    <ind:path>/etc/firewalld/zones/</ind:path>
+    <ind:filename operation="pattern match">^.+\.xml$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*&lt;port\s*(?:(?:protocol="{{{ proto }}}")|)\s*port="(\d+)"\s*(?:(?:protocol="{{{ proto }}}")|)\s*.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+    <filter action="include">state_firewalld_zones_with_interfaces</filter>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_firewalled_direct_{{{ proto }}}_ports" version="1"
+    comment="Directly firewalled ports according to firewalld configuration" datatype="int">
+    <object_component object_ref="object_firewalled_direct_{{{ proto }}}_ports" item_field="subexpression"/>
+  </local_variable>
+
+  <ind:variable_object id="object_var_firewalled_direct_{{{ proto }}}_ports" version="1">
+    <ind:var_ref>var_firewalled_direct_{{{ proto }}}_ports</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Object defining firewalled  services and ports -->
+  <ind:variable_object id="object_var_firewalled_{{{ proto }}}_ports" version="1">
+    <set>
+      <object_reference>object_var_firewalled_service_{{{ proto }}}_ports</object_reference>
+      <object_reference>object_var_firewalled_direct_{{{ proto }}}_ports</object_reference>
+    </set>
+  </ind:variable_object>
+
+  <local_variable id="var_object_var_firewalled_{{{ proto }}}_ports" version="1"
+    comment="Variable with all firewalled {{{ proto }}} ports" datatype="int">
+    <object_component object_ref="object_var_firewalled_{{{ proto }}}_ports" item_field="value"/>
+  </local_variable>
+
+  <ind:variable_test id="test_var_firewalled_{{{ proto }}}_ports_exists" check="all"
+    check_existence="at_least_one_exists" version="1"
+    comment="Check the existence of {{{ proto }}} port defined through services.">
+    <ind:object object_ref="object_var_firewalled_{{{ proto }}}_ports"/>
+  </ind:variable_test>
+
+  <linux:inetlisteningservers_test id="test_listening_inet_ports_{{{ proto }}}_exist" version="1" check="all"
+    check_existence="none_exist"
+    comment="Check if any service is listening on {{{ proto }}} ports">
+    <linux:object object_ref="obj_listening_inet_{{{ proto }}}_ports" />
+  </linux:inetlisteningservers_test>
+
+  <ind:variable_state id="state_firewalled_listening_inet_{{{ proto }}}_ports" version="1"
+    comment="Checks listen ports has port rule in firewalld">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+      var_ref="var_object_var_firewalled_{{{ proto }}}_ports"/>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_listening_fw_inet_ports_{{{ proto }}}_test" version="1"
+    check="all" comment="Check all {{{ proto }}} listening ports defined are firewalled">
+    <ind:object object_ref="object_var_obj_listening_inet_{{{ proto }}}_ports" />
+    <ind:state state_ref="state_firewalled_listening_inet_{{{ proto }}}_ports" />
+  </ind:variable_test>
+{{% endfor %}}
 </def-group>
