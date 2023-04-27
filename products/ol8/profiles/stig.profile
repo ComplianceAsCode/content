@@ -82,6 +82,9 @@ selections:
     # OL08-00-010010
     - security_patches_up_to_date
 
+    # OL08-00-010019
+    - ensure_oracle_gpgkey_installed
+
     # OL08-00-010020
     - sysctl_crypto_fips_enabled
     - harden_sshd_ciphers_openssh_conf_crypto_policy
