@@ -3,9 +3,8 @@ How to Perform An Upstream Release (GitHub)
 
 # Automation of Release Tasks
 
-In line with this release process documentation, there is a script designed to automate as much as possible the tasks described in this document. While any task can be performed manually, it is highly recommended to use the `release_helper.py` script during the release process in order to increase the efficiency and be less prone to errors.
+In line with this release process documentation, there is a script designed to automate the tasks described in this document as much as possible. While any task can be performed manually, it is highly recommended to use the `release_helper.py` script during the release process in order to increase the efficiency and be less prone to errors.
 
-The script interacts with the Github API so an api token is necessary for most of the tasks. Instructions for generating a Github API token can be found directly on [Github documentation](https://docs.github.com/) but some hints are also provided by the script.
 
 The script interacts with the Github API, so an [API token](https://github.com/settings/tokens) is required for most tasks. Instructions for generating a Github API token can be found directly in the [Github documentation](https://docs.github.com/), but some hints are also provided by the script.
 
@@ -15,7 +14,7 @@ The `release_helper.py` script can also be used to check the current status of t
 ./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content stats
 ```
 
-Throughout the document, for each automated task it will be shown an example of the respective task using the script but here is a shortcut for quicker reference:
+There is an example usage of release_helper.py  shown for each automated task throughout the document. But here is a cheatsheet for quicker reference:
 
 ```bash
 ./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --contributors
@@ -33,7 +32,7 @@ Throughout the document, for each automated task it will be shown an example of 
 
 This script was created targeting automation of boring tasks and reduction of human errors while allowing release process to be executed much faster with a lower knowledge curve.
 
-There are still space for improvements and any contribution is welcome. Here are some ideas to start contributing:
+There is still space for improvement and any contribution is welcome. Here are some ideas to start contributing:
 * Include an option to automate the process of updating the **stable** branch
 * Improve the messages to include the name of maintainer
   * Thanks [Matthew](https://github.com/ComplianceAsCode/content/pull/10076#discussion_r1165956665) for this idea.
