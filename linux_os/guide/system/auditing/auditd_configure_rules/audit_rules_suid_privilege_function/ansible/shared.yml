@@ -11,6 +11,8 @@
   command:
     grep '^ExecStartPost' /usr/lib/systemd/system/auditd.service
   register: check_rules_scripts_result
+  changed_when: false
+  failed_when: false
 
 - name: Set suid_audit_rules fact
   set_fact:
