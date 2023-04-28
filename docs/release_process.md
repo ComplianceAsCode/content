@@ -3,10 +3,11 @@ How to Perform An Upstream Release (GitHub)
 
 # Automation of Release Tasks
 
-In line with this release process documentation, there is a script designed to automate the tasks described in this document as much as possible. While any task can be performed manually, it is highly recommended to use the `release_helper.py` script during the release process in order to increase the efficiency and be less prone to errors.
+In line with this release process documentation, there is a script designed to automate the tasks described in this document as much as possible.
+While any task can be performed manually, it is highly recommended to use the `release_helper.py` script during the release process in order to increase the efficiency and be less prone to errors.
 
-
-The script interacts with the Github API, so an [API token](https://github.com/settings/tokens) is required for most tasks. Instructions for generating a Github API token can be found directly in the [Github documentation](https://docs.github.com/), but some hints are also provided by the script.
+The script interacts with the Github API, so an [API token](https://github.com/settings/tokens) is required for most tasks.
+Instructions for generating a Github API token can be found directly in the [Github documentation](https://docs.github.com/), but some hints are also provided by the script.
 
 The `release_helper.py` script can also be used to check the current status of the project regarding releases:
 
@@ -14,7 +15,8 @@ The `release_helper.py` script can also be used to check the current status of t
 ./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content stats
 ```
 
-There is an example usage of release_helper.py  shown for each automated task throughout the document. But here is a cheatsheet for quicker reference:
+There is an example usage of `release_helper.py` shown for each automated task throughout the document.
+Anyway, here's a cheat sheet for quicker reference:
 
 ```bash
 ./release_helper.py -c ~/secret.ini -r ComplianceAsCode/content release_prep --contributors
