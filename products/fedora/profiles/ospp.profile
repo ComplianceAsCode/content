@@ -47,6 +47,8 @@ selections:
     - sysctl_kernel_perf_event_paranoid_value=2
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
+    - sysctl_net_ipv4_ip_local_port_range
+    - sysctl_net_ipv4_ip_local_port_range_value=fedora
     - sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
