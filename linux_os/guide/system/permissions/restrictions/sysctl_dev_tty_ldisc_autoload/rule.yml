@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable Automatically load TTY Line Disciplines'
+
+description: '{{{ describe_sysctl_option_value(sysctl="dev.tty.ldisc_autoload", value="0") }}}'
+
+rationale: |-
+    Historically the kernel has always automatically loaded any line discipline
+    that is in a kernel module when a user asks for it to be loaded with the
+    TIOCSETD ioctl, or through other means. This is not always the best thing
+    to do on systems where you know you will not be using some of the more
+    "ancient" line disciplines, so prevent the kernel from doing this unless
+    the request is coming from a process with the CAP_SYS_MODULE permissions.
+
+severity: medium
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="dev.tty.ldisc_autoload", value="0") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent automatically load any line discipline.
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: dev.tty.ldisc_autoload
+        sysctlval: '0'
+        datatype: int
