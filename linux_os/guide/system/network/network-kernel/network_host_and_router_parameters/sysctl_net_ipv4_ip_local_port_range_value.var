@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: net.ipv4.ip_local_port_range
+
+description: |-
+    Configure the local port range that is used by TCP and UDP to choose the
+    local port. First number is start of range and last number is last of range.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: 32768 65535
+    fedora: 32768 60999
