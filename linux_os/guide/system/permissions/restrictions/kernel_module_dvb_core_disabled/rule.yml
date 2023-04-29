@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable the dvb-core module'
+
+description: |-
+    Driver support DVB devices.
+    {{{ describe_module_disable(module="dvb-core") }}}
+
+rationale: |-
+    Disabling
+    DVB support
+    protects the system against exploitation of any flaws in its
+    implementation.
+
+severity: medium
+
+platform: machine
+
+{{{ complete_ocil_entry_module_disable(module="dvb-core") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("dvb-core") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: dvb-core
