@@ -41,5 +41,7 @@ ocil: |-
     To ensure that the GPG key is installed, run:
     <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
     The command should return one of the strings below:
+    <pre>gpg(Fedora {{{ rawhide_version }}} ({{{ rawhide_version }}}) &lt;fedora-{{{ rawhide_version }}}@fedoraproject.org&gt;)</pre>
+    <pre>gpg(Fedora {{{ future_version }}} ({{{ future_version }}}) &lt;fedora-{{{ future_version }}}@fedoraproject.org&gt;)</pre>
     <pre>gpg(Fedora {{{ latest_version }}} ({{{ latest_version }}}) &lt;fedora-{{{ latest_version }}}@fedoraproject.org&gt;)</pre>
     <pre>gpg(Fedora {{{ previous_version }}} ({{{ previous_version }}}) &lt;fedora-{{{ previous_version }}}@fedoraproject.org&gt;)</pre>
