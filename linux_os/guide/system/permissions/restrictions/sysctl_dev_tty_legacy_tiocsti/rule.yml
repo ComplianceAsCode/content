@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable legacy TIOCSTI usage'
+
+description: '{{{ describe_sysctl_option_value(sysctl="dev.tty.legacy_tiocsti", value="0") }}}'
+
+rationale: |-
+    Historically the kernel has allowed TIOCSTI, which will push characters
+    into a controlling TTY. This continues to be used as a malicious privilege
+    escalation mechanism, and provides no meaningful real-world utility any
+    more. Its use is considered a dangerous legacy operation, and can be
+    disabled on most systems.
+
+severity: medium
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="dev.tty.legacy_tiocsti", value="0") }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent use of TIOCSTI.
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: dev.tty.legacy_tiocsti
+        sysctlval: '0'
+        datatype: int
