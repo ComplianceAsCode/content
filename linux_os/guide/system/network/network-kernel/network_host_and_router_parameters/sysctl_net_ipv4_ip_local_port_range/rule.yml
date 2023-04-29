@@ -4,7 +4,7 @@ prodtype: fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Set Kernel Parameter to Increase Local Port Range'
 
-description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.ip_local_port_range", value="32768 65535") }}}'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.ip_local_port_range", value=xccdf_value("sysctl_net_ipv4_ip_local_port_range_value")) }}}'
 
 rationale: |-
     This setting defines the local port range that is used by TCP and UDP to
@@ -23,13 +23,12 @@ identifiers:
 references:
     anssi: BP28(R22)
 
-{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.ip_local_port_range", value="32768 65535") }}}
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.ip_local_port_range", value=xccdf_value("sysctl_net_ipv4_ip_local_port_range_value")) }}}
 
 template:
     name: sysctl
     vars:
         sysctlvar: net.ipv4.ip_local_port_range
         datatype: string
-        sysctlval: 32768 65535
-        operation: pattern match
-        sysctlval_regex: '32768\s*65535'
+        sysctl_correct_value: 32768 65535
+        sysctl_wrong_value: 48000 60000

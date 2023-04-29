@@ -20,6 +20,37 @@
     <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- endmacro -%}}
+{{%- macro sysctl_local_variables(suffix) -%}}
+{{% if SYSCTLVAR == "net.ipv4.ip_local_port_range" %}}
+  <local_variable id="var_{{{ rule_id }}}_first_value{{{ suffix }}}"
+      comment="port range first element"
+      version="1" datatype="string">
+    <regex_capture pattern="^\s*(\d+)\s+\d+\s*$">
+      <variable_component var_ref="{{{ rule_id }}}_value"/>
+    </regex_capture>
+  </local_variable>
+
+  <local_variable id="var_{{{ rule_id }}}_last_value{{{ suffix }}}"
+      comment="port range last element"
+      version="1" datatype="string">
+    <regex_capture pattern="^\s*\d+\s+(\d+)\s*$">
+      <variable_component var_ref="{{{ rule_id }}}_value"/>
+    </regex_capture>
+  </local_variable>
+
+  <local_variable id="var_{{{ rule_id }}}_regex{{{ suffix }}}"
+      comment="port range first element"
+      version="1" datatype="string">
+    <concat>
+      <literal_component>^\s*</literal_component>
+      <variable_component var_ref="var_{{{ rule_id }}}_first_value{{{ suffix }}}"/>
+      <literal_component>\s+</literal_component>
+      <variable_component var_ref="var_{{{ rule_id }}}_last_value{{{ suffix }}}"/>
+      <literal_component>\s*$</literal_component>
+    </concat>
+  </local_variable>
+{{% endif %}}
+{{%- endmacro -%}}
 {{%- if "P" in FLAGS -%}}
 
 <def-group>
@@ -88,9 +119,15 @@
 {{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" %}}
   <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
+{{% if SYSCTLVAR == "net.ipv4.ip_local_port_range" %}}
+    <unix:value datatype="string" operation="pattern match"
+                var_ref="var_{{{ rule_id }}}_regex"/>
+{{% else %}}
     <unix:value datatype="{{{ DATATYPE }}}" operation="equals"
                 var_ref="{{{ rule_id }}}_value"/>
+{{% endif %}}
   </unix:sysctl_state>
+{{{ sysctl_local_variables("") }}}
 
   <external_variable id="{{{ rule_id }}}_value" version="1"
                      comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
@@ -260,9 +297,15 @@
 {{% if SYSCTLVAL == "" %}}
 
   <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}" version="1">
+{{% if SYSCTLVAR == "net.ipv4.ip_local_port_range" %}}
+    <ind:subexpression operation="pattern match" datatype="string"
+                       var_ref="var_{{{ rule_id }}}_regex_static"/>
+{{% else %}}
     <ind:subexpression operation="{{{ OPERATION }}}" var_ref="{{{ rule_id }}}_value"
                        datatype="{{{ DATATYPE }}}" />
+{{% endif %}}
   </ind:textfilecontent54_state>
+{{{ sysctl_local_variables("_static") }}}
 
   <external_variable id="{{{ rule_id }}}_value" version="1"
                      comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
