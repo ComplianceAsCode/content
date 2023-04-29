@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Disable the snd module'
+
+description: |-
+    Disable support for Advanced Linux Sound Architecture.
+    {{{ describe_module_disable(module="snd") }}}
+
+rationale: |-
+    Disabling
+    Advanced Linux Sound Architecture support
+    protects the system against exploitation of any flaws in its
+    implementation.
+
+severity: medium
+
+platform: machine
+
+{{{ complete_ocil_entry_module_disable(module="snd") }}}
+
+fixtext: '{{{ fixtext_kernel_module_disabled("snd") }}}'
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: snd
