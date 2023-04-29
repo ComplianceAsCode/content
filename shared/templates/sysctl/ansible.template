@@ -10,7 +10,7 @@
     paths:
       - "/etc/sysctl.d/"
       - "/run/sysctl.d/"
-{{% else %}}      
+{{% else %}}
   find:
     paths:
       - "/etc/sysctl.d/"
@@ -60,4 +60,4 @@
 {{% endif %}}
     state: present
     reload: yes
-
+    sysctl_set: true
