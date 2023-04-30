@@ -1,3 +1,11 @@
+{{% set system_with_modprobeconf_supported = false %}}
+{{% set system_with_blacklisted_supported = false %}}
+{{% if product not in ["fedora"] and "ol" not in product and "rhel" not in product and "ubuntu" not in product %}}
+{{% set system_with_modprobeconf_supported = true %}}
+{{% endif %}}
+{{% if product in ["fedora", "rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product %}}
+{{% set system_with_blacklisted_supported = true %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance"
     id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
@@ -5,14 +13,14 @@
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
       <criteria operator="AND">
-{{% if product in ["rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product %}}
+{{% if system_with_blacklisted_supported %}}
         <criterion test_ref="test_{{{ local_id }}}_blacklisted"
           comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d"/>
 {{% endif %}}
         <criterion test_ref="test_{{{ local_id }}}_disabled"
           comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
       </criteria>
-{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product%}}
+{{% if system_with_modprobeconf_supported %}}
       <criterion test_ref="test_{{{ local_id }}}_modprobeconf"
         comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf"/>
 {{% endif %}}
@@ -43,7 +51,7 @@
     <value>/usr/lib/modules-load.d</value>
   </constant_variable>
 
-{{% if product in ["rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product %}}
+{{% if system_with_blacklisted_supported %}}
   <ind:textfilecontent54_test id="test_{{{ local_id }}}_blacklisted"
     comment="kernel module {{{ KERNMODULE }}} blacklisted" version="1" check="all">
     <ind:object object_ref="obj_{{{ local_id }}}_blacklisted"/>
@@ -58,7 +66,7 @@
   </ind:textfilecontent54_object>
 {{% endif %}}
 
-{{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product %}}
+{{% if system_with_modprobeconf_supported %}}
   <ind:textfilecontent54_test id="test_{{{ local_id }}}_modprobeconf"
     comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" version="1" check="all">
     <ind:object object_ref="obj_{{{ local_id }}}_modprobeconf"/>
