@@ -2440,3 +2440,248 @@ from /etc/os-release from VERSION_ID variable.
 {{%- macro bash_get_version_os_linux(os_release_path="/etc/os-release") -%}}
 grep -P "^VERSION_ID=[\"']?[\w.]+[\"']?$" {{{ os_release_path }}} | sed "s/^VERSION_ID=[\"']\?\([^\"']\+\)[\"']\?$/\1/"
 {{%- endmacro -%}}
+
+
+{{#
+Generate code for kernel_module_disable tests
+
+:param KERNMODULE: kernel module name
+:param KERNMODULE_RX: kernel module name regexp escaped
+:param t_blacklist: pass and fail conditions
+:param t_dracut: pass and fail conditions
+:param t_dracut_drivers: pass and fail conditions
+:param t_modprobe: pass and fail conditions
+:param t_modprobe_d_install: pass and fail conditions
+:param dir_blacklist: directory prefix config is in
+:param dir_modprobe_d_install: directory prefix config is in
+:param dir_modules_load_d: directory prefix config is in
+
+Idea is to immplement whole test in one parametrized method.
+
+This template has several possible tests, each can have passing or failing
+value in different ways. This should provide clear documentation why test should fail.
+
+There is several possibilities for configuration file names and directories.
+Capsulating all cases here allows to keep variations or parallel
+implementations low and keep copy-paste code minimal.
+
+Implementation uses mix of jinja and bash functions which should allow most
+flexible test generation.
+
+Try to keep system_with, and directory lists, possible tests with OVAL.
+
+I decided not to use default pass / fail condition and instead implemented
+checks with raise.
+#}}
+{{%- macro bash_kernel_module_disable_test(KERNMODULE, KERNMODULE_RX, t_blacklist="", t_dracut="", t_dracut_drivers="", t_modprobe="", t_modprobe_d_install="", t_modules_load_d="", dir_blacklist="/etc", dir_modprobe_d_install="/etc", dir_modules_load_d="/etc") -%}}
+# first line can be commented to allow shellcheck during developement
+set -epu
+{{% set system_with_modprobeconf_supported = false %}}
+{{% set system_with_blacklisted_supported = false %}}
+{{% set system_with_dracut_supported = false %}}
+{{% if product not in ["fedora"] and "ol" not in product and "rhel" not in product and "ubuntu" not in product %}}
+{{% set system_with_modprobeconf_supported = true %}}
+{{% endif %}}
+{{% if product in ["fedora", "ol7", "ol8", "rhcos4", "sle12", "sle15"] or "rhel" in product %}}
+{{% set system_with_blacklisted_supported = true %}}
+{{% endif %}}
+{{% if product in ["fedora", "rhel8", "rhel9"] %}}
+{{% set system_with_dracut_supported = true %}}
+{{% endif %}}
+
+{{% set err_prefix = "KERNMODULE (" + KERNMODULE + ") test with " %}}
+
+{{% if t_blacklist == "" and system_with_blacklisted_supported %}}
+{{{ raise(err_prefix + "system_with_blacklisted_supported support but no pass / fail condition defined") }}}
+{{% endif %}}
+{{% if t_dracut == "" and system_with_dracut_supported %}}
+{{{ raise(err_prefix + "system_with_dracut_supported but no pass / fail condition defined") }}}
+{{% endif %}}
+{{% if t_dracut_drivers == "" and system_with_dracut_supported %}}
+{{{ raise(err_prefix + "system_with_dracut_supported but no pass / fail condition defined") }}}
+{{% endif %}}
+{{% if t_modprobe == "" and system_with_modprobeconf_supported %}}
+{{{ raise(err_prefix + "system_with_modprobeconf_supported but no pass / fail condition defined") }}}
+{{% endif %}}
+{{% if t_modprobe_d_install == "" %}}
+{{{ raise(err_prefix + "modprobe_d support but no pass / fail condition defined") }}}
+{{% endif %}}
+{{% if t_modules_load_d == "" %}}
+{{{ raise(err_prefix + "modules_load_d support but no pass / fail condition defined") }}}
+{{% endif %}}
+
+system_with_modprobeconf_supported={{%- if system_with_modprobeconf_supported -%}}1{{%- else -%}}0{{%- endif %}}
+system_with_blacklisted_supported={{%- if system_with_blacklisted_supported -%}}1{{%- else -%}}0{{%- endif %}}
+system_with_dracut_supported={{%- if system_with_dracut_supported -%}}1{{%- else -%}}0{{%- endif %}}
+
+_kernmodule_base={{{ KERNMODULE | quote }}}
+_kernmodule_rx_base={{{ KERNMODULE_RX | quote }}}
+
+kernmodule="${kernmodule:-"${_kernmodule_base}"}"
+kernmodule_file="${kernmodule_file:-"${_kernmodule_base}"}"
+kernmodule_rx="${kernmodule_rx:-"${_kernmodule_rx_base}"}"
+
+blacklist_pass="${blacklist_pass:-"blacklist ${kernmodule}"}"
+dracut_omit_pass="${dracut_omit_pass:-"$(printf 'omit_drivers+=" %s "' "${kernmodule}")"}"
+install_pass="${install_pass:-"install ${kernmodule} /bin/true"}"
+
+dracut_omit_rx="${dracut_omit_rx:-"$(printf '^omit_drivers\+="[^"]*\s%s\s[^"]*"' "${kernmodule_rx}")"}"
+install_rx="${install_rx:-"^install\s+${kernmodule_rx}(\s|$)"}"
+modules_load_d_rx="${modules_load_d_rx:-"^${kernmodule_rx}$"}"
+
+kmd_empty() {
+    local file="$1"; shift
+    mkdir -p "${file%/*}"
+    printf "" > "${file}"
+}
+
+kmd_remove_rx() {
+    local file="$1"; shift
+    local rx="$1"; shift
+    [[ -f "${file}" ]] || return 0
+    if ! LC_ALL=C grep -E -q -m 1 "${rx}" "${file}"; then
+        LC_ALL=C sed -Ei "/${rx}/d" "${file}"
+    fi
+}
+
+kmd_add() {
+    local file="$1"; shift
+    local msg="$1"; shift
+    mkdir -p "${file%/*}"
+    printf '%s\n' "${msg}" >> "${file}"
+}
+
+kmd_add_missing() {
+    local file="$1"; shift
+    local msg="$1"; shift
+    local rx="$1"; shift
+    if [ -f "${file}" ] && LC_ALL=C grep -E -q -m 1 "${rx}" "${file}"; then
+        return 0
+    fi
+    kmd_add "${file}" "${msg}"
+}
+
+kmd_modprobe_install_commented() {
+    kmd_remove_rx "$1" "${install_rx}"
+    kmd_add "$1" "# ${install_pass}"
+}
+
+kmd_modules_load_commented() {
+    kmd_remove_rx "$1" "${modules_load_d_rx}"
+    kmd_add "$1" "# ${kernmodule}"
+}
+
+{{% set modprobe_d_dir_all = ['/etc', '/run', '/usr/lib'] %}}
+{{% set modules_load_d_dir_all = ['/etc', '/lib', '/run', '/usr/lib', '/usr/local/lib'] %}}
+
+{{% if system_with_blacklisted_supported %}}
+{{% if dir_blacklist not in modprobe_d_dir_all + ["all"] %}}
+{{{ raise(err_prefix + "unknown dir_blacklist value: '" ~ dir_blacklist ~ "'") }}}
+{{% elif dir_blacklist == "all" %}}
+{{% set dirs = modprobe_d_dir_all %}}
+{{% else %}}
+{{% set dirs = [dir_blacklist] %}}
+{{% endif %}}
+{{% for dir in dirs %}}
+file={{{ dir | quote }}}/modprobe.d/"${kernmodule_file}".conf
+{{% if t_blacklist == "pass" %}}
+kmd_add "${file}" "${blacklist_pass}"
+{{% elif t_blacklist == "fail" %}}
+kmd_add "${file}" "x${blacklist_pass}"
+{{% elif t_blacklist == "fail_empty" %}}
+kmd_empty "${file}"
+{{% elif t_blacklist == "fail_miss" %}}
+{{% else %}}
+{{{ raise(err_prefix + "unknown t_blacklist value: '" ~ t_blacklist ~ "'") }}}
+{{% endif %}}
+{{% endfor %}}
+{{% endif %}}
+
+{{% if system_with_dracut_supported %}}
+{{% if t_dracut == "pass" %}}
+kmd_add_missing /etc/dracut.conf "${dracut_omit_pass}" "${dracut_omit_rx}"
+{{% elif t_dracut == "pass_d" %}}
+kmd_add_missing "/etc/dracut.conf.d/omit-${kernmodule_file}.conf" "${dracut_omit_pass}" "${dracut_omit_rx}"
+{{% elif t_dracut == "fail_empty" %}}
+kmd_empty "/etc/dracut.conf.d/omit-${kernmodule_file}.conf"
+{{% elif t_dracut == "fail_miss" %}}
+{{% else %}}
+{{{ raise(err_prefix + "unknown t_dracut value: '" ~ t_dracut ~ "'") }}}
+{{% endif %}}
+
+{{% if t_dracut_drivers == "pass" %}}
+kmd_add "/etc/dracut.conf" "$(printf 'force_drivers+=" x%s "' "${kernmodule}")"
+{{% elif t_dracut_drivers == "pass_d" %}}
+kmd_add "/etc/dracut.conf.d/${kernmodule_file}.conf" "$(printf 'force_drivers+=" x%s "' "${kernmodule}")"
+{{% elif t_dracut_drivers == "pass_empty" %}}
+{{% elif t_dracut_drivers == "fail" %}}
+kmd_add "/etc/dracut.conf.d/${kernmodule_file}.conf" "$(printf 'force_drivers+=" %s "' "${kernmodule}")"
+{{% elif t_dracut_drivers == "fail_add" %}}
+kmd_add "/etc/dracut.conf.d/${kernmodule_file}.conf" "$(printf 'add_drivers+=" %s "' "${kernmodule}")"
+{{% else %}}
+{{{ raise(err_prefix + "unknown t_dracut_drivers value: '" ~ t_dracut_drivers ~ "'") }}}
+{{% endif %}}
+{{% endif %}}
+
+{{% if dir_modprobe_d_install not in modprobe_d_dir_all + ["all"] %}}
+{{{ raise(err_prefix + "unknown dir_modprobe_d_install value: '" ~ dir_modprobe_d_install ~ "'") }}}
+{{% elif dir_modprobe_d_install == "all" %}}
+{{% set dirs = modprobe_d_dir_all %}}
+{{% else %}}
+{{% set dirs = [dir_modprobe_d_install] %}}
+{{% endif %}}
+{{% for dir in dirs %}}
+file={{{ dir | quote }}}/modprobe.d/"${kernmodule_file}".conf
+{{% if t_modprobe_d_install == "pass" %}}
+kmd_add "${file}" "${install_pass}"
+{{% elif t_modprobe_d_install == "fail" %}}
+kmd_add "${file}" "${install_pass} x"
+{{% elif t_modprobe_d_install == "fail_wrong" %}}
+kmd_add "${file}" "$(printf 'install %s /usr/bin/ls' "${kernmodule}")"
+{{% elif t_modprobe_d_install == "fail_commented" %}}
+kmd_modprobe_install_commented "${file}"
+{{% elif t_modprobe_d_install == "fail_empty" %}}
+kmd_empty "${file}"
+{{% elif t_modprobe_d_install == "fail_miss" %}}
+{{% else %}}
+{{{ raise(err_prefix + "unknown t_modprobe_d_install value: '" ~ t_modprobe_d_install ~ "'") }}}
+{{% endif %}}
+{{% endfor %}}
+
+{{% if system_with_modprobeconf_supported %}}
+{{% if t_modprobe == "pass" %}}
+kmod_modprobe_install_pass /etc/modprobe.conf
+{{% elif t_modprobe == "fail_commented" %}}
+kmod_modprobe_install_commented /etc/modprobe.conf
+{{% elif t_modprobe == "fail_miss" %}}
+{{% else %}}
+{{{ raise(err_prefix + "unknown t_modprobe value: '" ~ t_modprobe ~ "'") }}}
+{{% endif %}}
+{{% endif %}}
+
+{{% if dir_modules_load_d not in modules_load_d_dir_all + ["all"] %}}
+{{{ raise(err_prefix + "unknown dir_modules_load_d value: '" ~ dir_modules_load_d ~ "'") }}}
+{{% elif dir_modules_load_d == "all" %}}
+{{% set dirs = modules_load_d_dir_all %}}
+{{% else %}}
+{{% set dirs = [dir_modules_load_d] %}}
+{{% endif %}}
+{{% for dir in dirs %}}
+file={{{ dir | quote }}}/modules-load.d/"${kernmodule_file}".conf
+{{% if t_modules_load_d == "pass" %}}
+kmd_remove_rx "${file}" "${modules_load_d_rx}"
+{{% elif t_modules_load_d == "fail" %}}
+kmd_add "${file}" "${kernmodule}"
+{{% elif t_modules_load_d == "pass_commented" %}}
+kmd_modules_load_commented "${file}"
+{{% elif t_modules_load_d == "pass_empty" %}}
+kmd_empty "${file}"
+{{% elif t_modules_load_d == "pass_miss" %}}
+{{% else %}}
+{{{ raise(err_prefix + "unknown t_modules_load_d value: '" ~ t_modules_load_d ~ "'") }}}
+{{% endif %}}
+{{% endfor %}}
+
+echo "# DONE"
+
+{{%- endmacro -%}}

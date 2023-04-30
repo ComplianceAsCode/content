@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Convert - in firewire-core to _
-kernmodule="firewire-core"
-kernmodule_r="${kernmodule/-/_}"
-echo "install ${kernmodule_r} /bin/true" > /etc/modprobe.d/"${kernmodule}".conf
-{{% if product in ["fedora", "ol7", "ol8"] or "rhel" in product %}}
-echo "blacklist ${kernmodule_r}" >> /etc/modprobe.d/"${kernmodule}".conf
-{{% endif %}}
+kernmodule="firewire_core"
+{{{ bash_kernel_module_disable_test(
+    'firewire-core', 'firewire[_-]core',
+    t_blacklist="pass",
+    t_dracut="pass_d",
+    t_dracut_drivers="pass_d",
+    t_modprobe="pass",
+    t_modprobe_d_install="pass",
+    t_modules_load_d="pass",
+) }}}

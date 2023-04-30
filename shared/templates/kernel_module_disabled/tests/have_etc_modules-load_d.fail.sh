@@ -1,12 +1,11 @@
 #!/bin/bash
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 
 {{{ bash_kernel_module_disable_test(
     KERNMODULE, KERNMODULE_RX,
-    t_blacklist="fail",
+    t_blacklist="pass",
     t_dracut="pass",
-    t_dracut_drivers="pass",
+    t_dracut_drivers="pass_empty",
     t_modprobe="pass",
     t_modprobe_d_install="pass",
-    t_modules_load_d="pass",
+    t_modules_load_d="fail",
 ) }}}

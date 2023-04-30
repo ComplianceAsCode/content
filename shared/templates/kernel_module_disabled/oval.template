@@ -1,10 +1,84 @@
+{{#
+    There is several ways kernel modules can be loaded or obstacles set to the
+    loading
+
+    Normal userspace configuration:
+        modprobe.d(5) has 2 obstacles to loading, latter only on some distros
+        - run command instead of loading: install <name> /bin/true
+        - ignore all possible aliases: blacklist <name>
+
+        modprobe.conf(5) to have obstacle in other distros with
+        - run command instead of loading: install <name> /bin/true
+
+        modules-load.d(5) loads modules
+        - load module: <name>
+
+        modprobe(8)
+        - udev installs module because of rules
+        - user install module by hand
+
+        insmod(8)
+        - user installs module by hand
+
+    Initramfs
+        dracut.conf(5) has both obstacles and ways to load modules
+        - modules not to add to initramfs: omit_drivers
+        - modules to add to initramfs: drivers
+        - modules to add initramfs: add_drivers
+        - modules to load initramfs: force_drivers
+
+        dracut(8)
+        - any command line option overrules configuration
+
+    Kernel command line
+        systemd-modules-load.service(8) / kernel-command-line(7), check
+        systemd-modules-load.service unit file for additional undocumented
+        cmdline options and paths
+        - modules to load: modules_load=, rd.modules_load=
+        - modules to load: modules-load=, rd.modules-load=
+
+    Runtime
+        proc(5) / lsmod(8)
+        - loaded modules: /proc/modules
+
+    For this modules to be success all methods should be implemented:
+    - add all possible obstackles to make loading modules fail during multiuser
+      phase
+    - ensure modules are not configured to be loaded, like in initramfs /
+      kernel command line
+    - ensure module is not loaded in runtime by any trickery
+    - there could be some order where obstacles ensure module is not loaded,
+      but ensuring fully is just simpler way
+
+    Additionals
+    modprobe(8): there is no difference between _ and - in module names
+    - so when checking module name check always both formats
+    - when adding configuration, only one format is needed
+
+    TODO:
+    - bootloader arguments check, essentially whole
+      grub2_bootloader_argument_absent should be implemented here, and as
+      aspects of that is already in 3 places I'm not too happy to add another
+    - also grub2_bootloader_argument_absent lacks support for regexp based
+      pattern matching
+    - not every sane combination is tested
+    - not every sane combination of remedy is implemented
+    - documentation
+    - any dracut config modification left hanging, no initramfs update triggered
+    - removing modules is not always easy as they might be there because of
+      service etc, or there is module dependencies
+-#}}
 {{% set system_with_modprobeconf_supported = false %}}
 {{% set system_with_blacklisted_supported = false %}}
+{{% set system_with_dracut_supported = false %}}
 {{% if product not in ["fedora"] and "ol" not in product and "rhel" not in product and "ubuntu" not in product %}}
 {{% set system_with_modprobeconf_supported = true %}}
 {{% endif %}}
 {{% if product in ["fedora", "rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product %}}
 {{% set system_with_blacklisted_supported = true %}}
+{{% endif %}}
+{{% if product in ["fedora", "rhel8", "rhel9"] %}}
+{{% set system_with_dracut_supported = true %}}
 {{% endif %}}
 {{% set modprobe_d_install_rx = '^\s*install\s+' ~ KERNMODULE_RX ~ '\s+(?:/bin/false|/bin/true)$' %}}
 <def-group>
@@ -18,10 +92,28 @@
         <criterion test_ref="test_{{{ local_id }}}_blacklisted"
           comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d"/>
 {{% endif %}}
+{{% if system_with_dracut_supported %}}
+        <criteria operator="OR">
+          <extend_definition definition_ref="package_dracut_installed"
+            comment="Either no dracut package or check dracut config" negate="true"/>
+          <criteria operator="AND">
+            <criteria operator="OR">
+              {{{ dracut_conf_criterion(local_id, 'omit_drivers', 'kernel module ' ~ KERNMODULE) }}}
+            </criteria>
+{{% for directive in ['drivers', 'add_drivers', 'force_drivers'] %}}
+              {{{ dracut_conf_criterion(local_id, directive, 'kernel module ' ~ KERNMODULE, ' negate="true"') }}}
+{{% endfor %}}
+          </criteria>
+        </criteria>
+{{% endif %}}
         <criterion test_ref="test_{{{ local_id }}}_disabled"
           comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
         <criterion test_ref="test_{{{ local_id }}}_in_modules_load"
           comment="kernel module {{{ KERNMODULE }}} not in modules_load.d" negate="true"/>
+        <criterion test_ref="test_{{{ local_id }}}_runtime"
+          comment="kernel module {{{ KERNMODULE }}} not in /proc/modules" negate="true"/>
+        <criterion test_ref="test_{{{ local_id }}}_cmdline"
+          comment="kernel module {{{ KERNMODULE }}} loading directives not in /proc/cmdline" negate="true"/>
       </criteria>
 {{% if system_with_modprobeconf_supported %}}
       <criterion test_ref="test_{{{ local_id }}}_modprobeconf"
@@ -88,6 +180,37 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
+
+{{% if system_with_dracut_supported %}}
+  {{% for directive in ['omit_drivers', 'drivers', 'add_drivers', 'force_drivers'] %}}
+  {{% set directive_rx = '^\s*' ~ directive ~ '[+]="[^"]*\s' ~ KERNMODULE_RX ~ '\s[^"]*"\s*$' %}}
+  {{{ dracut_conf_test_object(local_id, directive, directive_rx, "kernel module " ~ KERNMODULE, setup=loop.first) }}}
+  {{% endfor %}}
+{{% endif %}}
+
+  <ind:textfilecontent54_test id="test_{{{ local_id }}}_runtime" version="1" check="all"
+    comment="kernel module {{{ KERNMODULE }}} runtime check from /proc/modules">
+    <ind:object object_ref="obj_{{{ local_id }}}_runtime"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ local_id }}}_runtime"
+    version="1" comment="kernel module {{{ KERNMODULE }}} runtime check from /proc/modules">
+    <ind:filepath>/proc/modules</ind:filepath>
+    <ind:pattern operation="pattern match">^{{{ KERNMODULE_RX }}}\s</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ local_id }}}_cmdline" version="1" check="all"
+    comment="kernel module {{{ KERNMODULE }}} kernel command line check from /proc/cmdline">
+    <ind:object object_ref="obj_{{{ local_id }}}_cmdline"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ local_id }}}_cmdline"
+    version="1" comment="kernel module {{{ KERNMODULE }}} kernel command line check from /proc/cmdline">
+    <ind:filepath>/proc/cmdline</ind:filepath>
+    <ind:pattern operation="pattern match">(?:^|\s)(?:rd\.)?modules[_-]load={{{ KERNMODULE_RX }}}(?:\s|$)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
 {{% if system_with_modprobeconf_supported %}}
   <ind:textfilecontent54_test id="test_{{{ local_id }}}_modprobeconf"

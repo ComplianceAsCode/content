@@ -1,9 +1,12 @@
 #!/bin/bash
 
-if [[ ! -d /run/modprobe.d ]]; then
-    mkdir -p /run/modprobe.d
-fi
-echo "install {{{ KERNMODULE }}} /bin/true" > /run/modprobe.d/{{{ KERNMODULE }}}.conf
-{{% if "ol" in product or 'rhel' in product %}}
-echo "blacklist {{{ KERNMODULE }}}" >> /run/modprobe.d/{{{ KERNMODULE }}}.conf
-{{% endif %}}
+{{{ bash_kernel_module_disable_test(
+    KERNMODULE, KERNMODULE_RX,
+    t_blacklist="pass",
+    t_dracut="pass",
+    t_dracut_drivers="pass",
+    t_modprobe="pass",
+    t_modprobe_d_install="pass",
+    t_modules_load_d="pass_empty",
+    dir_modprobe_d_install="/run",
+) }}}
