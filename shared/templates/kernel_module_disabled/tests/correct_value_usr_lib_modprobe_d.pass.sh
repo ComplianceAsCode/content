@@ -1,6 +1,11 @@
 #!/bin/bash
 
-echo "install {{{ KERNMODULE }}} /bin/true" > /usr/lib/modprobe.d/{{{ KERNMODULE }}}.conf
-{{% if product in ["ol7", "ol8"] or 'rhel' in product %}}
-echo "blacklist {{{ KERNMODULE }}}" >> /usr/lib/modprobe.d/{{{ KERNMODULE }}}.conf
-{{% endif %}}
+{{{ bash_kernel_module_disable_test(
+    KERNMODULE, KERNMODULE_RX,
+    t_blacklist="pass",
+    t_dracut="pass",
+    t_modprobe="pass",
+    t_modprobe_d_install="pass",
+    t_modules_load_d="pass",
+    dir_modprobe_d_install="/usr/lib",
+) }}}

@@ -5,6 +5,6 @@
     t_blacklist="pass",
     t_dracut="pass",
     t_modprobe="pass",
-    t_modprobe_d_install="fail_wrong",
-    t_modules_load_d="pass",
+    t_modprobe_d_install="pass",
+    t_modules_load_d="fail",
 ) }}}

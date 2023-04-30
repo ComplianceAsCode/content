@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# Paths to configuration files and directories for modprobe
-kernel_mod_files=( "/etc/modprobe.d/*.conf" "/etc/modprobe.conf" "/etc/modules-load.d/*.conf" "/run/modules-load.d/*.conf" "/usr/lib/modules-load.d/*.conf" "/run/modprobe.d/*.conf" "/usr/lib/modprobe.d/*.conf" )
-for filename in "${kernel_mod_files[@]}"; do
-    for file in $filename; do
-        if [[ -f $file ]]; then
-            sed -i '/install {{{ KERNMODULE }}}/d' $file
-            echo "# install {{{ KERNMODULE }}} /bin/true" > $file
-        fi
-    done
-done
+{{{ bash_kernel_module_disable_test(
+    KERNMODULE, KERNMODULE_RX,
+    t_blacklist="pass",
+    t_dracut="pass_d",
+    t_modprobe="fail_commented",
+    t_modprobe_d_install="fail_commented",
+    t_modules_load_d="pass_commented",
+    dir_modprobe_d_install="all",
+) }}}

@@ -1039,3 +1039,44 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
+{{% macro dracut_conf_criterion(id_tag, directive, comment, additional="") %}}
+          <criterion test_ref="test_{{{ id_tag }}}_dracut_conf_{{{ directive }}}"
+            comment="{{{ comment }}} in {{{ directive }}} directive in dracut.conf"{{{ additional }}}/>
+          <criterion test_ref="test_{{{ id_tag }}}_dracut_conf_d_{{{ directive }}}"
+            comment="{{{ comment }}} in {{{ directive }}} directive in dracut.conf.d"{{{ additional }}}/>
+{{% endmacro %}}
+
+{{% macro dracut_conf_test_object(id_tag, directive, directive_rx, comment, setup=false) %}}
+  {{% if setup %}}
+  <constant_variable datatype="string" comment="Paths where dracut can be configured"
+    id="var_{{{ id_tag }}}_dracut_conf_paths" version="1">
+    <value>/etc/dracut.conf.d</value>
+    <value>/usr/lib/dracut/dracut.conf.d</value>
+  </constant_variable>
+
+  {{% endif %}}
+  <ind:textfilecontent54_test id="test_{{{ id_tag }}}_dracut_conf_{{{ directive }}}"
+    version="1" check="all" comment="{{{ comment }}} in dracut.conf {{{ directive }}}">
+    <ind:object object_ref="obj_{{{ id_tag }}}_dracut_conf_{{{ directive }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ id_tag }}}_dracut_conf_{{{ directive }}}"
+    version="1" comment="{{{ comment }}} in dracut.conf {{{ directive }}}">
+    <ind:filepath>/etc/dracut.conf</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ directive_rx }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_{{{ id_tag }}}_dracut_conf_d_{{{ directive }}}"
+    version="1" check="all" comment="{{{ comment }}} in dracut.conf.d {{{ directive }}}">
+    <ind:object object_ref="obj_{{{ id_tag }}}_dracut_conf_d_{{{ directive }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ id_tag }}}_dracut_conf_d_{{{ directive }}}"
+    version="1" comment="{{{ comment }}} in dracut.conf.d {{{ directive }}}">
+    <ind:path var_ref="var_{{{ id_tag }}}_dracut_conf_paths" var_check="at least one"/>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">{{{ directive_rx }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endmacro %}}

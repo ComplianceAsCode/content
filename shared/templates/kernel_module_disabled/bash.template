@@ -3,17 +3,60 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-if LC_ALL=C grep -q -m 1 "^install {{{ KERNMODULE }}}" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
-	{{% if '#' in KERNMODULE %}}
-	{{{ raise("KERNMODULE (" + KERNMODULE + ") uses sed path separator (#) in " + rule_id) }}}
-	{{% endif %}}
-	sed -i 's#^install {{{ KERNMODULE }}}.*#install {{{ KERNMODULE }}} /bin/true#g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
+set -u
+{{% set system_with_blacklisted_supported = false %}}
+{{% set system_with_dracut_supported = false %}}
+{{% if product in ["fedora", "ol7", "ol8", "rhcos4", "sle12", "sle15"] or "rhel" in product %}}
+{{% set system_with_blacklisted_supported = true %}}
+{{% endif %}}
+{{% if product in ["fedora", "rhel8", "rhel9"] %}}
+{{% set system_with_dracut_supported = true %}}
+{{% endif %}}
+{{% if '/' in KERNMODULE %}}
+{{{ raise("KERNMODULE (" + KERNMODULE + ") uses path separator (/) in " + rule_id) }}}
+{{% endif %}}
+{{% if '#' in KERNMODULE %}}
+{{{ raise("KERNMODULE (" + KERNMODULE + ") uses sed path separator (#) in " + rule_id) }}}
+{{% endif %}}
+kernmodule={{{ KERNMODULE | quote }}}
+kernmodule_rx={{{ KERNMODULE_RX | quote }}}
+modprobe_file=/etc/modprobe.d/"${kernmodule}".conf
+rx="^install\s+${kernmodule_rx}(\s|$)"
+if LC_ALL=C grep -E -q -m 1 "${rx}" -- "${modprobe_file}"; then
+    sed -Ei "s#${rx}.*#install ${kernmodule} /bin/true#g" "${modprobe_file}"
 else
-	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
-	echo "install {{{ KERNMODULE }}} /bin/true" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
+    printf "\n# Disable per security requirements\ninstall %s /bin/true\n" "${kernmodule}" >> "${modprobe_file}"
 fi
-{{% if product in ["fedora", "ol7", "ol8", "sle12", "sle15"] or "rhel" in product %}}
-if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
-	echo "blacklist {{{ KERNMODULE }}}" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
+
+rx="^\s*${kernmodule_rx}\s*$"
+for f in /etc/modules-load.d/*.conf /lib/modules-load.d/*.conf /run/modules-load.d/*.conf /usr/lib/modules-load.d/*.conf /usr/local/lib/modules-load.d/*.conf; do
+    [ -f "${f}" ] || continue
+    if LC_ALL=C grep -E -q -m 1 "${rx}" -- "${f}"; then
+        LC_ALL=C sed -Ei "/${rx}/d" -- "${f}"
+    fi
+done
+
+{{% if system_with_blacklisted_supported %}}
+if ! LC_ALL=C grep -E -q -m 1 "^\s*blacklist\s+${kernmodule_rx}\s*$" "${modprobe_file}"; then
+    printf "blacklist %s\n" "${kernmodule}" >> "${modprobe_file}"
 fi
 {{% endif %}}
+{{% if system_with_dracut_supported %}}
+dracut_file=/etc/dracut.conf.d/omit-"${kernmodule}".conf
+if ! LC_ALL=C grep -E -q -m 1 '^\s*omit_drivers+="[^"]*\s'"${kernmodule_rx}"'\s[^"]*"\s*$' "${dracut_file}"; then
+    printf 'omit_drivers+=" %s "\n' "${kernmodule}" >> "${dracut_file}"
+fi
+
+rx='^\s*((drivers|add_drivers|force_drivers)\+="[^"]*)\s{{{ KERNMODULE_RX }}}\s([^"]*")\s*$'
+for f in /etc/dracut.conf/*.conf /etc/dracut.conf.d/*.conf /usr/lib/dracut/dracut.conf.d/*.conf; do
+    [ -f "${f}" ] || continue
+    if LC_ALL=C grep -E -q -m 1 "${rx}" -- "${f}"; then
+        LC_ALL=C sed -Ei "s/${rx}/\1 \2/" -- "${f}"
+    fi
+done
+{{% endif %}}
+
+# Try to unload, this might fail for various reasons
+if LC_ALL=C grep -E -q -m 1 "^${kernmodule_rx}\s" /proc/modules; then
+    modprobe -r "${kernmodule}" || :
+fi

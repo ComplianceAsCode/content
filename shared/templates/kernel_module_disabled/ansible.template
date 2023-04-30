@@ -3,17 +3,117 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
+{{% set system_with_blacklisted_supported = false %}}
+{{% set system_with_dracut_supported = false %}}
+{{% if product in ["fedora", "ol7", "ol8", "rhcos4", "sle12", "sle15"] or "rhel" in product %}}
+{{% set system_with_blacklisted_supported = true %}}
+{{% endif %}}
+{{% if product in ["fedora", "rhel8", "rhel9"] %}}
+{{% set system_with_dracut_supported = true %}}
+{{% endif %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
   lineinfile:
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
-    regexp: 'install\s+{{{ KERNMODULE }}}'
+    regexp: 'install\s+{{{ KERNMODULE_RX }}}'
     line: "install {{{ KERNMODULE }}} /bin/true"
-{{% if product in ["fedora", "ol7", "ol8", "sle12", "sle15"] or "rhel" in product %}}
+
+- name: "Find modules-load.d files with {{{ KERNMODULE }}} load"
+  find:
+    paths:
+      - /etc/modules-load.d
+      - /lib/modules-load.d
+      - /run/modules-load.d
+      - /usr/lib/modules-load.d
+      - /usr/local/lib/modules-load.d
+    patterns: >-
+      *.conf
+    contains: >-
+      ^\s*{{{ KERNMODULE_RX }}}\s*$
+  register: r_modules_load_d_to_modify
+
+- name: "Remove {{{ KERNMODULE }}} load from modules-load.d files"
+  lineinfile:
+    path: "{{ item.path }}"
+    state: absent
+    regexp: >-
+      ^\s*{{{ KERNMODULE_RX }}}\s*$
+  loop: "{{ r_modules_load_d_to_modify.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: "Is {{{ KERNMODULE }}} as loaded module"
+  lineinfile:
+    path: /proc/modules
+    regexp: >-
+      ^{{{ KERNMODULE_RX }}}\s
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: r_in_modules
+
+- name: "Try to remove {{{ KERNMODULE }}}, might fail"
+  when:
+    - r_in_modules.found is defined
+    - r_in_modules.found >= 1
+  command:
+    argv:
+      - modprobe
+      - '-r'
+      - "{{{ KERNMODULE }}}"
+  failed_when: false
+
+{{% if system_with_blacklisted_supported  %}}
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is blacklisted
   lineinfile:
     create: yes
     dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
-    regexp: '^blacklist {{{ KERNMODULE }}}$'
+    regexp: >-
+      ^blacklist {{{ KERNMODULE_RX }}}$
     line: "blacklist {{{ KERNMODULE }}}"
+{{% endif %}}
+{{% if system_with_dracut_supported %}}
+- name: Block dracut configuration
+  block:
+    - name: Gather the package facts
+      package_facts:
+        manager: auto
+
+    - name: Block dracut package
+      when:
+        - ('dracut' in ansible_facts.packages)
+      block:
+        - name: "Find dracut configs with {{{ KERNMODULE }}} load"
+          find:
+            paths:
+              - /etc/dracut.conf.d
+              - /usr/lib/dracut/dracut.conf.d
+            patterns: >-
+              *.conf
+            contains: >-
+              ^\s*(drivers|add_drivers|force_drivers)\+="[^"]*\s{{{ KERNMODULE_RX }}}\s[^"]*"\s*$
+          register: r_dracut_configs_to_modify
+
+        - name: Replace dracut configs with {{{ KERNMODULE }}} load
+          replace:
+            path: "{{ item.path }}"
+            regexp: >-
+              ^\s*((?:drivers|add_drivers|force_drivers)\+="[^"]*)\s{{{ KERNMODULE_RX }}}\s([^"]*")\s*$
+            replace: >-
+              \g<1> \g<2>
+          vars:
+            dracut_conf_path_entry:
+              - path: /etc/dracut.conf
+          loop: "{{ r_dracut_configs_to_modify.files + dracut_conf_path_entry }}"
+          loop_control:
+            label: "{{ item.path }}"
+
+        - name: Ensure kernel module '{{{ KERNMODULE }}}' is in dracut.conf omit_drivers
+          lineinfile:
+            create: yes
+            dest: "/etc/dracut.conf.d/omit-{{{ KERNMODULE }}}.conf"
+            regexp: >-
+              ^omit_drivers\+=" {{{ KERNMODULE_RX }}} "$
+            line: >-
+              omit_drivers+=" {{{ KERNMODULE }}} "
 {{% endif %}}
