@@ -20,6 +20,8 @@
 {{% endif %}}
         <criterion test_ref="test_{{{ local_id }}}_disabled"
           comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
+        <criterion test_ref="test_{{{ local_id }}}_in_modules_load"
+          comment="kernel module {{{ KERNMODULE }}} not in modules_load.d" negate="true"/>
       </criteria>
 {{% if system_with_modprobeconf_supported %}}
       <criterion test_ref="test_{{{ local_id }}}_modprobeconf"
@@ -45,11 +47,31 @@
   <constant_variable id="var_{{{ local_id }}}_paths"
     comment="Other paths where kernel modules can be configured" datatype="string" version="1">
     <value>/etc/modprobe.d</value>
-    <value>/etc/modules-load.d</value>
     <value>/run/modprobe.d</value>
-    <value>/run/modules-load.d</value>
     <value>/usr/lib/modprobe.d</value>
+  </constant_variable>
+
+  <ind:textfilecontent54_test id="test_{{{ local_id }}}_in_modules_load"
+    version="1" check="all" comment="kernel module {{{ KERNMODULE }}} in modules-load.d">
+    <ind:object object_ref="obj_{{{ local_id }}}_in_modules_load"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ local_id }}}_in_modules_load"
+    comment="kernel module {{{ KERNMODULE }}} in modules-load.d" version="1">
+    <ind:path var_ref="var_{{{ local_id }}}_modules_load_paths" var_check="at least one"/>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*{{{ KERNMODULE_RX }}}\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <constant_variable id="var_{{{ local_id }}}_modules_load_paths"
+    comment="Paths where kernel modules loading can be configured by modules-load.d"
+    datatype="string" version="1">
+    <value>/etc/modules-load.d</value>
+    <value>/lib/modules-load.d</value>
+    <value>/run/modules-load.d</value>
     <value>/usr/lib/modules-load.d</value>
+    <value>/usr/local/lib/modules-load.d</value>
   </constant_variable>
 
 {{% if system_with_blacklisted_supported %}}
