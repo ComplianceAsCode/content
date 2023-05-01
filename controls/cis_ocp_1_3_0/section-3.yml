@@ -6,27 +6,42 @@ controls:
   controls:
   - id: '3.1'
     title: Authentication and Authorization
-    status: pending
+    status: automated
     rules: []
     controls:
+    # FIXME(rhmdnd): This control has some typos in the audit steps that cause
+    # them to not work properly (specifically, escaping characters). This needs
+    # to be fixed in CIS upstream.
     - id: 3.1.1
       title: Client certificate authentication should not be used for users
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - idp_is_configured
+        - kubeadmin_removed
       level: level_2
   - id: '3.2'
     title: Logging
     status: pending
     rules: []
     controls:
+    # FIXME(rhmdnd): The audit steps for this control need to be updated in CIS
+    # upstream so they return relevant configs.
     - id: 3.2.1
       title: Ensure that a minimal audit policy is created
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - audit_profile_set
       level: level_1
+    # FIXME(rhmdnd): The audit steps for this control need to be updated in CIS
+    # upstream so they return relevant configs.
     - id: 3.2.2
       title: Ensure that the audit policy covers key security concerns
       status: pending
-      rules: []
+      rules:
+        # FIXME(rhmdnd): This needs to also ensure we're logging access to
+        # secrets, config maps, token reviews, modification of pods,
+        # modification of deployments, the use of `pod/exec`,
+        # `pod/portforward`, `pod/proxy`, and `services/proxy`.
+        - audit_profile_set
       level: level_2
 
