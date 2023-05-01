@@ -6,6 +6,7 @@
 {{% if product in ["fedora", "ol7", "ol8", "rhcos4", "sle12", "sle15"] or "rhel" in product %}}
 {{% set system_with_blacklisted_supported = true %}}
 {{% endif %}}
+{{% set modprobe_d_install_rx = '^\s*install\s+' ~ KERNMODULE_RX ~ '\s+(?:/bin/false|/bin/true)$' %}}
 <def-group>
   <definition class="compliance"
     id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
@@ -37,7 +38,7 @@
     comment="kernel module {{{ KERNMODULE }}} disabled" version="1">
     <ind:path var_ref="var_{{{ local_id }}}_paths" var_check="at least one"/>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE_RX }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ modprobe_d_install_rx }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -75,7 +76,7 @@
   <ind:textfilecontent54_object id="obj_{{{ local_id }}}_modprobeconf"
     comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}" version="1">
     <ind:filepath>/etc/modprobe.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE_RX }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ modprobe_d_install_rx }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
