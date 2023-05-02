@@ -1,4 +1,4 @@
-# variables = var_nftable_master_config_file=/etc/sysconfig/nftables.conf
+# variables = var_nftables_master_config_file=/etc/sysconfig/nftables.conf
 {{% set nftables_family_names = ['bridge', 'arp', 'inet'] %}}
 
 # make sure file starts from empty

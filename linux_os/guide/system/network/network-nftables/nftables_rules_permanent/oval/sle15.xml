@@ -36,12 +36,12 @@
   </local_variable>
 {{% endfor %}}
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_file" version="1">
-    <ind:filepath operation="equals" var_ref="var_nftable_master_config_file"/>
+    <ind:filepath operation="equals" var_ref="var_nftables_master_config_file"/>
     <ind:pattern operation="pattern match">^[\s]*include[\s]+\"([^\s]+)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <external_variable comment="file path" datatype="string"
-                     id="var_nftable_master_config_file" version="1"/>
+                     id="var_nftables_master_config_file" version="1"/>
   <local_variable id="var_{{{ rule_id }}}_families_config_paths" datatype="string" version="1"
     comment="File paths of all needed families part of the permanent configuration">
     <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_file" />
