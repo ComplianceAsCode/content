@@ -1,5 +1,5 @@
 {{% if 'ubuntu' in product %}}
-{{% set config_command_line="--config {{{ aide_conf_path }}} " %}}
+{{% set config_command_line="--config " ~ aide_conf_path ~ " " %}}
 {{% endif %}}
 
 documentation_complete: true
