@@ -22,7 +22,7 @@ from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml, is_rule_dir
 from ssg.rule_yaml import parse_prodtype
-from ssg.utils import mkdir_p
+from ssg.utils import file_known_as_useless, mkdir_p
 from ssg_test_suite.log import LogHelper
 
 import ssg.templates
@@ -237,7 +237,7 @@ def _exclude_garbage(tarinfo):
     file_name = tarinfo.name
     if file_name.endswith('pyc'):
         return None
-    if file_name.endswith('swp'):
+    if file_known_as_useless(file_name):
         return None
     return tarinfo
 
@@ -466,7 +466,7 @@ def fetch_all_templated_tests_paths(rule_template):
             continue
 
         for filename in filenames:
-            if filename.endswith(".swp"):
+            if file_known_as_useless(filename):
                 continue
 
             # Relative path to the file becomes our results key.
@@ -502,10 +502,6 @@ def load_test(absolute_path, rule_template, local_env_yaml):
     filled_template = ssg.jinja.process_file_with_macros(
         absolute_path, jinja_dict)
     return filled_template
-
-
-def file_known_as_useless(file_name):
-    return file_name.endswith(".swp")
 
 
 def fetch_local_tests_paths(tests_dir):
