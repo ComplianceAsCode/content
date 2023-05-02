@@ -29,7 +29,7 @@ warnings:
        of the system.
 
 ocil: |-
-    Run the following commands and verify that base chains contain a policy of DROP:
+    Run the following commands and verify that base chains policy is <tt>drop</tt>:
     <pre>$ sudo nft list ruleset | grep 'hook input' </pre>
     Output should include a list of nftables similar to:
     <tt>type filter hook input priority 0; policy drop; </tt>
