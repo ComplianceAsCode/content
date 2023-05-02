@@ -44,7 +44,7 @@
   </unix:file_state>
 
   <unix:file_test id="test_accounts_users_home_netrc_file_permissions" check="all" version="1"
-                  comment=".netrc files are not group or world accessible">
+      check_existence="any_exist" comment=".netrc files are not group or world accessible">
     <unix:object object_ref="object_accounts_users_home_netrc_file_permissions"/>
     <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_gread" />
     <unix:state state_ref="state_accounts_users_home_netrc_file_permissions_gwrite" />
