@@ -86,10 +86,10 @@ def _get_jinja_environment(substitutions_dict):
             loader=AbsolutePathFileSystemLoader(),
             bytecode_cache=bytecode_cache
         )
-        _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
         _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
-        _get_jinja_environment.env.filters['escape_regex'] = escape_regex
+        _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
         _get_jinja_environment.env.filters['escape_id'] = escape_id
+        _get_jinja_environment.env.filters['escape_regex'] = escape_regex
         _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
         _get_jinja_environment.env.filters['sha256'] = sha256
 
