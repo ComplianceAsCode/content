@@ -508,12 +508,11 @@ def load_test(absolute_path, rule_template, local_env_yaml):
     template_vars = rule_template['vars']
     # Load template parameters and apply it to the test case.
     maybe_template = ssg.templates.Template.load_template(_SHARED_TEMPLATES, template_name)
-    if maybe_template is not None:
-        template_parameters = maybe_template.preprocess(template_vars, "tests")
-    else:
+    if maybe_template is None:
         raise ValueError("Rule uses template '{}' "
                          "which doesn't exist in '{}".format(template_name, _SHARED_TEMPLATES))
 
+    template_parameters = maybe_template.preprocess(template_vars, "tests")
     jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
     filled_template = ssg.jinja.process_file_with_macros(
         absolute_path, jinja_dict)
