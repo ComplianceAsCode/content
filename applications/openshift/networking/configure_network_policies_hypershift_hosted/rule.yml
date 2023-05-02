@@ -6,7 +6,7 @@ title: 'Ensure that HyperShift Hosted Namespaces have Network Policies defined.'
 
 {{% set default_jqfilter = '[.items[] | .metadata.name]' %}}
 {{% set default_api_path = '/apis/networking.k8s.io/v1/namespaces/networkpolicies' %}}
-{{% set hypershift_path = '/apis/networking.k8s.io/v1/namespaces/clusters-{{.hypershift_cluster}}/networkpolicies' %}}
+{{% set hypershift_path = '/apis/networking.k8s.io/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/networkpolicies' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ default_jqfilter %}}
 
 description: |-
@@ -37,7 +37,7 @@ ocil: |-
     Verify that the HyperShift hosted control plane namespace has an appropriate
     NetworkPolicy.
     To get NetworkPolicy for hosted control plane namespace run the following command:
-    <pre>$ oc get networkpolicies -n clusters-{{.hypershift_cluster}} -o yaml</pre>
+    <pre>$ oc get networkpolicies -n {{.hypershift_namespace_prefix}}-{{.hypershift_cluster}} -o yaml</pre>
     Make sure that the namespaces displayed in the commands of the commands match.
 
 warnings:
