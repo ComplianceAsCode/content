@@ -610,9 +610,10 @@ class RuleRunner(GenericRunner):
                     .format(self.rule_id))
             else:
                 msg = (
-                    'Rule evaluation resulted in {0}, '
-                    'instead of expected {1} during {2} stage '
-                    .format(rule_result, self.context, self.stage)
+                    'Rule {4} evaluation resulted in {0}, '
+                    'instead of expected {1} during {2} stage after {3}'
+                    .format(rule_result, self.context, self.stage,
+                            self.script_name, self.rule_id)
                 )
             LogHelper.preload_log(logging.ERROR, msg, 'fail')
         return local_success
