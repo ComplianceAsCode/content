@@ -2,17 +2,16 @@ documentation_complete: true
 
 prodtype: sle15
 
-title: 'Ensure nftables default deny firewall policy'
+title: 'Ensure nftables Default Deny Firewall Policy'
 
 description: |-
    Base chain policy is the default verdict that will be applied to packets reaching the end of
-   the chain.
+   the chain. There are two policies: accept (Default) and drop. If the policy is set to accept,
+   the firewall will accept any packet that is not configured to be denied and the packet will
+   continue traversing the network stack.
 
 rationale: |-
-    There are two policies: accept (Default) and drop. If the policy is set to accept, the
-    firewall will accept any packet that is not configured to be denied and the packet will
-    continue traversing the network stack. It is easier to allow acceptable usage than to block
-    unacceptable usage.
+   It is easier to allow acceptable usage than to block unacceptable usage.
 
 severity: medium
 
