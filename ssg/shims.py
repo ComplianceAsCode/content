@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import subprocess
+import time
 
 try:
     import queue as Queue
@@ -39,7 +40,10 @@ def input_func(prompt=None):
     try:
         return str(raw_input(prompt))
     except NameError:
-        return input(prompt)
+        try:
+            return input(prompt)
+        except EOFError:
+            time.sleep(3600)
 
 
 unicode_func = str

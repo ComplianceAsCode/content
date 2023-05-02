@@ -5,9 +5,11 @@ import collections
 import datetime
 import json
 import logging
+import os
 import os.path
 import re
 import shlex
+import signal
 import socket
 import subprocess
 import sys
@@ -345,7 +347,24 @@ class GenericRunner(object):
     def _wait_for_continue(self):
         """ In case user requests to leave machine in failed state for hands
         on debugging, ask for keypress to continue."""
-        input_func("Paused for manual debugging. Continue by pressing return.")
+        if sys.stdout.isatty():
+            input_func("Paused for manual debugging. Continue by pressing return.")
+        else:
+            print("Paused for manual debugging up to 1 hour."
+                  " Send SIGHUP to continue to PID={}".format(os.getpid()))
+
+            def signal_handler_hup(sig, frame):
+                print('Received SIGHUP, continue.')
+                signal.alarm(0)
+
+            def signal_handler_alrm(sig, frame):
+                print('Timeout, continue.')
+
+            signal.signal(signal.SIGHUP, signal_handler_hup)
+            signal.signal(signal.SIGALRM, signal_handler_alrm)
+            signal.alarm(3600)
+            signal.pause()
+            signal.alarm(0)
 
     def prepare_online_scanning_arguments(self):
         self.command_options.extend([
