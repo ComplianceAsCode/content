@@ -4,17 +4,14 @@
     {{%- set local_id = "kernmod_" ~ KERNMODULE -%}}
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
-{{% if product in ["rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product %}}
       <criteria operator="AND">
+{{% if product in ["rhcos4", "sle12", "sle15"] or 'ol' in product or 'rhel' in product %}}
         <criterion test_ref="test_{{{ local_id }}}_blacklisted"
           comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d"/>
+{{% endif %}}
         <criterion test_ref="test_{{{ local_id }}}_disabled"
           comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
       </criteria>
-{{% else %}}
-      <criterion test_ref="test_{{{ local_id }}}_disabled"
-        comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
-{{% endif %}}
 {{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product%}}
       <criterion test_ref="test_{{{ local_id }}}_modprobeconf"
         comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf"/>
