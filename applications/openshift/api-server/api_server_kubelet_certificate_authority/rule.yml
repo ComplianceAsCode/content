@@ -6,7 +6,7 @@ title: 'Configure the kubelet Certificate Authority for the API Server'
 
 {{% set default_jqfilter = '[.data."config.yaml" | fromjson | select(.apiServerArguments["kubelet-certificate-authority"]) | .apiServerArguments["kubelet-certificate-authority"][] | select(test("{{.var_apiserver_kubelet_certificate_authority}}"))]' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
-{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/configmaps/kas-config' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/configmaps/kas-config' %}}
 {{% set hypershift_jqfilter = '[.data."config.json" | fromjson | select(.apiServerArguments["kubelet-certificate-authority"]) | .apiServerArguments["kubelet-certificate-authority"][] | select(test("/etc/kubernetes/certs/kubelet-ca/ca.crt"))]' %}}
 {{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}

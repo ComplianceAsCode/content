@@ -6,7 +6,7 @@ title: Ensure that the port parameter is zero
 
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod' %}}
 {{% set default_jqfilter = '[.data."pod.yaml"]' %}}
-{{% set hypershift_path = '/api/v1/namespaces/clusters-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-scheduler' %}}
+{{% set hypershift_path = '/api/v1/namespaces/{{.hypershift_namespace_prefix}}-{{.hypershift_cluster}}/pods?labelSelector=app%3Dkube-scheduler' %}}
 {{% set hypershift_jqfilter = '[.items[0].spec.containers[0].args | join(" ")]' %}}
 {{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
