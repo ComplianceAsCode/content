@@ -1,13 +1,13 @@
 # platform = multi_platform_sle
 
-- name: Implement loopback rules
-  command: nft add rule inet filter input iif lo accept
+- name: Implement Loopback Rules
+  ansible.builtin.command: nft add rule inet filter input iif lo accept
 
-- name: Create rule to drop input IP address from loopback
-  command: nft insert rule inet filter input ip saddr 127.0.0.0/8 counter drop
+- name: Create Rule to Drop Input IP Address from Loopback
+  ansible.builtin.command: nft insert rule inet filter input ip saddr 127.0.0.0/8 counter drop
 
-- name: Check if IPv6 is disabled
-  shell: |
+- name: Check if IPv6 is Disabled in grub Configuration
+  ansible.builtin.shell: |
     [ -n "$passing" ] && passing=""
     [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ] && passing="true"
   register: ipv6_status
