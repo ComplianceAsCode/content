@@ -1097,6 +1097,13 @@ ComplianceAsCode support all built-in Jinja
 There are also some custom filters useful for content authoring defined
 in the project:
 
+banner_anchor_wrap
+-   Wrap banner text as regex, no quoting.
+
+banner_regexify
+-   Wrap banner text in such way that space (' ') is replaced with
+    `[\\s\\n]` and newline ('\n') with `(?:[\\n]+|(?:\\\\n)+)`.
+
 escape_id
 -   Replaces all non-word (regex **\\W**) characters with underscore.
     Useful for sanitizing ID strings as it is compatible with OVAL IDs
@@ -1106,3 +1113,13 @@ escape_regex
 -   Escapes characters in the string for it to be usable as a part of
     some regular expression, behaves similar to the Python 3’s
     [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).
+
+escape_yaml_key
+-   Escape uppercase letters and `^` with additional `^` and convert letters
+    to lovercase. This is because of OVAL's name argument limitations.
+
+quote
+-   Escape string to be used as POSIX shell value. Like Ansible `quote`.
+
+sha256
+-   Get SHA-256 hexdigest of value.
