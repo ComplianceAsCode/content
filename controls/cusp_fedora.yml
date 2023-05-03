@@ -16,7 +16,7 @@ controls:
     status: manual
 
   - id: 1.2
-    title: Proper BIOS or UEFI configuration
+    title: Proper BIOS or UEFI Configuration
     description: >-
       Users should disable features and devices in the BIOS or UEFI that are not in use and should only include trusted devices in the boot order.
     status: manual
@@ -30,25 +30,25 @@ controls:
   ### 2. System installation
   ###
   - id: 2.1
-    title: Security policy selection
+    title: Security Policy Selection
     description: >-
-      Users should apply the "Fedora Common User Security Policy" in the installer.
+      Users should apply the Fedora Common User Security Policy in the installer.
     status: manual
 
   - id: 2.2
-    title: Disk partitioning
+    title: Disk Partitioning
     description: >-
       Users should put the /home, /tmp, /var, /var/tmp and /var/log directories on separate partitions.
     status: manual
 
   - id: 2.3
-    title: Password security
+    title: Password Security
     description: >-
       Users should ensure that all account passwords adhere to the password rules in rule 4.1.
     status: manual
 
   - id: 2.4
-    title: Disk encryption
+    title: Disk Encryption
     description: >-
       Users should encrypt their disk with a passphrase that adheres to the password rules in rule 4.1.
     status: manual
@@ -56,7 +56,7 @@ controls:
   ### 3. General system configuration
   ###
   - id: 3.1
-    title: Bootloader security
+    title: Bootloader Security
     description: >-
       If the BIOS or UEFI does not allow password protection of the boot process, users should set a bootloader password.
     status: partial
@@ -79,7 +79,7 @@ controls:
       - grub2_uefi_password
 
   - id: 3.2
-    title: Software updates
+    title: Software Updates
     description: >-
       Users should apply updates from the GNOME Software application at least once per day.
     status: partial
@@ -87,9 +87,9 @@ controls:
       - package_gnome_software_installed
 
   - id: 3.3
-    title: Filesystem configuration
+    title: Filesystem Configuration
     description: >-
-      /home (-noexec), /tmp, /var, /var/tmp and /var/log mount option configuration
+      Directories /home (-noexec), /tmp, /var, /var/tmp and /var/log mount option configuration.
     status: automated
     rules:
       - mount_option_home_nodev
@@ -99,9 +99,9 @@ controls:
       - kernel_module_udf_disabled
 
   - id: 3.4
-    title: Crypto policy
+    title: Crypto Policy
     description: >-
-      system cryto policy configuation and ensuring it is not overridden in critical components
+      System cryto policy configuation and ensuring it is not overridden in critical components.
     status: automated
     rules:
       - configure_crypto_policy
@@ -114,9 +114,9 @@ controls:
       - configure_ssh_crypto_policy
 
   - id: 3.5
-    title: Auditing and logging
+    title: Auditing and Logging
     description: >-
-      auditd and journald configutation
+      Auditd and journald configutation.
     status: automated
     rules:
       # auditd config
@@ -188,9 +188,9 @@ controls:
       - journald_storage
 
   - id: 3.6
-    title: Files, permissions, and ownership
+    title: Files, Permissions, and Ownership
     description: >-
-      user and critical system file permissions and ownership, user identifiers,
+      User and critical system file permissions and ownership, user and group file and directory ownership, identifiers.
     status: partial
     rules:
       #  file config
@@ -239,9 +239,9 @@ controls:
       - accounts_user_dot_no_world_writable_programs
 
   - id: 3.7
-    title: Memory protection
+    title: Memory Protection
     description: >-
-      enable ASLR and ExecShield, restrict exposed kernel pointer
+      Enable ASLR and ExecShield, restrict exposed kernel pointer.
     status: automated
     rules:
       - sysctl_kernel_randomize_va_space
@@ -249,18 +249,18 @@ controls:
       - sysctl_kernel_kptr_restrict
 
   - id: 3.8
-    title: GUI configuration
+    title: GUI Configuration
     description: >-
-      do not show user list, disable xdmpc and auto login, set up idle lock and protect the settings
+      Do not show user list, disable xdmpc and auto login, set up idle lock and protect the settings.
     status: automated
     rules:
       - gnome_gdm_disable_xdmcp
       - gnome_gdm_disable_automatic_login
 
   - id: 3.9
-    title: Time and schedulers
+    title: Time and Schedulers
     description: >-
-      chrony and time-based scheduler security configuration
+      Chrony and time-based scheduler security configuration.
     status: automated
     rules:
       #  chrony
@@ -296,7 +296,7 @@ controls:
       - file_permissions_at_allow
 
   - id: "3.10"
-    title: Service minimization
+    title: Service Minimization
     description: >-
       The user should remove any services that are not necessary for normal system usage.
     status: partial
@@ -330,7 +330,7 @@ controls:
   ### 4. User access and control
   ###
   - id: 4.1
-    title: Account protection
+    title: Account Protection
     description: >-
       All account passwords must be passphrases of at least 4 words and 15 characters with at least three character classes, generated with a large wordlist and a source of randomness.
     status: partial
@@ -367,7 +367,7 @@ controls:
   - id: 4.2
     title: Sudo
     description: >-
-      secure sudo configuration
+      Secure sudo configuration.
     status: automated
     rules:
       - package_sudo_installed
@@ -381,7 +381,7 @@ controls:
   - id: 4.3
     title: SSH Server
     description: >-
-      secure ssh server configuration
+      Secure ssh server configuration.
     status: automated
     rules:
       - file_groupowner_sshd_config
@@ -423,7 +423,7 @@ controls:
   ### 5. Networking
   ###
   - id: 5.1
-    title: General network configuration
+    title: General Network Configuration
     description: >-
       If the user did not configure IPv6 on the system and it is not needed, it should be disabled.
     status: partial
@@ -468,7 +468,7 @@ controls:
       - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
   - id: 5.2
-    title: Firewall configuration
+    title: Firewall Configuration
     description: >-
       Users should ensure that all network interfaces are in the appropriate firewall zone and that ports and services allowed by the firewall are reduced to the necessary minimum.
     status: partial
@@ -480,13 +480,13 @@ controls:
   ### 6. User applications
   ###
   - id: 6.1
-    title: Web browser
+    title: Web Browser
     description: >-
       The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application. If the default Firefox application must be used, the user should apply the Common User Security Profile for Mozilla Firefox CaC profile.
     status: manual
 
   - id: 6.2
-    title: Password management
+    title: Password Management
     description: >-
       Users should install the Bitwarden AppImage from the Bitwarden site and use it to generate and store passwords for online accounts.
     status: manual
@@ -508,7 +508,7 @@ controls:
       - sysctl_fs_protected_symlinks
 
   - id: 7.2
-    title: Periodic compliance scans
+    title: Periodic Compliance Scans
     description: >-
       Users should perform periodic system scans and remediations with the Common User Security Profile by using the oscap tool or SCAP Workbench.
     status: manual
