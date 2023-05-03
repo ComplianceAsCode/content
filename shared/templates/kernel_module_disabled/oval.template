@@ -1,41 +1,42 @@
 <def-group>
   <definition class="compliance"
-  id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
+    id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
-      {{% if product in ["ol7", "ol8", "rhcos4", "sle12", "sle15"] or 'rhel' in product %}}
+{{% if product in ["ol7", "ol8", "rhcos4", "sle12", "sle15"] or 'rhel' in product %}}
       <criteria operator="AND">
         <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
-        comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
+          comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d"/>
         <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
-        comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
+          comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
       </criteria>
-      {{% else %}}
+{{% else %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
-      comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
-      {{% endif %}}
+        comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d"/>
+{{% endif %}}
 {{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product%}}
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
+      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf"
+        comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf"/>
 {{% endif %}}
 
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_disabled" version="1" check="all"
-  comment="kernel module {{{ KERNMODULE }}} disabled">
-    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_disabled" />
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_disabled"
+    version="1" check="all" comment="kernel module {{{ KERNMODULE }}} disabled">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_disabled"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_disabled"
-  version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
-    <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one" />
+    comment="kernel module {{{ KERNMODULE }}} disabled" version="1">
+    <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one"/>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <constant_variable datatype="string" comment="Other paths where kernel modules can be configured"
-  id="var_kernel_module_{{{ KERNMODULE }}}_paths" version="1">
+  <constant_variable id="var_kernel_module_{{{ KERNMODULE }}}_paths"
+    comment="Other paths where kernel modules can be configured" datatype="string" version="1">
     <value>/etc/modprobe.d</value>
     <value>/etc/modules-load.d</value>
     <value>/run/modprobe.d</value>
@@ -45,14 +46,14 @@
   </constant_variable>
 
 {{% if product in ["ol7", "ol8", "rhcos4", "sle12", "sle15"]  or 'rhel' in product %}}
-  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
-  comment="kernel module {{{ KERNMODULE }}} blacklisted">
-    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted" />
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
+    comment="kernel module {{{ KERNMODULE }}} blacklisted" version="1" check="all">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_blacklisted"
-  version="1" comment="kernel module {{{ KERNMODULE }}} blacklisted">
-    <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one" />
+    comment="kernel module {{{ KERNMODULE }}} blacklisted" version="1">
+    <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one"/>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
@@ -60,13 +61,13 @@
 {{% endif %}}
 
 {{% if "ubuntu" not in product and "rhel" not in product and "ol" not in product %}}
-  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" version="1" check="all"
-  comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
-    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf" />
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf"
+    comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" version="1" check="all">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf"
-  version="1" comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}">
+    comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}" version="1">
     <ind:filepath>/etc/modprobe.conf</ind:filepath>
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
