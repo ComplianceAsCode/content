@@ -1,0 +1,66 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Make sure that there is permanent nftables configuration is configured
+    with default chains policy drop") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_{{{ rule_id }}}_file"
+                 comment="Check the existence of top level nftables configuration file" />
+      <criterion test_ref="test_{{{ rule_id }}}_include_chains_policy"
+                 comment="Check the contents of configuration files for default chains policy"/>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_file"
+  comment="Check top level configuration file is named as expected"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_file" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_file" version="1">
+    <ind:filepath operation="equals" var_ref="var_nftables_master_config_file"/>
+    <ind:pattern operation="pattern match">^[\s]*include[\s]+\"([^\s]+)"$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <external_variable comment="file path" datatype="string"
+                     id="var_nftables_master_config_file" version="1"/>
+  <local_variable id="var_{{{ rule_id }}}_families_config_paths" datatype="string" version="1"
+                  comment="File paths of all needed families part of the permanent configuration">
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_file" />
+      </glob_to_regex>
+    </unique>
+  </local_variable>
+
+    <local_variable id="var_{{{ rule_id }}}_include_chains_configurations" datatype="string" version="1"
+                  comment="Chain configuration statements">
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_include_chains_policy" />
+      </glob_to_regex>
+    </unique>
+  </local_variable>
+
+  <ind:variable_object id="object_var_{{{ rule_id }}}_include_chains_configurations" version="1">
+    <ind:var_ref>var_{{{ rule_id }}}_include_chains_configurations</ind:var_ref>
+  </ind:variable_object>
+  
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_include_chains_policy" version="1">
+    <ind:filepath operation="pattern match" var_check="at least one"
+                  var_ref="var_{{{ rule_id }}}_families_config_paths"/>
+    <ind:pattern operation="pattern match"
+                 >\s*chain\s*\w*\s*\{([^\}]*)\}</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:variable_state id="state_{{{ rule_id }}}_include_chains_policy"
+                               comment="policy should be drop" version="1">
+   <ind:value datatype="string" operation="pattern match">\;\s*policy drop\s*\;</ind:value>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_{{{ rule_id }}}_include_chains_policy" check="all"
+                              check_existence="all_exist" version="1"
+                              comment="Check configuration files for default chains policy">
+    <ind:object object_ref="object_var_{{{ rule_id }}}_include_chains_configurations" />
+    <ind:state state_ref="state_{{{ rule_id }}}_include_chains_policy" />
+
+  </ind:variable_test>
+</def-group>

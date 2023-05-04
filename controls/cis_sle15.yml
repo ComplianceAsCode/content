@@ -1123,7 +1123,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual # rule is missing
+    status: automated
+    rules:
+      - var_nftables_master_config_file=sysconfig
+      - nftables_ensure_default_deny_policy
 
   - id: 3.5.2.9
     title: Ensure nftables service is enabled (Automated)
@@ -1141,7 +1144,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - var_nftable_master_config_file=sysconfig
+      - var_nftables_master_config_file=sysconfig
       - nftables_rules_permanent
 
   - id: 3.5.3.1.1
