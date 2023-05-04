@@ -4,63 +4,117 @@
 # complexity = low
 # disruption = medium
 
-# Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
-{{% if product in [ "sle12", "sle15"] %}}
-for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
-{{% elif product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
-{{% else %}}
-for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf; do
-{{% endif %}}
-  matching_list=$(grep -P '^(?!#).*[\s]*{{{ SYSCTLVAR }}}.*$' $f | uniq )
-  if ! test -z "$matching_list"; then
-    while IFS= read -r entry; do
-      escaped_entry=$(sed -e 's|/|\\/|g' <<< "$entry")
-      # comment out "{{{ SYSCTLVAR }}}" matches to preserve user data
-      sed -i "s/^${escaped_entry}$/# &/g" $f
-    done <<< "$matching_list"
-  fi
-done
+#
+# sysctl.d directories managed here. This might not be all sysctl.d supported
+# directories.
+#
+{{{ bash_sysctl_set_config_directories('sysctl_directories') }}}
 
 #
 # Set sysctl config file which to save the desired value
 #
-{{% if sysctl_remediate_drop_in_file == "true" %}}
-SYSCONFIG_FILE='/etc/sysctl.d/{{{ SYSCTLVAR | replace(".","_") }}}.conf'
-{{% else %}}
-SYSCONFIG_FILE="/etc/sysctl.conf"
-{{% endif %}}
+{{{ bash_sysctl_set_remediate_file_name('SYSCONFIG_FILE', SYSCTLVAR) }}}
 
+#
+# key and value at hand
+#
+sysctlvar={{{ SYSCTLVAR | quote }}}
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
 {{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
 
+{{#-
+    TODO: Seems some values contain \n, they mess up sed below this should be
+    fixed in OVAL.
+#}}
 #
-# Set runtime for {{{ SYSCTLVAR }}}
+# Replace any control characters with space. Mainly to get rid of '\n'.
+# Sysctl does have '\t', so it is allowed.
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
-
-#
-# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
-#	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
-#
-{{% if sysctl_remediate_drop_in_file == "true" %}}
-sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
-{{% endif %}}
-{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
-
+sysctl_{{{ SYSCTLID }}}_value="${sysctl_{{{ SYSCTLID }}}_value//[$'\x01-\x08\x0a-\x1f\x7f']/ }"
 {{%- else %}}
+sysctl_{{{ SYSCTLID }}}_value={{{ SYSCTLVAL | quote }}}
+{{%- endif %}}
+
+#
+# Escape SYSCTLVAR to be used as a key for replacements.
+#
+# man sysctl(8)
+#   The '/' separator is also accepted in place of a '.'.
+#
+# man sysctl.conf(5)
+#   whitespace before and after a token ... is ignored
+#   ...
+#   Lines which begin with a # or ; are considered comments and ignored.
+#   ...
+#   If a line begins with a single -, any attempts to set the value that fail
+#   will be ignored.
+#
+# man sysctl.d(5)
+#   Note that either "/" or "." may be used as separators within sysctl
+#   variable names. If the first separator is a slash, remaining slashes
+#   and dots are left intact. If the first separator is a dot, dots and
+#   slashes are interchanged.
+#
+# Note following features might not implemented properly:
+# - sysctl.d features about globs or ignoring globs.
+#
+{{#-
+Word boundary must be "=" because defafult "\>" does not work with for example
+"=1". And we want to end used match with "=" as we do not want to mixup with
+glob stuff.
+-#}}
+{{%- set word_boundary = "=" %}}
+
+#
+# {{{ SYSCTLVAR }}} regexp
+#
+{{{ bash_sed_escape_regexp("sysctlvar", "sysctlvar_rx") }}}
+{{#-
+The pattern substitution relies bash_sed_escape_regexp to do escape as
+  . -> [.]
+  / -> [/]
+both are replaced as [./], this ensures their interchangeability.
+#}}
+sysctlvar_rx="^[[:blank:]]*[-]\?[[:blank:]]*${sysctlvar_rx//\[[.\/]\]/[./]}[[:blank:]]*"
+
+#
+# Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
+#
+for d in "${sysctl_directories[@]}"; do
+    [[ -d "${d}" ]] || continue
+    for f in "${d}"/*.conf; do
+        [[ -f "${f}" ]] || continue
+        readarray -t matching_list < <(LC_ALL=C grep -e "${sysctlvar_rx}{{{ word_boundary }}}" "${f}" | sort -u || :)
+        for entry in "${matching_list[@]}"; do
+            {{{ bash_sed_escape_regexp("entry", "escaped_entry") | indent(12) }}}
+            # comment out "{{{ SYSCTLVAR }}}" matches to preserve user data
+            LC_ALL=C sed --follow-symlinks -i "s/^${escaped_entry}$/# &/" "${f}"
+        done
+    done
+done
 
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+/sbin/sysctl -q -n -w "${sysctlvar}"="${sysctl_{{{ SYSCTLID }}}_value}"
 
 #
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
+# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
+#   else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
+{{%- else %}}
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
-#	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
-#
-{{% if sysctl_remediate_drop_in_file == "true" %}}
-sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
-{{% endif %}}
-{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}
+#   else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
 {{%- endif %}}
+#
+{{%- if sysctl_remediate_drop_in_file == "true" %}}
+LC_ALL=C sed --follow-symlinks -i "/${sysctlvar_rx}{{{ word_boundary }}}/d" /etc/sysctl.conf
+{{%- endif %}}
+{{{ bash_replace_or_append(
+    "${SYSCONFIG_FILE}",
+    SYSCTLVAR,
+    "${sysctl_" ~ SYSCTLID ~ "_value}",
+    key_regex="${sysctlvar_rx}",
+    word_boundary=word_boundary,
+    ignore_case=false,
+) }}}
