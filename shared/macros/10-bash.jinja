@@ -16,6 +16,52 @@ Then, assume that variables of that names are defined and contain the correct va
 
 
 {{#
+Escape value to be used in sed s command as regexp, all but \w is quoted::
+
+Any control characters are replaced with space except \0 (null character) and
+\t (horizontal tab). \0 does not work right in shell anyways (only as input
+separator and there as 0 length). As hex \x01-\x08 \x0a-1f \x7f.
+
+There is bash_sed_escape_replacement for replacement escape.
+
+   variable=$'q"$(foo^bar)/`rm -rf`'
+   {{{ bash_sed_escape_regexp("variable", "result_variable") }}}
+   sed -Ei "s/${result_variable}/replacement/" file
+
+:param variable:        string, shell variable name with content to be escaped
+:param result_variable: string, shell variable name where escaped content is placed
+
+#}}
+{{%- macro bash_sed_escape_regexp(variable, result_variable) -%}}
+{{#-
+    First weed out control characters. See: ascii(7)
+    Then escape other than \w and ^ with [ ]. And then ^ with \^.
+    And use bash replacement to remove \n.
+-#}}
+{{{ result_variable }}}="$(LC_ALL=C sed 's/[\x01-\x08\x0a-\x1f\x7f]/ /g;s/[^^a-zA-Z0-9_]/[&]/g;s/\^/\\^/g' <<< "{{{ "${" ~ variable ~ "//[$'\n']/ }" }}}")"
+{{%- endmacro -%}}
+
+
+{{#
+   Escape value to be used in sed s as replacement, against / and \ (like \1)
+
+Any control characters are replaced with space except \0 (null character) and
+\t (horizontal tab). \0 does not work right in shell anyways. As hex \x01-\x08
+\x0a-1f \x7f
+
+:param variable shell: variable name with content to be escaped
+:param result_variable: shell variable name where escaped content is placed
+:param delim: optional delim in s expression, default '/'
+
+#}}
+{{%- macro bash_sed_escape_replacement(variable, result_variable, delim="/") -%}}
+{{{ result_variable }}}="{{{ "${" ~ variable }}}//\\/\\\\/}"
+{{{ result_variable }}}="{{{ "${" ~ result_variable }}}//[$'\x01-\x08\x0a-\x1f\x7f']/ }"
+{{{ result_variable }}}="{{{ "${" ~ result_variable }}}//\{{{ delim }}}/\\\{{{ delim ~ "}" }}}"
+{{%- endmacro -%}}
+
+
+{{#
     Make sure that we have a line like this in pamFile (additional options are left as-is):
     type control module option=valueRegexArg
 
