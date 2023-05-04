@@ -25,14 +25,6 @@ utils.compare\_ds module
    :undoc-members:
    :show-inheritance:
 
-utils.count\_oval\_objects module
----------------------------------
-
-.. automodule:: utils.count_oval_objects
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.create\-stig\-overlay module
 ----------------------------------
 
