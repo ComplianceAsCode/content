@@ -89,7 +89,7 @@
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_syscall_events
--   Ensure there is an audit rule to record for all uses of 
+-   Ensure there is an audit rule to record for all uses of
     specified system call
 
 -   Parameters:
@@ -644,11 +644,11 @@ When the remediation is applied duplicate occurrences of `key` are removed.
            argument needs to be added or modified.
         -  **new_argument** - (optional) the argument to be added if not
            already present, eg, `dcredit=-1`. It is required when the argument
-           is not already present and needs to be added. 
+           is not already present and needs to be added.
         -  **remove_argument** - (optional) the argument will be
            removed, if the argument is present. This parameter must not be
            specified when the argument is being added or modified.
-       
+
 -    Language: Ansible, OVAL
 
 #### sebool
@@ -936,7 +936,7 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
         is considered as a blob and the field `value` has to contain a capture regex.
-   
+
     -   **regex_data** - if set to `"true"` and combined with `xccdf_variable`, it will use the value of `xccdf_variable` as a regex
         and does pattern match operation instead of equal operation.
 
@@ -1044,7 +1044,7 @@ where *LANG* should be the language  identifier in lower case, e.g.
 3) Create a file called `template.yml` within the template directory. This file
 stores template metadata. Currently, it stores list of supported languages. Note
 that each language listed in this file must have associated implementation
-file with the *.template* extension, see above. 
+file with the *.template* extension, see above.
 
     An example can look like this:
 
@@ -1097,6 +1097,13 @@ ComplianceAsCode support all built-in Jinja
 There are also some custom filters useful for content authoring defined
 in the project:
 
+banner_anchor_wrap
+-   Wrap banner text as regex, no quoting.
+
+banner_regexify
+-   Wrap banner text in such way that space (' ') is replaced with
+    `[\\s\\n]` and newline ('\n') with `(?:[\\n]+|(?:\\\\n)+)`.
+
 escape_id
 -   Replaces all non-word (regex **\\W**) characters with underscore.
     Useful for sanitizing ID strings as it is compatible with OVAL IDs
@@ -1106,3 +1113,13 @@ escape_regex
 -   Escapes characters in the string for it to be usable as a part of
     some regular expression, behaves similar to the Python 3’s
     [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).
+
+escape_yaml_key
+-   Escape uppercase letters and `^` with additional `^` and convert letters
+    to lovercase. This is because of OVAL's name argument limitations.
+
+quote
+-   Escape string to be used as POSIX shell value. Like Ansible `quote`.
+
+sha256
+-   Get SHA-256 hexdigest of value.
