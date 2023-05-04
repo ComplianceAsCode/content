@@ -11,18 +11,33 @@ pkg_manager: "dnf"
 init_system: "systemd"
 
 # The fingerprints below are retrieved from https://getfedora.org/keys/
-latest_version: 36
-latest_release_fingerprint: "53DED2CB922D8B8D9E63FD18999F7CBF38AB71F4"
-latest_pkg_version: "38ab71f4"
-latest_pkg_release: "60242b08"
+latest_version: 38
+latest_release_fingerprint: "6A51BBABBA3D5467B6171221809A8D7CEB10B464"
+latest_pkg_version: "eb10b464"
+latest_pkg_release: "6202d9c6"
 
-previous_version: 35
-previous_release_fingerprint: "787EA6AE1147EEE56C40B30CDB4639719867C58F"
-previous_pkg_version: "9867c58f"
-previous_pkg_release: "601c49ca"
+previous_version: 37
+previous_release_fingerprint: "ACB5EE4E831C74BB7C168D27F55AD3FB5323552A"
+previous_pkg_version: "5323552a"
+previous_pkg_release: "6112bcdc"
 
 cpes_root: "./applicability"
 cpes:
+  - fedora_40:
+      name: "cpe:/o:fedoraproject:fedora:40"
+      title: "Fedora 40"
+      check_id: installed_OS_is_fedora
+
+  - fedora_39:
+      name: "cpe:/o:fedoraproject:fedora:39"
+      title: "Fedora 39"
+      check_id: installed_OS_is_fedora
+
+  - fedora_38:
+      name: "cpe:/o:fedoraproject:fedora:38"
+      title: "Fedora 38"
+      check_id: installed_OS_is_fedora
+
   - fedora_37:
       name: "cpe:/o:fedoraproject:fedora:37"
       title: "Fedora 37"
@@ -31,9 +46,4 @@ cpes:
   - fedora_36:
       name: "cpe:/o:fedoraproject:fedora:36"
       title: "Fedora 36"
-      check_id: installed_OS_is_fedora
-
-  - fedora_35:
-      name: "cpe:/o:fedoraproject:fedora:35"
-      title: "Fedora 35"
       check_id: installed_OS_is_fedora
