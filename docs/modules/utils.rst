@@ -41,14 +41,6 @@ utils.find\_duplicates module
    :undoc-members:
    :show-inheritance:
 
-utils.find\_shadowed\_files module
-----------------------------------
-
-.. automodule:: utils.find_shadowed_files
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.fix\-rules module
 -----------------------
 
