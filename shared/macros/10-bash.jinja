@@ -16,6 +16,77 @@ Then, assume that variables of that names are defined and contain the correct va
 
 
 {{#
+Escape value to be used in *sed* **s** command as regexp, all but ``\w`` is quoted
+
+All control characters are removed except ``\t`` (horizontal tab).
+
+There is *bash_sed_escape_replacement* for replacement escape.
+
+Example calls:
+
+    Unsafe variable::
+
+        variable=$'q"$(foo^bar)/`rm -rf`'
+        {{{ bash_sed_escape_regexp("variable", "result_variable") }}}
+        sed -Ei "s/${result_variable}/replacement/" file
+
+    Full set::
+
+        {{{ bash_sed_escape_regexp("variable", "variable") }}}
+        {{{ bash_sed_escape_replacement("replacement", "replacement") }}}
+        sed -Ei "s/${variable}/${replacement}/" file
+
+:param variable: Shell variable name with content to be escaped
+:type variable: str
+:param result_variable: Shell variable name where escaped content is placed
+:type result_variable: str
+
+#}}
+{{%- macro bash_sed_escape_regexp(variable, result_variable) -%}}
+{{#-
+    First weed out control characters. See: ascii(7)
+    Then escape other than \w and ^ with [ ]. And then ^ with \^.
+-#}}
+{{%- if (variable is not string) or ((variable | quote) != variable) -%}}
+{{{ raise("variable '" ~ variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{%- if (result_variable is not string) or ((result_variable | quote) != result_variable) -%}}
+{{{ raise("result_variable '" ~ result_variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{{ result_variable }}}="$(set -o pipefail;LC_ALL=C sed 's/[\x00-\x08\x0a-\x1f\x7f]//g;s/[^^a-zA-Z0-9_]/[&]/g;s/\^/\\^/g' <<< "{{{ "${" ~ variable ~ "}" }}}" | tr -d '\n')"
+{{%- endmacro -%}}
+
+
+{{#
+Escape value to be used in *sed* **s** command as replacement, against ``/`` and ``\`` (like ``\1``)
+
+All control characters are removed except ``\t`` (horizontal tab).
+
+There is *bash_sed_escape_regexp* for regexp escape.
+
+:param variable: Shell variable name with content to be escaped
+:type variable: str
+:param result_variable: Shell variable name where escaped content is placed
+:type result_variable: str
+:param delim: Delimiter character in **s** command
+:type delim: char
+
+#}}
+{{%- macro bash_sed_escape_replacement(variable, result_variable, delim="/") -%}}
+{{%- if (variable is not string) or ((variable | quote) != variable) -%}}
+{{{ raise("variable '" ~ variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{%- if (result_variable is not string) or ((result_variable | quote) != result_variable) -%}}
+{{{ raise("result_variable '" ~ result_variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{%- if (delim is not string) or ((delim | length) != 1) -%}}
+{{{ raise("delim '" ~ delim ~ "' must be char aka string with legth of one.") }}}
+{{%- endif -%}}
+{{{ result_variable }}}="$(LC_ALL=C sed 's/[\x00-\x08\x0a-\x1f\x7f]//g;s/\\/\\\\/g{{% if delim == '^' %}};s/\^/\\^/g{{% else %}};s^{{{ delim }}}^\\{{{ delim }}}^g{{% endif %}};s/[&]/\\&/g' <<< "{{{ "${" ~ variable ~ "}" }}}" | tr -d '\n')"
+{{%- endmacro -%}}
+
+
+{{#
     Make sure that we have a line like this in pamFile (additional options are left as-is):
     type control module option=valueRegexArg
 
