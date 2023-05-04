@@ -6,24 +6,35 @@ platform: ocp4-node
 
 title: 'kubelet - Set Up Sysctl to Enable Protect Kernel Defaults - Check Parameter vm.panic_on_oom'
 
+{{% set kernel_root_maxbytes_val = 25000000 %}}
+{{% set kernel_root_maxkeys_val = 1000000 %}}
+{{% set kernel_panic_val = 10 %}}
+{{% set kernel_panic_on_oops_val = 1 %}}
+{{% set vm_overcommit_memory_val = 1 %}}
+{{% set vm_panic_on_oom_val = 0 %}}
+
 description: |-
   <p>
-  Setup required tuned kernel parameters before enabling overwritten protection.
+  Setup required tuned kernel parameters before enabling overwritten protection. Note
+  that depending on the Linux distribution and its version that your cluster nodes are
+  running, these parameters might be already set up for you. Please refer to the rule
+  instructions for a check.
   </p>
 
   <p>
   Before enabling kernel parameter overwritten protection default, 
-  it's important and necessary to first create a <tt>MachineConfig</tt>
+  it's important to check if these values are already set to the required values.
+  If not, it is neccessary to first create a <tt>MachineConfig</tt>
   object that persist the required sysctl's. The required sysctl's are the following:
   </p>
 
   <pre>
-  kernel.keys.root_maxbytes=25000000
-  kernel.keys.root_maxkeys=1000000
-  kernel.panic=10
-  kernel.panic_on_oops=1
-  vm.overcommit_memory=1
-  vm.panic_on_oom=0
+  kernel.keys.root_maxbytes={{{ kernel_root_maxbytes_val }}}
+  kernel.keys.root_maxkeys={{{ kernel_root_maxkeys_val }}}
+  kernel.panic={{{ kernel_panic_val }}}
+  kernel.panic_on_oops={{{ kernel_panic_on_oops_val }}}
+  vm.overcommit_memory={{{ vm_overcommit_memory_val }}}
+  vm.panic_on_oom={{{ vm_panic_on_oom_val }}}
   </pre>
   
   <p>
@@ -60,7 +71,7 @@ description: |-
 
   <p>
   To configure, follow the directions in
-  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/nodes/nodes/nodes-nodes-managing.html",
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-managing.html",
               text="the documentation") }}}
   </p>
 
@@ -78,12 +89,12 @@ severity: medium
 ocil_clause: 'the kubelet can modify kernel parameters'
 
 ocil: |-
-  Run the following command on the kubelet node(s):
-  <pre>$ sudo grep kernel.panic /etc/sysctl.d/90-kubelet.conf</pre>
-  The output should return <tt>a value</tt>.
+  Run the following command on the kubelet node(s) to check parameter kernel.panic:
+  <pre>$ sysctl kernel.panic</pre>
+  The output should return {{{ kernel_panic_val }}}
 
-#identifiers:
-#   cce@ocp4: 
+identifiers:
+   cce@ocp4: CCE-86086-6
 
 references:
   cis@ocp4: 4.2.6
@@ -92,7 +103,8 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 template:
-  name: lineinfile
+  name: sysctl
   vars:
-    path: /etc/sysctl.d/90-kubelet.conf
-    text: "kernel.panic=10"
+      sysctlvar: vm.panic_on_oom
+      sysctlval: '0'
+      datatype: int
