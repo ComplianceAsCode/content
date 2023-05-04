@@ -6,7 +6,7 @@
 
 - name: "Get nfs and nfs4 mount points, that don't have {{{ MOUNTOPTION }}}"
   # 'no' before MOUNTOPTION isn't omission, it means a negation
-  command: findmnt --fstab --types nfs,nfs4 -O no{{{ MOUNTOPTION }}} -n
+  command: findmnt --fstab --types nfs,nfs4 -O no{{{ MOUNTOPTION }}} -n -P
   register: points_register
   check_mode: no
   changed_when: False
@@ -15,10 +15,11 @@
 
 - name: "Add {{{ MOUNTOPTION }}} to nfs and nfs4 mount points"
   mount:
-    path: "{{ item.split()[0] }}"
-    src: "{{ item.split()[1] }}"
-    fstype: "{{ item.split()[2] }}"
-    state: mounted
-    opts: "{{ item.split()[3] }},{{{ MOUNTOPTION }}}"
-  when: (points_register.stdout | length > 0)
+    path: "{{ item | regex_search('TARGET=\"([^\"]+)\"','\\1') | first }}"
+    src: "{{ item | regex_search('SOURCE=\"([^\"]+)\"','\\1') | first }}"
+    fstype: "{{ item | regex_search('FSTYPE=\"([^\"]+)\"','\\1') | first }}"
+    state: present
+    opts: "{{ item | regex_search('OPTIONS=\"([^\"]+)\"','\\1') | first }},{{{ MOUNTOPTION }}}"
+  # ansible doesn't escape correctly the tab character
+  when: (points_register.stdout | length > 0) and '\\x09' not in item
   with_items: "{{ points_register.stdout_lines }}"
