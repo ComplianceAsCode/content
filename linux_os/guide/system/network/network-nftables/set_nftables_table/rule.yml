@@ -1,16 +1,26 @@
 documentation_complete: true
 
-
 title: 'Ensure a Table Exists for Nftables'
 
 description: |-
-   Tables in nftables hold chains. Each table only has one address family and only applies
-   to packets of this family. Tables can have one of six families.
+    Tables in nftables hold chains. Each table only has one address family and only applies
+    to packets of this family. Tables can have one of six families.
+    {{% if "rhel" in product %}}
+    {{{ full_name }}} uses <tt>firewalld</tt> for firewall management. When <tt>nftables</tt> is
+    the firewall backend used by <tt>firewalld</tt>, an <tt>{{{ xccdf_value("var_nftables_family") }}}</tt>
+    family table called <tt>{{{ xccdf_value("var_nftables_table") }}}</tt> is used.
+
+    To verify that the <tt>nftables</tt> table used by <tt>firewalld</tt> exists, run the following
+    command:
+    <pre>$ sudo nft list tables
+    table {{{ xccdf_value("var_nftables_family") }}} {{{ xccdf_value("var_nftables_table") }}}
+    </pre>
+    This table is automatically created by <tt>firewalld</tt> when it is started.
+    {{%- endif %}}
 
 rationale: |-
-    Nftables doesn't have any default tables. Without a table being built, nftables will not filter
-    network traffic.
-    Note: adding rules to a running nftables can cause loss of connectivity to the system.
+    Nftables doesn't have any default tables. Without a table being built, nftables will not
+    filter network traffic.
 
 severity: medium
 
@@ -30,12 +40,18 @@ references:
 ocil_clause: 'a nftables table does not exist'
 
 warnings:
-   - general: "Adding rules to a running nftables can cause loss of connectivity to the system."
+    - general: |-
+        Adding or editing rules in a running nftables can cause loss of connectivity to the system.
+    - general: |-
+        Both the SCE check and remediation for this rule only consider runtime settings.
+        There is no specific file to check as it depends on each site's policy. Therefore, check
+        and remediation use the nft command directly. The fix is not persistent across system
+        reboots.
 
 ocil: |-
     To verify that a nftables table exists, run the following command:
     <pre>$ sudo nft list tables</pre>
     Output should include a list of nftables similar to:
     <tt>
-      table inet filter
+      table {{{ xccdf_value("var_nftables_family") }}} {{{ xccdf_value("var_nftables_table") }}}
     </tt>
