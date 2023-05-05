@@ -1,6 +1,40 @@
 import ssg.utils
 
 
+def validate_sysctlval_type(data):
+    # Testing type helps logic in OVAL, remediations and tests
+    # We test "", string and what is left is list.
+
+    if isinstance(data["sysctlval"], list):
+        if len(data["sysctlval"]) == 0:
+            raise ValueError(
+                "The sysctlval parameter of {0} is an empty list".format(
+                    data["_rule_id"]))
+        for val in data["sysctlval"]:
+            if isinstance(data["sysctlval"], str):
+                return False
+    elif not(isinstance(data["sysctlval"], str)):
+        return False
+
+    return True
+
+
+def validate(data):
+    if not validate_sysctlval_type(data):
+        raise ValueError(
+            "The 'sysctlval' parameter of {0} must be either not set,"
+            " string or, list of strings".format(
+                data["_rule_id"]))
+
+    # Configure data for test scenarios
+    if data["datatype"] not in ["string", "int"]:
+        raise ValueError(
+            "Test scenarios for data type '{0}' are not implemented yet.\n"
+            "Please check if rule '{1}' has correct data type and edit "
+            "{2} to add tests for it.".format(
+                data["datatype"], data["_rule_id"], __file__))
+
+
 def preprocess(data, lang):
     data["sysctlid"] = ssg.utils.escape_id(data["sysctlvar"])
     if not data.get("sysctlval"):
@@ -11,18 +45,6 @@ def preprocess(data, lang):
     data["flags"] = "SR" + ipv6_flag
     if "operation" not in data:
         data["operation"] = "equals"
-    if isinstance(data["sysctlval"], list) and len(data["sysctlval"]) == 0:
-        raise ValueError(
-            "The sysctlval parameter of {0} is an empty list".format(
-                data["_rule_id"]))
-
-    # Configure data for test scenarios
-    if data["datatype"] not in ["string", "int"]:
-        raise ValueError(
-            "Test scenarios for data type '{0}' are not implemented yet.\n"
-            "Please check if rule '{1}' has correct data type and edit "
-            "{2} to add tests for it.".format(
-                data["datatype"], data["_rule_id"], __file__))
 
     if data["sysctlval"] == "":
         if data["datatype"] == "int":
@@ -44,4 +66,7 @@ def preprocess(data, lang):
             data["sysctl_wrong_value"] = str((int(data["sysctlval"]) + 1) % 2)
         elif data["datatype"] == "string":
             data["sysctl_wrong_value"] = "wrong_value"
+
+    validate(data)
+
     return data
