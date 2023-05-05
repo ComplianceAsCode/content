@@ -1581,6 +1581,29 @@ Part of the grub2_bootloader_argument_absent template.
 {{%- endmacro -%}}
 
 
+{{#
+Ansible value containing sysctl.d directories to handle, as ansible array
+
+This is not about directories sysctl supports in product, but what directories
+are considered managed.
+
+:param all_possible: boolean, default false, limit per product
+
+See: sysctl.conf(5)
+#}}
+{{%- macro ansible_sysctl_set_config_directories(all_possible=false) -%}}
+{{%- set lst = ['/etc/sysctl.d', '/run/sysctl.d'] -%}}
+{{% if product in [ "sle12", "sle15"] or all_possible -%}}
+{{%- set lst = lst + ['/usr/local/lib/sysctl.d'] -%}}
+{{%- endif -%}}
+{{%- if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] or all_possible -%}}
+{{%- set lst = lst + ['/usr/lib/sysctl.d'] -%}}
+{{%- set lst = lst + ['/lib/sysctl.d'] -%}}
+{{%- endif -%}}
+{{{- lst -}}}
+{{%- endmacro -%}}
+
+
 {{%- macro ansible_mount_conditional(path) -%}}
 '"{{{ path }}}" in ansible_mounts | map(attribute="mount") | list'
 {{%- endmacro -%}}
