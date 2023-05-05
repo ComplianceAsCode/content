@@ -5,9 +5,7 @@
 # disruption = medium
 - name: List /etc/sysctl.d/*.conf files
   find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
+    paths: {{{ ansible_sysctl_set_config_directories }}}
     contains: ^[\s]*kernel.core_pattern.*$
     patterns: '*.conf'
     file_type: any
