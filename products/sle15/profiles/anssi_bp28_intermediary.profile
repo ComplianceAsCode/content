@@ -22,4 +22,9 @@ description: |-
     Manual review is required to assess if the installed services are minimal.
 
 selections:
-  - anssi:all:intermediary
+    - anssi:all:intermediary
+    # remove some rules from profile
+    - '!accounts_passwords_pam_faillock_deny'
+    - '!accounts_passwords_pam_faillock_deny_root'
+    - '!accounts_passwords_pam_faillock_interval'
+    - '!accounts_passwords_pam_faillock_unlock_time'

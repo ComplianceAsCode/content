@@ -13,6 +13,10 @@ description: |-
 
 selections:
     -  pcidss_4:all:base
-    -  '!service_ntp_enabled'
-    -  '!service_ntpd_enabled'
-    -  '!service_timesyncd_enabled'
+    # remove some rules from profile
+    - '!service_ntp_enabled'
+    - '!service_ntpd_enabled'
+    - '!service_timesyncd_enabled'
+    - '!accounts_passwords_pam_faillock_deny'    
+    - '!accounts_passwords_pam_faillock_deny_root'
+    - '!accounts_passwords_pam_faillock_unlock_time'

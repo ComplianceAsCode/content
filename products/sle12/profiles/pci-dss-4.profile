@@ -77,4 +77,7 @@ selections:
     -  sshd_use_approved_ciphers
     -  sshd_use_approved_macs
     -  sysctl_fs_suid_dumpable
-    
+    # remove some rules from profile
+    - '!accounts_passwords_pam_faillock_deny'    
+    - '!accounts_passwords_pam_faillock_deny_root'
+    - '!accounts_passwords_pam_faillock_unlock_time'
