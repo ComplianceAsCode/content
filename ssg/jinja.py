@@ -23,6 +23,8 @@ from .utils import (required_key,
                     banner_anchor_wrap,
                     escape_id,
                     escape_regex,
+                    escape_regex_all,
+                    escape_regex_sq,
                     escape_yaml_key,
                     sha256
                     )
@@ -94,6 +96,8 @@ def _get_jinja_environment(substitutions_dict):
         _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
         _get_jinja_environment.env.filters['escape_id'] = escape_id
         _get_jinja_environment.env.filters['escape_regex'] = escape_regex
+        _get_jinja_environment.env.filters['escape_regex_all'] = escape_regex_all
+        _get_jinja_environment.env.filters['escape_regex_sq'] = escape_regex_sq
         _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
         _get_jinja_environment.env.filters['quote'] = shell_quote
         _get_jinja_environment.env.filters['sha256'] = sha256

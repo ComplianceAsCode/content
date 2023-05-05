@@ -343,12 +343,33 @@ def mkdir_p(path):
             raise
 
 
+# Mimic from python 3.11, but drop ws
+# SPECIAL_CHARS
+# closing ')', '}' and ']'
+# '-' (a range in character set)
+# '&', '~', (extended character set operations)
+# '#' (comment) and WHITESPACE (ignored) in verbose mode
+_special_chars_map = {i: '\\' + chr(i) for i in b'()[]{}?*+-|^$\\.&~#'}
+
 def escape_regex(text):
     # We could use re.escape(), but it escapes too many characters, including plain white space.
-    # In python 3.7 the set of charaters escaped by re.escape is reasonable, so lets mimic it.
-    # See https://docs.python.org/3/library/re.html#re.sub
     # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
-    return re.sub(r"([#$&*+.^`|~:()-])", r"\\\1", text)
+    return text.translate(_special_chars_map)
+
+
+# all special characters, by ascii order
+_all_special_chars_map = {i: '\\' + chr(i) for i in b'!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~'}
+_all_special_chars_map_sq = {
+    i: (('[' + chr(i) + ']') if i != '^' else ('\\' + chr(i)))
+    for i in b'!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~'
+}
+
+def escape_regex_all(text):
+    return text.translate(_all_special_chars_map)
+
+
+def escape_regex_sq(text):
+    return text.translate(_all_special_chars_map_sq)
 
 
 def escape_id(text):

@@ -1114,6 +1114,18 @@ escape_regex
     some regular expression, behaves similar to the Python 3’s
     [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).
 
+escape_regex_all
+-   Escapes characters in the string for it to be usable as a part of
+    some regular expression.
+    Escape all but unprintable and **\w**.
+    [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).
+
+escape_regex_sq
+-   Escapes characters in the string for it to be usable as a part of
+    some regular expression.
+    Use `.` -> `[.]` style escape method. And `^` is replaced with `\^'.
+    Escape all but unprintable and **\w**.
+
 escape_yaml_key
 -   Escape uppercase letters and `^` with additional `^` and convert letters
     to lovercase. This is because of OVAL's name argument limitations.
