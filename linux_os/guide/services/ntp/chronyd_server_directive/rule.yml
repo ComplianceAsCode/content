@@ -28,7 +28,7 @@ references:
 ocil_clause: 'an authoritative remote time server is not configured or configured with pool directive'
 
 ocil: |-
-    Run the following command and verify that time sources are only configure with <tt>server</tt> directive:
+    Run the following command and verify that time sources are only configured with <tt>server</tt> directive:
     <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>
     A line with the appropriate server should be returned, any line returned starting with <tt>pool</tt> is a finding.
 
