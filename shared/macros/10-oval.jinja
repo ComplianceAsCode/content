@@ -3,6 +3,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 :param products: Name of products
 :type products: str
+
 #}}
 {{%- macro oval_affected(products) %}}
 <affected family="unix">
@@ -12,6 +13,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Constants.
+
 #}}
 {{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
 
@@ -976,6 +978,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
   :param object_id: Object id to be created.
   :type object_id: str
+
 #}}
 {{%- macro create_interactive_users_list_object(object_id) -%}}
   {{%- set ignored_users_list="(nobody|nfsnobody)" %}}

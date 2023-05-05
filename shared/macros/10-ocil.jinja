@@ -1,5 +1,6 @@
 {{#
     How to log in to a Red Hat CoreOS Node
+
 #}}
 {{% macro rhcos_node_login_instructions() -%}}
     As a user with administrator privileges, log into a node in the relevant pool:
@@ -17,6 +18,7 @@
 
 {{#
   Macro that creates a check from :code:`oc` output
+
 #}}
 {{% macro ocil_oc_pipe_jq_filter(object, jqfilter, namespace=none, all_namespaces=false) -%}}
 oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
@@ -79,6 +81,7 @@ ocil: |-
 
 {{#
     OCIL clause for adding a syscall to audit logs
+
 #}}
 {{% macro ocil_clause_entry_audit_syscall() -%}}
 ocil_clause: "no line is returned"
@@ -228,6 +231,7 @@ ocil_clause: "the package is installed"
 
 :param package: The package to check
 :type package: str
+
 #}}
 {{%- macro dpkg_complete_ocil_entry_package(package) %}}
 ocil: |-
@@ -477,6 +481,7 @@ ocil: |-
 
 {{#
     An OCIL clause for an sshd option
+
 #}}
 {{% macro ocil_clause_entry_sshd_option() -%}}
 ocil_clause: "the required value is not set"
@@ -1082,6 +1087,7 @@ Write out the OCIL for generating the common check for Firefox configuration
 :type config: str
 :param value: Expected value for preference
 :type value: str
+
 #}}
 {{% macro ocil_firefox_config(preference, config, value) -%}}
 {{%- if value == "true" -%}}
@@ -1109,6 +1115,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 
 :param syscall: system call
 :type syscall: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification(syscall, key) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to use the {{{ syscall }}} system call.
@@ -1138,6 +1145,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :type syscall: str
 :param position: the position of the system call O_CREAT argument, eg. a2
 :type position: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification_o_creat(syscall, position) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to create files using the {{{ syscall }}} system call with O_CREAT flag.
@@ -1166,6 +1174,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :type syscall: str
 :param position: the position of the system call O_TRUNC_WRITE argument, eg. a2
 :type position: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, position) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to modify files using the {{{ syscall }}} system call with O_TRUNC_WRITE flag.
@@ -1194,6 +1203,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :type syscall: str
 :param position: the position of the system call O_TRUNC_WRITE and O_CREAT arguments, eg. a2
 :type position: str
+
 #}}
 {{% macro ocil_audit_rules_unsuccessful_file_modification_rule_order(syscall, position) -%}}
     Verify that rules for unsuccessful calls of the {{{ syscall }}} syscall are in the order shown below.
