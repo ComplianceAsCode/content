@@ -132,6 +132,9 @@ class Product(object):
     def __len__(self):
         return len(self.primary_data)
 
+    def get(self, key, default=None):
+        return self.primary_data.get(key, default)
+
     def _load_from_filename(self, filename):
         self.primary_data = open_raw(filename)
 
@@ -201,7 +204,7 @@ def get_profile_files_from_root(env_yaml, product_yaml):
     profile_files = []
     if env_yaml:
         profiles_root = get_profiles_directory(env_yaml)
-        base_dir = os.path.dirname(product_yaml)
+        base_dir = product_yaml["product_dir"]
         profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
                                .format(profiles_root=profiles_root, base_dir=base_dir)))
     return profile_files

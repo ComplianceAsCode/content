@@ -56,7 +56,7 @@ def get_env_yaml(build_config_yaml, product_yaml):
 
 def get_all_content_directories(env_yaml, product_yaml):
     relative_benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
-    benchmark_root = os.path.join(os.path.dirname(product_yaml), relative_benchmark_root)
+    benchmark_root = os.path.join(product_yaml["product_dir"], relative_benchmark_root)
 
     add_content_dirs = get_additional_content_directories(env_yaml)
     return [benchmark_root] + add_content_dirs
@@ -119,6 +119,9 @@ def main():
     args = parser.parse_args()
 
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
+    product_yaml = None
+    if args.product_yaml:
+        product_yaml = ssg.products.Product(args.product_yaml)
     product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(env_yaml)
     product_cpes.load_content_cpes(env_yaml)
@@ -132,9 +135,9 @@ def main():
 
     loader = ssg.build_yaml.BuildLoader(
         None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
-    load_benchmark_source_data_from_directory_tree(loader, env_yaml, args.product_yaml)
+    load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
-    profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, args.product_yaml, loader, product_cpes, args.controls_dir)
+    profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, product_yaml, loader, product_cpes, args.controls_dir)
 
     save_everything(args.resolved_base, loader, profiles_by_id.values())
 

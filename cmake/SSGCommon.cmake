@@ -319,6 +319,7 @@ macro(ssg_build_sce PRODUCT)
             OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
             COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         )
     else()
         # Here we fake generating SCE metadata by creating an empty file.
@@ -329,12 +330,12 @@ macro(ssg_build_sce PRODUCT)
             COMMAND ${CMAKE_COMMAND} -E make_directory "${BUILD_CHECKS_DIR}/sce"
             COMMAND ${CMAKE_COMMAND} -E touch "${BUILD_CHECKS_DIR}/sce/metadata.json"
             COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         )
     endif()
     add_custom_target(
         generate-internal-${PRODUCT}-sce-metadata.json
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
     )
 endmacro()
 

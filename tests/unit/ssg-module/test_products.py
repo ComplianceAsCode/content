@@ -28,12 +28,13 @@ def test_get_all(ssg_root):
     assert "firefox" not in products.linux
 
 
-def test_product_yaml_load(testing_product_yaml_path):
+def test_product_yaml(testing_product_yaml_path):
     product = ssg.products.Product(testing_product_yaml_path)
     assert "product" in product
     assert product["product"] == "rhel7"
     assert product["pkg_system"] == "rpm"
     assert product["product_dir"].endswith("data")
+    assert product.get("X", "x") == "x"
 
     copied_product = dict()
     copied_product.update(product)
