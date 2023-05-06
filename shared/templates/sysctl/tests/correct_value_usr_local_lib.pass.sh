@@ -1,4 +1,5 @@
 #!/bin/bash
+# platform = multi_platform_sle
 {{% if SYSCTLVAL == "" %}}
 # variables = sysctl_{{{ SYSCTLID }}}_value={{{ SYSCTL_CORRECT_VALUE }}}
 {{% endif %}}
