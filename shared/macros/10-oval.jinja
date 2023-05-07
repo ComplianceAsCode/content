@@ -1004,6 +1004,44 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endmacro %}}
 
 
+{{#
+Convert list to set, complicated as one set can contain 1 or 2 items, but list
+can contain more thant that. Set needs to be build from sub sets of items or
+previous level sets. Do it recursiverly.
+
+:param list_to_handle: list of elements
+:param _result_list:   internal, do not set
+#}}
+{{%- macro oval_list_to_set(list_to_handle, _result_list=[]) -%}}
+{{%- if (list_to_handle | length) == 0 -%}}
+{{%- if (_result_list | length) <= 1 -%}}
+{{%- for item in _result_list %}}
+{{{ item }}}
+{{%- endfor -%}}
+{{%- else -%}}
+{{{ oval_list_to_set(_result_list, []) }}}
+{{%- endif -%}}
+{{%- else -%}}
+{{%- set result_list_item -%}}
+<set>
+{{%- for item in list_to_handle -%}}
+{{%- if loop.index0 < 2 %}}
+    {{{ item | indent }}}
+{{%- endif -%}}
+{{%- endfor %}}
+</set>
+{{%- endset -%}}
+{{%- set next_list = namespace(lst=[]) -%}}
+{{%- for item in list_to_handle -%}}
+{{%- if loop.index0 >= 2 -%}}
+{{%- set next_list.lst = next_list.lst + [item] -%}}
+{{%- endif -%}}
+{{%- endfor -%}}
+{{{ oval_list_to_set(next_list.lst, _result_list + [result_list_item]) }}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
 {{%- macro mount_active_criterion(path) %}}
    <criterion comment="The path {{{ path }}} is an active (mounted) mount point"
      test_ref="test_mount_active_{{{ path | escape_id }}}_exists" />
