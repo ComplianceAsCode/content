@@ -4,10 +4,18 @@
 # complexity = low
 # disruption = medium
 
+{{#- sysctl quirks -#}}
+{{%- set setsysctlvar_rx -%}}
+^[ \\t]*-?[ \\t]*{{{
+    SYSCTLVAR | escape_regex_sq |
+    replace('[.]', '[./]') | replace('[/]', '[./]')
+    }}}[ \\t]*=
+{{%- endset %}}
 - name: List /etc/sysctl.d/*.conf files
   find:
     paths: {{{ ansible_sysctl_set_config_directories() }}}
-    contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
+    contains: >-
+      {{{ setsysctlvar_rx }}}.*$
     patterns: "*.conf"
     file_type: any
   register: find_sysctl_d
@@ -15,19 +23,24 @@
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from config files
   replace:
     path: "{{ item.path }}"
-    regexp: '^[\s]*{{{ SYSCTLVAR }}}'
+    regexp: >-
+      {{{ setsysctlvar_rx }}}
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"
 
-{{% if sysctl_remediate_drop_in_file == "true" %}}
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
   replace:
     path: "/etc/sysctl.conf"
-    regexp: '^[\s]*{{{ SYSCTLVAR }}}'
+    regexp: >-
+      {{{ setsysctlvar_rx }}}
     replace: '#{{{ SYSCTLVAR }}}'
-{{% endif %}}
-
+{{%- if sysctl_remediate_drop_in_file != "true" %}}
+{{#- sysctl module manages only last entry #}}
+    before: >-
+      .*\n{{{ setsysctlvar_rx | trim('^') }}}
+{{%- endif %}}
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
+
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
@@ -35,16 +48,18 @@
     name: "{{{ SYSCTLVAR }}}"
     value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
 {{%- else %}}
+
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
   sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{{ SYSCTLVAL }}}"
 {{%- endif %}}
-{{% if sysctl_remediate_drop_in_file == "true" %}}
-    sysctl_file: "/etc/sysctl.d/{{{ SYSCTLVAR | replace('.','_') }}}.conf"
-{{% else %}}
-    sysctl_file: "/etc/sysctl.conf"
-{{% endif %}}
+    sysctl_file: >-
+{{%- if sysctl_remediate_drop_in_file == "true" %}}
+      /etc/sysctl.d/{{{ SYSCTLVAR | replace('.','_') | replace('/', '_') }}}.conf
+{{%- else %}}
+      /etc/sysctl.conf
+{{%- endif %}}
     state: present
     reload: yes
     sysctl_set: true
