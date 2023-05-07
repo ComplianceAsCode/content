@@ -1535,9 +1535,10 @@ cce="{{{ cce_identifiers['cce'] }}}"
 :param value: Value of the configuration option to change
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
 :param key_regex: Optional argument, If not empty string, used as regex to match key.
+:param ignore_case: boolean, Default true.
 
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', key_regex='') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', key_regex='', ignore_case=true) -%}}
 {{%- if key_regex == '' -%}}
 {{%- set key_regex = key -%}}
 {{%- endif -%}}
@@ -1547,6 +1548,11 @@ sed_command=('sed' '-i')
 if test -L "{{{ config_file }}}"; then
     sed_command+=('--follow-symlinks')
 fi
+
+grep_command=(grep)
+{{%- if ignore_case %}}
+grep_command+=(-i)
+{{%- endif %}}
 
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
@@ -1559,7 +1565,7 @@ printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 # If the key exists, change it. Otherwise, add it to the config_file.
 # We search for the key string followed by a word boundary (matched by \>),
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 -i -e "{{{ key_regex }}}\\>" "{{{ config_file }}}"; then
+if LC_ALL=C "${grep_command[@]}" -q -m 1 -e "{{{ key_regex }}}\\>" "{{{ config_file }}}"; then
     {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
     LC_ALL=C "${sed_command[@]}" "s/{{{ key_regex }}}\\>.*/${escaped_formatted_output}/gi" "{{{ config_file }}}"
 else
