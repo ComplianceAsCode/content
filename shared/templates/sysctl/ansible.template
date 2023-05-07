@@ -24,16 +24,16 @@
   replace:
     path: "{{ item.path }}"
     regexp: >-
-      {{{ setsysctlvar_rx }}}
-    replace: '#{{{ SYSCTLVAR }}}'
+      ({{{ setsysctlvar_rx }}})
+    replace: '# \g<1>'
   loop: "{{ find_sysctl_d.files }}"
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
   replace:
     path: "/etc/sysctl.conf"
     regexp: >-
-      {{{ setsysctlvar_rx }}}
-    replace: '#{{{ SYSCTLVAR }}}'
+      ({{{ setsysctlvar_rx }}})
+    replace: '# \g<1>'
 {{%- if sysctl_remediate_drop_in_file != "true" %}}
 {{#- sysctl module manages only last entry #}}
     before: >-
