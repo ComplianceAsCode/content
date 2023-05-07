@@ -1557,7 +1557,7 @@ printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 # so if we search for 'setting', 'setting2' won't match.
 if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
     {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
-    "${sed_command[@]}" "s/{{{ key }}}\\>.*/${escaped_formatted_output}/gi" "{{{ config_file }}}"
+    LC_ALL=C "${sed_command[@]}" "s/{{{ key }}}\\>.*/${escaped_formatted_output}/gi" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
