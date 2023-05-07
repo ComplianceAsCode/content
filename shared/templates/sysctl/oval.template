@@ -6,15 +6,15 @@
 {{%- set COMMENT_VALUE = SYSCTLVAL | join(" or " ) %}}
 {{%- endif %}}
 
-{{% macro state_static_sysctld(prefix) -%}}
+{{%- macro state_static_sysctld(prefix) -%}}
     <ind:object object_ref="object_static_{{{ prefix }}}_{{{ rule_id }}}"/>
-{{% if SYSCTLVAL is string %}}
+{{%- if SYSCTLVAL is string %}}
     <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}"/>
-{{% elif SYSCTLVAL is sequence %}}
-{{% for x in SYSCTLVAL %}}
+{{%- elif SYSCTLVAL is sequence -%}}
+{{%- for x in SYSCTLVAL %}}
     <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
-{{% endfor %}}
-{{% endif %}}
+{{%- endfor -%}}
+{{%- endif -%}}
 {{%- endmacro -%}}
 
 {{%- macro sysctl_match() -%}}
@@ -35,19 +35,19 @@
     </definition>
 </def-group>
 
-{{%- elif "I" in FLAGS -%}}
+{{%- elif "I" in FLAGS %}}
 
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="4">
         {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
         <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
-{{% if product in ["ubuntu1604", "ubuntu1804"] %}}
+{{%- if product in ["ubuntu1604", "ubuntu1804"] %}}
             <extend_definition comment="is IPv6 enabled?"
                                definition_ref="kernel_module_ipv6_option_disabled"/>
-{{% else %}}
+{{%- else %}}
             <extend_definition comment="is IPv6 enabled?"
                                definition_ref="sysctl_kernel_ipv6_disable"/>
-{{% endif %}}
+{{%- endif %}}
             <criteria operator="AND">
                 <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
                                    definition_ref="{{{ rule_id }}}_static"/>
@@ -58,8 +58,8 @@
     </definition>
 </def-group>
 
-{{%- endif %}}
-{{%- if "R" in FLAGS -%}}
+{{%- endif -%}}
+{{%- if "R" in FLAGS %}}
 
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}_runtime" version="3">
@@ -74,20 +74,20 @@
                       comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                       check="all" check_existence="all_exist" state_operator="OR">
         <unix:object object_ref="object_{{{ rule_id }}}_runtime"/>
-{{% if SYSCTLVAL is string %}}
+{{%- if SYSCTLVAL is string %}}
         <unix:state state_ref="state_{{{ rule_id }}}_runtime"/>
-{{% elif SYSCTLVAL is sequence %}}
-{{% for x in SYSCTLVAL %}}
+{{%- elif SYSCTLVAL is sequence -%}}
+{{%- for x in SYSCTLVAL %}}
         <unix:state state_ref="state_{{{ rule_id }}}_runtime_{{{ x }}}"/>
-{{% endfor %}}
-{{% endif %}}
+{{%- endfor -%}}
+{{%- endif %}}
     </unix:sysctl_test>
 
     <unix:sysctl_object id="object_{{{ rule_id }}}_runtime" version="1">
         <unix:name>{{{ SYSCTLVAR }}}</unix:name>
     </unix:sysctl_object>
-{{% if SYSCTLVAL is string %}}
-{{% if SYSCTLVAL == "" %}}
+{{%- if SYSCTLVAL is string -%}}
+{{%- if SYSCTLVAL == "" %}}
     <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
         <unix:value datatype="{{{ DATATYPE }}}" operation="equals"
                     var_ref="{{{ rule_id }}}_value"/>
@@ -97,27 +97,27 @@
                        comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
 {{%- else %}}
     <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
-{{% if OPERATION == "pattern match" %}}
+{{%- if OPERATION == "pattern match" %}}
         <unix:value datatype="{{{ DATATYPE }}}"
                     operation="{{{ OPERATION }}}">{{{ SYSCTLVAL_REGEX }}}</unix:value>
-{{% else %}}
+{{%- else %}}
         <unix:value datatype="{{{ DATATYPE }}}"
                     operation="{{{ OPERATION }}}">{{{ SYSCTLVAL }}}</unix:value>
-{{% endif %}}
-    </unix:sysctl_state>
 {{%- endif %}}
-{{% elif SYSCTLVAL is sequence %}}
-{{% for x in SYSCTLVAL %}}
+    </unix:sysctl_state>
+{{%- endif -%}}
+{{%- elif SYSCTLVAL is sequence -%}}
+{{%- for x in SYSCTLVAL %}}
     <unix:sysctl_state id="state_{{{ rule_id }}}_runtime_{{{ x }}}" version="1">
         <unix:value datatype="{{{ DATATYPE }}}"
                     operation="{{{ OPERATION }}}">{{{ x }}}</unix:value>
     </unix:sysctl_state>
-{{% endfor %}}
-{{% endif %}}
+{{%- endfor -%}}
+{{%- endif %}}
 </def-group>
 
 {{%- endif -%}}
-{{%- if "S" in FLAGS -%}}
+{{%- if "S" in FLAGS %}}
 
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
@@ -144,10 +144,10 @@
                            test_ref="test_{{{ rule_id }}}_not_defined"
                            negate="true"/>
             </criteria>
-{{% if MISSING_PARAMETER_PASS == "true" %}}
+{{%- if MISSING_PARAMETER_PASS == "true" %}}
             <criterion comment="Check that {{{ SYSCTLID }}} is not defined in any file"
                        test_ref="test_{{{ rule_id }}}_not_defined"/>
-{{% endif %}}
+{{%- endif %}}
         </criteria>
     </definition>
 
@@ -226,9 +226,9 @@
     <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ rule_id }}}" version="1">
         <set>
             <object_reference>object_static_run_sysctld_{{{ rule_id }}}</object_reference>
-{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+{{%- if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
             <object_reference>object_static_usr_lib_sysctld_{{{ rule_id }}}</object_reference>
-{{% endif %}}
+{{%- endif %}}
         </set>
     </ind:textfilecontent54_object>
 
@@ -254,16 +254,16 @@
         <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
         {{{ sysctl_match() }}}
     </ind:textfilecontent54_object>
-{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+{{%- if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
 
     <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ rule_id }}}" version="1">
         <ind:path>/usr/lib/sysctl.d</ind:path>
         <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
         {{{ sysctl_match() }}}
     </ind:textfilecontent54_object>
-{{% endif %}}
-{{% if SYSCTLVAL is string %}}
-{{% if SYSCTLVAL == "" %}}
+{{%- endif -%}}
+{{%- if SYSCTLVAL is string -%}}
+{{%- if SYSCTLVAL == "" %}}
 
     <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}" version="1">
         <ind:subexpression operation="{{{ OPERATION }}}" var_ref="{{{ rule_id }}}_value"
@@ -272,21 +272,21 @@
 
     <external_variable id="{{{ rule_id }}}_value" version="1"
                        comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
-{{% else %}}
+{{%- else %}}
     <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}" version="1">
-{{% if OPERATION == "pattern match" %}}
+{{%- if OPERATION == "pattern match" %}}
         <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL_REGEX }}}</ind:subexpression>
-{{% else %}}
+{{%- else %}}
         <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL }}}</ind:subexpression>
-{{% endif %}}
+{{%- endif %}}
     </ind:textfilecontent54_state>
-{{% endif %}}
-{{% elif SYSCTLVAL is sequence %}}
-{{% for x in SYSCTLVAL %}}
+{{%- endif -%}}
+{{%- elif SYSCTLVAL is sequence -%}}
+{{%- for x in SYSCTLVAL %}}
     <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}" version="1">
         <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ x }}}</ind:subexpression>
     </ind:textfilecontent54_state>
-{{% endfor %}}
-{{% endif %}}
+{{%- endfor -%}}
+{{%- endif %}}
 </def-group>
 {{%- endif -%}}
