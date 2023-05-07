@@ -1687,9 +1687,11 @@ Example Calls:
 :type value: str
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
 :type format: str
+:param insensitive: If true *key* is case insensitive
+:type insensitive: bool
 
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', insensitive=true) -%}}
 {{%- if key is not string -%}}
 {{{ raise("key '" ~ key ~ "' is not string") }}}
 {{%- endif -%}}
@@ -1698,6 +1700,9 @@ Example Calls:
 {{%- endif -%}}
 {{%- if format is not string -%}}
 {{{ raise("format '" ~ format ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if insensitive is not boolean -%}}
+{{{ raise("insensitive '" ~ insensitive ~ "' is not boolean") }}}
 {{%- endif -%}}
 {{%- if key.startswith('^') -%}}
 {{{ raise("key is not partially regex any more, use key_regex") }}}
@@ -1726,9 +1731,9 @@ printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 # If the key exists, change it. Otherwise, add it to the config_file.
 # We search for the key string followed by a word boundary (matched by \>),
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 -i -e "${key_regex}" "{{{ config_file }}}"; then
+if LC_ALL=C grep -q -m 1{{%- if insensitive %}} -i{{%- endif %}} -e "${key_regex}" "{{{ config_file }}}"; then
     {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
-    LC_ALL=C sed -i --follow-symlinks "s/${key_regex}.*/${escaped_formatted_output}/i" "{{{ config_file }}}"
+    LC_ALL=C sed -i --follow-symlinks "s/${key_regex}.*/${escaped_formatted_output}/{{%- if insensitive -%}}i{{%- endif -%}}" "{{{ config_file }}}"
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
