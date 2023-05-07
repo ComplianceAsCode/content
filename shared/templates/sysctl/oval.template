@@ -134,7 +134,7 @@
                     test_ref="test_{{{ rule_id }}}_static_etc_sysctld"/>
           <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
                     test_ref="test_{{{ rule_id }}}_static_run_sysctld"/>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
           <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                     test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
 {{% endif %}}
@@ -174,7 +174,7 @@
     {{{ state_static_sysctld("run_sysctld") }}}
   </ind:textfilecontent54_test>
 
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_usr_lib_sysctld" version="2"
                           check_existence="any_exist"
                           check="all"
@@ -220,7 +220,7 @@
   <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ rule_id }}}" version="1">
     <set>
       <object_reference>object_static_run_sysctld_{{{ rule_id }}}</object_reference>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
       <object_reference>object_static_usr_lib_sysctld_{{{ rule_id }}}</object_reference>
 {{% endif %}}
     </set>
@@ -249,7 +249,7 @@
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+{{% if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/usr/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>

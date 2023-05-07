@@ -69,7 +69,7 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.kptr_restrict
-        {{% if 'ol' in product or 'rhel' in product %}}
+        {{% if product in ['fedora'] or 'ol' in product or 'rhel' in product %}}
         sysctlval:
         - '1'
         - '2'

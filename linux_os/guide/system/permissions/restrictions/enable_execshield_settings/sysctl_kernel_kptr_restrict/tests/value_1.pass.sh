@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 
 # Clean sysctl config directories
 rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*

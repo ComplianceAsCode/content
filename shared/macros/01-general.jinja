@@ -272,7 +272,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>install {{{ module }}} /bin/true</pre>
-    {{% if product in ["ol7", "ol8", "rhel7", "rhel8"] %}}
+    {{% if product in ["fedora", "ol7", "ol8", "rhel7", "rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>blacklist {{{ module }}}</pre>
@@ -977,7 +977,7 @@ Operator see
 
 #}}
 {{% macro rule_notapplicable_when_ovirt_installed() %}}
-{{%- if product == "rhel8" %}}
+{{%- if product in ["fedora", "rhel8"] %}}
 - no_ovirt
 {{%- endif %}}
 {{% endmacro %}}
@@ -989,7 +989,7 @@ Operator see
 
 #}}
 {{%- macro describe_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9"] or 'ubuntu' in product -%}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9"] or "ubuntu" in product -%}}
 To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
 argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
 default Grub2 command line for Linux operating systems. Modify the line within
@@ -1067,7 +1067,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 
 #}}
 {{%- macro aide_string() -%}}
-{{%- if 'rhel' not in product and 'ubuntu' not in product and product != 'ol8' -%}}
+{{%- if product not in ['fedora', 'ol8'] and 'rhel' not in product and 'ubuntu' not in product -%}}
 p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
 {{%- else -%}}
 p+i+n+u+g+s+b+acl+xattrs+sha512
@@ -1084,9 +1084,9 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/ausearch {{{ aide_string() }}}
     /usr/sbin/aureport {{{ aide_string() }}}
     /usr/sbin/autrace {{{ aide_string() }}}
-    {{% if 'rhel' not in product and product != 'ol8' %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
+    {{% if product not in ['fedora', 'ol8'] and 'rhel' not in product %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
     {{% if product == 'ol8' %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
-    {{% if product == 'rhel9' %}}/usr/sbin/autrace {{{ aide_string() }}}{{% endif %}}
+    {{% if product in ['fedora', 'rhel9'] %}}/usr/sbin/autrace {{{ aide_string() }}}{{% endif %}}
     /usr/sbin/augenrules {{{ aide_string() }}}
 {{% endmacro %}}
 
@@ -1120,7 +1120,7 @@ Part of the grub2_bootloader_argument(_absent) templates.
     {{%- else -%}}
         {{{ raise("Unknown action" + action) }}}
     {{%- endif -%}}
-    {{%- if product in ["rhel8", "ol8"] -%}}
+    {{%- if product in ["fedora", "ol8", "rhel8"] -%}}
         {{# Suppress the None output of append -#}}
         {{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
     {{%- endif -%}}

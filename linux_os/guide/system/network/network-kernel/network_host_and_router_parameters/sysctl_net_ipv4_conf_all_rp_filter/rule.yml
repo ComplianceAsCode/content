@@ -87,7 +87,7 @@ template:
     name: sysctl
     vars:
         sysctlvar: net.ipv4.conf.all.rp_filter
-        {{% if 'ol' in product or 'rhel' in product %}}
+        {{% if product in ['fedora'] or 'ol' in product or 'rhel' in product %}}
         sysctlval:
         - '1'
         - '2'

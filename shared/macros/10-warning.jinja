@@ -5,7 +5,7 @@
     :param rationale: Explanation why RHV needs the rule disabled.
 #}}
 {{% macro warning_ovirt_rule_notapplicable(rationale) %}}
-{{%- if product == "rhel8" %}}
+{{%- if product in ["fedora", "rhel8"] %}}
 - general: |-
     This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
     {{{ rationale }}}.
