@@ -834,8 +834,10 @@ The selected value can be changed in the profile (consult the actual variable fo
     sysctl configurations:
     - /etc/sysctl.conf
     - /etc/sysctl.d/\*.conf
+    - /lib/sysctl.d/\*.conf (does not apply to Fedora, RHEL and OL)
     - /run/sysctl.d/\*.conf
-    - /usr/lib/sysctl.d/\*.conf (does not apply to RHEL and OL)
+    - /usr/local/lib/sysctl.d/\*.conf (only if SLE)
+    - /usr/lib/sysctl.d/\*.conf (does not apply to Fedora, RHEL and OL)
 
     A sysctl option is allowed to be defined in more than one file within the scanned directories
     as long as those values are compliant.

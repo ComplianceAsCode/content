@@ -2433,6 +2433,67 @@ fi
 
 
 {{#
+Set shell variable containing sysctl.d directories to handle
+
+This is not about directories sysctl supports in product, but what directories
+are considered managed.
+
+:param variable: string, shell array variable name to be set
+:param all_possible: boolean, default false, limit per product
+
+See: sysctl.conf(5)
+#}}
+{{%- macro bash_sysctl_set_config_directories(variable, all_possible=false) -%}}
+{{{ variable }}}=(
+    /etc/sysctl.d
+    /run/sysctl.d
+{{%- if product in [ "sle12", "sle15"] or all_possible %}}
+    /usr/local/lib/sysctl.d
+{{%- endif -%}}
+{{%- if product not in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] or all_possible %}}
+    /usr/lib/sysctl.d
+    /lib/sysctl.d
+{{%- endif %}}
+)
+{{%- endmacro -%}}
+
+
+{{#
+Set shell variable to sysctl filename used in remediate
+
+:param variable: string, shell variable name to be set
+:param SYSCTLVAR: sysctl variable name in question
+#}}
+{{%- macro bash_sysctl_set_remediate_file_name(variable, SYSCTLVAR) -%}}
+{{{ variable }}}=
+{{%- if sysctl_remediate_drop_in_file == "true" -%}}
+"/etc/sysctl.d/{{{ SYSCTLVAR | replace(".", "_") | replace('/', '_') }}}.conf"
+{{%- else -%}}
+"/etc/sysctl.conf"
+{{%- endif %}}
+{{%- endmacro -%}}
+
+
+{{#
+Generate code to clean sysctl environment
+
+:param all_possible: boolean, default true, not limit per product
+
+Ensure test environment is controlled, meaning empty, but existing directories
+and /etc/sysctl.conf as pre-existing stage. Meant to be used at start of sysctl
+test cases.
+#}}
+{{%- macro bash_sysctl_test_clean(all_possible=true) -%}}
+{{{ bash_sysctl_set_config_directories('sysctl_directories', all_possible=all_possible) }}}
+mkdir -p -- "${sysctl_directories[@]}"
+for d in "${sysctl_directories[@]}"; do
+    rm -rf -- "${d}"/*
+done
+[ -f /etc/sysctl.conf ] || touch /etc/sysctl.conf
+{{%- endmacro -%}}
+
+
+{{#
 This macro creates a Bash conditional which is used to determine if a
 remediation is applicable. The condition compares the actual version of the
 operating system with the expected version using the given operator. The macro
