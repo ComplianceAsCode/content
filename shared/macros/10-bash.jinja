@@ -1534,9 +1534,13 @@ cce="{{{ cce_identifiers['cce'] }}}"
 :param key: Configuration option to change
 :param value: Value of the configuration option to change
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
+:param key_regex: Optional argument, If not empty string, used as regex to match key.
 
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', key_regex='') -%}}
+{{%- if key_regex == '' -%}}
+{{%- set key_regex = key -%}}
+{{%- endif -%}}
 # Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
 # Otherwise, regular sed command will do.
 sed_command=('sed' '-i')
@@ -1555,9 +1559,9 @@ printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 # If the key exists, change it. Otherwise, add it to the config_file.
 # We search for the key string followed by a word boundary (matched by \>),
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
+if LC_ALL=C grep -q -m 1 -i -e "{{{ key_regex }}}\\>" "{{{ config_file }}}"; then
     {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
-    LC_ALL=C "${sed_command[@]}" "s/{{{ key }}}\\>.*/${escaped_formatted_output}/gi" "{{{ config_file }}}"
+    LC_ALL=C "${sed_command[@]}" "s/{{{ key_regex }}}\\>.*/${escaped_formatted_output}/gi" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
