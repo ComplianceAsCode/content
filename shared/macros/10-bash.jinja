@@ -1727,7 +1727,7 @@ printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 # We search for the key string followed by a word boundary (matched by \>),
 # so if we search for 'setting', 'setting2' won't match.
 if LC_ALL=C grep -q -m 1 -i -e "${key_regex}" "{{{ config_file }}}"; then
-    escaped_formatted_output="$(LC_ALL=C sed 's|/|\\/|g' <<< "${formatted_output}")"
+    {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
     LC_ALL=C sed -i --follow-symlinks "s/${key_regex}.*/${escaped_formatted_output}/i" "{{{ config_file }}}"
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
