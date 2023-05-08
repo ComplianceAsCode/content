@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -19,8 +19,8 @@
 #Policy 
 {{{ ansible_instantiate_variables("var_nftables_base_chain_policies") }}}
 
-- name: {{{ rule_title }}} - Collect Existing NFtables
-  ansible.builtin.command: nft list table {{ var_nftables_family }} {{ var_nftables_table }}
+- name: {{{ rule_title }}} - Collect Existing NFtable
+  ansible.builtin.shell: nft list tables  | grep '{{ var_nftables_family }} {{ var_nftables_table }}'
   register: existing_nftables
   changed_when: false
   failed_when: false
