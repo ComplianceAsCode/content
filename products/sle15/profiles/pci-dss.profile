@@ -13,3 +13,4 @@ description: |-
 
 selections:
     - pcidss_3:all:base
+    - sshd_approved_macs=cis_sle15

@@ -13,7 +13,7 @@ description: |-
 
 selections:
     -  pcidss_4:all:base
-    # remove some rules from profile
-    - '!service_ntp_enabled'
-    - '!service_ntpd_enabled'
-    - '!service_timesyncd_enabled'
+    -  sshd_approved_macs=cis_sle15
+    -  '!service_ntp_enabled'
+    -  '!service_ntpd_enabled'
+    -  '!service_timesyncd_enabled'

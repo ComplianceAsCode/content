@@ -76,4 +76,5 @@ selections:
     -  sshd_set_maxstartups
     -  sshd_use_approved_ciphers
     -  sshd_use_approved_macs
+    -  sshd_approved_macs=cis_sle12
     -  sysctl_fs_suid_dumpable
