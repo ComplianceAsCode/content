@@ -298,7 +298,7 @@ controls:
   - id: "3.10"
     title: Service Minimization
     description: >-
-      The user should remove any services that are not necessary for normal system usage.
+      Users should remove any services that are not necessary for normal system usage.
     status: partial
     rules:
       - package_xinetd_removed
@@ -425,7 +425,7 @@ controls:
   - id: 5.1
     title: General Network Configuration
     description: >-
-      If the user did not configure IPv6 on the system and it is not needed, it should be disabled.
+      If users did not configure IPv6 on the system and it is not needed, it should be disabled.
     status: partial
     rules:
       - kernel_module_sctp_disabled
@@ -482,13 +482,7 @@ controls:
   - id: 6.1
     title: Web Browser
     description: >-
-      The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application. If the default Firefox application must be used, the user should apply the Common User Security Profile for Mozilla Firefox CaC profile.
-    status: manual
-
-  - id: 6.2
-    title: Password Management
-    description: >-
-      Users should install the Bitwarden AppImage from the Bitwarden site and use it to generate and store passwords for online accounts.
+      Users should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application. If the default Firefox application must be used, the users should apply the Common User Security Profile for Mozilla Firefox CaC profile.
     status: manual
   ###
   ### 7. Advanced security features
@@ -496,12 +490,14 @@ controls:
   - id: 7.1
     title: Mandatory Access Control
     description: >-
-      The user should install the Firefox Flatpak from FlatHub and use it instead of the default Firefox application.
+      Ensure SELinux is installed and enabled, in enforcing mode using targeted policy.
     status: partial
     rules:
       - package_libselinux_installed
       - grub2_enable_selinux
+      - var_selinux_policy_name=targeted
       - selinux_policytype
+      - var_selinux_state=enforcing
       - selinux_state
       - package_mcstrans_removed
       - sysctl_fs_protected_hardlinks
