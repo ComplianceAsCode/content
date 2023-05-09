@@ -9,12 +9,12 @@ description: |-
     the same time, all requests must be authorized. If no authentication
     mechanism is used, the request is assigned the <tt>system:anonymous</tt>
     virtual user and the <tt>system:unauthenticated</tt> virtual group.
-    This allows the authorization layer to determin which requests, if any,
+    This allows the authorization layer to determine which requests, if any,
     is an anonymous user authorized to make.
 
     To verify the authorization rules for anonymous requests run the following:
     <pre>$ oc describe clusterrolebindings</pre>
-    and inspect the bidnings of the <tt>system:anonymous</tt>
+    and inspect the bindings of the <tt>system:anonymous</tt>
     virtual user and the <tt>system:unauthenticated</tt> virtual group.
 
     To test that an anonymous request is authorized to access the <tt>readyz</tt>
