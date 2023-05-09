@@ -119,6 +119,12 @@ def parse_args():
         action='store_true',
         help="Connect to a serial console of the VM (to monitor installation progress)."
     )
+    parser.add_argument(
+        "--disk-unsafe",
+        dest="disk_unsafe",
+        action='store_true',
+        help="Set cache unsafe.",
+    )
 
     return parser.parse_args()
 
@@ -177,14 +183,19 @@ def main():
     print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
     print("Using hypervisor: {0}".format(data.libvirt))
 
+    disk_spec = [
+        "size={0}".format(data.disk_size),
+        "format=qcow2"
+    ]
     if data.disk:
-        data.disk_spec = data.disk
+        disk_spec.extend(data.disk.split(","))
     elif data.disk_dir:
         disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
         print("Location of VM disk: {0}".format(disk_path))
-        data.disk_spec = "path={0},format=qcow2,size={1}".format(disk_path, data.disk_size)
-    else:
-        data.disk_spec = "size={0},format=qcow2".format(data.disk_size)
+        disk_spec.append("path={0}".format(disk_path))
+    if data.disk_unsafe:
+        disk_spec.append("cache=unsafe")
+    data.disk_spec = ",".join(disk_spec)
 
     data.ks_basename = os.path.basename(data.kickstart)
 
