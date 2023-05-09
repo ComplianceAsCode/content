@@ -6,14 +6,14 @@ description: |-
     Check that Chrony only has time sources configured with the <tt>server</tt> directive.
 
 rationale: |-
-    Depending on the infrastruture being used the <tt>pool</tt> directive may not be supported.
+    Depending on the infrastructure being used the <tt>pool</tt> directive may not be supported.
 
 severity: medium
 
 platform: package[chrony]
 
 warnings:
-  - general: This rule doesn't come with a remediation, the time source needs to be added by the adminstrator.
+  - general: This rule doesn't come with a remediation, the time source needs to be added by the administrator.
 
 identifiers:
     cce@rhel8: CCE-86077-5
@@ -28,7 +28,7 @@ references:
 ocil_clause: 'an authoritative remote time server is not configured or configured with pool directive'
 
 ocil: |-
-    Run the following command and verify that time sources are only configure with <tt>server</tt> directive:
+    Run the following command and verify that time sources are only configured with <tt>server</tt> directive:
     <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>
     A line with the appropriate server should be returned, any line returned starting with <tt>pool</tt> is a finding.
 
