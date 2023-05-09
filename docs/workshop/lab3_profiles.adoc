@@ -316,7 +316,7 @@ Also make sure there is no trailing whitespace.
 [... ]$ open linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml
 ----
 +
-You can see there are two occurences of `xccdf_value("var_accounts_tmout")`. This is the reference we are looking for.
+You can see there are two occurrences of `xccdf_value("var_accounts_tmout")`. This is the reference we are looking for.
 
 From the rule contents you can clearly see that it is parameterized by the `var_accounts_tmout` variable.
 Note that the `var_accounts_tmout` variable is used in the description instead of an exact value.
@@ -820,9 +820,9 @@ The main purpose of security controls is to assist content authors in interpreta
 Therefore, the control file can mirror the document, and link:https://complianceascode.readthedocs.io/en/latest/manual/developer/03_creating_content.html?highlight=controls#controls-file-format[optional keys] s.a. `description` or `notes` can assist in clarifying choices that were taken when the policy got interpreted to a profile.
 On the policy level, only the keys `id`, `title` and `controls` are required, and on the control level, only the key `id` is required.
 
-You can add some more optional metadata, so the link between the real-world policy and its projection into a SCAP profile is strenghtened.
+You can add some more optional metadata, so the link between the real-world policy and its projection into a SCAP profile is strengthened.
 Adding `policy`, `version` and `source` allows content authors to quickly understand exact details concerning the security policy that is interpreted.
-That additional metadata isn't processed by the build system, it only serves as a context that can facilitate content creation, completion assesment and so on.
+That additional metadata isn't processed by the build system, it only serves as a context that can facilitate content creation, completion assessment and so on.
 
 As a result, the whole control file `controls/my-company.yml` will look like
 
