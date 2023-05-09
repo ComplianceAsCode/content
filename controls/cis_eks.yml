@@ -260,7 +260,7 @@ controls:
         functionality. These connections terminate at the kubelet’s HTTPS endpoint. By default, the
         apiserver does not verify the kubelet’s serving certificate, which makes the connection
         subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public
-        networks. Enabling Kubelet certificate authentication ensu
+        networks. Enabling Kubelet certificate authentication ensures that the apiserver could authenticate the Kubelet before submitting any requests.
       status: automated
       levels:
       - level_1
@@ -1036,7 +1036,7 @@ controls:
           endpoint. The public endpoint enables the Kubernetes API to be
           accessed from outside the master's VPC network. Although Kubernetes
           API requires an authorized token to perform sensitive actions, a
-          vulnerability could potentially expose the Kubernetes publically with
+          vulnerability could potentially expose the Kubernetes publicly with
           unrestricted access. Additionally, an attacker may be able to
           identify the current cluster and Kubernetes API version and determine
           whether it is vulnerable to an attack. Unless required, disabling
