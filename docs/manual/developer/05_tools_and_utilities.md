@@ -635,3 +635,75 @@ By default, the script just outputs a list of files are non-compliant.
  ```bash
  $ ./utils/check_eof.py ssg linux_os utils tests products shared docs apple_os applications build-scripts cmake Dockerfiles
  ```
+
+### Generating CIS Control Files - `utils/generate_profile.py`
+
+This script accepts a CIS benchmark spreadsheet (XLSX) and outputs a profile,
+section, or rule. This is primarily useful for contributors maintaining
+content. The script doesn't make assumptions about rules that implement
+controls, should still be done by someone knowledge about the platform and
+benchmark. The goal of the script is to reduce the amount of text contributors
+have to copy and paste from benchmarks, making it easier to automate parts of
+the benchmark maintenance process.
+
+You can download CIS XLSX spreadsheets from CIS directly if you have access to
+[CIS workbench](https://workbench.cisecurity.org/).
+
+You can use the script to list all controls in a benchmark:
+
+```bash
+$ python utils/generate_profile.py -i benchmark.xlsx list
+1.1.1
+1.1.2
+1.1.3
+1.1.4
+1.1.5
+1.1.6
+1.1.7
+1.1.8
+1.1.9
+1.1.10
+...
+```
+
+To generate a rule for a specific control:
+
+```
+$ python utils/generate_profile.py -i benchmark.xlsx generate --product-type ocp -c 1.1.2
+documentation_complete: false
+prodtype: ocp
+title: |-
+  Ensure that the API server pod specification file ownership is set to root:root
+description: 'Ensure that the API server pod specification file ownership is set to
+  `root:root`.
+
+  No remediation required; file permissions are managed by the operator.'
+rationale: |-
+  The API server pod specification file controls various parameters that set the behavior of the API server. You should set its file ownership to maintain the integrity of the file. The file should be owned by `root:root`.
+severity: PLACEHOLDER
+references: PLACEHOLDER
+ocil: "OpenShift 4 deploys two API servers: the OpenShift API server and the Kube\
+  \ API server. \n\nThe OpenShift API server is managed as a deployment. The pod specification\
+  \ yaml for openshift-apiserver is stored in etcd. \n\nThe Kube API Server is managed\
+  \ as a static pod. The pod specification file for the kube-apiserver is created\
+  \ on the control plane nodes at /etc/kubernetes/manifests/kube-apiserver-pod.yaml.\
+  \ The kube-apiserver is mounted via hostpath to the kube-apiserver pods via /etc/kubernetes/static-pod-resources/kube-apiserver-pod.yaml\
+  \ with ownership `root:root`.\n\nTo verify pod specification file ownership for\
+  \ the kube-apiserver, run the following command.\n\n```\n#echo \u201Ccheck kube-apiserver\
+  \ pod specification file ownership\u201D\n\nfor i in $( oc get pods -n openshift-kube-apiserver\
+  \ -l app=openshift-kube-apiserver -o name )\ndo\n oc exec -n openshift-kube-apiserver\
+  \ $i -- \\\n stat -c %U:%G /etc/kubernetes/static-pod-resources/kube-apiserver-pod.yaml\n\
+  done\n```\nVerify that the ownership is set to `root:root`."
+ocil_clause: PLACEHOLDER
+warnings: PLACEHOLDER
+template: PLACEHOLDER
+```
+
+To generate an entire section:
+
+```
+$ python utils/generate_profile.py -i benchmark.xlsx generate --product-type ocp -s 1
+```
+
+The `PLACEHOLDER` values must be filled in later, ideally when the rules are
+provided for each control.
