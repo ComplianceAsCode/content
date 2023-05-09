@@ -1,24 +1,18 @@
-{{%- if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204", "sle15", "sle12"] %}}
-    {{%- set rsyslog_perm='640' %}}
-{{%- else %}}
-    {{%- set rsyslog_perm='600' %}}
-{{%- endif %}}
-
 documentation_complete: true
 
 title: 'Ensure System Log Files Have Correct Permissions'
 
 description: |-
     The file permissions for all log files written by <tt>rsyslog</tt> should
-    be set to {{{ rsyslog_perm }}}, or more restrictive. These log files are determined by the
+    be set to 640, or more restrictive. These log files are determined by the
     second part of each Rule line in <tt>/etc/rsyslog.conf</tt> and typically
     all appear in <tt>/var/log</tt>. For each log file <i>LOGFILE</i>
     referenced in <tt>/etc/rsyslog.conf</tt>, run the following command to
     inspect the file's permissions:
     <pre>$ ls -l <i>LOGFILE</i></pre>
-    If the permissions are not {{{ rsyslog_perm }}} or more restrictive, run the following
+    If the permissions are not 640 or more restrictive, run the following
     command to correct this:
-    <pre>$ sudo chmod {{{ rsyslog_perm }}} <i>LOGFILE</i></pre>"
+    <pre>$ sudo chmod 640 <i>LOGFILE</i></pre>"
 
 rationale: |-
     Log files can contain valuable information regarding system
@@ -53,23 +47,15 @@ ocil_clause: 'the permissions are not correct'
 
 ocil: |-
     The file permissions for all log files written by <tt>rsyslog</tt> should
-    be set to {{{ rsyslog_perm }}}, or more restrictive. These log files are determined by the
+    be set to 640, or more restrictive. These log files are determined by the
     second part of each Rule line in <tt>/etc/rsyslog.conf</tt> and typically
     all appear in <tt>/var/log</tt>. To see the permissions of a given log
     file, run the following command:
     <pre>$ ls -l <i>LOGFILE</i></pre>
-    The permissions should be {{{ rsyslog_perm }}}, or more restrictive.
+    The permissions should be 640, or more restrictive.
 
 template:
   name: rsyslog_logfiles_attributes_modify
   vars:
     attribute: permissions
-    value: '0600'
-    value@debian10: '0640'
-    value@debian11: '0640'
-    value@sle12: '0640'
-    value@sle15: '0640'
-    value@ubuntu1604: '0640'
-    value@ubuntu1804: '0640'
-    value@ubuntu2004: '0640'
-    value@ubuntu2204: '0640'
+    value: '0640'
