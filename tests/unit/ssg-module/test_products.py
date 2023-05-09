@@ -41,9 +41,18 @@ def test_product_yaml(testing_product_yaml_path):
     assert copied_product["pkg_system"] == "rpm"
 
 
-def test_product_yaml_write(testing_product_yaml_path, tmp_path):
+@pytest.fixture
+def product_filename_py2(tmpdir):
+    return str(tmpdir.join("tmp_product.yml"))
+
+
+@pytest.fixture
+def product_filename_py3(tmp_path):
+    return tmp_path / "tmp_product.yml"
+
+
+def test_product_yaml_write(testing_product_yaml_path, product_filename_py2):
     product = ssg.products.Product(testing_product_yaml_path)
-    filename = tmp_path / "tmp_product.yml"
-    product.write(filename)
-    second_product = ssg.products.Product(filename)
+    product.write(product_filename_py2)
+    second_product = ssg.products.Product(product_filename_py2)
     assert product["product_dir"] == second_product["product_dir"]
