@@ -5,6 +5,7 @@ import multiprocessing
 import errno
 import os
 import re
+import sys
 from collections import namedtuple
 import hashlib
 
@@ -343,33 +344,60 @@ def mkdir_p(path):
             raise
 
 
+# CentOS 7 etc has PY2
+_PY2 = bool(sys.version_info[0] == 2)
+
+if _PY2:
+    def _py2_text_translate(text, table):
+        result = []
+        for char in text:
+            if char in table:
+                result.append(table[char])
+            else:
+                result.append(char)
+        return "".join(result)
+
+
+def _binary_type_conversion(i):
+    return str(i) if _PY2 else chr(i)
+
+
+_text_translate = _py2_text_translate if _PY2 else str.translate
+
 # Mimic from python 3.11, but drop ws
 # SPECIAL_CHARS
 # closing ')', '}' and ']'
 # '-' (a range in character set)
 # '&', '~', (extended character set operations)
 # '#' (comment) and WHITESPACE (ignored) in verbose mode
-_special_chars_map = {i: '\\' + chr(i) for i in b'()[]{}?*+-|^$\\.&~#'}
+_special_chars_map = {
+    i: '\\' + _binary_type_conversion(i)
+    for i in b'()[]{}?*+-|^$\\.&~#'
+}
+# all special characters (not \w), by ascii order
+_all_special_chars_map = {
+    i: '\\' + _binary_type_conversion(i)
+    for i in b'!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~'
+}
+_all_special_chars_map_sq = {
+    i: (('[' + _binary_type_conversion(i) + ']')
+        if _binary_type_conversion(i) != '^' else ('\\' + _binary_type_conversion(i)))
+    for i in b'!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~'
+}
+
 
 def escape_regex(text):
     # We could use re.escape(), but it escapes too many characters, including plain white space.
     # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
-    return text.translate(_special_chars_map)
+    return _text_translate(text, _special_chars_map)
 
-
-# all special characters, by ascii order
-_all_special_chars_map = {i: '\\' + chr(i) for i in b'!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~'}
-_all_special_chars_map_sq = {
-    i: (('[' + chr(i) + ']') if i != '^' else ('\\' + chr(i)))
-    for i in b'!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~'
-}
 
 def escape_regex_all(text):
-    return text.translate(_all_special_chars_map)
+    return _text_translate(text, _all_special_chars_map)
 
 
 def escape_regex_sq(text):
-    return text.translate(_all_special_chars_map_sq)
+    return _text_translate(text, _all_special_chars_map_sq)
 
 
 def escape_id(text):
