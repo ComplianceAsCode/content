@@ -25,6 +25,7 @@ value: :code:`Setting={{ varname1 }}`
   calling the ansible_only_lineinfile macro to handle deduplication of values.
 
   Note that all string-like parameters are single quoted in the YAML.
+
 #}}
 {{%- macro ansible_lineinfile(msg='', path='', mode='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False) -%}}
 - name: "{{{ msg or rule_title }}}"
@@ -90,6 +91,7 @@ value: :code:`Setting={{ varname1 }}`
 
 {{#
   Find files matching a particular value. Not a full implementation.
+
 #}}
 {{%- macro ansible_find(msg='', paths='', recurse='yes', follow='no', contains='', register='', when='') %}}
 - name: '{{{ msg or rule_title }}}'
@@ -115,6 +117,7 @@ value: :code:`Setting={{ varname1 }}`
   a single configuration parameter might have multiple values, but only one
   value is approved. All lines matching the regex are first removed and then
   the new line is appended to the file.
+
 #}}
 {{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, create='no', block=False, validate='', insert_after='', insert_before='', mode='') -%}}
 {{%- if block %}}
@@ -136,6 +139,7 @@ value: :code:`Setting={{ varname1 }}`
   key-seperator-value files with no sense of structure. In particular,
   ini configuration files are best served with the ini Ansible module
   instead of lineinfile-based solutions.
+
 #}}
 {{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='', escape_regex=False, mode='') %}}
 {{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before, mode=mode) }}}
@@ -148,6 +152,7 @@ value: :code:`Setting={{ varname1 }}`
   files with no sense of structure. In particular, ini configuration files are
   best served with the ini Ansible module instead of lineinfile-based
   solutions.
+
 #}}
 {{%- macro ansible_set_config_file_dir(msg, config_file, config_dir, set_file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
 {{%- set var_dir = config_dir | replace("/", "_") | replace("-", "_") | replace(".", "_") -%}}
@@ -262,6 +267,7 @@ value: :code:`Setting={{ varname1 }}`
   files. Note this is only suitable for calling a single command once with the
   correct arguments and not for calling the same command multiple times with
   different arguments. This includes setting an environment variable once.
+
 #}}
 {{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
@@ -323,6 +329,7 @@ value: :code:`Setting={{ varname1 }}`
 :type filepath: str
 :param contents: contents that should be in the file
 :type contents: str
+
 #}}
 {{%- macro ansible_file_contents(filepath='', contents='') %}}
 - name: "Put contents into {{{ filepath }}} according to policy"
@@ -339,6 +346,7 @@ value: :code:`Setting={{ varname1 }}`
 
 :param banner_var_name: name of ansible variable with the banner regex
 :type banner_var_name: str
+
 #}}
 {{% macro ansible_deregexify_banner_etc_issue(banner_var_name) -%}}
 {{ {{{ banner_var_name }}} |
@@ -356,6 +364,7 @@ wordwrap() }}
 
 :param banner_var_name: name of ansible variable with the banner regex
 :type banner_var_name: str
+
 #}}
 {{% macro ansible_deregexify_banner_dconf_gnome(banner_var_name) -%}}
 ''{{ {{{ banner_var_name }}} |
@@ -719,6 +728,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :param package: package name
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 :param ver: package version (optional argument, use together with "op")
+
 #}}
 {{%- macro ansible_pkg_conditional(package, op=None, ver=None) -%}}
 {{%- if package in platform_package_overrides -%}}
@@ -741,6 +751,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     Macro used to check if authselect files are intact. When used, it will exit the respective
     script if any authselect file was modified without proper use of authselect tool and
     respective profiles.
+
 #}}
 {{% macro ansible_check_authselect_integrity() -%}}
 - name: '{{{ rule_title }}} - Check integrity of authselect current profile'
@@ -791,6 +802,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{#
     Enable authselect feature if the authselect current profile is intact or inform that its
     integrity check failed.
+
 #}}
 {{%- macro ansible_enable_authselect_feature(feature) -%}}
 {{{ ansible_check_authselect_integrity() }}}
@@ -820,6 +832,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{#
     Used to identify if authselect is present or not in the system.
     Some macros can change the remediation behavior based on the presence of authselect.
+
 #}}
 {{%- macro ansible_check_authselect_presence() -%}}
 - name: '{{{ rule_title }}} - Check if system relies on authselect tool'
@@ -839,6 +852,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     :param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
                         Note: For this macro, there is a special value used to include a line at
                         the beginning of the file: "BOF"
+
 #}}
 {{%- macro ansible_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
 {{{ ansible_check_authselect_presence() }}}
@@ -918,6 +932,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{#
   This macro ensures the pam_faillock.so PAM module is enabled.
   It is enabled using the authselect tool or editing the PAM files, only if authselect tool is not available.
+
 #}}
 {{%- macro ansible_pam_faillock_enable() -%}}
 
@@ -1178,6 +1193,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 {{#
   Macro to restrict permissions in home directories of interactive users
+
 #}}
 {{%- macro ansible_restrict_permissions_home_directories(recursive=false) -%}}
 - name: Get all local users from /etc/passwd
@@ -1375,6 +1391,7 @@ Part of the grub2_bootloader_argument_absent template.
     new custom profile will be created based on the current profile and preserving the already
     enabled features. Custom profiles are only recommeded if an authselect feature for the same
     purpose is not available.
+
 #}}
 {{% macro ansible_ensure_authselect_custom_profile() -%}}
 - name: '{{{ rule_title }}} - Get authselect current profile'

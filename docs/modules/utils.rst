@@ -25,14 +25,6 @@ utils.compare\_ds module
    :undoc-members:
    :show-inheritance:
 
-utils.count\_oval\_objects module
----------------------------------
-
-.. automodule:: utils.count_oval_objects
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.create\-stig\-overlay module
 ----------------------------------
 
@@ -45,14 +37,6 @@ utils.find\_duplicates module
 -----------------------------
 
 .. automodule:: utils.find_duplicates
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-utils.find\_shadowed\_files module
-----------------------------------
-
-.. automodule:: utils.find_shadowed_files
    :members:
    :undoc-members:
    :show-inheritance:

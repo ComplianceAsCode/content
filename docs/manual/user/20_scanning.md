@@ -1,7 +1,7 @@
 # Scanning
 ## Running a Scan with OpenSCAP
 
-#### Command Line Interface (CLI)
+### Command Line Interface (CLI)
 This document outlines the usage of OpenSCAP, a command-line utility packaged within Fedora and Red Hat Enterprise Linux which allows users to load, scan, validate, edit, and export SCAP documents.
 
 See also [OpenSCAP User Manual](https://static.open-scap.org/openscap-1.3/oscap_user_manual.html) for instructions how to use OpenSCAP.

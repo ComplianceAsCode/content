@@ -88,17 +88,19 @@ def walk_rules(args, known_rules, oval_func, remediation_func):
 
     The input rule_obj structure is the value of known_rules[rule_id].
 
-    The output structure is a dict as follows:
-    {
-        rule_id: {
-            "oval": oval_func(args, rule_obj),
-            "ansible": remediation_func(args, "ansible", rule_obj),
-            "anaconda": remediation_func(args, "anaconda", rule_obj),
-            "bash": remediation_func(args, "bash", rule_obj),
-            "puppet": remediation_func(args, "puppet", rule_obj)
-        },
-        ...
-    }
+    The output structure is a dict as follows::
+
+        {
+            rule_id: {
+                "oval": oval_func(args, rule_obj),
+                "ansible": remediation_func(args, "ansible", rule_obj),
+                "anaconda": remediation_func(args, "anaconda", rule_obj),
+                "bash": remediation_func(args, "bash", rule_obj),
+                "puppet": remediation_func(args, "puppet", rule_obj)
+            },
+            ...
+        }
+
 
     The arguments supplied to oval_func are args and rule_obj.
     The arguments supplied to remediation_func are args, the remediation type,
