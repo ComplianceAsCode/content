@@ -19,13 +19,13 @@
 #Policy 
 {{{ ansible_instantiate_variables("var_nftables_base_chain_policies") }}}
 
-- name: {{{ rule_title }}} - Collect Existing NFtable
-  ansible.builtin.shell: nft list tables  | grep '{{ var_nftables_family }} {{ var_nftables_table }}'
+- name: {{{ rule_title }}} - Check Existence of Nftables Table
+  ansible.builtin.shell: nft list tables | grep '{{ var_nftables_family }} {{ var_nftables_table }}'
   register: existing_nftables
   changed_when: false
   failed_when: false
 
-- name: {{{ rule_title }}} - Set NFTable Table
+- name: {{{ rule_title }}} - Set NFTables Table
   ansible.builtin.command: nft create table {{ var_nftables_family }} {{ var_nftables_table }}
   when: existing_nftables.rc > 0
 
