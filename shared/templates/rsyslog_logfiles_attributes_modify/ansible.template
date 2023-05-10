@@ -39,7 +39,6 @@
   failed_when: False
   changed_when: False
 
-
 - name: '{{{ rule_title }}} - Extract log files old format'
   ansible.builtin.shell: |
     set -o pipefail
@@ -72,9 +71,9 @@
 - name: '{{{ rule_title }}} -Setup log files attribute'
   ansible.builtin.file:
     path: "{{ item }}"
-    {{{ 'owner: ' ~ VALUE if ATTRIBUTE == "owner" }}}
-    {{{- 'group: ' ~ VALUE if ATTRIBUTE == "groupowner" }}}
-    {{{- 'mode: ' ~ VALUE if ATTRIBUTE == "permissions" }}}
+    {{{ 'owner: "' ~ VALUE ~ '"' if ATTRIBUTE == "owner" }}}
+    {{{- 'group: "' ~ VALUE ~ '"' if ATTRIBUTE == "groupowner" }}}
+    {{{- 'mode: "' ~ VALUE ~ '"' if ATTRIBUTE == "permissions" }}}
     state: file
   loop: "{{ log_files | list | flatten | unique }}"
   failed_when: false
