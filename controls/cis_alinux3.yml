@@ -209,7 +209,7 @@ controls:
     status: automated
     rules:
       - banner_etc_motd
-      - login_banner_text=cis_banners
+      - motd_banner_text=cis_banners
 
   - id: 1.2.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -224,7 +224,10 @@ controls:
     title: Ensure remote login warning banner is configured properly (Automated)
     levels:
       - l1
-    status: planned
+    status: automated
+    rules:
+      - banner_etc_issue_net
+      - remote_login_banner_text=cis_banners
 
   - id: 1.2.4
     title: Ensure permissions on /etc/motd are configured (Automated)

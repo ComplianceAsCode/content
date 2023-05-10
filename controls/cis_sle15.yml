@@ -36,7 +36,7 @@ controls:
     rules:
       - kernel_module_cramfs_disabled
       - kernel_module_squashfs_disabled
-      
+
   - id: 1.1.1.2
     title: Ensure mounting of udf filesystems is disabled (Automated)
     levels:
@@ -53,7 +53,7 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - kernel_module_vfat_disabled  
+      - kernel_module_vfat_disabled
 
   - id: 1.1.2
     title: Ensure /tmp is configured (Automated)
@@ -271,10 +271,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual 
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually. 
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
     - ensure_package_repositories_are_configured
 
@@ -453,7 +453,7 @@ controls:
     status: automated
     rules:
       - banner_etc_motd
-      - login_banner_text=cis_banners
+      - motd_banner_text=cis_banners
 
   - id: 1.8.1.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -473,7 +473,7 @@ controls:
     status: automated
     rules:
       - banner_etc_issue_net
-      - login_banner_text=cis_banners
+      - remote_login_banner_text=cis_banners
 
   - id: 1.8.1.4
     title: Ensure permissions on /etc/motd are configured (Automated)
@@ -513,11 +513,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual 
+    status: manual
     related_rules:
       - security_patches_up_to_date
 
-  - id: "1.10"
+  - id: 1.10
     title: Ensure GDM login banner is configured (Automated)
     levels:
       - l1_server
@@ -613,7 +613,7 @@ controls:
       - package_dhcp_removed
       - package_dhcp_client_removed
       - service_dhcpd_disabled
-    
+
 
   - id: 2.2.6
     title: Ensure LDAP server is not installed (Automated)
@@ -804,7 +804,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual 
+    status: manual
 
   - id: 3.1.1
     title: Disable IPv6 (Automated)
@@ -1028,10 +1028,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual 
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually.     
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
       - set_firewalld_appropriate_zone
 
@@ -1040,10 +1040,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual 
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually. 
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
       - unnecessary_firewalld_services_ports_disabled
 
@@ -1069,10 +1069,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: manual 
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually. 
+    status: manual
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
       - ensure_iptables_are_flushed
 
@@ -1082,10 +1082,10 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    notes: 
-       The audit (OVAL check) cannot be automated, 
+    notes:
+       The audit (OVAL check) cannot be automated,
        and should be addressed manually.
-    rules: 
+    rules:
       - set_nftables_table
       - var_nftables_family=inet
       - var_nftables_table=filter
@@ -1112,9 +1112,9 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
-    notes: >- 
-       The control cannot be automated, 
-       and should be addressed manually.      
+    notes: >-
+       The control cannot be automated,
+       and should be addressed manually.
     rules:
       - set_nftables_new_connections
 
@@ -1171,7 +1171,7 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - package_firewalld_removed    
+      - package_firewalld_removed
       - service_firewalld_disabled
 
   - id: 3.5.3.2.1
@@ -1361,7 +1361,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: automated 
+    status: automated
     rules:
       - audit_rules_mac_modification
       - audit_rules_mac_modification_usr_share
@@ -1373,7 +1373,7 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - audit_rules_login_events_faillock
+      - audit_rules_login_events_faillog
       - audit_rules_login_events_lastlog
       - audit_rules_login_events_tallylog
 
@@ -1515,7 +1515,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules: 
+    rules:
       - rsyslog_files_permissions
       - rsyslog_files_ownership
       - rsyslog_files_groupownership
@@ -1980,7 +1980,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
@@ -1991,7 +1991,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_minimum_age_login_defs
       - var_accounts_minimum_age_login_defs=1
@@ -2018,7 +2018,7 @@ controls:
       - account_disable_post_pw_expiration
       - var_account_disable_post_pw_expiration=30
       - accounts_set_post_pw_existing
-   
+
 
   - id: 5.4.1.6
     title: Ensure all users last password change date is in the past (Automated)
@@ -2258,7 +2258,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - accounts_user_interactive_home_directory_exists
 
@@ -2381,6 +2381,6 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated 
+    status: automated
     rules:
       - ensure_shadow_group_empty

@@ -316,7 +316,7 @@ controls:
     status: automated
     rules:
     - banner_etc_motd
-    - login_banner_text=cis_banners
+    - motd_banner_text=cis_banners
 
   - id: 1.7.1.2
     title: Ensure local login warning banner is configured properly (Scored)
@@ -334,7 +334,7 @@ controls:
     status: automated
     rules:
     - banner_etc_issue_net
-    - login_banner_text=cis_banners
+    - remote_login_banner_text=cis_banners
 
   - id: 1.7.1.4
     title: Ensure permissions on /etc/motd are configured (Not Scored)
@@ -875,7 +875,7 @@ controls:
     - auditd_data_retention_action_mail_acct
     - var_auditd_action_mail_acct=root
     - auditd_data_retention_admin_space_left_action
-    - var_auditd_admin_space_left_action=halt 
+    - var_auditd_admin_space_left_action=halt
 
   - id: 4.1.1.3
     title: Ensure audit logs are not automatically deleted (Scored)
@@ -885,7 +885,7 @@ controls:
     rules:
     - auditd_data_retention_max_log_file_action
     - var_auditd_max_log_file_action=keep_logs
- 
+
   - id: 4.1.2
     title: Ensure auditd service is enabled (Scored)
     levels:
@@ -1206,7 +1206,7 @@ controls:
     - l1
     status: automated
     rules:
-    - sshd_allow_only_protocol2 
+    - sshd_allow_only_protocol2
 
   - id: 5.2.3
     title: Ensure permissions on SSH private host key files are configured (Scored)
@@ -1214,7 +1214,7 @@ controls:
     - l1
     status: automated
     rules:
-    - file_permissions_sshd_private_key 
+    - file_permissions_sshd_private_key
 
   - id: 5.2.4
     title: Ensure permissions on SSH public host key files are configured (Scored)
