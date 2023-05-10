@@ -4,7 +4,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_stig
 # platform = Oracle Linux 7,Red Hat Enterprise Linux 7
 
-yum remove -y chrony
+{{{ bash_package_remove("chrony") }}}
 
 if ! grep "^server.*maxpoll 10" /etc/ntp.conf; then
     sed -i "s/^server.*/& maxpoll 10/" /etc/ntp.conf

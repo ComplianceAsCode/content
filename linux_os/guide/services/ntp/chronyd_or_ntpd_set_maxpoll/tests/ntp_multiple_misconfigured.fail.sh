@@ -4,7 +4,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_stig
 # platform = Oracle Linux 7,Red Hat Enterprise Linux 7
 
-yum remove -y chrony
+{{{ bash_package_remove("chrony") }}}
 
 sed -i "s/^server.*/& maxpoll 17/" /etc/ntp.conf
 echo "server 0.test.ntp.org maxpoll 17 iburst" >> /etc/ntp.conf
