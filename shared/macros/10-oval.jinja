@@ -1042,6 +1042,47 @@ previous level sets. Do it recursiverly.
 {{%- endmacro -%}}
 
 
+{{#
+Convert variable to trimmed variable where whitespace is removed before and after.
+
+Creates new variable from old by adding "_trim" + possible suffix.
+
+:param variable: variable to trim
+:param suffix:   extra suffix
+:param DATATYPE: int / string
+#}}
+{{%- macro oval_var_trim(variable, suffix="", DATATYPE="string") -%}}
+    <local_variable id="{{{ variable }}}_trim{{{ suffix }}}"
+                    comment="Trimmed value, in right type"
+                    version="1" datatype="{{{ DATATYPE }}}">
+{{%- if DATATYPE == "int" %}}
+        <regex_capture pattern="^\s*(-?\d+)\s*$">
+            <variable_component var_ref="{{{ variable }}}_trim_capture{{{ suffix }}}"/>
+        </regex_capture>
+    </local_variable>
+
+    <local_variable id="{{{ variable }}}_trim_capture{{{ suffix }}}"
+                    comment="Capture a value to trim it"
+                    version="1" datatype="string">
+        <variable_component var_ref="{{{ variable }}}"/>
+    </local_variable>
+{{%- else %}}
+{{#-
+Capture either
+    - empty
+    - one char of non space
+    - starting and ending with non space
+    => this should implement "trim" like feature to strip any whitespace before
+       and after
+#}}
+        <regex_capture pattern="^\s*(|\S|\S[^\n]*\S)\s*$">
+            <variable_component var_ref="{{{ variable }}}"/>
+        </regex_capture>
+    </local_variable>
+{{%- endif %}}
+{{%- endmacro -%}}
+
+
 {{%- macro mount_active_criterion(path) %}}
    <criterion comment="The path {{{ path }}} is an active (mounted) mount point"
      test_ref="test_mount_active_{{{ path | escape_id }}}_exists" />
