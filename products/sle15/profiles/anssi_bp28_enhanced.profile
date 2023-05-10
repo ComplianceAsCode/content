@@ -23,8 +23,3 @@ description: |-
 
 selections:
     - anssi:all:enhanced
-    # remove some rules from profile
-    - '!accounts_passwords_pam_faillock_deny'
-    - '!accounts_passwords_pam_faillock_deny_root'
-    - '!accounts_passwords_pam_faillock_interval'
-    - '!accounts_passwords_pam_faillock_unlock_time'
