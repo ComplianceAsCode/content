@@ -3,7 +3,7 @@
 
 groupadd testGrp
 
-mkdir testDir
+mkdir -p testDir
 
 chgrp testGrp  testDir/
 
