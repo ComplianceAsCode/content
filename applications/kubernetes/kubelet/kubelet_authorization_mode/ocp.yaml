@@ -1,0 +1,30 @@
+documentation_complete: false
+prodtype: ocp
+title: |-
+  Ensure that the --authorization-mode argument is not set to AlwaysAllow
+description: 'Do not allow all requests. Enable explicit authorization.
+
+  None required. Unauthenticated/Unauthorized users have no access to OpenShift nodes.'
+rationale: |-
+  Kubelets, by default, allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests.
+severity: PLACEHOLDER
+references: PLACEHOLDER
+ocil: "In OpenShift 4, the kublet config file is managed by the Machine Config Operator.\
+  \ By default, Unauthenticated/Unauthorized users have no access to OpenShift nodes.\
+  \ Run the following command:\n\n```\n\n#In one terminal, run:\n oc proxy\n\n#Then\
+  \ in another terminal, run:\nfor name in $(oc get nodes -ojsonpath='{.items[*].metadata.name}')\n\
+  do \n curl -sS http://127.0.0.1:8080/api/v1/nodes/$name/proxy/configz | jq -r '.kubeletconfig.authorization.mode'\n\
+  \ done\n\n# Alternative without oc proxy\nPOD=$(oc -n openshift-kube-apiserver get\
+  \ pod -l app=openshift-kube-apiserver -o jsonpath='{.items[0].metadata.name}')\n\
+  \nTOKEN=$(oc whoami -t)\n\nfor name in $(oc get nodes -ojsonpath='{.items[*].metadata.name}')\n\
+  do\n oc exec -n openshift-kube-apiserver $POD -- curl -sS https://172.25.0.1/api/v1/nodes/$name/proxy/configz\
+  \ -k -H \"Authorization: Bearer $TOKEN\" | jq -r '.kubeletconfig.authorization.mode'\n\
+  done\n```\n\nVerify that access is not successful."
+ocil_clause: PLACEHOLDER
+warnings: PLACEHOLDER
+template: PLACEHOLDER
+ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
+identifier: "cce@ocp4: CCE-83593-4"
+reference:
+  cis@ocp4: 4.2.2
+

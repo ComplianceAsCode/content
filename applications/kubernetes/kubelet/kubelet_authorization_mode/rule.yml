@@ -1,0 +1,25 @@
+documentation_complete: {{{ documentation_complete }}}
+
+prodtype: {{{ product }}}
+platform: {{{ product }}}
+
+title: {{{ title }}}
+
+description: {{{ description }}}
+rationale: {{{ description }}}
+
+identifiers: {{{ identifier }}}
+severity: {{{ severity }}}
+
+references: {{{ reference }}}
+
+ocil_clause: {{{ ocil_clause }}}
+
+ocil: {{{ ocil }}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
+template:
+    name: kubelet_combine

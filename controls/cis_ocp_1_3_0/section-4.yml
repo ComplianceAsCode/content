@@ -78,7 +78,8 @@ controls:
     - id: 4.2.2
       title: Ensure that the --authorization-mode argument is not set to AlwaysAllow
       status: pending
-      rules: []
+      rules:
+        - kubelet_authorization_mode
       level: level_1
     - id: 4.2.3
       title: Ensure that the --client-ca-file argument is set as appropriate

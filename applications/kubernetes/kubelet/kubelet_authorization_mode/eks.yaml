@@ -1,0 +1,76 @@
+documentation_complete: false
+prodtype: eks
+title: |-
+  Ensure that the --authorization-mode argument is not set to AlwaysAllow
+description: "Do not allow all requests. Enable explicit authorization.\n**Remediation\
+  \ Method 1:**\n\nIf configuring via the Kubelet config file, you first need to locate\
+  \ the file.\n\nTo do this, SSH to each node and execute the following command to\
+  \ find the kubelet process:\n\n```\nps -ef | grep kubelet\n```\n\nThe output of\
+  \ the above command provides details of the active kubelet process, from which we\
+  \ can see the location of the configuration file provided to the kubelet service\
+  \ with the `--config` argument. The file can be viewed with a command such as `more`\
+  \ or `less`, like so:\n\n```\nsudo less /path/to/kubelet-config.json\n```\n\nEnable\
+  \ Webhook Authentication by setting the following parameter:\n\n```\n\"authentication\"\
+  : { \"webhook\": { \"enabled\": true } }\n```\n\nNext, set the Authorization Mode\
+  \ to `Webhook` by setting the following parameter:\n\n```\n\"authorization\": {\
+  \ \"mode\": \"Webhook }\n```\n\nFiner detail of the `authentication` and `authorization`\
+  \ fields can be found in the [Kubelet Configuration documentation](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/).\n\
+  \n**Remediation Method 2:**\n\nIf using executable arguments, edit the kubelet service\
+  \ file on each worker node and ensure the below parameters are part of the `KUBELET_ARGS`\
+  \ variable string.\n\nFor systems using `systemd`, such as the Amazon EKS Optimised\
+  \ Amazon Linux or Bottlerocket AMIs, then this file can be found at `/etc/systemd/system/kubelet.service.d/10-kubelet-args.conf`.\
+  \ Otherwise, you may need to look up documentation for your chosen operating system\
+  \ to determine which service manager is configured:\n\n```\n--authentication-token-webhook\n\
+  --authorization-mode=Webhook\n```\n\n**For Both Remediation Steps:**\n\nBased on\
+  \ your system, restart the `kubelet` service and check the service status. \n\n\
+  The following example is for operating systems using `systemd`, such as the Amazon\
+  \ EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the `systemctl` command.\
+  \ If `systemctl` is not available then you will need to look up documentation for\
+  \ your chosen operating system to determine which service manager is configured:\n\
+  \n```\nsystemctl daemon-reload\nsystemctl restart kubelet.service\nsystemctl status\
+  \ kubelet -l\n```"
+rationale: |-
+  Kubelets can be configured to allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests.
+severity: PLACEHOLDER
+references: PLACEHOLDER
+ocil: "**Audit Method 1:**\n\nKubelets can accept configuration via a configuration\
+  \ file and in some cases via command line arguments. It is important to note that\
+  \ parameters provided as command line arguments will override their counterpart\
+  \ parameters in the configuration file (see `--config` details in the [Kubelet CLI\
+  \ Reference](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/)\
+  \ for more info, where you can also find out which configuration parameters can\
+  \ be supplied as a command line argument). \n\nWith this in mind, it is important\
+  \ to check for the existence of command line arguments as well as configuration\
+  \ file entries when auditing Kubelet configuration. \n\nFirstly, SSH to each node\
+  \ and execute the following command to find the Kubelet process:\n\n```\nps -ef\
+  \ | grep kubelet\n```\n\nThe output of the above command provides details of the\
+  \ active Kubelet process, from which we can see the command line arguments provided\
+  \ to the process. Also note the location of the configuration file, provided with\
+  \ the `--config` argument, as this will be needed to verify configuration. The file\
+  \ can be viewed with a command such as `more` or `less`, like so:\n\n```\nsudo less\
+  \ /path/to/kubelet-config.json\n```\n\nVerify that Webhook Authentication is enabled.\
+  \ This may be enabled as a command line argument to the kubelet service with `--authentication-token-webhook`\
+  \ or in the kubelet configuration file via `\"authentication\": { \"webhook\": {\
+  \ \"enabled\": true } }`.\n\nVerify that the Authorization Mode is set to `WebHook`.\
+  \ This may be set as a command line argument to the kubelet service with `--authorization-mode=Webhook`\
+  \ or in the configuration file via `\"authorization\": { \"mode\": \"Webhook }`.\n\
+  \n**Audit Method 2:**\n\nIt is also possible to review the running configuration\
+  \ of a Kubelet via the /configz endpoint of the Kubernetes API. This can be achieved\
+  \ using `kubectl` to proxy your requests to the API.\n\nDiscover all nodes in your\
+  \ cluster by running the following command:\n\n```\nkubectl get nodes\n```\n\nNext,\
+  \ initiate a proxy with kubectl on a local port of your choice. In this example\
+  \ we will use 8080:\n\n```\nkubectl proxy --port=8080\n```\n\nWith this running,\
+  \ in a separate terminal run the following command for each node:\n\n```\nexport\
+  \ NODE_NAME=my-node-name\ncurl http://localhost:8080/api/v1/nodes/${NODE_NAME}/proxy/configz\
+  \ \n```\n\nThe curl command will return the API response which will be a JSON formatted\
+  \ string representing the Kubelet configuration.\n\nVerify that Webhook Authentication\
+  \ is enabled with `\"authentication\": { \"webhook\": { \"enabled\": true } }` in\
+  \ the API response.\n\nVerify that the Authorization Mode is set to `WebHook` with\
+  \ `\"authorization\": { \"mode\": \"Webhook }` in the API response."
+ocil_clause: PLACEHOLDER
+warnings: PLACEHOLDER
+template: PLACEHOLDER
+
+ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
+reference:
+  cis@eks: 3.2.2
