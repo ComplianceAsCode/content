@@ -51,6 +51,7 @@ selections:
     -  group_unique_name
     -  no_files_unowned_by_user
     -  package_bind_removed
+    -  package_cron_installed
     -  package_dhcp_removed
     -  package_httpd_removed
     -  package_net-snmp_removed
