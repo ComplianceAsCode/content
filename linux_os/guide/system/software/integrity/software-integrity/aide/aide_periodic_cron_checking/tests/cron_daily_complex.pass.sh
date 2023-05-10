@@ -1,6 +1,5 @@
 #!/bin/bash
-#
-# packages = aide
+# packages = aide,crontabs
 
 # This TS is a regression test for https://bugzilla.redhat.com/show_bug.cgi?id=2175684
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = aide,crontabs
 
 if command -v yum; then
     yum remove -y aide

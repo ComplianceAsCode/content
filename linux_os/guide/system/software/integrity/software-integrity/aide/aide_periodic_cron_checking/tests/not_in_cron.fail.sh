@@ -1,6 +1,5 @@
 #!/bin/bash
-#
-# packages = aide
+# packages = aide,crontabs,cronie
 
 # aide installs automatically a file that is periodically run on /etc/cron.daily/aide
 rm -f /etc/cron.daily/aide
