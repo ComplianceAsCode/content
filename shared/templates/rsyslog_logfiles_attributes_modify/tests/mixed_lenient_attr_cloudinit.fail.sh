@@ -16,7 +16,7 @@ ATTR_INCORRECT_VALUE="cac_testgroup"
 groupadd $ATTR_INCORRECT_VALUE
 {{% else %}}
 CHATTR="chmod"
-ATTR_VALUE="0600"
+ATTR_VALUE="0640"
 ATTR_INCORRECT_VALUE="0666"
 {{% endif %}}
 
@@ -33,6 +33,6 @@ cat << EOF > $RSYSLOG_CONF
 
 #### RULES ####
 *.*     ${RSYSLOG_TEST_LOGS[0]}
-*.*     action(type="omfile" FileCreateMode="0640" fileOwner="root" fileGroup="hoiadm" File="${RSYSLOG_TEST_LOGS[1]}")
+:syslogtag, isequal, "[CLOUDINIT]" ${RSYSLOG_TEST_LOGS[1]}
 
 EOF

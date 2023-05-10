@@ -16,7 +16,7 @@ ATTR_INCORRECT_VALUE="cac_testgroup"
 groupadd $ATTR_INCORRECT_VALUE
 {{% else %}}
 CHATTR="chmod"
-ATTR_VALUE="0600"
+ATTR_VALUE="0640"
 ATTR_INCORRECT_VALUE="0666"
 {{% endif %}}
 
