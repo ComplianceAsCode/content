@@ -70,6 +70,8 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
             <literal_component>)\s*$</literal_component>
         </concat>
     </local_variable>
+{{%- else %}}
+    {{{ oval_var_trim(rule_id ~ "_value", suffix=suffix, DATATYPE=DATATYPE) }}}
 {{%- endif -%}}
 {{%- endmacro -%}}
 
@@ -146,7 +148,7 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
                     var_ref="local_var_{{{ rule_id }}}_regex"/>
 {{%- else %}}
         <unix:value datatype="{{{ DATATYPE }}}" operation="equals"
-                    var_ref="{{{ rule_id }}}_value"/>
+                    var_ref="{{{ rule_id }}}_value_trim"/>
 {{%- endif %}}
     </unix:sysctl_state>
 {{{ sysctl_local_variables("") }}}
@@ -260,7 +262,7 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
         <ind:subexpression operation="pattern match" datatype="string"
                            var_ref="local_var_{{{ rule_id }}}_regex_static"/>
 {{%- else %}}
-        <ind:subexpression operation="{{{ OPERATION }}}" var_ref="{{{ rule_id }}}_value"
+        <ind:subexpression operation="{{{ OPERATION }}}" var_ref="{{{ rule_id }}}_value_trim_static"
                            datatype="{{{ DATATYPE }}}"/>
 {{%- endif %}}
     </ind:textfilecontent54_state>
