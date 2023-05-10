@@ -19,7 +19,7 @@
 # key and value at hand
 #
 sysctlvar={{{ SYSCTLVAR | quote }}}
-{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
+{{%- if SYSCTLVAL is none or SYSCTLVAL is not string %}}
 {{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
 
 {{#-
@@ -99,7 +99,7 @@ done
 /sbin/sysctl -q -n -w "${sysctlvar}"="${sysctl_{{{ SYSCTLID }}}_value}"
 
 #
-{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
+{{%- if SYSCTLVAL is none or SYSCTLVAL is not string %}}
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
 #   else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
 {{%- else %}}

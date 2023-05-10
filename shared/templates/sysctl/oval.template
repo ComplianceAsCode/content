@@ -1,4 +1,4 @@
-{{%- if SYSCTLVAL == "" %}}
+{{%- if SYSCTLVAL is none %}}
 {{%- set COMMENT_VALUE="the appropriate value" %}}
 {{%- elif SYSCTLVAL is string %}}
 {{%- set COMMENT_VALUE=SYSCTLVAL %}}
@@ -8,7 +8,7 @@
 
 {{%- macro state_static_sysctld(suffix) -%}}
     <ind:object object_ref="{{{ obj_static_sysctld_id(suffix) }}}"/>
-{{%- if SYSCTLVAL is string %}}
+{{%- if SYSCTLVAL is none or SYSCTLVAL is string -%}}
     <ind:state state_ref="state_{{{ rule_id }}}_static_sysctld"/>
 {{%- else -%}}
 {{%- for x in SYSCTLVAL %}}
@@ -128,7 +128,7 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
                       comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                       check="all" check_existence="all_exist" state_operator="OR">
         <unix:object object_ref="obj_{{{ rule_id }}}_runtime"/>
-{{%- if SYSCTLVAL is string %}}
+{{%- if SYSCTLVAL is none or SYSCTLVAL is string %}}
         <unix:state state_ref="state_{{{ rule_id }}}_runtime"/>
 {{%- else -%}}
 {{%- for x in SYSCTLVAL %}}
@@ -140,8 +140,8 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
     <unix:sysctl_object id="obj_{{{ rule_id }}}_runtime" version="1">
         <unix:name>{{{ SYSCTLVAR }}}</unix:name>
     </unix:sysctl_object>
-{{%- if SYSCTLVAL is string -%}}
-{{%- if SYSCTLVAL == "" %}}
+
+{{%- if SYSCTLVAL is none %}}
     <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
 {{%- if SYSCTLVAR == "net.ipv4.ip_local_port_range" %}}
         <unix:value datatype="string" operation="pattern match"
@@ -155,7 +155,7 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
 
     <external_variable id="{{{ rule_id }}}_value" version="1"
                        comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
-{{%- else %}}
+{{%- elif SYSCTLVAL is string %}}
     <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
 {{%- if OPERATION == "pattern match" %}}
         <unix:value datatype="{{{ DATATYPE }}}"
@@ -165,7 +165,6 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
                     operation="{{{ OPERATION }}}">{{{ SYSCTLVAL }}}</unix:value>
 {{%- endif %}}
     </unix:sysctl_state>
-{{%- endif -%}}
 {{%- else -%}}
 {{%- for x in SYSCTLVAL %}}
     <unix:sysctl_state id="state_{{{ rule_id }}}_runtime_{{{ x }}}" version="1">
@@ -254,8 +253,7 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
         {{{ oval_list_to_set(obj_refs.lst) | indent(8) }}}
     </ind:textfilecontent54_object>
 
-{{%- if SYSCTLVAL is string -%}}
-{{%- if SYSCTLVAL == "" %}}
+{{%- if SYSCTLVAL is none %}}
 
     <ind:textfilecontent54_state id="state_{{{ rule_id }}}_static_sysctld" version="1">
 {{%- if SYSCTLVAR == "net.ipv4.ip_local_port_range" %}}
@@ -270,7 +268,7 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
 
     <external_variable id="{{{ rule_id }}}_value" version="1"
                        comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
-{{%- else %}}
+{{%- elif SYSCTLVAL is string -%}}
     <ind:textfilecontent54_state id="state_{{{ rule_id }}}_static_sysctld" version="1">
 {{%- if OPERATION == "pattern match" %}}
         <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL_REGEX }}}</ind:subexpression>
@@ -278,7 +276,6 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
         <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL }}}</ind:subexpression>
 {{%- endif %}}
     </ind:textfilecontent54_state>
-{{%- endif -%}}
 {{%- else -%}}
 {{%- for x in SYSCTLVAL %}}
     <ind:textfilecontent54_state id="state_{{{ rule_id }}}_static_sysctld_{{{ x }}}" version="1">

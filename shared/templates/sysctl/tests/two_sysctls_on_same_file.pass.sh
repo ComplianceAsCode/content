@@ -1,5 +1,5 @@
 #!/bin/bash
-{{% if SYSCTLVAL == "" %}}
+{{% if SYSCTLVAL is none or SYSCTLVAL is not string %}}
 # variables = sysctl_{{{ SYSCTLID }}}_value={{{ SYSCTL_CORRECT_VALUE }}}
 {{% endif %}}
 

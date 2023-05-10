@@ -39,20 +39,26 @@
     before: >-
       .*\n{{{ setsysctlvar_rx | trim('^') }}}
 {{%- endif %}}
-{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
+{{%- if SYSCTLVAL is none or SYSCTLVAL is not string %}}
 
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
   sysctl:
     name: "{{{ SYSCTLVAR }}}"
-    value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
+    # Ansible sysctl module doesn't allow empty string. A space string is
+    # allowed and has the same semantics as sysctl will ignore spaces.
+    # center(1) adds one space to empty string.
+    value: >-
+      {{ sysctl_{{{ SYSCTLID }}}_value | center(1) }}
 {{%- else %}}
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
   sysctl:
     name: "{{{ SYSCTLVAR }}}"
-    value: "{{{ SYSCTLVAL }}}"
+    # Ansible sysctl module doesn't allow empty string. A space string is
+    # allowed and has the same semantics as sysctl will ignore spaces.
+    value: {{% if SYSCTLVAL == "" %}}" "{{% else %}}"{{{ SYSCTLVAL }}}"{{% endif %}}
 {{%- endif %}}
     sysctl_file: >-
 {{%- if sysctl_remediate_drop_in_file == "true" %}}

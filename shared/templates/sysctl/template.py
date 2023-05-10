@@ -3,7 +3,9 @@ import ssg.utils
 
 def validate_sysctlval_type(data):
     # Testing type helps logic in OVAL, remediations and tests
-    # We test "", string and what is left is list.
+    # We test none, string and what is left is list.
+    if data["sysctlval"] is None:
+        return True
 
     if isinstance(data["sysctlval"], list):
         if len(data["sysctlval"]) == 0:
@@ -37,8 +39,8 @@ def validate(data):
 
 def preprocess(data, lang):
     data["sysctlid"] = ssg.utils.escape_id(data["sysctlvar"])
-    if not data.get("sysctlval"):
-        data["sysctlval"] = ""
+    if "sysctlval" not in data:
+        data["sysctlval"] = None
     ipv6_flag = "P"
     if data["sysctlid"].find("ipv6") >= 0:
         ipv6_flag = "I"
@@ -46,7 +48,7 @@ def preprocess(data, lang):
     if "operation" not in data:
         data["operation"] = "equals"
 
-    if data["sysctlval"] == "":
+    if data["sysctlval"] is None:
         if data["datatype"] == "int":
             data["sysctl_correct_value"] = "0"
             data["sysctl_wrong_value"] = "1"
