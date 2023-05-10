@@ -7,9 +7,9 @@ df --local -P | awk '{if (NR!=1) print $6}' \
 -exec chmod a+t {} +
 
 # Create a new dir that has sticky bit but is not word-writable
-mkdir /test_dir_1
+mkdir -p /test_dir_1
 chmod 1770 /test_dir_1
 
 # Create a new dir that is word-writable but doesn't have sticky bit
-mkdir /test_dir_2
+mkdir -p /test_dir_2
 chmod 0774 /test_dir_2
