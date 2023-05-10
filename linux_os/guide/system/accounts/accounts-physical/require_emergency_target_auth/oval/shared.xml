@@ -2,13 +2,25 @@
   <definition class="compliance" id="require_emergency_target_auth" version="1">
     {{{ oval_metadata("The requirement for a password to boot into emergency mode
       should be configured correctly.") }}}
-    <criteria operator="AND">
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_require_emergency_service" />
-      <criterion test_ref="test_require_emergency_service_emergency_target" />
-      <criterion test_ref="test_no_custom_emergency_target" negate="true"/>
-      <criterion test_ref="test_no_custom_emergency_service" negate="true"/>
+{{% if 'sle' in product %}}
+    <criteria operator="OR">
+{{% endif %}}
+      <criteria operator="AND">
+        <criterion comment="Conditions are satisfied"
+          test_ref="test_require_emergency_service" />
+        <criterion test_ref="test_require_emergency_service_emergency_target" />
+        <criterion test_ref="test_no_custom_emergency_target" negate="true"/>
+        <criterion test_ref="test_no_custom_emergency_service" negate="true"/>
+      </criteria>
+{{% if 'sle' in product %}}
+      <criteria operator="OR">
+        <criterion comment="Check /usr/lib/* configuration"
+          test_ref="test_require_emergency_service" />
+        <criterion comment="Check drop-in configuration"
+          test_ref="test_require_emergency_service_dropin" />
+      </criteria>
     </criteria>
+{{% endif %}}
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
@@ -18,8 +30,8 @@
     /sbin/sulogin
     {{%- endif %}}
     was not removed from the default systemd emergency.service to ensure that a
-  password must be entered to access single user mode"
-  id="test_require_emergency_service" version="1">
+    password must be entered to access single user mode"
+    id="test_require_emergency_service" version="1">
     <ind:object object_ref="obj_require_emergency_service" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_emergency_service" version="1">
@@ -31,6 +43,23 @@
     {{%- endif -%}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+{{% if 'sle' in product %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="Tests that
+    /usr/lib/systemd/systemd-sulogin-shell
+    was not removed from the default systemd emergency.service to ensure that a
+    password must be entered to access single user mode"
+    id="test_require_emergency_service_dropin" version="1">
+    <ind:object object_ref="obj_require_emergency_service_dropin" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_emergency_service_dropin" version="1">
+    <ind:path>/etc/systemd/system/emergency.service.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^ExecStart=\-/usr/lib/systemd/systemd-sulogin-shell[\s]+emergency</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that the systemd emergency.service is in the emergency.target"
@@ -49,19 +78,19 @@
     <unix:object object_ref="object_no_custom_emergency_service" />
   </unix:file_test>
   <unix:file_object comment="look for emergency.service in /etc/systemd/system"
-  id="object_no_custom_emergency_service" version="1">
+    id="object_no_custom_emergency_service" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
     <unix:path operation="equals">/etc/systemd/system</unix:path>
     <unix:filename operation="pattern match">^emergency.service$</unix:filename>
   </unix:file_object>
 
   <unix:file_test check="all" check_existence="at_least_one_exists"
-  comment="look for emergency.target in /etc/systemd/system"
-  id="test_no_custom_emergency_target" version="1">
+    comment="look for emergency.target in /etc/systemd/system"
+    id="test_no_custom_emergency_target" version="1">
     <unix:object object_ref="object_no_custom_emergency_target" />
   </unix:file_test>
   <unix:file_object comment="look for emergency.target in /etc/systemd/system"
-  id="object_no_custom_emergency_target" version="1">
+    id="object_no_custom_emergency_target" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="all" />
     <unix:path operation="equals">/etc/systemd/system</unix:path>
     <unix:filename operation="pattern match">^emergency.target$</unix:filename>
