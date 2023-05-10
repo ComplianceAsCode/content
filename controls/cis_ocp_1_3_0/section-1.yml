@@ -299,14 +299,24 @@ controls:
       level: level_1
     - id: 1.2.33
       title: Ensure that the --encryption-provider-config argument is set as appropriate
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - api_server_encryption_provider_cipher
       level: level_1
+      tickets:
+        - https://issues.redhat.com/browse/CMP-1973
+      notes: |-
+        Ticket 1973 tracks adding the aesgcm encryption method for OCP 4.13+
     - id: 1.2.34
       title: Ensure that encryption providers are appropriately configured
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - api_server_encryption_provider_cipher
       level: level_1
+      tickets:
+        - https://issues.redhat.com/browse/CMP-1973
+      notes: |-
+        Ticket 1973 tracks adding the aesgcm encryption method for OCP 4.13+
     - id: 1.2.35
       title: Ensure that the API Server only makes use of Strong Cryptographic Ciphers
       status: pending

@@ -13,6 +13,23 @@ title: 'Configure the Encryption Provider Cipher'
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
 
 description: |-
+    <p>
+    When you enable etcd encryption, the following OpenShift API server
+    and Kubernetes API server resources are encrypted:
+    <ul>
+      <li>Secrets</li>
+      <li>ConfigMaps</li>
+      <li>Routes</li>
+      <li>OAuth access tokens</li>
+      <li>OAuth authorize tokens</li>
+    </ul>
+    </p>
+    <p>
+    When you enable etcd encryption, encryption keys are created. These
+    keys are rotated on a weekly basis. You must have these keys in order
+    to restore from an etcd backup.
+    </p>
+    <p>
     To ensure the correct cipher, set the encryption type <tt>aescbc</tt> in the
     <tt>apiserver</tt> object which configures the API server itself.
     <pre>
@@ -20,10 +37,12 @@ description: |-
       encryption:
         type: aescbc
     </pre>
-
+    </p>
+    <p>
     For more information, follow
-    {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/security/encrypting-etcd.html",
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html",
                 text="the relevant documentation") }}}.
+    </p>
 
 rationale: |-
     etcd is a highly available key-value store used by OpenShift deployments
@@ -48,9 +67,21 @@ references:
 ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
 
 ocil: |-
-    Run the following command:
+    OpenShift supports encryption of data at rest of etcd datastore, but it is up to the
+    customer to configure. The asecbc cipher is used. No other ciphers are supported. Keys
+    are stored on the filesystem of the master and automatically rotated.
+    Run the following command to review the Encrypted status condition for the OpenShift
+    API server to verify that its resources were successfully encrypted:
+    <pre>
+    # encrypt the etcd datastore
+    $ oc get openshiftapiserver -o=jsonpath='{range.items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+    <pre>
+    The output shows <tt>EncryptionCompleted</tt> upon successful encryption.
+    If the output shows <tt>EncryptionInProgress</tt> this means that encryption is still in
+    progress. Wait a few minutes and try again.
+    To display the encryption configured, run the following command:
     <pre>$ oc get --raw {{.var_apiserver_encryption_path}} | jq {{.var_apiserver_encryption_filter}} </pre>
-    The output should return <tt>aescbc</tt> as the encryption type.
+    If the output does not list <tt>aescbc</tt>, the encryption is not configured correctly.
 
 warnings:
 - general: |-
