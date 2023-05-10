@@ -4,7 +4,7 @@ title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
 
-{{% if product == 'rhcos4' %}}
+{{% if product in ["rhcos4", "sle12", "sle15"] %}}
 {{# CoreOS is special - it is immutable, so it is more predictable, and it uses the dedicated group as key owner by default #}}
 {{% set perms = "-rw-r-----" %}}
 {{% set perms_num = "0640" %}}
@@ -67,6 +67,6 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms=perm
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms=perms) }}}
 
-fixtext: '{{{ srg_requirement_file_permission(file="/etc/ssh/*_key", mode="0600") }}}'
+fixtext: '{{{ srg_requirement_file_permission(file="/etc/ssh/*_key", mode=perms_num) }}}'
 
-srg_requirement: 'The {{{ full_namne }}} SSH private host key files must have mode 0600 or less permissive.'
+srg_requirement: 'The {{{ full_namne }}} SSH private host key files must have mode {{{ perms_num }}} or less permissive.'
