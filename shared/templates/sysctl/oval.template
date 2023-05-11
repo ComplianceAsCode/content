@@ -245,12 +245,12 @@ obj_{{{ rule_id }}}_static_sysctld_{{{ suffix }}}
     <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
          variable to have no value even when there are valid objects. -->
     <ind:textfilecontent54_object id="{{{ obj_static_sysctld_id("unfiltered") }}}" version="1">
-{{%- set obj_refs = namespace(lst=[]) -%}}
-{{%- set obj_refs.lst = obj_refs.lst + ['<object_reference>' ~ obj_static_sysctld_id("sysctl") ~ '</object_reference>'] -%}}
+{{%- set obj_refs = [] -%}}
+{{%- set _ = obj_refs.append('<object_reference>' ~ obj_static_sysctld_id("sysctl") ~ '</object_reference>') -%}}
 {{%- for sysctl_dir in sysctl_dirs -%}}
-{{%- set obj_refs.lst = obj_refs.lst + ['<object_reference>' ~ obj_static_sysctld_id(sysctl_d_id(sysctl_dir)) ~ '</object_reference>'] -%}}
+{{%- set _ = obj_refs.append('<object_reference>' ~ obj_static_sysctld_id(sysctl_d_id(sysctl_dir)) ~ '</object_reference>') -%}}
 {{%- endfor -%}}
-        {{{ oval_list_to_set(obj_refs.lst) | indent(8) }}}
+        {{{ oval_list_to_set(obj_refs) | indent(8) }}}
     </ind:textfilecontent54_object>
 
 {{%- if SYSCTLVAL is none %}}
