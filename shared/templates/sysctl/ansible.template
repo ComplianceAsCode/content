@@ -12,7 +12,7 @@
     }}}[ \\t]*=
 {{%- endset %}}
 - name: List /etc/sysctl.d/*.conf files
-  find:
+  ansible.builtin.find:
     paths: {{{ ansible_sysctl_set_config_directories() }}}
     contains: >-
       {{{ setsysctlvar_rx }}}.*$
@@ -21,7 +21,7 @@
   register: find_sysctl_d
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from config files
-  replace:
+  ansible.builtin.replace:
     path: "{{ item.path }}"
     regexp: >-
       ({{{ setsysctlvar_rx }}})
@@ -29,7 +29,7 @@
   loop: "{{ find_sysctl_d.files }}"
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.conf
-  replace:
+  ansible.builtin.replace:
     path: "/etc/sysctl.conf"
     regexp: >-
       ({{{ setsysctlvar_rx }}})
@@ -44,7 +44,7 @@
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
-  sysctl:
+  ansible.posix.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     # Ansible sysctl module doesn't allow empty string. A space string is
     # allowed and has the same semantics as sysctl will ignore spaces.
@@ -54,7 +54,7 @@
 {{%- else %}}
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
-  sysctl:
+  ansible.posix.sysctl:
     name: "{{{ SYSCTLVAR }}}"
     # Ansible sysctl module doesn't allow empty string. A space string is
     # allowed and has the same semantics as sysctl will ignore spaces.
