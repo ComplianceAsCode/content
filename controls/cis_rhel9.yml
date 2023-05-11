@@ -1142,14 +1142,18 @@ controls:
       - l1_workstation
     status: manual
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5248
   - id: 3.4.2.7
     title: Ensure nftables default deny firewall policy (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use.
+    related_rules:
+      - nftables_ensure_default_deny_policy
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
