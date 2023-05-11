@@ -26,6 +26,13 @@ def testing_product(testing_product_yaml_path):
     return ssg.products.Product(testing_product_yaml_path)
 
 
+@pytest.fixture
+def product_with_updated_properties(testing_product, testing_datadir):
+    properties_dir = os.path.join(testing_datadir, "properties")
+    testing_product.read_properties_from_directory(properties_dir)
+    return testing_product
+
+
 def test_get_all(ssg_root):
     products = ssg.products.get_all(ssg_root)
 
@@ -69,17 +76,21 @@ def test_product_yaml_write(testing_product, product_filename_py2):
 def test_product_updates_with_dict(testing_product):
     assert "property_one" not in testing_product
     properties = dict(property_one="one")
-    testing_product.expand_by(properties)
+    testing_product.expand_by_acquired_data(properties)
     assert testing_product["property_one"] == "one"
     overriding_property = dict(property_one="two")
-    testing_product.expand_by(overriding_property)
+    testing_product.expand_by_acquired_data(overriding_property)
     assert testing_product["property_one"] == "two"
 
 
-def test_product_updates_with_files(testing_product, testing_datadir):
-    properties_dir = os.path.join(testing_datadir, "properties")
-    testing_product.read_properties_from_directory(properties_dir)
-    assert testing_product["property_one"] == "one"
-    assert testing_product["product"] == "rhel7"
-    assert testing_product["rhel_version"] == "seven"
-    assert testing_product["property_two"] == "two"
+def test_product_updates_with_files(product_with_updated_properties):
+    product = product_with_updated_properties
+    assert product["property_one"] == "one"
+    assert product["product"] == "rhel7"
+    assert product["rhel_version"] == "seven"
+    assert product["property_two"] == "two"
+
+
+def test_product_updates_preserve_product_definitions(product_with_updated_properties):
+    product = product_with_updated_properties
+    assert product["grub2_uefi_boot_path"].startswith("/boot")
