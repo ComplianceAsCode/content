@@ -1,0 +1,34 @@
+srg_requirement: |-
+    OpenShift must protect audit information from unauthorized modification.
+
+checktext: |-
+    Verify the permissions and ownership of files located under "/var/log/pods" that store the output of pods are set to protect from unauthorized access.
+
+    1. Verify the files are readable only by the owner by executing the following command:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find /var/log/pods/ -type f \( -perm /022 -o -perm /044 \)' 2>/dev/null; done
+
+    If any files are returned, this is a finding.
+
+    2. Verify files are group-owned by root and owned by root by executing the following:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find /var/log/pods/ -type f \! -user 0' 2>/dev/null; done
+
+    (Example output:
+    ip-10-0-150-1 root root)
+
+    If "root" is not returned as the owner, this is a finding.
+
+    If "root" is not returned as the group owner, this is a finding.
+
+fixtext: |-
+    Change the permissions and ownership of files located under "/var/log/pods" to protect from unauthorized access.
+
+    1. Execute the following to set the output of pods readable only by the owner:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find /var/log/pods/ -type f \( -perm /022 -o -perm /044 \) | xargs -r chmod 600' 2>/dev/null; done
+
+    2. Execute the following to set the group and group-ownership to root for files that store the output of pods:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find /var/log/pods/ -type f \! -user 0 | xargs -r chown root:root' 2>/dev/null; done
+
