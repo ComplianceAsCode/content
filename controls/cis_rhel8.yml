@@ -1964,9 +1964,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - file_permissions_sshd_private_key
+      - file_ownership_sshd_private_key
+      - file_groupownership_sshd_private_key
 
   # TODO
   # Missing rules for owner and group-owner.
