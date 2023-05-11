@@ -15,14 +15,14 @@
 - name: Set audit_tools fact
   set_fact:
     audit_tools:
-      {{% if 'rhel' not in product and product != 'ol8' %}}- /usr/sbin/audispd{{% endif %}}
+      {{% if product not in ['fedora', 'ol8'] and 'rhel' not in product %}}- /usr/sbin/audispd{{% endif %}}
       - /usr/sbin/auditctl
       - /usr/sbin/auditd
       - /usr/sbin/augenrules
       - /usr/sbin/aureport
       - /usr/sbin/ausearch
       - /usr/sbin/autrace
-      {{% if product == 'ol8' or 'rhel' in product %}}- /usr/sbin/rsyslogd{{% endif %}}
+      {{% if product in ['fedora', 'ol8'] or 'rhel' in product %}}- /usr/sbin/rsyslogd{{% endif %}}
 
 - name: Ensure existing AIDE configuration for audit tools are correct
   lineinfile:
