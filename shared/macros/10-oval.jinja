@@ -1031,13 +1031,13 @@ previous level sets. Do it recursiverly.
 {{%- endfor %}}
 </set>
 {{%- endset -%}}
-{{%- set next_list = namespace(lst=[]) -%}}
+{{%- set next_list = [] -%}}
 {{%- for item in list_to_handle -%}}
 {{%- if loop.index0 >= 2 -%}}
-{{%- set next_list.lst = next_list.lst + [item] -%}}
+{{%- set _ = next_list.append(item) -%}}
 {{%- endif -%}}
 {{%- endfor -%}}
-{{{ oval_list_to_set(next_list.lst, _result_list + [result_list_item]) }}}
+{{{ oval_list_to_set(next_list, _result_list + [result_list_item]) }}}
 {{%- endif -%}}
 {{%- endmacro -%}}
 
