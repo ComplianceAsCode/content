@@ -32,7 +32,7 @@
 {{%- if sysctl_remediate_drop_in_file != "true" %}}
 {{#- sysctl module manages only last entry #}}
     before: >-
-      .*\n{{{ setsysctlvar_rx | trim('^') }}}
+      .*\n{{{ setsysctlvar_rx.lstrip('^') }}}
 {{%- endif %}}
 {{%- if SYSCTLVAL is none or SYSCTLVAL is not string %}}
 
