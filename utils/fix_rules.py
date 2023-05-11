@@ -153,6 +153,8 @@ def find_rules_generator(args, func):
         if product not in product_yamls:
             product_path = ssg.products.product_yaml_path(args.root, product)
             product_yaml = ssg.products.load_product_yaml(product_path)
+            properties_directory = os.path.join(args.root, "product_properties")
+            product_yaml.read_properties_from_directory(properties_directory)
             product_yamls[product] = product_yaml
 
         local_env_yaml = dict(cmake_build_type='Debug')

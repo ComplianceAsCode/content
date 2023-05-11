@@ -26,7 +26,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         XCCDF_PLATFORM_TO_PACKAGE,
                         SSG_REF_URIS)
 from .utils import merge_dicts, required_key
-from .yaml import open_raw, ordered_dump
+from .yaml import open_raw, ordered_dump, open_and_expand
 
 
 def _validate_product_oval_feed_url(contents):
@@ -155,6 +155,17 @@ class Product(object):
         self.primary_data["reference_uris"] = merge_dicts(SSG_REF_URIS, reference_uris)
 
         self.primary_data["basic_properties_derived"] = True
+
+    def expand_by(self, property_dict):
+        self.primary_data.update(property_dict)
+
+    def read_properties_from_directory(self, path):
+        filenames = glob(path + "/*.yml")
+        for f in sorted(filenames):
+            substitutions_dict = dict()
+            substitutions_dict.update(self)
+            new_symbols = open_and_expand(f, substitutions_dict)
+            self.expand_by(new_symbols.items())
 
 
 def load_product_yaml(product_yaml_path):
