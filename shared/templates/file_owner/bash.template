@@ -5,14 +5,15 @@
 # disruption = low
 
 {{%- if RECURSIVE %}}
-{{% set FIND_RECURSE_ARGS="" %}}
+{{%- set FIND_RECURSE_ARGS="" %}}
 {{%- else %}}
-{{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS="-maxdepth 1" %}}
 {{%- endif %}}
 
-{{% for path in FILEPATH %}}
+{{%- for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
+
 find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown {{{ FILEUID }}} {} \;
 {{%- else %}}
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown {{{ FILEUID }}} {} \;
@@ -20,4 +21,4 @@ find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown {{{ FILEUID }
 {{%- else %}}
 chown {{{ FILEUID }}} {{{ path }}}
 {{%- endif %}}
-{{% endfor %}}
+{{%- endfor %}}
