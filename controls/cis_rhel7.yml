@@ -1774,9 +1774,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial # missing rules for ownership
+    status: automated
     rules:
     - file_permissions_sshd_pub_key
+    - file_ownership_sshd_pub_key
+    - file_groupownership_sshd_pub_key
 
   - id: 5.3.4
     title: Ensure SSH access is limited (Automated)
