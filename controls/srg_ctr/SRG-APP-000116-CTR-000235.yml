@@ -4,6 +4,11 @@ controls:
   - medium
   title: {{{ full_name }}} must use internal system clocks to generate audit
     record time stamps.
+  rules:
+  - service_chronyd_or_ntpd_enabled
+  - chronyd_or_ntpd_specify_remote_server
   related_rules:
-  - audit_profile_set
-  status: inherently met
+  - chronyd_or_ntpd_specify_multiple_servers
+  - chronyd_or_ntpd_set_maxpoll
+  - chronyd_client_only
+  status: automated
