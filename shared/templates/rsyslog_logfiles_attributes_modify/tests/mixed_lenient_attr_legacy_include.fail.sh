@@ -16,35 +16,48 @@ ATTR_INCORRECT_VALUE="cac_testgroup"
 groupadd $ATTR_INCORRECT_VALUE
 {{% else %}}
 CHATTR="chmod"
-ATTR_VALUE="0600"
+ATTR_VALUE="0640"
 ATTR_INCORRECT_VALUE="0666"
 {{% endif %}}
 
-# create two test log file
-create_rsyslog_test_logs 2
+# create three test log file
+create_rsyslog_test_logs 3
 
 # setup test log file property
 $CHATTR $ATTR_VALUE ${RSYSLOG_TEST_LOGS[0]}
 $CHATTR $ATTR_INCORRECT_VALUE ${RSYSLOG_TEST_LOGS[1]}
+$CHATTR $ATTR_VALUE ${RSYSLOG_TEST_LOGS[2]}
 
-# create test configuration file with rule for second test log file
-test_conf=${RSYSLOG_TEST_DIR}/test1.conf
-cat << EOF > ${test_conf}
-# rsyslog test configuration file
+# create first test configuration file with legacy rule for second test log file
+test_conf1=${RSYSLOG_TEST_DIR}/legacy.conf
+cat << EOF > ${test_conf1}
+# rsyslog test configuration file with legacy syntax
 
 #### RULES ####
 *.*     ${RSYSLOG_TEST_LOGS[1]}
 
 EOF
 
-# add rule with first test log file plus an include statement
+# create second test configuration file with RainerScript rule for third test log file
+test_conf2=${RSYSLOG_TEST_DIR}/rainerscript.conf
+cat << EOF > ${test_conf2}
+# rsyslog test configuration file with RainerScript syntax
+
+#### RULES ####
+*.*     action(type="omfile" FileCreateMode="0640" fileOwner="root" fileGroup="hoiadm" File="${RSYSLOG_TEST_LOGS[2]}")
+
+EOF
+
+# add rule with first test log file plus two mixed include statement
 cat << EOF > $RSYSLOG_CONF
 # rsyslog configuration file
 
 #### RULES ####
-*.*        ${RSYSLOG_TEST_LOGS[0]}
+*.*     ${RSYSLOG_TEST_LOGS[0]}
 
 #### MODULES ####
-\$IncludeConfig ${test_conf}
+\$IncludeConfig ${test_conf1}
+
+include(file="${test_conf2}")
 
 EOF

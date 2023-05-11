@@ -7,32 +7,25 @@ source $SHARED/rsyslog_log_utils.sh
 {{% if ATTRIBUTE == "owner" %}}
 CHATTR="chown"
 ATTR_VALUE="root"
-ATTR_INCORRECT_VALUE="cac_testuser"
-useradd $ATTR_INCORRECT_VALUE
 {{% elif ATTRIBUTE == "groupowner" %}}
 CHATTR="chgrp"
 ATTR_VALUE="root"
-ATTR_INCORRECT_VALUE="cac_testgroup"
-groupadd $ATTR_INCORRECT_VALUE
 {{% else %}}
 CHATTR="chmod"
 ATTR_VALUE="0600"
-ATTR_INCORRECT_VALUE="0666"
 {{% endif %}}
 
-# create three test log file
-create_rsyslog_test_logs 2
+# create one test log file
+create_rsyslog_test_logs 1
 
 # setup test log file property
-$CHATTR $ATTR_INCORRECT_VALUE ${RSYSLOG_TEST_LOGS[0]}
-$CHATTR $ATTR_VALUE ${RSYSLOG_TEST_LOGS[1]}
+$CHATTR $ATTR_VALUE ${RSYSLOG_TEST_LOGS[0]}
 
-# add rules with both syntax for different test log files
+# add rule with test log file
 cat << EOF > $RSYSLOG_CONF
 # rsyslog configuration file
 
 #### RULES ####
-*.*     ${RSYSLOG_TEST_LOGS[0]}
-*.*     action(type="omfile" FileCreateMode="0640" fileOwner="root" fileGroup="hoiadm" File="${RSYSLOG_TEST_LOGS[1]}")
+*.*     action(type="omfile" FileCreateMode="0640" fileOwner="root" fileGroup="hoiadm" File="${RSYSLOG_TEST_LOGS[0]}")
 
 EOF

@@ -12,20 +12,22 @@ CHATTR="chgrp"
 ATTR_VALUE="root"
 {{% else %}}
 CHATTR="chmod"
-ATTR_VALUE="0640"
+ATTR_VALUE="0600"
 {{% endif %}}
 
-# create one test log file
-create_rsyslog_test_logs 1
+# create three test log file
+create_rsyslog_test_logs 2
 
 # setup test log file property
 $CHATTR $ATTR_VALUE ${RSYSLOG_TEST_LOGS[0]}
+$CHATTR $ATTR_VALUE ${RSYSLOG_TEST_LOGS[1]}
 
-# add rule with test log file
+# add rules with both syntax for different test log files
 cat << EOF > $RSYSLOG_CONF
 # rsyslog configuration file
 
 #### RULES ####
 *.*     ${RSYSLOG_TEST_LOGS[0]}
+*.*     action(type="omfile" FileCreateMode="0640" fileOwner="root" fileGroup="hoiadm" File="${RSYSLOG_TEST_LOGS[1]}")
 
 EOF
