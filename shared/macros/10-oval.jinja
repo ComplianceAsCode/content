@@ -1022,15 +1022,7 @@ previous level sets. Do it recursiverly.
 {{{ oval_list_to_set(_result_list, []) }}}
 {{%- endif -%}}
 {{%- else -%}}
-{{%- set result_list_item -%}}
-<set>
-{{%- for item in list_to_handle -%}}
-{{%- if loop.index0 < 2 %}}
-    {{{ item | indent }}}
-{{%- endif -%}}
-{{%- endfor %}}
-</set>
-{{%- endset -%}}
+{{%- set result_list_item = _oval_list_to_set_block(list_to_handle) -%}}
 {{%- set next_list = [] -%}}
 {{%- for item in list_to_handle -%}}
 {{%- if loop.index0 >= 2 -%}}
@@ -1039,6 +1031,18 @@ previous level sets. Do it recursiverly.
 {{%- endfor -%}}
 {{{ oval_list_to_set(next_list, _result_list + [result_list_item]) }}}
 {{%- endif -%}}
+{{%- endmacro -%}}
+
+
+{{#- This exists only because 2.8 has set block assignment, but CentOS has Jinja 2.7 -#}}
+{{%- macro _oval_list_to_set_block(list_to_handle) -%}}
+<set>
+{{%- for item in list_to_handle -%}}
+{{%- if loop.index0 < 2 %}}
+    {{{ item | indent }}}
+{{%- endif -%}}
+{{%- endfor %}}
+</set>
 {{%- endmacro -%}}
 
 
