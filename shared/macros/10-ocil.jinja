@@ -1248,3 +1248,29 @@ Review the list of users and groups who have {{{ verb }}} access to the cluster 
 If any user or group listed should not have access to {{{ verb }}} the cluster logging resources, this is a finding.
 {{%- endmacro %}}
 
+{{# RBAC macros #}}
+
+{{#
+    OCIL for how to check RBAC permissions for the cluster in general
+
+#}}
+{{%- macro ocil_rbac_least_privilege() -%}}
+The administrator must verify that Openshift is configured with the necessary RBAC access controls.
+
+Review the RBAC configuration.
+
+As the cluster-admin, view the cluster roles and their associated rule sets by executing the following::
+
+oc describe clusterrole.rbac
+
+Now view the current set of cluster role bindings, which shows the users and groups that are bound to various roles by executing the following:
+
+oc describe clusterrolebinding.rbac
+
+Local roles and bindings can be determined using the follow commands by executing the following:
+
+oc describe rolebinding.rbac
+
+If these results show users with privileged access that do not require that access, this is a finding.
+{{%- endmacro %}}
+

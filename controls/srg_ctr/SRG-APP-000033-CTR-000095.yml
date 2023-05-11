@@ -4,17 +4,6 @@ controls:
   - medium
   title: Least privilege access and need to know must be required to access the container
     platform runtime.
-  status: inherently met
-  status_justification: |-
-    The OpenShift Container Platform provides RBAC policies and
-    enforcement of those policies out of the box.  Verification of
-    SRG-APP-000340-CTR-000770 will ensure that binding of user and groups
-    to roles provides proper restriction of access to resources. For more
-    information on how RBAC policies work in OpenShift, refer to
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
-
-    Access to the OpenShift Container Platform API service is enforced by
-    the platform's RBAC policy.
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  status: manual
+  rules:
+  - rbac_least_privilege

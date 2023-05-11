@@ -577,3 +577,31 @@ Remove {{{ verb }}} permissions from any unauthorized user or group by performin
 
 Where ROLE/CLUSTER_ROLE is the role granting user {{{ verb }}} permission to resources in openshift-logging namespace.
 {{%- endmacro %}}
+
+{{#
+Fixtext for how to restrict RBAC permissions for cluster logging
+
+:param verb: The RBAC verb to restrict
+
+#}}
+{{% macro fix_openshift_rbac_least_privilege() -%}}
+If users or groups exist that are bound to roles they must not have, modify the user or group permissions using the following cluster and local role binding commands:
+
+Remove a User from a Cluster RBAC role by executing the following:
+
+oc adm policy remove-cluster-role-from-user role username
+
+Remove a Group from a Cluster RBAC role by executing the following:
+
+oc adm policy remove-cluster-role-from-group role groupname
+
+Remove a User from a Local RBAC role by executing the following:
+
+oc adm policy remove-role-from-user role username
+
+Remove a Group from a Local RBAC role by executing the following:
+
+oc adm policy remove-role-from-group role groupname
+
+NOTE: For additional information. https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+{{%- endmacro %}}
