@@ -39,7 +39,7 @@
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
-  ansible.posix.sysctl:
+  sysctl:
     name: "{{{ SYSCTLVAR }}}"
     # Ansible sysctl module doesn't allow empty string. A space string is
     # allowed and has the same semantics as sysctl will ignore spaces.
@@ -49,7 +49,7 @@
 {{%- else %}}
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
-  ansible.posix.sysctl:
+  sysctl:
     name: "{{{ SYSCTLVAR }}}"
     # Ansible sysctl module doesn't allow empty string. A space string is
     # allowed and has the same semantics as sysctl will ignore spaces.
