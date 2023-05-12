@@ -391,15 +391,14 @@ def send_scripts(test_env, test_content_by_rule_id):
         print("Setting up test setup scripts", file=log_file)
 
         test_env.execute_ssh_command(
-            "mkdir -p {remote_dir}".format(remote_dir=remote_dir),
+            ["mkdir", "-p",  remote_dir],
             log_file, "Cannot create directory {0}".format(remote_dir))
         test_env.scp_upload_file(
             archive_file, remote_dir,
             log_file, "Cannot copy archive {0} to the target machine's directory {1}"
             .format(archive_file, remote_dir))
         test_env.execute_ssh_command(
-            "tar xf {remote_archive_file} -C {remote_dir}"
-            .format(remote_dir=remote_dir, remote_archive_file=remote_archive_file),
+            ["tar", "xf", remote_archive_file, "-C", remote_dir],
             log_file, "Cannot extract data tarball {0}".format(remote_archive_file))
     os.unlink(archive_file)
     return remote_dir
@@ -552,7 +551,7 @@ def load_local_tests(local_tests_paths, local_env_yaml):
 def get_cpe_of_tested_os(test_env, log_file):
     os_release_file = "/etc/os-release"
     cpe_line = test_env.execute_ssh_command(
-        "grep CPE_NAME {os_release_file}".format(os_release_file=os_release_file),
+        ["grep", "CPE_NAME", os_release_file],
         log_file)
     # We are parsing an assignment that is possibly quoted
     cpe = re.match(r'''CPE_NAME=(["']?)(.*)\1''', cpe_line)
@@ -589,13 +588,14 @@ def install_packages(test_env, packages):
         platform_cpe = get_cpe_of_tested_os(test_env, log_file)
     platform = cpes_to_platform([platform_cpe])
 
-    command_str = " ".join(INSTALL_COMMANDS[platform] + tuple(packages))
+    command_components = []
+    command_components.extend(INSTALL_COMMANDS[platform] + tuple(packages))
 
     with open(log_file_name, 'a') as log_file:
         print("Installing packages", file=log_file)
         log_file.flush()
         test_env.execute_ssh_command(
-            command_str, log_file,
+            command_components, log_file,
             "Couldn't install required packages: {packages}".format(packages=",".join(packages)))
 
 

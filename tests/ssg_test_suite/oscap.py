@@ -107,13 +107,6 @@ def get_result_id_from_arf(arf_path, verbose_path):
     return res_id
 
 
-def single_quote_string(input):
-    result = input
-    for char in "\"'":
-        result = result.replace(char, "")
-    return "'{}'".format(result)
-
-
 def generate_fixes_remotely(test_env, formatting, verbose_path):
     command_base = ['oscap', 'xccdf', 'generate', 'fix']
     command_options = [
@@ -126,10 +119,11 @@ def generate_fixes_remotely(test_env, formatting, verbose_path):
     if 'result_id' in formatting:
         command_options.extend(['--result-id', formatting['result_id']])
 
-    command_components = command_base + command_options + command_operands
-    command_string = ' '.join([single_quote_string(c) for c in command_components])
+    command_components = []
+    command_components.extend(command_base + command_options + command_operands)
+
     with open(verbose_path, "a") as log_file:
-        test_env.execute_ssh_command(command_string, log_file)
+        test_env.execute_ssh_command(command_components, log_file)
 
 
 def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
@@ -195,13 +189,15 @@ def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
                            '/' + formatting['output_file']):
         return False
 
-    command_string = '/bin/bash -x /{output_file}'.format(** formatting)
+    command_components = []
+    command_components.extend(['/bin/bash', '-x'])
+    command_components.append('/{output_file}'.format(** formatting))
 
     with open(verbose_path, "a") as log_file:
         error_msg_template = _get_bash_remediation_error_message_template(formatting)
         try:
             test_env.execute_ssh_command(
-                command_string, log_file, error_msg_template=error_msg_template)
+                command_components, log_file, error_msg_template=error_msg_template)
         except Exception as exc:
             LogHelper.preload_log(logging.ERROR, str(exc), 'fail')
             return False

@@ -133,11 +133,12 @@ class TestEnv(object):
         if not error_msg_template:
             error_msg_template = "Return code of '{command}' on {remote_dest} is {rc}: {stderr}"
         remote_dest = "root@{ip}".format(ip=self.domain_ip)
+        command_str = command if isinstance(command, str) else shlex.join(command)
         result = common.retry_with_stdout_logging(
-            "ssh", tuple(self.ssh_additional_options) + (remote_dest, command), log_file)
+            "ssh", tuple(self.ssh_additional_options) + (remote_dest, command_str), log_file)
         if result.returncode:
             error_msg = error_msg_template.format(
-                command=command, remote_dest=remote_dest,
+                command=command_str, remote_dest=remote_dest,
                 rc=result.returncode, stderr=result.stderr)
             raise RuntimeError(error_msg)
         return result.stdout
