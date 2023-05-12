@@ -5,12 +5,7 @@
 # disruption = medium
 
 {{#- sysctl quirks -#}}
-{{%- set setsysctlvar_rx -%}}
-^[ \\t]*-?[ \\t]*{{{
-    SYSCTLVAR | escape_regex_sq |
-    replace('[.]', '[./]') | replace('[/]', '[./]')
-    }}}[ \\t]*=
-{{%- endset %}}
+{{%- set setsysctlvar_rx = '^[ \\t]*-?[ \\t]*' ~ SYSCTLVAR | escape_regex_sq | replace('[.]', '[./]') | replace('[/]', '[./]') ~ '[ \\t]*=' %}}
 - name: List /etc/sysctl.d/*.conf files
   ansible.builtin.find:
     paths: {{{ ansible_sysctl_set_config_directories() }}}
