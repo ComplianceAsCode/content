@@ -70,22 +70,6 @@ def triage_xml_results(fname):
     return triaged
 
 
-def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
-    """Upload files to VM."""
-    # files is a list of absolute paths on the host
-    success = True
-    destination = 'root@{0}:{1}'.format(domain_ip, remote_dir)
-    files_string = ' '.join(files)
-
-    logging.debug('Uploading files {0} to {1}'.format(files_string,
-                                                      destination))
-    command = ['scp'] + list(common.SSH_ADDITIONAL_OPTS) + list(files) + [destination]
-    if common.run_cmd_local(command, verbose_path)[0] != 0:
-        logging.error('Failed to upload files {0}'.format(files_string))
-        success = False
-    return success
-
-
 def get_file_remote(test_env, verbose_path, local_dir, remote_path):
     """Download a file from VM."""
     # remote_path is an absolute path of a file on remote machine
