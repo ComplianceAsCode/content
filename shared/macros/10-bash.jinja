@@ -38,7 +38,7 @@ There is bash_sed_escape_replacement for replacement escape.
     Then escape other than \w and ^ with [ ]. And then ^ with \^.
     And use bash replacement to remove \n.
 -#}}
-{{{ result_variable }}}="$(LC_ALL=C sed 's/[\x01-\x08\x0a-\x1f\x7f]/ /g;s/[^^a-zA-Z0-9_]/[&]/g;s/\^/\\^/g' <<< "{{{ "${" ~ variable ~ "//[$'\n']/ }" }}}")"
+{{{ result_variable }}}="$(LC_ALL=C sed 's/[\x01-\x08\x0a-\x1f\x7f]/ /g;s/[^^a-zA-Z0-9_]/[&]/g;s/\^/\\^/g' <<< "{{{ "${" ~ variable ~ "}" }}}" | tr '\n' ' ')"
 {{%- endmacro -%}}
 
 
@@ -55,9 +55,7 @@ Any control characters are replaced with space except \0 (null character) and
 
 #}}
 {{%- macro bash_sed_escape_replacement(variable, result_variable, delim="/") -%}}
-{{{ result_variable }}}="{{{ "${" ~ variable }}}//\\/\\\\/}"
-{{{ result_variable }}}="{{{ "${" ~ result_variable }}}//[$'\x01-\x08\x0a-\x1f\x7f']/ }"
-{{{ result_variable }}}="{{{ "${" ~ result_variable }}}//\{{{ delim }}}/\\\{{{ delim ~ "}" }}}"
+{{{ result_variable }}}="$(LC_ALL=C sed 's/[\x01-\x08\x0a-\x1f\x7f]/ /g;s/\\/\\\\/g' <<< "{{{ "${" ~ variable }}}//\{{{ delim }}}/\\\{{{ delim ~ "}" }}}")"
 {{%- endmacro -%}}
 
 
@@ -1557,8 +1555,7 @@ grep_command+=(-i)
 
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
-stripped_key="{{{ key }}}"
-stripped_key="${stripped_key//[$'^=$,;+']}"
+stripped_key="$(LC_ALL=C sed 's/[\^=$,;+]//g' <<< "{{{ key }}}")"
 
 # shellcheck disable=SC2059
 printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
