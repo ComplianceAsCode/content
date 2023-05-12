@@ -367,7 +367,7 @@ To determine the IP address of the {domain} VM use:
   {ip_cmd}
 
 To connect to the {domain} VM use:
-  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null admin@IP
 
 To connect to the VM serial console, use:
   virsh console {domain}""".format(** data.__dict__, ip_cmd=ip_cmd))

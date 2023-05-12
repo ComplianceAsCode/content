@@ -73,11 +73,15 @@ class TestEnv(object):
 
         self.have_local_oval_graph = False
 
-        self.is_root = True
+        self.is_root = False
 
     def init(self):
-        self.remote_user = "root"
-        self.remote_user_home_directory = "/root"
+        if self.is_root:
+            self.remote_user = "root"
+            self.remote_user_home_directory = "/root"
+        else:
+            self.remote_user = "admin"
+            self.remote_user_home_directory = "/home/admin"
         self.remote_test_scenarios_directory = \
             os.path.join(self.remote_user_home_directory, common.TEST_SUITE_NAME)
         try:
