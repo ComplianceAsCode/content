@@ -56,8 +56,15 @@ do
 	# Search log file for path(s) only in case it exists!
 	if [[ -f "${LOG_FILE}" ]]
 	then
-		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[#|$]/d" "${LOG_FILE}")
-		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+$' <<< "${NORMALIZED_CONFIG_FILE_LINES}")
+		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[[:space:]]*\(#\|$\)/d" "${LOG_FILE}")
+		rc=0
+		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+$' <<< "${NORMALIZED_CONFIG_FILE_LINES}") || rc=$?
+		# No paths
+		if (( rc == 1 )); then
+			continue
+		fi
+		# under set -e fail here
+		(( rc == 0 || rc == 1 ))
 		FILTERED_PATHS=$(awk '{if(NF>=2&&($NF~/^\//||$NF~/^-\//)){sub(/^-\//,"/",$NF);print $NF}}' <<< "${LINES_WITH_PATHS}")
 		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
 		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
