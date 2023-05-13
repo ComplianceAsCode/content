@@ -13,14 +13,12 @@ fi
 product_string="$1"
 
 # Create and change to .build_profiling dir 
-[ ! -d ".build_profiling" ] && (mkdir .build_profiling || die \
-"Creating the .build_profiling directory failed")
+mkdir -p .build_profiling || die "Creating the .build_profiling directory failed"
 
 cd .build_profiling || die "Changing to the .build_profiling directory failed"
 
 # Create and change to product_string dir 
-[ ! -d "$product_string" ] && (mkdir "$product_string" || die \
-"Creating the $product_string directory failed")
+mkdir -p "$product_string" || die "Creating the $product_string directory failed"
 
 cd "$product_string" || die "Changing to the $product_string directory failed"
 
