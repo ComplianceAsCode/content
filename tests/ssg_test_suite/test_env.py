@@ -72,6 +72,14 @@ class TestEnv(object):
         self.product = None
 
         self.have_local_oval_graph = False
+
+        self.is_root = True
+
+    def init(self):
+        self.remote_user = "root"
+        self.remote_user_home_directory = "/root"
+        self.remote_test_scenarios_directory = \
+            os.path.join(self.remote_user_home_directory, common.TEST_SUITE_NAME)
         try:
             cmd = ['arf-to-graph', '--version']
             p = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -132,7 +140,7 @@ class TestEnv(object):
         """
         if not error_msg_template:
             error_msg_template = "Return code of '{command}' on {remote_dest} is {rc}: {stderr}"
-        remote_dest = "root@{ip}".format(ip=self.domain_ip)
+        remote_dest = "{user}@{ip}".format(user=self.remote_user, ip=self.domain_ip)
         command_str = command if isinstance(command, str) else shlex.join(command)
         result = common.retry_with_stdout_logging(
             "ssh", tuple(self.ssh_additional_options) + (remote_dest, command_str), log_file)
@@ -144,11 +152,11 @@ class TestEnv(object):
         return result.stdout
 
     def scp_download_file(self, source, destination, log_file, error_msg=None):
-        scp_src = "root@{ip}:{source}".format(ip=self.domain_ip, source=source)
+        scp_src = "{user}@{ip}:{source}".format(user=self.remote_user, ip=self.domain_ip, source=source)
         return self.scp_transfer_file(scp_src, destination, log_file, error_msg)
 
     def scp_upload_file(self, source, destination, log_file, error_msg=None):
-        scp_dest = "root@{ip}:{dest}".format(ip=self.domain_ip, dest=destination)
+        scp_dest = "{user}@{ip}:{dest}".format(user=self.remote_user, ip=self.domain_ip, dest=destination)
         return self.scp_transfer_file(source, scp_dest, log_file, error_msg)
 
     def scp_transfer_file(self, source, destination, log_file, error_msg=None):
@@ -185,8 +193,13 @@ class TestEnv(object):
         pass
 
     def _oscap_ssh_base_arguments(self):
-        full_hostname = 'root@{}'.format(self.domain_ip)
-        return ['oscap-ssh', full_hostname, "{}".format(self.ssh_port), 'xccdf', 'eval']
+        oscap_ssh_cmd = ['oscap-ssh']
+        if not self.is_root:
+            oscap_ssh_cmd.append('--sudo')
+        oscap_ssh_cmd.append('{user}@{ip}'.format(user=self.remote_user, ip=self.domain_ip))
+        oscap_ssh_cmd.append("{}".format(self.ssh_port))
+        oscap_ssh_cmd.extend(['xccdf', 'eval'])
+        return oscap_ssh_cmd
 
     def scan(self, args, verbose_path):
         if self.scanning_mode == "online":
@@ -315,6 +328,7 @@ class ContainerTestEnv(TestEnv):
         self.containers = []
         self.domain_ip = None
         self.internal_ssh_port = 22222
+        self.is_root = True
 
     def start(self):
         self.run_container(self.base_image)

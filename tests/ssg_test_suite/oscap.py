@@ -74,6 +74,16 @@ def triage_xml_results(fname):
 def get_file_remote(test_env, verbose_path, local_dir, remote_path):
     """Download a file from VM."""
     # remote_path is an absolute path of a file on remote machine
+    # Ensure file can be read
+    if not test_env.is_root:
+        with open(verbose_path, "a") as log_file:
+            try:
+                test_env.execute_ssh_command(
+                    ["sudo", "chmod", "0644",  remote_path],
+                    log_file, "Cannot chmod 0644 {0}".format(remote_path))
+            except Exception:
+                logging.error('Failed to download file {0}'.format(remote_path))
+                return False
     success = True
     logging.debug('Downloading remote file {0} to {1}'
                   .format(remote_path, local_dir))
@@ -115,11 +125,13 @@ def generate_fixes_remotely(test_env, formatting, verbose_path):
         '--template', formatting['output_template'],
         '--output', '/{output_file}'.format(** formatting),
     ]
-    command_operands = ['/{source_arf_basename}'.format(** formatting)]
+    command_operands = [formatting['source_arf_remote']]
     if 'result_id' in formatting:
         command_options.extend(['--result-id', formatting['result_id']])
 
     command_components = []
+    if not test_env.is_root:
+        command_components.append('sudo')
     command_components.extend(command_base + command_options + command_operands)
 
     with open(verbose_path, "a") as log_file:
@@ -190,6 +202,8 @@ def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
         return False
 
     command_components = []
+    if not test_env.is_root:
+        command_components.append('sudo')
     command_components.extend(['/bin/bash', '-x'])
     command_components.append('/{output_file}'.format(** formatting))
 
@@ -214,9 +228,17 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
             return False
         formatting['result_id'] = res_id
 
+    formatting['source_arf_remote'] = os.path.join(
+        test_env.remote_test_scenarios_directory, formatting['source_arf_basename'])
+
     with open(verbose_path, "a") as log_file:
+        remote_dir = os.path.dirname(formatting['source_arf_remote'])
         try:
-            test_env.scp_upload_file(formatting["source_arf"], "/", log_file)
+            test_env.execute_ssh_command(
+                ["mkdir", "-p", remote_dir],
+                log_file, "Cannot create directory {0}".format(remote_dir))
+            test_env.scp_upload_file(
+                formatting["source_arf"], formatting['source_arf_remote'], log_file)
         except Exception:
             return False
 
@@ -666,6 +688,7 @@ class AnsibleRuleRunner(RuleRunner):
 class Checker(object):
     def __init__(self, test_env):
         self.test_env = test_env
+        self.test_env.init()
         self.executed_tests = 0
 
         self.datastream = ""

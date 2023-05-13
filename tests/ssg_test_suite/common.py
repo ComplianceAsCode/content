@@ -48,9 +48,6 @@ _SHARED_TEMPLATES = os.path.abspath(os.path.join(SSG_ROOT, 'shared/templates'))
 
 TEST_SUITE_NAME="ssgts"
 TEST_SUITE_PREFIX = "_{}".format(TEST_SUITE_NAME)
-REMOTE_USER = "root"
-REMOTE_USER_HOME_DIRECTORY = "/root"
-REMOTE_TEST_SCENARIOS_DIRECTORY = os.path.join(REMOTE_USER_HOME_DIRECTORY, TEST_SUITE_NAME)
 
 try:
     SSH_ADDITIONAL_OPTS = tuple(os.environ.get('SSH_ADDITIONAL_OPTIONS').split())
@@ -369,7 +366,7 @@ def create_tarball(test_content_by_rule_id):
 
 
 def send_scripts(test_env, test_content_by_rule_id):
-    remote_dir = REMOTE_TEST_SCENARIOS_DIRECTORY
+    remote_dir = test_env.remote_test_scenarios_directory
     archive_file = create_tarball(test_content_by_rule_id)
     archive_file_basename = os.path.basename(archive_file)
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
@@ -578,6 +575,8 @@ def install_packages(test_env, packages):
     platform = cpes_to_platform([platform_cpe])
 
     command_components = []
+    if not test_env.is_root:
+        command_components.append('sudo')
     command_components.extend(INSTALL_COMMANDS[platform] + tuple(packages))
 
     with open(log_file_name, 'a') as log_file:
