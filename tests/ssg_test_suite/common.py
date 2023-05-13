@@ -58,6 +58,7 @@ except AttributeError:
     SSH_ADDITIONAL_OPTS = tuple()
 
 SSH_ADDITIONAL_OPTS = (
+    "-o", "BatchMode=yes",
     "-o", "StrictHostKeyChecking=no",
     "-o", "UserKnownHostsFile=/dev/null",
 ) + SSH_ADDITIONAL_OPTS
