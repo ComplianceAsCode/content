@@ -7,6 +7,10 @@ import subprocess
 import time
 
 
+def path_from_tests(path):
+    return os.path.relpath(os.path.join(os.path.dirname(__file__), path))
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -19,7 +23,7 @@ def parse_args():
     parser.add_argument(
         "--kickstart",
         dest="kickstart",
-        default="kickstarts/test_suite.cfg",
+        default=path_from_tests("kickstarts/test_suite.cfg"),
         help="Path to a kickstart file for installation of a VM."
     )
     parser.add_argument(
