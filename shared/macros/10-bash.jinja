@@ -846,6 +846,16 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 {{%- endmacro -%}}
 
 
+{{#
+    Macro to run systemctl daemon-reload if possible
+#}}
+{{%- macro bash_systemctl_daemon_reload() -%}}
+{{%- if init_system == "systemd" -%}}
+/usr/bin/systemctl daemon-reload
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
 {{%- macro _put_into_firefox_cfg(config_item, key, value_varname, where, sed_separator) -%}}
 # If the key exists, change it. Otherwise, add it to the config_file.
 if LC_ALL=C grep -m 1 -q '^{{{ config_item }}}("{{{ key }}}", ' "{{{ where }}}"; then
