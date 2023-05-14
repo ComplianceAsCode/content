@@ -308,6 +308,9 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     local_env_yaml['rule_title'] = rule.title
     local_env_yaml['products'] = prodtypes
 
+    logging.debug('Rule {}'.format(pprint.pformat(rule)))
+    logging.debug('Env {}'.format(pprint.pformat(local_env_yaml)))
+
     return rule, local_env_yaml
 
 
