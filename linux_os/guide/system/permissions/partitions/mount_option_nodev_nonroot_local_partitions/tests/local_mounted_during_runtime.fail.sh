@@ -7,6 +7,7 @@
 cp /etc/fstab /etc/fstab.backup
 sed -e 's/\bnodev\b/,/g' -e 's/,,//g' -e 's/\s,\s/defaults/g' /etc/fstab.backup
 awk '{$4 = $4",nodev"; print}' /etc/fstab.backup > /etc/fstab
+{{{ bash_systemctl_daemon_reload() }}}
 # Remount all partitions. (--all option can't be used because it doesn't
 # mount e.g. /boot partition
 declare -a partitions=( $(awk '{print $2}' /etc/fstab | grep "^/\w") )
