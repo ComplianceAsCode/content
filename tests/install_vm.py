@@ -222,9 +222,9 @@ def main():
             )
 
         if data.install_gui:
-            gui_group="\n%packages\n@^graphical-server-environment\n"
+            gui_group = "\n%packages\n@^graphical-server-environment\n"
             if data.distro == "fedora":
-                gui_group="\n%packages\n@^Fedora Workstation\n"
+                gui_group = "\n%packages\n@^Fedora Workstation\n"
             content = content.replace("\n%packages\n", gui_group)
             data.graphics_opt = "vnc"
             data.inst_opt = "inst.graphical"
@@ -250,7 +250,7 @@ def main():
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
     command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} inst.ks.device=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
     if data.uefi == "normal":
-        command = command+" --boot uefi"
+        command = command + " --boot uefi"
     if data.uefi == "secureboot":
         command = command + " --boot uefi,loader_secure=yes,\
 loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,\
@@ -278,7 +278,10 @@ nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
 
     print("To connect to the {0} VM use:\n  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP\n".format(data.domain))
     print("To connect to the VM serial console, use:\n  virsh console {0}\n".format(data.domain))
-    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY' option to your ssh command and export the SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY' before running the SSG Test Suite.")
+    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY'"
+          " option to your ssh command and export the"
+          " SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY'"
+          " before running the SSG Test Suite.")
 
     if data.libvirt == "qemu:///system":
         print("\nIMPORTANT: When running SSG Test Suite use `sudo -E` to make sure that your SSH key is used.")
