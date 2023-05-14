@@ -13,4 +13,3 @@ description: |-
 
 selections:
     - pcidss_3:all:base
-

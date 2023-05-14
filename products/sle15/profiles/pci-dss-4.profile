@@ -13,6 +13,7 @@ description: |-
 
 selections:
     -  pcidss_4:all:base
-    -  '!service_ntp_enabled'
-    -  '!service_ntpd_enabled'
-    -  '!service_timesyncd_enabled'
+    # remove some rules from profile
+    - '!service_ntp_enabled'
+    - '!service_ntpd_enabled'
+    - '!service_timesyncd_enabled'
