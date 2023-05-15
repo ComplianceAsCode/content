@@ -152,10 +152,12 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
         'ansible-playbook',
         '-vvv',
         '--inventory={domain_ip},'.format(** formatting),
-        '--user=root',
+        '--user={remote_user}'.format(** test_env),
         '--ssh-common-args={0}'.format(' '.join(test_env.ssh_additional_options)),
-        formatting['playbook'],
     ]
+    if not test_env.is_root:
+        command.append('--become')
+    command.append(formatting['playbook'])
     returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
     with open(verbose_path, 'ab') as f:
