@@ -50,7 +50,7 @@ jobs:
           path: 'output.json'
           prop_path: 'product'
       - name: Find Comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -58,7 +58,7 @@ jobs:
           body-includes: Start a new ephemeral environment with changes proposed in this pull request
       - name: Create or update comment
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -77,7 +77,7 @@ jobs:
           edit-mode: replace
       - name: Create or update a trimmed comment
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE == '0' }}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
