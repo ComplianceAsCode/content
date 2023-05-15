@@ -1466,6 +1466,22 @@ cce="{{{ cce_identifiers['cce'] }}}"
 
 
 {{#
+    Ensure file ends with newline
+
+    Do not modify file at all if there already is newline. Always follows
+    symlinks.
+
+    :param file:     file to check
+#}}
+{{%- macro bash_ensure_nl_at_eof(file) -%}}
+{{#- Plain sed '$a\' updates stat even if it dones not change the file. -#}}
+if [[ -s "{{{ file }}}" ]] && [[ -n "$(tail -c 1 -- "{{{ file }}}" || true)" ]]; then
+    LC_ALL=C sed -i --follow-symlinks '$a'\\ "{{{ file }}}"
+fi
+{{%- endmacro -%}}
+
+
+{{#
     Macro to replace configuration setting in config file or add the configuration setting if
     it does not exist.
 
