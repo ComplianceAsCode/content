@@ -13,5 +13,6 @@ rpm --initdb
 if grep -q "rhel" /etc/os-release; then
     yum install -y redhat-release
 else
-    dnf install -y fedora-release
+    source /etc/os-release
+    dnf install -y fedora-release --releasever "$VERSION_ID"
 fi

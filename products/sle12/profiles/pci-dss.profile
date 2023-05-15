@@ -14,3 +14,4 @@ description: |-
 selections:
     - pcidss_3:all:base
     - sshd_approved_macs=cis_sle12
+    - sshd_approved_ciphers=cis_sle12
