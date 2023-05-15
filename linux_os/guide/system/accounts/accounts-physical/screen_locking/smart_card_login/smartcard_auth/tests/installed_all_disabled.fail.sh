@@ -1,7 +1,5 @@
 #!/bin/bash
-# packages = pcsc-lite pam_pkcs11 esc
-
-
+# packages = pcsc-lite,pam_pkcs11,esc
 
 systemctl disable pcscd.socket
 systemctl disable pcscd.service
