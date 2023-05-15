@@ -8,6 +8,18 @@ account required                        pam_tally2.so
 account	required			pam_permit.so
 CAPTAC
 
+{{% if product in ["sle12","sle15"] %}}
+
+cat >/etc/pam.d/login <<CAPTDM
+auth required pam_tally2.so onerr=fail audit silent even_deny_root unlock_time=900
+auth	[success=1 default=ignore]	pam_unix.so nullok_secure
+auth	requisite			pam_deny.so
+auth	required			pam_permit.so
+auth	optional			pam_cap.so
+CAPTDM
+
+{{% else %}}
+
 cat >/etc/pam.d/common-auth <<CAPTDM
 auth required pam_tally2.so onerr=fail audit silent even_deny_root unlock_time=900
 auth	[success=1 default=ignore]	pam_unix.so nullok_secure
@@ -15,3 +27,5 @@ auth	requisite			pam_deny.so
 auth	required			pam_permit.so
 auth	optional			pam_cap.so
 CAPTDM
+
+{{% endif %}}

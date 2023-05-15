@@ -17,9 +17,13 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_even_deny_root" comment="Check even deny root configuration of pam_tally2" version="1">
+    {{% if product in ["sle12","sle15"] %}}
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    {{% else %}}
     <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*deny=[[4-9]|[1-9][0-9]]+([\s+\S+]*)even_deny_root([\s+\S+])*\s*(\\)*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    {{% endif %}}
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(?:(?:(?:(?!\n)\s)?[^\n]+)?onerr=fail(?:(?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+deny=(\d+)(?:(?:\s+\S+)*\s*$))|(?:(?:(?:(?!\n)\s)?[^\n]+)?deny=(\d+)(?:(?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+even_deny_root(?:(?:\s+\S+)*\s*$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>    
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_even_deny_root_account"
