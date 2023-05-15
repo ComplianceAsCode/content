@@ -119,9 +119,7 @@ def main():
     args = parser.parse_args()
 
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
-    product_yaml = None
-    if args.product_yaml:
-        product_yaml = ssg.products.Product(args.product_yaml)
+    product_yaml = ssg.products.Product(args.product_yaml)
     product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(env_yaml)
     product_cpes.load_content_cpes(env_yaml)
