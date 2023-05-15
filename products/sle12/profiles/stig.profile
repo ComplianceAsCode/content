@@ -15,6 +15,7 @@ description: |-
 
 selections:
     - sshd_approved_macs=stig
+    - sshd_approved_ciphers=stig
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
