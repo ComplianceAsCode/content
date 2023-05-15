@@ -1507,14 +1507,6 @@ fi
 
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
-
-# Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
-# Otherwise, regular sed command will do.
-sed_command=('sed' '-i')
-if test -L "{{{ config_file }}}"; then
-    sed_command+=('--follow-symlinks')
-fi
-
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
@@ -1527,7 +1519,7 @@ printf -v formatted_output "{{{ format }}}" "$stripped_key" "{{{ value }}}"
 # so if we search for 'setting', 'setting2' won't match.
 if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
     escaped_formatted_output=$(sed -e 's|/|\\/|g' <<< "$formatted_output")
-    "${sed_command[@]}" "s/{{{ key }}}\\>.*/$escaped_formatted_output/gi" "{{{ config_file }}}"
+    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}\\>.*/$escaped_formatted_output/gi" "{{{ config_file }}}"
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
