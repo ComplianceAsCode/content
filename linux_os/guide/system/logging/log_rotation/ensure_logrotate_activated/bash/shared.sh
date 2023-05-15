@@ -20,7 +20,7 @@ sed -i '/^\s*\(weekly\|monthly\|yearly\).*$/d' $LOGROTATE_CONF_FILE
 {{% else %}}
 # configure cron.daily if not already
 if ! grep -q "^[[:space:]]*/usr/sbin/logrotate[[:alnum:][:blank:][:punct:]]*$LOGROTATE_CONF_FILE$" $CRON_DAILY_LOGROTATE_FILE; then
-	echo "#!/bin/sh" > $CRON_DAILY_LOGROTATE_FILE
+	echo '#!/bin/sh' > $CRON_DAILY_LOGROTATE_FILE
 	echo "/usr/sbin/logrotate $LOGROTATE_CONF_FILE" >> $CRON_DAILY_LOGROTATE_FILE
 fi
 {{% endif %}}
