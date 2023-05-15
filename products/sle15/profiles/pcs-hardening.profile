@@ -61,6 +61,7 @@ selections:
     - accounts_password_set_min_life_existing
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
+    - var_password_pam_tally2=5
     - accounts_tmout
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
