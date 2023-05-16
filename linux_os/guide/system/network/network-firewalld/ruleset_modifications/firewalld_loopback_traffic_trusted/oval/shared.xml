@@ -1,0 +1,50 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Configure Firewalld to Trust Loopback Traffic") }}}
+        <criteria operator="OR">
+            <criteria operator="AND">
+                <criterion
+                    comment="Ensure default trusted zone file has lo interface defined"
+                    test_ref="test_firewalld_lo_interface_trusted_usr"/>
+                <criterion
+                    comment="Ensure default trusted zone file was not overridden"
+                    test_ref="test_firewalld_trusted_zone_not_overridden"/>
+            </criteria>
+            <criterion
+                comment="Ensure custom trusted zone file has lo interface defined"
+                test_ref="test_firewalld_lo_interface_trusted_etc"/>
+        </criteria>
+    </definition>
+
+    <ind:xmlfilecontent_test id="test_firewalld_lo_interface_trusted_usr" version="1"
+        check="all" check_existence="all_exist"
+        comment="lo interface is assigned to the trusted zone by default">
+        <ind:object object_ref="object_firewalld_lo_interface_trusted_usr"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_lo_interface_trusted_usr" version="1">
+        <ind:filepath>/usr/lib/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/interface[@name='lo']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <ind:xmlfilecontent_test id="test_firewalld_lo_interface_trusted_etc" version="1"
+        check="all" check_existence="all_exist"
+        comment="lo interface is assigned to the custom trusted zone in /etc/firewalld/zones">
+        <ind:object object_ref="object_firewalld_lo_interface_trusted_etc"/>
+    </ind:xmlfilecontent_test>
+
+    <ind:xmlfilecontent_object id="object_firewalld_lo_interface_trusted_etc" version="1">
+        <ind:filepath>/etc/firewalld/zones/trusted.xml</ind:filepath>
+        <ind:xpath>/zone/interface[@name='lo']</ind:xpath>
+    </ind:xmlfilecontent_object>
+
+    <unix:file_test id="test_firewalld_trusted_zone_not_overridden" version="1"
+        check="all" check_existence="none_exist"
+        comment="there is no equivalent file for trusted zone defined by the administrator">
+        <unix:object object_ref="object_firewalld_customized_trusted_zone_file"/>
+    </unix:file_test>
+
+    <unix:file_object id="object_firewalld_customized_trusted_zone_file" version="1">
+        <unix:filepath>/etc/firewalld/zones/trusted.xml</unix:filepath>
+    </unix:file_object>
+</def-group>
