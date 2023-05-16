@@ -460,8 +460,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 GLOBAL_REFERENCES = ("srg", "disa", "cis-csc",)
 
 # Application constants
-DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'
-DEFAULT_GRUB2_UEFI_BOOT_PATH = '/boot/grub2'
 DEFAULT_DCONF_GDM_DIR = 'gdm.d'
 DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
 DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
