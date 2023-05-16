@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-        {{{ oval_metadata("The SELinux is not Disabled.") }}}
+        {{{ oval_metadata("SELinux is not Disabled.") }}}
         <criteria operator="AND">
             <criterion test_ref="test_selinux_not_disabled" comment="SELinux is not disabled"/>
         </criteria>
