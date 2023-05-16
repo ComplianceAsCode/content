@@ -6,8 +6,12 @@ function call_bash_ensure_ini_config {
     {{{ bash_ensure_ini_config("$1", "$2", "$3", "$4") | indent(4) }}}
 }
 
+setup() {
+    pushd "${BATS_TEST_TMPDIR}"
+    mkdir -p sssd_test
+}
+
 @test "bash_ensure_ini_config - Basic value remediation" {
-    mkdir sssd_test
     printf "[pam]\npam_cert_auth = false\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
@@ -15,12 +19,9 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - Value remediation in multiple files" {
-    mkdir sssd_test
     printf "[pam]\npam_cert_auth = false\n" > sssd_test/sssd.conf
     printf "[pam]\npam_cert_auth = false\n" > pam_cert_auth.conf
     expected_output="[pam]\npam_cert_auth = true\n"
@@ -32,13 +33,9 @@ function call_bash_ensure_ini_config {
 
     run diff "pam_cert_auth.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm pam_cert_auth.conf
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - No remediation happened" {
-    mkdir sssd_test
     printf "[pam]\npam_cert_auth = true\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
@@ -46,12 +43,9 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - Append section with option to empty file" {
-    mkdir sssd_test
     printf "" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
@@ -59,8 +53,6 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - Create file with section and option" {
@@ -70,12 +62,9 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - Append option to section" {
-    mkdir sssd_test
     printf "[pam]\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
@@ -83,12 +72,9 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - Append option to section when section is substring of option" {
-    mkdir sssd_test
     printf "[pam]\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_verbosity = 1\npam_cert_auth = true\n"
 
@@ -96,14 +82,10 @@ function call_bash_ensure_ini_config {
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_verbosity" "1"
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
-
-    rm -rf sssd_test
-
     [ "$status" -eq 0 ]
 }
 
 @test "bash_ensure_ini_config - Append option to section in multiple files" {
-    mkdir sssd_test
     printf "[pam]\n" > sssd_test/sssd.conf
     printf "[pam]\n" > pam_cert_auth.conf
     expected_output="[pam]\npam_cert_auth = true\n"
@@ -115,13 +97,9 @@ function call_bash_ensure_ini_config {
 
      run diff "pam_cert_auth.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm pam_cert_auth.conf
-    rm -rf sssd_test
 }
 
 @test "bash_ensure_ini_config - Append section with option to non-empty file" {
-    mkdir sssd_test
     printf "[section]\nkey = value\n" > sssd_test/sssd.conf
     expected_output="[section]\nkey = value\n[pam]\npam_cert_auth = true\n"
 
@@ -129,6 +107,4 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm -rf sssd_test
 }
