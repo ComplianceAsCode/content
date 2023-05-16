@@ -77,5 +77,6 @@ selections:
     -  sshd_use_approved_ciphers
     -  sshd_approved_ciphers=cis_sle12
     -  sshd_use_approved_macs
+    -  sshd_strong_kex=default
     -  sshd_approved_macs=cis_sle12
     -  sysctl_fs_suid_dumpable
