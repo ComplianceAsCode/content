@@ -29,6 +29,9 @@ warnings:
     - general: |-
         Changing firewall settings while connected over network can
         result in being locked out of the system.
+        Keep in mind the remediation makes changes only to the running
+        system, in order to keep the changes need to take care to save
+        the nft settings to the relvant configutation files.
 
 ocil_clause: 'nftables loopback traffic is not configured'
 
