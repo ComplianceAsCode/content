@@ -36,6 +36,23 @@ while (( $# )); do
     esac
 done
 
+bats_version="$(bats -v)" || :
+case "${bats_version##* }" in
+    # Debian 10 v0.4.0
+    # Usage: bats [-c] [-p | -t]
+    ""|"0."*|"1.0."*|"1.1."*)
+        OPT_parallel=0
+        OPT_verbose=0
+        OPT_debug=0
+        ;;
+    # Ubuntu 22.04
+    # Error: Bad command line option '--print-output-on-failure'
+    "1.2."*|"1.3."*|"1.4."*)
+        OPT_verbose=0
+        OPT_debug=0
+        ;;
+esac
+
 PYTHON_EXECUTABLE="$1"; shift
 TESTS_ROOT="$1"; shift
 TESTDIR="$1"; shift
@@ -46,17 +63,20 @@ mkdir -p "${OUTDIR}"
 bats_opts=()
 
 if (( OPT_parallel )); then
-    bats_opts+=(--jobs "$(nproc)")
+    bats_opts+=(--jobs "$(nproc)")  # 1.2.0
 fi
 
 if (( OPT_verbose > 1 )); then
-    bats_opts+=(--verbose-run)
+    bats_opts+=(--verbose-run)  # 1.5.0
 elif (( OPT_verbose == 1 )); then
-    bats_opts+=(--print-output-on-failure)
+    bats_opts+=(--print-output-on-failure)  # 1.5.0
 fi
 
 if (( OPT_debug )); then
-    bats_opts+=(--no-tempdir-cleanup --trace)
+    bats_opts+=(
+        --no-tempdir-cleanup  # 1.4.0
+        --trace  # 1.5.0
+    )
 fi
 
 rc=0
