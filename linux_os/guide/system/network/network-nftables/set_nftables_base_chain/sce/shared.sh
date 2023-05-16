@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_sle
+# platform = multi_platform_all
 # check-import = stdout
 
 chain_hook=$(nft list ruleset | grep 'hook input')
