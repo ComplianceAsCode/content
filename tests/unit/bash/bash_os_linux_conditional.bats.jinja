@@ -2,9 +2,12 @@
 
 set -pu
 
-@test "bash_os_linux_conditional - test OS release - RHEL" {
-    os_release_path="$(mktemp)"
+setup() {
+    pushd "${BATS_TEST_TMPDIR}"
+    os_release_path="os-release"
+}
 
+@test "bash_os_linux_conditional - test OS release - RHEL" {
     cat << EOF > "$os_release_path"
 NAME="Red Hat Enterprise Linux"
 VERSION="9.2 (Plow)"
@@ -44,13 +47,9 @@ EOF
     ! ( {{{ bash_os_linux_conditional("fedora", "38", "==", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("fedora", "9.2", "==", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("fedora", "9.4", "<", "$os_release_path") }}} )
-
-    rm -rf "$os_release_path"
 }
 
 @test "bash_os_linux_conditional - test OS release - Ubuntu" {
-    os_release_path="$(mktemp)"
-
     cat << EOF > "$os_release_path"
 PRETTY_NAME="Ubuntu 22.04.1 LTS"
 NAME="Ubuntu"
@@ -84,6 +83,4 @@ EOF
 
     ! ( {{{ bash_os_linux_conditional("fedora", "38", "==", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("fedora", "22.10", "<", "$os_release_path") }}} )
-
-    rm -rf "$os_release_path"
 }
