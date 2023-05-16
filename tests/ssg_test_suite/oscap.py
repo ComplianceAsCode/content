@@ -123,7 +123,7 @@ def generate_fixes_remotely(test_env, formatting, verbose_path):
         '--benchmark-id', formatting['benchmark_id'],
         '--profile', formatting['profile'],
         '--template', formatting['output_template'],
-        '--output', '/{output_file}'.format(** formatting),
+        '--output', formatting['remote_file'],
     ]
     command_operands = [formatting['source_arf_remote']]
     if 'result_id' in formatting:
@@ -145,8 +145,7 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
     formatting['output_template'] = _ANSIBLE_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
         run_type, test_env, formatting, verbose_path)
-    if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
-                           '/' + formatting['output_file']):
+    if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR, formatting['remote_file']):
         return False
     command = [
         'ansible-playbook',
@@ -199,15 +198,13 @@ def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
     formatting['output_template'] = _BASH_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
         run_type, test_env, formatting, verbose_path)
-    if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
-                           '/' + formatting['output_file']):
+    if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR, formatting['remote_file']):
         return False
 
     command_components = []
     if not test_env.is_root:
         command_components.append('sudo')
-    command_components.extend(['/bin/bash', '-x'])
-    command_components.append('/{output_file}'.format(** formatting))
+    command_components.extend(['/bin/bash', '-x', formatting['remote_file']])
 
     with open(verbose_path, "a") as log_file:
         error_msg_template = _get_bash_remediation_error_message_template(formatting)
@@ -229,9 +226,6 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
             logging.error(str(exc))
             return False
         formatting['result_id'] = res_id
-
-    formatting['source_arf_remote'] = os.path.join(
-        test_env.remote_test_scenarios_directory, formatting['source_arf_basename'])
 
     with open(verbose_path, "a") as log_file:
         remote_dir = os.path.dirname(formatting['source_arf_remote'])
@@ -451,6 +445,9 @@ class GenericRunner(object):
         }
         formatting['source_arf'] = self._get_initial_arf_path()
         formatting['source_arf_basename'] = os.path.basename(formatting['source_arf'])
+        formatting['source_arf_remote'] = os.path.join(
+            self.environment.remote_test_scenarios_directory,
+            formatting['source_arf_basename'])
         return formatting
 
 
@@ -622,6 +619,9 @@ class AnsibleProfileRunner(ProfileRunner):
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.profile)
+        formatting['remote_file'] = os.path.join(
+            self.environment.remote_test_scenarios_directory,
+            formatting['output_file'])
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
                                               formatting['output_file'])
 
@@ -634,6 +634,9 @@ class BashProfileRunner(ProfileRunner):
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.profile)
+        formatting['remote_file'] = os.path.join(
+            self.environment.remote_test_scenarios_directory,
+            formatting['output_file'])
 
         return run_stage_remediation_bash('profile', self.environment, formatting, self.verbose_path)
 
@@ -654,6 +657,9 @@ class BashRuleRunner(RuleRunner):
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.rule_id)
+        formatting['remote_file'] = os.path.join(
+            self.environment.remote_test_scenarios_directory,
+            formatting['output_file'])
 
         success = run_stage_remediation_bash('rule', self.environment, formatting, self.verbose_path)
         return success
@@ -663,6 +669,9 @@ class AnsibleRuleRunner(RuleRunner):
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.rule_id)
+        formatting['remote_file'] = os.path.join(
+            self.environment.remote_test_scenarios_directory,
+            formatting['output_file'])
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
                                               formatting['output_file'])
 
