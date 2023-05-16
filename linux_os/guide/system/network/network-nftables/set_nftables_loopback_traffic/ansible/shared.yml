@@ -29,7 +29,7 @@
   register: sysctl_ipv6_default
 
 - name: Check if IPv6 is Disabled
-  set_fact:
+  ansible.builtin.set_fact:
     passing: "true"
   when: ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
 
