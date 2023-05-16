@@ -28,5 +28,5 @@
   register: sysctl_ipv6_default
 
 - name: Implement IPv6 loopback rules
-  command: nft add rule inet filter input ip6 saddr ::1 counter drop
+  ansible.builtin.command: nft add rule inet filter input ip6 saddr ::1 counter drop
   when: ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
