@@ -86,7 +86,7 @@ def _apply_script(rule_dir, test_env, script):
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
         shared_dir = os.path.join(test_env.remote_test_scenarios_directory, "shared")
-        command = "cd {0}; SHARED={1} bash -x {2}".format(rule_dir, shared_dir, script)
+        command = "cd {0} || exit 1; SHARED={1} bash -x {2}".format(rule_dir, shared_dir, script)
 
         try:
             error_msg_template = (
