@@ -1,0 +1,52 @@
+# platform = multi_platform_all
+# reboot = false
+# complexity = low
+# strategy = configure
+# disruption = low
+
+- name: '{{{ rule_title }}} - Ensure firewalld Package is Installed'
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - firewalld
+
+- name: '{{{ rule_title }}} - Collect Facts About System Services'
+  ansible.builtin.service_facts:
+  register: result_services_states
+
+- name: '{{{ rule_title }}} - Remediation is Applicable if firewalld Service is Running'
+  block:
+    - name: '{{{ rule_title }}} - Ensure firewalld trusted Zone Restricts IPv4 Loopback Traffic'
+      ansible.builtin.command:
+        cmd: firewall-cmd --permanent --zone=trusted --add-rich-rule='rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+      register: result_trusted_ipv4_restriction
+      changed_when:
+          - "'ALREADY_ENABLED' not in result_trusted_ipv4_restriction.stderr"
+
+    - name: '{{{ rule_title }}} - Ensure firewalld trusted Zone Restricts IPv6 Loopback Traffic'
+      ansible.builtin.command:
+        cmd: firewall-cmd --permanent --zone=trusted --add-rich-rule='rule family=ipv6 source address="::1" destination not address="::1" drop'
+      register: result_trusted_ipv6_restriction
+      changed_when:
+          - "'ALREADY_ENABLED' not in result_trusted_ipv6_restriction.stderr"
+
+    - name: '{{{ rule_title }}} - Ensure firewalld Changes are Applied'
+      ansible.builtin.service:
+        name: firewalld
+        state: reloaded
+      when:
+        - result_trusted_ipv4_restriction is changed or result_trusted_ipv6_restriction is changed
+  when:
+    - ansible_facts.services['firewalld.service'].state == 'running'
+
+- name: '{{{ rule_title }}} - Informative Message Based on Service State'
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.services['firewalld.service'].state == 'running'
+    fail_msg:
+      - firewalld service is not active. Remediation aborted!
+      - This remediation could not be applied because it depends on firewalld service running.
+      - The service is not started by this remediation in order to prevent connection issues.
+    success_msg:
+      - {{{ rule_title }}} remediation successfully executed

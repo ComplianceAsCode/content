@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Configure Firewalld to Restrict Loopback Traffic'
+
+description: |-
+    Configure <tt>firewalld</tt> to restrict loopback traffic to the <tt>lo</tt> interface.
+
+    The loopback traffic must be trusted by assigning the <tt>lo</tt> interface to the
+    <tt>firewalld</tt> <tt>trusted</tt> zone. However, the loopback traffic must be restricted
+    to the loopback interface as an anti-spoofing measure.
+
+    To configure <tt>firewalld</tt> to restrict loopback traffic to the <tt>lo</tt> interface,
+    run the following commands:
+    <pre>
+    sudo firewall-cmd --permanent --zone=trusted --add-rich-rule='rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+    sudo firewall-cmd --permanent --zone=trusted --add-rich-rule='rule family=ipv6 source address="::1" destination not address="::1" drop'
+    </pre>
+
+    To ensure <tt>firewalld</tt> settings are applied in runtime, run the following command:
+    <pre>firewall-cmd --reload</pre>
+
+rationale: |-
+    Loopback traffic is generated between processes on machine and is typically critical to
+    operation of the system. The loopback interface is the only place that loopback network
+    traffic should be seen, all other interfaces should ignore traffic on this network as an
+    anti-spoofing measure.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86137-7
+
+references:
+    cis@rhel9: 3.4.2.4
+
+ocil_clause: 'loopback traffic is not restricted'
+
+ocil: |-
+    Inspect the firewalld trusted and default zones and verify the loopback traffic is restricted
+    to the <tt>lo</tt> interface by running the following command:
+
+    <pre>$ sudo firewall-cmd --list-rich-rules --zone=trusted</pre>
+
+    The following rich-rules should be listed:
+    <pre>
+    rule family="ipv4" source address="127.0.0.1" destination not address="127.0.0.1" drop
+    rule family="ipv6" source address="::1" destination not address="127.0.0.1" drop
+    </pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to restrict loopback traffic using the following commands:
+
+    $ sudo firewall-cmd --permanent --zone=trusted --add-rich-rule='rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+    $ sudo firewall-cmd --permanent --zone=trusted --add-rich-rule='rule family=ipv6 source address="::1" destination not address="::1" drop'
+    $ sudo firewall-cmd --reload
