@@ -10,8 +10,13 @@ function call_bash_replace_or_append_w_format {
     {{{ bash_replace_or_append("$1", "$2", "$3", "$4") | indent(4) }}}
 }
 
+setup() {
+    pushd "${BATS_TEST_TMPDIR}"
+    tmp_file=test.sh
+    touch "$tmp_file"
+}
+
 @test "bash_replace_or_append - Basic value remediation" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_space = 5" > "$tmp_file"
     expected_output="kernel.randomize_va_space = 2\n"
 
@@ -19,12 +24,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - No remediation happened" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_space = 2" > "$tmp_file"
     expected_output="kernel.randomize_va_space = 2\n"
 
@@ -32,12 +34,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - Append key to empty file" {
-    tmp_file="$(mktemp)"
     printf "" > "$tmp_file"
     expected_output="kernel.randomize_va_space = 2\n"
 
@@ -45,12 +44,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - Append key to non-empty file" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_fake = 5" > "$tmp_file"
     expected_output="kernel.randomize_va_fake = 5\nkernel.randomize_va_space = 2\n"
 
@@ -58,12 +54,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - Remediation with format" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_space=5" > "$tmp_file"
     expected_output="kernel.randomize_va_space=2\n"
 
@@ -71,12 +64,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - No remediation with format" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_space=2" > "$tmp_file"
     expected_output="kernel.randomize_va_space=2\n"
 
@@ -84,12 +74,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - Append key with format to empty file" {
-    tmp_file="$(mktemp)"
     printf "" > "$tmp_file"
     expected_output="kernel.randomize_va_space=2\n"
 
@@ -97,12 +84,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - Append key with format to non-empty file" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_fake=5" > "$tmp_file"
     expected_output="kernel.randomize_va_fake=5\nkernel.randomize_va_space=2\n"
 
@@ -110,12 +94,9 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "bash_replace_or_append - Remediate value containing forward slash" {
-    tmp_file="$(mktemp)"
     printf "%s\n" "kernel.core_pattern=|/bin/true" > "$tmp_file"
     expected_output="kernel.core_pattern=|/bin/false\n"
 
@@ -123,6 +104,4 @@ function call_bash_replace_or_append_w_format {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
