@@ -412,7 +412,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 
 5. Create a new file in the product directory called `CMakeLists.txt`:
 ``
-cat < EOF >> $NEW_PRODUCT/CMakeLists.txt
+cat << EOF >  $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
 if ("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
@@ -424,7 +424,7 @@ EOF
 
 7. Create a new file in the product directory called `product.yml` (note: you may want to change the `pkg_manager` attribute):
 ```
-cat < EOF >> $NEW_PRODUCT/product.yml
+cat << EOF >  $NEW_PRODUCT/product.yml
 product: $NEW_PRODUCT
 full_name: $FULL_NAME
 type: platform
@@ -451,7 +451,7 @@ EOF
 
 8. Create a draft profile under `profiles` directory called `standard.profile`:
 ```
-cat < EOF >> $NEW_PRODUCT/profiles/standard.profile
+cat << EOF >  $NEW_PRODUCT/profiles/standard.profile
 documentation_complete: true
 
 title: 'Standard System Security Profile for $FULL_NAME'
@@ -468,7 +468,7 @@ EOF
 
 9. Create a new file under `transforms` directory called `constants.xslt` (you may want to review the links below):
 ```
-cat < EOF >> $NEW_PRODUCT/transforms/constants.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/constants.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
@@ -490,7 +490,7 @@ EOF
 
 11. Create a new file under `transforms` directory called `table-style.xslt`:
 ```
-cat < EOF >> $NEW_PRODUCT/transforms/table-style.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/table-style.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="../../../shared/transforms/shared_table-style.xslt"/>
@@ -501,7 +501,7 @@ EOF
 
 12. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
 ```
-cat < EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://checklists.nist.gov/xccdf/1.1" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
@@ -515,7 +515,7 @@ EOF
 
 13. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
 ```
-cat < EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
@@ -530,7 +530,7 @@ EOF
 
 14. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
 ```
-cat < EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://public.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
 
@@ -545,7 +545,7 @@ EOF
 
 15. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
-cat < EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
+cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
   <definition class="inventory" id="installed_OS_is_$NEW_PRODUCT" version="3">
     <metadata>
