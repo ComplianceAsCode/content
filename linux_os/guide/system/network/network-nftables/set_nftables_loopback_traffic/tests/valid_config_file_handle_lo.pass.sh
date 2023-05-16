@@ -8,7 +8,7 @@ cat >/etc/nftables/inet-filter <<EOF
 ! /usr/sbin/nft -f
 
 table inet filter {
-	chain input		{ 
+	chain input		{
                                   type filter hook input priority 0;
                                 # loopback
 				  iif lo accept
