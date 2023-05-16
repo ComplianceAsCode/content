@@ -516,7 +516,7 @@ It supports up to two arguments:
 To execute:
 
 ```bash
-    $ ./build_profiler_report.py <logflie> [--baseline]
+    $ ./build_profiler_report.py <logfile> [--baseline]
 ```
 
 ## Other Scripts

@@ -215,7 +215,7 @@
 
 #### dconf_ini_file
 -   Checks for `dconf` configuration. Additionally checks if the
-    configuration is locked so it cannot be overriden by the user.
+    configuration is locked so it cannot be overridden by the user.
     The `locks` directory is always the **path** appended by `locks/`.
 
 -   Parameters:
@@ -566,8 +566,8 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 #### key_value_pair_in_file
 Checks if a given key and value are configured in a file.
 
-The check passes if the file has multiple occurences of `key` as long as they all
-have the same value `value`. If multiple occurences of `key` have conflicting values,
+The check passes if the file has multiple occurrences of `key` as long as they all
+have the same value `value`. If multiple occurrences of `key` have conflicting values,
 the check will evaluate to fail.
 
 When the remediation is applied duplicate occurrences of `key` are removed.
@@ -636,7 +636,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
            is not required and will be ignored if present. It is required when
            a value argument needs to be added or modified.
         -  **argument_value** - (optional) the expected argument value for a
-           value argument to be added or modifed, when the **argument_match**
+           value argument to be added or modified, when the **argument_match**
            regular expression failed to yield a match. The argument's existing
            value will be replaced by **argument_value**. When the argument has
            no value, or when the argument is to be removed, this parameter is

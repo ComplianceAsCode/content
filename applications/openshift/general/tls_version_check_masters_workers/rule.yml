@@ -40,7 +40,7 @@ ocil_clause: 'TLS version is not configured or contains insecure version'
 ocil: |-
     Run the following command to check the TLS version used on master and worker nodes:
     <pre>$ sudo grep -oE VersionTLS1[2-9]{1} /etc/kubernetes/kubelet.conf </pre>
-    Make sure that the result has a onue of VersionTLSXX where XX is 12 or greater.
+    Make sure that the result has a value of VersionTLSXX where XX is 12 or greater.
 
 severity: medium
 

@@ -820,7 +820,7 @@ controls:
         that is stored in the AWS KMS, separately from the data key.
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used to decrypt the data key is
         stored in the TPM (Trusted Platform Module), on the motherboard of the node.
-      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
+      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisioning
         metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
         See https://github.com/latchset/tang
     status: inherently met
@@ -836,7 +836,7 @@ controls:
         The KEK is stored in the AWS KMS only.
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in the TPM (Trusted Platform Module) only.
         The encrypted data key is stored on the MBR of the disk only.
-      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
+      * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisioning
         metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
         See https://github.com/latchset/tang
     status: inherently met

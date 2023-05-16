@@ -21,7 +21,7 @@ controls:
     levels:
     - enhanced
     description: >-
-      It is recommended to apply the configuration recommendations for Hardware suppport
+      It is recommended to apply the configuration recommendations for Hardware support
       mentioned in ANSSI DAT-24.
     notes: >-
       This requirement can be checked, but remediation requires manual reinstall of the OS.
@@ -141,7 +141,7 @@ controls:
     - intermediary
     status: automated
     rules:
-    # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerabilyt, or
+    # l1tf=full,force to enable countermeasure for L1 Terminal Fault vulnerability, or
     # l1tf=off to maximize performance, when system is not a hypervisor or VMs are trusted
     - grub2_l1tf_argument
     - var_l1tf_options=full_force

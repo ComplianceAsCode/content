@@ -148,7 +148,7 @@ A rule itself contains these attributes:
     <tr class="even">
     <td><p><code>low</code></p></td>
     <td><p><code>CAT III</code></p></td>
-    <td><p>Any vulnerability, the existence of which degrades measures to protect againstloss of Confidentiality, Availability, or Integrity.</p></td>
+    <td><p>Any vulnerability, the existence of which degrades measures to protect against loss of Confidentiality, Availability, or Integrity.</p></td>
     </tr>
     </tbody>
     </table>
@@ -1503,7 +1503,7 @@ The logs will be located in the `logs_bash` directory.
 
 The ComplianceAsCode/content repo runs some end-to-end tests for the
 ocp4 content. These tests run over the OpenShift infrastructure, spawn
-an ephemeral cluster and run tests targetted at a specific profile.
+an ephemeral cluster and run tests targeted at a specific profile.
 
 The current workflow is as follows:
 
@@ -1555,7 +1555,7 @@ Where:
     scan is run. The second scan takes place after remediations are
     applied.
 
-Note that this format applies if the result of a rule will be the same accross
+Note that this format applies if the result of a rule will be the same across
 roles in the cluster.
 
 It is also possible to differentiate results between roles. For such a thing,
@@ -1636,7 +1636,7 @@ Here, we apply the remediation (through the `patch` command) and probe
 the cluster for status. Once the cluster converges, we exit the script
 with `0`, which is a successful status.
 
-The e2e test run will time out at **15 minuntes** if a script doesn't
+The e2e test run will time out at **15 minutes** if a script doesn't
 converge.
 
 Note that the scripts will be run in parallel, but the test run will

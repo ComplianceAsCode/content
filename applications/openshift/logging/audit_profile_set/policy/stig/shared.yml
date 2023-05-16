@@ -5,7 +5,7 @@ check: |-
   > oc get apiserver.config.openshift.io/cluster -ojsonpath='{.spec.audit.profile}'
 
   If the output, from the options of Default, WriteRequestBodies, and
-  AllRequestBodies, does not match the defined auditable event threshhold,
+  AllRequestBodies, does not match the defined auditable event threshold,
   this is a finding.
 
 fixtext: |-
