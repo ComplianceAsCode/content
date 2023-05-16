@@ -1,6 +1,6 @@
 # platform = multi_platform_fedora
 
-dnf install -y gpg
+{{{ bash_package_install("gpg") }}}
 
 fedora_version=$(grep -oP '[[:digit:]]+' /etc/redhat-release)
 
