@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -pu
 
 function call_set_config_file_create_false {
     {{{ set_config_file("$1", "Compression", "no", False) | indent(4) }}}

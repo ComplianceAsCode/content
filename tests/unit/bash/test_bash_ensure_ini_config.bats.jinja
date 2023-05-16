@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -pu
 
 function call_bash_ensure_ini_config {
     {{{ bash_ensure_ini_config("$1", "$2", "$3", "$4") | indent(4) }}}

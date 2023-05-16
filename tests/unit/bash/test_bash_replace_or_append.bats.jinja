@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -pu
 
 function call_bash_replace_or_append {
     {{{ bash_replace_or_append("$1", "$2", "$3") | indent(4) }}}
