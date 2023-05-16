@@ -8,8 +8,7 @@
 
 - name: Check if IPv6 is Disabled in grub Configuration
   ansible.builtin.shell: |
-    [ -n "$passing" ] && passing=""
-    [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ] && passing="true"
+    [ -z "$(grep "^\s*linux" /boot/grub2/grub.cfg | grep -v ipv6.disabled=1)" ]
   register: ipv6_status
 
 - name: Check sysctl value of net.ipv6.conf.all.disable_ipv6
@@ -28,11 +27,6 @@
   check_mode: true
   register: sysctl_ipv6_default
 
-- name: Check if IPv6 is Disabled
-  ansible.builtin.set_fact:
-    passing: "true"
-  when: ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
-
 - name: Implement IPv6 loopback rules
   command: nft add rule inet filter input ip6 saddr ::1 counter drop
-  when: passing == "false"
+  when: ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
