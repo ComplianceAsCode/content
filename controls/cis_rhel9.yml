@@ -1118,13 +1118,15 @@ controls:
       - l1_workstation
     status: pending
 
-  # https://github.com/ComplianceAsCode/content/issues/5246
   - id: 3.4.2.4
     title: Ensure host based firewall loopback traffic is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - firewalld_loopback_traffic_trusted
+      - firewalld_loopback_traffic_restricted
 
   - id: 3.4.2.5
     title: Ensure firewalld drops unnecessary services and ports (Manual)
