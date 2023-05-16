@@ -450,13 +450,14 @@ controls:
       - var_selinux_policy_name=targeted
       - selinux_policytype
 
-  # NEEDS RULE - The selinux_state could be extended
   - id: 1.6.1.4
     title: Ensure the SELinux mode is not disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - selinux_not_disabled
 
   - id: 1.6.1.5
     title: Ensure the SELinux mode is enforcing (Automated)
