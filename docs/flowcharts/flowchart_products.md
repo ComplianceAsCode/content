@@ -11,6 +11,7 @@ flowchart TD
     subgraph products
     60[products] --> |identified by| 61[product_name]
         61[product_name] --> |defined at| 62[product.yml]
+        61[product_properties] --> |defined at| 62[product.yml, product_properties/]
         61[product_name] --> |contains| 63[overlays]
         61[product_name] --> |contains| 64[profiles]
             64[profiles] --> |written at| 65[profile_name.profile]
