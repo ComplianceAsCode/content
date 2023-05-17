@@ -37,9 +37,11 @@ def main():
     for product in ssg.constants.product_directories:
         product_yaml_path = ssg.products.product_yaml_path(ssg_root, product)
         product = ssg.products.Product(product_yaml_path)
-        product.read_properties_from_directory(os.path.join(ssg_root, "product_properties"))
 
-        env_yaml = ssg.environment.open_environment(ssg_build_config_yaml, product_yaml_path)
+        product_properties_path = os.path.join(ssg_root, "product_properties")
+        env_yaml = ssg.environment.open_environment(
+                ssg_build_config_yaml, product_yaml_path, product_properties_path)
+        env_yaml.update(product)
         ssg.jinja.add_python_functions(env_yaml)
 
         guide_dir = os.path.join(product["product_dir"], product['benchmark_root'])

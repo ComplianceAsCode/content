@@ -369,10 +369,11 @@ def handle_output(output: str, results: list, format_type: str, product: str) ->
     print(f'Wrote output to {output}')
 
 
-def get_env_yaml(root: str, product: str, build_config_yaml: str) -> dict:
-    product_dir = os.path.join(root, "products", product)
+def get_env_yaml(root: str, product_path: str, build_config_yaml: str) -> dict:
+    product_dir = os.path.join(root, "products", product_path)
     product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(build_config_yaml, str(product_yaml_path))
+    env_yaml = ssg.environment.open_environment(
+            build_config_yaml, product_yaml_path, os.path.join(root, "product_properties"))
     return env_yaml
 
 
@@ -383,8 +384,8 @@ def main() -> None:
 
     srgs = ssg.build_stig.parse_srgs(args.manual)
     product_dir = os.path.join(args.root, "products", args.product)
-    product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
+    env_yaml = get_env_yaml(
+            args.root, args.product, args.build_config_yaml)
     policy = get_policy(args, env_yaml)
     rule_json = get_rule_json(args.json)
 

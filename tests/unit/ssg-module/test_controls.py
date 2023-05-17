@@ -2,6 +2,8 @@ import pytest
 import logging
 import os
 
+import pytest
+
 import ssg.controls
 import ssg.build_yaml
 from ssg.environment import open_environment
@@ -13,10 +15,15 @@ controls_dir = os.path.join(data_dir, "controls_dir")
 profiles_dir = os.path.join(data_dir, "profiles_dir")
 
 
-def _load_test(profile):
+@pytest.fixture
+def env_yaml():
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    env_yaml = open_environment(build_config_yaml, product_yaml)
+    return open_environment(
+        build_config_yaml, product_yaml, os.path.join(ssg_root, "product_properties"))
+
+
+def _load_test(env_yaml, profile):
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
     c_r1 = controls_manager.get_control(profile, "R1")
@@ -60,14 +67,11 @@ def _load_test(profile):
     assert c_r5.status_justification == "Mitigate with third-party software."
 
 
-def test_controls_load():
-    _load_test("abcd")
+def test_controls_load(env_yaml):
+    _load_test(env_yaml, "abcd")
 
 
-def test_controls_levels():
-    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    env_yaml = open_environment(build_config_yaml, product_yaml)
+def test_controls_levels(env_yaml):
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
@@ -185,11 +189,7 @@ def test_controls_levels():
     assert "configure_crypto_policy" in s7_high[0].selections
 
 
-def test_controls_load_product():
-    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    env_yaml = open_environment(build_config_yaml, product_yaml)
-
+def test_controls_load_product(env_yaml):
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
@@ -207,20 +207,21 @@ def test_controls_load_product():
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
 
 
-def test_profile_resolution_inline():
+def test_profile_resolution_inline(env_yaml):
     profile_resolution(
-        ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
+        env_yaml, ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
 
 
-def test_profile_resolution_extends_inline():
+def test_profile_resolution_extends_inline(env_yaml):
     profile_resolution_extends(
+        env_yaml,
         ssg.build_yaml.ProfileWithInlinePolicies,
         "abcd-low-inline", "abcd-high-inline")
 
 
-def test_profile_resolution_all_inline():
+def test_profile_resolution_all_inline(env_yaml):
     profile_resolution_all(
-        ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
+        env_yaml, ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
 
 
 class DictContainingAnyRule(dict):
@@ -233,11 +234,7 @@ class DictContainingAnyRule(dict):
         return True
 
 
-def profile_resolution(cls, profile_low):
-    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    env_yaml = open_environment(build_config_yaml, product_yaml)
-
+def profile_resolution(env_yaml, cls, profile_low):
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
     low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
@@ -261,11 +258,7 @@ def profile_resolution(cls, profile_low):
     assert "security_patches_up_to_date" in selected
 
 
-def profile_resolution_extends(cls, profile_low, profile_high):
-    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    env_yaml = open_environment(build_config_yaml, product_yaml)
-
+def profile_resolution_extends(env_yaml, cls, profile_low, profile_high):
     # tests ABCD High profile which is defined as an extension of ABCD Low
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
@@ -299,11 +292,7 @@ def profile_resolution_extends(cls, profile_low, profile_high):
     assert high_profile.variables["var_password_pam_ocredit"] == "2"
 
 
-def profile_resolution_all(cls, profile_all):
-    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    env_yaml = open_environment(build_config_yaml, product_yaml)
-
+def profile_resolution_all(env_yaml, cls, profile_all):
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
     profile_path = os.path.join(profiles_dir, profile_all + ".profile")
@@ -336,13 +325,13 @@ def profile_resolution_all(cls, profile_all):
     assert "security_patches_up_to_date" in selected
 
 
-def test_load_control_from_folder():
-    _load_test("qrst")
+def test_load_control_from_folder(env_yaml):
+    _load_test(env_yaml, "qrst")
 
 
-def test_load_control_from_folder_and_file():
-    _load_test("jklm")
+def test_load_control_from_folder_and_file(env_yaml):
+    _load_test(env_yaml, "jklm")
 
 
-def test_load_control_from_specific_folder_and_file():
-    _load_test("nopq")
+def test_load_control_from_specific_folder_and_file(env_yaml):
+    _load_test(env_yaml, "nopq")
