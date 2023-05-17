@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'Ensure the audit-libs package as a part of audit Subsystem is Installed'
+title: 'Ensure the libaudit package as a part of audit Subsystem is Installed'
 
 prodtype: sle12,sle15
 
-description: 'The audit-libs package should be installed.'
+description: 'The libaudit package should be installed.'
 
 rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparison with potential local access control policy such as SELinux policy.'
 
@@ -28,16 +28,16 @@ references:
 
     
 
-ocil_clause: 'the audit package is not installed'
+ocil_clause: 'the libaudit package is not installed'
 
-ocil: '{{{ ocil_package("audit-libs") }}}'
+ocil: '{{{ ocil_package("libaudit") }}}'
 
 fixtext: |-
-    Install the audit-libs package (if the audit-libs package is not already installed) with the following command:
+    Install the libaudit package (if libaudit package is not already installed) with the following command:
 
-    {{{ package_install("audit-libs") }}}
+    {{{ package_install("libaudit") }}}
 
 template:
     name: package_installed
     vars:
-        pkgname: audit-libs
+        pkgname: libaudit
