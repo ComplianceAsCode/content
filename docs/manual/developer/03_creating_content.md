@@ -411,7 +411,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 
 
 5. Create a new file in the product directory called `CMakeLists.txt`:
-``
+```
 cat << EOF >  $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
 if ("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
@@ -429,7 +429,7 @@ product: $NEW_PRODUCT
 full_name: $FULL_NAME
 type: platform
 
-benchmark_root: "../linux_os/guide"
+benchmark_root: "../../linux_os/guide"
 
 profiles_root: "./profiles"
 
