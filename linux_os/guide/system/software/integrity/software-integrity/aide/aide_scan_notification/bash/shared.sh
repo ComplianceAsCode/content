@@ -1,6 +1,7 @@
 # platform = multi_platform_all
 
 {{{ bash_package_install("aide") }}}
+{{{ bash_package_install("crontabs") }}}
 {{{ bash_instantiate_variables("var_aide_scan_notification_email") }}}
 
 CRONTAB=/etc/crontab

@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = crontabs
 
 FILE=/etc/cron.deny
 

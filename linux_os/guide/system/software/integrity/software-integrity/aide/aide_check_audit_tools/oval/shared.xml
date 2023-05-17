@@ -22,7 +22,7 @@
     {{% if 'rhel' not in product and 'ubuntu' not in product and product != 'ol8' %}}
     <ind:subexpression operation="equals">p+i+n+u+g+s+b+acl+selinux+xattrs+sha512</ind:subexpression>
     {{% else %}}
-    <ind:subexpression operation="pattern match">p\+i\+n\+u\+g\+s\+b\+acl(|\+selinux)\+xattrs\+sha512</ind:subexpression>
+    <ind:subexpression operation="pattern match">^p\+i\+n\+u\+g\+s\+b\+acl(|\+selinux)\+xattrs\+sha512$</ind:subexpression>
     {{% endif %}}
   </ind:textfilecontent54_state>
 

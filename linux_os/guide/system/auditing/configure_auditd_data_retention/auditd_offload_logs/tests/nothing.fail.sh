@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = audit
+# packages = audit,crontabs
 # remediation = none
 
 mkdir -p /etc/cron.weekly/
