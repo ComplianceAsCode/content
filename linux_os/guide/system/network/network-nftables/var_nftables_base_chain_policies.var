@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Nftables Base Chain Policies'
+
+description: |-
+    This is the default verdict that will be applied to packets reaching the end of the chain 
+    (i.e, no more rules to be evaluated against).
+    Currently there are 2 policies: 
+    <tt>accept</tt> this verdict means that the packet will keep traversing the network stack.
+    <tt>drop</tt> this verdict means that the packet is discarded if the packet reaches the end 
+    of the base chain.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: "accept,accept,accept"
+    accept: accept 
+    drop: drop
+    chain_policies: "accept,accept,accept"

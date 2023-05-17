@@ -1,0 +1,63 @@
+documentation_complete: true
+
+title: 'Nftables Base Chain Priorities'
+
+description: |-
+    Each nftables base chain is assigned a priority that defines its ordering 
+    among other base chains, flowtables, and Netfilter internal operations at 
+    the same hook. For example, a chain on the prerouting hook with priority 
+    -300 will be placed before connection tracking operations. 
+    Netfilter Internal Priority for inet, ip, ip6:
+    <tt>NF_IP_PRI_RAW_BEFORE_DEFRAG</tt> Typical hooks: prerouting; nft Keyword: n/a; Description: n/a
+    <tt>NF_IP_PRI_CONNTRACK_DEFRAG</tt> Typical hooks: prerouting; nft Keyword: n/a; Description: Packet defragmentation / datagram reassembly 
+    <tt>NF_IP_PRI_RAW</tt> Typical hooks: all; nft Keyword: raw; Description:  Typical hooks: prerouting; nft Keyword: n/a; Description: Traditional priority of 
+    the raw table placed before connection tracking operation 
+    <tt>NF_IP_PRI_SELINUX_FIRST</tt> Typical hooks: n/a; nft Keyword: n/a; Description: SELinux operations  
+    <tt>NF_IP_PRI_CONNTRACK</tt> Typical hooks: prerouting, output;nft Keyword: n/a; Description: Connection tracking processes run early in prerouting and 
+    output hooks to associate packets with tracked connections.
+    <tt>NF_IP_PRI_MANGLE</tt> Typical hooks: all;nft Keyword: mangle; Description: Mangle operation
+    <tt>NF_IP_PRI_NAT_DST</tt> Typical hooks: prerouting;nft Keyword: dstnat; Description: Destination NAT
+    <tt>NF_IP_PRI_FILTER</tt> Typical hooks: all;nft Keyword: filter; Description: Filtering operation, the filter table 
+    <tt>NF_IP_PRI_SECURITY</tt> Typical hooks: all;nft Keyword: security; Description: Place of security table, where secmark can be set for example 
+    <tt>NF_IP_PRI_NAT_SRC</tt> Typical hooks: postrouting;nft Keyword: srcnat; Description: Source NAT
+    <tt>NF_IP_PRI_SELINUX_LAST</tt> Typical hooks: postrouting;nft Keyword: n/a; Description: SELinux at packet exit
+    <tt>NF_IP_PRI_CONNTRACK_HELPER</tt> Typical hooks: postrouting;nft Keyword: n/a; Description: Connection tracking helpers, which identify expected and 
+    related packets. 
+    <tt>NF_IP_PRI_CONNTRACK_CONFIRM</tt> Typical hooks: input,postrouting;nft Keyword: n/a; Description: Connection tracking adds new tracked connections 
+    at final step in input and postrouting hooks. 
+    Netfilter Internal Priority for bridge:
+    <tt>NF_BR_PRI_NAT_DST_BRIDGED</tt> Typical hooks: prerouting; nft Keyword: n/a; Description: n/a
+    <tt>NF_BR_PRI_FILTER_BRIDGED</tt> Typical hooks: all;nft Keyword: filter; Description: n/a
+    <tt>NF_BR_PRI_BRNF</tt> Typical hooks: n/a;nft Keyword: n/a; Description: n/a
+    <tt>NF_BR_PRI_NAT_DST_OTHER</tt> Typical hooks: output;nft Keyword: out; Description: n/a
+    <tt>NF_BR_PRI_FILTER_OTHER</tt> Typical hooks: n/a;nft Keyword: n/a; Description: n/a
+    <tt>NF_BR_PRI_NAT_SRC</tt> Typical hooks: postrouting;nft Keyword: srcnat; Description: n/a
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: "0,0,0"
+    NF_IP_PRI_RAW_BEFORE_DEFRAG: -450
+    NF_IP_PRI_CONNTRACK_DEFRAG: -400
+    NF_IP_PRI_RAW: -300
+    NF_IP_PRI_SELINUX_FIRST: -225
+    NF_IP_PRI_CONNTRACK: -200
+    NF_IP_PRI_MANGLE: -150
+    NF_IP_PRI_NAT_DST: -100
+    NF_IP_PRI_FILTER: 0
+    NF_IP_PRI_SECURITY: 50
+    NF_IP_PRI_NAT_SRC: 100
+    NF_IP_PRI_SELINUX_LAST: 225
+    NF_IP_PRI_CONNTRACK_HELPER: 300
+    NF_IP_PRI_CONNTRACK_CONFIRM: 2147483647
+    NF_BR_PRI_NAT_DST_BRIDGED: -300
+    NF_BR_PRI_FILTER_BRIDGED: -200
+    NF_BR_PRI_BRNF: 0
+    NF_BR_PRI_NAT_DST_OTHER: 100
+    NF_BR_PRI_FILTER_OTHER: 200
+    NF_BR_PRI_NAT_SRC: 300 
+    chain_priorities: "0,0,0"
