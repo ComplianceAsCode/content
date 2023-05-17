@@ -89,7 +89,7 @@ macro(ssg_build_man_page)
     )
 endmacro()
 
-macro(ssg_build_xccdf_oval_ocil PRODUCT)
+macro(ssg_build_compiled_artifacts PRODUCT)
     file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
     list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
     list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
@@ -123,7 +123,9 @@ macro(ssg_build_xccdf_oval_ocil PRODUCT)
         ${PRODUCT}-compile-all
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
     )
+endmacro()
 
+macro(ssg_build_xccdf_oval_ocil PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -330,7 +332,6 @@ macro(ssg_build_sce PRODUCT)
             COMMAND ${CMAKE_COMMAND} -E make_directory "${BUILD_CHECKS_DIR}/sce"
             COMMAND ${CMAKE_COMMAND} -E touch "${BUILD_CHECKS_DIR}/sce/metadata.json"
             COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
-            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         )
     endif()
     add_custom_target(
@@ -697,6 +698,7 @@ macro(ssg_build_product PRODUCT)
         set(PRODUCT_${_LANGUAGE}_REMEDIATION_ENABLED TRUE)
     endforeach()
 
+    ssg_build_compiled_artifacts(${PRODUCT})
     ssg_build_sce(${PRODUCT})
     ssg_build_xccdf_oval_ocil(${PRODUCT})
     ssg_make_all_tables(${PRODUCT})
