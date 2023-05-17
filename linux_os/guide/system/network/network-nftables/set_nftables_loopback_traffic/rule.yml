@@ -1,0 +1,48 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Set nftables Configuration for Loopback Traffic'
+
+description: |-
+    Configure the loopback interface to accept traffic.
+    Configure all other interfaces to deny traffic to the loopback
+    network.
+
+rationale: |-
+    Loopback traffic is generated between processes on machine and is
+    typically critical to operation of the system. The loopback interface
+    is the only place that loopback network traffic should be seen,
+    all other interfaces should ignore traffic on this network as an
+    anti-spoofing measure.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-92481-1
+
+references:
+    cis@sle15: 3.5.2.6 
+    pcidss: Req-1.4.1
+
+warnings:
+    - general: |-
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
+        Keep in mind the remediation makes changes only to the running
+        system, in order to keep the changes need to take care to save
+        the nft settings to the relvant configutation files.
+
+ocil_clause: 'nftables loopback traffic is not configured'
+
+ocil: |-
+    Verify that the loopback interface is configured:
+    <pre>
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
+    </pre>
+    iif "lo" accept
+    If IPv6 is enabled, verify that the IPv6 loopback interface is configured:
+    <pre>
+    # nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+    </pre>
+    ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop
