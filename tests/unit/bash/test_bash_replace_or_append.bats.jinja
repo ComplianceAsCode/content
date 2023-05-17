@@ -105,3 +105,872 @@ setup() {
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
+
+@test "bash_replace_or_append - Key prefix remediation" {
+    printf "kernel.randomize_va_space = 5\nakernel.randomize_va_space = 5\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\nakernel.randomize_va_space = 5\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Key suffix remediation" {
+    printf "kernel.randomize_va_space = 5\nkernel.randomize_va_space2 = 5\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\nkernel.randomize_va_space2 = 5\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Key ending with . remediation" {
+    skip "Implementation needs to have word_boundary"
+    printf "kernel.randomize_va_space. = 5\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space. = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space.' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Key contains * with remediation" {
+    skip "Implementation does not quote regexps properly despite skipped_key functionality"
+    printf "kernel.randomize_va_space. = 5\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space. = 5\nkernel.* = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.*' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Commented remediation" {
+    printf "kernel.randomize_va_space = 5\n# kernel.randomize_va_space = 5\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n# kernel.randomize_va_space = 5\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Case insensitive key remediation" {
+    printf "KERNEL.RANDOMIZE_VA_SPACE = 5\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Case sensitive value remediation" {
+    printf "kernel.randomize_va_space = FOO\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = foo\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' 'foo'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Case insensitive key, remediation happened 3 times" {
+    printf "kernel.randomize_va_space = foo\nKERNEL.RANDOMIZE_VA_SPACE = 2\nkernel.randomize_va_space = foo\n" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\nkernel.randomize_va_space = 2\nkernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - No file before" {
+    rm "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Fail if not file" {
+    skip "bash_replace_or_append does not handle situation where final target is not creatable/readable/writable file"
+    rm "${tmp_file}"
+    mkdir -p "${tmp_file}"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Is symlink missing" {
+    ln -s "${tmp_file}" symlink.sh
+    rm "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "symlink.sh" '^kernel.randomize_va_space' '2'
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+    [ -L symlink.sh ]
+    [ -f "${tmp_file}" ]
+}
+
+@test "bash_replace_or_append - Is symlink empty" {
+    ln -s "${tmp_file}" symlink.sh
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "symlink.sh" '^kernel.randomize_va_space' '2'
+    [ -L symlink.sh ]
+    [ -f "${tmp_file}" ]
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Is symlink remediation" {
+    printf "foo\n%s\nbar\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
+    ln -s "${tmp_file}" symlink.sh
+    expected_output="foo\nkernel.randomize_va_space = 2\nbar\n"
+
+    call_bash_replace_or_append "symlink.sh" '^kernel.randomize_va_space' '2'
+    [ -L symlink.sh ]
+    [ -f "${tmp_file}" ]
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Filename contains space" {
+    tmp_file="${tmp_file} "
+    printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Filename contains tab" {
+    tmp_file="$(printf "\t%s" "${tmp_file}")"
+    printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Filename contains newline" {
+    tmp_file="$(printf "%s\n" "${tmp_file}")"
+    printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test 'bash_replace_or_append - Filename contains \$(touch foo)' {
+    tmp_file+=$'$(touch foo)'
+    printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [[ ${tmp_file} =~ foo ]]
+    [ "${status}" -eq 0 ]
+    [ ! -f foo ]
+}
+
+@test 'bash_replace_or_append - Filename contains \`touch foo\`' {
+    tmp_file+=$'`touch foo`'
+    printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space = 2\n"
+
+    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [[ ${tmp_file} =~ foo ]]
+    [ "${status}" -eq 0 ]
+    [ ! -f foo ]
+}
+
+@test "bash_replace_or_append - Remediate value emtpy" {
+    printf "%s\n" "kernel.core_pattern=|/bin/true" > "${tmp_file}"
+    expected_output="kernel.core_pattern=\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '' '%s=%s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediation with format space" {
+    printf "%s\n" "kernel.randomize_va_space 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space 2\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - No remediation with format space" {
+    printf "%s\n" "kernel.randomize_va_space 2" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space 2\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Append key with format to empty file format space" {
+    printf "" > "${tmp_file}"
+    expected_output="kernel.randomize_va_space 2\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Append key with format to non-empty file format space" {
+    printf "%s\n" "kernel.randomize_va_fake 5" > "${tmp_file}"
+    expected_output="kernel.randomize_va_fake 5\nkernel.randomize_va_space 2\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing forward slash format space" {
+    printf "%s\n" "kernel.core_pattern |/bin/true" > "${tmp_file}"
+    expected_output="kernel.core_pattern |/bin/false\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '|/bin/false' '%s %s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value emtpy format space" {
+    printf "%s\n" "kernel.core_pattern |/bin/true" > "${tmp_file}"
+    expected_output="kernel.core_pattern \n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '' '%s %s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value emtpy format tab" {
+    printf "kernel.core_pattern\t|/bin/true\n" > "${tmp_file}"
+    expected_output="kernel.core_pattern\t\n"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '' '%s\t%s'
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate file previously not ending with newline" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}=${value}\n"
+
+    # This way variable value is not trimmed at end and we can test \n etc
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate file previously ending with space" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s "
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before} \n${key}=${value}\n"
+
+    # This way variable value is not trimmed at end and we can test \n etc
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate file previously ending with tab" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\t"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\t\n${key}=${value}\n"
+
+    # This way variable value is not trimmed at end and we can test \n etc
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing newline prefix" {
+    skip "Value newline trim not implemented."
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="\n%s"
+    expected_output="${before}\n${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing newline suffix" {
+    skip "Value newline trim not implemented."
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s\n"
+    expected_output="${before}\n${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing multiple newlines prefix and suffix" {
+    skip "Value newline trim not implemented."
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="\n\n%s\n\n"
+    expected_output="${before}\n${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing space prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt=" %s"
+    expected_output="${before}\n${key}= ${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing space suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s "
+    expected_output="${before}\n${key}=${value} \n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing multiple spaces prefix and suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="  %s  "
+    expected_output="${before}\n${key}=  ${value}  \n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing tab prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="\t%s"
+    expected_output="${before}\n${key}=\t${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing tab suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s\t"
+    expected_output="${before}\n${key}=${value}\t\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate value containing multiple tab prefix and suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="\t\t%s\t\t"
+    expected_output="${before}\n${key}=\t\t${value}\t\t\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate key containing space prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^ %s"
+    value_fmt="%s"
+    expected_output="${before}\n ${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate key containing space suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s "
+    value_fmt="%s"
+    expected_output="${before}\n${key} =${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate key containing multiple spaces prefix and suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^  %s  "
+    value_fmt="%s"
+    expected_output="${before}\n  ${key}  =${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate key containing tab prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^\t%s"
+    value_fmt="%s"
+    expected_output="${before}\n\t${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate key containing tab suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s\t"
+    value_fmt="%s"
+    expected_output="${before}\n${key}\t=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate key containing multiple tab prefix and suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^\t\t%s\t\t"
+    value_fmt="%s"
+    expected_output="${before}\n\t\t${key}\t\t=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format key containing space prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format=' %s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n ${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format key containing space suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s =%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key} =${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format value containing space prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s= %s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}= ${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format value containing space suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s '
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}=${value} \n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format containing multiple spaces prefix and suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='  %s  =  %s  '
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n  ${key}  =  ${value}  \n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" '  %s  =  %s  '
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format key containing tab prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='\t%s=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n\t${key}=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format key containing tab suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s\t=%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}\t=${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format value containing tab prefix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=\t%s'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}=\t${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format value containing tab suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='%s=%s\t'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}=${value}\t\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Remediate format containing multiple tab prefix and suffix" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="6"
+
+    format='\t\t%s\t\t=\t\t%s\t\t'
+    before_fmt="%s\n"
+    key_fmt="^%s"
+    value_fmt="%s"
+    expected_output="${before}\n\t\t${key}\t\t=\t\t${value}\t\t\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
