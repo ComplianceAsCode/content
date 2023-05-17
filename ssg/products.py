@@ -26,7 +26,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         XCCDF_PLATFORM_TO_PACKAGE,
                         SSG_REF_URIS)
 from .utils import merge_dicts, required_key
-from .yaml import open_raw
+from .yaml import open_raw, ordered_dump
 
 
 def _validate_product_oval_feed_url(contents):
@@ -109,29 +109,61 @@ def product_yaml_path(ssg_root, product):
     return os.path.join(ssg_root, "products", product, "product.yml")
 
 
+class Product(object):
+    def __init__(self, filename):
+        self.primary_data = dict()
+        self._load_from_filename(filename)
+        if "basic_properties_derived" not in self.primary_data:
+            self._derive_basic_properties(filename)
+
+    def write(self, filename):
+        with open(filename, "w") as f:
+            ordered_dump(self.primary_data, f)
+
+    def __getitem__(self, key):
+        return self.primary_data[key]
+
+    def __contains__(self, key):
+        return key in self.primary_data
+
+    def __iter__(self):
+        return iter(self.primary_data.items())
+
+    def __len__(self):
+        return len(self.primary_data)
+
+    def get(self, key, default=None):
+        return self.primary_data.get(key, default)
+
+    def _load_from_filename(self, filename):
+        self.primary_data = open_raw(filename)
+
+    def _derive_basic_properties(self, filename):
+        _validate_product_oval_feed_url(self.primary_data)
+
+        # The product directory is necessary to get absolute paths to benchmark, profile and
+        # cpe directories, which are all relative to the product directory
+        self.primary_data["product_dir"] = os.path.dirname(filename)
+
+        platform_package_overrides = self.primary_data.get("platform_package_overrides", {})
+        # Merge common platform package mappings, while keeping product specific mappings
+        self.primary_data["platform_package_overrides"] = merge_dicts(
+                XCCDF_PLATFORM_TO_PACKAGE, platform_package_overrides)
+        self.primary_data.update(_get_implied_properties(self.primary_data))
+
+        reference_uris = self.primary_data.get("reference_uris", {})
+        self.primary_data["reference_uris"] = merge_dicts(SSG_REF_URIS, reference_uris)
+
+        self.primary_data["basic_properties_derived"] = True
+
+
 def load_product_yaml(product_yaml_path):
     """
     Reads a product data from disk and returns it.
     The returned product dictionary also contains derived useful information.
     """
 
-    product_yaml = open_raw(product_yaml_path)
-    _validate_product_oval_feed_url(product_yaml)
-
-    # The product directory is necessary to get absolute paths to benchmark, profile and
-    # cpe directories, which are all relative to the product directory
-    product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
-
-    platform_package_overrides = product_yaml.get("platform_package_overrides", {})
-    # Merge common platform package mappings, while keeping product specific mappings
-    product_yaml["platform_package_overrides"] = merge_dicts(XCCDF_PLATFORM_TO_PACKAGE,
-                                                             platform_package_overrides)
-    product_yaml.update(_get_implied_properties(product_yaml))
-
-    reference_uris = product_yaml.get("reference_uris", {})
-    product_yaml["reference_uris"] = merge_dicts(SSG_REF_URIS,
-                                                 reference_uris)
-
+    product_yaml = Product(product_yaml_path)
     return product_yaml
 
 
@@ -146,8 +178,8 @@ def get_all(ssg_root):
     other_products = set()
 
     for product in product_directories:
-        product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
-        product_yaml = load_product_yaml(product_yaml_path)
+        path = product_yaml_path(ssg_root, product)
+        product_yaml = load_product_yaml(path)
 
         guide_dir = os.path.join(product_yaml["product_dir"], product_yaml['benchmark_root'])
         guide_dir = os.path.abspath(guide_dir)
@@ -172,7 +204,7 @@ def get_profile_files_from_root(env_yaml, product_yaml):
     profile_files = []
     if env_yaml:
         profiles_root = get_profiles_directory(env_yaml)
-        base_dir = os.path.dirname(product_yaml)
+        base_dir = product_yaml["product_dir"]
         profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
                                .format(profiles_root=profiles_root, base_dir=base_dir)))
     return profile_files

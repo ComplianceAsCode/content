@@ -14,7 +14,7 @@ from .constants import (
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
-from . import utils
+from . import utils, products
 
 
 def load_sce_and_metadata(file_path, local_env_yaml):
@@ -111,7 +111,8 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
 
     # We maintain the same search structure as build_ovals.py even though we
     # don't currently have any content under shared/checks/sce.
-    product_dir = os.path.dirname(yaml_path)
+    product_yaml = products.Product(yaml_path)
+    product_dir = product_yaml["product_dir"]
     relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
     guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
     additional_content_directories = env_yaml.get("additional_content_directories", [])

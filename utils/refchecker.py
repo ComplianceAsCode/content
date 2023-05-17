@@ -109,8 +109,9 @@ def main():
         raise ValueError(msg)
 
     product_base = os.path.join(SSG_ROOT, "products", args.product)
-    product_yaml = os.path.join(product_base, "product.yml")
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
+    product_yaml_path = os.path.join(product_base, "product.yml")
+    product_yaml = ssg.products.Product(product_yaml_path)
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml_path)
 
     controls_manager = None
     if os.path.exists(args.controls):
