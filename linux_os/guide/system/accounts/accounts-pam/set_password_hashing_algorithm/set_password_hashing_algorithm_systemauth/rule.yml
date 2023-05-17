@@ -109,7 +109,7 @@ template:
 {{% endif %}}
 
 fixtext: |-
-    {{% if product in ['rhel9'] -%}}
+    {{% if product in ['ol9', 'rhel9'] -%}}
     Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
     {{% else %}}
     Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
@@ -122,6 +122,6 @@ fixtext: |-
     password sufficient pam_unix.so sha512
     {{%- endif %}}
 
-{{% if product in ['rhel9'] -%}}
+{{% if product in ['ol9', 'rhel9'] -%}}
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
 {{%- endif %}}

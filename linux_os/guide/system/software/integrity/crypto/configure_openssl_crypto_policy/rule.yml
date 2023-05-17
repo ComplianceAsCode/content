@@ -10,7 +10,7 @@ title: 'Configure OpenSSL library to use System Crypto Policy'
   {{%- set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
 {{%- endif %}}
 
-{{% if product in ["fedora", "rhel9"] %}}
+{{% if product in ["fedora", "ol9", "rhel9"] %}}
     {{% set include_directive = ".include = /etc/crypto-policies/back-ends/opensslcnf.config" %}}
 {{% else %}}
     {{% set include_directive = ".include /etc/crypto-policies/back-ends/opensslcnf.config" %}}

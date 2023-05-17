@@ -24,7 +24,7 @@
     log_file: "{{ log_file_line.stdout | trim }}"
   when: (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
 
-{{% if product not in ["ol8"] and "rhel" not in product %}}
+{{% if 'ol' not in product and "rhel" not in product %}}
 - name: Get log files group
   command: grep -m 1 ^log_group /etc/audit/auditd.conf
   failed_when: false

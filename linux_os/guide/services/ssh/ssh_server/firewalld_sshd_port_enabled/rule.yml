@@ -56,7 +56,7 @@ warnings:
         the respective file. If the default SSH port is modified, it is on the administrator
         responsibility to ensure the firewalld customizations in the service port level are
         properly configured.
-{{% if product in [ 'rhel9' ] %}}
+{{% if product in [ 'ol9', 'rhel9' ] %}}
     - management: |-
         {{{ full_name }}} prefers and recommends to use NetworkManager keyfiles instead of the
         <tt>ifcfg</tt> files stored in <tt>/etc/sysconfig/network-scripts</tt>. Therefore, if the
