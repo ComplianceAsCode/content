@@ -15,5 +15,5 @@ for partition in ${partitions[@]}; do
 done
 
 PARTITION="/dev/new_partition1"; create_partition
-mkdir /tmp/test_dir
+mkdir -p /tmp/test_dir
 mount $PARTITION /tmp/test_dir

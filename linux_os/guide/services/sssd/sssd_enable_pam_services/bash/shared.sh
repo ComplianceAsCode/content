@@ -4,7 +4,7 @@ SSSD_CONF="/etc/sssd/sssd.conf"
 SSSD_CONF_DIR="/etc/sssd/conf.d/*.conf"
 
 if [ ! -f "$SSSD_CONF" ] && [ ! -f "$SSSD_CONF_DIR" ]; then
-    mkdir /etc/sssd
+    mkdir -p /etc/sssd
     touch "$SSSD_CONF"
 fi
 

@@ -2,4 +2,4 @@
 
 USER="cac_user"
 useradd -m $USER
-mkdir /home/$USER/.hiddenfolder
+mkdir -p /home/"${USER}"/.hiddenfolder
