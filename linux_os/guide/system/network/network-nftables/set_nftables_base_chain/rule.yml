@@ -1,14 +1,14 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: sle15,ubuntu2004,ubuntu2204
 
 title: 'Ensure Base Chains Exist for Nftables'
 
 description: |-
-   Tables in nftables hold chains. Each table only has one address family and only applies 
+   Tables in nftables hold chains. Each table only has one address family and only applies
    to packets of this family. Tables can have one of six families.
-   Chains are containers for rules. They exist in two kinds, base chains and regular chains. 
-   A base chain is an entry point for packets from the networking stack, a regular chain may 
+   Chains are containers for rules. They exist in two kinds, base chains and regular chains.
+   A base chain is an entry point for packets from the networking stack, a regular chain may
    be used as jump target and is used for better rule organization.
 
 rationale: |-
@@ -22,18 +22,20 @@ identifiers:
 
 references:
     cis@sle15: 3.5.2.5
+    cis@ubuntu2004: 3.5.2.5
+    cis@ubuntu2204: 3.5.2.5
 
 ocil_clause: 'base chains do not exist for nftables'
 
 warnings:
-   - general: "Configuring rules over ssh, by creating a base chain with policy drop will cause loss of connectivity. 
+   - general: "Configuring rules over ssh, by creating a base chain with policy drop will cause loss of connectivity.
                Ensure that a rule allowing ssh has been added to the base chain prior to setting the base cahin's policy to drop"
 
 ocil: |-
     To verify that base chains exist for INPUT, FORWARD, and OUTPUT, run the following commands:
     <pre>$ sudo nft list ruleset | grep 'hook input'</pre>
     <pre>$ sudo nft list ruleset | grep 'hook forward'</pre>
-    <pre>$ sudo nft list ruleset | grep 'hook output'</pre> 
+    <pre>$ sudo nft list ruleset | grep 'hook output'</pre>
     Output should be similar to:
     <tt>
       type filter hook input priority 0;
