@@ -1601,6 +1601,13 @@ Example Calls:
 
         {{{ bash_replace_or_append(( unsafe_file | quote), 'key', "value") }}}
 
+    There is sometimes need to submit '"' in str fields. Because of shell
+    scripting limitations, this is not allowed as jinja variable and error is
+    raised, but you can do it like this::
+
+        format='"%s" = "%s"'
+        {{{ bash_replace_or_append('/etc/config', 'key parts', "value parts", "${format}") }}}
+
 :param config_file: Configuration file that will be modified
 :type config_file: str
 :param key: Configuration option to change
@@ -1612,6 +1619,30 @@ Example Calls:
 
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
+{{%- if key is not string -%}}
+{{{ raise("key '" ~ key ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if value is not string -%}}
+{{{ raise("value '" ~ value ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if format is not string -%}}
+{{{ raise("format '" ~ format ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if key.startswith('^') -%}}
+{{{ raise("key is not partially regex any more, use key_regex") }}}
+{{%- endif -%}}
+{{%- if '"' in config_file -%}}
+{{{ raise("config_file contains '\"' character, must not. You can put value of config_file in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in key -%}}
+{{{ raise("key contains '\"' character, must not. You can put value of key in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in value -%}}
+{{{ raise("value contains '\"' character, must not. You can put value of value in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in format -%}}
+{{{ raise("format contains '\"' character, must not. You can put value of format in shell variable.") }}}
+{{%- endif -%}}
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
