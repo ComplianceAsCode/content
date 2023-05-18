@@ -160,18 +160,16 @@ teardown() {
 }
 
 @test "bash_replace_or_append - Key ending with . remediation" {
-    skip "Implementation needs to have word_boundary"
-    printf "kernel.randomize_va_space. = 5\n" > "${tmp_file}"
+    printf "kernel.randomize_va_space.=5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space. = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space.' '2'
+    {{{ bash_replace_or_append("${tmp_file}", 'kernel.randomize_va_space.', '2', word_boundary="[ \t=]") | indent(4) }}}
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Key contains * with remediation" {
-    skip "Implementation does not quote regexps properly despite skipped_key functionality"
     printf "kernel.randomize_va_space. = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space. = 5\nkernel.* = 2\n"
 
@@ -481,7 +479,6 @@ teardown() {
 }
 
 @test "bash_replace_or_append - Remediate value containing newline prefix" {
-    skip "Value newline trim not implemented."
     before="foo"
     key="kernel.randomize_va_fake"
     value="6"
@@ -503,7 +500,6 @@ teardown() {
 }
 
 @test "bash_replace_or_append - Remediate value containing newline suffix" {
-    skip "Value newline trim not implemented."
     before="foo"
     key="kernel.randomize_va_fake"
     value="6"
@@ -525,7 +521,6 @@ teardown() {
 }
 
 @test "bash_replace_or_append - Remediate value containing multiple newlines prefix and suffix" {
-    skip "Value newline trim not implemented."
     before="foo"
     key="kernel.randomize_va_fake"
     value="6"
@@ -1006,4 +1001,109 @@ teardown() {
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Value is same as delim in format" {
+    before="foo"
+    key="kernel.randomize_va_fake"
+    value="$(printf "\t")"
+
+    format='%s\t%s'
+    before_fmt="%s\n"
+    key_fmt="%s"
+    value_fmt="%s"
+    expected_output="${before}\n${key}\t${value}\n"
+
+    IFS='' read -d '' -r key_param < <(printf "${key_fmt}" "${key}") || :
+    IFS='' read -d '' -r value_param < <(printf "${value_fmt}" "${value}") || :
+    printf "${before_fmt}" "${before}" > "${tmp_file}"
+
+    call_bash_replace_or_append_w_format "${tmp_file}" "${key_param}" "${value_param}" "${format}"
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Key has all ASCII 0x20-0x7e" {
+    # z at end handles word_boundary
+    key=' !"#$%&'"'"'()*+,-./01234567890:;<=>?@ABCEDFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcedfghijklmnopqrstuvwxyz{|}~z'
+    value1="1"
+    value2="2"
+
+    call_bash_replace_or_append "${tmp_file}" "${key}" "${value1}"
+
+    run diff -u "${tmp_file}" <(echo -E "${key} = ${value1}")
+    [ "${status}" -eq 0 ]
+
+    call_bash_replace_or_append "${tmp_file}" "${key}" "${value2}"
+
+    run diff -u "${tmp_file}" <(echo -E "${key} = ${value2}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - *.* and key_regex" {
+    printf "*.* /var/log/messages\n*.*\t@@syloghost\n" > "${tmp_file}"
+    expected_output="*.* /var/log/messages\n*.*\t@@127.0.0.1\n"
+
+    rsyslog_remote_loghost_address="127.0.0.1"
+    {{{ bash_replace_or_append("${tmp_file}", "*.*", "@@${rsyslog_remote_loghost_address}", '%s\t%s', key_regex='^\*\.\*[ \t]\+\(@\|:omrelp:\)', word_boundary='') | indent(4) }}}
+
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
+}
+
+@test "bash_replace_or_append - Check 2 char keys, empty" {
+    skip "takes long time"
+    nums=(9 $(seq 32 50) $(seq 58 66) $(seq 91 98) $(seq 123 126))
+    for a in "${nums[@]}"; do
+        for b in "${nums[@]}"; do
+            rm "${tmp_file}"
+            IFS='' read -d '' -r key < <(printf "\\x$(printf "%x" "$a")\\x$(printf "%x" "$b")") || :
+            {{{ bash_replace_or_append("${tmp_file}", "${key}", "a", '%s\t%s', word_boundary='') | indent(12) }}}
+            run diff -u "${tmp_file}" <(printf "%s\ta\n" "${key}")
+            [ "${status}" -eq 0 ]
+        done
+    done
+}
+
+@test "bash_replace_or_append - Check 2 char keys, wrong value" {
+    skip "takes long time"
+    nums=(9 $(seq 32 50) $(seq 58 66) $(seq 91 98) $(seq 123 126))
+    for a in "${nums[@]}"; do
+        for b in "${nums[@]}"; do
+            IFS='' read -d '' -r key < <(printf "\\x$(printf "%x" "$a")\\x$(printf "%x" "$b")") || :
+            printf "%s\tb\n" "${key}" > "${tmp_file}"
+            {{{ bash_replace_or_append("${tmp_file}", "${key}", "a", '%s\t%s', word_boundary='') | indent(12) }}}
+            run diff -u "${tmp_file}" <(printf "%s\ta\n" "${key}")
+            [ "${status}" -eq 0 ]
+        done
+    done
+}
+
+@test "bash_replace_or_append - Check 2 char keys, wrong value and right value" {
+    skip "takes long time"
+    nums=(9 $(seq 32 50) $(seq 58 66) $(seq 91 98) $(seq 123 126))
+    for a in "${nums[@]}"; do
+        for b in "${nums[@]}"; do
+            IFS='' read -d '' -r key < <(printf "\\x$(printf "%x" "$a")\\x$(printf "%x" "$b")") || :
+            printf "%s\tb\n%s\ta\n" "${key}" "${key}" > "${tmp_file}"
+            {{{ bash_replace_or_append("${tmp_file}", "${key}", "a", '%s\t%s', word_boundary='') | indent(12) }}}
+            run diff -u "${tmp_file}" <(printf "%s\ta\n%s\ta\n" "${key}" "${key}")
+            [ "${status}" -eq 0 ]
+        done
+    done
+}
+
+@test "bash_replace_or_append - Check 2 char keys, right and wrong value" {
+    skip "takes long time"
+    nums=(9 $(seq 32 50) $(seq 58 66) $(seq 91 98) $(seq 123 126))
+    for a in "${nums[@]}"; do
+        for b in "${nums[@]}"; do
+            IFS='' read -d '' -r key < <(printf "\\x$(printf "%x" "$a")\\x$(printf "%x" "$b")") || :
+            printf "%s\ta\n%s\tb\n" "${key}" "${key}" > "${tmp_file}"
+            {{{ bash_replace_or_append("${tmp_file}", "${key}", "a", '%s\t%s', word_boundary='') | indent(12) }}}
+            run diff -u "${tmp_file}" <(printf "%s\ta\n%s\ta\n" "${key}" "${key}")
+            [ "${status}" -eq 0 ]
+        done
+    done
 }
