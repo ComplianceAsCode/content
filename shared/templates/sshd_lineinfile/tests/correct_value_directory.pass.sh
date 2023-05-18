@@ -5,7 +5,7 @@
 source common.sh
 
 {{% if product in ["ol8", "ol9"] %}}
-{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s") }}}
+{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s", key_starts_with=false) }}}
 {{% endif %}}
 
 {{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config) -}}}

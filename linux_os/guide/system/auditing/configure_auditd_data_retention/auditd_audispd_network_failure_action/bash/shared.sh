@@ -4,4 +4,4 @@
 
 AUDITCONFIG={{{ audisp_conf_path }}}/audisp-remote.conf
 
-{{{ bash_replace_or_append("$AUDITCONFIG", '^network_failure_action', "$var_audispd_network_failure_action") }}}
+{{{ bash_replace_or_append("$AUDITCONFIG", 'network_failure_action', "$var_audispd_network_failure_action") }}}

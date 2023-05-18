@@ -1658,15 +1658,15 @@ Example Calls:
 
     With default format of 'key = value'::
 
-        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
+        {{{ bash_replace_or_append('/etc/sysctl.conf', 'kernel.randomize_va_space', '2') }}}
 
     With custom key/value format::
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', 'SELINUX=', 'disabled', '%s=%s') }}}
 
     With a variable::
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', 'SELINUX=', "$var_selinux_state", '%s=%s') }}}
 
     Caller is responsible for shell quoting::
 
@@ -1687,13 +1687,17 @@ Example Calls:
 :type value: str
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
 :type format: str
-:param insensitive: If true *key* is case insensitive
+:param insensitive: If true *key*, or *key_regex* are case insensitive
 :type insensitive: bool
 :param word_boundary: Regex to separate *key* in case of common prefix
 :type word_boundary: str
+:param key_regex: Regex to match the key line
+:type key_regex: str
+:param key_starts_with: If true, line must start with *key*. Only enabled if *key_regex* is not set
+:type key_starts_with: bool
 
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', insensitive=true, word_boundary="\\>") -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', insensitive=true, word_boundary="\\>", key_regex=none, key_starts_with=true) -%}}
 {{%- if key is not string -%}}
 {{{ raise("key '" ~ key ~ "' is not string") }}}
 {{%- endif -%}}
@@ -1709,7 +1713,13 @@ Example Calls:
 {{%- if word_boundary is not string -%}}
 {{{ raise("word_boundary '" ~ word_boundary ~ "' is not string") }}}
 {{%- endif -%}}
-{{%- if key.startswith('^') -%}}
+{{%- if (key_regex is not none) and (key_regex is not string) -%}}
+{{{ raise("key_regex '" ~ key_regex ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if key_starts_with is not boolean -%}}
+{{{ raise("key_starts_with '" ~ key_starts_with ~ "' is not boolean") }}}
+{{%- endif -%}}
+{{%- if (key_regex is none) and key.startswith('^') -%}}
 {{{ raise("key is not partially regex any more, use key_regex") }}}
 {{%- endif -%}}
 {{%- if '"' in config_file -%}}
@@ -1727,14 +1737,24 @@ Example Calls:
 {{%- if '"' in word_boundary -%}}
 {{{ raise("word_boundary contains '\"' character, must not. You can put value of word_boundary in shell variable.") }}}
 {{%- endif -%}}
+{{%- if key_regex is not none and '"' in key_regex -%}}
+{{{ raise("key_regex contains '\"' character, must not. You can put value of key_regex in shell variable.") }}}
+{{%- endif -%}}
 
-# Strip any search characters in the key arg so that the key can be replaced without
-# adding any search characters to the config file.
-stripped_key="$(LC_ALL=C sed 's/[\^=$,;+]*//g' <<< "{{{ key }}}")"
-key_regex="{{{ key ~ word_boundary }}}"
+{{%- if key_regex is none -%}}
+key_regex="{{{ key }}}"
+{{{ bash_sed_escape_regexp("key_regex", "key_regex") }}}
+{{%- if key_starts_with %}}
+key_regex="^${key_regex}{{{ word_boundary }}}"
+{{%- else %}}
+key_regex+="{{{ word_boundary }}}"
+{{%- endif -%}}
+{{%- else %}}
+key_regex="{{{ key_regex ~ word_boundary }}}"
+{{%- endif %}}
 
 # shellcheck disable=SC2059
-printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
+printf -v formatted_output "{{{ format }}}" "{{{ key }}}" "{{{ value }}}"
 
 # If the key exists, change it. Otherwise, add it to the config_file.
 {{%- if word_boundary == "" %}}

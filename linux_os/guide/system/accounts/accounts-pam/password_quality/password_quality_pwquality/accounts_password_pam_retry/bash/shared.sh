@@ -11,7 +11,7 @@
 
 {{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] -%}}
 	{{{ bash_replace_or_append('/etc/security/pwquality.conf',
-							   '^retry',
+							   'retry',
 							   '$var_password_pam_retry',
 							   '%s = %s') }}}
 	{{% for cfile in configuration_files %}}

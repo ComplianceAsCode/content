@@ -46,7 +46,7 @@ SYSCONFIG_FILE="/etc/sysctl.conf"
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% endif %}}
-{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , '$sysctl_' ~ SYSCTLID ~ '_value') }}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', SYSCTLVAR, '$sysctl_' ~ SYSCTLID ~ '_value') }}}
 
 {{%- else %}}
 
@@ -62,5 +62,5 @@ sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% if sysctl_remediate_drop_in_file == "true" %}}
 sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 {{% endif %}}
-{{{ bash_replace_or_append('${SYSCONFIG_FILE}', '^' ~ SYSCTLVAR , SYSCTLVAL ) }}}
+{{{ bash_replace_or_append('${SYSCONFIG_FILE}', SYSCTLVAR, SYSCTLVAL ) }}}
 {{%- endif %}}

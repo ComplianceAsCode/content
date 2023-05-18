@@ -8,7 +8,7 @@ SSHD_VAL={{{ VALUE }}}
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
 
-{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "sshd_config.d/*.conf", "%s %s") }}}
+{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "sshd_config.d/*.conf", "%s %s", key_starts_with=false) }}}
 echo "Include /etc/bad_config.conf" >> "/etc/ssh/sshd_config"
 
 if grep -q "^\s*${SSHD_PARAM}" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* ; then

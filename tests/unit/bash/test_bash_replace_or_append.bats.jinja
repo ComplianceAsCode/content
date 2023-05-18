@@ -53,7 +53,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 5" > "$tmp_file"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -63,7 +63,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 2" > "$tmp_file"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -73,7 +73,7 @@ teardown() {
     printf "" > "$tmp_file"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -83,7 +83,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_fake = 5" > "$tmp_file"
     expected_output="kernel.randomize_va_fake = 5\nkernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -93,7 +93,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space=5" > "$tmp_file"
     expected_output="kernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" '^kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -103,7 +103,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space=2" > "$tmp_file"
     expected_output="kernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" '^kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -113,7 +113,7 @@ teardown() {
     printf "" > "$tmp_file"
     expected_output="kernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" '^kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -123,7 +123,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_fake=5" > "$tmp_file"
     expected_output="kernel.randomize_va_fake=5\nkernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" '^kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -133,7 +133,7 @@ teardown() {
     printf "%s\n" "kernel.core_pattern=|/bin/true" > "$tmp_file"
     expected_output="kernel.core_pattern=|/bin/false\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" '^kernel.core_pattern' '|/bin/false' '%s=%s'
+    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.core_pattern' '|/bin/false' '%s=%s'
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -143,7 +143,7 @@ teardown() {
     printf "kernel.randomize_va_space = 5\nakernel.randomize_va_space = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\nakernel.randomize_va_space = 5\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -153,7 +153,7 @@ teardown() {
     printf "kernel.randomize_va_space = 5\nkernel.randomize_va_space2 = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\nkernel.randomize_va_space2 = 5\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -164,7 +164,7 @@ teardown() {
     printf "kernel.randomize_va_space. = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space. = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space.' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space.' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -175,7 +175,7 @@ teardown() {
     printf "kernel.randomize_va_space. = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space. = 5\nkernel.* = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.*' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.*' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -185,7 +185,7 @@ teardown() {
     printf "kernel.randomize_va_space = 5\n# kernel.randomize_va_space = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n# kernel.randomize_va_space = 5\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -195,7 +195,7 @@ teardown() {
     printf "KERNEL.RANDOMIZE_VA_SPACE = 5\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -205,7 +205,7 @@ teardown() {
     printf "kernel.randomize_va_space = FOO\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = foo\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' 'foo'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' 'foo'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -215,7 +215,7 @@ teardown() {
     printf "kernel.randomize_va_space = foo\nKERNEL.RANDOMIZE_VA_SPACE = 2\nkernel.randomize_va_space = foo\n" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\nkernel.randomize_va_space = 2\nkernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -225,7 +225,7 @@ teardown() {
     rm "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -236,7 +236,7 @@ teardown() {
     rm "${tmp_file}"
     mkdir -p "${tmp_file}"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
     [ "${status}" -eq 0 ]
 }
 
@@ -245,7 +245,7 @@ teardown() {
     rm "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "symlink.sh" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "symlink.sh" 'kernel.randomize_va_space' '2'
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
     [ -L symlink.sh ]
@@ -256,7 +256,7 @@ teardown() {
     ln -s "${tmp_file}" symlink.sh
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "symlink.sh" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "symlink.sh" 'kernel.randomize_va_space' '2'
     [ -L symlink.sh ]
     [ -f "${tmp_file}" ]
     run diff -u "${tmp_file}" <(printf "${expected_output}")
@@ -268,7 +268,7 @@ teardown() {
     ln -s "${tmp_file}" symlink.sh
     expected_output="foo\nkernel.randomize_va_space = 2\nbar\n"
 
-    call_bash_replace_or_append "symlink.sh" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "symlink.sh" 'kernel.randomize_va_space' '2'
     [ -L symlink.sh ]
     [ -f "${tmp_file}" ]
     run diff -u "${tmp_file}" <(printf "${expected_output}")
@@ -280,7 +280,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -291,7 +291,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -302,7 +302,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -313,7 +313,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [[ ${tmp_file} =~ foo ]]
@@ -326,7 +326,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "${tmp_file}" '^kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [[ ${tmp_file} =~ foo ]]
@@ -338,7 +338,7 @@ teardown() {
     printf "%s\n" "kernel.core_pattern=|/bin/true" > "${tmp_file}"
     expected_output="kernel.core_pattern=\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '' '%s=%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.core_pattern' '' '%s=%s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -348,7 +348,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space 2\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s %s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -358,7 +358,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_space 2" > "${tmp_file}"
     expected_output="kernel.randomize_va_space 2\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s %s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -368,7 +368,7 @@ teardown() {
     printf "" > "${tmp_file}"
     expected_output="kernel.randomize_va_space 2\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s %s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -378,7 +378,7 @@ teardown() {
     printf "%s\n" "kernel.randomize_va_fake 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_fake 5\nkernel.randomize_va_space 2\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.randomize_va_space' '2' '%s %s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s %s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -388,7 +388,7 @@ teardown() {
     printf "%s\n" "kernel.core_pattern |/bin/true" > "${tmp_file}"
     expected_output="kernel.core_pattern |/bin/false\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '|/bin/false' '%s %s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.core_pattern' '|/bin/false' '%s %s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -398,7 +398,7 @@ teardown() {
     printf "%s\n" "kernel.core_pattern |/bin/true" > "${tmp_file}"
     expected_output="kernel.core_pattern \n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '' '%s %s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.core_pattern' '' '%s %s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
@@ -408,7 +408,7 @@ teardown() {
     printf "kernel.core_pattern\t|/bin/true\n" > "${tmp_file}"
     expected_output="kernel.core_pattern\t\n"
 
-    call_bash_replace_or_append_w_format "${tmp_file}" '^kernel.core_pattern' '' '%s\t%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.core_pattern' '' '%s\t%s'
 
     run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
