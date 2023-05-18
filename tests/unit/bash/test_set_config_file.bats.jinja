@@ -17,7 +17,7 @@ function call_set_config_file_rsyslog {
             create=true, separator=" ", separator_regex=" ") }}}
 }
 
-@test "Basic value remediation" {
+@test "set_config_file - Basic value remediation" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Compression yes" > "$tmp_file"
     expected_output="Compression no\n"
@@ -30,7 +30,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "No remediation happened" {
+@test "set_config_file - No remediation happened" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Compression no" > "$tmp_file"
     expected_output="Compression no\n"
@@ -43,7 +43,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Multiline file remediation" {
+@test "set_config_file - Multiline file remediation" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Protocol 2" "Compression yes" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
@@ -56,7 +56,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "No remediation on commented line" {
+@test "set_config_file - No remediation on commented line" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Protocol 2" "# Compression yes" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\n# Compression yes\nPort 22\nCompression no\n"
@@ -69,7 +69,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Create if missing" {
+@test "set_config_file - Create if missing" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Protocol 2" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
@@ -82,7 +82,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Create file if doesn't exist" {
+@test "set_config_file - Create file if doesn't exist" {
     tmp_file="$(mktemp)"
     rm "$tmp_file"
     expected_output="Compression no\n"
@@ -95,7 +95,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Do not create if missing" {
+@test "set_config_file - Do not create if missing" {
     tmp_file="$(mktemp)"
     rm "$tmp_file"
 
@@ -106,7 +106,7 @@ function call_set_config_file_rsyslog {
 }
 
 
-@test "Case insensitive remediation" {
+@test "set_config_file - Case insensitive remediation" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
@@ -119,7 +119,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Case sensitive remediation" {
+@test "set_config_file - Case sensitive remediation" {
     tmp_file="$(mktemp)"
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nCOMPRESSION YES\nPort 22\nCompression no\n"
@@ -133,7 +133,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Basic Bash remediation" {
+@test "set_config_file - Basic Bash remediation" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=foo" > "$tmp_file"
     expected_output="something='va lue'\n"
@@ -147,7 +147,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Variable remediation - preserve dollar and use double quotes" {
+@test "set_config_file - Variable remediation - preserve dollar and use double quotes" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=bar" > "$tmp_file"
     expected_output='something="$value"'"\n"
@@ -161,7 +161,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Basic Bash remediation - don't quote" {
+@test "set_config_file - Basic Bash remediation - don't quote" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=foo" > "$tmp_file"
     expected_output="something=va lue\n"
@@ -175,7 +175,7 @@ function call_set_config_file_rsyslog {
     rm "$tmp_file"
 }
 
-@test "Variable remediation - don't quote" {
+@test "set_config_file - Variable remediation - don't quote" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=bar" > "$tmp_file"
     expected_output='something=$value'"\n"
