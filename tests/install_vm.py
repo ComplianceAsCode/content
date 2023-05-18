@@ -7,8 +7,14 @@ import subprocess
 import time
 
 
+def path_from_tests(path):
+    return os.path.relpath(os.path.join(os.path.dirname(__file__), path))
+
+
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
     parser.add_argument(
         "--libvirt",
@@ -19,7 +25,7 @@ def parse_args():
     parser.add_argument(
         "--kickstart",
         dest="kickstart",
-        default="kickstarts/test_suite.cfg",
+        default=path_from_tests("kickstarts/test_suite.cfg"),
         help="Path to a kickstart file for installation of a VM."
     )
     parser.add_argument(
@@ -113,6 +119,12 @@ def parse_args():
         action='store_true',
         help="Connect to a serial console of the VM (to monitor installation progress)."
     )
+    parser.add_argument(
+        "--disk-unsafe",
+        dest="disk_unsafe",
+        action='store_true',
+        help="Set cache unsafe.",
+    )
 
     return parser.parse_args()
 
@@ -171,14 +183,19 @@ def main():
     print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
     print("Using hypervisor: {0}".format(data.libvirt))
 
+    disk_spec = [
+        "size={0}".format(data.disk_size),
+        "format=qcow2"
+    ]
     if data.disk:
-        data.disk_spec = data.disk
+        disk_spec.extend(data.disk.split(","))
     elif data.disk_dir:
         disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
         print("Location of VM disk: {0}".format(disk_path))
-        data.disk_spec = "path={0},format=qcow2,size={1}".format(disk_path, data.disk_size)
-    else:
-        data.disk_spec = "size={0},format=qcow2".format(data.disk_size)
+        disk_spec.append("path={0}".format(disk_path))
+    if data.disk_unsafe:
+        disk_spec.append("cache=unsafe")
+    data.disk_spec = ",".join(disk_spec)
 
     data.ks_basename = os.path.basename(data.kickstart)
 
@@ -199,11 +216,15 @@ def main():
             content = content.replace(
                 "part /boot --fstype=xfs --size=512",
                 "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200"
+            ).replace(
+                "part biosboot ",
+                "# part biosboot "
             )
+
         if data.install_gui:
-            gui_group="\n%packages\n@^graphical-server-environment\n"
+            gui_group = "\n%packages\n@^graphical-server-environment\n"
             if data.distro == "fedora":
-                gui_group="\n%packages\n@^Fedora Workstation\n"
+                gui_group = "\n%packages\n@^Fedora Workstation\n"
             content = content.replace("\n%packages\n", gui_group)
             data.graphics_opt = "vnc"
             data.inst_opt = "inst.graphical"
@@ -229,7 +250,7 @@ def main():
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
     command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} inst.ks.device=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
     if data.uefi == "normal":
-        command = command+" --boot uefi"
+        command = command + " --boot uefi"
     if data.uefi == "secureboot":
         command = command + " --boot uefi,loader_secure=yes,\
 loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,\
@@ -257,7 +278,10 @@ nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
 
     print("To connect to the {0} VM use:\n  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP\n".format(data.domain))
     print("To connect to the VM serial console, use:\n  virsh console {0}\n".format(data.domain))
-    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY' option to your ssh command and export the SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY' before running the SSG Test Suite.")
+    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY'"
+          " option to your ssh command and export the"
+          " SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY'"
+          " before running the SSG Test Suite.")
 
     if data.libvirt == "qemu:///system":
         print("\nIMPORTANT: When running SSG Test Suite use `sudo -E` to make sure that your SSH key is used.")
