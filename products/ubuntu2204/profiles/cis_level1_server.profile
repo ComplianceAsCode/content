@@ -413,7 +413,7 @@ selections:
     ## 3.5 Firewall Configuration ##
     ### 3.5.1 Configure UncomplicatedFirewall ###
     #### 3.5.1.1 Ensure ufw is installed (Automated)
-    - package_ufw_installed
+    - '!package_ufw_installed'
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed with ufw (Automated)
     - package_iptables-persistent_removed
@@ -471,11 +471,11 @@ selections:
     #### 3.5.3.1 Configure iptables software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
-    - package_iptables-persistent_installed
+    - '!package_iptables-persistent_installed'
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
-    - service_nftables_disabled
-    - package_nftables_removed
+    - '!service_nftables_disabled'
+    - '!package_nftables_removed'
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
     - package_ufw_removed
