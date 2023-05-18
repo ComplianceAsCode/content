@@ -617,10 +617,6 @@ class OscapProfileRunner(ProfileRunner):
 
 
 class AnsibleProfileRunner(ProfileRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(AnsibleProfileRunner, self).initial()
-
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.profile)
@@ -633,10 +629,6 @@ class AnsibleProfileRunner(ProfileRunner):
 
 
 class BashProfileRunner(ProfileRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(BashProfileRunner, self).initial()
-
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.profile)
@@ -657,12 +649,7 @@ class OscapRuleRunner(RuleRunner):
 
 
 class BashRuleRunner(RuleRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(BashRuleRunner, self).initial()
-
     def remediation(self):
-
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.rule_id)
 
@@ -671,10 +658,6 @@ class BashRuleRunner(RuleRunner):
 
 
 class AnsibleRuleRunner(RuleRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(AnsibleRuleRunner, self).initial()
-
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.rule_id)
