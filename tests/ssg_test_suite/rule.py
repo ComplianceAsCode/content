@@ -9,6 +9,7 @@ import logging
 import math
 import os
 import os.path
+import pprint
 import re
 import shutil
 import subprocess
@@ -400,6 +401,10 @@ class RuleChecker(oscap.Checker):
 
         templated_tests_paths, local_tests_paths = self._find_tests_paths(
             rule, product_yaml)
+        logging.debug("_load_all_tests rule={} templated_tests_paths={}".format(
+            rule.id, pprint.pformat(templated_tests_paths)))
+        logging.debug("_load_all_tests rule={} local_tests_paths={}".format(
+            rule.id, pprint.pformat(local_tests_paths)))
 
         # All tests is a mapping from path (in the tarball) to contents
         # of the test case. This is necessary because later code (which
@@ -408,11 +413,18 @@ class RuleChecker(oscap.Checker):
         # here, we can save later code from having to understand the
         # templating system.
         all_tests = dict()
+
         templated_tests = common.load_templated_tests(
             templated_tests_paths, rule.rule.template,
             rule.local_env_yaml)
+        logging.debug("_load_all_tests rule={} templated_tests={}".format(
+            rule.id, pprint.pformat(templated_tests)))
+
         local_tests = common.load_local_tests(
             local_tests_paths, rule.local_env_yaml)
+        logging.debug("_load_all_tests rule={} local_tests={}".format(
+            rule.id, pprint.pformat(local_tests)))
+
         all_tests.update(templated_tests)
         all_tests.update(local_tests)
         return all_tests
