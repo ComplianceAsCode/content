@@ -425,7 +425,7 @@ selections:
     # Skip due to being a manual test
 
     #### 3.5.2.8 Ensure default deny firewall policy (Automated)
-    # Needs rule
+    - nftables_ensure_default_deny_policy
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
     - service_nftables_enabled
