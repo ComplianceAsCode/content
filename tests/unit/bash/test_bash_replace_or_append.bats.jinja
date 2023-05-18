@@ -23,7 +23,7 @@ setup() {
     fi
     pushd "${BATS_TEST_TMPDIR}" || exit 1
     tmp_file=test.sh
-    touch "$tmp_file"
+    touch "${tmp_file}"
 }
 
 teardown() {
@@ -50,93 +50,93 @@ teardown() {
 }
 
 @test "bash_replace_or_append - Basic value remediation" {
-    printf "%s\n" "kernel.randomize_va_space = 5" > "$tmp_file"
+    printf "%s\n" "kernel.randomize_va_space = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - No remediation happened" {
-    printf "%s\n" "kernel.randomize_va_space = 2" > "$tmp_file"
+    printf "%s\n" "kernel.randomize_va_space = 2" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Append key to empty file" {
-    printf "" > "$tmp_file"
+    printf "" > "${tmp_file}"
     expected_output="kernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Append key to non-empty file" {
-    printf "%s\n" "kernel.randomize_va_fake = 5" > "$tmp_file"
+    printf "%s\n" "kernel.randomize_va_fake = 5" > "${tmp_file}"
     expected_output="kernel.randomize_va_fake = 5\nkernel.randomize_va_space = 2\n"
 
-    call_bash_replace_or_append "$tmp_file" 'kernel.randomize_va_space' '2'
+    call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Remediation with format" {
-    printf "%s\n" "kernel.randomize_va_space=5" > "$tmp_file"
+    printf "%s\n" "kernel.randomize_va_space=5" > "${tmp_file}"
     expected_output="kernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - No remediation with format" {
-    printf "%s\n" "kernel.randomize_va_space=2" > "$tmp_file"
+    printf "%s\n" "kernel.randomize_va_space=2" > "${tmp_file}"
     expected_output="kernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Append key with format to empty file" {
-    printf "" > "$tmp_file"
+    printf "" > "${tmp_file}"
     expected_output="kernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Append key with format to non-empty file" {
-    printf "%s\n" "kernel.randomize_va_fake=5" > "$tmp_file"
+    printf "%s\n" "kernel.randomize_va_fake=5" > "${tmp_file}"
     expected_output="kernel.randomize_va_fake=5\nkernel.randomize_va_space=2\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.randomize_va_space' '2' '%s=%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Remediate value containing forward slash" {
-    printf "%s\n" "kernel.core_pattern=|/bin/true" > "$tmp_file"
+    printf "%s\n" "kernel.core_pattern=|/bin/true" > "${tmp_file}"
     expected_output="kernel.core_pattern=|/bin/false\n"
 
-    call_bash_replace_or_append_w_format "$tmp_file" 'kernel.core_pattern' '|/bin/false' '%s=%s'
+    call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.core_pattern' '|/bin/false' '%s=%s'
 
-    run diff "$tmp_file" <(printf "$expected_output")
-    [ "$status" -eq 0 ]
+    run diff "${tmp_file}" <(printf "${expected_output}")
+    [ "${status}" -eq 0 ]
 }
 
 @test "bash_replace_or_append - Key prefix remediation" {
@@ -421,7 +421,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key}=${value}\n"
 
@@ -443,7 +443,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s "
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before} \n${key}=${value}\n"
 
@@ -465,7 +465,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\t"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\t\n${key}=${value}\n"
 
@@ -488,7 +488,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="\n%s"
     expected_output="${before}\n${key}=${value}\n"
 
@@ -510,7 +510,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s\n"
     expected_output="${before}\n${key}=${value}\n"
 
@@ -532,7 +532,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="\n\n%s\n\n"
     expected_output="${before}\n${key}=${value}\n"
 
@@ -553,7 +553,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt=" %s"
     expected_output="${before}\n${key}= ${value}\n"
 
@@ -574,7 +574,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s "
     expected_output="${before}\n${key}=${value} \n"
 
@@ -595,7 +595,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="  %s  "
     expected_output="${before}\n${key}=  ${value}  \n"
 
@@ -616,7 +616,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="\t%s"
     expected_output="${before}\n${key}=\t${value}\n"
 
@@ -637,7 +637,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s\t"
     expected_output="${before}\n${key}=${value}\t\n"
 
@@ -658,7 +658,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="\t\t%s\t\t"
     expected_output="${before}\n${key}=\t\t${value}\t\t\n"
 
@@ -679,7 +679,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^ %s"
+    key_fmt=" %s"
     value_fmt="%s"
     expected_output="${before}\n ${key}=${value}\n"
 
@@ -700,7 +700,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s "
+    key_fmt="%s "
     value_fmt="%s"
     expected_output="${before}\n${key} =${value}\n"
 
@@ -721,7 +721,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^  %s  "
+    key_fmt="  %s  "
     value_fmt="%s"
     expected_output="${before}\n  ${key}  =${value}\n"
 
@@ -742,7 +742,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^\t%s"
+    key_fmt="\t%s"
     value_fmt="%s"
     expected_output="${before}\n\t${key}=${value}\n"
 
@@ -763,7 +763,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s\t"
+    key_fmt="%s\t"
     value_fmt="%s"
     expected_output="${before}\n${key}\t=${value}\n"
 
@@ -784,7 +784,7 @@ teardown() {
 
     format='%s=%s'
     before_fmt="%s\n"
-    key_fmt="^\t\t%s\t\t"
+    key_fmt="\t\t%s\t\t"
     value_fmt="%s"
     expected_output="${before}\n\t\t${key}\t\t=${value}\n"
 
@@ -805,7 +805,7 @@ teardown() {
 
     format=' %s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n ${key}=${value}\n"
 
@@ -826,7 +826,7 @@ teardown() {
 
     format='%s =%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key} =${value}\n"
 
@@ -847,7 +847,7 @@ teardown() {
 
     format='%s= %s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key}= ${value}\n"
 
@@ -868,7 +868,7 @@ teardown() {
 
     format='%s=%s '
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key}=${value} \n"
 
@@ -889,7 +889,7 @@ teardown() {
 
     format='  %s  =  %s  '
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n  ${key}  =  ${value}  \n"
 
@@ -910,7 +910,7 @@ teardown() {
 
     format='\t%s=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n\t${key}=${value}\n"
 
@@ -931,7 +931,7 @@ teardown() {
 
     format='%s\t=%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key}\t=${value}\n"
 
@@ -952,7 +952,7 @@ teardown() {
 
     format='%s=\t%s'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key}=\t${value}\n"
 
@@ -973,7 +973,7 @@ teardown() {
 
     format='%s=%s\t'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n${key}=${value}\t\n"
 
@@ -994,7 +994,7 @@ teardown() {
 
     format='\t\t%s\t\t=\t\t%s\t\t'
     before_fmt="%s\n"
-    key_fmt="^%s"
+    key_fmt="%s"
     value_fmt="%s"
     expected_output="${before}\n\t\t${key}\t\t=\t\t${value}\t\t\n"
 
