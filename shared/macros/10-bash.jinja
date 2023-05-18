@@ -1689,9 +1689,11 @@ Example Calls:
 :type format: str
 :param insensitive: If true *key* is case insensitive
 :type insensitive: bool
+:param word_boundary: Regex to separate *key* in case of common prefix
+:type word_boundary: str
 
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', insensitive=true) -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', insensitive=true, word_boundary="\\>") -%}}
 {{%- if key is not string -%}}
 {{{ raise("key '" ~ key ~ "' is not string") }}}
 {{%- endif -%}}
@@ -1703,6 +1705,9 @@ Example Calls:
 {{%- endif -%}}
 {{%- if insensitive is not boolean -%}}
 {{{ raise("insensitive '" ~ insensitive ~ "' is not boolean") }}}
+{{%- endif -%}}
+{{%- if word_boundary is not string -%}}
+{{{ raise("word_boundary '" ~ word_boundary ~ "' is not string") }}}
 {{%- endif -%}}
 {{%- if key.startswith('^') -%}}
 {{{ raise("key is not partially regex any more, use key_regex") }}}
@@ -1719,18 +1724,25 @@ Example Calls:
 {{%- if '"' in format -%}}
 {{{ raise("format contains '\"' character, must not. You can put value of format in shell variable.") }}}
 {{%- endif -%}}
+{{%- if '"' in word_boundary -%}}
+{{{ raise("word_boundary contains '\"' character, must not. You can put value of word_boundary in shell variable.") }}}
+{{%- endif -%}}
 
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key="$(LC_ALL=C sed 's/[\^=$,;+]*//g' <<< "{{{ key }}}")"
-key_regex="{{{ key }}}\\>"
+key_regex="{{{ key ~ word_boundary }}}"
 
 # shellcheck disable=SC2059
 printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 
 # If the key exists, change it. Otherwise, add it to the config_file.
-# We search for the key string followed by a word boundary (matched by \>),
+{{%- if word_boundary == "" %}}
+# We search for the key string followed by a word boundary (matched by {{{ word_boundary }}}),
 # so if we search for 'setting', 'setting2' won't match.
+{{%- else %}}
+# We search for the key string, but care should be take not to match common prefix.
+{{%- endif %}}
 if LC_ALL=C grep -q -m 1{{%- if insensitive %}} -i{{%- endif %}} -e "${key_regex}" "{{{ config_file }}}"; then
     {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
     LC_ALL=C sed -i --follow-symlinks "s/${key_regex}.*/${escaped_formatted_output}/{{%- if insensitive -%}}i{{%- endif -%}}" "{{{ config_file }}}"
