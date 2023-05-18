@@ -55,7 +55,7 @@ teardown() {
 
     call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -65,7 +65,7 @@ teardown() {
 
     call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -75,7 +75,7 @@ teardown() {
 
     call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -85,7 +85,7 @@ teardown() {
 
     call_bash_replace_or_append "${tmp_file}" 'kernel.randomize_va_space' '2'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -95,7 +95,7 @@ teardown() {
 
     call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -105,7 +105,7 @@ teardown() {
 
     call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -115,7 +115,7 @@ teardown() {
 
     call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -125,7 +125,7 @@ teardown() {
 
     call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.randomize_va_space' '2' '%s=%s'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
@@ -135,7 +135,7 @@ teardown() {
 
     call_bash_replace_or_append_w_format "${tmp_file}" 'kernel.core_pattern' '|/bin/false' '%s=%s'
 
-    run diff "${tmp_file}" <(printf "${expected_output}")
+    run diff -u "${tmp_file}" <(printf "${expected_output}")
     [ "${status}" -eq 0 ]
 }
 
