@@ -12,8 +12,9 @@ function call_set_config_file {
 }
 
 function call_set_config_file_rsyslog {
-	{{{ set_config_file(path="$1",
-                    parameter="\$DefaultNetstreamDriver", value="gtls", create=true, separator=" ", separator_regex=" ") }}}
+    {{{ set_config_file(path="$1",
+            parameter="\$DefaultNetstreamDriver", value="gtls",
+            create=true, separator=" ", separator_regex=" ") }}}
 }
 
 @test "Basic value remediation" {
