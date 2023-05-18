@@ -24,7 +24,7 @@ jobs:
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
+        run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Checkout fork point
         uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
       - name: Detect content changes in the PR
         run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
-        run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
+        run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
       - name: Print changes to content detected if any
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
@@ -73,7 +73,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
       - name: Test if there are datastream changes
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: echo "::set-output name=COMPARE_DS_OUTPUT_SIZE::$(stat --printf="%s" diff.log)"
+        run: echo "COMPARE_DS_OUTPUT_SIZE=$(stat --printf="%s" diff.log)" >> $GITHUB_OUTPUT
         id: compare_ds
       - name: Print datastream changes if any
         if: ${{ steps.compare_ds.outputs.COMPARE_DS_OUTPUT_SIZE != '0'}}
@@ -87,7 +87,7 @@ jobs:
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
-          echo ::set-output name=log::${body:0:65000}
+          echo "log=${body:0:65000}">> $GITHUB_OUTPUT
           set +f
       - name: Find Comment
         uses: peter-evans/find-comment@v1

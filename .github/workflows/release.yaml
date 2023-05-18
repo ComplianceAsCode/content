@@ -30,7 +30,9 @@ jobs:
         working-directory: ./build
       - name: Set Version
         id: set_version
-        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//} && echo ::set-output name=ver::${GITHUB_REF/refs\/tags\/v/}
+        run: |- 
+          echo "tag=${GITHUB_REF/refs\/tags\//}"  >> $GITHUB_OUTPUT
+          echo "ver=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_OUTPUT
         env:
           GITHUB_REF: ${{ github.ref }}
       - name: Build Changelog
