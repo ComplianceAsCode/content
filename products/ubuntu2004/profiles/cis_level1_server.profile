@@ -419,7 +419,7 @@ selections:
     # Needs rule
 
     #### 3.5.2.6 Ensure loopback traffic is configured (Automated)
-    # Needs rule
+    - set_nftables_loopback_traffic
 
     #### 3.5.2.7 Ensure outbound and established connections are configured (Manual)
     # Skip due to being a manual test
