@@ -1714,9 +1714,11 @@ Example Calls:
 {{%- if '"' in format -%}}
 {{{ raise("format contains '\"' character, must not. You can put value of format in shell variable.") }}}
 {{%- endif -%}}
+
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key="$(LC_ALL=C sed 's/[\^=$,;+]*//g' <<< "{{{ key }}}")"
+key_regex="{{{ key }}}\\>"
 
 # shellcheck disable=SC2059
 printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
@@ -1724,9 +1726,9 @@ printf -v formatted_output "{{{ format }}}" "${stripped_key}" "{{{ value }}}"
 # If the key exists, change it. Otherwise, add it to the config_file.
 # We search for the key string followed by a word boundary (matched by \>),
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
+if LC_ALL=C grep -q -m 1 -i -e "${key_regex}" "{{{ config_file }}}"; then
     escaped_formatted_output="$(LC_ALL=C sed 's|/|\\/|g' <<< "${formatted_output}")"
-    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}\\>.*/${escaped_formatted_output}/i" "{{{ config_file }}}"
+    LC_ALL=C sed -i --follow-symlinks "s/${key_regex}.*/${escaped_formatted_output}/i" "{{{ config_file }}}"
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
