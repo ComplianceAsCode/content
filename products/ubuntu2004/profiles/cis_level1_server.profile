@@ -416,7 +416,7 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure base chains exist (Automated)
-    # Needs rule
+    - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure loopback traffic is configured (Automated)
     - set_nftables_loopback_traffic
