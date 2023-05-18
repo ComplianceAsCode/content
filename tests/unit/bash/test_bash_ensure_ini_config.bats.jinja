@@ -112,7 +112,7 @@ function call_bash_ensure_ini_config {
 
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-    
+
      run diff "pam_cert_auth.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
