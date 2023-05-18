@@ -303,7 +303,7 @@ To illustrate the process we will use the name `custom6` which basically means t
 For more details in the naming conventions and directory structure, check the [](#directory-structure) section.
 You can use the following commands to create the basic directory structure, `content` is the root directory of the project:
 <pre>
-cd content
+cd content/products
 export SHORTNAME="C"
 export NAME="custom"
 export CAMEL_CASE_NAME="Custom"
@@ -335,13 +335,13 @@ message(STATUS "JBoss EAP 6: ${SSG_PRODUCT_EAP6}")
 <pre>
 ...
 if (SSG_PRODUCT_DEBIAN11)
-    add_subdirectory("debian11")
+    add_subdirectory("products/debian11")
 endif()
 <b>if (SSG_PRODUCT_CUSTOM6)
-      add_subdirectory("custom6")
+      add_subdirectory("products/custom6")
 endif()</b>
 if (SSG_PRODUCT_EAP6)
-    add_subdirectory("eap6")
+    add_subdirectory("products/eap6")
 endif()
 ...
 </pre>
@@ -357,7 +357,7 @@ all_cmake_products=(
 ...
 </pre>
 
-4. Add the product to [constants.py](../../../ssg/constants.py) file:
+4. Add the product to [ssg/constants.py](../../../ssg/constants.py) file:
 <pre>
 ...
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
@@ -412,7 +412,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 
 5. Create a new file in the product directory called `CMakeLists.txt`:
 ```
-cat << EOF >> $NEW_PRODUCT/CMakeLists.txt
+cat << EOF >  $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
 if ("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
@@ -424,12 +424,12 @@ EOF
 
 7. Create a new file in the product directory called `product.yml` (note: you may want to change the `pkg_manager` attribute):
 ```
-cat << EOF >> $NEW_PRODUCT/product.yml
+cat << EOF >  $NEW_PRODUCT/product.yml
 product: $NEW_PRODUCT
 full_name: $FULL_NAME
 type: platform
 
-benchmark_root: "../linux_os/guide"
+benchmark_root: "../../linux_os/guide"
 
 profiles_root: "./profiles"
 
@@ -437,7 +437,7 @@ pkg_manager: "yum"
 
 init_system: "systemd"
 
-cpes_root: "../shared/applicability"
+cpes_root: "../../shared/applicability"
 cpes:
   new_product:
     name: "cpe:/o:$NAME:$VERSION"
@@ -451,7 +451,7 @@ EOF
 
 8. Create a draft profile under `profiles` directory called `standard.profile`:
 ```
-cat << EOF >> $NEW_PRODUCT/profiles/standard.profile
+cat << EOF >  $NEW_PRODUCT/profiles/standard.profile
 documentation_complete: true
 
 title: 'Standard System Security Profile for $FULL_NAME'
@@ -468,10 +468,10 @@ EOF
 
 9. Create a new file under `transforms` directory called `constants.xslt` (you may want to review the links below):
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/constants.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:include href="../../shared/transforms/shared_constants.xslt"/>
+<xsl:include href="../../../shared/transforms/shared_constants.xslt"/>
 
 <xsl:variable name="product_long_name">$FULL_NAME</xsl:variable>
 <xsl:variable name="product_short_name">$FULL_SHORT_NAME</xsl:variable>
@@ -490,10 +490,10 @@ EOF
 
 11. Create a new file under `transforms` directory called `table-style.xslt`:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/table-style.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="../../shared/transforms/shared_table-style.xslt"/>
+<xsl:import href="../../../shared/transforms/shared_table-style.xslt"/>
 
 </xsl:stylesheet>
 EOF
@@ -501,11 +501,11 @@ EOF
 
 12. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://checklists.nist.gov/xccdf/1.1" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
-<xsl:include href="../../shared/transforms/shared_xccdf-apply-overlay-stig.xslt"/>
+<xsl:include href="../../../shared/transforms/shared_xccdf-apply-overlay-stig.xslt"/>
 <xsl:include href="constants.xslt"/>
 <xsl:variable name="overlays" select="document($overlay)/xccdf:overlays" />
 
@@ -515,11 +515,11 @@ EOF
 
 13. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="../../shared/transforms/shared_xccdf2table-cce.xslt"/>
+<xsl:import href="../../../shared/transforms/shared_xccdf2table-cce.xslt"/>
 
 <xsl:include href="constants.xslt"/>
 <xsl:include href="table-style.xslt"/>
@@ -530,11 +530,11 @@ EOF
 
 14. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
 ```
-cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
+cat << EOF >  $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="https://public.cyber.mil/stigs/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
 
-<xsl:import href="../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
+<xsl:import href="../../../shared/transforms/shared_xccdf2table-profileccirefs.xslt"/>
 
 <xsl:include href="constants.xslt"/>
 <xsl:include href="table-style.xslt"/>
@@ -545,7 +545,7 @@ EOF
 
 15. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
-cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
+cat << EOF >  shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
   <definition class="inventory" id="installed_OS_is_$NEW_PRODUCT" version="3">
     <metadata>
