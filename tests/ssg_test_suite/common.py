@@ -274,7 +274,7 @@ def get_product_context(product=None):
     product_yaml = dict()
     if product:
         yaml_path = product_yaml_path(SSG_ROOT, product)
-        product_yaml = load_product_yaml(yaml_path)
+        product_yaml.update(load_product_yaml(yaml_path))
 
     # We could run into a DocumentationNotComplete error when loading a
     # rule's YAML contents. However, because the test suite isn't executed
