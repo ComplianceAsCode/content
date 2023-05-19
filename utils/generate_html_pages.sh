@@ -83,34 +83,34 @@ popd
 
 
 
-POLICY_DIR=$PAGES_DIR/rendered-policies
-mkdir -p $POLICY_DIR
-touch $POLICY_DIR/index.html
-echo "<!DOCTYPE html>" > $POLICY_DIR/index.html
-echo '<html lang="en">' >> $POLICY_DIR/index.html
-echo "<head>" >> $POLICY_DIR/index.html
-echo '<meta charset="utf-8" />' >> $POLICY_DIR/index.html
-echo "<title>Rendered Policies</title>" >> $POLICY_DIR/index.html
-echo "</head>" >> $POLICY_DIR/index.html
-echo "<body>" >> $POLICY_DIR/index.html
-echo "<h1>Rendered Policies</h1>" >> $POLICY_DIR/index.html
+POLICY_DIR="$PAGES_DIR/rendered-policies"
+mkdir -p "$POLICY_DIR"
+touch "$POLICY_DIR/index.html"
+echo "<!DOCTYPE html>" > "$POLICY_DIR/index.html"
+echo '<html lang="en">' >> "$POLICY_DIR/index.html"
+echo "<head>" >> "$POLICY_DIR/index.html"
+echo '<meta charset="utf-8" />' >> "$POLICY_DIR/index.html"
+echo "<title>Rendered Policies</title>" >> "$POLICY_DIR/index.html"
+echo "</head>" >> "$POLICY_DIR/index.html"
+echo "<body>" >> "$POLICY_DIR/index.html"
+echo "<h1>Rendered Policies</h1>" >> "$POLICY_DIR/index.html"
 # get supported products
 products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directories)" | python3 | sed -s "s/'//g; s/,//g; s/\[//g; s/\]//g")
 for product in $products
 do
     if [ -d build/$product ]; then
-        echo "<h4>Product: ${product}</h4>" >> $POLICY_DIR/index.html
-        echo "<ul>" >> $POLICY_DIR/index.html
-        mkdir -p $POLICY_DIR/$product
-        if [ -d build/$product/rendered-policies/ ]; then
-            cp -rf build/$product/rendered-policies/* $POLICY_DIR/$product/
-            echo "<li><a href=\"$product/\">Rendered Policies</a></li>" >> $POLICY_DIR/index.html
+        echo "<h4>Product: ${product}</h4>" >> "$POLICY_DIR/index.html"
+        echo "<ul>" >> "$POLICY_DIR/index.html"
+        mkdir -p "$POLICY_DIR/$product"
+        if [ -d "build/$product/rendered-policies/" ]; then
+            cp -rf "build/${product}/rendered-policies/"* "$POLICY_DIR/$product/"
+            echo "<li><a href=\"$product/\">Rendered Policies</a></li>" >> "$POLICY_DIR/index.html"
         fi
-        echo "</ul>" >> $POLICY_DIR/index.html
+        echo "</ul>" >> "$POLICY_DIR/index.html"
     fi
 done
-echo "</body>" >> $POLICY_DIR/index.html
-echo "</html>" >> $POLICY_DIR/index.html
+echo "</body>" >> "$POLICY_DIR/index.html"
+echo "</html>" >> "$POLICY_DIR/index.html"
 
 pushd $PAGES_DIR
 touch index.html
