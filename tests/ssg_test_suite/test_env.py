@@ -4,6 +4,7 @@ import contextlib
 import json
 import logging
 import os
+import pprint
 import re
 import shlex
 import subprocess
@@ -148,6 +149,7 @@ class TestEnv(object):
         command_str = command if isinstance(command, str) else shlex.join(command)
         result = common.retry_with_stdout_logging(
             "ssh", tuple(self.ssh_additional_options) + (remote_dest, command_str), log_file)
+        logging.debug('Result {}'.format(pprint.pformat(result)))
         if result.returncode:
             error_msg = error_msg_template.format(
                 command=command_str, remote_dest=remote_dest,
