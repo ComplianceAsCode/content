@@ -30,12 +30,12 @@ jobs:
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
+        run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Detect content changes in the PR
         run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }}  --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
-        run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
+        run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
       - uses: actions/upload-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
@@ -81,7 +81,7 @@ jobs:
         continue-on-error: true
       - name: Test if there are no content changes
         if: ${{ steps.get_ctf_output.outcome == 'success' }}
-        run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
+        run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
       - name: Print changes to content detected if any
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
