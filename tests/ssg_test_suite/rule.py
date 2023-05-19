@@ -312,7 +312,7 @@ class RuleChecker(oscap.Checker):
                 # This is an error only if the user specified the rules to be
                 # tested explicitly using command line arguments
                 if self.target_type == "rule ID":
-                    logging.error(
+                    logging.warning(
                         "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
                         .format(
                             full_rule_id, self.benchmark_id, self.datastream))
