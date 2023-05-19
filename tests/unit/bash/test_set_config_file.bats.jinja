@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -pu
 
 function call_set_config_file_create_false {
     {{{ set_config_file("$1", "Compression", "no", False) | indent(4) }}}
@@ -11,12 +12,51 @@ function call_set_config_file {
 }
 
 function call_set_config_file_rsyslog {
-	{{{ set_config_file(path="$1",
-                    parameter="\$DefaultNetstreamDriver", value="gtls", create=true, separator=" ", separator_regex=" ") }}}
+    {{{ set_config_file(path="$1",
+            parameter="\$DefaultNetstreamDriver", value="gtls",
+            create=true, separator=" ", separator_regex=" ") }}}
 }
 
-@test "Basic value remediation" {
-    tmp_file="$(mktemp)"
+is_old_bats=0
+
+setup() {
+    if [[ -z "${BATS_TEST_TMPDIR:-}" ]] || [[ ! -d "${BATS_TEST_TMPDIR}" ]]; then
+        BATS_TEST_TMPDIR="$(mktemp -d)"  # 1.4.0
+        # shellcheck disable=SC2034
+        BATS_TEARDOWN_STARTED=  # 1.3.0
+        is_old_bats=1
+    else
+        is_old_bats=0
+    fi
+    pushd "${BATS_TEST_TMPDIR}" || exit 1
+    tmp_file=test.conf
+    touch "$tmp_file"
+}
+
+teardown() {
+    if (( is_old_bats )); then
+        if [[ -z "${BATS_TEST_TMPDIR:-}" ]] || [[ ! -d "${BATS_TEST_TMPDIR}" ]]; then
+            >&2 echo "INTERNAL ERROR"
+            exit 3
+        fi
+        local tmppath xpwd
+        tmppath="$(readlink -f -- "${BATS_TEST_TMPDIR}")"
+        if [[ ! "${tmppath}" =~ ^/tmp/ ]] || [[ ! -d "${tmppath}" ]]; then
+            >&2 echo "INTERNAL ERROR"
+            exit 3
+        fi
+        xpwd="$(readlink -f -- .)"
+        if [[ "${tmppath}" != "${xpwd}" ]]; then
+            >&2 echo "INTERNAL ERROR"
+            exit 3
+        fi
+        popd || exit 1
+        rm -rf -- "${tmppath}"
+        BATS_TEST_TMPDIR=""
+    fi
+}
+
+@test "set_config_file - Basic value remediation" {
     printf "%s\n" "Compression yes" > "$tmp_file"
     expected_output="Compression no\n"
 
@@ -24,12 +64,9 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "No remediation happened" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - No remediation happened" {
     printf "%s\n" "Compression no" > "$tmp_file"
     expected_output="Compression no\n"
 
@@ -37,12 +74,9 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Multiline file remediation" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Multiline file remediation" {
     printf "%s\n" "Protocol 2" "Compression yes" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
 
@@ -50,12 +84,9 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "No remediation on commented line" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - No remediation on commented line" {
     printf "%s\n" "Protocol 2" "# Compression yes" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\n# Compression yes\nPort 22\nCompression no\n"
 
@@ -63,12 +94,9 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Create if missing" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Create if missing" {
     printf "%s\n" "Protocol 2" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
 
@@ -76,12 +104,9 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Create file if doesn't exist" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Create file if doesn't exist" {
     rm "$tmp_file"
     expected_output="Compression no\n"
 
@@ -89,12 +114,9 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Do not create if missing" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Do not create if missing" {
     rm "$tmp_file"
 
     run call_set_config_file_create_false "$tmp_file"
@@ -104,8 +126,7 @@ function call_set_config_file_rsyslog {
 }
 
 
-@test "Case insensitive remediation" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Case insensitive remediation" {
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
 
@@ -113,90 +134,64 @@ function call_set_config_file_rsyslog {
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Case sensitive remediation" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Case sensitive remediation" {
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nCOMPRESSION YES\nPort 22\nCompression no\n"
 
     {{{ set_config_file("$tmp_file", "Compression", "no", True, "", "", False) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
-    echo "$output"
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Basic Bash remediation" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Basic Bash remediation" {
     printf "%s\n" "something=foo" > "$tmp_file"
     expected_output="something='va lue'\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", "va lue") | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
-    echo "$output"
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Variable remediation - preserve dollar and use double quotes" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Variable remediation - preserve dollar and use double quotes" {
     printf "%s\n" "something=bar" > "$tmp_file"
     expected_output='something="$value"'"\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", '$value') | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
-    echo "$output"
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Basic Bash remediation - don't quote" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Basic Bash remediation - don't quote" {
     printf "%s\n" "something=foo" > "$tmp_file"
     expected_output="something=va lue\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", "va lue", no_quotes=true) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
-    echo "$output"
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
-@test "Variable remediation - don't quote" {
-    tmp_file="$(mktemp)"
+@test "set_config_file - Variable remediation - don't quote" {
     printf "%s\n" "something=bar" > "$tmp_file"
     expected_output='something=$value'"\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", '$value', no_quotes=true) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
-    echo "$output"
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
 
 @test "set_config_file - handle escaped dollar" {
-    tmp_file="$(mktemp)"
     printf "%s\n" '$DefaultNetstreamDriver bad' > "$tmp_file"
     expected_output='$DefaultNetstreamDriver gtls'"\n"
 
     call_set_config_file_rsyslog "$tmp_file"
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
-    echo "$output"
     [ "$status" -eq 0 ]
-
-    rm "$tmp_file"
 }
