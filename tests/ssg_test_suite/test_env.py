@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -507,14 +508,19 @@ class PodmanTestEnv(ContainerTestEnv):
     def __init__(self, scanning_mode, image_name):
         super(PodmanTestEnv, self).__init__(scanning_mode, image_name)
 
-    def _commit(self, container, image):
-        podman_cmd = ["podman", "commit", container, image]
+    def run_podman_cmd(self, podman_cmd):
         try:
-            subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
+            podman_output = subprocess.run(
+                podman_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(
-                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+                shlex.join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
+        return podman_output
+
+    def _commit(self, container, image):
+        podman_cmd = ["podman", "commit", container, image]
+        self.run_podman_cmd(podman_cmd)
 
     def _new_container_from_image(self, image_name, container_name):
         long_name = "{0}_{1}".format(self._name_stem, container_name)
@@ -533,13 +539,8 @@ class PodmanTestEnv(ContainerTestEnv):
             image_name,
             "/usr/sbin/sshd", "-p", "{internal_ssh_port}".format(** self.__dict__), "-D",
         ]
-        try:
-            podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(
-                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
-        container_id = podman_output.decode("utf-8").strip()
+        podman_output = self.run_podman_cmd(podman_cmd)
+        container_id = podman_output.stdout.decode("utf-8").strip()
         return container_id
 
     def get_ip_address(self):
@@ -548,13 +549,8 @@ class PodmanTestEnv(ContainerTestEnv):
             "--format={{.NetworkSettings.IPAddress}}",
             self.current_container,
         ]
-        try:
-            podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(
-                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
-        ip_address = podman_output.decode("utf-8").strip()
+        podman_output = self.run_podman_cmd(podman_cmd)
+        ip_address = podman_output.stdout.decode("utf-8").strip()
         if not ip_address:
             ip_address = "localhost"
         return ip_address
@@ -565,13 +561,8 @@ class PodmanTestEnv(ContainerTestEnv):
             "--format={{json .NetworkSettings.Ports}}",
             container,
         ]
-        try:
-            podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(
-                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
-        return self.extract_port_map(json.loads(podman_output))
+        podman_output = self.run_podman_cmd(podman_cmd)
+        return self.extract_port_map(json.loads(podman_output.stdout))
 
     def extract_port_map(self, podman_network_data):
         if 'containerPort' in podman_network_data:
@@ -588,28 +579,13 @@ class PodmanTestEnv(ContainerTestEnv):
         if self.containers:
             running_state = self.containers.pop()
             podman_cmd = ["podman", "stop", running_state]
-            try:
-                subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-            except subprocess.CalledProcessError as e:
-                msg = "Command '{0}' returned {1}:\n{2}".format(
-                    " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-                raise RuntimeError(msg)
+            self.run_podman_cmd(podman_cmd)
             podman_cmd = ["podman", "rm", running_state]
-            try:
-                subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-            except subprocess.CalledProcessError as e:
-                msg = "Command '{0}' returned {1}:\n{2}".format(
-                    " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-                raise RuntimeError(msg)
+            self.run_podman_cmd(podman_cmd)
 
     def _remove_image(self, image):
         podman_cmd = ["podman", "rmi", image]
-        try:
-            subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(
-                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+        self.run_podman_cmd(podman_cmd)
 
     def _local_oscap_check_base_arguments(self):
         raise NotImplementedError("OpenSCAP doesn't support offline scanning of Podman Containers")
