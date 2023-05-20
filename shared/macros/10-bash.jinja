@@ -1997,8 +1997,11 @@ optional version restricion, the Bash remediation will be applied. The macro
 respects `platform_package_overrides` variable.
 
 :param package: package name
-:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type package: str
+:param op: version comparison operator (optional argument, "<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
+:type ver: str
 
 #}}
 {{%- macro bash_pkg_conditional(package, op=None, ver=None) -%}}
