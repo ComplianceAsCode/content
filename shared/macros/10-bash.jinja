@@ -2614,6 +2614,7 @@ This macro generates code that retrieves the operating system version
 from /etc/os-release from VERSION_ID variable.
 
 :param os_release_path: path to the os-release file, default: "/etc/os-release"
+:type os_release_path: str
 
 #}}
 {{%- macro bash_get_version_os_linux(os_release_path="/etc/os-release") -%}}
