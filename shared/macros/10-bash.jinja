@@ -953,8 +953,15 @@ Example Call(s):
         bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
 
 :param config_file:           Configuration file that will be modified
-:param key:                   Configuration option to change
-:param value:                 Value of the configuration option to change
+:type config_file: str
+:param key:                  Configuration option to change
+:type key: str
+:param value:                Value of the configuration option to change
+:type value: str
+:param quoted_value:
+:type quoted_value: str
+:param sed_separator:
+:type sed_separator: char
 
 #}}
 {{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
