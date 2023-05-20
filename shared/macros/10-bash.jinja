@@ -991,7 +991,9 @@ done
     Macro to ensure that the ntp/chrony config file contains valid server entries.
 
 :param config_file: Path to the ntp/chrony config file
+:type config_file: str
 :param servers_list: Comma-separated list of servers
+:type servers_list: str
 
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
