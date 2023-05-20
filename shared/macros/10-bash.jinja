@@ -1392,7 +1392,9 @@ rm "{{{ path }}}.bak"
   Generates bash script code that puts 'contents' into a file at 'filepath'
 
 :param filepath: Filepath of the file to check
+:type filepath: str
 :param contents:  Contents that should be in the file
+:type contents: str
 
 #}}
 {{%- macro bash_file_contents(filepath='', contents='') %}}
