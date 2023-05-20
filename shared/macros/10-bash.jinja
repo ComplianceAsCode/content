@@ -1605,10 +1605,14 @@ Ensures that given mount point is in :code:`/etc/fstab`.
 
         LABEL=t-home2   /home      ext4    defaults,auto_da_alloc      0  2
 
-    :param mount_point: mount point
-    :param mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
-    :param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
-    :param type:        mount type of mount point (used when adding new entry in fstab)
+:param mount_point: mount point
+:type mount_point: str
+:param mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
+:type mount_opt: str
+:param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+:type fs_spec: str
+:param type:        mount type of mount point (used when adding new entry in fstab)
+:type type: str
 
 #}}
 {{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
