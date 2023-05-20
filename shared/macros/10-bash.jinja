@@ -2075,14 +2075,19 @@ https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-orderi
 This macro generates comparison code based on the operator.
 
 Assumptions:
-- Version arguments are either literal, or they expand to versions (e.g. the argument is a deferenced variable)
-- Either all versions have epoch, or none of them has.
-  - Violation of this results in undefined behavior.
-  - If one has epoch e.g. 0, and the other one has no epoch, they will not be treated as equal.
+
+* Version arguments are either literal, or they expand to versions (e.g. the argument is a deferenced variable)
+* Either all versions have epoch, or none of them has.
+
+  * Violation of this results in undefined behavior.
+  * If one has epoch e.g. 0, and the other one has no epoch, they will not be treated as equal.
 
 :param real: real package version
+:type real: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param expected: expected package version
+:type expected: str
 
 #}}
 {{%- macro bash_compare_version(real, op, expected) -%}}
