@@ -1952,7 +1952,9 @@ fi
     Ensures that /etc/default/grub file contains the arg_name_value.
 
 :param arg_name: name of the grub parameter, e.g.: "audit"
+:type arg_name: str
 :param arg_name_value: parameter together with the value to ensure, e.g.: "audit=1"
+:type arg_name_value: str
 
 #}}
 {{%- macro update_etc_default_grub_manually(arg_name, arg_name_value) -%}}
