@@ -1620,10 +1620,15 @@ Part of the grub2_bootloader_argument_absent template.
     be directly edited.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param option:          PAM module option.
+:type option: str
 
 #}}
 {{%- macro ansible_remove_pam_module_option_configuration(pam_file, group, control, module, option) -%}}
