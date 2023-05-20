@@ -2037,27 +2037,33 @@ This macro creates a Bash conditional that compares version of the package
 with a given version.
 
 Description of the algorithm:
-1. Get the actual version of the given package and store it in `real`.
-2. Store the expected version in `ver`.
-3. Perform the comparison and return the result.
+
+#. Get the actual version of the given package and store it in `real`.
+#. Store the expected version in `ver`.
+#. Perform the comparison and return the result.
    Comparison method is different based on the comparison operator. The method
    code is chosen at the build time during Jinja expansion. Therefore, the
    algorithm doesn't use the operator at all.
    Based on the operator, these operations are performed:
-   a. "<": real != ver && is_sorted([real, ver])
-   b. "<=": is_sorted([real, ver])
-   c. "==": real == ver
-   d. "!=": real != ver
-   e. ">=" real != ver && is_sorted([ver, real])
-   f. ">" is_sorted([ver, real])
+
+   #. "<": real != ver && is_sorted([real, ver])
+   #. "<=": is_sorted([real, ver])
+   #. "==": real == ver
+   #. "!=": real != ver
+   #. ">=" real != ver && is_sorted([ver, real])
+   #. ">" is_sorted([ver, real])
+
    where is_sorted returns true if the given list parameter is a sorted list of version numbers.
 
 The implementation uses the GNU `sort` version ordering, which is described at:
 https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-ordering
 
 :param real: real package version
+:type real: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param expected: expected package version
+:type expected: str
 
 #}}
 {{%- macro bash_pkg_conditional_compare(real, op, expected) -%}}
