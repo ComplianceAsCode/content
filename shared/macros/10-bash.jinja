@@ -889,8 +889,15 @@ Example Calls:
         bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="$var_config_file_name")
 
 :param config_file:          Configuration file that will be modified
+:type config_file: str
 :param key:                  Configuration option to change
+:type key: str
 :param value:                Value of the configuration option to change
+:type value: str
+:param quoted_value:
+:type quoted_value: str
+:param sed_separator:
+:type sed_separator: char
 
 #}}
 {{%- macro bash_firefox_js_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
