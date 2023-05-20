@@ -809,6 +809,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     not desired, avoid defining a backup name.
 
 :param backup_name:        Changes the default backup name used by authselect.
+:type backup_name: str
 
 #}}
 {{% macro ansible_apply_authselect_changes(backup_name='') -%}}
