@@ -1162,9 +1162,9 @@ Macro for Ansible remediation for adding a kernel command line argument to the G
 Part of the grub2_bootloader_argument template.
 
 :param arg_name: Kernel command line argument
-:type arg_name str:
+:type arg_name: str
 :param arg_name_value: Kernel command line argument concatenated with the value of this argument using an equal sign, eg. "noexec=off".
-:type arg_name_value str:
+:type arg_name_value: str
 
 #}}
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
