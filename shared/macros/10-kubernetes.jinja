@@ -695,7 +695,7 @@ metadata:
     complianceascode.io/node-role: "{{.{{{ role }}}}}"
 spec:
 {{{ expand_yaml_path(path, parameter) }}}: {{.{{{ value }}}}}
-{{%- endmacro -%}} 
+{{%- endmacro -%}}
 
 {{#
    Macro which generates Kubernetes remediation in kubelet config format:

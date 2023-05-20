@@ -922,8 +922,8 @@ Example Call(s):
         bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
 
 :param config_file:           Configuration file that will be modified
-:param  key:                  Configuration option to change
-:param  value:                Value of the configuration option to change
+:param key:                   Configuration option to change
+:param value:                 Value of the configuration option to change
 
 #}}
 {{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
@@ -2059,11 +2059,11 @@ Example macro invocation:
 
     {{{ bash_chromium_pol_setting("chrome_stig_policy.json", "/etc/chromium/policies/managed/", "ExtensionInstallBlacklist", "\[\"*\"\]") }}}
 
-:param  chrome_pol_file:      Policy file to that will be modified
-:param  chrome_pol_dir:       Directory where the policy file is located
-:param  pol_setting:          The setting that will be modified
-:param  pol_setting_val:      Value of the setting to replace the current value with
-:param  pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
+:param chrome_pol_file:      Policy file to that will be modified
+:param chrome_pol_dir:       Directory where the policy file is located
+:param pol_setting:          The setting that will be modified
+:param pol_setting_val:      Value of the setting to replace the current value with
+:param pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
 
 #}}
 {{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=None) %}}
