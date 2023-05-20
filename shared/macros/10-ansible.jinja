@@ -1034,9 +1034,12 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   case the file /etc/security/faillock.conf is present in the system, the option is removed from
   PAM files since it is not needed there in that case.
 
-  :param parameter:         The pam_faillock.so parameter name.
-  :param faillock_var_name: If the parameter expects a value from a variable, the variable name is informed here.
-  :param authfail: check the pam_faillock.so conf line with authfail
+:param parameter: The pam_faillock.so parameter name.
+:type parameter: str
+:param faillock_var_name: If the parameter expects a value from a variable, the variable name is informed here.
+:type faillock_var_name: str
+:param authfail: check the pam_faillock.so conf line with authfail
+:type authfail: bool
 
 #}}
 {{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='', authfail=True) -%}}
