@@ -1571,22 +1571,35 @@ fi
 
 
 {{#
-    Macro to replace configuration setting in config file or add the configuration setting if
-    it does not exist.
+Macro to replace configuration setting in config file or add the configuration setting if
+it does not exist.
 
-    Example Calls:
+All regular expression files accept Basic Regular Expression (BRE) format.
 
-      With default format of 'key = value'::
+Inherent limitations:
+
+* no '"' in jinja level variables, error raised
+* only allowed control character is \t (vertical tab), filtered away at shell level
+* caller is responsible for shell quoting (variables from
+  `bash_instantiate_variables` are quoted automatically)
+
+Example Calls:
+
+    With default format of 'key = value'::
 
         {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
 
-      With custom key/value format::
+    With custom key/value format::
 
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
 
-      With a variable::
+    With a variable::
 
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
+
+    Caller is responsible for shell quoting::
+
+        {{{ bash_replace_or_append(( unsafe_file | quote), 'key', "value") }}}
 
 :param config_file: Configuration file that will be modified
 :type config_file: str
