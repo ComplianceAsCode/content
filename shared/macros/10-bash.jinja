@@ -1205,8 +1205,11 @@ fi
     It also adds pam_faillock.so as required module for account.
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
+:type option: str
 :param value: value of option
+:type value: str
 :param authfail: check the pam_faillock.so conf line with authfail
+:type authfail: bool
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
