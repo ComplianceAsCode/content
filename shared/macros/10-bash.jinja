@@ -2290,10 +2290,12 @@ fi
     If the line is not present, it will be included after the regex informed in the "after_match"
     parameter. If the "after_match" parameter is empty, the line will be included at the end of
     the file informed in the "pam_file" parameter.
+
     If the line was already present, but with a different control, the control will be updated.
     Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
     Instead, a new line will be included after the regex informed in "after_match" or at the
     end of file if "after_match" parameter is empty or there is no match.
+
     This is a conservative safeguard for improper use of this macro in rare cases of modules
     configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
     situations, these special modules may have similar lines sharing the same "group" and "module".
@@ -2301,11 +2303,16 @@ fi
     PAM module is working as expected. Otherwise, a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param after_match:     Regex used as reference to append a line, if necessary. Optional parameter.
                         Note: For this macro, there is a special value used to include a line at the beginning of the file: "BOF"
+:type after_match: str
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
