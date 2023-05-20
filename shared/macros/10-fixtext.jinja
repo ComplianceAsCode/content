@@ -87,18 +87,6 @@ The audit daemon must be restarted for the changes to take effect.
 
 
 {{#
-    Generate a fixtext for audit rules for dac modification events - chown
-
-:param syscall: syscall name
-:type syscall: str
-
-#}}
-{{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
-{{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
-{{% endmacro %}}
-
-
-{{#
     Generate a fixtext for audit rules for dac modification events - attr
 
 :param syscall: syscall name
