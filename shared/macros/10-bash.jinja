@@ -2163,8 +2163,11 @@ with a given version.
 This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
 
 :param package: package name
-:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type package: str
+:param op: version comparison operator (optional argument, "<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
+:type ver: str
 
 #}}
 {{%- macro bash_pkg_conditional_dpkg(package, op=None, ver=None) -%}}
