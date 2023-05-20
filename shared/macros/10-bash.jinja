@@ -1632,9 +1632,13 @@ done
     documentation
 
 :param vfstype:     type of filesystem
+:type vfstype: str
 :param mount_opt:   mount point option which we are checking
+:type mount_opt: str
 :param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+:type fs_spec: str
 :param type:        mount type of new mount point (used when adding new entry in fstab)
+:type type: str
 
 #}}
 {{% macro bash_ensure_mount_option_for_vfstype(vfstype, mount_opt, filesystem, type) -%}}
