@@ -479,8 +479,8 @@ AuditBackend=LinuxAudit
 
 {{% macro audit_syscalls_rule(syscalls=[], key='', fields='') %}}
 {{%- for syscall in syscalls -%}}
--a always,exit -F arch=b64 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}} -k {{{ key }}}
--a always,exit -F arch=b32 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}} -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}}{{% if key %}} -k {{{ key }}}{{% endif %}}
+-a always,exit -F arch=b32 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}}{{% if key %}} -k {{{ key }}}{{% endif %}}
 {{% endfor %}}
 {{%- endmacro %}}
 
