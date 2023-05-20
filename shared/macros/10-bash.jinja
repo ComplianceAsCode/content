@@ -2573,10 +2573,14 @@ conforms and satisfies the optional version restricion, the Bash remediation
 will be applied.
 
 :param os_id: OS name, value of the ID variable in /etc/os-release
+:type os_id: str
 :param expected_ver: expected OS version, value of the VERSION_ID variable in /etc/os-release
             (optional argument, use together with "op")
-:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type expected_ver: str
+:param op: version comparison operator (optional argument, "<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param os_release_path: path to the os-release file, default: "/etc/os-release"
+:type os_release_path: str
 
 #}}
 {{%- macro bash_os_linux_conditional(os_id, expected_ver=None, op=None, os_release_path="/etc/os-release") -%}}
