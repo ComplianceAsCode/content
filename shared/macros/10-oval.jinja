@@ -317,7 +317,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type id_stem: str
 
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value=false, quotes='', id_stem='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
