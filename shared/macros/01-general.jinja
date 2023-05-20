@@ -1101,9 +1101,9 @@ Generates a correct command based on the product (grubby, grub2-mkconfig, update
 Part of the grub2_bootloader_argument(_absent) templates.
 
 :param action: What to do with the argument, must be one of: "update", "add", "remove".
-:type action str:
-:param arg_name: :type arg_name str: :param arg_name_value: If action is "add", it's kernel command line argument concatenated with the value of this argument using an equal sign, eg. "audit=1". If action is "remove", it's only the kernel command line argument name, eg. "audit".
-:type arg_name_value str:
+:type action: str
+:param arg_name_value: If action is "add", it's kernel command line argument concatenated with the value of this argument using an equal sign, eg. "audit=1". If action is "remove", it's only the kernel command line argument name, eg. "audit".
+:type arg_name_value: str
 
 #}}
 {{% macro grub_command(action, arg_name_value=None) -%}}
