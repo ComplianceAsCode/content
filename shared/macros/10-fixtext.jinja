@@ -237,6 +237,7 @@ The audit daemon must be restarted for the changes to take effect.
 :parameter value: Value to set
 :type value: str
 :param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
+:type config_is_distributed: bool
 
 #}}
 {{%- macro fixtext_sshd_lineinfile(parameter, value, config_is_distributed) -%}}
