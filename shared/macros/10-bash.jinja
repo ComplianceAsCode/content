@@ -1157,8 +1157,11 @@ fi
     from pam files to avoid conflicts or confusion.
 
 :param pam_file:    PAM config file.
+:type pam_file: str
 :param option:      pwhistory option e.g.: remember, retry, debug
+:type option: str
 :param value:       value of option
+:type value: str
 
 #}}
 {{%- macro bash_pam_pwhistory_parameter_value(pam_file, option, value='') -%}}
