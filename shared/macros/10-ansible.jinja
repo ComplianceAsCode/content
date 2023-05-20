@@ -917,8 +917,11 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     from pam files to avoid conflicts or confusion.
 
 :param pam_file:            PAM config file.
+:type pam_file: str
 :param parameter:           pwhistory parameter/option e.g.: remember, retry, debug
+:type parameter: str
 :param pwhistory_var_name:  Literal variable name.
+:type pwhistory_var_name: str
 
 #}}
 {{%- macro ansible_pam_pwhistory_parameter_value(pam_file, parameter, pwhistory_var_name='') -%}}
