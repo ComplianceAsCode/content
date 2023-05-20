@@ -485,18 +485,23 @@ EOF
 
 {{#
     Macro to fix audit file system object watch rule for given path:
+
     * if rule exists, also verifies the -w bits match the requirements
     * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
       audit rules file, depending on the tool which was used to load audit rules
 
-:param audit tool                      tool used to load audit rules, either 'auditctl', or 'augenrules'
-:param path:                          	value of -w audit rule's argument
-:param required_access_bits:       	    value of -p audit rule's argument
-:param key:                        	value of -k audit rule's argument
-
     Example macro invocation::
 
           {{{ bash_fix_audit_watch_rule("auditctl", "/etc/localtime", "wa", "audit_time_rules") }}}
+
+:param tool:                 tool used to load audit rules, either 'auditctl', or 'augenrules'
+:type tool: str
+:param path:                 value of -w audit rule's argument
+:type path: str
+:param required_access_bits: value of -p audit rule's argument
+:type required_access_bits: str
+:param key:                  value of -k audit rule's argument
+:type key: str
 
 #}}
 {{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key) -%}}
