@@ -2024,6 +2024,7 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 This macro generates code that gets version of an installed RPM package.
 
 :param package: package name
+:type package: str
 
 #}}
 {{%- macro bash_get_rpm_package_version(package) -%}}
