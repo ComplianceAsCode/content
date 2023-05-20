@@ -471,7 +471,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type is_regex: bool
 
 #}}
-{{%- macro oval_argument_value_in_line_test(filepath, name, value, line_prefix='', line_suffix='', is_regex=False) -%}}
+{{%- macro oval_argument_value_in_line_test(filepath, name, value='', line_prefix='', line_suffix='', is_regex=False) -%}}
 {{%- if value -%}}
   {{%- set name_value = name+"="+value -%}}
 {{%- else -%}}
