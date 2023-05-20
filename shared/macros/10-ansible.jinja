@@ -589,13 +589,23 @@ The macro requires following parameters:
 {{#
 The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rules` file.
 
-:param action_arch_filters:  The action and arch filters of the rule. For example, "-a always,exit -F arch=b64"
-:param other_filters:        Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
-:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
-:param syscalls: List of syscalls to ensure presense among audit rules. For example, "['fchown', 'lchown', 'fchownat']"
-:param syscall_groupings: List of other syscalls that can be grouped with 'syscalls'
-                        For example, "['fchown', 'lchown', 'fchownat']"
+:param action_arch_filters: The action and arch filters of the rule.
+    For example, "-a always,exit -F arch=b64"
+:type action_arch_filters: str
+:param other_filters: Other filters that may characterize the rule.
+    For example, "-F a2&03 -F path=/etc/passwd"
+:type other_filters: str
+:param auid_filters: The auid filters of the rule.
+    For example, "-F auid>=1000 -F auid!=unset"
+:type auid_filters: str
+:param syscalls: List of syscalls to ensure presense among audit rules.
+    For example, "['fchown', 'lchown', 'fchownat']"
+:type syscalls: list[str]
 :param key: The key to use when appending a new rule
+:type key: str
+:param syscall_grouping: List of other syscalls that can be grouped with
+    'syscalls'. For example, "['fchown', 'lchown', 'fchownat']"
+:type syscall_grouping: list[str]
 
 #}}
 {{% macro ansible_audit_auditctl_add_syscall_rule(action_arch_filters="", other_filters="", auid_filters="", syscalls=[], key="", syscall_grouping=[]) -%}}
