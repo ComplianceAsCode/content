@@ -29,9 +29,9 @@ Therefore, you need to use a tool that can query the OCP API, retrieve KubeletCo
   by the jq command ( https://stedolan.github.io/jq/manual/ ).
 
 :param path_filter_pairs: Kubernetes object path/filter directive pairs
-:type path_filter_pairs: dict
+:type path_filter_pairs: dict[str, str]
 :param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
-:type path_filter_pairs: list
+:type varargs: list[dict[str, str]]
 
 #}}
 {{% macro openshift_filtered_cluster_setting(path_filter_pairs) -%}}
