@@ -1,6 +1,7 @@
 {{#
-Pass strings that correspond to XCCDF value names as arguments to this macro:
-ansible_instantiate_variables("varname1", "varname2")
+Pass strings that correspond to XCCDF value names as arguments to this macro::
+
+    ansible_instantiate_variables("varname1", "varname2")
 
 Then, assume that the task that follows can work with the variable by referencing it, e.g.
 value: :code:`Setting={{ varname1 }}`
