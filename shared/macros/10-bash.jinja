@@ -1574,9 +1574,13 @@ fi
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
 
 :param config_file: Configuration file that will be modified
+:type config_file: str
 :param key: Configuration option to change
+:type key: str
 :param value: Value of the configuration option to change
+:type value: str
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
+:type format: str
 
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
