@@ -2343,12 +2343,19 @@ fi
     Make sure that an existing PAM module line is properly configured with an option.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param option:          PAM module option.
+:type option: str
 :param value:           PAM module option argument, if is case. Optional parameter.
+:type value: str
 :param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
+:type after_match: str
 
 #}}
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
