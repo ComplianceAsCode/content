@@ -2146,8 +2146,11 @@ This macro creates a Bash conditional that compares version of the DEB package
 with a given version.
 
 :param package: package name
+:type package: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
+:type ver: str
 
 #}}
 {{%- macro bash_compare_version_dpkg(package, op, ver) -%}}
