@@ -873,11 +873,14 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     If authselect is present but the "with-pwhistory" feature is not yet available, a custom profile will be used.
     If authselect is not present, PAM files will be directly edited.
 
-    :param pam_file:    PAM config file.
-    :param control:     PAM control flags.
-    :param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
-                        Note: For this macro, there is a special value used to include a line at
-                        the beginning of the file: "BOF"
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
 
 #}}
 {{%- macro ansible_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
