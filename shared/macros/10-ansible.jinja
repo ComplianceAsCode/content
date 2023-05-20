@@ -1287,10 +1287,15 @@ Part of the grub2_bootloader_argument_absent template.
     PAM module is working as expected. Otherwise, a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param after_match:     Regex used as reference to include the line below, if necessary. Optional parameter.
+:type after_match: str
 
 #}}
 {{%- macro ansible_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
