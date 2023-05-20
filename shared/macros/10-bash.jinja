@@ -2597,8 +2597,11 @@ This macro generates bash condition that compares the actual version of the
 operating system with the expected version using the given operator.
 
 :param expected: expected OS version, value of the VERSION_ID variable in /etc/os-release
+:type expected: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param os_release_path: path to the os-release file, default: "/etc/os-release"
+:type os_release_path: str
 
 #}}
 {{%- macro bash_compare_version_os_linux(expected, op, os_release_path="/etc/os-release") -%}}
