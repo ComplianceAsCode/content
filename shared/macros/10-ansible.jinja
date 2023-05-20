@@ -646,6 +646,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when: syscalls_found | length == 0
 {{%- endmacro %}}
 
+
 {{% macro ansible_sssd_ldap_config(parameter, value) -%}}
 - name: "Test for id_provider different than Active Directory (ad)"
   command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
@@ -701,6 +702,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     mode: 0644
 {{%- endmacro %}}
 
+
 {{%- macro ansible_sudo_remove_config(parameter, pattern) -%}}
 
 - name: Find /etc/sudoers.d/ files
@@ -719,6 +721,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - { path: /etc/sudoers }
     - "{{ sudoers.files }}"
 {{%- endmacro -%}}
+
 
 {{#
   This macro creates an Ansible snipped which is used in `when` clause to determine applicability of a task.
@@ -829,6 +832,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - result_authselect_enable_feature_cmd is success
 {{%- endmacro -%}}
 
+
 {{#
     Used to identify if authselect is present or not in the system.
     Some macros can change the remediation behavior based on the presence of authselect.
@@ -840,6 +844,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     path: /usr/bin/authselect
   register: result_authselect_present
 {{%- endmacro -%}}
+
 
 {{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.
@@ -880,6 +885,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     (result_authselect_available_features.stdout is defined and result_authselect_available_features.stdout is not search("with-pwhistory"))
     or result_authselect_available_features is not defined
 {{%- endmacro -%}}
+
 
 {{#
     Set pam_pwhistory.so PAM module options and values. In case the file
@@ -928,6 +934,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - not result_pwhistory_conf_check.stat.exists
 {{%- endmacro -%}}
+
 
 {{#
   This macro ensures the pam_faillock.so PAM module is enabled.
@@ -993,6 +1000,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - not result_authselect_present.stat.exists
 {{%- endmacro -%}}
+
 
 {{#
   This macro make sure the informed parameter from pam_faillock.so PAM module is properly set. In
@@ -1117,6 +1125,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - not result_faillock_conf_check.stat.exists
 {{%- endmacro -%}}
 
+
 {{#
 Macro for Ansible remediation for adding a kernel command line argument to the GRUB 2 bootloader.
 Part of the grub2_bootloader_argument template.
@@ -1158,6 +1167,7 @@ Part of the grub2_bootloader_argument template.
 {{% endif -%}}
 {{%- endmacro -%}}
 
+
 {{#
 Macro for Ansible remediation for removing a kernel command line argument from the GRUB 2 bootloader.
 Part of the grub2_bootloader_argument_absent template.
@@ -1190,6 +1200,7 @@ Part of the grub2_bootloader_argument_absent template.
   command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
 {{% endif -%}}
 {{%- endmacro -%}}
+
 
 {{#
   Macro to restrict permissions in home directories of interactive users

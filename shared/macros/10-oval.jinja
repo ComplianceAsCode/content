@@ -11,6 +11,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </affected>
 {{%- endmacro %}}
 
+
 {{#
   Constants.
 
@@ -98,6 +99,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </def-group>
 {{%- endmacro %}}
 
+
 {{#
   Macro to define the criterion of the OVAL check (Criterion definition).
 
@@ -130,6 +132,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 <criterion comment="{{{ comment }}}"
   test_ref="test_{{{ id_stem }}}{{{ suffix_id }}}" />
 {{%- endmacro %}}
+
 
 {{#
   Macro to define the OVAL test to be constructed (Test definition).
@@ -169,6 +172,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{%- endif %}}
 </ind:textfilecontent54_test>
 {{%- endmacro %}}
+
 
 {{#
   Macro to check if a parameter in a configuration file is set (Object definition).
@@ -238,6 +242,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
+
 {{#
   Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
 
@@ -270,21 +275,26 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </ind:textfilecontent54_state>
 {{%- endmacro %}}
 
+
 {{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
 {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) -}}}
 {{%- endmacro %}}
+
 
 {{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false, avoid_conflicting=false) -%}}
 {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir", avoid_conflicting=avoid_conflicting) }}}
 {{%- endmacro %}}
 
+
 {{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
 {{{- oval_line_in_file_object(path_or_filepath=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filename_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
 
+
 {{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='') -%}}
 {{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
+
 
 {{#
   Macro to define the OVAL criterion to check if the configuration file exists (Criterion definition).
@@ -296,6 +306,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_config_file_exists_criterion(path='') -%}}
 	<criterion comment="test if configuration file {{{ path }}} exists for {{{ rule_id }}}" test_ref="test_{{{ rule_id }}}_config_file_exists" />
 {{%- endmacro %}}
+
 
 {{#
   Macro to define the OVAL test to check if the configuration file exists (Test definition).
@@ -310,6 +321,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </unix:file_test>
 {{%- endmacro %}}
 
+
 {{#
   Macro to define the OVAL criterion that requires a file not to exist.
   The id of the test name will be test_<id>.
@@ -321,6 +333,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_file_absent_criterion(filepath) -%}}
   <criterion comment="Pass if there are no files matching pattern '{{{ filepath }}}' exist in the system" test_ref="test_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
 {{%- endmacro %}}
+
 
 {{#
   Macro to define the OVAL test to check if the configuration file exists (Test definition).
@@ -339,6 +352,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </unix:file_object>
 {{%- endmacro %}}
 
+
 {{#
   Macro to define the OVAL object to check if the configuration file exists (Object definition).
 
@@ -351,6 +365,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <unix:filepath operation="pattern match">^{{{ filepath_regex }}}</unix:filepath>
   </unix:file_object>
 {{%- endmacro %}}
+
 
 {{#
   Macro to define the OVAL test to check if there is a line in file with a pair of argument=value (Criterion definition).
@@ -376,6 +391,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is {{% if negate %}}not {{% endif %}}present in {{{ filepath }}}"
   test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" {{% if negate %}}negate="true" {{% endif %}}/>
 {{%- endmacro -%}}
+
 
 {{#
   Macro to define the OVAL test to check if there is a line in file with a pair of argument=value (Test definition).
@@ -421,6 +437,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_state>
 {{%- endmacro -%}}
 
+
 {{#
   High level macro to define the OVAL test to check if there is a line in file with a pair of argument=value.
 
@@ -448,6 +465,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </def-group>
 {{%- endmacro -%}}
 
+
 {{#
   High level macro to check if a particular combination of parameter and value in the ssh daemon configuration file is set.
   A case insensitive comparison is used in the prefix because sshd_config has case-insensitive parameters (but case-sensitive values).
@@ -467,6 +485,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_sshd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
 {{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
+
 
 {{#
   High level macro to check if a particular shell variable is set.
@@ -501,6 +520,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{{ oval_check_config_file(path, prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, quotes=quotes) }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to check if a particular combination of parameter and value in the Audit daemon configuration file is set.
 
@@ -519,6 +539,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
 {{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
+
 
 {{#
   High level macro to set a parameter in /etc/systemd/coredump.conf.
@@ -539,6 +560,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{{ oval_check_config_file("/etc/systemd/coredump.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="systemd-coredump", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section="Coredump") }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to check if a particular combination of parameter and value in the grub configuration file is set.
 
@@ -558,6 +580,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
+
 {{#
   To be removed macro. Prevents regression on sshd configuration rules.
 #}}
@@ -574,6 +597,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         {{% endif %}}
       </criteria>
 {{%- endmacro %}}
+
+
 {{#
   To be removed macro. Prevents regression on sshd configuration rules.
 #}}
@@ -590,6 +615,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         {{% endif %}}
       {{# Note that a criteria was left open #}}
 {{%- endmacro %}}
+
 
 {{#
   High level macro which checks configuration in an INI file.
@@ -616,6 +642,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{{ oval_check_config_file(path=path, prefix_regex="^\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
 {{%- endmacro %}}
 
+
 {{#
   Creates OVAL tests with given test_id which checks if package
   is not installed.
@@ -624,6 +651,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type package: str
 :param test_id: Suffix of the Ids in test, obj, and state elements
 :type test_id: str
+
 #}}
 {{%- macro oval_test_package_removed(package='', test_id='') -%}}
 {{% if pkg_system == "rpm" %}}
@@ -646,6 +674,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </linux:dpkginfo_object>
 {{% endif %}}
 {{%- endmacro -%}}
+
 
 {{#
   Creates OVAL tests with given test_id which checks if package
@@ -698,6 +727,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{% endif %}}
 {{%- endmacro -%}}
 
+
 {{#
   Macro which generates OVAL test for OpenShift Container Platform
   runtime process configuration.
@@ -725,6 +755,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <unix:command_line operation="pattern match">^.*[\s]+{{{ option }}}=.*({{{ value }}}).*([\s]+.*$|$)</unix:command_line>
   </unix:process58_state>
 {{%- endmacro -%}}
+
 
 {{#
   Macro which generates OVAL definition, test and object that check for contents
@@ -768,6 +799,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </def-group>
 {{%- endmacro %}}
 
+
 {{#
   Macro which generates the OVAL metadata section
 
@@ -798,6 +830,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
 {{%- endmacro %}}
+
 
 {{#
     Create a full OVAL check for dconf ini file.
@@ -853,6 +886,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 </def-group>
 {{%- endmacro %}}
+
 
 {{#
     Create a full OVAL check for an sshd parameter and value.
@@ -1009,10 +1043,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
      test_ref="test_mount_active_{{{ path | escape_id }}}_exists" />
 {{%- endmacro %}}
 
+
 {{%- macro mount_configured_fstab_criterion(path) %}}
    <criterion comment="The path {{{ path }}} is a mount point configured in /etc/fstab"
      test_ref="test_mount_configured_fstab_{{{ path | escape_id }}}_exists" />
 {{%- endmacro %}}
+
 
 {{%- macro mount_active_test_object(path) %}}
 {{%- set escaped_path = path | escape_id %}}
@@ -1026,6 +1062,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <linux:mount_point>{{{ path }}}</linux:mount_point>
   </linux:partition_object>
 {{%- endmacro %}}
+
 
 {{%- macro mount_configured_fstab_test_object(path) %}}
 {{%- set escaped_path = path | escape_id %}}

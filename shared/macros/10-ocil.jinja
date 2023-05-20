@@ -44,6 +44,7 @@ Standard audit OCIL clause
 the command does not return a line, or the line is commented out
 {{%- endmacro %}}
 
+
 {{#
 OCIL and OCIL clause for ensuring that a privileged command is audited.
 
@@ -63,6 +64,7 @@ ocil: |-
 
     -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 {{% endmacro %}}
+
 
 {{#
     OCIL for adding a syscall to audit logs
@@ -117,6 +119,7 @@ ocil: |
     If the system is configured to audit this activity, it will return a line.
 {{%- endmacro %}}
 
+
 {{#
     OCIL for adding a unsuccessful syscall to audit logs
 
@@ -146,6 +149,7 @@ ocil: |
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
 
+
 {{#
     OCIL and OCIL clause for adding a unsuccessful syscall to audit logs
 
@@ -159,7 +163,6 @@ ocil: |
 
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
-
 
 
 {{# Package macros #}}
@@ -301,6 +304,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{%- endif -%}}
 {{%- endmacro %}}
 
+
 {{#
     Inserts an OCIL Clause for a case when a service should be enabled.
 
@@ -370,6 +374,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
   {{%- endif -%}}
 {{%- endmacro %}}
+
 
 {{#
     Inserts an OCIL Clause for a case when a service should be disabled.
@@ -689,6 +694,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
     If <code>firewalld</code> is configured to prevent access, no output will be returned.
 {{%- endmacro %}}
 
+
 {{# Kernel modules macros #}}
 
 {{#
@@ -740,6 +746,7 @@ ocil: |-
 
 ocil_clause: "{{{ sebool }}} is not set as expected"
 {{%- endmacro %}}
+
 
 {{#
     Describe how to check if given SELinux boolean is set depending on a variable.
@@ -1110,6 +1117,7 @@ ocil: |-
     <pre>lockPref("{{config}}", "{{value}}");</pre>
 {{%- endmacro %}}
 
+
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification template
 
@@ -1167,6 +1175,7 @@ The output should be the following:
 
 {{%- endmacro %}}
 
+
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_o_trunc_write template
 
@@ -1195,6 +1204,7 @@ The output should be the following:
 -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
 
 {{%- endmacro %}}
+
 
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_rule_order template
@@ -1227,6 +1237,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
     -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
     -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro %}}
+
 
 {{# OpenShift Logging Macros #}}
 

@@ -174,6 +174,7 @@ spec:
         overwrite: true
 {{%- endmacro -%}}
 
+
 {{#
   Macro which generates Kubernetes remediation in MachineConfig format with
   dependencies reflected:
@@ -218,7 +219,6 @@ spec:
     - source_content (String): The source of the content to be applied.
     - vals (list): The list of required values for this remediation to be applies for example: var_something
 #}}
-
 {{%- macro kubernetes_machine_config_file_with_required_value(path='', file_permissions_mode='', source='', vals=[]) -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
@@ -469,11 +469,13 @@ AuditBackend=LinuxAudit
 {{{ kubernetes_machine_config_file_with_dependencies(path='/etc/usbguard/usbguard-daemon.conf', file_permissions_mode='0600', source=usbguard_config_source(), deps=deps, ocp_version_range='>=4.7.0') }}}
 {{%- endmacro -%}}
 
+
 {{% macro kubernetes_machineconfig_audit_add_watch_rule(path='', permissions='', key='') -%}}
 {{%- set audit_watch_rule = "-w " + path + " -p " + permissions + " -k " + key + "\n" -%}}
 {{%- set audit_watch_rule_path = "/etc/audit/rules.d/75-" + path | replace('/', '')  + "-" + permissions + "-" + key + ".rules" -%}}
 {{{ kubernetes_machine_config_file(path=audit_watch_rule_path, file_permissions_mode='0600', source=audit_watch_rule) }}}
 {{%- endmacro %}}
+
 
 {{% macro audit_syscalls_rule(syscalls=[], key='', fields='') %}}
 {{%- for syscall in syscalls -%}}
@@ -489,6 +491,7 @@ AuditBackend=LinuxAudit
 {{% macro kubernetes_machineconfig_audit_add_syscall_rule(path='', syscalls=[], key='', fields='') -%}}
 {{{ kubernetes_machine_config_file(path=path, file_permissions_mode='0600', source=audit_syscalls_rule(syscalls, key, fields)) }}}
 {{%- endmacro %}}
+
 
 {{% macro rhcos_ospp_audit_rules() -%}}
 ## This content is a section of an Audit config snapshot recommended for {{{full_name|urlencode}}} systems that target OSPP compliance.
@@ -541,6 +544,7 @@ AuditBackend=LinuxAudit
 {{{ kubernetes_machine_config_file(path='/etc/audit/rules.d/30-ospp-v42-remediation.rules', file_permissions_mode='0600', source=rhcos_ospp_audit_rules()) }}}
 {{%- endmacro %}}
 
+
 {{% macro rhcos_logrotate_config() -%}}
 # see "man logrotate" for details
 # rotate log files daily
@@ -571,6 +575,7 @@ include /etc/logrotate.d
 {{% macro kubernetes_machineconfig_logrotate_config() -%}}
 {{{ kubernetes_machine_config_file(path='/etc/logrotate.conf', file_permissions_mode='0644', source=rhcos_logrotate_config()) }}}
 {{%- endmacro %}}
+
 
 {{% macro rhcos_auditd_config() -%}}
 #
@@ -622,6 +627,7 @@ plugin_dir = /etc/audit/plugins.d
 {{{ kubernetes_machine_config_file(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config()) }}}
 {{%- endmacro %}}
 
+
 {{% macro kubernetes_machineconfig_auditd_config_with_required_value(vals=[]) -%}}
 {{{ kubernetes_machine_config_file_with_required_value(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config(),vals=vals)}}}
 {{%- endmacro %}}
@@ -656,6 +662,7 @@ spec:
         path: /etc/chrony.d/ntp-server.conf
 {{%- endmacro %}}
 
+
 {{% macro ntp_server() -%}}
 #
 # This file controls the configuration of the ntp server
@@ -681,6 +688,7 @@ spec:
 {{{ expand_yaml_path(path, parameter) }}}: {{.{{{ value }}}}}
 {{%- endmacro -%}}
 
+
 {{#
    Macro which generates Kubernetes remediation in kubelet config format:
      - path (String): path for the variable
@@ -696,6 +704,7 @@ metadata:
 spec:
 {{{ expand_yaml_path(path, parameter) }}}: {{.{{{ value }}}}}
 {{%- endmacro -%}}
+
 
 {{#
    Macro which generates Kubernetes remediation in kubelet config format:

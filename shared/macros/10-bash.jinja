@@ -149,7 +149,6 @@ fi
 {{#
     Macro to perform remediation for 'audit_rules_privileged_commands' rule
 
-
 :param tool:		    tool used to load audit rules either 'auditctl' or 'augenrules'
 :param min_auid:		minimum original ID the user logged in with
 
@@ -375,6 +374,7 @@ done
 {{%- endif %}}
 {{%- endmacro %}}
 
+
 {{#
     Macro that copies the audit rules into a file.
     The purpose is to create exactly the same content in the file specified by filename argument
@@ -390,6 +390,7 @@ cat <<EOF > "{{{ filename }}}"
 {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
 {{%- endmacro -%}}
+
 
 {{#
    Set parameter in /etc/audit/auditd.conf
@@ -471,7 +472,6 @@ EOF
     * if rule exists, also verifies the -w bits match the requirements
     * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
       audit rules file, depending on the tool which was used to load audit rules
-
 
 :param audit tool                      tool used to load audit rules, either 'auditctl', or 'augenrules'
 :param path:                          	value of -w audit rule's argument
@@ -676,6 +676,7 @@ do
     {{{ bash_fix_audit_syscall_rule("auditctl", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") | indent(4) }}}
 done
 {{%- endmacro -%}}
+
 
 {{#
     Disable prelinking in sysconfig
@@ -906,7 +907,6 @@ done
 Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
 preference if it does not exist.
 
-
 Example Call(s):
 
     Without string or variable::
@@ -1056,6 +1056,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Validate an authselect custom profile integrity and ensures the correct file path is defined
     in the "PAM_FILE_PATH" variable. The macros which change PAM files are the same regardless of
@@ -1075,6 +1076,7 @@ PAM_FILE_NAME=$(basename "{{{ pam_file }}}")
 PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
 {{{ bash_apply_authselect_changes() }}}
 {{%- endmacro -%}}
+
 
 {{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.
@@ -1102,6 +1104,7 @@ else
     {{{ bash_ensure_pam_module_line(pam_file, 'password', control, 'pam_pwhistory.so', after_match) | indent(4) }}}
 fi
 {{%- endmacro -%}}
+
 
 {{#
     Set pam_pwhistory.so PAM module options and values. In case the file
@@ -1145,6 +1148,7 @@ else
     fi
 fi
 {{%- endmacro -%}}
+
 
 {{#
     Sets PAM faillock module options and values. In case the file
@@ -1214,6 +1218,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Print a message to stderr and exit the shell
 
@@ -1226,6 +1231,7 @@ fi
 printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 {{{ action }}} {{{ rc }}}
 {{%- endmacro %}}
+
 
 {{#
     Add an entry to a text configuration file
@@ -1242,7 +1248,6 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 :param prefix_regex: regular expression describing allowed leading characters at each line
 
 #}}
-
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
     {{%- set new_line = parameter+separator+value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
@@ -1259,6 +1264,7 @@ fi
 {{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive, sed_path_separator=sed_path_separator) }}}
 {{%- endmacro -%}}
 
+
 {{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/") -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
@@ -1271,6 +1277,7 @@ fi
 LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
 {{%- endmacro -%}}
 
+
 {{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true, filename_glob="*") -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
@@ -1279,6 +1286,7 @@ LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }
     {{%- endif -%}}
 LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/{{{ filename_glob }}}
 {{%- endmacro -%}}
+
 
 {{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true, sed_path_separator="/") -%}}
     {{%- if insensitive -%}}
@@ -1328,6 +1336,7 @@ fi
 rm "{{{ path }}}.bak"
 {{%- endmacro -%}}
 
+
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
 
@@ -1341,35 +1350,42 @@ cat << 'EOF' > {{{ filepath }}}
 EOF
 {{%- endmacro %}}
 
+
 {{# Strips anchors regex around the banner text #}}
 {{% macro bash_deregexify_banner_anchors(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/^\^\(.*\)\$$/\1/g')
 {{%- endmacro %}}
+
 
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro bash_deregexify_multiple_banners(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/^(\(.*\.\)|.*)$/\1/g')
 {{%- endmacro %}}
 
+
 {{# Strips whitespace or newline regex #}}
 {{% macro bash_deregexify_banner_space(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\[\\s\\n\]+/ /g')
 {{%- endmacro %}}
+
 
 {{# Strips newline or newline escape sequence regex #}}
 {{% macro bash_deregexify_banner_newline(banner_var_name, newline) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\\\n)+)/{{{ newline }}}/g')
 {{%- endmacro %}}
 
+
 {{# Strips newline token for a newline escape sequence regex #}}
 {{% macro bash_deregexify_banner_newline_token(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(n)\*/\\n/g')
 {{%- endmacro %}}
 
+
 {{# Strips backslash regex #}}
 {{% macro bash_deregexify_banner_backslash(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\\//g')
 {{%- endmacro %}}
+
 
 {{% macro bash_ini_file_set(filename, section, key, value) -%}}
 {{% set config_dir = "/".join(filename.split("/")[:-1]) %}}
@@ -1393,6 +1409,7 @@ else
 fi
 {{%- endmacro %}}
 
+
 {{%- macro bash_sudo_remove_config(parameter, pattern) -%}}
 for f in /etc/sudoers /etc/sudoers.d/* ; do
   if [ ! -e "$f" ] ; then
@@ -1409,6 +1426,7 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
   fi
 done
 {{%- endmacro -%}}
+
 
 {{% macro bash_sssd_ldap_config(parameter, value) -%}}
 SSSD_CONF="/etc/sssd/sssd.conf"
@@ -1437,6 +1455,7 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
         fi
 fi
 {{%- endmacro %}}
+
 
 {{#
     Check whether or not a package is installed.
@@ -1472,6 +1491,7 @@ cce="{{{ cce_identifiers['cce'] }}}"
     symlinks.
 
     :param file:     file to check
+
 #}}
 {{%- macro bash_ensure_nl_at_eof(file) -%}}
 {{#- Plain sed '$a\' updates stat even if it dones not change the file. -#}}
@@ -1498,7 +1518,6 @@ fi
       With a variable::
 
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
-
 
 :param config_file: Configuration file that will be modified
 :param key: Configuration option to change
@@ -1530,6 +1549,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Macro to restrict permissions in home directories of interactive users.
 
@@ -1546,6 +1566,7 @@ for home_dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid
     {{%- endif %}}
 done
 {{%- endmacro -%}}
+
 
 {{#
     To see how args corresponds to an :code:`/etc/fstab` entry, see
@@ -1567,6 +1588,7 @@ do
     {{{ bash_ensure_mount_option_in_fstab("${vfstype_point//\\\\/\\\\\\\\}", mount_opt, fs_spec, type) | indent(4) }}}
 done
 {{%- endmacro %}}
+
 
 {{#
 Ensures that given mount point is in :code:`/etc/fstab`.
@@ -1602,6 +1624,7 @@ elif ! grep "$mount_point_match_regexp" /etc/fstab | grep "{{{ mount_opt }}}"; t
 fi
 {{%- endmacro %}}
 
+
 {{#
     Check whether mount_point is present in /etc/fstab; print err to stderr and return 1 if not
 
@@ -1617,6 +1640,7 @@ grep "$mount_point_match_regexp" -q /etc/fstab \
             echo "Not remediating, because there is no record of {{{ mount_point }}} in /etc/fstab" >&2; return 1; }
 {{%- endmacro %}}
 
+
 {{#
   Ensure that partition is mounted at mount_point with correct options, but only if the partition
   is already mounted.
@@ -1629,6 +1653,7 @@ if mkdir -p "{{{ mount_point }}}"; then
     fi
 fi
 {{%- endmacro %}}
+
 
 {{#
 Based on example audit syscall rule definitions as outlined in
@@ -1656,7 +1681,6 @@ existing audit rule. The audit rule will retain the key it already had.
 :param syscall: The syscall to ensure presense among audit rules. For example, "chown"
 :param syscall_groupings: Other syscalls that can be grouped with 'syscall' as a space separated list. For example, "fchown lchown fchownat"
 :param  key: The key to use when appending a new rule
-
 
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
@@ -1831,6 +1855,7 @@ if [ "$skip" -ne 0 ]; then
 fi
 {{%- endmacro %}}
 
+
 {{#
     Ensures that /etc/default/grub file contains the arg_name_value.
 
@@ -1849,6 +1874,7 @@ else
 fi
 {{%- endmacro %}}
 
+
 {{#
 Macro for Bash remediation for adding a kernel command line argument to the GRUB 2 bootloader.
 Part of the grub2_bootloader_argument template.
@@ -1866,6 +1892,7 @@ Part of the grub2_bootloader_argument template.
 {{{ grub_command("add", arg_name_value) }}}
 {{% endmacro %}}
 
+
 {{#
     Ensures that /etc/default/grub file does not contain the arg_name_value.
 
@@ -1878,6 +1905,7 @@ if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; t
        sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
 fi
 {{%- endmacro %}}
+
 
 {{#
 Macro for Bash remediation for removing a kernel command line argument from the GRUB 2 bootloader.
@@ -1893,6 +1921,7 @@ Part of the grub2_bootloader_argument_absent template.
 {{% endif -%}}
 {{{ grub_command("remove", arg_name) }}}
 {{% endmacro %}}
+
 
 {{#
 This macro creates a bash conditional which is used to determine if a
@@ -1921,6 +1950,7 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 {{% endif %}}
 {{%- endmacro -%}}
 
+
 {{#
 This macro generates code that gets version of an installed RPM package.
 
@@ -1930,6 +1960,7 @@ This macro generates code that gets version of an installed RPM package.
 {{%- macro bash_get_rpm_package_version(package) -%}}
 $(epoch=$(rpm -q --queryformat '%{EPOCH}' {{{ package }}}); version=$(rpm -q --queryformat '%{VERSION}' {{{ package }}}); [ "$epoch" = "(none)" ] && echo "0:$version" || echo "$epoch:$version")
 {{%- endmacro -%}}
+
 
 {{#
 This macro creates a Bash conditional that compares version of the package
@@ -1963,6 +1994,7 @@ https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-orderi
 { real="{{{ real }}}"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", op, "$expected") }}}; }
 {{%- endmacro -%}}
 
+
 {{#
 This macro generates comparison code based on the operator.
 
@@ -1993,6 +2025,7 @@ printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
 {{%- endif -%}}
 {{%- endmacro -%}}
 
+
 {{#
 This macro creates a Bash conditional which uses rpm to check if a package passed as a parameter is installed.
 
@@ -2010,6 +2043,7 @@ rpm --quiet -q {{{ package }}}
 {{%- endif -%}}
 {{%- endmacro %}}
 
+
 {{#
 This macro generates code that gets version of an installed DEB package.
 
@@ -2020,6 +2054,7 @@ This macro generates code that gets version of an installed DEB package.
 {{# We don't take the "release" part into account. #}}
 dpkg-query -f='${Version}\n' --show {{{ package }}} | cut -f1 -d-
 {{%- endmacro -%}}
+
 
 {{#
 This macro creates a Bash conditional that compares version of the DEB package
@@ -2034,6 +2069,7 @@ with a given version.
 {{%- set op_codes = ({"<":"lt", "<=":"le", "==":"eq", "!=":"ne", ">":"gt", ">=":"ge"}) -%}}
 { real="$({{{ bash_get_dpkg_package_version(package) }}})"; ver="{{{ ver }}}"; dpkg --compare-versions "$real" "{{{ op_codes[op] }}}" "$ver"; }
 {{%- endmacro -%}}
+
 
 {{#
 This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
@@ -2050,6 +2086,7 @@ dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/
 dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
 {{%- endif -%}}
 {{%- endmacro -%}}
+
 
 {{#
 Macro to replace configuration setting(s) in the Chromium stig policy (.json) file or add the
@@ -2328,6 +2365,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Remove a PAM module option from an existing PAM module line. This macro is compatible with
     custom authselect profiles if the system relies on authselect. Otherwise, the PAM files will
@@ -2381,6 +2419,7 @@ else
 fi
 {{%- endmacro %}}
 
+
 {{#
     Macro to insert script to find Mozilla Firefox location on the target system.
 
@@ -2417,6 +2456,7 @@ grep -qP "^ID=[\"']?{{{ os_id }}}[\"']?$" "{{{ os_release_path }}}"
 {{%- endif -%}}
 {{%- endmacro %}}
 
+
 {{#
 This macro generates bash condition that compares the actual version of the
 operating system with the expected version using the given operator.
@@ -2429,6 +2469,7 @@ operating system with the expected version using the given operator.
 {{%- macro bash_compare_version_os_linux(expected, op, os_release_path="/etc/os-release") -%}}
 { real="$({{{ bash_get_version_os_linux(os_release_path) }}})"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", op, "$expected") }}}; }
 {{%- endmacro -%}}
+
 
 {{#
 This macro generates code that retrieves the operating system version

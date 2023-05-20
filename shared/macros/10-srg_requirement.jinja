@@ -9,6 +9,7 @@
 {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect {{{ path }}}.
 {{%- endmacro %}}
 
+
 {{#
     Generate a SRG requirement text for auditing all calls to a syscall.
 
@@ -19,6 +20,7 @@
 {{% macro srg_requirement_audit_syscall(event) -%}}
 Successful/unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
 {{%- endmacro %}}
+
 
 {{#
     Generate a SRG requirement text for auditing unsuccessful calls to a syscall.
@@ -31,6 +33,7 @@ Successful/unsuccessful uses of the {{{ event }}} system call in {{{ full_name }
 Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
 {{%- endmacro %}}
 
+
 {{#
     Generate a SRG requirement text for auditing a command.
 
@@ -41,6 +44,7 @@ Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must gen
 {{% macro srg_requirement_audit_command(command) %}}
 {{{ full_name }}} must audit all uses of the {{{ command }}} command.
 {{%- endmacro %}}
+
 
 {{#
     Generate a SRG requirement text for package removal.
@@ -53,6 +57,7 @@ Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must gen
 {{{ full_name }}} must not have the {{{ package }}} package installed.
 {{%- endmacro %}}
 
+
 {{#
     Generate a SRG requirement text for package removal.
 
@@ -64,6 +69,7 @@ Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must gen
 The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
 {{%- endmacro %}}
 
+
 {{#
     Generate a SRG requirement text for package installed.
 
@@ -74,6 +80,7 @@ The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
 {{% macro srg_requirement_package_installed(package) %}}
 {{{ full_name }}} must have the {{{ package }}} package installed.
 {{%- endmacro %}}
+
 
 {{#
     Generate a SRG requirement text for service enabled.

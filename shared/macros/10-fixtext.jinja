@@ -7,6 +7,7 @@
 :type key: str
 :param rule_path: Full path to where the rule wil
 :type rule_path: str
+
 #}}
 {{% macro fixtext_audit_file_watch_rule(path, key, rule_path) -%}}
 Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that <tt>"{{{ path }}}"</tt>.
@@ -17,6 +18,7 @@ Add or update the following file system rule to <tt>"{{{ rule_path }}}"</tt>:
 
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
+
 
 {{% macro fixtext_audit_rules(event, key, event_group, extra_params=False, flag=None) -%}}
 Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in "/etc/audit/audit.rules" and adding the following rules to "/etc/audit/rules.d/{{{ key }}}.rules" or updating the existing rules in files in the "/etc/audit/rules.d/" directory:
@@ -47,6 +49,7 @@ It's allowed to group this system call within the same line as {{{ event_group }
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
+
 {{#
     Generate a fixtext for audit rules for file deletion events
 
@@ -57,6 +60,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{% macro fixtext_audit_rules_file_deletion_events(syscall) -%}}
 {{{ fixtext_audit_rules(syscall, "delete", '"rename", "unlink", "rmdir", "renameat", and "unlinkat"') }}}
 {{% endmacro %}}
+
 
 {{#
     Generate a fixtext for audit rules for dac modification events - chmod
@@ -69,16 +73,6 @@ The audit daemon must be restarted for the changes to take effect.
 {{{ fixtext_audit_rules(syscall, "perm_mod", '"chmod", "fchmod" and "fchmodat"') }}}
 {{% endmacro %}}
 
-{{#
-    Generate a fixtext for audit rules for dac modification events - chown
-
-:param syscall: syscall name
-:type path: str
-
-#}}
-{{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
-{{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
-{{% endmacro %}}
 
 {{#
     Generate a fixtext for audit rules for dac modification events - chown
@@ -90,6 +84,19 @@ The audit daemon must be restarted for the changes to take effect.
 {{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
 {{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
 {{% endmacro %}}
+
+
+{{#
+    Generate a fixtext for audit rules for dac modification events - chown
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
+{{% endmacro %}}
+
 
 {{#
     Generate a fixtext for audit rules for dac modification events - attr
@@ -101,6 +108,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{% macro fixtext_audit_rules_dac_modification_attr(syscall) -%}}
 {{{ fixtext_audit_rules(syscall, "perm_mod", '"fremovexattr", "lremovexattr", "removexattr", "fsetxattr", "lsetxattr" and "setxattr"') }}}
 {{% endmacro %}}
+
 
 {{#
     Generate a fixtext for audit rules for unsuccessful file modification
@@ -118,6 +126,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{{ fixtext_audit_rules(syscall, "access", syscall_grouping_text, extra_params=True) }}}
 {{% endmacro %}}
 
+
 {{#
     Generate a fixtext for audit rules for unsuccessful file modification
     when O_CREAT flag is specified.
@@ -133,6 +142,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{{ fixtext_audit_rules(syscall, "unsuccesful-create", '"open", "openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;0100") }}}
 {{% endmacro %}}
 
+
 {{#
     Generate a fixtext for audit rules for unsuccessful file modification
     when O_TRUNC_WRITE flag is specified.
@@ -147,6 +157,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{% macro fixtext_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, pos) -%}}
 {{{ fixtext_audit_rules(syscall, "unsuccesful-modification", '"openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;01003") }}}
 {{% endmacro %}}
+
 
 {{#
     Generate a fixtext for ordering of audit rules for unsuccessful file modification.
@@ -165,6 +176,7 @@ The audit daemon must be restarted for the changes to take effect.
 
     The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
+
 
 {{#
     Human readable text for how to fix ini files
@@ -194,6 +206,7 @@ The audit daemon must be restarted for the changes to take effect.
     $ sudo dconf update
 {{%- endmacro -%}}
 
+
 {{#
     Human readable text for how to lock dconf settings
 
@@ -214,6 +227,7 @@ The audit daemon must be restarted for the changes to take effect.
 
     {{{ section }}}
 {{%- endmacro -%}}
+
 
 {{#
     Describe how to fix an ssh configure
@@ -241,6 +255,7 @@ The audit daemon must be restarted for the changes to take effect.
 
 {{%- endmacro -%}}
 
+
 {{#
     Describe how to enable a service
 
@@ -253,6 +268,7 @@ The audit daemon must be restarted for the changes to take effect.
 
     $ sudo systemctl enable --now {{{ service }}}
 {{%- endmacro -%}}
+
 
 {{#
     Describe how to disable a service
@@ -269,6 +285,7 @@ The audit daemon must be restarted for the changes to take effect.
     $ sudo systemctl mask --now {{{ service }}}
 {{%- endmacro -%}}
 
+
 {{#
     Describe how to disable a socket
 
@@ -283,6 +300,7 @@ The audit daemon must be restarted for the changes to take effect.
 
     $ sudo systemctl mask --now {{{ socket }}}
 {{%- endmacro -%}}
+
 
 {{#
     Macro describing fix for sysctl rules.
@@ -301,6 +319,7 @@ Load settings from all system configuration files with the following command:
 
 $ sudo sysctl --system
 {{%- endmacro %}}
+
 
 {{#
     Describe fix for GRUB 2 bootloader kernel argument
@@ -322,6 +341,7 @@ Run the following command:
 
 $ sudo {{{ grub_command("add", argument + "=" + value) }}}
 {{% endmacro %}}
+
 
 {{#
     Describe fix for removal of a GRUB 2 bootloader kernel argument
@@ -352,12 +372,14 @@ $ sudo {{{ grub_command("remove", argument) }}}
 :type param: str
 :param value: The value of the audit configuration.
 :type value: str
+
 #}}
 {{% macro fixtext_audit_configuration(param, value) -%}}
 Edit the file "/etc/audit/auditd.conf" and add or edit the following line:
 {{{ param }}} = {{{ value }}}
 
 {{%- endmacro %}}
+
 
 {{#
 Fixtext macro describing configuration of mount option,
@@ -372,6 +394,7 @@ for rules using the mount_option template.
 {{% macro fixtext_mount_option(mountpoint, mountoption) -%}}
 Modify "/etc/fstab" to use the "{{{ mountoption }}}" option on the "{{{ mountpoint }}}" directory.
 {{%- endmacro %}}
+
 
 {{#
 Fixtext macro describing how to audit a command.
@@ -392,6 +415,7 @@ Configure the audit system to generate an audit event for any successful/unsucce
 The audit daemon must be restarted for the changes to take effect.
 {{%- endmacro %}}
 
+
 {{#
 Fixtext for ensuring that a privileged command is audited.
 
@@ -399,6 +423,7 @@ Fixtext for ensuring that a privileged command is audited.
 :type cmd: str
 :param path_prefix: The directory the command is in
 :type path_prefix: str
+
 #}}
 {{% macro fixtext_audit_rules_privileged_commands(cmd, path_prefix, key) -%}}
 Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "{{{ cmd }}}" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
@@ -407,6 +432,7 @@ Configure {{{ full_name }}} to generate audit records upon successful/unsuccessf
 
 The audit daemon must be restarted for the changes to take effect.
 {{%- endmacro %}}
+
 
 {{#
 Fixtext for removing a package
@@ -421,6 +447,7 @@ To remove the {{{ full_name }}} package {{{ package }}} run the following comman
 {{{ package_remove(package) }}}
 {{%- endmacro %}}
 
+
 {{#
 Fixtext for installing a package
 
@@ -433,6 +460,7 @@ To install the {{{ full_name }}} package {{{ package }}} run the following comma
 
 {{{ package_install(package) }}}
 {{%- endmacro %}}
+
 
 {{#
 Fixtext for disabling a kernel module
@@ -452,6 +480,7 @@ blacklist {{{ module }}}
 Reboot the system for the settings to take effect.
 {{%- endmacro %}}
 
+
 {{#
 Fixtext for setting the owner on a file.
 
@@ -466,6 +495,7 @@ Change the owner of the file {{{ file }}} to {{{ owner }}} by running the follow
 
 $ sudo chown {{{ owner }}} {{{ file }}}
 {{%- endmacro %}}
+
 
 {{#
 Fixtext for setting the group owner on a file.
@@ -482,6 +512,7 @@ Change the group of the file {{{ file }}} to {{{ group }}} by running the follow
 $ sudo chgrp {{{ group }}} {{{ file }}}
 {{%- endmacro %}}
 
+
 {{#
 Fixtext for setting the owner on a directory.
 
@@ -497,6 +528,7 @@ Change the owner of the directory {{{ file }}} to {{{ owner }}} by running the f
 $ sudo chown {{{ owner }}} {{{ file }}}
 {{%- endmacro %}}
 
+
 {{#
 Fixtext for setting the group owner on a directory.
 
@@ -511,6 +543,7 @@ Change the group of the directory {{{ file }}} to {{{ group }}} by running the f
 
 $ sudo chgrp {{{ group }}} {{{ file }}}
 {{%- endmacro %}}
+
 
 {{#
 Fixtext for setting the permissions on a directory.
@@ -543,6 +576,7 @@ Configure the "{{{ file }}}" file to "{{{ mode }}}" by running the following com
 $ sudo chmod {{{ mode }}} {{{ file }}}
 {{%- endmacro %}}
 
+
 {{#
 Fixtext for having a mount point on another partition
 
@@ -553,6 +587,7 @@ Fixtext for having a mount point on another partition
 {{% macro fixtext_separate_partition(part) -%}}
 Migrate the "{{{ part }}}" path onto a separate file system.
 {{%- endmacro %}}
+
 
 {{#
 Fixtext for how to restrict RBAC permissions for cluster logging
