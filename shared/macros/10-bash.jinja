@@ -2237,18 +2237,22 @@ done <   <({{{ command_and_its_args }}})
 
 
 {{#
-  # Ensure key is set to correct value under a correct section in an .ini style config file
+    Ensure key is set to correct value under a correct section in an .ini style config file
+
+Example macro invocation(s)::
+
+    {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1") }}}
+    {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd") }}}
 
 :param files:   list of space-separated files to add key = value to (may contain wildcards)
                 if none contain section, create and append to FIRST file
+:type files: str
 :param section: section to add key = value under
+:type section: str
 :param key:     key
+:type key: str
 :param value:   value
-
-Example macro invocation(s):
-
-    bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1")
-    bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd")
+:type value: str
 
 #}}
 {{% macro bash_ensure_ini_config(files, section, key, value) -%}}
