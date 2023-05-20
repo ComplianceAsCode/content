@@ -19,8 +19,10 @@
     Includes a deprecation warning in rules which are no longer recommended in favor of a similar
     and more updated rule.
 
-    :param rule: Rule which replaces the deprecated rule.
-    :param release: Release number since the rule is officially deprecated.
+:param rule: Rule which replaces the deprecated rule.
+:type rule: str
+:param release: Release number since the rule is officially deprecated.
+:type release: str
 
 #}}
 {{% macro warning_rule_deprecated_by(rule, release='') %}}
