@@ -791,17 +791,20 @@ dconf update
 
 
 {{#
-    Macro to enable or disable a particular service.
+Macro to enable or disable a particular service.
 
     Examples::
 
-    bash_service_command("enable", "bluetooth")
-    bash_service_command("disable", "bluetooth.service")
-    bash_service_command("disable", "rsh.socket", xinetd="rsh")
+        bash_service_command("enable", "bluetooth")
+        bash_service_command("disable", "bluetooth.service")
+        bash_service_command("disable", "rsh.socket", xinetd="rsh")
 
 :param service_state: Desired state of the service
+:type service_state: str
 :param service: The service to change
+:type service: str
 :param xinetd: Set the xinetd for the service. Defaults to empty string.
+:type xinetd: str
 
 #}}
 {{%- macro bash_service_command(service_state, service, xinetd="") -%}}
