@@ -20,12 +20,19 @@ Then, assume that variables of that names are defined and contain the correct va
     type control module option=valueRegexArg
 
 :param pamFile:         PAM config file
+:type pamFile: str
 :param type:            PAM module interface
+:type type: str
 :param control:         PAM control flags
+:type control: str
 :param module:          PAM module name
+:type module: str
 :param option:          PAM module option
+:type option: str
 :param valueRegexArg:   PAM module option argument regex pattern
+:type valueRegexArg: str
 :param defaultValueArg: PAM module option argument default value
+:type defaultValueArg: str
 
 #}}
 {{%- macro bash_ensure_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
