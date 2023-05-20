@@ -163,13 +163,15 @@ fi
 {{#
     Macro to perform remediation for 'audit_rules_privileged_commands' rule
 
-:param tool:		    tool used to load audit rules either 'auditctl' or 'augenrules'
-:param min_auid:		minimum original ID the user logged in with
-
     Example macro invocation(s)::
 
          perform_audit_rules_privileged_commands_remediation("auditctl", "500")
          perform_audit_rules_privileged_commands_remediation("augenrules", "1000")
+
+:param tool: tool used to load audit rules either 'auditctl' or 'augenrules'
+:type tool: str
+:param min_auid: minimum original ID the user logged in with
+:type min_auid: str
 
 #}}
 {{%- macro bash_perform_audit_rules_privileged_commands_remediation(tool, min_auid) -%}}
