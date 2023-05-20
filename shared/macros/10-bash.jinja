@@ -1079,7 +1079,8 @@ fi
     the macro will properly locate the correct profile and file to be edited in the authselect
     context. This sequence of commands is used in multiple PAM related macros.
 
-    :param pam_file:    PAM config file.
+:param pam_file:    PAM config file.
+:type pam_file: str
 
 #}}
 {{%- macro bash_ensure_pam_variables_and_authselect_profile(pam_file) -%}}
