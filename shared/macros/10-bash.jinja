@@ -2111,9 +2111,12 @@ printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
 This macro creates a Bash conditional which uses rpm to check if a package passed as a parameter is installed.
 
 :param package: package name
+:type package: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
     The version always needs to contain epoch. If the package has no epoch, please prepend "0:".
+:type ver: str
 
 #}}
 {{%- macro bash_pkg_conditional_rpm(package, op=None, ver=None) -%}}
