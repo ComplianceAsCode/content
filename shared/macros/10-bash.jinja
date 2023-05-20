@@ -1274,8 +1274,11 @@ fi
     Print a message to stderr and exit the shell
 
 :param message: The message to print.
+:type message: str
 :param rc: The error code (optional, default is 1)
+:type rc: int
 :param action: What to do (optional, default is 'exit', can be also 'return' or anything else)
+:type action: str
 
 #}}
 {{% macro die(message, rc=1, action="exit") -%}}
