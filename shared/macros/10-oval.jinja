@@ -497,7 +497,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :param value: The variable value WITHOUT QUOTES.
 :type value: str
 :param application: The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
-:type value: application
+:type application: str
 :param no_quotes: If set, the check will require that the RHS of the assignment is the literal value, without quotes. If no_quotes is false, then one level of single or double quotes won't be regarded as part of the value by the check.
 :type no_quotes: bool
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
