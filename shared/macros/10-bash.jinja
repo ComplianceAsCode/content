@@ -1735,18 +1735,29 @@ for further details.
 
 Notes:
 
-* The 2-nd up to 4-th arguments are used to determine how many existing audit rules will be inspected for resemblance with the new audit rule the macro is going to add.
-* The macro's similarity check uses the 5-th argument to optimize audit rules definitions (merge syscalls of the same group into one rule) to avoid the "single-syscall-per-audit-rule" performance penalty.
-* The key argument (7-th argument) is not used when the syscall is grouped to an
-existing audit rule. The audit rule will retain the key it already had.
+* The 2-nd up to 4-th arguments are used to determine how many existing audit
+  rules will be inspected for resemblance with the new audit rule the macro
+  is going to add.
+* The macro's similarity check uses the 5-th argument to optimize audit rules
+  definitions (merge syscalls of the same group into one rule) to avoid the
+  "single-syscall-per-audit-rule" performance penalty.
+* The key argument (7-th argument) is not used when the syscall is grouped to
+  an existing audit rule. The audit rule will retain the key it already had.
 
-:param audit_tool:  tool used to load audit rules, either 'auditctl', or 'augenrules
+:param tool:  tool used to load audit rules, either 'auditctl', or 'augenrules
+:type tool: str
 :param action_arch_filters: The action and arch filters of the rule. For example, "-a always,exit -F arch=b64"
+:type action_arch_filters: str
 :param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
+:type other_filters: str
 :param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:type auid_filters: str
 :param syscall: The syscall to ensure presense among audit rules. For example, "chown"
+:type syscall: str
 :param syscall_groupings: Other syscalls that can be grouped with 'syscall' as a space separated list. For example, "fchown lchown fchownat"
-:param  key: The key to use when appending a new rule
+:type syscall_groupings: str
+:param key: The key to use when appending a new rule
+:type key: str
 
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
