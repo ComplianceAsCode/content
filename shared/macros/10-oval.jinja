@@ -848,8 +848,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type value: str
 :param application: What application this applies to
 :type application: str
+:param section: What section this applies to
+:type section: str
 :param quotes:  If non-empty, one level of matching quotes is considered when checking the value. Specify one or more quote types as a string.  For example, for shell quoting, specify quotes="'\""), which will make sure that value, 'value' and "value" are matched, but 'value" or '"value"' won't be.
-:type value: str
+:type quotes: str
 :param lock_path: Path to lock file
 :type lock_path: str
 
