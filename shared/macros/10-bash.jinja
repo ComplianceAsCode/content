@@ -1291,15 +1291,27 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
     Add an entry to a text configuration file
 
 :param path: path of the configuration file
+:type path: str
 :param parameter: the parameter to be set in the configuration file
+:type parameter: str
 :param value: the value of the parameter to be set in the configuration file
+:type value: str
 :param create: whether create the file specified by path if the file does not exits
+:type create: bool
 :param insert_after: inserts the entry right after first line that matches regular expression specified by this argument, set to EOF to insert at the end of the file
+:type insert_after: str
 :param insert_before: inserts the entry right before first line that matches regular expression specified by this argument, set to BOF to insert at the beginning of the file
+:type insert_before: str
 :param insensitive: ignore case
+:type insensitive: bool
 :param separator: separates parameter from the value (literal)
+:type separator: str
 :param separator_regex: regular expression that describes the separator and surrounding whitespace
+:type separator_regex: str
 :param prefix_regex: regular expression describing allowed leading characters at each line
+:type prefix_regex: str
+:param sed_path_separator:
+:type sed_path_separator: char
 
 #}}
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
