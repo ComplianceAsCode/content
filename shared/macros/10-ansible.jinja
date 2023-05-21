@@ -1162,7 +1162,6 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - result_faillock_conf_check.stat.exists
 
-
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter in PAM files
   block:
     - name: {{{ rule_title }}} - Check if pam_faillock.so {{{ parameter }}} parameter is already enabled in pam files

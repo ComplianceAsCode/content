@@ -761,7 +761,6 @@ then
     fi
 fi
 
-
 [ ! -z "${DCONFFILE}" ] && echo "" >> "${DCONFFILE}"
 if ! grep -q "\\[{{{ path }}}\\]" "${DCONFFILE}"
 then
@@ -1860,7 +1859,6 @@ Notes:
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
 
-
 unset syscall_a
 unset syscall_grouping
 unset syscall_string
@@ -1889,7 +1887,6 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 # -----------------------------------------------------------------------------------------
 #
 files_to_inspect=()
-
 
 {{% if tool == "auditctl" %}}
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'
