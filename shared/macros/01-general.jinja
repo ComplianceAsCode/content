@@ -296,25 +296,15 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
-    Describe preventing access a port or service in firewalld. If the :code:`service` parameter is defined
-    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+Describe preventing access to service in firewalld.
 
-:param port: The port to allow
-:type port: int
-:param proto: The protocol to allow
-:type proto: str
 :param service: The service to allow
 :type service: str
 
 #}}
-{{%- macro describe_firewalld_prevent(port, proto, service) %}}
+{{%- macro describe_firewalld_prevent_service(service) %}}
     To configure <code>firewalld</code> to prevent access, run the following command(s):
-    {{% if port %}}
-    <code>firewall-cmd --permanent --remove-port={{{ port }}}/{{{ proto }}}</code>
-    {{% endif %}}
-    {{% if service %}}
     <code>firewall-cmd --permanent --remove-service={{{ service }}}</code>
-    {{% endif %}}
 {{%- endmacro %}}
 
 
