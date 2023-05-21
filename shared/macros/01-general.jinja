@@ -14,6 +14,7 @@ This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file. {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
 
+
 {{% macro openshift_cluster_setting_kubeletconfig() -%}}
 This rule's check operates on the cluster configuration dump. This will be a Platform rule, var_role_worker and var_role_master needed to be set if scan is not expected to run on master, and worker nodes.
 Therefore, you need to use a tool that can query the OCP API, retrieve KubeletConfig through <code class="ocp-api-endpoint-kubeletconfig">"/api/v1/nodes/NODE_NAME/proxy/configz"</code> {{{suppressed_warning()}}} API endpoint to the local <code class="ocp-dump-location-kubeletconfig">{{{ xccdf_value("ocp_data_root") }}}"/kubeletconfig/role/role"</code> file.
