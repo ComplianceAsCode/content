@@ -811,7 +811,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :param title: Optional, the associated rule title is used by default
 :type title: str
 :param affected_platforms: Optional, list of unix platform strings (e.g. "Fedora") to put under the affected element. Uses the oval_affected macro by default under the hood.
-:type affected_platforms: str
+:type affected_platforms: list[str]
 
 #}}
 {{%- macro oval_metadata(description, title="", affected_platforms=None) -%}}
