@@ -103,12 +103,14 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{#
   Macro to define the criterion of the OVAL check (Criterion definition).
 
-:param oval_line_in_file_criterion: Path to the configuration file to be checked.
-:type oval_line_in_file_criterion: str
+:param path: Path to the configuration file to be checked.
+:type path: str
 :param parameter: The parameter to be checked in the configuration file.
 :type parameter: str
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 :type missing_parameter_pass: bool
+:param comment: Optional criterion comment
+:type comment: str
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
 :param avoid_conflicting: If true, the check will only pass in case all (if any) configurations found are compliant
