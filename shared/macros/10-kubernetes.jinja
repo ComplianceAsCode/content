@@ -666,7 +666,7 @@ spec:
 {{% macro ntp_server() -%}}
 #
 # This file controls the configuration of the ntp server
-# {{.var_multiple_time_servers}} we have to put variable array name here for mutilines remediation 
+# {{.var_multiple_time_servers}} we have to put variable array name here for mutilines remediation
 {{$var_time_service_set_maxpoll:=.var_time_service_set_maxpoll}}
 {{range $element:=.var_multiple_time_servers|toArrayByComma}}server {{$element}} minpoll 4 maxpoll {{$var_time_service_set_maxpoll}}
 {{end}}
