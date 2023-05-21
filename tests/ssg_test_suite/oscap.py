@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 from __future__ import print_function
 
+import collections
+import datetime
+import json
 import logging
 import os.path
 import re
-import collections
-import xml.etree.ElementTree
-import json
-import datetime
 import socket
+import subprocess
 import sys
 import time
-import subprocess
+import xml.etree.ElementTree
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 

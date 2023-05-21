@@ -1,11 +1,11 @@
 from __future__ import print_function
+
 import logging
 import os
 import os.path
 import sys
 
 from ssg.utils import mkdir_p
-
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 

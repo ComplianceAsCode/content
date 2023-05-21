@@ -1,15 +1,15 @@
 from __future__ import print_function
 
-import os
-import logging
-import subprocess
-from collections import namedtuple
 import functools
-import tarfile
-import tempfile
+import logging
+import os
 import re
 import shutil
+import subprocess
+import tarfile
+import tempfile
 import time
+from collections import namedtuple
 
 import ssg.yaml
 from ssg.build_cpe import ProductCPEs
