@@ -2,16 +2,16 @@
 from __future__ import print_function
 
 import argparse
-import textwrap
+import contextlib
 import logging
 import os
 import os.path
-import time
-import sys
-from glob import glob
 import re
-import contextlib
+import sys
 import tempfile
+import textwrap
+import time
+from glob import glob
 
 ssg_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(ssg_dir)
