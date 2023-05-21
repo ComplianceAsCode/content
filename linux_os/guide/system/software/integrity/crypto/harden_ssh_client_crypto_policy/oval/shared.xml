@@ -114,7 +114,7 @@
     - parameter (String): The parameter to be checked in the configuration file. Not used in the actual state definition, but only to connect the state to the test.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied). Not used in the actual state definition, but only to connect the state to the test.
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', parameter='', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value=false, parameter='', missing_parameter_pass=false) -%}}
 {{%- if multi_value %}}
 {{%- set regex = "^.*\\b"+value+"\\b.*$" -%}}
 {{%- else %}}
