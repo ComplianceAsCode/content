@@ -977,25 +977,6 @@ substituting the correct package management software.
 
 
 {{#
-    A warning about rule depending on another.
-
-:param rule_id: Rule id of the rule that must be selected.
-:type rule_id: str
-:param why: The reasoning for the dependency. Should fit into this part of the sentence "make sure that rule with ID is selected as well:".
-:type why: str
-
-#}}
-{{% macro body_of_warning_about_dependent_rule(rule_id, why) -%}}
-        When selecting this rule in a profile,
-        {{%- if why %}}
-            make sure that rule with ID <code>{{{ rule_id }}}</code> is selected as well: {{{ why }}}
-        {{%- else %}}
-            rule <code>{{{ rule_id }}}</code> has to be selected as well.
-        {{%- endif %}}
-{{% endmacro %}}
-
-
-{{#
     An openssl config file with strong entropy.
 
 #}}
