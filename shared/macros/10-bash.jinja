@@ -434,7 +434,8 @@ EOF
 
 
 {{#
-   Set parameter in /etc/systemd/coredump.conf
+   Set parameter in /etc/systemd/coredump.conf.
+   For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
 
 :parameter parameter: Parameter to set
 :type parameter: str
@@ -443,8 +444,17 @@ EOF
 
 #}}
 {{%- macro bash_coredump_config_set(parameter, value) -%}}
+{{% if 'sle' in product %}}
+mkdir -p /etc/systemd/coredump.conf.d/
+if [ ! -f "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" ]; then
+   echo "[Coredump]" > "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf"
+fi
+{{%- set target_path="/etc/systemd/coredump.conf.d/oscap-autoremedy.conf" -%}}
+{{% else %}}
+{{%- set target_path="/etc/systemd/coredump.conf" -%}}
+{{% endif %}}
 {{{ set_config_file(
-        path="/etc/systemd/coredump.conf",
+        path=target_path,
         parameter=parameter,
         value=value,
         create=true,
