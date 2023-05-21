@@ -190,7 +190,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :param separator_regex: Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
 :type separator_regex: str
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
-:type missing_parameter_pass: str
+:type missing_parameter_pass: bool
 :param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 :type multi_value: bool
 :param filename_regex: If specified, the first argument is interpreted as `path`, and this will serve as `filename` regex.
