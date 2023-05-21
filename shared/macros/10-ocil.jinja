@@ -1100,39 +1100,6 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 {{# Firefox macros #}}
 
 {{#
-Write out the OCIL for generating the common check for Firefox configuration
-
-:param preference: Name of preference
-:type preference: str
-:param config: configuration item name in Firefox
-:type config: str
-:param value: Expected value for preference, "true" or "false"
-:type value: str
-
-#}}
-{{% macro ocil_firefox_config(preference, config, value) -%}}
-{{%- if value == "true" -%}}
-ocil_clause: 'it is not enabled'
-{{%- elif value == "false" %}}
-ocil_clause: 'it is not disabled'
-{{%- endif %}}
-
-ocil: |-
-    {{% if value == "true" -%}}
-    To verify that {{preference}} is enabled,
-    {{%- elif value == "false" %}}
-    To verify that {{preference}} is disabled,
-{{% else %}}
-    To verify the correct setting of {{preference}},
-{{% endif %}}
-    run the following command:
-    <pre>$ grep '{{config}}' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
-    The output should return:
-    <pre>lockPref("{{config}}", "{{value}}");</pre>
-{{%- endmacro %}}
-
-
-{{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification template
 
 :param syscall: system call
