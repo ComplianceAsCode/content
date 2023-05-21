@@ -7,7 +7,7 @@ description: |-
     By default, <tt>firewalld</tt>
     blocks access to the ports used by the web server.
 
-    {{{ describe_firewalld_allow(proto="tcp", service="ftp") }}}
+    {{{ describe_firewalld_allow_service(service="ftp") }}}
     {{% else %}}
     By default, <tt>iptables</tt>
     blocks access to the ports used by the web server.

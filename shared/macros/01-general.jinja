@@ -319,26 +319,32 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
-    Describe allowing access a port or service in firewalld. If the :code:`service` parameter is defined
-    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+Describe allowing access to a port in firewalld.
 
 :param port: The port to allow
 :type port: int
 :param proto: The protocol to allow
 :type proto: str
+
+#}}
+{{%- macro describe_firewalld_allow_port(port, proto) %}}
+    To configure <code>firewalld</code> to allow <code>{{{ port }}}/{{{ proto }}}</code> access, run the following command(s):
+    <pre>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</pre>
+    Then run the following command to load the newly created rule(s):
+    <pre>firewall-cmd --reload</pre>
+{{%- endmacro %}}
+
+
+{{#
+Describe allowing access to a service in firewalld.
+
 :param service: The service to allow
 :type service: str
 
 #}}
-{{%- macro describe_firewalld_allow(port, proto, service) %}}
-    {{% if port %}}
-    To configure <code>firewalld</code> to allow <code>{{{ port }}}/{{{ proto }}}</code> access, run the following command(s):
-    <pre>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</pre>
-    {{% endif %}}
-    {{% if service %}}
+{{%- macro describe_firewalld_allow_service(service) %}}
     To configure <code>firewalld</code> to allow <code>{{{ service }}}</code> access, run the following command(s):
     <pre>firewall-cmd --permanent --add-service={{{ service }}}</pre>
-    {{% endif %}}
     Then run the following command to load the newly created rule(s):
     <pre>firewall-cmd --reload</pre>
 {{%- endmacro %}}
