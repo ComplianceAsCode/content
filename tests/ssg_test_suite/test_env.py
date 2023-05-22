@@ -521,13 +521,18 @@ class PodmanTestEnv(ContainerTestEnv):
         # Podman drops cap_audit_write which causes that it is not possible
         # run sshd by default. Therefore, we need to add the capability.
         # We also need cap_sys_admin so it can perform mount/umount.
-        podman_cmd = ["podman", "run", "--name", long_name,
-                      "--cap-add=cap_audit_write",
-                      "--cap-add=cap_sys_admin",
-                      "--cap-add=cap_sys_chroot",
-                    #   "--privileged",
-                      "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
-                      "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]
+        podman_cmd = [
+            "podman", "run",
+            "--name={}".format(long_name),
+            "--cap-add=cap_audit_write",
+            "--cap-add=cap_sys_admin",
+            "--cap-add=cap_sys_chroot",
+            # "--privileged",
+            "--publish={internal_ssh_port}".format(** self.__dict__),
+            "--detach",
+            image_name,
+            "/usr/sbin/sshd", "-p", "{internal_ssh_port}".format(** self.__dict__), "-D",
+        ]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
@@ -539,8 +544,9 @@ class PodmanTestEnv(ContainerTestEnv):
 
     def get_ip_address(self):
         podman_cmd = [
-                "podman", "inspect", self.current_container,
-                "--format", "{{.NetworkSettings.IPAddress}}",
+            "podman", "inspect",
+            "--format={{.NetworkSettings.IPAddress}}",
+            self.current_container,
         ]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
@@ -554,8 +560,11 @@ class PodmanTestEnv(ContainerTestEnv):
         return ip_address
 
     def _get_container_ports(self, container):
-        podman_cmd = ["podman", "inspect", container, "--format",
-                      "{{json .NetworkSettings.Ports}}"]
+        podman_cmd = [
+            "podman", "inspect",
+            "--format={{json .NetworkSettings.Ports}}",
+            container,
+        ]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
