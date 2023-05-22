@@ -643,10 +643,15 @@ endmacro()
 
 macro(ssg_render_policies_for_product PRODUCT CONTROL_FILES)
         foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
-        add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render-policy.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html" ${PRODUCT} "${CMAKE_SOURCE_DIR}/controls/${CONTROL_FILE}.yml"
             DEPENDS generate-ssg-${PRODUCT}-ds.xml
-            COMMENT "[${PRODUCT}-render-policies] generating rendered policy for ${CONTROL_FILE}"
+            COMMENT "[${PRODUCT}-render-policy-${CONTROL_FILE}] generating rendered policy for ${CONTROL_FILE}"
+            )
+
+            add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
+            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
             )
         endforeach()
 endmacro()
