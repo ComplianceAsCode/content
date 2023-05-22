@@ -63,6 +63,12 @@ add_test(
 set_tests_properties("stable-profiles" PROPERTIES LABELS quick)
 
 add_test(
+    NAME "stable-products"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_product_stability.py" "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/data/product_stability"
+)
+set_tests_properties("stable-products" PROPERTIES LABELS quick)
+
+add_test(
     NAME "machine-only-rules"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_machine_only_rules.py" --source_dir "${CMAKE_SOURCE_DIR}" --build_dir "${CMAKE_BINARY_DIR}"
 )
