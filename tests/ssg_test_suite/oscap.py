@@ -142,10 +142,14 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
     if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
                            '/' + formatting['output_file']):
         return False
-    command = (
-        'ansible-playbook', '-vvv', '-i', '{0},'.format(formatting['domain_ip']),
-        '-u' 'root', '--ssh-common-args={0}'.format(' '.join(test_env.ssh_additional_options)),
-        formatting['playbook'])
+    command = [
+        'ansible-playbook',
+        '-vvv',
+        '--inventory={domain_ip},'.format(** formatting),
+        '--user=root',
+        '--ssh-common-args={0}'.format(' '.join(test_env.ssh_additional_options)),
+        formatting['playbook'],
+    ]
     command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
