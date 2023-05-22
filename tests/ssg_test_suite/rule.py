@@ -1,18 +1,18 @@
 from __future__ import print_function
 
+import collections
+import contextlib
+import fnmatch
+import itertools
+import json
 import logging
+import math
 import os
-import shutil
 import os.path
 import re
+import shutil
 import subprocess
-import collections
-import json
-import fnmatch
 import tempfile
-import contextlib
-import itertools
-import math
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg_test_suite import oscap
