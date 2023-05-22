@@ -5,10 +5,11 @@ prodtype: alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu22
 title: 'Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server'
 
 description: |-
-    The <tt>rsyslog</tt> daemon should not accept remote messages
-    unless the system acts as a log server.
-    To ensure that it is not listening on the network, ensure the following lines are
-    <i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
+    The <tt>rsyslog</tt> daemon should not accept remote messages unless the system acts as a log
+    server. To ensure that it is not listening on the network, ensure any of the following lines
+    are <i>not</i> found in <tt>rsyslog</tt> configuration files.
+
+    If using legacy syntax:
     <pre>$ModLoad imtcp
     $InputTCPServerRun <i>port</i>
     $ModLoad imudp
@@ -16,10 +17,17 @@ description: |-
     $ModLoad imrelp
     $InputRELPServerRun <i>port</i></pre>
 
+    If using RainerScript syntax:
+    <pre>module(load="imtcp")
+    module(load="imudp")
+    input(type="imtcp" port="514")
+    input(type="imudp" port="514")
+    </pre>
+
 rationale: |-
-    Any process which receives messages from the network incurs some risk
-    of receiving malicious messages. This risk can be eliminated for
-    rsyslog by configuring it not to listen on the network.
+    Any process which receives messages from the network incurs some risk of receiving malicious
+    messages. This risk can be eliminated for rsyslog by configuring it not to listen on the
+    network.
 
 severity: medium
 
@@ -54,9 +62,15 @@ references:
 ocil_clause: "rsyslog accepts remote messages and is not documented as a log aggregation system"
 
 ocil: |-
-    Verify that the system is not accepting "rsyslog" messages from other systems unless it is documented as a log aggregation server.
-    Display the contents of the configuration file:
-    <pre>cat /etc/rsyslog.conf</pre>
+    Verify that the system is not accepting "rsyslog" messages from other systems unless it is
+    documented as a log aggregation server.
+    Display the contents of the rsyslog configuration files:
+    <pre>find /etc -maxdepth 2 -regex '/etc/rsyslog\(\.conf\|\.d\/.*\.conf\)' -exec cat '{}' \;</pre>
+
+    If any of the below lines are found, ask to see the documentation for the system being used
+    for log aggregation:
+
+    If using legacy syntax:
     <pre>$ModLoad imtcp
     $InputTCPServerRun <i>port</i>
     $ModLoad imudp
@@ -64,9 +78,13 @@ ocil: |-
     $ModLoad imrelp
     $InputRELPServerRun <i>port</i></pre>
 
-    If any of the above modules are being loaded in the "/etc/rsyslog.conf" file, ask to see the documentation for the system being used for log aggregation.
+    If using RainerScript syntax:
+    <pre>module(load="imtcp")
+    module(load="imudp")
+    input(type="imtcp" port="514")
+    input(type="imudp" port="514")
+    </pre>
 
-fixtext: 'The {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.'
-
-srg_requirement: |-
-    {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
+fixtext: |-
+    The {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log
+    messages from other servers unless the server is being used for log aggregation.
