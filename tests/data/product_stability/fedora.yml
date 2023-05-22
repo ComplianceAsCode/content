@@ -2,85 +2,55 @@ aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 auid: 1000
-aux_pkg_release: 5b32db75
-aux_pkg_version: d4082792
-auxiliary_key_fingerprint: 6A6AA7C97C8890AEC6AEBFE2F76F66C3D4082792
 basic_properties_derived: true
-benchmark_id: RHEL-8
+benchmark_id: FEDORA
 benchmark_root: ../../linux_os/guide
-centos_major_version: '8'
-centos_pkg_release: 5ccc5b19
-centos_pkg_version: 8483c65d
 chrony_conf_path: /etc/chrony.conf
 cpes:
-- rhel8:
-    check_id: installed_OS_is_rhel8
-    name: cpe:/o:redhat:enterprise_linux:8
-    title: Red Hat Enterprise Linux 8
-- rhel8.0:
-    check_id: installed_OS_is_rhel8_0
-    name: cpe:/o:redhat:enterprise_linux:8.0
-    title: Red Hat Enterprise Linux 8.0
-- rhel8.1:
-    check_id: installed_OS_is_rhel8_1
-    name: cpe:/o:redhat:enterprise_linux:8.1
-    title: Red Hat Enterprise Linux 8.1
-- rhel8.2:
-    check_id: installed_OS_is_rhel8_2
-    name: cpe:/o:redhat:enterprise_linux:8.2
-    title: Red Hat Enterprise Linux 8.2
-- rhel8.3:
-    check_id: installed_OS_is_rhel8_3
-    name: cpe:/o:redhat:enterprise_linux:8.3
-    title: Red Hat Enterprise Linux 8.3
-- rhel8.4:
-    check_id: installed_OS_is_rhel8_4
-    name: cpe:/o:redhat:enterprise_linux:8.4
-    title: Red Hat Enterprise Linux 8.4
-- rhel8.5:
-    check_id: installed_OS_is_rhel8_5
-    name: cpe:/o:redhat:enterprise_linux:8.5
-    title: Red Hat Enterprise Linux 8.5
-- rhel8.6:
-    check_id: installed_OS_is_rhel8_6
-    name: cpe:/o:redhat:enterprise_linux:8.6
-    title: Red Hat Enterprise Linux 8.6
-- rhel8.7:
-    check_id: installed_OS_is_rhel8_7
-    name: cpe:/o:redhat:enterprise_linux:8.7
-    title: Red Hat Enterprise Linux 8.7
-- rhel8.8:
-    check_id: installed_OS_is_rhel8_8
-    name: cpe:/o:redhat:enterprise_linux:8.8
-    title: Red Hat Enterprise Linux 8.8
-- rhel8.9:
-    check_id: installed_OS_is_rhel8_9
-    name: cpe:/o:redhat:enterprise_linux:8.9
-    title: Red Hat Enterprise Linux 8.9
-- rhel8.10:
-    check_id: installed_OS_is_rhel8_10
-    name: cpe:/o:redhat:enterprise_linux:8.10
-    title: Red Hat Enterprise Linux 8.10
+- fedora_40:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:40
+    title: Fedora 40
+- fedora_39:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:39
+    title: Fedora 39
+- fedora_38:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:38
+    title: Fedora 38
+- fedora_37:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:37
+    title: Fedora 37
+- fedora_36:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:36
+    title: Fedora 36
 cpes_root: ../../shared/applicability
-dconf_gdm_dir: gdm.d
-faillock_path: /var/log/faillock
-full_name: Red Hat Enterprise Linux 8
+dconf_gdm_dir: distro.d
+faillock_path: /var/run/faillock
+full_name: Fedora
+future_pkg_release: 62f2920f
+future_pkg_version: 18b8e74c
+future_release_fingerprint: E8F23996F23218640CB44CBE75CF5AC418B8E74C
+future_version: 39
 gid_min: 1000
 groups:
   dedicated_ssh_keyowner:
-    id: '995'
     name: ssh_keys
 grub2_boot_path: /boot/grub2
-grub2_uefi_boot_path: /boot/efi/EFI/redhat
+grub2_uefi_boot_path: /boot/grub2
 init_system: systemd
+latest_pkg_release: 6202d9c6
+latest_pkg_version: eb10b464
+latest_release_fingerprint: 6A51BBABBA3D5467B6171221809A8D7CEB10B464
+latest_version: 38
 nobody_gid: 65534
 nobody_uid: 65534
-oval_feed_url: https://access.redhat.com/security/data/oval/com.redhat.rhsa-RHEL8.xml.bz2
-pkg_manager: yum
-pkg_manager_config_file: /etc/yum.conf
-pkg_release: 4ae0493b
+pkg_manager: dnf
+pkg_manager_config_file: /etc/dnf/dnf.conf
 pkg_system: rpm
-pkg_version: fd431d51
 platform_package_overrides:
   aarch64_arch: null
   grub2: grub2-common
@@ -95,12 +65,19 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: rhel8
+previous_pkg_release: 6112bcdc
+previous_pkg_version: 5323552a
+previous_release_fingerprint: ACB5EE4E831C74BB7C168D27F55AD3FB5323552A
+previous_version: 37
+product: fedora
 profiles_root: ./profiles
+rawhide_pkg_release: 63d04c2c
+rawhide_pkg_version: a15b79cc
+rawhide_release_fingerprint: 115DF9AEF857853EE8445D0A0727707EA15B79CC
+rawhide_version: 40
 reference_uris:
   anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
-  cis: https://www.cisecurity.org/benchmark/red_hat_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cnss: http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf
@@ -122,8 +99,7 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
-release_key_fingerprint: 567E347AD0044ADE55BA8A5F199E2F91FD431D51
-sshd_distributed_config: 'false'
+sshd_distributed_config: 'true'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000

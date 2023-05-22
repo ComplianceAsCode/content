@@ -1,81 +1,53 @@
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
-audisp_conf_path: /etc/audit
+audisp_conf_path: /etc/audisp
 auid: 1000
-aux_pkg_release: 5b32db75
-aux_pkg_version: d4082792
-auxiliary_key_fingerprint: 6A6AA7C97C8890AEC6AEBFE2F76F66C3D4082792
+aux_pkg_release: 45700c69
+aux_pkg_version: 2fa658e0
+auxiliary_key_fingerprint: 43A6E49C4A38F4BE9ABF2A5345689C882FA658E0
 basic_properties_derived: true
-benchmark_id: RHEL-8
+benchmark_id: RHEL-7
 benchmark_root: ../../linux_os/guide
-centos_major_version: '8'
-centos_pkg_release: 5ccc5b19
-centos_pkg_version: 8483c65d
+centos_major_version: '7'
+centos_pkg_release: 53a7ff4b
+centos_pkg_version: f4a80eb5
 chrony_conf_path: /etc/chrony.conf
 cpes:
-- rhel8:
-    check_id: installed_OS_is_rhel8
-    name: cpe:/o:redhat:enterprise_linux:8
-    title: Red Hat Enterprise Linux 8
-- rhel8.0:
-    check_id: installed_OS_is_rhel8_0
-    name: cpe:/o:redhat:enterprise_linux:8.0
-    title: Red Hat Enterprise Linux 8.0
-- rhel8.1:
-    check_id: installed_OS_is_rhel8_1
-    name: cpe:/o:redhat:enterprise_linux:8.1
-    title: Red Hat Enterprise Linux 8.1
-- rhel8.2:
-    check_id: installed_OS_is_rhel8_2
-    name: cpe:/o:redhat:enterprise_linux:8.2
-    title: Red Hat Enterprise Linux 8.2
-- rhel8.3:
-    check_id: installed_OS_is_rhel8_3
-    name: cpe:/o:redhat:enterprise_linux:8.3
-    title: Red Hat Enterprise Linux 8.3
-- rhel8.4:
-    check_id: installed_OS_is_rhel8_4
-    name: cpe:/o:redhat:enterprise_linux:8.4
-    title: Red Hat Enterprise Linux 8.4
-- rhel8.5:
-    check_id: installed_OS_is_rhel8_5
-    name: cpe:/o:redhat:enterprise_linux:8.5
-    title: Red Hat Enterprise Linux 8.5
-- rhel8.6:
-    check_id: installed_OS_is_rhel8_6
-    name: cpe:/o:redhat:enterprise_linux:8.6
-    title: Red Hat Enterprise Linux 8.6
-- rhel8.7:
-    check_id: installed_OS_is_rhel8_7
-    name: cpe:/o:redhat:enterprise_linux:8.7
-    title: Red Hat Enterprise Linux 8.7
-- rhel8.8:
-    check_id: installed_OS_is_rhel8_8
-    name: cpe:/o:redhat:enterprise_linux:8.8
-    title: Red Hat Enterprise Linux 8.8
-- rhel8.9:
-    check_id: installed_OS_is_rhel8_9
-    name: cpe:/o:redhat:enterprise_linux:8.9
-    title: Red Hat Enterprise Linux 8.9
-- rhel8.10:
-    check_id: installed_OS_is_rhel8_10
-    name: cpe:/o:redhat:enterprise_linux:8.10
-    title: Red Hat Enterprise Linux 8.10
+- rhel7:
+    check_id: installed_OS_is_rhel7
+    name: cpe:/o:redhat:enterprise_linux:7
+    title: Red Hat Enterprise Linux 7
+- rhel7-server:
+    check_id: installed_OS_is_rhel7
+    name: cpe:/o:redhat:enterprise_linux:7::server
+    title: Red Hat Enterprise Linux 7 Server
+- rhel7-client:
+    check_id: installed_OS_is_rhel7
+    name: cpe:/o:redhat:enterprise_linux:7::client
+    title: Red Hat Enterprise Linux 7 Client
+- rhel7-computenode:
+    check_id: installed_OS_is_rhel7
+    name: cpe:/o:redhat:enterprise_linux:7::computenode
+    title: Red Hat Enterprise Linux 7 ComputeNode
+- rhel7-workstation:
+    check_id: installed_OS_is_rhel7
+    name: cpe:/o:redhat:enterprise_linux:7::workstation
+    title: red hat enterprise linux 7 workstation
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
-faillock_path: /var/log/faillock
-full_name: Red Hat Enterprise Linux 8
+faillock_path: /var/run/faillock
+full_name: Red Hat Enterprise Linux 7
 gid_min: 1000
 groups:
   dedicated_ssh_keyowner:
-    id: '995'
+    id: '997'
     name: ssh_keys
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/efi/EFI/redhat
 init_system: systemd
 nobody_gid: 65534
 nobody_uid: 65534
-oval_feed_url: https://access.redhat.com/security/data/oval/com.redhat.rhsa-RHEL8.xml.bz2
+oval_feed_url: https://access.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2
 pkg_manager: yum
 pkg_manager_config_file: /etc/yum.conf
 pkg_release: 4ae0493b
@@ -89,13 +61,14 @@ platform_package_overrides:
   non-uefi: null
   not_aarch64_arch: null
   not_s390x_arch: null
+  openssl-pkcs11: pam_pkcs11
   ovirt: null
   s390x_arch: null
   sssd: sssd-common
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: rhel8
+product: rhel7
 profiles_root: ./profiles
 reference_uris:
   anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
