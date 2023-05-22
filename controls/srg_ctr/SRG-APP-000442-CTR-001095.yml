@@ -4,7 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must maintain the confidentiality and integrity of
     information during reception.
-  rules:
+  related_rules:
   - api_server_client_ca
   - api_server_etcd_ca
   - api_server_tls_cert
@@ -15,3 +15,8 @@ controls:
   - kubelet_configure_tls_key
   - routes_protected_by_tls
   status: inherently met
+  status_justification: |-
+    The OpenShift Container Platform uses TLS encryption for communication with the internal components. Many of these components support additional levels of configuration, such as allowed cyphers and minimum TLS levels. Although not all components support this additional configuration, they still use TLS for encryption of the internal communications.
+  artifact_description: |-
+    Supporting evidence is in the following documentation
+    https://access.redhat.com/articles/5348961
