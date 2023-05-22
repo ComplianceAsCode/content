@@ -709,6 +709,9 @@ class Rule(XCCDFEntity, Templatable):
                 setattr(result, k, v)
         return result
 
+    def __repr__(self):
+        return '<Rule:' + '|'.join(map(repr, self.__dict__.items())) + '>'
+
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, sce_metadata=None):
         rule = super(Rule, cls).from_yaml(yaml_file, env_yaml, product_cpes)
