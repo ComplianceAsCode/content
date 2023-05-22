@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -297,7 +298,7 @@ def main():
 
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
-        print(command)
+        print(shlex.join(command))
     else:
         subprocess.call(command)
         if data.console:
