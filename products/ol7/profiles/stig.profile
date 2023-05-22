@@ -334,7 +334,7 @@ selections:
     - auditd_audispd_remote_daemon_type
     - account_temp_expire_date
     - package_screen_installed
-    - sysctl_kernel_dmesg_restric
+    - sysctl_kernel_dmesg_restrict
     - authconfig_config_files_symlinks
     - ensure_oracle_gpgkey_installed
     - dconf_gnome_disable_user_list
