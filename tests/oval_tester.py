@@ -56,7 +56,10 @@ class OVALTester(object):
     def _evaluate_oval(self, oval_path):
         results_path = oval_path + ".results.xml"
         oscap_command = [
-            "oscap", "oval", "eval", "--results", results_path, oval_path]
+            "oscap", "oval", "eval",
+            "--results", results_path,
+            oval_path,
+        ]
         oscap_process = subprocess.Popen(
             oscap_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         oscap_stdout, oscap_stderr = oscap_process.communicate()
