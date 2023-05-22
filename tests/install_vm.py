@@ -167,10 +167,11 @@ def wait_vm_not_running(domain):
             cmd = ["virsh", "domstate", domain]
             if subprocess.getoutput(cmd).rstrip() != "running":
                 return
-            if time.time() >= end_time:
-                print("Timeout reached: {0} VM failed to shutdown, cancelling wait."
-                      .format(domain))
-                return
+            if time.time() < end_time:
+                continue
+            print("Timeout reached: {0} VM failed to shutdown, cancelling wait."
+                  .format(domain))
+            return
     except KeyboardInterrupt:
         print("Interrupted, cancelling wait.")
         return
@@ -181,16 +182,18 @@ def err(rc, msg):
     sys.exit(rc)
 
 
-def main():
-    data = parse_args()
-
+def handle_url(data):
     if not data.url:
         data.url = DISTRO_URL.get(data.distro, None)
         data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
 
-    if not data.url:
-        err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
+    if data.url:
+        return
 
+    err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
+
+
+def handle_ssh_pubkey(data):
     data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
         username = os.environ.get("SUDO_USER", "")
@@ -202,10 +205,10 @@ def main():
 You can use the `--ssh-pubkey` to specify which key should be used.""".format(data.ssh_pubkey))
 
     with open(data.ssh_pubkey) as f:
-        pub_key = f.readline().rstrip()
-    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
-    print("Using hypervisor: {0}".format(data.libvirt))
+        data.pub_key_content = f.readline().rstrip()
 
+
+def handle_disk(data):
     disk_spec = [
         "size={0}".format(data.disk_size),
         "format=qcow2",
@@ -220,21 +223,26 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
         disk_spec.append("cache=unsafe")
     data.disk_spec = ",".join(disk_spec)
 
+
+def handle_kickstart(data):
     data.ks_basename = os.path.basename(data.kickstart)
 
     tmp_kickstart = "/tmp/" + data.ks_basename
     with open(data.kickstart) as infile, open(tmp_kickstart, "w") as outfile:
         content = infile.read()
-        content = content.replace("&&HOST_PUBLIC_KEY&&", pub_key)
-        if not data.distro == "fedora":
+        content = content.replace("&&HOST_PUBLIC_KEY&&", data.pub_key_content)
+
+        if data.distro != "fedora":
             content = content.replace("&&YUM_REPO_URL&&", data.url)
+
+        repo_cmd = ""
         if data.extra_repo:
             # extra repository
             repo_cmd = "repo --name=extra-repository --baseurl={0}".format(data.extra_repo)
-            content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
             content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
-        else:
-            content = content.replace("&&YUM_EXTRA_REPO&&", "")
+
+        content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
+
         if data.uefi:
             content = content.replace(
                 "part /boot --fstype=xfs --size=512",
@@ -249,15 +257,12 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
             if data.distro == "fedora":
                 gui_group = "\n%packages\n@^Fedora Workstation\n"
             content = content.replace("\n%packages\n", gui_group)
-            data.graphics_opt = "vnc"
-            data.inst_opt = "inst.graphical"
-        else:
-            data.graphics_opt = "none"
-            data.inst_opt = "inst.cmdline"
+
         outfile.write(content)
     data.kickstart = tmp_kickstart
-    print("Using kickstart file: {0}".format(data.kickstart))
 
+
+def handle_rest(data):
     if not data.network:
         if data.libvirt == "qemu:///system":
             data.network = "network=default"
@@ -268,6 +273,14 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
     else:
         data.wait_opt = -1
 
+
+def join_extented_opt(opt_name, delim, opts):
+    if opts:
+        return ["{0}={1}".format(opt_name, delim.join(opts))]
+    return []
+
+
+def get_virt_install_command(data) -> list[str]:
     command = [
         "virt-install",
         "--connect={0}".format(data.libvirt),
@@ -278,7 +291,6 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
         "--disk={0}".format(data.disk_spec),
         "--initrd-inject={0}".format(data.kickstart),
         "--serial=pty",
-        "--graphics={0}".format(data.graphics_opt),
         "--noautoconsole",
         "--rng=/dev/random",
         "--wait={0}".format(data.wait_opt),
@@ -289,7 +301,6 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
 
     extra_args_opts = [
         "inst.ks=file:/{0}".format(data.ks_basename),
-        "{0}".format(data.inst_opt),
         "inst.ks.device=eth0",
         # The kernel option "net.ifnames=0" is used to disable predictable network
         # interface names, for more details see:
@@ -300,33 +311,44 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
 
     features_opts = []
 
+    if data.install_gui:
+        command.append("--graphics=vnc")
+        extra_args_opts.append("inst.graphical")
+    else:
+        command.append("--graphics=none")
+        extra_args_opts.append("inst.cmdline")
+
     if data.uefi:
         boot_opts.append("uefi")
         if data.uefi == "secureboot":
             boot_opts.extend([
                 "loader_secure=yes",
                 "loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd",
-                "nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd"
+                "nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd",
             ])
             features_opts.append("smm=on")
 
-    if boot_opts:
-        command.append("--boot={0}".format(",".join(boot_opts)))
-    if extra_args_opts:
-        command.append("--extra-args={0}".format(" ".join(extra_args_opts)))
-    if features_opts:
-        command.append("--features={0}".format(",".join(features_opts)))
+    command.extend(join_extented_opt("--boot", ",", boot_opts))
+    command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
+    command.extend(join_extented_opt("--features", ",", features_opts))
 
+    return command
+
+
+def run_virt_install(data, command) -> None:
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
         print(shlex.join(command))
-    else:
-        subprocess.call(command)
-        if data.console:
-            subprocess.call(["unbuffer", "virsh", "console", data.domain])
-            wait_vm_not_running(data.domain)
-            subprocess.call(["virsh", "start", data.domain])
+        return
 
+    subprocess.call(command)
+    if data.console:
+        subprocess.call(["unbuffer", "virsh", "console", data.domain])
+        wait_vm_not_running(data.domain)
+        subprocess.call(["virsh", "start", data.domain])
+
+
+def give_info(data):
     if data.libvirt == "qemu:///system":
         ip_cmd = "sudo virsh domifaddr {0}".format(data.domain)
     else:
@@ -334,6 +356,7 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
         # parenthesis for example: (echo foo). In other shells you
         # need to prepend the $ symbol as: $(echo foo)
         from os import environ
+
         cmd_eval = "" if environ["SHELL"][-4:] == "fish" else "$"
 
         ip_cmd = "arp -n | grep {0}(virsh -q domiflist {1} | awk '{{print $5}}')".format(
@@ -364,6 +387,26 @@ before running the SSG Test Suite.""".format(** data.__dict__))
 IMPORTANT: When running SSG Test Suite use:
   sudo -E
 to make sure that your SSH key is used.""")
+
+
+def main():
+    data = parse_args()
+
+    handle_url(data)
+    handle_ssh_pubkey(data)
+
+    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
+    print("Using hypervisor: {0}".format(data.libvirt))
+
+    handle_disk(data)
+    handle_kickstart(data)
+
+    print("Using kickstart file: {0}".format(data.kickstart))
+
+    handle_rest(data)
+    command = get_virt_install_command(data)
+    run_virt_install(data, command)
+    give_info(data)
 
 
 if __name__ == "__main__":
