@@ -126,7 +126,6 @@ selections:
 
     # OL08-00-010130
     - set_password_hashing_min_rounds_logindefs
-    - accounts_password_pam_unix_rounds_system_auth
 
     # OL08-00-010140
     - grub2_uefi_password
@@ -965,6 +964,7 @@ selections:
     - package_abrt_removed
     - package_abrt-libs_removed
     - package_abrt-server-info-page_removed
+    - package_libreport-plugin-logger_removed
 
     # OL08-00-040002
     - package_sendmail_removed
