@@ -3,6 +3,7 @@ from __future__ import print_function
 import functools
 import logging
 import os
+import pprint
 import re
 import shlex
 import shutil
@@ -170,6 +171,7 @@ def run_cmd_local(command, verbose_path, env=None):
     with open(verbose_path, 'w') as verbose_file:
         output = subprocess.run(
             command, stdout=subprocess.PIPE, stderr=verbose_file, env=env)
+    logging.debug('Result local command: {}'.format(pprint.pformat(output)))
     return output.returncode, output.stdout.decode('utf-8')
 
 
