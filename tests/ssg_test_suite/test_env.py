@@ -72,8 +72,8 @@ class TestEnv(object):
 
         self.have_local_oval_graph = False
         try:
-            p = subprocess.run(['arf-to-graph', '--version'],
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            cmd = ['arf-to-graph', '--version']
+            p = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             if p.returncode == 0:
                 self.have_local_oval_graph = True
         except FileNotFoundError:
@@ -88,7 +88,12 @@ class TestEnv(object):
         html_filename = re.sub(r"\barf\b", "graph", arf_filename)
         html_filename = re.sub(r".xml", ".html", html_filename)
 
-        cmd = ['arf-to-graph', '--all-in-one', '--output', html_filename, arf_filename, '.']
+        cmd = [
+            'arf-to-graph',
+            '--all-in-one',
+            '--output', html_filename,
+            arf_filename, '.',
+        ]
         p = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         if p.returncode != 0:
             print("Error generating OVAL check summaries: {stderr}".format(stderr=p.stderr),
