@@ -6,13 +6,13 @@ ENV BUILD_JOBS 4
 ENV ANSIBLE_LOCAL_TEMP /home/$OSCAP_USERNAME/.ansible/tmp
 
 RUN true \
-	&& dnf -y upgrade \
-	&& dnf -y install cmake ninja-build openscap-utils python3-jinja2 python3-PyYAML ansible \
-	&& mkdir -p /home/$OSCAP_USERNAME \
-	&& dnf clean all \
-	&& rm -rf /usr/share/doc /usr/share/doc-base \
-		/usr/share/man /usr/share/locale /usr/share/zoneinfo \
-	&& true
+    && dnf -y upgrade \
+    && dnf -y install cmake ninja-build openscap-utils python3-jinja2 python3-PyYAML ansible \
+    && mkdir -p /home/$OSCAP_USERNAME \
+    && dnf clean all \
+    && rm -rf /usr/share/doc /usr/share/doc-base \
+        /usr/share/man /usr/share/locale /usr/share/zoneinfo \
+    && true
 
 WORKDIR /home/$OSCAP_USERNAME
 
@@ -24,7 +24,7 @@ RUN rm -rf $OSCAP_DIR/build/*
 WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
 
 CMD true \
-	&& cmake -G Ninja .. \
-	&& ninja -j $BUILD_JOBS \
-	&& ctest --output-on-failure -j $BUILD_JOBS \
-	&& true
+    && cmake -G Ninja .. \
+    && ninja -j $BUILD_JOBS \
+    && ctest --output-on-failure -j $BUILD_JOBS \
+    && true
