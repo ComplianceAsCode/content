@@ -179,6 +179,7 @@ def main():
     if not data.url:
         err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
 
+    data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
         data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
 
@@ -312,25 +313,43 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
             wait_vm_not_running(data.domain)
             subprocess.call(["virsh", "start", data.domain])
 
-    print("\nTo determine the IP address of the {0} VM use:".format(data.domain))
     if data.libvirt == "qemu:///system":
-        print("  sudo virsh domifaddr {0}\n".format(data.domain))
+        ip_cmd = "sudo virsh domifaddr {0}".format(data.domain)
     else:
         # command evaluation in fish shell is simply surrounded by
         # parenthesis for example: (echo foo). In other shells you
         # need to prepend the $ symbol as: $(echo foo)
         from os import environ
-        print("  arp -n | grep {0}(virsh -q domiflist {1} | awk '{{print $5}}')\n".format('' if 'fish' == environ['SHELL'][-4:] else '$', data.domain))
+        cmd_eval = "" if "fish" == environ["SHELL"][-4:] else "$"
 
-    print("To connect to the {0} VM use:\n  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP\n".format(data.domain))
-    print("To connect to the VM serial console, use:\n  virsh console {0}\n".format(data.domain))
-    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY'"
-          " option to your ssh command and export the"
-          " SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY'"
-          " before running the SSG Test Suite.")
+        ip_cmd = "arp -n | grep {0}(virsh -q domiflist {1} | awk '{{print $5}}')".format(
+            cmd_eval, data.domain)
 
-    if data.libvirt == "qemu:///system":
-        print("\nIMPORTANT: When running SSG Test Suite use `sudo -E` to make sure that your SSH key is used.")
+    print("""
+To determine the IP address of the {domain} VM use:
+  {ip_cmd}
+
+To connect to the {domain} VM use:
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP
+
+To connect to the VM serial console, use:
+  virsh console {domain}""".format(** data.__dict__, ip_cmd=ip_cmd))
+
+    if data.ssh_pubkey_used:
+        print("""
+Add:
+  -o IdentityFile={ssh_pubkey}
+
+option to your ssh command and export the:
+  export SSH_ADDITIONAL_OPTIONS='-o IdentityFile={ssh_pubkey}'
+
+before running the SSG Test Suite.""".format(** data.__dict__))
+
+        if data.libvirt == "qemu:///system":
+            print("""
+IMPORTANT: When running SSG Test Suite use:
+  sudo -E
+to make sure that your SSH key is used.""")
 
 
 if __name__ == '__main__':
