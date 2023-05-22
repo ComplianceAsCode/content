@@ -44,109 +44,112 @@ def parse_args():
         "--libvirt",
         dest="libvirt",
         default="qemu:///session",
-        help="What hypervisor should be used when installing VM."
+        help="What hypervisor should be used when installing VM.",
     )
     parser.add_argument(
         "--kickstart",
         dest="kickstart",
         default=path_from_tests("kickstarts/test_suite.cfg"),
-        help="Path to a kickstart file for installation of a VM."
+        help="Path to a kickstart file for installation of a VM.",
     )
     parser.add_argument(
         "--distro",
         dest="distro",
         required=True,
         choices=KNOWN_DISTROS,
-        help="What distribution to install."
+        help="What distribution to install.",
     )
     parser.add_argument(
         "--domain",
         dest="domain",
         required=True,
-        help="What name should the new domain have."
+        help="What name should the new domain have.",
     )
     parser.add_argument(
         "--disk-dir",
         dest="disk_dir",
         default=None,
-        help="Location of the VM qcow2 disk file (ignored when --disk is specified)."
+        help="Location of the VM qcow2 disk file (ignored when --disk is specified).",
     )
     parser.add_argument(
         "--disk-size",
         dest="disk_size",
         default=20,
-        help="Size of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified)."
+        help="Size of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified).",
     )
     parser.add_argument(
         "--disk",
         dest="disk",
-        help="Full disk type/spec, ie. pool=MyPool,bus=sata,cache=unsafe."
+        help="Full disk type/spec, ie. pool=MyPool,bus=sata,cache=unsafe.",
     )
     parser.add_argument(
         "--ram",
         dest="ram",
         default=3072,
         type=int,
-        help="Amount of RAM configured for the VM."
+        help="Amount of RAM configured for the VM.",
     )
     parser.add_argument(
         "--cpu",
         dest="cpu",
         default=2,
         type=int,
-        help="Number of CPU cores configured for the VM."
+        help="Number of CPU cores configured for the VM.",
     )
     parser.add_argument(
         "--network",
         dest="network",
-        help="Network type/spec, ie. bridge=br0 or network=name."
+        help="Network type/spec, ie. bridge=br0 or network=name.",
     )
     parser.add_argument(
         "--url",
         dest="url",
         default=None,
-        help="URL to an installation tree on a remote server."
+        help="URL to an installation tree on a remote server.",
     )
     parser.add_argument(
         "--extra-repo",
         dest="extra_repo",
         default=None,
-        help="URL to an extra repository to be used during installation (e.g. AppStream)."
+        help="URL to an extra repository to be used during installation (e.g. AppStream).",
     )
     parser.add_argument(
         "--dry",
         dest="dry",
         action="store_true",
-        help="Print command line instead of triggering command."
+        help="Print command line instead of triggering command.",
     )
     parser.add_argument(
         "--ssh-pubkey",
         dest="ssh_pubkey",
         default=None,
-        help="Path to an SSH public key which will be used to access the VM."
+        help="Path to an SSH public key which will be used to access the VM.",
     )
     parser.add_argument(
         "--uefi",
         dest="uefi",
-        choices=['secureboot', 'normal'],
-        help="Perform UEFI based installation, optionally with secure boot support."
+        choices=[
+            "secureboot",
+            "normal",
+        ],
+        help="Perform UEFI based installation, optionally with secure boot support.",
     )
     parser.add_argument(
         "--install-gui",
         dest="install_gui",
-        action='store_true',
-        help="Perform a GUI installation (default is installation without GUI)."
+        action="store_true",
+        help="Perform a GUI installation (default is installation without GUI).",
     )
     parser.add_argument(
         "--console",
         dest="console",
-        action='store_true',
-        help="Connect to a serial console of the VM (to monitor installation progress)."
+        action="store_true",
+        help="Connect to a serial console of the VM (to monitor installation progress).",
     )
     parser.add_argument(
         "--disk-unsafe",
         dest="disk_unsafe",
-        action='store_true',
+        action="store_true",
         help="Set cache unsafe.",
     )
 
@@ -209,7 +212,7 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
 
     disk_spec = [
         "size={0}".format(data.disk_size),
-        "format=qcow2"
+        "format=qcow2",
     ]
     if data.disk:
         disk_spec.extend(data.disk.split(","))
@@ -239,10 +242,10 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
         if data.uefi:
             content = content.replace(
                 "part /boot --fstype=xfs --size=512",
-                "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200"
+                "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200",
             ).replace(
                 "part biosboot ",
-                "# part biosboot "
+                "# part biosboot ",
             )
 
         if data.install_gui:
@@ -335,7 +338,7 @@ You can use the `--ssh-pubkey` to specify which key should be used.""".format(da
         # parenthesis for example: (echo foo). In other shells you
         # need to prepend the $ symbol as: $(echo foo)
         from os import environ
-        cmd_eval = "" if "fish" == environ["SHELL"][-4:] else "$"
+        cmd_eval = "" if environ["SHELL"][-4:] == "fish" else "$"
 
         ip_cmd = "arp -n | grep {0}(virsh -q domiflist {1} | awk '{{print $5}}')".format(
             cmd_eval, data.domain)
@@ -367,5 +370,5 @@ IMPORTANT: When running SSG Test Suite use:
 to make sure that your SSH key is used.""")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
