@@ -183,12 +183,6 @@ def err(rc, msg):
 
 def main():
     data = parse_args()
-    username = ""
-    try:
-        username = os.environ["SUDO_USER"]
-    except KeyError:
-        pass
-    home_dir = os.path.expanduser('~' + username)
 
     if not data.url:
         data.url = DISTRO_URL.get(data.distro, None)
@@ -199,6 +193,8 @@ def main():
 
     data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
+        username = os.environ.get("SUDO_USER", "")
+        home_dir = os.path.expanduser("~" + username)
         data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
 
     if not os.path.isfile(data.ssh_pubkey):
