@@ -165,11 +165,9 @@ def get_oscap_supported_cpes():
     Obtain a list of CPEs that the scanner supports
     """
     result = []
-    proc = subprocess.Popen(
-            ("oscap", "--version"),
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = ("oscap", "--version"),
     try:
-        outs, errs = proc.communicate(timeout=3)
+        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=3)
     except subprocess.TimeoutExpired:
         logging.warn("Scanner timeouted when asked about supported CPEs")
         proc.kill()
