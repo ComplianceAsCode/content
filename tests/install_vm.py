@@ -246,16 +246,54 @@ def main():
     else:
         data.wait_opt = -1
 
-    # The kernel option 'net.ifnames=0' is used to disable predictable network
-    # interface names, for more details see:
-    # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} inst.ks.device=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
-    if data.uefi == "normal":
-        command = command + " --boot uefi"
-    if data.uefi == "secureboot":
-        command = command + " --boot uefi,loader_secure=yes,\
-loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,\
-nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
+    command = [
+        "virt-install",
+        "--connect={0}".format(data.libvirt),
+        "--name={0}".format(data.domain),
+        "--memory={0}".format(data.ram),
+        "--vcpus={0}".format(data.cpu),
+        "--network={0}".format(data.network),
+        "--disk={0}".format(data.disk_spec),
+        "--initrd-inject={0}".format(data.kickstart),
+        "--serial=pty",
+        "--graphics={0}".format(data.graphics_opt),
+        "--noautoconsole",
+        "--rng=/dev/random",
+        "--wait={0}".format(data.wait_opt),
+        "--location={0}".format(data.url),
+    ]
+
+    boot_opts = []
+
+    extra_args_opts = [
+        "inst.ks=file:/{0}".format(data.ks_basename),
+        "{0}".format(data.inst_opt),
+        "inst.ks.device=eth0",
+        # The kernel option "net.ifnames=0" is used to disable predictable network
+        # interface names, for more details see:
+        # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
+        "net.ifnames=0",
+        "console=ttyS0,115200",
+    ]
+
+    features_opts = []
+
+    if data.uefi:
+        boot_opts.append("uefi")
+        if data.uefi == "secureboot":
+            boot_opts.extend([
+                "loader_secure=yes",
+                "loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd",
+                "nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd"
+            ])
+            features_opts.append("smm=on")
+
+    if boot_opts:
+        command.append("--boot={0}".format(",".join(boot_opts)))
+    if extra_args_opts:
+        command.append("--extra-args={0}".format(" ".join(extra_args_opts)))
+    if features_opts:
+        command.append("--features={0}".format(",".join(features_opts)))
 
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
