@@ -3,6 +3,9 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must generate audit record for privileged activities.
-  related_rules:
-  - audit_profile_set
-  status: inherently met
+  rules:
+  - audit_rules_kernel_module_loading_delete
+  - audit_rules_kernel_module_loading_finit
+  - audit_rules_kernel_module_loading_init
+  - audit_rules_privileged_commands_kmod
+  status: automated
