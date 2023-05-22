@@ -234,10 +234,10 @@ def matches_platform(scenario_platforms, benchmark_cpes):
 
 
 def run_with_stdout_logging(command, args, log_file):
-    log_file.write("{0} {1}\n".format(command, " ".join(args)))
-    result = subprocess.run(
-            (command,) + args, encoding="utf-8", stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE, check=False)
+    cmd_args = (command,) + args
+    log_file.write("{0}\n".format(shlex.join(cmd_args)))
+    result = subprocess.run(cmd_args, encoding="utf-8", stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, check=False)
     if result.stdout:
         log_file.write("STDOUT: ")
         log_file.write(result.stdout)
