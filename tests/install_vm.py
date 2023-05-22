@@ -150,6 +150,11 @@ def wait_vm_not_running(domain):
         return
 
 
+def err(rc, msg):
+    print(msg, file=sys.stderr)
+    sys.exit(rc)
+
+
 def main():
     data = parse_args()
     username = ""
@@ -170,16 +175,17 @@ def main():
         elif data.distro == "centos9":
             data.url = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/"
             data.extra_repo = "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/"
+
     if not data.url:
-        sys.stderr.write("For the '{0}' distro the `--url` option needs to be provided.\n".format(data.distro))
-        return 1
+        err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
 
     if not data.ssh_pubkey:
         data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
+
     if not os.path.isfile(data.ssh_pubkey):
-        sys.stderr.write("Error: SSH public key not found at {0}\n".format(data.ssh_pubkey))
-        sys.stderr.write("You can use the `--ssh-pubkey` to specify which key should be used.\n")
-        return 1
+        err(1, """Error: SSH public key not found at {0}
+You can use the `--ssh-pubkey` to specify which key should be used.""".format(data.ssh_pubkey))
+
     with open(data.ssh_pubkey) as f:
         pub_key = f.readline().rstrip()
     print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
