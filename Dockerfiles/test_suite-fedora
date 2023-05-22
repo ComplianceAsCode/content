@@ -14,6 +14,7 @@ RUN true \
         && yum install -y openssh-clients openssh-server openscap-scanner \
                 python3 findutils \
                 $ADDITIONAL_PACKAGES \
+        && rm -rf /var/cache/dnf \
         && true
 
 RUN true \
@@ -31,6 +32,7 @@ s/^EnvironmentFile=.*/PassEnvironment=TEST_SSHD_PORT/;\
 ' /usr/lib/systemd/system/sshd.service > /etc/systemd/system/test-sshd.service; \
     systemctl mask systemd-remount-fs.service dev-hugepages.mount sys-fs-fuse-connections.mount getty.target console-getty.service systemd-udev-trigger.service systemd-udevd.service systemd-random-seed.service systemd-machine-id-commit.service systemd-resolved.service proc-sys-fs-binfmt_misc.mount systemd-oomd.service systemd-userdbd.service; \
     systemctl enable test-sshd.service; \
+    printf "keepcache=True\n"  >> /etc/dnf/dnf.conf; \
     :
 
 STOPSIGNAL SIGRTMIN+3

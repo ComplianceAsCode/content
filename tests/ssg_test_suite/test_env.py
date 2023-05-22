@@ -541,8 +541,18 @@ class PodmanTestEnv(ContainerTestEnv):
         podman_cmd = ["podman", "commit", container, image]
         self.run_podman_cmd(podman_cmd)
 
+    def _ensure_cache_volume(self, cache_name):
+        podman_cmd = ["podman", "volume", "exists", cache_name]
+        podman_output = self.run_podman_cmd(podman_cmd)
+        if podman_output.returncode == 0:
+            return
+        podman_cmd = ["podman", "volume", "create", cache_name]
+        self.run_podman_cmd(podman_cmd)
+
     def _new_container_from_image(self, image_name, container_name):
         long_name = "{0}_{1}".format(self._name_stem, container_name)
+        cache_name = "var-cache"
+        self._ensure_cache_volume(cache_name)
         # Podman drops cap_audit_write which causes that it is not possible
         # run sshd by default. Therefore, we need to add the capability.
         # We also need cap_sys_admin so it can perform mount/umount.
@@ -555,6 +565,7 @@ class PodmanTestEnv(ContainerTestEnv):
             # "--privileged",
             "--publish={internal_ssh_port}".format(** self.__dict__),
             "--detach",
+            "--volume", "{}:/var/cache:rw,nodev,noexec,nosuid".format(cache_name),
             image_name,
             "systemd.setenv=TEST_SSHD_PORT={internal_ssh_port}".format(** self.__dict__),
         ]
