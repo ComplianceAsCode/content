@@ -30,7 +30,7 @@
   </unix:shadow_object>
 
   <unix:shadow_state id="filter_no_passwords_or_locked_accounts_min_life" version="1">
-      <unix:password operation="pattern match">^[^\!\*]+$</unix:password>
+      <unix:password operation="pattern match">^[^\!\*]*$</unix:password>
   </unix:shadow_state>
 
   <unix:shadow_state id="max_min_password_change_interval" version="1" comment="change passwords every maximum interval or less">
