@@ -1558,7 +1558,7 @@ done
 :param type:        mount type of new mount point (used when adding new entry in fstab)
 
 #}}
-{{% macro bash_ensure_mount_option_for_vfstype(vfstype, mount_opt, filesystem, type) -%}}
+{{% macro bash_ensure_mount_option_for_vfstype(vfstype, mount_opt, fs_spec, type) -%}}
 vfstype_points=()
 readarray -t vfstype_points < <(grep -E "[[:space:]]{{{ vfstype }}}[[:space:]]" /etc/fstab | awk '{print $2}')
 
