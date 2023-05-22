@@ -7,6 +7,7 @@ import json
 import logging
 import os.path
 import re
+import shlex
 import socket
 import subprocess
 import sys
@@ -95,11 +96,10 @@ def find_result_id_in_output(output):
 
 def get_result_id_from_arf(arf_path, verbose_path):
     command = ['oscap', 'info', arf_path]
-    command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
     if returncode != 0:
         raise RuntimeError('{0} returned {1} exit code'.
-                           format(command_string, returncode))
+                           format(shlex.join(command), returncode))
     res_id = find_result_id_in_output(output)
     if res_id is None:
         raise RuntimeError('Failed to find result ID in {0}'
@@ -150,11 +150,10 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
         '--ssh-common-args={0}'.format(' '.join(test_env.ssh_additional_options)),
         formatting['playbook'],
     ]
-    command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
     with open(verbose_path, 'ab') as f:
-        f.write('Stdout of "{}":'.format(command_string).encode("utf-8"))
+        f.write('Stdout of "{}":'.format(shlex.join(command)).encode("utf-8"))
         f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
