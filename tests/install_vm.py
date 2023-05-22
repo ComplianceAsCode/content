@@ -170,7 +170,7 @@ def main():
             data.url = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/"
             data.extra_repo = "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/"
     if not data.url:
-        sys.stderr.write("For the '{}' distro the `--url` option needs to be provided.\n".format(data.distro))
+        sys.stderr.write("For the '{0}' distro the `--url` option needs to be provided.\n".format(data.distro))
         return 1
 
     if not data.ssh_pubkey:
@@ -208,7 +208,7 @@ def main():
             content = content.replace("&&YUM_REPO_URL&&", data.url)
         if data.extra_repo:
             # extra repository
-            repo_cmd = "repo --name=extra-repository --baseurl={}".format(data.extra_repo)
+            repo_cmd = "repo --name=extra-repository --baseurl={0}".format(data.extra_repo)
             content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
             content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
         else:
