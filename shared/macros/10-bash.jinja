@@ -603,6 +603,9 @@ done
 
 #}}
 {{%- macro bash_package_install(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
 {{%- if pkg_manager is defined -%}}
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if ! rpm -q --quiet "{{{ package }}}" ; then
@@ -632,6 +635,9 @@ zypper install -y "{{{ package }}}"
 
 #}}
 {{%- macro bash_package_remove(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
 {{%- if pkg_manager is defined -%}}
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
