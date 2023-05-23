@@ -1110,31 +1110,6 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 
 
 {{#
-    OCIL for a kernel build config rule.
-
-    Example usage::
-
-        ocil_kernel_build_config(config="config_kernel_strict_rwx", value="y")
-
-:param config: The kernel config parameter
-:type config: str
-:param value: The value for the given config
-:type value: str
-
-#}}
-{{% macro kernel_build_config_ocil(config, value) -%}}
-    To determine the config value the kernel was built with, run the following command:
-    <pre>$ grep {{{ config }}} /boot/config.*</pre>
-    {{% if value == "n" %}}
-    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
-    lines should be returned.
-    {{% else %}}
-    For each kernel installed, a line with value "{{{ value }}}" should be returned.
-    {{% endif %}}
-{{%- endmacro %}}
-
-
-{{#
     Returns the AIDE strings based on the current product
 
 #}}
