@@ -8,11 +8,24 @@ import sys
 import ssg.products
 
 
+IGNORED_PROPERTIES = (
+    "product_dir",
+)
+
+
 class Difference(object):
     def __init__(self):
         self.added = []
         self.removed = []
         self.modified = dict()
+
+    def remove_item_from_comparison(self, item):
+        if item in self.added:
+            self.added.remove(item)
+        if item in self.removed:
+            self.removed.remove(item)
+        if item in self.modified:
+            self.modified.pop(item)
 
     @property
     def empty(self):
@@ -68,6 +81,8 @@ def compare_dictionaries(reference, sample):
     for key, value in reference.items():
         if sample.get(key, value) != value:
             result.modified[key] = (value, sample[key])
+    for item in IGNORED_PROPERTIES:
+        result.remove_item_from_comparison(item)
     return result
 
 
@@ -148,4 +163,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
