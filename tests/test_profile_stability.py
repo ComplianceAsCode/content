@@ -113,6 +113,27 @@ def get_reference_vs_built_difference(reference_fname, built_fname):
     return difference
 
 
+def inform_and_append_fix_based_on_reference_compiled_profile(ref, build_root, fix_commands):
+    if not corresponding_product_built(build_root, ref):
+        return
+
+    compiled_profile = get_matching_compiled_profile_filename(build_root, ref)
+    if not compiled_profile:
+        msg = ("Unexpectedly unable to find compiled profile corresponding"
+               "to the test file {ref}, although the corresponding product has been built. "
+               "This indicates that a profile we have tests for is missing."
+               .format(ref=ref))
+        raise RuntimeError(msg)
+    difference = get_reference_vs_built_difference(ref, compiled_profile)
+    if not difference.empty:
+        comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
+        report_comparison(comprehensive_profile_name, difference)
+        fix_commands.append(
+            "cp '{compiled}' '{reference}'"
+            .format(compiled=compiled_profile, reference=ref)
+        )
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("build_root")
@@ -125,24 +146,8 @@ def main():
                            .format(test_root=args.test_data_root))
     fix_commands = []
     for ref in reference_files:
-        if not corresponding_product_built(args.build_root, ref):
-            continue
-
-        compiled_profile = get_matching_compiled_profile_filename(args.build_root, ref)
-        if not compiled_profile:
-            msg = ("Unexpectedly unable to find compiled profile corresponding"
-                   "to the test file {ref}, although the corresponding product has been built. "
-                   "This indicates that a profile we have tests for is missing."
-                   .format(ref=ref))
-            raise RuntimeError(msg)
-        difference = get_reference_vs_built_difference(ref, compiled_profile)
-        if not difference.empty:
-            comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
-            report_comparison(comprehensive_profile_name, difference)
-            fix_commands.append(
-                "cp '{compiled}' '{reference}'"
-                .format(compiled=compiled_profile, reference=ref)
-            )
+        inform_and_append_fix_based_on_reference_compiled_profile(
+                ref, args.build_root, fix_commands)
 
     if fix_commands:
         msg = (

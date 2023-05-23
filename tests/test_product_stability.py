@@ -83,6 +83,29 @@ def get_reference_vs_built_difference(ref_product, built_product):
     return difference
 
 
+def inform_and_append_fix_based_on_reference_compiled_product(ref, build_root, fix_commands):
+    ref_product = ssg.products.Product(ref)
+    product_id = ref_product["product"]
+    if not corresponding_product_built(build_root, product_id):
+        return
+
+    compiled_path = os.path.join(build_root, product_id, "product.yml")
+    compiled_product = ssg.products.Product(compiled_path)
+    if not compiled_product:
+        msg = ("Unexpectedly unable to find compiled product file corresponding"
+               "to the test file {ref}, although the corresponding product has been built. "
+               "This indicates that a profile we have tests for is missing."
+               .format(ref=ref))
+        raise RuntimeError(msg)
+    difference = get_reference_vs_built_difference(ref_product, compiled_product)
+    if not difference.empty:
+        stability.report_comparison(product_id, difference)
+        fix_commands.append(
+            "cp '{compiled}' '{reference}'"
+            .format(compiled=compiled_path, reference=ref)
+        )
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("build_root")
@@ -95,26 +118,8 @@ def main():
                            .format(test_root=args.test_data_root))
     fix_commands = []
     for ref in reference_files:
-        ref_product = ssg.products.Product(ref)
-        product_id = ref_product["product"]
-        if not corresponding_product_built(args.build_root, product_id):
-            continue
-
-        compiled_path = os.path.join(args.build_root, product_id, "product.yml")
-        compiled_product = ssg.products.Product(compiled_path)
-        if not compiled_product:
-            msg = ("Unexpectedly unable to find compiled product file corresponding"
-                   "to the test file {ref}, although the corresponding product has been built. "
-                   "This indicates that a profile we have tests for is missing."
-                   .format(ref=ref))
-            raise RuntimeError(msg)
-        difference = get_reference_vs_built_difference(ref_product, compiled_product)
-        if not difference.empty:
-            stability.report_comparison(product_id, difference)
-            fix_commands.append(
-                "cp '{compiled}' '{reference}'"
-                .format(compiled=compiled_path, reference=ref)
-            )
+        inform_and_append_fix_based_on_reference_compiled_product(
+                ref, args.build_root, fix_commands)
 
     if fix_commands:
         msg = (
