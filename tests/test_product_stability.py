@@ -7,39 +7,12 @@ import sys
 
 import ssg.products
 
+import tests.test_profile_stability as stability
+
 
 IGNORED_PROPERTIES = (
     "product_dir",
 )
-
-
-class Difference(object):
-    def __init__(self):
-        self.added = []
-        self.removed = []
-        self.modified = dict()
-
-    def remove_item_from_comparison(self, item):
-        if item in self.added:
-            self.added.remove(item)
-        if item in self.removed:
-            self.removed.remove(item)
-        if item in self.modified:
-            self.modified.pop(item)
-
-    @property
-    def empty(self):
-        return not (self.added or self.removed or self.modified)
-
-
-def describe_changeset(intro, changeset):
-    if not changeset:
-        return ""
-
-    msg = intro
-    for rid in changeset:
-        msg += " - {rid}\n".format(rid=rid)
-    return msg
 
 
 def describe_modification(intro, changeset):
@@ -56,11 +29,11 @@ def describe_modification(intro, changeset):
 def describe_change(difference, name):
     msg = ""
 
-    msg += describe_changeset(
+    msg += stability.describe_changeset(
         "Following properties were added to the {name} product:\n".format(name=name),
         difference.added,
     )
-    msg += describe_changeset(
+    msg += stability.describe_changeset(
         "Following properties were removed from the {name} product:\n".format(name=name),
         difference.removed,
     )
@@ -75,7 +48,7 @@ def compare_dictionaries(reference, sample):
     reference_keys = set(reference.keys())
     sample_keys = set(sample.keys())
 
-    result = Difference()
+    result = stability.Difference()
     result.added = list(sample_keys.difference(reference_keys))
     result.removed = list(reference_keys.difference(sample_keys))
     for key, value in reference.items():
@@ -84,13 +57,6 @@ def compare_dictionaries(reference, sample):
     for item in IGNORED_PROPERTIES:
         result.remove_item_from_comparison(item)
     return result
-
-
-def report_comparison(name, result):
-    msg = ""
-    if not result.empty:
-        msg = describe_change(result, name)
-    print(msg, file=sys.stderr)
 
 
 def get_references(ref_root):
@@ -144,7 +110,7 @@ def main():
             raise RuntimeError(msg)
         difference = get_reference_vs_built_difference(ref_product, compiled_product)
         if not difference.empty:
-            report_comparison(product_id, difference)
+            stability.report_comparison(product_id, difference)
             fix_commands.append(
                 "cp '{compiled}' '{reference}'"
                 .format(compiled=compiled_path, reference=ref)

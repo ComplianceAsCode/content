@@ -12,10 +12,19 @@ class Difference(object):
     def __init__(self):
         self.added = []
         self.removed = []
+        self.modified = dict()
+
+    def remove_item_from_comparison(self, item):
+        if item in self.added:
+            self.added.remove(item)
+        if item in self.removed:
+            self.removed.remove(item)
+        if item in self.modified:
+            self.modified.pop(item)
 
     @property
     def empty(self):
-        return not (self.added or self.removed)
+        return not (self.added or self.removed or self.modified)
 
 
 def describe_changeset(intro, changeset):
@@ -23,8 +32,8 @@ def describe_changeset(intro, changeset):
         return ""
 
     msg = intro
-    for rid in changeset:
-        msg += " - {rid}\n".format(rid=rid)
+    for item in changeset:
+        msg += " - {item}\n".format(item=item)
     return msg
 
 
