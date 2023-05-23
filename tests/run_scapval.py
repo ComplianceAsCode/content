@@ -45,6 +45,10 @@ def ds_is_k8s_related(result_path):
     return False
 
 
+def print_requirement_feedback(req_id, message):
+    print("    %s: %s" % (req_id, message))
+
+
 def process_results(result_path):
     ret_val = True
     tree = ET.parse(result_path)
@@ -52,20 +56,20 @@ def process_results(result_path):
     results = root.find("./{%s}results" % scapval_results_ns)
     for base_req in results.findall(
             "./{%s}base-requirement" % scapval_results_ns):
-        requirement_id = base_req.get("id")
+        scapval_requirement_id = base_req.get("id")
         status = base_req.find("./{%s}status" % scapval_results_ns).text
         if status == "FAIL":
-            if ds_is_k8s_related(result_path) and requirement_id == XML_SCHEMA_REQUIREMENT:
+            if ds_is_k8s_related(result_path) and scapval_requirement_id == XML_SCHEMA_REQUIREMENT:
                 warning = "WARNING (Contains non-standardized yamlfilecontent_test)"
-                print("    %s: %s" % (requirement_id, warning))
+                print_requirement_feedback(scapval_requirement_id, warning)
             else:
-                print("    %s: %s" % (requirement_id, status))
+                print_requirement_feedback(scapval_requirement_id, status)
                 ret_val = False
         if status == "PASS":
-            if ds_is_k8s_related(result_path) and requirement_id == XML_SCHEMA_REQUIREMENT:
-                print("    %s: %s" % (
-                    requirement_id, "FAIL (yamlfilecontent_test is probably standardized by now."
-                    "You should update the waiver.)"))
+            if ds_is_k8s_related(result_path) and scapval_requirement_id == XML_SCHEMA_REQUIREMENT:
+                msg = ("FAIL (yamlfilecontent_test is probably standardized by now."
+                       "You should update the waiver.)")
+                print_requirement_feedback(scapval_requirement_id, msg)
     return ret_val
 
 
