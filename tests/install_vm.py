@@ -8,6 +8,29 @@ import sys
 import time
 
 
+KNOWN_DISTROS = [
+    "fedora",
+    "centos7",
+    "centos8",
+    "centos9",
+    "rhel7",
+    "rhel8",
+    "rhel9",
+]
+
+DISTRO_URL = {
+    "fedora":
+        "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Everything/x86_64/os",
+    "centos7": "http://mirror.centos.org/centos/7/os/x86_64",
+    "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
+    "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
+}
+DISTRO_EXTRA_REPO = {
+    "centos8": "http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/",
+    "centos9": "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/",
+}
+
+
 def path_from_tests(path):
     return os.path.relpath(os.path.join(os.path.dirname(__file__), path))
 
@@ -33,7 +56,7 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        choices=['fedora', 'rhel7', 'centos7', 'centos8', 'centos9', 'rhel8', 'rhel9'],
+        choices=KNOWN_DISTROS,
         help="What distribution to install."
     )
     parser.add_argument(
@@ -165,16 +188,8 @@ def main():
     home_dir = os.path.expanduser('~' + username)
 
     if not data.url:
-        if data.distro == "fedora":
-            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Everything/x86_64/os"
-        elif data.distro == "centos7":
-            data.url = "http://mirror.centos.org/centos/7/os/x86_64"
-        elif data.distro == "centos8":
-            data.url = "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/"
-            data.extra_repo = "http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/"
-        elif data.distro == "centos9":
-            data.url = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/"
-            data.extra_repo = "http://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/"
+        data.url = DISTRO_URL.get(data.distro, None)
+        data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
 
     if not data.url:
         err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
