@@ -2205,10 +2205,8 @@ controls:
       - l1_workstation
     status: partial
     rules:
-      - no_shelllogin_for_systemaccounts
-    related_rules:
       - no_password_auth_for_systemaccounts
-      # This rule needs OVAL and remediation
+      - no_shelllogin_for_systemaccounts
 
   - id: 5.6.3
     title: Ensure default user shell timeout is 900 seconds or less (Automated)
