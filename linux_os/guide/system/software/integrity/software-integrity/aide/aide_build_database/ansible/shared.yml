@@ -3,12 +3,8 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Ensure AIDE is installed"
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - aide
+
+{{{ ansible_package_install(['aide'], name="AIDE") }}}
 
 - name: "Build and Test AIDE Database"
 {{% if 'sle' in product %}}

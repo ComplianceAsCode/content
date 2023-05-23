@@ -3,12 +3,8 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Ensure AIDE is installed"
-  package:
-    name:
-      - aide
-      - crontabs
-    state: present
+
+{{{ ansible_package_install(['aide', 'crontabs'], name="AIDE") }}}
 
 - name: Set cron package name - RedHat
   set_fact:

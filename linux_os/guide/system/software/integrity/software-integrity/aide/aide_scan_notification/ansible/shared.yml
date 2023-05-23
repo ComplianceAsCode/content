@@ -5,12 +5,7 @@
 # disruption = low
 - (xccdf-var var_aide_scan_notification_email)
 
-- name: "Ensure AIDE is installed"
-  package:
-    name:
-      - aide
-      - crontabs
-    state: present
+{{{ ansible_package_install(['aide', 'crontabs'], name="AIDE") }}}
 
 - name: "{{{ rule_title }}}"
   cron:

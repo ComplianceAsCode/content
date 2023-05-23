@@ -4,13 +4,7 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure aide is installed
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - aide
-
+{{{ ansible_package_install(['aide'], name="AIDE") }}}
 
 - name: Set audit_tools fact
   set_fact:
