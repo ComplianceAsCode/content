@@ -264,18 +264,6 @@ value: :code:`Setting={{ varname1 }}`
 
 
 {{#
-  High level macro to set a value in /etc/profile (and /etc/profile.d) bash
-  files. Note this is only suitable for calling a single command once with the
-  correct arguments and not for calling the same command multiple times with
-  different arguments. This includes setting an environment variable once.
-
-#}}
-{{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
-{{%- endmacro %}}
-
-
-{{#
   High level macro to set a command in auditd configuration file /etc/audit/auditd.conf.
 
 :param msg: The name for the Ansible task
