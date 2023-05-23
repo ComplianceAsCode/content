@@ -7,7 +7,7 @@ import sys
 
 import ssg.products
 
-import tests.test_profile_stability as stability
+from tests.common import stability
 
 
 IGNORED_PROPERTIES = (
@@ -59,7 +59,7 @@ def compare_dictionaries(reference, sample):
     return result
 
 
-def get_references(ref_root):
+def get_references_filenames(ref_root):
     return glob.glob(os.path.join(ref_root, "*.yml"))
 
 
@@ -91,15 +91,9 @@ def inform_and_append_fix_based_on_reference_compiled_product(ref, build_root, f
 
     compiled_path = os.path.join(build_root, product_id, "product.yml")
     compiled_product = ssg.products.Product(compiled_path)
-    if not compiled_product:
-        msg = ("Unexpectedly unable to find compiled product file corresponding"
-               "to the test file {ref}, although the corresponding product has been built. "
-               "This indicates that a profile we have tests for is missing."
-               .format(ref=ref))
-        raise RuntimeError(msg)
     difference = get_reference_vs_built_difference(ref_product, compiled_product)
     if not difference.empty:
-        stability.report_comparison(product_id, difference)
+        stability.report_comparison(product_id, difference, describe_change)
         fix_commands.append(
             "cp '{compiled}' '{reference}'"
             .format(compiled=compiled_path, reference=ref)
@@ -112,7 +106,7 @@ def main():
     parser.add_argument("test_data_root")
     args = parser.parse_args()
 
-    reference_files = get_references(args.test_data_root)
+    reference_files = get_references_filenames(args.test_data_root)
     if not reference_files:
         raise RuntimeError("Unable to find any reference compiled products in {test_root}"
                            .format(test_root=args.test_data_root))

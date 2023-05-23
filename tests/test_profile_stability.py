@@ -7,44 +7,17 @@ import sys
 
 import ssg.yaml
 
-
-class Difference(object):
-    def __init__(self):
-        self.added = []
-        self.removed = []
-        self.modified = dict()
-
-    def remove_item_from_comparison(self, item):
-        if item in self.added:
-            self.added.remove(item)
-        if item in self.removed:
-            self.removed.remove(item)
-        if item in self.modified:
-            self.modified.pop(item)
-
-    @property
-    def empty(self):
-        return not (self.added or self.removed or self.modified)
-
-
-def describe_changeset(intro, changeset):
-    if not changeset:
-        return ""
-
-    msg = intro
-    for item in changeset:
-        msg += " - {item}\n".format(item=item)
-    return msg
+from tests.common import stability
 
 
 def describe_change(difference, name):
     msg = ""
 
-    msg += describe_changeset(
+    msg += stability.describe_changeset(
         "Following selections were added to the {name} profile:\n".format(name=name),
         difference.added,
     )
-    msg += describe_changeset(
+    msg += stability.describe_changeset(
         "Following selections were removed from the {name} profile:\n".format(name=name),
         difference.removed,
     )
@@ -55,20 +28,13 @@ def compare_sets(reference, sample):
     reference = set(reference)
     sample = set(sample)
 
-    result = Difference()
+    result = stability.Difference()
     result.added = list(sample.difference(reference))
     result.removed = list(reference.difference(sample))
     return result
 
 
-def report_comparison(name, result):
-    msg = ""
-    if not result.empty:
-        msg = describe_change(result, name)
-    print(msg, file=sys.stderr)
-
-
-def get_references(ref_root):
+def get_references_filenames(ref_root):
     found = []
     for root, dirs, files in os.walk(ref_root):
         for basename in files:
@@ -127,7 +93,7 @@ def inform_and_append_fix_based_on_reference_compiled_profile(ref, build_root, f
     difference = get_reference_vs_built_difference(ref, compiled_profile)
     if not difference.empty:
         comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
-        report_comparison(comprehensive_profile_name, difference)
+        stability.report_comparison(comprehensive_profile_name, difference, describe_change)
         fix_commands.append(
             "cp '{compiled}' '{reference}'"
             .format(compiled=compiled_profile, reference=ref)
@@ -140,7 +106,7 @@ def main():
     parser.add_argument("test_data_root")
     args = parser.parse_args()
 
-    reference_files = get_references(args.test_data_root)
+    reference_files = get_references_filenames(args.test_data_root)
     if not reference_files:
         raise RuntimeError("Unable to find any reference profiles in {test_root}"
                            .format(test_root=args.test_data_root))
