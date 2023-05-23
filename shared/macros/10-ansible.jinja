@@ -772,6 +772,37 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 
 {{#
+Ansible ansible.builtin.package wrapping macro, ensure package(s) are installed
+
+:param package: Package(s) to  ensure are installed
+:type package: str | list[str]
+:param name: Name used in task name. If not set, package names joined with comma and "and".
+:type name: None | str
+
+#}}
+{{%- macro ansible_package_install(package, name=none) -%}}
+{{%- if (package is sequence) and (package is not mapping) and (package is not string) -%}}
+{{%- set packages = package -%}}
+{{%- else %}}
+{{%- set packages = [package] -%}}
+{{%- endif %}}
+{{%- if name is none %}}
+{{%- set name = "the " ~ (packages | join_comma_and) -%}}
+{{%- endif %}}
+- name: "{{{ rule_title }}} - Ensure {{{ name }}} {{% if packages | length > 1 %}}Packages Are{{% else %}}Package Is{{% endif %}} Installed"
+  ansible.builtin.package:
+    name:
+{{%- for p in packages %}}
+{{%- if p in platform_package_overrides %}}
+  {{%- set p = platform_package_overrides[p] %}}
+{{%- endif %}}
+      - "{{{ p }}}"
+{{%- endfor %}}
+    state: present
+{{%- endmacro -%}}
+
+
+{{#
     Macro used to check if authselect files are intact. When used, it will exit the respective
     script if any authselect file was modified without proper use of authselect tool and
     respective profiles.
