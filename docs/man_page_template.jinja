@@ -51,20 +51,21 @@ oscap xccdf eval --profile ospp \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
 --oval-results \
-/usr/share/xml/scap/ssg/content/ssg-{product}-xccdf.xml
+{{{ install_prefix }}}/{{{ content_path }}}/ssg-{product}-xccdf.xml
 .PP
 Additional details can be found on the projects wiki page:
 https://www.github.com/ComplianceAsCode/content/wiki
 
 
 .SH FILES
-.I /usr/share/xml/scap/ssg/content
+.I {{{ install_prefix }}}/{{{ content_path }}}
 .RS
 Houses SCAP content utilizing the following naming conventions:
 
 .I SCAP Source Datastreams:
 ssg-{product}-ds.xml
 
+{{% if xccdf_oval_ocil_cpes -%}}
 .I CPE Dictionaries:
 ssg-{product}-cpe-dictionary.xml
 
@@ -76,22 +77,54 @@ ssg-{product}-oval.xml
 
 .I XCCDF Content:
 ssg-{product}-xccdf.xml
+{{%- endif %}}
 .RE
 
-.I /usr/share/doc/scap-security-guide/guides/
+{{% if guides_path -%}}
+.I {{{ install_prefix }}}/{{{ guides_path }}}
 .RS
 HTML versions of SSG profiles.
 .RE
+{{%- endif %}}
 
-.I /usr/share/scap-security-guide/ansible/
+{{% if ansible_profile_playbooks_path -%}}
+.I {{{ install_prefix }}}/{{{ ansible_profile_playbooks_path }}}/
 .RS
 Contains Ansible Playbooks for SSG profiles.
 .RE
+{{%- endif %}}
 
-.I /usr/share/scap-security-guide/bash/
+
+{{% if ansible_playbooks_generated_for_all_rules_path -%}}
+.I {{{ install_prefix }}}/{{{ ansible_playbooks_generated_for_all_rules_path }}}
+.RS
+Contains Ansible Playbooks for individual rules.
+.RE
+{{%- endif %}}
+
+
+{{% if bash_profile_scripts_path -%}}
+.I {{{ install_prefix }}}/{{{ bash_profile_scripts_path }}}/
 .RS
 Contains Bash remediation scripts for SSG profiles.
 .RE
+{{%- endif %}}
+
+
+{{% if kickstarts_path -%}}
+.I {{{ install_prefix }}}/{{{ kickstarts_path }}}/
+.RS
+Contains example kickstarts that install systems hardened against a particular profile.
+.RE
+{{%- endif %}}
+
+
+{{% if tailoring_path -%}}
+.I {{{ install_prefix }}}/{{{ tailoring_path }}}/
+.RS
+Contains delta tailoring, whatever that means.
+.RE
+{{%- endif %}}
 
 
 .SH DEPLOYMENT TO U.S. CIVILIAN GOVERNMENT SYSTEMS

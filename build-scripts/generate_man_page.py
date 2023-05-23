@@ -14,16 +14,57 @@ import re
 import io
 
 
+def parse_argument_into_dict(output_dict, dict_key, passed_string):
+    on_or_off, path = passed_string.split(":", 1)
+    if on_or_off == "ON":
+        value = path
+    else:
+        value = ""
+    output_dict[dict_key] = value
+
+
+def parse_arguments_into_dict(args):
+    result = dict()
+    parse_argument_into_dict(
+            result, "xccdf_oval_ocil_cpes_path", args.separate_scap_files)
+    parse_argument_into_dict(
+            result, "bash_profile_scripts_path", args.profile_bash)
+    parse_argument_into_dict(
+            result, "ansible_profile_playbooks_path", args.profile_ansible)
+    parse_argument_into_dict(
+            result, "ansible_per_rule_path", args.ansible_per_rule)
+    parse_argument_into_dict(
+            result, "kickstarts_path", args.kickstarts)
+    parse_argument_into_dict(
+            result, "tailoring_path", args.tailoring)
+    return result
+
+
 def main():
     p = argparse.ArgumentParser(
         description="Generates man page from profile data")
     p.add_argument("--input_dir", required=True)
     p.add_argument("--output", required=True)
     p.add_argument("--template", required=True)
+    p.add_argument("--content-path", required=True)
+    p.add_argument("--install-prefix", default="/usr")
+
+    p.add_argument("--separate-scap-files")
+    p.add_argument("--profile-bash")
+    p.add_argument("--profile-ansible")
+    p.add_argument("--ansible-per-rule")
+    p.add_argument("--kickstarts")
+    p.add_argument("--tailoring")
     args = p.parse_args()
+
     input_dir = os.path.abspath(args.input_dir)
     all_products = get_all_products(input_dir)
-    substitution_dicts = {"products": all_products}
+    substitution_dicts = dict(
+        products=all_products,
+        content_path=args.content_path,
+        install_prefix=args.install_prefix,
+    )
+    substitution_dicts.update(parse_arguments_into_dict(args))
     man_page = ssg.jinja.process_file(args.template, substitution_dicts)
     with io.open(args.output, "w", encoding="utf-8") as output_file:
         output_file.write(man_page)

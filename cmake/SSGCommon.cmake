@@ -82,7 +82,7 @@ endmacro()
 macro(ssg_build_man_page)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/scap-security-guide.8"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_man_page.py" --template "${CMAKE_SOURCE_DIR}/docs/man_page_template.jinja" --input_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/scap-security-guide.8"
+	COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_man_page.py" --template "${CMAKE_SOURCE_DIR}/docs/man_page_template.jinja" --input_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/scap-security-guide.8" --install-prefix "${CMAKE_INSTALL_PREFIX}" --separate-scap-files "${SSG_SEPARATE_SCAP_FILES_ENABLED}:${SSG_CONTENT_INSTALL_DIR}" --profile-bash "${SSG_BASH_SCRIPTS_ENABLED}:${SSG_BASH_ROLE_INSTALL_DIR}" --profile-ansible "${SSG_ANSIBLE_PLAYBOOKS_ENABLED}:${SSG_ANSIBLE_ROLE_INSTALL_DIR}" --ansible-per-rule "${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}:${SSG_ANSIBLE_PER_RULE_PLAYBOOKS_ISNTALL_DIR}" --kickstarts "ON:${SSG_KICKSTART_INSTALL_DIR}" --tailoring "ON:${SSG_TAILORING_INSTALL_DIR}" --content-path "${SSG_CONTENT_INSTALL_DIR}"
         COMMENT "[man-page] generating man page"
     )
     add_custom_target(
@@ -890,11 +890,11 @@ macro(ssg_build_product PRODUCT)
         install(
             CODE "
             file(GLOB PLAYBOOK_PER_RULE_FILES \"${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/*\") \n
-            if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks)
-                file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
+            if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_PER_RULE_PLAYBOOKS_ISNTALL_DIR})
+                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_PER_RULE_PLAYBOOKS_ISNTALL_DIR}/${PRODUCT}\"
                     TYPE FILE FILES \${PLAYBOOK_PER_RULE_FILES})
             else()
-                file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
+                file(INSTALL DESTINATION \"${SSG_ANSIBLE_PER_RULE_PLAYBOOKS_ISNTALL_DIR}/${PRODUCT}\"
                     TYPE FILE FILES \${PLAYBOOK_PER_RULE_FILES})
             endif()
             "
