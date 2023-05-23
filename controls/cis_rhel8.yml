@@ -2347,15 +2347,12 @@ controls:
     rules:
       - accounts_password_last_change_is_in_past
 
-  # NEEDS RULE
-  # We are missing the component of this control which locks non-root system accounts
-  # https://github.com/ComplianceAsCode/content/issues/7352
   - id: 5.6.2
     title: Ensure system accounts are secured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
       - no_password_auth_for_systemaccounts
       - no_shelllogin_for_systemaccounts
