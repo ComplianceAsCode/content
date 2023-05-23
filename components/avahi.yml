@@ -1,0 +1,16 @@
+groups:
+- avahi
+- avahi_configuration
+name: avahi
+packages:
+- avahi
+- avahi-autoipd
+rules:
+- avahi_check_ttl
+- avahi_disable_publishing
+- avahi_ip_only
+- avahi_prevent_port_sharing
+- avahi_restrict_published_information
+- package_avahi-autoipd_removed
+- package_avahi_removed
+- service_avahi-daemon_disabled

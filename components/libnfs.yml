@@ -1,0 +1,26 @@
+groups:
+- nfs_client_or_server_not_both
+- nfs_configure_fixed_ports
+- nfs_configuring_all_machines
+- nfs_configuring_clients
+- nfs_configuring_servers
+name: libnfs
+packages:
+- libnfs
+rules:
+- mount_option_krb_sec_remote_filesystems
+- mount_option_nodev_remote_filesystems
+- mount_option_noexec_remote_filesystems
+- mount_option_nosuid_remote_filesystems
+- nfs_fixed_lockd_tcp_port
+- nfs_fixed_lockd_udp_port
+- nfs_fixed_mountd_port
+- nfs_fixed_statd_port
+- nfs_no_anonymous
+- no_all_squash_exports
+- no_insecure_locks_exports
+- restrict_nfs_clients_to_privileged_ports
+- service_nfs_disabled
+- service_rpcsvcgssd_disabled
+- use_kerberos_security_all_exports
+- use_root_squashing_all_exports

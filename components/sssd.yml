@@ -1,0 +1,24 @@
+groups:
+- sssd
+- sssd-ldap
+name: sssd
+packages:
+- sssd
+- sssd-ipa
+rules:
+- package_sssd-ipa_installed
+- package_sssd_installed
+- service_sssd_enabled
+- sssd_certificate_verification
+- sssd_enable_certmap
+- sssd_enable_pam_services
+- sssd_enable_smartcards
+- sssd_has_trust_anchor
+- sssd_ldap_configure_tls_ca
+- sssd_ldap_configure_tls_ca_dir
+- sssd_ldap_configure_tls_reqcert
+- sssd_ldap_start_tls
+- sssd_memcache_timeout
+- sssd_offline_cred_expiration
+- sssd_run_as_sssd_user
+- sssd_ssh_known_hosts_timeout

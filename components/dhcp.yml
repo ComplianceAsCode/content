@@ -1,0 +1,22 @@
+groups:
+- dhcp
+- dhcp_client_configuration
+- dhcp_server_configuration
+- disabling_dhcp_client
+- disabling_dhcp_server
+name: dhcp
+packages:
+- dhcp
+- dhcp-client
+- dhcp-server
+rules:
+- dhcp_client_restrict_options
+- dhcp_server_configure_logging
+- dhcp_server_deny_bootp
+- dhcp_server_deny_decline
+- dhcp_server_disable_ddns
+- dhcp_server_minimize_served_info
+- package_dhcp_client_removed
+- package_dhcp_removed
+- service_dhcpd_disabled
+- sysconfig_networking_bootproto_ifcfg

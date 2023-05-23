@@ -1,0 +1,11 @@
+groups:
+- configure_printing
+- printing
+name: cups
+packages:
+- cups
+rules:
+- cups_disable_browsing
+- cups_disable_printserver
+- package_cups_removed
+- service_cups_disabled

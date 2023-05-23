@@ -1,0 +1,21 @@
+groups:
+- journald
+name: systemd
+packages:
+- systemd
+- systemd-journal-remote
+- systemd-timesyncd
+rules:
+- coredump_disable_backtraces
+- coredump_disable_storage
+- disable_ctrlaltdel_burstaction
+- journald_compress
+- journald_forward_to_syslog
+- journald_storage
+- package_systemd-journal-remote_installed
+- package_timesyncd_installed
+- service_debug-shell_disabled
+- service_systemd-coredump_disabled
+- service_systemd-journald_enabled
+- service_timesyncd_enabled
+- socket_systemd-journal-remote_disabled

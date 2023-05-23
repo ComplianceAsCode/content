@@ -1,0 +1,25 @@
+groups:
+- postfix_client
+- postfix_configure_ssl_certs
+- postfix_harden_os
+- postfix_install_ssl_cert
+- postfix_server_cfg
+- postfix_server_dos
+- postfix_server_mail_smtpd_recipient_restrictions
+- postfix_server_mail_smtpd_relay_restrictions
+- postfix_server_relay
+- postfix_server_relay_require_tls
+- postfix_server_relay_set_trusted
+- postfix_server_relay_smtp_auth_for_untrusted
+name: postfix
+packages:
+- postfix
+rules:
+- package_postfix_installed
+- postfix_client_configure_mail_alias
+- postfix_client_configure_mail_alias_postmaster
+- postfix_client_configure_relayhost
+- postfix_network_listening_disabled
+- postfix_prevent_unrestricted_relay
+- postfix_server_banner
+- service_postfix_enabled
