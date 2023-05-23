@@ -212,34 +212,6 @@ spec:
 
 
 {{#
-  Macro which generates Kubernetes remediation in MachineConfig format with
-  required value
-    - path (String): Path to the configuration file.
-    - file_permissions_mode (String): File permissions to be applied to the file represented by path argument
-    - source_content (String): The source of the content to be applied.
-    - vals (list): The list of required values for this remediation to be applies for example: var_something
-#}}
-{{%- macro kubernetes_machine_config_file_with_required_value(path='', file_permissions_mode='', source='', vals=[]) -%}}
-apiVersion: machineconfiguration.openshift.io/v1
-kind: MachineConfig
-metadata:
-  annotations:
-    complianceascode.io/value-input-required: {{{ vals | join(",") }}}
-spec:
-  config:
-    ignition:
-      version: 3.1.0
-    storage:
-      files:
-      - contents:
-          source: data:,{{ {{{ url_encode(source) }}} }}
-        mode: {{{ file_permissions_mode }}}
-        path: {{{ path }}}
-        overwrite: true
-{{%- endmacro -%}}
-
-
-{{#
   High level macro to generate Kubernetes remediation to set the ssh daemon configuration file.
 #}}
 {{%- macro kubernetes_sshd_set() -%}}
