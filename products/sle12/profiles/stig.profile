@@ -273,6 +273,7 @@ selections:
     - sudoers_validate_passwd
     - susefirewall2_ddos_protection
     - susefirewall2_only_required_services
+    - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects
