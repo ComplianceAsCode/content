@@ -628,11 +628,6 @@ plugin_dir = /etc/audit/plugins.d
 {{%- endmacro %}}
 
 
-{{% macro kubernetes_machineconfig_auditd_config_with_required_value(vals=[]) -%}}
-{{{ kubernetes_machine_config_file_with_required_value(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config(),vals=vals)}}}
-{{%- endmacro %}}
-
-
 {{#
   Macro to generate MachineConfig setting our recommended chrony.conf
 #}}
