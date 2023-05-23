@@ -5,7 +5,5 @@ controls:
   title: For container platform using password authentication, the application must
     store only cryptographic representations of passwords.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

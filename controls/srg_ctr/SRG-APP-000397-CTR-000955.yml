@@ -5,7 +5,5 @@ controls:
   title: {{{ full_name }}} must allow the use of a temporary password for system
     logons with an immediate change to a permanent password.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

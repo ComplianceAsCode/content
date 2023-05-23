@@ -5,7 +5,5 @@ controls:
   title: {{{ full_name }}} must require the change of at least 15 of the total
     number of characters when passwords are changed.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

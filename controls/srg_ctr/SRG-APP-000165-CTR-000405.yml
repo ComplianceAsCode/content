@@ -4,7 +4,5 @@ controls:
   - medium
   title: {{{ full_name }}} must prohibit password reuse for a minimum of 10 generations.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

@@ -4,7 +4,5 @@ controls:
   - medium
   title: {{{ full_name }}} must enforce a minimum 15-character password length.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

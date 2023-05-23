@@ -6,7 +6,5 @@ controls:
     account is released by an administrator when three unsuccessful login attempts
     in 15 minutes are exceeded.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

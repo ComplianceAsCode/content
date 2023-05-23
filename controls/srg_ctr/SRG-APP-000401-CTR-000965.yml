@@ -6,7 +6,5 @@ controls:
     cache of revocation data to support path discovery and validation in case of the
     inability to access revocation information via the network.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

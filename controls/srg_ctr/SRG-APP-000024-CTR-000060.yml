@@ -5,8 +5,5 @@ controls:
   title: {{{ full_name }}} must automatically remove or disable temporary user
     accounts after 72 hours.
   rules:
-  - idp_is_configured
-  - ocp_idp_no_htpasswd
-  - kubeadmin_removed
-  - ocp_no_ldap_insecure
+  - idp_is_oidc_or_ldap
   status: automated

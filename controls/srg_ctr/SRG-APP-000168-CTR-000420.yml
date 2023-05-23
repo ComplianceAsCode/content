@@ -5,7 +5,5 @@ controls:
   title: {{{ full_name }}} must enforce password complexity by requiring that
     at least one numeric character be used.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

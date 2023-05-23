@@ -5,7 +5,5 @@ controls:
   title: {{{ full_name }}} must enforce 24 hours (one day) as the minimum password
     lifetime.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated

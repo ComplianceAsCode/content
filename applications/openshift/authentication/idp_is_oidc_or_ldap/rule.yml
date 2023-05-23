@@ -1,0 +1,85 @@
+prodtype: ocp4
+
+{{% set default_jqfilter = '.spec' %}}
+{{% set default_api_path = '/apis/config.openshift.io/v1/oauths/cluster' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_jqfilter = '.spec.configuration.oauth' %}}
+{{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
+{{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+title: "Configure An Identity Provider to be either LDAP or OIDC"
+
+description: |-
+  <p>
+  For users to interact with OpenShift Container Platform, they must first
+  authenticate to the cluster. The authentication layer identifies the user
+  associated with requests to the OpenShift Container Platform API. The
+  authorization layer then uses information about the requesting user to
+  determine if the request is allowed.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html",
+              text="Understanding authentication | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  The OpenShift Container Platform includes a built-in OAuth server for
+  token-based authentication. Developers and administrators obtain OAuth
+  access tokens to authenticate themselves to the API. It is recommended for
+  an administrator to configure OAuth to specify an identity provider after
+  the cluster is installed. User access to the cluster is managed through the
+  identity provider.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html",
+              text="Understanding identity provider configuration | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  OpenShift includes built-in role based access control (RBAC) to determine
+  whether a user is allowed to perform a given action within the cluster.
+  Roles can have cluster scope or local (i.e. project) scope.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html",
+              text="Using RBAC to define and apply permissions | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+rationale: |-
+  <p>
+  With any authentication mechanism the ability to revoke credentials if they
+  are compromised or no longer required, is a key control. Kubernetes client
+  certificate authentication does not allow for this due to a lack of support
+  for certificate revocation.
+  </p>
+
+  <p>
+  OpenShift's built-in OAuth server allows credential revocation by relying on
+  the Identity provider, as well as giving the administrators the ability to
+  revoke any tokens given to a specific user.
+  </p>
+
+identifiers:
+  cce@ocp4: CCE-90594-3
+
+references:
+  srg: SRG-APP-000149-CTR-000355,SRG-APP-000150-CTR-000360,SRG-APP-000023-CTR-000055,SRG-APP-000172-CTR-000440,SRG-APP-000024-CTR-000060,SRG-APP-000025-CTR-000065,SRG-APP-000065-CTR-000115,SRG-APP-000151-CTR-000365,SRG-APP-000152-CTR-000370,SRG-APP-000157-CTR-000385,SRG-APP-000163-CTR-000395,SRG-APP-000164-CTR-000400,SRG-APP-000165-CTR-000405,SRG-APP-000166-CTR-000410,SRG-APP-000167-CTR-000415,SRG-APP-000168-CTR-000420,SRG-APP-000169-CTR-000425,SRG-APP-000170-CTR-000430,SRG-APP-000171-CTR-000435,SRG-APP-000173-CTR-000445,SRG-APP-000174-CTR-000450,SRG-APP-000177-CTR-000465,SRG-APP-000317-CTR-000735,SRG-APP-000318-CTR-000740,SRG-APP-000156-CTR-000380,SRG-APP-000345-CTR-000785,SRG-APP-000391-CTR-000935,SRG-APP-000397-CTR-000955,SRG-APP-000401-CTR-000965,SRG-APP-000402-CTR-000970
+
+ocil_clause: 'identity provider is not configured to either LDAP or OIDC'
+
+ocil: |-
+    Verify the authentication operator is configure to use either an LDAP or a OpenIDConnect provider by executing the following:
+    oc get oauth cluster -o jsonpath="{.spec.identityProviders[*].type}{'\n'}"
+    The type in the output can only be LDAP or OpenID.
+
+severity: high
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: 'true'
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: ".identityProviders[:].type"
+    entity_check: "all"
+    values:
+    - value: 'OpenID|LDAP'
+      operation: "pattern match"

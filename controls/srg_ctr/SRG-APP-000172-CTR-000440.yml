@@ -6,7 +6,5 @@ controls:
     FIPS-validated SHA-2 or later protocol to protect the integrity of the password
     authentication process.
   rules:
-  - ocp_idp_no_htpasswd
-  - idp_is_configured
-  - kubeadmin_removed
+  - idp_is_oidc_or_ldap
   status: automated
