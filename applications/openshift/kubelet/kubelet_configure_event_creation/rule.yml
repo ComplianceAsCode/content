@@ -2,6 +2,8 @@ documentation_complete: true
 
 prodtype: ocp4
 
+platform: ocp4-node
+
 title: 'Kubelet - Ensure Event Creation Is Configured'
 
 description: |-
@@ -56,9 +58,15 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-warnings:
-- general: |-
-    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
-
+# This check ensures that the option is not left defaulted in the config.  The
+# default of 5 might be sufficient for a deployment; here the point is to check
+# that at least _some_ value has been considered.
 template:
-    name: kubelet_combine
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.eventRecordQPS"
+        check_existence: "all_exist"
+        values:
+            - value: "0"
+              operation: "not equal"

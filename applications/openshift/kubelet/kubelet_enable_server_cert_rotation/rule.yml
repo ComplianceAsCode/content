@@ -2,13 +2,13 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}
-
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
 {{%- endif %}}
+
+platform: {{{ product }}}-node
 
 title: 'kubelet - Enable Server Certificate Rotation'
 
@@ -43,10 +43,11 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-warnings:
-- general: |-
-    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
-
-
 template:
-    name: kubelet_combine
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.serverTLSBootstrap"
+        values:
+         - value: "true"
+           operation: "equals"
