@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from copy import deepcopy
+import collections
 import datetime
 import json
 import os
@@ -1321,7 +1322,7 @@ class DirectoryLoader(object):
 
 class BuildLoader(DirectoryLoader):
     def __init__(
-            self, profiles_dir, env_yaml, product_cpes,
+            self, profiles_dir, env_yaml, product_cpes, components_dir=None,
             sce_metadata_path=None, stig_reference_path=None):
         super(BuildLoader, self).__init__(profiles_dir, env_yaml, product_cpes)
 
@@ -1331,6 +1332,24 @@ class BuildLoader(DirectoryLoader):
         self.stig_references = None
         if stig_reference_path:
             self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
+        self.rule_to_component = None
+        self.use_components = self.benchmark_has_component_mapping()
+        if components_dir and self.use_components:
+            self.rule_to_component = self._load_components(components_dir)
+
+    def benchmark_has_component_mapping(self):
+        return ("linux_os/guide" in self.env_yaml["benchmark_root"])
+
+    def _load_components(self, components_dir):
+        rule_to_component = collections.defaultdict(list)
+        for component_file in os.listdir(components_dir):
+            component_file_path = os.path.join(components_dir, component_file)
+            component = ssg.yaml.open_raw(component_file_path)
+            component_name = component["name"]
+            rules = component["rules"]
+            for rule in rules:
+                rule_to_component[rule].append(component_name)
+        return rule_to_component
 
     def _process_values(self):
         for value_yaml in self.value_files:
@@ -1346,6 +1365,11 @@ class BuildLoader(DirectoryLoader):
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
+            if self.use_components and rule.id_ not in self.rule_to_component:
+                raise ValueError(
+                    "The rule '%s' isn't mapped to any component! Insert the "
+                    "rule ID at least once to the rule-component mapping." %
+                    (rule.id_))
             prodtypes = parse_prodtype(rule.prodtype)
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
@@ -1364,6 +1388,8 @@ class BuildLoader(DirectoryLoader):
         loader.sce_metadata = self.sce_metadata
         # Do it this way so we only have to parse the STIG references once.
         loader.stig_references = self.stig_references
+        # Do it this way so we only have to parse the component metadata once.
+        loader.rule_to_component = self.rule_to_component
         return loader
 
     def export_group_to_file(self, filename):
