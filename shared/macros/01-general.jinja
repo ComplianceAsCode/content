@@ -1110,16 +1110,6 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 
 
 {{#
-    Adds a default "no easy remediation" warning for kernel_build_config warning.
-
-#}}
-{{% macro kernel_build_config_warning() %}}
-- general: |-
-    There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
-{{% endmacro %}}
-
-
-{{#
     OCIL for a kernel build config rule.
 
     Example usage::
