@@ -44,6 +44,7 @@ Standard audit OCIL clause
 the command does not return a line, or the line is commented out
 {{%- endmacro %}}
 
+
 {{#
 OCIL and OCIL clause for ensuring that a privileged command is audited.
 
@@ -63,6 +64,7 @@ ocil: |-
 
     -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -k {{% if key %}}{{{ key }}}{{% else %}}privileged-{{{ cmd }}}{{% endif %}}
 {{% endmacro %}}
+
 
 {{#
     OCIL for adding a syscall to audit logs
@@ -117,6 +119,7 @@ ocil: |
     If the system is configured to audit this activity, it will return a line.
 {{%- endmacro %}}
 
+
 {{#
     OCIL for adding a unsuccessful syscall to audit logs
 
@@ -146,6 +149,7 @@ ocil: |
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
 
+
 {{#
     OCIL and OCIL clause for adding a unsuccessful syscall to audit logs
 
@@ -159,7 +163,6 @@ ocil: |
 
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
-
 
 
 {{# Package macros #}}
@@ -301,6 +304,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{%- endif -%}}
 {{%- endmacro %}}
 
+
 {{#
     Inserts an OCIL Clause for a case when a service should be enabled.
 
@@ -370,6 +374,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
   {{%- endif -%}}
 {{%- endmacro %}}
+
 
 {{#
     Inserts an OCIL Clause for a case when a service should be disabled.
@@ -651,7 +656,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
     it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
 
 :param port: The port to allow
-:type port: int
+:type port: str
 :param proto: The protocol to allow
 :type proto: str
 :param service: The service to allow
@@ -688,6 +693,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
 {{{ _firewalld_check("prevent access", port, proto, service) }}}
     If <code>firewalld</code> is configured to prevent access, no output will be returned.
 {{%- endmacro %}}
+
 
 {{# Kernel modules macros #}}
 
@@ -740,6 +746,7 @@ ocil: |-
 
 ocil_clause: "{{{ sebool }}} is not set as expected"
 {{%- endmacro %}}
+
 
 {{#
     Describe how to check if given SELinux boolean is set depending on a variable.
@@ -824,8 +831,8 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{#
     Describe how to check if timer is enabled in systemd.
 
-:param service: The service to check
-:type service: str
+:param timer: The timer to check
+:type timer: str
 
 #}}
 {{%- macro systemd_ocil_timer_enabled(timer) %}}
@@ -959,8 +966,8 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 :param file: File to change
 :type file: str
-:param owner: the group owner for the file
-:type owner: str
+:param group: the group owner for the file
+:type group: str
 
 #}}
 {{%- macro ocil_clause_file_group_owner(file, group) -%}}
@@ -1081,11 +1088,12 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 
 {{#
 Write out the OCIL for generating the common check for Firefox configuration
+
 :param preference: Name of preference
 :type preference: str
 :param config: configuration item name in Firefox
 :type config: str
-:param value: Expected value for preference
+:param value: Expected value for preference, "true" or "false"
 :type value: str
 
 #}}
@@ -1109,6 +1117,7 @@ ocil: |-
     The output should return:
     <pre>lockPref("{{config}}", "{{value}}");</pre>
 {{%- endmacro %}}
+
 
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification template
@@ -1167,6 +1176,7 @@ The output should be the following:
 
 {{%- endmacro %}}
 
+
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_o_trunc_write template
 
@@ -1195,6 +1205,7 @@ The output should be the following:
 -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
 
 {{%- endmacro %}}
+
 
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_rule_order template
@@ -1228,13 +1239,14 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
     -a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro %}}
 
+
 {{# OpenShift Logging Macros #}}
 
 {{#
     OCIL for how to check RBAC permissions for cluster logging
 
 :param verb: The RBAC verb to check
-:type file: str
+:type verb: str
 
 #}}
 {{%- macro ocil_cluster_logging_rbac_review(verb) -%}}

@@ -12,12 +12,10 @@ This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
 
-#}}
 {{% macro openshift_cluster_setting_kubeletconfig() -%}}
 This rule's check operates on the cluster configuration dump. This will be a Platform rule, var_role_worker and var_role_master needed to be set if scan is not expected to run on master, and worker nodes.
 Therefore, you need to use a tool that can query the OCP API, retrieve KubeletConfig through <code class="ocp-api-endpoint-kubeletconfig">"/api/v1/nodes/NODE_NAME/proxy/configz"</code> API endpoint to the local <code class="ocp-dump-location-kubeletconfig">{{{ xccdf_value("ocp_data_root") }}}"/kubeletconfig/role/role"</code> file.
 {{%- endmacro %}}
-
 
 
 {{#
@@ -91,6 +89,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 </ul>
 {{%- endmacro %}}
 
+
 {{#
   Macro which generates a unique identifier for Compliance Operator, this will hide the rule from ComplianceCheckResult
 
@@ -99,6 +98,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 This rule will be a hidden rule 
 <code class="ocp-hide-rule" id="ocp-hide-rule">true</code>
 {{%- endmacro %}}
+
 
 {{% macro openshift_filtered_version(path_filter_pairs) -%}}
 This rule's check operates on the cluster configuration dump.
@@ -120,7 +120,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{% endfor %}}
 </ul>
 {{%- endmacro %}}
-
 
 
 {{#
@@ -1029,6 +1028,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
     {{% endif %}}
 {{%- endmacro %}}
 
+
 {{#
     Adds a default "no easy remediation" warning for kernel_build_config warning.
 
@@ -1037,6 +1037,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 - general: |-
     There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
 {{% endmacro %}}
+
 
 {{#
     OCIL for a kernel build config rule.
@@ -1062,6 +1063,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
     {{% endif %}}
 {{%- endmacro %}}
 
+
 {{#
     Returns the AIDE strings based on the current product
 
@@ -1073,6 +1075,7 @@ p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
 p+i+n+u+g+s+b+acl+xattrs+sha512
 {{%- endif -%}}
 {{%- endmacro -%}}
+
 
 {{#
     Lists the files need for the rule aide_check_audit_tools with the AIDE string
@@ -1097,9 +1100,9 @@ Generates a correct command based on the product (grubby, grub2-mkconfig, update
 Part of the grub2_bootloader_argument(_absent) templates.
 
 :param action: What to do with the argument, must be one of: "update", "add", "remove".
-:type action str:
-:param arg_name: :type arg_name str: :param arg_name_value: If action is "add", it's kernel command line argument concatenated with the value of this argument using an equal sign, eg. "audit=1". If action is "remove", it's only the kernel command line argument name, eg. "audit".
-:type arg_name_value str:
+:type action: str
+:param arg_name_value: If action is "add", it's kernel command line argument concatenated with the value of this argument using an equal sign, eg. "audit=1". If action is "remove", it's only the kernel command line argument name, eg. "audit".
+:type arg_name_value: str
 
 #}}
 {{% macro grub_command(action, arg_name_value=None) -%}}
@@ -1127,6 +1130,7 @@ Part of the grub2_bootloader_argument(_absent) templates.
 {{%- endif -%}}
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 {{%- endmacro %}}
+
 
 {{%- macro audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() -%}}
 ## This content is a section of an Audit config snapshot recommended for linux systems that target OSPP compliance.
@@ -1170,6 +1174,7 @@ Part of the grub2_bootloader_argument(_absent) templates.
 -a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 -a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro -%}}
+
 
 {{#
 Join list of items to create a human readable list in which the last item is

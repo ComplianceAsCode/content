@@ -20,12 +20,19 @@ Then, assume that variables of that names are defined and contain the correct va
     type control module option=valueRegexArg
 
 :param pamFile:         PAM config file
+:type pamFile: str
 :param type:            PAM module interface
+:type type: str
 :param control:         PAM control flags
+:type control: str
 :param module:          PAM module name
+:type module: str
 :param option:          PAM module option
+:type option: str
 :param valueRegexArg:   PAM module option argument regex pattern
+:type valueRegexArg: str
 :param defaultValueArg: PAM module option argument default value
+:type defaultValueArg: str
 
 #}}
 {{%- macro bash_ensure_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
@@ -69,13 +76,20 @@ fi
     Make sure that we have a line with given type, control and module has the given option in pamFile (additional options are left as-is):
     `type control module option=valueRegexArg`
 
-:param pamFile:        PAM config file
-:param type:           PAM module interface
-:param control:        PAM control flags
-:param module:         PAM module name
-:param option:         PAM module option
-:param valueRegexArg:   PAM module option argument regex pattern
+:param pamFile: PAM config file
+:type pamFile: str
+:param type: PAM module interface
+:type type: str
+:param control: PAM control flags
+:type control: str
+:param module: PAM module name
+:type module: str
+:param option: PAM module option
+:type option: str
+:param valueRegexArg: PAM module option argument regex pattern
+:type valueRegexArg: str
 :param defaultValueArg: PAM module option argument default value
+:type defaultValueArg: str
 
 #}}
 {{%- macro bash_provide_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
@@ -115,8 +129,8 @@ fi
 :type parameter: str
 :param value: Value to set
 :type value: str
-:param no_quotes: Boolean, if true the value is not quoted. Default is false.
-:type no_quotes: str
+:param no_quotes: If true the value is not quoted. Default is false.
+:type no_quotes: bool
 
 #}}
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
@@ -149,14 +163,15 @@ fi
 {{#
     Macro to perform remediation for 'audit_rules_privileged_commands' rule
 
-
-:param tool:		    tool used to load audit rules either 'auditctl' or 'augenrules'
-:param min_auid:		minimum original ID the user logged in with
-
     Example macro invocation(s)::
 
          perform_audit_rules_privileged_commands_remediation("auditctl", "500")
          perform_audit_rules_privileged_commands_remediation("augenrules", "1000")
+
+:param tool: tool used to load audit rules either 'auditctl' or 'augenrules'
+:type tool: str
+:param min_auid: minimum original ID the user logged in with
+:type min_auid: str
 
 #}}
 {{%- macro bash_perform_audit_rules_privileged_commands_remediation(tool, min_auid) -%}}
@@ -375,6 +390,7 @@ done
 {{%- endif %}}
 {{%- endmacro %}}
 
+
 {{#
     Macro that copies the audit rules into a file.
     The purpose is to create exactly the same content in the file specified by filename argument
@@ -390,6 +406,7 @@ cat <<EOF > "{{{ filename }}}"
 {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
 {{%- endmacro -%}}
+
 
 {{#
    Set parameter in /etc/audit/auditd.conf
@@ -468,19 +485,23 @@ EOF
 
 {{#
     Macro to fix audit file system object watch rule for given path:
+
     * if rule exists, also verifies the -w bits match the requirements
     * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
       audit rules file, depending on the tool which was used to load audit rules
 
-
-:param audit tool                      tool used to load audit rules, either 'auditctl', or 'augenrules'
-:param path:                          	value of -w audit rule's argument
-:param required_access_bits:       	    value of -p audit rule's argument
-:param key:                        	value of -k audit rule's argument
-
     Example macro invocation::
 
           {{{ bash_fix_audit_watch_rule("auditctl", "/etc/localtime", "wa", "audit_time_rules") }}}
+
+:param tool:                 tool used to load audit rules, either 'auditctl', or 'augenrules'
+:type tool: str
+:param path:                 value of -w audit rule's argument
+:type path: str
+:param required_access_bits: value of -p audit rule's argument
+:type required_access_bits: str
+:param key:                  value of -k audit rule's argument
+:type key: str
 
 #}}
 {{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key) -%}}
@@ -677,6 +698,7 @@ do
 done
 {{%- endmacro -%}}
 
+
 {{#
     Disable prelinking in sysconfig
 
@@ -776,17 +798,20 @@ dconf update
 
 
 {{#
-    Macro to enable or disable a particular service.
+Macro to enable or disable a particular service.
 
     Examples::
 
-    bash_service_command("enable", "bluetooth")
-    bash_service_command("disable", "bluetooth.service")
-    bash_service_command("disable", "rsh.socket", xinetd="rsh")
+        bash_service_command("enable", "bluetooth")
+        bash_service_command("disable", "bluetooth.service")
+        bash_service_command("disable", "rsh.socket", xinetd="rsh")
 
 :param service_state: Desired state of the service
+:type service_state: str
 :param service: The service to change
+:type service: str
 :param xinetd: Set the xinetd for the service. Defaults to empty string.
+:type xinetd: str
 
 #}}
 {{%- macro bash_service_command(service_state, service, xinetd="") -%}}
@@ -864,8 +889,15 @@ Example Calls:
         bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="$var_config_file_name")
 
 :param config_file:          Configuration file that will be modified
+:type config_file: str
 :param key:                  Configuration option to change
+:type key: str
 :param value:                Value of the configuration option to change
+:type value: str
+:param quoted_value:
+:type quoted_value: str
+:param sed_separator:
+:type sed_separator: char
 
 #}}
 {{%- macro bash_firefox_js_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
@@ -906,7 +938,6 @@ done
 Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
 preference if it does not exist.
 
-
 Example Call(s):
 
     Without string or variable::
@@ -922,8 +953,15 @@ Example Call(s):
         bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
 
 :param config_file:           Configuration file that will be modified
-:param  key:                  Configuration option to change
-:param  value:                Value of the configuration option to change
+:type config_file: str
+:param key:                  Configuration option to change
+:type key: str
+:param value:                Value of the configuration option to change
+:type value: str
+:param quoted_value:
+:type quoted_value: str
+:param sed_separator:
+:type sed_separator: char
 
 #}}
 {{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
@@ -953,7 +991,9 @@ done
     Macro to ensure that the ntp/chrony config file contains valid server entries.
 
 :param config_file: Path to the ntp/chrony config file
+:type config_file: str
 :param servers_list: Comma-separated list of servers
+:type servers_list: str
 
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
@@ -978,6 +1018,7 @@ fi
     not desired, avoid defining a backup name.
 
 :param backup_name:        Changes the default backup name used by authselect.
+:type backup_name: str
 
 #}}
 {{% macro bash_apply_authselect_changes(backup_name='') -%}}
@@ -1056,6 +1097,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Validate an authselect custom profile integrity and ensures the correct file path is defined
     in the "PAM_FILE_PATH" variable. The macros which change PAM files are the same regardless of
@@ -1064,7 +1106,8 @@ fi
     the macro will properly locate the correct profile and file to be edited in the authselect
     context. This sequence of commands is used in multiple PAM related macros.
 
-    :param pam_file:    PAM config file.
+:param pam_file:    PAM config file.
+:type pam_file: str
 
 #}}
 {{%- macro bash_ensure_pam_variables_and_authselect_profile(pam_file) -%}}
@@ -1076,17 +1119,21 @@ PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
 {{{ bash_apply_authselect_changes() }}}
 {{%- endmacro -%}}
 
+
 {{#
     Enable pam_pwhistory.so PAM module according to the system capabilities.
     If authselect is present and the "with-pwhistory" feature is available, the feature will be enabled.
     If authselect is present but the "with-pwhistory" feature is not yet available, a custom profile will be used.
     If authselect is not present, PAM files will be directly edited.
 
-    :param pam_file:    PAM config file.
-    :param control:     PAM control flags.
-    :param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
-                        Note: For this macro, there is a special value used to include a line at
-                        the beginning of the file: "BOF"
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
 
 #}}
 {{%- macro bash_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
@@ -1103,14 +1150,18 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Set pam_pwhistory.so PAM module options and values. In case the file
     /etc/security/pwhistory.conf is present in the system, the option is ensured there and removed
     from pam files to avoid conflicts or confusion.
 
 :param pam_file:    PAM config file.
+:type pam_file: str
 :param option:      pwhistory option e.g.: remember, retry, debug
+:type option: str
 :param value:       value of option
+:type value: str
 
 #}}
 {{%- macro bash_pam_pwhistory_parameter_value(pam_file, option, value='') -%}}
@@ -1146,6 +1197,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Sets PAM faillock module options and values. In case the file
     /etc/security/faillock.conf is present in the system, the option is removed from pam files
@@ -1153,8 +1205,11 @@ fi
     It also adds pam_faillock.so as required module for account.
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
+:type option: str
 :param value: value of option
+:type value: str
 :param authfail: check the pam_faillock.so conf line with authfail
+:type authfail: bool
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
@@ -1214,12 +1269,16 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Print a message to stderr and exit the shell
 
 :param message: The message to print.
+:type message: str
 :param rc: The error code (optional, default is 1)
+:type rc: int
 :param action: What to do (optional, default is 'exit', can be also 'return' or anything else)
+:type action: str
 
 #}}
 {{% macro die(message, rc=1, action="exit") -%}}
@@ -1227,22 +1286,34 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 {{{ action }}} {{{ rc }}}
 {{%- endmacro %}}
 
+
 {{#
     Add an entry to a text configuration file
 
 :param path: path of the configuration file
+:type path: str
 :param parameter: the parameter to be set in the configuration file
+:type parameter: str
 :param value: the value of the parameter to be set in the configuration file
+:type value: str
 :param create: whether create the file specified by path if the file does not exits
+:type create: bool
 :param insert_after: inserts the entry right after first line that matches regular expression specified by this argument, set to EOF to insert at the end of the file
+:type insert_after: str
 :param insert_before: inserts the entry right before first line that matches regular expression specified by this argument, set to BOF to insert at the beginning of the file
+:type insert_before: str
 :param insensitive: ignore case
+:type insensitive: bool
 :param separator: separates parameter from the value (literal)
+:type separator: str
 :param separator_regex: regular expression that describes the separator and surrounding whitespace
+:type separator_regex: str
 :param prefix_regex: regular expression describing allowed leading characters at each line
+:type prefix_regex: str
+:param sed_path_separator:
+:type sed_path_separator: char
 
 #}}
-
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
     {{%- set new_line = parameter+separator+value -%}}
     {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
@@ -1259,6 +1330,7 @@ fi
 {{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive, sed_path_separator=sed_path_separator) }}}
 {{%- endmacro -%}}
 
+
 {{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/") -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
@@ -1271,6 +1343,7 @@ fi
 LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
 {{%- endmacro -%}}
 
+
 {{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true, filename_glob="*") -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
@@ -1279,6 +1352,7 @@ LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }
     {{%- endif -%}}
 LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/{{{ filename_glob }}}
 {{%- endmacro -%}}
+
 
 {{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true, sed_path_separator="/") -%}}
     {{%- if insensitive -%}}
@@ -1328,11 +1402,14 @@ fi
 rm "{{{ path }}}.bak"
 {{%- endmacro -%}}
 
+
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
 
 :param filepath: Filepath of the file to check
+:type filepath: str
 :param contents:  Contents that should be in the file
+:type contents: str
 
 #}}
 {{%- macro bash_file_contents(filepath='', contents='') %}}
@@ -1341,35 +1418,42 @@ cat << 'EOF' > {{{ filepath }}}
 EOF
 {{%- endmacro %}}
 
+
 {{# Strips anchors regex around the banner text #}}
 {{% macro bash_deregexify_banner_anchors(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/^\^\(.*\)\$$/\1/g')
 {{%- endmacro %}}
+
 
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro bash_deregexify_multiple_banners(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/^(\(.*\.\)|.*)$/\1/g')
 {{%- endmacro %}}
 
+
 {{# Strips whitespace or newline regex #}}
 {{% macro bash_deregexify_banner_space(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\[\\s\\n\]+/ /g')
 {{%- endmacro %}}
+
 
 {{# Strips newline or newline escape sequence regex #}}
 {{% macro bash_deregexify_banner_newline(banner_var_name, newline) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\\\n)+)/{{{ newline }}}/g')
 {{%- endmacro %}}
 
+
 {{# Strips newline token for a newline escape sequence regex #}}
 {{% macro bash_deregexify_banner_newline_token(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(n)\*/\\n/g')
 {{%- endmacro %}}
 
+
 {{# Strips backslash regex #}}
 {{% macro bash_deregexify_banner_backslash(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\\//g')
 {{%- endmacro %}}
+
 
 {{% macro bash_ini_file_set(filename, section, key, value) -%}}
 {{% set config_dir = "/".join(filename.split("/")[:-1]) %}}
@@ -1393,6 +1477,7 @@ else
 fi
 {{%- endmacro %}}
 
+
 {{%- macro bash_sudo_remove_config(parameter, pattern) -%}}
 for f in /etc/sudoers /etc/sudoers.d/* ; do
   if [ ! -e "$f" ] ; then
@@ -1409,6 +1494,7 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
   fi
 done
 {{%- endmacro -%}}
+
 
 {{% macro bash_sssd_ldap_config(parameter, value) -%}}
 SSSD_CONF="/etc/sssd/sssd.conf"
@@ -1437,6 +1523,7 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
         fi
 fi
 {{%- endmacro %}}
+
 
 {{#
     Check whether or not a package is installed.
@@ -1471,7 +1558,9 @@ cce="{{{ cce_identifiers['cce'] }}}"
     Do not modify file at all if there already is newline. Always follows
     symlinks.
 
-    :param file:     file to check
+:param file:     file to check
+:type file: str
+
 #}}
 {{%- macro bash_ensure_nl_at_eof(file) -%}}
 {{#- Plain sed '$a\' updates stat even if it dones not change the file. -#}}
@@ -1499,11 +1588,14 @@ fi
 
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
 
-
 :param config_file: Configuration file that will be modified
+:type config_file: str
 :param key: Configuration option to change
+:type key: str
 :param value: Value of the configuration option to change
+:type value: str
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
+:type format: str
 
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
@@ -1530,6 +1622,7 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Macro to restrict permissions in home directories of interactive users.
 
@@ -1547,15 +1640,20 @@ for home_dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid
 done
 {{%- endmacro -%}}
 
+
 {{#
     To see how args corresponds to an :code:`/etc/fstab` entry, see
     `bash_ensure_mount_option_for_vfstype <#template-bash_ensure_mount_option_in_fstab>`_
     documentation
 
 :param vfstype:     type of filesystem
+:type vfstype: str
 :param mount_opt:   mount point option which we are checking
+:type mount_opt: str
 :param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+:type fs_spec: str
 :param type:        mount type of new mount point (used when adding new entry in fstab)
+:type type: str
 
 #}}
 {{% macro bash_ensure_mount_option_for_vfstype(vfstype, mount_opt, fs_spec, type) -%}}
@@ -1568,6 +1666,7 @@ do
 done
 {{%- endmacro %}}
 
+
 {{#
 Ensures that given mount point is in :code:`/etc/fstab`.
 
@@ -1579,10 +1678,14 @@ Ensures that given mount point is in :code:`/etc/fstab`.
 
         LABEL=t-home2   /home      ext4    defaults,auto_da_alloc      0  2
 
-    :param mount_point: mount point
-    :param mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
-    :param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
-    :param type:        mount type of mount point (used when adding new entry in fstab)
+:param mount_point: mount point
+:type mount_point: str
+:param mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
+:type mount_opt: str
+:param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+:type fs_spec: str
+:param type:        mount type of mount point (used when adding new entry in fstab)
+:type type: str
 
 #}}
 {{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
@@ -1602,6 +1705,7 @@ elif ! grep "$mount_point_match_regexp" /etc/fstab | grep "{{{ mount_opt }}}"; t
 fi
 {{%- endmacro %}}
 
+
 {{#
     Check whether mount_point is present in /etc/fstab; print err to stderr and return 1 if not
 
@@ -1617,6 +1721,7 @@ grep "$mount_point_match_regexp" -q /etc/fstab \
             echo "Not remediating, because there is no record of {{{ mount_point }}} in /etc/fstab" >&2; return 1; }
 {{%- endmacro %}}
 
+
 {{#
   Ensure that partition is mounted at mount_point with correct options, but only if the partition
   is already mounted.
@@ -1629,6 +1734,7 @@ if mkdir -p "{{{ mount_point }}}"; then
     fi
 fi
 {{%- endmacro %}}
+
 
 {{#
 Based on example audit syscall rule definitions as outlined in
@@ -1644,19 +1750,29 @@ for further details.
 
 Notes:
 
-* The 2-nd up to 4-th arguments are used to determine how many existing audit rules will be inspected for resemblance with the new audit rule the macro is going to add.
-* The macro's similarity check uses the 5-th argument to optimize audit rules definitions (merge syscalls of the same group into one rule) to avoid the "single-syscall-per-audit-rule" performance penalty.
-* The key argument (7-th argument) is not used when the syscall is grouped to an
-existing audit rule. The audit rule will retain the key it already had.
+* The 2-nd up to 4-th arguments are used to determine how many existing audit
+  rules will be inspected for resemblance with the new audit rule the macro
+  is going to add.
+* The macro's similarity check uses the 5-th argument to optimize audit rules
+  definitions (merge syscalls of the same group into one rule) to avoid the
+  "single-syscall-per-audit-rule" performance penalty.
+* The key argument (7-th argument) is not used when the syscall is grouped to
+  an existing audit rule. The audit rule will retain the key it already had.
 
-:param audit_tool:  tool used to load audit rules, either 'auditctl', or 'augenrules
+:param tool:  tool used to load audit rules, either 'auditctl', or 'augenrules
+:type tool: str
 :param action_arch_filters: The action and arch filters of the rule. For example, "-a always,exit -F arch=b64"
+:type action_arch_filters: str
 :param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
+:type other_filters: str
 :param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:type auid_filters: str
 :param syscall: The syscall to ensure presense among audit rules. For example, "chown"
+:type syscall: str
 :param syscall_groupings: Other syscalls that can be grouped with 'syscall' as a space separated list. For example, "fchown lchown fchownat"
-:param  key: The key to use when appending a new rule
-
+:type syscall_groupings: str
+:param key: The key to use when appending a new rule
+:type key: str
 
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
@@ -1831,11 +1947,14 @@ if [ "$skip" -ne 0 ]; then
 fi
 {{%- endmacro %}}
 
+
 {{#
     Ensures that /etc/default/grub file contains the arg_name_value.
 
 :param arg_name: name of the grub parameter, e.g.: "audit"
+:type arg_name: str
 :param arg_name_value: parameter together with the value to ensure, e.g.: "audit=1"
+:type arg_name_value: str
 
 #}}
 {{%- macro update_etc_default_grub_manually(arg_name, arg_name_value) -%}}
@@ -1849,14 +1968,15 @@ else
 fi
 {{%- endmacro %}}
 
+
 {{#
 Macro for Bash remediation for adding a kernel command line argument to the GRUB 2 bootloader.
 Part of the grub2_bootloader_argument template.
 
 :param arg_name: Kernel command line argument
-:type arg_name str:
+:type arg_name: str
 :param arg_name_value: Kernel command line argument concatenated with the value of this argument using an equal sign, eg. "noexec=off".
-:type arg_name_value str:
+:type arg_name_value: str
 
 #}}
 {{% macro grub2_bootloader_argument_remediation(arg_name, arg_name_value) %}}
@@ -1866,10 +1986,12 @@ Part of the grub2_bootloader_argument template.
 {{{ grub_command("add", arg_name_value) }}}
 {{% endmacro %}}
 
+
 {{#
     Ensures that /etc/default/grub file does not contain the arg_name_value.
 
 :param arg_name: name of the grub parameter, e.g.: "audit"
+:type arg_name: str
 
 #}}
 {{%- macro update_etc_default_grub_manually_absent(arg_name) -%}}
@@ -1879,12 +2001,13 @@ if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; t
 fi
 {{%- endmacro %}}
 
+
 {{#
 Macro for Bash remediation for removing a kernel command line argument from the GRUB 2 bootloader.
 Part of the grub2_bootloader_argument_absent template.
 
 :param arg_name: Name of the kernel command line argument that will be removed from GRUB 2 configuration.
-:type arg_name str:
+:type arg_name: str
 
 #}}
 {{% macro grub2_bootloader_argument_absent_remediation(arg_name) %}}
@@ -1894,6 +2017,7 @@ Part of the grub2_bootloader_argument_absent template.
 {{{ grub_command("remove", arg_name) }}}
 {{% endmacro %}}
 
+
 {{#
 This macro creates a bash conditional which is used to determine if a
 remediation is applicable. The macro takes package as an argument and chooses
@@ -1902,8 +2026,11 @@ optional version restricion, the Bash remediation will be applied. The macro
 respects `platform_package_overrides` variable.
 
 :param package: package name
-:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type package: str
+:param op: version comparison operator (optional argument, "<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
+:type ver: str
 
 #}}
 {{%- macro bash_pkg_conditional(package, op=None, ver=None) -%}}
@@ -1921,60 +2048,75 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 {{% endif %}}
 {{%- endmacro -%}}
 
+
 {{#
 This macro generates code that gets version of an installed RPM package.
 
 :param package: package name
+:type package: str
 
 #}}
 {{%- macro bash_get_rpm_package_version(package) -%}}
 $(epoch=$(rpm -q --queryformat '%{EPOCH}' {{{ package }}}); version=$(rpm -q --queryformat '%{VERSION}' {{{ package }}}); [ "$epoch" = "(none)" ] && echo "0:$version" || echo "$epoch:$version")
 {{%- endmacro -%}}
 
+
 {{#
 This macro creates a Bash conditional that compares version of the package
 with a given version.
 
 Description of the algorithm:
-1. Get the actual version of the given package and store it in `real`.
-2. Store the expected version in `ver`.
-3. Perform the comparison and return the result.
+
+#. Get the actual version of the given package and store it in `real`.
+#. Store the expected version in `ver`.
+#. Perform the comparison and return the result.
    Comparison method is different based on the comparison operator. The method
    code is chosen at the build time during Jinja expansion. Therefore, the
    algorithm doesn't use the operator at all.
    Based on the operator, these operations are performed:
-   a. "<": real != ver && is_sorted([real, ver])
-   b. "<=": is_sorted([real, ver])
-   c. "==": real == ver
-   d. "!=": real != ver
-   e. ">=" real != ver && is_sorted([ver, real])
-   f. ">" is_sorted([ver, real])
+
+   #. "<": real != ver && is_sorted([real, ver])
+   #. "<=": is_sorted([real, ver])
+   #. "==": real == ver
+   #. "!=": real != ver
+   #. ">=" real != ver && is_sorted([ver, real])
+   #. ">" is_sorted([ver, real])
+
    where is_sorted returns true if the given list parameter is a sorted list of version numbers.
 
 The implementation uses the GNU `sort` version ordering, which is described at:
 https://www.gnu.org/software/coreutils/manual/coreutils.html#Version-sort-ordering
 
 :param real: real package version
+:type real: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param expected: expected package version
+:type expected: str
 
 #}}
 {{%- macro bash_pkg_conditional_compare(real, op, expected) -%}}
 { real="{{{ real }}}"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", op, "$expected") }}}; }
 {{%- endmacro -%}}
 
+
 {{#
 This macro generates comparison code based on the operator.
 
 Assumptions:
-- Version arguments are either literal, or they expand to versions (e.g. the argument is a deferenced variable)
-- Either all versions have epoch, or none of them has.
-  - Violation of this results in undefined behavior.
-  - If one has epoch e.g. 0, and the other one has no epoch, they will not be treated as equal.
+
+* Version arguments are either literal, or they expand to versions (e.g. the argument is a deferenced variable)
+* Either all versions have epoch, or none of them has.
+
+  * Violation of this results in undefined behavior.
+  * If one has epoch e.g. 0, and the other one has no epoch, they will not be treated as equal.
 
 :param real: real package version
+:type real: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param expected: expected package version
+:type expected: str
 
 #}}
 {{%- macro bash_compare_version(real, op, expected) -%}}
@@ -1993,13 +2135,17 @@ printf "%s\n%s" "{{{ expected }}}" "{{{ real }}}" | sort -VC
 {{%- endif -%}}
 {{%- endmacro -%}}
 
+
 {{#
 This macro creates a Bash conditional which uses rpm to check if a package passed as a parameter is installed.
 
 :param package: package name
+:type package: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
     The version always needs to contain epoch. If the package has no epoch, please prepend "0:".
+:type ver: str
 
 #}}
 {{%- macro bash_pkg_conditional_rpm(package, op=None, ver=None) -%}}
@@ -2010,10 +2156,12 @@ rpm --quiet -q {{{ package }}}
 {{%- endif -%}}
 {{%- endmacro %}}
 
+
 {{#
 This macro generates code that gets version of an installed DEB package.
 
 :param package: package name
+:type package: str
 
 #}}
 {{%- macro bash_get_dpkg_package_version(package) -%}}
@@ -2021,13 +2169,17 @@ This macro generates code that gets version of an installed DEB package.
 dpkg-query -f='${Version}\n' --show {{{ package }}} | cut -f1 -d-
 {{%- endmacro -%}}
 
+
 {{#
 This macro creates a Bash conditional that compares version of the DEB package
 with a given version.
 
 :param package: package name
+:type package: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
+:type ver: str
 
 #}}
 {{%- macro bash_compare_version_dpkg(package, op, ver) -%}}
@@ -2035,12 +2187,16 @@ with a given version.
 { real="$({{{ bash_get_dpkg_package_version(package) }}})"; ver="{{{ ver }}}"; dpkg --compare-versions "$real" "{{{ op_codes[op] }}}" "$ver"; }
 {{%- endmacro -%}}
 
+
 {{#
 This macro creates a Bash conditional which uses dpkg to check if a package passed as a parameter is installed.
 
 :param package: package name
-:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type package: str
+:param op: version comparison operator (optional argument, "<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param ver: package version (optional argument, use together with "op")
+:type ver: str
 
 #}}
 {{%- macro bash_pkg_conditional_dpkg(package, op=None, ver=None) -%}}
@@ -2051,19 +2207,25 @@ dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/
 {{%- endif -%}}
 {{%- endmacro -%}}
 
+
 {{#
 Macro to replace configuration setting(s) in the Chromium stig policy (.json) file or add the
 preference if it does not exist.
 
-Example macro invocation:
+Example macro invocation::
 
     {{{ bash_chromium_pol_setting("chrome_stig_policy.json", "/etc/chromium/policies/managed/", "ExtensionInstallBlacklist", "\[\"*\"\]") }}}
 
-:param  chrome_pol_file:      Policy file to that will be modified
-:param  chrome_pol_dir:       Directory where the policy file is located
-:param  pol_setting:          The setting that will be modified
-:param  pol_setting_val:      Value of the setting to replace the current value with
-:param  pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
+:param chrome_pol_file:      Policy file to that will be modified
+:type chrome_pol_file: str
+:param chrome_pol_dir:       Directory where the policy file is located
+:type chrome_pol_dir: str
+:param pol_setting:          The setting that will be modified
+:type pol_setting: str
+:param pol_setting_val:      Value of the setting to replace the current value with
+:type pol_setting_val: str
+:param pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
+:type pol_setting_val_edit: str
 
 #}}
 {{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=None) %}}
@@ -2104,18 +2266,22 @@ done <   <({{{ command_and_its_args }}})
 
 
 {{#
-  # Ensure key is set to correct value under a correct section in an .ini style config file
+    Ensure key is set to correct value under a correct section in an .ini style config file
+
+Example macro invocation(s)::
+
+    {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1") }}}
+    {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd") }}}
 
 :param files:   list of space-separated files to add key = value to (may contain wildcards)
                 if none contain section, create and append to FIRST file
+:type files: str
 :param section: section to add key = value under
+:type section: str
 :param key:     key
+:type key: str
 :param value:   value
-
-Example macro invocation(s):
-
-    bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1")
-    bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd")
+:type value: str
 
 #}}
 {{% macro bash_ensure_ini_config(files, section, key, value) -%}}
@@ -2153,10 +2319,12 @@ fi
     If the line is not present, it will be included after the regex informed in the "after_match"
     parameter. If the "after_match" parameter is empty, the line will be included at the end of
     the file informed in the "pam_file" parameter.
+
     If the line was already present, but with a different control, the control will be updated.
     Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
     Instead, a new line will be included after the regex informed in "after_match" or at the
     end of file if "after_match" parameter is empty or there is no match.
+
     This is a conservative safeguard for improper use of this macro in rare cases of modules
     configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
     situations, these special modules may have similar lines sharing the same "group" and "module".
@@ -2164,11 +2332,16 @@ fi
     PAM module is working as expected. Otherwise, a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param after_match:     Regex used as reference to append a line, if necessary. Optional parameter.
                         Note: For this macro, there is a special value used to include a line at the beginning of the file: "BOF"
+:type after_match: str
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
@@ -2199,12 +2372,19 @@ fi
     Make sure that an existing PAM module line is properly configured with an option.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param option:          PAM module option.
+:type option: str
 :param value:           PAM module option argument, if is case. Optional parameter.
+:type value: str
 :param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
+:type after_match: str
 
 #}}
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
@@ -2230,10 +2410,15 @@ fi
     Remove a PAM module option if present in a PAM module line.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param option:          PAM module option.
+:type option: str
 
 #}}
 {{%- macro bash_remove_pam_module_option(pam_file, group, control, module, option) -%}}
@@ -2300,12 +2485,19 @@ fi
     relies on authselect. Otherwise, the PAM files will be directly edited.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param option:          PAM module option. Optional parameter.
+:type option: str
 :param value:           PAM module option argument, if is case. Optional parameter.
+:type value: str
 :param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
+:type after_match: str
 
 #}}
 {{%- macro bash_ensure_pam_module_configuration(pam_file, group, control, module, option='', value='', after_match='') -%}}
@@ -2328,16 +2520,22 @@ else
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Remove a PAM module option from an existing PAM module line. This macro is compatible with
     custom authselect profiles if the system relies on authselect. Otherwise, the PAM files will
     be directly edited.
 
 :param pam_file:        PAM config file.
+:type pam_file: str
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
+:type group: str
 :param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
+:type control: str
 :param module:          PAM module name.
+:type module: str
 :param option:          PAM module option.
+:type option: str
 
 #}}
 {{%- macro bash_remove_pam_module_option_configuration(pam_file, group, control, module, option) -%}}
@@ -2381,6 +2579,7 @@ else
 fi
 {{%- endmacro %}}
 
+
 {{#
     Macro to insert script to find Mozilla Firefox location on the target system.
 
@@ -2403,10 +2602,14 @@ conforms and satisfies the optional version restricion, the Bash remediation
 will be applied.
 
 :param os_id: OS name, value of the ID variable in /etc/os-release
+:type os_id: str
 :param expected_ver: expected OS version, value of the VERSION_ID variable in /etc/os-release
             (optional argument, use together with "op")
-:param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type expected_ver: str
+:param op: version comparison operator (optional argument, "<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param os_release_path: path to the os-release file, default: "/etc/os-release"
+:type os_release_path: str
 
 #}}
 {{%- macro bash_os_linux_conditional(os_id, expected_ver=None, op=None, os_release_path="/etc/os-release") -%}}
@@ -2417,24 +2620,30 @@ grep -qP "^ID=[\"']?{{{ os_id }}}[\"']?$" "{{{ os_release_path }}}"
 {{%- endif -%}}
 {{%- endmacro %}}
 
+
 {{#
 This macro generates bash condition that compares the actual version of the
 operating system with the expected version using the given operator.
 
 :param expected: expected OS version, value of the VERSION_ID variable in /etc/os-release
+:type expected: str
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
+:type op: str
 :param os_release_path: path to the os-release file, default: "/etc/os-release"
+:type os_release_path: str
 
 #}}
 {{%- macro bash_compare_version_os_linux(expected, op, os_release_path="/etc/os-release") -%}}
 { real="$({{{ bash_get_version_os_linux(os_release_path) }}})"; expected="{{{ expected }}}"; {{{ bash_compare_version("$real", op, "$expected") }}}; }
 {{%- endmacro -%}}
 
+
 {{#
 This macro generates code that retrieves the operating system version
 from /etc/os-release from VERSION_ID variable.
 
 :param os_release_path: path to the os-release file, default: "/etc/os-release"
+:type os_release_path: str
 
 #}}
 {{%- macro bash_get_version_os_linux(os_release_path="/etc/os-release") -%}}
