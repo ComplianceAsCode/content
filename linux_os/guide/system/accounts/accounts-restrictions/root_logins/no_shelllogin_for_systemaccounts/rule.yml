@@ -5,22 +5,19 @@ prodtype: alinux2,alinux3,anolis8,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,sl
 title: 'Ensure that System Accounts Do Not Run a Shell Upon Login'
 
 description: |-
-    Some accounts are not associated with a human user of the system, and exist to
-    perform some administrative function. Should an attacker be able to log into
-    these accounts, they should not be granted access to a shell.
-    <br /><br />
-    The login shell for each local account is stored in the last field of each line
-    in <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID
-    less than UID_MIN, where value of UID_MIN directive is set in
-    /etc/login.defs configuration file. In the default configuration UID_MIN is set
-    to 1000, thus system accounts are those user accounts with a user ID less than
-    1000. The user ID is stored in the third field. If any system account
-    <i>SYSACCT</i> (other than root) has a login shell, disable it with the
-    command: <pre>$ sudo usermod -s /sbin/nologin <i>SYSACCT</i></pre>
+    Some accounts are not associated with a human user of the system, and exist to perform some
+    administrative functions. Should an attacker be able to log into these accounts, they should
+    not be granted access to a shell.
+    <br/><br/>
+    The login shell for each local account is stored in the last field of each line in
+    <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID less than
+    <tt>{{{ uid_min }}}</tt>. The user ID is stored in the third field. If any system account
+    other than <tt>root</tt> has a login shell, disable it with the command:
+    <pre>$ sudo usermod -s /sbin/nologin <i>account</i></pre>
 
 rationale: |-
-    Ensuring shells are not given to system accounts upon login makes it more
-    difficult for attackers to make use of system accounts.
+    Ensuring shells are not given to system accounts upon login makes it more difficult for
+    attackers to make use of system accounts.
 
 severity: medium
 
@@ -56,26 +53,24 @@ references:
     stigid@sle12: SLES-12-010631
     stigid@sle15: SLES-15-020091
 
-ocil_clause: 'any system account (other than root) has a login shell'
+ocil_clause: 'any system account other than root has a login shell'
 
 ocil: |-
-    To obtain a listing of all users, their UIDs, and their shells, run the
-    command: <pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre> Identify
-    the system accounts from this listing. These will primarily be the accounts
-    with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
-    directive is set in /etc/login.defs configuration file. In the default
-    configuration UID_MIN is set to 1000.
+    To obtain a listing of all users, their UIDs, and their shells, run the command:
+    <pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre>
+    Identify the system accounts from this listing. These will primarily be the accounts with UID
+    numbers less than {{{ uid_min }}}, other than root.
 
 fixtext: |-
     Configure {{{ full_name }}} so that all non-interactive accounts on the system have no interactive shell assigned to them.
 
     Run the following command to disable the interactive shell for a specific non-interactive user account:
 
-    $ sudo usermod --shell /sbin/nologin nobody
+    $ sudo usermod --shell /sbin/nologin account
 
 srg_requirement: '{{{ full_name }}} system accounts must not have have login shell.'
 
 warnings:
     - functionality: |-
-        Do not perform the steps in this section on the root account. Doing so might
-        cause the system to become inaccessible.
+        Do not perform the steps in this section on the root account. Doing so might cause the
+        system to become inaccessible.

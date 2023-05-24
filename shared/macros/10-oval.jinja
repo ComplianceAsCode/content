@@ -1043,6 +1043,35 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endmacro %}}
 
 
+{{#
+  Extract from /etc/passwd a list composed of password objects related to system UIDs.
+  This list is then filtered to exclude some special usernames.
+
+  The macro receives a string as parameter, which is used as the password_object id in the rule.
+
+  :param object_id: Object id to be created.
+  :type object_id: str
+
+#}}
+{{%- macro create_system_accounts_list_object(object_id) -%}}
+  {{%- set ignored_users_list="(root|halt|sync|shutdown|nfsnobody)" %}}
+
+  <unix:password_object id="{{{ object_id }}}" version="1">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+    <filter action="include">state_{{{ rule_id }}}_users_uids</filter>
+    <filter action="exclude">state_{{{ rule_id }}}_users_ignored</filter>
+  </unix:password_object>
+
+  <unix:password_state id="state_{{{ rule_id }}}_users_uids" version="1">
+    <unix:user_id datatype="int" operation="less than">{{{ uid_min }}}</unix:user_id>
+  </unix:password_state>
+
+  <unix:password_state id="state_{{{ rule_id }}}_users_ignored" version="1">
+    <unix:username datatype="string" operation="pattern match">^{{{ ignored_users_list }}}$</unix:username>
+  </unix:password_state>
+{{%- endmacro %}}
+
+
 {{%- macro mount_active_criterion(path) %}}
    <criterion comment="The path {{{ path }}} is an active (mounted) mount point"
      test_ref="test_mount_active_{{{ path | escape_id }}}_exists" />
