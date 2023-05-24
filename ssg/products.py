@@ -175,15 +175,25 @@ class Product(object):
         self._acquired_data.update(property_dict)
 
     @staticmethod
-    def transform_list_of_mappings_to_mapping(mappings):
+    def transform_default_and_overrides_mappings_to_mapping(mappings):
         result = dict()
-        for index, mapping in enumerate(mappings):
-            if not isinstance(mapping, dict):
-                msg = (
-                    "Expected a list of key-value pairs, got '{val}' at index {index}."
-                    .format(val=mapping, index=index))
-                raise ValueError(msg)
+        if not isinstance(mappings, dict):
+            msg = (
+                "Expected a mapping, got {type}."
+                .format(type=str(type(mappings))))
+            raise ValueError(msg)
+
+        mapping = mappings.pop("default")
+        if mapping:
             result.update(mapping)
+        mapping = mappings.pop("overrides", dict())
+        if mapping:
+            result.update(mapping)
+        if len(mappings):
+            msg = (
+                "The dictionary contains unwanted keys: {keys}"
+                .format(keys=list(mappings.keys())))
+            raise ValueError(msg)
         return result
 
     def read_properties_from_directory(self, path):
@@ -191,8 +201,8 @@ class Product(object):
         for f in sorted(filenames):
             substitutions_dict = dict()
             substitutions_dict.update(self)
-            list_of_new_symbols = open_and_expand(f, substitutions_dict)
-            new_symbols = self.transform_list_of_mappings_to_mapping(list_of_new_symbols)
+            new_defs = open_and_expand(f, substitutions_dict)
+            new_symbols = self.transform_default_and_overrides_mappings_to_mapping(new_defs)
             self.expand_by_acquired_data(new_symbols)
 
 

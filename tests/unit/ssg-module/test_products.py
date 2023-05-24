@@ -33,13 +33,15 @@ def product_with_updated_properties(testing_product, testing_datadir):
     return testing_product
 
 
-def test_list_of_mappings_to_mapping():
-    converter = ssg.products.Product.transform_list_of_mappings_to_mapping
-    assert converter([]) == dict()
-    assert converter([dict(one=1)]) == dict(one=1)
-    assert converter([dict(one=2), dict(one=1)]) == dict(one=1)
+def test_default_and_overrides_mappings_to_mapping():
+    converter = ssg.products.Product.transform_default_and_overrides_mappings_to_mapping
+    assert converter(dict(default=[])) == dict()
+    assert converter(dict(default=dict(one=1))) == dict(one=1)
+    assert converter(dict(default=dict(one=2), overrides=dict(one=1))) == dict(one=1)
     with pytest.raises(ValueError):
-        assert converter([dict(one=2), 5])
+        converter([dict(one=2), 5])
+    with pytest.raises(KeyError):
+        converter(dict(deflaut=dict(one=2)))
 
 
 def test_get_all(ssg_root):

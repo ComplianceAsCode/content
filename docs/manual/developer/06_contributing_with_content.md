@@ -427,6 +427,10 @@ so you can use only product properties in the content.
 In other words, use this functionality to avoid referencing product versions in macros used in checks or remediations.
 Instead, use properties that directly relate to configurations being checked or set, and that help to reveal the intention of the check or remediation code.
 
+As Jinja2 conditionals are prone to errors, products can be protected by product stability tests.
+If a product sample is present in `tests/data/product_stability/`, it is compared to the actual compiled product,
+and if there is a difference that is not only cosmetic, a product stability test will fail.
+
 Rules are unselected by default - even if the scanner reads rule
 definitions, they are effectively ignored during the scan or
 remediation. A rule may be selected by any number of profiles, so when
