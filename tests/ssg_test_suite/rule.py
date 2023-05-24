@@ -443,10 +443,13 @@ class RuleChecker(oscap.Checker):
 
     def _test_target(self):
         rules_to_test = self._get_rules_to_test()
+        source = self.rule_spec
+        if not self.rule_spec:
+            source = self.template_spec
         if not rules_to_test:
             logging.error("No tests found matching the {0}(s) '{1}'".format(
                 self.target_type,
-                ", ".join(self.rule_spec)))
+                ", ".join(source)))
             return
 
         test_content_by_rule_id = self._get_test_content_by_rule_id(
