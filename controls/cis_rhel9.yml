@@ -1103,14 +1103,16 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: supported
     notes:
-       The audit (OVAL check) cannot be automated,
-       and should be addressed manually.
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use. firewalld uses the inet firewalld that is created when firewalld is installed.
+      The OVAL check cannot be automated but an SCE is availble.
     rules:
       - set_nftables_table
       - var_nftables_family=inet
-      - var_nftables_table=filter
+      - var_nftables_table=firewalld
 
   - id: 3.4.2.3
     title: Ensure nftables base chains exist (Automated)
