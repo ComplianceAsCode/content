@@ -1,0 +1,105 @@
+aide_bin_path: /usr/sbin/aide
+aide_conf_path: /etc/aide.conf
+audisp_conf_path: /etc/audit
+auid: 1000
+basic_properties_derived: true
+benchmark_id: FEDORA
+benchmark_root: ../../linux_os/guide
+chrony_conf_path: /etc/chrony.conf
+cpes:
+- fedora_40:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:40
+    title: Fedora 40
+- fedora_39:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:39
+    title: Fedora 39
+- fedora_38:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:38
+    title: Fedora 38
+- fedora_37:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:37
+    title: Fedora 37
+- fedora_36:
+    check_id: installed_OS_is_fedora
+    name: cpe:/o:fedoraproject:fedora:36
+    title: Fedora 36
+cpes_root: ../../shared/applicability
+dconf_gdm_dir: distro.d
+faillock_path: /var/run/faillock
+full_name: Fedora
+future_pkg_release: 62f2920f
+future_pkg_version: 18b8e74c
+future_release_fingerprint: E8F23996F23218640CB44CBE75CF5AC418B8E74C
+future_version: 39
+gid_min: 1000
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+grub2_boot_path: /boot/grub2
+grub2_uefi_boot_path: /boot/grub2
+init_system: systemd
+latest_pkg_release: 6202d9c6
+latest_pkg_version: eb10b464
+latest_release_fingerprint: 6A51BBABBA3D5467B6171221809A8D7CEB10B464
+latest_version: 38
+nobody_gid: 65534
+nobody_uid: 65534
+pkg_manager: dnf
+pkg_manager_config_file: /etc/dnf/dnf.conf
+pkg_system: rpm
+platform_package_overrides:
+  aarch64_arch: null
+  grub2: grub2-common
+  login_defs: shadow-utils
+  no_ovirt: null
+  non-uefi: null
+  not_aarch64_arch: null
+  not_s390x_arch: null
+  ovirt: null
+  s390x_arch: null
+  sssd: sssd-common
+  sssd-ldap: null
+  uefi: null
+  zipl: s390utils-base
+previous_pkg_release: 6112bcdc
+previous_pkg_version: 5323552a
+previous_release_fingerprint: ACB5EE4E831C74BB7C168D27F55AD3FB5323552A
+previous_version: 37
+product: fedora
+profiles_root: ./profiles
+rawhide_pkg_release: 63d04c2c
+rawhide_pkg_version: a15b79cc
+rawhide_release_fingerprint: 115DF9AEF857853EE8445D0A0727707EA15B79CC
+rawhide_version: 40
+reference_uris:
+  anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
+  app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  cis-csc: https://www.cisecurity.org/controls/
+  cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
+  cnss: http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf
+  cobit5: https://www.isaca.org/resources/cobit
+  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  dcid: not_officially_available
+  disa: https://public.cyber.mil/stigs/cci/
+  hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
+  isa-62443-2009: https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat
+  isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
+  ism: https://www.cyber.gov.au/acsc/view-all-content/ism
+  iso27001-2013: https://www.iso.org/standard/54534.html
+  nerc-cip: https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx
+  nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
+  nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
+  os-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
+  ospp: https://www.niap-ccevs.org/Profile/PP.cfm
+  pcidss: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+  pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+  stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+  stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+sshd_distributed_config: 'true'
+sysctl_remediate_drop_in_file: 'false'
+type: platform
+uid_min: 1000

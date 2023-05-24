@@ -7,35 +7,17 @@ import sys
 
 import ssg.yaml
 
-
-class Difference(object):
-    def __init__(self):
-        self.added = []
-        self.removed = []
-
-    @property
-    def empty(self):
-        return not (self.added or self.removed)
-
-
-def describe_changeset(intro, changeset):
-    if not changeset:
-        return ""
-
-    msg = intro
-    for rid in changeset:
-        msg += " - {rid}\n".format(rid=rid)
-    return msg
+from tests.common import stability
 
 
 def describe_change(difference, name):
     msg = ""
 
-    msg += describe_changeset(
+    msg += stability.describe_changeset(
         "Following selections were added to the {name} profile:\n".format(name=name),
         difference.added,
     )
-    msg += describe_changeset(
+    msg += stability.describe_changeset(
         "Following selections were removed from the {name} profile:\n".format(name=name),
         difference.removed,
     )
@@ -46,20 +28,13 @@ def compare_sets(reference, sample):
     reference = set(reference)
     sample = set(sample)
 
-    result = Difference()
+    result = stability.Difference()
     result.added = list(sample.difference(reference))
     result.removed = list(reference.difference(sample))
     return result
 
 
-def report_comparison(name, result):
-    msg = ""
-    if not result.empty:
-        msg = describe_change(result, name)
-    print(msg, file=sys.stderr)
-
-
-def get_references(ref_root):
+def get_references_filenames(ref_root):
     found = []
     for root, dirs, files in os.walk(ref_root):
         for basename in files:
@@ -104,36 +79,41 @@ def get_reference_vs_built_difference(reference_fname, built_fname):
     return difference
 
 
+def inform_and_append_fix_based_on_reference_compiled_profile(ref, build_root, fix_commands):
+    if not corresponding_product_built(build_root, ref):
+        return
+
+    compiled_profile = get_matching_compiled_profile_filename(build_root, ref)
+    if not compiled_profile:
+        msg = ("Unexpectedly unable to find compiled profile corresponding"
+               "to the test file {ref}, although the corresponding product has been built. "
+               "This indicates that a profile we have tests for is missing."
+               .format(ref=ref))
+        raise RuntimeError(msg)
+    difference = get_reference_vs_built_difference(ref, compiled_profile)
+    if not difference.empty:
+        comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
+        stability.report_comparison(comprehensive_profile_name, difference, describe_change)
+        fix_commands.append(
+            "cp '{compiled}' '{reference}'"
+            .format(compiled=compiled_profile, reference=ref)
+        )
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("build_root")
     parser.add_argument("test_data_root")
     args = parser.parse_args()
 
-    reference_files = get_references(args.test_data_root)
+    reference_files = get_references_filenames(args.test_data_root)
     if not reference_files:
         raise RuntimeError("Unable to find any reference profiles in {test_root}"
                            .format(test_root=args.test_data_root))
     fix_commands = []
     for ref in reference_files:
-        if not corresponding_product_built(args.build_root, ref):
-            continue
-
-        compiled_profile = get_matching_compiled_profile_filename(args.build_root, ref)
-        if not compiled_profile:
-            msg = ("Unexpectedly unable to find compiled profile corresponding"
-                   "to the test file {ref}, although the corresponding product has been built. "
-                   "This indicates that a profile we have tests for is missing."
-                   .format(ref=ref))
-            raise RuntimeError(msg)
-        difference = get_reference_vs_built_difference(ref, compiled_profile)
-        if not difference.empty:
-            comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
-            report_comparison(comprehensive_profile_name, difference)
-            fix_commands.append(
-                "cp '{compiled}' '{reference}'"
-                .format(compiled=compiled_profile, reference=ref)
-            )
+        inform_and_append_fix_based_on_reference_compiled_profile(
+                ref, args.build_root, fix_commands)
 
     if fix_commands:
         msg = (
