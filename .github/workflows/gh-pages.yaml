@@ -28,6 +28,9 @@ jobs:
       - name: Build Statistics
         run: ninja html-stats html-profile-stats -j2
         working-directory: ./build
+      - name: Render Policies (Using control files)
+        run: ninja render-policies -j2
+        working-directory: ./build
       - name: Generate HTML pages
         run: utils/generate_html_pages.sh $PAGES_DIR
         shell: bash
@@ -48,3 +51,9 @@ jobs:
           token: ${{ secrets.CONTENT_PAGES_TOKEN }}
           git-config-name: openscap-ci
           git-config-email: openscap-ci@gmail.com
+      - name: Upload artifact if the event is pull request
+        uses: actions/upload-artifact@v3
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: built-content
+          path: ${{ env.PAGES_DIR }}

@@ -106,6 +106,7 @@ set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
+set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 
 message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
@@ -314,6 +315,8 @@ add_custom_target(profile-stats)
 
 add_custom_target(html-stats)
 add_custom_target(html-profile-stats)
+
+add_custom_target(render-policies)
 
 if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_MYST_PARSER)
     message(STATUS "Enabling docs directory as system supports Sphinx builds.")

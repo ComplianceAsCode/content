@@ -641,6 +641,21 @@ macro(ssg_make_html_stats_for_product PRODUCT)
     )
 endmacro()
 
+macro(ssg_render_policies_for_product PRODUCT CONTROL_FILES)
+        foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render-policy.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html" ${PRODUCT} "${CMAKE_SOURCE_DIR}/controls/${CONTROL_FILE}.yml"
+            DEPENDS generate-ssg-${PRODUCT}-ds.xml
+            COMMENT "[${PRODUCT}-render-policy-${CONTROL_FILE}] generating rendered policy for ${CONTROL_FILE}"
+            )
+
+            add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
+            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
+            )
+        endforeach()
+endmacro()
+
 macro(ssg_make_all_tables PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html"
@@ -775,6 +790,20 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(stats ${PRODUCT}-stats)
     add_dependencies(profile-stats ${PRODUCT}-profile-stats)
     ssg_make_html_stats_for_product(${PRODUCT})
+
+    file(GLOB CONTROL_FILEPATHS "${CMAKE_SOURCE_DIR}/controls/*.yml")
+
+    foreach(CONTROL_FILEPATH IN LISTS CONTROL_FILEPATHS)
+        get_filename_component(CONTROL_FILE ${CONTROL_FILEPATH} NAME_WE)
+        list(APPEND CONTROL_FILES ${CONTROL_FILE})
+    endforeach()
+
+    ssg_render_policies_for_product(${PRODUCT} ${CONTROL_FILES})
+
+    foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
+        add_dependencies(render-policies ${PRODUCT}-render-policy-${CONTROL_FILE})
+    endforeach()
+
     add_dependencies(html-stats ${PRODUCT}-html-stats)
     add_dependencies(html-profile-stats ${PRODUCT}-html-profile-stats)
 
