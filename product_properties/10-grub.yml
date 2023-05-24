@@ -1,3 +1,22 @@
 
-grub2_boot_path: "/boot/grub2"
-grub2_uefi_boot_path: "/boot/grub2"
+default:
+  grub2_boot_path: "/boot/grub2"
+  grub2_uefi_boot_path: "/boot/grub2"
+
+overrides:
+{{% if product in ("rhel7", "ol7", "rhel8", "ol8") %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
+{{% elif product == "sle12" %}}
+  grub2_uefi_boot_path: "/boot/efi/EFI/sles"
+{{% elif "debian" in product %}}
+  grub2_boot_path: "/boot/grub"
+{{% endif %}}
+{{% if "ubuntu" in product %}}
+{{% if product <= "ubuntu1804" %}}
+  grub2_boot_path: "/boot/grub"
+  grub2_uefi_boot_path: "/boot/efi/EFI/ubuntu"
+{{% else %}}
+  grub2_boot_path: "/boot/grub"
+  grub2_uefi_boot_path: "/boot/grub"
+{{% endif %}}
+{{% endif %}}
