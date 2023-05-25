@@ -5,8 +5,6 @@ controls:
   title: {{{ full_name }}} must use a centralized user management solution to
     support account management functions.
   rules:
-  - idp_is_configured
-  - ocp_idp_no_htpasswd
+  - idp_is_oidc_or_ldap
   - kubeadmin_removed
-  - ocp_no_ldap_insecure
   status: automated
