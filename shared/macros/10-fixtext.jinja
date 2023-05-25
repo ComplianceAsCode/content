@@ -106,7 +106,7 @@ The audit daemon must be restarted for the changes to take effect.
 :type syscall: str
 :param syscall_grouping: A list of other syscalls that can be audited with the
     same audit rules.
-:type syscall_grouping: list
+:type syscall_grouping: list[str]
 
 #}}
 {{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall, syscall_grouping) -%}}
