@@ -2,19 +2,12 @@
 # platform = multi_platform_all
 # check-import = stdout
 
-chain_hook=$(nft list ruleset | grep 'hook input')
-if [ -z "${chain_hook}" ]; then
-    exit ${XCCDF_RESULT_FAIL}
+output=$(nft list ruleset)
+# Check if there are base chains
+if ! (grep -q 'hook input' "$output" &&\
+    grep -q 'hook forward' "$output" &&\
+    grep -q 'hook output' "$output"); then
+    exit "${XCCDF_RESULT_FAIL}"
 fi
 
-chain_hook=$(nft list ruleset | grep 'hook forward')
-if [ -z "${chain_hook}" ]; then
-    exit ${XCCDF_RESULT_FAIL}
-fi
-
-chain_hook=$(nft list ruleset | grep 'hook output')
-if [ -z "${chain_hook}" ]; then
-    exit ${XCCDF_RESULT_FAIL}
-fi
-
-exit ${XCCDF_RESULT_PASS}
+exit "${XCCDF_RESULT_PASS}"

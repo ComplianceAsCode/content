@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: sle15,ubuntu2004,ubuntu2204
 
 title: 'Set nftables Configuration for Loopback Traffic'
 
@@ -18,11 +18,15 @@ rationale: |-
 
 severity: medium
 
+platform: package[nftables]
+
 identifiers:
     cce@sle15: CCE-92481-1
 
 references:
-    cis@sle15: 3.5.2.6 
+    cis@sle15: 3.5.2.6
+    cis@ubuntu2004: 3.5.2.6
+    cis@ubuntu2204: 3.5.2.6
     pcidss: Req-1.4.1
 
 warnings:

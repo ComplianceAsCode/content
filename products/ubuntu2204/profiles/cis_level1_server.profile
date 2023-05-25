@@ -413,7 +413,7 @@ selections:
     ## 3.5 Firewall Configuration ##
     ### 3.5.1 Configure UncomplicatedFirewall ###
     #### 3.5.1.1 Ensure ufw is installed (Automated)
-    - package_ufw_installed
+    - '!package_ufw_installed'
 
     #### 3.5.1.2 Ensure iptables-persistent is not installed with ufw (Automated)
     - package_iptables-persistent_removed
@@ -449,32 +449,33 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure nftables base chains exist (Automated)
-    # NEEDS RULE
+    - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure nftables loopback traffic is configured (Automated)
-    # NEEDS RULE
+    - set_nftables_loopback_traffic
 
     #### 3.5.2.7 Ensure nftables outbound and established connections are configured (Manual)
     # Skip due to being a manual test
 
     #### 3.5.2.8 Ensure nftables default deny firewall policy (Automated)
-    # NEEDS RULE
+    - nftables_ensure_default_deny_policy
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
     - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
-    # NEEDS RULE
+    - var_nftables_master_config_file=etc
+    - nftables_rules_permanent
 
     ### 3.5.3 Configure iptables ###
     #### 3.5.3.1 Configure iptables software ####
     ##### 3.5.3.1.1 Ensure iptables packages are installed (Automated)
     - package_iptables_installed
-    - package_iptables-persistent_installed
+    - '!package_iptables-persistent_installed'
 
     ###### 3.5.3.1.2 Ensure nftables is not installed with iptables (Automated)
-    - service_nftables_disabled
-    - package_nftables_removed
+    - '!service_nftables_disabled'
+    - '!package_nftables_removed'
 
     ###### 3.5.3.1.3 Ensure ufw is uninstalled or disabled with iptables (Automated)
     - package_ufw_removed

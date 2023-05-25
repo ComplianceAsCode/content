@@ -416,22 +416,23 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure base chains exist (Automated)
-    # Needs rule
+    - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure loopback traffic is configured (Automated)
-    # Needs rule
+    - set_nftables_loopback_traffic
 
     #### 3.5.2.7 Ensure outbound and established connections are configured (Manual)
     # Skip due to being a manual test
 
     #### 3.5.2.8 Ensure default deny firewall policy (Automated)
-    # Needs rule
+    - nftables_ensure_default_deny_policy
 
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
     - service_nftables_enabled
 
     #### 3.5.2.10 Ensure nftables rules are permanent (Automated)
-    # Needs rule
+    - var_nftables_master_config_file=etc
+    - nftables_rules_permanent
 
     ### 3.5.3 Configure iptables ###
     #### 3.5.3.1 Configure software ####
