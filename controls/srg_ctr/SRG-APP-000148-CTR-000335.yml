@@ -6,7 +6,7 @@ controls:
   rules:
   - sshd_disable_root_login
   related_rules:
-  - idp_is_configured
+  - idp_is_oidc_or_ldap
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
   status: automated

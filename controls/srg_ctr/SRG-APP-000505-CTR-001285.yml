@@ -5,7 +5,7 @@ controls:
   title: {{{ full_name }}} audit records must record user access start and end
     times.
   related_rules:
-  - idp_is_configured
+  - idp_is_oidc_or_ldap
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
   status: not applicable

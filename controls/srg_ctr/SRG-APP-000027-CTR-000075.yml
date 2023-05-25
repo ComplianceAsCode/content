@@ -7,6 +7,8 @@ controls:
   rules:
   - audit_rules_sysadmin_actions
   - audit_rules_usergroup_modification
+  related_rules:
+  - idp_is_oidc_or_ldap
   check: |-
     Verify for each of the files that contain account information the system is configured to emit an audit event in case of a write, by executing the following:
 

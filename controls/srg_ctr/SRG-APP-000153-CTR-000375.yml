@@ -5,7 +5,7 @@ controls:
   title: {{{ full_name }}} must ensure users are authenticated with an individual
     authenticator prior to using a group authenticator.
   related_rules:
-  - idp_is_configured
+  - idp_is_oidc_or_ldap
   - ocp_idp_no_htpasswd
   - kubeadmin_removed
   rules:
