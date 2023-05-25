@@ -753,7 +753,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :param op: version comparison operator ("<", "<=", "==", "!=", ">", ">=")
 :type op: str
 :param ver: package version (optional argument, use together with "op")
-:type ver: version
+:type ver: str
 
 #}}
 {{%- macro ansible_pkg_conditional(package, op=None, ver=None) -%}}
