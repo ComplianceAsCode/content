@@ -35,6 +35,7 @@
     regexp: "{{ rsyslog_listen_legacy_regex }}"
     replace: '# \1'
   loop: "{{ rsyslog_legacy_remote_listen_files }}"
+  register: rsyslog_listen_legacy_comment
   when:
     - rsyslog_legacy_remote_listen_files | length > 0
 
@@ -68,5 +69,13 @@
     regexp: "{{ rsyslog_listen_rainer_regex }}"
     replace: '# \1'
   loop: "{{ rsyslog_rainer_remote_listen_files }}"
+  register: rsyslog_listen_rainer_comment
   when:
     - rsyslog_rainer_remote_listen_files | length > 0
+
+- name: "{{{ rule_title }}} - Restart Rsyslog if Any Line Were Commented Out"
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+  when:
+    - rsyslog_listen_legacy_comment is changed or rsyslog_listen_rainer_comment is changed
