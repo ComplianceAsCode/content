@@ -275,6 +275,7 @@ selections:
     - sudo_require_reauthentication
     - sudoers_default_includedir
     - sudoers_validate_passwd
+    - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects
