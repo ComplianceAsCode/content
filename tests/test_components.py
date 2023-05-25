@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 
 import ssg.build_yaml
 import ssg.components
@@ -90,20 +91,54 @@ def iterate_over_all_rules(base_dir, env_yaml):
 
 
 def test_templates(
-        linux_os_guide_dir, env_yaml,
-        package_to_components, rules_to_components, template_to_component):
+        rule, package_to_components, rule_components,
+        template_to_component):
     result = True
-    for rule in iterate_over_all_rules(linux_os_guide_dir, env_yaml):
-        candidates = get_components_by_template(
-            rule, package_to_components, template_to_component)
-        rule_components = [c.name for c in rules_to_components[rule.id_]]
-        for candidate, reason in candidates:
-            if candidate not in rule_components:
-                result = False
-                print(
-                    "Rule '%s' should be assigned to component '%s', "
-                    "because %s." % (rule.id_, candidate, reason))
+    candidates = get_components_by_template(
+        rule, package_to_components, template_to_component)
+    for candidate, reason in candidates:
+        if candidate not in rule_components:
+            result = False
+            print(
+                "Rule '%s' should be assigned to component '%s', "
+                "because %s." % (rule.id_, candidate, reason))
     return result
+
+
+def test_package_platform(rule, package_to_component, rule_components):
+    match = re.match(r"package\[([\w\-_]+)\]", rule.platform)
+    if not match:
+        return True
+    for package in match.groups():
+        component = package_to_component.get(package, package)
+        if component not in rule_components:
+            print(
+                "Rule '%s' should be assigned to component '%s', "
+                "because it uses the package['%s'] platform." %
+                (rule.id_, component, package))
+            return False
+
+
+def test_platform(rule, package_to_component, rule_components):
+    platform = rule.platform
+    if platform is None:
+        return True
+    if "package" in platform:
+        return test_package_platform(
+            rule, package_to_component, rule_components)
+    elif platform == "grub2" and "grub2" not in rule_components:
+        print(
+            "Rule '%s' should be assigned to component 'grub2', "
+            "because it uses the 'grub2' platform." %
+            (rule.id_))
+        return False
+    elif platform == "sssd-ldap" and "sssd" not in rule_components:
+        print(
+            "Rule '%s' should be assigned to component 'sssd', "
+            "because it uses the 'sssd-ldap' platform." %
+            (rule.id_))
+        return False
+    return True
 
 
 def main():
@@ -125,10 +160,14 @@ def main():
         components)
     template_to_component = ssg.components.template_component_mapping(
         components)
-    if not test_templates(
-            linux_os_guide_dir, env_yaml,
-            package_to_component, rule_to_components, template_to_component):
-        result = 1
+    for rule in iterate_over_all_rules(linux_os_guide_dir, env_yaml):
+        rule_components = [c.name for c in rule_to_components[rule.id_]]
+        if not test_templates(
+                rule, package_to_component, rule_components,
+                template_to_component):
+            result = 1
+        if not test_platform(rule, package_to_component, rule_components):
+            result = 1
     exit(result)
 
 
