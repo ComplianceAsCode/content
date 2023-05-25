@@ -1,27 +1,19 @@
 srg_requirement: |-
-  {{{ full_name }}} must use a centralized user management solution to
-  support account management functions.
+  {{{ full_name }}} must use FIPS-validated SHA-1 or higher hash function to provide replay-resistant authentication mechanisms for network access to privileged accounts.
 
 vuldiscussion: |-
-  OpenShift supports several different types of identity providers.
-  In order to add users and grant access to OpenShift, an identity provider
-  needs to be configured. Some of the identity provider types, such as
-  HTPassword, only provide simple user management and are not intended
-  for production. Other types are public services, like GitHub. These
-  provider types may not be appropriate as they are managed by public
-  service providers and therefore are unable to enforce the organizations
-  account management requirements.
+  A replay attack may enable an unauthorized user to gain access to the application. Authentication sessions between the authenticator and the application validating the user credentials must not be vulnerable to a replay attack.
 
-  After a new install, the default authentication uses kubeadmin as the
-  default cluster-admin account.  This default account needs to be disabled,
-  and another user account should be given cluster-admin rights.
+  Anti-replay is a cryptographically based mechanism; thus, it must use FIPS-approved algorithms. An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message. Note that the anti-replay service is implicit when data contains monotonically increasing sequence numbers and data integrity is assured. Use of DoD PKI is inherently compliant with this requirement for user and device access. Use of Transport Layer Security (TLS), including application protocols such as HTTPS and DNSSEC, that use TLS/SSL as the underlying security protocol is also complaint.
+
+  Configure the information system to use the hash message authentication code (HMAC) algorithm for authentication services to Kerberos, SSH, web management tool, and any other access method.
 
 checktext: |-
-  Run the following command to list the identity providers configured:
-  > oc get oauth cluster -o
-  jsonpath="{.spec.identityProviders[*].type}{'\n'}"
+  Verify the authentication operator is configured to use a secure transport to an OpenIDConnect provider:
 
-  If any of the IDP providers' type is HTPasswd, this is a finding.
+  oc get oauth cluster -o jsonpath="{.spec.identityProviders[*]}{'\n'}"
+
+  If the transport is not secure (ex. HTTPS), this is a finding.
 
 fixtext: |-
   Configure OpenShift to use an appropriate Identity Provider. Do not use
@@ -76,7 +68,7 @@ fixtext: |-
 
       For more information on configuring an
       LDAP provider refer to the documentation:
-      https://docs.openshift.com/container-platform/4.8/authentication/identity_providers/configuring-ldap-identity-provider.html
+      https://docs.openshift.com/container-platform/latest/authentication/identity_providers/configuring-ldap-identity-provider.html
 
   Steps to configure OpenID provider:
 
@@ -128,4 +120,4 @@ fixtext: |-
 
       For more information on configuring an
       OpenID provider refer to the documentation:
-      https://docs.openshift.com/container-platform/4.8/authentication/identity_providers/configuring-oidc-identity-provider.html
+      https://docs.openshift.com/container-platform/latest/authentication/identity_providers/configuring-oidc-identity-provider.html
