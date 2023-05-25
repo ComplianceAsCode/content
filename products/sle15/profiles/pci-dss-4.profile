@@ -13,7 +13,7 @@ description: |-
 
 selections:
     -  pcidss_4:all:base
-    -  sshd_strong_kex=default
+    -  sshd_strong_kex=pcidss
     -  sshd_approved_macs=cis_sle15
     -  sshd_approved_ciphers=cis_sle15 
     -  var_multiple_time_servers=suse
