@@ -360,3 +360,8 @@ if (PYTHON_VERSION_MAJOR GREATER 2)
     )
     set_tests_properties("install-vm" PROPERTIES LABELS quick)
 endif()
+
+add_test(
+    NAME "components"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_SOURCE_DIR}/products/rhel9/product.yml" --source-dir "${CMAKE_SOURCE_DIR}"
+)
