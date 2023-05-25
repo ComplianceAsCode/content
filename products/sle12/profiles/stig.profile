@@ -72,6 +72,7 @@ selections:
     - account_temp_expire_date
     - aide_build_database
     - aide_check_audit_tools
+    - aide_periodic_cron_checking
     - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
