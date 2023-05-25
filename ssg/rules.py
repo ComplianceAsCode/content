@@ -4,8 +4,6 @@ from __future__ import print_function
 import os
 from glob import glob
 
-import ssg.build_yaml
-
 
 def get_rule_dir_yaml(dir_path):
     """
@@ -167,12 +165,3 @@ def find_rule_dirs_in_paths(base_dirs):
         for cur_dir in base_dirs:
             for d in find_rule_dirs(cur_dir):
                 yield d
-
-
-def find_all_rules(base_dir):
-    """
-    Generator which yields all rule IDs within a given base_dir, recursively
-    """
-    for rule_dir in find_rule_dirs(base_dir):
-        rule_id = get_rule_dir_id(rule_dir)
-        yield rule_id

@@ -38,6 +38,12 @@ def template_component_mapping(components):
             template_to_component[template] = component.name
     return template_to_component
 
+def group_components_mapping(components):
+    group_to_component = defaultdict(list)
+    for component in components.values():
+        for group in component.groups:
+            group_to_component[group].append(component.name)
+    return group_to_component
 
 class Component:
     def __init__(self, filepath):
@@ -46,3 +52,4 @@ class Component:
         self.rules = yaml_data["rules"]
         self.packages = yaml_data["packages"]
         self.templates = yaml_data.get("templates", [])
+        self.groups = yaml_data.get("groups", [])
