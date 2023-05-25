@@ -11,6 +11,13 @@ scapval_results_ns = "http://csrc.nist.gov/ns/decima/results/1.0"
 oval_unix_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.2"
 
+XML_SCHEMA_REQUIREMENT = "SRC-329"
+
+K8S_PRODUCTS = set((
+    "ocp4",
+    "eks",
+))
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -30,6 +37,18 @@ def parse_args():
     return parser.parse_args()
 
 
+def ds_is_k8s_related(result_path):
+    for prodname in K8S_PRODUCTS:
+        ds_basename_stem = "ssg-{prodname}-ds".format(prodname=prodname)
+        if ds_basename_stem in result_path:
+            return True
+    return False
+
+
+def print_requirement_feedback(req_id, message):
+    print("    %s: %s" % (req_id, message))
+
+
 def process_results(result_path):
     ret_val = True
     tree = ET.parse(result_path)
@@ -37,19 +56,20 @@ def process_results(result_path):
     results = root.find("./{%s}results" % scapval_results_ns)
     for base_req in results.findall(
             "./{%s}base-requirement" % scapval_results_ns):
-        id_ = base_req.get("id")
+        scapval_requirement_id = base_req.get("id")
         status = base_req.find("./{%s}status" % scapval_results_ns).text
         if status == "FAIL":
-            if ('ssg-ocp4-ds' in result_path or 'ssg-eks-ds' in result_path) and id_ == "SRC-329":
-                print("    %s: %s" % (id_, "WARNING (Contains non-standardized yamlfilecontent_test)"))
+            if ds_is_k8s_related(result_path) and scapval_requirement_id == XML_SCHEMA_REQUIREMENT:
+                warning = "WARNING (Contains non-standardized yamlfilecontent_test)"
+                print_requirement_feedback(scapval_requirement_id, warning)
             else:
-                print("    %s: %s" % (id_, status))
+                print_requirement_feedback(scapval_requirement_id, status)
                 ret_val = False
         if status == "PASS":
-            if ('ssg-ocp4-ds' in result_path or 'ssg-eks-ds' in result_path) and id_ == "SRC-329":
-                print("    %s: %s" % (
-                    id_, "FAIL (yamlfilecontent_test is probably standardized by now."
-                    "You should update the waiver.)"))
+            if ds_is_k8s_related(result_path) and scapval_requirement_id == XML_SCHEMA_REQUIREMENT:
+                msg = ("FAIL (yamlfilecontent_test is probably standardized by now."
+                       "You should update the waiver.)")
+                print_requirement_feedback(scapval_requirement_id, msg)
     return ret_val
 
 
