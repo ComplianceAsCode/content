@@ -1,10 +1,16 @@
+{{% if product in ["sle12","sle15"] %}}
+{{% set package_name = "libaudit" %}}
+{{% else %}} 
+{{% set package_name = "audit-libs" %}}
+{{% endif %}}
+
 documentation_complete: true
 
-title: 'Ensure the libaudit package as a part of audit Subsystem is Installed'
+title: 'Ensure the {{{ package_name }}} package as a part of audit Subsystem is Installed'
 
 prodtype: sle12,sle15
 
-description: 'The libaudit package should be installed.'
+description: 'The {{{ package_name }}} package should be installed.'
 
 rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparison with potential local access control policy such as SELinux policy.'
 
@@ -28,16 +34,24 @@ references:
 
     
 
-ocil_clause: 'the libaudit package is not installed'
+ocil_clause: 'the {{{ package_name }}} package is not installed'
 
+{{% if product in ["sle12","sle15"] %}}
 ocil: '{{{ ocil_package("libaudit") }}}'
+{{% else %}}
+ocil: '{{{ ocil_package("audit-libs") }}}'
+{{% endif %}}
 
 fixtext: |-
-    Install the libaudit package (if libaudit package is not already installed) with the following command:
-
+    Install the {{{ package_name }}} package (if {{{ package_name }}} package is not already installed) with the following command:
+{{% if product in ["sle12","sle15"] %}}
     {{{ package_install("libaudit") }}}
+{{% else %}}
+    {{{ package_install("audit-libs") }}}
+{{% endif %}}
 
 template:
     name: package_installed
     vars:
-        pkgname: libaudit
+        pkgname: audit-libs
+        pkgname@sle15: libaudit
