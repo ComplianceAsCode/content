@@ -46,6 +46,7 @@ def group_components_mapping(components):
             group_to_component[group].append(component.name)
     return group_to_component
 
+
 class Component:
     def __init__(self, filepath):
         yaml_data = ssg.yaml.open_raw(filepath)
