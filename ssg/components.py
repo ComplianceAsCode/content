@@ -38,6 +38,7 @@ def template_component_mapping(components):
             template_to_component[template] = component.name
     return template_to_component
 
+
 def group_components_mapping(components):
     group_to_component = defaultdict(list)
     for component in components.values():
