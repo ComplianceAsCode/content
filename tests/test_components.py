@@ -178,9 +178,10 @@ def test_benchmark_rules(components, source_dir):
     return result
 
 
-def test_rule(
-        rule, rule_to_components, package_to_component,
-        template_to_component, rule_to_groups, group_to_components):
+def test_rule(rule, mappings):
+    (
+        rule_to_components, package_to_component, template_to_component,
+        rule_to_groups, group_to_components) = mappings
     result = True
     rule_components = [c.name for c in rule_to_components[rule.id_]]
     rule_groups = rule_to_groups[rule.id_]
@@ -207,10 +208,11 @@ def test_resolved_rules(components, build_dir, product):
     groups_dir = os.path.join(product_dir, "groups")
     rule_to_groups = get_rule_to_groups(groups_dir)
     rules_dir = os.path.join(product_dir, "rules")
+    mappings = (
+        rule_to_components, package_to_component, template_to_component,
+        rule_to_groups, group_to_components)
     for rule in iterate_over_resolved_rules(rules_dir):
-        if not test_rule(
-                rule, rule_to_components, package_to_component,
-                template_to_component, rule_to_groups, group_to_components):
+        if not test_rule(rule, mappings):
             result = False
     return result
 
