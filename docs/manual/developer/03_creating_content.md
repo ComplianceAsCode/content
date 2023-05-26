@@ -49,22 +49,26 @@ build files/configuration, etc.
 <td><p>Contains the CMake build configuration files.</p></td>
 </tr>
 <tr class="odd">
+<td><p><code>components</code></p></td>
+<td><p>Contains the component files which provide mapping of operating system components to CaC rules.</p></td>
+</tr>
+<tr class="even">
 <td><p><code>Dockerfiles</code></p></td>
 <td><p>Contains Dockerfiles to build content test suite container backends.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>docs</code></p></td>
 <td><p>Contains the User Guide and Developer Guide, manual page template, etc.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p><code>products</code></p></td>
 <td><p>Contains per-product directories (such as <code>rhel8</code>) of product-specific information and profiles.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>ssg</code></p></td>
 <td><p>Contains Python <code>ssg</code> module which is used by most of the scripts in this repository.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p><code>utils</code></p></td>
 <td><p>Miscellaneous scripts used for development but not used by the build system.</p></td>
 </tr>
@@ -1225,3 +1229,22 @@ To export the spreadsheet use the following command:
 
 The output by default will be out in CSV file in build directory.
 The file will be a csv file named as the UNIX timestamp of when the file was created.
+
+## Components
+
+The `/components` directory contains files that provide mapping of operating system components to individual rules.
+
+The component in ComplianceAsCode doesn't necessary have to correspond to operating system components, we are free to define our components where we see fit.
+For example, SELinux is spread into `policycoreutils`, `libselinux` and others, but ComplianceAsCode has a `selinux` component.
+
+Each component is represented by a separate YAML file in the `/components` directory.
+The component YAML file name is equal to the component name.
+
+YAML file keys:
+
+- `name` (string) - component name
+- `rules` (list) - rules that belong to this component
+- `groups` (list) - groups that indicate that rules in these groups should belong to this component (optional)
+- `templates` (list) - templates that indicate that rules using these templates should belong to this component (optional)
+
+Each rule in the benchmark in the `/linux_os/guide` directory must be a member of at least 1 component.
