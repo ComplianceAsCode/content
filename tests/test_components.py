@@ -81,11 +81,11 @@ def find_all_rules(base_dir):
         yield rule_id
 
 
-def iterate_over_resolved_rules(built_rules_dir, env_yaml):
+def iterate_over_resolved_rules(built_rules_dir):
     for file_name in os.listdir(built_rules_dir):
         file_path = os.path.join(built_rules_dir, file_name)
         try:
-            rule = ssg.build_yaml.Rule.from_yaml(file_path, env_yaml)
+            rule = ssg.build_yaml.Rule.from_yaml(file_path)
         except ssg.yaml.DocumentationNotComplete:
             pass
         yield rule
@@ -178,20 +178,16 @@ def main():
         result = 1
     if not test_unmapped_rules(rules_in_benchmark, rules_with_component):
         result = 1
-    build_config_yaml_path = os.path.join(args.build_dir, "build_config.yml")
-    product_dir = os.path.join(args.build_dir, args.product)
-    product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(
-        build_config_yaml_path, product_yaml_path)
     package_to_component = ssg.components.package_component_mapping(
         components)
     template_to_component = ssg.components.template_component_mapping(
         components)
     group_to_components = ssg.components.group_components_mapping(components)
+    product_dir = os.path.join(args.build_dir, args.product)
     groups_dir = os.path.join(product_dir, "groups")
     rule_to_groups = get_rule_to_groups(groups_dir)
     rules_dir = os.path.join(product_dir, "rules")
-    for rule in iterate_over_resolved_rules(rules_dir, env_yaml):
+    for rule in iterate_over_resolved_rules(rules_dir):
         rule_components = [c.name for c in rule_to_components[rule.id_]]
         if not test_templates(
                 rule, package_to_component, rule_components,
