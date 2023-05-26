@@ -165,40 +165,65 @@ def get_rule_to_groups(groups_dir):
     return rule_to_groups
 
 
-def main():
-    result = 0
-    args = parse_args()
-    components_dir = os.path.join(args.source_dir, "components")
-    components = ssg.components.load(components_dir)
+def test_benchmark_rules(components, source_dir):
+    result = True
     rule_to_components = ssg.components.rule_components_mapping(components)
     rules_with_component = set(rule_to_components.keys())
-    linux_os_guide_dir = os.path.join(args.source_dir, "linux_os", "guide")
+    linux_os_guide_dir = os.path.join(source_dir, "linux_os", "guide")
     rules_in_benchmark = set(find_all_rules(linux_os_guide_dir))
     if not test_nonexistent_rules(rules_in_benchmark, rules_with_component):
-        result = 1
+        result = False
     if not test_unmapped_rules(rules_in_benchmark, rules_with_component):
-        result = 1
+        result = False
+    return result
+
+
+def test_rule(
+        rule, rule_to_components, package_to_component,
+        template_to_component, rule_to_groups, group_to_components):
+    result = True
+    rule_components = [c.name for c in rule_to_components[rule.id_]]
+    rule_groups = rule_to_groups[rule.id_]
+    if not test_templates(
+            rule, package_to_component, rule_components,
+            template_to_component):
+        result = False
+    if not test_platform(rule, package_to_component, rule_components):
+        result = False
+    if not test_group(rule, rule_components, rule_groups, group_to_components):
+        result = False
+    return result
+
+
+def test_resolved_rules(components, build_dir, product):
+    result = True
+    rule_to_components = ssg.components.rule_components_mapping(components)
     package_to_component = ssg.components.package_component_mapping(
         components)
     template_to_component = ssg.components.template_component_mapping(
         components)
     group_to_components = ssg.components.group_components_mapping(components)
-    product_dir = os.path.join(args.build_dir, args.product)
+    product_dir = os.path.join(build_dir, product)
     groups_dir = os.path.join(product_dir, "groups")
     rule_to_groups = get_rule_to_groups(groups_dir)
     rules_dir = os.path.join(product_dir, "rules")
     for rule in iterate_over_resolved_rules(rules_dir):
-        rule_components = [c.name for c in rule_to_components[rule.id_]]
-        if not test_templates(
-                rule, package_to_component, rule_components,
-                template_to_component):
-            result = 1
-        if not test_platform(rule, package_to_component, rule_components):
-            result = 1
-        rule_groups = rule_to_groups[rule.id_]
-        if not test_group(
-                rule, rule_components, rule_groups, group_to_components):
-            result = 1
+        if not test_rule(
+                rule, rule_to_components, package_to_component,
+                template_to_component, rule_to_groups, group_to_components):
+            result = False
+    return result
+
+
+def main():
+    args = parse_args()
+    components_dir = os.path.join(args.source_dir, "components")
+    components = ssg.components.load(components_dir)
+    result = 0
+    if not test_benchmark_rules(components, args.source_dir):
+        result = 1
+    if not test_resolved_rules(components, args.build_dir, args.product):
+        result = 1
     exit(result)
 
 
