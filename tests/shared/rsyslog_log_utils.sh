@@ -1,6 +1,7 @@
 #!/bin/bash
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
+RSYSLOG_CONF_DIR='/etc/rsyslog.d'
 LOG_FILE_PREFIX=test
 RSYSLOG_TEST_DIR=/tmp
 declare -a RSYSLOG_TEST_LOGS
