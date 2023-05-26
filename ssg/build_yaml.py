@@ -1357,6 +1357,23 @@ class BuildLoader(DirectoryLoader):
             self.all_values[value.id_] = value
             self.loaded_group.add_value(value)
 
+    def __process_rule(self, rule):
+        if self.use_components and rule.id_ not in self.rule_to_component:
+            raise ValueError(
+                "The rule '%s' isn't mapped to any component! Insert the "
+                "rule ID at least once to the rule-component mapping." %
+                (rule.id_))
+        prodtypes = parse_prodtype(rule.prodtype)
+        if "all" not in prodtypes and self.product not in prodtypes:
+            return False
+        self.all_rules[rule.id_] = rule
+        self.loaded_group.add_rule(
+            rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
+        rule.normalize(self.env_yaml["product"])
+        if self.stig_references:
+            rule.add_stig_references(self.stig_references)
+        return True
+
     def _process_rules(self):
         for rule_yaml in self.rule_files:
             try:
@@ -1365,21 +1382,8 @@ class BuildLoader(DirectoryLoader):
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
-            if self.use_components and rule.id_ not in self.rule_to_component:
-                raise ValueError(
-                    "The rule '%s' isn't mapped to any component! Insert the "
-                    "rule ID at least once to the rule-component mapping." %
-                    (rule.id_))
-            prodtypes = parse_prodtype(rule.prodtype)
-            if "all" not in prodtypes and self.product not in prodtypes:
+            if not self.__process_rule(rule):
                 continue
-            self.all_rules[rule.id_] = rule
-            self.loaded_group.add_rule(
-                rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
-
-            rule.normalize(self.env_yaml["product"])
-            if self.stig_references:
-                rule.add_stig_references(self.stig_references)
 
     def _get_new_loader(self):
         loader = BuildLoader(
