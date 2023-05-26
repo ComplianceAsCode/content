@@ -124,22 +124,23 @@ def test_platform(rule, package_to_component, rule_components):
     platform = rule.platform
     if platform is None:
         return True
+    result = True
     if "package" in platform:
-        return test_package_platform(
+        result = test_package_platform(
             rule, package_to_component, rule_components)
     elif platform == "grub2" and "grub2" not in rule_components:
         print(
             "Rule '%s' should be assigned to component 'grub2', "
             "because it uses the 'grub2' platform." %
             (rule.id_))
-        return False
+        result = False
     elif platform == "sssd-ldap" and "sssd" not in rule_components:
         print(
             "Rule '%s' should be assigned to component 'sssd', "
             "because it uses the 'sssd-ldap' platform." %
             (rule.id_))
-        return False
-    return True
+        result = False
+    return result
 
 
 def test_group(rule, rule_components, rule_groups, group_to_components):
