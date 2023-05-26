@@ -263,6 +263,7 @@ selections:
     - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers
+    - sshd_use_approved_kex_ordered_stig
     - sshd_use_approved_macs
     - sshd_use_priv_separation
     - sshd_x11_use_localhost

@@ -265,6 +265,7 @@ selections:
     - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers_ordered_stig
+    - sshd_use_approved_kex_ordered_stig
     - sshd_use_approved_macs_ordered_stig
     - sssd_memcache_timeout
     - sssd_offline_cred_expiration

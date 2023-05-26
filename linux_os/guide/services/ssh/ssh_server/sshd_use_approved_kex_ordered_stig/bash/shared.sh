@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Oracle Linux 7
+# platform = Red Hat Enterprise Linux 7,Oracle Linux 7,multi_platform_sle
 
 KEX_ALGOS="ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,\
 diffie-hellman-group-exchange-sha256"
