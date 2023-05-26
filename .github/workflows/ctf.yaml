@@ -8,11 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Deps
-        uses: mstksg/get-package@master
-        with:
-          apt-get: git python3-jinja2 python3-yaml python3-setuptools python3-deepdiff python3-git python3-github python3-requests xmldiff
+        run: sudo apt-get update && sudo apt-get install git python3-jinja2 python3-yaml python3-setuptools python3-deepdiff python3-git python3-github python3-requests xmldiff
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
@@ -25,12 +23,12 @@ jobs:
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Checkout fork point
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ steps.fork_point.outputs.FORK_POINT }}
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -50,7 +48,7 @@ jobs:
           path: 'output.json'
           prop_path: 'product'
       - name: Find Comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -58,7 +56,7 @@ jobs:
           body-includes: Start a new ephemeral environment with changes proposed in this pull request
       - name: Create or update comment
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -77,7 +75,7 @@ jobs:
           edit-mode: replace
       - name: Create or update a trimmed comment
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE == '0' }}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}

@@ -14,11 +14,11 @@ jobs:
       - name: Install deps python
         run: pip install gitpython xmldiff
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -64,13 +64,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
-        uses: mstksg/get-package@master
-        with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Get cached CTF output
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         id: get_ctf_output
         with:
           name: output.json
@@ -127,7 +125,7 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'ansible'
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ssg-${{steps.product.outputs.prop}}-ds.xml
