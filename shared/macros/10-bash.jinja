@@ -1708,10 +1708,12 @@ if ! grep "$mount_point_match_regexp" /etc/fstab; then
                 | sed -E "s/(rw|defaults|seclabel|{{{ mount_opt }}})(,|$)//g;s/,$//")
     [ "$previous_mount_opts" ] && previous_mount_opts+=","
     echo "{{{ fs_spec }}} {{{ mount_point }}} {{{ type }}} defaults,${previous_mount_opts}{{{ mount_opt }}} 0 0" >> /etc/fstab
+    {{{ bash_systemctl_daemon_reload() }}}
 # If the mount_opt option is not already in the mount point's /etc/fstab entry, add it
 elif ! grep "$mount_point_match_regexp" /etc/fstab | grep "{{{ mount_opt }}}"; then
     previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/fstab | awk '{print $4}')
     sed -i "s|\(${mount_point_match_regexp}.*${previous_mount_opts}\)|\1,{{{ mount_opt }}}|" /etc/fstab
+    {{{ bash_systemctl_daemon_reload() }}}
 fi
 {{%- endmacro %}}
 
