@@ -36,7 +36,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_query_module_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>={{{ uid_min }}}[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -45,7 +45,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_query_module_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>={{{ uid_min }}}[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -54,7 +54,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_query_module_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>={{{ uid_min }}}[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -63,7 +63,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_query_module_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>=1000[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+query_module[\s]+|([\s]+|[,])query_module([\s]+|[,]))).*(?:-F\s+auid>={{{ uid_min }}}[\s]+)(?:-F\s+auid!=(unset|4294967295))\s+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
