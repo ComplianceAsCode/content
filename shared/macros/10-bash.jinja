@@ -702,59 +702,6 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 
 
 {{#
-Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
-preference if it does not exist.
-
-Example Call(s):
-
-    Without string or variable::
-
-        bash_firefox_cfg_setting("mozilla.cfg" "extensions.update.enabled" value="false")
-
-    With string::
-
-        bash_firefox_cfg_setting("mozilla.cfg" "security.default_personal_cert" quoted_value="Ask Every Time")
-
-    With a string variable::
-
-        bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
-
-:param config_file:           Configuration file that will be modified
-:type config_file: str
-:param key:                  Configuration option to change
-:type key: str
-:param value:                Value of the configuration option to change
-:type value: str
-:param quoted_value:
-:type quoted_value: str
-:param sed_separator:
-:type sed_separator: char
-
-#}}
-{{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
-firefox_cfg="{{{ config_file }}}"
-{{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
-firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
-
-# Check the possible Firefox install directories
-for firefox_dir in ${firefox_dirs}; do
-    # If the Firefox directory exists, then Firefox is installed
-    if [ -d "${firefox_dir}" ]; then
-        # Make sure the Firefox .cfg file exists and has the appropriate permissions
-        if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
-            echo "//  IMPORTANT: Start your code on the 2nd line" > "${firefox_dir}/${firefox_cfg}"
-            chmod 644 "${firefox_dir}/${firefox_cfg}"
-        elif ! head -1 "${firefox_dir}/${firefox_cfg}" | grep -q "^//"; then
-            sed -i '1 i\// IMPORTANT: Start your code on the 2nd line' "${firefox_dir}/${firefox_cfg}"
-        fi
-
-        {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(4 * 2) }}}
-    fi
-done
-{{%- endmacro -%}}
-
-
-{{#
     Macro to ensure that the ntp/chrony config file contains valid server entries.
 
 :param config_file: Path to the ntp/chrony config file
