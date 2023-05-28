@@ -52,7 +52,7 @@ ocil_clause: 'the group ownership is incorrect'
 ocil: |-
     To verify the assigned home directory of all interactive users is group-
     owned by that users primary GID, run the following command:
-    <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+    <pre># ls -ld $(awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
 
 fixtext: |-
     Change the group owner of a local interactive user’s home directory to the group found in "/etc/passwd". To change the group owner of a local interactive user’s home directory, use the following command:

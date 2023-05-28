@@ -11,12 +11,12 @@ cat << EOF > "/etc/pam.d/system-auth"
 auth        required      pam_env.so
 auth        required      pam_faildelay.so delay=2000000
 auth        sufficient    pam_unix.so nullok try_first_pass
-auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
+auth        requisite     pam_succeed_if.so uid >= {{{ uid_min }}} quiet_success
 auth        required      pam_deny.so
 
 account     required      pam_unix.so
 account     sufficient    pam_localuser.so
-account     sufficient    pam_succeed_if.so uid < 1000 quiet
+account     sufficient    pam_succeed_if.so uid < {{{ uid_min }}} quiet
 account     required      pam_permit.so
 
 password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=
@@ -40,7 +40,7 @@ auth        required      pam_deny.so
 
 account     required      pam_unix.so
 account     sufficient    pam_localuser.so
-account     sufficient    pam_succeed_if.so uid < 1000 quiet
+account     sufficient    pam_succeed_if.so uid < {{{ uid_min }}} quiet
 account     required      pam_permit.so
 
 password    required      pam_pkcs11.so

@@ -46,7 +46,7 @@ ocil_clause: 'the user ownership is incorrect'
 
 ocil: |-
     To verify the home directory ownership, run the following command:
-    <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+    <pre># ls -ld $(awk -F: '($3&gt;={{{ uid_min }}})&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
 
 warnings:
     - general: |-
