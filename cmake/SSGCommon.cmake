@@ -1058,10 +1058,10 @@ endmacro()
 macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REFERENCES)
     set(OUTPUTS_LIST "")
     set(REFS_STR "")
-    foreach(ref ${REFERENCES})
-        string(REPLACE "{ref_id}" "${ref}" "basename" "${OUTPUT_TEMPLATE}")
+    foreach(REF ${REFERENCES})
+        string(REPLACE "{ref_id}" "${REF}" "basename" "${OUTPUT_TEMPLATE}")
         list(APPEND OUTPUTS_LIST "${CMAKE_BINARY_DIR}/tables/${basename}.html")
-        set(REFS_STR "${REFS_STR} ${ref}")
+        set(REFS_STR "${REFS_STR} ${REF}")
     endforeach()
     add_custom_command(
         OUTPUT ${OUTPUTS_LIST}
