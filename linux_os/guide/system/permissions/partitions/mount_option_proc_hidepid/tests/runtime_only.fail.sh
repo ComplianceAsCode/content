@@ -8,4 +8,5 @@ hidepid=2
 {{% endif %}}
 
 sed -i '/^proc/d' /etc/fstab
+{{{ bash_systemctl_daemon_reload() }}}
 mount -oremount,hidepid=${hidepid} /proc
