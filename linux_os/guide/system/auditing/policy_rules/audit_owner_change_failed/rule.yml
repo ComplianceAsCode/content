@@ -6,10 +6,10 @@ title: 'Configure auditing of unsuccessful ownership changes'
 
 {{% set file_contents_audit_owner_change_failed =
 "## Unsuccessful ownership change
--a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change
--a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change
--a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change
--a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change" %}}
+-a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=unsuccessful-owner-change
+-a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=unsuccessful-owner-change
+-a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=unsuccessful-owner-change
+-a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=unsuccessful-owner-change" %}}
 
 description: |-
     Ensure that unsuccessful attempts to change an ownership of files or directories are audited.

@@ -1765,7 +1765,7 @@ Notes:
 :type action_arch_filters: str
 :param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
 :type other_filters: str
-:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=" ~ uid_min ~ " -F auid!=unset"
 :type auid_filters: str
 :param syscall: The syscall to ensure presense among audit rules. For example, "chown"
 :type syscall: str
