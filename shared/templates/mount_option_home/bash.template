@@ -19,7 +19,7 @@ function perform_remediation (){
 }
 
 readarray -t home_directories  < \
-    <(awk -F':' '{if ($3>={{{ uid_min }}} && $3!= 65534) print $6}' /etc/passwd )
+    <(awk -F':' '{if ($3>={{{ uid_min }}} && $3!= {{{ nobody_uid }}}) print $6}' /etc/passwd )
 
 
 for home_directory in "${home_directories[@]}"
