@@ -510,6 +510,7 @@ or
 
 * Shall use 2-space indentation
 * Shall use lower case for commands
+* Shall use commands, including `if` etc., without extra spaces before or after `(` and `)` (Eg. `command(<args>)`
 * `endif`, `endforeach`, and similar commands shall not have any arguments
 
 ## Markup Languages
