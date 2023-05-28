@@ -168,7 +168,7 @@ jobs:
         with:
           coverageLocations: build/tests/coverage.xml:coverage.py
       - name: Validate gitmailmap
-        run: egrep "\S" .mailmap | egrep -v '^#' | git check-mailmap --stdin
+        run: grep -E "\S" .mailmap | grep -Ev '^#' | git check-mailmap --stdin
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)

@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd with the following command:
 
-    $  sudo auditctl -l | egrep '(/etc/shadow)'
+    $  sudo auditctl -l | grep -E '(/etc/shadow)'
 
     -w /etc/shadow -p wa -k identity
 

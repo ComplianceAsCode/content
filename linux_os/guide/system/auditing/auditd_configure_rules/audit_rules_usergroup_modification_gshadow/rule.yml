@@ -75,7 +75,7 @@ ocil_clause: 'the system is not configured to audit account changes'
 ocil: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/gshadow" with the following command:
 
-    $ sudo auditctl -l | egrep '(/etc/gshadow)'
+    $ sudo auditctl -l | grep -E '(/etc/gshadow)'
 
     -w /etc/gshadow -p wa -k identity
 
