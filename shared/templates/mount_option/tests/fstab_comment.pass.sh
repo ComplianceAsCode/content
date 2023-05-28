@@ -12,5 +12,6 @@ make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 defaults
 sed -Ei '${s/^/#/}' /etc/fstab
 
 make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 {{{ MOUNTOPTION }}}
+{{{ bash_systemctl_daemon_reload() }}}
 
 mount_partition {{{ MOUNTPOINT }}} || true

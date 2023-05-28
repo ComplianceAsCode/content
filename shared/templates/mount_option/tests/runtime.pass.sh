@@ -8,5 +8,6 @@ clean_up_partition {{{ MOUNTPOINT }}}
 create_partition
 
 make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 {{{ MOUNTOPTION }}}
+{{{ bash_systemctl_daemon_reload() }}}
 
 mount_partition {{{ MOUNTPOINT }}} || true

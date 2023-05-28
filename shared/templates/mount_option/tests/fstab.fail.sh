@@ -12,5 +12,6 @@ make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 nodev
 {{% else %}}
 make_fstab_given_partition_line {{{ MOUNTPOINT }}} ext2 noexec
 {{% endif %}}
+{{{ bash_systemctl_daemon_reload() }}}
 
 mount_partition {{{ MOUNTPOINT }}} || true
