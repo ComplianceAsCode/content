@@ -850,7 +850,7 @@ macro(ssg_build_product PRODUCT)
         CODE "
         file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-*.html\") \n
         if(NOT IS_ABSOLUTE ${SSG_GUIDE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
                 TYPE FILE FILES \${GUIDE_FILES})
         else()
             file(INSTALL DESTINATION \"${SSG_GUIDE_INSTALL_DIR}\"
@@ -863,7 +863,7 @@ macro(ssg_build_product PRODUCT)
             CODE "
             file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/ansible/${PRODUCT}-playbook-*.yml\") \n
             if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
-                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
+                file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                     TYPE FILE FILES \${ROLE_FILES})
             else()
                 file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
@@ -877,7 +877,7 @@ macro(ssg_build_product PRODUCT)
             CODE "
             file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash/${PRODUCT}-script-*.sh\") \n
             if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
-                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
+                file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                     TYPE FILE FILES \${ROLE_FILES})
             else()
                 file(INSTALL DESTINATION \"${SSG_BASH_ROLE_INSTALL_DIR}\"
@@ -891,7 +891,7 @@ macro(ssg_build_product PRODUCT)
             CODE "
             file(GLOB PLAYBOOK_PER_RULE_FILES \"${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/*\") \n
             if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks)
-                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
+                file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
                     TYPE FILE FILES \${PLAYBOOK_PER_RULE_FILES})
             else()
                 file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
@@ -1028,7 +1028,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         CODE "
         file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${DERIVATIVE}-guide-*.html\") \n
         if(NOT IS_ABSOLUTE ${SSG_GUIDE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
                 TYPE FILE FILES \${GUIDE_FILES})
         else()
             file(INSTALL DESTINATION \"${SSG_GUIDE_INSTALL_DIR}\"
@@ -1040,7 +1040,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         CODE "
         file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/ansible/${DERIVATIVE}-playbook-*.yml\") \n
         if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         else()
             file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
@@ -1052,7 +1052,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         CODE "
         file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash/${DERIVATIVE}-script-*.sh\") \n
         if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         else()
             file(INSTALL DESTINATION \"${SSG_BASH_ROLE_INSTALL_DIR}\"
