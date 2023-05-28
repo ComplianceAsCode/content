@@ -17,6 +17,7 @@ make_fstab_given_partition_line /srv ext2 nodev
 {{% else %}}
 make_fstab_given_partition_line /srv ext2 noexec
 {{% endif %}}
+{{{ bash_systemctl_daemon_reload() }}}
 
 mount_partition /srv
 
