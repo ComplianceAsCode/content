@@ -513,6 +513,7 @@ or
 * Shall use commands, including `if` etc., without extra spaces before or after `(` and `)` (Eg. `command(<args>)`
 * `endif`, `endforeach`, and similar commands shall not have any arguments
 * Shall keep flowing `)` at same indentation as starting clause
+* Shall use no more than 2 empty lines (Eg. 1 empty to mark part and 2 empty to mark sections)
 
 ## Markup Languages
 
