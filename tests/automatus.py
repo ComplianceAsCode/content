@@ -433,19 +433,9 @@ def normalize_passed_arguments(options):
     if options.docker:
         options.test_env = ssg_test_suite.test_env.DockerTestEnv(
             options.scanning_mode, options.docker)
-        if options.container_ssh_port != 0:
-            options.test_env.container_ssh_port = options.container_ssh_port
-        logging.info(
-            "The base image option has been specified, "
-            "choosing Docker-based test environment.")
     elif options.container:
         options.test_env = ssg_test_suite.test_env.PodmanTestEnv(
             options.scanning_mode, options.container)
-        if options.container_ssh_port != 0:
-            options.test_env.container_ssh_port = options.container_ssh_port
-        logging.info(
-            "The base image option has been specified, "
-            "choosing Podman-based test environment.")
     else:
         hypervisor, domain_name = options.libvirt
         # Possible hypervisor spec we have to catch: qemu+unix:///session
@@ -456,6 +446,14 @@ def normalize_passed_arguments(options):
         logging.info(
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")
+
+    if options.docker or options.container:
+        if options.container_ssh_port != 0:
+            options.test_env.container_ssh_port = options.container_ssh_port
+        logging.info(
+            "The base image option has been specified, "
+            "choosing {} test environment."
+            .format(options.test_env.name))
 
     # Add in product to the test environment. This is independent of actual
     # test environment type so we do it after creation.
