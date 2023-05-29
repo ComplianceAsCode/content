@@ -1245,6 +1245,7 @@ YAML file keys:
 - `name` (string) - component name
 - `rules` (list) - rules that belong to this component
 - `groups` (list) - groups that indicate that rules in these groups should belong to this component (optional)
+- `packages` (list) - names of packages that are part of this component (optional)
 - `templates` (list) - templates that indicate that rules using these templates should belong to this component (optional)
 - `changelog` (list) - records substantial changes in the given component that affected rules and remediations (optional)
 
