@@ -280,7 +280,7 @@ def join_extented_opt(opt_name, delim, opts):
     return []
 
 
-def get_virt_install_command(data) -> list[str]:
+def get_virt_install_command(data):
     command = [
         "virt-install",
         "--connect={0}".format(data.libvirt),
@@ -335,7 +335,7 @@ def get_virt_install_command(data) -> list[str]:
     return command
 
 
-def run_virt_install(data, command) -> None:
+def run_virt_install(data, command):
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
         print(shlex.join(command))
