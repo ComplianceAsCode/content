@@ -1,10 +1,8 @@
 
-property_one: one
-property_two: one
-grub2_uefi_boot_path: "garbage"
+- property_one: one
 
 {{% if product == "rhel7" %}}
-rhel_version: "seven"
+- rhel_version: "seven"
 {{% else %}}
-rhel_version: "not_seven"
+- rhel_version: "not_seven"
 {{% endif %}}

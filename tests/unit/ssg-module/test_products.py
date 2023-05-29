@@ -33,6 +33,15 @@ def product_with_updated_properties(testing_product, testing_datadir):
     return testing_product
 
 
+def test_list_of_mappings_to_mapping():
+    converter = ssg.products.Product.transform_list_of_mappings_to_mapping
+    assert converter([]) == dict()
+    assert converter([dict(one=1)]) == dict(one=1)
+    assert converter([dict(one=2), dict(one=1)]) == dict(one=1)
+    with pytest.raises(ValueError):
+        assert converter([dict(one=2), 5])
+
+
 def test_get_all(ssg_root):
     products = ssg.products.get_all(ssg_root)
 
@@ -78,9 +87,6 @@ def test_product_updates_with_dict(testing_product):
     properties = dict(property_one="one")
     testing_product.expand_by_acquired_data(properties)
     assert testing_product["property_one"] == "one"
-    overriding_property = dict(property_one="two")
-    testing_product.expand_by_acquired_data(overriding_property)
-    assert testing_product["property_one"] == "two"
 
 
 def test_product_updates_with_files(product_with_updated_properties):
@@ -88,9 +94,31 @@ def test_product_updates_with_files(product_with_updated_properties):
     assert product["property_one"] == "one"
     assert product["product"] == "rhel7"
     assert product["rhel_version"] == "seven"
+
+
+def test_updates_have_access_to_previously_defined_properties(product_with_updated_properties):
+    product = product_with_updated_properties
     assert product["property_two"] == "two"
 
 
-def test_product_updates_preserve_product_definitions(product_with_updated_properties):
+def test_product_properties_set_only_in_one_place(product_with_updated_properties):
     product = product_with_updated_properties
-    assert product["grub2_uefi_boot_path"].startswith("/boot")
+    existing_data = dict(pkg_manager=product["pkg_manager"])
+    with pytest.raises(ValueError):
+        product.expand_by_acquired_data(existing_data)
+
+    existing_data = dict(property_one=1)
+    with pytest.raises(ValueError):
+        product.expand_by_acquired_data(existing_data)
+
+    new_data = dict(new_one=1)
+    product.expand_by_acquired_data(new_data)
+    with pytest.raises(ValueError):
+        product.expand_by_acquired_data(new_data)
+
+
+def test_product_updating_twice_doesnt_work(product_with_updated_properties, testing_datadir):
+    testing_product = product_with_updated_properties
+    properties_dir = os.path.join(testing_datadir, "properties")
+    with pytest.raises(ValueError):
+        testing_product.read_properties_from_directory(properties_dir)

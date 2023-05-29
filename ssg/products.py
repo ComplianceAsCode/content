@@ -165,15 +165,35 @@ class Product(object):
         self._primary_data["basic_properties_derived"] = True
 
     def expand_by_acquired_data(self, property_dict):
+        for specified_key in property_dict:
+            if specified_key in self:
+                msg = (
+                    "The property {name} is already defined, "
+                    "you can't define it once more elsewhere."
+                    .format(name=specified_key))
+                raise ValueError(msg)
         self._acquired_data.update(property_dict)
+
+    @staticmethod
+    def transform_list_of_mappings_to_mapping(mappings):
+        result = dict()
+        for index, mapping in enumerate(mappings):
+            if not isinstance(mapping, dict):
+                msg = (
+                    "Expected a list of key-value pairs, got '{val}' at index {index}."
+                    .format(val=mapping, index=index))
+                raise ValueError(msg)
+            result.update(mapping)
+        return result
 
     def read_properties_from_directory(self, path):
         filenames = glob(path + "/*.yml")
         for f in sorted(filenames):
             substitutions_dict = dict()
             substitutions_dict.update(self)
-            new_symbols = open_and_expand(f, substitutions_dict)
-            self.expand_by_acquired_data(new_symbols.items())
+            list_of_new_symbols = open_and_expand(f, substitutions_dict)
+            new_symbols = self.transform_list_of_mappings_to_mapping(list_of_new_symbols)
+            self.expand_by_acquired_data(new_symbols)
 
 
 def load_product_yaml(product_yaml_path):

@@ -1,2 +1,6 @@
-property_two: two
+{{% if property_one == "one" %}}
+- property_two: two
+{{% else %}}
+- property_two: one
+{{% endif %}}
 
