@@ -157,12 +157,16 @@ class TestEnv(object):
             raise RuntimeError(error_msg)
         return result.stdout
 
+    def _scp_remote(self, file):
+        return "{user}@{ip}:{file}".format(
+            user=self.remote_user, ip=self.domain_ip, file=file)
+
     def scp_download_file(self, source, destination, log_file, error_msg=None):
-        scp_src = "{user}@{ip}:{source}".format(user=self.remote_user, ip=self.domain_ip, source=source)
+        scp_src = self._scp_remote(source)
         return self.scp_transfer_file(scp_src, destination, log_file, error_msg)
 
     def scp_upload_file(self, source, destination, log_file, error_msg=None):
-        scp_dest = "{user}@{ip}:{dest}".format(user=self.remote_user, ip=self.domain_ip, dest=destination)
+        scp_dest = self._scp_remote(destination)
         return self.scp_transfer_file(source, scp_dest, log_file, error_msg)
 
     def scp_transfer_file(self, source, destination, log_file, error_msg=None):
