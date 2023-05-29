@@ -1,0 +1,68 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure that timesyncd is enabled and configured") }}}
+    <criteria comment="chrony.conf conditions are met" operator="AND">
+      <criterion test_ref="test_systemd_timesyncd_service_enabled" />
+      <criterion test_ref="test_systemd_timesyncd_configuration" />
+    </criteria>
+  </definition>
+
+  <external_variable comment="remote vendor-approved pool servers" datatype="string"
+   id="var_multiple_time_servers" version="1" />  
+
+  <local_variable id="temp_variable_test_servers" datatype="string" version="1"
+    comment="a local variable which includes all vendor-approved pool servers">
+      <concat>
+          <literal_component>^(?:pool)[[:space:]]</literal_component>
+          <split delimiter=",">
+              <variable_component var_ref="var_multiple_time_servers" />
+          </split>
+          <literal_component>$</literal_component>
+      </concat>
+  </local_variable>
+
+  <linux:systemdunitproperty_state id="ste_timesyncd_is_enabled" version="1">
+    <linux:value>enabled</linux:value>
+  </linux:systemdunitproperty_state>
+
+  <linux:systemdunitproperty_object id="obj_timesyncd-service_unitfilestate" version="1">
+    <linux:unit>systemd-timesyncd.service</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+
+  <linux:systemdunitproperty_test check="all" id="test_systemd_timesyncd_service_enabled" version="1"
+    comment="systemd timesyncd.service enabled">
+    <linux:object object_ref="obj_timesyncd-service_unitfilestate" />
+    <linux:state state_ref="ste_timesyncd_is_enabled" />
+  </linux:systemdunitproperty_test>
+  
+  <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
+                                id="object_systemd_timesyncd_configuration" version="1">
+    <ind:filepath>/etc/systemd/timesyncd.conf</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="temp_variable_test_servers"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_systemd_timesyncd_backup_servers" version="1">
+    <ind:subexpression operation="pattern match" datatype="string">^\s*NTP=</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_systemd_timesyncd_fallback_servers" version="1">
+    <ind:subexpression operation="pattern match"
+      datatype="string">^\s*FallbackNTP=</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_systemd_timesyncd_root_distance" version="1">
+    <ind:subexpression operation="pattern match"
+      datatype="string">^\s*RootDistanceMax=\d+</ind:subexpression>
+  </ind:textfilecontent54_state>
+  
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    comment="Ensure remote NTP servers are configured" id="test_systemd_timesyncd_configuration">
+    <ind:object object_ref="object_systemd_timesyncd_configuration" />
+    <ind:state state_ref="state_systemd_timesyncd_ntp_servers" />
+    <ind:state state_ref="state_systemd_timesyncd_fallback_servers" />
+    <ind:state state_ref="state_systemd_timesyncd_root_distance" />
+  </ind:textfilecontent54_test>
+
+</def-group>
