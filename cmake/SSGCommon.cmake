@@ -96,7 +96,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_product.py" --product-yaml "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/product.yml" --compiled-product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_product.py" --product-yaml "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/product.yml" --product-properties "${CMAKE_SOURCE_DIR}/product_properties" --compiled-product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         COMMENT "[${PRODUCT}-content] compiling product yaml"
     )
 
