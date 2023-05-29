@@ -1246,5 +1246,6 @@ YAML file keys:
 - `rules` (list) - rules that belong to this component
 - `groups` (list) - groups that indicate that rules in these groups should belong to this component (optional)
 - `templates` (list) - templates that indicate that rules using these templates should belong to this component (optional)
+- `changelog` (list) - records substantial changes in the given component that affected rules and remediations (optional)
 
 Each rule in the benchmark in the `/linux_os/guide` directory must be a member of at least 1 component.
