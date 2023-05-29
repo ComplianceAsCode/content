@@ -12,7 +12,7 @@ checktext: |-
 
     Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F kernel.kptr_restrict | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' |  grep -F kernel.kptr_restrict | tail -1
 
     kernel.kptr_restrict =1
 

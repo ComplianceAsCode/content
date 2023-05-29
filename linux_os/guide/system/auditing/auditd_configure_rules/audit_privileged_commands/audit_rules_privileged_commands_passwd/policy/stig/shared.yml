@@ -13,7 +13,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/gshadow" with the following command:
 
-    $ sudo auditctl -l | egrep '(/usr/bin/passwd)'
+    $ sudo auditctl -l | grep -E '(/usr/bin/passwd)'
 
     -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid&gt;=1000 -F auid!=unset -k privileged-passwd
 

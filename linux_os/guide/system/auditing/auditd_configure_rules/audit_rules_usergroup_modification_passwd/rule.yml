@@ -75,7 +75,7 @@ ocil_clause: 'the command does not return a line, or the line is commented out'
 ocil: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd" with the following command:
 
-    $  sudo auditctl -l | egrep '(/etc/passwd)'
+    $  sudo auditctl -l | grep -E '(/etc/passwd)'
 
     -w /etc/passwd -p wa -k identity
 
