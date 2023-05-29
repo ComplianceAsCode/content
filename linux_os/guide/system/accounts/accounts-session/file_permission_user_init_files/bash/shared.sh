@@ -1,4 +1,8 @@
 # platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
 
 {{{ bash_instantiate_variables("var_user_initialization_files_regex") }}}
 
