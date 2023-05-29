@@ -1,4 +1,3 @@
-
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("User initialization files have mode 0740 or less permissive") }}}
@@ -7,6 +6,7 @@
                 test_ref="test_{{{ rule_id }}}" />
         </criteria>
     </definition>
+
     <unix:file_test id="test_{{{ rule_id }}}" check="all"
                     check_existence="any_exist" version="1"
                     comment="Init files have mode 0740 or less permissive">
@@ -42,6 +42,6 @@
     </local_variable>
     
 
-    <external_variable comment="init files tegex" datatype="int"
+    <external_variable comment="init files regex" datatype="int"
         id="var_user_initialization_files_regex" version="1" />
 </def-group>
