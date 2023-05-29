@@ -68,6 +68,10 @@ build files/configuration, etc.
 <td><p><code>utils</code></p></td>
 <td><p>Miscellaneous scripts used for development but not used by the build system.</p></td>
 </tr>
+<tr class="even">
+<td><p><code>product_properties</code></p></td>
+<td><p>Directory with its own README and with drop-in files that can define product properties across more products at once using jinja macros.</p></td>
+</tr>
 </tbody>
 </table>
 

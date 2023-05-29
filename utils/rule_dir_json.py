@@ -50,6 +50,7 @@ def walk_products(root, all_products):
         product_dir = os.path.join(root, "products", product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.products.load_product_yaml(product_yaml_path)
+        product_yaml.read_properties_from_directory(os.path.join(root, "product_properties"))
         product_yamls[product] = product_yaml
 
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])

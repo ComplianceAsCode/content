@@ -18,7 +18,7 @@ cpe_items_dir = os.path.join(DATADIR, "applicability")
 
 build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
 product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-env_yaml = open_environment(build_config_yaml, product_yaml)
+env_yaml = open_environment(build_config_yaml, product_yaml, os.path.join(ssg_root, "product_properties"))
 
 
 def test_render_extra_ovals():

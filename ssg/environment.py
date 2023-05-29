@@ -6,7 +6,10 @@ from .products import load_product_yaml
 from .yaml import open_raw
 
 
-def open_environment(build_config_yaml_path, product_yaml_path):
+def open_environment(build_config_yaml_path, product_yaml_path, product_properties_path=None):
     contents = open_raw(build_config_yaml_path)
-    contents.update(load_product_yaml(product_yaml_path))
+    product = load_product_yaml(product_yaml_path)
+    if product_properties_path:
+        product.read_properties_from_directory(product_properties_path)
+    contents.update(product)
     return contents

@@ -48,6 +48,21 @@ def _save_rename(result, stem, prefix):
     result["{0}_{1}".format(prefix, stem)] = stem
 
 
+def _get_yaml_contents_without_documentation_complete(parsed_yaml, substitutions_dict):
+    """
+    If the YAML is a mapping, then handle the documentation_complete accordingly,
+    and take that key-value out.
+    Otherwise, if YAML is empty, or it is a list, pass it on.
+    """
+    if isinstance(parsed_yaml, dict):
+        documentation_incomplete_content_and_not_debug_build = (
+            parsed_yaml.pop("documentation_complete", "true") == "false"
+            and substitutions_dict.get("cmake_build_type") != "Debug")
+        if documentation_incomplete_content_and_not_debug_build:
+            raise DocumentationNotComplete("documentation not complete and not a debug build")
+    return parsed_yaml
+
+
 def _open_yaml(stream, original_file=None, substitutions_dict={}):
     """
     Open given file-like object and parse it as YAML.
@@ -55,16 +70,12 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
     Optionally, pass the path to the original_file for better error handling
     when the file contents are passed.
 
-    Return None if it contains "documentation_complete" key set to "false".
+    Raise an exception if it contains "documentation_complete" key set to "false".
     """
     try:
         yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
 
-        if yaml_contents.pop("documentation_complete", "true") == "false" and \
-                substitutions_dict.get("cmake_build_type") != "Debug":
-            raise DocumentationNotComplete("documentation not complete and not a debug build")
-
-        return yaml_contents
+        return _get_yaml_contents_without_documentation_complete(yaml_contents, substitutions_dict)
     except DocumentationNotComplete as e:
         raise e
     except Exception as e:

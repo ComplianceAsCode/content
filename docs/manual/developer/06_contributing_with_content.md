@@ -418,15 +418,18 @@ that begin with underscores are not meant to be used in descriptions.
 You can also check documentation for all macros in the `Jinja Macros Reference`
 section accessible from the table of contents.
 
-To parametrize rules and remediations as well as Jinja macros, you can
-use product-specific variables defined in `product.yml` in product root
-directory. Moreover, you can define **implied properties** which are
-variables inferred from them. For example, you can define a condition
-that checks if the system uses `yum` or `dnf` as a package manager and
-based on that populate a variable containing correct path to the
-configuration file. The inferring logic is implemented in
-`_get_implied_properties` in `ssg/yaml.py`. Constants and mappings used
-in implied properties should be defined in `ssg/constants.py`.
+To parametrize rules and remediations as well as Jinja macros,
+use product-specific variables defined either
+in `product.yml` in product root directory,
+or in files in the `product_properties` project directory.
+Use this functionality to associate product properties with product versions,
+so you can use only product properties in the content.
+In other words, use this functionality to avoid referencing product versions in macros used in checks or remediations.
+Instead, use properties that directly relate to configurations being checked or set, and that help to reveal the intention of the check or remediation code.
+
+As Jinja2 conditionals are prone to errors, products can be protected by product stability tests.
+If a product sample is present in `tests/data/product_stability/`, it is compared to the actual compiled product,
+and if there is a difference that is not only cosmetic, a product stability test will fail.
 
 Rules are unselected by default - even if the scanner reads rule
 definitions, they are effectively ignored during the scan or

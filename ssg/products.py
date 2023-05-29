@@ -26,7 +26,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         XCCDF_PLATFORM_TO_PACKAGE,
                         SSG_REF_URIS)
 from .utils import merge_dicts, required_key
-from .yaml import open_raw, ordered_dump
+from .yaml import open_raw, ordered_dump, open_and_expand
 
 
 def _validate_product_oval_feed_url(contents):
@@ -111,50 +111,99 @@ def product_yaml_path(ssg_root, product):
 
 class Product(object):
     def __init__(self, filename):
-        self.primary_data = dict()
+        self._primary_data = dict()
+        self._acquired_data = dict()
         self._load_from_filename(filename)
-        if "basic_properties_derived" not in self.primary_data:
+        if "basic_properties_derived" not in self._primary_data:
             self._derive_basic_properties(filename)
+
+    @property
+    def _data_as_dict(self):
+        data = dict()
+        data.update(self._acquired_data)
+        data.update(self._primary_data)
+        return data
 
     def write(self, filename):
         with open(filename, "w") as f:
-            ordered_dump(self.primary_data, f)
+            ordered_dump(self._data_as_dict, f)
 
     def __getitem__(self, key):
-        return self.primary_data[key]
+        return self._data_as_dict[key]
 
     def __contains__(self, key):
-        return key in self.primary_data
+        return key in self._data_as_dict
 
     def __iter__(self):
-        return iter(self.primary_data.items())
+        return iter(self._data_as_dict.items())
 
     def __len__(self):
-        return len(self.primary_data)
+        return len(self._data_as_dict)
 
     def get(self, key, default=None):
-        return self.primary_data.get(key, default)
+        return self._data_as_dict.get(key, default)
 
     def _load_from_filename(self, filename):
-        self.primary_data = open_raw(filename)
+        self._primary_data = open_raw(filename)
 
     def _derive_basic_properties(self, filename):
-        _validate_product_oval_feed_url(self.primary_data)
+        _validate_product_oval_feed_url(self._primary_data)
 
         # The product directory is necessary to get absolute paths to benchmark, profile and
         # cpe directories, which are all relative to the product directory
-        self.primary_data["product_dir"] = os.path.dirname(filename)
+        self._primary_data["product_dir"] = os.path.dirname(filename)
 
-        platform_package_overrides = self.primary_data.get("platform_package_overrides", {})
+        platform_package_overrides = self._primary_data.get("platform_package_overrides", {})
         # Merge common platform package mappings, while keeping product specific mappings
-        self.primary_data["platform_package_overrides"] = merge_dicts(
+        self._primary_data["platform_package_overrides"] = merge_dicts(
                 XCCDF_PLATFORM_TO_PACKAGE, platform_package_overrides)
-        self.primary_data.update(_get_implied_properties(self.primary_data))
+        self._primary_data.update(_get_implied_properties(self._primary_data))
 
-        reference_uris = self.primary_data.get("reference_uris", {})
-        self.primary_data["reference_uris"] = merge_dicts(SSG_REF_URIS, reference_uris)
+        reference_uris = self._primary_data.get("reference_uris", {})
+        self._primary_data["reference_uris"] = merge_dicts(SSG_REF_URIS, reference_uris)
 
-        self.primary_data["basic_properties_derived"] = True
+        self._primary_data["basic_properties_derived"] = True
+
+    def expand_by_acquired_data(self, property_dict):
+        for specified_key in property_dict:
+            if specified_key in self:
+                msg = (
+                    "The property {name} is already defined, "
+                    "you can't define it once more elsewhere."
+                    .format(name=specified_key))
+                raise ValueError(msg)
+        self._acquired_data.update(property_dict)
+
+    @staticmethod
+    def transform_default_and_overrides_mappings_to_mapping(mappings):
+        result = dict()
+        if not isinstance(mappings, dict):
+            msg = (
+                "Expected a mapping, got {type}."
+                .format(type=str(type(mappings))))
+            raise ValueError(msg)
+
+        mapping = mappings.pop("default")
+        if mapping:
+            result.update(mapping)
+        mapping = mappings.pop("overrides", dict())
+        if mapping:
+            result.update(mapping)
+        if len(mappings):
+            msg = (
+                "The dictionary contains unwanted keys: {keys}"
+                .format(keys=list(mappings.keys())))
+            raise ValueError(msg)
+        return result
+
+    def read_properties_from_directory(self, path):
+        filenames = glob(path + "/*.yml")
+        for f in sorted(filenames):
+            substitutions_dict = dict()
+            substitutions_dict.update(self)
+            new_defs = open_and_expand(f, substitutions_dict)
+            new_symbols = self.transform_default_and_overrides_mappings_to_mapping(new_defs)
+            self.expand_by_acquired_data(new_symbols)
 
 
 def load_product_yaml(product_yaml_path):

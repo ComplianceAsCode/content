@@ -109,7 +109,8 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
 
     product_dir = os.path.join(root_path, "products", product)
     product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(build_config_yaml_path, str(product_yaml_path))
+    env_yaml = ssg.environment.open_environment(
+        build_config_yaml_path, product_yaml_path, os.path.join(root_path, "product_properties"))
 
     known_rules = dict()
     for rule in platform_rules:
