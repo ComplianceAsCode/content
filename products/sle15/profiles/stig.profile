@@ -69,6 +69,7 @@ selections:
     - account_unique_id
     - aide_build_database
     - aide_check_audit_tools
+    - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
     - aide_periodic_cron_checking
