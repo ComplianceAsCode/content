@@ -13,8 +13,7 @@
              "diffie-hellman-group-exchange-sha256"]  %}}
 {{% endif %}}
 
-{{% set kex_algos_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ kex_algos|join("\\b,?)?(\\b") ~ ")?" ~
-                        sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
+{{% set kex_algos_regex=prefix_conf %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
