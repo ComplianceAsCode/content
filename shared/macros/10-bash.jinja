@@ -1697,6 +1697,12 @@ if ! grep "$mount_point_match_regexp" /etc/fstab; then
     previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
                 | sed -E "s/(rw|defaults|seclabel|{{{ mount_opt }}})(,|$)//g;s/,$//")
     [ "$previous_mount_opts" ] && previous_mount_opts+=","
+    # In iso9660 filesystems mtab could describe a "blocksize" value, this should be reflected in
+    # fstab as "block".  The next variable is to satisfy shellcheck SC2050.
+    fs_type="{{{ type }}}"
+    if [  "$fs_type" == "iso9660" ] ; then
+        previous_mount_opts=$(sed 's/blocksize=/block=/' <<< "$previous_mount_opts")
+    fi
     echo "{{{ fs_spec }}} {{{ mount_point }}} {{{ type }}} defaults,${previous_mount_opts}{{{ mount_opt }}} 0 0" >> /etc/fstab
 # If the mount_opt option is not already in the mount point's /etc/fstab entry, add it
 elif ! grep "$mount_point_match_regexp" /etc/fstab | grep "{{{ mount_opt }}}"; then
