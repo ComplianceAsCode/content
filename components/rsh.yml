@@ -1,0 +1,10 @@
+name: rsh
+packages:
+- rsh
+- rsh-server
+rules:
+- package_rsh-server_removed
+- package_rsh_removed
+- service_rexec_disabled
+- service_rlogin_disabled
+- service_rsh_disabled

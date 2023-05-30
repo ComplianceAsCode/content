@@ -1,0 +1,19 @@
+groups:
+- smart_card_login
+name: opensc
+packages:
+- opensc
+rules:
+- configure_opensc_card_drivers
+- configure_opensc_nss_db
+- force_opensc_card_drivers
+- install_smartcard_packages
+- package_opensc_installed
+- package_pcsc-lite_installed
+- service_pcscd_enabled
+- smartcard_auth
+- smartcard_configure_ca
+- smartcard_configure_cert_checking
+- smartcard_configure_crl
+- smartcard_pam_enabled
+- verify_use_mappers

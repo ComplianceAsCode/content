@@ -1,0 +1,11 @@
+groups:
+- kerberos
+name: krb5
+packages:
+- krb5
+- krb5-server
+- krb5-workstation
+rules:
+- kerberos_disable_no_keytab
+- package_krb5-server_removed
+- package_krb5-workstation_removed

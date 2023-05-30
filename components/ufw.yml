@@ -1,0 +1,14 @@
+groups:
+- network-ufw
+name: ufw
+packages:
+- ufw
+rules:
+- package_ufw_installed
+- package_ufw_removed
+- service_ufw_enabled
+- set_ufw_default_rule
+- set_ufw_loopback_traffic
+- ufw_only_required_services
+- ufw_rate_limit
+- ufw_rules_for_open_ports

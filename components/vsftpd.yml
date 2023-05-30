@@ -1,0 +1,19 @@
+groups:
+- disabling_vsftpd
+- ftp_configure_vsftpd
+- ftp_restrict_users
+- ftp_use_vsftpd
+name: vsftpd
+packages:
+- vsftpd
+rules:
+- ftp_configure_firewall
+- ftp_disable_uploads
+- ftp_home_partition
+- ftp_limit_users
+- ftp_log_transactions
+- ftp_present_banner
+- ftp_restrict_to_anon
+- package_vsftpd_installed
+- package_vsftpd_removed
+- service_vsftpd_disabled
