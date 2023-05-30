@@ -213,6 +213,17 @@ class Policy():
             self.controls.append(c)
             self.controls_by_id[c.id] = c
 
+
+    def dump(self, file):
+        dump = {}
+        dump["id"] = id
+        dump["title"] = self.title
+        dump["source"] = self.source
+        dump["controls"] = self.controls_by_id
+        dump["levels"] = self.levels
+        ssg.yaml.ordered_dump(dump, file)
+
+
     def get_control(self, control_id):
         try:
             c = self.controls_by_id[control_id]
@@ -315,3 +326,10 @@ class ControlsManager():
     def get_all_controls(self, policy_id):
         policy = self._get_policy(policy_id)
         return policy.controls_by_id.values()
+
+    def save_everything(self, output_dir):
+        # Create output directory if it doesn't yet exist.
+        ssg.utils.mkdir_p(output_dir)
+        for policy_id, policy in self.policies.items():
+            with open(os.path.join(output_dir, "{}.{}".format(policy_id, "yml")), "w+") as f:
+                policy.dump(f)

@@ -85,11 +85,7 @@ def dump_compiled_profile(base_dir, profile):
     profile.dump_yaml(dest)
 
 
-def get_all_resolved_profiles_by_id(env_yaml, product_yaml, loader, product_cpes, controls_dir=None):
-    controls_manager = None
-    if controls_dir:
-        controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
-        controls_manager.load()
+def get_all_resolved_profiles_by_id(env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir=None):
 
     profile_files = ssg.products.get_profile_files_from_root(env_yaml, product_yaml)
     profiles_by_id = load_resolve_and_validate_profiles(env_yaml, profile_files, loader, controls_manager, product_cpes)
@@ -135,9 +131,13 @@ def main():
         None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
-    profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, product_yaml, loader, product_cpes, args.controls_dir)
+    controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)
+    controls_manager.load()
+
+    profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, product_yaml, loader, product_cpes, controls_manager, args.controls_dir)
 
     save_everything(args.resolved_base, loader, profiles_by_id.values())
+    controls_manager.save_everything(os.path.join(args.resolved_base, "controls"))
 
 
 if __name__ == "__main__":
