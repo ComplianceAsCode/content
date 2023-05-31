@@ -7,11 +7,11 @@
 {{{ ansible_instantiate_variables("var_user_initialization_files_regex") }}}
 
 
-- name: '{{{ rule_title }}} - Gather user info'
+- name: '{{{ rule_title }}} - Gather User Info'
   ansible.builtin.getent:
     database: passwd
 
-- name: '{{{ rule_title }}} - Find init files'
+- name: '{{{ rule_title }}} - Find Init Files'
   ansible.builtin.find:
     paths: "{{ item.value[4] }}"
     pattern: "{{ var_user_initialization_files_regex }}"
@@ -24,7 +24,7 @@
     - item.value[1] | int >= {{{ uid_min }}}
   register: found_init_files
 
-- name: '{{{ rule_title }}} - Fix init files permissions'
+- name: '{{{ rule_title }}} - Fix Init Files Permissions'
   ansible.builtin.file:
     path: "{{ item.1.path }}"
     mode: u-s,g-wxs,o=
