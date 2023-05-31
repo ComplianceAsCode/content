@@ -13,6 +13,7 @@ import glob
 
 
 import ssg.build_remediations
+import ssg.components
 from .build_cpe import CPEALLogicalTest, CPEALCheckFactRef, ProductCPEs
 from .constants import (XCCDF12_NS,
                         OSCAP_BENCHMARK,
@@ -1341,15 +1342,12 @@ class BuildLoader(DirectoryLoader):
         return ("linux_os/guide" in self.env_yaml["benchmark_root"])
 
     def _load_components(self, components_dir):
-        rule_to_component = collections.defaultdict(list)
-        for component_file in os.listdir(components_dir):
-            component_file_path = os.path.join(components_dir, component_file)
-            component = ssg.yaml.open_raw(component_file_path)
-            component_name = component["name"]
-            rules = component["rules"]
-            for rule in rules:
-                rule_to_component[rule].append(component_name)
-        return rule_to_component
+        components = ssg.components.load(components_dir)
+        rule_to_components = collections.defaultdict(list)
+        for component in components.values():
+            for rule_id in component.rules:
+                rule_to_components[rule_id].append(component.name)
+        return rule_to_components
 
     def _process_values(self):
         for value_yaml in self.value_files:
