@@ -20,7 +20,7 @@
       register: n_entries_options
 
     - name: "Update boot entries options"
-      command: grubby --update-kernel=ALL --args="{{{ ARG_NAME }}}={{{ ARG_VALUE }}}"
+      command: "{{{ grub_command("add", ARG_NAME ~ "=" ~ ARG_VALUE) }}}"
       when: n_entries is defined and n_entries_options is defined and n_entries.matched != n_entries_options.matched
 
     - name: "Check if /etc/kernel/cmdline exists"

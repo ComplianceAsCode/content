@@ -1,7 +1,7 @@
 # platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 
 # Correct BLS option using grubby, which is a thin wrapper around BLS operations
-grubby --update-kernel=ALL --args="{{{ ARG_NAME }}}={{{ ARG_VALUE }}}"
+{{{ grub_command("add", ARG_NAME ~ "=" ~ ARG_VALUE) }}}
 
 # Ensure new kernels and boot entries retain the boot option
 if [ ! -f /etc/kernel/cmdline ]; then
