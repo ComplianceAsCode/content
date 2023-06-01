@@ -1,4 +1,4 @@
-# platform = Oracle Linux 7,Oracle Linux 8
+# platform = multi_platform_all
 
 {{{ set_config_file(path="/etc/login.defs",
                     parameter="SHA_CRYPT_MIN_ROUNDS",
