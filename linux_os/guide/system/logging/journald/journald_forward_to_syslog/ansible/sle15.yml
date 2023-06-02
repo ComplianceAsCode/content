@@ -1,0 +1,47 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Check for duplicate values in master configuration
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    create: false
+    regexp: ^\s*ForwardToSyslog=
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: dupes_master
+
+- name: Deduplicate values from journald master configuration
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    create: false
+    regexp: ^\s*ForwardToSyslog=
+    state: absent
+  when: dupes_master.found is defined and dupes_master.found > 1
+
+- name: Collect all journald config files which configure ForwardToSyslog
+  ansible.builtin.find:
+    paths: /etc/systemd/journald.conf.d/
+    contains: ^[\s]*ForwardToSyslog=.*$
+    patterns: "*.conf"
+  register: journald_dropin_config_files
+
+- name: Deduplicate values from journald dropin configuration
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    create: false
+    regexp: ^\s*ForwardToSyslog=
+    state: absent
+  loop: "{{  journald_dropin_config_files.files }}"
+
+- name: Insert correct line to journald configuration
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf.d/oscap-remedy.conf
+    create: true
+    regexp: ^\s*ForwardToSyslog=
+    line: ForwardToSyslog="yes"
+    state: present
+    insertbefore: ^# ForwardToSyslog
+    validate: /usr/bin/bash -n %s
