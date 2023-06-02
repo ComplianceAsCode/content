@@ -19,7 +19,7 @@
           meta: noop
 
 - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
-  command: systemctl list-unit-files {{{ DAEMONNAME }}}.socket
+  command: systemctl -q list-unit-files {{{ DAEMONNAME }}}.socket
   register: socket_file_exists
   changed_when: False
   failed_when: socket_file_exists.rc not in [0, 1]
@@ -31,7 +31,7 @@
     enabled: "no"
     state: "stopped"
     masked: "yes"
-  when: '"{{{ DAEMONNAME }}}.socket" in socket_file_exists.stdout_lines[1]'
+  when: 'socket_file_exists.stdout_lines is search("{{{ DAEMONNAME }}}.socket",multiline=True)' 
 {{%- else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}
