@@ -7,8 +7,10 @@
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
 
 config_file="/etc/systemd/timesyncd.d/oscap-remedy.conf"
-preferred_ntp_servers='{{ var_multiple_time_servers.split(",").slice(2)[0].join("," }}'
-fallback_ntp_servers='{{ var_multiple_time_servers.split(",").slice(2)[1].join("," }}'
+preferred_ntp_servers='{{ (var_multiple_time_servers.split(",") | slice(2)| first |\
+                           join(",") }}'
+fallback_ntp_servers='{{ var_multiple_time_servers.split(",") | slice(2)| last |\
+                         join(",") }}'
 
 # Comment existing NTP FallbackNTP and RootDistance settings
 # TODO
