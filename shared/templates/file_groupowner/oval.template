@@ -52,11 +52,11 @@
 
   {{%- if FILEGID != '0' %}}
   <ind:textfilecontent54_object id="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" version="1" comment="gid of the dedicated {{{ FILEGID }}} group">
-  {{%- if product != 'rhcos4' -%}}
-    <ind:filepath>/etc/group</ind:filepath>
-  {{%- else %}}
+  {{%- if product in ["rhcos4","ocp4"] %}}
     {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
     <ind:filepath>/usr/lib/group</ind:filepath>
+  {{%- else %}}
+    <ind:filepath>/etc/group</ind:filepath>
   {{%- endif %}}
     <ind:pattern operation="pattern match">^{{{ FILEGID }}}:\w+:(\w+):.*</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
