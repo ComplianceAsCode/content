@@ -119,6 +119,7 @@ selections:
     - audit_rules_privileged_commands_userhelper
     - audit_rules_session_events
     - audit_rules_sysadmin_actions
+    - audit_rules_sysadmin_scope
     - audit_rules_system_shutdown
     - var_audit_failure_mode=panic
     - audit_rules_time_adjtimex
