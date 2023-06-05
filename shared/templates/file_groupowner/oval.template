@@ -38,34 +38,11 @@
   </unix:file_object>
 
   <unix:file_state id="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}_{{{ loop.index0 }}}" version="1">
-    {{%- if FILEGID == '0' %}}
     <unix:group_id datatype="int">{{{ FILEGID }}}</unix:group_id>
-    {{%- else %}}
-    <unix:group_id datatype="int" var_ref="var_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}"></unix:group_id>
-    {{%- endif %}}
   </unix:file_state>
   {{% endfor %}}
 
   <unix:file_state id="symlink_file_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
-
-  {{%- if FILEGID != '0' %}}
-  <ind:textfilecontent54_object id="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" version="1" comment="gid of the dedicated {{{ FILEGID }}} group">
-  {{%- if product != 'rhcos4' -%}}
-    <ind:filepath>/etc/group</ind:filepath>
-  {{%- else %}}
-    {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
-    <ind:filepath>/usr/lib/group</ind:filepath>
-  {{%- endif %}}
-    <ind:pattern operation="pattern match">^{{{ FILEGID }}}:\w+:(\w+):.*</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <!-- variable storing count of all group names - including duplicates -->
-  <local_variable id="var_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" datatype="int" version="1"
-                  comment="Count of all group names (including duplicates if any)">
-          <object_component item_field="subexpression" object_ref="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}"/>
-  </local_variable>
-  {{%- endif %}}
 </def-group>
