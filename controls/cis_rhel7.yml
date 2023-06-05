@@ -1763,22 +1763,21 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated
+    status: partial # missing rule for group ownership
     rules:
       - file_permissions_sshd_private_key
       - file_ownership_sshd_private_key
-      - file_groupownership_sshd_private_key
 
   - id: 5.3.3
     title: Ensure permissions on SSH public host key files are configured (Automated)
     levels:
     - l1_server
     - l1_workstation
-    status: automated
+    status: partial # missing rule for group ownership
     rules:
     - file_permissions_sshd_pub_key
     - file_ownership_sshd_pub_key
-    - file_groupownership_sshd_pub_key
+
 
   - id: 5.3.4
     title: Ensure SSH access is limited (Automated)
