@@ -353,8 +353,10 @@ if (PY_CMAKELINT)
     )
 endif()
 
-add_test(
-    NAME "install-vm"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/install_vm.py" "--help"
-)
-set_tests_properties("install-vm" PROPERTIES LABELS quick)
+if (PYTHON_VERSION_MAJOR GREATER 2)
+    add_test(
+        NAME "install-vm"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/install_vm.py" "--help"
+    )
+    set_tests_properties("install-vm" PROPERTIES LABELS quick)
+endif()
