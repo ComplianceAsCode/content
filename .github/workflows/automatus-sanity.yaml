@@ -3,6 +3,8 @@ on:
   pull_request:
     branches: [ master, 'stabilization*' ]
 
+env:
+  DATASTREAM: ssg-fedora-ds.xml
 jobs:
   build-content:
     name: Build Content
@@ -18,6 +20,10 @@ jobs:
           fetch-depth: 0
       - name: Build product
         run: ./build_product fedora --debug
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.DATASTREAM }}
+          path: build/${{ env.DATASTREAM }}
 
   validate-automatus-ubuntu:
     name: Run Tests
@@ -40,6 +46,10 @@ jobs:
           sudo mv -v oscap-ssh /usr/local/bin
           sudo chown root:root /usr/local/bin/oscap-ssh
           rm -f oscap-ssh
+      - name: Get Datastream
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.DATASTREAM }}
       - name: Check One Rule
         run: ./tests/automatus.py rule --remove-platforms --remove-machine-only --logdir log_rule --datastream ssg-fedora-ds.xml --container ssg_test_suite package_sudo_installed
       - name: Check One Rule - Ansible

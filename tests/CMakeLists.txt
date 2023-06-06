@@ -360,3 +360,9 @@ if (PYTHON_VERSION_MAJOR GREATER 2)
     )
     set_tests_properties("install-vm" PROPERTIES LABELS quick)
 endif()
+
+add_test(
+    NAME "automatus-sanity"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/automatus.py" "--help"
+)
+set_tests_properties("automatus-sanity" PROPERTIES LABELS quick)
