@@ -1,0 +1,70 @@
+name: Automatus Sanity
+on:
+  pull_request:
+    branches: [ master, 'stabilization*' ]
+
+jobs:
+  build-content:
+    name: Build Content
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 git python3-pip
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Build product
+        run: ./build_product fedora --debug
+
+  validate-automatus-ubuntu:
+    name: Run Tests
+    needs: build-content
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install Deps
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Generate id_rsa key
+        run: ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+      - name: Build test suite container
+        run: podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-fedora
+        working-directory: ./Dockerfiles
+      - name: Get oscap-ssh
+        run: |
+          wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.3/utils/oscap-ssh
+          sudo chmod 755 oscap-ssh
+          sudo mv -v oscap-ssh /usr/local/bin
+          sudo chown root:root /usr/local/bin/oscap-ssh
+          rm -f oscap-ssh
+      - name: Check One Rule
+        run: ./tests/automatus.py rule --remove-platforms --remove-machine-only --logdir log_rule --datastream ssg-fedora-ds.xml --container ssg_test_suite package_sudo_installed
+      - name: Check One Rule - Ansible
+        run: ./tests/automatus.py rule --remove-platforms --remove-machine-only --logdir log_rule_ansible --remediate-using ansible --datastream ssg-fedora-ds.xml --container ssg_test_suite package_sudo_installed
+      - name: Check Profile Mode
+        run: ./tests/automatus.py profile --remove-platforms --remove-machine-only --logdir log_profile --datastream ssg-fedora-ds.xml --container ssg_test_suite test
+      - name: Check Combined Mode
+        run: ./tests/automatus.py combined --remove-platforms --remove-machine-only --logdir log_combined --datastream ssg-fedora-ds.xml --container ssg_test_suite test
+      - name: Check Template Mode
+        run: ./tests/automatus.py template --remove-platforms --remove-machine-only --logdir log_template --datastream ssg-fedora-ds.xml --container ssg_test_suite file_groupowner
+      - name: Check for ERROR in logs
+        run: grep -q "^ERROR" logs_*/test_suite.log
+        id: check_results
+        # when grep returns 1 means it didn't find the ^ERROR string in the test_suite.log file
+        # and this means tests finished successfully without errors. So the job needs to keep going.
+        # By using continue-on-error: true the "conclusion" parameter is set to true so it's not possible to use
+        # it to determine whether the task has failed or succeed. The "outcome" parameter has to be used instead.
+        # See the step below
+        continue-on-error: true
+      - name: Fail in case of ERROR present in logs
+        if: ${{ steps.check_results.outcome == 'success' }}
+        run: |
+          [[ -f log_rule/test_suite.log ]] && echo "---------Rule Remediation Logs---------" && cat log_rule/test_suite.log | grep -v "DEBUG - "
+          [[ -f log_rule_ansible/test_suite.log ]] && echo "---------Rule Ansible Remediation Logs---------" && cat log_rule_ansible/test_suite.log | grep -v "DEBUG - "
+          [[ -f log_profile/test_suite.log ]] && echo "---------Profile Remediation Logs---------" && cat log_profile/test_suite.log | grep -v "DEBUG - "
+          [[ -f log_combined/test_suite.log ]] && echo "---------Combined Remediation Logs---------" && cat log_combined/test_suite.log | grep -v "DEBUG - "
+          [[ -f log_template/test_suite.log ]] && echo "---------Template Remediation Logs---------" && cat log_template/test_suite.log | grep -v "DEBUG - "
+          exit 1
