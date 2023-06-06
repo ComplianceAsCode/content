@@ -2008,7 +2008,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # we can check only certain parts, we need probably some complex rule for this
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - var_accounts_passwords_pam_faillock_deny=5
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_unlock_time=900
 
   - id: 5.4.3
     title: Ensure password hashing algorithm is SHA-512 (Automated)
