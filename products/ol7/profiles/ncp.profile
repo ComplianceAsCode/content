@@ -143,7 +143,7 @@ selections:
     - audit_rules_usergroup_modification_shadow
     - rsyslog_cron_logging
     - rsyslog_nolisten
-    - var_multiple_time_servers=rhel
+    - var_multiple_time_servers=ol
     - chronyd_or_ntpd_specify_remote_server
     - chronyd_or_ntpd_specify_multiple_servers
     - service_chronyd_or_ntpd_enabled
