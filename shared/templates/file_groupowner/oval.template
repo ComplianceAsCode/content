@@ -1,13 +1,13 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
    {{% if FILEPATH is not string %}}
-      {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " is group owned by " + FILEGID + ".") }}}
+      {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " is group owned by " + GID_OR_NAME + ".") }}}
       <criteria>
     {{% for filepath in FILEPATH %}}
       <criterion comment="Check file group ownership of {{{ filepath }}}" test_ref="test_file_groupowner{{{ FILEID }}}_{{{ loop.index0 }}}" />
     {{% endfor %}}
    {{% else %}}
-    {{{ oval_metadata("This test makes sure that " + FILEPATH + " is group owned by " + FILEGID + ".") }}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH + " is group owned by " + GID_OR_NAME + ".") }}}
     <criteria>
       <criterion comment="Check file group ownership of {{{ FILEPATH }}}" test_ref="test_file_groupowner{{{ FILEID }}}" />
    {{% endif %}}
@@ -33,39 +33,39 @@
     {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
     {{%- endif %}}
-    <filter action="exclude">symlink_file_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}</filter>
-    <filter action="exclude">state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}_{{{ loop.index0 }}}</filter>
+    <filter action="exclude">symlink_file_groupowner{{{ FILEID }}}_uid_{{{ GID_OR_NAME }}}</filter>
+    <filter action="exclude">state_file_groupowner{{{ FILEID }}}_gid_{{{ GID_OR_NAME }}}_{{{ loop.index0 }}}</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}_{{{ loop.index0 }}}" version="1">
-    {{%- if FILEGID == '0' %}}
-    <unix:group_id datatype="int">{{{ FILEGID }}}</unix:group_id>
+  <unix:file_state id="state_file_groupowner{{{ FILEID }}}_gid_{{{ GID_OR_NAME }}}_{{{ loop.index0 }}}" version="1">
+    {{%- if GROUP_REPRESENTED_WITH_GID %}}
+    <unix:group_id datatype="int">{{{ GID_OR_NAME }}}</unix:group_id>
     {{%- else %}}
-    <unix:group_id datatype="int" var_ref="var_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}"></unix:group_id>
+    <unix:group_id datatype="int" var_ref="var_dedicated_groupowner{{{ FILEID }}}_uid_{{{ GID_OR_NAME }}}"></unix:group_id>
     {{%- endif %}}
   </unix:file_state>
   {{% endfor %}}
 
-  <unix:file_state id="symlink_file_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" version="1">
+  <unix:file_state id="symlink_file_groupowner{{{ FILEID }}}_uid_{{{ GID_OR_NAME }}}" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 
-  {{%- if FILEGID != '0' %}}
-  <ind:textfilecontent54_object id="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" version="1" comment="gid of the dedicated {{{ FILEGID }}} group">
+  {{%- if not GROUP_REPRESENTED_WITH_GID %}}
+  <ind:textfilecontent54_object id="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ GID_OR_NAME }}}" version="1" comment="gid of the dedicated {{{ GID_OR_NAME }}} group">
   {{%- if product in ["rhcos4","ocp4"] %}}
     {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
     <ind:filepath>/usr/lib/group</ind:filepath>
   {{%- else %}}
     <ind:filepath>/etc/group</ind:filepath>
   {{%- endif %}}
-    <ind:pattern operation="pattern match">^{{{ FILEGID }}}:\w+:(\w+):.*</ind:pattern>
+    <ind:pattern operation="pattern match">^{{{ GID_OR_NAME }}}:\w+:(\w+):.*</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <!-- variable storing count of all group names - including duplicates -->
-  <local_variable id="var_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" datatype="int" version="1"
+  <local_variable id="var_dedicated_groupowner{{{ FILEID }}}_uid_{{{ GID_OR_NAME }}}" datatype="int" version="1"
                   comment="Count of all group names (including duplicates if any)">
-          <object_component item_field="subexpression" object_ref="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}"/>
+          <object_component item_field="subexpression" object_ref="obj_dedicated_groupowner{{{ FILEID }}}_uid_{{{ GID_OR_NAME }}}"/>
   </local_variable>
   {{%- endif %}}
 </def-group>
