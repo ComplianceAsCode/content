@@ -55,3 +55,11 @@ class Component:
         self.packages = yaml_data["packages"]
         self.templates = yaml_data.get("templates", [])
         self.groups = yaml_data.get("groups", [])
+
+
+def get_rule_to_components_mapping(components):
+    rule_to_components = defaultdict(list)
+    for component in components.values():
+        for rule_id in component.rules:
+            rule_to_components[rule_id].append(component.name)
+    return rule_to_components
