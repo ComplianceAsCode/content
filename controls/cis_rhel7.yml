@@ -1171,11 +1171,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending
+    status: automated
     notes: <-
-      CIS benchmark allows to choose from several firewall applications. This interpretation of the benchmark chose the Firewalld application and other subsections are not automated.
+      Already covered by requirement 3.5.1.1.
     related_rules:
-    - package_iptables_installed
+      - package_iptables_installed
 
   - id: 3.5.3.1.2
     title: Ensure nftables is not installed with iptables (Automated)
