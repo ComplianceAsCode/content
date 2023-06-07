@@ -2121,10 +2121,14 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+    status: partial
+    notes: |-
+      The OVAL properly checks the variable but not if it is exported and readonly.
+      The Bash remediation ensures it is exported and readonly. OVAL and Ansible remediation
+      need to be incremented for CIS.
     rules:
-    - accounts_tmout
-    - var_accounts_tmout=15_min
+      - accounts_tmout
+      - var_accounts_tmout=15_min
 
   - id: 5.5.5
     title: Ensure default user umask is configured (Automated)
