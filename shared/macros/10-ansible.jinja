@@ -697,6 +697,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
+    mode: 0600
   with_items:
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: {{{ parameter }}}, value: "{{{ value }}}"}
@@ -712,6 +713,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
     option: {{{ parameter }}}
     value: "{{{ value }}}"
+    mode: 0600
   when:
     - test_grep_domain.stdout is defined
     - test_grep_domain.stdout | length > 0

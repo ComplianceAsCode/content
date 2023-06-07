@@ -4,7 +4,14 @@
 # complexity = low
 # disruption = medium
 
+# sssd configuration files must be created with 600 permissions if they don't exist
+# otherwise the sssd module fails to start
+OLD_UMASK=$(umask)
+umask u=rw,go=
+
 {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "pam_cert_auth", "True") }}}
+
+umask $OLD_UMASK
 
 {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
 if [ -f /usr/bin/authselect ]; then
