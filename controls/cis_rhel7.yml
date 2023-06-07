@@ -2099,9 +2099,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial # missing rule for locking of accounts
+    status: automated
     rules:
-    - no_shelllogin_for_systemaccounts
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
 
   - id: 5.5.3
     title: Ensure default group for the root account is GID 0 (Automated)
