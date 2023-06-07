@@ -2154,9 +2154,14 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial  # we check only for usage of use_uid with pam_su, not for the group
+    status: automated
+    notes: |-
+      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
+      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
+      use of "sudo" for privileged access. Therefore, members of these groups should be manually
+      checked or a different group should be informed.
     rules:
-    - use_pam_wheel_for_su
+      - use_pam_wheel_for_su
 
   - id: 6.1.1
     title: Audit system file permissions (Manual)
