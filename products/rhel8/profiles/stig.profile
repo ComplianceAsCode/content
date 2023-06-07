@@ -118,6 +118,7 @@ selections:
     - rsyslog_remote_access_monitoring
 
     # RHEL-08-010090
+    - sssd_has_trust_anchor
 
     # RHEL-08-010100
     - ssh_keys_passphrase_protected
