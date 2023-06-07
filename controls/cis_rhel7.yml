@@ -1080,7 +1080,8 @@ controls:
     - l1_workstation
     status: supported
     notes: |-
-      RHEL7 is not using nftables by default.
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
     related_rules:
       - package_nftables_installed
 
@@ -1112,7 +1113,8 @@ controls:
     - l1_workstation
     status: supported
     notes: |-
-      RHEL7 is not using nftables by default.
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
     related_rules:
       - set_nftables_table
       - var_nftables_family=inet
@@ -1125,10 +1127,8 @@ controls:
     - l1_workstation
     status: supported
     notes: |-
-      RHEL systems use firewalld for firewall management. iptables is the default back-end for
-      firewalld in RHEL7 but regardless of the used back-end, it is not recommended to use
-      iptables or nftables directly when firewalld is in use. When using firewalld with nftables
-      back-end, the nftables base chains are installed by default.
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
     related_rules:
       - set_nftables_base_chain
       - var_nftables_table=firewalld
@@ -1144,7 +1144,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # rule missing
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    related_rules:
+      - set_nftables_loopback_traffic
 
   - id: 3.5.2.8
     title: Ensure nftables outbound and established connections are configured (Manual)
@@ -1160,7 +1165,8 @@ controls:
     - l1_workstation
     status: supported
     notes: |-
-      RHEL7 is not using nftables by default.
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
     related_rules:
       - nftables_ensure_default_deny_policy
 
@@ -1170,10 +1176,9 @@ controls:
     - l1_server
     - l1_workstation
     notes: |-
-      nftables can be a backend for firewalld but its service does not need to be running.
-      Otherwise, it will conflict with firewalld service. The preferred service to manage firewall
-      rules is firewalld. In addition, the default backend in RHEL7 is iptables.
-    status: automated
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    status: supported
     related_rules:
       - service_nftables_enabled
 
@@ -1182,7 +1187,13 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # rule missing
+    notes: |-
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    status: supported
+    related_rules:
+      - var_nftables_master_config_file=sysconfig
+      - nftables_rules_permanent
 
   - id: 3.5.3.1.1
     title: Ensure iptables packages are installed (Automated)
