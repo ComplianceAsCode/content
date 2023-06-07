@@ -129,6 +129,9 @@ selections:
     # RHEL-08-010120
     - accounts_password_all_shadowed_sha512
 
+    # RHEL-08-010121
+    - no_empty_passwords_etc_shadow
+
     # RHEL-08-010130
     - set_password_hashing_min_rounds_logindefs
 
