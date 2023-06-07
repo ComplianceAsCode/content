@@ -128,18 +128,17 @@ def test_platform(rule, package_to_component, rule_components):
     if "package" in platform:
         result = test_package_platform(
             rule, package_to_component, rule_components)
-    elif platform == "grub2" and "grub2" not in rule_components:
-        print(
-            "Rule '%s' should be assigned to component 'grub2', "
-            "because it uses the 'grub2' platform." %
-            (rule.id_))
-        result = False
-    elif platform == "sssd-ldap" and "sssd" not in rule_components:
-        print(
-            "Rule '%s' should be assigned to component 'sssd', "
-            "because it uses the 'sssd-ldap' platform." %
-            (rule.id_))
-        result = False
+    component_exclusive_platforms = {
+        "grub2": "grub2",
+        "sssd-ldap": "sssd"
+    }
+    for e_platform, e_component in component_exclusive_platforms.items():
+        if platform == e_platform and e_component not in rule_components:
+            print(
+                "Rule '%s' should be assigned to component '%s', "
+                "because it uses the '%s' platform." %
+                (rule.id_, e_component, e_platform))
+            result = False
     return result
 
 
