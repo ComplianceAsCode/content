@@ -1033,7 +1033,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # rule missing
+    status: automated
+    rules:
+      - service_nftables_disabled
 
   - id: 3.5.1.4
     title: Ensure firewalld service enabled and running (Automated)
