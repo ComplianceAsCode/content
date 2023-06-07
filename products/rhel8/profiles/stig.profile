@@ -301,6 +301,9 @@ selections:
     - sudo_require_reauthentication
     - var_sudo_timestamp_timeout=always_prompt
 
+    # RHEL-08-010385
+    - disallow_bypass_password_sudo
+
     # RHEL-08-010390
     - install_smartcard_packages
 
