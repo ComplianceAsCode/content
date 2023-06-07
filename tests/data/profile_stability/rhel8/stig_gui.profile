@@ -213,6 +213,7 @@ selections:
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
 - disable_users_coredumps
+- disallow_bypass_password_sudo
 - display_login_attempts
 - enable_authselect
 - enable_dracut_fips_module
@@ -303,6 +304,7 @@ selections:
 - network_configure_name_resolution
 - network_sniffer_disabled
 - no_empty_passwords
+- no_empty_passwords_etc_shadow
 - no_files_unowned_by_user
 - no_host_based_files
 - no_tmux_in_shells
@@ -393,6 +395,7 @@ selections:
 - sssd_certificate_verification
 - sssd_enable_certmap
 - sssd_enable_smartcards
+- sssd_has_trust_anchor
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate
 - sudo_remove_nopasswd
