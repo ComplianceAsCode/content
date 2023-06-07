@@ -37,11 +37,6 @@ def create_parser():
         "e.g.: ~/scap-security-guide/controls",
     )
     parser.add_argument(
-        "--components-dir",
-        help="Directory that contains YAML files with component-rule mapping. "
-        "e.g.: ~/scap-security-guide/components",
-    )
-    parser.add_argument(
         "--sce-metadata",
         help="Combined SCE metadata to read."
     )
@@ -137,7 +132,7 @@ def main():
     logging.basicConfig(filename=logfile, level=logging.INFO)
 
     loader = ssg.build_yaml.BuildLoader(
-        None, env_yaml, product_cpes, args.components_dir, args.sce_metadata, args.stig_references)
+        None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
     profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, product_yaml, loader, product_cpes, args.controls_dir)
