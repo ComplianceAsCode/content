@@ -1323,7 +1323,7 @@ class DirectoryLoader(object):
 
 class BuildLoader(DirectoryLoader):
     def __init__(
-            self, profiles_dir, env_yaml, product_cpes, components_dir=None,
+            self, profiles_dir, env_yaml, product_cpes,
             sce_metadata_path=None, stig_reference_path=None):
         super(BuildLoader, self).__init__(profiles_dir, env_yaml, product_cpes)
 
@@ -1333,15 +1333,14 @@ class BuildLoader(DirectoryLoader):
         self.stig_references = None
         if stig_reference_path:
             self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
-        self.rule_to_component = None
-        self.use_components = self.benchmark_has_component_mapping()
-        if components_dir and self.use_components:
-            self.rule_to_component = self._load_components(components_dir)
+        self.rule_to_components = self._load_components()
 
-    def benchmark_has_component_mapping(self):
-        return ("linux_os/guide" in self.env_yaml["benchmark_root"])
-
-    def _load_components(self, components_dir):
+    def _load_components(self):
+        if "components_root" not in self.env_yaml:
+            return None
+        product_dir = self.env_yaml["product_dir"]
+        components_root = self.env_yaml["components_root"]
+        components_dir = os.path.join(product_dir, components_root)
         components = ssg.components.load(components_dir)
         rule_to_components = collections.defaultdict(list)
         for component in components.values():
@@ -1356,7 +1355,7 @@ class BuildLoader(DirectoryLoader):
             self.loaded_group.add_value(value)
 
     def __process_rule(self, rule):
-        if self.use_components and rule.id_ not in self.rule_to_component:
+        if self.rule_to_components is not None and rule.id_ not in self.rule_to_components:
             raise ValueError(
                 "The rule '%s' isn't mapped to any component! Insert the "
                 "rule ID at least once to the rule-component mapping." %
@@ -1391,7 +1390,7 @@ class BuildLoader(DirectoryLoader):
         # Do it this way so we only have to parse the STIG references once.
         loader.stig_references = self.stig_references
         # Do it this way so we only have to parse the component metadata once.
-        loader.rule_to_component = self.rule_to_component
+        loader.rule_to_components = self.rule_to_components
         return loader
 
     def export_group_to_file(self, filename):
