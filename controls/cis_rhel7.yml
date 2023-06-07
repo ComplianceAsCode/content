@@ -1123,7 +1123,21 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # rule missing
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. iptables is the default back-end for
+      firewalld in RHEL7 but regardless of the used back-end, it is not recommended to use
+      iptables or nftables directly when firewalld is in use. When using firewalld with nftables
+      back-end, the nftables base chains are installed by default.
+    related_rules:
+      - set_nftables_base_chain
+      - var_nftables_table=firewalld
+      - var_nftables_family=inet
+      - var_nftables_base_chain_names=chain_names
+      - var_nftables_base_chain_types=chain_types
+      - var_nftables_base_chain_hooks=chain_hooks
+      - var_nftables_base_chain_priorities=chain_priorities
+      - var_nftables_base_chain_policies=chain_policies
 
   - id: 3.5.2.7
     title: Ensure nftables loopback traffic is configured (Automated)
@@ -1147,6 +1161,8 @@ controls:
     status: supported
     notes: |-
       RHEL7 is not using nftables by default.
+    related_rules:
+      - nftables_ensure_default_deny_policy
 
   - id: 3.5.2.10
     title: Ensure nftables service is enabled (Automated)
@@ -1184,7 +1200,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # rule missing
+    status: automated
+    rules:
+      - package_nftables_removed
 
   - id: 3.5.3.1.3
     title: Ensure firewalld is either not installed or masked with iptables
