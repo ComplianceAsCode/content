@@ -31,6 +31,13 @@ def preprocess(data, lang):
                                                      parameter="recursive",
                                                      default_value=False)
 
+
+    try:
+        int(data["gid_or_name"])
+        data["group_represented_with_gid"] = True
+    except ValueError:
+        data["group_represented_with_gid"] = False
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
     return data
