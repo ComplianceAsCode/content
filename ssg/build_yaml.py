@@ -1342,10 +1342,8 @@ class BuildLoader(DirectoryLoader):
         components_root = self.env_yaml["components_root"]
         components_dir = os.path.join(product_dir, components_root)
         components = ssg.components.load(components_dir)
-        rule_to_components = collections.defaultdict(list)
-        for component in components.values():
-            for rule_id in component.rules:
-                rule_to_components[rule_id].append(component.name)
+        rule_to_components = ssg.components.get_rule_to_components_mapping(
+            components)
         return rule_to_components
 
     def _process_values(self):
