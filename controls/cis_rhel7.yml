@@ -1076,9 +1076,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    notes: <-
-      CIS benchmark allows to choose from several firewall applications. This interpretation of the benchmark chose the Firewalld application and other subsections are not automated.
-    status: pending # rule missing
+    status: supported
+    notes: |-
+      RHEL7 is not using nftables by default.
+    related_rules:
+      - package_nftables_installed
 
   - id: 3.5.2.2
     title: Ensure firewalld is either not installed or masked with nftables (Automated)
