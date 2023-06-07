@@ -9,7 +9,12 @@ import ssg.build_stig
 import ssg.build_yaml
 import ssg.constants
 import ssg.jinja
-from utils.gen_tables_common import create_table
+from utils.template_renderer import render_template
+
+
+TABLE_DIR = os.path.join(os.path.dirname(__file__), "tables")
+SRGMAP_TEMPLATE = os.path.join(TABLE_DIR, "srgmap_template.html")
+SRGMAP_FLAT_TEMPLATE = os.path.join(TABLE_DIR, "srgmap_flat_template.html")
 
 
 def parse_args():
@@ -47,5 +52,5 @@ if __name__ == "__main__":
     data["srgs"] = ssg.build_stig.parse_srgs(args.srgs)
     data["rules_by_srgid"] = get_rules_by_srgid(args.build_dir, args.product)
     data["full_name"] = ssg.utils.prodtype_to_name(args.product)
-    create_table(data, "srgmap_template.html", args.srgmap)
-    create_table(data, "srgmap_flat_template.html", args.srgmap_flat)
+    render_template(data, SRGMAP_TEMPLATE, args.srgmap)
+    render_template(data, SRGMAP_FLAT_TEMPLATE, args.srgmap_flat)

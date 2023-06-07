@@ -3,27 +3,17 @@
 import argparse
 import os
 import pathlib
-import sys
 import yaml
 from collections import namedtuple
 
-import ssg.jinja
-from utils.template_renderer import FlexibleLoader
+from utils.template_renderer import render_template
 
 # Helper script used to generate an HTML page to display rendered policies.
 
 Product = namedtuple("Product", ["id", "name"])
 Policy = namedtuple("Policy", ["id", "name"])
 
-
-def create_index(data, template_name, output_filename):
-    html_jinja_template = os.path.join(
-        os.path.dirname(__file__), template_name)
-    env = ssg.jinja._get_jinja_environment(dict())
-    env.loader = FlexibleLoader(os.path.dirname(html_jinja_template))
-    result = ssg.jinja.process_file(html_jinja_template, data)
-    with open(output_filename, "wb") as f:
-        f.write(result.encode('utf8', 'replace'))
+TEMPLATE = os.path.join(os.path.dirname(__file__), "html_rendered_policies_index_template.html")
 
 
 def get_control_files(ssg_root):
@@ -72,4 +62,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     data = get_data(args.ssg_root)
     data.update({"control_files": get_control_files(args.ssg_root)})
-    create_index(data, "html_rendered_policies_index_template.html", args.output)
+    render_template(data, TEMPLATE, args.output)
