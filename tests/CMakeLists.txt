@@ -353,7 +353,7 @@ if(PY_CMAKELINT)
     )
 endif()
 
-if (PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "install-vm"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/install_vm.py" "--help"
