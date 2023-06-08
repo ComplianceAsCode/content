@@ -14,7 +14,7 @@ import re
 import io
 
 
-def parse_argument_into_dict(output_dict, dict_key, passed_string):
+def parse_togglable_argument_into_dict(output_dict, dict_key, passed_string):
     on_or_off, path = passed_string.split(":", 1)
     if on_or_off == "ON":
         value = path
@@ -25,18 +25,21 @@ def parse_argument_into_dict(output_dict, dict_key, passed_string):
 
 def parse_arguments_into_dict(args):
     result = dict()
-    parse_argument_into_dict(
+    parse_togglable_argument_into_dict(
             result, "xccdf_oval_ocil_cpes_path", args.separate_scap_files)
-    parse_argument_into_dict(
+    parse_togglable_argument_into_dict(
             result, "bash_profile_scripts_path", args.profile_bash)
-    parse_argument_into_dict(
+    parse_togglable_argument_into_dict(
             result, "ansible_profile_playbooks_path", args.profile_ansible)
-    parse_argument_into_dict(
+    parse_togglable_argument_into_dict(
             result, "ansible_per_rule_path", args.ansible_per_rule)
-    parse_argument_into_dict(
+    parse_togglable_argument_into_dict(
             result, "kickstarts_path", args.kickstarts)
-    parse_argument_into_dict(
+    parse_togglable_argument_into_dict(
             result, "tailoring_path", args.tailoring)
+
+    result["content_path"] = args.content_path
+    result["install_prefix"] = args.install_prefix
     return result
 
 
@@ -61,8 +64,6 @@ def main():
     all_products = get_all_products(input_dir)
     substitution_dicts = dict(
         products=all_products,
-        content_path=args.content_path,
-        install_prefix=args.install_prefix,
     )
     substitution_dicts.update(parse_arguments_into_dict(args))
     man_page = ssg.jinja.process_file(args.template, substitution_dicts)

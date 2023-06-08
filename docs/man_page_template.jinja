@@ -122,7 +122,7 @@ Contains example kickstarts that install systems hardened against a particular p
 {{% if tailoring_path -%}}
 .I {{{ install_prefix }}}/{{{ tailoring_path }}}/
 .RS
-Contains delta tailoring, whatever that means.
+Contains tailoring files that enable rules that are not covered by third-party SCAP content and disables rules that are covered by the content shipped in scap-security-guide.
 .RE
 {{%- endif %}}
 
