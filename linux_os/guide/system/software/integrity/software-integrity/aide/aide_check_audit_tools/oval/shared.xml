@@ -8,10 +8,10 @@
       <criterion comment="ausearch is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_ausearch" />
       <criterion comment="aureport is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_aureport" />
       <criterion comment="autrace is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_autrace" />
-      {{% if 'rhel' not in product and 'ol' not in product %}}
+      {{% if aide_also_checks_audispd == "yes" %}}
       <criterion comment="audispd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_audispd" />
       {{% endif %}}
-      {{% if 'ol' in product or 'rhel' in product %}}
+      {{% if aide_also_checks_rsyslog == "yes" %}}
       <criterion comment="rsyslogd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_rsyslogd" />
       {{% endif %}}
       <criterion comment="augenrules is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_augenrules" />
@@ -91,6 +91,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
+{{% if aide_also_checks_audispd == "yes" %}}
   <ind:textfilecontent54_test id="test_aide_verify_audispd"
   comment="audispd is checked in {{{ aide_conf_path }}}" check="all"
   check_existence="all_exist" version="1">
@@ -103,7 +104,9 @@
     <ind:pattern operation="pattern match">^/usr/sbin/audispd\s+([^\n]+)$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
+{{% if aide_also_checks_rsyslog == "yes" %}}
   <ind:textfilecontent54_test id="test_aide_verify_rsyslogd"
   comment="rsyslogd is checked in {{{ aide_conf_path }}}" check="all"
   check_existence="all_exist" version="1">
@@ -116,6 +119,7 @@
     <ind:pattern operation="pattern match">^/usr/sbin/rsyslogd\s+([^\n]+)$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
   <ind:textfilecontent54_test id="test_aide_verify_augenrules"
   comment="augenrules is checked in {{{ aide_conf_path }}}" check="all"
