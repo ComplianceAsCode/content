@@ -5,11 +5,13 @@
 
 :param endpoint: The Kubernetes object path(s) to fetch
 :type endpoint: str/list
+:param suppress: Whether to suppress the warning
+:type suppress: bool
 
 #}}
-{{% macro openshift_cluster_setting(endpoint) -%}}
+{{% macro openshift_cluster_setting(endpoint, suppress) -%}}
 This rule's check operates on the cluster configuration dump.
-Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file{{% endfor %}}.{{% endif %}}
+Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file. {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
 
 {{% macro openshift_cluster_setting_kubeletconfig() -%}}
@@ -91,6 +93,80 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule as well as how to filter it. This
+  is used by the Compliance Operator to automatically figure
+  out what resources to fetch. The filtering directive can be used
+  by the jq command ( https://stedolan.github.io/jq/manual/ ).
+  This macro will suppress any non-fatal failed to fetch api warnings.
+
+:param path_filter_pairs: Kubernetes object path/filter directive pairs
+:type path_filter_pairs: dict
+:param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
+:type path_filter_pairs: list
+
+#}}
+{{% macro openshift_filtered_cluster_setting_suppressed(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+    file.
+    {{{ suppressed_warning() }}}
+  </li>
+{{% endfor %}}
+
+{{% for arg in varargs %}}
+    {{% for obj_path, v in arg.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[1] %}}
+  {{% elif vars|length == 3 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set default_filter = vars[1] %}}
+    {{% set custom_filter = vars[2] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set default_filter = v %}}
+    {{% set custom_filter = v %}}
+  {{% endif %}}
+    <li>
+        <code class="ocp-api-endpoint" id="{{{ (dump_path+default_filter)|sha256 }}}">{{{ obj_path }}}</code>
+        API endpoint, filter with with the <code>jq</code> utility using the following filter
+        <code class="ocp-api-filter" id="filter-{{{ (dump_path+default_filter)|sha256 }}}">{{{ custom_filter }}}</code>
+        and persist it to the local
+        <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+default_filter)|sha256 }}}</code>
+        file.
+        {{{ suppressed_warning() }}}
+    </li>
+    {{% endfor %}}
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+{{#
   Macro which generates a unique identifier for Compliance Operator, this will hide the rule from ComplianceCheckResult
 
 #}}
@@ -99,6 +175,12 @@ This rule will be a hidden rule
 <code class="ocp-hide-rule" id="ocp-hide-rule">true</code>
 {{%- endmacro %}}
 
+{{#
+  Macro which generate a unique identifier for Compliance Operator, this will suppress the warning
+#}}
+{{% macro suppressed_warning() -%}}
+<code class="ocp-suppress-warning" id="ocp-suppress-warning">true</code>
+{{%- endmacro %}}
 
 {{% macro openshift_filtered_version(path_filter_pairs) -%}}
 This rule's check operates on the cluster configuration dump.
@@ -116,6 +198,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     <code class="ocp-dump-location" id="dump-{{{ (dump_path+default_filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}</code>
     file.
     {{{ hide_rule() }}}
+    {{{ suppressed_warning() }}}
   </li>
 {{% endfor %}}
 </ul>
