@@ -1109,14 +1109,14 @@ controls:
     rules:
       - package_firewalld_installed
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5238
   - id: 3.4.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    rules:
+      - package_iptables-services_removed
 
   - id: 3.4.1.3
     title: Ensure nftables is not enabled with firewalld (Automated)
@@ -1180,13 +1180,16 @@ controls:
       - l1_workstation
     status: pending
 
-  # NEEDS RULE
   - id: 3.4.2.3
     title: Ensure iptables-services not installed with nftables (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
+    status: automated
+    notes: <-
+      Already covered by requirement 3.4.1.2.
+    related_rules:
+      - package_iptables-services_removed
 
   - id: 3.4.2.4
     title: Ensure iptables are flushed with nftables (Manual)

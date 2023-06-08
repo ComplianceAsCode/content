@@ -1026,7 +1026,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # missing rule
+    status: automated
+    rules:
+      - package_iptables-services_removed
 
   - id: 3.5.1.3
     title: Ensure nftables either not installed or masked with firewalld (Automated)
@@ -1097,7 +1099,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending # rule missing
+    status: automated
+    notes: <-
+      Already covered by requirement 3.5.1.2.
+    related_rules:
+      - package_iptables-services_removed
 
   - id: 3.5.2.4
     title:  Ensure iptables are flushed with nftables (Manual)
