@@ -6,14 +6,6 @@ controls:
     configuration changes.
   related_rules:
   - audit_profile_set
-  status: inherently met
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-
-    https://docs.openshift.com/container-platform/latest/updating/updating-cluster.html#prerequisites
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
-  status_justification: |
-    Administrators must have access to the cluster as a user with cluster-admin privileges in order to apply configuration changes to the cluster. See RBAC link for how to define and apply permissions.
-
-    https://docs.openshift.com/container-platform/latest/updating/updating-cluster.html#prerequisites
-    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+  rules:
+  - rbac_least_privilege
+  status: manual

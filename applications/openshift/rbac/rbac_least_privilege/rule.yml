@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure that the RBAC setup follows the principle of least privilege'
+
+description: |-
+    Role-based access control (RBAC) objects determine whether a user is
+    allowed to perform a given action within a project.
+
+    {{{ fix_openshift_rbac_least_privilege() | indent(4) }}}
+
+rationale: |-
+    Controlling and limiting users access to system services and resources
+    is key to securing the platform and limiting the intentional or
+    unintentional comprimising of the system and its services.  OpenShift
+    provides a robust RBAC policy system that allows for authorization
+    policies to be as detailed as needed. Additionally there are two layers
+    of RBAC policies, the first is Cluster RBAC policies which administrators
+    can control who has what access to cluster level services. The other is
+    Local RBAC policies, which allow project developers/administrators to
+    control what level of access users have to a given project or namespace.
+
+severity: high
+
+identifiers:
+  cce@ocp4: CCE-90678-4
+
+references:
+    nist: AC-3,CM-5(6),IA-2,IA-2(5),AC-6(10),CM-11(2),CM-5(1),CM-7(5)(b)
+    srg: SRG-APP-000033-CTR-000090,SRG-APP-000033-CTR-000095,SRG-APP-000033-CTR-000100,SRG-APP-000133-CTR-000290,SRG-APP-000133-CTR-000295,SRG-APP-000133-CTR-000300,SRG-APP-000133-CTR-000305,SRG-APP-000133-CTR-000310,SRG-APP-000148-CTR-000350,SRG-APP-000153-CTR-000375,SRG-APP-000340-CTR-000770,SRG-APP-000378-CTR-000880,SRG-APP-000378-CTR-000885,SRG-APP-000378-CTR-000890,SRG-APP-000380-CTR-000900,SRG-APP-000386-CTR-000920
+
+ocil_clause: 'RBAC needs review'
+
+ocil: |-
+    {{{ ocil_rbac_least_privilege() | indent(4) }}}
