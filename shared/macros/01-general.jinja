@@ -1207,7 +1207,7 @@ Part of the grub2_bootloader_argument(_absent) templates.
         {{# Suppress the None output of append -#}}
         {{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
     {{%- endif -%}}
-{{%- else  -%}}
+{{%- elif grub_helper_executable -%}}
         {{{ raise("Unknown grub helper executable: " ~ grub_helper_executable) }}}
 {{%- endif -%}}
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
