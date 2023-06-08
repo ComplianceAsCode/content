@@ -127,49 +127,6 @@ Contains tailoring files that enable rules that are not covered by third-party S
 {{%- endif %}}
 
 
-.SH DEPLOYMENT TO U.S. CIVILIAN GOVERNMENT SYSTEMS
-SCAP Security Guide content is considered vendor (Red Hat) provided content.
-Per guidance from the U.S. National Institute of Standards and Technology (NIST),
-U.S. Government programs are allowed to use Vendor produced SCAP content in absence
-of "Governmental Authority" checklists. The specific NIST verbage:
-http://web.nvd.nist.gov/view/ncp/repository/glossary?cid=1#Authority
-
-
-.SH DEPLOYMENT TO U.S. MILITARY SYSTEMS
-DoD Directive (DoDD) 8500.1 requires that "all IA and IA-enabled IT products
-incorporated into DoD information systems shall be configured in accordance
-with DoD-approved security configuration guidelines" and tasks Defense
-Information Systems Agency (DISA) to "develop and provide security configuration
-guidance for IA and IA-enabled IT products in coordination with Director, NSA."
-The output of this authority is the DISA Security Technical Implementation Guides,
-or STIGs. DISA FSO is in the process of moving the STIGs towards the use
-of the NIST Security Content Automation Protocol (SCAP) in order to "automate"
-compliance reporting of the STIGs.
-
-Through a common, shared vision, the SCAP Security Guide community enjoys
-close collaboration directly with NSA, NIST, and DISA FSO. As stated in Section 1.1 of
-the Red Hat Enterprise Linux 6 STIG Overview, Version 1, Release 2, issued on 03-JUNE-2013:
-
-"The consensus content was developed using an open-source project called SCAP
-Security Guide. The project's website is https://www.open-scap.org/security-policies/scap-security-guide.
-Except for differences in formatting to accommodate the DISA STIG publishing
-process, the content of the Red Hat Enterprise Linux 6 STIG should mirror the SCAP Security Guide
-content with only minor divergence as updates from multiple sources work through
-the consensus process."
-
-The DoD STIG for Red Hat Enterprise Linux 7, revision V2R4, was released in July 2019
-Currently, the DoD Red Hat Enterprise Linux 7 STIG contains only XCCDF content and is
-available online:
-https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
-
-Content published against the public.cyber.mil website is authoritative
-STIG content. The SCAP Security Guide project, as noted in the STIG overview,
-is considered upstream content. Unlike DISA FSO, the SCAP Security Guide project
-does publish OVAL automation content. Individual programs and C&A evaluators
-make program-level determinations on the direct usage of the SCAP Security Guide.
-Currently there is no blanket approval.
-
-
 .SH SEE ALSO
 .B oscap(8)
 
