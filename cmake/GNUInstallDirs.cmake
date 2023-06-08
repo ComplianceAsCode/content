@@ -45,70 +45,70 @@
 # Installation directories
 #
 if(NOT DEFINED CMAKE_INSTALL_BINDIR)
-  set(CMAKE_INSTALL_BINDIR "bin" CACHE PATH "user executables (bin)")
+    set(CMAKE_INSTALL_BINDIR "bin" CACHE PATH "user executables (bin)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_SBINDIR)
-  set(CMAKE_INSTALL_SBINDIR "sbin" CACHE PATH "system admin executables (sbin)")
+    set(CMAKE_INSTALL_SBINDIR "sbin" CACHE PATH "system admin executables (sbin)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_LIBEXECDIR)
-  set(CMAKE_INSTALL_LIBEXECDIR "libexec" CACHE PATH "program executables (libexec)")
+    set(CMAKE_INSTALL_LIBEXECDIR "libexec" CACHE PATH "program executables (libexec)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_SYSCONFDIR)
-  set(CMAKE_INSTALL_SYSCONFDIR "etc" CACHE PATH "read-only single-machine data (etc)")
+    set(CMAKE_INSTALL_SYSCONFDIR "etc" CACHE PATH "read-only single-machine data (etc)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_SHAREDSTATEDIR)
-  set(CMAKE_INSTALL_SHAREDSTATEDIR "com" CACHE PATH "modifiable architecture-independent data (com)")
+    set(CMAKE_INSTALL_SHAREDSTATEDIR "com" CACHE PATH "modifiable architecture-independent data (com)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_LOCALSTATEDIR)
-  set(CMAKE_INSTALL_LOCALSTATEDIR "var" CACHE PATH "modifiable single-machine data (var)")
+    set(CMAKE_INSTALL_LOCALSTATEDIR "var" CACHE PATH "modifiable single-machine data (var)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
-  set(_LIBDIR_DEFAULT "lib")
-  # Override this default 'lib' with 'lib64' iff:
-  #  - we are on Linux system but NOT cross-compiling
-  #  - we are NOT on debian
-  #  - we are on a 64 bits system
-  # reason is: amd64 ABI: http://www.x86-64.org/documentation/abi.pdf
-  # For Debian with multiarch, use 'lib/${CMAKE_LIBRARY_ARCHITECTURE}' if
-  # CMAKE_LIBRARY_ARCHITECTURE is set (which contains e.g. "i386-linux-gnu"
-  # See http://wiki.debian.org/Multiarch
-  if(CMAKE_SYSTEM_NAME MATCHES "Linux"
-      AND NOT CMAKE_CROSSCOMPILING)
-    if (EXISTS "/etc/debian_version") # is this a debian system ?
-      if(CMAKE_LIBRARY_ARCHITECTURE)
-        set(_LIBDIR_DEFAULT "lib/${CMAKE_LIBRARY_ARCHITECTURE}")
-    endif()
-    else() # not debian, rely on CMAKE_SIZEOF_VOID_P:
-      if(NOT DEFINED CMAKE_SIZEOF_VOID_P)
-        message(AUTHOR_WARNING
-          "Unable to determine default CMAKE_INSTALL_LIBDIR directory because no target architecture is known. "
-          "Please enable at least one language before including GNUInstallDirs.")
-      else()
-        if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-          set(_LIBDIR_DEFAULT "lib64")
+    set(_LIBDIR_DEFAULT "lib")
+    # Override this default 'lib' with 'lib64' iff:
+    #  - we are on Linux system but NOT cross-compiling
+    #  - we are NOT on debian
+    #  - we are on a 64 bits system
+    # reason is: amd64 ABI: http://www.x86-64.org/documentation/abi.pdf
+    # For Debian with multiarch, use 'lib/${CMAKE_LIBRARY_ARCHITECTURE}' if
+    # CMAKE_LIBRARY_ARCHITECTURE is set (which contains e.g. "i386-linux-gnu"
+    # See http://wiki.debian.org/Multiarch
+    if(CMAKE_SYSTEM_NAME MATCHES "Linux"
+        AND NOT CMAKE_CROSSCOMPILING)
+        if(EXISTS "/etc/debian_version") # is this a debian system ?
+            if(CMAKE_LIBRARY_ARCHITECTURE)
+                set(_LIBDIR_DEFAULT "lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+            endif()
+        else() # not debian, rely on CMAKE_SIZEOF_VOID_P:
+            if(NOT DEFINED CMAKE_SIZEOF_VOID_P)
+                message(AUTHOR_WARNING
+                    "Unable to determine default CMAKE_INSTALL_LIBDIR directory because no target architecture is known. "
+                    "Please enable at least one language before including GNUInstallDirs.")
+            else()
+                if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+                    set(_LIBDIR_DEFAULT "lib64")
+                endif()
+            endif()
         endif()
-      endif()
     endif()
-  endif()
-  set(CMAKE_INSTALL_LIBDIR "${_LIBDIR_DEFAULT}" CACHE PATH "object code libraries (${_LIBDIR_DEFAULT})")
+    set(CMAKE_INSTALL_LIBDIR "${_LIBDIR_DEFAULT}" CACHE PATH "object code libraries (${_LIBDIR_DEFAULT})")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
-  set(CMAKE_INSTALL_INCLUDEDIR "include" CACHE PATH "C header files (include)")
+    set(CMAKE_INSTALL_INCLUDEDIR "include" CACHE PATH "C header files (include)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_OLDINCLUDEDIR)
-  set(CMAKE_INSTALL_OLDINCLUDEDIR "/usr/include" CACHE PATH "C header files for non-gcc (/usr/include)")
+    set(CMAKE_INSTALL_OLDINCLUDEDIR "/usr/include" CACHE PATH "C header files for non-gcc (/usr/include)")
 endif()
 
 if(NOT DEFINED CMAKE_INSTALL_DATAROOTDIR)
-  set(CMAKE_INSTALL_DATAROOTDIR "share" CACHE PATH "read-only architecture-independent data root (share)")
+    set(CMAKE_INSTALL_DATAROOTDIR "share" CACHE PATH "read-only architecture-independent data root (share)")
 endif()
 
 #-----------------------------------------------------------------------------
@@ -117,72 +117,72 @@ endif()
 # not set explicitly.  This auto-updates the defaults as DATAROOTDIR changes.
 
 if(NOT CMAKE_INSTALL_DATADIR)
-  set(CMAKE_INSTALL_DATADIR "" CACHE PATH "read-only architecture-independent data (DATAROOTDIR)")
-  set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATAROOTDIR}")
+    set(CMAKE_INSTALL_DATADIR "" CACHE PATH "read-only architecture-independent data (DATAROOTDIR)")
+    set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATAROOTDIR}")
 endif()
 
 if(NOT CMAKE_INSTALL_INFODIR)
-  set(CMAKE_INSTALL_INFODIR "" CACHE PATH "info documentation (DATAROOTDIR/info)")
-  set(CMAKE_INSTALL_INFODIR "${CMAKE_INSTALL_DATAROOTDIR}/info")
+    set(CMAKE_INSTALL_INFODIR "" CACHE PATH "info documentation (DATAROOTDIR/info)")
+    set(CMAKE_INSTALL_INFODIR "${CMAKE_INSTALL_DATAROOTDIR}/info")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCALEDIR)
-  set(CMAKE_INSTALL_LOCALEDIR "" CACHE PATH "locale-dependent data (DATAROOTDIR/locale)")
-  set(CMAKE_INSTALL_LOCALEDIR "${CMAKE_INSTALL_DATAROOTDIR}/locale")
+    set(CMAKE_INSTALL_LOCALEDIR "" CACHE PATH "locale-dependent data (DATAROOTDIR/locale)")
+    set(CMAKE_INSTALL_LOCALEDIR "${CMAKE_INSTALL_DATAROOTDIR}/locale")
 endif()
 
 if(NOT CMAKE_INSTALL_MANDIR)
-  set(CMAKE_INSTALL_MANDIR "" CACHE PATH "man documentation (DATAROOTDIR/man)")
-  set(CMAKE_INSTALL_MANDIR "${CMAKE_INSTALL_DATAROOTDIR}/man")
+    set(CMAKE_INSTALL_MANDIR "" CACHE PATH "man documentation (DATAROOTDIR/man)")
+    set(CMAKE_INSTALL_MANDIR "${CMAKE_INSTALL_DATAROOTDIR}/man")
 endif()
 
 if(NOT CMAKE_INSTALL_DOCDIR)
-  set(CMAKE_INSTALL_DOCDIR "" CACHE PATH "documentation root (DATAROOTDIR/doc/PROJECT_NAME)")
-  set(CMAKE_INSTALL_DOCDIR "${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME}")
+    set(CMAKE_INSTALL_DOCDIR "" CACHE PATH "documentation root (DATAROOTDIR/doc/PROJECT_NAME)")
+    set(CMAKE_INSTALL_DOCDIR "${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME}")
 endif()
 
 #-----------------------------------------------------------------------------
 
 mark_as_advanced(
-  CMAKE_INSTALL_BINDIR
-  CMAKE_INSTALL_SBINDIR
-  CMAKE_INSTALL_LIBEXECDIR
-  CMAKE_INSTALL_SYSCONFDIR
-  CMAKE_INSTALL_SHAREDSTATEDIR
-  CMAKE_INSTALL_LOCALSTATEDIR
-  CMAKE_INSTALL_LIBDIR
-  CMAKE_INSTALL_INCLUDEDIR
-  CMAKE_INSTALL_OLDINCLUDEDIR
-  CMAKE_INSTALL_DATAROOTDIR
-  CMAKE_INSTALL_DATADIR
-  CMAKE_INSTALL_INFODIR
-  CMAKE_INSTALL_LOCALEDIR
-  CMAKE_INSTALL_MANDIR
-  CMAKE_INSTALL_DOCDIR
-  )
+    CMAKE_INSTALL_BINDIR
+    CMAKE_INSTALL_SBINDIR
+    CMAKE_INSTALL_LIBEXECDIR
+    CMAKE_INSTALL_SYSCONFDIR
+    CMAKE_INSTALL_SHAREDSTATEDIR
+    CMAKE_INSTALL_LOCALSTATEDIR
+    CMAKE_INSTALL_LIBDIR
+    CMAKE_INSTALL_INCLUDEDIR
+    CMAKE_INSTALL_OLDINCLUDEDIR
+    CMAKE_INSTALL_DATAROOTDIR
+    CMAKE_INSTALL_DATADIR
+    CMAKE_INSTALL_INFODIR
+    CMAKE_INSTALL_LOCALEDIR
+    CMAKE_INSTALL_MANDIR
+    CMAKE_INSTALL_DOCDIR
+)
 
 # Result directories
 #
 foreach(dir
-    BINDIR
-    SBINDIR
-    LIBEXECDIR
-    SYSCONFDIR
-    SHAREDSTATEDIR
-    LOCALSTATEDIR
-    LIBDIR
-    INCLUDEDIR
-    OLDINCLUDEDIR
-    DATAROOTDIR
-    DATADIR
-    INFODIR
-    LOCALEDIR
-    MANDIR
-    DOCDIR
-    )
-  if(NOT IS_ABSOLUTE ${CMAKE_INSTALL_${dir}})
-    set(CMAKE_INSTALL_FULL_${dir} "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_${dir}}")
-  else()
-    set(CMAKE_INSTALL_FULL_${dir} "${CMAKE_INSTALL_${dir}}")
-  endif()
+        BINDIR
+        SBINDIR
+        LIBEXECDIR
+        SYSCONFDIR
+        SHAREDSTATEDIR
+        LOCALSTATEDIR
+        LIBDIR
+        INCLUDEDIR
+        OLDINCLUDEDIR
+        DATAROOTDIR
+        DATADIR
+        INFODIR
+        LOCALEDIR
+        MANDIR
+        DOCDIR
+)
+    if(NOT IS_ABSOLUTE ${CMAKE_INSTALL_${dir}})
+        set(CMAKE_INSTALL_FULL_${dir} "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_${dir}}")
+    else()
+        set(CMAKE_INSTALL_FULL_${dir} "${CMAKE_INSTALL_${dir}}")
+    endif()
 endforeach()

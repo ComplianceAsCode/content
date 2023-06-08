@@ -1,5 +1,5 @@
 # Sometimes our users will try to do: "cd rhel8; cmake ." That needs to error in a nice way.
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
 endif()
 
@@ -28,6 +28,6 @@ ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig_gui")
 
 #ssg_build_html_stig_tables(${PRODUCT} "ospp")
 
-if (SSG_CENTOS_DERIVATIVES_ENABLED)
+if(SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "centos8")
 endif()

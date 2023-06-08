@@ -1,4 +1,4 @@
-if (ENABLE_PYTHON_COVERAGE)
+if(ENABLE_PYTHON_COVERAGE)
     set(PYTEST_COVERAGE_OPTIONS --cov-append --cov-report=xml --cov "${CMAKE_SOURCE_DIR}/ssg")
 endif()
 
@@ -7,13 +7,13 @@ macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH)
         NAME "python-unit-${PYTHON_COMPONENT_ID}"
         COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT_ID}"
     )
-    set_tests_properties ("python-unit-${PYTHON_COMPONENT_ID}" PROPERTIES ENVIRONMENT
+    set_tests_properties("python-unit-${PYTHON_COMPONENT_ID}" PROPERTIES ENVIRONMENT
         "PYTHONPATH=${CMAKE_SOURCE_DIR}/${RELATIVE_PYTHONPATH}:$ENV{PYTHONPATH}"
         LABELS quick
     )
 endmacro()
 
-if (PY_PYTEST)
+if(PY_PYTEST)
     ssg_python_unit_tests("build-scripts" "build-scripts")
     ssg_python_unit_tests("utils" "utils")
     ssg_python_unit_tests("ssg-module" ".")
@@ -74,7 +74,7 @@ add_test(
 )
 set_tests_properties("machine-only-rules" PROPERTIES LABELS quick)
 
-if (SSG_BATS_TESTS_ENABLED AND BATS_EXECUTABLE)
+if(SSG_BATS_TESTS_ENABLED AND BATS_EXECUTABLE)
     add_test(
         NAME "bash-unit-tests"
         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/unit/bash/execute_tests.sh" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/unit/bash" "${CMAKE_BINARY_DIR}/tests"
@@ -151,8 +151,8 @@ set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES DEPENDS "test-rule-dir-json")
 set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
-if (PY_YAMLPATH)
-    if (PY_PYTEST)
+if(PY_YAMLPATH)
+    if(PY_PYTEST)
         add_test(
             NAME "test-function-check_playbook_file_removed_and_added"
             COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_CURRENT_SOURCE_DIR}/test_check_playbook_file_removed_and_added.py"
@@ -166,7 +166,7 @@ if (PY_YAMLPATH)
 endif()
 
 macro(mypy_test SCRIPT)
-    if (PY_MYPY)
+    if(PY_MYPY)
         add_test(
             NAME "test-mypy-${SCRIPT}"
             COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/${SCRIPT}"
@@ -179,7 +179,7 @@ endmacro()
 mypy_test("utils/import_srg_spreadsheet.py")
 mypy_test("utils/check_eof.py")
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
         NAME "srg-export-rhel9-xlsx"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_srg_export.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --control "${CMAKE_SOURCE_DIR}/controls/srg_gpos.yml" --product rhel9 --out-format "xlsx" --output "${CMAKE_BINARY_DIR}/cac_stig_output.xlsx" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
@@ -227,7 +227,7 @@ endif()
 
 file(GLOB RHEL8_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel8-v[0-9]*r[0-9]*-xccdf-manual.xml")
 
-if (PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2)
 add_test(
     NAME "test-compare_ds"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_ds.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
@@ -235,7 +235,7 @@ add_test(
 set_tests_properties("test-compare_ds" PROPERTIES LABELS quick)
 endif()
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+if(PYTHON_VERSION_MAJOR GREATER 2 AND GIT_EXECUTABLE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 add_test(
     NAME "test-generate_contributors"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/generate_contributors.py" "--dry-run"
@@ -244,7 +244,7 @@ set_tests_properties("test-generate_contributors" PROPERTIES LABELS quick)
 endif()
 
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
 add_test(
         NAME "test-create_scap_delta_tailoring"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --dry-run --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --reference "stigid"  --output "${CMAKE_BINARY_DIR}/rhel8_stig_tailoring.xml" --product rhel8 --manual  "${RHEL8_DISA_STIG_REF}" -B "${CMAKE_BINARY_DIR}"
@@ -262,7 +262,7 @@ set_tests_properties("test-create_scap_delta_tailoring_resolved" PROPERTIES DEPE
 endif()
 
 
-if (PYTHON_VERSION_MAJOR GREATER 2  AND PYTHON_VERSION_MINOR GREATER 6)
+if(PYTHON_VERSION_MAJOR GREATER 2  AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "test-controleval-directory"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "stats" "--level" "high" "--product" "rhel9" "--id" "qrst-levels"
@@ -292,7 +292,7 @@ macro(ssg_refcheck_test PRODUCT PROFILE KEY)
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
 endmacro()
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     ssg_refcheck_test("rhel8" "cis_workstation_l1" "cis")
     ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
@@ -300,14 +300,14 @@ if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
 endif()
 
 
-if (PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
     ssg_refcheck_test("rhel7" "cis_workstation_l1" "cis")
     ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel7" "cis" "cis")
 endif()
 
-if (PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "test-compare-disa-xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_disa_xml.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
@@ -316,7 +316,7 @@ if (PYTHON_VERSION_MAJOR GREATER 2)
 endif()
 
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
-    if (PYTHON_VERSION_MAJOR GREATER 2)
+    if(PYTHON_VERSION_MAJOR GREATER 2)
         add_test(
             NAME "controlrefchecker-${PRODUCT}-${CONTROL}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controlrefcheck.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "${PRODUCT}" "${CONTROL}" "${KEY}"
@@ -327,25 +327,25 @@ macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     endif()
 endmacro()
 
-if (SSG_PRODUCT_RHEL7)
+if(SSG_PRODUCT_RHEL7)
     ssg_controlrefcheck_test("rhel7" "cis_rhel7" "cis")
 endif()
-if (SSG_PRODUCT_RHEL8)
+if(SSG_PRODUCT_RHEL8)
     ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
 endif()
-if (SSG_PRODUCT_RHEL9)
+if(SSG_PRODUCT_RHEL9)
     ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
 endif()
 
 
-if (PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "test-check-eof"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_eof.py" "${CMAKE_SOURCE_DIR}/ssg" "${CMAKE_SOURCE_DIR}/linux_os" "${CMAKE_SOURCE_DIR}/utils" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/products" "${CMAKE_SOURCE_DIR}/shared" "${CMAKE_SOURCE_DIR}/docs" "${CMAKE_SOURCE_DIR}/apple_os" "${CMAKE_SOURCE_DIR}/applications" "${CMAKE_SOURCE_DIR}/build-scripts" "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/Dockerfiles" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/controls"
     )
 endif()
 
-if (PY_CMAKELINT)
+if(PY_CMAKELINT)
     file(GLOB CMAKELINT_FILES "${CMAKE_SOURCE_DIR}/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/products/*/CMakeLists.txt" "${CMAKE_SOURCE_DIR}/cmake/*.cmake")
     add_test(
         NAME "test-cmakelint"

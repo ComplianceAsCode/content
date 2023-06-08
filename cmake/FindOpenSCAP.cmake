@@ -1,3 +1,8 @@
+# Keep filename as is
+# lint_cmake: -convention/filename, -package/consistency
+
+include(FindPackageHandleStandardArgs)
+
 set(OPENSCAP_POSSIBLE_ROOT_DIRS
     "${OPENSCAP_ROOT_DIR}"
     "$ENV{OPENSCAP_ROOT_DIR}"
@@ -26,15 +31,15 @@ foreach(NAME ${OPENSCAP_POSSIBLE_ROOT_DIRS})
     )
 endforeach()
 
-if (NOT EXISTS "${OPENSCAP_XCCDF_XSL_1_2}")
+if(NOT EXISTS "${OPENSCAP_XCCDF_XSL_1_2}")
     list(APPEND OscapErrors "ERROR: The OPENSCAP XSL XCCDF file was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
 endif()
 
-if (NOT EXISTS "${OPENSCAP_OSCAP_EXECUTABLE}")
+if(NOT EXISTS "${OPENSCAP_OSCAP_EXECUTABLE}")
     list(APPEND OscapErrors "ERROR: The OPENSCAP executable was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
 endif()
 
-if (OscapErrors)
+if(OscapErrors)
     message(FATAL_ERROR "${OscapErrors}")
 endif()
 
