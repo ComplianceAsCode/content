@@ -347,3 +347,4 @@ selections:
     - authconfig_config_files_symlinks
     - no_empty_passwords_etc_shadow
     - disallow_bypass_password_sudo
+    - selinux_confine_to_least_privilege
