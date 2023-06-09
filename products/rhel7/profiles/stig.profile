@@ -346,3 +346,4 @@ selections:
     - aide_build_database
     - authconfig_config_files_symlinks
     - no_empty_passwords_etc_shadow
+    - disallow_bypass_password_sudo
