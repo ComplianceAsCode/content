@@ -52,6 +52,7 @@ selections:
 - accounts_minimum_age_login_defs
 - accounts_no_uid_except_zero
 - accounts_password_all_shadowed_sha512
+- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_dictcheck
 - accounts_password_pam_difok

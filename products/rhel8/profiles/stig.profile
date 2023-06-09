@@ -621,6 +621,9 @@ selections:
     # RHEL-08-020230
     - accounts_password_pam_minlen
 
+    # RHEL-08-020231
+    - accounts_password_minlen_login_defs
+
     # RHEL-08-020240
     - account_unique_id
 
