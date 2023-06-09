@@ -4,21 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must allow only the ISSM (or individuals or roles
     appointed by the ISSM) to select which auditable events are to be audited.
-  related_rules:
+  rules:
   - audit_profile_set
-  status: does not meet
-  status_justification: |-
-    The OpenShift Container Platform records every request/action against the API Server[1]. The platform allows for configuring the verbosity, such as meta-data only, or the entire request body. But, all events are audited, and the ISSM or admins are not able to filter or select only certain event types to be audited.
+  status: automated
 
-    [1] https://docs.openshift.com/container-platform/latest/security/audit-log-policy-config.html
-  artifact_description: |-
-    Supporting evidence is in the following documentation
-
-    https://docs.openshift.com/container-platform/latest/security/audit-log-policy-config.html
-  mitigation: |-
-    All requests to the API Server are audited.
-  fixtext: |-
-    This requirement is a permanent finding and cannot be fixed.
-  check: |-
-    {{{ full_name }}} does not support this requirement.
-    This is an applicable-does not meet finding.
