@@ -345,3 +345,4 @@ selections:
     - sysctl_kernel_dmesg_restrict
     - aide_build_database
     - authconfig_config_files_symlinks
+    - no_empty_passwords_etc_shadow
