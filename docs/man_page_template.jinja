@@ -24,7 +24,7 @@ https://www.open-scap.org/security-policies/scap-security-guide
 {{% for product in products %}}
 .SH Profiles in {{{ product.title }}}
 
-Source Datastream: \fI {{{ product.ds_filename }}} \fR
+Source data stream: \fI {{{ product.ds_filename }}} \fR
 
 The {{{ product.title }}} is broken into 'profiles', groupings of security settings
 that correlate to a known policy. Available profiles are:
@@ -48,21 +48,34 @@ To scan your system utilizing the OpenSCAP utility against the
 ospp profile:
 
 oscap xccdf eval --profile ospp \
---results /tmp/`hostname`-ssg-results.xml \
+--results-arf /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
---oval-results \
 {{{ install_prefix }}}/{{{ content_path }}}/ssg-{product}-xccdf.xml
 .PP
-Additional details can be found on the projects wiki page:
-https://www.github.com/ComplianceAsCode/content/wiki
 
+Additional details can be found on the following websites:
+
+https://www.github.com/ComplianceAsCode/content
+.RS
+The project's Github page.
+.RE
+
+https://complianceascode.readthedocs.io
+.RS
+The project's ReadTheDocs page.
+.RE
+
+https://app.gitter.im/#/room/#Compliance-As-Code-The_content:gitter.im
+.RS
+The project's Gitter IM space
+.RE
 
 .SH FILES
 .I {{{ install_prefix }}}/{{{ content_path }}}
 .RS
 Houses SCAP content utilizing the following naming conventions:
 
-.I SCAP Source Datastreams:
+.I SCAP Source data streams:
 ssg-{product}-ds.xml
 
 {{% if xccdf_oval_ocil_cpes -%}}
