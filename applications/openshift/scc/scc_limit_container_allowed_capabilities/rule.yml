@@ -5,10 +5,39 @@ prodtype: ocp4
 title: 'Limit Container Capabilities'
 
 description: |-
-    Containers should not enable more capabilities than needed as this
+    <p>
+    Containers should not enable more capabilites than needed as this
     opens the door for malicious use. To enable only the
     required capabilities, the appropriate Security Context Constraints (SCCs)
     should set capabilities as a list in <tt>allowedCapabilities</tt>.
+    </p>
+    <p>
+    In case an SCC outside the default allow list in the variable
+    <tt>var-sccs-with-allowed-capabilities-regex</tt> is being flagged,
+    create a <tt>TailoredProfile</tt> and add the additional SCC to the
+    regular expression in the variable <tt>var-sccs-with-allowed-capabilities-regex</tt>.
+    An example allowing an SCC named <tt>additional</tt> follows:
+    </p>
+    <pre>
+    apiVersion: compliance.openshift.io/v1alpha1
+    kind: TailoredProfile
+    metadata:
+      name: cis-additional-scc
+    spec:
+      description: Allows an additional scc
+      setValues:
+      - name: upstream-ocp4-var-sccs-with-allowed-capabilities-regex
+        rationale: Allow our own custom SCC
+        value: ^privileged$|^hostnetwork-v2$|^restricted-v2$|^nonroot-v2$|^additional$
+      extends: upstream-ocp4-cis
+      title: Modified CIS allowing one more SCC
+    </pre>
+    <p>
+    Finally, reference this <tt>TailoredProfile</tt> in a <tt>ScanSettingBinding</tt>
+    For more information on Tailoring the Compliance Operator, please consult the
+    OpenShift documentation:
+      {{{ weblink(link="https://docs.openshift.com/container-platform/4.12/security/compliance_operator/compliance-operator-tailor.html") }}}
+    </p>
 
 rationale: |-
     By default, containers run with a default set of capabilities as assigned
@@ -31,25 +60,17 @@ references:
 ocil_clause: 'allowed capabilities listings in SCCs needs review'
 
 ocil: |-
-    Inspect each SCC returned from running the following command:
-    <pre>$ oc get scc</pre>
-    Next, examine the outputs of the following commands:
-    <pre>$ oc describe roles --all-namespaces</pre>
-    <pre>$ oc describe clusterroles</pre>
-    For any role/clusterrole that reference the
-    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
-    of the SCCs that do not list an explicit <tt>allowedCapabilities</tt>, examine the
-    associated rolebindings to account for the users that are bound to the role.
-    Review each SCC and determine that only required capabilities are either
-    completely added as a list entry under <tt>allowedCapabilities</tt>,
-    or that all the un-required capabilities are dropped for containers and SCCs.
-    variable var_sccs_with_allowed_capabilities_regex can be set to exclude certain
-    SCCs from the check.
-    Use following command to verify if the correct regex is being used, this ouput
-    will list unqualified SCCs:
+    This rule checks the SCCs with allowedCapabilities set to non-null
+    and fails if there are more such SCCs than those allowed in the variable
+    named ocp4-var-sccs-with-allowed-capabilities-regex. To debug the rule,
+    check the variable value, e.g:
+    <pre>$ oc get variable ocp4-var-sccs-with-allowed-capabilities-regex  -ojsonpath='{.value}' </pre>
+    Then use following command to list the SCCs that would fail the test:
     <pre>$ oc get scc -o json | {{{ jqfilter }}}</pre>
-    {{.var_sccs_with_allowed_capabilities_regex}} should be replace to the actual value set,
-    either the default one or the one set from TailoredProfile.
+    Please replace the regular expression in the test command with the value read from the variable
+    <pre>ocp4-var-sccs-with-allowed-capabilities-regex</pre>. You can read the variable
+    value with:
+    <pre>$ oc get variable ocp4-var-sccs-with-allowed-capabilities-regex -ojsonpath='{.value}' -n openshift-compliance </pre>
 
 
 warnings:
