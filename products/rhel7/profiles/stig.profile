@@ -345,3 +345,6 @@ selections:
     - sysctl_kernel_dmesg_restrict
     - aide_build_database
     - authconfig_config_files_symlinks
+    - no_empty_passwords_etc_shadow
+    - disallow_bypass_password_sudo
+    - selinux_confine_to_least_privilege
