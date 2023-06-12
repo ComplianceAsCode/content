@@ -155,17 +155,21 @@
     {{{ state_static_sysctld("user") }}}
   </ind:textfilecontent54_test>
 
+  {{% if MISSING_PARAMETER_PASS == "true" %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_pkg_not_wrong" version="2" check="all"
                           check_existence="any_exist"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" state_operator="OR">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
-
+  {{% else %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_pkg_correct" version="2" check="all"
                           check_existence="all_exist"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf" state_operator="OR">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf"
+                          state_operator="OR">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
+  {{% endif %}}
+
 
   <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
        variable to have no value even when there are valid objects. -->
