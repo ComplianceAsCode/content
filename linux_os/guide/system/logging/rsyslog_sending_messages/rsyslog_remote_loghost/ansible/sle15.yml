@@ -9,38 +9,29 @@
   ansible.builtin.lineinfile:
     path: /etc/rsyslog.conf
     create: false
-    regexp: "^\\*\\.\\*"
+    regexp: "^\\*\\.\\*\\s+.*$"
     state: absent
-  check_mode: true
   changed_when: false
   register: dupes_master
 
-- name: Deduplicate values from rsyslog master configuration
-  ansible.builtin.lineinfile:
-    path: /etc/rsyslog.conf
-    create: false
-    regexp: "^\\*\\.\\*"
-    state: absent
-  when: dupes_master.found is defined and dupes_master.found > 1
-
-- name: Collect all config rsyslog files which configure Compress
+- name: Collect all config rsyslog files which configure remote logger
   ansible.builtin.find:
     paths: /etc/rsyslog.d/
-    contains: "^\\*\\.\\*"
+    contains: "^\\*\\.\\*\\s+.*$"
     patterns: "*.conf"
   register: rsyslog_dropin_config_files
 
 - name: Deduplicate values from rsyslog dropin configuration
   ansible.builtin.lineinfile:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     create: false
-    regexp: "^\\*\\.\\*"
+    regexp: "^\\*\\.\\*\\s+.*$"
     state: absent
   loop: "{{  rsyslog_dropin_config_files.files }}"
   
 - name: "Set rsyslog remote loghost"
   lineinfile:
     dest: /etc/rsyslog.d/remote.conf
-    regexp: "^\\*\\.\\*"
+    regexp: "^\\*\\.\\*\\s+.*$"
     line: "*.* @@{{ rsyslog_remote_loghost_address }}"
     create: yes
