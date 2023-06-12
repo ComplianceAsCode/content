@@ -24,7 +24,7 @@ https://www.open-scap.org/security-policies/scap-security-guide
 {{% for product in products %}}
 .SH Profiles in {{{ product.title }}}
 
-Source Datastream: \fI {{{ product.ds_filename }}} \fR
+Source data stream: \fI {{{ product.ds_filename }}} \fR
 
 The {{{ product.title }}} is broken into 'profiles', groupings of security settings
 that correlate to a known policy. Available profiles are:
@@ -48,23 +48,37 @@ To scan your system utilizing the OpenSCAP utility against the
 ospp profile:
 
 oscap xccdf eval --profile ospp \
---results /tmp/`hostname`-ssg-results.xml \
+--results-arf /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
---oval-results \
-/usr/share/xml/scap/ssg/content/ssg-{product}-xccdf.xml
+{{{ install_prefix }}}/{{{ content_path }}}/ssg-{product}-xccdf.xml
 .PP
-Additional details can be found on the projects wiki page:
-https://www.github.com/ComplianceAsCode/content/wiki
 
+Additional details can be found on the following websites:
+
+https://www.github.com/ComplianceAsCode/content
+.RS
+The project's Github page.
+.RE
+
+https://complianceascode.readthedocs.io
+.RS
+The project's ReadTheDocs page.
+.RE
+
+https://app.gitter.im/#/room/#Compliance-As-Code-The_content:gitter.im
+.RS
+The project's Gitter IM space
+.RE
 
 .SH FILES
-.I /usr/share/xml/scap/ssg/content
+.I {{{ install_prefix }}}/{{{ content_path }}}
 .RS
 Houses SCAP content utilizing the following naming conventions:
 
-.I SCAP Source Datastreams:
+.I SCAP Source data streams:
 ssg-{product}-ds.xml
 
+{{% if xccdf_oval_ocil_cpes -%}}
 .I CPE Dictionaries:
 ssg-{product}-cpe-dictionary.xml
 
@@ -76,65 +90,54 @@ ssg-{product}-oval.xml
 
 .I XCCDF Content:
 ssg-{product}-xccdf.xml
+{{%- endif %}}
 .RE
 
-.I /usr/share/doc/scap-security-guide/guides/
+{{% if guides_path -%}}
+.I {{{ install_prefix }}}/{{{ guides_path }}}
 .RS
 HTML versions of SSG profiles.
 .RE
+{{%- endif %}}
 
-.I /usr/share/scap-security-guide/ansible/
+{{% if ansible_profile_playbooks_path -%}}
+.I {{{ install_prefix }}}/{{{ ansible_profile_playbooks_path }}}/
 .RS
 Contains Ansible Playbooks for SSG profiles.
 .RE
+{{%- endif %}}
 
-.I /usr/share/scap-security-guide/bash/
+
+{{% if ansible_playbooks_generated_for_all_rules_path -%}}
+.I {{{ install_prefix }}}/{{{ ansible_playbooks_generated_for_all_rules_path }}}
+.RS
+Contains Ansible Playbooks for individual rules.
+.RE
+{{%- endif %}}
+
+
+{{% if bash_profile_scripts_path -%}}
+.I {{{ install_prefix }}}/{{{ bash_profile_scripts_path }}}/
 .RS
 Contains Bash remediation scripts for SSG profiles.
 .RE
+{{%- endif %}}
 
 
-.SH DEPLOYMENT TO U.S. CIVILIAN GOVERNMENT SYSTEMS
-SCAP Security Guide content is considered vendor (Red Hat) provided content.
-Per guidance from the U.S. National Institute of Standards and Technology (NIST),
-U.S. Government programs are allowed to use Vendor produced SCAP content in absence
-of "Governmental Authority" checklists. The specific NIST verbage:
-http://web.nvd.nist.gov/view/ncp/repository/glossary?cid=1#Authority
+{{% if kickstarts_path -%}}
+.I {{{ install_prefix }}}/{{{ kickstarts_path }}}/
+.RS
+Contains example kickstarts that install systems hardened against a particular profile.
+.RE
+{{%- endif %}}
 
 
-.SH DEPLOYMENT TO U.S. MILITARY SYSTEMS
-DoD Directive (DoDD) 8500.1 requires that "all IA and IA-enabled IT products
-incorporated into DoD information systems shall be configured in accordance
-with DoD-approved security configuration guidelines" and tasks Defense
-Information Systems Agency (DISA) to "develop and provide security configuration
-guidance for IA and IA-enabled IT products in coordination with Director, NSA."
-The output of this authority is the DISA Security Technical Implementation Guides,
-or STIGs. DISA FSO is in the process of moving the STIGs towards the use
-of the NIST Security Content Automation Protocol (SCAP) in order to "automate"
-compliance reporting of the STIGs.
-
-Through a common, shared vision, the SCAP Security Guide community enjoys
-close collaboration directly with NSA, NIST, and DISA FSO. As stated in Section 1.1 of
-the Red Hat Enterprise Linux 6 STIG Overview, Version 1, Release 2, issued on 03-JUNE-2013:
-
-"The consensus content was developed using an open-source project called SCAP
-Security Guide. The project's website is https://www.open-scap.org/security-policies/scap-security-guide.
-Except for differences in formatting to accommodate the DISA STIG publishing
-process, the content of the Red Hat Enterprise Linux 6 STIG should mirror the SCAP Security Guide
-content with only minor divergence as updates from multiple sources work through
-the consensus process."
-
-The DoD STIG for Red Hat Enterprise Linux 7, revision V2R4, was released in July 2019
-Currently, the DoD Red Hat Enterprise Linux 7 STIG contains only XCCDF content and is
-available online:
-https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
-
-Content published against the public.cyber.mil website is authoritative
-STIG content. The SCAP Security Guide project, as noted in the STIG overview,
-is considered upstream content. Unlike DISA FSO, the SCAP Security Guide project
-does publish OVAL automation content. Individual programs and C&A evaluators
-make program-level determinations on the direct usage of the SCAP Security Guide.
-Currently there is no blanket approval.
+{{% if tailoring_path -%}}
+.I {{{ install_prefix }}}/{{{ tailoring_path }}}/
+.RS
+Contains tailoring files that enable rules that are not covered by third-party SCAP content and disables rules that are covered by the content shipped in scap-security-guide.
+.RE
+{{%- endif %}}
 
 
 .SH SEE ALSO
