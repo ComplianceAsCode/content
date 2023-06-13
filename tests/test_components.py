@@ -13,9 +13,12 @@ import ssg.yaml
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Test components data consistency")
-    parser.add_argument("--source-dir", help="Path to the root directory")
-    parser.add_argument("--build-dir", help="Path to the build directory")
-    parser.add_argument("--product", help="Product ID")
+    parser.add_argument(
+        "--source-dir", help="Path to the root directory", required=True)
+    parser.add_argument(
+        "--build-dir", help="Path to the build directory", required=True)
+    parser.add_argument(
+        "--product", help="Product ID", required=True)
     return parser.parse_args()
 
 
