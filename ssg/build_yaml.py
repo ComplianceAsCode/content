@@ -659,6 +659,7 @@ class Rule(XCCDFEntity, Templatable):
         rationale=lambda: "",
         severity=lambda: "",
         references=lambda: dict(),
+        components=lambda: list(),
         identifiers=lambda: dict(),
         ocil_clause=lambda: None,
         ocil=lambda: None,
@@ -1340,7 +1341,8 @@ class BuildLoader(DirectoryLoader):
             return None
         product_dir = self.env_yaml["product_dir"]
         components_root = self.env_yaml["components_root"]
-        components_dir = os.path.join(product_dir, components_root)
+        components_dir = os.path.abspath(
+            os.path.join(product_dir, components_root))
         components = ssg.components.load(components_dir)
         rule_to_components = ssg.components.get_rule_to_components_mapping(
             components)
@@ -1367,6 +1369,7 @@ class BuildLoader(DirectoryLoader):
         rule.normalize(self.env_yaml["product"])
         if self.stig_references:
             rule.add_stig_references(self.stig_references)
+        rule.components = self.rule_to_components[rule.id_]
         return True
 
     def _process_rules(self):
