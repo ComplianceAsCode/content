@@ -439,6 +439,8 @@ type: platform
 
 benchmark_root: "../../linux_os/guide"
 
+components_root: "../../components"
+
 profiles_root: "./profiles"
 
 pkg_manager: "yum"
