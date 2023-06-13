@@ -922,14 +922,24 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
           definition_ref="sshd_not_required_or_unset" />
-        <extend_definition comment="rpm package openssh-server removed"
-          definition_ref="package_openssh-server_removed" />
+          {{% if product in ['opensuse', 'sle12','sle15'] %}}
+          <extend_definition definition_ref="package_openssh_removed"
+          comment="rpm package openssh removed"/>
+          {{% else %}}
+           <extend_definition comment="rpm package openssh-server removed"
+           definition_ref="package_openssh-server_removed" />
+          {{% endif %}}
      </criteria>
      <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12','sle15'] %}}
+        <extend_definition comment="rpm package openssh installed" 
+          definition_ref="package_openssh_installed" />
+        {{% else %}}  
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
         <criteria comment="sshd is configured correctly" operator="AND">
           <criteria comment="the configuration is correct if it exists" operator="AND">
             {{{- oval_line_in_file_criterion(sshd_config_path, parameter, avoid_conflicting=true) | indent(10)}}}
