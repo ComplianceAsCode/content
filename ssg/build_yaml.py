@@ -1344,7 +1344,7 @@ class BuildLoader(DirectoryLoader):
         components_dir = os.path.abspath(
             os.path.join(product_dir, components_root))
         components = ssg.components.load(components_dir)
-        rule_to_components = ssg.components.get_rule_to_components_mapping(
+        rule_to_components = ssg.components.rule_component_mapping(
             components)
         return rule_to_components
 

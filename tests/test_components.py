@@ -26,7 +26,7 @@ def test_template_name(
         template, package_to_component, template_to_component):
     template_name = template["name"]
     if template_name in template_to_component:
-        component = template_to_component[template_name]
+        component = template_to_component[template_name][0]
         reason = (
             "all rules using template '%s' must be assigned to component "
             "'%s'" % (template_name, component))
@@ -40,7 +40,7 @@ def test_template_package(
     template_vars = template["vars"]
     if template_name in ["package_installed", "package_removed"]:
         package = template_vars["pkgname"]
-        component = package_to_component.get(package, package)
+        component = package_to_component.get(package, [package])[0]
         reason = (
             "rule uses template '%s' with 'pkgname' parameter set to '%s' "
             "which is a package that already belongs to component '%s'" %
@@ -58,7 +58,7 @@ def test_template_service(
             package = template_vars["packagename"]
         else:
             package = template_vars["servicename"]
-        component = package_to_component.get(package, package)
+        component = package_to_component.get(package, [package])[0]
         reason = (
             "rule uses template '%s' checking service '%s' provided by "
             "package '%s' which is a package that already belongs to "
@@ -147,7 +147,7 @@ def test_package_platform(rule, package_to_component, rule_components):
         return True
     result = True
     for package in match.groups():
-        component = package_to_component.get(package, package)
+        component = package_to_component.get(package, [package])[0]
         if component not in rule_components:
             print(
                 "Rule '%s' must be assigned to component '%s', "
@@ -204,7 +204,7 @@ def get_rule_to_groups(groups_dir):
 
 def test_benchmark_rules(components, source_dir):
     result = True
-    rule_to_components = ssg.components.rule_components_mapping(components)
+    rule_to_components = ssg.components.rule_component_mapping(components)
     rules_with_component = set(rule_to_components.keys())
     linux_os_guide_dir = os.path.join(source_dir, "linux_os", "guide")
     rules_in_benchmark = set(find_all_rules(linux_os_guide_dir))
@@ -220,7 +220,7 @@ def test_rule(rule, mappings):
         rule_to_components, package_to_component, template_to_component,
         rule_to_groups, group_to_components) = mappings
     result = True
-    rule_components = [c.name for c in rule_to_components[rule.id_]]
+    rule_components = rule_to_components[rule.id_]
     rule_groups = rule_to_groups[rule.id_]
     if not test_templates(
             rule, package_to_component, rule_components,
@@ -235,12 +235,12 @@ def test_rule(rule, mappings):
 
 def test_resolved_rules(components, build_dir, product):
     result = True
-    rule_to_components = ssg.components.rule_components_mapping(components)
+    rule_to_components = ssg.components.rule_component_mapping(components)
     package_to_component = ssg.components.package_component_mapping(
         components)
     template_to_component = ssg.components.template_component_mapping(
         components)
-    group_to_components = ssg.components.group_components_mapping(components)
+    group_to_components = ssg.components.group_component_mapping(components)
     product_dir = os.path.join(build_dir, product)
     groups_dir = os.path.join(product_dir, "groups")
     rule_to_groups = get_rule_to_groups(groups_dir)

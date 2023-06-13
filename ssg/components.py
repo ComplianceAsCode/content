@@ -15,36 +15,28 @@ def load(components_dir):
     return components
 
 
-def rule_components_mapping(components):
-    rules_to_components = defaultdict(list)
+def __reverse_mapping(components, attribute):
+    mapping = defaultdict(list)
     for component in components.values():
-        for rule_id in component.rules:
-            rules_to_components[rule_id].append(component)
-    return rules_to_components
+        for item in getattr(component, attribute):
+            mapping[item].append(component.name)
+    return mapping
 
 
 def package_component_mapping(components):
-    packages_to_components = {}
-    for component in components.values():
-        for package in component.packages:
-            packages_to_components[package] = component.name
-    return packages_to_components
+    return __reverse_mapping(components, "packages")
 
 
 def template_component_mapping(components):
-    template_to_component = {}
-    for component in components.values():
-        for template in component.templates:
-            template_to_component[template] = component.name
-    return template_to_component
+    return __reverse_mapping(components, "templates")
 
 
-def group_components_mapping(components):
-    group_to_component = defaultdict(list)
-    for component in components.values():
-        for group in component.groups:
-            group_to_component[group].append(component.name)
-    return group_to_component
+def group_component_mapping(components):
+    return __reverse_mapping(components, "groups")
+
+
+def rule_component_mapping(components):
+    return __reverse_mapping(components, "rules")
 
 
 class Component:
@@ -55,11 +47,3 @@ class Component:
         self.packages = yaml_data["packages"]
         self.templates = yaml_data.get("templates", [])
         self.groups = yaml_data.get("groups", [])
-
-
-def get_rule_to_components_mapping(components):
-    rule_to_components = defaultdict(list)
-    for component in components.values():
-        for rule_id in component.rules:
-            rule_to_components[rule_id].append(component.name)
-    return rule_to_components

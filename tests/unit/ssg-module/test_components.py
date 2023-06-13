@@ -18,47 +18,13 @@ def test_load():
     assert cs["fapolicyd"].name == "fapolicyd"
 
 
-def test_rule_components_mapping():
-    cs = ssg.components.load(components_dir)
-    rule_to_components = ssg.components.rule_components_mapping(cs)
-    assert isinstance(rule_to_components, dict)
-    assert len(rule_to_components) == 3
-    assert "fapolicy_default_deny" in rule_to_components
-    assert isinstance(
-        rule_to_components["fapolicy_default_deny"], list)
-    assert len(rule_to_components["fapolicy_default_deny"]) == 1
-    assert isinstance(
-        rule_to_components["fapolicy_default_deny"][0],
-        ssg.components.Component)
-    assert rule_to_components["fapolicy_default_deny"][0].name == "fapolicyd"
-    assert "fapolicyd_prevent_home_folder_access" in rule_to_components
-    assert isinstance(
-        rule_to_components["fapolicyd_prevent_home_folder_access"], list)
-    assert len(rule_to_components["fapolicyd_prevent_home_folder_access"]) == 1
-    assert isinstance(
-        rule_to_components["fapolicyd_prevent_home_folder_access"][0],
-        ssg.components.Component)
-    assert \
-        rule_to_components["fapolicyd_prevent_home_folder_access"][0].name == \
-        "fapolicyd"
-    assert "service_fapolicyd_enabled" in rule_to_components
-    assert isinstance(
-        rule_to_components["service_fapolicyd_enabled"], list)
-    assert len(rule_to_components["service_fapolicyd_enabled"]) == 1
-    assert isinstance(
-        rule_to_components["service_fapolicyd_enabled"][0],
-        ssg.components.Component)
-    assert rule_to_components["service_fapolicyd_enabled"][0].name == \
-        "fapolicyd"
-
-
 def test_package_component_mapping():
     cs = ssg.components.load(components_dir)
     package_to_component = ssg.components.package_component_mapping(cs)
     assert isinstance(package_to_component, dict)
     assert len(package_to_component.keys()) == 1
     assert "fapolicyd-server" in package_to_component
-    assert package_to_component["fapolicyd-server"] == "fapolicyd"
+    assert package_to_component["fapolicyd-server"] == ["fapolicyd"]
 
 
 def test_template_component_mapping():
@@ -67,12 +33,12 @@ def test_template_component_mapping():
     assert isinstance(template_to_component, dict)
     assert len(template_to_component.keys()) == 1
     assert "file_policy_blocked" in template_to_component
-    assert template_to_component["file_policy_blocked"] == "fapolicyd"
+    assert template_to_component["file_policy_blocked"] == ["fapolicyd"]
 
 
 def test_group_components_mapping():
     cs = ssg.components.load(components_dir)
-    group_to_component = ssg.components.group_components_mapping(cs)
+    group_to_component = ssg.components.group_component_mapping(cs)
     assert isinstance(group_to_component, dict)
     assert len(group_to_component.keys()) == 2
     assert "fapolicy" in group_to_component
