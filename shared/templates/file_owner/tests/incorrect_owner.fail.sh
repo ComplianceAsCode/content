@@ -3,10 +3,17 @@
 useradd testuser_123
 
 {{% for path in FILEPATH %}}
-{{% if IS_DIRECTORY and FILE_REGEX %}}
+{{% if path.endswith("/") %}}
+if [ ! -d {{{ path }}} ]; then
+    mkdir -p {{{ path }}}
+fi
+{{% if FILE_REGEX %}}
 echo "Create specific tests for this rule because of regex"
-{{% elif IS_DIRECTORY and RECURSIVE %}}
+{{% elif RECURSIVE %}}
 find -L {{{ path }}} -type d -exec chown testuser_123 {} \;
+{{% else %}}
+chown testuser_123 {{{ path }}}
+{{% endif %}}
 {{% else %}}
 if [ ! -f {{{ path }}} ]; then
     mkdir -p "$(dirname '{{{ path }}}')"

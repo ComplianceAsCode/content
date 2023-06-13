@@ -4,8 +4,15 @@
     {{% if MISSING_FILE_PASS %}}
         rm -f {{{ path }}}
     {{% else %}}
-        {{% if IS_DIRECTORY and RECURSIVE %}}
+        {{% if path.endswith("/") %}}
+if [ ! -d {{{ path }}} ]; then
+    mkdir -p {{{ path }}}
+fi
+{{% if RECURSIVE %}}
         find -L {{{ path }}} -type d -exec chown {{{ FILEUID }}} {} \;
+{{% else %}}
+        chown {{{ FILEUID }}} {{{ path }}}
+{{%endif %}}
         {{% else %}}
         if [ ! -f {{{ path }}} ]; then
             mkdir -p "$(dirname '{{{ path }}}')"
