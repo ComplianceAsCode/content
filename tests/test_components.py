@@ -22,28 +22,38 @@ def parse_args():
     return parser.parse_args()
 
 
-def get_component_by_template(
-        rule, package_to_component, template_to_component):
-    template = rule.template
-    component = None
-    reason = None
-    if not template:
-        return (component, reason)
+def test_template_name(
+        template, package_to_component, template_to_component):
     template_name = template["name"]
-    template_vars = template["vars"]
     if template_name in template_to_component:
         component = template_to_component[template_name]
         reason = (
             "all rules using template '%s' should be assigned to component "
             "'%s'" % (template_name, component))
-    elif template_name in ["package_installed", "package_removed"]:
+        return (component, reason)
+    return None
+
+
+def test_template_package(
+        template, package_to_component, template_to_component):
+    template_name = template["name"]
+    template_vars = template["vars"]
+    if template_name in ["package_installed", "package_removed"]:
         package = template_vars["pkgname"]
         component = package_to_component.get(package, package)
         reason = (
             "rule uses template '%s' with 'pkgname' parameter set to '%s' "
             "which is a package that already belongs to component '%s'" %
             (template_name, package, component))
-    elif template_name in ["service_enabled", "service_disabled"]:
+        return (component, reason)
+    return None
+
+
+def test_template_service(
+        template, package_to_component, template_to_component):
+    template_name = template["name"]
+    template_vars = template["vars"]
+    if template_name in ["service_enabled", "service_disabled"]:
         if "packagename" in template_vars:
             package = template_vars["packagename"]
         else:
@@ -53,9 +63,30 @@ def get_component_by_template(
             "rule uses template '%s' checking service '%s' provided by "
             "package '%s' which is a package that already belongs to "
             "component '%s'" % (
-                template_name,  template_vars["servicename"],
+                template_name, template_vars["servicename"],
                 package, component))
-    return (component, reason)
+        return (component, reason)
+    return None
+
+
+template_test_plugins = [
+    test_template_name,
+    test_template_package,
+    test_template_service,
+]
+
+
+def get_component_by_template(
+        rule, package_to_component, template_to_component):
+    template = rule.template
+    if not template:
+        return None
+    for plugin_function in template_test_plugins:
+        plugin_result = plugin_function(
+            template, package_to_component, template_to_component)
+        if plugin_result is not None:
+            return plugin_result
+    return None
 
 
 def test_nonexistent_rules(rules_in_benchmark, rules_with_component):
@@ -97,8 +128,11 @@ def iterate_over_resolved_rules(built_rules_dir):
 def test_templates(
         rule, package_to_component, rule_components, template_to_component):
     result = True
-    candidate, reason = get_component_by_template(
+    sub_outcome = get_component_by_template(
         rule, package_to_component, template_to_component)
+    if sub_outcome is None:
+        return result
+    candidate, reason = sub_outcome
     if candidate and candidate not in rule_components:
         result = False
         print(
