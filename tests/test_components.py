@@ -28,7 +28,7 @@ def test_template_name(
     if template_name in template_to_component:
         component = template_to_component[template_name]
         reason = (
-            "all rules using template '%s' should be assigned to component "
+            "all rules using template '%s' must be assigned to component "
             "'%s'" % (template_name, component))
         return (component, reason)
     return None
@@ -136,7 +136,7 @@ def test_templates(
     if candidate and candidate not in rule_components:
         result = False
         print(
-            "Rule '%s' should be assigned to component '%s', because %s." %
+            "Rule '%s' must be assigned to component '%s', because %s." %
             (rule.id_, candidate, reason))
     return result
 
@@ -150,7 +150,7 @@ def test_package_platform(rule, package_to_component, rule_components):
         component = package_to_component.get(package, package)
         if component not in rule_components:
             print(
-                "Rule '%s' should be assigned to component '%s', "
+                "Rule '%s' must be assigned to component '%s', "
                 "because it uses the package['%s'] platform." %
                 (rule.id_, component, package))
             result = False
@@ -172,7 +172,7 @@ def test_platform(rule, package_to_component, rule_components):
     for e_platform, e_component in component_exclusive_platforms.items():
         if platform == e_platform and e_component not in rule_components:
             print(
-                "Rule '%s' should be assigned to component '%s', "
+                "Rule '%s' must be assigned to component '%s', "
                 "because it uses the '%s' platform." %
                 (rule.id_, e_component, e_platform))
             result = False
@@ -186,7 +186,7 @@ def test_group(rule, rule_components, rule_groups, group_to_components):
         for c in components:
             if c not in rule_components:
                 print(
-                    "Rule '%s' should be in component '%s' because it's a "
+                    "Rule '%s' must be in component '%s' because it's a "
                     "member of '%s' group." % (rule.id_, c, g))
                 result = False
     return result
