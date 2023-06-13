@@ -1369,7 +1369,8 @@ class BuildLoader(DirectoryLoader):
         rule.normalize(self.env_yaml["product"])
         if self.stig_references:
             rule.add_stig_references(self.stig_references)
-        rule.components = self.rule_to_components[rule.id_]
+        if self.rule_to_components is not None:
+            rule.components = self.rule_to_components[rule.id_]
         return True
 
     def _process_rules(self):
