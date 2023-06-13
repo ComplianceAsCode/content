@@ -1352,7 +1352,7 @@ class BuildLoader(DirectoryLoader):
             self.all_values[value.id_] = value
             self.loaded_group.add_value(value)
 
-    def __process_rule(self, rule):
+    def _process_rule(self, rule):
         if self.rule_to_components is not None and rule.id_ not in self.rule_to_components:
             raise ValueError(
                 "The rule '%s' isn't mapped to any component! Insert the "
@@ -1377,7 +1377,7 @@ class BuildLoader(DirectoryLoader):
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
-            if not self.__process_rule(rule):
+            if not self._process_rule(rule):
                 continue
 
     def _get_new_loader(self):
