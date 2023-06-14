@@ -72,6 +72,24 @@ def controls_manager(env_yaml):
     return controls_manager
 
 
+@pytest.fixture
+def compiled_controls_dir_py2(tmpdir):
+    return str(tmpdir)
+
+
+@pytest.fixture
+def compiled_controls_dir_py3(tmp_path):
+    return tmp_path
+
+
+@pytest.fixture
+def compiled_controls_manager(env_yaml, controls_manager,compiled_controls_dir_py2):
+    controls_manager.save_everything(compiled_controls_dir_py2)
+    controls_manager = ssg.controls.ControlsManager(compiled_controls_dir_py2, env_yaml)
+    controls_manager.load()
+    return controls_manager
+
+
 def _load_test(controls_manager, profile):
     assert_control_confirms_to_standard(controls_manager, profile)
 
@@ -326,6 +344,10 @@ def test_load_control_from_folder(controls_manager):
 
 def test_load_control_from_folder_and_file(controls_manager):
     _load_test(controls_manager, "jklm")
+
+
+def test_load_compiled_control_from_folder_and_file(compiled_controls_dir_py2, compiled_controls_manager):
+    _load_test(compiled_controls_manager, "jklm")
 
 
 def test_load_control_from_specific_folder_and_file(controls_manager):
