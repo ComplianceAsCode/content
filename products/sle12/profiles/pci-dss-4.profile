@@ -90,3 +90,6 @@ selections:
     -  sshd_strong_kex=pcidss
     -  sshd_approved_macs=cis_sle12
     -  sysctl_fs_suid_dumpable
+    -  '!use_pam_wheel_for_su'
+    -  use_pam_wheel_group_for_su
+    -  var_pam_wheel_group_for_su=cis

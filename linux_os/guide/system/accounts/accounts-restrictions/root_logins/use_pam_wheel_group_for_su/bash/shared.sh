@@ -1,7 +1,14 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_ubuntu,multi_platform_sle
 {{{ bash_instantiate_variables("var_pam_wheel_group_for_su") }}}
 
 PAM_CONF=/etc/pam.d/su
+
+if [ $(getent group ${var_pam_wheel_group_for_su})]; then
+  # group exists
+   groupdel -f ${var_pam_wheel_group_for_su}
+fi
+groupadd -f ${var_pam_wheel_group_for_su}
+
 
 pamstr=$(grep -P '^auth\s+required\s+pam_wheel\.so\s+(?=[^#]*\buse_uid\b)(?=[^#]*\bgroup=)' ${PAM_CONF})
 if [ -z "$pamstr" ]; then

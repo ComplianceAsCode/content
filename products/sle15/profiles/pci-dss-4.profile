@@ -26,3 +26,6 @@ selections:
     - '!service_ntpd_enabled'
     - '!service_timesyncd_enabled'
     - '!package_libreswan_installed'
+    - '!use_pam_wheel_for_su'
+    -  use_pam_wheel_group_for_su
+    -  var_pam_wheel_group_for_su=cis
