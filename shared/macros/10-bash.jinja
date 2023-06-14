@@ -1601,10 +1601,10 @@ fi
 
 {{%- macro bash_comment_config_line(config_file, key) -%}}
 # If the key exists, comment it. Otherwise do nothing
-# We search for the key string followed by a word boundary (matched by \>),
+# We search for the key string followed by a blank space,
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
-    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}\\>.*/#&/gi" "{{{ config_file }}}"
+if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}[[:blank:]]" "{{{ config_file }}}"; then
+    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}[[:blank:]].*/#&/gi" "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}
 
