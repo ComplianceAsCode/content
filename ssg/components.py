@@ -15,7 +15,7 @@ def load(components_dir):
     return components
 
 
-def __reverse_mapping(components, attribute):
+def _reverse_mapping(components, attribute):
     mapping = defaultdict(list)
     for component in components.values():
         for item in getattr(component, attribute):
@@ -24,19 +24,19 @@ def __reverse_mapping(components, attribute):
 
 
 def package_component_mapping(components):
-    return __reverse_mapping(components, "packages")
+    return _reverse_mapping(components, "packages")
 
 
 def template_component_mapping(components):
-    return __reverse_mapping(components, "templates")
+    return _reverse_mapping(components, "templates")
 
 
 def group_component_mapping(components):
-    return __reverse_mapping(components, "groups")
+    return _reverse_mapping(components, "groups")
 
 
 def rule_component_mapping(components):
-    return __reverse_mapping(components, "rules")
+    return _reverse_mapping(components, "rules")
 
 
 class Component:
