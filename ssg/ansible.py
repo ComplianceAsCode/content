@@ -40,6 +40,13 @@ def add_minimum_version(ansible_src):
     return ansible_src.replace(" - hosts: all", pre_task, 1)
 
 
+def add_play_name(ansible_src, profile):
+    old_play_start = r"^( *)- hosts: all"
+    new_play_start = (
+        r"\1- name: Ansible Playbook for %s\n\1  hosts: all" % (profile))
+    return re.sub(old_play_start, new_play_start, ansible_src, flags=re.M)
+
+
 def remove_too_many_blank_lines(ansible_src):
     """
     Condenses three or more empty lines as two.
