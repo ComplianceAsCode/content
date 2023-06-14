@@ -691,6 +691,13 @@ class Rule(XCCDFEntity, Templatable):
         "severity",
     }
 
+    OVERRIDABLE_KEYS = {
+        "documentation_complete",
+        "title",
+        "description",
+        "rationale",
+    }
+
     GENERIC_FILENAME = "rule.yml"
     ID_LABEL = "rule_id"
 
@@ -746,6 +753,9 @@ class Rule(XCCDFEntity, Templatable):
         # Only load policy specific content if rule doesn't have it defined yet
         if not rule.policy_specific_content:
             rule.load_policy_specific_content(yaml_file, env_yaml)
+
+        if env_yaml:
+            rule.apply_override_files(yaml_file, env_yaml)
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -850,6 +860,34 @@ class Rule(XCCDFEntity, Templatable):
             policy_specific_content = self.read_policy_specific_content(
                 env_yaml, policy_specific_content_files)
         self.policy_specific_content = policy_specific_content
+
+    def get_rule_override_files(self, rule_root_dir):
+        overrides_dir = os.path.join(rule_root_dir, "rule_overrides")
+        filenames = set()
+        override_files = glob.glob(os.path.join(overrides_dir, "*.yml"))
+        filenames.update(set(override_files))
+        return filenames
+
+    def check_if_override_is_applicable(self, filename, env_yaml):
+        applicable_filename = env_yaml["product"] + ".yml"
+        return os.path.basename(filename) == applicable_filename
+
+    def apply_override_files(self, rule_file, env_yaml):
+        rule_dir = os.path.dirname(rule_file)
+        overrides = self.get_rule_override_files(rule_dir)
+        applicable_files = [
+            f for f in overrides if self.check_if_override_is_applicable(f, env_yaml)]
+        if len(applicable_files) == 0:
+            return
+        applicable_file = applicable_files[0]
+        override_yaml = open_and_macro_expand(applicable_file, env_yaml)
+        for k, v in override_yaml.items():
+            if k in self.OVERRIDABLE_KEYS:
+                setattr(self, k, v)
+            else:
+                raise ValueError(
+                    "You are trying to override a {0} rule attribute in {1},"
+                    "but that is not allowed.".format(k, self.id_))
 
     def get_template_context(self, env_yaml):
         ctx = super(Rule, self).get_template_context(env_yaml)
