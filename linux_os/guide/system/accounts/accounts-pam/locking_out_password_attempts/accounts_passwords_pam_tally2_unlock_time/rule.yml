@@ -22,6 +22,8 @@ identifiers:
 references:
     anssi: BP28(R18)
     cis-csc: 1,12,15,16
+    cis@sle12: 5.3.2
+    cis@sle15: 5.3.2 
     cobit5: DSS05.04,DSS05.10,DSS06.10
     disa: CCI-002238,CCI-000044
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
@@ -39,13 +41,13 @@ ocil_clause: 'unlock_time is less than the expected value'
 
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
-    <pre>$ grep pam_tally2 /etc/pam.d/system-auth /etc/pam.d/common-auth</pre>
+    <pre>$ grep pam_tally2 /etc/pam.d/login</pre>
     The output should show <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
 
 fixtext: |-
     To configure the system to lock out accounts during a specified time period after a number of
     incorrect login attempts using <tt>pam_faillock.so</tt>,
-    Modify the content of both <tt>/etc/pam.d/common-auth</tt>, like this:
+    Modify the content of both <tt>/etc/pam.d/login</tt>, like this:
     <pre>auth required pam_tally2.so deny={{{ xccdf_value("var_accounts_passwords_pam_tally2_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_tally2_unlock_time") }}}</tt> </pre>
 
 platform: package[pam]

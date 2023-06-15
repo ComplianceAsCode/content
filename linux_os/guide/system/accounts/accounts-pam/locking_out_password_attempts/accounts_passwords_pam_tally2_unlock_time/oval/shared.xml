@@ -19,7 +19,7 @@
                      comment="number of failed login attempts allowed" version="1"/>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_unlock_time" comment="Check unlock_time configuration of pam_tally2" version="1">
-    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
     <ind:pattern operation="pattern match">^\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*unlock_time=([0-9]+)([\s+\S+])*\s*(\\)*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
