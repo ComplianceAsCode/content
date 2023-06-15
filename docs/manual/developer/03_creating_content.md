@@ -1153,6 +1153,38 @@ instead is automatically generated during build from a semantic data source. It
 seamlessly integrates with the build system to include the generated profile in
 the resulting SCAP source data stream.
 
+### Controls File Life Cycle
+
+This flowchart represents a high level overview of the control file life cycle based on security policies.
+
+Initial Control File creation using as source a security policy:
+
+<div class="mermaid" style="width=100%;">
+flowchart TD
+    A[Security Policy V1] -->|Convert | B(Control File V1)
+    B[Control File V1] --> |Map Rules | C(Existing Rules)
+    B[Control File V1] --> |Create New Rules | D(Rules)
+    C(Existing Rules) --> |Assign References | D(Rules)
+    D(Rules) --> |Select | F(Populated Control File V1)
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+Control File Update with newer version of the security policy
+
+<div class="mermaid" style="width=100%;">
+flowchart TD
+    control_file_v1(Control File V1) -->|Combine | A
+    control_file_v1(Control File V1) -->|Compare | C
+    A[Security Policy V2] -->|Generate | B(Control File V2)
+    B[Control File V2] --> |Compare | C(Differences of V1 and V2)
+    C[Difference of V1 and V2]-->| Process | D(Update/creation of rules and selections update)
+    D(Update/creation of rules and selections update) --> |Finish | E(Populated Control File V2)
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
 ### Presentation of data
 
 Apart to the build system, the controls files can be also processed by
