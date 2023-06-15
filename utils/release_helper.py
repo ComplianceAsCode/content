@@ -633,9 +633,10 @@ def stats(repo, args):
 
 def cleanup(repo, args) -> None:
     if args.branch:
-        branch_to_remove = get_old_stabilization_branch(repo)
-        if branch_to_remove:
-            remove_old_stabilization_branch(branch_to_remove)
+        branches_to_remove = get_old_stabilization_branch(repo)
+        if branches_to_remove:
+            for branch in branches_to_remove:
+                remove_old_stabilization_branch(repo, branch)
         else:
             print('Great! There is no branch to be removed.')
 
