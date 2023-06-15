@@ -2,6 +2,7 @@ name: chrony
 packages:
 - chrony
 rules:
+- chronyd_configure_pool_and_server
 - chronyd_run_as_chrony_user
 - chronyd_server_directive
 - chronyd_specify_remote_server

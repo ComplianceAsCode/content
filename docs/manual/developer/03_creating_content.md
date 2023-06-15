@@ -439,6 +439,8 @@ type: platform
 
 benchmark_root: "../../linux_os/guide"
 
+components_root: "../../components"
+
 profiles_root: "./profiles"
 
 pkg_manager: "yum"
@@ -1286,3 +1288,5 @@ YAML file keys:
 - `changelog` (list) - records substantial changes in the given component that affected rules and remediations (optional)
 
 Each rule in the benchmark in the `/linux_os/guide` directory must be a member of at least 1 component.
+
+Products specify a path to the directory with component files by the `components_root` key in the `product.yml`.

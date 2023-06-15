@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from copy import deepcopy
+import collections
 import datetime
 import json
 import os
@@ -12,6 +13,7 @@ import glob
 
 
 import ssg.build_remediations
+import ssg.components
 from .build_cpe import CPEALLogicalTest, CPEALCheckFactRef, ProductCPEs
 from .constants import (XCCDF12_NS,
                         OSCAP_BENCHMARK,
@@ -657,6 +659,7 @@ class Rule(XCCDFEntity, Templatable):
         rationale=lambda: "",
         severity=lambda: "",
         references=lambda: dict(),
+        components=lambda: list(),
         identifiers=lambda: dict(),
         ocil_clause=lambda: None,
         ocil=lambda: None,
@@ -1331,12 +1334,44 @@ class BuildLoader(DirectoryLoader):
         self.stig_references = None
         if stig_reference_path:
             self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
+        self.rule_to_components = self._load_components()
+
+    def _load_components(self):
+        if "components_root" not in self.env_yaml:
+            return None
+        product_dir = self.env_yaml["product_dir"]
+        components_root = self.env_yaml["components_root"]
+        components_dir = os.path.abspath(
+            os.path.join(product_dir, components_root))
+        components = ssg.components.load(components_dir)
+        rule_to_components = ssg.components.rule_component_mapping(
+            components)
+        return rule_to_components
 
     def _process_values(self):
         for value_yaml in self.value_files:
             value = Value.from_yaml(value_yaml, self.env_yaml)
             self.all_values[value.id_] = value
             self.loaded_group.add_value(value)
+
+    def _process_rule(self, rule):
+        if self.rule_to_components is not None and rule.id_ not in self.rule_to_components:
+            raise ValueError(
+                "The rule '%s' isn't mapped to any component! Insert the "
+                "rule ID at least once to the rule-component mapping." %
+                (rule.id_))
+        prodtypes = parse_prodtype(rule.prodtype)
+        if "all" not in prodtypes and self.product not in prodtypes:
+            return False
+        self.all_rules[rule.id_] = rule
+        self.loaded_group.add_rule(
+            rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
+        rule.normalize(self.env_yaml["product"])
+        if self.stig_references:
+            rule.add_stig_references(self.stig_references)
+        if self.rule_to_components is not None:
+            rule.components = self.rule_to_components[rule.id_]
+        return True
 
     def _process_rules(self):
         for rule_yaml in self.rule_files:
@@ -1346,16 +1381,8 @@ class BuildLoader(DirectoryLoader):
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
-            prodtypes = parse_prodtype(rule.prodtype)
-            if "all" not in prodtypes and self.product not in prodtypes:
+            if not self._process_rule(rule):
                 continue
-            self.all_rules[rule.id_] = rule
-            self.loaded_group.add_rule(
-                rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
-
-            rule.normalize(self.env_yaml["product"])
-            if self.stig_references:
-                rule.add_stig_references(self.stig_references)
 
     def _get_new_loader(self):
         loader = BuildLoader(
@@ -1364,6 +1391,8 @@ class BuildLoader(DirectoryLoader):
         loader.sce_metadata = self.sce_metadata
         # Do it this way so we only have to parse the STIG references once.
         loader.stig_references = self.stig_references
+        # Do it this way so we only have to parse the component metadata once.
+        loader.rule_to_components = self.rule_to_components
         return loader
 
     def export_group_to_file(self, filename):
