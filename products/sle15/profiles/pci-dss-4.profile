@@ -18,6 +18,10 @@ selections:
     -  sshd_approved_ciphers=cis_sle15 
     -  var_multiple_time_servers=suse
     -  var_multiple_time_pools=suse      
-    -  '!service_ntp_enabled'
-    -  '!service_ntpd_enabled'
-    -  '!service_timesyncd_enabled'
+# Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only 
+# rules related to chrony
+    - '!ntpd_specify_multiple_servers'
+    - '!ntpd_specify_remote_server'
+    - '!service_ntp_enabled'
+    - '!service_ntpd_enabled'
+    - '!service_timesyncd_enabled'

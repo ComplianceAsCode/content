@@ -52,12 +52,15 @@ selections:
     -  group_unique_id
     -  group_unique_name
     -  no_files_unowned_by_user
+    -  '!ntpd_specify_multiple_servers'
+    -  '!ntpd_specify_remote_server'
     -  package_bind_removed
     -  package_cron_installed
     -  package_dhcp_removed
     -  package_httpd_removed
     -  package_net-snmp_removed
     -  package_nfs-utils_removed
+    -  '!package_ntp_installed'
     -  package_openldap-servers_removed
     -  package_rsh_removed
     -  package_samba_removed
@@ -68,8 +71,11 @@ selections:
     -  service_avahi-daemon_disabled
     -  service_cron_enabled
     -  service_cups_disabled
+    -  '!service_ntp_enabled'
+    -  '!service_ntpd_enabled'
     -  service_rpcbind_disabled
     -  service_rsyncd_disabled
+    -  '!service_timesyncd_enabled'
     -  sshd_disable_rhosts
     -  sshd_disable_tcp_forwarding
     -  sshd_disable_x11_forwarding
