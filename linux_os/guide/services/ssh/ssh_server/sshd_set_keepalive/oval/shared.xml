@@ -6,7 +6,7 @@
       <criteria operator="AND" comment="sshd is not required and not installed">
         <extend_definition definition_ref="sshd_not_required_or_unset"
           comment="sshd is not required or requirement is unset"/>
-        {{% if product in ['opensuse', 'sle12'] %}}
+        {{% if product in ['opensuse', 'sle12','sle15'] %}}
         <extend_definition definition_ref="package_openssh_removed"
           comment="rpm package openssh removed"/>
         {{% else %}}
@@ -17,7 +17,7 @@
       <criteria operator="AND" comment="sshd is installed and configured">
         <extend_definition definition_ref="sshd_required_or_unset"
           comment="sshd is required or requirement is unset"/>
-        {{% if product in ['opensuse', 'sle12'] %}}
+        {{% if product in ['opensuse', 'sle12','sle15'] %}}
         <extend_definition definition_ref="package_openssh_installed"
           comment="rpm package openssh installed"/>
         {{% else %}}
@@ -45,7 +45,7 @@
 
   <ind:textfilecontent54_object id="object_sshd_set_keepalive_clientalivecountmax" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)ClientAliveCountMax(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -65,7 +65,7 @@
   <ind:textfilecontent54_object id="object_sshd_set_keepalive_clientalivecountmax_dir" version="2">
     <ind:path>/etc/ssh/sshd_config.d</ind:path>
     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)ClientAliveCountMax(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern> 
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{%- endif %}}
