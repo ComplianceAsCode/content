@@ -1426,9 +1426,9 @@ controls:
       - l1_workstation
     status: automated
     rules:
+      - package_cron_installed
       - service_cron_enabled
-      - service_crond_enabled
-
+  
   - id: 5.1.2
     title: Ensure permissions on /etc/crontab are configured (Automated)
     levels:
