@@ -24,6 +24,8 @@ filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platfo
 
 selections:
     - srg_ctr:all
+  ### Variables
+    - var_openshift_audit_profile=WriteRequestBodies
   ### Helper Rules
   ### This is a helper rule to fetch the required api resource for detecting OCP version
     - version_detect_in_ocp
