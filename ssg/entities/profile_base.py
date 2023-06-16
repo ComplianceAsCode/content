@@ -37,6 +37,7 @@ class Profile(XCCDFEntity, SelectionHandler):
     KEYS = dict(
         description=lambda: "",
         extends=lambda: "",
+        hidden=lambda: "",
         metadata=lambda: None,
         reference=lambda: None,
         selections=lambda: list(),
@@ -90,6 +91,9 @@ class Profile(XCCDFEntity, SelectionHandler):
             element.append(select)
 
     def to_xml_element(self):
+        if self.hidden:
+            return ET.Comment('Default Profile')
+
         element = ET.Element('{%s}Profile' % XCCDF12_NS)
         element.set("id", OSCAP_PROFILE + self.id_)
         if self.extends:
@@ -247,6 +251,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         profile.extends = self.extends
         profile.platforms = self.platforms
         profile.platform = self.platform
+        profile.hidden = self.hidden
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
