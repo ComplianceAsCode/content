@@ -347,6 +347,17 @@ class Benchmark(XCCDFEntity):
         for p in self.profiles:
             p.unselect_empty_groups(self)
 
+    def drop_rules_not_included_in_a_profile(self):
+        selected_rules = self.get_rules_selected_in_all_profiles()
+        for g in self.groups.values():
+            g.remove_rules_with_ids_not_listed(selected_rules)
+
+    def get_rules_selected_in_all_profiles(self):
+        selected_rules = set()
+        for p in self.profiles:
+            selected_rules.update(p.selected)
+        return selected_rules
+
     def to_xml_element(self, env_yaml=None, product_cpes=None):
         root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
         root.set('id', OSCAP_BENCHMARK + self.id_)
@@ -642,6 +653,11 @@ class Group(XCCDFEntity):
             return
         child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
+
+    def remove_rules_with_ids_not_listed(self, rule_ids_list):
+        self.rules = dict(filter(lambda el, ids=rule_ids_list: el[0] in ids, self.rules.items()))
+        for group in self.groups.values():
+            group.remove_rules_with_ids_not_listed(rule_ids_list)
 
     def __str__(self):
         return self.id_
@@ -1376,7 +1392,8 @@ class BuildLoader(DirectoryLoader):
                 (rule.id_, self.components_dir))
         prodtypes = parse_prodtype(rule.prodtype)
         if "all" not in prodtypes and self.product not in prodtypes:
-            return False
+            # TODO: remove prodtype
+            pass
         self.all_rules[rule.id_] = rule
         self.loaded_group.add_rule(
             rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
@@ -1468,6 +1485,7 @@ class LinearLoader(object):
             except KeyError as exc:
                 # Add only the groups we have compiled and loaded
                 pass
+        self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):
