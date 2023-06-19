@@ -6,13 +6,7 @@
 
 {{{ ansible_instantiate_variables("firewalld_sshd_zone") }}}
 
-- name: '{{{ rule_title }}} - Ensure firewalld and NetworkManager packages are installed'
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - firewalld
-    - NetworkManager
+{{{ ansible_package_install(["firewalld", "NetworkManager"]) }}}
 
 - name: '{{{ rule_title }}} - Collect facts about system services'
   ansible.builtin.service_facts:
