@@ -1334,6 +1334,7 @@ class BuildLoader(DirectoryLoader):
         self.stig_references = None
         if stig_reference_path:
             self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
+        self.components_dir = None
         self.rule_to_components = self._load_components()
 
     def _load_components(self):
@@ -1341,9 +1342,9 @@ class BuildLoader(DirectoryLoader):
             return None
         product_dir = self.env_yaml["product_dir"]
         components_root = self.env_yaml["components_root"]
-        components_dir = os.path.abspath(
+        self.components_dir = os.path.abspath(
             os.path.join(product_dir, components_root))
-        components = ssg.components.load(components_dir)
+        components = ssg.components.load(self.components_dir)
         rule_to_components = ssg.components.rule_component_mapping(
             components)
         return rule_to_components
@@ -1358,8 +1359,8 @@ class BuildLoader(DirectoryLoader):
         if self.rule_to_components is not None and rule.id_ not in self.rule_to_components:
             raise ValueError(
                 "The rule '%s' isn't mapped to any component! Insert the "
-                "rule ID at least once to the rule-component mapping." %
-                (rule.id_))
+                "rule ID to at least one file in '%s'." %
+                (rule.id_, self.components_dir))
         prodtypes = parse_prodtype(rule.prodtype)
         if "all" not in prodtypes and self.product not in prodtypes:
             return False
