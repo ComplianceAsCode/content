@@ -4,12 +4,7 @@
 # strategy = configure
 # disruption = low
 
-- name: '{{{ rule_title }}} - Ensure firewalld Package is Installed'
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - firewalld
+{{{ ansible_package_install(["firewalld"]) }}}
 
 - name: '{{{ rule_title }}} - Collect Facts About System Services'
   ansible.builtin.service_facts:
