@@ -26,17 +26,11 @@
   register: aesni_supported
   check_mode: no
 
-- name: Ensure dracut-fips-aesni is installed
-  package:
-    name: dracut-fips-aesni
-    state: present
+{{{ ansible_package_install(["dracut-fips-aesni"]) }}}
   when:
     - aesni_supported.rc == 0
 
-- name: Install dracut-fips
-  package:
-    name: dracut-fips
-    state: present
+{{{ ansible_package_install(["dracut-fips"]) }}}
 
 - name: Rebuild initramfs
   command: dracut -f
