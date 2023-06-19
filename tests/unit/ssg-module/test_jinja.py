@@ -26,3 +26,11 @@ def test_macro_expansion():
 
     complete_defs = get_definitions_with_substitution(dict(global_var="value"))
     assert complete_defs["expand_to_global_var"]() == "value"
+
+
+def test_join_comma_and():
+    assert ssg.jinja.join_comma_and([]) == ""
+    assert ssg.jinja.join_comma_and(["first"]) == "first"
+    assert ssg.jinja.join_comma_and(["first", "last"]) == "first and last"
+    assert ssg.jinja.join_comma_and(["first", "b", "last"]) == "first, b and last"
+    assert ssg.jinja.join_comma_and(["first", "b", "c", "last"]) == "first, b, c and last"

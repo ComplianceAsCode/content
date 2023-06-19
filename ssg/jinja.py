@@ -24,6 +24,7 @@ from .utils import (required_key,
                     escape_id,
                     escape_regex,
                     escape_yaml_key,
+                    join_comma_and,
                     sha256
                     )
 
@@ -95,6 +96,7 @@ def _get_jinja_environment(substitutions_dict):
         _get_jinja_environment.env.filters['escape_id'] = escape_id
         _get_jinja_environment.env.filters['escape_regex'] = escape_regex
         _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
+        _get_jinja_environment.env.filters['join_comma_and'] = join_comma_and
         _get_jinja_environment.env.filters['quote'] = shell_quote
         _get_jinja_environment.env.filters['sha256'] = sha256
 

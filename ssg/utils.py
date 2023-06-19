@@ -470,3 +470,7 @@ def apply_formatting_on_dict_values(source_dict, string_dict, ignored_keys=froze
         else:
             new_dict[k] = v
     return new_dict
+
+
+def join_comma_and(lst):
+    return ", ".join(lst[:-2] + [" and ".join(lst[-2:])])

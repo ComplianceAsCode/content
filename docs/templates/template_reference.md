@@ -1118,6 +1118,9 @@ escape_yaml_key
 -   Escape uppercase letters and `^` with additional `^` and convert letters
     to lovercase. This is because of OVAL's name argument limitations.
 
+join_comma_and
+-   Join list using comma and "and". Example ["a", "b", "c"] -> "a, b and c".
+
 quote
 -   Escape string to be used as POSIX shell value. Like Ansible `quote`.
 
