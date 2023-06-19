@@ -4,12 +4,7 @@
 # complexity = low
 # disruption = medium
 
-- name: Ensure NetworkManager is installed
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - NetworkManager
+{{{ ansible_package_install(["NetworkManager"]) }}}
 
 - name: Deactivate Wireless Network Interfaces
   command: nmcli radio wifi off
