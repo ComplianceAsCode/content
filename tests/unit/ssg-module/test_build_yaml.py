@@ -555,3 +555,27 @@ def profile_with_version(profile_ospp):
 def test_profile_with_version(profile_with_version):
     profile_el = profile_with_version.to_xml_element()
     assert profile_el.find("{%s}version" % XCCDF12_NS).text == "3.2.1"
+
+
+def test_aply_override_files():
+    test_rule_path = os.path.join(DATADIR, "overrides", "rule.yml")
+    test_rule = ssg.build_yaml.Rule.from_yaml(test_rule_path)
+    assert test_rule.title == "original title"
+    assert test_rule.description == "original description"
+    env_yaml = {"product": "rhel9"}
+    test_rule.apply_override_files(test_rule_path, env_yaml)
+    assert test_rule.title == "rhel9 title"
+    assert test_rule.description == "rhel9 description"
+    assert test_rule.ocil == "original ocil"
+    env_yaml = {"product": "rhel8"}
+    test_rule.apply_override_files(test_rule_path, env_yaml)
+    assert test_rule.title == "rhel8 title"
+    assert test_rule.description == "rhel9 description"
+    assert test_rule.ocil == "original ocil"
+
+def test_apply_prohibited_override():
+    test_rule_path = os.path.join(DATADIR, "overrides", "rule.yml")
+    test_rule = ssg.build_yaml.Rule.from_yaml(test_rule_path)
+    env_yaml = {"product": "rhel7"}
+    with pytest.raises(ValueError) as e:
+        test_rule.apply_override_files(test_rule_path, env_yaml)
