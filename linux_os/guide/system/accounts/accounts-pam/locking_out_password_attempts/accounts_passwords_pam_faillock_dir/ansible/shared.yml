@@ -7,14 +7,7 @@
 {{{ ansible_pam_faillock_enable() }}}
 {{{ ansible_pam_faillock_parameter_value("dir", "var_accounts_passwords_pam_faillock_dir") }}}
 
-- name: '{{{ rule_title }}} - Ensure necessary SELinux packages are installed'
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - python3-libselinux
-    - python3-policycoreutils
-    - policycoreutils-python-utils
+{{{ ansible_package_install(["python3-libselinux", "python3-policycoreutils", "policycoreutils-python-utils"], "necessary SELinux") }}}
 
 - name: '{{{ rule_title }}} - Create the tally directory if it does not exist'
   ansible.builtin.file:
