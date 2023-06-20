@@ -4,4 +4,4 @@
 
 AUDITCONFIG={{{ audisp_conf_path }}}/audisp-remote.conf
 
-{{{ bash_replace_or_append("$AUDITCONFIG", '^disk_full_action', "$var_audispd_disk_full_action") }}}
+{{{ bash_replace_or_append("$AUDITCONFIG", 'disk_full_action', "$var_audispd_disk_full_action") }}}

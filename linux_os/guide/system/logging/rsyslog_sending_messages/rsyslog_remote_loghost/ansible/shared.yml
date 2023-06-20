@@ -6,8 +6,9 @@
 {{{ ansible_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
 - name: "Set rsyslog remote loghost"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/rsyslog.conf
-    regexp: "^\\*\\.\\*"
+    regexp: >-
+      ^\*\.\*[ \\t]+(?:@|\:omrelp\:)
     line: "*.* @@{{ rsyslog_remote_loghost_address }}"
     create: yes

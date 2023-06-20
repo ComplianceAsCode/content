@@ -9,7 +9,7 @@ mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
 
 {{% if product in ["ol8", "ol9"] %}}
-{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s") }}}
+{{{ bash_replace_or_append("/etc/ssh/sshd_config", "Include", "/etc/ssh/sshd_config.d/*.conf", "%s %s", key_starts_with=false) }}}
 {{% endif %}}
 
 if grep -q "^\s*${SSHD_PARAM}" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* ; then

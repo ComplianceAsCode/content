@@ -16,6 +16,77 @@ Then, assume that variables of that names are defined and contain the correct va
 
 
 {{#
+Escape value to be used in *sed* **s** command as regexp, all but ``\w`` is quoted
+
+All control characters are removed except ``\t`` (horizontal tab).
+
+There is *bash_sed_escape_replacement* for replacement escape.
+
+Example calls:
+
+    Unsafe variable::
+
+        variable=$'q"$(foo^bar)/`rm -rf`'
+        {{{ bash_sed_escape_regexp("variable", "result_variable") }}}
+        sed -Ei "s/${result_variable}/replacement/" file
+
+    Full set::
+
+        {{{ bash_sed_escape_regexp("variable", "variable") }}}
+        {{{ bash_sed_escape_replacement("replacement", "replacement") }}}
+        sed -Ei "s/${variable}/${replacement}/" file
+
+:param variable: Shell variable name with content to be escaped
+:type variable: str
+:param result_variable: Shell variable name where escaped content is placed
+:type result_variable: str
+
+#}}
+{{%- macro bash_sed_escape_regexp(variable, result_variable) -%}}
+{{#-
+    First weed out control characters. See: ascii(7)
+    Then escape other than \w and ^ with [ ]. And then ^ with \^.
+-#}}
+{{%- if (variable is not string) or ((variable | quote) != variable) -%}}
+{{{ raise("variable '" ~ variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{%- if (result_variable is not string) or ((result_variable | quote) != result_variable) -%}}
+{{{ raise("result_variable '" ~ result_variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{{ result_variable }}}="$(set -o pipefail;LC_ALL=C sed 's/[\x00-\x08\x0a-\x1f\x7f]//g;s/[^^a-zA-Z0-9_]/[&]/g;s/\^/\\^/g' <<< "{{{ "${" ~ variable ~ "}" }}}" | tr -d '\n')"
+{{%- endmacro -%}}
+
+
+{{#
+Escape value to be used in *sed* **s** command as replacement, against ``/`` and ``\`` (like ``\1``)
+
+All control characters are removed except ``\t`` (horizontal tab).
+
+There is *bash_sed_escape_regexp* for regexp escape.
+
+:param variable: Shell variable name with content to be escaped
+:type variable: str
+:param result_variable: Shell variable name where escaped content is placed
+:type result_variable: str
+:param delim: Delimiter character in **s** command
+:type delim: char
+
+#}}
+{{%- macro bash_sed_escape_replacement(variable, result_variable, delim="/") -%}}
+{{%- if (variable is not string) or ((variable | quote) != variable) -%}}
+{{{ raise("variable '" ~ variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{%- if (result_variable is not string) or ((result_variable | quote) != result_variable) -%}}
+{{{ raise("result_variable '" ~ result_variable ~ "' must be shell variable name, not value.") }}}
+{{%- endif -%}}
+{{%- if (delim is not string) or ((delim | length) != 1) -%}}
+{{{ raise("delim '" ~ delim ~ "' must be char aka string with legth of one.") }}}
+{{%- endif -%}}
+{{{ result_variable }}}="$(LC_ALL=C sed 's/[\x00-\x08\x0a-\x1f\x7f]//g;s/\\/\\\\/g{{% if delim == '^' %}};s/\^/\\^/g{{% else %}};s^{{{ delim }}}^\\{{{ delim }}}^g{{% endif %}};s/[&]/\\&/g' <<< "{{{ "${" ~ variable ~ "}" }}}" | tr -d '\n')"
+{{%- endmacro -%}}
+
+
+{{#
     Make sure that we have a line like this in pamFile (additional options are left as-is):
     type control module option=valueRegexArg
 
@@ -1571,22 +1642,42 @@ fi
 
 
 {{#
-    Macro to replace configuration setting in config file or add the configuration setting if
-    it does not exist.
+Macro to replace configuration setting in config file or add the configuration setting if
+it does not exist.
 
-    Example Calls:
+All regular expression files accept Basic Regular Expression (BRE) format.
 
-      With default format of 'key = value'::
+Inherent limitations:
 
-        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
+* no '"' in jinja level variables, error raised
+* only allowed control character is \t (vertical tab), filtered away at shell level
+* caller is responsible for shell quoting (variables from
+  `bash_instantiate_variables` are quoted automatically)
 
-      With custom key/value format::
+Example Calls:
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
+    With default format of 'key = value'::
 
-      With a variable::
+        {{{ bash_replace_or_append('/etc/sysctl.conf', 'kernel.randomize_va_space', '2') }}}
 
-        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
+    With custom key/value format::
+
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', 'SELINUX=', 'disabled', '%s=%s') }}}
+
+    With a variable::
+
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', 'SELINUX=', "$var_selinux_state", '%s=%s') }}}
+
+    Caller is responsible for shell quoting::
+
+        {{{ bash_replace_or_append(( unsafe_file | quote), 'key', "value") }}}
+
+    There is sometimes need to submit '"' in str fields. Because of shell
+    scripting limitations, this is not allowed as jinja variable and error is
+    raised, but you can do it like this::
+
+        format='"%s" = "%s"'
+        {{{ bash_replace_or_append('/etc/config', 'key parts', "value parts", "${format}") }}}
 
 :param config_file: Configuration file that will be modified
 :type config_file: str
@@ -1596,29 +1687,92 @@ fi
 :type value: str
 :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
 :type format: str
+:param insensitive: If true *key*, or *key_regex* are case insensitive
+:type insensitive: bool
+:param word_boundary: Regex to separate *key* in case of common prefix
+:type word_boundary: str
+:param key_regex: Regex to match the key line
+:type key_regex: str
+:param key_starts_with: If true, line must start with *key*. Only enabled if *key_regex* is not set
+:type key_starts_with: bool
 
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
-# Strip any search characters in the key arg so that the key can be replaced without
-# adding any search characters to the config file.
-stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s', insensitive=true, word_boundary="\\>", key_regex=none, key_starts_with=true) -%}}
+{{%- if key is not string -%}}
+{{{ raise("key '" ~ key ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if value is not string -%}}
+{{{ raise("value '" ~ value ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if format is not string -%}}
+{{{ raise("format '" ~ format ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if insensitive is not boolean -%}}
+{{{ raise("insensitive '" ~ insensitive ~ "' is not boolean") }}}
+{{%- endif -%}}
+{{%- if word_boundary is not string -%}}
+{{{ raise("word_boundary '" ~ word_boundary ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if (key_regex is not none) and (key_regex is not string) -%}}
+{{{ raise("key_regex '" ~ key_regex ~ "' is not string") }}}
+{{%- endif -%}}
+{{%- if key_starts_with is not boolean -%}}
+{{{ raise("key_starts_with '" ~ key_starts_with ~ "' is not boolean") }}}
+{{%- endif -%}}
+{{%- if (key_regex is none) and key.startswith('^') -%}}
+{{{ raise("key is not partially regex any more, use key_regex") }}}
+{{%- endif -%}}
+{{%- if '"' in config_file -%}}
+{{{ raise("config_file contains '\"' character, must not. You can put value of config_file in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in key -%}}
+{{{ raise("key contains '\"' character, must not. You can put value of key in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in value -%}}
+{{{ raise("value contains '\"' character, must not. You can put value of value in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in format -%}}
+{{{ raise("format contains '\"' character, must not. You can put value of format in shell variable.") }}}
+{{%- endif -%}}
+{{%- if '"' in word_boundary -%}}
+{{{ raise("word_boundary contains '\"' character, must not. You can put value of word_boundary in shell variable.") }}}
+{{%- endif -%}}
+{{%- if key_regex is not none and '"' in key_regex -%}}
+{{{ raise("key_regex contains '\"' character, must not. You can put value of key_regex in shell variable.") }}}
+{{%- endif -%}}
+
+{{%- if key_regex is none -%}}
+key_regex="{{{ key }}}"
+{{{ bash_sed_escape_regexp("key_regex", "key_regex") }}}
+{{%- if key_starts_with %}}
+key_regex="^${key_regex}{{{ word_boundary }}}"
+{{%- else %}}
+key_regex+="{{{ word_boundary }}}"
+{{%- endif -%}}
+{{%- else %}}
+key_regex="{{{ key_regex ~ word_boundary }}}"
+{{%- endif %}}
 
 # shellcheck disable=SC2059
-printf -v formatted_output "{{{ format }}}" "$stripped_key" "{{{ value }}}"
+printf -v formatted_output "{{{ format }}}" "{{{ key }}}" "$(tr -d '\n' <<< "{{{ value }}}")"
 
 # If the key exists, change it. Otherwise, add it to the config_file.
-# We search for the key string followed by a word boundary (matched by \>),
+{{%- if word_boundary == "" %}}
+# We search for the key string followed by a word boundary (matched by {{{ word_boundary }}}),
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
-    escaped_formatted_output=$(sed -e 's|/|\\/|g' <<< "$formatted_output")
-    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}\\>.*/$escaped_formatted_output/gi" "{{{ config_file }}}"
+{{%- else %}}
+# We search for the key string, but care should be take not to match common prefix.
+{{%- endif %}}
+if LC_ALL=C grep -q -m 1{{%- if insensitive %}} -i{{%- endif %}} -e "${key_regex}" "{{{ config_file }}}"; then
+    {{{ bash_sed_escape_replacement("formatted_output", "escaped_formatted_output") }}}
+    LC_ALL=C sed -i --follow-symlinks "s/${key_regex}.*/${escaped_formatted_output}/{{%- if insensitive -%}}i{{%- endif -%}}" "{{{ config_file }}}"
 else
     {{{ bash_ensure_nl_at_eof(config_file) | indent }}}
     {{%- if cce_identifiers and 'cce' in cce_identifiers %}}
     {{{ set_cce_value() }}}
     printf '# Per %s: Set %s in %s\n' "${cce}" "${formatted_output}" "{{{ config_file }}}" >> "{{{ config_file }}}"
     {{%- endif %}}
-    printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"
+    printf '%s\n' "${formatted_output}" >> "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}
 

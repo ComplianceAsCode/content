@@ -62,7 +62,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -72,7 +72,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -82,7 +82,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -92,7 +92,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -102,7 +102,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -112,7 +112,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -132,7 +132,7 @@ teardown() {
 
     call_set_config_file "$tmp_file"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -u "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 

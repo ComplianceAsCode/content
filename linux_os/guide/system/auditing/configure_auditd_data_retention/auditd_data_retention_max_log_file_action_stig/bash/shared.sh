@@ -2,4 +2,4 @@
 
 {{{ bash_instantiate_variables("var_auditd_max_log_file_action") }}}
 
-{{{ bash_replace_or_append("/etc/audit/auditd.conf", '^max_log_file_action', "$var_auditd_max_log_file_action") }}}
+{{{ bash_replace_or_append("/etc/audit/auditd.conf", 'max_log_file_action', "$var_auditd_max_log_file_action") }}}

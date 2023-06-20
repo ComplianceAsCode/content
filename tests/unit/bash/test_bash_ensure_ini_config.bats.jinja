@@ -50,7 +50,7 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -61,10 +61,10 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf pam_cert_auth.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-    run diff "pam_cert_auth.conf" <(printf "$expected_output")
+    run diff -u "pam_cert_auth.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -74,7 +74,7 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -84,7 +84,7 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -93,7 +93,7 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -103,7 +103,7 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -114,7 +114,7 @@ teardown() {
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_verbosity" "1"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -125,10 +125,10 @@ teardown() {
 
     call_bash_ensure_ini_config "pam_cert_auth.conf sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-     run diff "pam_cert_auth.conf" <(printf "$expected_output")
+     run diff -u "pam_cert_auth.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }
 
@@ -138,6 +138,6 @@ teardown() {
 
     call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
 
-    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    run diff -u "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 }

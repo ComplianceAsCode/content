@@ -1,3 +1,4 @@
+{{%- set remote_rx = "^\*\.\*[ \t]+(?:@|\:omrelp\:)" -%}}
 <def-group>
   <definition class="compliance" id="rsyslog_remote_loghost" version="1">
     {{{ oval_metadata("Syslog logs should be sent to a remote loghost") }}}
@@ -33,14 +34,14 @@
 
   <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_conf" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\*\.\*[\s]+(?:@|\:omrelp\:)</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ remote_rx }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_d" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
     <ind:filename operation="pattern match">^.+\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\*\.\*[\s]+(?:@|\:omrelp\:)</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ remote_rx }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
