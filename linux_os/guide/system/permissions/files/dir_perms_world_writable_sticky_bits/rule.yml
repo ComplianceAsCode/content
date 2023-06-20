@@ -69,15 +69,34 @@ references:
 ocil_clause: 'any world-writable directories are missing the sticky bit'
 
 ocil: |-
+    {{% if product == "rhcos4" -%}}
+    Verify that all world-writable directories have the sticky bit set. The following command will list any world-writeable directories that do not have the sticky bit set.
+
+    > for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find / -type d \( -perm -0002 -a ! -perm -1000 ! -path "/var/lib/containers/*" ! -path "/var/lib/kubelet/pods/*" ! -path "/sysroot/ostree/deploy/*" \) -print 2>/dev/null' 2>/dev/null; done
+
+    If there are any directories listed in the results, this is a finding.
+    {{% else -%}}
     To find world-writable directories that lack the sticky bit, run the following command:
     <pre>$ sudo find / -type d \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null</pre>
+    {{% endif -%}}
 
 fixtext: |-
+    {{% if product == "rhcos4" -%}}
+    Fix the directory permissions, by either removing world-writeable permission, or setting the sticky bit
+
+    > oc debug node/<node_name> -- chroot /host /bin/bash -c 'chmod XXXX <directory>'
+
+    where
+      node_name: The name of the node to connect to (oc get node)
+      XXXX:  Either 1777 (sticky bit) or 0755 (remove group and world write permission)
+      <directory>: The directory on which to correct the permissions
+    {{% else -%}}
     Configure all world-writable directories to have the sticky bit set to prevent unauthorized and unintended information transferred via shared system resources.
 
     Set the sticky bit on all world-writable directories using the command, replace "[World-Writable Directory]" with any directory path missing the sticky bit:
 
     $ chmod a+t [World-Writable Directory]
+    {{% endif -%}}
 
 srg_requirement:
     A sticky bit must be set on all {{{ full_name }}} public directories to prevent unauthorized and unintended information transferred via shared system resources.
