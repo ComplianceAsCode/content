@@ -4,4 +4,8 @@ controls:
   - medium
   title: {{{ full_name }}} runtime must isolate security functions from non-security
     functions.
-  status: inherently met
+  status: automated
+  rules:
+  - coreos_enable_selinux_kernel_argument
+  - selinux_policytype
+  - selinux_state
