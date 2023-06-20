@@ -1,6 +1,10 @@
 documentation_complete: true
 
+<<<<<<< Updated upstream
 title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R1'
+=======
+title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R9'
+>>>>>>> Stashed changes
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -529,6 +533,7 @@ selections:
     - chronyd_sync_clock
 
     # UBTU-20-010437 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
+    - aide_disable_silentreports
 
     # UBTU-20-010438 The Ubuntu operating system's Advance Package Tool (APT) must be configured to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.
     - apt_conf_disallow_unauthenticated
@@ -566,8 +571,8 @@ selections:
     - clean_components_post_updating
 
     # UBTU-20-010450 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
-    - aide_build_database
     - package_aide_installed
+    - aide_build_database
 
     # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.
 
