@@ -449,6 +449,7 @@ selections:
     - account_disable_post_pw_expiration
 
     # UBTU-20-010410 The Ubuntu operating system must automatically remove or disable emergency accounts after 72 hours.
+    - account_emergency_expire_date
 
     # UBTU-20-010411 The Ubuntu operating system must set a sticky bit  on all public directories to prevent unauthorized and unintended information transferred via shared system resources.
     - dir_perms_world_writable_sticky_bits
