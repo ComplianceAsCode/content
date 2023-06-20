@@ -73,6 +73,7 @@ class Status:
 
 class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEntity):
     KEYS = dict(
+        id=str,
         levels=list,
         notes=str,
         title=str,
@@ -106,10 +107,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         self.status_justification = ""
         self.fixtext = ""
         self.check = ""
-
-    @property
-    def id_(self):
-        return self.id
+        self.controls = []
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -156,6 +154,11 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.related_rules = control_dict.get("related_rules", [])
         return control
 
+    def represent_as_dict(self):
+        data = super(Control, self).represent_as_dict()
+        data["rules"] = self.selections
+        return data
+
 
 class Level(ssg.entities.common.XCCDFEntity):
     KEYS = dict(
@@ -175,18 +178,6 @@ class Level(ssg.entities.common.XCCDFEntity):
 
 
 class Policy(ssg.entities.common.XCCDFEntity):
-    KEYS = dict(
-        controls_dir=str,
-        controls=list,
-        levels=list,
-        source=str,
-        ** ssg.entities.common.XCCDFEntity.KEYS
-    )
-
-    MANDATORY_KEYS = {
-        "title",
-    }
-
     def __init__(self, filepath, env_yaml=None):
         self.id = None
         self.env_yaml = env_yaml
@@ -199,16 +190,12 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.title = ""
         self.source = ""
 
-    @property
-    def id_(self):
-        return self.id
-
-    @property
-    def definition_location(self):
-        return self.filepath
-
     def represent_as_dict(self):
-        data = super(Policy, self).represent_as_dict()
+        data = dict()
+        data["id"] = self.id
+        data["title"] = self.title
+        data["source"] = self.source
+        data["definition_location"] = self.filepath
         data["controls"] = [c.represent_as_dict() for c in self.controls]
         data["levels"] = [l.represent_as_dict() for l in self.levels]
         return data
@@ -228,10 +215,20 @@ class Policy(ssg.entities.common.XCCDFEntity):
                     .format(filename=self.filepath, error=str(exc)))
                 raise RuntimeError(msg)
             if "controls" in node:
-                for sc in self._parse_controls_tree(node["controls"]):
-                    yield sc
-                    control.update_with(sc)
+                control_entries = node["controls"]
+                for control_entry in control_entries:
+                    if isinstance(control_entry, str):
+                        control.controls.append(control_entry)
+                    else:
+                        for sc in self._parse_controls_tree([control_entry]):
+                            control.controls.append(sc.id)
+                            yield sc
             yield control
+
+    def save_controls_tree(self, tree):
+        for c in self._parse_controls_tree(tree):
+            self.controls.append(c)
+            self.controls_by_id[c.id] = c
 
     def _load_from_subdirectory(self, yaml_contents):
         controls_tree = yaml_contents.get("controls", list())
@@ -267,19 +264,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
             controls_tree = self._load_from_subdirectory(yaml_contents)
         else:
             controls_tree = ssg.utils.required_key(yaml_contents, "controls")
-        for c in self._parse_controls_tree(controls_tree):
-            self.controls.append(c)
-            self.controls_by_id[c.id] = c
-
-
-    def dump(self, file):
-        dump = {}
-        dump["id"] = id
-        dump["title"] = self.title
-        dump["source"] = self.source
-        dump["controls"] = self.controls_by_id
-        dump["levels"] = self.levels
-        ssg.yaml.ordered_dump(dump, file)
+        self.save_controls_tree(controls_tree)
 
 
     def get_control(self, control_id):
@@ -330,6 +315,21 @@ class ControlsManager():
             policy = Policy(filepath, self.env_yaml)
             policy.load()
             self.policies[policy.id] = policy
+        self.resolve_controls()
+
+    def resolve_controls(self):
+        for pid, policy in self.policies.items():
+            for control in policy.controls:
+                self._resolve_control(pid, control)
+
+    def _resolve_control(self, pid, control):
+        for sub_name in control.controls:
+            policy_id = pid
+            if ":" in sub_name:
+                policy_id, sub_name = sub_name.split(":", 1)
+            subcontrol = self.get_control(policy_id, sub_name)
+            self._resolve_control(pid, subcontrol)
+            control.update_with(subcontrol)
 
     def get_control(self, policy_id, control_id):
         policy = self._get_policy(policy_id)
@@ -385,6 +385,4 @@ class ControlsManager():
         ssg.utils.mkdir_p(output_dir)
         for policy_id, policy in self.policies.items():
             filename = os.path.join(output_dir, "{}.{}".format(policy_id, "yml"))
-            with open(filename, "w+") as f:
-                policy.dump(f)
             policy.dump_yaml(filename)

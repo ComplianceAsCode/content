@@ -352,3 +352,117 @@ def test_load_compiled_control_from_folder_and_file(compiled_controls_dir_py2, c
 
 def test_load_control_from_specific_folder_and_file(controls_manager):
     _load_test(controls_manager, "nopq")
+
+
+@pytest.fixture
+def minimal_empty_controls():
+    return [dict(title="control", id="c", rules=["a"])]
+
+
+@pytest.fixture
+def one_simple_subcontrol():
+    return dict(title="subcontrol", id="s", rules=["b"])
+
+
+def test_policy_parse_from_dict(minimal_empty_controls):
+    policy = ssg.controls.Policy("")
+    controls = policy.save_controls_tree(minimal_empty_controls)
+    controls = policy.controls
+    assert len(controls) == 1
+    control = controls[0]
+    assert control.title == "control"
+
+
+def test_policy_fail_parse_from_incomplete_dict(minimal_empty_controls):
+    incomplete_controls = minimal_empty_controls
+    incomplete_controls[0]["controls"] = [dict(title="nested")]
+
+    policy = ssg.controls.Policy("")
+
+    with pytest.raises(RuntimeError, match="id"):
+        policy.save_controls_tree(incomplete_controls)
+
+
+def order_by_attribute(items, attribute, ordering):
+    items_by_attribute = {getattr(i, attribute): i for i in items}
+    return [items_by_attribute[val] for val in ordering]
+
+
+def test_policy_parse_from_nested(minimal_empty_controls, one_simple_subcontrol):
+    nested_controls = minimal_empty_controls
+    nested_controls[0]["controls"] = [one_simple_subcontrol]
+
+    policy = ssg.controls.Policy("P")
+    controls = policy.save_controls_tree(minimal_empty_controls)
+    controls = policy.controls
+    assert len(controls) == 2
+    control, subcontrol = order_by_attribute(controls, "id", ("c", "s"))
+    assert control.title == "control"
+    assert control.selections == ["a"]
+    assert subcontrol.title == "subcontrol"
+    assert subcontrol.selections == ["b"]
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[policy.id] = policy
+
+    controls_manager.resolve_controls()
+    control = policy.get_control("c")
+    assert control.selections == ["a", "b"]
+
+
+def test_policy_parse_from_nested():
+    top_control_dict = dict(id="top", controls=["nested-1"])
+    first_nested_dict = dict(id="nested-1", controls=["nested-2"], rules="Y")
+    second_nested_dict = dict(id="nested-2", rules=["X"])
+
+    policy = ssg.controls.Policy("")
+    policy.id = "P"
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[policy.id] = policy
+
+    controls = policy.save_controls_tree([top_control_dict, second_nested_dict, first_nested_dict])
+    controls_manager.resolve_controls()
+    control = policy.get_control("top")
+    assert "Y" in control.selections
+    assert "X" in control.selections
+
+
+def test_policy_parse_from_ours_and_foreign():
+    main_control_dict = dict(id="top", controls=["foreign:top", "ours", "P:ours_qualified"])
+    main_subcontrol_dicts = [dict(id="ours", rules=["ours"]), dict(id="ours_qualified", rules=["really_ours"])]
+    foreign_control_dict = dict(id="top", rules=["foreign"])
+
+    main_policy = ssg.controls.Policy("")
+    main_policy.id = "P"
+    main_policy.save_controls_tree([main_control_dict] + main_subcontrol_dicts)
+
+    foreign_policy = ssg.controls.Policy("")
+    foreign_policy.id = "foreign"
+    foreign_policy.save_controls_tree([foreign_control_dict])
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[main_policy.id] = main_policy
+    controls_manager.policies[foreign_policy.id] = foreign_policy
+
+    controls_manager.resolve_controls()
+    control = controls_manager.get_control("P", "top")
+    assert "ours" in control.selections
+    assert "really_ours" in control.selections
+    assert "foreign" in control.selections
+
+
+def test_policy_parse_from_referenced(minimal_empty_controls, one_simple_subcontrol):
+    nested_controls = minimal_empty_controls
+    nested_controls[0]["controls"] = ["s"]
+    nested_controls.append(one_simple_subcontrol)
+
+    policy = ssg.controls.Policy("")
+    policy.id = "P"
+    controls = policy.save_controls_tree(minimal_empty_controls)
+    controls = policy.controls
+    assert len(controls) == 2
+    control, subcontrol = order_by_attribute(controls, "id", ("c", "s"))
+    assert control.title == "control"
+    assert control.controls == ["s"]
+    assert subcontrol.title == "subcontrol"
