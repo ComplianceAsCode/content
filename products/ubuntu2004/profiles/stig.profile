@@ -564,6 +564,7 @@ selections:
 
     # UBTU-20-010450 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - package_aide_installed
+    - aide_build_database
 
     # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.
 
