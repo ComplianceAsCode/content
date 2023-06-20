@@ -801,7 +801,10 @@ def __main__():
 
     subst_dict = dict()
     if args.product:
-        subst_dict = products.load_product_yaml(args.product)
+        subst_dict = dict()
+        product = products.load_product_yaml(args.product)
+        product.read_properties_from_directory(os.path.join(project_root, "product_properties"))
+        subst_dict.update(product)
 
     args.func(args, subst_dict)
 
