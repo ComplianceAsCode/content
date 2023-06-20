@@ -3,7 +3,7 @@
 
 PAM_CONF=/etc/pam.d/su
 
-if [ $(getent group ${var_pam_wheel_group_for_su})]; then
+if [ $(getent group ${var_pam_wheel_group_for_su}) ]; then
   # group exists
    groupdel -f ${var_pam_wheel_group_for_su}
 fi
