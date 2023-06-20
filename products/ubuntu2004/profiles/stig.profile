@@ -343,6 +343,7 @@ selections:
     - audit_rules_kernel_module_loading_finit
 
     # UBTU-20-010181 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the delete_module syscall
+    - audit_rules_kernel_module_loading_delete
 
     # UBTU-20-010182 The Ubuntu operating system must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DoD-defined auditable events and actions in near real time.
     - package_audit_installed
@@ -419,9 +420,6 @@ selections:
 
     # UBTU-20-010300 The Ubuntu operating system must have a crontab script running weekly to offload audit events of standalone systems.
     - auditd_offload_logs
-
-    # UBTU-20-010302 The Ubuntu operating system must generate records for successful/unsuccessful uses of delete_module syscall.
-    - audit_rules_kernel_module_loading_delete
 
     # UBTU-20-010400 The Ubuntu operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
     - var_accounts_max_concurrent_login_sessions=10
