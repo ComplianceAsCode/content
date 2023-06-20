@@ -525,6 +525,7 @@ selections:
     - chronyd_sync_clock
 
     # UBTU-20-010437 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
+    - aide_disable_silentreports
 
     # UBTU-20-010438 The Ubuntu operating system's Advance Package Tool (APT) must be configured to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.
     - apt_conf_disallow_unauthenticated
