@@ -6,8 +6,8 @@ title: 'Configure auditing of successful file deletions'
 
 {{% set file_contents_audit_delete_success =
 "## Successful file delete
--a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-delete
--a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-delete" %}}
+-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F success=1 -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=successful-delete
+-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F success=1 -F auid&gt;=" ~ uid_min ~ " -F auid!=unset -F key=successful-delete" %}}
 
 description: |-
     Ensure that successful attempts to delete a file are audited.

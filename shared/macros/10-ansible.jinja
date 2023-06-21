@@ -501,7 +501,7 @@ The macro requires following parameters:
 :type action_arch_filters: str
 :param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
 :type other_filters: str
-:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=" ~ uid_min ~ " -F auid!=unset"
 :type auid_filters: str
 :param syscalls: List of syscalls to ensure presense among audit rules. For example, "['fchown', 'lchown', 'fchownat']"
 :type syscalls: list[str]
@@ -597,7 +597,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     For example, "-F a2&03 -F path=/etc/passwd"
 :type other_filters: str
 :param auid_filters: The auid filters of the rule.
-    For example, "-F auid>=1000 -F auid!=unset"
+    For example, "-F auid>=" ~ uid_min ~ " -F auid!=unset"
 :type auid_filters: str
 :param syscalls: List of syscalls to ensure presense among audit rules.
     For example, "['fchown', 'lchown', 'fchownat']"

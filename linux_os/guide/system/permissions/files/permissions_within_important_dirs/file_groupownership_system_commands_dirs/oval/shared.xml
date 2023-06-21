@@ -15,14 +15,14 @@
 
   <unix:file_object comment="system commands files" id="object_groupownership_system_commands_dirs" version="1">
     <!-- Check that system commands within directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-         belong to group with gid 0 (root) or gid < 1000 (system account)-->
+         belong to group with gid 0 (root) or gid < {{{ gid_min }}} (system account)-->
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_groupowner_system_commands_dirs_not_root_or_system_account</filter>
   </unix:file_object>
 
   <unix:file_state id="state_groupowner_system_commands_dirs_not_root_or_system_account" version="1">
-    <unix:group_id datatype="int" operation="greater than or equal">1000</unix:group_id>
+    <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
   </unix:file_state>
 
 </def-group>

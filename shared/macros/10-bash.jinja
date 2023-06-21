@@ -1771,7 +1771,7 @@ Notes:
 :type action_arch_filters: str
 :param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
 :type other_filters: str
-:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=" ~ uid_min ~ " -F auid!=unset"
 :type auid_filters: str
 :param syscall: The syscall to ensure presense among audit rules. For example, "chown"
 :type syscall: str
@@ -2654,4 +2654,17 @@ from /etc/os-release from VERSION_ID variable.
 #}}
 {{%- macro bash_get_version_os_linux(os_release_path="/etc/os-release") -%}}
 grep -P "^VERSION_ID=[\"']?[\w.]+[\"']?$" {{{ os_release_path }}} | sed "s/^VERSION_ID=[\"']\?\([^\"']\+\)[\"']\?$/\1/"
+{{%- endmacro -%}}
+
+
+{{#
+Remove all interactive users (UID >= uid_min) from /etc/passwd
+#}}
+{{%- macro bash_remove_interactive_users_from_passwd_by_uid() -%}}
+# remove all interactive users (UID >= {{{ uid_min }}}) from /etc/passwd
+del=""
+while read -r user; do
+    del+="/^${user}:/d;"
+done < <(awk -F: '($3 >= {{{ uid_min }}}) { print $1 }' /etc/passwd)
+sed -i "${del}" /etc/passwd
 {{%- endmacro -%}}

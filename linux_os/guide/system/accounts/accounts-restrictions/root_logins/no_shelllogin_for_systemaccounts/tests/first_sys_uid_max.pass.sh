@@ -1,7 +1,7 @@
 #!/bin/bash
 
 useradd --system --shell /sbin/nologin -u 999 sysuser
-useradd -u 1000 testuser
+useradd -u {{{ uid_min }}} testuser
 
 key=SYS_UID_MAX
 
