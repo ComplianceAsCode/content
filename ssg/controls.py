@@ -165,6 +165,7 @@ class Level(ssg.entities.common.XCCDFEntity):
         id=lambda: str,
         inherits_from=lambda: None,
     )
+
     def __init__(self):
         self.id = None
         self.inherits_from = None
@@ -200,49 +201,75 @@ class Policy(ssg.entities.common.XCCDFEntity):
         data["levels"] = [l.represent_as_dict() for l in self.levels]
         return data
 
-    def _parse_controls_tree(self, tree):
-        default_level = ["default"]
+    @property
+    def default_level(self):
+        result = ["default"]
         if self.levels:
-            default_level = [self.levels[0].id]
+            result = [self.levels[0].id]
+        return result
 
-        for node in tree:
-            try:
-                control = Control.from_control_dict(
-                    node, self.env_yaml, default_level=default_level)
-            except Exception as exc:
-                msg = (
-                    "Unable to parse controls from {filename}: {error}"
-                    .format(filename=self.filepath, error=str(exc)))
-                raise RuntimeError(msg)
-            if "controls" in node:
-                control_entries = node["controls"]
-                for control_entry in control_entries:
-                    if isinstance(control_entry, str):
-                        control.controls.append(control_entry)
-                    else:
-                        for sc in self._parse_controls_tree([control_entry]):
-                            control.controls.append(sc.id)
-                            yield sc
-            yield control
+    def _create_control_from_subtree(self, subtree):
+        try:
+            control = Control.from_control_dict(
+                subtree, self.env_yaml, default_level=self.default_level)
+        except Exception as exc:
+            msg = (
+                "Unable to parse controls from {filename}: {error}"
+                .format(filename=self.filepath, error=str(exc)))
+            raise RuntimeError(msg)
+        return control
+
+    def _extract_and_record_subcontrols(self, current_control, controls_tree):
+        subcontrols = []
+        if "controls" not in controls_tree:
+            return subcontrols
+
+        for control_def_or_ref in controls_tree["controls"]:
+            if isinstance(control_def_or_ref, str):
+                control_ref = control_def_or_ref
+                current_control.controls.append(control_ref)
+                continue
+            control_def = control_def_or_ref
+            for sc in self._parse_controls_tree([control_def]):
+                current_control.controls.append(sc.id)
+                current_control.update_with(sc)
+                subcontrols.append(sc)
+        return subcontrols
+
+    def _parse_controls_tree(self, tree):
+        controls = []
+
+        for control_subtree in tree:
+            control = self._create_control_from_subtree(control_subtree)
+            subcontrols = self._extract_and_record_subcontrols(control, control_subtree)
+            controls.extend(subcontrols)
+            controls.append(control)
+        return controls
 
     def save_controls_tree(self, tree):
         for c in self._parse_controls_tree(tree):
             self.controls.append(c)
             self.controls_by_id[c.id] = c
 
+    def _parse_file_into_control_trees(self, dirname, basename):
+        controls_trees = []
+        if basename.endswith('.yml'):
+            full_path = os.path.join(dirname, basename)
+            yaml_contents = ssg.yaml.open_and_expand(full_path, self.env_yaml)
+            for control in yaml_contents['controls']:
+                controls_trees.append(control)
+        elif basename.startswith('.'):
+            pass
+        else:
+            raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+        return controls_trees
+
     def _load_from_subdirectory(self, yaml_contents):
         controls_tree = yaml_contents.get("controls", list())
         files = os.listdir(self.controls_dir)
         for file in files:
-            if file.endswith('.yml'):
-                full_path = os.path.join(self.controls_dir, file)
-                yaml_contents = ssg.yaml.open_and_expand(full_path, self.env_yaml)
-                for control in yaml_contents['controls']:
-                    controls_tree.append(control)
-            elif file.startswith('.'):
-                continue
-            else:
-                raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+            trees = self._parse_file_into_control_trees(self.controls_dir, file)
+            controls_tree.extend(trees)
         return controls_tree
 
     def load(self):
@@ -265,7 +292,6 @@ class Policy(ssg.entities.common.XCCDFEntity):
         else:
             controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         self.save_controls_tree(controls_tree)
-
 
     def get_control(self, control_id):
         try:
