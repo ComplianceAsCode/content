@@ -105,7 +105,7 @@ fi
 # Generate Components page
 COMPONENTS_DIR="$PAGES_DIR/components"
 mkdir -p "$COMPONENTS_DIR"
-utils/render_components.py "$(pwd)" "$COMPONENTS_DIR"
+utils/render_components.py -r "$(pwd)" "$COMPONENTS_DIR"
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Something wrong happened while generating components HTML pages."

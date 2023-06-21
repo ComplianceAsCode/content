@@ -12,6 +12,7 @@ import ssg.products
 import utils.template_renderer
 from utils.rendering.common import resolve_var_substitutions
 
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "rendering")
 COMPONENT_TEMPLATE = os.path.join(TEMPLATES_DIR, "component-template.html")
 COMPONENT_INDEX_TEMPLATE = os.path.join(
@@ -33,7 +34,8 @@ def parse_args():
         "-> rule mapping to a set of HTML files that can be published "
         "online.")
     parser.add_argument(
-        "ssg_root", help="path to the project root directory")
+        "-r", "--root", type=str, action="store", default=SSG_ROOT,
+        help="Path to SSG root directory (defaults to %s)" % SSG_ROOT)
     parser.add_argument("output", help="output directory")
     args = parser.parse_args()
     return args
@@ -157,7 +159,7 @@ def main():
     args = parse_args()
     if not os.path.exists(args.output):
         os.mkdir(args.output)
-    product_components = process_products(args.ssg_root, args.output)
+    product_components = process_products(args.root, args.output)
     create_index_html(args.output, product_components)
 
 
