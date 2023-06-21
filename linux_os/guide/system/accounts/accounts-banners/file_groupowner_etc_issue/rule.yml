@@ -39,7 +39,7 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/issue", group="root") 
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/issue", group="root") }}}
 
-{{% if product in ['sle15'] %}}
+{{%- if product in ['sle15'] -%}}
 template:
     name: file_groupowner
     vars:
@@ -47,11 +47,10 @@ template:
         filegid: '0'
         file_regex: ^.*$
         recursive: 'true'
-{{% else %}}
+{{%- else -%}}
 template:
     name: file_groupowner
     vars:
         filepath: /etc/issue
         gid_or_name: '0'
 {{% endif %}}
-

@@ -5,12 +5,12 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("login_banner_text") }}}
 
-{{% if product not in ['sle15'] %}}
+{{%- if product not in ['sle15'] -%}}
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   copy:
     dest: /etc/issue
     content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
-{{% else %}}
+{{%- else -%}}
 - name: {{{ rule_title }}} Ensure issue-generator is Installed
   package:
     name: "issue-generator"
@@ -27,4 +27,4 @@
     enabled: "yes"
     state: "restarted"
     masked: "no"
-{{% endif %}}
+{{%- endif -%}}
