@@ -25,3 +25,4 @@ selections:
     - '!service_ntp_enabled'
     - '!service_ntpd_enabled'
     - '!service_timesyncd_enabled'
+    - '!package_libreswan_installed'

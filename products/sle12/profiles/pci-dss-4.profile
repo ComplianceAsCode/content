@@ -64,6 +64,7 @@ selections:
     -  package_openldap-servers_removed
     -  package_rsh_removed
     -  package_samba_removed
+    -  '!package_libreswan_installed'
     -  package_talk_removed
     -  package_telnet_removed
     -  package_xinetd_removed
