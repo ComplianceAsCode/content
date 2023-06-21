@@ -6,13 +6,12 @@ title: 'Configure Systemd Timesyncd Servers'
 
 description: |-
     <tt>systemd-timesyncd</tt> is a daemon that has been added for synchronizing the system clock
-    across the network. More information on <tt>chrony</tt> can be found at
-    The <tt>systemd-timesyncd</tt> daemon implements:
+    across the network. The <tt>systemd-timesyncd</tt> daemon implements:
       - Implements an SNTP client
       - Runs with minimal privileges
       - Saves the current clock to disk every time a new NTP sync has been acquired
       - Is hooked up with networkd to only operate when network connectivity is available
-    Add or edit server or pool lines to <tt>{{{ chrony_conf_path }}}</tt> as appropriate:
+    Add or edit server or pool lines to <tt>/etc/systemd/timesyncd.conf</tt> as appropriate:
     <pre>server &lt;remote-server&gt;</pre>
     Multiple servers may be configured.
 
