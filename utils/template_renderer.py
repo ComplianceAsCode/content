@@ -13,11 +13,9 @@ import ssg.jinja
 
 
 def render_template(data, template_path, output_filename):
-    env = ssg.jinja._get_jinja_environment(dict())
-    env.loader = FlexibleLoader(os.path.dirname(template_path))
-    result = ssg.jinja.process_file(template_path, data)
-    with open(output_filename, "wb") as f:
-        f.write(result.encode('utf8', 'replace'))
+    loader = FlexibleLoader(os.path.dirname(template_path))
+    return ssg.jinja.render_template(
+        data, template_path, output_filename, loader)
 
 
 """
