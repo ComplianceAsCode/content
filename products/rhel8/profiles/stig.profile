@@ -342,7 +342,7 @@ selections:
     - no_user_host_based_files
 
     # RHEL-08-010471
-    # currently there is not a relevant rule which would improve RNG for RHEL in this context
+    # currently there is not a relevant rule which would improve RNG for RHEL in this context. See #10153
 
     # RHEL-08-010472
     - package_rng-tools_installed
@@ -527,7 +527,7 @@ selections:
     # RHEL-08-020031, RHEL-08-020080
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
-    
+
     # RHEL-08-020032
     - dconf_gnome_disable_user_list
 
