@@ -11,8 +11,8 @@
 <h3>Relevant packages:</h3>
 {{% if component.packages %}}
 <ul>
-{{% for p in component.packages %}}
-<li>{{{ p }}}</li>
+{{% for package in component.packages %}}
+<li>{{{ package }}}</li>
 {{% endfor %}}
 </ul>
 {{% else %}}
@@ -22,8 +22,8 @@
 <h3>Relevant groups:</h3>
 {{% if component.groups %}}
 <ul>
-{{% for g in component.groups %}}
-<li>{{{ g }}}</li>
+{{% for group in component.groups %}}
+<li>{{{ group }}}</li>
 {{% endfor %}}
 </ul>
 {{% else %}}
