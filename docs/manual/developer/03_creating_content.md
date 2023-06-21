@@ -1290,3 +1290,5 @@ YAML file keys:
 Each rule in the benchmark in the `/linux_os/guide` directory must be a member of at least 1 component.
 
 Products specify a path to the directory with component files by the `components_root` key in the `product.yml`.
+
+The mappings of components to rules can be converted to HTML by the `utils/render_components.py` script.

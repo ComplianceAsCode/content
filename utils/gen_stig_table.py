@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 import argparse
-from utils.gen_tables_common import create_table
+import os
+from utils.template_renderer import render_template
 from ssg.xml import ElementTree as ET
 from ssg.xml import determine_xccdf_tree_namespace
+
+
+TABLE_DIR = os.path.join(os.path.dirname(__file__), "tables")
+STIG_TEMPLATE = os.path.join(TABLE_DIR, "stig_template.html")
 
 
 def parse_args():
@@ -83,7 +88,7 @@ def main():
     data["title"] = "Rules in " + root.find("./xccdf:title", ns).text
     data["stats"] = get_stats(root, ns)
     data["rules"] = get_rules(root, ns)
-    create_table(data, "stig_template.html", args.output)
+    render_template(data, STIG_TEMPLATE, args.output)
 
 
 if __name__ == "__main__":

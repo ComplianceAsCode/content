@@ -63,3 +63,5 @@ def test_component_parse():
     assert "service_fapolicyd_enabled" in c.rules
     assert len(c.templates) == 1
     assert "file_policy_blocked" in c.templates
+    assert len(c.changelog) == 1
+    assert "created in 2023" in c.changelog

@@ -12,6 +12,12 @@ import ssg.environment
 import ssg.jinja
 
 
+def render_template(data, template_path, output_filename):
+    loader = FlexibleLoader(os.path.dirname(template_path))
+    return ssg.jinja.render_template(
+        data, template_path, output_filename, loader)
+
+
 """
 Loader that extends the AbsolutePathFileSystemLoader so it accepts
 relative paths of templates if those are located in selected directories.
