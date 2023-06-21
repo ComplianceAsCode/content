@@ -1598,6 +1598,18 @@ fi
 :type format: str
 
 #}}
+
+{{%- macro bash_comment_config_line(config_file, key) -%}}
+# If the key exists, comment it. Otherwise do nothing
+# We search for the key string followed by a blank space,
+# so if we search for 'setting', 'setting2' won't match.
+if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}[[:blank:]]" "{{{ config_file }}}"; then
+    LC_ALL=C sed -i --follow-symlinks "s/{{{ key }}}[[:blank:]].*/#&/gi" "{{{ config_file }}}"
+fi
+{{%- endmacro -%}}
+
+
+
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
