@@ -5,53 +5,65 @@
       unexpected changes in installed files.
       ") }}}
     <criteria operator="AND">
-      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed"/>
       <criteria operator="OR">
-        <criterion comment="run aide with cron" test_ref="test_aide_periodic_cron_checking" />
-        <criterion comment="run aide with cron" test_ref="test_aide_crond_checking" />
-        <criterion comment="run aide with cron" test_ref="test_aide_var_cron_checking" />
-        <criterion comment="run aide with cron.(daily|weekly)" test_ref="test_aide_crontabs_checking" />
+        <criterion comment="run aide with cron" test_ref="test_aide_periodic_cron_checking"/>
+        <criterion comment="run aide with cron" test_ref="test_aide_crond_checking"/>
+        <criterion comment="run aide with cron" test_ref="test_aide_var_cron_checking"/>
+        <criterion comment="run aide with cron.(daily|weekly)"
+          test_ref="test_aide_crontabs_checking"/>
         <criteria operator="AND">
-          <criterion test_ref="tst_aidecheck-service_enabled" comment="systemd aidecheck.service enabled" />
-          <criterion test_ref="tst_aidecheck-timer_enabled" comment="systemd aidecheck.timer enabled" />
-          <criterion test_ref="tst_aidecheck-timer_active" comment="systemd aidecheck.timer active" />
+          <criterion test_ref="tst_aidecheck-service_enabled"
+            comment="systemd aidecheck.service enabled"/>
+          <criterion test_ref="tst_aidecheck-timer_enabled"
+            comment="systemd aidecheck.timer enabled"/>
+          <criterion test_ref="tst_aidecheck-timer_active"
+            comment="systemd aidecheck.timer active"/>
         </criteria>
       </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide with cron" id="test_aide_periodic_cron_checking" version="1">
+  <ind:textfilecontent54_test id="test_aide_periodic_cron_checking" check="all"
+    check_existence="all_exist" comment="run aide with cron" version="1">
     <ind:object object_ref="object_test_aide_periodic_cron_checking" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="run aide with cron" id="object_test_aide_periodic_cron_checking" version="1">
+  <ind:textfilecontent54_object id="object_test_aide_periodic_cron_checking"
+    comment="run aide with cron" version="1">
     <ind:filepath>/etc/crontab</ind:filepath>
     <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*root[\s]*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide with cron" id="test_aide_crond_checking" version="1">
+  <ind:textfilecontent54_test id="test_aide_crond_checking" check="all" check_existence="all_exist"
+    comment="run aide with cron" version="1">
     <ind:object object_ref="object_test_aide_crond_checking" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="run aide with cron" id="object_test_aide_crond_checking" version="1">
+  <ind:textfilecontent54_object id="object_test_aide_crond_checking" comment="run aide with cron"
+    version="1">
     <ind:path>/etc/cron.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*root[\s]*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide with cron" id="test_aide_var_cron_checking" version="1">
+  <ind:textfilecontent54_test id="test_aide_var_cron_checking" check="all"
+    check_existence="all_exist" comment="run aide with cron" version="1">
     <ind:object object_ref="object_aide_var_cron_checking" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="run aide with cron" id="object_aide_var_cron_checking" version="1">
+  <ind:textfilecontent54_object id="object_aide_var_cron_checking" version="1"
+    comment="run aide with cron">
     <ind:filepath>/var/spool/cron/root</ind:filepath>
     <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*(root)?[\s]*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="run aide with cron.(daily|weekly)" id="test_aide_crontabs_checking" version="2">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="run aide with cron.(daily|weekly)" id="test_aide_crontabs_checking" version="2">
     <ind:object object_ref="object_aide_crontabs_checking" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="run aide with cron.(daily|weekly)" id="object_aide_crontabs_checking" version="1">
+  <ind:textfilecontent54_object id="object_aide_crontabs_checking"
+    comment="run aide with cron.(daily|weekly)" version="1">
     <ind:path operation="pattern match">^/etc/cron.(daily|weekly)$</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^[^#]*{{{ aide_bin_path | replace("/", "\/") }}}\s+\-\-check\s*$</ind:pattern>
@@ -77,15 +89,18 @@
     <linux:value>active</linux:value>
   </linux:systemdunitproperty_state>
 
-    <linux:systemdunitproperty_test check="all" id="tst_aidecheck-service_enabled" version="1" comment="systemd aidecheck.service enabled">
+  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-service_enabled" version="1"
+    comment="systemd aidecheck.service enabled">
     <linux:object object_ref="obj_aidecheck-service_unitfilestate" />
     <linux:state state_ref="ste_aide_is_enabled" />
   </linux:systemdunitproperty_test>
-  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_enabled" version="1" comment="systemd aidecheck.timer enabled">
+  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_enabled" version="1"
+    comment="systemd aidecheck.timer enabled">
     <linux:object object_ref="obj_aidecheck-timer_unitfilestate" />
     <linux:state state_ref="ste_aide_is_enabled" />
   </linux:systemdunitproperty_test>
-  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_active" version="1" comment="systemd aidecheck.timer active">
+  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_active" version="1"
+    comment="systemd aidecheck.timer active">
     <linux:object object_ref="obj_aidecheck-timer_activestate" />
     <linux:state state_ref="ste_aide_is_active" />
   </linux:systemdunitproperty_test>
