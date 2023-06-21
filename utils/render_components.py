@@ -45,7 +45,7 @@ def parse_args() -> argparse.Namespace:
 def create_component_html(
         output_dir: str, component_data: ComponentData) -> None:
     component_name = component_data.component.name
-    title = f"Rules related to '{component_name}'"
+    title = f"Rules Related To '{component_name}'"
     data = dict(title=title, component_data=component_data)
     output_path = os.path.join(output_dir, component_name + ".html")
     utils.template_renderer.render_template(
@@ -55,7 +55,7 @@ def create_component_html(
 def create_index_html(
         output_dir: str, product_components: list) -> None:
     index_path = os.path.join(output_dir, "index.html")
-    title = "List of components"
+    title = "List of Components"
     data = dict(title=title, product_components=product_components)
     utils.template_renderer.render_template(
         data, COMPONENT_INDEX_TEMPLATE, index_path)
