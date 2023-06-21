@@ -458,6 +458,8 @@ selections:
     # UBTU-20-010413 The Ubuntu operating system must disable kernel core dumps  so that it can fail to a secure state if system initialization fails, shutdown fails or aborts fail.
     - service_kdump_disabled
 
+    # UBTU-20-010444 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest.
+    # UBTU-20-010445 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest.
     # UBTU-20-010414 Ubuntu operating systems handling data requiring "data at rest" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.
     - encrypt_partitions
 
@@ -550,11 +552,7 @@ selections:
     - is_fips_mode_enabled
 
     # UBTU-20-010443 The Ubuntu operating system must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions.
-    - only_allow_dod_certs
-
-    # UBTU-20-010444 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest.
-
-    # UBTU-20-010445 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest.
+    - only_allow_dod_certs 
 
     # UBTU-20-010446 The Ubuntu operating system must configure the uncomplicated firewall to rate-limit impacted network interfaces.
     - ufw_rate_limit
