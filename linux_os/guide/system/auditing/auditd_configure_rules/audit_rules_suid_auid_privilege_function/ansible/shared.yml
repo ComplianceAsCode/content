@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# platform = multi_platform_rhel
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -30,9 +30,9 @@
       - rule: '-a always,exit -F arch=b64 -S execve -C euid!=uid -F auid!=unset -k user_emulation'
         regex: {{{ rx_beg + rx_b64 + rx_uid + rx_end }}}
 
-- name: Update /etc/audit/rules.d/privileged.rules to audit privileged functions
+- name: Update /etc/audit/rules.d/user_emulation.rules to audit privileged functions
   ansible.builtin.lineinfile:
-    path: /etc/audit/rules.d/privileged.rules
+    path: /etc/audit/rules.d/user_emulation.rules
     line: "{{  item.rule  }}"
     regexp: "{{ item.regex }}"
     create: yes
