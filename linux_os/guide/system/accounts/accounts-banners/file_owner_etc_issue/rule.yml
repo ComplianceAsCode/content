@@ -39,7 +39,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/issue", owner="root") }}}'
 ocil: |-
     {{{ ocil_file_owner(file="/etc/issue", owner="root") }}}
 
-{{%- if product in ['sle15'] -%}}
+{{%- if product in ['sle15'] %}}
 template:
     name: file_owner
     vars:
@@ -47,7 +47,7 @@ template:
         fileuid: '0'
         file_regex: ^.*$
         recursive: 'true'
-{{%- else -%}}
+{{%- else %}}
 template:
     name: file_owner
     vars:
