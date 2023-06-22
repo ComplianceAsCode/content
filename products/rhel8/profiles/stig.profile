@@ -118,6 +118,7 @@ selections:
     - rsyslog_remote_access_monitoring
 
     # RHEL-08-010090
+    - sssd_has_trust_anchor
 
     # RHEL-08-010100
     - ssh_keys_passphrase_protected
@@ -127,6 +128,9 @@ selections:
 
     # RHEL-08-010120
     - accounts_password_all_shadowed_sha512
+
+    # RHEL-08-010121
+    - no_empty_passwords_etc_shadow
 
     # RHEL-08-010130
     - set_password_hashing_min_rounds_logindefs
@@ -297,6 +301,9 @@ selections:
     - sudo_require_reauthentication
     - var_sudo_timestamp_timeout=always_prompt
 
+    # RHEL-08-010385
+    - disallow_bypass_password_sudo
+
     # RHEL-08-010390
     - install_smartcard_packages
 
@@ -335,7 +342,7 @@ selections:
     - no_user_host_based_files
 
     # RHEL-08-010471
-    # currently there is not a relevant rule which would improve RNG for RHEL in this context
+    # currently there is not a relevant rule which would improve RNG for RHEL in this context. See #10153
 
     # RHEL-08-010472
     - package_rng-tools_installed
@@ -520,7 +527,7 @@ selections:
     # RHEL-08-020031, RHEL-08-020080
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
-    
+
     # RHEL-08-020032
     - dconf_gnome_disable_user_list
 
@@ -613,6 +620,9 @@ selections:
 
     # RHEL-08-020230
     - accounts_password_pam_minlen
+
+    # RHEL-08-020231
+    - accounts_password_minlen_login_defs
 
     # RHEL-08-020240
     - account_unique_id
