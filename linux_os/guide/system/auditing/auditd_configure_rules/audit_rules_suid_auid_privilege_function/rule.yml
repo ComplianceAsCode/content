@@ -2,10 +2,11 @@ documentation_complete: true
 
 prodtype: rhel8,rhel9
 
-title: 'Record Events When Privileged Executables Are Run CIS'
+title: 'Record Events When Executables Are Run As Another User'
 
 description: |-
-    Verify the system generates an audit record when privileged functions are executed.
+    Verify the system generates an audit record when actions are run as another user.
+    sudo provides users with temporary elevated privileges to perform operations, either as the superuser or another user.
 
     If audit is using the "auditctl" tool to load the rules, run the following command:
 
@@ -20,6 +21,11 @@ description: |-
     If both the "b32" and "b64" audit rules for "SUID" files are not defined, this is a finding.
 
 rationale: |-
+    Creating an audit log of users with temporary elevated privileges and the
+    operation(s) they performed is essential to reporting. Administrators will
+    want to correlate the events written to the audit trail with the records
+    written to sudo's logfile to verify if unauthorized commands have
+    been executed.
     Misuse of privileged functions, either intentionally or unintentionally by
     authorized users, or by unauthorized external entities that have
     compromised information system accounts, is a serious and ongoing concern
@@ -45,7 +51,7 @@ warnings:
 ocil_clause: 'the command does not return all lines, or the lines are commented out'
 
 ocil: |-
-    Verify {{{ full_name }}} audits the execution of privileged functions.
+    Verify {{{ full_name }}} audits execution as another user.
 
     Check if {{{ full_name }}} is configured to audit the execution of the "execve" system call using the following command:
 
@@ -68,4 +74,4 @@ fixtext: |-
 
 platform: machine
 
-srg_requirement: '{{{ full_name }}} must audit the execution of privileged functions.'
+srg_requirement: '{{{ full_name }}} must audit execution as another user.'
