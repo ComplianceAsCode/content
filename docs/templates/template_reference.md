@@ -279,7 +279,10 @@
         subdirectories under the directory specified by **filepath**. Default
         value is `"false"`.
 
-    -   **filegid** - group ID (GID)
+    -   **gid_or_name** - group ID (GID) or a group name.
+        If the parameter is an integer, it is treated as group ID. If the
+        parameter is not an integer, it is treated as a group name and it is
+        converted to GID by reading /etc/group.
 
 -   Languages: Ansible, Bash, OVAL
 

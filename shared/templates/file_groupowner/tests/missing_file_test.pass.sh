@@ -2,18 +2,33 @@
 
 {{% for path in FILEPATH %}}
     {{% if MISSING_FILE_PASS %}}
-        rm -f {{{ path }}}
-    {{% else %}}
-        {{% if IS_DIRECTORY and FILE_REGEX %}}
+{{% if path.endswith("/") %}}
+{{% if FILE_REGEX %}}
         echo "Create specific tests for this rule because of regex"
-        {{% elif IS_DIRECTORY and RECURSIVE %}}
-        find -L {{{ path }}} -type d -exec chgrp {{{ FILEGID }}} {} \;
+{{% else %}}
+rm -rf {{{ path }}}
+{{% endif %}}
+{{% else %}}
+        rm -f {{{ path }}}
+{{% endif %}}
+    {{% else %}}
+        {{% if path.endswith("/") %}}
+if [ ! -d {{{ path }}} ]; then
+    mkdir -p {{{ path }}}
+fi
+{{% if FILE_REGEX %}}
+        echo "Create specific tests for this rule because of regex"
+        {{% elif RECURSIVE %}}
+        find -L {{{ path }}} -type d -exec chgrp {{{ GID_OR_NAME }}} {} \;
+{{% else %}}
+        chgrp {{{ GID_OR_NAME }}} {{{ path }}}
+{{% endif %}}
         {{% else %}}
         if [ ! -f {{{ path }}} ]; then
             mkdir -p "$(dirname '{{{ path }}}')"
             touch {{{ path }}}
         fi
-        chgrp {{{ FILEGID }}} {{{ path }}}
+        chgrp {{{ GID_OR_NAME }}} {{{ path }}}
         {{% endif %}}
     {{% endif %}}
 {{% endfor %}}

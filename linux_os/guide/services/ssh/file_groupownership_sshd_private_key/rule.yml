@@ -35,4 +35,4 @@ template:
             - /etc/ssh/
         file_regex:
             - ^.*_key$
-        filegid: '{{{ dedicated_ssh_groupname if dedicated_ssh_groupname else '0' }}}'
+        gid_or_name: '{{{ dedicated_ssh_groupname if dedicated_ssh_groupname else '0' }}}'
