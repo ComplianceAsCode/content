@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: ubuntu2004
+prodtype: ubuntu1804,ubuntu2004
 
-title: 'AIDE must notify personnel if baseline configurations are altered'
+title: 'Configure AIDE To Notify Personnel if Baseline Configurations Are Altered'
 
 description: |-
     The operating system file integrity tool must be configured to notify designated personnel of any changes to configurations.
@@ -23,7 +23,7 @@ ocil_clause: 'silentreports is enabled in aide default configuration, or is miss
 ocil: |- 
     Verify that Advanced Intrusion Detection Environment (AIDE) notifies the System Administrator
     when anomalies in the operation of any security functions are discovered with the following command: 
-    <pre># grep SILENTREPORTS /etc/default/aide </pre>
+    <pre># grep SILENTREPORTS {{{ aide_default_path }}} </pre>
 
     SILENTREPORTS=no 
 
@@ -36,7 +36,7 @@ ocil: |-
 fixtext: |-
     Configure the Ubuntu operating system to notify designated personnel if baseline configurations are changed in an unauthorized manner. 
  
-    Modify the "SILENTREPORTS" parameter in the "/etc/default/aide" file with a value of "no" if it does not already exist.
+    Modify the "SILENTREPORTS" parameter in the "{{{ aide_default_path }}}" file with a value of "no" if it does not already exist.
 
 srg_requirement:
     {{{ full_name }}} must notify designated personnel if baseline configurations are changed in an unauthorized manner.
@@ -45,5 +45,5 @@ template:
     name: lineinfile
     vars:
       text: 'SILENTREPORTS=no'
-      path: '/etc/default/aide'
+      path: '{{{ aide_default_path }}}'
 
