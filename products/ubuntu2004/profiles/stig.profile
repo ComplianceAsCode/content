@@ -595,3 +595,6 @@ selections:
     # UBTU-20-010460 The Ubuntu operating system must disable the x86 Ctrl-Alt-Delete key sequence.
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
+
+    # UBTU-20-010462 The Ubuntu operating system must not have accounts configured with blank or null passwords.
+    - no_empty_passwords_etc_shadow
