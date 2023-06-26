@@ -12,12 +12,16 @@ args:
     {{% endif %}}
   chrony:
     pkgname: chrony
+  firewalld:
+    pkgname: firewalld
   gdm:
     {{% if pkg_system == "rpm" %}}
     pkgname: gdm
     {{% else %}}
     pkgname: gdm3
     {{% endif %}}
+  iptables:
+    pkgname: iptables
   libuser:
     pkgname: libuser
   net-snmp:
