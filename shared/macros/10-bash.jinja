@@ -1068,7 +1068,7 @@ if ! grep -qE '^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$' "$pa
     if [ ! -z "$num_lines" ]; then
         echo "$num_lines"
         pattern=""
-        for i in {1..$num_lines}; do
+        for ((i=1; i <= num_lines; i++)); do
             pattern="${pattern}n;"
         done;
         sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/{'$pattern'a auth        [default=die]      pam_faillock.so authfail
