@@ -86,6 +86,9 @@ selections:
     # UBTU-20-010044 The Ubuntu operating system must configure the SSH daemon to use FIPS 140-2 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
     - sshd_use_approved_ciphers_ordered_stig
 
+    # UBTU-20-010045 The Ubuntu operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
+    - sshd_use_approved_kex_ordered_stig
+
     # UBTU-20-010047 The Ubuntu operating system must not allow unattended or automatic login via SSH.
     - sshd_disable_empty_passwords
     - sshd_do_not_permit_user_env
