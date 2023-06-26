@@ -1,8 +1,7 @@
 <def-group>
   <definition class="compliance" id="sshd_use_strong_macs" version="1">
-    {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.") }}}
+    {{{ oval_metadata("Ensure only strong MAC algorithms are used") }}}
     <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <criteria comment="SSH is configured correctly or is not installed"
       operator="OR">
         <criteria comment="sshd is not installed" operator="AND">
@@ -65,7 +64,7 @@
       <variable_component var_ref="sshd_strong_macs" />
     </split>
   </local_variable>
-  <external_variable comment="SSH approved MACs by FIPS" datatype="string" id="sshd_strong_macs" version="1" />
+  <external_variable comment="SSH MAC algorithms considered strong" datatype="string" id="sshd_strong_macs" version="1" />
 </def-group>
 
 
