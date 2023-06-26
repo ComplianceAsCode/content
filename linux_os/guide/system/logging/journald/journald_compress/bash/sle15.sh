@@ -6,7 +6,7 @@
 JOURNALD_REMEDY_CFG="/etc/systemd/journald.d/oscap-remedy.conf"
 JOURNALD_CONFIG=$(ls /etc/systemd/journald.d/*.conf)
 JOURNALD_CONFIG+=("/etc/systemd/journald.conf")
-for f in $JOURNALD_CONFIG
+for f in "${JOURNALD_CONFIG[@]}"
 do
     sed -i "/^\s*Compress\s*=\s*/d" "$f"
     # make sure file has newline at the end
