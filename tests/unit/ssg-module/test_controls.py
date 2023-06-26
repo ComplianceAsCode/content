@@ -15,17 +15,7 @@ controls_dir = os.path.join(data_dir, "controls_dir")
 profiles_dir = os.path.join(data_dir, "profiles_dir")
 
 
-@pytest.fixture
-def env_yaml():
-    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
-    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
-    return open_environment(
-        build_config_yaml, product_yaml, os.path.join(ssg_root, "product_properties"))
-
-
-def _load_test(env_yaml, profile):
-    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
-    controls_manager.load()
+def assert_control_confirms_to_standard(controls_manager, profile):
     c_r1 = controls_manager.get_control(profile, "R1")
     assert c_r1.title == "User session timeout"
     assert c_r1.description == "Remote user sessions must be closed after " \
@@ -53,6 +43,8 @@ def _load_test(env_yaml, profile):
     assert "accounts_password_pam_ocredit" in c_r4_rules
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
+    assert "R4.a" in c_r4.controls
+    assert "R4.b" in c_r4.controls
     c_r5 = controls_manager.get_control(profile, "R5")
     assert c_r5.id == "R5"
     assert c_r5.status == "does not meet"
@@ -67,14 +59,48 @@ def _load_test(env_yaml, profile):
     assert c_r5.status_justification == "Mitigate with third-party software."
 
 
-def test_controls_load(env_yaml):
-    _load_test(env_yaml, "abcd")
+@pytest.fixture
+def env_yaml():
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+    return env_yaml
 
 
-def test_controls_levels(env_yaml):
+@pytest.fixture
+def controls_manager(env_yaml):
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
+    return controls_manager
 
+
+@pytest.fixture
+def compiled_controls_dir_py2(tmpdir):
+    return str(tmpdir)
+
+
+@pytest.fixture
+def compiled_controls_dir_py3(tmp_path):
+    return tmp_path
+
+
+@pytest.fixture
+def compiled_controls_manager(env_yaml, controls_manager,compiled_controls_dir_py2):
+    controls_manager.save_everything(compiled_controls_dir_py2)
+    controls_manager = ssg.controls.ControlsManager(compiled_controls_dir_py2, env_yaml)
+    controls_manager.load()
+    return controls_manager
+
+
+def _load_test(controls_manager, profile):
+    assert_control_confirms_to_standard(controls_manager, profile)
+
+
+def test_controls_load(controls_manager):
+    _load_test(controls_manager, "abcd")
+
+
+def test_controls_levels(controls_manager):
     # Default level is the lowest level
     c_1 = controls_manager.get_control("abcd-levels", "S1")
     assert c_1.levels == ["low"]
@@ -189,10 +215,7 @@ def test_controls_levels(env_yaml):
     assert "configure_crypto_policy" in s7_high[0].selections
 
 
-def test_controls_load_product(env_yaml):
-    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
-    controls_manager.load()
-
+def test_controls_load_product(controls_manager):
     c_r1 = controls_manager.get_control("abcd", "R1")
     assert c_r1.title == "User session timeout"
     assert c_r1.description == "Remote user sessions must be closed after " \
@@ -207,21 +230,21 @@ def test_controls_load_product(env_yaml):
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
 
 
-def test_profile_resolution_inline(env_yaml):
+def test_profile_resolution_inline(env_yaml, controls_manager):
     profile_resolution(
-        env_yaml, ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
+        env_yaml, controls_manager, ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
 
 
-def test_profile_resolution_extends_inline(env_yaml):
+def test_profile_resolution_extends_inline(env_yaml, controls_manager):
     profile_resolution_extends(
-        env_yaml,
+        env_yaml, controls_manager,
         ssg.build_yaml.ProfileWithInlinePolicies,
         "abcd-low-inline", "abcd-high-inline")
 
 
-def test_profile_resolution_all_inline(env_yaml):
+def test_profile_resolution_all_inline(env_yaml, controls_manager):
     profile_resolution_all(
-        env_yaml, ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
+        env_yaml, controls_manager, ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
 
 
 class DictContainingAnyRule(dict):
@@ -234,9 +257,7 @@ class DictContainingAnyRule(dict):
         return True
 
 
-def profile_resolution(env_yaml, cls, profile_low):
-    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
-    controls_manager.load()
+def profile_resolution(env_yaml, controls_manager, cls, profile_low):
     low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
     profile = cls.from_yaml(low_profile_path, env_yaml)
     all_profiles = {"abcd-low": profile}
@@ -258,11 +279,7 @@ def profile_resolution(env_yaml, cls, profile_low):
     assert "security_patches_up_to_date" in selected
 
 
-def profile_resolution_extends(env_yaml, cls, profile_low, profile_high):
-    # tests ABCD High profile which is defined as an extension of ABCD Low
-    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
-    controls_manager.load()
-
+def profile_resolution_extends(env_yaml, controls_manager, cls, profile_low, profile_high):
     low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
     low_profile = cls.from_yaml(low_profile_path, env_yaml)
     high_profile_path = os.path.join(profiles_dir, profile_high + ".profile")
@@ -292,9 +309,7 @@ def profile_resolution_extends(env_yaml, cls, profile_low, profile_high):
     assert high_profile.variables["var_password_pam_ocredit"] == "2"
 
 
-def profile_resolution_all(env_yaml, cls, profile_all):
-    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
-    controls_manager.load()
+def profile_resolution_all(env_yaml, controls_manager, cls, profile_all):
     profile_path = os.path.join(profiles_dir, profile_all + ".profile")
     profile = cls.from_yaml(profile_path, env_yaml)
     all_profiles = {profile_all: profile}
@@ -325,13 +340,131 @@ def profile_resolution_all(env_yaml, cls, profile_all):
     assert "security_patches_up_to_date" in selected
 
 
-def test_load_control_from_folder(env_yaml):
-    _load_test(env_yaml, "qrst")
+def test_load_control_from_folder(controls_manager):
+    _load_test(controls_manager, "qrst")
 
 
-def test_load_control_from_folder_and_file(env_yaml):
-    _load_test(env_yaml, "jklm")
+def test_load_control_from_folder_and_file(controls_manager):
+    _load_test(controls_manager, "jklm")
 
 
-def test_load_control_from_specific_folder_and_file(env_yaml):
-    _load_test(env_yaml, "nopq")
+def test_load_compiled_control_from_folder_and_file(compiled_controls_dir_py2, compiled_controls_manager):
+    _load_test(compiled_controls_manager, "jklm")
+
+
+def test_load_control_from_specific_folder_and_file(controls_manager):
+    _load_test(controls_manager, "nopq")
+
+
+@pytest.fixture
+def minimal_empty_controls():
+    return [dict(title="control", id="c", rules=["a"])]
+
+
+@pytest.fixture
+def one_simple_subcontrol():
+    return dict(title="subcontrol", id="s", rules=["b"])
+
+
+def test_policy_parse_from_dict(minimal_empty_controls):
+    policy = ssg.controls.Policy("")
+    controls = policy.save_controls_tree(minimal_empty_controls)
+    controls = policy.controls
+    assert len(controls) == 1
+    control = controls[0]
+    assert control.title == "control"
+
+
+def test_policy_fail_parse_from_incomplete_dict(minimal_empty_controls):
+    incomplete_controls = minimal_empty_controls
+    incomplete_controls[0]["controls"] = [dict(title="nested")]
+
+    policy = ssg.controls.Policy("")
+
+    with pytest.raises(RuntimeError, match="id"):
+        policy.save_controls_tree(incomplete_controls)
+
+
+def order_by_attribute(items, attribute, ordering):
+    items_by_attribute = {getattr(i, attribute): i for i in items}
+    return [items_by_attribute[val] for val in ordering]
+
+
+def test_policy_parse_from_nested(minimal_empty_controls, one_simple_subcontrol):
+    nested_controls = minimal_empty_controls
+    nested_controls[0]["controls"] = [one_simple_subcontrol]
+
+    policy = ssg.controls.Policy("P")
+    controls = policy.save_controls_tree(minimal_empty_controls)
+    controls = policy.controls
+    assert len(controls) == 2
+    control, subcontrol = order_by_attribute(controls, "id", ("c", "s"))
+    assert control.title == "control"
+    assert control.selections == ["a"]
+    assert subcontrol.title == "subcontrol"
+    assert subcontrol.selections == ["b"]
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[policy.id] = policy
+
+    controls_manager.resolve_controls()
+    control = policy.get_control("c")
+    assert control.selections == ["a", "b"]
+
+
+def test_policy_parse_from_nested():
+    top_control_dict = dict(id="top", controls=["nested-1"])
+    first_nested_dict = dict(id="nested-1", controls=["nested-2"], rules="Y")
+    second_nested_dict = dict(id="nested-2", rules=["X"])
+
+    policy = ssg.controls.Policy("")
+    policy.id = "P"
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[policy.id] = policy
+
+    controls = policy.save_controls_tree([top_control_dict, second_nested_dict, first_nested_dict])
+    controls_manager.resolve_controls()
+    control = policy.get_control("top")
+    assert "Y" in control.selections
+    assert "X" in control.selections
+
+
+def test_policy_parse_from_ours_and_foreign():
+    main_control_dict = dict(id="top", controls=["foreign:top", "ours", "P:ours_qualified"])
+    main_subcontrol_dicts = [dict(id="ours", rules=["ours"]), dict(id="ours_qualified", rules=["really_ours"])]
+    foreign_control_dict = dict(id="top", rules=["foreign"])
+
+    main_policy = ssg.controls.Policy("")
+    main_policy.id = "P"
+    main_policy.save_controls_tree([main_control_dict] + main_subcontrol_dicts)
+
+    foreign_policy = ssg.controls.Policy("")
+    foreign_policy.id = "foreign"
+    foreign_policy.save_controls_tree([foreign_control_dict])
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[main_policy.id] = main_policy
+    controls_manager.policies[foreign_policy.id] = foreign_policy
+
+    controls_manager.resolve_controls()
+    control = controls_manager.get_control("P", "top")
+    assert "ours" in control.selections
+    assert "really_ours" in control.selections
+    assert "foreign" in control.selections
+
+
+def test_policy_parse_from_referenced(minimal_empty_controls, one_simple_subcontrol):
+    nested_controls = minimal_empty_controls
+    nested_controls[0]["controls"] = ["s"]
+    nested_controls.append(one_simple_subcontrol)
+
+    policy = ssg.controls.Policy("")
+    policy.id = "P"
+    controls = policy.save_controls_tree(minimal_empty_controls)
+    controls = policy.controls
+    assert len(controls) == 2
+    control, subcontrol = order_by_attribute(controls, "id", ("c", "s"))
+    assert control.title == "control"
+    assert control.controls == ["s"]
+    assert subcontrol.title == "subcontrol"

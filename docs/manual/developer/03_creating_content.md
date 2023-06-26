@@ -708,6 +708,14 @@ In the real world, controls (requirements) can be nested. For example, PCI-DSS
 has a tree-like structure, within requirement 2.3, we can find 2.3.a, 2.3.b,
 etc. Therefore, each item in `controls` list can contain a `controls` list.
 
+Nesting can be accomplished both by
+
+* nesting whole control definitions, or by
+* nesting references to existing controls in the `policy:control` format, where the `policy:` part can be skipped
+if the reference points to a control in that policy.
+
+Nesting using references allows reuse of controls across multiple policies.
+
 Once we have the initial file, we can read through the policy requirements and
 assess each requirement. For each control, we will have to identify whether it
 can be automated by SCAP. If so, we should look if we already have existing
@@ -989,7 +997,7 @@ controls: a list of controls (required key)
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
     related_rules: a list of related rules
-    controls: a nested list of controls
+    controls: a (nested) list of either control definitions, or of control references in the policy:id format
     status: a keyword that reflects the current status of the implementation of this control
     tickets: a list of URLs reflecting the work that still needs to be done to address this control
 ```
@@ -1064,6 +1072,7 @@ controls:
           - accounts_password_pam_minlen
           - accounts_password_pam_ocredit
           - var_password_pam_ocredit=1
+      - other-policy:other-control
 ```
 
 ### Using controls in profiles
