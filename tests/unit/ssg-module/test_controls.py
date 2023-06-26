@@ -43,6 +43,8 @@ def assert_control_confirms_to_standard(controls_manager, profile):
     assert "accounts_password_pam_ocredit" in c_r4_rules
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
+    assert "R4.a" in c_r4.controls
+    assert "R4.b" in c_r4.controls
     c_r5 = controls_manager.get_control(profile, "R5")
     assert c_r5.id == "R5"
     assert c_r5.status == "does not meet"

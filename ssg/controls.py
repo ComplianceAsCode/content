@@ -157,6 +157,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
     def represent_as_dict(self):
         data = super(Control, self).represent_as_dict()
         data["rules"] = self.selections
+        data["controls"] = self.controls
         return data
 
 
