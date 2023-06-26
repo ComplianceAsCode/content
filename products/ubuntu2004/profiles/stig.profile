@@ -520,6 +520,7 @@ selections:
     # UBTU-20-010433 The Ubuntu operating system must have an application firewall installed in order to control remote access methods.
     - package_ufw_installed
 
+    # UBTU-20-010454 The Ubuntu operating system must have an application firewall enabled.
     # UBTU-20-010434 The Ubuntu operating system must enable and run the uncomplicated firewall(ufw).
     - service_ufw_enabled
 
@@ -572,8 +573,6 @@ selections:
 
     # UBTU-20-010453 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
     - display_login_attempts
-
-    # UBTU-20-010454 The Ubuntu operating system must have an application firewall enabled.
 
     # UBTU-20-010455 The Ubuntu operating system must disable all wireless network adapters.
     - wireless_disable_interfaces
