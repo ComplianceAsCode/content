@@ -174,8 +174,14 @@
        variable to have no value even when there are valid objects. -->
   <ind:textfilecontent54_object id="object_static_user_{{{ rule_id }}}" version="1">
     <set>
-      <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
+      <object_reference>object_static_etc_lib_sysctls_{{{ rule_id }}}</object_reference>
       <object_reference>object_static_run_usr_local_sysctls_{{{ rule_id }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_lib_sysctls_{{{ rule_id }}}" version="1">
+    <set>
+      <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
       <object_reference>object_static_lib_sysctld_{{{ rule_id }}}</object_reference>
 {{% endif %}}
