@@ -595,3 +595,6 @@ selections:
 
     # UBTU-20-010462 The Ubuntu operating system must not have accounts configured with blank or null passwords.
     - no_empty_passwords_etc_shadow
+
+    # UBTU-20-010463 The Ubuntu operating system must not allow accounts configured with blank or null passwords.
+    - no_empty_passwords

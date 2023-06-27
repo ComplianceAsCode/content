@@ -1,0 +1,10 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+- name: Ensure 'nullok' is removed in /etc/pam.d/common-password
+  replace:
+    path: /etc/pam.d/common-password
+    regexp: 'nullok.*'
+    replace: ''
