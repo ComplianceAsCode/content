@@ -1,0 +1,11 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Ensure 'nullok' Is Removed in /etc/pam.d/common-password"
+  ansible.builtin.replace:
+      path: /etc/pam.d/common-password
+      regexp: 'nullok.*'
+      replace: ''
