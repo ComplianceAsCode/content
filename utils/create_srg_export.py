@@ -14,7 +14,7 @@ from typing import TextIO
 import xml.etree.ElementTree as ET
 
 from utils.srg_export import html, md, xlsx
-from utils.srg_export.data import HEADERS, srgid_to_iacontrol
+from utils.srg_export.data import HEADERS, get_iacontrol_mapping
 
 try:
     import ssg.build_stig
@@ -44,8 +44,11 @@ def get_iacontrol(srg_str: str) -> str:
     srgs = srg_str.split(',')
     result = list()
     for srg in srgs:
-        if srg in srgid_to_iacontrol:
-            result.append(srgid_to_iacontrol[srg])
+        mapping = get_iacontrol_mapping(srg)
+        if mapping is None:
+            continue
+        if srg in mapping:
+            result.append(mapping[srg])
     result_set = set(result)
     return ','.join(str(srg) for srg in result_set)
 
