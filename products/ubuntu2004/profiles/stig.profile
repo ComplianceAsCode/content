@@ -427,6 +427,9 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
 
+    #UBTU-20-010401 The Ubuntu operating system must restrict access to the kernel message buffer.
+    - sysctl_kernel_dmesg_restrict
+
     # UBTU-20-010403 The Ubuntu operating system must monitor remote access methods.
     - rsyslog_remote_access_monitoring
 
