@@ -101,7 +101,7 @@ class StandardContentDiffer(object):
         for cpe_platform in cpe_platforms:
             fact_refs = cpe_platform.find_all_fact_ref_elements()
             for fact_ref in fact_refs:
-                cpe_list.append(fact_ref.get("name"))
+                cpe_list.append(fact_ref.get("id-ref"))
         return cpe_list
 
     def compare_platforms(self, old_rule, new_rule, old_benchmark, new_benchmark, identifier):
