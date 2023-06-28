@@ -1,0 +1,507 @@
+---
+policy: CCN-STIC-610A22
+title: Security Profile Application Guide for Red Hat Enterprise Linux 9
+id: ccn_rhel9
+version: '2022-10'
+source: https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html
+levels:
+  - id: basic
+  - id: intermediate
+    inherits_from:
+      - basic
+  - id: advanced
+    inherits_from:
+      - intermediate
+
+controls:
+  - id: reload_dconf_db
+    title: Reload Dconf database
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    notes: |-
+      This is a helper rule to reload Dconf database correctly.
+    status: automated
+    rules:
+      - dconf_db_up_to_date
+
+  - id: enable_authselect
+    title: Enable Authselect
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    notes: |-
+      The policy doesn't have any section where this would fit better.
+    status: automated
+    rules:
+      - var_authselect_profile=sssd
+      - enable_authselect
+
+  #[A.3] Manipulación de los registros de actividad (log).
+  - id: A.3.SEC-RHEL1
+    title: Se auditan los inicios de sesión.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL2
+    title: Se controla quien puede acceder a los registros de seguridad y auditoría.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL3
+    title: Se controla el cambio de hora del sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL4
+    title: Se controla quién puede generar o modificar reglas de audit.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL5
+    title: Se ha implementado la auditoría detallada basada en subcategorías.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL6
+    title: Se garantiza al menos 90 días de registros de actividad.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL7
+    title: Se auditan las modificaciones del fichero sudoers, así como los cambios en permisos, usuarios, grupos y contraseñas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL8
+    title: Se auditan los cambios en la configuración de Cron y en tareas programadas incluyendo los de scripts de inicio.
+    levels:
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL9
+    title: Se auditan los intentos de acceso a elementos críticos.
+    levels:
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL10
+    title: Se audita toda operación de montaje en el sistema y modificaciones en la memoria de intercambio.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.3.SEC-RHEL11
+    title: Se auditan modificaciones en ficheros PAM.
+    levels:
+      - advanced
+    status: pending
+
+  #[A.4] Manipulación de los ficheros de configuración
+  - id: A.4.SEC-RHEL1
+    title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran incluidos en un grupo sudoer.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.4.SEC-RHEL2
+    title: El sistema tiene un antivirus y este está actualizado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.4.SEC-RHEL3
+    title: Se modifican los permisos por particiones.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.5] Suplantación de la identidad.
+  - id: A.5.SEC-RHEL1
+    title: Se controlan los permisos de inicio de sesión y suplantación de identidad.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL2
+    title: Se controlan los intentos de elevación mediante definición de usuarios y grupos sudoers.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL3
+    title: Se controla el acceso a las claves de cifrado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL4
+    title: Se han deshabilitado los algoritmos de cifrado inseguros.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL5
+    title: Se exige el cambio de contraseña de forma recurrente.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL6
+    title: Se hace uso de protocolos seguros para los procesos de autenticación de red.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL7
+    title: Se controla la inactividad de la sesión de red.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.5.SEC-RHEL8
+    title: Se controla la inactividad de consola local y remota.
+    levels:
+      - advanced
+    status: pending
+
+  #[A.6] Abuso de privilegios de acceso.
+  - id: A.6.SEC-RHEL1
+    title: Se refuerza la seguridad de los objetos sensibles del sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.6.SEC-RHEL2
+    title: Se restringen accesos en modo recuperación incluido el modo modificación de inicio de grub.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.6.SEC-RHEL3
+    title: Se limita la shell de usuarios de servicio a "/bin/false".
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.6.SEC-RHEL4
+    title: Se restringe el uso de sesiones con usuario "root".
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.6.SEC-RHEL5
+    title: Se modifica la máscara global del sistema para ser más restrictiva.
+    levels:
+      - advanced
+    status: pending
+
+  - id: A.6.SEC-RHEL6
+    title: Se eliminan los grupos y usuarios innecesarios del sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.8] Difusión de software dañino.
+  - id: A.8.SEC-RHEL1
+    title: Se controla quién puede instalar software en el sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL2
+    title: El sistema operativo está actualizado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL3
+    title: El sistema tiene un firewall local activado.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL4
+    title: Se deshabilitan servicios innecesarios, reduciendo la superficie de exposición.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL5
+    title: Se controla la ejecución de aplicaciones.
+    levels:
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL6
+    title: Se dispone de medidas anti ransomware habilitadas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL7
+    title: Está habilitado el arranque cifrado con contraseña que evite modificaciones (GRUB protegido).
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL8
+    title: Se audita la descarga de archivos.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.8.SEC-RHEL9
+    title: Están deshabilitados los compiladores del sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.11] Acceso no autorizado.
+  - id: A.11.SEC-RHEL1
+    title: Se controla el inicio de sesión local en el sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL2
+    title: Se ha reforzado la seguridad del protocolo SSH.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL3
+    title: Se dispone de una política de credenciales robusta.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL4
+    title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las normas o directivas de la organización.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL5
+    title: Se controla el acceso al sistema a través de la red.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL6
+    title: Sólo se permiten algoritmos de cifrado robustos en accesos al sistema.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL7
+    title: Se limita el tiempo de inactividad del GUI.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL8
+    title: Se muestra un banner disuasorio.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL9
+    title: Se deshabilita la lista de usuarios.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL10
+    title: Se deshabilita recordar el historial de ficheros.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL11
+    title: Se deshabilita combinación de teclas para iniciar el inspector GTK
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.11.SEC-RHEL12
+    title: Se deshabilita el auto montaje de dispositivos extraíbles en el sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.15] Modificación de la información.
+  - id: A.15.SEC-RHEL1
+    title: Se controla el uso de medios de almacenamiento extraíbles.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.19] Revelación de información.
+  - id: A.19.SEC-RHEL1
+    title: Se controla el acceso al árbol de carpetas y ficheros.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.19.SEC-RHEL2
+    title: Se aplican medidas para la protección de las cuentas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.19.SEC-RHEL3
+    title: A robust algorithm and password complexity are enabled
+    original_title: Está habilitado un algoritmo robusto y la complejidad de contraseñas.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: planned
+    related_rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
+
+  #[A.23] Manipulación del hardware.
+  - id: A.23.SEC-RHEL1
+    title: Control the installation and use of any device connected to the equipment
+    original_title: Se controla la instalación y uso de cualquier dispositivo conectado al equipo.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: planned
+    related_rules:
+      - package_usbguard_installed
+      - service_usbguard_enabled
+      - usbguard_generate_policy
+
+  - id: A.23.SEC-RHEL2
+    title: Restrict dynamic mounting and unmounting of file systems
+    original_title: Se restringe el montaje y desmontaje dinámico de sistemas de archivos.
+    levels:
+      - basic
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.24] Denegación de servicio.
+  - id: A.24.SEC-RHEL1
+    title: Se controlan los privilegios que afectan al rendimiento del sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  - id: A.24.SEC-RHEL2
+    title: Se controla quien puede apagar el sistema.
+    levels:
+      - intermediate
+      - advanced
+    status: pending
+
+  #[A.25] Robo de equipos.
+  - id: A.25.SEC-RHEL1
+    title: El disco del sistema está cifrado.
+    levels:
+      - advanced
+    status: pending
+
+  - id: A.25.SEC-RHEL2
+    title: El disco de datos está cifrado.
+    levels:
+      - advanced
+    status: pending
+
+  #[A.30] Ingeniería social.
+  - id: A.30.SEC-RHEL1
+    title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
+    levels:
+      - advanced
+    status: pending
