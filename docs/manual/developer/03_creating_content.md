@@ -1320,12 +1320,14 @@ By effectively managing these updates, we can ensure that the project's rules re
 
 #### Updates and Changes
 
-By design it is expected that the rules in the project will be shared and used by the supported products. And during the lifespan of a product a component may change and require that one or more rules be updated.
+By design it is expected that the rules in the project will be shared and used by the supported products.
+And during the lifespan of a product a component may change and require that one or more rules be updated.
 
-When a component supported by CaC undergoes changes, it is essential to update and align the rules configuring it in the project accordingly. This is necessary to keep the rules in the project up to date and relevant.
+When a component supported by CaC undergoes changes, it is essential to update and align the rules configuring it in the project accordingly.
+This is necessary to keep the rules in the project up to date and relevant.
 
 But some changes may not apply to all products, sometimes a change is specific to a Linux distro, or a specific minor version or architecture of that distro.
-In these situations the behavior of the rule needs to be different for a product or one of its versions. 
+In these situations the behavior of the rule needs to be different for a product or one of its versions.
 The rule behavior needs to diverge according to the product and version.
 
 A rule can diverge in two ways:
@@ -1429,7 +1431,7 @@ Cons
 - Spawning may result in creation of almost identical rules without any real benefit of granularity.
 - Bugs affecting multiple spawned rules may be more laborious to be consistently fixed along the time.
 
-Profile and control selections
+#### Profile and control selections
 
 ##### Conditionals
 
@@ -1443,7 +1445,7 @@ Remarks
 
 - The ability to define extendable controls may mitigate the shortcomings mentioned right above.
 
-Content Clarity
+#### Content Clarity
 
 ##### Conditionals
 
@@ -1465,7 +1467,7 @@ Cons
 
 - Need to ensure that new and existing rules have distinct titles and descriptions, so the difference between them is clear, specially in tiny changes, like a single syscall in a list of multiple syscalls in a rule.
 
-Code duplication
+#### Code duplication
 
 Reducing code duplication is important to keep the maintenance costs low.
 
@@ -1477,9 +1479,10 @@ A rule that spawns another rule will lead to duplication of code, especially if 
 Similarly, rule updates solved with conditionals can also lead to code duplication if the behavior handled by the new conditional is similar and doesn’t use templates or macros.
 
 
-In summary, code duplication is mitigated by refactoring or using templates and macros. Transform the existing code into a macro or template, and use it in the new rule or conditional.
+In summary, code duplication is mitigated by refactoring or using templates and macros.
+Transform the existing code into a macro or template, and use it in the new rule or conditional.
 
-Stability
+#### Stability
 
 ##### Conditionals
 
@@ -1495,19 +1498,19 @@ Cons
 
 Pros
 
-- Rule doesn’t change, it just slowly erodes. But less changes means less surface for emerging problems.
+- Rule doesn’t change, it just slowly erodes.
+  But less changes means less surface for emerging problems.
 
 Cons
 
 - Customers will have to actively select spawned rules in case of e.g. extending profiles by tailoring.
 
-Deprecation and Removal
+#### Deprecation and Removal
 
 The need to configure a component can appear and disappear, just as the component itself.
 
-
-
-Once a rule is deemed obsolete or unnecessary it is deprecated so that new products don’t pick it up into their content. The rule deprecation process is detailed here.
+Once a rule is deemed obsolete or unnecessary it is deprecated so that new products don’t pick it up into their content.
+The rule deprecation process is detailed here.
 
 Once no product is including the deprecated rule in their content the rule can be removed.
 
