@@ -134,6 +134,7 @@ def main():
 
     controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)
     controls_manager.load()
+    controls_manager.remove_selections_not_known(loader.all_rules)
 
     profiles_by_id = get_all_resolved_profiles_by_id(
         env_yaml, product_yaml, loader, product_cpes, controls_manager, args.controls_dir)
