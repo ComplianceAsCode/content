@@ -1,0 +1,64 @@
+{{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
+{{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
+{{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
+{{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+euid!=uid[\s]+-F[\s]+auid!=unset[\s]+" %}}
+{{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
+<def-group>
+  <definition class="compliance" id="audit_rules_suid_auid_privilege_function" version="1">
+    {{{ oval_metadata("Ensure audit rule for all uses of privileged functions is enabled") }}}
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules 32-bit uid privileged function " test_ref="test_32bit_uid_auid_privileged_function_augenrules" />
+        <criterion comment="audit augenrules 64-bit uid privileged function" test_ref="test_64bit_uid_auid_privileged_function_augenrules" />
+        </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl 32-bit uid privileged function" test_ref="test_32bit_uid_auid_privileged_function_auditctl" />
+        <criterion comment="audit auditctl 64-bit uid privileged function" test_ref="test_64bit_uid_auid_privileged_function_auditctl" />
+        </criteria>
+
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit uid privileged function" id="test_32bit_uid_auid_privileged_function_augenrules" version="1">
+    <ind:object object_ref="object_32bit_uid_auid_privileged_function_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_uid_auid_privileged_function_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b32 + rx_uid + rx_end }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit uid privileged function" id="test_64bit_uid_auid_privileged_function_augenrules" version="1">
+    <ind:object object_ref="object_64bit_uid_auid_privileged_function_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_uid_auid_privileged_function_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b64 + rx_uid + rx_end }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit uid privileged function" id="test_32bit_uid_auid_privileged_function_auditctl" version="1">
+    <ind:object object_ref="object_32bit_uid_auid_privileged_function_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_uid_auid_privileged_function_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b32 + rx_uid + rx_end }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit uid privileged_function" id="test_64bit_uid_auid_privileged_function_auditctl" version="1">
+    <ind:object object_ref="object_64bit_uid_auid_privileged_function_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_uid_auid_privileged_function_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b64 + rx_uid + rx_end }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
