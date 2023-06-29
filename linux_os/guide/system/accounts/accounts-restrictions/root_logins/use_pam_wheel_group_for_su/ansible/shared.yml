@@ -6,16 +6,6 @@
 
 {{{ ansible_instantiate_variables("var_pam_wheel_group_for_su") }}}
 
-- name: {{{ rule_title }}} - Ensure group {{ var_pam_wheel_group_for_su }} is removed
-  group:
-    name: "{{ var_pam_wheel_group_for_su }}"
-    state: absent 
-
-- name: {{{ rule_title }}} - Ensure group {{ var_pam_wheel_group_for_su }} exist
-  group:
-    name: "{{ var_pam_wheel_group_for_su }}"
-    state: present
-
 - name: {{{ rule_title }}} - Add the group to the /etc/pam.d/su file
   ansible.builtin.lineinfile:
     path: "/etc/pam.d/su"

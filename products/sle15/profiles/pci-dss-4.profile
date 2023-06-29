@@ -13,6 +13,7 @@ description: |-
 
 selections:
     -  pcidss_4:all:base
+    -  ensure_pam_wheel_group_empty
     -  sshd_strong_kex=pcidss
     -  sshd_approved_macs=cis_sle15
     -  sshd_approved_ciphers=cis_sle15 
