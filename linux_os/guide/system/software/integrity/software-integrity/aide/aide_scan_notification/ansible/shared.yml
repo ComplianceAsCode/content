@@ -7,10 +7,10 @@
 
 - name: "Ensure AIDE is installed"
   package:
-    name:
-      - aide
-      - crontabs
+    name: "{{ item }}"
     state: present
+  with_items:
+    - aide
 
 - name: "{{{ rule_title }}}"
   cron:
