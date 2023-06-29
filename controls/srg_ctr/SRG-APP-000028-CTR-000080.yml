@@ -2,7 +2,7 @@ controls:
 - id: SRG-APP-000028-CTR-000080
   levels:
   - medium
-  title: {{{ full_name }}} must automatically audit account-disabling actions.
+  title: {{{ full_name }}} must generate audit rules to capture account creation, modification, disabling, removal and enabling actions.
   related_rules:
   - idp_is_configured
   - ocp_idp_no_htpasswd
@@ -11,4 +11,64 @@ controls:
   rules:
   - audit_rules_sysadmin_actions
   - audit_rules_usergroup_modification
+  check: |-
+    Verify the audit rules capture account creation, modification, disabling, removal and enabling actions by executing the following:
 
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; grep -e user-modify -e group-modify -e audit_rules_usergroup_modification /etc/audit/rules.d/* /etc/audit/audit.rules' 2>/dev/null; done
+
+    Confirm the following rules exist on each node:
+    -w /etc/group -p wa -k audit_rules_usergroup_modification
+    -w /etc/gshadow -p wa -k audit_rules_usergroup_modification
+    -w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification
+    -w /etc/passwd -p wa -k audit_rules_usergroup_modification
+    -w /etc/shadow -p wa -k audit_rules_usergroup_modification
+
+    If the above rules are not listed on each node, this is a finding.
+  fixtext: |-
+    Apply the machine config using the following command:
+
+    for mcpool in $(oc get mcp -oname | sed "s:.*/::" ); do
+    echo "apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      name: 75-account-modifications-rules-$mcpool
+      labels:
+        machineconfiguration.openshift.io/role: $mcpool
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        storage:
+          files:
+          - contents:
+              source: data:,-w%20/etc/sudoers.d/%20-p%20wa%20-k%20actions%0A-w%20/etc/sudoers%20-p%20wa%20-k%20actions%0A
+            mode: 0644
+            path: /etc/audit/rules.d/75-audit-sysadmin-actions.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/group%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_group_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/gshadow%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_gshadow_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/security/opasswd%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_security_opasswd_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/passwd%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_passwd_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/shadow%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_shadow_usergroup_modification.rules
+            overwrite: true
+    " | oc apply -f -
+    done
