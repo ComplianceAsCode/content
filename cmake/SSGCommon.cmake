@@ -305,16 +305,16 @@ endmacro()
 
 macro(ssg_build_manifest PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/manifest.json"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_manifest.py" --output "${CMAKE_CURRENT_BINARY_DIR}/manifest.json" --build-root "${CMAKE_CURRENT_BINARY_DIR}"
-        # The manifest requires compiled artifacts and OVAL, and the latter is the blocker.
-        # Individual OVAL files are produced during the build of "unlinked OVAL".
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_manifest.py" --output "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json" --build-root "${CMAKE_CURRENT_BINARY_DIR}"
+        # The manifest requires compiled artifacts on right places and also per-rule OVAL.
+        # It is not clear when those things assume their places, so manifest is compiled late
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-content] generating JSON manifest"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-manifest.json
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/manifest.json"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json"
     )
 endmacro()
 
