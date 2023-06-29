@@ -5,10 +5,10 @@
 # disruption = low
 - name: "Ensure AIDE is installed"
   package:
-    name:
-      - aide
-      - crontabs
+    name: "{{ item }}"
     state: present
+  with_items:
+    - aide
 
 - name: Set cron package name - RedHat
   set_fact:
