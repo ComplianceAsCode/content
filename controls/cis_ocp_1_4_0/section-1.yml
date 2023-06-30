@@ -6,113 +6,185 @@ controls:
   controls:
   - id: '1.1'
     title: Master Node Configuration Files
-    status: pending
+    status: automated
     rules: []
     controls:
     - id: 1.1.1
       title: Ensure that the API server pod specification file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_kube_apiserver
       levels: level_1
     - id: 1.1.2
       title: Ensure that the API server pod specification file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_kube_apiserver
+        - file_groupowner_kube_apiserver
       levels: level_1
     - id: 1.1.3
       title: Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_kube_apiserver
       levels: level_1
     - id: 1.1.4
       title: Ensure that the controller manager pod specification file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_kube_controller_manager
+        - file_groupowner_kube_controller_manager
       levels: level_1
     - id: 1.1.5
       title: Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_kube_scheduler
       levels: level_1
     - id: 1.1.6
       title: Ensure that the scheduler pod specification file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_kube_scheduler
+        - file_groupowner_kube_scheduler
       levels: level_1
     - id: 1.1.7
       title: Ensure that the etcd pod specification file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_etcd_member
       levels: level_1
     - id: 1.1.8
       title: Ensure that the etcd pod specification file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_groupowner_etcd_member
+        - file_owner_etcd_member
       levels: level_1
     - id: 1.1.9
       title: Ensure that the Container Network Interface file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_cni_conf
+        - file_permissions_multus_conf
+        - file_permissions_ip_allocations
+        - file_perms_openshift_sdn_cniserver_config
+        - file_permissions_ovs_pid
+        - file_permissions_ovs_conf_db
+        - file_permissions_ovs_sys_id_conf
+        - file_permissions_ovs_conf_db_lock
+        - file_permissions_ovs_vswitchd_pid
+        - file_permissions_ovsdb_server_pid
+        - file_permissions_ovn_cni_server_sock
+        - file_permissions_ovn_db_files
       levels: level_1
     - id: 1.1.10
       title: Ensure that the Container Network Interface file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_cni_conf
+        - file_groupowner_cni_conf
+        - file_owner_multus_conf
+        - file_groupowner_multus_conf
+        - file_owner_ip_allocations
+        - file_groupowner_ip_allocations
+        - file_owner_openshift_sdn_cniserver_config
+        - file_groupowner_openshift_sdn_cniserver_config
+        - file_owner_ovs_pid
+        - file_groupowner_ovs_pid
+        - file_owner_ovs_conf_db
+        - file_groupowner_ovs_conf_db
+        - file_owner_ovs_sys_id_conf
+        - file_groupowner_ovs_sys_id_conf
+        - file_owner_ovs_conf_db_lock
+        - file_groupowner_ovs_conf_db_lock
+        - file_owner_ovs_vswitchd_pid
+        - file_groupowner_ovs_vswitchd_pid
+        - file_owner_ovsdb_server_pid
+        - file_groupowner_ovsdb_server_pid
+        - file_groupowner_ovn_cni_server_sock
+        - file_owner_ovn_cni_server_sock
+        - file_owner_ovn_db_files
+        - file_groupowner_ovn_db_files
       levels: level_1
     - id: 1.1.11
       title: Ensure that the etcd data directory permissions are set to 700 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_etcd_data_dir
+        - file_permissions_etcd_data_files
       levels: level_1
     - id: 1.1.12
       title: Ensure that the etcd data directory ownership is set to etcd:etcd
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_etcd_data_dir
+        - file_groupowner_etcd_data_dir
+        - file_owner_etcd_data_files
+        - file_groupowner_etcd_data_files
       levels: level_1
     - id: 1.1.13
       title: Ensure that the kubeconfig file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_master_admin_kubeconfigs
       levels: level_1
     - id: 1.1.14
       title: Ensure that the kubeconfig file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_master_admin_kubeconfigs
+        - file_groupowner_master_admin_kubeconfigs
       levels: level_1
     - id: 1.1.15
       title: Ensure that the Scheduler kubeconfig file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_scheduler_kubeconfig
       levels: level_1
     - id: 1.1.16
       title: Ensure that the Scheduler kubeconfig file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_scheduler_kubeconfig
+        - file_groupowner_scheduler_kubeconfig
       levels: level_1
     - id: 1.1.17
       title: Ensure that the Controller Manager kubeconfig file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_controller_manager_kubeconfig
       levels: level_1
     - id: 1.1.18
       title: Ensure that the Controller Manager kubeconfig file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_controller_manager_kubeconfig
+        - file_groupowner_controller_manager_kubeconfig
       levels: level_1
     - id: 1.1.19
       title: Ensure that the OpenShift PKI directory and file ownership is set to root:root
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_owner_openshift_pki_key_files
+        - file_groupowner_openshift_pki_key_files
+        - file_owner_openshift_pki_cert_files
+        - file_groupowner_openshift_pki_cert_files
+        - file_owner_etcd_pki_cert_files
+        - file_groupowner_etcd_pki_cert_files
       levels: level_1
     - id: 1.1.20
       title: Ensure that the OpenShift PKI certificate file permissions are set to 600 or more restrictive
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_openshift_pki_cert_files
+        - file_permissions_etcd_pki_cert_files
       levels: level_1
     - id: 1.1.21
       title: Ensure that the OpenShift PKI key file permissions are set to 600
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_permissions_openshift_pki_key_files
       levels: level_1
   - id: '1.2'
     title: API Server
