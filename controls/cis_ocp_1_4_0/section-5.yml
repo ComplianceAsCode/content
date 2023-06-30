@@ -111,18 +111,20 @@ controls:
       levels: level_2
   - id: '5.4'
     title: Secrets Management
-    status: pending
+    status: manual
     rules: []
     controls:
     - id: 5.4.1
       title: Prefer using secrets as files over secrets as environment variables
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - secrets_no_environment_variables
       levels: level_1
     - id: 5.4.2
       title: Consider external secret storage
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - secrets_consider_external_storage
       levels: level_2
   - id: '5.5'
     title: Extensible Admission Control
