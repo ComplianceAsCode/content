@@ -101,13 +101,16 @@ controls:
     controls:
     - id: 5.3.1
       title: Ensure that the CNI in use supports Network Policies
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - configure_network_policies
       levels: level_1
     - id: 5.3.2
       title: Ensure that all Namespaces have Network Policies defined
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - configure_network_policies_namespaces
+        - configure_network_policies_hypershift_hosted
       levels: level_2
   - id: '5.4'
     title: Secrets Management
