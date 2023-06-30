@@ -42,9 +42,13 @@ def print_set(elements: set) -> None:
         print(" - " + element)
 
 
-def compare_sets(set1: set, set2: set, title: str, name: str) -> None:
+def compare_sets(set1: set, set2: set) -> tuple:
     added = set2 - set1
     removed = set1 - set2
+    return added, removed
+
+
+def print_diff(added: set, removed: set, title: str, name: str):
     if not added and not removed:
         return
     print(title)
@@ -72,7 +76,8 @@ class ManifestComparator():
     def compare_rules(self) -> None:
         rules1 = set(self.manifest1["rules"].keys())
         rules2 = set(self.manifest2["rules"].keys())
-        compare_sets(rules1, rules2, "Rules in benchmark:", "rules")
+        added, removed = compare_sets(rules1, rules2)
+        print_diff(added, removed, "Rules in benchmark:", "rules")
 
     def _get_reports(self, rules: list) -> list:
         rule_reports = []
@@ -83,10 +88,9 @@ class ManifestComparator():
             platforms1 = set(rule1["platform_names"])
             content2 = set(rule2["content"])
             platforms2 = set(rule2["platform_names"])
-            content_added = content2 - content1
-            content_removed = content1 - content2
-            platforms_added = platforms2 - platforms1
-            platforms_removed = platforms1 - platforms2
+            content_added, content_removed = compare_sets(content1, content2)
+            platforms_added, platforms_removed = compare_sets(
+                platforms1, platforms2)
             if (content_added or content_removed or platforms_added
                     or platforms_removed):
                 msgs = []
@@ -117,14 +121,15 @@ class ManifestComparator():
     def compare_profiles(self) -> None:
         profiles1 = set(self.manifest1["profiles"].keys())
         profiles2 = set(self.manifest2["profiles"].keys())
-        compare_sets(
-            profiles1, profiles2, "Profiles in benchmark:", "profiles")
+        added, removed = compare_sets(profiles1, profiles2)
+        print_diff(added, removed, "Profiles in benchmark:", "profiles")
         profiles_intersection = sorted(profiles1 & profiles2)
         for profile_id in profiles_intersection:
             rules1 = set(self.manifest1["profiles"][profile_id]["rules"])
             rules2 = set(self.manifest2["profiles"][profile_id]["rules"])
-            compare_sets(
-                rules1, rules2, f"Profile {profile_id} differs:", "rules")
+            added, removed = compare_sets(rules1, rules2)
+            print_diff(
+                added, removed, f"Profile {profile_id} differs:", "rules")
 
     def compare(self) -> None:
         self.compare_products()
