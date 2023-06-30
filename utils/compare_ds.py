@@ -24,8 +24,7 @@ def parse_args():
     )
     parser.add_argument(
         "--no-diffs", action="store_true",
-        help="Do not perform detailed comparison of checks and "
-        "remediations contents."
+        help="Do not perform detailed comparison of checks and remediations contents."
     )
     parser.add_argument(
         "--only-rules", action="store_true",
