@@ -46,53 +46,63 @@ controls:
     controls:
     - id: 5.2.1
       title: Minimize the admission of privileged containers
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_limit_privileged_containers
       levels: level_1
     - id: 5.2.2
       title: Minimize the admission of containers wishing to share the host process ID namespace
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_limit_process_id_namespace
       levels: level_1
     - id: 5.2.3
       title: Minimize the admission of containers wishing to share the host IPC namespace
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_limit_ipc_namespace
       levels: level_1
     - id: 5.2.4
       title: Minimize the admission of containers wishing to share the host network namespace
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_limit_network_namespace
       levels: level_1
     - id: 5.2.5
       title: Minimize the admission of containers with allowPrivilegeEscalation
-      status: pending
+      status: manual
       rules: []
+        - scc_limit_privilege_escalation
       levels: level_1
     - id: 5.2.6
       title: Minimize the admission of root containers
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_limit_root_containers
       levels: level_2
     - id: 5.2.7
       title: Minimize the admission of containers with the NET_RAW capability
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_limit_net_raw_capability
       levels: level_1
     - id: 5.2.8
       title: Minimize the admission of containers with added capabilities
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - scc_limit_container_allowed_capabilities
       levels: level_1
     - id: 5.2.9
       title: Minimize the admission of containers with capabilities assigned
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - scc_drop_container_capabilities
       levels: level_2
     - id: 5.2.10
       title: Minimize access to privileged Security Context Constraints
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - rbac_least_privilege
       levels: level_2
   - id: '5.3'
     title: Network Policies and CNI
