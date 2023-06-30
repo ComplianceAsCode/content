@@ -127,9 +127,26 @@ class ManifestComparator():
         for profile_id in profiles_intersection:
             rules1 = set(self.manifest1["profiles"][profile_id]["rules"])
             rules2 = set(self.manifest2["profiles"][profile_id]["rules"])
-            added, removed = compare_sets(rules1, rules2)
-            print_diff(
-                added, removed, f"Profile {profile_id} differs:", "rules")
+            rules_added, rules_removed = compare_sets(rules1, rules2)
+            values1 = set(self.manifest1["profiles"][profile_id]["values"])
+            values2 = set(self.manifest2["profiles"][profile_id]["values"])
+            values_added, values_removed = compare_sets(values1, values2)
+            if rules_added or rules_removed or values_added or values_removed:
+                print(f"Profile {profile_id} differs:")
+                if rules_added:
+                    print(f"The following rules were added:")
+                    print_set(rules_added)
+                if rules_removed:
+                    print(f"The following rules were removed:")
+                    print_set(rules_removed)
+                if values_added:
+                    print(f"The following values were added:")
+                    print_set(values_added)
+                if values_removed:
+                    print(f"The following values were removed:")
+                    print_set(values_removed)
+                print()
+
 
     def compare(self) -> None:
         self.compare_products()
