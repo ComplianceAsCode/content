@@ -309,30 +309,36 @@ controls:
     controls:
     - id: 1.3.1
       title: Ensure that controller manager healthz endpoints are protected by RBAC
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - rbac_debug_role_protects_pprof
       level: level_1
     - id: 1.3.2
       title: Ensure that the --use-service-account-credentials argument is set to
         true
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - controller_use_service_account
       level: level_1
     - id: 1.3.3
       title: Ensure that the --service-account-private-key-file argument is set as
         appropriate
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - controller_service_account_private_key
       level: level_1
     - id: 1.3.4
       title: Ensure that the --root-ca-file argument is set as appropriate
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - controller_service_account_ca
       level: level_1
     - id: 1.3.5
       title: Ensure that the --bind-address argument is set to 127.0.0.1
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - controller_secure_port
+        - controller_insecure_port_disabled
       level: level_1
   - id: '1.4'
     title: Scheduler
