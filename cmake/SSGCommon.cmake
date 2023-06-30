@@ -303,6 +303,21 @@ macro(ssg_build_cpe_oval_unlinked PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_manifest PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_manifest.py" --output "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json" --build-root "${CMAKE_CURRENT_BINARY_DIR}"
+        # The manifest requires compiled artifacts on right places and also per-rule OVAL.
+        # It is not clear when those things assume their places, so manifest is compiled late
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-content] generating JSON manifest"
+    )
+    add_custom_target(
+        generate-ssg-${PRODUCT}-manifest.json
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json"
+    )
+endmacro()
+
 # Builds SCE content into the build system. This occurs prior to XCCDF
 # generation so that the XCCDF builder can correctly place SCE content
 # (without needing a separate XML or XSLT linking step) and also place
@@ -736,6 +751,7 @@ macro(ssg_build_product PRODUCT)
     endif()
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_oval_unlinked(${PRODUCT})
+    ssg_build_manifest(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
@@ -750,6 +766,7 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-xccdf.xml
         generate-ssg-${PRODUCT}-oval.xml
         generate-ssg-${PRODUCT}-ocil.xml
+        generate-ssg-${PRODUCT}-manifest.json
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
         generate-ssg-tables-${PRODUCT}-all
