@@ -209,6 +209,13 @@ class Policy(ssg.entities.common.XCCDFEntity):
             result = [self.levels[0].id]
         return result
 
+    def remove_selections_not_known(self, known_rules):
+        for c in self.controls:
+            selections = set(c.selected).intersection(known_rules)
+            c.selected = list(selections)
+            unselections = set(c.unselected).intersection(known_rules)
+            c.unselected = list(unselections)
+
     def _create_control_from_subtree(self, subtree):
         try:
             control = Control.from_control_dict(
@@ -343,6 +350,11 @@ class ControlsManager():
             policy.load()
             self.policies[policy.id] = policy
         self.resolve_controls()
+
+    def remove_selections_not_known(self, known_rules):
+        known_rules = set(known_rules)
+        for p in self.policies.values():
+            p.remove_selections_not_known(known_rules)
 
     def resolve_controls(self):
         for pid, policy in self.policies.items():

@@ -412,6 +412,30 @@ def test_policy_parse_from_nested(minimal_empty_controls, one_simple_subcontrol)
     assert control.selections == ["a", "b"]
 
 
+def test_manager_removes_rules():
+    control_dict = dict(id="top", rules=["one", "two", "three", "!four", "!five"])
+
+    policy = ssg.controls.Policy("")
+    policy.save_controls_tree([control_dict])
+    policy.id = "P"
+
+    controls_manager = ssg.controls.ControlsManager("", dict())
+    controls_manager.policies[policy.id] = policy
+
+    control = controls_manager.get_control("P", "top")
+    assert len(control.selections) == 5
+
+    controls_manager.remove_selections_not_known(["one", "four"])
+    control = controls_manager.get_control("P", "top")
+    assert len(control.selections) == 2
+    assert "one" in control.selections
+    assert "!four" in control.selections
+
+    controls_manager.remove_selections_not_known([])
+    control = controls_manager.get_control("P", "top")
+    assert len(control.selections) == 0
+
+
 def test_policy_parse_from_nested():
     top_control_dict = dict(id="top", controls=["nested-1"])
     first_nested_dict = dict(id="nested-1", controls=["nested-2"], rules="Y")
