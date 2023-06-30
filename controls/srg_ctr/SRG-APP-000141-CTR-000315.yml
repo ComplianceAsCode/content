@@ -3,12 +3,11 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must be configured with only essential configurations.
-  status: inherently met
-  artifact_description: |-
-    Supporting evidence is in the following documentation
+  related_rules:
+  - service_sshd_disabled
+  - kernel_module_usb-storage_disabled
+  - package_usbguard_installed
+  - service_usbguard_enabled
+  - configure_usbguard_auditbackend
+  status: automated
 
-    https://docs.openshift.com/container-platform/latest/architecture/architecture-rhcos.html
-  status_justification: |-
-    RHCOS itself is built with the sole intention of running OpenShift,
-    therefore it doesn't have extra packages that are not necessary to run the main
-    workload (OCP). There is, for instance, no extra interpreters, e.g. python.
