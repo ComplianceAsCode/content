@@ -138,28 +138,32 @@ controls:
       level: level_2
   - id: '5.7'
     title: General Policies
-    status: pending
+    status: partial
     rules: []
     controls:
     - id: 5.7.1
       title: Create administrative boundaries between resources using namespaces
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - general_namespaces_in_use
       level: level_1
     - id: 5.7.2
       title: Ensure that the seccomp profile is set to docker/default in your pod
         definitions
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - general_default_seccomp_profile
       level: level_2
     - id: 5.7.3
       title: Apply Security Context to Your Pods and Containers
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - general_apply_scc
       level: level_2
     - id: 5.7.4
       title: The default namespace should not be used
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - general_default_namespace_use
       level: level_2
 
