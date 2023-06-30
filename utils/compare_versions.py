@@ -48,7 +48,7 @@ def compare_sets(set1: set, set2: set) -> tuple:
     return added, removed
 
 
-def print_diff(added: set, removed: set, title: str, name: str):
+def print_diff(added: set, removed: set, title: str, name: str) -> None:
     if not added and not removed:
         return
     print(title)
