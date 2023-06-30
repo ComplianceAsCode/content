@@ -9,10 +9,11 @@ from ssg.entities import profile
 from ssg import build_yaml
 
 
-RULE_CONTENT_FILES = dict(
-    ansible="fixes/ansible/{id}.yml",
-    bash="fixes/bash/{id}.sh",
-    oval="checks/oval/{id}.xml",
+RULE_CONTENT_FILES = (
+    ("ansible", "fixes/ansible/{id}.yml"),
+    ("bash", "fixes/bash/{id}.sh"),
+    ("oval", "checks/oval/{id}.xml"),
+    ("oval", "checks_from_templates/oval/{id}.xml"),
 )
 
 RULE_ATTRIBUTES = dict(
@@ -42,7 +43,7 @@ def add_rule_attributes(main_dir, output_dict, rule_id):
 
 def add_rule_associated_content(main_dir, output_dict, rule_id):
     contents = set()
-    for content_id, expected_filename_template in RULE_CONTENT_FILES.items():
+    for content_id, expected_filename_template in RULE_CONTENT_FILES:
         expected_filename = os.path.join(main_dir, expected_filename_template.format(id=rule_id))
         if os.path.exists(expected_filename):
             contents.add(content_id)
