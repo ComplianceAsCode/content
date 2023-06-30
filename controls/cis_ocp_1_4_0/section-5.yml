@@ -128,13 +128,14 @@ controls:
       level: level_2
   - id: '5.5'
     title: Extensible Admission Control
-    status: pending
+    status: partial
     rules: []
     controls:
     - id: 5.5.1
       title: Configure Image Provenance using image controller configuration parameters
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - general_configure_imagepolicywebhook
       level: level_2
   - id: '5.7'
     title: General Policies
