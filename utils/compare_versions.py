@@ -132,6 +132,24 @@ class ManifestComparator():
                 print(" - " + report)
             print()
 
+    @staticmethod
+    def _print_profile_comparison(
+            rules_added: set, rules_removed: set,
+            values_added: set, values_removed: set) -> None:
+        if rules_added:
+            print(f"The following rules were added:")
+            print_set(rules_added)
+        if rules_removed:
+            print(f"The following rules were removed:")
+            print_set(rules_removed)
+        if values_added:
+            print(f"The following values were added:")
+            print_set(values_added)
+        if values_removed:
+            print(f"The following values were removed:")
+            print_set(values_removed)
+        print()
+
     def compare_profile(self, profile_id: str) -> None:
         rules1 = set(self.manifest1["profiles"][profile_id]["rules"])
         rules2 = set(self.manifest2["profiles"][profile_id]["rules"])
@@ -141,19 +159,8 @@ class ManifestComparator():
         values_added, values_removed = compare_sets(values1, values2)
         if rules_added or rules_removed or values_added or values_removed:
             print(f"Profile {profile_id} differs:")
-            if rules_added:
-                print(f"The following rules were added:")
-                print_set(rules_added)
-            if rules_removed:
-                print(f"The following rules were removed:")
-                print_set(rules_removed)
-            if values_added:
-                print(f"The following values were added:")
-                print_set(values_added)
-            if values_removed:
-                print(f"The following values were removed:")
-                print_set(values_removed)
-            print()
+            self._print_profile_comparison(
+                rules_added, rules_removed, values_added, values_removed)
 
     def compare_profiles(self) -> None:
         profiles1 = set(self.manifest1["profiles"].keys())
