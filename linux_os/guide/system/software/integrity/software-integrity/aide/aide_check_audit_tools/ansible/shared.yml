@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_sle,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -30,13 +30,13 @@
 
 - name: Ensure existing AIDE configuration for audit tools are correct
   lineinfile:
-    path: /etc/aide.conf
+    path: {{{ aide_conf_path }}}
     regexp: ^{{ item }}\s
     line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"
 
 - name: Configure AIDE to properly protect audit tools
   lineinfile:
-    path: /etc/aide.conf
+    path: {{{ aide_conf_path }}}
     line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"
