@@ -5,6 +5,7 @@ import json
 import os
 import subprocess
 import tempfile
+from typing import Optional
 
 
 def parse_args() -> argparse.Namespace:
@@ -79,32 +80,45 @@ class ManifestComparator():
         added, removed = compare_sets(rules1, rules2)
         print_diff(added, removed, "Rules in benchmark:", "rules")
 
+    def _compare_content(self, rule1: dict, rule2: dict) -> list:
+        msgs = []
+        content1 = set(rule1["content"])
+        content2 = set(rule2["content"])
+        content_added, content_removed = compare_sets(content1, content2)
+        if content_added:
+            msgs.append("adds " + ", ".join(content_added))
+        if content_removed:
+            msgs.append("removes " + ", ".join(content_removed))
+        return msgs
+
+    def _compare_platforms(self, rule1: dict, rule2: dict) -> list:
+        msgs = []
+        content1 = set(rule1["platform_names"])
+        content2 = set(rule2["platform_names"])
+        content_added, content_removed = compare_sets(content1, content2)
+        if content_added:
+            msgs.append("adds platform(s)" + ", ".join(content_added))
+        if content_removed:
+            msgs.append("removes platform(s)" + ", ".join(content_removed))
+        return msgs
+
+    def _get_report(self, rule_id: str) -> Optional[str]:
+        rule1 = self.manifest1["rules"][rule_id]
+        rule2 = self.manifest2["rules"][rule_id]
+        msgs = []
+        msgs.extend(self._compare_content(rule1, rule2))
+        msgs.extend(self._compare_platforms(rule1, rule2))
+        if len(msgs) == 0:
+            return None
+        rule_report = "Rule " + rule_id + " " + ", ".join(msgs) + "."
+        return rule_report
+
     def _get_reports(self, rules: list) -> list:
         rule_reports = []
         for rule_id in rules:
-            rule1 = self.manifest1["rules"][rule_id]
-            rule2 = self.manifest2["rules"][rule_id]
-            content1 = set(rule1["content"])
-            platforms1 = set(rule1["platform_names"])
-            content2 = set(rule2["content"])
-            platforms2 = set(rule2["platform_names"])
-            content_added, content_removed = compare_sets(content1, content2)
-            platforms_added, platforms_removed = compare_sets(
-                platforms1, platforms2)
-            if (content_added or content_removed or platforms_added
-                    or platforms_removed):
-                msgs = []
-                if content_added:
-                    msgs.append("adds " + ", ".join(content_added))
-                if content_removed:
-                    msgs.append("removes " + ", ".join(content_removed))
-                if platforms_added:
-                    msgs.append("adds platform " + ", ".join(platforms_added))
-                if platforms_removed:
-                    msgs.append(
-                        "removes platform " + ", ".join(platforms_removed))
-                rule_report = "Rule " + rule_id + " " + ", ".join(msgs) + "."
-                rule_reports.append(rule_report)
+            report = self._get_report(rule_id)
+            if report is not None:
+                rule_reports.append(report)
         return rule_reports
 
     def compare_rule_details(self) -> None:
@@ -118,6 +132,29 @@ class ManifestComparator():
                 print(" - " + report)
             print()
 
+    def compare_profile(self, profile_id: str) -> None:
+        rules1 = set(self.manifest1["profiles"][profile_id]["rules"])
+        rules2 = set(self.manifest2["profiles"][profile_id]["rules"])
+        rules_added, rules_removed = compare_sets(rules1, rules2)
+        values1 = set(self.manifest1["profiles"][profile_id]["values"])
+        values2 = set(self.manifest2["profiles"][profile_id]["values"])
+        values_added, values_removed = compare_sets(values1, values2)
+        if rules_added or rules_removed or values_added or values_removed:
+            print(f"Profile {profile_id} differs:")
+            if rules_added:
+                print(f"The following rules were added:")
+                print_set(rules_added)
+            if rules_removed:
+                print(f"The following rules were removed:")
+                print_set(rules_removed)
+            if values_added:
+                print(f"The following values were added:")
+                print_set(values_added)
+            if values_removed:
+                print(f"The following values were removed:")
+                print_set(values_removed)
+            print()
+
     def compare_profiles(self) -> None:
         profiles1 = set(self.manifest1["profiles"].keys())
         profiles2 = set(self.manifest2["profiles"].keys())
@@ -125,28 +162,7 @@ class ManifestComparator():
         print_diff(added, removed, "Profiles in benchmark:", "profiles")
         profiles_intersection = sorted(profiles1 & profiles2)
         for profile_id in profiles_intersection:
-            rules1 = set(self.manifest1["profiles"][profile_id]["rules"])
-            rules2 = set(self.manifest2["profiles"][profile_id]["rules"])
-            rules_added, rules_removed = compare_sets(rules1, rules2)
-            values1 = set(self.manifest1["profiles"][profile_id]["values"])
-            values2 = set(self.manifest2["profiles"][profile_id]["values"])
-            values_added, values_removed = compare_sets(values1, values2)
-            if rules_added or rules_removed or values_added or values_removed:
-                print(f"Profile {profile_id} differs:")
-                if rules_added:
-                    print(f"The following rules were added:")
-                    print_set(rules_added)
-                if rules_removed:
-                    print(f"The following rules were removed:")
-                    print_set(rules_removed)
-                if values_added:
-                    print(f"The following values were added:")
-                    print_set(values_added)
-                if values_removed:
-                    print(f"The following values were removed:")
-                    print_set(values_removed)
-                print()
-
+            self.compare_profile(profile_id)
 
     def compare(self) -> None:
         self.compare_products()
