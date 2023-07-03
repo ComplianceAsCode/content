@@ -30,13 +30,21 @@
 
 - name: Ensure existing AIDE configuration for audit tools are correct
   lineinfile:
+    {{% if 'ubuntu' in product %}}
+    path: /etc/aide/aide.conf
+    {{% else %}}
     path: /etc/aide.conf
+    {{% endif %}}
     regexp: ^{{ item }}\s
     line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"
 
 - name: Configure AIDE to properly protect audit tools
   lineinfile:
+    {{% if 'ubuntu' in product %}}
+    path: /etc/aide/aide.conf
+    {{% else %}}
     path: /etc/aide.conf
+    {{% endif %}}
     line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"
