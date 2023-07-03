@@ -23,7 +23,11 @@
 # mainly to allow ansible's check mode to work
 - name: "Check whether the stock AIDE Database exists"
   stat:
+    {{% if 'ubuntu' in product %}}
+    path: /var/lib/aide/aide.db.new
+    {{% else %}}
     path: /var/lib/aide/aide.db.new.gz
+    {{% endif %}}
   register: aide_database_stat
 
 - name: "Stage AIDE Database"
