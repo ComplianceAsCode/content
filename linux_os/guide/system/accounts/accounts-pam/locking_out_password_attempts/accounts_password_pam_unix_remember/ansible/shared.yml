@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{% if product in [ "sle12", "sle15" ] %}}
+{{% if product in [ "sle12", "sle15" ] or product in [ "ubuntu1804", "ubuntu2004" ] %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
