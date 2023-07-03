@@ -11,7 +11,12 @@
 - name: Check to see if 'pam_pkcs11' module is configured in '/etc/pam.d/common-auth'
   shell: grep -E '^\s*auth\s+\S+\s+pam_pkcs11\.so' /etc/pam.d/common-auth || true
   register: check_pam_pkcs11_module_result
-  when: '"pam_pkcs11" in ansible_facts.packages'
+  when: 
+    {{% if 'sle' in product %}}
+    - '"pam_pkcs11" in ansible_facts.packages'
+    {{% else %}}
+    - '"libpam-pkcs11" in ansible_facts.packages'
+    {{% endif %}}
 
 - name: Configure 'pam_pkcs11' module in '/etc/pam.d/common-auth'
   lineinfile:
@@ -20,7 +25,11 @@
     insertafter: '^\s*#'
     state: present
   when:
+    {{% if 'sle' in product %}}
     - '"pam_pkcs11" in ansible_facts.packages'
+    {{% else %}}
+    - '"libpam-pkcs11" in ansible_facts.packages'
+    {{% endif %}}
     - '"pam_pkcs11.so" not in check_pam_pkcs11_module_result.stdout'
 
 - name: Ensure 'pam_pkcs11' module has 'sufficient' control flag
@@ -29,4 +38,9 @@
     regexp: '^(\s*auth\s+)\S+(\s+pam_pkcs11\.so.*)'
     line: '\g<1>sufficient\g<2>'
     backrefs: yes
-  when: '"pam_pkcs11" in ansible_facts.packages'
+  when:
+    {{% if 'sle' in product %}}
+    - '"pam_pkcs11" in ansible_facts.packages'
+    {{% else %}}
+    - '"libpam-pkcs11" in ansible_facts.packages' 
+    {{% endif %}}
