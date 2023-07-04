@@ -1337,6 +1337,8 @@ controls:
 
     # Based on DAT-NT-012 R18
     # The rules sets the rotation frequency to daily
+    - package_logrotate_installed
+    - timer_logrotate_enabled
     - ensure_logrotate_activated
 
     # Based on DAT-NT-012 R20
