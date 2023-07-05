@@ -117,7 +117,8 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
     @classmethod
     def _check_keys(cls, control_dict):
         for key in control_dict.keys():
-            if key not in cls.KEYS.keys() and key not in ['rules', 'related_rules', 'controls', ]:
+            if key not in cls.KEYS.keys() and key not in [
+                    'controls', 'original_title', 'related_rules', 'rules']:
                 raise ValueError("Key %s is not a valid for a control." % key)
 
     @classmethod

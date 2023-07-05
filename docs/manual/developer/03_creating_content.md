@@ -983,9 +983,10 @@ This is a complete schema of the YAML file format.
 ```
 id: policy ID (required key)
 title: short title (required key)
+original_title: used as a reference for policies not yet available in english
 source: a link to the original policy, eg. a URL of a PDF document
 controls_dir: a directory containing files representing controls that will be imported into this policy
-levels: a list of levels, the first one is default.
+levels: a list of levels, the first one is default
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
 
@@ -993,10 +994,10 @@ controls: a list of controls (required key)
   - id: control ID (required key)
     title: control title
     description: description of the control in a few sentences
-    levels: The list of policy levels that the control belongs to.
+    levels: The list of policy levels that the control belongs to
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
-    related_rules: a list of related rules
+    related_rules: a list of related rules only for reference
     controls: a (nested) list of either control definitions, or of control references in the policy:id format
     status: a keyword that reflects the current status of the implementation of this control
     tickets: a list of URLs reflecting the work that still needs to be done to address this control

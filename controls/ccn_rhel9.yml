@@ -41,7 +41,8 @@ controls:
 
   #[A.3] Manipulación de los registros de actividad (log).
   - id: A.3.SEC-RHEL1
-    title: Se auditan los inicios de sesión.
+    title: Session initiation is audited
+    original_title: Se auditan los inicios de sesión.
     levels:
       - basic
       - intermediate
@@ -53,7 +54,8 @@ controls:
       - audit_rules_login_events_lastlog
 
   - id: A.3.SEC-RHEL2
-    title: Se controla quien puede acceder a los registros de seguridad y auditoría.
+    title: Control who can access security and audit logs
+    original_title: Se controla quien puede acceder a los registros de seguridad y auditoría.
     levels:
       - intermediate
       - advanced
@@ -65,7 +67,8 @@ controls:
       - directory_permissions_var_log_audit
 
   - id: A.3.SEC-RHEL3
-    title: Se controla el cambio de hora del sistema.
+    title: System time change is controlled
+    original_title: Se controla el cambio de hora del sistema.
     levels:
       - intermediate
       - advanced
@@ -77,7 +80,8 @@ controls:
       - var_multiple_time_servers=rhel
 
   - id: A.3.SEC-RHEL4
-    title: Se controla quién puede generar o modificar reglas de audit.
+    title: Control who can generate or modify audit rules
+    original_title: Se controla quién puede generar o modificar reglas de audit.
     levels:
       - intermediate
       - advanced
@@ -88,14 +92,16 @@ controls:
       - file_groupownership_audit_configuration
 
   - id: A.3.SEC-RHEL5
-    title: Se ha implementado la auditoría detallada basada en subcategorías.
+    title: It is implemented a detailed audit based on subcategories
+    original_title: Se ha implementado la auditoría detallada basada en subcategorías.
     levels:
       - intermediate
       - advanced
     status: pending
 
   - id: A.3.SEC-RHEL6
-    title: Se garantiza al menos 90 días de registros de actividad.
+    title: At least 90 days of activity logs are guaranteed
+    original_title: Se garantiza al menos 90 días de registros de actividad.
     levels:
       - basic
       - intermediate
@@ -106,7 +112,8 @@ controls:
       - var_auditd_max_log_file_action=keep_logs
 
   - id: A.3.SEC-RHEL7
-    title: Se auditan las modificaciones del fichero sudoers, así como los cambios en permisos, usuarios, grupos y contraseñas.
+    title: Modifications to the sudoers file are audited, as are changes to permissions, users, groups, and passwords
+    original_title: Se auditan las modificaciones del fichero sudoers, así como los cambios en permisos, usuarios, grupos y contraseñas.
     levels:
       - basic
       - intermediate
@@ -135,7 +142,8 @@ controls:
       - audit_rules_dac_modification_setxattr
 
   - id: A.3.SEC-RHEL8
-    title: Se auditan los cambios en la configuración de Cron y en tareas programadas incluyendo los de scripts de inicio.
+    title: Changes to cron settings and scheduled tasks including startup scripts are audited
+    original_title: Se auditan los cambios en la configuración de Cron y en tareas programadas incluyendo los de scripts de inicio.
     levels:
       - advanced
     status: pending
@@ -147,7 +155,8 @@ controls:
       - audit_rules_time_watch_localtime
 
   - id: A.3.SEC-RHEL9
-    title: Se auditan los intentos de acceso a elementos críticos.
+    title: Attempts to access critical items are audited
+    original_title: Se auditan los intentos de acceso a elementos críticos.
     levels:
       - advanced
     status: planned
@@ -159,7 +168,8 @@ controls:
       - audit_rules_unsuccessful_file_modification_truncate
 
   - id: A.3.SEC-RHEL10
-    title: Se audita toda operación de montaje en el sistema y modificaciones en la memoria de intercambio.
+    title: All mount operations on the system and changes to the swap are audited
+    original_title: Se audita toda operación de montaje en el sistema y modificaciones en la memoria de intercambio.
     levels:
       - intermediate
       - advanced
@@ -168,14 +178,16 @@ controls:
       - audit_rules_media_export
 
   - id: A.3.SEC-RHEL11
-    title: Se auditan modificaciones en ficheros PAM.
+    title: Modifications in PAM files are audited
+    original_title: Se auditan modificaciones en ficheros PAM.
     levels:
       - advanced
     status: pending
 
   #[A.4] Manipulación de los ficheros de configuración
   - id: A.4.SEC-RHEL1
-    title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran incluidos en un grupo sudoer.
+    title: Common users do not have local administrator permissions or are included in a sudo group
+    original_title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran incluidos en un grupo sudoer.
     levels:
       - basic
       - intermediate
@@ -183,7 +195,8 @@ controls:
     status: pending
 
   - id: A.4.SEC-RHEL2
-    title: El sistema tiene un antivirus y este está actualizado.
+    title: The system has an updated antivirus
+    original_title: El sistema tiene un antivirus y este está actualizado.
     levels:
       - basic
       - intermediate
@@ -191,7 +204,8 @@ controls:
     status: pending
 
   - id: A.4.SEC-RHEL3
-    title: Se modifican los permisos por particiones.
+    title: Permissions by partitions are modified
+    original_title: Se modifican los permisos por particiones.
     levels:
       - basic
       - intermediate
@@ -202,7 +216,8 @@ controls:
 
   #[A.5] Suplantación de la identidad.
   - id: A.5.SEC-RHEL1
-    title: Se controlan los permisos de inicio de sesión y suplantación de identidad.
+    title: Control login and impersonation permissions
+    original_title: Se controlan los permisos de inicio de sesión y suplantación de identidad.
     levels:
       - intermediate
       - advanced
@@ -212,7 +227,8 @@ controls:
       - use_pam_wheel_for_su
 
   - id: A.5.SEC-RHEL2
-    title: Se controlan los intentos de elevación mediante definición de usuarios y grupos sudoers.
+    title: Elevation attempts are controlled by defining sudoers users and groups
+    original_title: Se controlan los intentos de elevación mediante definición de usuarios y grupos sudoers.
     levels:
       - basic
       - intermediate
@@ -223,7 +239,8 @@ controls:
       - sudo_require_reauthentication
 
   - id: A.5.SEC-RHEL3
-    title: Se controla el acceso a las claves de cifrado.
+    title: Access to encryption keys is controlled
+    original_title: Se controla el acceso a las claves de cifrado.
     levels:
       - basic
       - intermediate
@@ -231,7 +248,8 @@ controls:
     status: pending
 
   - id: A.5.SEC-RHEL4
-    title: Se han deshabilitado los algoritmos de cifrado inseguros.
+    title: Disable insecure encryption algorithms
+    original_title: Se han deshabilitado los algoritmos de cifrado inseguros.
     levels:
       - basic
       - intermediate
@@ -242,7 +260,8 @@ controls:
       - var_system_crypto_policy=default_policy
 
   - id: A.5.SEC-RHEL5
-    title: Se exige el cambio de contraseña de forma recurrente.
+    title: Recurring password change required
+    original_title: Se exige el cambio de contraseña de forma recurrente.
     levels:
       - basic
       - intermediate
@@ -260,7 +279,8 @@ controls:
       - accounts_password_set_warn_age_existing
 
   - id: A.5.SEC-RHEL6
-    title: Se hace uso de protocolos seguros para los procesos de autenticación de red.
+    title: Secure protocols are used for network authentication processes
+    original_title: Se hace uso de protocolos seguros para los procesos de autenticación de red.
     levels:
       - basic
       - intermediate
@@ -270,7 +290,8 @@ controls:
       - configure_ssh_crypto_policy
 
   - id: A.5.SEC-RHEL7
-    title: Se controla la inactividad de la sesión de red.
+    title: Control network session inactivity
+    original_title: Se controla la inactividad de la sesión de red.
     levels:
       - basic
       - intermediate
@@ -283,7 +304,8 @@ controls:
       - var_sshd_set_keepalive=0
 
   - id: A.5.SEC-RHEL8
-    title: Se controla la inactividad de consola local y remota.
+    title: Control local and remote console inactivity
+    original_title: Se controla la inactividad de consola local y remota.
     levels:
       - advanced
     status: planned
@@ -293,7 +315,8 @@ controls:
 
   #[A.6] Abuso de privilegios de acceso.
   - id: A.6.SEC-RHEL1
-    title: Se refuerza la seguridad de los objetos sensibles del sistema.
+    title: The security of sensitive system objects is reinforced
+    original_title: Se refuerza la seguridad de los objetos sensibles del sistema.
     levels:
       - intermediate
       - advanced
@@ -307,7 +330,8 @@ controls:
       - selinux_state
 
   - id: A.6.SEC-RHEL2
-    title: Se restringen accesos en modo recuperación incluido el modo modificación de inicio de grub.
+    title: Access in recovery mode including grub boot modification mode is restricted
+    original_title: Se restringen accesos en modo recuperación incluido el modo modificación de inicio de grub.
     levels:
       - basic
       - intermediate
@@ -322,17 +346,21 @@ controls:
       - file_permissions_user_cfg
 
   - id: A.6.SEC-RHEL3
-    title: Se limita la shell de usuarios de servicio a "/bin/false".
+    title: Service users shell is limited to "/bin/false"
+    original_title: Se limita la shell de usuarios de servicio a "/bin/false".
     levels:
       - intermediate
       - advanced
     status: planned
+    notes: |-
+      "/sbin/nologin" might be a better option
     related_rules:
       - no_password_auth_for_systemaccounts
       - no_shelllogin_for_systemaccounts
 
   - id: A.6.SEC-RHEL4
-    title: Se restringe el uso de sesiones con usuario "root".
+    title: The use of sessions with the "root" user is restricted
+    original_title: Se restringe el uso de sesiones con usuario "root".
     levels:
       - intermediate
       - advanced
@@ -342,7 +370,8 @@ controls:
       - no_empty_passwords_etc_shadow
 
   - id: A.6.SEC-RHEL5
-    title: Se modifica la máscara global del sistema para ser más restrictiva.
+    title: The global system mask is modified to be more restrictive
+    original_title: Se modifica la máscara global del sistema para ser más restrictiva.
     levels:
       - advanced
     status: planned
@@ -353,7 +382,8 @@ controls:
       - var_accounts_user_umask=027
 
   - id: A.6.SEC-RHEL6
-    title: Se eliminan los grupos y usuarios innecesarios del sistema.
+    title: Unnecessary groups and users are removed from the system
+    original_title: Se eliminan los grupos y usuarios innecesarios del sistema.
     levels:
       - basic
       - intermediate
@@ -362,7 +392,8 @@ controls:
 
   #[A.8] Difusión de software dañino.
   - id: A.8.SEC-RHEL1
-    title: Se controla quién puede instalar software en el sistema.
+    title: Control who can install software on the system
+    original_title: Se controla quién puede instalar software en el sistema.
     levels:
       - basic
       - intermediate
@@ -370,7 +401,8 @@ controls:
     status: pending
 
   - id: A.8.SEC-RHEL2
-    title: El sistema operativo está actualizado.
+    title: The operating system is updated
+    original_title: El sistema operativo está actualizado.
     levels:
       - basic
       - intermediate
@@ -380,7 +412,8 @@ controls:
       - security_patches_up_to_date
 
   - id: A.8.SEC-RHEL3
-    title: El sistema tiene un firewall local activado.
+    title: The system has a local firewall activated
+    original_title: El sistema tiene un firewall local activado.
     levels:
       - basic
       - intermediate
@@ -394,7 +427,8 @@ controls:
       - firewalld_loopback_traffic_restricted
 
   - id: A.8.SEC-RHEL4
-    title: Se deshabilitan servicios innecesarios, reduciendo la superficie de exposición.
+    title: Unnecessary services are disabled, reducing the attack surface
+    original_title: Se deshabilitan servicios innecesarios, reduciendo la superficie de exposición.
     levels:
       - intermediate
       - advanced
@@ -412,13 +446,15 @@ controls:
       - kernel_module_udf_disabled
 
   - id: A.8.SEC-RHEL5
-    title: Se controla la ejecución de aplicaciones.
+    title: Control application execution
+    original_title: Se controla la ejecución de aplicaciones.
     levels:
       - advanced
     status: pending
 
   - id: A.8.SEC-RHEL6
-    title: Se dispone de medidas anti ransomware habilitadas.
+    title: Anti-ransomware measures are enabled
+    original_title: Se dispone de medidas anti ransomware habilitadas.
     levels:
       - basic
       - intermediate
@@ -457,7 +493,8 @@ controls:
       - sysctl_net_ipv4_conf_default_rp_filter
 
   - id: A.8.SEC-RHEL7
-    title: Está habilitado el arranque cifrado con contraseña que evite modificaciones (GRUB protegido).
+    title: Password encrypted boot that prevents modification is enabled (protected GRUB)
+    original_title: Está habilitado el arranque cifrado con contraseña que evite modificaciones (GRUB protegido).
     levels:
       - basic
       - intermediate
@@ -467,12 +504,13 @@ controls:
       - grub2_password
 
   - id: A.8.SEC-RHEL8
-    title: Se audita la descarga de archivos.
+    title: File download is audited
+    original_title: Se audita la descarga de archivos.
     levels:
       - basic
       - intermediate
       - advanced
-    status: planned
+    status: pending
     related_rules:
       - audit_rules_file_deletion_events_rename
       - audit_rules_file_deletion_events_renameat
@@ -480,7 +518,8 @@ controls:
       - audit_rules_file_deletion_events_unlinkat
 
   - id: A.8.SEC-RHEL9
-    title: Están deshabilitados los compiladores del sistema.
+    title: System compilers are disabled
+    original_title: Están deshabilitados los compiladores del sistema.
     levels:
       - basic
       - intermediate
@@ -489,7 +528,8 @@ controls:
 
   #[A.11] Acceso no autorizado.
   - id: A.11.SEC-RHEL1
-    title: Se controla el inicio de sesión local en el sistema.
+    title: Control local logon to the system
+    original_title: Se controla el inicio de sesión local en el sistema.
     levels:
       - basic
       - intermediate
@@ -497,7 +537,8 @@ controls:
     status: pending
 
   - id: A.11.SEC-RHEL2
-    title: Se ha reforzado la seguridad del protocolo SSH.
+    title: The security of the SSH protocol is strengthened
+    original_title: Se ha reforzado la seguridad del protocolo SSH.
     levels:
       - basic
       - intermediate
@@ -507,7 +548,8 @@ controls:
       - sshd_limit_user_access
 
   - id: A.11.SEC-RHEL3
-    title: Se dispone de una política de credenciales robusta.
+    title: A robust credential policy is in place
+    original_title: Se dispone de una política de credenciales robusta.
     levels:
       - basic
       - intermediate
@@ -523,7 +565,8 @@ controls:
       - no_empty_passwords_etc_shadow
 
   - id: A.11.SEC-RHEL4
-    title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las normas o directivas de la organización.
+    title: During login, the system displays a text in compliance with the organization's standards or policies
+    original_title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las normas o directivas de la organización.
     levels:
       - basic
       - intermediate
@@ -542,7 +585,8 @@ controls:
       - remote_login_banner_text=cis_banners
 
   - id: A.11.SEC-RHEL5
-    title: Se controla el acceso al sistema a través de la red.
+    title: Control network access to the system
+    original_title: Se controla el acceso al sistema a través de la red.
     levels:
       - basic
       - intermediate
@@ -552,7 +596,8 @@ controls:
       - configure_firewalld_ports
 
   - id: A.11.SEC-RHEL6
-    title: Sólo se permiten algoritmos de cifrado robustos en accesos al sistema.
+    title: Only strong encryption algorithms are allowed in accesses to the system
+    original_title: Sólo se permiten algoritmos de cifrado robustos en accesos al sistema.
     levels:
       - basic
       - intermediate
@@ -562,7 +607,8 @@ controls:
       - configure_ssh_crypto_policy
 
   - id: A.11.SEC-RHEL7
-    title: Se limita el tiempo de inactividad del GUI.
+    title: GUI idle time is limited
+    original_title: Se limita el tiempo de inactividad del GUI.
     levels:
       - intermediate
       - advanced
@@ -574,14 +620,18 @@ controls:
       - var_screensaver_lock_delay=immediate
 
   - id: A.11.SEC-RHEL8
-    title: Se muestra un banner disuasorio.
+    title: A dissuasive banner is displayed
+    original_title: Se muestra un banner disuasorio.
     levels:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      It seems to duplicate the A.11.SEC-RHEL4 requirement
 
   - id: A.11.SEC-RHEL9
-    title: Se deshabilita la lista de usuarios.
+    title: The user list is disabled
+    original_title: Se deshabilita la lista de usuarios.
     levels:
       - intermediate
       - advanced
@@ -590,21 +640,24 @@ controls:
       - dconf_gnome_disable_user_list
 
   - id: A.11.SEC-RHEL10
-    title: Se deshabilita recordar el historial de ficheros.
+    title: Disable remember file history
+    original_title: Se deshabilita recordar el historial de ficheros.
     levels:
       - intermediate
       - advanced
     status: pending
 
   - id: A.11.SEC-RHEL11
-    title: Se deshabilita combinación de teclas para iniciar el inspector GTK
+    title: Key combination to launch GTK inspector is disabled
+    original_title: Se deshabilita combinación de teclas para iniciar el inspector GTK
     levels:
       - intermediate
       - advanced
     status: pending
 
   - id: A.11.SEC-RHEL12
-    title: Se deshabilita el auto montaje de dispositivos extraíbles en el sistema.
+    title: Disable auto-mounting of removable devices on the system
+    original_title: Se deshabilita el auto montaje de dispositivos extraíbles en el sistema.
     levels:
       - intermediate
       - advanced
@@ -616,7 +669,8 @@ controls:
 
   #[A.15] Modificación de la información.
   - id: A.15.SEC-RHEL1
-    title: Se controla el uso de medios de almacenamiento extraíbles.
+    title: Control the use of removable storage media
+    original_title: Se controla el uso de medios de almacenamiento extraíbles.
     levels:
       - intermediate
       - advanced
@@ -626,7 +680,8 @@ controls:
 
   #[A.19] Revelación de información.
   - id: A.19.SEC-RHEL1
-    title: Se controla el acceso al árbol de carpetas y ficheros.
+    title: Control access to the folder and file tree
+    original_title: Se controla el acceso al árbol de carpetas y ficheros.
     levels:
       - basic
       - intermediate
@@ -634,7 +689,8 @@ controls:
     status: pending
 
   - id: A.19.SEC-RHEL2
-    title: Se aplican medidas para la protección de las cuentas.
+    title: Measures are applied to protect accounts
+    original_title: Se aplican medidas para la protección de las cuentas.
     levels:
       - basic
       - intermediate
@@ -682,14 +738,16 @@ controls:
 
   #[A.24] Denegación de servicio.
   - id: A.24.SEC-RHEL1
-    title: Se controlan los privilegios que afectan al rendimiento del sistema.
+    title: Privileges that affect system performance are controlled
+    original_title: Se controlan los privilegios que afectan al rendimiento del sistema.
     levels:
       - intermediate
       - advanced
     status: pending
 
   - id: A.24.SEC-RHEL2
-    title: Se controla quien puede apagar el sistema.
+    title: Control who can turn off the system
+    original_title: Se controla quien puede apagar el sistema.
     levels:
       - intermediate
       - advanced
@@ -697,20 +755,23 @@ controls:
 
   #[A.25] Robo de equipos.
   - id: A.25.SEC-RHEL1
-    title: El disco del sistema está cifrado.
+    title: System disk is encrypted
+    original_title: El disco del sistema está cifrado.
     levels:
       - advanced
     status: pending
 
   - id: A.25.SEC-RHEL2
-    title: El disco de datos está cifrado.
+    title: The data disk is encrypted
+    original_title: El disco de datos está cifrado.
     levels:
       - advanced
     status: pending
 
   #[A.30] Ingeniería social.
   - id: A.30.SEC-RHEL1
-    title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
+    title: There is an account lockout policy for incorrect logins
+    original_title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
     levels:
       - advanced
     status: planned
