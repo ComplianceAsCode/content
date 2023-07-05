@@ -1,0 +1,20 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Ensure pam_faildelay.so is properly configured in /etc/pam.d/common-auth
+  block:
+    - name: Check existent entry and get delay
+      shell: grep "required pam_faildelay.so" /etc/pam.d/common-auth | sed 's/.*\= *//'
+      register: pam_delay
+      changed_when: false
+    
+    - name: Set proper entry
+      lineinfile:
+        dest: /etc/pam.d/common-auth
+        regexp: ^(#)?.*pam_faildelay.so.*$
+        line: auth required pam_faildelay.so delay=4000000
+        create: true
+      when: (pam_delay.stdout | int) < 4000000 or pam_delay is undefined
