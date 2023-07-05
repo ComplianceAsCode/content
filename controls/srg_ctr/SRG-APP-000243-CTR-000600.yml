@@ -4,19 +4,10 @@ controls:
   - medium
   title: {{{ full_name }}} must prevent unauthorized and unintended information
     transfer via shared system resources.
-  status: manual
-  check: |-
-    Verify that all world-writable directories have the sticky bit set. The following command will list any world-writeable directories that do not have the sticky bit set.
-
-    > for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME "; find / -type d \( -perm -0002 -a ! -perm -1000 ! -path "/var/lib/containers/*" ! -path "/var/lib/kubelet/pods/*" ! -path "/sysroot/ostree/deploy/*" \) -print 2>/dev/null' 2>/dev/null; done
-
-    If there are any directories listed in the results, this is a finding.
-  fixtext: |-
-    Fix the directory permissions, by either removing world-writeable permission, or setting the sticky bit
-
-    > oc debug node/<node_name> -- chroot /host /bin/bash -c 'chmod XXXX <directory>'
-
-    where
-      node_name: The name of the node to connect to (oc get node)
-      XXXX:  Either 1777 (sticky bit) or 0755 (remove group and world write permission)
-      <directory>: The directory on which to correct the permissions
+  status: automated
+  rules:
+  - coreos_page_poison_kernel_argument
+  - coreos_vsyscall_kernel_argument
+  - coreos_slub_debug_kernel_argument
+  - sysctl_kernel_dmesg_restrict
+  - sysctl_kernel_perf_event_paranoid
