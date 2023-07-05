@@ -46,28 +46,46 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - audit_rules_session_events
+      - audit_rules_login_events_faillock
+      - audit_rules_login_events_lastlog
 
   - id: A.3.SEC-RHEL2
     title: Se controla quien puede acceder a los registros de seguridad y auditoría.
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - file_permissions_var_log_audit
+      - file_ownership_var_log_audit
+      - file_group_ownership_var_log_audit
+      - directory_permissions_var_log_audit
 
   - id: A.3.SEC-RHEL3
     title: Se controla el cambio de hora del sistema.
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - package_chrony_installed
+      - chronyd_specify_remote_server
+      - chronyd_run_as_chrony_user
+      - var_multiple_time_servers=rhel
 
   - id: A.3.SEC-RHEL4
     title: Se controla quién puede generar o modificar reglas de audit.
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - file_permissions_audit_configuration
+      - file_ownership_audit_configuration
+      - file_groupownership_audit_configuration
 
   - id: A.3.SEC-RHEL5
     title: Se ha implementado la auditoría detallada basada en subcategorías.
@@ -82,7 +100,10 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - auditd_data_retention_max_log_file_action
+      - var_auditd_max_log_file_action=keep_logs
 
   - id: A.3.SEC-RHEL7
     title: Se auditan las modificaciones del fichero sudoers, así como los cambios en permisos, usuarios, grupos y contraseñas.
@@ -90,19 +111,52 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - audit_sudo_log_events
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+      - audit_rules_sysadmin_actions
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_setxattr
 
   - id: A.3.SEC-RHEL8
     title: Se auditan los cambios en la configuración de Cron y en tareas programadas incluyendo los de scripts de inicio.
     levels:
       - advanced
     status: pending
+    related_rules:
+      - audit_rules_time_adjtimex
+      - audit_rules_time_settimeofday
+      - audit_rules_time_clock_settime
+      - audit_rules_time_stime
+      - audit_rules_time_watch_localtime
 
   - id: A.3.SEC-RHEL9
     title: Se auditan los intentos de acceso a elementos críticos.
     levels:
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_truncate
 
   - id: A.3.SEC-RHEL10
     title: Se audita toda operación de montaje en el sistema y modificaciones en la memoria de intercambio.
@@ -110,6 +164,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    related_rules:
+      - audit_rules_media_export
 
   - id: A.3.SEC-RHEL11
     title: Se auditan modificaciones en ficheros PAM.
@@ -141,6 +197,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      Related to nosuid, noexec and nodev options but in /boot.
 
   #[A.5] Suplantación de la identidad.
   - id: A.5.SEC-RHEL1
@@ -148,7 +206,10 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - sudo_add_use_pty
+      - use_pam_wheel_for_su
 
   - id: A.5.SEC-RHEL2
     title: Se controlan los intentos de elevación mediante definición de usuarios y grupos sudoers.
@@ -156,7 +217,10 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - sudo_require_authentication
+      - sudo_require_reauthentication
 
   - id: A.5.SEC-RHEL3
     title: Se controla el acceso a las claves de cifrado.
@@ -172,7 +236,10 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=default_policy
 
   - id: A.5.SEC-RHEL5
     title: Se exige el cambio de contraseña de forma recurrente.
@@ -180,7 +247,17 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - accounts_minimum_age_login_defs
+      - var_accounts_minimum_age_login_defs=2
+      - accounts_password_set_min_life_existing
+      - accounts_maximum_age_login_defs
+      - var_accounts_maximum_age_login_defs=45
+      - accounts_password_set_max_life_existing
+      - accounts_password_warn_age_login_defs
+      - var_accounts_password_warn_age_login_defs=10
+      - accounts_password_set_warn_age_existing
 
   - id: A.5.SEC-RHEL6
     title: Se hace uso de protocolos seguros para los procesos de autenticación de red.
@@ -188,7 +265,9 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - configure_ssh_crypto_policy
 
   - id: A.5.SEC-RHEL7
     title: Se controla la inactividad de la sesión de red.
@@ -196,13 +275,21 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - sshd_idle_timeout_value=15_minutes
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - var_sshd_set_keepalive=0
 
   - id: A.5.SEC-RHEL8
     title: Se controla la inactividad de consola local y remota.
     levels:
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - accounts_tmout
+      - var_accounts_tmout=5_min
 
   #[A.6] Abuso de privilegios de acceso.
   - id: A.6.SEC-RHEL1
@@ -210,7 +297,14 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - package_libselinux_installed
+      - grub2_enable_selinux
+      - var_selinux_policy_name=targeted
+      - selinux_policytype
+      - var_selinux_state=enforcing
+      - selinux_state
 
   - id: A.6.SEC-RHEL2
     title: Se restringen accesos en modo recuperación incluido el modo modificación de inicio de grub.
@@ -218,27 +312,45 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - file_groupowner_grub2_cfg
+      - file_owner_grub2_cfg
+      - file_permissions_grub2_cfg
+      - file_groupowner_user_cfg
+      - file_owner_user_cfg
+      - file_permissions_user_cfg
 
   - id: A.6.SEC-RHEL3
     title: Se limita la shell de usuarios de servicio a "/bin/false".
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
 
   - id: A.6.SEC-RHEL4
     title: Se restringe el uso de sesiones con usuario "root".
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - ensure_root_password_configured
+      - no_empty_passwords_etc_shadow
 
   - id: A.6.SEC-RHEL5
     title: Se modifica la máscara global del sistema para ser más restrictiva.
     levels:
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=027
 
   - id: A.6.SEC-RHEL6
     title: Se eliminan los grupos y usuarios innecesarios del sistema.
@@ -246,7 +358,7 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: manual
 
   #[A.8] Difusión de software dañino.
   - id: A.8.SEC-RHEL1
@@ -263,7 +375,9 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: manual
+    related_rules:
+      - security_patches_up_to_date
 
   - id: A.8.SEC-RHEL3
     title: El sistema tiene un firewall local activado.
@@ -271,14 +385,31 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - service_firewalld_enabled
+      - service_nftables_disabled
+      - set_firewalld_default_zone
+      - firewalld_loopback_traffic_trusted
+      - firewalld_loopback_traffic_restricted
 
   - id: A.8.SEC-RHEL4
     title: Se deshabilitan servicios innecesarios, reduciendo la superficie de exposición.
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - package_bind_removed
+      - package_cyrus-imapd_removed
+      - package_dovecot_removed
+      - package_net-snmp_removed
+      - package_squid_removed
+      - package_telnet-server_removed
+      - package_tftp-server_removed
+      - package_vsftpd_removed
+      - kernel_module_squashfs_disable
+      - kernel_module_udf_disabled
 
   - id: A.8.SEC-RHEL5
     title: Se controla la ejecución de aplicaciones.
@@ -292,7 +423,38 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    notes: |-
+      These are mentioned to be reviewed but not enforced:
+      #net.ipv4.icmp_echo_ignore_all = 1
+      #net.ipv4.tcp_timestamps = 0
+      #net.ipv4.tcp_max_syn_backlog = 1280
+      #sysctl_net_ipv6_conf_all_disable_ipv6
+      #sysctl_net_ipv6_conf_default_disable_ipv6
+    related_rules:
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_default_send_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_tcp_syncookies
+      - sysctl_net_ipv6_conf_all_accept_source_route
+      - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_source_route
+      - sysctl_net_ipv6_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_fs_suid_dumpable
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter
 
   - id: A.8.SEC-RHEL7
     title: Está habilitado el arranque cifrado con contraseña que evite modificaciones (GRUB protegido).
@@ -300,7 +462,9 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - grub2_password
 
   - id: A.8.SEC-RHEL8
     title: Se audita la descarga de archivos.
@@ -308,7 +472,12 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
 
   - id: A.8.SEC-RHEL9
     title: Están deshabilitados los compiladores del sistema.
@@ -333,7 +502,9 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - sshd_limit_user_access
 
   - id: A.11.SEC-RHEL3
     title: Se dispone de una política de credenciales robusta.
@@ -341,7 +512,15 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - accounts_password_pam_minclass
+      - accounts_password_pam_minlen
+      - accounts_password_pam_retry
+      - var_password_pam_minclass=4
+      - var_password_pam_minlen=14
+      - ensure_root_password_configured
+      - no_empty_passwords_etc_shadow
 
   - id: A.11.SEC-RHEL4
     title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las normas o directivas de la organización.
@@ -349,7 +528,18 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - dconf_gnome_banner_enabled
+      - dconf_gnome_login_banner_text
+      - login_banner_text=cis_default
+      - sshd_enable_warning_banner_net
+      - banner_etc_motd
+      - motd_banner_text=cis_banners
+      - banner_etc_issue
+      - login_banner_text=cis_banners
+      - banner_etc_issue_net
+      - remote_login_banner_text=cis_banners
 
   - id: A.11.SEC-RHEL5
     title: Se controla el acceso al sistema a través de la red.
@@ -357,7 +547,9 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: manual
+    related_rules:
+      - configure_firewalld_ports
 
   - id: A.11.SEC-RHEL6
     title: Sólo se permiten algoritmos de cifrado robustos en accesos al sistema.
@@ -365,14 +557,21 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - configure_ssh_crypto_policy
 
   - id: A.11.SEC-RHEL7
     title: Se limita el tiempo de inactividad del GUI.
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=5_minutes
+      - var_screensaver_lock_delay=immediate
 
   - id: A.11.SEC-RHEL8
     title: Se muestra un banner disuasorio.
@@ -386,7 +585,9 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - dconf_gnome_disable_user_list
 
   - id: A.11.SEC-RHEL10
     title: Se deshabilita recordar el historial de ficheros.
@@ -407,7 +608,11 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
+      - dconf_gnome_disable_autorun
 
   #[A.15] Modificación de la información.
   - id: A.15.SEC-RHEL1
@@ -415,7 +620,9 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - kernel_module_usb-storage_disabled
 
   #[A.19] Revelación de información.
   - id: A.19.SEC-RHEL1
@@ -470,6 +677,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      It seems to duplicate the A.11.SEC-RHEL12 requirement.
 
   #[A.24] Denegación de servicio.
   - id: A.24.SEC-RHEL1
@@ -504,4 +713,9 @@ controls:
     title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
     levels:
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - accounts_passwords_pam_faillock_deny
+      - var_accounts_passwords_pam_faillock_deny=8
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_unlock_time=0
