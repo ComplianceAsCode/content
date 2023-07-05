@@ -11,6 +11,16 @@
     option: solver.upgradeRemoveDroppedPackages
     value: true
     create: False
+{{% elif 'ubuntu' in product %}}
+- name: Ensure Apt Removes Previous Package Versions
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: ^(\/\/)?\\s*{{ item }}.*$
+    line: '{{ item }} "true";'
+    create: true
+  with_items:
+  - Unattended-Upgrade::Remove-Unused-Dependencies
+  - Unattended-Upgrade::Remove-Unused-Kernel-Packages
 {{% else %}}
 - name: "Ensure {{{ pkg_manager | upper }}} Removes Previous Package Versions"
   lineinfile:
