@@ -1907,7 +1907,9 @@ controls:
       - l1_workstation
     automated: partially # we check only for usage of use_uid with pam_su, not for the group
     rules:
-      - use_pam_wheel_for_su
+      - ensure_pam_wheel_group_empty
+      - use_pam_wheel_group_for_su
+      - var_pam_wheel_group_for_su=cis
 
   - id: 6.1.1
     title: Audit system file permissions (Manual)

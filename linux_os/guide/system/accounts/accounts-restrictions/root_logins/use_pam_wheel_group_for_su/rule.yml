@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ubuntu2004,ubuntu2204
+prodtype: sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Enforce Usage of pam_wheel with Group Parameter for su Authentication'
 
@@ -19,7 +19,13 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@sle12: CCE-92351-6
+    cce@sle15: CCE-92522-2
+
 references:
+    cis@sle12: '5.6'
+    cis@sle15: '5.6'
     cis@ubuntu2004: '5.6'
     cis@ubuntu2204: 5.3.7
 

@@ -21,6 +21,7 @@ selections:
     -  disable_host_auth
     -  disable_prelink
     -  disable_users_coredumps
+    -  ensure_pam_wheel_group_empty
     -  file_at_deny_not_exist
     -  file_cron_deny_not_exist
     -  file_groupowner_at_allow
@@ -90,3 +91,6 @@ selections:
     -  sshd_strong_kex=pcidss
     -  sshd_approved_macs=cis_sle12
     -  sysctl_fs_suid_dumpable
+    -  '!use_pam_wheel_for_su'
+    -  use_pam_wheel_group_for_su
+    -  var_pam_wheel_group_for_su=cis
