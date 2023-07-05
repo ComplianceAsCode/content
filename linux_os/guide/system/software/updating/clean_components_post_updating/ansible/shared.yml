@@ -3,20 +3,31 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+
 {{% if 'sle' in product %}}
-- name: Ensure Zypper Removes Previous Package Versions
-  ini_file:
+- name: "{{{ rule_title }}} - Ensure Zypper Removes Previous Package Versions"
+  ansible.builtin.ini_file:
     dest: /etc/zypp/zypp.conf
     section: main
     option: solver.upgradeRemoveDroppedPackages
     value: true
     create: False
+{{% elif 'ubuntu' in product %}}
+- name: "{{{ rule_title }}} - Ensure Apt Removes Previous Package Versions"
+  ansible.builtin.lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: ^(\/\/)?\\s*{{ item }}.*$
+    line: '{{ item }} "true";'
+    create: true
+  with_items:
+  - Unattended-Upgrade::Remove-Unused-Dependencies
+  - Unattended-Upgrade::Remove-Unused-Kernel-Packages
 {{% else %}}
-- name: "Ensure {{{ pkg_manager | upper }}} Removes Previous Package Versions"
-  lineinfile:
-      dest: {{{ pkg_manager_config_file }}}
-      regexp: ^#?clean_requirements_on_remove
-      line: clean_requirements_on_remove=1
-      insertafter: '\[main\]'
-      create: yes
+- name: "{{{ rule_title }}} - Ensure {{{ pkg_manager | upper }}} Removes Previous Package Versions"
+  ansible.builtin.lineinfile:
+    dest: {{{ pkg_manager_config_file }}}
+    regexp: ^#?clean_requirements_on_remove
+    line: clean_requirements_on_remove=1
+    insertafter: '\[main\]'
+    create: yes
 {{% endif %}}
