@@ -59,7 +59,7 @@ jobs:
       - name: Check Combined Mode
         run: ./tests/automatus.py combined --remove-platforms --remove-machine-only --logdir log_combined --datastream ssg-fedora-ds.xml --container ssg_test_suite test
       - name: Check Template Mode
-        run: ./tests/automatus.py template --remove-platforms --remove-machine-only --logdir log_template --datastream ssg-fedora-ds.xml --container ssg_test_suite --slice 1 15 file_owner
+        run: ./tests/automatus.py template --remove-platforms --logdir log_template --datastream ssg-fedora-ds.xml --container ssg_test_suite file_existence
       - name: Check for ERROR in logs
         run: grep -q "^ERROR" log_rule/test_suite.log log_rule_ansible/test_suite.log log_profile/test_suite.log log_combined/test_suite.log log_template/test_suite.log
         id: check_results
