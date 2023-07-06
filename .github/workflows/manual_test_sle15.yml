@@ -6,27 +6,44 @@ name: Manual workflow
 # or API.
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
-        # The data type of the input
-        type: string
+    branches: [ master, 'stabilization*' ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env: 
+  DATASTREAM: ssg-sle15-ds.xml
 jobs:
   # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
+  build-content:
+    name: Build Content
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    container: 
+      image: registry.suse.com/suse/sle15:15.4
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+      - name: Update CA certificates
+        run: update-ca-certificates
+      - name: Zypper refs  
+        run: zypper refs
+      - name: Zypper refresh  
+        run: zypper refresh 
+      - name: Install deps
+        run: zypper --non-interactive in cmake ninja expat openssh-clients openssh-server openscap-utils tar gzip git python3 python3-rpm python3-pip python3-devel libxml2-tools libxslt-tools python3-PyYAML
+      - name: Upgrade pip python
+        run: pip install pip --upgrade
+      - name: Install deps python
+        run: pip install json2html sphinxcontrib.jinjadomain GitPython
+      - name: Checkout
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+      - name: Checkout (CTF)
+        uses: actions/checkout@v3
+        with: 
+          repository: ComplianceAsCode/content-test-filtering
+          path: ctf
+      - name: Set git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Find forking point
+        env: 
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
+        id: fork point
+          
