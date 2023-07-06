@@ -98,6 +98,10 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      It is not clear the intention of this requirement since there is no definition of these
+      subcategories. The project has many audit related rules. Clarifying these subcategories
+      we can select the proper rules.
 
   - id: A.3.SEC-RHEL6
     title: At least 90 days of activity logs are guaranteed
@@ -147,6 +151,10 @@ controls:
     levels:
       - advanced
     status: pending
+    notes: |-
+      Some possible rules were included here but it is not clear if the requirement intends to
+      check more than these rules. We can se if more related rules are available in the project
+      and include everything that makes sense in the context of cron and chrony.
     related_rules:
       - audit_rules_time_adjtimex
       - audit_rules_time_settimeofday
@@ -174,6 +182,9 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      We probably have audit related rule to monitor mount related syscalls, but it is not clear
+      about the swap. Is the intention to monitor when swap is changed?
     related_rules:
       - audit_rules_media_export
 
@@ -183,6 +194,9 @@ controls:
     levels:
       - advanced
     status: pending
+    notes: |-
+      The intention here is probably to audit changes in /etc/pam.d files, but we need to confirm
+      this assumption and get more context.
 
   #[A.4] Manipulación de los ficheros de configuración
   - id: A.4.SEC-RHEL1
@@ -193,6 +207,10 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      It is a little tricky to interpret this requirement. Assuming the "Common users" are actually
+      interactive users, this requirement would automatically enforce all admin actions to be
+      performed only by the root user. I am not sure if this is the intetion here.
 
   - id: A.4.SEC-RHEL2
     title: The system has an updated antivirus
@@ -202,6 +220,10 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      New templated rule is necessary to install the package. But to ensure the chosen antivirus
+      is actually updated would demand a more complex rule. Maybe this requirement can have at
+      leastthe partial status after the templated rule.
 
   - id: A.4.SEC-RHEL3
     title: Permissions by partitions are modified
@@ -212,7 +234,7 @@ controls:
       - advanced
     status: pending
     notes: |-
-      Related to nosuid, noexec and nodev options but in /boot.
+      Related to nosuid, noexec and nodev options but in /boot. More context is needed.
 
   #[A.5] Suplantación de la identidad.
   - id: A.5.SEC-RHEL1
@@ -246,6 +268,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      There are rules for ssh_keys, for example. We need to confirm the scope of this requirement
 
   - id: A.5.SEC-RHEL4
     title: Disable insecure encryption algorithms
@@ -451,6 +475,9 @@ controls:
     levels:
       - advanced
     status: pending
+    notes: |-
+      This might be related to SELinux.
+      We need more context to confirm the intention of this requirement
 
   - id: A.8.SEC-RHEL6
     title: Anti-ransomware measures are enabled
@@ -511,6 +538,9 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      Is it related to downloads from the Internet to the system or from the system to an external
+      storage, for example?
     related_rules:
       - audit_rules_file_deletion_events_rename
       - audit_rules_file_deletion_events_renameat
@@ -525,6 +555,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      Maybe simply removing the packages is enough.
 
   #[A.11] Acceso no autorizado.
   - id: A.11.SEC-RHEL1
@@ -535,6 +567,9 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      Is it related to TTY access, physical access, local users authentication, etc?
+      It is not not clear the scope.
 
   - id: A.11.SEC-RHEL2
     title: The security of the SSH protocol is strengthened
@@ -646,6 +681,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      New rules might be necessary.
 
   - id: A.11.SEC-RHEL11
     title: Key combination to launch GTK inspector is disabled
@@ -654,6 +691,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      New rules might be necessary.
 
   - id: A.11.SEC-RHEL12
     title: Disable auto-mounting of removable devices on the system
@@ -687,6 +726,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      More context should be provided to clarify this requirement
 
   - id: A.19.SEC-RHEL2
     title: Measures are applied to protect accounts
@@ -696,6 +737,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      This is already covered by other requirements. Maybe more rules could be included here.
 
   - id: A.19.SEC-RHEL3
     title: A robust algorithm and password complexity are enabled
@@ -744,6 +787,8 @@ controls:
       - intermediate
       - advanced
     status: pending
+    notes: |-
+      Is it about system limits?
 
   - id: A.24.SEC-RHEL2
     title: Control who can turn off the system
@@ -759,14 +804,20 @@ controls:
     original_title: El disco del sistema está cifrado.
     levels:
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - package_cryptsetup-luks_installed
+      - encrypt_partitions
 
   - id: A.25.SEC-RHEL2
     title: The data disk is encrypted
     original_title: El disco de datos está cifrado.
     levels:
       - advanced
-    status: pending
+    status: planned
+    related_rules:
+      - package_cryptsetup-luks_installed
+      - encrypt_partitions
 
   #[A.30] Ingeniería social.
   - id: A.30.SEC-RHEL1
