@@ -918,6 +918,14 @@ macro(ssg_build_product PRODUCT)
         )
     endif()
 
+    if(ENABLE_SCAPVAL13)
+        add_test(
+            NAME "scapval-${PRODUCT}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/run_scapval.py" "--scap-version" "1.3" "--scapval-path" "${SCAPVAL_PATH}" "--datastream" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+        set_tests_properties("scapval-${PRODUCT}" PROPERTIES LABELS scapval)
+    endif()
+
     # grab all the kickstarts (if any) and install them
     file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")
     install(FILES ${KICKSTART_FILES}
