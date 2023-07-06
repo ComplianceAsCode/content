@@ -45,5 +45,5 @@ jobs:
         env: 
           BASE_BRANCH: ${{ github.base_ref }}
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
-        id: fork point
+        id: fork_point
           
