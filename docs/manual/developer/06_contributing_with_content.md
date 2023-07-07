@@ -420,6 +420,36 @@ that begin with underscores are not meant to be used in descriptions.
 You can also check documentation for all macros in the `Jinja Macros Reference`
 section accessible from the table of contents.
 
+#### Defining rule parts for specific products
+
+There might be cases when an author desires that a specific rule attribute (see
+below for a list) is very different from the generic one in rule.yml.
+It is possible to use macros.
+However, if the attribute such as description is very different from the generic
+one, it could make the main rule.yml file long and confusing.
+Therefore there is an option which allows to extract those overrides into small files in their own folder.
+The feature can be used by creating a new folder called `rule_overrides` within
+the rule main directory, e.g. in the directory where the rule.yml file is
+placed.
+In the folder, create a file called `<product>.yml`.
+Replace `<product>` with the actual product short name, e.g. for the `rhel9`
+product the file would be called `rhel9.yml`.
+The file format is the same as for rule.yml files.
+However, the number of attributes which can be overridden in this way is limited to the following list:
+
+- title
+
+- description
+
+- rationale
+
+- ocil
+
+- ocil_clause
+
+Attributes mentioned in the overriding file will replace attributes in rule.yml
+for the given product.
+
 #### Product-specific variables
 
 To parametrize rules and remediations as well as Jinja macros,
