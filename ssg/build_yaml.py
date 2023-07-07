@@ -692,10 +692,11 @@ class Rule(XCCDFEntity, Templatable):
     }
 
     OVERRIDABLE_KEYS = {
-        "documentation_complete",
         "title",
         "description",
         "rationale",
+        "ocil",
+        "ocil_clause",
     }
 
     GENERIC_FILENAME = "rule.yml"
