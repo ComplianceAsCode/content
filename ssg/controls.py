@@ -147,15 +147,6 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", {})
 
-        product = None
-        product_dir = None
-        benchmark_root = None
-        if env_yaml:
-            product = env_yaml.get('product', None)
-            product_dir = env_yaml.get('product_dir', None)
-            benchmark_root = env_yaml.get('benchmark_root', None)
-            content_dir = os.path.join(product_dir, benchmark_root)
-
         control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
