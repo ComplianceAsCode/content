@@ -390,6 +390,8 @@ A rule may contain those reference-type attributes:
     for an example of reference-type attributes as there are others that
     are not referenced above.
 
+#### Macros
+
 Some of existing rule definitions contain attributes that use macros.
 There are two implementations of macros:
 
@@ -418,6 +420,8 @@ that begin with underscores are not meant to be used in descriptions.
 You can also check documentation for all macros in the `Jinja Macros Reference`
 section accessible from the table of contents.
 
+#### Product-specific variables
+
 To parametrize rules and remediations as well as Jinja macros,
 use product-specific variables defined either
 in `product.yml` in product root directory,
@@ -427,9 +431,13 @@ so you can use only product properties in the content.
 In other words, use this functionality to avoid referencing product versions in macros used in checks or remediations.
 Instead, use properties that directly relate to configurations being checked or set, and that help to reveal the intention of the check or remediation code.
 
+#### Product stability tests
+
 As Jinja2 conditionals are prone to errors, products can be protected by product stability tests.
 If a product sample is present in `tests/data/product_stability/`, it is compared to the actual compiled product,
 and if there is a difference that is not only cosmetic, a product stability test will fail.
+
+#### Handling of rules during build time
 
 Rules are unselected by default - even if the scanner reads rule
 definitions, they are effectively ignored during the scan or
