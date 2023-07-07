@@ -4,6 +4,8 @@ versioned: true
 template:
   name: platform_package
 args:
+  apport:
+    pkgname: apport
   audit:
     {{% if pkg_system == "rpm" %}}
     pkgname: audit
