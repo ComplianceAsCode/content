@@ -2076,7 +2076,9 @@ controls:
       use of "sudo" for privileged access. Therefore, members of these groups should be manually
       checked or a different group should be informed.
     rules:
-      - use_pam_wheel_for_su
+      - var_pam_wheel_group_for_su=cis
+      - use_pam_wheel_group_for_su
+      - ensure_pam_wheel_group_empty
 
   - id: 5.4.1
     title: Ensure custom authselect profile is used (Manual)
