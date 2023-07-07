@@ -22,7 +22,7 @@ jobs:
       - name: Upgrade pip python
         run: pip install pip --upgrade
       - name: Install deps python
-        run: pip install json2html sphinxcontrib.jinjadomain GitPython
+        run: pip install json2html sphinxcontrib.jinjadomain GitPython deepdiff
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -62,7 +62,7 @@ jobs:
           prop_path: 'product'
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: ./build_product sle15 --derivatives
+        run: ./build_product sle15
       - uses: actions/upload-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
