@@ -22,7 +22,7 @@ jobs:
       - name: Upgrade pip python
         run: pip install pip --upgrade
       - name: Install deps python
-        run: pip install json2html sphinxcontrib.jinjadomain GitPython deepdiff
+        run: pip install json2html sphinxcontrib.jinjadomain GitPython deepdiff Jinja2 xmldiff
       - name: Checkout
         uses: actions/checkout@v3
         with:
