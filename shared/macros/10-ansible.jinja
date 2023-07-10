@@ -293,6 +293,7 @@ value: :code:`Setting={{ varname1 }}`
 
 {{#
   High level macro to set a parameter in /etc/systemd/coredump.conf.
+  For SLE platforms put remediation in drop-in configuration file /etc/systemd/coredump.conf.d/oscap-autoremedy.conf.
 
 :param msg: The name for the Ansible task
 :type msg: str
@@ -303,7 +304,18 @@ value: :code:`Setting={{ varname1 }}`
 
 #}}
 {{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
+{{% if 'sle' in product %}}
+
+- name: "{{{ rule_title }}}: Make sure Coredump section exist in remediation file"
+  ansible.builtin.lineinfile:
+    path: '/etc/systemd/coredump.conf.d/oscap-autoremedy.conf'
+    line: '[Coredump]'
+    create: true
+
+{{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf.d/oscap-autoremedy.conf", parameter=parameter, value=value, create="yes", separator="=", separator_regex="\s*=\s*", insert_after="[Coredump]") }}}
+{{% else %}}
 {{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="no", separator="=", separator_regex="\s*=\s*") }}}
+{{% endif %}}
 {{%- endmacro %}}
 
 
