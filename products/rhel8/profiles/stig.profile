@@ -885,9 +885,7 @@ selections:
     - audit_rules_privileged_commands_kmod
 
     # RHEL-08-030590
-    # This one needs to be updated to use /var/log/faillock, but first RHEL-08-020017 should be
-    # implemented as it is the one that configures a different path for the events of failing locks
-    # - audit_rules_login_events_faillock
+    - audit_rules_login_events_faillock
 
     # RHEL-08-030600
     - audit_rules_login_events_lastlog
