@@ -2,8 +2,6 @@ import pytest
 import logging
 import os
 
-import pytest
-
 import ssg.controls
 import ssg.build_yaml
 from ssg.environment import open_environment
@@ -492,3 +490,13 @@ def test_policy_parse_from_referenced(minimal_empty_controls, one_simple_subcont
     assert control.title == "control"
     assert control.controls == ["s"]
     assert subcontrol.title == "subcontrol"
+
+
+def test_control_with_bad_key():
+    control = {'id': 'abcd', 'badval': 'should not be here', }
+    control_obj = None
+    try:
+        control_obj = ssg.controls.Control.from_control_dict(control)
+    except ValueError as e:
+        assert type(e) is ValueError
+    assert control_obj is None
