@@ -7,4 +7,62 @@ controls:
   rules:
   - audit_rules_sysadmin_actions
   - audit_rules_usergroup_modification
+  check: |-
+    Verify  Red Hat Enterprise Linux CoreOS (RHCOS) generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/shadow".
 
+    Logging on as administrator, check the auditing rules in "/etc/audit/audit.rules" by executing the following:
+
+    for node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n "$HOSTNAME: "; grep /etc/shadow /etc/audit/audit.rules /etc/audit/rules.d/*'; done
+
+    (Example output:
+    -w /etc/shadow -p wa -k identity)
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+  fixtext: |-
+    Apply the machine config using the following command:
+
+    for mcpool in $(oc get mcp -oname | sed "s:.*/::" ); do
+    echo "apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      name: 75-account-modifications-rules-$mcpool
+      labels:
+        machineconfiguration.openshift.io/role: $mcpool
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        storage:
+          files:
+          - contents:
+              source: data:,-w%20/etc/sudoers.d/%20-p%20wa%20-k%20actions%0A-w%20/etc/sudoers%20-p%20wa%20-k%20actions%0A
+            mode: 0644
+            path: /etc/audit/rules.d/75-audit-sysadmin-actions.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/group%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_group_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/gshadow%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_gshadow_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/security/opasswd%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_security_opasswd_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/passwd%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_passwd_usergroup_modification.rules
+            overwrite: true
+          - contents:
+              source: data:,-w%20/etc/shadow%20-p%20wa%20-k%20audit_rules_usergroup_modification%0A
+            mode: 0644
+            path: /etc/audit/rules.d/30-etc_shadow_usergroup_modification.rules
+            overwrite: true
+    " | oc apply -f -
+    done
