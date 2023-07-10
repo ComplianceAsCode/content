@@ -30,7 +30,11 @@
         line: \1required\3 silent
         state: present
       loop:
+        {{% if 'ubuntu' in product %}}
+        - /etc/pam.d/common-auth
+        {{% else %}}
         - /etc/pam.d/system-auth
         - /etc/pam.d/password-auth
+        {{% endif %}}
   when:
     - not result_faillock_conf_check.stat.exists
