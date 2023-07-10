@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Permissions on the pod log files'
+
+platforms:
+  - ocp4-node
+
+description: |-
+    All logs must be owned by root user and group and have permissions
+    755. By default, the path for the Kubernetes pod logs is
+    <pre>/var/log/pods/</pre>.
+
+rationale: |-
+    Pod log files may contain sensitive information such as application
+    data, user credentials, or system configurations. Unauthorized access
+    to these log files can expose sensitive data to malicious actors. By
+    setting owner permissions, OpenShift ensures that only authorized users
+    or processes with the necessary privileges can access the pod log files,
+    preserving the confidentiality of the logged information.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-88583-0
+
+references:
+    srg: SRG-APP-000118-CTR-000240
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/pods/*", perms="-rwxr-xr-x") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/pods/*", perms="-rwxr-xr-x") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: ^/var/log/pods/.*$
+        filemode: '0755'
+        filepath_is_regex: "true"

@@ -4,35 +4,20 @@ controls:
   - medium
   title: {{{ full_name }}} must protect audit information from any type of unauthorized
     read access.
+  rules:
+  - file_ownership_var_log_audit
+  - file_permissions_var_log_audit
+  - file_permissions_system_journal
+  - file_owner_system_journal
+  - file_groupowner_system_journal
+  - file_permissions_var_log
+  - file_owner_var_log
+  - file_groupowner_var_log
+  - file_owner_groupowner_permissions_pod_logs
   related_rules:
   - audit_log_forwarding_uses_tls
   - audit_profile_set
   - directory_permissions_var_log_kube_audit
   - directory_permissions_var_log_oauth_audit
   - directory_permissions_var_log_ocp_audit
-  status: does not meet
-  status_justification: |-
-    Fluentd stores logs that are to be forwarded to a centralized log collection service.
-    The file permissions are too permissive,
-
-    The /var/lib/fluentd permissions issue is tracked by https://issues.redhat.com/browse/LOG-2176
-  mitigation: |-
-    The logs themselves are protected by a combination of UNIX DAC permissions
-    and SELinux labels.
-    When OpenShift Cluster Logging Operator is used to forward logs off the
-    cluster, then all the Cluster Logging Operator components are sandboxed
-    (running inside the openshift-logging namespace and using a custom, locked down SCC).
-
-    However, the SRG is marked as Does Not Meet, because data that is about to be
-    forwarded off the OpenShift cluster are processed by fluentd in a MessagePack
-    format and stored in a directory /var/log/fluentd whose permissions are too
-    open and allow the MessagePacks to be read by any user.
-
-    It should be noted though that in order to read those files, the user would
-    either need to log in to the nodes or have access to a pod that mounts the host
-    filesystem which is a privileged operation.
-  fixtext: |-
-    This requirement is a permanent finding and cannot be fixed.
-  check: |-
-    {{{ full_name }}} does not support this requirement.
-    This is an applicable-does not meet finding.
+  status: automated
