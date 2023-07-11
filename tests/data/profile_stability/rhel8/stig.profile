@@ -112,6 +112,7 @@ selections:
 - audit_rules_kernel_module_loading_delete
 - audit_rules_kernel_module_loading_finit
 - audit_rules_kernel_module_loading_init
+- audit_rules_login_events_faillock
 - audit_rules_login_events_lastlog
 - audit_rules_media_export
 - audit_rules_privileged_commands_chage
