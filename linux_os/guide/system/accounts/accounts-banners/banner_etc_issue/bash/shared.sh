@@ -16,6 +16,14 @@
 {{{ bash_deregexify_banner_backslash("login_banner_text") }}}
 formatted=$(echo "$login_banner_text" | fold -sw 80)
 
+{{%- if product not in ['sle15'] %}}
 cat <<EOF >/etc/issue
 $formatted
 EOF
+{{%- else %}}
+{{{ bash_package_install("issue-generator") }}}
+cat <<EOF >/etc/issue.d/99-oscap-setting
+$formatted
+EOF
+{{{ bash_service_command("restart", "issue-generator") }}}
+{{%- endif -%}}
