@@ -115,7 +115,14 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         return hash(self.id)
 
     @classmethod
+    def _check_keys(cls, control_dict):
+        for key in control_dict.keys():
+            if key not in cls.KEYS.keys() and key not in ['rules', 'related_rules', 'controls', ]:
+                raise ValueError("Key %s is not a valid for a control." % key)
+
+    @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
+        cls._check_keys(control_dict)
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
@@ -139,15 +146,6 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.levels = control_dict.get("levels", default_level)
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", {})
-
-        product = None
-        product_dir = None
-        benchmark_root = None
-        if env_yaml:
-            product = env_yaml.get('product', None)
-            product_dir = env_yaml.get('product_dir', None)
-            benchmark_root = env_yaml.get('benchmark_root', None)
-            content_dir = os.path.join(product_dir, benchmark_root)
 
         control.selections = selections
 

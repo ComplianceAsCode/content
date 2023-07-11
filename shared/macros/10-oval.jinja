@@ -101,6 +101,65 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 
 {{#
+  High level macro which checks if a particular combination of parameter and value in a systemd configuration is set.
+
+:param path: Path to the configuration file to be checked. This parameter is used also to construct directory for drop-in configuration files.
+:type path: str
+:param prefix_regex: Regular expression to be used in the beginning of the OVAL text file content check.
+:type prefix_regex: str
+:param parameter: The parameter to be checked in the configuration file.
+:type parameter: str
+:param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+:type value: str
+:param separator_regex: Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
+:type separator_regex: str
+:param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+:type missing_parameter_pass: boolean
+:param application: The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+:type application: str
+:param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+:type multi_value: boolean
+:param section: If set, the parameter will be checked only within the given section defined by [section].
+:type section: str
+:param quotes: If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
+:type quotes: str
+
+#}}
+{{%- macro oval_check_systemd_config(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, section='', quotes='') -%}}
+{{%- if application == '' -%}}
+	{{%- set application = "The respective application or service" -%}}
+{{%- endif -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{% set dir_path = path + ".d" %}}          
+    <criteria comment="{{{ application }}} is configured correctly"
+    operator="OR">
+        {{{- oval_line_in_file_criterion(path, parameter) }}}
+        {{{- oval_line_in_directory_criterion(dir_path, parameter) }}}
+        {{%- if missing_parameter_pass %}}
+        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
+        {{{- oval_line_in_directory_criterion(dir_path, parameter, missing_parameter_pass) }}}
+        {{%- endif %}}
+    </criteria>
+  </definition>
+  {{{ oval_line_in_file_test(path, parameter) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{{ oval_line_in_directory_test(dir_path, parameter) }}}
+  {{{ oval_line_in_directory_object(dir_path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{{ oval_line_in_directory_state(value, multi_value, quotes) }}}
+  {{%- if missing_parameter_pass %}}
+  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{{ oval_line_in_directory_test(dir_path, parameter, missing_parameter_pass) }}}
+  {{{ oval_line_in_directory_object(dir_path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{%- endif %}}
+
+</def-group>
+{{%- endmacro %}}
+
+{{#
   Macro to define the criterion of the OVAL check (Criterion definition).
 
 :param path: Path to the configuration file to be checked.
@@ -544,9 +603,9 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 
 {{#
-  High level macro to set a parameter in /etc/systemd/coredump.conf.
+  High level macro to set a parameter in /etc/systemd/coredump.conf and /etc/systemd/coredump.conf.d/*.conf
 
-:param parameter: The parameter to be checked in the configuration file.
+:param parameter: The parameter to be checked in the configuration file(s).
 :type parameter: str
 :param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
 :type value: str
@@ -554,12 +613,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_parameter_pass: bool
 :param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 :type multi_value: bool
-:param missing_config_file_fail: If set, the check will fail if the configuration is not existent in the system.
-:type missing_config_file_fail: bool
 
 #}}
-{{%- macro oval_coredump_config_set(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/systemd/coredump.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="systemd-coredump", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section="Coredump") }}}
+{{%- macro oval_coredump_config_set(parameter='', value='', missing_parameter_pass=false, multi_value=false) %}}
+{{{ oval_check_systemd_config("/etc/systemd/coredump.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="systemd-coredump", multi_value=multi_value, section="Coredump") }}}
 {{%- endmacro %}}
 
 

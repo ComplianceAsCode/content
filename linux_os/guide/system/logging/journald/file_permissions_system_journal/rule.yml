@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Verify Permissions on the system journal'
+
+description: |-
+  {{{ describe_file_permissions(file="/var/log/journal/.*/system.journal", perms="0640") }}}
+
+rationale: |-
+  RHCOS must protect system  journal file from any type of unauthorized access by setting file permissions. 
+
+identifiers:
+  cce@rhcos4: CCE-86509-7
+
+severity: medium
+
+references:
+  srg: SRG-APP-000118-CTR-000240
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/journal/.*/system.journal", perms="-rw-r-----") }}}'
+
+ocil: |-
+  {{{ ocil_file_permissions(file="/var/log/journal/.*/system.journal", perms="-rw-r-----") }}}
+
+template:
+  name: file_permissions
+  vars:
+    filepath: ^/var/log/journal/.*/system.journal$
+    filemode: '0640'
+    filepath_is_regex: "true"
