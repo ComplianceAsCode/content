@@ -10,6 +10,7 @@
             that if faillock.conf is available, authselect tool only manage parameters on it -->
         <criteria operator="OR"
         comment="Check expected value for pam_faillock.so silent parameter">
+            {{% if 'ubuntu' not in product %}}
             <criteria operator="AND"
             comment="Check expected pam_faillock.so silent parameter in pam files">
                 <criterion
@@ -19,14 +20,17 @@
                 test_ref="test_pam_faillock_silent_parameter_password_auth"
                 comment="Check the silent parameter in auth section of password-auth file"/>
             </criteria>
+            {{% endif %}}
             <criteria operator="AND"
             comment="Check expected pam_faillock.so silent parameter in faillock.conf">
+                {{% if 'ubuntu' not in product %}}
                 <criterion
                 test_ref="test_pam_faillock_silent_parameter_no_pamd_system"
                 comment="Check the silent parameter is not present system-auth file"/>
                 <criterion
                 test_ref="test_pam_faillock_silent_parameter_no_pamd_password"
                 comment="Check the silent parameter is not present password-auth file"/>
+                {{% endif %}}
                 <criterion
                 test_ref="test_pam_faillock_silent_parameter_faillock_conf"
                 comment="Ensure the silent parameter is present in /etc/security/faillock.conf"/>
@@ -48,7 +52,7 @@
     </ind:textfilecontent54_object>
 
     <ind:textfilecontent54_object id="obj_all_pam_faillock_silent_parameter_password_auth"
-    comment="Get the pam_faillock.so preauth silent parameter from system-auth file" version="1">
+    comment="Get the pam_faillock.so preauth silent parameter from password-auth file" version="1">
         <ind:filepath >/etc/pam.d/password-auth</ind:filepath>
         <ind:pattern operation="pattern match"
         var_ref="var_pam_faillock_silent_parameter_regex" />
