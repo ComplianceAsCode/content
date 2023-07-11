@@ -4,34 +4,48 @@ controls:
   - medium
   title: {{{ full_name }}} runtime must enforce ports, protocols, and services
     that adhere to the PPSM CAL.
-  status: does not meet
-  mitigation: |-
-    Review the OpenShift Documentation regarding network infrastructure requirements
-    https://docs.openshift.com/container-platform/latest/installing/installing_bare_metal/installing-bare-metal-network-customizations.html#installation-network-connectivity-user-infra_installing-bare-metal-network-customizations
+  status: manual
+  check: |-
+    Review the OpenShift documentation and configuration.
+    (See for additional information: https://docs.openshift.com/container-platform/4.12/installing/installing_platform_agnostic/installing-platform-agnostic.html)
 
-    In addition, verify the network port configuration for the following services:
+    1. Interview the application administrator.
 
-    kube-apiserver
-    > oc get configmap kube-apiserver-pod -n openshift-kube-apiserver -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.containerPort?' | grep -v "null"
-    > oc get configmap kube-apiserver-pod -n openshift-kube-apiserver -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.hostPort?' | grep -v "null"
-    > oc get services -A --show-labels | grep apiserver | awk '{print $6,$8}' | grep apiserver
+    2. Identify the TCP/IP port numbers OpenShift is configured to utilize and is utilizing by using a combination of relevant OS commands and application configuration utilities.
 
-    kube-scheduler
-    > oc get configmap kube-scheduler-pod -n openshift-kube-scheduler -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.containerPort?' | grep -v "null"
-    > oc get services -A --show-labels | grep scheduler | awk '{print $6,$8}' | grep scheduler
+    3. Identify the network ports and protocols that are utilized by kube-apiserver by executing the following:
+    oc get configmap kube-apiserver-pod -n openshift-kube-apiserver -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.containerPort?' | grep -v "null"
 
-    kube-controller-manager
-    > oc get configmap kube-controller-manager-pod -n openshift-kube-controller-manager -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.containerPort?' | grep -v "null"
-    > oc get services -A --show-labels | grep kube-controller
+    oc get configmap kube-apiserver-pod -n openshift-kube-apiserver -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.hostPort?' | grep -v "null"
 
-    etcd
-    > oc get configmap etcd-pod -n openshift-etcd -o "jsonpath={ .data['pod\.yaml'] }" | grep -Po '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]+' | sort -u
+    oc get services -A --show-labels | grep apiserver | awk '{print $6,$8}' | grep apiserver
 
-    If any of the ports used in these services are prohibited by the
-    PPSM CAL, document the additional ports. Update any network firewall
-    policies to limit access to those services in accordance with the RH
-    documentation in the above link.
-  status_justification: |-
-    OpenShift Container Platform uses a number of IPV4 and IPV6 ports and
-    protocols to facilitate cluster communication and coordination. Not
-    all of these ports are identified and approved by the PPSM CAL.
+    4. Identify the network ports and protocols that are utilized by kube-scheduler by executing the following:
+    oc get configmap kube-scheduler-pod -n openshift-kube-scheduler -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.containerPort?' | grep -v "null"
+
+    oc get services -A --show-labels | grep scheduler | awk '{print $6,$8}' | grep scheduler
+
+    5. Identify the network ports and protocols that are utilized by kube-controller-manager by executing the following:
+    oc get configmap kube-controller-manager-pod -n openshift-kube-controller-manager -o "jsonpath={ .data['pod\.yaml'] }" | jq '..|.containerPort?' | grep -v "null"
+
+    oc get services -A --show-labels | grep kube-controller
+
+    6. Identify the network ports and protocols that are utilized by etcd by executing the following:
+    oc get configmap etcd-pod -n openshift-etcd -o "jsonpath={ .data['pod\.yaml'] }" | grep -Po '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]+' | sort -u
+
+
+    Review the PPSM web page at:
+
+    http://www.disa.mil/Network-Services/Enterprise-Connections/PPSM
+
+    Review the PPSM Category Assurance List (CAL) directly at the following link: 
+
+    https://disa.deps.mil/ext/cop/iase/ppsm/Pages/cal.aspx
+
+    Verify the ports used by the OpenShift are approved by the PPSM CAL.
+
+    If the ports, protocols, and services have not be registered locally, this is a finding.
+  fixtext: |-
+    Verify the accreditation documentation lists all interfaces and the ports, protocols, and services used.
+
+    Register OpenShift's ports, protocols, and services with PPSM.
