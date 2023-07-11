@@ -350,3 +350,4 @@ selections:
     - selinux_confine_to_least_privilege
     - ensure_redhat_gpgkey_installed
     - dconf_gnome_disable_user_list
+    - package_mailx_installed
