@@ -348,3 +348,4 @@ selections:
     - no_empty_passwords_etc_shadow
     - disallow_bypass_password_sudo
     - selinux_confine_to_least_privilege
+    - ensure_redhat_gpgkey_installed
