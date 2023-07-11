@@ -20,9 +20,8 @@ for current_cfg in "${current_cfg_arr[@]}"
 do
     sed -i 's/^NTP/#&/g' "$current_cfg"
     sed -i 's/^FallbackNTP/#&/g' "$current_cfg"
-    sed -i 's/^RootDistanceMax/#&/g' "$current_cfg"
 done
 # Set primary fallback NTP servers and RootDistance in drop-in configuration
 echo "NTP=$preferred_ntp_servers" >> "$config_file"
 echo "FallbackNTP=$fallback_ntp_servers" >> "$config_file"
-echo "RootDistanceMax=1" >> "$config_file"
+
