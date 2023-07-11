@@ -1081,19 +1081,26 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       changed_when: false
       register: result_pam_faillock_is_enabled
 
-    {{% if 'ubuntu' not in product %}}
     - name: {{{ rule_title }}} - Enable pam_faillock.so preauth editing PAM files
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: auth        required      pam_faillock.so preauth
+        {{% if 'ubuntu' in product %}}
+        insertbefore: ^auth.*.*pam_unix\.so.*
+        {{% else %}}
         insertbefore: ^auth.*sufficient.*pam_unix\.so.*
+        {{% endif %}}
         state: present
       loop:
+        {{% if 'ubuntu' in product %}}
+        - /etc/pam.d/common-auth
+        {{% else %}}
         - /etc/pam.d/system-auth
         - /etc/pam.d/password-auth
+        {{% endif %}}
       when:
         - result_pam_faillock_is_enabled.found == 0
-    {{% else %}}
+    {{% if 'ubuntu' not in product %}}
     - name: {{{ rule_title }}} - Enable pam_faillock.so authsucc editing PAM files
       ansible.builtin.lineinfile:
         path: /etc/pam.d/common-auth
