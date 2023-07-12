@@ -13,32 +13,32 @@ controls:
       title: Ensure that the cluster-admin role is only used where required
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.1.2
       title: Minimize access to secrets
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.1.3
       title: Minimize wildcard use in Roles and ClusterRoles
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.1.4
       title: Minimize access to create pods
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.1.5
       title: Ensure that default service accounts are not actively used.
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.1.6
       title: Ensure that Service Account Tokens are only mounted where necessary
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
   - id: '5.2'
     title: Security Context Constraints
     status: pending
@@ -48,54 +48,54 @@ controls:
       title: Minimize the admission of privileged containers
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.2
       title: Minimize the admission of containers wishing to share the host process
         ID namespace
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.3
       title: Minimize the admission of containers wishing to share the host IPC namespace
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.4
       title: Minimize the admission of containers wishing to share the host network
         namespace
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.5
       title: Minimize the admission of containers with allowPrivilegeEscalation
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.6
       title: Minimize the admission of root containers
       status: pending
       rules: []
-      level: level_2
+      levels: level_2
     - id: 5.2.7
       title: Minimize the admission of containers with the NET_RAW capability
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.8
       title: Minimize the admission of containers with added capabilities
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.2.9
       title: Minimize the admission of containers with capabilities assigned
       status: pending
       rules: []
-      level: level_2
+      levels: level_2
     - id: 5.2.10
       title: Minimize access to privileged Security Context Constraints
       status: pending
       rules: []
-      level: level_2
+      levels: level_2
   - id: '5.3'
     title: Network Policies and CNI
     status: pending
@@ -105,12 +105,12 @@ controls:
       title: Ensure that the CNI in use supports Network Policies
       status: pending
       rules: []
-      level: level_1
+      levels: level_1
     - id: 5.3.2
       title: Ensure that all Namespaces have Network Policies defined
       status: pending
       rules: []
-      level: level_2
+      levels: level_2
   - id: '5.4'
     title: Secrets Management
     status: pending
@@ -120,12 +120,12 @@ controls:
       title: Prefer using secrets as files over secrets as environment variables
       status: pending
       rules: []
-      level: level_2
+      levels: level_1
     - id: 5.4.2
       title: Consider external secret storage
       status: pending
       rules: []
-      level: level_2
+      levels: level_2
   - id: '5.5'
     title: Extensible Admission Control
     status: pending
@@ -135,7 +135,7 @@ controls:
       title: Configure Image Provenance using image controller configuration parameters
       status: pending
       rules: []
-      level: level_2
+      levels: level_2
   - id: '5.7'
     title: General Policies
     status: partial
@@ -146,24 +146,24 @@ controls:
       status: manual
       rules:
         - general_namespaces_in_use
-      level: level_1
+      levels: level_1
     - id: 5.7.2
       title: Ensure that the seccomp profile is set to docker/default in your pod
         definitions
       status: manual
       rules:
         - general_default_seccomp_profile
-      level: level_2
+      levels: level_2
     - id: 5.7.3
       title: Apply Security Context to Your Pods and Containers
       status: manual
       rules:
         - general_apply_scc
-      level: level_2
+      levels: level_2
     - id: 5.7.4
       title: The default namespace should not be used
       status: manual
       rules:
         - general_default_namespace_use
-      level: level_2
+      levels: level_2
 
