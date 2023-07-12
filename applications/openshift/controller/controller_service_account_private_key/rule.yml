@@ -41,7 +41,7 @@ identifiers:
 severity: medium
 
 references:
-    cis@ocp4: 1.3.4
+    cis@ocp4: 1.3.3
     nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
     nist: CM-6,CM-6(1),SC-8,SC-8(1)
     pcidss: Req-2.2,Req-2.2.3,Req-2.3
@@ -69,6 +69,6 @@ template:
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '[:]'
     values:
-    - value: 'true'      
+    - value: 'true'
       type: "string"
       entity_check: "at least one"
