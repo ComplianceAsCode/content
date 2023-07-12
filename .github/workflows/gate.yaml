@@ -43,22 +43,20 @@ jobs:
     steps:
       - name: Update CA certificates
         run: update-ca-certificates
+      - name: Zypper add factory repo - to install bats and ShellCheck
+        run: zypper --non-interactive ar  https://download.opensuse.org/repositories/openSUSE:/Backports:/SLE-15-SP5/standard/openSUSE:Backports:SLE-15-SP5.repo     
+      - name: Zypper auto import keys
+        run: zypper  --gpg-auto-import-keys --non-interactive ref
       - name: Zypper refs
         run: zypper refs
       - name: Zypper refresh
         run: zypper refresh    
       - name: Install Deps           
-        run: zypper install -y git cmake make openscap-utils python3 python3-rpm python3-pip python3-devel python3-PyYAML python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools
+        run: zypper install -y git cmake make bats openscap-utils python3 python3-rpm python3-pip python3-devel python3-PyYAML python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Upgrade pip python
         run: pip install pip --upgrade
       - name: Install deps python
         run: pip install pytest pytest-cov
-      - name: Zypper add factory repo - to install bats
-        run: zypper ar -G -f https://download.opensuse.org/tumbleweed/repo/oss/ Factory
-      - name: Zypper refresh Factory
-        run: zypper --non-interactive refresh -f -r Factory
-      - name: Install bats
-        run: zypper install -y -r Factory bats    
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
