@@ -96,6 +96,9 @@ selections:
     # RHEL-08-010010
     - security_patches_up_to_date
 
+    # RHEL-08-010019
+    - ensure_redhat_gpgkey_installed
+
     # RHEL-08-010020
     - sysctl_crypto_fips_enabled
 
