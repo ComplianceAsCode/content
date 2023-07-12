@@ -1,12 +1,11 @@
-# platform = Red Hat Virtualization 4,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Fedora,Oracle Linux 7,Oracle Linux 8
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = medium
 
-
-- name: "Configure excluded (non local) file systems"
-  set_fact:
+- name: "{{{ rule_title }}} - Define Excluded (Non-Local) File Systems and Paths"
+  ansible.builtin.set_fact:
     excluded_fstypes:
       - afs
       - ceph
@@ -27,34 +26,57 @@
       - lustre
       - davfs
       - fuse.sshfs
-
-- name: "Create empty list of excluded paths"
-  set_fact:
     excluded_paths:
-      - /proc
+      - dev
+      - proc
+      - run
+      - sys
+    search_paths: []
+    world_writable_dirs: []
 
-- name: "Detect nonlocal file systems and add them to excluded paths"
-  set_fact:
-    excluded_paths: "{{ excluded_paths | union([item.mount]) }}"
-  loop: "{{ ansible_mounts }}"
-  when: item.fstype in excluded_fstypes
-
-- name: "Find all directories excluding non-local partitions"
-  find:
-    paths: "/"
-    excludes: excluded_paths
+- name: "{{{ rule_title }}} - Find Relevant Root Directories Ignoring Pre-Defined Excluded Paths"
+  ansible.builtin.find:
+    paths: /
     file_type: directory
-    hidden: yes
-    recurse: yes
-  register: found_dirs
+    excludes: "{{ excluded_paths }}"
+    hidden: true
+    recurse: false
+  register: result_relevant_root_dirs
 
-- name: "Create list of world writable directories"
-  set_fact:
-    world_writable_dirs: "{{ found_dirs.files | selectattr('woth') | list }}"
+- name: "{{{ rule_title }}} - Include Relevant Root Directories in a List of Paths to be Searched"
+  ansible.builtin.set_fact:
+    search_paths: "{{ search_paths | union([item.path]) }}"
+  loop: "{{ result_relevant_root_dirs.files }}"
 
-- name: "Change owner to root on directories which are world writable"
-  file:
-    path: '{{ item.path }}'
+- name: "{{{ rule_title }}} - Increment Search Paths List with Local Partitions Mount Points"
+  ansible.builtin.set_fact:
+    search_paths: "{{ search_paths | union([item.mount]) }}"
+  loop: '{{ ansible_mounts }}'
+  when:
+    - item.fstype not in excluded_fstypes
+    - item.mount != '/'
+
+- name: "{{{ rule_title }}} - Increment Search Paths List with Local NFS File System Targets"
+  ansible.builtin.set_fact:
+    search_paths: "{{ search_paths | union([item.device.split(':')[1]]) }}"
+  loop: '{{ ansible_mounts }}'
+  when:
+    - item.device is search("localhost:")
+
+- name: "{{{ rule_title }}} - Find All Uncompliant Directories in Local File Systems"
+  ansible.builtin.command:
+    cmd: find {{ item }} -xdev -type d -perm -0002 -uid +0
+  loop: "{{ search_paths }}"
+  changed_when: false
+  register: result_found_dirs
+
+- name: "{{{ rule_title }}} - Create List of World Writable Directories Not Owned by root"
+  ansible.builtin.set_fact:
+    world_writable_dirs: '{{ world_writable_dirs | union(item.stdout_lines) | list }}'
+  loop: "{{ result_found_dirs.results }}"
+
+- name: "{{{ rule_title }}} - Ensure root Ownership on Local World Writable Directories"
+  ansible.builtin.file:
+    path: '{{ item }}'
     owner: root
-  loop:  '{{ world_writable_dirs }}'
-  ignore_errors: yes
+  loop: '{{ world_writable_dirs }}'
