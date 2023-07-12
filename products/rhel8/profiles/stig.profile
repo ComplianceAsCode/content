@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R9
+    version: V1R10
     SMEs:
         - mab879
         - ggbecker
@@ -95,6 +95,9 @@ selections:
 
     # RHEL-08-010010
     - security_patches_up_to_date
+
+    # RHEL-08-010019
+    - ensure_redhat_gpgkey_installed
 
     # RHEL-08-010020
     - sysctl_crypto_fips_enabled
@@ -249,6 +252,9 @@ selections:
 
     # RHEL-08-010351
     - dir_group_ownership_library_dirs
+
+    # RHEL-08-010358
+    - package_mailx_installed
 
     # RHEL-08-010359
     - package_aide_installed
@@ -634,7 +640,7 @@ selections:
     - account_disable_post_pw_expiration
 
     # RHEL-08-020270
-    - account_emergency_expire_date
+    - account_temp_expire_date
 
     # RHEL-08-020280
     - accounts_password_pam_ocredit

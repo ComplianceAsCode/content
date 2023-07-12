@@ -22,14 +22,13 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R9
+    version: V1R10
     SMEs:
     - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
-- account_emergency_expire_date
 - account_password_selinux_faillock_dir
 - account_temp_expire_date
 - account_unique_id
@@ -315,6 +314,7 @@ selections:
 - package_krb5-workstation_removed
 - package_libreport-plugin-logger_removed
 - package_libreport-plugin-rhtsupport_removed
+- package_mailx_installed
 - package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
