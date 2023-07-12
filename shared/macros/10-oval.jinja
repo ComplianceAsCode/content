@@ -1077,8 +1077,9 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 
 {{#
-  Extract from /etc/passwd a list composed of password objects related to non-system UIDs.
+  Extract from system password database a list composed of password objects related to non-system UIDs.
   This list is then filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list includes non-local (LDAP) users, because the implementation of "unix:password_object" in OpenSCAP makes use of getpwent(), which browses all users provided by the NSS.
 
   The macro receives a string as parameter, which is used as the password_object id in the rule.
 
@@ -1109,6 +1110,51 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </unix:password_state>
 {{%- endmacro %}}
 
+{{#
+  Extract from /etc/passwd a list of home directories of local interactive users.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+
+  Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
+
+  The macro receives a string as parameter, which is used as the textfilecontent54_object ID in the rule.
+
+:param object_id: Object ID to be created.
+:type object_id: str
+
+#}}
+{{%- macro create_local_interactive_users_home_dirs_list_object(object_id) -%}}
+
+  <!-- OVAL object to collect home directories of local interactive users -->
+  <ind:textfilecontent54_object id="{{{ object_id }}}" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <!-- Home directories from /etc/passwd (6th column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match" var_ref="variable_{{{ rule_id }}}_local_interactive_users_regex" var_check="at least one"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <local_variable id="variable_{{{ rule_id }}}_local_interactive_users_regex" datatype="int" version="1" comment="usernames rows retrieved from /etc/passwd">
+    <concat>
+      <literal_component>^(?:</literal_component>
+      <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_local_interactive_users" />
+      <literal_component>:)(?:[^:]*:){4}([^:]+):[^:]*$</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- OVAL object to collect user names of local interactive users -->
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_local_interactive_users" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d{4,}:(?:[^:]*:){3}(?!\/sbin\/nologin)[^:]*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_{{{ rule_id }}}_users_ignored</filter>
+  </ind:textfilecontent54_object>
+
+  {{%- set ignored_users_list="(nobody|nfsnobody)" %}}
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_users_ignored" version="1">
+    <ind:subexpression operation="pattern match">^{{{ ignored_users_list }}}$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+{{%- endmacro %}}
 
 {{#
   Extract from /etc/passwd a list composed of password objects related to system UIDs.
