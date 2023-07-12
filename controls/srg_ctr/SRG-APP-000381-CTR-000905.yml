@@ -4,16 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must enforce access restrictions and support auditing
     of the enforcement actions.
-  related_rules:
-  - audit_profile_set
-  status: inherently met
-  artifact_description: |-
-    Supporting evidence is in the following documentation
+  rules:
+  - audit_rules_suid_privilege_function
+  status: automated
 
-    https://docs.openshift.com/container-platform/latest/security/audit-log-policy-config.html
-  status_justification: |-
-    OpenShift comes with a robust RBAC system by default. Users are given Roles that are comprised of Actions they can or cannot perform. All interactions with the RBAC system are by way of the API Server. The API Server by default logs all activity for audit. The specific configuration for the level at which the API server logs interactions is configurable with the following steps:
-      `oc edit apiserver cluster` 
-    Observe the value referenced in the `spec.audit.profile` key.
-    There are 3 options available for this key, all of which log the metadata for read and write requests. Those options are [Default, WriteRequestBodies, AllRequestBodies].
-    https://docs.openshift.com/container-platform/latest/security/audit-log-policy-config.html
