@@ -5,7 +5,26 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("login_banner_text") }}}
 
-- name: "{{{ rule_title }}} - ensure correct banner"
+{{%- if product not in ['sle15'] -%}}
+- name: "{{{ rule_title }}} - Ensure Correct Banner"
   copy:
     dest: /etc/issue
     content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
+{{%- else -%}}
+- name: {{{ rule_title }}} Ensure issue-generator is Installed
+  package:
+    name: "issue-generator"
+    state: present
+
+- name: "{{{ rule_title }}} - Ensure Correct Banner"
+  copy:
+    dest: /etc/issue.d/99-oscap-setting
+    content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
+
+- name: {{{ rule_title }}} Retart issue-generator Service on Issue Configration Change
+  ansible.builtin.systemd:
+    name: "issue-generator"
+    enabled: "yes"
+    state: "restarted"
+    masked: "no"
+{{%- endif -%}}

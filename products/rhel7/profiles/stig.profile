@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R10
+    version: V3R11
     SMEs:
         - ggbecker
 
@@ -348,3 +348,6 @@ selections:
     - no_empty_passwords_etc_shadow
     - disallow_bypass_password_sudo
     - selinux_confine_to_least_privilege
+    - ensure_redhat_gpgkey_installed
+    - dconf_gnome_disable_user_list
+    - package_mailx_installed
