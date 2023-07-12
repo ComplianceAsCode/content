@@ -30,10 +30,11 @@ def parse_args():
     parser.add_argument(
         "--scapval-path",
         help="Full path to the SCAPVal JAR archive", required=True)
-    parser.add_argument(
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group.add_argument(
         "--build-dir",
-        help="Full path to the ComplianceAsCode build directory",
-        required=True)
+        help="Full path to the ComplianceAsCode build directory")
+    input_group.add_argument("--datastream", help="Full path to the ComplianceAsCode data stream")
     return parser.parse_args()
 
 
@@ -108,14 +109,22 @@ def test_datastream(datastream_path,  scapval_path, scap_version):
 def main():
     overall_result = True
     args = parse_args()
+    if args.datastream is not None:
+        build_dir = os.path.dirname(args.datastream)
+        files = [os.path.basename(args.datastream), ]
+    else:
+        build_dir = args.build_dir
+        files = os.listdir(build_dir)
+    print(f"Build dir: {build_dir}")
     if args.scap_version == "1.2":
         ds_suffix = "-ds-1.2.xml"
     elif args.scap_version == "1.3":
         ds_suffix = "-ds.xml"
-    for filename in os.listdir(args.build_dir):
+
+    for filename in files:
         if filename.endswith(ds_suffix):
             print("Testing %s ..." % filename)
-            datastream_path = os.path.join(args.build_dir, filename)
+            datastream_path = os.path.join(build_dir, filename)
             datastream_result = test_datastream(
                     datastream_path, args.scapval_path, args.scap_version)
             if datastream_result:
