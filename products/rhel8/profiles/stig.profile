@@ -253,6 +253,9 @@ selections:
     # RHEL-08-010351
     - dir_group_ownership_library_dirs
 
+    # RHEL-08-010358
+    - package_mailx_installed
+
     # RHEL-08-010359
     - package_aide_installed
     - aide_build_database
