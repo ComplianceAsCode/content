@@ -66,62 +66,78 @@ controls:
     controls:
     - id: 4.2.1
       title: Activate Garbage collection in OpenShift Container Platform 4, as appropriate
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_eviction_thresholds_set_hard_memory_available
+        - kubelet_eviction_thresholds_set_hard_nodefs_available
+        - kubelet_eviction_thresholds_set_hard_nodefs_inodesfree
+        - kubelet_eviction_thresholds_set_hard_imagefs_available
       levels: level_1
     - id: 4.2.2
       title: Ensure that the --anonymous-auth argument is set to false
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_anonymous_auth
       levels: level_1
     - id: 4.2.3
       title: Ensure that the --authorization-mode argument is not set to AlwaysAllow
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_authorization_mode
       levels: level_1
     - id: 4.2.4
       title: Ensure that the --client-ca-file argument is set as appropriate
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_configure_client_ca
       levels: level_1
     - id: 4.2.5
       title: Verify that the read only port is not used or is set to 0
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_disable_readonly_port
       levels: level_1
     - id: 4.2.6
       title: Ensure that the --streaming-connection-idle-timeout argument is not set to 0
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_enable_streaming_connections
       levels: level_1
     - id: 4.2.7
       title: Ensure that the --make-iptables-util-chains argument is set to true
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_enable_iptables_util_chains
       levels: level_1
     - id: 4.2.8
       title: Ensure that the kubeAPIQPS [--event-qps] argument is set to 0 or a level which ensures appropriate event capture
-      status: pending
-      rules: []
-      levels: level_1
+      status: automated
+      rules:
+        - kubelet_configure_event_creation
+      levels: level_2
     - id: 4.2.9
       title: Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_configure_tls_cert
       levels: level_1
     - id: 4.2.10
       title: Ensure that the --rotate-certificates argument is not set to false
-      status: pending
+      status: automated
       rules: []
+        - kubelet_enable_client_cert_rotation
+        - kubelet_enable_cert_rotation
       levels: level_1
     - id: 4.2.11
       title: Verify that the RotateKubeletServerCertificate argument is set to true
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_enable_server_cert_rotation
       levels: level_1
     - id: 4.2.12
       title: Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - kubelet_configure_tls_cipher_suites
       levels: level_1
 
