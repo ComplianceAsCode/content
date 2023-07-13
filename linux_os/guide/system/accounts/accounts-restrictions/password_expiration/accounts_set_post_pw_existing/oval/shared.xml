@@ -1,4 +1,5 @@
 <def-group>
+  {{% set regex="^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){4}(\d+):(?:[^:]*:)(?:[^:]*)$" %}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Set existing passwords a period of inactivity before they been locked") }}}
     <criteria operator="OR">
@@ -9,34 +10,23 @@
     </criteria>      
   </definition>
 
-  <unix:shadow_test id="test_accounts_set_post_pw_existing" version="1"
-    check="all" check_existence="at_least_one_exists"
-    comment="Password INACTIVE parameter is no more than 30 days.">
-    <unix:object object_ref="object_shadow_password_users_post_pw_existing"/>
-    <unix:state state_ref="inactive_param_for_passwords_change"/>
-  </unix:shadow_test>
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_accounts_set_post_pw_existing",
+    regex=regex,
+    external_variable_id="var_account_disable_post_pw_expiration",
+    operation="less than or equal") }}}
 
-  <unix:shadow_object id="object_shadow_password_users_post_pw_existing" version="1">
-    <unix:username operation="pattern match">.*</unix:username>
-    <filter action="exclude">state_accounts_set_post_pw_existing_no_password</filter>
-  </unix:shadow_object>
-
-  <unix:shadow_state id="state_accounts_set_post_pw_existing_no_password" version="1">
-      <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked)$</unix:password>
-  </unix:shadow_state>
-  
-  <unix:shadow_state id="inactive_param_for_passwords_change" version="1"
-    comment="change INACTIVE parameter for passwords to the recommended value">
-    <unix:exp_inact operation="less than or equal" datatype="int"
-      var_ref="var_account_disable_post_pw_expiration"/>
-  </unix:shadow_state>
-
-  <external_variable id="var_account_disable_post_pw_expiration" datatype="int" version="1"
-    comment="Number of days after an inactive user account can be automatically disabled"/>
-
-  <unix:shadow_test id="test_accounts_set_post_pw_existing_no_pass" version="1"
+  <ind:textfilecontent54_test id="test_accounts_set_post_pw_existing_no_pass" version="1"
     check="all" check_existence="none_exist"
     comment="Check the inexistence of users with a password defined">
-    <unix:object object_ref="object_shadow_password_users_post_pw_existing"/>
-  </unix:shadow_test>
+    <ind:object object_ref="object_accounts_password_set_warn_age_existing"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_shadow_password_users_post_pw_existing" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <!-- subexpression capturing group matches the 6th field - maximum password age -->
+    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
