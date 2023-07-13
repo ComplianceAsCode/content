@@ -1207,46 +1207,19 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   <!-- Define a test for the /etc/shadow file for non-system accounts to look for the maximum
        password change interval. -->
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_existing" version="1"
-    check="all" check_existence="any_exist"
-    comment="Password maximum lifetime for existing accounts is at least the minimum.">
-    <ind:object object_ref="object_{{{ rule_id }}}_shadow_password_users_max_life_existing"/>
-    <ind:state state_ref="state_{{{ rule_id }}}_max_password_change_interval"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_shadow_password_users_max_life_existing" version="1">
-    <ind:filepath>/etc/shadow</ind:filepath>
-    <!-- subexpression capturing group matches the {{{ field }}} th field - maximum password age -->
-    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
-    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_max_password_change_interval" version="1">
-    <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
-      var_ref="var_accounts_maximum_age_login_defs"/>
-  </ind:textfilecontent54_state>
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_" + rule_id + "_password_max_life_existing",
+    regex=regex,
+    external_variable_id="var_accounts_maximum_age_login_defs",
+    operation="less than or equal") }}}
 
   <!-- Define a second test to ensure the maximum password life is at least the defined
        minimum (usually 1). -->
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_existing_minimum" version="1"
-    check="all" check_existence="any_exist"
-    comment="Password maximum life entry is at least a defined minimum">
-    <ind:object object_ref="object_{{{ rule_id }}}_shadow_password_users_max_life_existing"/>
-    <ind:state state_ref="state_{{{ rule_id }}}_min_max_password_change_interval"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_min_max_password_change_interval" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_check="all"
-      var_ref="var_accounts_minimum_age_login_defs"/>
-  </ind:textfilecontent54_state>
-
-  <!-- these external variables are defined at the group level,
-       reusing the account-level definitions. -->
-  <external_variable id="var_accounts_maximum_age_login_defs" datatype="int" version="1"
-                     comment="Maximum password age"/>
-  <external_variable id="var_accounts_minimum_age_login_defs" datatype="int" version="1"
-                     comment="Minimum password age"/>
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_" + rule_id + "_password_max_life_existing_minimum",
+    regex=regex,
+    external_variable_id="var_accounts_minimum_age_login_defs",
+    operation="greater than or equal") }}}
 
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_not_empty" version="1"
     check="all" check_existence="none_exist"
@@ -1263,4 +1236,42 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
   </ind:textfilecontent54_object>
 
 </def-group>
+{{%- endmacro %}}
+
+{{#
+Generates an OVAL test used in checks a particular field in the "/etc/shadow" file.
+
+:param test_id: OVAL test ID
+:type test_id: str
+:param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
+:type regex: str
+:param external_variable_id: External variable ID
+:type external_variable_id: str
+:param operation: operation
+:type operation: str
+
+#}}
+{{%- macro textfilecontent54_test_etc_shadow(test_id, regex, external_variable_id, operation) -%}}
+
+  <ind:textfilecontent54_test id="{{{ test_id }}}" version="1"
+    check="all" check_existence="any_exist"
+    comment="Compares a specific field in /etc/shadow with a specific variable value">
+    <ind:object object_ref="object_{{{ test_id }}}"/>
+    <ind:state state_ref="state_{{{ test_id }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ test_id }}}" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ test_id }}}" version="1">
+    <ind:subexpression datatype="int" operation="{{{ operation }}}" var_check="all"
+      var_ref="{{{ external_variable_id }}}"/>
+  </ind:textfilecontent54_state>
+
+  <external_variable id="{{{ external_variable_id }}}" datatype="int" version="1"
+    comment="External variable"/>
 {{%- endmacro %}}
