@@ -8,6 +8,7 @@
 - name: Check to see the current status of FIPS mode
   command: /usr/bin/fips-mode-setup --check
   register: is_fips_enabled
+  ignore_errors: yes
   changed_when: false
 
 - name: Enable FIPS mode
