@@ -1180,3 +1180,87 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
+{{#
+Generates an OVAL check that checks a particular field in the "/etc/shadow" file.
+
+:param field: Field number
+:type field: int
+:param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
+:type regex: str
+:param regex_empty: Regex that matches the entries in shadow file if the particular field value is empty
+:type regex_empty: str
+
+#}}
+{{%- macro etc_shadow_test(field, regex, regex_empty) %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+      {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
+    <criteria operator="AND">
+        <criterion test_ref="test_{{{ rule_id }}}_password_max_life_existing"
+          comment="Passwords must be restricted to the appropriate maximum age for existing accounts."/>
+        <criterion test_ref="test_{{{ rule_id }}}_password_max_life_existing_minimum"
+          comment="Passwords must have a maximum lifetime greater than or equal minimum password age."/>
+        <criterion test_ref="test_{{{ rule_id }}}_password_max_life_not_empty"
+          comment="Passwords must have the maximum password age set non-empty in /etc/shadow."/>
+    </criteria>
+  </definition>
+
+  <!-- Define a test for the /etc/shadow file for non-system accounts to look for the maximum
+       password change interval. -->
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_existing" version="1"
+    check="all" check_existence="any_exist"
+    comment="Password maximum lifetime for existing accounts is at least the minimum.">
+    <ind:object object_ref="object_{{{ rule_id }}}_shadow_password_users_max_life_existing"/>
+    <ind:state state_ref="state_{{{ rule_id }}}_max_password_change_interval"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_shadow_password_users_max_life_existing" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <!-- subexpression capturing group matches the {{{ field }}} th field - maximum password age -->
+    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_max_password_change_interval" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
+      var_ref="var_accounts_maximum_age_login_defs"/>
+  </ind:textfilecontent54_state>
+
+  <!-- Define a second test to ensure the maximum password life is at least the defined
+       minimum (usually 1). -->
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_existing_minimum" version="1"
+    check="all" check_existence="any_exist"
+    comment="Password maximum life entry is at least a defined minimum">
+    <ind:object object_ref="object_{{{ rule_id }}}_shadow_password_users_max_life_existing"/>
+    <ind:state state_ref="state_{{{ rule_id }}}_min_max_password_change_interval"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_min_max_password_change_interval" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_check="all"
+      var_ref="var_accounts_minimum_age_login_defs"/>
+  </ind:textfilecontent54_state>
+
+  <!-- these external variables are defined at the group level,
+       reusing the account-level definitions. -->
+  <external_variable id="var_accounts_maximum_age_login_defs" datatype="int" version="1"
+                     comment="Maximum password age"/>
+  <external_variable id="var_accounts_minimum_age_login_defs" datatype="int" version="1"
+                     comment="Minimum password age"/>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_not_empty" version="1"
+    check="all" check_existence="none_exist"
+    comment="Passwords must have the maximum password age set non-empty in /etc/shadow.">
+    <ind:object object_ref="object_{{{ rule_id }}}_shadow_password_users_max_life_not_existing"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_shadow_password_users_max_life_not_existing" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <!-- subexpression capturing group matches the {{{ field }}} th field (maximum password age) if it's empty -->
+    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
+    <ind:pattern operation="pattern match">{{{ regex_empty }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+{{%- endmacro %}}
