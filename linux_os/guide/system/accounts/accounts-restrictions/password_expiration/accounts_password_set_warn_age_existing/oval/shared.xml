@@ -1,4 +1,5 @@
 <def-group>
+{{% set regex="^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){3}(\d+):(?:[^:]*:){2}(?:[^:]*)$" %}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Set Existing Passwords Warning Age") }}}
     <criteria operator="OR">
@@ -9,35 +10,24 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_accounts_password_set_warn_age_existing" version="1"
-    check="all" check_existence="at_least_one_exists"
-    comment="Password expiration warn age for existing accounts is properly set in /etc/shadow.">
-    <ind:object object_ref="object_accounts_password_set_warn_age_existing"/>
-    <ind:state state_ref="state_warn_age_for_passwords_change"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_accounts_password_set_warn_age_existing" version="1">
-    <ind:filepath>/etc/shadow</ind:filepath>
-    <!-- subexpression capturing group matches the 6th field - maximum password age -->
-    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
-    <ind:pattern operation="pattern match">^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){3}(\d+):(?:[^:]*:){2}(?:[^:]*)$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_state id="state_warn_age_for_passwords_change" version="1">
-    <ind:subexpression operation="greater than or equal" datatype="int"
-      var_ref="var_accounts_password_warn_age_login_defs"/>
-  </ind:textfilecontent54_state>
-
-  <!-- this external variable is defined at the group level,
-       reusing the account-level definitions. -->
-  <external_variable id="var_accounts_password_warn_age_login_defs" version="1"
-    datatype="int" comment="Warning days before password expires"/>
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_accounts_password_set_warn_age_existing",
+    regex=regex,
+    external_variable_id="var_accounts_password_warn_age_login_defs",
+    operation="greater than or equal") }}}
 
   <ind:textfilecontent54_test id="test_accounts_password_set_warn_age_existing_no_pass" version="1"
     check="all" check_existence="none_exist"
     comment="Check the inexistence of users with a password defined">
     <ind:object object_ref="object_accounts_password_set_warn_age_existing"/>
   </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_set_warn_age_existing" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <!-- subexpression capturing group matches the 6th field - maximum password age -->
+    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
 </def-group>
