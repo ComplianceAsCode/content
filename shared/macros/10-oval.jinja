@@ -1276,7 +1276,19 @@ Generates an OVAL test used in checks a particular field in the "/etc/shadow" fi
     comment="External variable"/>
 {{%- endmacro %}}
 
+{{#
+Generates an OVAL check that checks a particular field in the "/etc/shadow" file and compares it with a given XCCDF Value variable.
 
+:param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
+:type regex: str
+:param external_variable_id: External variable ID
+:type external_variable_id: str
+:param operation: operation
+:type operation: str
+:param description: brief description for OVAL metadata
+:type description: str
+
+#}}
 {{%- macro test_etc_shadow_password_variable(regex, external_variable_id, operation, description) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
