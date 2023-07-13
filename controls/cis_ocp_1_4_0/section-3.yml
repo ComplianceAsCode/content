@@ -6,27 +6,31 @@ controls:
   controls:
   - id: '3.1'
     title: Authentication and Authorization
-    status: pending
+    status: automated
     rules: []
     controls:
     - id: 3.1.1
       title: Client certificate authentication should not be used for users
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - idp_is_configured
+        - kubeadmin_removed
       levels: level_2
   - id: '3.2'
     title: Logging
-    status: pending
+    status: automated
     rules: []
     controls:
     - id: 3.2.1
       title: Ensure that a minimal audit policy is created
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - audit_profile_set
       levels: level_1
     - id: 3.2.2
       title: Ensure that the audit policy covers key security concerns
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - audit_profile_set
       levels: level_2
 
