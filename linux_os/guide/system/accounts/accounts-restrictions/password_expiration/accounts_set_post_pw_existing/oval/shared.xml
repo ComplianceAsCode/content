@@ -1,32 +1,5 @@
-<def-group>
-  {{% set regex="^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){4}(\d+):(?:[^:]*:)(?:[^:]*)$" %}}
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Set existing passwords a period of inactivity before they been locked") }}}
-    <criteria operator="OR">
-      <criterion test_ref="test_accounts_set_post_pw_existing"
-        comment="Passwords must be configured to the appropriate period of inactivity."/>
-      <criterion test_ref="test_accounts_set_post_pw_existing_no_pass"
-        comment="There is no password defined in /etc/shadow"/>
-    </criteria>      
-  </definition>
-
-  {{{ textfilecontent54_test_etc_shadow(
-    test_id="test_accounts_set_post_pw_existing",
-    regex=regex,
+{{{ test_etc_shadow_password_variable(
+    regex="^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){4}(\d+):(?:[^:]*:)(?:[^:]*)$",
     external_variable_id="var_account_disable_post_pw_expiration",
-    operation="less than or equal") }}}
-
-  <ind:textfilecontent54_test id="test_accounts_set_post_pw_existing_no_pass" version="1"
-    check="all" check_existence="none_exist"
-    comment="Check the inexistence of users with a password defined">
-    <ind:object object_ref="object_accounts_password_set_warn_age_existing"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_shadow_password_users_post_pw_existing" version="1">
-    <ind:filepath>/etc/shadow</ind:filepath>
-    <!-- subexpression capturing group matches the 6th field - maximum password age -->
-    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
-    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-</def-group>
+    operation="less than or equal",
+    description="Set existing passwords a period of inactivity before they been locked") }}}

@@ -1275,3 +1275,37 @@ Generates an OVAL test used in checks a particular field in the "/etc/shadow" fi
   <external_variable id="{{{ external_variable_id }}}" datatype="int" version="1"
     comment="External variable"/>
 {{%- endmacro %}}
+
+
+{{%- macro test_etc_shadow_password_variable(regex, external_variable_id, operation, description) -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata(description) }}}
+    <criteria operator="OR">
+      <criterion test_ref="test_{{{ rule_id }}}"
+        comment="Passwords must be configured to the appropriate value"/>
+      <criterion test_ref="test_{{{ rule_id }}}_no_pass"
+        comment="There is no password defined in /etc/shadow"/>
+    </criteria>
+  </definition>
+
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_" + rule_id,
+    regex=regex,
+    external_variable_id=external_variable_id,
+    operation=operation) }}}
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_pass" version="1"
+    check="all" check_existence="none_exist"
+    comment="Check the inexistence of users with a password defined">
+    <ind:object object_ref="object_{{{ rule_id }}}_no_pass"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_no_pass" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+{{%- endmacro %}}
