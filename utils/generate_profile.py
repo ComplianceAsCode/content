@@ -186,7 +186,7 @@ class Generator:
             'rules': []
         }
         if hasattr(node, 'level'):
-            d['level'] = node.level.replace(' ', '_').lower()
+            d['levels'] = node.level.replace(' ', '_').lower()
         if node.children:
             d['controls'] = []
         for node in node.children:
