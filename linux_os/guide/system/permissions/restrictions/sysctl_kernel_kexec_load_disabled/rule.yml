@@ -30,7 +30,11 @@ references:
 
 srg_requirement: '{{{ full_name }}} must prevent the loading of a new kernel for later execution.'
 
+{{% if product == "ol8" %}}
+platform: machine and not (secure_boot and kernel_uek)
+{{% else %}}
 platform: machine
+{{% endif %}}
 
 template:
     name: sysctl
