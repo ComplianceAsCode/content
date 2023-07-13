@@ -39,7 +39,6 @@ controls:
       - var_authselect_profile=sssd
       - enable_authselect
 
-  #[A.3] Manipulación de los registros de actividad (log).
   - id: A.3.SEC-RHEL1
     title: Session initiation is audited
     original_title: Se auditan los inicios de sesión.
@@ -198,7 +197,6 @@ controls:
       The intention here is probably to audit changes in /etc/pam.d files, but we need to confirm
       this assumption and get more context.
 
-  #[A.4] Manipulación de los ficheros de configuración
   - id: A.4.SEC-RHEL1
     title: Common users do not have local administrator permissions and are not included in a sudo group
     original_title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran incluidos en un grupo sudoer.
@@ -236,7 +234,6 @@ controls:
     notes: |-
       Related to nosuid, noexec and nodev options but in /boot. More context is needed.
 
-  #[A.5] Suplantación de la identidad.
   - id: A.5.SEC-RHEL1
     title: Login and impersonation permissions are controlled
     original_title: Se controlan los permisos de inicio de sesión y suplantación de identidad.
@@ -314,7 +311,7 @@ controls:
       - configure_ssh_crypto_policy
 
   - id: A.5.SEC-RHEL7
-    title:Network session inactivity is controlled
+    title: Network session inactivity is controlled
     original_title: Se controla la inactividad de la sesión de red.
     levels:
       - basic
@@ -337,7 +334,6 @@ controls:
       - accounts_tmout
       - var_accounts_tmout=5_min
 
-  #[A.6] Abuso de privilegios de acceso.
   - id: A.6.SEC-RHEL1
     title: The security of sensitive system objects is reinforced
     original_title: Se refuerza la seguridad de los objetos sensibles del sistema.
@@ -414,7 +410,6 @@ controls:
       - advanced
     status: manual
 
-  #[A.8] Difusión de software dañino.
   - id: A.8.SEC-RHEL1
     title: Control who can install software on the system
     original_title: Se controla quién puede instalar software en el sistema.
@@ -558,7 +553,6 @@ controls:
     notes: |-
       Maybe simply removing the packages is enough.
 
-  #[A.11] Acceso no autorizado.
   - id: A.11.SEC-RHEL1
     title: Local log on to the system is controlled
     original_title: Se controla el inicio de sesión local en el sistema.
@@ -706,7 +700,6 @@ controls:
       - dconf_gnome_disable_automount_open
       - dconf_gnome_disable_autorun
 
-  #[A.15] Modificación de la información.
   - id: A.15.SEC-RHEL1
     title: The use of removable storage media is controlled
     original_title: Se controla el uso de medios de almacenamiento extraíbles.
@@ -717,7 +710,6 @@ controls:
     related_rules:
       - kernel_module_usb-storage_disabled
 
-  #[A.19] Revelación de información.
   - id: A.19.SEC-RHEL1
     title: Access to the folder and file tree is controlled
     original_title: Se controla el acceso al árbol de carpetas y ficheros.
@@ -754,7 +746,6 @@ controls:
       - set_password_hashing_algorithm_logindefs
       - var_password_hashing_algorithm=SHA512
 
-  #[A.23] Manipulación del hardware.
   - id: A.23.SEC-RHEL1
     title: The installation and use of any device connected to the equipment is controlled
     original_title: Se controla la instalación y uso de cualquier dispositivo conectado al equipo.
@@ -779,7 +770,6 @@ controls:
     notes: |-
       It seems to duplicate the A.11.SEC-RHEL12 requirement.
 
-  #[A.24] Denegación de servicio.
   - id: A.24.SEC-RHEL1
     title: Privileges that affect system performance are controlled
     original_title: Se controlan los privilegios que afectan al rendimiento del sistema.
@@ -801,7 +791,6 @@ controls:
       - disable_ctrlaltdel_burstaction
       - disable_ctrlaltdel_reboot
 
-  #[A.25] Robo de equipos.
   - id: A.25.SEC-RHEL1
     title: System disk is encrypted
     original_title: El disco del sistema está cifrado.
@@ -822,7 +811,6 @@ controls:
       - package_cryptsetup-luks_installed
       - encrypt_partitions
 
-  #[A.30] Ingeniería social.
   - id: A.30.SEC-RHEL1
     title: There is an account lockout policy for incorrect logins
     original_title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
