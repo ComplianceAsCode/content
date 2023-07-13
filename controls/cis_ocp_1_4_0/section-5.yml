@@ -11,33 +11,39 @@ controls:
     controls:
     - id: 5.1.1
       title: Ensure that the cluster-admin role is only used where required
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - rbac_limit_cluster_admin
       levels: level_1
     - id: 5.1.2
       title: Minimize access to secrets
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - rbac_limit_secrets_access
       levels: level_1
     - id: 5.1.3
       title: Minimize wildcard use in Roles and ClusterRoles
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - rbac_wildcard_use
       levels: level_1
     - id: 5.1.4
       title: Minimize access to create pods
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - rbac_pod_creation_access
       levels: level_1
     - id: 5.1.5
       title: Ensure that default service accounts are not actively used.
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - accounts_unique_service_account
       levels: level_1
     - id: 5.1.6
       title: Ensure that Service Account Tokens are only mounted where necessary
-      status: pending
-      rules: []
+      status: manual
+      rules:
+        - accounts_restrict_service_account_tokens
       levels: level_1
   - id: '5.2'
     title: Security Context Constraints
