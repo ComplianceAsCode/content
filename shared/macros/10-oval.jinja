@@ -1133,7 +1133,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_object>
 
 
-  <local_variable id="variable_{{{ rule_id }}}_local_interactive_users_regex" datatype="int" version="1" comment="usernames rows retrieved from /etc/passwd">
+  <local_variable id="variable_{{{ rule_id }}}_local_interactive_users_regex" datatype="string" version="1" comment="usernames rows retrieved from /etc/passwd">
     <concat>
       <literal_component>^(?:</literal_component>
       <object_component item_field="subexpression" object_ref="object_{{{ rule_id }}}_local_interactive_users" />
