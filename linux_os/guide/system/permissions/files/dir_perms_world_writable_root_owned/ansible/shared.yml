@@ -30,10 +30,11 @@
 
 - name: "Create empty list of excluded paths"
   set_fact:
-    excluded_paths: []
+    excluded_paths:
+      - /proc
 
 - name: "Detect nonlocal file systems and add them to excluded paths"
-  set_fact: 
+  set_fact:
     excluded_paths: "{{ excluded_paths | union([item.mount]) }}"
   loop: "{{ ansible_mounts }}"
   when: item.fstype in excluded_fstypes
