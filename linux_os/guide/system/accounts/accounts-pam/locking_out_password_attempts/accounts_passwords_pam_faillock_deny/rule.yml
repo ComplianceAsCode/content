@@ -7,9 +7,19 @@ title: 'Lock Accounts After Failed Password Attempts'
 description: |-
     This rule configures the system to lock out accounts after a number of incorrect login attempts
     using <tt>pam_faillock.so</tt>.
-
     pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
     defined to work as expected.
+    {{% if product in ["rhel7"] %}}
+    Ensure that pam_faillock.so module entries in
+    <tt>/etc/pam.d/password-auth</tt> and <tt>/etc/pam.d/system-auth</tt> are
+    followed by the assignment <tt>deny=&lt;count&gt;</tt> where count should be less than or equal to 
+    {{{xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} and greater than 0.
+    {{% else %}}
+    Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
+    <tt>deny = &lt;count&gt;</tt>
+    Where count should be less than or equal to 
+    {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} and greater than 0.
+    {{% endif %}}
     {{% if 'ubuntu' not in product %}}
     In order to avoid errors when manually editing these files, it is
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,

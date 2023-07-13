@@ -105,6 +105,9 @@ option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux de
 
 option(FORCE_VALIDATE_EVERYTHING "If enabled, perform all validation tests regardless of oscap version requirements. By default, the build system may not perform validation of some content types if the openscap used to build it is not up-to-date" FALSE)
 
+# SCAPVal Options
+option(ENABLE_SCAPVAL13 "Set to ON to enable SCAPVal tests" OFF)
+
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
@@ -155,7 +158,7 @@ cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage
 find_package(OpenSCAP REQUIRED)
 
 if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
+    message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
@@ -261,6 +264,20 @@ else()
 endif()
 message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
 message(STATUS "Build SCE Content: " ${SSG_SCE_ENABLED})
+message(STATUS "SCAPVal 1.3 Enabled: ${ENABLE_SCAPVAL13}")
+if(ENABLE_SCAPVAL13)
+    message(STATUS "SCAPVAL Path: ${SCAPVAL_PATH}")
+    if(NOT SCAPVAL_PATH)
+        message(SEND_ERROR "Path to SCAPVal was not specified.")
+    endif()
+
+    find_program(JAVA_EXECUTABLE NAMES java)
+    message(STATUS "java: ${JAVA_EXECUTABLE}")
+    if(NOT JAVA_EXECUTABLE)
+        message(SEND_ERROR "java is required for SCAPVal!")
+    endif()
+
+endif()
 message(STATUS " ")
 
 message(STATUS "Products:")

@@ -1,0 +1,11 @@
+name: "cpe:/a:ipv6-{arg}"
+title: "IPv6 is {arg} on system"
+template:
+  name: platform_ipv6_state
+args:
+  enabled:
+    state: enabled
+    ipv6_disable_value: 0
+  disabled:
+    state: disabled
+    ipv6_disable_value: 1
