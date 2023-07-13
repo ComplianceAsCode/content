@@ -92,7 +92,7 @@ controls:
       - file_groupownership_audit_configuration
 
   - id: A.3.SEC-RHEL5
-    title: It is implemented a detailed audit based on subcategories
+    title: A detailed audit has been implemented based on subcategories
     original_title: Se ha implementado la auditoría detallada basada en subcategorías.
     levels:
       - intermediate
@@ -200,7 +200,7 @@ controls:
 
   #[A.4] Manipulación de los ficheros de configuración
   - id: A.4.SEC-RHEL1
-    title: Common users do not have local administrator permissions or are included in a sudo group
+    title: Common users do not have local administrator permissions and are not included in a sudo group
     original_title: Los usuarios estándar no disponen de permisos de administrador local ni se encuentran incluidos en un grupo sudoer.
     levels:
       - basic
@@ -238,7 +238,7 @@ controls:
 
   #[A.5] Suplantación de la identidad.
   - id: A.5.SEC-RHEL1
-    title: Control login and impersonation permissions
+    title: Login and impersonation permissions are controlled
     original_title: Se controlan los permisos de inicio de sesión y suplantación de identidad.
     levels:
       - intermediate
@@ -249,7 +249,7 @@ controls:
       - use_pam_wheel_for_su
 
   - id: A.5.SEC-RHEL2
-    title: Elevation attempts are controlled by defining sudoers users and groups
+    title: Elevation attempts are controlled by defining users and sudoer groups
     original_title: Se controlan los intentos de elevación mediante definición de usuarios y grupos sudoers.
     levels:
       - basic
@@ -284,7 +284,7 @@ controls:
       - var_system_crypto_policy=default_policy
 
   - id: A.5.SEC-RHEL5
-    title: Recurring password change required
+    title: Recurring password change is required
     original_title: Se exige el cambio de contraseña de forma recurrente.
     levels:
       - basic
@@ -303,7 +303,7 @@ controls:
       - accounts_password_set_warn_age_existing
 
   - id: A.5.SEC-RHEL6
-    title: Secure protocols are used for network authentication processes
+    title: Secure protocols are used for the network authentication processes
     original_title: Se hace uso de protocolos seguros para los procesos de autenticación de red.
     levels:
       - basic
@@ -314,7 +314,7 @@ controls:
       - configure_ssh_crypto_policy
 
   - id: A.5.SEC-RHEL7
-    title: Control network session inactivity
+    title:Network session inactivity is controlled
     original_title: Se controla la inactividad de la sesión de red.
     levels:
       - basic
@@ -328,7 +328,7 @@ controls:
       - var_sshd_set_keepalive=0
 
   - id: A.5.SEC-RHEL8
-    title: Control local and remote console inactivity
+    title: Local and remote console inactivity is controlled
     original_title: Se controla la inactividad de consola local y remota.
     levels:
       - advanced
@@ -436,7 +436,7 @@ controls:
       - security_patches_up_to_date
 
   - id: A.8.SEC-RHEL3
-    title: The system has a local firewall activated
+    title: The system has an activated local firewall
     original_title: El sistema tiene un firewall local activado.
     levels:
       - basic
@@ -470,7 +470,7 @@ controls:
       - kernel_module_udf_disabled
 
   - id: A.8.SEC-RHEL5
-    title: Control application execution
+    title: Application execution is controlled
     original_title: Se controla la ejecución de aplicaciones.
     levels:
       - advanced
@@ -560,7 +560,7 @@ controls:
 
   #[A.11] Acceso no autorizado.
   - id: A.11.SEC-RHEL1
-    title: Control local logon to the system
+    title: Local log on to the system is controlled
     original_title: Se controla el inicio de sesión local en el sistema.
     levels:
       - basic
@@ -600,7 +600,7 @@ controls:
       - no_empty_passwords_etc_shadow
 
   - id: A.11.SEC-RHEL4
-    title: During login, the system displays a text in compliance with the organization's standards or policies
+    title: During login, the system displays a text in compliance with the organization's standards or directives
     original_title: Durante el inicio de sesión, el sistema muestra un texto en cumplimiento con las normas o directivas de la organización.
     levels:
       - basic
@@ -620,7 +620,7 @@ controls:
       - remote_login_banner_text=cis_banners
 
   - id: A.11.SEC-RHEL5
-    title: Control network access to the system
+    title: Network access to the system is controlled
     original_title: Se controla el acceso al sistema a través de la red.
     levels:
       - basic
@@ -675,7 +675,7 @@ controls:
       - dconf_gnome_disable_user_list
 
   - id: A.11.SEC-RHEL10
-    title: Disable remember file history
+    title: File history is disabled
     original_title: Se deshabilita recordar el historial de ficheros.
     levels:
       - intermediate
@@ -695,7 +695,7 @@ controls:
       New rules might be necessary.
 
   - id: A.11.SEC-RHEL12
-    title: Disable auto-mounting of removable devices on the system
+    title: Auto-mounting of removable devices on the system is disabled
     original_title: Se deshabilita el auto montaje de dispositivos extraíbles en el sistema.
     levels:
       - intermediate
@@ -708,7 +708,7 @@ controls:
 
   #[A.15] Modificación de la información.
   - id: A.15.SEC-RHEL1
-    title: Control the use of removable storage media
+    title: The use of removable storage media is controlled
     original_title: Se controla el uso de medios de almacenamiento extraíbles.
     levels:
       - intermediate
@@ -719,7 +719,7 @@ controls:
 
   #[A.19] Revelación de información.
   - id: A.19.SEC-RHEL1
-    title: Control access to the folder and file tree
+    title: Access to the folder and file tree is controlled
     original_title: Se controla el acceso al árbol de carpetas y ficheros.
     levels:
       - basic
@@ -756,7 +756,7 @@ controls:
 
   #[A.23] Manipulación del hardware.
   - id: A.23.SEC-RHEL1
-    title: Control the installation and use of any device connected to the equipment
+    title: The installation and use of any device connected to the equipment is controlled
     original_title: Se controla la instalación y uso de cualquier dispositivo conectado al equipo.
     levels:
       - basic
@@ -769,7 +769,7 @@ controls:
       - usbguard_generate_policy
 
   - id: A.23.SEC-RHEL2
-    title: Restrict dynamic mounting and unmounting of file systems
+    title: The dynamic mounting and unmounting of file systems is restricted
     original_title: Se restringe el montaje y desmontaje dinámico de sistemas de archivos.
     levels:
       - basic
