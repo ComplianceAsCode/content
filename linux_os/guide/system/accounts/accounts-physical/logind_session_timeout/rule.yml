@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,rhel9
+prodtype: ol8,rhel8,rhel9
 
 title: "Configure Logind to terminate idle sessions after certain time of inactivity"
 
@@ -20,6 +20,7 @@ severity: medium
 
 platforms:
     - os_linux[rhel]>=8.7 and os_linux[rhel]!=9.0
+    - os_linux[ol]>=8.7
 
 identifiers:
     cce@rhel8: CCE-90784-0
@@ -39,6 +40,7 @@ references:
     nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.IP-2
     ospp: FMT_SMF_EXT.1.1
     pcidss: Req-8.1.8
+    stigid@ol8: OL08-00-020035
 
 ocil_clause: "the option is not configured"
 
