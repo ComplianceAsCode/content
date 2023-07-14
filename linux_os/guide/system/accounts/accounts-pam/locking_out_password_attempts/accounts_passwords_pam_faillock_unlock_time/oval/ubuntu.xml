@@ -10,13 +10,17 @@
             comment="pam_unix.so appears only once in auth section of common-auth"/>
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_auth"
             comment="pam_faillock.so is properly defined in auth section of common-auth"/>
+        {{% if 'ubuntu2004' not in product %}}
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_account"
             comment="pam_faillock.so is properly defined in common-account"/>
+        {{% endif %}}
       </criteria>
       <criteria operator="OR"
                 comment="Check expected value for pam_faillock.so unlock_time parameter">
+        {{% if 'ubuntu2004' in product %}}
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_common"
             comment="Check the unlock_time parameter is not present common-auth file"/>
+        {{% endif %}}
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
             comment="Ensure the unlock_time parameter is present in /etc/security/faillock.conf"/>
       </criteria>
@@ -31,10 +35,25 @@
     <value>^\s*auth.*pam_unix\.so</value>
   </constant_variable>
 
-  <constant_variable id="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_auth_regex"
+  <constant_variable
+  id="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"
                 datatype="string" version="1"
                 comment="regex to identify pam_faillock.so entries in auth section of pam files">
-      <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
+    <value>^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$</value>
+  </constant_variable>
+
+  <constant_variable
+  id="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    <value>^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc.*$</value>
+  </constant_variable>
+
+  <constant_variable
+  id="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*$</value>
   </constant_variable>
 
   <constant_variable id="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_account_regex"
@@ -86,7 +105,13 @@
         comment="Check common definition of pam_faillock.so in auth section of common-auth">
     <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_faillock_auth_regex"/>
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"/>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"/>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"/>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
