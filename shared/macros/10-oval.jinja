@@ -1183,15 +1183,13 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{#
 Generates an OVAL check that checks a particular field in the "/etc/shadow" file.
 
-:param field: Field number
-:type field: int
 :param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
 :type regex: str
 :param regex_empty: Regex that matches the entries in shadow file if the particular field value is empty
 :type regex_empty: str
 
 #}}
-{{%- macro etc_shadow_test(field, regex, regex_empty) %}}
+{{%- macro etc_shadow_test(regex, regex_empty) %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
       {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
@@ -1229,7 +1227,6 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_shadow_password_users_max_life_not_existing" version="1">
     <ind:filepath>/etc/shadow</ind:filepath>
-    <!-- subexpression capturing group matches the {{{ field }}} th field (maximum password age) if it's empty -->
     <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
     <ind:pattern operation="pattern match">{{{ regex_empty }}}</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
