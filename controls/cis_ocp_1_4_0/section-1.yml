@@ -234,8 +234,9 @@ controls:
       levels: level_1
     - id: 1.2.19
       title: Ensure that the healthz endpoint is protected by RBAC
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - api_server_profiling_protected_by_rbac
       levels: level_1
     - id: 1.2.20
       title: Ensure that the --audit-log-path argument is set
