@@ -132,6 +132,7 @@ def get_profileruleids(xccdftree, profile_name):
 def is_remote_feed(href):
     return href.startswith("http://") or \
             href.startswith("https://") or \
+            href.startswith("security-data-oval-v2-") or \
             href.startswith("security-data-oval-com.redhat.rhsa-") or \
             href.startswith("security-oval-com.oracle") or \
             href.startswith("-ubuntu-security-oval-com.ubuntu") or \
