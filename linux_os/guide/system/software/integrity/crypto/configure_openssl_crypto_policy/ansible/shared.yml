@@ -3,10 +3,12 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
+
+{{% set openssl_cnf_file="openssl.cnf" %}}
 {{% if 'sle' in product %}}
-  {{% set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
+  {{% set openssl_cnf_dir="/etc/ssl" %}}
 {{% else %}}
-  {{%- set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
+  {{%- set openssl_cnf_dir="/etc/pki/tls" %}}
 {{% endif %}}
 
 {{% if product in ["fedora", "ol9", "rhel9"] %}}
@@ -17,28 +19,34 @@
 {{% set full_config_section = "[crypto_policy]\n" + ansible_openssl_include_directive %}}
 
 
-- name: "Test for crypto_policy group"
-  command: grep '^\s*\[\s*crypto_policy\s*]' {{{ openssl_cnf_path }}}
+- name: "{{{ rule_title }}} - Test for crypto_policy group"
+  ansible.builtin.find:
+    paths: "{{{ openssl_cnf_dir }}}"
+    patterns: "{{{ openssl_cnf_file }}}"
+    contains: '^\s*\[\s*crypto_policy\s*]'
   register: test_crypto_policy_group
-  failed_when: test_crypto_policy_group.rc not in [0, 1]
-  changed_when: False
-  check_mode: no
 
-- name: "Add .include for opensslcnf.config to crypto_policy section"
-  lineinfile:
+- name: "{{{ rule_title }}} - test for crypto policy section together with include directive"
+  ansible.builtin.find:
+    paths: "{{{ openssl_cnf_dir }}}"
+    patterns: "{{{ openssl_cnf_file }}}"
+    contains: '^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$'
+  register: test_crypto_policy_include_directive
+
+- name: "{{ rule_title }} - Add .include for opensslcnf.config to crypto_policy section"
+  ansible.builtin.lineinfile:
     create: yes
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
     line: {{{ ansible_openssl_include_directive }}}
-    path: {{{ openssl_cnf_path }}}
+    path: "{{{ openssl_cnf_dir }}}/{{{ openssl_cnf_file }}}"
   when:
-    - test_crypto_policy_group.stdout is defined
-    - test_crypto_policy_group.stdout | length > 0
+    - test_crypto_policy_group.matched > 0
+    - test_crypto_policy_include_directive.matched == 0
 
-- name: "Add crypto_policy group and set include opensslcnf.config"
-  lineinfile:
+- name: "{{{ rule_title }}} - Add crypto_policy group and set include opensslcnf.config"
+  ansible.builtin.lineinfile:
     create: yes
     line: "[crypto_policy]\n{{{ ansible_openssl_include_directive }}}"
-    path: {{{ openssl_cnf_path }}}
+    path: "{{{ openssl_cnf_dir }}}/{{{ openssl_cnf_file }}}"
   when:
-    - test_crypto_policy_group.stdout is defined
-    - test_crypto_policy_group.stdout | length < 1
+    - test_crypto_policy_group.matched == 0
