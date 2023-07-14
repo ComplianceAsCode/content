@@ -122,81 +122,58 @@
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
 
-{{% if MISSING_PARAMETER_PASS == "true" %}}
     <criteria operator="OR">
-{{% endif %}}
+      <!--  Processing differently files in /usr/lib/sysctl.d/ as they are managed by packages and
+            won't be fixed by remediations, see sysctl.d(5) -->
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in sysctl files not managed by packages"
+                    test_ref="test_{{{ rule_id }}}_static_user" />
       <criteria operator="AND">
-        <criteria operator="AND">
-          <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.conf"
-                    test_ref="test_{{{ rule_id }}}_static"/>
-          <!-- see sysctl.d(5) -->
-          <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.d/*.conf"
-                    test_ref="test_{{{ rule_id }}}_static_etc_sysctld"/>
-          <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
-                    test_ref="test_{{{ rule_id }}}_static_run_sysctld"/>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-          <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
-                    test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
-{{% endif %}}
-          <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/local/lib/sysctl.d/*.conf"
-                    test_ref="test_{{{ rule_id }}}_static_usr_local_lib_sysctld"/>
-        </criteria>
-        <criterion comment="Check that {{{ SYSCTLID }}} is defined in at least one file" test_ref="test_{{{ rule_id }}}_not_defined"
-                   negate="true"/>
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} missing in sysctl files not managed by packages"
+                    test_ref="test_{{{ rule_id }}}_static_user_missing" />
+        {{% if MISSING_PARAMETER_PASS == "true" %}}
+          <criterion comment="{{{ "kernel static parameter"  + SYSCTLVAR + " set to " +
+                      COMMENT_VALUE + " or missing in sysctl files managed by packages" }}}"
+                    test_ref="test_{{{ rule_id }}}_static_pkg_not_wrong" />
+        {{% else %}}
+          <criterion comment="{{{ "kernel static parameter " + SYSCTLVAR + " set to " +
+                      COMMENT_VALUE + " in sysctl files managed by packages" }}}"
+                    test_ref="test_{{{ rule_id }}}_static_pkg_correct" />
+        {{% endif %}}
       </criteria>
-{{% if MISSING_PARAMETER_PASS == "true" %}}
-      <criterion comment="Check that {{{ SYSCTLID }}} is not defined in any file" test_ref="test_{{{ rule_id }}}_not_defined" />
     </criteria>
-{{% endif %}}
   </definition>
 
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_not_defined" version="2"
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_user_missing" version="1"
                               check="all" check_existence="none_exist"
                               comment="{{{ SYSCTLVAR }}} static configuration">
-    <ind:object object_ref="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" />
+    <ind:object object_ref="object_static_user_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static" version="2"
-                              check="all" check_existence="any_exist"
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_user" version="1"
+                              check="all" check_existence="all_exist"
                               comment="{{{ SYSCTLVAR }}} static configuration" state_operator="OR">
-    {{{ state_static_sysctld("sysctl") }}}
+    {{{ state_static_sysctld("user") }}}
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_etc_sysctld" version="2" check="all"
+  {{% if MISSING_PARAMETER_PASS == "true" %}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_pkg_not_wrong" version="2" check="all"
                           check_existence="any_exist"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" state_operator="OR">
-    {{{ state_static_sysctld("etc_sysctld") }}}
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_run_sysctld" version="2" check="all"
-                          check_existence="any_exist"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf" state_operator="OR">
-    {{{ state_static_sysctld("run_sysctld") }}}
-  </ind:textfilecontent54_test>
-
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_usr_lib_sysctld" version="2"
-                          check_existence="any_exist"
-                          check="all"
                           comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
-{{% endif %}}
-
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_usr_local_lib_sysctld" version="1"
-                          check_existence="any_exist"
-                          check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/local/lib/sysctl.d/*.conf" state_operator="OR">
-    {{{ state_static_sysctld("usr_local_lib_sysctld") }}}
+  {{% else %}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_pkg_correct" version="2" check="all"
+                          check_existence="all_exist"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf"
+                          state_operator="OR">
+    {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
+  {{% endif %}}
 
-  <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_{{{ rule_id }}}" version="1">
-    <object_component object_ref="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" item_field="filepath" />
-  </local_variable>
 
   <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
        variable to have no value even when there are valid objects. -->
-  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_static_set_sysctls_unfiltered" version="1">
+  <ind:textfilecontent54_object id="object_static_user_{{{ rule_id }}}" version="1">
     <set>
       <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
       <object_reference>object_static_run_usr_local_sysctls_{{{ rule_id }}}</object_reference>
@@ -213,16 +190,7 @@
   <ind:textfilecontent54_object id="object_static_run_usr_local_sysctls_{{{ rule_id }}}" version="1">
     <set>
       <object_reference>object_static_usr_local_lib_sysctld_{{{ rule_id }}}</object_reference>
-      <object_reference>object_static_run_usr_sysctls_{{{ rule_id }}}</object_reference>
-    </set>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ rule_id }}}" version="1">
-    <set>
       <object_reference>object_static_run_sysctld_{{{ rule_id }}}</object_reference>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-      <object_reference>object_static_usr_lib_sysctld_{{{ rule_id }}}</object_reference>
-{{% endif %}}
     </set>
   </ind:textfilecontent54_object>
 
@@ -249,13 +217,12 @@
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ rule_id }}}" version="1">
     <ind:path>/usr/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
-{{% endif %}}
+
 {{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" %}}
 
