@@ -1147,6 +1147,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   <!-- OVAL object to collect user names of local interactive users -->
   <ind:textfilecontent54_object id="{{{ object_id }}}_local_interactive_users" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
+    <!-- The regex matches only user entries with UID greater than or
+      equal 1000. The users whose UID is greater than or equal 1000 are
+      considered interactive users. This is achieved by ':\d{4,}:' in the
+      regular expression which ensures that the third field in the entry
+      contains at least 4 digits (or more) and therefore the regular
+      expression doesn't match entries with values 999 or less. -->
     <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d{4,}:(?:[^:]*:){3}(?!\/sbin\/nologin)[^:]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_{{{ object_id }}}_users_ignored</filter>
