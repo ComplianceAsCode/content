@@ -19,21 +19,21 @@
 {{% set full_config_section = "[crypto_policy]\n" + ansible_openssl_include_directive %}}
 
 
-- name: "{{{ rule_title }}} - Test for crypto_policy group"
+- name: "{{{ rule_title }}} - Search for crypto_policy Section"
   ansible.builtin.find:
     paths: "{{{ openssl_cnf_dir }}}"
     patterns: "{{{ openssl_cnf_file }}}"
     contains: '^\s*\[\s*crypto_policy\s*]'
   register: test_crypto_policy_group
 
-- name: "{{{ rule_title }}} - test for crypto policy section together with include directive"
+- name: "{{{ rule_title }}} - Search for crypto_policy Section Together With .include Directive"
   ansible.builtin.find:
     paths: "{{{ openssl_cnf_dir }}}"
     patterns: "{{{ openssl_cnf_file }}}"
     contains: '^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$'
   register: test_crypto_policy_include_directive
 
-- name: "{{ rule_title }} - Add .include for opensslcnf.config to crypto_policy section"
+- name: "{{ rule_title }} - Add .include Line for opensslcnf.config File in crypto_policy Section"
   ansible.builtin.lineinfile:
     create: yes
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
@@ -43,7 +43,7 @@
     - test_crypto_policy_group.matched > 0
     - test_crypto_policy_include_directive.matched == 0
 
-- name: "{{{ rule_title }}} - Add crypto_policy group and set include opensslcnf.config"
+- name: "{{{ rule_title }}} - Add crypto_policy Section With .include for opensslcnf.config File"
   ansible.builtin.lineinfile:
     create: yes
     line: "[crypto_policy]\n{{{ ansible_openssl_include_directive }}}"
