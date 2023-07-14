@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2023-05-29 11:01 UTC
+Last Modified: 2023-07-14 08:43 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -70,6 +70,7 @@ The following people have contributed to the SCAP Security Guide project
 * Greg Elin <gregelin@gitmachines.com>
 * eradot4027 <jrtonmac@gmail.com>
 * Alexis Facques <alexis.facques@mythalesgroup.io>
+* Henry Finucane <hfinucane@zscaler.com>
 * Leah Fisher <lfisher047@gmail.com>
 * Yavor Georgiev <strandjata@gmail.com>
 * Alijohn Ghassemlouei <alijohn@secureagc.com>
@@ -107,6 +108,7 @@ The following people have contributed to the SCAP Security Guide project
 * Hunter Jones <hjones2199@gmail.com>
 * Jono <jono@ubuntu-18.localdomain>
 * justchris1 <justchris1@justchris1.email>
+* Kacper <kacper@kacper.se>
 * Kai Kang <kai.kang@windriver.com>
 * Charles Kernstock <charles.kernstock@ultra-ats.com>
 * Yuli Khodorkovskiy <ykhodorkovskiy@tresys.com>
@@ -122,6 +124,7 @@ The following people have contributed to the SCAP Security Guide project
 * kspargur <kspargur@kspargur.csb>
 * Amit Kumar <amitkuma@redhat.com>
 * Fen Labalme <fen@civicactions.com>
+* Dexter Le <dexter.le@sap.com>
 * Ade Lee <alee@redhat.com>
 * Christopher Lee <Crleekwc@gmail.com>
 * Ian Lee <lee1001@llnl.gov>
@@ -181,6 +184,7 @@ The following people have contributed to the SCAP Security Guide project
 * Wesley Ceraso Prudencio <wcerasop@redhat.com>
 * Raphael Sanchez Prudencio <rsprudencio@redhat.com>
 * T.O. Radzy Radzykewycz <radzy@windriver.com>
+* rain-Qing <yangyuqing6@qq.com>
 * Kenyon Ralph <kenyon@kenyonralph.com>
 * Mike Ralph <mralph@redhat.com>
 * Federico Ramirez <federico.r.ramirez@oracle.com>
