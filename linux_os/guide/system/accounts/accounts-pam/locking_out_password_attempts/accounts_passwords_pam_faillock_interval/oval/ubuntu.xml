@@ -34,28 +34,21 @@
   </constant_variable>
 
   <constant_variable
-  id="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_preauth_regex"
+  id="var_accounts_passwords_pam_faillock_interval_pam_faillock_auth_preauth_regex"
                 datatype="string" version="1"
                 comment="regex to identify pam_faillock.so entries in auth section of pam files">
     <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*$</value>
   </constant_variable>
 
   <constant_variable
-  id="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_unix_regex"
-                datatype="string" version="1"
-                comment="regex to identify pam_faillock.so entries in auth section of pam files">
-    <value>^\s*auth.*pam_unix\.so.*$</value>
-  </constant_variable>
-
-  <constant_variable
-  id="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_authfail_regex"
+  id="var_accounts_passwords_pam_faillock_interval_pam_faillock_auth_authfail_regex"
                 datatype="string" version="1"
                 comment="regex to identify pam_faillock.so entries in auth section of pam files">
     <value>^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$</value>
   </constant_variable>
 
   <constant_variable
-  id="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_authsucc_regex"
+  id="var_accounts_passwords_pam_faillock_interval_pam_faillock_auth_authsucc_regex"
                 datatype="string" version="1"
                 comment="regex to identify pam_faillock.so entries in auth section of pam files">
     <value>^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc.*$</value>
@@ -110,13 +103,13 @@
         comment="Check common definition of pam_faillock.so in auth section of common-auth">
     <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_preauth_regex"/>
+                 var_ref="var_accounts_passwords_pam_faillock_interval_pam_faillock_auth_preauth_regex"/>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_unix_regex"/>
+                 var_ref="var_accounts_passwords_pam_faillock_interval_pam_unix_regex"/>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_authfail_regex"/>
+                 var_ref="var_accounts_passwords_pam_faillock_interval_pam_faillock_auth_authfail_regex"/>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_deny_pam_faillock_auth_authsucc_regex"/>
+                 var_ref="var_accounts_passwords_pam_faillock_interval_pam_faillock_auth_authsucc_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -158,7 +151,7 @@
   <ind:textfilecontent54_object version="1"
         id="object_accounts_passwords_pam_faillock_interval_parameter_pamd_common"
         comment="Get the pam_faillock.so fail_interval parameter from common-auth file">
-    <ind:filepath>/etc/pam.d/comon-auth</ind:filepath>
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
                  var_ref="var_accounts_passwords_pam_faillock_interval_pam_faillock_fail_interval_parameter_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
