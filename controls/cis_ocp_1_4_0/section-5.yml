@@ -147,14 +147,18 @@ controls:
       levels: level_2
   - id: '5.5'
     title: Extensible Admission Control
-    status: pending
+    status: automated
     rules: []
     controls:
     - id: 5.5.1
       title: Configure Image Provenance using image controller configuration parameters
-      status: pending
-      rules: []
-      levels: level_2
+      status: automated
+      rules:
+        - ocp_allowed_registries
+        - ocp_allowed_registries_for_import
+        - ocp_insecure_registries
+        - ocp_insecure_allowed_registries_for_import
+      level: level_2
   - id: '5.7'
     title: General Policies
     status: partial
