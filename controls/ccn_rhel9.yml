@@ -437,13 +437,13 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
+      - firewalld_loopback_traffic_restricted
+      - firewalld_loopback_traffic_trusted
       - service_firewalld_enabled
       - service_nftables_disabled
       - set_firewalld_default_zone
-      - firewalld_loopback_traffic_trusted
-      - firewalld_loopback_traffic_restricted
 
   - id: A.8.SEC-RHEL4
     title: Unnecessary Services are Disabled, Reducing the Attack Surface
