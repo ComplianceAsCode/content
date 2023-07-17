@@ -17,7 +17,6 @@ SSG_REF_URIS = {
     'isa-62443-2013': 'https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu',
     'isa-62443-2009': 'https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat',
     'cobit5': 'https://www.isaca.org/resources/cobit',
-    'ccn': 'https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html',
     'cis-csc': 'https://www.cisecurity.org/controls/',
     'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
     'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
@@ -244,7 +243,7 @@ REFERENCES = dict(
         id="anssi", name="ANSSI", url=anssi_ns,
         regex_with_groups=r"BP28\(R(\d+)\)"),
     ccn=Reference(
-        id="ccn", name="CCN", url=SSG_REF_URIS["ccn"],
+        id="ccn", name="CCN", url="",
         regex_with_groups=r"A.(\d+).SEC-RHEL(\d+)"),
     cis=Reference(
         id="cis", name="CIS", url=cis_ns,
