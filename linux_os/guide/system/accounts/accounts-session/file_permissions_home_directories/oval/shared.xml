@@ -8,12 +8,12 @@
   </definition>
 
   {{%- set interactive_users_object = "object_" ~ rule_id ~ "_objects" -%}}
-  {{{ create_interactive_users_list_object(interactive_users_object) }}}
+  {{{ create_local_interactive_users_home_dirs_list_object(interactive_users_object) }}}
 
   <!-- #### prepare for test_file_permissions_home_directories #### -->
   <local_variable id="var_file_permissions_home_directories_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
-    <object_component item_field="home_dir" object_ref="{{{ interactive_users_object }}}"/>
+    <object_component item_field="subexpression" object_ref="{{{ interactive_users_object }}}"/>
   </local_variable>
 
   <!-- #### creation of object #### -->
