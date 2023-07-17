@@ -340,14 +340,14 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
-      - package_libselinux_installed
+    status: automated
+    rules:
       - grub2_enable_selinux
-      - var_selinux_policy_name=targeted
+      - package_libselinux_installed
       - selinux_policytype
-      - var_selinux_state=enforcing
       - selinux_state
+      - var_selinux_policy_name=targeted
+      - var_selinux_state=enforcing
 
   - id: A.6.SEC-RHEL2
     title: Access in Recovery Mode Including Grub Boot Modification Mode is Restricted
