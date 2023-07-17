@@ -451,8 +451,10 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
+      - kernel_module_squashfs_disabled
+      - kernel_module_udf_disabled
       - package_bind_removed
       - package_cyrus-imapd_removed
       - package_dovecot_removed
@@ -461,8 +463,6 @@ controls:
       - package_telnet-server_removed
       - package_tftp-server_removed
       - package_vsftpd_removed
-      - kernel_module_squashfs_disable
-      - kernel_module_udf_disabled
 
   - id: A.8.SEC-RHEL5
     title: Application Execution is Controlled
