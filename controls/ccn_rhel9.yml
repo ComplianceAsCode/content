@@ -598,17 +598,16 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
+      - banner_etc_issue
+      - banner_etc_issue_net
+      - banner_etc_motd
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
-      - login_banner_text=cis_default
       - sshd_enable_warning_banner_net
-      - banner_etc_motd
-      - motd_banner_text=cis_banners
-      - banner_etc_issue
       - login_banner_text=cis_banners
-      - banner_etc_issue_net
+      - motd_banner_text=cis_banners
       - remote_login_banner_text=cis_banners
 
   - id: A.11.SEC-RHEL5
