@@ -1,3 +1,4 @@
+{{# The regular expression filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field of /etc/shadow entries). #}}
 {{{ test_etc_shadow_password_variable(
     regex="^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){3}(\d+):(?:[^:]*:){2}(?:[^:]*)$",
     external_variable_id="var_accounts_password_warn_age_login_defs",

@@ -1,3 +1,4 @@
+{{# The regular expression filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field of /etc/shadow entries). #}}
 {{{ test_etc_shadow_password_variable(
     regex="^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){4}(\d+):(?:[^:]*:)(?:[^:]*)$",
     external_variable_id="var_account_disable_post_pw_expiration",

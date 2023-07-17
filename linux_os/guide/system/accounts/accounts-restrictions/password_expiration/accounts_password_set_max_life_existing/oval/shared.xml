@@ -1,3 +1,4 @@
+{{# The regular expression filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field of /etc/shadow entries). #}}
 {{{ etc_shadow_test(
   regex='^(?:[^:]*:)(?:[^\!\*:]*:)(?:[^:]*:){2}(\d+):(?:[^:]*:){3}(?:[^:]*)$',
   regex_empty='^(?:[^:]*:)(?:[^\!\*:]+:)(?:[^:]*:){2}():(?:[^:]*:){3}(?:[^:]*)$'

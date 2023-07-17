@@ -1227,7 +1227,6 @@ Generates an OVAL check that checks a particular field in the "/etc/shadow" file
 
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_shadow_password_users_max_life_not_existing" version="1">
     <ind:filepath>/etc/shadow</ind:filepath>
-    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
     <ind:pattern operation="pattern match">{{{ regex_empty }}}</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -1259,7 +1258,6 @@ Generates an OVAL test used in checks a particular field in the "/etc/shadow" fi
 
   <ind:textfilecontent54_object id="object_{{{ test_id }}}" version="1">
     <ind:filepath>/etc/shadow</ind:filepath>
-    <!-- filters away accounts with no passwords and locked passwords (passwords are located in the 2nd field)-->
     <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
