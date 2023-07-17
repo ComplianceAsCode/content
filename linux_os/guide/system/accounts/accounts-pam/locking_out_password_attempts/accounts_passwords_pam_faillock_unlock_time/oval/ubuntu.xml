@@ -8,8 +8,16 @@
              system is properly configured, it must appear only once in auth section. -->
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_common_pam_unix_auth"
             comment="pam_unix.so appears only once in auth section of common-auth"/>
-        <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_auth"
-            comment="pam_faillock.so is properly defined in auth section of common-auth"/>
+        <criteria operator="AND" comment="Check if pam_faillock.so within common-auth is properly enabled">
+          <criterion
+          test_ref="test_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"/>
+          <criterion 
+          test_ref="test_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"/>
+          <criterion
+          test_ref="test_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"/>
+          <criterion
+          test_ref="test_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
+        </criteria>
         {{% if 'ubuntu2004' not in product %}}
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_account"
             comment="pam_faillock.so is properly defined in common-account"/>
@@ -93,25 +101,71 @@
   </ind:textfilecontent54_object>
 
   <!-- Check common definition of pam_faillock.so in common-auth -->
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
-        id="test_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_auth"
-        comment="One and only one occurrence is expected in auth section of common-auth">
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"
+        comment="Check if authsucc parameter of pam_faillock.so is defined within the auth section of common-auth">
     <ind:object
-        object_ref="object_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_auth"/>
+          object_ref="object_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"
+        comment="Check if authfail parameter of pam_faillock.so is defined within the auth section of common-auth">
+    <ind:object
+          object_ref="object_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"
+        comment="Check if preauth parameter of pam_faillock.so is defined within the auth section of common-auth">
+    <ind:object
+          object_ref="object_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all"
+  check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"
+        comment="Check if preauth parameter of pam_faillock.so is defined within the auth section of common-auth">
+    <ind:object
+          object_ref="object_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object version="1"
-        id="object_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_auth"
-        comment="Check common definition of pam_faillock.so in auth section of common-auth">
+        id="object_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"
+        comment="Check if authsucc parameter of pam_faillock.so is defined within the auth section of common-auth">
     <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"/>
+                var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"
+        comment="Check if authfail parameter of pam_faillock.so is defined within the auth section of common-auth">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authsucc_regex"/>
+                var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_authfail_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"
+        comment="Check if preauth parameter of pam_faillock.so is defined within the auth section of common-auth">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"/>
+                var_ref="var_accounts_passwords_pam_faillock_unlock_pam_faillock_auth_preauth_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"
+        comment="Check if unix paramter of pam_faillock.so is defined within the auth section of common-auth">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
     <ind:pattern operation="pattern match"
-                 var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
+                var_ref="var_accounts_passwords_pam_faillock_unlock_time_pam_unix_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
