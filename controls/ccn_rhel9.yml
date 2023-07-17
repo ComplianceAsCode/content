@@ -180,11 +180,11 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: partial
     notes: |-
       We probably have audit related rule to monitor mount related syscalls, but it is not clear
       about the swap. Is the intention to monitor when swap is changed?
-    related_rules:
+    rules:
       - audit_rules_media_export
 
   - id: A.3.SEC-RHEL11
