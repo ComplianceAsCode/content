@@ -820,9 +820,9 @@ controls:
     original_title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
     levels:
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - accounts_passwords_pam_faillock_deny
-      - var_accounts_passwords_pam_faillock_deny=8
       - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_deny=8
       - var_accounts_passwords_pam_faillock_unlock_time=0
