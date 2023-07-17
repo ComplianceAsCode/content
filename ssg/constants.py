@@ -242,6 +242,9 @@ REFERENCES = dict(
     anssi=Reference(
         id="anssi", name="ANSSI", url=anssi_ns,
         regex_with_groups=r"BP28\(R(\d+)\)"),
+    ccn=Reference(
+        id="ccn", name="CCN", url="",
+        regex_with_groups=r"A.(\d+).SEC-RHEL(\d+)"),
     cis=Reference(
         id="cis", name="CIS", url=cis_ns,
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),

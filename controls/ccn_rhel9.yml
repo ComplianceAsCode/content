@@ -46,8 +46,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - audit_rules_session_events
       - audit_rules_login_events_faillock
       - audit_rules_login_events_lastlog
@@ -58,8 +58,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - file_permissions_var_log_audit
       - file_ownership_var_log_audit
       - file_group_ownership_var_log_audit
@@ -71,8 +71,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - package_chrony_installed
       - chronyd_specify_remote_server
       - chronyd_run_as_chrony_user
@@ -84,8 +84,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - file_permissions_audit_configuration
       - file_ownership_audit_configuration
       - file_groupownership_audit_configuration
@@ -109,8 +109,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - auditd_data_retention_max_log_file_action
       - var_auditd_max_log_file_action=keep_logs
 
@@ -121,8 +121,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - audit_sudo_log_events
       - audit_rules_usergroup_modification_group
       - audit_rules_usergroup_modification_gshadow
@@ -152,7 +152,7 @@ controls:
     status: pending
     notes: |-
       Some possible rules were included here but it is not clear if the requirement intends to
-      check more than these rules. We can se if more related rules are available in the project
+      check more than these rules. We can see if more related rules are available in the project
       and include everything that makes sense in the context of cron and chrony.
     related_rules:
       - audit_rules_time_adjtimex
@@ -166,8 +166,8 @@ controls:
     original_title: Se auditan los intentos de acceso a elementos críticos.
     levels:
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - audit_rules_unsuccessful_file_modification_creat
       - audit_rules_unsuccessful_file_modification_ftruncate
       - audit_rules_unsuccessful_file_modification_open
@@ -180,11 +180,11 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: pending
+    status: partial
     notes: |-
       We probably have audit related rule to monitor mount related syscalls, but it is not clear
       about the swap. Is the intention to monitor when swap is changed?
-    related_rules:
+    rules:
       - audit_rules_media_export
 
   - id: A.3.SEC-RHEL11
@@ -240,8 +240,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - sudo_add_use_pty
       - use_pam_wheel_for_su
 
@@ -252,8 +252,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - sudo_require_authentication
       - sudo_require_reauthentication
 
@@ -275,8 +275,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - configure_crypto_policy
       - var_system_crypto_policy=default_policy
 
@@ -287,17 +287,17 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
-      - accounts_minimum_age_login_defs
-      - var_accounts_minimum_age_login_defs=2
-      - accounts_password_set_min_life_existing
+    status: automated
+    rules:
       - accounts_maximum_age_login_defs
-      - var_accounts_maximum_age_login_defs=45
+      - accounts_minimum_age_login_defs
       - accounts_password_set_max_life_existing
-      - accounts_password_warn_age_login_defs
-      - var_accounts_password_warn_age_login_defs=10
+      - accounts_password_set_min_life_existing
       - accounts_password_set_warn_age_existing
+      - accounts_password_warn_age_login_defs
+      - var_accounts_maximum_age_login_defs=45
+      - var_accounts_minimum_age_login_defs=2
+      - var_accounts_password_warn_age_login_defs=10
 
   - id: A.5.SEC-RHEL6
     title: Secure Protocols Are Used For the Network Authentication Processes
@@ -306,8 +306,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - configure_ssh_crypto_policy
 
   - id: A.5.SEC-RHEL7
@@ -317,8 +317,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - sshd_idle_timeout_value=15_minutes
       - sshd_set_idle_timeout
       - sshd_set_keepalive
@@ -329,8 +329,8 @@ controls:
     original_title: Se controla la inactividad de consola local y remota.
     levels:
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - accounts_tmout
       - var_accounts_tmout=5_min
 
@@ -340,14 +340,14 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
-      - package_libselinux_installed
+    status: automated
+    rules:
       - grub2_enable_selinux
-      - var_selinux_policy_name=targeted
+      - package_libselinux_installed
       - selinux_policytype
-      - var_selinux_state=enforcing
       - selinux_state
+      - var_selinux_policy_name=targeted
+      - var_selinux_state=enforcing
 
   - id: A.6.SEC-RHEL2
     title: Access in Recovery Mode Including Grub Boot Modification Mode is Restricted
@@ -356,13 +356,13 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - file_groupowner_grub2_cfg
-      - file_owner_grub2_cfg
-      - file_permissions_grub2_cfg
       - file_groupowner_user_cfg
+      - file_owner_grub2_cfg
       - file_owner_user_cfg
+      - file_permissions_grub2_cfg
       - file_permissions_user_cfg
 
   - id: A.6.SEC-RHEL3
@@ -371,10 +371,10 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
+    status: automated
     notes: |-
       "/sbin/nologin" might be a better option
-    related_rules:
+    rules:
       - no_password_auth_for_systemaccounts
       - no_shelllogin_for_systemaccounts
 
@@ -384,8 +384,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - ensure_root_password_configured
       - no_empty_passwords_etc_shadow
 
@@ -394,8 +394,8 @@ controls:
     original_title: Se modifica la máscara global del sistema para ser más restrictiva.
     levels:
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - accounts_umask_etc_bashrc
       - accounts_umask_etc_login_defs
       - accounts_umask_etc_profile
@@ -437,13 +437,13 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
+      - firewalld_loopback_traffic_restricted
+      - firewalld_loopback_traffic_trusted
       - service_firewalld_enabled
       - service_nftables_disabled
       - set_firewalld_default_zone
-      - firewalld_loopback_traffic_trusted
-      - firewalld_loopback_traffic_restricted
 
   - id: A.8.SEC-RHEL4
     title: Unnecessary Services are Disabled, Reducing the Attack Surface
@@ -451,8 +451,10 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
+      - kernel_module_squashfs_disabled
+      - kernel_module_udf_disabled
       - package_bind_removed
       - package_cyrus-imapd_removed
       - package_dovecot_removed
@@ -461,8 +463,6 @@ controls:
       - package_telnet-server_removed
       - package_tftp-server_removed
       - package_vsftpd_removed
-      - kernel_module_squashfs_disable
-      - kernel_module_udf_disabled
 
   - id: A.8.SEC-RHEL5
     title: Application Execution is Controlled
@@ -481,7 +481,7 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
+    status: partial
     notes: |-
       These are mentioned to be reviewed but not enforced:
       #net.ipv4.icmp_echo_ignore_all = 1
@@ -489,7 +489,7 @@ controls:
       #net.ipv4.tcp_max_syn_backlog = 1280
       #sysctl_net_ipv6_conf_all_disable_ipv6
       #sysctl_net_ipv6_conf_default_disable_ipv6
-    related_rules:
+    rules:
       - sysctl_net_ipv4_conf_all_send_redirects
       - sysctl_net_ipv4_conf_all_accept_redirects
       - sysctl_net_ipv4_conf_all_secure_redirects
@@ -521,8 +521,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - grub2_password
 
   - id: A.8.SEC-RHEL8
@@ -572,8 +572,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - sshd_limit_user_access
 
   - id: A.11.SEC-RHEL3
@@ -583,15 +583,13 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - accounts_password_pam_minclass
       - accounts_password_pam_minlen
       - accounts_password_pam_retry
       - var_password_pam_minclass=4
       - var_password_pam_minlen=14
-      - ensure_root_password_configured
-      - no_empty_passwords_etc_shadow
 
   - id: A.11.SEC-RHEL4
     title: During Login, the System Displays a Text in Compliance With the Organization's Standards or Directives
@@ -600,17 +598,16 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
+      - banner_etc_issue
+      - banner_etc_issue_net
+      - banner_etc_motd
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
-      - login_banner_text=cis_default
       - sshd_enable_warning_banner_net
-      - banner_etc_motd
-      - motd_banner_text=cis_banners
-      - banner_etc_issue
       - login_banner_text=cis_banners
-      - banner_etc_issue_net
+      - motd_banner_text=cis_banners
       - remote_login_banner_text=cis_banners
 
   - id: A.11.SEC-RHEL5
@@ -631,7 +628,9 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
+    status: automated
+    notes: |-
+      It overlaps the rule in A.5.SEC-RHEL6 requirement
     related_rules:
       - configure_ssh_crypto_policy
 
@@ -641,8 +640,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - dconf_gnome_screensaver_idle_delay
       - dconf_gnome_screensaver_lock_delay
       - inactivity_timeout_value=5_minutes
@@ -664,8 +663,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - dconf_gnome_disable_user_list
 
   - id: A.11.SEC-RHEL10
@@ -694,8 +693,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - dconf_gnome_disable_automount
       - dconf_gnome_disable_automount_open
       - dconf_gnome_disable_autorun
@@ -706,8 +705,8 @@ controls:
     levels:
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - kernel_module_usb-storage_disabled
 
   - id: A.19.SEC-RHEL1
@@ -739,8 +738,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - set_password_hashing_algorithm_systemauth
       - set_password_hashing_algorithm_passwordauth
       - set_password_hashing_algorithm_logindefs
@@ -753,8 +752,8 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - package_usbguard_installed
       - service_usbguard_enabled
       - usbguard_generate_policy
@@ -796,17 +795,22 @@ controls:
     original_title: El disco del sistema está cifrado.
     levels:
       - advanced
-    status: planned
+    status: partial
+    notes: |-
+      package_cryptsetup-luks_installed should be enabled for RHEL9.
+    rules:
+      - encrypt_partitions
     related_rules:
       - package_cryptsetup-luks_installed
-      - encrypt_partitions
 
   - id: A.25.SEC-RHEL2
     title: The Data Disk is Encrypted
     original_title: El disco de datos está cifrado.
     levels:
       - advanced
-    status: planned
+    status: partial
+    notes: |-
+      The rules in this requirement overlaps the A.25.SEC-RHEL1 requirement
     related_rules:
       - package_cryptsetup-luks_installed
       - encrypt_partitions
@@ -816,9 +820,9 @@ controls:
     original_title: Existe una política de bloqueo de cuentas ante inicios de sesión incorrectos.
     levels:
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - accounts_passwords_pam_faillock_deny
-      - var_accounts_passwords_pam_faillock_deny=8
       - accounts_passwords_pam_faillock_unlock_time
-      - var_accounts_passwords_pam_faillock_unlock_time=0
+      - var_accounts_passwords_pam_faillock_deny=8
+      - var_accounts_passwords_pam_faillock_unlock_time=never
