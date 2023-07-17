@@ -583,15 +583,13 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
+    status: automated
+    rules:
       - accounts_password_pam_minclass
       - accounts_password_pam_minlen
       - accounts_password_pam_retry
       - var_password_pam_minclass=4
       - var_password_pam_minlen=14
-      - ensure_root_password_configured
-      - no_empty_passwords_etc_shadow
 
   - id: A.11.SEC-RHEL4
     title: During Login, the System Displays a Text in Compliance With the Organization's Standards or Directives
