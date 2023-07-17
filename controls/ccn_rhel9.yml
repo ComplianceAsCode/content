@@ -287,17 +287,17 @@ controls:
       - basic
       - intermediate
       - advanced
-    status: planned
-    related_rules:
-      - accounts_minimum_age_login_defs
-      - var_accounts_minimum_age_login_defs=2
-      - accounts_password_set_min_life_existing
+    status: automated
+    rules:
       - accounts_maximum_age_login_defs
-      - var_accounts_maximum_age_login_defs=45
+      - accounts_minimum_age_login_defs
       - accounts_password_set_max_life_existing
-      - accounts_password_warn_age_login_defs
-      - var_accounts_password_warn_age_login_defs=10
+      - accounts_password_set_min_life_existing
       - accounts_password_set_warn_age_existing
+      - accounts_password_warn_age_login_defs
+      - var_accounts_maximum_age_login_defs=45
+      - var_accounts_minimum_age_login_defs=2
+      - var_accounts_password_warn_age_login_defs=10
 
   - id: A.5.SEC-RHEL6
     title: Secure Protocols Are Used For the Network Authentication Processes
