@@ -757,13 +757,6 @@ class Rule(XCCDFEntity, Templatable):
         rule.validate_references(yaml_file)
         return rule
 
-    def _verify_stigid_format(self, product):
-        stig_id = self.references.get("stigid", None)
-        if not stig_id:
-            return
-        if "," in stig_id:
-            raise ValueError("Rules can not have multiple STIG IDs.")
-
     def _verify_disa_cci_format(self):
         cci_id = self.references.get("disa", None)
         if not cci_id:
@@ -791,10 +784,16 @@ class Rule(XCCDFEntity, Templatable):
         stig_id = self.references.get("stigid", None)
         if not stig_id:
             return
-        reference = stig_references.get(stig_id, None)
-        if not reference:
-            return
-        self.references["stigref"] = reference
+
+        references = []
+        for id in stig_id.split(","):
+            reference = stig_references.get(id, None)
+            if not reference:
+                continue
+            references.append(reference)
+
+        if references:
+            self.references["stigref"] = ",".join(references)
 
     def _get_product_only_references(self):
         product_references = dict()
@@ -894,8 +893,6 @@ class Rule(XCCDFEntity, Templatable):
         self.references = general_references
         self._verify_disa_cci_format()
         self.references.update(product_references)
-
-        self._verify_stigid_format(product)
 
     def validate_identifiers(self, yaml_file):
         if self.identifiers is None:
