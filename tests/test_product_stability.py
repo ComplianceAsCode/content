@@ -6,6 +6,7 @@ import os.path
 import sys
 
 import ssg.products
+import ssg.yaml
 
 from tests.common import stability
 
@@ -83,47 +84,85 @@ def get_reference_vs_built_difference(ref_product, built_product):
     return difference
 
 
-def inform_and_append_fix_based_on_reference_compiled_product(ref, build_root, fix_commands):
+def inform_and_append_fix_based_on_reference_compiled_product(ref, build_root):
     ref_product = ssg.products.Product(ref)
     product_id = ref_product["product"]
     if not corresponding_product_built(build_root, product_id):
-        return
+        return True
 
     compiled_path = os.path.join(build_root, product_id, "product.yml")
     compiled_product = ssg.products.Product(compiled_path)
     difference = get_reference_vs_built_difference(ref_product, compiled_product)
-    if not difference.empty:
-        stability.report_comparison(product_id, difference, describe_change)
-        fix_commands.append(
-            "cp '{compiled}' '{reference}'"
-            .format(compiled=compiled_path, reference=ref)
-        )
+    all_ok = difference.empty
+    return all_ok
+
+
+def compare_compiled_products_with_reference_data(test_data_root, build_root):
+    reference_files = get_references_filenames(test_data_root)
+    if not reference_files:
+        raise RuntimeError("Unable to find any reference compiled products in {test_root}"
+                           .format(test_root=test_data_root))
+    all_ok = True
+    for ref in reference_files:
+        all_ok &= inform_and_append_fix_based_on_reference_compiled_product(
+                ref, build_root)
+
+    if not all_ok:
+        products_dir = os.path.join(os.path.dirname(__file__), "..", "products")
+        msg = (
+            "If changes to mentioned products are intentional, "
+            "execute this script with PYTHONPATH set to the project root "
+            "to regenerate reference products: \n"
+            "{script_name} --update-reference-data {build_root} {test_data_root}\n"
+            "If those changes are unwanted, take a look at product properties "
+            "that likely cause these changes."
+            .format(script_name=__file__, build_root=os.path.normpath(products_dir),
+                    test_data_root=test_data_root))
+        print(msg, file=sys.stderr)
+    return all_ok
+
+
+def write_product_without_keys(product, path, exclude_keys=frozenset()):
+    product_data = dict()
+    product_data.update(product)
+    for key in exclude_keys:
+        product_data.pop(key, None)
+    with open(path, "w") as f:
+        ssg.yaml.ordered_dump(product_data, f)
+
+
+def update_reference_data(test_data_root, products_dir):
+    properties_dir = os.path.join(products_dir, os.path.pardir, "product_properties")
+    product_yamls = glob.glob(os.path.join(products_dir, "*", "product.yml"))
+    for fname in product_yamls:
+        product = ssg.products.Product(fname)
+        product.read_properties_from_directory(properties_dir)
+        out_fname = os.path.join(test_data_root, product["product"] + ".yml")
+        write_product_without_keys(product, out_fname, IGNORED_PROPERTIES)
+    print("Updated test data of {num_products} products".format(num_products=len(product_yamls)))
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("build_root")
-    parser.add_argument("test_data_root")
+    parser.add_argument(
+            "build_root", help="A directory that contains product-named subdirectories "
+            "with product.yml files. Typically the build root, or products source root "
+            "if the script is executed in the update mode")
+    parser.add_argument("test_data_root", help="Root of reference data containing "
+                        "reference files named <product>.yml")
+    parser.add_argument(
+        "--update-reference-data", action="store_true", default=False,
+        help="If supplied with this option, "
+        "and the build root is the product root, update all of the test data")
     args = parser.parse_args()
 
-    reference_files = get_references_filenames(args.test_data_root)
-    if not reference_files:
-        raise RuntimeError("Unable to find any reference compiled products in {test_root}"
-                           .format(test_root=args.test_data_root))
-    fix_commands = []
-    for ref in reference_files:
-        inform_and_append_fix_based_on_reference_compiled_product(
-                ref, args.build_root, fix_commands)
+    if args.update_reference_data:
+        update_reference_data(args.test_data_root, args.build_root)
+        sys.exit(0)
 
-    if fix_commands:
-        msg = (
-            "If changes to mentioned products are intentional, "
-            "copy those compiled files, so they become the new reference:\n{fixes}\n"
-            "If those changes are unwanted, take a look at product properties "
-            "that likely cause these changes."
-            .format(fixes="\n".join(fix_commands)))
-        print(msg, file=sys.stderr)
-    sys.exit(bool(fix_commands))
+    all_ok = compare_compiled_products_with_reference_data(args.test_data_root, args.build_root)
+    return_code = int(not all_ok)
+    sys.exit(return_code)
 
 
 if __name__ == "__main__":

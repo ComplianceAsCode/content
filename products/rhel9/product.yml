@@ -2,6 +2,12 @@ product: rhel9
 full_name: Red Hat Enterprise Linux 9
 type: platform
 
+families:
+  - rhel
+  - rhel-like
+
+major_version_ordinal: 9
+
 benchmark_id: RHEL-9
 benchmark_root: "../../linux_os/guide"
 components_root: "../../components"
@@ -13,8 +19,6 @@ pkg_manager: "dnf"
 init_system: "systemd"
 
 # EFI and non-EFI configs are stored in same path, see https://fedoraproject.org/wiki/Changes/UnifyGrubConfig
-grub2_boot_path: "/boot/grub2"
-grub2_uefi_boot_path: "/boot/grub2"
 
 groups:
   dedicated_ssh_keyowner:

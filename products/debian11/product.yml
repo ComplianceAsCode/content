@@ -2,6 +2,12 @@ product: debian11
 full_name: Debian 11
 type: platform
 
+families:
+  - debian
+  - debian-like
+
+major_version_ordinal: 11
+
 benchmark_id: DEBIAN-11
 benchmark_root: "../../linux_os/guide"
 
@@ -11,7 +17,6 @@ pkg_manager: "apt_get"
 
 init_system: "systemd"
 
-grub2_boot_path: "/boot/grub"
 
 cpes_root: "../../shared/applicability"
 cpes:

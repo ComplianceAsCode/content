@@ -2,6 +2,11 @@ product: sle15
 full_name: SUSE Linux Enterprise 15
 type: platform
 
+families:
+  - suse
+
+major_version_ordinal: 15
+
 benchmark_id: SLE-15
 benchmark_root: "../../linux_os/guide"
 
@@ -17,8 +22,6 @@ pkg_version: "39db7c82"
 release_key_fingerprint: "FEAB502539D846DB2C0961CA70AF9E8139DB7C82"
 oval_feed_url: "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.15.xml"
 
-grub2_boot_path: "/boot/grub2"
-grub2_uefi_boot_path: "/boot/grub2"
 aide_bin_path: "/usr/bin/aide"
 
 cpes_root: "../../shared/applicability"
@@ -37,8 +40,6 @@ platform_package_overrides:
   login_defs: "shadow"
   grub2: "grub2"
   sssd: "sssd"
-
-auid: 1000
 
 reference_uris:
   cis: 'https://www.cisecurity.org/benchmark/suse_linux/'

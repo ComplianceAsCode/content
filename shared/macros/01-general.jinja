@@ -1189,14 +1189,11 @@ Part of the grub2_bootloader_argument(_absent) templates.
 
 #}}
 {{% macro grub_command(action, arg_name_value=None) -%}}
-{{%- if 'ubuntu' in product -%}}
-    {{%- set grub_helper_executable = "update-grub" -%}}
+{{%- if "update-grub" in grub_helper_executable -%}}
     {{%- set grub_helper_args = [] -%}}
-{{%- elif product in ["sle12", "sle15"] -%}}
-    {{%- set grub_helper_executable = "grub2-mkconfig" -%}}
+{{%- elif "grub2-mkconfig" in grub_helper_executable -%}}
     {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub2.cfg"] -%}}
-{{%- else -%}}
-    {{%- set grub_helper_executable = "grubby" -%}}
+{{%- elif "grubby" in grub_helper_executable -%}}
     {{%- if action == "update" -%}}
         {{%- set grub_helper_args = ["--update-kernel=ALL"] -%}}
     {{%- elif action == "add" -%}}
@@ -1206,10 +1203,12 @@ Part of the grub2_bootloader_argument(_absent) templates.
     {{%- else -%}}
         {{{ raise("Unknown action" + action) }}}
     {{%- endif -%}}
-    {{%- if product in ["rhel8", "ol8"] -%}}
+    {{%- if 'rhel-like' in families and major_version_ordinal == 8 -%}}
         {{# Suppress the None output of append -#}}
         {{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
     {{%- endif -%}}
+{{%- elif grub_helper_executable -%}}
+        {{{ raise("Unknown grub helper executable: " ~ grub_helper_executable) }}}
 {{%- endif -%}}
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 {{%- endmacro %}}

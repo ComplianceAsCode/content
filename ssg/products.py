@@ -7,12 +7,6 @@ from glob import glob
 
 from .build_cpe import ProductCPEs
 from .constants import (DEFAULT_PRODUCT, product_directories,
-                        DEFAULT_GID_MIN,
-                        DEFAULT_UID_MIN,
-                        DEFAULT_NOBODY_GID,
-                        DEFAULT_NOBODY_UID,
-                        DEFAULT_GRUB2_BOOT_PATH,
-                        DEFAULT_GRUB2_UEFI_BOOT_PATH,
                         DEFAULT_DCONF_GDM_DIR,
                         DEFAULT_AIDE_CONF_PATH,
                         DEFAULT_AIDE_BIN_PATH,
@@ -51,29 +45,8 @@ def _get_implied_properties(existing_properties):
             if pkg_manager in PKG_MANAGER_TO_CONFIG_FILE:
                 result["pkg_manager_config_file"] = PKG_MANAGER_TO_CONFIG_FILE[pkg_manager]
 
-    if "gid_min" not in existing_properties:
-        result["gid_min"] = DEFAULT_GID_MIN
-
-    if "uid_min" not in existing_properties:
-        result["uid_min"] = DEFAULT_UID_MIN
-
-    if "nobody_gid" not in existing_properties:
-        result["nobody_gid"] = DEFAULT_NOBODY_GID
-
-    if "nobody_uid" not in existing_properties:
-        result["nobody_uid"] = DEFAULT_NOBODY_UID
-
-    if "auid" not in existing_properties:
-        result["auid"] = existing_properties.get("uid_min", DEFAULT_UID_MIN)
-
     if "groups" not in existing_properties:
         result["groups"] = dict()
-
-    if "grub2_boot_path" not in existing_properties:
-        result["grub2_boot_path"] = DEFAULT_GRUB2_BOOT_PATH
-
-    if "grub2_uefi_boot_path" not in existing_properties:
-        result["grub2_uefi_boot_path"] = DEFAULT_GRUB2_UEFI_BOOT_PATH
 
     if "dconf_gdm_dir" not in existing_properties:
         result["dconf_gdm_dir"] = DEFAULT_DCONF_GDM_DIR

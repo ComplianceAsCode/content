@@ -2,6 +2,12 @@ product: rhel7
 full_name: Red Hat Enterprise Linux 7
 type: platform
 
+families:
+  - rhel
+  - rhel-like
+
+major_version_ordinal: 7
+
 benchmark_id: RHEL-7
 benchmark_root: "../../linux_os/guide"
 components_root: "../../components"
@@ -22,7 +28,6 @@ release_key_fingerprint: "567E347AD0044ADE55BA8A5F199E2F91FD431D51"
 auxiliary_key_fingerprint: "43A6E49C4A38F4BE9ABF2A5345689C882FA658E0"
 oval_feed_url: "https://access.redhat.com/security/data/oval/v2/RHEL7/rhel-7.oval.xml.bz2"
 
-grub2_uefi_boot_path: "/boot/efi/EFI/redhat"
 audisp_conf_path: "/etc/audisp"
 
 groups:

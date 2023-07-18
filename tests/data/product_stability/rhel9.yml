@@ -1,3 +1,5 @@
+aide_also_checks_audispd: 'no'
+aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
@@ -21,6 +23,9 @@ cpes:
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: distro.d
 faillock_path: /var/log/faillock
+families:
+- rhel
+- rhel-like
 full_name: Red Hat Enterprise Linux 9
 gid_min: 1000
 groups:
@@ -28,7 +33,9 @@ groups:
     name: ssh_keys
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
+grub_helper_executable: grubby
 init_system: systemd
+major_version_ordinal: 9
 nobody_gid: 65534
 nobody_uid: 65534
 oval_feed_url: https://access.redhat.com/security/data/oval/v2/RHEL9/rhel-9.oval.xml.bz2

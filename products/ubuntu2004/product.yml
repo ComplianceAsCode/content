@@ -2,6 +2,12 @@ product: ubuntu2004
 full_name: "Ubuntu 20.04"
 type: platform
 
+families:
+  - debian-like
+  - ubuntu
+
+major_version_ordinal: 2004
+
 benchmark_id: UBUNTU_20-04
 benchmark_root: "../../linux_os/guide"
 
@@ -13,8 +19,6 @@ pkg_manager_config_file: "/etc/apt/apt.conf"
 init_system: "systemd"
 oval_feed_url: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
 
-grub2_boot_path: "/boot/grub"
-grub2_uefi_boot_path: "/boot/grub"
 
 aide_bin_path: "/usr/bin/aide.wrapper"
 aide_conf_path: "/etc/aide/aide.conf"

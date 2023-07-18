@@ -2,6 +2,11 @@ product: sle12
 full_name: SUSE Linux Enterprise 12
 type: platform
 
+families:
+  - suse
+
+major_version_ordinal: 12
+
 benchmark_id: SLE-12
 benchmark_root: "../../linux_os/guide"
 
@@ -13,7 +18,6 @@ pkg_manager: "zypper"
 pkg_manager_config_file: "/etc/zypp/zypp.conf"
 oval_feed_url: "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.12.xml"
 
-grub2_uefi_boot_path: "/boot/efi/EFI/sles"
 aide_bin_path: "/usr/bin/aide"
 
 cpes_root: "../../shared/applicability"
@@ -32,8 +36,6 @@ platform_package_overrides:
   login_defs: "shadow"
   grub2: "grub2"
   sssd: "sssd"
-
-auid: 1000
 
 reference_uris:
   cis: 'https://www.cisecurity.org/benchmark/suse_linux/'

@@ -1,3 +1,5 @@
+aide_also_checks_audispd: 'yes'
+aide_also_checks_rsyslog: 'no'
 aide_bin_path: /usr/bin/aide.wrapper
 aide_conf_path: /etc/aide/aide.conf
 audisp_conf_path: /etc/audit
@@ -14,12 +16,17 @@ cpes:
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 faillock_path: /var/run/faillock
+families:
+- debian-like
+- ubuntu
 full_name: Ubuntu 18.04
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub
 grub2_uefi_boot_path: /boot/efi/EFI/ubuntu
+grub_helper_executable: update-grub
 init_system: systemd
+major_version_ordinal: 1804
 nobody_gid: 65534
 nobody_uid: 65534
 pkg_manager: apt_get
