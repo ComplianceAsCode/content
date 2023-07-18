@@ -388,8 +388,9 @@ controls:
       rules:
         - api_server_encryption_provider_cipher
       levels: level_1
-      tickets:
-        - https://issues.redhat.com/browse/CMP-1973
+      # Remove this comment once https://github.com/ComplianceAsCode/content/issues/10868 is fixed.
+      # tickets:
+      #   - https://issues.redhat.com/browse/CMP-1973
       notes: |-
         Ticket 1973 tracks adding the aesgcm encryption method for OCP 4.13+
     - id: 1.2.32
