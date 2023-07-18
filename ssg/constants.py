@@ -244,7 +244,7 @@ REFERENCES = dict(
         regex_with_groups=r"BP28\(R(\d+)\)"),
     ccn=Reference(
         id="ccn", name="CCN", url="",
-        regex_with_groups=r"A.(\d+).SEC-RHEL(\d+)"),
+        regex_with_groups=r"A\.(\d+)\.SEC-(\w+)(\d+)"),
     cis=Reference(
         id="cis", name="CIS", url=cis_ns,
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
