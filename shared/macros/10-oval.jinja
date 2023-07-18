@@ -1291,3 +1291,139 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
+{{#
+Generates an OVAL check that checks a particular field in the "/etc/shadow" file.
+
+:param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
+:type regex: str
+:param regex_empty: Regex that matches the entries in shadow file if the particular field value is empty
+:type regex_empty: str
+
+#}}
+{{%- macro etc_shadow_test(regex, regex_empty) %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+      {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
+    <criteria operator="AND">
+        <criterion test_ref="test_{{{ rule_id }}}_password_max_life_existing"
+          comment="Passwords must be restricted to the appropriate maximum age for existing accounts."/>
+        <criterion test_ref="test_{{{ rule_id }}}_password_max_life_existing_minimum"
+          comment="Passwords must have a maximum lifetime greater than or equal minimum password age."/>
+        <criterion test_ref="test_{{{ rule_id }}}_password_max_life_not_empty"
+          comment="Passwords must have the maximum password age set non-empty in /etc/shadow."/>
+    </criteria>
+  </definition>
+
+  <!-- Define a test for the /etc/shadow file for non-system accounts to look for the maximum
+       password change interval. -->
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_" + rule_id + "_password_max_life_existing",
+    regex=regex,
+    external_variable_id="var_accounts_maximum_age_login_defs",
+    operation="less than or equal") }}}
+
+  <!-- Define a second test to ensure the maximum password life is at least the defined
+       minimum (usually 1). -->
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_" + rule_id + "_password_max_life_existing_minimum",
+    regex=regex,
+    external_variable_id="var_accounts_minimum_age_login_defs",
+    operation="greater than or equal") }}}
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_password_max_life_not_empty" version="1"
+    check="all" check_existence="none_exist"
+    comment="Passwords must have the maximum password age set non-empty in /etc/shadow.">
+    <ind:object object_ref="object_{{{ rule_id }}}_shadow_password_users_max_life_not_existing"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_shadow_password_users_max_life_not_existing" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ regex_empty }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+{{%- endmacro %}}
+
+{{#
+Generates an OVAL test used in checks a particular field in the "/etc/shadow" file.
+
+:param test_id: OVAL test ID
+:type test_id: str
+:param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
+:type regex: str
+:param external_variable_id: External variable ID
+:type external_variable_id: str
+:param operation: operation
+:type operation: str
+
+#}}
+{{%- macro textfilecontent54_test_etc_shadow(test_id, regex, external_variable_id, operation) -%}}
+
+  <ind:textfilecontent54_test id="{{{ test_id }}}" version="1"
+    check="all" check_existence="any_exist"
+    comment="Compares a specific field in /etc/shadow with a specific variable value">
+    <ind:object object_ref="object_{{{ test_id }}}"/>
+    <ind:state state_ref="state_{{{ test_id }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ test_id }}}" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ test_id }}}" version="1">
+    <ind:subexpression datatype="int" operation="{{{ operation }}}" var_check="all"
+      var_ref="{{{ external_variable_id }}}"/>
+  </ind:textfilecontent54_state>
+
+  <external_variable id="{{{ external_variable_id }}}" datatype="int" version="1"
+    comment="External variable"/>
+{{%- endmacro %}}
+
+{{#
+Generates an OVAL check that checks a particular field in the "/etc/shadow" file and compares it with a given XCCDF Value variable.
+
+:param regex: Regex that matches the entries in shadow file and captures the particular field value to a subexpression
+:type regex: str
+:param external_variable_id: External variable ID
+:type external_variable_id: str
+:param operation: operation
+:type operation: str
+:param description: brief description for OVAL metadata
+:type description: str
+
+#}}
+{{%- macro test_etc_shadow_password_variable(regex, external_variable_id, operation, description) -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata(description) }}}
+    <criteria operator="OR">
+      <criterion test_ref="test_{{{ rule_id }}}"
+        comment="Passwords must be configured to the appropriate value"/>
+      <criterion test_ref="test_{{{ rule_id }}}_no_pass"
+        comment="There is no password defined in /etc/shadow"/>
+    </criteria>
+  </definition>
+
+  {{{ textfilecontent54_test_etc_shadow(
+    test_id="test_" + rule_id,
+    regex=regex,
+    external_variable_id=external_variable_id,
+    operation=operation) }}}
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_pass" version="1"
+    check="all" check_existence="none_exist"
+    comment="Check the inexistence of users with a password defined">
+    <ind:object object_ref="object_{{{ rule_id }}}_no_pass"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_no_pass" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+{{%- endmacro %}}
