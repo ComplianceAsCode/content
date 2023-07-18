@@ -1,6 +1,6 @@
 # platform = multi_platform_ubuntu
 
-readarray -t files < <(find /var/log/)
+readarray -t files < <(find /var/log/ -type f)
 for file in "${files[@]}"; do
     if basename $file | grep -qE '^.*$'; then
         chmod 0640 $file
