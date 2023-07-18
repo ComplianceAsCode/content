@@ -47,6 +47,8 @@ controls:
       rules:
         - file_groupowner_kubelet_conf
         - file_owner_kubelet_conf
+        #- file_groupowner_kubelet
+        - file_owner_kubelet
       levels: level_1
     - id: 4.1.7
       title: Ensure that the certificate authorities file permissions are set to 644 or more restrictive
@@ -135,6 +137,7 @@ controls:
       status: automated
       rules:
         - kubelet_configure_tls_cert
+        - kubelet_configure_tls_key
       levels: level_1
     - id: 4.2.10
       title: Ensure that the --rotate-certificates argument is not set to false
@@ -148,6 +151,7 @@ controls:
       status: automated
       rules:
         - kubelet_enable_server_cert_rotation
+        - controller_rotate_kubelet_server_certs
       levels: level_1
     - id: 4.2.12
       title: Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
