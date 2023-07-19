@@ -16,7 +16,11 @@
 
   <ind:textfilecontent54_object id="object_smart_card_common_auth" version="1">
     <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    {{% if 'ubuntu' in product %}}
+    <ind:pattern operation="pattern match" datatype="string">^\s*auth\s+(?:\[success=2 default=ignore\])\s+pam_pkcs11.so(?:\s|$)</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match" datatype="string">^\s*auth\s+(?:sufficient|required)\s+pam_pkcs11.so(?:\s|$)</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
