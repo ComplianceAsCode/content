@@ -115,7 +115,7 @@ def main():
     else:
         build_dir = args.build_dir
         files = os.listdir(build_dir)
-    print(f"Build dir: {build_dir}")
+    print("Build dir: %s" % build_dir)
     if args.scap_version == "1.2":
         ds_suffix = "-ds-1.2.xml"
     elif args.scap_version == "1.3":
