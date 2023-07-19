@@ -307,14 +307,6 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
     ssg_refcheck_test("rhel7" "cis" "cis")
 endif()
 
-if(PYTHON_VERSION_MAJOR GREATER 2)
-    add_test(
-        NAME "test-compare-disa-xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/compare_disa_xml.py" "${CMAKE_SOURCE_DIR}/tests/data/utils/disa-stig-rhel8-v1r6-xccdf-manual.xml" "${RHEL8_DISA_STIG_REF}"
-    )
-    set_tests_properties("test-compare-disa-xml" PROPERTIES LABELS quick)
-endif()
-
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     if(PYTHON_VERSION_MAJOR GREATER 2)
         add_test(

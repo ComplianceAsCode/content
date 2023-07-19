@@ -521,62 +521,6 @@ To execute:
 
 ## Other Scripts
 
-### `utils/compare_disa_xml.py` - Compare DISA XML
-
-This script will output what SRG or STIG IDs where add or removed between two XML files from DISA.
-
-To execute:
-
-```bash
-    $ ./utils/compare_disa_xml.py old.xml new.xml
-```
-
-Example:
-
-```text
-    $ ./utils/compare_disa_xml.py U_RHEL_8_STIG_V1R4_Manual-xccdf.xml U_RHEL_8_STIG_V1R5_Manual-xccdf.xml
-    Base count: 381
-    Target count: 371
-    New rules: (13)
-        RHEL-08-010351
-        RHEL-08-020103
-        RHEL-08-020221
-        RHEL-08-020102
-        RHEL-08-040321
-        RHEL-08-010331
-        RHEL-08-010359
-        RHEL-08-010121
-        RHEL-08-010385
-        RHEL-08-020104
-        RHEL-08-010379
-        RHEL-08-010341
-        RHEL-08-020101
-    Removed rules (23)
-        RHEL-08-010560
-        RHEL-08-030500
-        RHEL-08-030210
-        RHEL-08-030440
-        RHEL-08-030365
-        RHEL-08-030540
-        RHEL-08-030530
-        RHEL-08-030364
-        RHEL-08-030240
-        RHEL-08-030363
-        RHEL-08-030362
-        RHEL-08-030460
-        RHEL-08-010131
-        RHEL-08-030230
-        RHEL-08-030220
-        RHEL-08-030450
-        RHEL-08-030520
-        RHEL-08-030050
-        RHEL-08-030510
-        RHEL-08-030380
-        RHEL-08-030470
-        RHEL-08-030430
-        RHEL-08-030270
-```
-
 ### Compare Two SRG Spreadsheets - `utils/srg_diff.py`
 
 This script will output an HTML page that compares two SRG exports.
