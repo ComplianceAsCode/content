@@ -1,0 +1,93 @@
+documentation_complete: true
+prodtype: ocp4
+title: |-
+  Verify that the scheduler API service is protected by RBAC
+description: |-
+  Do not bind the scheduler service to non-loopback insecure addresses.
+rationale: |-
+  The Scheduler API service which runs on port 10251/TCP by default is used for health and metrics information and is available without authentication or encryption. As such it should only be bound to a localhost interface, to minimize the cluster's attack surface
+severity: medium
+references:
+  cis@ocp4: 1.4.1
+ocil: |-
+  In OpenShift 4, The Kubernetes Scheduler operator manages and updates the Kubernetes Scheduler deployed on top of OpenShift. By default, the operator exposes metrics via metrics service. The metrics are collected from the Kubernetes Scheduler operator. Profiling data is sent to `healthzPort`, the port of the localhost `healthz` endpoint. Changing this value may disrupt components that monitor the kubelet health. The default `healthz` `port` value is `10251`, and the `healthz` `bindAddress` is `127.0.0.1`
+
+  To ensure the collected data is not exploited, profiling endpoints are secured via RBAC (see cluster-debugger role). By default, the profiling endpoints are accessible only by users bound to `cluster-admin` or `cluster-debugger` role. Profiling can not be disabled.
+
+  The bind-address argument is not used. Both authentication and authorization are in place.
+
+  Run the following command to verify the schedule endpoints:
+
+  ```
+  oc -n openshift-kube-scheduler describe endpoints
+  ```
+
+  Verify the `bind-address` and `port` arguments are not used:
+
+  ```
+  oc -n openshift-kube-scheduler get cm kube-scheduler-pod -o json | jq -r '.data."pod.yaml"' | jq '.spec.containers[]|select(.name=="kube-scheduler")|.args'
+  ```
+
+  Verify the metrics endpoint is protected by RBAC.
+
+  First, find the schedule pod information:
+
+  ```
+  oc project openshift-kube-scheduler
+  export POD=$(oc get pods -l app=openshift-kube-scheduler -o jsonpath='{.items[0].metadata.name}')
+  export POD_IP=$(oc get pods -l app=openshift-kube-scheduler -o jsonpath='{.items[0].status.podIP}')
+  export PORT=$(oc get pod $POD -o jsonpath='{.spec.containers[0].livenessProbe.httpGet.port}')
+  ```
+
+  Attempt to make an insecure `GET` request to the metrics endpoint:
+
+  ```
+  oc rsh $POD curl https://$POD_IP:$PORT/metrics -k
+  ```
+
+  Ensure an `HTTP 403` is returned.
+
+  Create a test service account:
+
+  ```
+  oc create sa permission-test-sa
+  ```
+
+  Generate a service account token and attempt to access the metrics endpoint:
+
+  ```
+  export SA_TOKEN=$(oc create token permission-test-sa)
+  oc rsh $POD curl https://$POD_IP:$PORT/metrics -H "Authorization: Bearer $SA_TOKEN" -k
+  ```
+
+  Verify that an `HTTP 403` is returned.
+
+  Login as a cluster administrator and attempt to access the metrics endpoint:
+
+  ```
+  export CLUSTER_ADMIN_TOKEN=$(oc whoami -t)
+  oc rsh $POD curl https://$POD_IP:$PORT/metrics -H "Authorization: Bearer $CLUSTER_ADMIN_TOKEN" -k
+  ```
+
+  Verify metrics output is returned. Unset environment variables used in the test and delete the test service account:
+
+  ```
+  unset CLUSTER_ADMIN_TOKEN POD PORT SA_TOKEN POD_IP
+  oc delete sa permission-test-sa
+  ```
+ocil_clause: 'The scheduler metrics endpoint is not protected by RBAC.'
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/rbac.authorization.k8s.io/v1/clusterroles/cluster-debugger") | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/rbac.authorization.k8s.io/v1/clusterroles/cluster-debugger
+    yamlpath: '.rules[0].nonResourceURLs[:]'
+    entity_check: 'at least one'
+    values:
+    - value: '\/metrics'
+      operation: 'pattern match'
+      entity_check: 'at least one'
+

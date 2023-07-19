@@ -442,17 +442,19 @@ controls:
       levels: level_1
   - id: '1.4'
     title: Scheduler
-    status: pending
+    status: automated
     rules: []
     controls:
     - id: 1.4.1
       title: Ensure that the healthz endpoints for the scheduler are protected by RBAC
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - scheduler_profiling_protected_by_rbac
       levels: level_1
     - id: 1.4.2
       title: Verify that the scheduler API service is protected by RBAC
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - scheduler_service_protected_by_rbac
       levels: level_1
 
