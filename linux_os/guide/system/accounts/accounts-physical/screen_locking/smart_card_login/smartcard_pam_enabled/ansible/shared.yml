@@ -8,39 +8,46 @@
   package_facts:
     manager: auto
 
+- name: Set pam package based on OS
+  set_fact:
+    {{% if 'ubuntu' in product %}}
+    pam_package: libpam-pkcs11
+    {{% else %}}
+    pam_package: pam_pkcs11
+    {{% endif %}}
+
 - name: Check to see if 'pam_pkcs11' module is configured in '/etc/pam.d/common-auth'
   shell: grep -E '^\s*auth\s+\S+\s+pam_pkcs11\.so' /etc/pam.d/common-auth || true
   register: check_pam_pkcs11_module_result
-  when: 
-    {{% if 'sle' in product %}}
-    - '"pam_pkcs11" in ansible_facts.packages'
-    {{% else %}}
-    - '"libpam-pkcs11" in ansible_facts.packages'
-    {{% endif %}}
+  changed_when: false
+  when: 'pam_package in ansible_facts.packages'
 
 - name: Configure 'pam_pkcs11' module in '/etc/pam.d/common-auth'
   lineinfile:
     path: /etc/pam.d/common-auth
+    {{% if 'ubuntu' in product %}}
+    line: 'auth    [success=2 default=ignore] pam_pkcs11.so'
+    {{% else %}}
     line: 'auth sufficient pam_pkcs11.so'
+    {{% endif %}}
     insertafter: '^\s*#'
     state: present
-  when:
-    {{% if 'sle' in product %}}
-    - '"pam_pkcs11" in ansible_facts.packages'
-    {{% else %}}
-    - '"libpam-pkcs11" in ansible_facts.packages'
-    {{% endif %}}
-    - '"pam_pkcs11.so" not in check_pam_pkcs11_module_result.stdout'
+  when: 'pam_package in ansible_facts.packages'
 
+{{% if 'ubuntu' in product %}}
+- name: Ensure 'pam_pkcs11' module has '[success=2 default=ignore]' control flag
+  lineinfile:
+    path: /etc/pam.d/common-auth
+    regexp: '^(\s*auth\s+)\S+(\s+pam_pkcs11\.so.*)'
+    line: '\g<1>[success=2 default=ignore]\g<2>'
+    backrefs: yes
+  when: 'pam_package in ansible_facts.packages'
+{{% else %}}
 - name: Ensure 'pam_pkcs11' module has 'sufficient' control flag
   lineinfile:
     path: /etc/pam.d/common-auth
     regexp: '^(\s*auth\s+)\S+(\s+pam_pkcs11\.so.*)'
     line: '\g<1>sufficient\g<2>'
     backrefs: yes
-  when:
-    {{% if 'sle' in product %}}
-    - '"pam_pkcs11" in ansible_facts.packages'
-    {{% else %}}
-    - '"libpam-pkcs11" in ansible_facts.packages' 
-    {{% endif %}}
+  when: 'pam_package in ansible_facts.packages'
+{{% endif %}}
