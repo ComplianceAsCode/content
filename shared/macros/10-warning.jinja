@@ -44,3 +44,24 @@
 - general: |-
     There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
 {{% endmacro %}}
+
+{{#
+    Includes a deprecation warning in rules which are no longer recommended because of some
+    changes in standard requirements or similar reasons.
+
+:param reason: General text explaining the reason of deprecation, i.e. standard changes etc
+:type reason: str
+:param release: Release number since the rule is officially deprecated.
+:type release: str
+
+#}}
+{{% macro warning_rule_deprecated_cause(reason, release='') %}}
+- general: |-
+    This rule is deprecated because of the changes in <code>{{{ rule }}}</code> rule.
+    Please consider replacing this rule in your files as it is not expected to receive
+    {{%- if release %}}
+    updates as of version <code>{{{ release }}}</code>.
+    {{%- else %}}
+    further updates.
+    {{% endif -%}}
+{{% endmacro %}}
