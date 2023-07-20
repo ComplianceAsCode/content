@@ -17,7 +17,7 @@
     passwd -q -n {{ var_accounts_minimum_age_login_defs }} {{ item }}
 {{% else %}}
   command: >
-    chage -m 1 {{ item }}
+    chage -m {{ var_accounts_minimum_age_login_defs }} {{ item }}
 {{% endif %}}    
   with_items: "{{ user_names.stdout_lines }}"
   when: user_names.stdout_lines | length > 0
