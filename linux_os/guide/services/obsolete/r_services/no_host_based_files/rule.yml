@@ -5,18 +5,15 @@ prodtype: ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 title: 'Remove Host-Based Authentication Files'
 
 description: |-
-    The <tt>shosts.equiv</tt> file list remote hosts
-    and users that are trusted by the local system.
-    To remove these files, run the following command to delete them from any
-    location:
+    The <tt>shosts.equiv</tt> file lists remote hosts and users that are trusted by the local
+    system. To remove these files, run the following command to delete them from any location:
     <pre>$ sudo rm /[path]/[to]/[file]/shosts.equiv</pre>
 
 rationale: |-
-    The shosts.equiv files are used to configure host-based authentication for the
-    system via SSH. Host-based authentication is not sufficient for preventing
-    unauthorized access to the system, as it does not require interactive
-    identification and authentication of a connection request, or for the use of
-    two-factor authentication.
+    The shosts.equiv files are used to configure host-based authentication for the system via SSH.
+    Host-based authentication is not sufficient for preventing unauthorized access to the system,
+    as it does not require interactive identification and authentication of a connection request,
+    or for the use of two-factor authentication.
 
 severity: high
 
@@ -40,8 +37,7 @@ references:
 ocil_clause: 'shosts.equiv files exist'
 
 ocil: |-
-    Verify that there are no <tt>shosts.equiv</tt> files
-    on the system, run the following command:
+    Verify that there are no <tt>shosts.equiv</tt> files on the system, run the following command:
     <pre>$ find / -name shosts.equiv</pre>
 
 fixtext: |-
