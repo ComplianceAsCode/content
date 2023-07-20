@@ -5,21 +5,7 @@ controls:
   title: {{{ full_name }}} must take appropriate action upon an audit failure.
   rules:
   - audit_error_alert_exists
-  status: does not meet
-  status_justification: |-
-    OpenShift's architecture is not structured to allow it to specifically
-    halt on a failure to log.  The same database and API that power
-    recording events are shared for normal access, so interactivity with the
-    cluster would be lost in the event of a logging component failure, but
-    workloads would continue operating.  This is by design, as the system
-    is architected to attempt to recover from failure of components. In
-    many failure modes, automated remediations would likely take place in
-    the event of a logging failure.  The system will continue to operate
-    during the remediation attempts.
-  mitigation: |-
-    The OpenShift Platform will generate an alert upon failure of the
-    audit logging service. The responses to those alerts may be defined
-    by the organizations administrative group, and may even be automated
-    responses.  If there is a failure to forward logs to the organization's
-    log collection service, OpenShift will retain about 10 logs up to
-    100MB each, more than that, the logs will then rotate.
+  - auditd_log_format
+  - auditd_data_disk_error_action
+  - auditd_data_retention_max_log_file_action_stig
+  status: automated

@@ -1,0 +1,11 @@
+# platform = multi_platform_ocp,multi_platform_rhcos
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+#
+{{% macro syscall_mount_audit_rules() -%}}
+-a always,exit -F arch=b32 -S umount -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod
+-a always,exit -F arch=b64 -S umount -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod
+{{% endmacro %}}
+{{{ kubernetes_machine_config_file(path='/etc/audit/rules.d/75-umount_dac_modification.rules', file_permissions_mode='0600', source=syscall_mount_audit_rules()) }}}

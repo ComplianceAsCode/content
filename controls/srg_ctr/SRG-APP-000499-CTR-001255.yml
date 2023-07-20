@@ -6,4 +6,31 @@ controls:
     attempts to delete privileges occur.
   related_rules:
   - audit_profile_set
-  status: inherently met
+  rules:
+  - audit_rules_dac_modification_chmod
+  - audit_rules_dac_modification_chown
+  - audit_rules_dac_modification_fchmod
+  - audit_rules_dac_modification_fchmodat
+  - audit_rules_dac_modification_fchown
+  - audit_rules_dac_modification_fchownat
+  - audit_rules_dac_modification_fremovexattr
+  - audit_rules_dac_modification_lchown
+  - audit_rules_dac_modification_lremovexattr
+  - audit_rules_dac_modification_removexattr
+  - audit_rules_execution_chacl
+  - audit_rules_file_deletion_events_rename
+  - audit_rules_file_deletion_events_renameat
+  - audit_rules_file_deletion_events_rmdir
+  - audit_rules_file_deletion_events_unlink
+  - audit_rules_file_deletion_events_unlinkat
+  - audit_rules_privileged_commands_su
+  - audit_rules_privileged_commands_sudo
+  - audit_rules_privileged_commands_usermod
+  - audit_rules_sudoers
+  - audit_rules_sudoers_d
+  - audit_rules_usergroup_modification_group
+  - audit_rules_usergroup_modification_gshadow
+  - audit_rules_usergroup_modification_passwd
+  - audit_rules_usergroup_modification_shadow
+  status: automated
+
