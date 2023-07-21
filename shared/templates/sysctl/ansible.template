@@ -8,8 +8,10 @@
 {{% if product in ["sle12","sle15"] %}}
   find:
     paths:
-      - "/etc/sysctl.d/"
       - "/run/sysctl.d/"
+      - "/etc/sysctl.d/"
+      - "/usr/local/lib/sysctl.d/"
+      - "/lib/sysctl.d/"      
 {{% else %}}      
   find:
     paths:
