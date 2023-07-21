@@ -1277,7 +1277,7 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - audit_rules_sysadmin_scope
+      - audit_rules_sysadmin_actions
 
   - id: 4.1.15
     title: Ensure system administrator actions (sudolog) are collected (Automated)
@@ -1285,8 +1285,8 @@ controls:
       - l2_server
       - l2_workstation
     status: automated
-    related_rules:
-      - audit_rules_sysadmin_actions
+    rules:
+      - audit_sudo_log_events
 
   - id: 4.1.16
     title: Ensure kernel module loading and unloading is collected (Automated)

@@ -119,7 +119,6 @@ selections:
     - audit_rules_privileged_commands_userhelper
     - audit_rules_session_events
     - audit_rules_sysadmin_actions
-    - audit_rules_sysadmin_scope
     - audit_rules_system_shutdown
     - var_audit_failure_mode=panic
     - audit_rules_time_adjtimex
@@ -138,6 +137,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_sudo_log_events
     - auditd_data_retention_flush
     - configure_crypto_policy
     - dconf_gnome_remote_access_credential_prompt

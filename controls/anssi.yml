@@ -1362,8 +1362,8 @@ controls:
       The logging of the system activity must be done through the auditd service.
     status: automated
     rules:
-    - audit_rules_sysadmin_scope
     - audit_rules_sysadmin_actions
+    - audit_sudo_log_events
 
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
