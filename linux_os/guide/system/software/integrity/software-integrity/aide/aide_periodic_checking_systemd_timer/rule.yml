@@ -1,0 +1,68 @@
+
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: 'Configure Systemd Timer Execution of AIDE'
+
+description: |-
+    At a minimum, AIDE should be configured to run a weekly scan.
+    To implement that a systemd service and a timer unit to run the service periodically.
+    For example, if a systemd timer to be started every day at 5AM
+    <pre>OnCalendar=*-*-* 05:00:0</pre> <pre>[Timer]</pre> section in the timer unit and
+    a Unit section starting the AIDE check service unit should be referred.
+
+rationale: |-
+    AIDE provides a means to check if unauthorized changes are made to the system.
+    AIDE itself does not setup a periodic execution, so in order to detect unauthorized
+    changes a systemd service to run the check is defined and a systemd timer to take care
+    of periodical execution of that systemd service.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-92366-4
+    cce@sle15: CCE-92516-4
+
+references:
+    anssi: BP28(R51)
+    cis-csc: 1,11,12,13,14,15,16,2,3,5,7,8,9
+    cis@alinux2: 1.3.2
+    cis@alinux3: 1.4.2
+    cis@rhel7: 1.3.2
+    cis@rhel8: 1.3.2
+    cis@rhel9: 1.3.2
+    cis@sle12: 1.4.2
+    cis@sle15: 1.4.2
+    cis@ubuntu2004: 1.4.2
+    cis@ubuntu2204: 1.3.2
+    cjis: 5.10.1.3
+    cobit5: APO01.06,BAI01.06,BAI02.01,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS01.03,DSS03.05,DSS04.07,DSS05.02,DSS05.03,DSS05.05,DSS05.07,DSS06.02,DSS06.06
+    disa: CCI-001744,CCI-002699,CCI-002702
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3,4.3.4.4.4
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8,SR 4.1,SR 6.2,SR 7.6'
+    iso27001-2013: A.11.2.4,A.12.1.2,A.12.2.1,A.12.4.1,A.12.5.1,A.12.6.2,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4,A.14.2.7,A.15.2.1,A.8.2.3
+    nist: SI-7,SI-7(1),CM-6(a)
+    nist-csf: DE.CM-1,DE.CM-7,PR.DS-1,PR.DS-6,PR.DS-8,PR.IP-1,PR.IP-3
+    nist@sle15: SI-6(d)
+    pcidss: Req-11.5
+    pcidss4: "11.5.2"
+    srg: SRG-OS-000363-GPOS-00150,SRG-OS-000446-GPOS-00200,SRG-OS-000447-GPOS-00201
+    stigid@ol7: OL07-00-020030
+    stigid@rhel7: RHEL-07-020030
+    stigid@sle15: SLES-15-010570
+    stigid@ubuntu2004: UBTU-20-010074
+
+ocil_clause: 'AIDE is not configured to scan periodically'
+
+ocil: |-
+    Verify the operating system routinely checks the baseline configuration for unauthorized changes.
+
+    To determine that periodic AIDE execution has been scheduled, run the following command:
+    <pre>$ systemctl list-timers</pre> should display <pre>aidecheck.timer</pre> or similar
+    that starts a service to run AIDE check.
+
+fixtext: |-
+    Configure an systemd timer to run AIDE checks at least once weekly
+
+srg_requirement: '{{{ full_name }}} must notify the system administrator when Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation of any security functions.'
