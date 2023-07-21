@@ -4,6 +4,5 @@
 # complexity = low
 # disruption = medium
 - name: "Run dconf update"
-  shell: |
-    set -o pipefail
-    dconf update
+  ansible.builtin.command:
+    cmd: dconf update
