@@ -349,6 +349,7 @@ selections:
 
     # RHEL-08-010471
     # currently there is not a relevant rule which would improve RNG for RHEL in this context. See #10153
+    # Not applicable for RHEL 8.4+
 
     # RHEL-08-010472
     - package_rng-tools_installed
