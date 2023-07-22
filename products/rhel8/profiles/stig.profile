@@ -177,9 +177,6 @@ selections:
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
-    # Although these rules have a different behavior in RHEL>=8.6
-    # they still need to be selected so it follows exactly what STIG
-    # states.
     # RHEL-08-010200
     - sshd_set_keepalive
     # RHEL-08-010201
