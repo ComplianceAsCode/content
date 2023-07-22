@@ -34,6 +34,11 @@ fixtext: '{{{ fixtext_service_disabled("rngd") }}}'
 
 srg_requirement: '{{{ srg_requirement_service_disabled("rngd") }}}'
 
+{{% if product == "rhel8" %}}
+platform: os_linux[rhel]<=8.3
+{{% endif %}}
+
+
 template:
     name: service_enabled
     vars:
