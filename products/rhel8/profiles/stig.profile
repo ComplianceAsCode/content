@@ -1010,7 +1010,7 @@ selections:
     - configure_firewalld_ports
 
     # RHEL-08-040060
-    ### NOTE: Will be removed in V1R2
+    ### NOTE: Removed in V1R2
 
     # RHEL-08-040070
     - service_autofs_disabled
