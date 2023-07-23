@@ -43,7 +43,16 @@ ocil: |-
     <pre>
     Compress=yes
     </pre>
-
+{{%- if product == "sle15" %}}
+template:
+    name: systemd_dropin_configuration
+    vars:
+        component: journald
+        master_cfg_file: /etc/systemd/journald.conf
+        dropin_dir: /etc/systemd/journal.d/
+        param: Compress
+        value: yes
+{{% else %}}
 template:
     name: shell_lineinfile
     vars:
@@ -51,3 +60,4 @@ template:
         parameter: Compress
         value: yes
         no_quotes: 'true'
+{{% endif -%}}
