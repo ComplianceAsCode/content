@@ -31,8 +31,8 @@
   </definition>
 
 {{%- if 'sle15' in product -%}}
-  {{{ oval_test_package_installed(package="selinux-policy-devel", evr=EVR, test_id="check_selinux_policy_devel_installed") }}}
-  {{{ oval_test_package_installed(package="selinux-policy-targeted", evr=EVR, test_id="check_selinux_policy_targeted_installed") }}}
+  {{{ oval_test_package_installed(package="selinux-policy-devel", evr="", test_id="check_selinux_policy_devel_installed") }}}
+  {{{ oval_test_package_installed(package="selinux-policy-targeted", evr="", test_id="check_selinux_policy_targeted_installed") }}}
 {{%- endif -%}}
 
   <ind:textfilecontent54_test id="test_armm_selinux_watch_augenrules_usr_share" version="1"
