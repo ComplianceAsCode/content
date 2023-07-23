@@ -4,15 +4,11 @@
     <criteria comment="Timesyncd servers are configured" operator="AND">
       <extend_definition comment="service timesyncd enabled"
         definition_ref="service_timesyncd_enabled" />
-      <criteria comment="service systemd-timesyncd is configured to start and is running" operator="AND">
-        <criterion comment="systemd-timesyncd is running"
-          test_ref="test_service_running_systemd-timesyncd" />
-        <criteria operator="OR" comment="service systemd-timesyncd is configured to start">
-          <criterion comment="multi-user.target wants systemd-timesyncd"
-            test_ref="test_multi_user_wants_systemd-timesyncd" />
-          <criterion comment="multi-user.target wants systemd-timesyncd socket"
-            test_ref="test_multi_user_wants_systemd-timesyncd_socket" />
-        </criteria>
+      <criteria operator="OR" comment="service systemd-timesyncd is configured to start">
+        <criterion comment="multi-user.target wants systemd-timesyncd"
+          test_ref="test_multi_user_wants_systemd-timesyncd" />
+        <criterion comment="multi-user.target wants systemd-timesyncd socket"
+          test_ref="test_multi_user_wants_systemd-timesyncd_socket" />
       </criteria>
       <criteria comment="Timesyncd is enabled and configured" operator="OR">
         <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_master_ntp_configuration" />
