@@ -265,6 +265,7 @@ selections:
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
+- logind_session_timeout
 - mount_option_boot_efi_nosuid
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -359,6 +360,7 @@ selections:
 - service_fapolicyd_enabled
 - service_firewalld_enabled
 - service_kdump_disabled
+- service_rngd_enabled
 - service_rsyslog_enabled
 - service_sshd_enabled
 - service_systemd-coredump_disabled
