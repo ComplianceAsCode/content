@@ -3,16 +3,14 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- name: "{{{ rule_title }}} - Ensure AIDE is Installed"
-  ansible.builtin.package:
-    name:
-      - aide
-    state: present
 
 - name: "{{{ rule_title }}} - Define AIDE Periodic Check Service"
   ansible.builtin.blockinfile:
       create: yes
       dest: /etc/systemd/system/aidecheck.service
+      owner: root
+      group: root
+      mode: '0644'
       block: |
         [Unit]
         Description=Aide Check
@@ -26,6 +24,9 @@
   ansible.builtin.blockinfile:
       create: yes
       dest: /etc/systemd/system/aidecheck.timer
+      owner: root
+      group: root
+      mode: '0644'
       block: |
         [Unit]
         Description=Aide check every day at 5AM
@@ -39,6 +40,7 @@
   ansible.builtin.systemd:
     name: aidecheck.service
     enabled: true
+    daemon_reload: true
     masked: false
 
 - name: "{{{ rule_title }}} - Ensure AIDE Service Timer is Enabled"
@@ -46,4 +48,5 @@
     name: aidecheck.timer
     state: started
     enabled: true
+    daemon_reload: true
     masked: false
