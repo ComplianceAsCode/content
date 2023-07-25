@@ -6,7 +6,16 @@
 
 {{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY %}}
-{{% if FILE_REGEX %}}
+
+{{%- if FILE_REGEX %}}
+{{% set STATE="file" %}}
+{{% set FIND_TYPE="-type f" %}}
+{{% set FIND_FILE_REGEX="-regex \"" ~ FILE_REGEX[loop.index0] ~ "\"" %}}
+{{%- else %}}
+{{% set STATE="directory" %}}
+{{% set FIND_TYPE="-type d" %}}
+{{% set FIND_FILE_REGEX="" %}}
+{{%- endif %}}
 
 {{%- if RECURSIVE %}}
 {{% set FIND_RECURSE_ARGS="" %}}
@@ -27,7 +36,7 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
   register: files_found
   changed_when: False
   failed_when: False
@@ -37,29 +46,17 @@
   file:
     path: "{{ item }}"
     mode: "{{{ FILEMODE }}}"
-    state: file
+    state: "{{{ STATE }}}"
   with_items:
     - "{{ files_found.stdout_lines }}"
 
-{{% else %}}
-
-- name: Set permissions for {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  file:
-    path: "{{{ path }}}"
-    state: directory
-{{% if RECURSIVE %}}
-    recurse: yes
-{{% endif %}}
-    mode: "{{{ FILEMODE }}}"
-
-{{% endif %}}
 {{% else %}}
 
 - name: Test for existence {{{ path }}}
   stat:
     path: "{{{ path }}}"
   register: file_exists
-  
+
 - name: Ensure permission {{{ FILEMODE }}} on {{{ path }}}
   file:
     path: "{{{ path }}}"
