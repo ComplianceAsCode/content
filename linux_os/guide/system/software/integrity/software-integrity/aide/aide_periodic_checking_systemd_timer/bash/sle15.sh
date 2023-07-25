@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_all
 
 {{{ bash_package_install("aide") }}}
 
