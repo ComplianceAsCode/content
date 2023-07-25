@@ -86,6 +86,10 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         status_justification=str,
         fixtext=str,
         check=str,
+        tickets=list,
+        original_title=str,
+        related_rules=list,
+        controls=list,
     )
 
     MANDATORY_KEYS = {
@@ -108,6 +112,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         self.fixtext = ""
         self.check = ""
         self.controls = []
+        self.tickets = []
+        self.original_title = ""
+        self.related_rules = []
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -117,9 +124,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
     @classmethod
     def _check_keys(cls, control_dict):
         for key in control_dict.keys():
-            if key not in cls.KEYS.keys() and key not in [
-                    'controls', 'original_title', 'related_rules', 'rules']:
-                raise ValueError("Key %s is not a valid for a control." % key)
+            # Rules shouldn't be in KEYS that data is in selections
+            if key not in cls.KEYS.keys() and key not in ['rules', ]:
+                raise ValueError("Key %s is not allowed in a control file." % key)
 
     @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
@@ -136,6 +143,10 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.mitigation = control_dict.get('mitigation')
         control.fixtext = control_dict.get('fixtext')
         control.check = control_dict.get('check')
+        control.tickets = control_dict.get('tickets')
+        control.original_title = control_dict.get('original_title')
+        control.related_rules = control_dict.get('related_rules')
+
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
