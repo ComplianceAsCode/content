@@ -7,7 +7,7 @@ title: 'Configure Systemd Timer Execution of AIDE'
 
 description: |-
     At a minimum, AIDE should be configured to run a weekly scan.
-    To implement that a systemd service and a timer unit to run the service periodically.
+    To implement a systemd service and a timer unit to run the service periodically:
     For example, if a systemd timer to be started every day at 5AM
     <pre>OnCalendar=*-*-* 05:00:0</pre> <pre>[Timer]</pre> section in the timer unit and
     a Unit section starting the AIDE check service unit should be referred.
