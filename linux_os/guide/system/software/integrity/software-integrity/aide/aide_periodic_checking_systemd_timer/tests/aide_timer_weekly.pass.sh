@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = aide,systemd
+# packages = aide
 
 # create unit file for periodic aide database check
 cat > /etc/systemd/system/aidecheck.service <<EOF
