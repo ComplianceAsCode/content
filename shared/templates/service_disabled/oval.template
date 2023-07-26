@@ -36,7 +36,11 @@
   <linux:systemdunitproperty_object id="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}" comment="Retrieve the LoadState property of {{{ SERVICENAME }}}" version="1">
     <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(service|socket)$</linux:unit>
     <linux:property>LoadState</linux:property>
+    <filter action="exclude">state_service_loadstate_is_notfound_{{{ SERVICENAME }}}</filter>
   </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="state_service_loadstate_is_notfound_{{{ SERVICENAME }}}" version="1" comment="LoadState is set to not-found">
+      <linux:value>not-found</linux:value>
+  </linux:systemdunitproperty_state>
   <linux:systemdunitproperty_state id="state_service_loadstate_is_masked_{{{ SERVICENAME }}}" version="1" comment="LoadState is set to masked">
       <linux:value>masked</linux:value>
   </linux:systemdunitproperty_state>
