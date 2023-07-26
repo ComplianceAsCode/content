@@ -92,6 +92,8 @@ class Profile(XCCDFEntity, SelectionHandler):
     def to_xml_element(self):
         element = ET.Element('{%s}Profile' % XCCDF12_NS)
         element.set("id", OSCAP_PROFILE + self.id_)
+        if self.metadata and 'version' in self.metadata and self.metadata['version'] is not None:
+            add_sub_element(element, "version", XCCDF12_NS, str(self.metadata["version"]))
         if self.extends:
             element.set("extends", self.extends)
         title = add_sub_element(element, "title", XCCDF12_NS, self.title)
