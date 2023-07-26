@@ -1710,6 +1710,10 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
+    related_rules:
+      - ensure_logrotate_activated
+      - package_logrotate_installed
+      - timer_logrotate_enabled
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled (Automated)
