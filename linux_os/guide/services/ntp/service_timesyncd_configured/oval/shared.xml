@@ -1,13 +1,9 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure that timesyncd is enabled and configured") }}}
-    <criteria comment="Timesyncd servers are configured" operator="AND">
-      <extend_definition comment="service timesyncd enabled"
-        definition_ref="service_timesyncd_enabled" />
-      <criteria comment="Timesyncd is enabled and configured" operator="OR">
-        <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_master_ntp_configuration" />
-        <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_dropin_ntp_configuration" />
-      </criteria>
+    <criteria comment="Timesyncd is enabled and configured" operator="OR">
+      <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_master_ntp_configuration" />
+      <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_dropin_ntp_configuration" />
     </criteria>
   </definition>
 
