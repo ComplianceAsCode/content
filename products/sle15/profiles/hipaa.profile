@@ -137,6 +137,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_sudo_log_events
     - auditd_data_retention_flush
     - configure_crypto_policy
     - dconf_gnome_remote_access_credential_prompt
