@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Disable {{{ SOCKETNAME }}}.socket") }}}
+    <criteria>
+        <criterion comment="Property LoadState of {{{ SOCKETNAME }}}.socket is masked"
+            test_ref="test_socket_loadstate_is_masked_{{{ SOCKETNAME }}}"/>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitproperty_test check="all" check_existence="any_exist"
+      comment="Test that the property LoadState from the {{{ SOCKETNAME }}}.socket is masked"
+      id="test_socket_loadstate_is_masked_{{{ SOCKETNAME }}}" version="1">
+    <linux:object object_ref="obj_socket_loadstate_is_masked_{{{ SOCKETNAME }}}"/>
+    <linux:state state_ref="state_socket_loadstate_is_masked_{{{ SOCKETNAME }}}"/>
+  </linux:systemdunitproperty_test>
+
+  <linux:systemdunitproperty_object comment="Retrieve the LoadState property of {{{ SOCKETNAME }}}.socket"
+      id="obj_socket_loadstate_is_masked_{{{ SOCKETNAME }}}" version="1">
+    <linux:unit operation="pattern match">^{{{ SOCKETNAME }}}.socket$</linux:unit>
+    <linux:property>LoadState</linux:property>
+  </linux:systemdunitproperty_object>
+
+  <linux:systemdunitproperty_state comment="LoadState is set to masked"
+      id="state_socket_loadstate_is_masked_{{{ SOCKETNAME }}}" version="1">
+    <linux:value>masked</linux:value>
+  </linux:systemdunitproperty_state>
+</def-group>
