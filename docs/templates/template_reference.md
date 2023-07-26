@@ -757,6 +757,15 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         form would be checked for, and the unquoted assignment would be
         inserted to the file by the remediation if not present.
 
+#### socket_disabled
+- Ensures that a Systemd socket is masked.
+
+- parameters:
+
+    - **socketname** - name of the socket without the ".socket" extension
+
+- languages: Ansible, Bash, OVAL
+
 #### sshd_lineinfile
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config` or
     `/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf` in case
