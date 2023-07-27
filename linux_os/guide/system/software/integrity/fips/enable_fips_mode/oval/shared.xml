@@ -3,36 +3,36 @@
     {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
     <criteria operator="AND">
       <extend_definition definition_ref="etc_system_fips_exists"
-        comment="check /etc/system-fips exists"/>
+        comment="check /etc/system-fips file existence"/>
       <extend_definition definition_ref="sysctl_crypto_fips_enabled"
-        comment="check sysctl crypto.fips_enabled = 1"/>
+        comment="check option crypto.fips_enabled = 1 in sysctl"/>
       <extend_definition definition_ref="enable_dracut_fips_module"
-        comment="Dracut FIPS module is enabled"/>
+        comment="dracut FIPS module is enabled"/>
       <extend_definition definition_ref="configure_crypto_policy"
         comment="system cryptography policy is configured"/>
       <criterion test_ref="test_system_crypto_policy_value"
-        comment="check if system crypto policy selection in var_system_crypto_policy in the profile is set to FIPS"/>
+        comment="check if var_system_crypto_policy variable selection is set to FIPS"/>
       <criterion test_ref="test_fips_1_argument_in_etc_kernel_cmdline"
-        comment="Check if argument fips=1 for Linux kernel is present in /etc/kernel/cmdline"/>
+        comment="check if kernel option fips=1 is present in /etc/kernel/cmdline"/>
       {{% if "ol" in product or "rhel" in product %}}
       <criteria operator="OR">
         <criteria operator="AND">
           <extend_definition definition_ref="system_info_architecture_s390_64"
-            comment="Generic test for s390x architecture"/>
+            comment="generic test for s390x architecture"/>
           <criterion test_ref="test_fips_1_argument_in_boot_loader_entries_conf"
-            comment="Check if argument fips=1 for Linux kernel is present in /boot/loader/entries/.*.conf"/>
+            comment="check if kernel option fips=1 is present in /boot/loader/entries/.*.conf"/>
         </criteria>
         <criteria operator="AND">
           <criteria negate="true">
             <extend_definition definition_ref="system_info_architecture_s390_64"
-              comment="Generic test for NOT s390x architecture"/>
+              comment="generic test for non-s390x architecture"/>
           </criteria>
           {{% if product in ["ol8", "rhel8"] %}}
           <criterion test_ref="test_grubenv_fips_mode"
             comment="check if the kernel boot parameter is configured for FIPS mode"/>
           {{% else %}}
           <criterion test_ref="test_fips_1_argument_in_boot_loader_entries_conf"
-            comment="Check if argument fips=1 for Linux kernel is present in /boot/loader/entries/.*.conf"/>
+            comment="check if kernel option fips=1 is present in /boot/loader/entries/.*.conf"/>
           {{% endif %}}
         </criteria>
       </criteria>
@@ -42,7 +42,7 @@
 
   <ind:textfilecontent54_test id="test_fips_1_argument_in_boot_loader_entries_conf" version="1"
     check="all" check_existence="all_exist"
-    comment="Check if argument fips=1 is present in the line starting with 'options ' in /boot/loader/entries/.*.conf">
+    comment="check if kernel option fips=1 is present in options in /boot/loader/entries/.*.conf">
     <ind:object object_ref="object_fips_1_argument_in_boot_loader_entries_conf" />
     <ind:state state_ref="state_fips_1_argument_in_captured_group" />
   </ind:textfilecontent54_test>
@@ -59,7 +59,7 @@
 
   <ind:textfilecontent54_test id="test_fips_1_argument_in_etc_kernel_cmdline" version="1"
     check="all" check_existence="all_exist"
-    comment="Check if argument fips=1 is present in /etc/kernel/cmdline">
+    comment="check if kernel option fips=1 is present in /etc/kernel/cmdline">
     <ind:object object_ref="object_fips_1_argument_in_etc_kernel_cmdline" />
     <ind:state state_ref="state_fips_1_argument_in_captured_group" />
   </ind:textfilecontent54_test>
@@ -71,7 +71,7 @@
   </ind:textfilecontent54_object>
 
   <ind:variable_test id="test_system_crypto_policy_value" version="1"
-    check="at least one" comment="tests if var_system_crypto_policy is set to FIPS">
+    check="at least one" comment="test if var_system_crypto_policy selection is set to FIPS">
     <ind:object object_ref="obj_system_crypto_policy_value" />
     <ind:state state_ref="ste_system_crypto_policy_value" />
   </ind:variable_test>
@@ -81,7 +81,8 @@
   </ind:variable_object>
 
   <ind:variable_state id="ste_system_crypto_policy_value" version="2"
-    comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds to a crypto policy module that further restricts the modified crypto policy.">
+    comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds
+to a crypto policy module that further restricts the modified crypto policy.">
   {{% if product in ["ol9","rhel9"] -%}}
     <ind:value operation="pattern match" datatype="string">^FIPS(:OSPP)?$</ind:value>
   {{%- else %}}
@@ -94,7 +95,7 @@
   {{% if product in ["ol8","rhel8"] %}}
   <ind:textfilecontent54_test id="test_grubenv_fips_mode" version="1"
     check="all" check_existence="all_exist"
-    comment="Fips mode selected in running kernel opts">
+    comment="FIPS mode is selected in running kernel options">
     <ind:object object_ref="obj_grubenv_fips_mode" />
   </ind:textfilecontent54_test>
 
@@ -106,5 +107,5 @@
   {{% endif %}}
 
   <external_variable id="var_system_crypto_policy" version="1"
-    datatype="string" comment="defined crypto policy"/>
+    datatype="string" comment="variable which selects the crypto policy"/>
 </def-group>
