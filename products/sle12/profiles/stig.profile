@@ -195,7 +195,6 @@ selections:
     - file_permissions_local_var_log_messages
     - file_permissions_system_commands_dirs
     - file_permission_user_init_files
-    - ftp_present_banner
     - gnome_gdm_disable_unattended_automatic_login
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_session_idle_user_locks
@@ -232,11 +231,9 @@ selections:
     - partition_for_var_log_audit
     - permissions_local_audit_binaries
     - permissions_local_var_log_audit
-    - policy_temp_passwords_immediate_change
     - postfix_client_configure_mail_alias
     - root_permissions_syslibrary_files
     - rsyslog_remote_loghost
-    - run_chkstat
     - security_patches_up_to_date
     - service_auditd_enabled
     - service_autofs_disabled

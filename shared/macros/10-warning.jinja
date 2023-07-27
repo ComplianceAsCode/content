@@ -23,11 +23,17 @@
 :type rule: str
 :param release: Release number since the rule is officially deprecated.
 :type release: str
+:param reason_is_rule: Set to False if the deprecation reason is not a rule. e.g.: A benchmark was retired.
+:type is_rule: bool
 
 #}}
-{{% macro warning_rule_deprecated_by(rule, release='') %}}
+{{% macro warning_rule_deprecated_by(cause, release='', reason_is_rule=True) %}}
 - general: |-
-    This rule is deprecated in favor of the <code>{{{ rule }}}</code> rule.
+    {{%- if reason_is_rule %}}
+    This rule is deprecated in favor of the <code>{{{ cause }}}</code> rule.
+    {{%- else %}}
+    This rule is deprecated due to the changes in <code>{{{ cause }}}</code>.
+    {{% endif -%}}
     Please consider replacing this rule in your files as it is not expected to receive
     {{%- if release %}}
     updates as of version <code>{{{ release }}}</code>.
@@ -44,3 +50,4 @@
 - general: |-
     There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
 {{% endmacro %}}
+
