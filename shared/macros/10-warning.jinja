@@ -29,7 +29,7 @@
 #}}
 {{% macro warning_rule_deprecated_by(cause, release='', is_rule=True) %}}
 - general: |-
-    {{%- if release %}}
+    {{%- if is_rule %}}
     This rule is deprecated in favor of the <code>{{{ cause }}}</code> rule.
     {{%- else %}}
     This rule is deprecated due to the changes in <code>{{{ cause }}}</code>.
