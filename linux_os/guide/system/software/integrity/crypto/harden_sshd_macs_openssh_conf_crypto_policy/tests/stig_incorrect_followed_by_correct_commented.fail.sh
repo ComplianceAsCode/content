@@ -1,8 +1,9 @@
 #!/bin/bash
 # platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# variables = sshd_approved_macs=hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
 
-sshd_approved_macs=hmac-sha2-512,hmac-sha2-256
+sshd_approved_macs=hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+
 incorrect_sshd_approved_macs=hmac-sha2-256-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha1,umac-128@openssh.com,hmac-sha2-512
 configfile=/etc/crypto-policies/back-ends/openssh.config
 
