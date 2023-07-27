@@ -66,7 +66,7 @@ selections:
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
     - aide_check_audit_tools
-    - aide_periodic_cron_checking
+    - aide_periodic_checking_systemd_timer
     - aide_verify_acls
     - aide_verify_ext_attributes
     - banner_etc_issue

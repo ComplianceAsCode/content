@@ -73,7 +73,7 @@ selections:
     - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
-    - aide_periodic_cron_checking
+    - aide_periodic_checking_systemd_timer
     - apparmor_configured
     #
     # NOTE: must configure "var_audispd_remote_server" when
