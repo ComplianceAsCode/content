@@ -8,10 +8,10 @@
           <extend_definition comment="sshd is not required or requirement is unset"
           definition_ref="sshd_not_required_or_unset" />
           {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
-          <extend_definition comment="rpm package openssh removed"
+          <extend_definition comment="package openssh removed"
           definition_ref="package_openssh_removed" />
           {{% else %}}
-          <extend_definition comment="rpm package openssh-server removed"
+          <extend_definition comment="package openssh-server removed"
           definition_ref="package_openssh-server_removed" />
           {{% endif %}}
         </criteria>
@@ -19,10 +19,10 @@
           <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
           {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
-          <extend_definition comment="rpm package openssh installed"
+          <extend_definition comment="package openssh installed"
           definition_ref="package_openssh_installed" />
           {{% else %}}
-          <extend_definition comment="rpm package openssh-server installed"
+          <extend_definition comment="package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
           {{% endif %}}
           <criterion comment="Check MACs in /etc/ssh/sshd_config"
