@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = {{{ PACKAGENAME }}}
 
 SOCKET_NAME="{{{ SOCKETNAME }}}.socket"
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
