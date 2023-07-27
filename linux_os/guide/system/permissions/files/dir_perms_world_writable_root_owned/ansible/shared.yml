@@ -4,64 +4,11 @@
 # complexity = low
 # disruption = medium
 
-- name: "{{{ rule_title }}} - Define Excluded (Non-Local) File Systems and Paths"
+{{{ ansible_create_list_of_local_paths(list_name="search_paths") }}}
+
+- name: "{{{ rule_title }}} - Define Rule Specific Facts"
   ansible.builtin.set_fact:
-    excluded_fstypes:
-      - afs
-      - ceph
-      - cifs
-      - smb3
-      - smbfs
-      - sshfs
-      - ncpfs
-      - ncp
-      - nfs
-      - nfs4
-      - gfs
-      - gfs2
-      - glusterfs
-      - gpfs
-      - pvfs2
-      - ocfs2
-      - lustre
-      - davfs
-      - fuse.sshfs
-    excluded_paths:
-      - dev
-      - proc
-      - run
-      - sys
-    search_paths: []
     world_writable_dirs: []
-
-- name: "{{{ rule_title }}} - Find Relevant Root Directories Ignoring Pre-Defined Excluded Paths"
-  ansible.builtin.find:
-    paths: /
-    file_type: directory
-    excludes: "{{ excluded_paths }}"
-    hidden: true
-    recurse: false
-  register: result_relevant_root_dirs
-
-- name: "{{{ rule_title }}} - Include Relevant Root Directories in a List of Paths to be Searched"
-  ansible.builtin.set_fact:
-    search_paths: "{{ search_paths | union([item.path]) }}"
-  loop: "{{ result_relevant_root_dirs.files }}"
-
-- name: "{{{ rule_title }}} - Increment Search Paths List with Local Partitions Mount Points"
-  ansible.builtin.set_fact:
-    search_paths: "{{ search_paths | union([item.mount]) }}"
-  loop: '{{ ansible_mounts }}'
-  when:
-    - item.fstype not in excluded_fstypes
-    - item.mount != '/'
-
-- name: "{{{ rule_title }}} - Increment Search Paths List with Local NFS File System Targets"
-  ansible.builtin.set_fact:
-    search_paths: "{{ search_paths | union([item.device.split(':')[1]]) }}"
-  loop: '{{ ansible_mounts }}'
-  when:
-    - item.device is search("localhost:")
 
 - name: "{{{ rule_title }}} - Find All Uncompliant Directories in Local File Systems"
   ansible.builtin.command:
