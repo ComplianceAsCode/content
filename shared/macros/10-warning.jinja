@@ -27,9 +27,9 @@
 :type is_rule: bool
 
 #}}
-{{% macro warning_rule_deprecated_by(cause, release='', is_rule=True) %}}
+{{% macro warning_rule_deprecated_by(cause, release='', reason_is_rule=True) %}}
 - general: |-
-    {{%- if is_rule %}}
+    {{%- if reason_is_rule %}}
     This rule is deprecated in favor of the <code>{{{ cause }}}</code> rule.
     {{%- else %}}
     This rule is deprecated due to the changes in <code>{{{ cause }}}</code>.
