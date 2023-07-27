@@ -764,6 +764,10 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     - **socketname** - name of the socket without the ".socket" extension
 
+    - **packagename** - name of the package providing the socket file; if no
+        package name is provided, socketname is used. Currently, the package name
+        is used when running Automatus test scenarios.
+
 - languages: Ansible, Bash, OVAL
 
 #### sshd_lineinfile
