@@ -1670,3 +1670,73 @@ Part of the grub2_bootloader_argument_absent template.
 {{%- macro ansible_mount_conditional(path) -%}}
 '"{{{ path }}}" in ansible_mounts | map(attribute="mount") | list'
 {{%- endmacro -%}}
+
+{{#
+    Create a list of paths composed by root directories and mount points representing local file systems.
+    This list excludes all local directories and mount points using known remote file systems.
+    It also excludes local directories and mount points with pseudo file systems. The list of paths
+    created by this macro can be used to efficiently locate local files or directories in a system.
+
+:param list_name:       Prefered list name to be used in subsequent tasks.
+:type pam_file: str
+
+#}}
+{{%- macro ansible_create_list_of_local_paths(list_name="search_paths") -%}}
+- name: "{{{ rule_title }}} - Define Excluded (Non-Local) File Systems and Paths"
+  ansible.builtin.set_fact:
+    excluded_fstypes:
+      - afs
+      - ceph
+      - cifs
+      - smb3
+      - smbfs
+      - sshfs
+      - ncpfs
+      - ncp
+      - nfs
+      - nfs4
+      - gfs
+      - gfs2
+      - glusterfs
+      - gpfs
+      - pvfs2
+      - ocfs2
+      - lustre
+      - davfs
+      - fuse.sshfs
+    excluded_paths:
+      - dev
+      - proc
+      - run
+      - sys
+    {{{ list_name }}}: []
+
+- name: "{{{ rule_title }}} - Find Relevant Root Directories Ignoring Pre-Defined Excluded Paths"
+  ansible.builtin.find:
+    paths: /
+    file_type: directory
+    excludes: "{{ excluded_paths }}"
+    hidden: true
+    recurse: false
+  register: result_relevant_root_dirs
+
+- name: "{{{ rule_title }}} - Include Relevant Root Directories in a List of Paths to be Searched"
+  ansible.builtin.set_fact:
+    {{{ list_name }}}: "{{ {{{ list_name }}} | union([item.path]) }}"
+  loop: "{{ result_relevant_root_dirs.files }}"
+
+- name: "{{{ rule_title }}} - Increment Search Paths List with Local Partitions Mount Points"
+  ansible.builtin.set_fact:
+    {{{ list_name }}}: "{{ {{{ list_name }}} | union([item.mount]) }}"
+  loop: '{{ ansible_mounts }}'
+  when:
+    - item.fstype not in excluded_fstypes
+    - item.mount != '/'
+
+- name: "{{{ rule_title }}} - Increment Search Paths List with Local NFS File System Targets"
+  ansible.builtin.set_fact:
+    {{{ list_name }}}: "{{ {{{ list_name }}} | union([item.device.split(':')[1]]) }}"
+  loop: '{{ ansible_mounts }}'
+  when:
+    - item.device is search("localhost:")
+{{%- endmacro -%}}
