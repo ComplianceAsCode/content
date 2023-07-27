@@ -4,7 +4,7 @@
       mandatory access controls (SELinux) in usr/share/selinux are enabled.") }}}
 
     <criteria operator="OR">
-{{%- if 'sle15' in product -%}}
+{{%- if product in ["sle15"] -%}}
       <criteria operator="AND">
         <criterion test_ref="check_selinux_policy_devel_installed"
           comment="Check no selinux-policy-devel package installed" negate="true"/>
@@ -30,7 +30,7 @@
     </criteria>
   </definition>
 
-{{%- if 'sle15' in product -%}}
+{{%- if product in ["sle15"] -%}}
   {{{ oval_test_package_installed(package="selinux-policy-devel", evr="", test_id="check_selinux_policy_devel_installed") }}}
   {{{ oval_test_package_installed(package="selinux-policy-targeted", evr="", test_id="check_selinux_policy_targeted_installed") }}}
 {{%- endif -%}}
