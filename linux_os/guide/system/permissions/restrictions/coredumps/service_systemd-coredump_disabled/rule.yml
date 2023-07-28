@@ -51,4 +51,8 @@ template:
     name: socket_disabled
     vars:
         socketname: systemd-coredump
+{{% if product in ["ol8", "rhel8"] %}}
+        packagename: systemd
+{{% else %}}
         packagename: systemd-udev
+{{% endif %}}
