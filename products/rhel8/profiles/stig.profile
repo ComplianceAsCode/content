@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R10
+    version: V1R11
     SMEs:
         - mab879
         - ggbecker
@@ -50,7 +50,7 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - var_sshd_set_keepalive=1
-    - sshd_approved_macs=stig
+    - sshd_approved_macs=stig_extended
     - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=rhel8
@@ -177,9 +177,6 @@ selections:
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
-    # Although these rules have a different behavior in RHEL>=8.6
-    # they still need to be selected so it follows exactly what STIG
-    # states.
     # RHEL-08-010200
     - sshd_set_keepalive
     # RHEL-08-010201
@@ -348,7 +345,8 @@ selections:
     - no_user_host_based_files
 
     # RHEL-08-010471
-    # currently there is not a relevant rule which would improve RNG for RHEL in this context. See #10153
+    # Not applicable for RHEL 8.4+
+    - service_rngd_enabled
 
     # RHEL-08-010472
     - package_rng-tools_installed
@@ -536,6 +534,9 @@ selections:
 
     # RHEL-08-020032
     - dconf_gnome_disable_user_list
+
+    # RHEL-08-020035
+    - logind_session_timeout
 
     # RHEL-08-020039
     - package_tmux_installed
@@ -1009,7 +1010,7 @@ selections:
     - configure_firewalld_ports
 
     # RHEL-08-040060
-    ### NOTE: Will be removed in V1R2
+    ### NOTE: Removed in V1R2
 
     # RHEL-08-040070
     - service_autofs_disabled
