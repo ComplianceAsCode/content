@@ -1,7 +1,7 @@
 #!/bin/bash
-# packages = systemd-journal-remote
+# packages = {{{ PACKAGENAME }}}
 
-SOCKET_NAME="systemd-journal-remote.socket"
+SOCKET_NAME="{{{ SOCKETNAME }}}.socket"
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 
 if "$SYSTEMCTL_EXEC" -q list-unit-files "$SOCKET_NAME"; then

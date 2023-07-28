@@ -11,11 +11,11 @@
   register: result_systemd_unit_files
   changed_when: false
 
-- name: "{{{ rule_title }}} - Ensure systemd-journal-remote.socket is Masked"
+- name: "{{{ rule_title }}} - Ensure {{{ SOCKETNAME }}}.socket is Masked"
   ansible.builtin.systemd:
-    name: systemd-journal-remote.socket
+    name: {{{ SOCKETNAME }}}.socket
     state: stopped
     enabled: false
     masked: true
   when:
-    - result_systemd_unit_files.stdout_lines is search("systemd-journal-remote.socket")
+    - result_systemd_unit_files.stdout_lines is search("{{{ SOCKETNAME }}}.socket")
