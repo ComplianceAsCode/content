@@ -4,28 +4,16 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure SHA_CRYPT_MIN_ROUNDS has minimum value of 5000
-  replace:
+- name: "{{{ rule_title }}} - Ensure SHA_CRYPT_MIN_ROUNDS has Minimum Value of 5000"
+  ansible.builtin.replace:
     path: /etc/login.defs
     regexp: '(^\s*SHA_CRYPT_MIN_ROUNDS\s+)(?!(?:[5-9]\d{3,}|\d{5,}))\S*(\s*$)'
     replace: '\g<1>5000\g<2>'
     backup: no
 
-- name: Check to see if SHA_CRYPT_MIN_ROUNDS is explicitly configured
-  shell: |
-    set -o pipefail
-    grep -e '^\s*SHA_CRYPT_MIN_ROUNDS\s\+' /etc/login.defs || true
-  register: check_sha_crypt_min_rounds_result
-
-# NOTE(gyee): there's a possibility that the value of SHA_CRYPT_MIN_ROUNDS is
-# greater than the value of SHA_CRYPT_MAX_ROUNDS. But as far as we're,
-# concerned, this is not a problem as per login.defs,
-# if SHA_CRYPT_MIN_ROUNDS > SHA_CRYPT_MAX_ROUNDS, the highest value will be
-# used. In that case, we don't need to touch SHA_CRYPT_MAX_ROUNDS.
-- name: Ensure SHA_CRYPT_MAX_ROUNDS has minimum value of 5000
-  replace:
+- name: "{{{ rule_title }}} - Ensure SHA_CRYPT_MAX_ROUNDS has Minimum Value of 5000"
+  ansible.builtin.replace:
     path: /etc/login.defs
     regexp: '(^\s*SHA_CRYPT_MAX_ROUNDS\s+)(?!(?:[5-9]\d{3,}|\d{5,}))\S*(\s*$)'
     replace: '\g<1>5000\g<2>'
     backup: no
-  when: '"SHA_CRYPT_MIN_ROUNDS" not in check_sha_crypt_min_rounds_result.stdout'

@@ -3,26 +3,28 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Find local mount points"
-  shell: |
-      set -o pipefail
-      df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev' || true
-  register: local_mount_points
 
-- name: "Detect the .shosts files on the system"
-  find:
-      paths: "{{ item }}"
-      recurse: yes
-      patterns: [".shosts"]
-      hidden: yes
-      file_type: "file"
-  check_mode: no
-  with_items: "{{ local_mount_points.stdout_lines }}"
-  register: shosts_locations
+{{{ ansible_create_list_of_local_paths(list_name="search_paths") }}}
 
-- name: "Remove .shosts Files"
-  file:
-      path: "{{ item.path }}"
-      state: absent
-  with_items: "{{ shosts_locations.results | map(attribute='files') | list }}"
-  when: shosts_locations is success
+- name: "{{{ rule_title }}} - Define Rule Specific Facts"
+  ansible.builtin.set_fact:
+    user_shosts_files:
+      - /.shosts
+
+- name: "{{{ rule_title }}} - Find All .shosts Files in Local File Systems"
+  ansible.builtin.command:
+    cmd: find {{ item }} -xdev -type f -name ".shosts"
+  loop: "{{ search_paths }}"
+  changed_when: false
+  register: result_found_shosts_files
+
+- name: "{{{ rule_title }}} - Create List of .shosts Files Present in Local File Systems"
+  ansible.builtin.set_fact:
+    user_shosts_files: '{{ user_shosts_files | union(item.stdout_lines) | list }}'
+  loop: "{{ result_found_shosts_files.results }}"
+
+- name: "{{{ rule_title }}} - Ensure No .shosts Files Are Present in the System"
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop: '{{ user_shosts_files }}'
