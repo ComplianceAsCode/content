@@ -11,21 +11,37 @@
   {{% set system_configuration_using_etc_bashrc_expected = true %}}
 {{% endif %}}
 
+- name: "{{{ rule_title }}} - Set TMOUT Line Fact"
+  ansible.builtin.set_fact:
+    {{% if product in ['ubuntu2004'] %}}
+    tmout_line: "TMOUT={{ var_accounts_tmout }}"
+    {{% else %}}
+    tmout_line: "declare -xr TMOUT={{ var_accounts_tmout }}"
+    {{% endif %}}
+
+{{% if 'ubuntu2004' in product %}}
+- name: "{{{ rule_title }}} - Correct Any Occurence of TMOUT in /etc/bash.bashrc"
+  ansible.builtin.replace:
+    path: /etc/bash.bashrc
+    regexp: '^[^#].*TMOUT=.*'
+    replace: "{{ tmout_line }}"
+{{% endif %}}
+
 {{% if system_configuration_using_etc_bashrc_expected %}}
-- name: Correct any occurrence of TMOUT in /etc/bashrc
-  replace:
+- name: "{{{ rule_title }}} - Correct Any Occurrence of TMOUT in /etc/bashrc"
+  ansible.builtin.replace:
     path: /etc/bashrc
     regexp: '^[^#].*TMOUT=.*'
-    replace: declare -xr TMOUT={{ var_accounts_tmout }}
+    replace: "{{ tmout_line }}"
   register: bashrc_replaced
 {{% endif %}}
 
-- name: Correct any occurrence of TMOUT in /etc/profile
-  replace:
+- name: "{{{ rule_title }}} - Correct Any Occurrence of TMOUT in /etc/profile"
+  ansible.builtin.replace:
     path: /etc/profile
     regexp: '^[^#].*TMOUT=.*'
-    replace: declare -xr TMOUT={{ var_accounts_tmout }}
+    replace: "{{ tmout_line }}"
   register: profile_replaced
 
-{{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", regex='TMOUT=', new_line='declare -xr TMOUT={{ var_accounts_tmout }}',
+{{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", regex='TMOUT=', new_line='{{ tmout_line }}',
     create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ["ol7", "rhel7"]) }}}
