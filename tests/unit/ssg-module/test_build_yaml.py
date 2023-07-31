@@ -533,3 +533,25 @@ def test_rule_to_ocil(rule_accounts_tmout):
             expected_file_path = os.path.join(DATADIR, expected_filename)
             diff = xmldiff_main.diff_files(real_file_path, expected_file_path)
             assert diff == []
+
+
+@pytest.fixture()
+def profile_without_version(profile_ospp):
+    profile_ospp.metadata.pop('version', None)
+    return profile_ospp
+
+
+def test_profile_without_version(profile_without_version):
+    profile_el = profile_without_version.to_xml_element()
+    assert profile_el.find("{%s}version" % XCCDF12_NS) is None
+
+
+@pytest.fixture()
+def profile_with_version(profile_ospp):
+    profile_ospp.metadata["version"] = "3.2.1"
+    return profile_ospp
+
+
+def test_profile_with_version(profile_with_version):
+    profile_el = profile_with_version.to_xml_element()
+    assert profile_el.find("{%s}version" % XCCDF12_NS).text == "3.2.1"
