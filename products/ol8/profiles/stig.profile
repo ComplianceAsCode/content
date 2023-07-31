@@ -527,6 +527,10 @@ selections:
     # OL08-00-020032
     - dconf_gnome_disable_user_list
 
+    # OL08-00-020035
+    - logind_session_timeout
+    - var_logind_session_timeout=15_minutes
+
     # OL08-00-020039
     - package_tmux_installed
 
