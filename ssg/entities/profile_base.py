@@ -89,10 +89,27 @@ class Profile(XCCDFEntity, SelectionHandler):
             select.set("selected", selected)
             element.append(select)
 
+    def _setup_defined_rules(self, element):
+        for value_id, selector in self.variables.items():
+            refine_value = ET.Element("{%s}refine-value" % XCCDF12_NS)
+            refine_value.set("idref", OSCAP_VALUE + value_id)
+            refine_value.set("selector", selector)
+            element.append(refine_value)
+        for refined_rule, refinement_list in self.refine_rules.items():
+            refine_rule = ET.Element("{%s}refine-rule" % XCCDF12_NS)
+            refine_rule.set("idref", OSCAP_RULE + refined_rule)
+            for refinement in refinement_list:
+                refine_rule.set(refinement[0], refinement[1])
+            element.append(refine_rule)
+
+    def _should_have_version(self):
+        return self.metadata and 'version' in self.metadata and self.metadata[
+            'version'] is not None
+
     def to_xml_element(self):
         element = ET.Element('{%s}Profile' % XCCDF12_NS)
         element.set("id", OSCAP_PROFILE + self.id_)
-        if self.metadata and 'version' in self.metadata and self.metadata['version'] is not None:
+        if self._should_have_version():
             add_sub_element(element, "version", XCCDF12_NS, str(self.metadata["version"]))
         if self.extends:
             element.set("extends", self.extends)
@@ -114,18 +131,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         self._add_selects(element, self.unselected, OSCAP_RULE, "false")
         self._add_selects(element, self.unselected_groups, OSCAP_GROUP, "false")
 
-        for value_id, selector in self.variables.items():
-            refine_value = ET.Element("{%s}refine-value" % XCCDF12_NS)
-            refine_value.set("idref", OSCAP_VALUE + value_id)
-            refine_value.set("selector", selector)
-            element.append(refine_value)
-
-        for refined_rule, refinement_list in self.refine_rules.items():
-            refine_rule = ET.Element("{%s}refine-rule" % XCCDF12_NS)
-            refine_rule.set("idref", OSCAP_RULE + refined_rule)
-            for refinement in refinement_list:
-                refine_rule.set(refinement[0], refinement[1])
-            element.append(refine_rule)
+        self._setup_defined_rules(element)
 
         return element
 
