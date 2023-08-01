@@ -5,7 +5,8 @@
 # disruption = low
 
 function remove_{{{ COMPONENT }}}_{{{ PARAM }}}_configuration {
-    local COMPONENT_PARAM_CONFIG=$(ls {{{ DROPIN_DIR }}}/*.conf)
+    local COMPONENT_PARAM_CONFIG
+    COMPONENT_PARAM_CONFIG=$(ls {{{ DROPIN_DIR }}}/*.conf)
     COMPONENT_PARAM_CONFIG+=("{{{ MASTER_CFG_FILE }}}")
 
     for f in "${COMPONENT_PARAM_CONFIG[@]}"
@@ -18,9 +19,10 @@ function remove_{{{ COMPONENT }}}_{{{ PARAM }}}_configuration {
 }
 
 function {{{ COMPONENT }}}_{{{ PARAM }}}_add_configuration {
-    local COMPONENT_PARAM_REMEDY_CFG="{{{ DROPIN_DIR }}}/oscap-remedy.conf"
+    local COMPONENT_PARAM_REMEDY_CFG
+    COMPONENT_PARAM_REMEDY_CFG="{{{ DROPIN_DIR }}}/oscap-remedy.conf"
 
-    cp "${COMPONENT_PARAM_REMEDY_CFG}" "${ COMPONENT_PARAM_REMEDY_CFG}.bak"
+    cp "${COMPONENT_PARAM_REMEDY_CFG}" "${COMPONENT_PARAM_REMEDY_CFG}.bak"
     # Insert before the line matching the regex '^#\s*Compress'.
     line_number="$(LC_ALL=C grep -n "^#\s*{{{ PARAM }}}" "${COMPONENT_PARAM_REMEDY_CFG}.bak" | LC_ALL=C sed 's/:.*//g')"
     if [ -z "$line_number" ]; then
