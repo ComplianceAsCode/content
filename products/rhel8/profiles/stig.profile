@@ -538,6 +538,9 @@ selections:
     # RHEL-08-020032
     - dconf_gnome_disable_user_list
 
+    # RHEL-08-020035
+    - logind_session_timeout
+
     # RHEL-08-020039
     - package_tmux_installed
 
