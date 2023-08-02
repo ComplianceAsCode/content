@@ -276,6 +276,7 @@ selections:
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
+- logind_session_timeout
 - mount_option_boot_efi_nosuid
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -369,6 +370,7 @@ selections:
 - service_fapolicyd_enabled
 - service_firewalld_enabled
 - service_kdump_disabled
+- service_rngd_enabled
 - service_rsyslog_enabled
 - service_sshd_enabled
 - service_systemd-coredump_disabled
@@ -460,7 +462,7 @@ selections:
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3
 - var_sshd_set_keepalive=1
-- sshd_approved_macs=stig
+- sshd_approved_macs=stig_extended
 - sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
 - var_accounts_authorized_local_users_regex=rhel8
