@@ -1,0 +1,47 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Check for duplicate {{{ PARAM }}} values in master {{{ COMPONENT }}} configuration
+  ansible.builtin.lineinfile:
+    path: {{{ MASTER_CFG_FILE }}}
+    create: false
+    regexp: ^\s*{{{ PARAM }}}=
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: dupes_master
+
+- name: Deduplicate {{{ PARAM }}} values from {{{ COMPONENT }}} master configuration
+  ansible.builtin.lineinfile:
+    path:  {{{ MASTER_CFG_FILE }}}
+    create: false
+    regexp: ^\s*{{{ PARAM }}}=
+    state: absent
+  when: dupes_master.found is defined and dupes_master.found > 1
+
+- name: Collect all config {{{ COMPONENT }}} files which configure {{{ PARAM }}}
+  ansible.builtin.find:
+    paths: {{{ DROPIN_DIR }}}
+    contains: ^[\s]*{{{ PARAM }}}=.*$
+    patterns: "*.conf"
+  register: {{{ COMPONENT }}}_{{{ PARAM }}}_dropin_config_files
+
+- name: Deduplicate values from {{{ COMPONENT }}} {{{ PARAM }}} dropin configuration
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    create: false
+    regexp: ^\s*{{{ PARAM }}}=
+    state: absent
+  loop: "{{  {{{ COMPONENT }}}_{{{ PARAM }}}_dropin_config_files.files }}"
+
+- name: Insert correct line to {{{ COMPONENT }}} {{{ PARAM }}} configuration
+  ansible.builtin.lineinfile:
+    path: {{{ DROPIN_DIR }}}/oscap-remedy.conf
+    create: true
+    regexp: ^\s*{{{ PARAM }}}=
+    line: {{{ PARAM }}}={{{ VALUE }}}
+    state: present
+    insertbefore: ^# {{{ PARAM }}}
+    validate: bash -n %s

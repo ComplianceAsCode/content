@@ -581,6 +581,72 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{{ oval_check_config_file(path, prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, quotes=quotes) }}}
 {{%- endmacro %}}
 
+{{#
+  High level macro to check if a particular configuration variable is set in application master config file or its dropin includes
+
+:param path: Path to the master configuration file.
+:type path: str
+:param dropin_dir: Path to the dropin directory
+:type dropin_dir: str
+:param parameter: The shell variable name.
+:type parameter: str
+:param value: The variable value WITHOUT QUOTES.
+:type value: str
+:param application: The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+:type application: str
+:param no_quotes: If set, the check will require that the RHS of the assignment is the literal value, without quotes. If no_quotes is false, then one level of single or double quotes won't be regarded as part of the value by the check.
+:type no_quotes: bool
+:param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+:type missing_parameter_pass: bool
+:param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+:type multi_value: bool
+:param missing_config_file_fail: If set, the check will fail if the configuration file doesn't exist in the system.
+:type missing_config_file_fail: bool
+#}}
+
+{{%- macro oval_check_dropin_file(path, dropin_dir, parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
+<def-group>
+  {{%- set prefix_regex = "^[ \\t]*" -%}}
+  {{%- set separator_regex = '=' -%}}
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{%- if missing_config_file_fail %}}
+    <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
+    operator="AND">
+    {{%- endif %}}
+
+    <criteria comment="{{{ application }}} is configured correctly"
+    operator="OR">
+        {{{- oval_line_in_file_criterion(path, parameter) }}}
+        {{%- if missing_parameter_pass %}}
+        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
+        {{%- endif %}}
+        {{{ oval_line_in_file_criterion(dropin_dir, parameter, missing_parameter_pass, "", rule_id ~ "_dropin_file") }}}
+    </criteria>
+    {{%- if missing_config_file_fail %}}
+        {{{- oval_config_file_exists_criterion(path) }}}
+    </criteria>
+    {{%- endif %}}
+  </definition>
+  {{{ oval_line_in_file_test(path, parameter) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{%- if missing_parameter_pass %}}
+  {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{%- endif %}}
+  {{%- if missing_config_file_fail %}}
+  {{{ oval_config_file_exists_test(path) }}}
+  {{{ oval_config_file_exists_object(path) }}}
+  {{%- endif %}}
+  {{{ oval_line_in_file_test(dropin_dir, parameter, missing_parameter_pass, rule_id ~ "_dropin_file") }}}
+  {{{ oval_line_in_file_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value,'^.*\.conf$', rule_id ~ "_dropin_file") }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id ~ "_dropin_file") }}}
+
+</def-group>
+{{%- endmacro %}}
+
+
 
 {{#
   High level macro to check if a particular combination of parameter and value in the Audit daemon configuration file is set.
