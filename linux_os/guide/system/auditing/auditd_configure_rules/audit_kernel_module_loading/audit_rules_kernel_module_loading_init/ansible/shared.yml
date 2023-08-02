@@ -4,10 +4,16 @@
 # disruption = low
 # strategy = configure
 
-{{% if "ol" in product or 'rhel' in product %}}
+{{% if product in ['ol', 'rhel', 'ubuntu2004'] %}}
 {{% set auid_filters = "-F auid>=" ~ auid ~ " -F auid!=unset" %}}
 {{% else %}}
 {{% set auid_filters = "" %}}
+{{% endif %}}
+
+{{% if 'ubuntu2004' in product %}}
+{{% set key_change = "module_chng" %}}
+{{% else %}}
+{{% set key_change = "module-change" %}}
 {{% endif %}}
 
 # What architecture are we on?
@@ -29,7 +35,7 @@
       other_filters="",
       auid_filters=auid_filters,
       syscalls=["init_module"],
-      key="module-change",
+      key=key_change,
       syscall_grouping=["init_module","finit_module"],
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -37,7 +43,7 @@
       other_filters="",
       auid_filters=auid_filters,
       syscalls=["init_module"],
-      key="module-change",
+      key=key_change,
       syscall_grouping=["init_module","finit_module"],
       )|indent(4) }}}
 
@@ -48,7 +54,7 @@
       other_filters="",
       auid_filters=auid_filters,
       syscalls=["init_module"],
-      key="module-change",
+      key=key_change,
       syscall_grouping=["init_module","finit_module"],
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
@@ -56,7 +62,7 @@
       other_filters="",
       auid_filters=auid_filters,
       syscalls=["init_module"],
-      key="module-change",
+      key=key_change,
       syscall_grouping=["init_module","finit_module"],
       )|indent(4) }}}
   when: audit_arch == "b64"
