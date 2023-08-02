@@ -1,3 +1,9 @@
+{{%- if product in ["ubuntu2004"] %}}
+    {{%- set unix_update_path="/sbin/unix_update" %}}
+{{%- else %}}
+    {{%- set unix_update_path="/usr/sbin/unix_update" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 prodtype: ol8,ol9,rhel8,rhel9,ubuntu2004,ubuntu2204
@@ -10,11 +16,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/unix_update -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ unix_update_path }}} -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/unix_update -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ unix_update_path }}} -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -47,3 +53,4 @@ template:
     name: audit_rules_privileged_commands
     vars:
         path: /usr/sbin/unix_update
+        path@ubuntu2004: /sbin/unix_update
