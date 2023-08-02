@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure that timesyncd is enabled and configured") }}}
+    <criteria comment="Timesyncd is configured" operator="OR">
+      <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_master_ntp_configuration" />
+      <criterion test_ref="{{{ rule_id }}}_test_systemd_timesyncd_dropin_ntp_configuration" />
+    </criteria>
+  </definition>
+
+  <external_variable comment="remote vendor-approved pool servers" datatype="string"
+   id="var_multiple_time_servers" version="1" />
+
+  <local_variable id="{{{ rule_id }}}_variable_test_servers" datatype="string" version="1"
+    comment="a local variable which includes all vendor-approved pool servers">
+      <concat>
+          <literal_component>^[[:space:]]*(NTP|FallbackNTP)[[:space:]]*=[[:space:]]*</literal_component>
+          <split delimiter=",">
+              <variable_component var_ref="var_multiple_time_servers" />
+          </split>
+          <literal_component>.*$</literal_component>
+      </concat>
+  </local_variable>
+
+  <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
+    id="{{{ rule_id }}}_object_systemd_timesyncd_master_configuration" version="1">
+    <ind:filepath>/etc/systemd/timesyncd.conf</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="{{{ rule_id }}}_variable_test_servers"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
+    id="{{{ rule_id }}}_object_systemd_timesyncd_dropin_configuration" version="1">
+    <ind:path>/etc/systemd/timesyncd.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match" var_ref="{{{ rule_id }}}_variable_test_servers"/>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    comment="Ensure NTP servers are configured in master configuration file"
+    id="{{{ rule_id }}}_test_systemd_timesyncd_master_ntp_configuration">
+    <ind:object object_ref="{{{ rule_id }}}_object_systemd_timesyncd_master_configuration" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    comment="Ensure NTP servers are configured in dropin configuration file"
+    id="{{{ rule_id }}}_test_systemd_timesyncd_dropin_ntp_configuration">
+    <ind:object object_ref="{{{ rule_id }}}_object_systemd_timesyncd_dropin_configuration" />
+  </ind:textfilecontent54_test>
+
+</def-group>
