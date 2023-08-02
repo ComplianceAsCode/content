@@ -336,10 +336,8 @@ selections:
     # UBTU-20-010178 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the pam_timestamp_check command.
     - audit_rules_privileged_commands_pam_timestamp_check
 
-    # UBTU-20-010179 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the init_module syscall.
+    # UBTU-20-010179 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the init_module and finit_module syscall.
     - audit_rules_kernel_module_loading_init
-
-    # UBTU-20-010180 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the finit_module syscall.
     - audit_rules_kernel_module_loading_finit
 
     # UBTU-20-010181 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the delete_module syscall
