@@ -29,6 +29,5 @@ selections:
     # remove some rules in pcs-hardening
     - '!accounts_umask_etc_login_defs'
     - '!accounts_umask_etc_profile'
-    - '!service_firewalld_enabled'
     - '!sshd_disable_root_login'
     - '!sshd_set_max_auth_tries'
