@@ -1611,10 +1611,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
+    status: automated
     notes: >-
-      Rule only coveres cronjob, not logrotate config itself.
+      Rule configures logrotate service.
     rules:
+      - package_logrotate_installed
+      - timer_logrotate_enabled
       - ensure_logrotate_activated
 
   - id: 5.1.1

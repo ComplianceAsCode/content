@@ -2146,6 +2146,8 @@ controls:
   rules:
     - var_auditd_action_mail_acct=root
     - auditd_data_retention_space_left_action
+    - package_logrotate_installed
+    - timer_logrotate_enabled
     - ensure_logrotate_activated
     - auditd_data_retention_max_log_file_action_stig
     - auditd_data_retention_num_logs
