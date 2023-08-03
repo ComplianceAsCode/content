@@ -1,11 +1,11 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,rhel7
+prodtype: fedora,ol7,rhel7,rhel9
 
-title: 'Install cryptsetup-luks Package'
+title: 'Install cryptsetup Package'
 
 description: |-
-    {{{ describe_package_install(package="cryptsetup-luks") }}}
+    {{{ describe_package_install(package="cryptsetup") }}}
 
 rationale: |-
     LUKS is the upcoming standard for Linux hard disk encryption. By providing a standard
@@ -13,20 +13,22 @@ rationale: |-
     provide secure management of multiple user passwords. In contrast to existing solution,
     LUKS stores all necessary setup information in the partition header, enabling the user
     to transport or migrate their data seamlessly. LUKS for dm-crypt is implemented in
-    <tt>cryptsetup</tt>. <tt>cryptsetup-luks</tt> is intended as a complete replacement for the
-    original <tt>cryptsetup</tt>. It provides all the functionality of the original
-    version plus all LUKS features, that are accessible by luks* action.
+    <tt>cryptsetup</tt>.
 
 severity: medium
 
 identifiers:
     cce@rhel7: CCE-82996-0
+    cce@rhel9: CCE-86612-9
+
+references:
+    ccn@rhel9: A.25.SEC-RHEL1,A.25.SEC-RHEL2
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="cryptsetup-luks") }}}'
+ocil: '{{{ ocil_package(package="cryptsetup") }}}'
 
 template:
     name: package_installed
     vars:
-        pkgname: cryptsetup-luks
+        pkgname: cryptsetup
