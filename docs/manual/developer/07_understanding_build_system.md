@@ -75,6 +75,7 @@ directly, in general this takes the following outline of steps in rough order
 of occurrence:
 
 - Generate SCE content and metadata.
+- Generate the product dictionary.
 - Resolve rules, profiles, groups, static checks and static remediations to the product-specific resolved form (also known as compiled form).
 - Generate templated checks and remediations from the templates.
 - Collect all available remediations.
@@ -104,6 +105,7 @@ refer to their help text for more information and usage:
   remediations and places them into a single directory.
 - `combine_ovals.py` -- combines separate (per-rule, shared, and templated) OVAL XML trees into a single larger OVAL XML document.
 - `compile_all.py` -- resolves rules, groups, profiles static checks and remediations to the product-specific resolved form (also known as compiled form)
+- `compile_product.py` -- resolves the product.yml and distributed product attributes
 - `compose_ds.py` -- composes an SCAP source data stream from individual
   SCAP components
 - `cpe_generate.py` -- generates the product-specific CPE dictionary and
