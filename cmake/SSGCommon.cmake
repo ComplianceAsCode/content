@@ -316,6 +316,7 @@ macro(ssg_build_manifest PRODUCT)
         generate-ssg-${PRODUCT}-manifest.json
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/manifest-${PRODUCT}.json"
     )
+    add_dependencies(zipfile generate-ssg-${PRODUCT}-manifest.json)
 endmacro()
 
 # Builds SCE content into the build system. This occurs prior to XCCDF
