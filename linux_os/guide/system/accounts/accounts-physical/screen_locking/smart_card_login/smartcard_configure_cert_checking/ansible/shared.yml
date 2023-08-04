@@ -4,6 +4,12 @@
 # complexity = low
 # disruption = low
 
+{{%- if 'sle' in product %}}
+  {{%- set pam_package = "pam_pkcs11" %}}
+{{%- else %}}
+  {{%- set pam_package = "libpam-pkcs11" %}}
+{{% endif %}}
+
 - name: Package facts
   package_facts:
 
@@ -11,12 +17,7 @@
   shell: grep "cert_policy" /etc/pam_pkcs11/pam_pkcs11.conf | wc -l
   register: cert_policy_count
   changed_when: false
-  when:
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
+  when: '"{{{ pam_package }}}" in ansible_facts.packages'
 
 - name: Add cert_policy entry if none exist in /etc/pam_pkcs11/pam_pkcs11.conf
   lineinfile:
@@ -25,34 +26,18 @@
     create: true
   when:
     - (cert_policy_count.stdout | int) == 0
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
+    - '"{{{ pam_package }}}" in ansible_facts.packages'
 
 - name: Replace 'none' from cert_policy
   replace:
     path: /etc/pam_pkcs11/pam_pkcs11.conf
     regexp: (^\s*cert_policy\s*=\s*)none\s*;(\s*$)
     replace: \g<1>ocsp_on,ca,signature;\g<2>
-  when:
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
-
+  when: '"{{{ pam_package }}}" in ansible_facts.packages'
 
 - name: Add 'ocsp_on' parameter for cert_policy in /etc/pam_pkcs11/pam_pkcs11.conf
   replace:
     path: /etc/pam_pkcs11/pam_pkcs11.conf
     regexp: (^\s*cert_policy\s*=\s*)(?!.*ocsp_on)(.*)
     replace: \g<1>ocsp_on,\g<2>
-  when:
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
-
+  when: '"{{{ pam_package }}}" in ansible_facts.packages'
