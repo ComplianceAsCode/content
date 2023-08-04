@@ -4,53 +4,49 @@
 # complexity = low
 # disruption = low
 
-- name: Package facts
-  package_facts:
+{{%- if 'sle' in product %}}
+  {{%- set pam_package = "pam_pkcs11" %}}
+{{%- else %}}
+  {{%- set pam_package = "libpam-pkcs11" %}}
+{{% endif %}}
 
-- name: Check if cert_policy entry exists in /etc/pam_pkcs11/pam_pkcs11.conf
-  shell: grep "cert_policy" /etc/pam_pkcs11/pam_pkcs11.conf | wc -l
-  register: cert_policy_count
-  changed_when: false
-  when:
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
+- name: "{{{ rule_title }}} - Gather Package Facts"
+  ansible.builtin.package_facts:
 
-- name: Add cert_policy entry if none exist in /etc/pam_pkcs11/pam_pkcs11.conf
-  lineinfile:
+- name: "{{{ rule_title }}} - Check if cert_policy in /etc/pam_pkcs11/pam_pkcs11.conf Is Already Set"
+  ansible.builtin.lineinfile:
     path: /etc/pam_pkcs11/pam_pkcs11.conf
-    line: 'cert_policy = ca,signature,ocsp_on;'
-    create: true
-  when:
-    - (cert_policy_count.stdout | int) == 0
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
+    regexp: ^(\s*)cert_policy\s+.*
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: cert_policy_replace
+  when: '"{{{ pam_package }}}" in ansible_facts.packages'
 
-- name: Replace 'none' from cert_policy
-  replace:
+- name: "{{{ rule_title }}} - Ensure 'none' Parameter for cert_policy in /etc/pam_pkcs11/pam_pkcs11.conf Is Removed"
+  ansible.builtin.replace:
     path: /etc/pam_pkcs11/pam_pkcs11.conf
     regexp: (^\s*cert_policy\s*=\s*)none\s*;(\s*$)
-    replace: \g<1>ocsp_on,ca,signature;\g<2>
-  when: 
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
+    replace: \g<1>ca,signature,ocsp_on;\g<2>
+  when:
+  - cert_policy_replace.found > 0 
+  - '"{{{ pam_package }}}" in ansible_facts.packages'
 
-- name: Add 'ca' parameter for cert_policy in /etc/pam_pkcs11/pam_pkcs11.conf
-  replace:
+- name: "{{{ rule_title }}} - Add 'ca' Parameter for cert_policy in /etc/pam_pkcs11/pam_pkcs11.conf"
+  ansible.builtin.replace:
     path: /etc/pam_pkcs11/pam_pkcs11.conf
     regexp: (^\s*cert_policy\s*=\s*)(?!.*ca)(.*)
     replace: \g<1>ca,\g<2>
   when:
-    {{% if 'sle' in product %}}
-    - "'pam_pkcs11' in ansible_facts.packages"
-    {{% else %}}
-    - "'libpam-pkcs11' in ansible_facts.packages"
-    {{% endif %}}
+  - cert_policy_replace.found > 0 
+  - '"{{{ pam_package }}}" in ansible_facts.packages'
+
+- name: "{{{ rule_title }}} - Add cert_policy if It Does Not Exist"
+  ansible.builtin.lineinfile:
+    path: /etc/pam_pkcs11/pam_pkcs11.conf
+    line: cert_policy = ca,signature,ocsp_on;
+    state: present
+    create: true
+  when: 
+  - cert_policy_replace.found == 0
+  - '"{{{ pam_package }}}" in ansible_facts.packages'
