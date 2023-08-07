@@ -30,7 +30,11 @@ ocil: |-
     following command:
 
     <pre>$ sudo auditctl -l | grep fdisk
+    {{% if product in ['ubuntu2004'] %}}
+    -w /usr/sbin/fdisk -p x -k fdisk
+    {{% else %}}
     -w /sbin/fdisk -p x -k fdisk </pre>
+    {{% endif %}}
 
     If the command does not return a line, or the line is commented out, this
     is a finding.
