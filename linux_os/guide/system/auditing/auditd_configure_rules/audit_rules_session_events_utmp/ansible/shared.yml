@@ -4,5 +4,11 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_audit_augenrules_add_watch_rule(path='/run/utmp', permissions='wa', key='session') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/run/utmp', permissions='wa', key='session') }}}
+{{%- if product in ['ubuntu2004'] %}}
+  {{%- set utmp_path = "/var/run/utmp" %}}
+{{%- else %}}
+  {{%- set utmp_path = "/run/utmp" %}}
+{{% endif %}}
+
+{{{ ansible_audit_augenrules_add_watch_rule(path=utmp_path, permissions='wa', key='session') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=utmp_path, permissions='wa', key='session') }}}
