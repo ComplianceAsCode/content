@@ -189,7 +189,7 @@ jobs:
       -   name: Checkout
           uses: actions/checkout@v3
       -   name: Install deps python
-          run: pip install -r requirements.txt -r test-requirements.txt
+          run: pip install -r requirements-base.txt -r test-requirements.txt
       -   name: Build
           run: |-
             ./build_product \
