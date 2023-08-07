@@ -1,3 +1,9 @@
+{{%- if product in ['ubuntu2004'] %}}
+  {{%- set utmp_path = "/var/run/utmp" %}}
+{{%- else %}}
+  {{%- set utmp_path = "/run/utmp" %}}
+{{% endif %}}
+
 documentation_complete: true
 
 prodtype: sle15,ubuntu2004,ubuntu2204
@@ -11,12 +17,12 @@ description: |-
     default), add the following lines to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing such process information:
-    <pre>-w /run/utmp -p wa -k session</pre>
+    <pre>-w {{{ utmp_path }}} -p wa -k session</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for attempted manual
     edits of files involved in storing such process information:
-    <pre>-w /run/utmp -p wa -k session</pre>
+    <pre>-w {{{ utmp_path }}} -p wa -k session</pre>
 
 rationale: |-
     Manual editing of these files may indicate nefarious activity, such
@@ -38,12 +44,13 @@ ocil_clause: 'Audit rule is not present'
 
 ocil: |-
     To Check the file is being audited by performing the following command
-    <pre> sudo auditctl -l | grep -w '/run/utmp'</pre>
+    <pre> sudo auditctl -l | grep -w '{{{ utmp_path }}}'</pre>
 
 template:
     name: audit_rules_login_events
     vars:
         path: /run/utmp
+        path@ubuntu2004: /var/run/utmp
     backends:
         ansible: "off"
         bash: "off"
