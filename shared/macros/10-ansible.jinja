@@ -124,12 +124,12 @@ value: :code:`Setting={{ varname1 }}`
 {{%- if block %}}
 - name: "{{{ msg or rule_title }}}"
   block:
-    {{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, create='no', state='absent', register='dupes', check_mode=True)|indent }}}
-    {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, create='no', state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
+    {{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, create=create, state='absent', register='dupes', check_mode=True)|indent }}}
+    {{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, create=create, state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + path, path, mode=mode, regex=line_regex, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
 {{%- else %}}
-{{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, create='no', state='absent', register='dupes', check_mode=True) }}}
-{{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, create='no', state='absent', when='dupes.found is defined and dupes.found > 1') }}}
+{{{ ansible_lineinfile("Check for duplicate values", path, mode=mode, regex=line_regex, create=create, state='absent', register='dupes', check_mode=True) }}}
+{{{ ansible_lineinfile("Deduplicate values from " + path, path, mode=mode, regex=line_regex, create=create, state='absent', when='dupes.found is defined and dupes.found > 1') }}}
 {{{ ansible_lineinfile("Insert correct line into " + path, path, mode=mode, regex=line_regex, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
 {{%- endif %}}
 {{%- endmacro %}}
