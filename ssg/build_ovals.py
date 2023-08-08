@@ -404,11 +404,23 @@ class OVALBuilder:
         self.already_loaded[oval_key] = self.oval_version
         return xml_content
 
+    def _check_affected(self, tree):
+        definitions = tree.findall(".//{%s}definition" % (oval_ns))
+        for definition in definitions:
+            def_id = definition.get("id")
+            affected = definition.findall(
+                "./{%s}metadata/{%s}affected" % (oval_ns, oval_ns))
+            if not affected:
+                raise ValueError(
+                    "Definition '%s' doesn't contain OVAL 'affected' element"
+                    % (def_id))
+
     def _manage_oval_file_xml_content(
             self, file_path, xml_content, from_benchmark):
+        oval_file_tree = _create_oval_tree_from_string(xml_content)
+        self._check_affected(oval_file_tree)
         if not _check_is_applicable_for_product(xml_content, self.product):
             return False
-        oval_file_tree = _create_oval_tree_from_string(xml_content)
         if not _check_oval_version_from_oval(oval_file_tree, self.oval_version):
             return False
         if from_benchmark:
