@@ -59,9 +59,20 @@
 
 
 if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
-    set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
+# Starting OpenSCAP 1.3.5, the schematron validation is the default behaviour
+# due to certification requirements, the --schematron has been deprecated
+# and --skip-schematron has been introduced.
+    if("${OSCAP_VERSION}" VERSION_LESS "1.3.5")
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
+    else()
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+    endif()
 else()
-    set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+    if("${OSCAP_VERSION}" VERSION_LESS "1.3.5")
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+    else()
+        set(OSCAP_OVAL_SCHEMATRON_OPTION "--skip-schematron")
+    endif()
 endif()
 
 set(SSG_HTML_GUIDE_FILE_LIST "")
