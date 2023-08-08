@@ -10,7 +10,7 @@ metadata:
 
 reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Container_Platform_V1R3_SRG.zip
 
-title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux CoreOS'
+title: 'DRAFT - DISA STIG for Red Hat Enterprise Linux CoreOS'
 
 description: |-
     This is a draft profile for experimental purposes
