@@ -12,8 +12,6 @@
         comment="system cryptography policy is configured"/>
       <criterion test_ref="test_system_crypto_policy_value"
         comment="check if var_system_crypto_policy variable selection is set to FIPS"/>
-      <criterion test_ref="test_fips_1_argument_in_etc_kernel_cmdline"
-        comment="check if kernel option fips=1 is present in /etc/kernel/cmdline"/>
       {{% if "ol" in product or "rhel" in product %}}
       <criteria operator="OR">
         <criteria operator="AND">
@@ -56,19 +54,6 @@
   <ind:textfilecontent54_state id="state_fips_1_argument_in_captured_group" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?fips=1(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_test id="test_fips_1_argument_in_etc_kernel_cmdline" version="1"
-    check="all" check_existence="all_exist"
-    comment="check if kernel option fips=1 is present in /etc/kernel/cmdline">
-    <ind:object object_ref="object_fips_1_argument_in_etc_kernel_cmdline" />
-    <ind:state state_ref="state_fips_1_argument_in_captured_group" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_fips_1_argument_in_etc_kernel_cmdline" version="1">
-    <ind:filepath operation="pattern match">^/etc/kernel/cmdline</ind:filepath>
-    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <ind:variable_test id="test_system_crypto_policy_value" version="1"
     check="at least one" comment="test if var_system_crypto_policy selection is set to FIPS">
