@@ -292,6 +292,8 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel9" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel9" "cis" "cis")
+    ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
+    ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
