@@ -51,7 +51,7 @@ selections:
     - var_password_pam_minlen=15
     - var_sshd_set_keepalive=1
     - sshd_approved_macs=stig_extended
-    - sshd_approved_ciphers=stig
+    - sshd_approved_ciphers=stig_extended
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=rhel8
     - var_accounts_passwords_pam_faillock_deny=3
