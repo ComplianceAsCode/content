@@ -4,7 +4,7 @@ prodtype: ocp4
 
 title: 'Verify User Who Owns The Etcd Member Pod Specification File'
 
-description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/etc/kubernetes/manifests/etcd-pod.yaml", owner="root") }}}'
 
 rationale: |-
     The etcd pod specification file controls various parameters that
@@ -25,10 +25,10 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/manifests/etcd-pod.yaml", owner="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}
+    {{{ ocil_file_owner(file="/etc/kubernetes/manifests/etcd-pod.yaml", owner="root") }}}
 
 platforms:
     - ocp4-master-node
