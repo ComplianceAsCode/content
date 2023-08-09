@@ -39,7 +39,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({hypershift_path: dump_path}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting_suppressed({hypershift_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
