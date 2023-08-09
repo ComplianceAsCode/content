@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
+title: 'DRAFT - Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the

@@ -8,12 +8,12 @@ metadata:
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: '[DRAFT] DISA STIG for Red Hat Virtualization Host (RHVH)'
+title: 'DRAFT - DISA STIG for Red Hat Virtualization Host (RHVH)'
 
 description: |-
     This *draft* profile contains configuration checks that align to the
     DISA STIG for Red Hat Virtualization Host (RHVH).
-    
+
 selections:
     - installed_OS_is_FIPS_certified
     - login_banner_text=dod_banners
