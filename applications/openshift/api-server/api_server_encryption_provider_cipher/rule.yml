@@ -96,5 +96,13 @@ template:
     entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: "[:]"
-    xccdf_variable: var_apiserver_encryption_type
-    regex_data: true
+    check_existence: "at_least_one_exists"
+    values:
+        # aesgcm is available for OpenShift 4.13 and newer, but we include it
+        # in our check here since it's not possible to set the encryption
+        # provider type to aesgcm on OpenShift versions older than 4.13, which
+        # simplifies the rule since we don't have to modify the check based on
+        # the OpenShift version CPE.
+        - value: "aescbc|aesgcm"
+          type: "string"
+          operation: "pattern match"
