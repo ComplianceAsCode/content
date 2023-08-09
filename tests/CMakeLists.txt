@@ -83,68 +83,12 @@ add_test(
 set_tests_properties("macros-oval" PROPERTIES LABELS quick)
 
 add_test(
-    NAME "fix_rules-empty_identifiers"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "empty_identifiers"
+    NAME "fix_rules"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "test_all"
 )
-set_tests_properties("fix_rules-empty_identifiers" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-empty_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-empty_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-invalid_identifiers"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "invalid_identifiers"
-)
-set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-invalid_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-int_identifiers"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "int_identifiers"
-)
-set_tests_properties("fix_rules-int_identifiers" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-int_identifiers" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-int_identifiers" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-empty_references"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "empty_references"
-)
-set_tests_properties("fix_rules-empty_references" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-empty_references" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-empty_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-int_references"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "int_references"
-)
-set_tests_properties("fix_rules-int_references" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-int_references" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-int_references" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-duplicate_subkeys"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "duplicate_subkeys"
-)
-set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-duplicate_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-sort_subkeys"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "sort_subkeys"
-)
-set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-sort_subkeys" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-
-add_test(
-    NAME "fix_rules-sort_prodtypes"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "sort_prodtypes"
-)
-set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES LABELS quick)
-set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES DEPENDS "test-rule-dir-json")
-set_tests_properties("fix_rules-sort_prodtypes" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+set_tests_properties("fix_rules" PROPERTIES LABELS quick)
+set_tests_properties("fix_rules" PROPERTIES DEPENDS "test-rule-dir-json")
+set_tests_properties("fix_rules" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
 if(PY_YAMLPATH)
     if(PY_PYTEST)
@@ -157,7 +101,6 @@ if(PY_YAMLPATH)
         NAME "ansible-file-removed-and-added"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_ansible_file_removed_and_added.py" --ansible_dir "${CMAKE_BINARY_DIR}/ansible"
     )
-    set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 endif()
 
 macro(mypy_test SCRIPT)
