@@ -1,0 +1,30 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Uncomment banner-message-enable for Login Warning Banner"
+  ansible.builtin.lineinfile:
+      path: /etc/gdm3/greeter.dconf-defaults
+      regexp: ^(#.*)(banner-message-enable=)
+      line: \2
+      backrefs: true
+
+- name: "{{{ rule_title }}} - Set banner-message-enable to True for Login Warning Banner"
+  ansible.builtin.ini_file:
+      dest: /etc/gdm3/greeter.dconf-defaults
+      section: "org/gnome/login-screen"
+      option: banner-message-enable
+      value: "true"
+      create: yes
+      no_extra_spaces: yes
+
+- name: "{{{ rule_title }}} - Dconf Update"
+  ansible.builtin.command: dconf update
+
+- name: "{{{ rule_title }}} - Restart gdm3.service"
+  ansible.builtin.systemd:
+      name: gdm3
+      enabled: true
+      state: restarted
