@@ -1,0 +1,29 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Uncomment banner-message-enable for Login Warning Banner"
+  lineinfile:
+    path: /etc/gdm3/greeter.dconf-defaults
+    regexp: ^(#.*)(banner-message-enable=true)
+    line: \2
+    backrefs: true
+
+- name: "Set banner-message-enable to true for Login Warning Banner"
+  ini_file:
+    dest: /etc/gdm3/greeter.dconf-defaults
+    section: "org/gnome/login-screen"
+    option: banner-message-enable
+    value: "true"
+    create: yes
+    no_extra_spaces: yes
+
+- name: Dconf Update
+  command: dconf update
+
+- name: Restart gdm3.service
+  systemd:
+    name: gdm3
+    enabled: true
+    state: restarted
