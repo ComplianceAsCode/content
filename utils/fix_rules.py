@@ -750,6 +750,28 @@ def sort_prodtypes(args, product_yaml):
     exit(int(len(results) > 0))
 
 
+@command("test_all", "Perform all checks on all rules")
+def test_all(args, product_yaml):
+    result = 0
+    checks = [
+        (has_empty_identifier, "empty identifiers"),
+        (has_invalid_cce, "invalid CCEs"),
+        (has_int_identifier, "integer references"),
+        (has_empty_references, "empty references"),
+        (has_int_reference, "unsorted references"),
+        (has_duplicated_subkeys, "duplicated subkeys"),
+        (has_unordered_sections, "unsorted references"),
+        (has_unsorted_prodtype, "unsorted prodtype")
+    ]
+    for item in rule_data_generator(args):
+        rule_path, rule, rule_lines, _, _ = item
+        for func, msg in checks:
+            if func(rule_path, rule, rule_lines):
+                print("Rule '%s' has %s" % (rule_path, msg))
+                result = 1
+    exit(result)
+
+
 def create_parser_from_functions(subparsers):
     for name, function in _COMMANDS.items():
         subparser = subparsers.add_parser(name, description=function.description)
