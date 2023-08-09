@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R9.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R11.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -33,7 +33,7 @@ description: 'This profile contains configuration checks that align to the
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
 extends: null
 metadata:
-    version: V1R10
+    version: V1R11
     SMEs:
     - mab879
     - ggbecker
@@ -463,7 +463,7 @@ selections:
 - var_password_pam_retry=3
 - var_sshd_set_keepalive=1
 - sshd_approved_macs=stig_extended
-- sshd_approved_ciphers=stig
+- sshd_approved_ciphers=stig_extended
 - sshd_idle_timeout_value=10_minutes
 - var_accounts_authorized_local_users_regex=rhel8
 - var_accounts_passwords_pam_faillock_deny=3
