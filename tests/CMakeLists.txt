@@ -287,13 +287,19 @@ macro(ssg_refcheck_test PRODUCT PROFILE KEY)
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
 endmacro()
 
+if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
+    ssg_refcheck_test("rhel9" "cis_workstation_l1" "cis")
+    ssg_refcheck_test("rhel9" "cis_workstation_l2" "cis")
+    ssg_refcheck_test("rhel9" "cis_server_l1" "cis")
+    ssg_refcheck_test("rhel9" "cis" "cis")
+endif()
+
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     ssg_refcheck_test("rhel8" "cis_workstation_l1" "cis")
     ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel8" "cis" "cis")
 endif()
-
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
     ssg_refcheck_test("rhel7" "cis_workstation_l1" "cis")
