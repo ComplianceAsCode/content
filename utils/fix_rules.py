@@ -34,8 +34,7 @@ def command(name, description):
     return wrapper
 
 
-def has_empty_identifier(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_empty_identifier(rule_path, rule, rule_lines):
     if 'identifiers' in rule and rule['identifiers'] is None:
         return True
 
@@ -61,8 +60,7 @@ def has_no_cce(yaml_file, product_yaml=None):
     return True
 
 
-def has_empty_references(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_empty_references(rule_path, rule, rule_lines):
     if 'references' in rule and rule['references'] is None:
         return True
 
@@ -73,8 +71,7 @@ def has_empty_references(yaml_file, product_yaml=None):
     return False
 
 
-def has_prefix_cce(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_prefix_cce(rule_path, rule, rule_lines):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
@@ -85,8 +82,7 @@ def has_prefix_cce(yaml_file, product_yaml=None):
     return False
 
 
-def has_invalid_cce(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_invalid_cce(rule_path, rule, rule_lines):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
@@ -95,8 +91,7 @@ def has_invalid_cce(yaml_file, product_yaml=None):
     return False
 
 
-def has_int_identifier(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_int_identifier(rule_path, rule, rule_lines):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for _, value in rule['identifiers'].items():
             if type(value) != str:
@@ -104,8 +99,7 @@ def has_int_identifier(yaml_file, product_yaml=None):
     return False
 
 
-def has_int_reference(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_int_reference(rule_path, rule, rule_lines):
     if 'references' in rule and rule['references'] is not None:
         for _, value in rule['references'].items():
             if type(value) != str:
@@ -113,16 +107,13 @@ def has_int_reference(yaml_file, product_yaml=None):
     return False
 
 
-def has_duplicated_subkeys(yaml_file, product_yaml=None):
-    rule_lines = read_file_list(yaml_file)
-    return ssg.rule_yaml.has_duplicated_subkeys(yaml_file, rule_lines, TO_SORT)
+def has_duplicated_subkeys(rule_path, rule, rule_lines):
+    return ssg.rule_yaml.has_duplicated_subkeys(rule_path, rule_lines, TO_SORT)
 
 
-def has_unordered_sections(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_unordered_sections(rule_path, rule, rule_lines):
     if 'references' in rule or 'identifiers' in rule:
-        rule_lines = read_file_list(yaml_file)
-        new_lines = ssg.rule_yaml.sort_section_keys(yaml_file, rule_lines, TO_SORT)
+        new_lines = ssg.rule_yaml.sort_section_keys(rule_path, rule_lines, TO_SORT)
 
         # Compare string representations to avoid issues with references being
         # different.
@@ -131,7 +122,7 @@ def has_unordered_sections(yaml_file, product_yaml=None):
     return False
 
 
-def find_rules_generator(args, func):
+def rule_data_generator(args):
     # Iterates over all know rules in the build system (according to
     # rule_dir_json.py) and attempts to load the resulting YAML files.
     # If they parse correctly, yield them as a result.
@@ -163,12 +154,20 @@ def find_rules_generator(args, func):
 
         rule_path = ssg.rules.get_rule_dir_yaml(rule_obj['dir'])
         try:
-            if func(rule_path, local_env_yaml):
-                yield (rule_path, product_path, local_env_yaml)
+            rule = yaml.open_and_macro_expand(rule_path, local_env_yaml)
+            rule_lines = read_file_list(rule_path)
+            yield rule_path, rule, rule_lines, product_path, local_env_yaml
         except jinja2.exceptions.UndefinedError as ue:
             msg = "Failed to parse file {0} (with product.yml: {1}). Skipping. {2}"
             msg = msg.format(rule_path, product_path, ue)
             print(msg, file=sys.stderr)
+
+
+def find_rules_generator(args, func):
+    for item in rule_data_generator(args):
+        rule_path, rule, rule_lines, product_path, local_env_yaml = item
+        if func(rule_path, rule, rule_lines):
+            yield (rule_path, product_path, local_env_yaml)
 
 
 def find_rules(args, func):
@@ -558,11 +557,11 @@ def add_cce(args, product_yaml):
 def _add_cce(directory, cce_pool, rules, product_yaml, args):
     product = product_yaml["product"]
 
-    def is_relevant_rule(fname, _=None):
+    def is_relevant_rule(rule_path, rule, rule_lines):
         for r in rules:
             if (
-                    fname.endswith("/{r}/rule.yml".format(r=r))
-                    and has_no_cce(fname, product_yaml)):
+                    rule_path.endswith("/{r}/rule.yml".format(r=r))
+                    and has_no_cce(rule_path, product_yaml)):
                 return True
         return False
 
@@ -588,8 +587,7 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
             cce_pool.remove_cce_from_file(cce)
 
 
-def has_unsorted_prodtype(yaml_file, product_yaml=None):
-    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+def has_unsorted_prodtype(rule_path, rule, rule_lines):
     if 'prodtype' in rule:
         prodtypes = rule['prodtype'].split(',')
         return prodtypes != sorted(prodtypes)
