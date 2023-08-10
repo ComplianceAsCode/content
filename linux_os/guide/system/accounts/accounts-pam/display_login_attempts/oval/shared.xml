@@ -4,31 +4,29 @@
 {{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
 {{% endif %}}
 <def-group>
-  <definition class="compliance" id="display_login_attempts" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Configure the system to notify users of last login/access using pam_lastlog.") }}}
-    <criteria operator="AND">
-      <criterion comment="Conditions for pam_lastlog are satisfied" test_ref="test_display_login_attempts" />
-      <criterion comment="silent option for pam_lastlog is not set" test_ref="test_display_login_attempts_silent" />
+    <criteria>
+      <criterion test_ref="test_display_login_attempts"
+        comment="conditions for pam_lastlog are satisfied"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="Check the pam_lastlog configuration" id="test_display_login_attempts" version="1">
+  <ind:textfilecontent54_test id="test_display_login_attempts" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="Check the pam_lastlog is configured to show last login information">
     <ind:object object_ref="obj_display_login_attempts" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
+  <!-- At least one line should include pam_lastlog.so without silent option
+       It sometimes intentional to include pam_lastlog.so with silent option and some previous
+       conditionals in order to avoid message duplication since some programs, like login,
+       implicitly shows the "Last login:" information regardless of pam_lastlog configuration.
+       An detailed documentation about these cases is found in
+       https://github.com/ComplianceAsCode/content/issues/9031 -->
+  <ind:textfilecontent54_object id="obj_display_login_attempts" version="2">
     <ind:filepath>{{{ pam_lastlog_path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*session\s+required\s+pam_lastlog\.so(?:\s+[\w=]+)*\s+showfailed(\s|$)</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <!-- DISA STIG forbids the 'silent' option for SLE12/SLE15, OL7, RHEL7/RHEL8 -->
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Forbid 'silent' option for pam_lastlog" id="test_display_login_attempts_silent" version="1">
-    <ind:object object_ref="obj_display_login_attempts_silent" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_display_login_attempts_silent" version="1">
-    <ind:filepath>{{{ pam_lastlog_path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*session\s+.*\s+pam_lastlog\.so(?:\s+[\w=]+)*\s+silent(\s|$)</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*session\s+.*\s+pam_lastlog\.so\b(?!.*\ssilent\s).*\sshowfailed\s.*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
