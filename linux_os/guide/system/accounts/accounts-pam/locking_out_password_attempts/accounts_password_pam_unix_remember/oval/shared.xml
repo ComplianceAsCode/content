@@ -3,6 +3,12 @@
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
 {{% endif %}}
+{{% if product in ["ubuntu2004"] %}}
+{{%- set pam_unix_legacy_regex = '^\s*password\s+\[success=1 default=ignore\]\s+pam_unix\.so.*remember=([0-9]*).*$' %}}
+{{% else %}}
+{{%- set pam_unix_legacy_regex = '^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*remember=([0-9]*).*$' %}}
+{{% endif %}}
+
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
@@ -145,14 +151,14 @@
   <!-- Check the pam_unix.so remember case -->
   <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember_legacy" version="1"
     check="all" check_existence="all_exist"
-    comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth">
+    comment="Test if remember attribute of pam_unix.so is set correctly in {{{ accounts_password_pam_unix_remember_file }}}">
     <ind:object object_ref="object_accounts_password_pam_unix_remember_legacy" />
     <ind:state state_ref="state_accounts_password_pam_unix_remember" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember_legacy" version="1">
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*remember=([0-9]*).*$</ind:pattern>
+    <ind:filepath>{{{ accounts_password_pam_unix_remember_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ pam_unix_legacy_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
