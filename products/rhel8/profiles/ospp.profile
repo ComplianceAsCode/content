@@ -3,10 +3,10 @@ documentation_complete: true
 metadata:
     version: 4.2.1
     SMEs:
-        - comps
-        - stevegrubb
+        - ggbecker
+        - matusmarhefka
 
-reference: https://www.niap-ccevs.org/Profile/PP.cfm
+reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=442&id=442
 
 title: 'Protection Profile for General Purpose Operating Systems'
 
