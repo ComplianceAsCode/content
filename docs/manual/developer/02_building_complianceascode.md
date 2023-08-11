@@ -563,7 +563,7 @@ packages.
 
 There may be situations during the development and testing phases where it is
 convenient to use Python modules installed via pip3, as in [this example](https://github.com/ComplianceAsCode/content/pull/7376/files),
-where the `yamlpath` module is needed for some tests, but it is not available
+where the `xmldiff` module is needed for some tests, but it is not available
 in the official distro repositories and therefore needs to be installed via pip3.
 
 However, for some time now, Python modules installed via pip3 have been located
