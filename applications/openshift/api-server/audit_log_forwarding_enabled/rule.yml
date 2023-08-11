@@ -39,7 +39,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance", true) | indent(4) }}}
 
 template:
   name: yamlfile_value
