@@ -90,19 +90,6 @@ set_tests_properties("fix_rules" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules" PROPERTIES DEPENDS "test-rule-dir-json")
 set_tests_properties("fix_rules" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
-if(PY_YAMLPATH)
-    if(PY_PYTEST)
-        add_test(
-            NAME "test-function-check_playbook_file_removed_and_added"
-            COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_CURRENT_SOURCE_DIR}/test_check_playbook_file_removed_and_added.py"
-        )
-    endif()
-    add_test(
-        NAME "ansible-file-removed-and-added"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_ansible_file_removed_and_added.py" --ansible_dir "${CMAKE_BINARY_DIR}/ansible"
-    )
-endif()
-
 macro(mypy_test SCRIPT)
     if(PY_MYPY)
         add_test(
