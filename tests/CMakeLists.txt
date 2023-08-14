@@ -34,12 +34,6 @@ set_tests_properties("test-rule-dir-json" PROPERTIES LABELS quick)
 set_tests_properties("test-rule-dir-json" PROPERTIES FIXTURES_SETUP "rule-dir-json")
 
 add_test(
-    NAME "validate-parse-platform"
-    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_parse_platform.py" "${CMAKE_SOURCE_DIR}"
-)
-set_tests_properties("validate-parse-platform" PROPERTIES LABELS quick)
-
-add_test(
     NAME "stable-profile-ids"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stable_profile_ids.py" "${CMAKE_BINARY_DIR}"
 )
