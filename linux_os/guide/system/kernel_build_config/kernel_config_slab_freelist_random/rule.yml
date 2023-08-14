@@ -8,7 +8,7 @@ description: |-
     Randomizes the freelist order used on creating new pages.
     This configuration is available from kernel 5.9, but may be available if backported by distros.
 
-    {{{ describe_kernel_build_config("CONFIG_SLAB_FRELIST_RANDOM", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SLAB_FREELIST_RANDOM", "y") | indent(4) }}}
 
 rationale: |-
     This security feature reduces the predictability of the kernel slab allocator against heap overflows.
@@ -28,11 +28,11 @@ references:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ ocil_kernel_build_config("CONFIG_SLAB_FRELIST_RANDOM", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_SLAB_FREELIST_RANDOM", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config
     vars:
-        config: CONFIG_SLAB_FRELIST_RANDOM
+        config: CONFIG_SLAB_FREELIST_RANDOM
         value: 'y'
 
