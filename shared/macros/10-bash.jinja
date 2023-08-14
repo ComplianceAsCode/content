@@ -2002,7 +2002,7 @@ if grep -q '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' 
        # modify the GRUB command-line if an {{{ arg_name }}}= arg already exists
        sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/"  '/etc/default/grub'
 # Add to already existing GRUB_CMDLINE_LINUX parameters
-elif grep -q '^\s*GRUB_CMDLINE_LINUX='  '/etc/default/grub' ; then 
+elif grep -q '^\s*GRUB_CMDLINE_LINUX='  '/etc/default/grub' ; then
        # no {{{ arg_name }}}=arg is present, append it
        sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ arg_name_value }}}\"/"  '/etc/default/grub'
 # Add GRUB_CMDLINE_LINUX parameters line

@@ -1201,7 +1201,7 @@ Part of the grub2_bootloader_argument template.
     create: yes
     mode: '0644'
   when: argcheck.rc != 0 and linecheck.rc != 0
-  
+
 - name: Replace existing {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
