@@ -381,7 +381,7 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 {{% if product in ["ol8", "ol9"] %}}
 # Find the include keyword, extract from the line the glob expression representing included files.
 # And if it is a relative path prepend '/etc/ssh/'
-included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
+included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*include\s*//I' | sed -e 's|^[^/]|/etc/ssh/&|')
 for included_file in ${included_files} ; do
     {{{ lineinfile_absent("$included_file", "^\s*" ~ parameter, insensitive=true) | indent(4) }}}
 done
