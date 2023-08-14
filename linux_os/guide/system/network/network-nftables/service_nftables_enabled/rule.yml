@@ -36,7 +36,7 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("nftables") }}}
 
-platform: machine and package[nftables] and not package[firewalld]
+platform: machine and package[nftables] and service_disabled[firewalld]
 
 template:
     name: service_enabled
