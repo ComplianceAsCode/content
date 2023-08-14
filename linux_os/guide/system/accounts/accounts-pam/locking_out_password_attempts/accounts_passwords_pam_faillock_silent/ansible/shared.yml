@@ -5,6 +5,12 @@
 # disruption = low
 {{{ ansible_pam_faillock_enable() }}}
 
+{{% if 'ubuntu' in product %}}
+  {{%- set pam_path = ['/etc/pam.d/common-auth'] %}}
+{{% else %}}
+  {{%- set pam_path = ['/etc/pam.d/system-auth', '/etc/pam.d/password-auth'] %}}
+{{% endif %}}
+
 - name: {{{ rule_title }}} - Check the presence of /etc/security/faillock.conf file
   ansible.builtin.stat:
     path: /etc/security/faillock.conf
@@ -29,12 +35,6 @@
         regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth(:?(?!silent).)*)
         line: \1required\3 silent
         state: present
-      loop:
-        {{% if 'ubuntu' in product %}}
-        - /etc/pam.d/common-auth
-        {{% else %}}
-        - /etc/pam.d/system-auth
-        - /etc/pam.d/password-auth
-        {{% endif %}}
+      loop: {{{ pam_path }}}
   when:
     - not result_faillock_conf_check.stat.exists
