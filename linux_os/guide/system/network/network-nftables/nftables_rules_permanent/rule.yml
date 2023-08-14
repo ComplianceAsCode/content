@@ -17,7 +17,7 @@ rationale: |-
 
 severity: medium
 
-platform: package[nftables] and not package[firewalld]
+platform: package[nftables] and service_disabled[firewalld]
 
 identifiers:
     cce@sle15: CCE-92485-2
