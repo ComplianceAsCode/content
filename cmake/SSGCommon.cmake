@@ -675,19 +675,19 @@ macro(ssg_make_html_stats_for_product PRODUCT)
     )
 endmacro()
 
-macro(ssg_render_policies_for_product PRODUCT CONTROL_FILES)
-    foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render-policy.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html" ${PRODUCT} "${CMAKE_SOURCE_DIR}/controls/${CONTROL_FILE}.yml"
-            DEPENDS generate-ssg-${PRODUCT}-ds.xml
-            COMMENT "[${PRODUCT}-render-policy-${CONTROL_FILE}] generating rendered policy for ${CONTROL_FILE}"
-        )
+macro(ssg_render_policies_for_product PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/rendered-policies-${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_UTILS_SCRIPTS}/render_all_policies.py" --ssg-root "${CMAKE_SOURCE_DIR}" --output-dir "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies" --product ${PRODUCT}
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/rendered-policies-${PRODUCT}"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}-render-policies] generating rendered policies for ${PRODUCT}"
+    )
 
-        add_custom_target(${PRODUCT}-render-policy-${CONTROL_FILE}
-            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/${CONTROL_FILE}.html"
-        )
-    endforeach()
+    add_custom_target(${PRODUCT}-render-policies
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/rendered-policies/rendered-policies-${PRODUCT}"
+    )
 endmacro()
 
 macro(ssg_make_all_tables PRODUCT)
@@ -827,21 +827,11 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(profile-stats ${PRODUCT}-profile-stats)
     ssg_make_html_stats_for_product(${PRODUCT})
 
-    file(GLOB CONTROL_FILEPATHS "${CMAKE_SOURCE_DIR}/controls/*.yml")
-
-    foreach(CONTROL_FILEPATH IN LISTS CONTROL_FILEPATHS)
-        get_filename_component(CONTROL_FILE ${CONTROL_FILEPATH} NAME_WE)
-        list(APPEND CONTROL_FILES ${CONTROL_FILE})
-    endforeach()
-
-    ssg_render_policies_for_product(${PRODUCT} ${CONTROL_FILES})
-
-    foreach(CONTROL_FILE IN LISTS CONTROL_FILES)
-        add_dependencies(render-policies ${PRODUCT}-render-policy-${CONTROL_FILE})
-    endforeach()
-
     add_dependencies(html-stats ${PRODUCT}-html-stats)
     add_dependencies(html-profile-stats ${PRODUCT}-html-profile-stats)
+
+    ssg_render_policies_for_product(${PRODUCT})
+    add_dependencies(render-policies ${PRODUCT}-render-policies)
 
     if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(7|8)")
         ssg_build_disa_delta(${PRODUCT} "stig")

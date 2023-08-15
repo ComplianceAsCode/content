@@ -45,6 +45,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         cpe_names=lambda: set(),
         platform=lambda: None,
         filter_rules=lambda: "",
+        policies=lambda: list(),
         ** XCCDFEntity.KEYS
     )
 
