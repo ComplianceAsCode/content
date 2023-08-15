@@ -4,7 +4,7 @@ title: Ensure that Audit Log Webhook Is Configured
 
 {{% set default_jqfilter = '.spec' %}}
 {{% set default_api_path = '/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance' %}}
-{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ default_jqfilter %}}
 
 description: |-

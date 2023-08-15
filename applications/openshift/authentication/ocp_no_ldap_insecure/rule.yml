@@ -4,7 +4,7 @@ title: "Only Use LDAP-based IdPs with TLS"
 
 {{% set default_jqfilter = '.spec' %}}
 {{% set default_api_path = '/apis/config.openshift.io/v1/oauths/cluster' %}}
-{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/clusters/hostedclusters/{{.hypershift_cluster}}' %}}
+{{% set hypershift_path = '/apis/hypershift.openshift.io/v1beta1/namespaces/{{.hypershift_namespace_prefix}}/hostedclusters/{{.hypershift_cluster}}' %}}
 {{% set hypershift_jqfilter = '.spec.configuration.oauth' %}}
 {{% set custom_api_path = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_path ~ '{{else}}' ~  default_api_path ~ '{{end}}' %}}
 {{% set custom_jqfilter = '{{if ne .hypershift_cluster "None"}}' ~ hypershift_jqfilter ~ '{{else}}' ~  default_jqfilter ~ '{{end}}' %}}
