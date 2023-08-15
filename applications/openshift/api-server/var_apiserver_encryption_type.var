@@ -2,7 +2,15 @@ documentation_complete: true
 
 title: 'OpenShift APIServer etcd encryption type'
 
-description: 'OpenShift APIServer etcd encryption config check encryption type'
+description: |
+    OpenShift APIServer etcd encryption provider type to use for
+    remediation. This variable is only applicable to remediations, and does not
+    affect checks. This variable is set to 'aescbc' by default, which is
+    supported across all OpenShift versions as the etcd encryption provider
+    type. OpenShift 4.13 and newer support 'aesgcm'. Attempting to use 'aesgcm'
+    on older versions of OpenShift will result in a failed remediation. Please
+    make sure the encryption provider type you set is supported on the version
+    of OpenShift you're using.
 
 type: string
 
@@ -11,4 +19,6 @@ operator: equals
 interactive: false
 
 options:
-    default: 'aescbc'
+    default: aescbc
+    aescbc: aescbc
+    aesgcm: aesgcm
