@@ -89,15 +89,6 @@ tests.test\_macros\_oval module
    :undoc-members:
    :show-inheritance:
 
-
-tests.test\_parse\_platform module
-----------------------------------
-
-.. automodule:: tests.test_parse_platform
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 tests.test\_profile\_stability module
 -------------------------------------
 
