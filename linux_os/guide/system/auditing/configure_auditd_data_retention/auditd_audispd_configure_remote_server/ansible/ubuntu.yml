@@ -1,0 +1,24 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_audispd_remote_server") }}}
+{{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
+
+- name: "{{{ rule_title }}} - Enable audisp-remote Plugin"
+  ansible.builtin.lineinfile:
+      path: /etc/audisp/plugins.d/au-remote.conf
+      line: \2 = yes
+      regexp: ^(#\s*)?(active).*$
+      create: true
+      backrefs: true
+      state: present
+
+- name: "{{{ rule_title }}} - Make Sure That a Remote Server Is Configured for Audispd"
+  ansible.builtin.lineinfile:
+      path: "{{{ audisp_config_file_path }}}"
+      line: "remote_server = {{ var_audispd_remote_server }}"
+      regexp: '^\s*remote_server\s*=.*$'
+      create: true
+      state: present
