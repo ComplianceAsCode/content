@@ -72,3 +72,6 @@ fixtext: |-
     $ sudo echo -n > /etc/resolv.conf
 
 srg_requirement: 'For {{{ full_name }}} systems using Domain Name Servers (DNS) resolution, at least two name servers must be configured.'
+
+warnings:
+  - general: This rule doesn't come with a remediation, the IP addresses of local authoritative name servers need to be added by the administrator.
