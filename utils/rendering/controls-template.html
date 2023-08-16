@@ -22,12 +22,15 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
   {{% if control.selections -%}}
   Selections:
   <ul>
-    {{%- for ruleobj in control.selections -%}}
-    {{%- set rule_id = ruleobj|string %}}
-    {{%- if rule_id in rules %}}
-    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[rule_id].relative_definition_location }}}">{{{ rule_id }}}</a>: {{{ rules[rule_id].title }}}</li>
+    {{%- for selection in control.selections|sort -%}}
+    {{%- if '=' in selection %}}
+    <li>{{{ selection }}}</li>
     {{%- else %}}
-    <li>{{{ rule_id }}} - not available for this product</li>
+    {{%- if selection in rules %}}
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[selection].relative_definition_location }}}">{{{ selection }}}</a>: {{{ rules[selection].title }}}</li>
+    {{%- else %}}
+    <li>{{{ selection }}} - not available for this product</li>
+    {{%- endif -%}}
     {{%- endif -%}}
     {{%- endfor %}}
   </ul>
