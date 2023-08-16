@@ -1,0 +1,43 @@
+# platform = multi_platform_ubuntu
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: "{{{ rule_title }}} - Set Facts"
+  ansible.builtin.set_fact:
+      conf_files: [ '/etc/rsyslog.d/50-default.conf' ]
+      remote_methods:
+        - selector: 'auth.*'
+          regexp: ^.*auth\.\*.*$
+          log_path_name: secure
+        - selector: 'authpriv.*'
+          regexp: ^.*authpriv\.\*.*$
+          log_path_name: secure
+        - selector: 'daemon.*'
+          regexp: ^.*daemon\.\*.*$
+          log_path_name: messages
+
+- name: "{{{ rule_title }}} - Ensure /etc/rsyslog.d/50-default.conf Exists"
+  ansible.builtin.file:
+      path: "{{ conf_files.0 }}"
+      state: touch
+
+- name: "{{{ rule_title }}} - Check for Existing Values in Conf Files"
+  ansible.builtin.lineinfile:
+      path: "{{ item.1 }}"
+      regexp: "{{ item.0.regexp }}"
+      state: absent
+  check_mode: true
+  changed_when: false
+  register: remote_method_values
+  loop: "{{ remote_methods|product(conf_files)|list }}"
+
+- name: "{{{ rule_title }}} - Configure /etc/rsyslog.d/50-default.conf With Proper Log Paths"
+  ansible.builtin.lineinfile:
+      path: /etc/rsyslog.d/50-default.conf
+      line: "{{ item.item.0.selector }} /var/log/{{ item.item.0.log_path_name }}"
+      insertafter: ^.*\/var\/log\/secure.*$
+      create: yes
+  loop: '{{ remote_method_values.results }}'
+  when: item.found == 0
