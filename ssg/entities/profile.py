@@ -98,6 +98,7 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         return controls
 
     def resolve_controls(self, controls_manager):
+        self.policies = list(self.controls_by_policy.keys())
         for policy_id, controls_ids in self.controls_by_policy.items():
             controls = self._process_controls_ids_into_controls(
                 controls_manager, policy_id, controls_ids)
