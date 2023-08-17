@@ -5,6 +5,8 @@
 {{%- set VALUE="correct_value" %}}
 {{%- endif %}}
 
+source common.sh
+
 # fail1 is the plain expected fail scenario, the config with a wrong value
 for file in /boot/config-* ; do
     if grep -q ^{{{ CONFIG }}} "$file" ; then
@@ -15,6 +17,5 @@ for file in /boot/config-* ; do
 done
 
 # Ensure one config file is compliant
-cp /boot/config-$(uname -r ) /boot/config-test
+touch /boot/config-test
 sed -i "s/{{{ CONFIG }}}.*/{{{ CONFIG }}}={{{ VALUE }}}/" /boot/config-test
-

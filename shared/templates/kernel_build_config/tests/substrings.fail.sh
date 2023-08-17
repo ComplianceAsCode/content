@@ -10,6 +10,8 @@
 {{%- set SUPER_VALUE='XYZ' ~ VALUE %}}
 {{%- endif %}}
 
+source common.sh
+
 for file in /boot/config-* ; do
     if grep -q ^{{{ CONFIG }}} "$file" ; then
         sed -i "s/{{{ CONFIG }}}.*/{{{ CONFIG }}}={{{ SUPER_VALUE }}}/" "$file"

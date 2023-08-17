@@ -5,6 +5,8 @@
 {{%- set VALUE="correct_value" %}}
 {{%- endif %}}
 
+source common.sh
+
 # fail1 is the plain expected fail scenario, the config with a wrong value
 
 for file in /boot/config-* ; do
