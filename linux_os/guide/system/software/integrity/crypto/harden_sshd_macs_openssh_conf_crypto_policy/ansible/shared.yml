@@ -5,6 +5,17 @@
 # disruption = low
 {{{ ansible_instantiate_variables("sshd_approved_macs") }}}
 
+- name: "{{{ rule_title }}}: Stat"
+  stat:
+    path: "{{ path }}"
+  register: openssh_file
+
+- name: "{{{ rule_title }}}: Copy file if symlink"
+  ansible.builtin.copy:
+    src: "{{ openssh_file.stat.lnk_source }}"
+    dest: "/etc/crypto-policies/back-ends/openssh.config"
+  when: openssh_file.stat.islnk is defined and openssh_file.stat.islnk
+
 {{{ ansible_set_config_file(
         msg='Configure SSH Daemon to Use FIPS 140-2 Validated MACs: openssh.config',
         file='/etc/crypto-policies/back-ends/openssh.config',

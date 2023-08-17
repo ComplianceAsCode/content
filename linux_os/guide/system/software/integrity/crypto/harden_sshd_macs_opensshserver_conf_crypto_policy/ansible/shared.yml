@@ -13,8 +13,13 @@
 - name: "{{{ rule_title }}}: Stat"
   stat:
     path: "{{ path }}"
-    follow: yes
   register: opensshserver_file
+
+- name: "{{{ rule_title }}}: Copy file if symlink"
+  ansible.builtin.copy:
+    src: "{{ opensshserver_file.stat.lnk_source }}"
+    dest: "{{ path }}"
+  when: opensshserver_file.stat.islnk is defined and opensshserver_file.stat.islnk
 
 - name: "{{{ rule_title }}}: Create"
   lineinfile:

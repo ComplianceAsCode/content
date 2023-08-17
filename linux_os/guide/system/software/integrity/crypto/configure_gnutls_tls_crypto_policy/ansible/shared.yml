@@ -12,8 +12,13 @@
 - name: "{{{ rule_title }}}: stat"
   stat:
     path: "{{ path }}"
-    follow: yes
   register: gnutls_file
+
+- name: "{{{ rule_title }}}: Copy file if symlink"
+  ansible.builtin.copy:
+    src: "{{ gnutls_file.stat.lnk_source }}"
+    dest: "{{ path }}"
+  when: gnutls_file.stat.islnk is defined and gnutls_file.stat.islnk
 
 - name: "{{{ rule_title }}}: Add"
   lineinfile:
