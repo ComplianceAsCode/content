@@ -1018,7 +1018,7 @@ selections:
     - no_netrc_files
 
     ### 6.2.15 Ensure no local interactive user has .forward files (Automated)
-    # - no_forward_files
+    - no_forward_files
 
     ### 6.2.16 Ensure no users have .rhosts files (Automated)
     - no_rsh_trust_files
