@@ -88,7 +88,7 @@ selections:
     #### 1.1.7.2 Ensure nodev option set on /home partition (Automated)
     - mount_option_home_nodev
 
-    #### 1.1.7.2 Ensure nosuid option set on /home partition (Automated)
+    #### 1.1.7.3 Ensure nosuid option set on /home partition (Automated)
     - mount_option_home_nosuid
 
     ### 1.1.8 Configure /dev/shm ###
