@@ -62,9 +62,9 @@ In order to keep the project scalable, we divide the project into separate areas
 Those areas are going to be segmented by
 
 - Products (RHEL, Ubuntu, …) - make it easy to develop content of a product that doesn't influence the other content or the build system.
-- Product-specific profiles (PSPs s.a. Firefox STIG, Ubuntu CIS, …) and respective control files - make it easy for SMEs that only want to assign rules to profiles without going into details.
+- Product-specific profiles (PSPs), e.g. Firefox STIG, Ubuntu CIS, &mldr;, and respective control files - make it easy for SMEs that only want to assign rules to profiles without going into details.
 - Shared resources
-  - Product-independent profiles (PIPs s.a. ANSSI, HIPAA, PCI-DSS, …) and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
+  - Product-independent profiles (PIPs), e.g. ANSSI, HIPAA, PCI-DSS, &mldr;, and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
   - Build system - decisions upon architecture of the build system impact build time, project capabilities, and can also move maintenance costs.
   - Test-related code - ensure that tests have the greatest coverage as possible, but that don't waste time and don't suffer from false positives.
   - Other - rules only loosely coupled to products, templates, CPEs etc. Same principles that apply to PIPs apply for the shared content as well.
@@ -180,6 +180,6 @@ The project maintainers decide about granting or strip of rights and about excep
 
 #### Organizations
 
-Aside from an organization (s.a. a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
+Aside from an organization (i.e., a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
 Those rights can be granted for a period of 12 months and their renewal can be requested.
 These rights can only be used in cases when regular developers aren't available and the organization needs to get their things through.
