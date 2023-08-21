@@ -8,8 +8,7 @@
       <description>Verify the SUSE operating system is configured to not overwrite Pluggable
     Authentication Modules (PAM) configuration on package changes.</description>
     </metadata>
-    <criteria comment="package pam_apparmor is installed and automatic configuration is disabled" operator="AND">
-        <extend_definition comment="package package pam_apparmor installed" definition_ref="package_pam_apparmor_installed" />
+    <criteria>
         <criterion comment="/etc/pam.d/common-* are not symbolic links" test_ref="test_pam_disable_automatic_configuration" />
     </criteria>
   </definition>
