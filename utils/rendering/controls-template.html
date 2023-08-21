@@ -24,7 +24,10 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
   <ul>
     {{%- for selection in control.selections|sort -%}}
     {{%- if '=' in selection %}}
-    <li>{{{ selection }}}</li>
+    {{% set value_id, value = selection.split('=') %}}
+    {{%- if value_id in values %}}
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ values[value_id].relative_definition_location }}}">{{{ value_id }}}</a> = {{{ value }}}</li>
+    {{%- endif -%}}
     {{%- else %}}
     {{%- if selection in rules %}}
     <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[selection].relative_definition_location }}}">{{{ selection }}}</a>: {{{ rules[selection].title }}}</li>
