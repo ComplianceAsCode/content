@@ -144,7 +144,7 @@ All issues and pull requests for product removal must use the [product-removal](
 #### Organizational administration
 
 - Keeping track of the decomposition: Maintainer file, readme?
-- Area of effect: Github org and project settings
+- Area of effect: GitHub org and project settings
 - Guidelines: Project rules are followed or adapted to changing conditions.
   Decisions are made when a project wants to join the ComplianceAsCode organization.
 
@@ -155,9 +155,9 @@ All issues and pull requests for product removal must use the [product-removal](
 
 TLDR: 6 non-trivial PRs within 6 months => merge rights for 1 year since the last activity.
 
-Contributors can ask for merge rights by opening a Github issue using the `Request Merge Rights` issue template.
+Contributors can ask for merge rights by opening a GitHub issue using the `Request Merge Rights` issue template.
 1. The issue must contain the following:
-    1. The Github ID of the user
+    1. The GitHub username of the applicant
     1. The Reasoning for the requested merge rights
     1. The links for PRs
 
@@ -173,7 +173,7 @@ Loss of merge rights:
 
 Standard acquisition of merge rights:
 - Merit: Anybody who submits 6 non-trivial PRs that get merged in a period no longer than 6 months is entitled to get such rights, and is encouraged to ask for them.
-- Renewal: When a person reapplies for merge rights less than a year after losing them, it is possible to satisfy formal conditions by submitting non-trivial PRs or non-trivial reviews -- 3 of those in 3 months.
+- Renewal: When a person reapplies for merge rights less than a year after losing them, it is possible to satisfy formal conditions by submitting non-trivial PRs or non-trivial reviews &mdash; 3 of those in 3 months.
 
 The project maintainers decide about granting or strip of rights and about exceptions to the procedure e.g. when an applicant has deep prior experience with the project.
 
