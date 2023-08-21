@@ -33,7 +33,7 @@
     contains: '^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$'
   register: test_crypto_policy_include_directive
 
-- name: "{{ rule_title }} - Add .include Line for opensslcnf.config File in crypto_policy Section"
+- name: "{{{ rule_title }}} - Add .include Line for opensslcnf.config File in crypto_policy Section"
   ansible.builtin.lineinfile:
     create: yes
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
