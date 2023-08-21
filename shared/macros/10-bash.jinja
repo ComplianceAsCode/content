@@ -1998,12 +1998,16 @@ fi
 #}}
 {{%- macro update_etc_default_grub_manually(arg_name, arg_name_value) -%}}
 # Correct the form of default kernel command line in GRUB
-if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; then
+if grep -q '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"'  '/etc/default/grub' ; then
        # modify the GRUB command-line if an {{{ arg_name }}}= arg already exists
-       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/"  '/etc/default/grub'
-else
+       sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\){{{ arg_name }}}=[^[:space:]]\+\(.*\"\)/\1{{{ arg_name_value }}}\2/"  '/etc/default/grub'
+# Add to already existing GRUB_CMDLINE_LINUX parameters
+elif grep -q '^\s*GRUB_CMDLINE_LINUX='  '/etc/default/grub' ; then
        # no {{{ arg_name }}}=arg is present, append it
-       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ arg_name_value }}}\"/"  '/etc/default/grub'
+       sed -i "s/\(^\s*GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ arg_name_value }}}\"/"  '/etc/default/grub'
+# Add GRUB_CMDLINE_LINUX parameters line
+else
+       echo "GRUB_CMDLINE_LINUX=\"{{{ arg_name_value }}}\"" >> '/etc/default/grub'
 fi
 {{%- endmacro %}}
 

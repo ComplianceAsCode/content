@@ -1184,23 +1184,38 @@ Part of the grub2_bootloader_argument template.
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
 {{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name }}}=' /etc/default/grub
+  command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
   failed_when: False
   register: argcheck
+
+- name: Check {{{ arg_name }}} argument exists
+  command: grep '^\s*GRUB_CMDLINE_LINUX=' /etc/default/grub
+  failed_when: False
+  register: linecheck
+
+- name: Add watch rule for {{{ path }}} in /etc/audit/audit.rules
+  ansible.builtin.lineinfile:
+    line: 'GRUB_CMDLINE_LINUX="{{{ arg_name_value }}} "'
+    state: present
+    dest: /etc/default/grub
+    create: yes
+    mode: '0644'
+  when: argcheck.rc != 0 and linecheck.rc != 0
 
 - name: Replace existing {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
       regexp: '{{{ arg_name }}}=\w+'
       replace: '{{{ arg_name_value }}}'
-  when: argcheck.rc == 0
+  when: argcheck.rc == 0 and linecheck.rc == 0
 
 - name: Add {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
-      regexp: '(GRUB_CMDLINE_LINUX=.*)"'
+      regexp: '(^\s*GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 {{{ arg_name_value }}}"'
-  when: argcheck.rc != 0
+  when: argcheck.rc != 0 and linecheck.rc == 0
+
 {{% endif -%}}
 
 {{% if product in ['sle12', 'sle15'] %}}
