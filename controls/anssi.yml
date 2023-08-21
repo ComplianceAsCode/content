@@ -817,6 +817,8 @@ controls:
     - sshd_disable_root_login
     - package_sudo_installed
     - audit_rules_privileged_commands_sudo
+    - service_auditd_enabled
+    - package_audit_installed
 
   - id: R34
     title: Deactivation of service accounts
@@ -1427,6 +1429,8 @@ controls:
     - audit_rules_privileged_commands_kmod
 
     - audit_rules_immutable
+    - service_auditd_enabled
+    - package_audit_installed
 
   - id: R74
     title: Configuring the local messaging service
