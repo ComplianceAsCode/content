@@ -24,6 +24,36 @@ jobs:
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
 
+  validate-sle:
+    name: Build, Test on SLE 15 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: registry.suse.com/bci/bci-base:latest
+    steps:
+      - name: Update CA certificates
+        run: update-ca-certificates
+      - name: Zypper add factory repo - to install bats and ShellCheck
+        run: zypper --non-interactive ar  https://download.opensuse.org/repositories/openSUSE:/Backports:/SLE-15-SP5/standard/openSUSE:Backports:SLE-15-SP5.repo     
+      - name: Zypper auto import keys
+        run: zypper  --gpg-auto-import-keys --non-interactive ref
+      - name: Zypper refs
+        run: zypper refs
+      - name: Zypper refresh
+        run: zypper refresh    
+      - name: Install Deps           
+        run: zypper install -y git cmake make bats openscap-utils python3 python3-rpm python3-pip python3-devel python3-PyYAML python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
+      - name: Upgrade pip python
+        run: pip install pip --upgrade
+      - name: Install deps python
+        run: pip install pytest pytest-cov
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
   validate-suse:
     name: Build, Test on OpenSUSE Leap 15 (Container)
     runs-on: ubuntu-latest
