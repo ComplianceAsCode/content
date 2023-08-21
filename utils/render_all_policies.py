@@ -51,6 +51,18 @@ def get_rules(root_abspath: str, built_product_dir: str) -> dict:
     return rules
 
 
+def get_values(root_abspath: str, built_product_dir: str) -> dict:
+    resolved_values_dir = os.path.join(built_product_dir, "values")
+    values = dict()
+    for v_file in os.listdir(resolved_values_dir):
+        v_file_path = os.path.join(resolved_values_dir, v_file)
+        val = ssg.build_yaml.Value.from_yaml(v_file_path)
+        val.relative_definition_location = val.definition_location.replace(
+            root_abspath, "")
+        values[val.id_] = val
+    return values
+
+
 def load_policy(controls_dir: str, policy_id: str) -> ssg.controls.Policy:
     policy_file = os.path.join(controls_dir, policy_id + ".yml")
     policy = ssg.controls.Policy(policy_file)
@@ -60,12 +72,13 @@ def load_policy(controls_dir: str, policy_id: str) -> ssg.controls.Policy:
 
 def render_policy(
         policy: ssg.controls.Policy, product_id: str, rules: list,
-        output_dir: str) -> None:
+        values: list, output_dir: str) -> None:
     output_path = os.path.join(output_dir, policy.id + ".html")
     data = {
         "policy": policy,
         "title": f"Definition of {policy.title} for {product_id}",
-        "rules": rules
+        "rules": rules,
+        "values": values
     }
     utils.template_renderer.render_template(
         data, CONTROLS_TEMPLATE, output_path)
@@ -79,11 +92,12 @@ def main():
     policies_used_in_product = get_used_policies(built_product_dir)
     controls_dir = os.path.join(built_product_dir, "controls")
     rules = get_rules(root_path, built_product_dir)
+    values = get_values(root_path, built_product_dir)
     if not os.path.exists(args.output_dir):
         os.mkdir(args.output_dir)
     for policy_id in policies_used_in_product:
         policy = load_policy(controls_dir, policy_id)
-        render_policy(policy, args.product, rules, args.output_dir)
+        render_policy(policy, args.product, rules, values, args.output_dir)
 
 
 if __name__ == "__main__":
