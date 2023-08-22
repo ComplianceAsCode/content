@@ -40,7 +40,7 @@ ocil: |-
 
 fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
 
-platform: machine
+platform: machine and package[nftables] and package[firewalld]
 
 template:
     name: service_disabled

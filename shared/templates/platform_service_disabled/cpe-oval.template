@@ -1,8 +1,8 @@
 <def-group>
 
-{{%- set package_removed_test_id = _RULE_ID + "_test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_removed" -%}}
+{{%- set package_removed_test_id = _RULE_ID + "test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_removed" -%}}
 
-  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+  <definition class="inventory" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The " + SERVICENAME + " service should be disabled.", affected_platforms=["multi_platform_all"]) }}}
     <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
       <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
