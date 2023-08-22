@@ -1722,7 +1722,7 @@ Ensures that given mount point is in :code:`/etc/fstab`.
 
 #}}
 {{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
-mount_point_match_regexp="$(printf "[^#].*[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
+mount_point_match_regexp="$(printf "^[[:space:]]*[^#].*[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
 
 # If the mount point is not in /etc/fstab, get previous mount options from /etc/mtab
 if ! grep "$mount_point_match_regexp" /etc/fstab; then
@@ -1750,7 +1750,7 @@ fi
 
 #}}
 {{% macro bash_assert_mount_point_in_fstab(mount_point) -%}}
-mount_point_match_regexp="$(printf "[^#].*[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
+mount_point_match_regexp="$(printf "^[[:space:]]*[^#].*[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
 {{#
     This macro gets expanded to code that will return 1 if MOUNTPOINT is not in /etc/fstab;
     This is consistent with the behavior prior to converting this function to a jinja macro
