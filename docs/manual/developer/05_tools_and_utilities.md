@@ -106,7 +106,7 @@ Optionally, provide a path to a CaC root and destination YAML file:
                                --output /tmp/rule_dirs.json
 ```
 
-### `utils/fix_rules.py` -- automatically fix-up rules
+### `utils/fix_rules.py` &ndash; automatically fix-up rules
 
 `utils/fix_rules.py` includes various sub-commands for automatically fixing
 common problems in rules.
@@ -165,7 +165,7 @@ Example for `sle15` product:
 ```
 
 
-### `utils/autoprodtyper.py` -- automatically add product to `prodtype`
+### `utils/autoprodtyper.py` &ndash; automatically add product to `prodtype`
 
 When building a profile for a new product version (such as forking
 `ubuntu1804` into `ubuntu2004`), it is helpful to be able to build a
@@ -193,7 +193,7 @@ For example:
 Note that it is generally good practice to commit all changes prior to running
 one of these commands and then commit the results separately.
 
-### `utils/refchecker.py` -- automatically check `rule.yml` for references
+### `utils/refchecker.py` &ndash; automatically check `rule.yml` for references
 
 This utility checks all `rule.yml` referenced from a given profile for the
 specified reference.  Unlike `build-scripts/profile_tool.py`, which operates
@@ -218,7 +218,7 @@ product-independent.
 
 Note that this utility does not modify the rule directories at all.
 
-### `utils/mod_prodtype.py` -- programmatically modify prodtype in `rule.yml`
+### `utils/mod_prodtype.py` &ndash; programmatically modify prodtype in `rule.yml`
 
 `utils/mod_prodtype.py` is a command-based utility for modifying `rule.yml`
 files. It supports the following sub-commands:
@@ -259,7 +259,7 @@ For an example of `remove`:
     $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 remove ubuntu1604 ubuntu1804 ubuntu2004
 ````
 
-### `utils/mod_checks.py` and `utils/mod_fixes.py` -- programmatically modify check and fix applicability
+### `utils/mod_checks.py` and `utils/mod_fixes.py` &ndash; programmatically modify check and fix applicability
 
 These two utilities have identical usage. Both modifies the platform/product
 applicability of various files (either OVAL or hardening content), similar to
@@ -333,7 +333,7 @@ For an example of `make_shared`:
     $ ./utils/mod_fixes.py clean_components_post_updating bash make_shared sle12
 ```
 
-### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
+### `utils/create_scap_delta_tailoring.py` &ndash; Create tailoring files for rules not covered by other content
 
 The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
 It supports the following arguments:
@@ -359,7 +359,7 @@ To execute:
     $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r4-xccdf-scap.xml
 ```
 
-### `utils/compare_ds.py` - Compare two data streams (can also compare XCCDFs)
+### `utils/compare_ds.py` &ndash; Compare two data streams (can also compare XCCDFs)
 
 This script compares two data streams or two benchmarks and generates a diff output.
 It can show what changed in rules, for example in description, references and remediation scripts.
@@ -407,7 +407,7 @@ Generate the HTML diffs:
     $ for f in $(ls compare_ds-diffs/); do diff2html -i file -t $f -F "html/$f.html" "compare_ds-diffs/$f"; done
 ```
 
-### `utils/compare_results.py` - Compare to two ARF result files
+### `utils/compare_results.py` &ndash; Compare to two ARF result files
 
 The goal of this script is to compare the result of two ARF files.
 It will show what rules are missing, different, and the same between the two files.
@@ -438,7 +438,7 @@ To execute:
     $ ./utils/compare_results.py ssg_results.xml disa_results.xml
 ```
 
-### `utils/import_srg_spreadsheet.py` - Import changes made to an SRG Spreadsheet into the project
+### `utils/import_srg_spreadsheet.py` &ndash; Import changes made to an SRG Spreadsheet into the project
 
 This script will import changes from a SRG export spreadsheet.
 This script is designed to be run then each file reviewed carefully before being committed.
@@ -459,7 +459,7 @@ To execute:
     $ ./utils/import_srg_spreadsheet.py --changed 20220811_submission.xlsx --current build/cac_stig_output.xlsx -p rhel9
 ```
 
-## Profiling the buildsystem
+## Profiling the Build System
 
 The goal of `utils/build_profiler.sh` and `utils/build_profiler_report.py` is to help developers measure and compare build times of a single product or a group of products and determine what impact their changes had on the speed of the buildsystem.
 Both of these tools shouldn't be invoked alone but rather through the build_product script by using the -p|--profiling switch.
@@ -470,7 +470,7 @@ The intended usage is:
     $ ./build_product <products> -p|--profiling
 ```
 
-### `utils/build_profiler.sh` -- Handle directory structure for profiling files and invokes other script
+### `utils/build_profiler.sh` &ndash; Handle directory structure for profiling files and invokes other script
 
 The goal of this tool is to create the directory structure necessary for the profiling system and create a new numbered logfile, as well as invoking the `utils/build_profiler_report.py` and subsequently generating an interactive HTML file using webtreenode.
 
@@ -493,7 +493,7 @@ To execute:
     $ ./build_profiler.sh <product_string>
 ```
 
-### `utils/build_profiler_report.py` -- Parse a ninja file and display report to user
+### `utils/build_profiler_report.py` &ndash; Parse a ninja file and display report to user
 
 The goal of this tool is to generate a report about differences in build times, both a text version in the terminal and a webtreenode version that is later converted into an interactive HTML report.
 
@@ -521,7 +521,7 @@ To execute:
 
 ## Other Scripts
 
-### Compare Two SRG Spreadsheets - `utils/srg_diff.py`
+### `utils/srg_diff.py` &ndash; Compare Two SRG Spreadsheets
 
 This script will output an HTML page that compares two SRG exports.
 This script should help with reviewing changes created by `utils/import_srg_spreadsheet.py` script.
@@ -541,7 +541,7 @@ Example:
     Wrote output to build/diff.html.
 ```
 
-### Convert shorthand OVAL to a full OVAL - `utils/shorthand_to_oval.py`
+### `utils/shorthand_to_oval.py` &ndash; Convert shorthand OVAL to a full OVAL
 
 This script converts (resolved) shorthand OVAL files to a valid OVAL file.
 
@@ -556,7 +556,7 @@ $ utils/shorthand_to_oval.py build/rhel9/checks/oval/accounts_tmout.xml oval.xml
 $ oscap oval eval oval.xml
 ```
 
-### Ensure Control Files and Rules Are Consistent - `utils/controlrefcheck.py`
+### `utils/controlrefcheck.py` &ndash; Ensure Control Files and Rules Are Consistent
 
 This script helps ensure that control files and rules files are in sync.
 The script takes in what product, control, and reference you are looking for.
@@ -569,7 +569,7 @@ To execute:
 $ ./utils/controlrefcheck.py rhel9 cis_rhel9 cis
 ```
 
-### Ensure Files Follow EOF Style - `utils/check_eof.py`
+### `utils/check_eof.py` - Ensure Files Follow EOF Style
 
 This script checks files of specific extensions (see `EXTENSIONS` in the script for the full list) to ensure that the files end with new line as required by the [style guide](https://complianceascode.readthedocs.io/en/latest/manual/developer/04_style_guide.html).
 This script can be used to fix files that don't have a newline at the end if the `--fix` flag is passed to the script.
@@ -580,7 +580,7 @@ By default, the script just outputs a list of files are non-compliant.
  $ ./utils/check_eof.py ssg linux_os utils tests products shared docs apple_os applications build-scripts cmake Dockerfiles
  ```
 
-### Generating CIS Control Files - `utils/generate_profile.py`
+### `utils/generate_profile.py` &ndash; Generating CIS Control Files
 
 This script accepts a CIS benchmark spreadsheet (XLSX) and outputs a profile,
 section, or rule. This is primarily useful for contributors maintaining
@@ -653,7 +653,7 @@ The `PLACEHOLDER` values must be filled in later, ideally when the rules are
 provided for each control.
 
 
-### Compare ComplianceAsCode versions - `utils/compare_versions.py`
+### `utils/compare_versions.py` &ndash; Compare ComplianceAsCode versions
 
 Show differences between two ComplianceAsCode versions.
 Lists added or removed rules, profiles, changes in profile composition and changes in remediations and platforms.

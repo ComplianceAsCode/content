@@ -637,7 +637,7 @@ fixes with the following commands:
     fix. See the description of `replace` under `mod_prodtype.py` for
     more information about the format of a replacement.
 
-This utility requires an up to date JSON tree created by
+This utility requires an up-to-date JSON tree created by
 `rule_dir_json.py`.
 
 #### `utils/add_platform_rule.py`

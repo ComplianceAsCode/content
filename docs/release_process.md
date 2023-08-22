@@ -6,8 +6,8 @@ How to Perform An Upstream Release (GitHub)
 In line with this release process documentation, there is a script designed to automate the tasks described in this document as much as possible.
 While any task can be performed manually, it is highly recommended to use the `release_helper.py` script during the release process in order to increase the efficiency and be less prone to errors.
 
-The script interacts with the Github API, so an [API token](https://github.com/settings/tokens) is required for most tasks.
-Instructions for generating a Github API token can be found directly in the [Github documentation](https://docs.github.com/), but some hints are also provided by the script.
+The script interacts with the GitHub API, so an [API token](https://github.com/settings/tokens) is required for most tasks.
+Instructions for generating a GitHub API token can be found directly in the [GitHub documentation](https://docs.github.com/), but some hints are also provided by the script.
 
 The `release_helper.py` script can also be used to check the current status of the project regarding releases:
 
@@ -143,7 +143,7 @@ Using `release_helper.py` script:
         - https://gitter.im/Compliance-As-Code-The/content
     - SCAP Security Guide Mail List
         - scap-security-guide@lists.fedorahosted.org
-    - Github Discussion
+    - GitHub Discussion
         - https://github.com/ComplianceAsCode/content/discussions/new?category=announcements
         - Reference: https://github.com/ComplianceAsCode/content/discussions/9859
     - Here is an example message that could be used as reference:
@@ -215,7 +215,7 @@ Below are listed a few approaches how to do it.
     ```
     stab_base=$(git merge-base master stabilization-v0.1.65)
     git checkout -b my_fix $stab_base
-    # Do the fix, commit, push and create two PRs through the Github Web Interface.
+    # Do the fix, commit, push and create two PRs through the GitHub Web Interface.
     # One PR should targeting **master** and the other targeting the **stabilization** branch.
     ```
 
@@ -312,7 +312,7 @@ Using `release_helper.py` script:
     - SCAP Security Guide and OpenSCAP Mail Lists
         - scap-security-guide@lists.fedorahosted.org
         - open-scap-list@redhat.com
-    - Github Discussion
+    - GitHub Discussion
         - https://github.com/ComplianceAsCode/content/discussions/new?category=announcements
     - Twitter
         - https://twitter.com/openscap
