@@ -11,12 +11,12 @@ description: |-
     default), add the following lines to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing logon events:
-    <pre>-w {{{ faillock_path }}} -p wa -k logins</pre>
+    <pre>-w {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}} -p wa -k logins</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
     edits of files involved in storing logon events:
-    <pre>-w {{{ faillock_path }}} -p wa -k logins</pre>
+    <pre>-w {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}} -p wa -k logins</pre>
 
 rationale: |-
     Manual editing of these files may indicate nefarious activity, such
@@ -66,16 +66,18 @@ ocil_clause: 'the command does not return a line, or the line is commented out'
 ocil: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/security/opasswd" with the following command:
 
-    $ sudo auditctl -l | grep {{{ faillock_path }}}
+    $ sudo auditctl -l | grep {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}
 
-    -w {{{ faillock_path }}} -p wa -k logins
+    -w {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}} -p wa -k logins
 
 template:
     name: audit_rules_login_events
     vars:
-        path: {{{ faillock_path }}}
+        path: var_accounts_passwords_pam_faillock_dir
+        path_is_variable: "true"
+
 
 fixtext: |-
-    {{{ fixtext_audit_file_watch_rule(faillock_path, "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}
+    {{{ fixtext_audit_file_watch_rule(xccdf_value("var_accounts_passwords_pam_faillock_dir"), "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}
 
-srg_requirement: '{{{ srg_requirement_audit_file_watch_rule(faillock_path) }}}'
+srg_requirement: '{{{ srg_requirement_audit_file_watch_rule(xccdf_value("var_accounts_passwords_pam_faillock_dir")) }}}'
