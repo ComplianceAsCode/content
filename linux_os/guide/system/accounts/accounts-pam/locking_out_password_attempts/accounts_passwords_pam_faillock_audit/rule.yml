@@ -21,6 +21,10 @@ references:
     stigid@ol8: OL08-00-020021
     stigid@rhel8: RHEL-08-020021
 
+{{% if product == "rhel8" %}}
+platform: os_linux[rhel]>=8.2
+{{% endif %}}
+
 ocil_clause: 'the "audit" option is not set, is missing or commented out'
 
 ocil: |-
