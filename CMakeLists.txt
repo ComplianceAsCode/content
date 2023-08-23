@@ -294,7 +294,7 @@ message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
-message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OE}")
+message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OPENEMBEDDED}")
 
 
 message(STATUS " ")
