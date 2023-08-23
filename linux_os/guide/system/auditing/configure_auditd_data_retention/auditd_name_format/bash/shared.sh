@@ -10,9 +10,12 @@
   {{%- set auditd_conf_path=audisp_conf_path + "/auditd.conf" %}}
 {{%- endif %}}
 
+
+{{{ bash_instantiate_variables("var_auditd_name_format") }}}
+
 {{{set_config_file(path=auditd_conf_path,
                   parameter="name_format",
-                  value="hostname",
+                  value="$var_auditd_name_format",
                   create=true,
                   insensitive=true,
                   separator=" = ",

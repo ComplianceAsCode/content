@@ -10,9 +10,12 @@
   {{%- set auditd_conf_path=audisp_conf_path + "/auditd.conf" %}}
 {{%- endif %}}
 
+
+{{{ ansible_instantiate_variables("var_auditd_name_format") }}}
+
 {{{ ansible_set_config_file(file=auditd_conf_path,
                   parameter="name_format",
-                  value="hostname",
+                  value="{{ var_auditd_name_format }}",
                   create=true,
                   separator=" = ",
                   separator_regex="\s*=\s*",
