@@ -96,19 +96,6 @@ ocil: |-
 
 platform: package[pam]
 
-{{% if product in ["sle12", "sle15"] %}}
-template:
-    name: pam_options
-    vars:
-      path: /etc/pam.d/common-password
-      type: password
-      control_flag: required
-      module: pam_unix.so
-      arguments:
-        - argument: sha512
-          new_argument: sha512
-{{% endif %}}
-
 fixtext: |-
     {{% if product in ['ol9', 'rhel9'] -%}}
     Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
