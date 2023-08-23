@@ -52,7 +52,7 @@ def ssg_xccdf_stigid_mapping(ssgtree):
 
     for rule in ssgtree.findall(".//{%s}Rule" % xccdf_ns):
         srgs = []
-        rhid = ""
+        rhid = []
 
         xccdfid = rule.get("id")
         if xccdf_ns == XCCDF12_NS:
@@ -62,10 +62,11 @@ def ssg_xccdf_stigid_mapping(ssgtree):
                 stig = [ids for ids in rule.findall(".//{%s}reference[@href='%s']" % (xccdf_ns, references))]
                 for ref in reversed(stig):
                     if not ref.text.startswith("SRG-"):
-                        rhid = ref.text
+                        rhid.append(ref.text)
                     else:
                         srgs.append(ref.text)
-            xccdftostig_idmapping.update({rhid: {xccdfid: srgs}})
+            for id in rhid:
+                xccdftostig_idmapping.update({id: {xccdfid: srgs}})
 
     return xccdftostig_idmapping
 
