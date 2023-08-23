@@ -416,7 +416,7 @@ endif()
 if(SSG_PRODUCT_UOS20)
     add_subdirectory("products/uos20" "uos20")
 endif()
-if(SSG_PRODUCT_OE)
+if(SSG_PRODUCT_OPENEMBEDDED)
     add_subdirectory("products/openembedded" "openembedded")
 endif()
 
