@@ -10,5 +10,4 @@
 {{%- set after_match = "^\s*session\s+.*pam_succeed_if\.so.*" %}}
 {{%- endif %}}
 
-{{{ bash_ensure_pam_module_configuration(pam_lastlog_path, 'session', control, 'pam_lastlog.so', 'showfailed', '', after_match) }}}
-{{{ bash_remove_pam_module_option_configuration(pam_lastlog_path, 'session', control, 'pam_lastlog.so', 'silent') }}}
+{{{ bash_pam_lastlog_enable_showfailed(pam_lastlog_path, control, after_match) }}}
