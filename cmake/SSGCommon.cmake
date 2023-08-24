@@ -586,6 +586,13 @@ macro(ssg_build_sds PRODUCT)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/test_ds_sce.py" "${CMAKE_BINARY_DIR}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         )
     endif()
+    if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_PCRE2)
+        add_test(
+            NAME "check-pcre2-compatibility-ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/check_pcre2_compatibility.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+        set_tests_properties("check-pcre2-compatibility-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
+    endif()
 endmacro()
 
 # Build per-product HTML guides to see the status of various profiles and

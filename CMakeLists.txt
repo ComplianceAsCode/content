@@ -143,6 +143,7 @@ find_python_module(json2html)
 find_python_module(mypy)
 find_python_module(openpyxl)
 find_python_module(pandas)
+find_python_module(pcre2)
 find_python_module(cmakelint)
 
 # sphinx documentation requirements
@@ -243,6 +244,7 @@ message(STATUS "python sphinx_rtd_theme module (optional): ${PY_SPHINX_RTD_THEME
 message(STATUS "python myst-parser module (optional): ${PY_MYST_PARSER}")
 message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
 message(STATUS "python pandas module (optional): ${PY_PANDAS}")
+message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
