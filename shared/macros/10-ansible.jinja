@@ -1317,7 +1317,7 @@ Part of the grub2_bootloader_argument_absent template.
 - name: '{{{ rule_title }}} - Check if expected PAM module line is present in {{{ pam_file }}}'
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
-    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*
+    regexp: ^\s*{{{ group }}}\s+{{ '{{{ control }}}' | regex_escape() }}\s+{{{ module }}}\s*.*
     state: absent
   check_mode: yes
   changed_when: false
@@ -1388,11 +1388,10 @@ Part of the grub2_bootloader_argument_absent template.
 #}}
 {{%- macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ ansible_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
-
 - name: '{{{ rule_title }}} - Check if the required PAM module option is present in {{{ pam_file }}}'
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
-    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b
+    regexp: ^\s*{{{ group }}}\s+{{ '{{{ control }}}' | regex_escape() }}\s+{{{ module }}}\s*.*\s{{{ option }}}\b
     state: absent
   check_mode: true
   changed_when: false
@@ -1402,7 +1401,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
     backrefs: true
-    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*)
+    regexp: ^(\s*{{{ group }}}\s+{{ '{{{ control }}}' | regex_escape() }}\s+{{{ module }}}.*)
     {{%- if value == '' %}}
     line: \1 {{{ option }}}
     {{%- else %}}
@@ -1418,7 +1417,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
     backrefs: true
-    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
+    regexp: ^(\s*{{{ group }}}\s+{{ '{{{ control }}}' | regex_escape() }}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
     line: \1\2={{{ value }}} \3
   register: result_pam_{{{ option }}}_edit
   when:
@@ -1449,7 +1448,7 @@ Part of the grub2_bootloader_argument_absent template.
     {{%- if control == '' %}}
     regexp: (.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
     {{%- else %}}
-    regexp: (.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
+    regexp: (.*{{{ group }}}.*{{ '{{{ control }}}' | regex_escape() }}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
     {{%- endif %}}
     replace: '\1\2'
   register: result_pam_option_removal
