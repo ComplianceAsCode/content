@@ -1,17 +1,17 @@
 #!/bin/bash
-# packages = authselect
-# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = multi_platform_fedora,multi_platform_ubuntu,Oracle Linux 7,Red Hat Enterprise Linux 7
 
-authselect create-profile hardening -b sssd
-CUSTOM_PROFILE="custom/hardening"
-authselect select $CUSTOM_PROFILE --force
+{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+{{% set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{% else %}}
+{{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{% endif %}}
 
-CUSTOM_POSTLOGIN="/etc/authselect/$CUSTOM_PROFILE/postlogin"
+rm -f {{{ pam_lastlog_path }}}
 
-cat <<EOF > $CUSTOM_POSTLOGIN
+cat <<EOF > {{{ pam_lastlog_path }}}
 session     optional                   pam_umask.so silent
 session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
 session     [default=1]                pam_lastlog.so nowtmp=showfailed
 session     optional                   pam_lastlog.so silent noupdate showfailed
 EOF
-authselect apply-changes -b

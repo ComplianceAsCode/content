@@ -13,5 +13,5 @@ cat <<EOF > {{{ pam_lastlog_path }}}
 session     optional                   pam_umask.so silent
 session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
 session     [default=1]                pam_lastlog.so nowtmp showfailed
-session     optional                   pam_lastlog.so silent noupdate showfailed
+session     optional                   pam_lastlog.so noupdate showfailed
 EOF
