@@ -1,17 +1,17 @@
-# platform = multi_platform_fedora,multi_platform_sle,Red Hat OpenShift Container Platform 4,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4
+# platform = multi_platform_all
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = medium
 
-- name: "Backup the old /etc/shadow file"
-  copy:
+- name: "{{{ rule_title }}} - Backup the Old /etc/shadow File"
+  ansible.builtin.copy:
     src: /etc/shadow
     dest: /etc/shadow-
     remote_src: true
 
-- name: "Remove lines starting with + from /etc/shadow"
-  lineinfile:
+- name: "{{{ rule_title }}} - Remove Lines Starting with + From /etc/shadow"
+  ansible.builtin.lineinfile:
     regexp: '^\+.*$'
     state: absent
     path: /etc/shadow
