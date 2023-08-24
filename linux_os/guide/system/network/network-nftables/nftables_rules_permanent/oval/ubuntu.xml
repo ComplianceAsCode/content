@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("Make sure that there is permanent nftables configuration file used
+          to save and re-apply rules on reboot") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_etc_nftables_conf_file"
+          comment="/etc/nftables.conf exists and include entry present" />
+      <criterion test_ref="test_etc_nftables_conf_include_file_exists"
+          comment="Check if file in include entry exists and not empty" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_etc_nftables_conf_file"
+      comment="Check the existence of /etc/nftables.conf file"
+      check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_etc_nftables_conf_file" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_etc_nftables_conf_include_file_exists"
+      comment="Check if file in include entry exists in system"
+      check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_etc_nftables_conf_include_file_exists" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etc_nftables_conf_file" version="1">
+    <ind:filepath operation="equals" var_ref="var_nftables_master_config_file"/>
+    <ind:pattern operation="pattern match">^[\s]*include[\s]+\"([^\s]+)"$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_etc_nftables_conf_include_file_exists" version="1">
+    <ind:filepath operation="equals" var_ref="var_include_entry_config_path"/>
+    <ind:pattern operation="pattern match">^.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <external_variable comment="file path" datatype="string"
+                     id="var_nftables_master_config_file" version="1"/>
+
+  <local_variable id="var_include_entry_config_path" datatype="string" version="1"
+    comment="File path of the include entry in nftables configuration">
+    <object_component item_field="subexpression" object_ref="object_etc_nftables_conf_file" />
+  </local_variable>
+</def-group>
