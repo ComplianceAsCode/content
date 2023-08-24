@@ -6,9 +6,11 @@
 
 {{%- if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{%- set after_match = "^\s*session.*include\s+common-session$" %}}
 {{%- else %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{%- set after_match = "^\s*session\s+.*pam_succeed_if\.so.*" %}}
 {{%- endif %}}
 
-{{{ ansible_ensure_pam_module_configuration(pam_lastlog_path, 'session', '[default=1]', 'pam_lastlog.so', 'showfailed', '', 'BOF') }}}
+{{{ ansible_ensure_pam_module_configuration(pam_lastlog_path, 'session', '[default=1]', 'pam_lastlog.so', 'showfailed', '', after_match) }}}
 {{{ ansible_remove_pam_module_option_configuration(pam_lastlog_path, 'session', '[default=1]', 'pam_lastlog.so', 'silent') }}}
