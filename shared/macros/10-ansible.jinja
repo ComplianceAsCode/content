@@ -839,6 +839,37 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 
 {{#
+    Disable authselect feature if the authselect current profile is intact or inform that its
+    integrity check failed.
+
+#}}
+{{%- macro ansible_disable_authselect_feature(feature) -%}}
+{{{ ansible_check_authselect_integrity() }}}
+
+- name: '{{{ rule_title }}} - Get authselect Features Currently Enabled'
+  ansible.builtin.shell:
+    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+  register: result_authselect_features
+  changed_when: false
+  when:
+    - result_authselect_check_cmd is success
+
+- name: '{{{ rule_title }}} - Ensure "{{{ feature }}}" Feature is Disabled Using authselect Tool'
+  ansible.builtin.command:
+    cmd: authselect disable-feature {{{ feature }}}
+  register: result_authselect_disable_feature_cmd
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_features.stdout is search("{{{ feature }}}")
+
+{{{ ansible_apply_authselect_changes() }}}
+  when:
+    - result_authselect_disable_feature_cmd is not skipped
+    - result_authselect_disable_feature_cmd is success
+{{%- endmacro -%}}
+
+
+{{#
     Enable authselect feature if the authselect current profile is intact or inform that its
     integrity check failed.
 
@@ -879,6 +910,48 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   ansible.builtin.stat:
     path: /usr/bin/authselect
   register: result_authselect_present
+{{%- endmacro -%}}
+
+
+{{#
+    Ensure pam_lastlog.so PAM module shows the failed logins according to the system capabilities.
+    If authselect is present and the "with-silent-lastlog" feature is available, the feature will be disabled.
+    If authselect is present but the "with-silent-lastlog" feature is not yet available, a custom profile will be used.
+    If authselect is not present, PAM files will be directly edited.
+
+:param pam_file:    PAM config file.
+:type pam_file: str
+:param control:     PAM control flags.
+:type control: str
+:param after_match: Regex used as reference to append a line, if necessary. Optional parameter.
+                    Note: For this macro, there is a special value used to include a line at
+                    the beginning of the file: "BOF"
+:type after_match: str
+
+#}}
+{{%- macro ansible_pam_lastlog_enable_showfailed(pam_file, control, after_match='') -%}}
+{{{ ansible_check_authselect_presence() }}}
+
+- name: '{{{ rule_title }}} - Collect the Available authselect Features'
+  ansible.builtin.command:
+    cmd: authselect list-features minimal
+  register: result_authselect_available_features
+  changed_when: false
+  when:
+    - result_authselect_present.stat.exists
+
+- name: '{{{ rule_title }}} - Configure pam_lastlog.so Using authselect Feature'
+  block:
+    {{{ ansible_disable_authselect_feature('with-silent-lastlog') | indent(4) }}}
+  when:
+    - result_authselect_present.stat.exists
+    - result_authselect_available_features.stdout is search("with-silent-lastlog")
+
+- name: '{{{ rule_title }}} - Configure pam_lastlog.so in appropriate PAM files'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog.so', 'showfailed', '', after_match) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', 'session', control, 'pam_lastlog.so', 'silent') | indent(4) }}}
 {{%- endmacro -%}}
 
 
@@ -1388,6 +1461,7 @@ Part of the grub2_bootloader_argument_absent template.
 #}}
 {{%- macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ ansible_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
+
 - name: '{{{ rule_title }}} - Check if the required PAM module option is present in {{{ pam_file }}}'
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
