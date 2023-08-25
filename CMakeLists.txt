@@ -98,6 +98,7 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_OPENEMBEDDED "If enabled, the OpenEmbedded SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
@@ -308,6 +309,7 @@ message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
+message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OPENEMBEDDED}")
 
 
 message(STATUS " ")
@@ -428,6 +430,9 @@ if(SSG_PRODUCT_UBUNTU2204)
 endif()
 if(SSG_PRODUCT_UOS20)
     add_subdirectory("products/uos20" "uos20")
+endif()
+if(SSG_PRODUCT_OPENEMBEDDED)
+    add_subdirectory("products/openembedded" "openembedded")
 endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
