@@ -17,6 +17,9 @@ DEFAULT_SELECTOR = "__DEFAULT"
 HASH_ROW = "#" * 79
 BenchmarkData = collections.namedtuple(
     "BenchmarkData", ["id", "version", "remediations", "variables"])
+ProfileData = collections.namedtuple(
+    "ProfileData", ["rules_in_profile_count", "refinements", "variables"]
+)
 
 
 def parse_args():
@@ -63,13 +66,17 @@ def get_remediation(rule):
     return None
 
 
+def _get_all_itms(benchmark, element_name, callback):
+    itms = {}
+    el_xpath = ".//{%s}%s" % (XCCDF12_NS, element_name)
+    for el in benchmark.findall(el_xpath):
+        rule_id = el.get("id")
+        itms[rule_id] = callback(el)
+    return itms
+
+
 def get_all_remediations(benchmark):
-    remediations = {}
-    rule_xpath = ".//{%s}Rule" % (XCCDF12_NS)
-    for rule in benchmark.findall(rule_xpath):
-        rule_id = rule.get("id")
-        remediations[rule_id] = get_remediation(rule)
-    return remediations
+    return _get_all_itms(benchmark, "Rule", get_remediation)
 
 
 def get_variable_values(variable):
@@ -86,12 +93,7 @@ def get_variable_values(variable):
 
 
 def get_all_variables(benchmark):
-    variables = {}
-    variable_xpath = ".//{%s}Value" % (XCCDF12_NS)
-    for variable in benchmark.findall(variable_xpath):
-        variable_id = variable.get("id")
-        variables[variable_id] = get_variable_values(variable)
-    return variables
+    return _get_all_itms(benchmark, "Value", get_variable_values)
 
 
 def expand_variables(fix_el, refinements, variables):
@@ -161,21 +163,22 @@ def create_header(benchmark_data, profile):
     return fix_header
 
 
-def generate_rule_remediation(
-        rule_id, fix_el, refinements, variables, current, total):
+def generate_rule_remediation(rule_id, fix_el, profile_data, current):
     output = []
     header = (
         "%s\n"
         "# BEGIN fix (%s / %s) for '%s'\n"
-        "%s\n"
-    ) % (HASH_ROW, current, total, rule_id, HASH_ROW)
+        "%s\n" % (
+            HASH_ROW, current, profile_data.rules_in_profile_count,
+            rule_id, HASH_ROW))
     output.append(header)
     begin_msg = "(>&2 echo \"Remediating rule %s/%s: '%s'\")\n" % (
-        current, total, rule_id)
+        current, profile_data.rules_in_profile_count, rule_id)
     output.append(begin_msg)
     expanded_remediation = None
     if fix_el is not None:
-        expanded_remediation = expand_variables(fix_el, refinements, variables)
+        expanded_remediation = expand_variables(
+            fix_el, profile_data.refinements, profile_data.variables)
     if expanded_remediation is not None:
         output.append(expanded_remediation)
     else:
@@ -194,13 +197,16 @@ def create_output(profile, benchmark_data):
     header = create_header(benchmark_data, profile)
     output.append(header)
     total = len(selected_rules)
+    profile_data = ProfileData(
+        rules_in_profile_count=total,
+        refinements=refinements,
+        variables=benchmark_data.variables)
     current = 1
     for rule_id, fix_el in benchmark_data.remediations.items():
         if rule_id not in selected_rules:
             continue
         rule_remediation = generate_rule_remediation(
-            rule_id, fix_el, refinements, benchmark_data.variables, current,
-            total)
+            rule_id, fix_el, profile_data, current)
         output.append(rule_remediation)
         current += 1
     return "".join(output)
