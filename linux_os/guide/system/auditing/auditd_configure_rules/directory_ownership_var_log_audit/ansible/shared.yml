@@ -1,0 +1,15 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: '{{{ rule_title }}} - Register Audit Configuration Text'
+  ansible.builtin.slurp:
+    src: /etc/audit/auditd.conf
+  register: auditd_config_slurp
+
+- name: '{{{ rule_title }}} - Set Permissions Custom Location'
+  ansible.builtin.file:
+    owner: root
+    path: "{{ auditd_config_slurp['content'] | b64decode | regex_findall('\nlog_file\\s*=\\s*(.+)') | default(['/var/log/audit/audit.log',], boolean=True) | first | dirname }}"
