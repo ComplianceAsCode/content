@@ -71,3 +71,17 @@ fixtext: |-
     session [default=1] pam_lastlog.so nowtmp showfailed
 
 srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon logon.'
+
+warnings:
+    - general: |-
+       If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+       will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+       PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+       aborted in order to preserve intentional changes. In this case, an informative message will
+       be shown in the remediation report.
+    - general: |-
+       <tt>authselect</tt> contains an authselect feature to easily and properly enable Last Logon
+       notifications with <tt>pam_lastlog.so</tt> module. If a custom profile was created and used
+       in the system before this authselect feature was available, the new feature can't be used
+       with this custom profile and the remediation will fail. In this case, the custom profile
+       should be recreated or manually updated.
