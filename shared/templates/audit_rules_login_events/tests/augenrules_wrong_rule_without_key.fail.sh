@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = audit
 
-
-echo "-w {{{ PATH }}} -p w" >> /etc/audit/rules.d/login.rules
+path={{{ PATH }}}
+. $SHARED/audit_rules_login_events/augenrules_wrong_rule_without_key.fail.sh

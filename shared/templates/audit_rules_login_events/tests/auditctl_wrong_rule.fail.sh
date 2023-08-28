@@ -1,5 +1,5 @@
 #!/bin/bash
 # packages = audit
 
-echo "-w {{{ PATH }}} -p w -k logins" >> /etc/audit/audit.rules
-sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+path={{{ PATH }}}
+. $SHARED/audit_rules_login_events/auditctl_wrong_rule.fail.sh
