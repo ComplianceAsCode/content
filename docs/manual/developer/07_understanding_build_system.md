@@ -114,6 +114,7 @@ refer to their help text for more information and usage:
   base product.
 - `expand_jinja.py` -- helper script used by the BATS (Bash unit test
   framework) to expand Jinja in test scripts.
+- `generate_bash_scripts.py` -- Generate profile oriented Bash remediation scripts from the built SCAP source data stream. The output is similar to the output of the `oscap xccdf generate fix` command, but the tool `generate_bash_scripts.py` generates the scripts for all profiles in the given SCAP source data stream at once.
 - `generate_man_page.py` -- generates the ComplianceAsCode man page.
 - `profile_tool.py` -- utility script to generate statistics about profiles
   in a specific XCCDF/Datastream file.
