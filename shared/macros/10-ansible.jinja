@@ -198,7 +198,7 @@ value: :code:`Setting={{ varname1 }}`
 {{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") %}}
 {{%- if config_is_distributed == "true" %}}
 {{% set config_dir = "/etc/ssh/sshd_config.d" %}}
-{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_dir~"/"~config_basename, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="^[#\s]*Match") }}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_dir~"/"~config_basename, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="BOF") }}}
 {{%- else %}}
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
@@ -215,7 +215,7 @@ value: :code:`Setting={{ varname1 }}`
   loop: "{{ sshd_config_included_files.stdout_lines }}"
 
 {{% endif %}}
-{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="BOF") }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
