@@ -93,6 +93,18 @@ def get_product_yaml(product):
     exit(1)
 
 
+def load_product_yaml(product):
+    product_yaml = get_product_yaml(product)
+    return ssg.products.load_product_yaml(product_yaml)
+
+
+def load_controls_manager(controls_dir, product):
+    product_yaml = load_product_yaml(product)
+    controls_manager = controls.ControlsManager(controls_dir, product_yaml)
+    controls_manager.load()
+    return controls_manager
+
+
 def get_formatted_name(text_name):
     for special_char in '-. ':
         text_name = text_name.replace(special_char, '_')
@@ -212,7 +224,8 @@ def print_stats_json(product, id, level, control_list):
     print(json.dumps(data))
 
 
-def stats(controls_manager, args):
+def stats(args):
+    controls_manager = load_controls_manager(args.controls_dir, args.product)
     validate_args(controls_manager, args)
     ctrls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
     total = len(ctrls)
@@ -270,12 +283,7 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    product_yaml = get_product_yaml(args.product)
-    env_yaml = ssg.products.load_product_yaml(product_yaml)
-    controls_manager = controls.ControlsManager(
-        args.controls_dir, env_yaml=env_yaml)
-    controls_manager.load()
-    subcmds[args.subcmd](controls_manager, args)
+    subcmds[args.subcmd](args)
 
 
 if __name__ == "__main__":
