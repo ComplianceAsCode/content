@@ -3,7 +3,6 @@
 import argparse
 import os
 import re
-import textwrap
 import xml.etree.ElementTree as ET
 
 import ssg.ansible
@@ -57,9 +56,16 @@ def extract_ansible_vars(string):
     return ansible_vars
 
 
+def indent(string, level):
+    out = ""
+    for line in string.splitlines():
+        out += " " * level + line + "\n"
+    return out
+
+
 def extract_ansible_tasks(string):
     string = ANSIBLE_VAR_PATTERN.sub("\n", string)
-    string = textwrap.indent(string, "    ")
+    string = indent(string, 4)
     string = ssg.ansible.remove_trailing_whitespace(string)
     return [string]
 
