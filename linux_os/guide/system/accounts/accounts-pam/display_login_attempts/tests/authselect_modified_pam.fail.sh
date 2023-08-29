@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = authselect
-# platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 # remediation = none
 
 authselect create-profile hardening -b sssd
