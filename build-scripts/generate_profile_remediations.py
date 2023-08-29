@@ -257,11 +257,12 @@ class ScriptGenerator:
         output.append(header)
         total = len(selected_rules)
         current = 1
-        for rule_id, fix_el in self.remediations.items():
+        for rule_id in self.remediations:
             if rule_id not in selected_rules:
                 continue
+            status = (current, total)
             rule_remediation = self.generate_bash_rule_remediation(
-                rule_id, fix_el, current, total, refinements)
+                rule_id, status, refinements)
             output.append(rule_remediation)
             current += 1
         return "".join(output)
@@ -318,8 +319,9 @@ class ScriptGenerator:
                 remediation_type, remediation_type, how_to_apply, HASH_ROW))
         return fix_header
 
-    def generate_bash_rule_remediation(
-            self, rule_id, fix_el, current, total, refinements):
+    def generate_bash_rule_remediation(self, rule_id, status, refinements):
+        current, total = status
+        fix_el = self.remediations[rule_id]
         output = []
         header = (
             "%s\n"
