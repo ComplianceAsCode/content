@@ -242,8 +242,14 @@ def stats(args):
         print_stats(status_count, control_list, args)
 
 
+def prometheus(args):
+    for product in args.products:
+        print(product)
+
+
 subcmds = dict(
-    stats=stats
+    stats=stats,
+    prometheus=prometheus
 )
 
 
@@ -278,6 +284,12 @@ def parse_arguments():
     stats_parser.add_argument(
         '-s', '--status', default='all',
         help="status used to filter the controls list output")
+    prometheus_parser = subparsers.add_parser(
+        'prometheus',
+        help="calculate and return benchmarks metrics in Prometheus format")
+    prometheus_parser.add_argument(
+        '-p', '--products', nargs='+', required=True,
+        help="list of products to process the respective controls files")
     return parser.parse_args()
 
 
