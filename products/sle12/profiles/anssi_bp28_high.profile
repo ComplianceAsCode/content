@@ -25,7 +25,7 @@ selections:
     - anssi:all:high
     - var_multiple_time_servers=suse
     - var_multiple_time_pools=suse
-    - var_sudo_dedicated_group=default
+    - var_sudo_dedicated_group=root
     - '!accounts_password_pam_unix_rounds_system_auth'
     - '!accounts_password_pam_unix_rounds_password_auth'
     -  set_password_hashing_min_rounds_logindefs
