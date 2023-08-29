@@ -10,12 +10,12 @@ description: |-
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing logon events:
     <pre>-w /var/log/tallylog -p wa -k logins
-    -w {{{ faillock_path }}} -p wa -k logins
+    -w {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}} -p wa -k logins
     -w /var/log/lastlog -p wa -k logins</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
     edits of files involved in storing logon events:
     <pre>-w /var/log/tallylog -p wa -k logins
-    -w {{{ faillock_path }}} -p wa -k logins
+    -w {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}} -p wa -k logins
     -w /var/log/lastlog -p wa -k logins</pre>
