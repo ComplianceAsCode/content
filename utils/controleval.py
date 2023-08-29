@@ -218,7 +218,7 @@ def stats(controls_manager, args):
     total = len(ctrls)
 
     if total == 0:
-        print("No controls founds with the given inputs. Maybe try another level.")
+        print("No controls found with the given inputs. Maybe try another level.")
         exit(1)
 
     status_count, control_list = count_controls_by_status(ctrls)
