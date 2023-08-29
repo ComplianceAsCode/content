@@ -105,10 +105,10 @@ references:
   srg: SRG-APP-000516-CTR-001325
 
 template:
-  name: yamlfile_value
-  vars:
-    filepath: {{{ kubeletconf_path }}}
-    yamlpath: ".protectKernelDefaults"
-    values:
-     - value: "true"
-       operation: "equals"
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.protectKernelDefaults"
+        values:
+         - value: "true"
+           operation: "equals"

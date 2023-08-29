@@ -2,8 +2,6 @@ documentation_complete: true
 
 prodtype: ocp4
 
-platform: ocp4
-
 title: "Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers"
 
 description: |-
@@ -48,6 +46,8 @@ references:
   nist: CM-6,CM-6(1)
   srg: SRG-APP-000516-CTR-001325
 
+platform: ocp4-node
+
 ocil_clause: "TLS cipher suite configuration is not configured or contains insecure ciphers"
 
 ocil: |-
@@ -63,10 +63,10 @@ ocil: |-
     TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
     </pre>
 
-warnings:
-- general: |-
-    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
-
-
 template:
-    name: kubelet_combine
+    name: yamlfile_value
+    vars:
+        filepath: '/etc/kubernetes/compliance-operator/kubeletconfig/openscap-kubeletconfig'
+        yamlpath: ".kubeletconfig.tlsCipherSuites[:]"
+        xccdf_variable: var_kubelet_tls_cipher_suites_regex
+        regex_data: true

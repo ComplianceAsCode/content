@@ -695,12 +695,9 @@ spec:
      - parameter (String): name of the variable to be set
      - value (String): xccdf vairable name to that varaiable
 #}}
-{{%- macro kubelet_config(path='', parameter='', value='', role='') -%}}
+{{%- macro kubelet_config(path='', parameter='', value='') -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
-metadata:
-  annotations:
-    complianceascode.io/node-role: "{{.{{{ role }}}}}"
 spec:
 {{{ expand_yaml_path(path, parameter) }}}: {{.{{{ value }}}}}
 {{%- endmacro -%}}
@@ -712,12 +709,9 @@ spec:
      - parameter (String): name of the variable to be set
      - value (String): the fixed value to that varaiable
 #}}
-{{%- macro kubelet_config_fixed(path='', parameter='', value='', role='') -%}}
+{{%- macro kubelet_config_fixed(path='', parameter='', value='') -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
-metadata:
-  annotations:
-    complianceascode.io/node-role: "{{.{{{ role }}}}}"
 spec:
 {{{ expand_yaml_path(path, parameter) }}}: {{{ value }}}
 {{%- endmacro -%}}

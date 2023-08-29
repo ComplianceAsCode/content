@@ -1,5 +1,3 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='makeIPTablesUtilChains', value='true', role='var_role_worker') }}}
----
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='makeIPTablesUtilChains', value='true', role='var_role_master') }}}
+{{{ kubelet_config_fixed(path='kubeletConfig',parameter='makeIPTablesUtilChains', value='true') }}}
