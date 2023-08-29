@@ -330,7 +330,7 @@ done
         value=value,
         create=true,
         insert_after="",
-        insert_before="^Match",
+        insert_before="BOF",
         insensitive=true,
         separator=" ",
         separator_regex="\s\+",
@@ -352,7 +352,7 @@ done
 :type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed, config_basename="00-complianceascode-hardening.conf") -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
@@ -371,7 +371,7 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
         value=value,
         create=true,
         insert_after="",
-        insert_before="^Match",
+        insert_before="BOF",
         insensitive=true,
         separator=" ",
         separator_regex=separator_regex,
