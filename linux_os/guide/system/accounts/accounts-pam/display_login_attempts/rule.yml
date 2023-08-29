@@ -1,8 +1,16 @@
-{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
-{{% set pam_lastlog_path = "/etc/pam.d/login" %}}
-{{% else %}}
-{{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
-{{% endif %}}
+{{%- if "sle" in product or "ubuntu" in product %}}
+{{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{%- else %}}
+{{%- set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{%- endif %}}
+
+{{%- if "ol" in product or "ubuntu" in product %}}
+{{%- set control = "required" %}}
+{{%- elif "sle" in product %}}
+{{%- set control = "optional" %}}
+{{%- else %}}
+{{%- set control = "[default=1]" %}}
+{{%- endif %}}
 
 documentation_complete: true
 
@@ -11,8 +19,8 @@ title: 'Ensure PAM Displays Last Logon/Access Notification'
 description: |-
     To configure the system to notify users of last logon/access using <tt>pam_lastlog</tt>,
     add or correct the <tt>pam_lastlog</tt> settings in <tt>{{{ pam_lastlog_path }}}</tt>
-    to read as follows:
-    <pre>session     [default=1]    pam_lastlog.so nowtmp showfailed</pre>
+    to include <tt>showfailed</tt> option, such as:
+    <pre>session     {{{ control }}}    pam_lastlog.so showfailed</pre>
     And make sure that the <tt>silent</tt> option is not set for this specific line.
 
 rationale: |-
@@ -61,14 +69,14 @@ ocil: |-
 
     <pre>$ sudo grep pam_lastlog {{{ pam_lastlog_path }}}
 
-    session [default=1] pam_lastlog.so nowtmp showfailed</pre>
+    session {{{ control }}} pam_lastlog.so showfailed</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "{{{ pam_lastlog_path }}}".
 
     Add the following line to the top of "{{{ pam_lastlog_path }}}":
 
-    session [default=1] pam_lastlog.so nowtmp showfailed
+    session {{{ control }}} pam_lastlog.so showfailed
 
 srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon logon.'
 
