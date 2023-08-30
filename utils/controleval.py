@@ -99,17 +99,17 @@ def get_controls_from_profiles(controls: list, profiles_files: list, used_contro
     return used_controls
 
 
-def get_controls_used_by_products(controls_manager: controls.ControlsManager, products: list) -> list:
+def get_controls_used_by_products(ctrls_mgr: controls.ControlsManager, products: list) -> list:
     used_controls = set()
-    controls = controls_manager.policies.keys()
+    controls = ctrls_mgr.policies.keys()
     for product in products:
         profiles_files = get_product_profiles_files(product)
         used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
     return used_controls
 
 
-def get_policy_levels(control_manager: object, control_id: str) -> list:
-    policy = control_manager._get_policy(control_id)
+def get_policy_levels(ctrls_mgr: object, control_id: str) -> list:
+    policy = ctrls_mgr._get_policy(control_id)
     return policy.levels_by_id.keys()
 
 
@@ -139,9 +139,9 @@ def load_product_yaml(product: str) -> yaml:
 
 def load_controls_manager(controls_dir: str, product: str) -> object:
     product_yaml = load_product_yaml(product)
-    controls_manager = controls.ControlsManager(controls_dir, product_yaml)
-    controls_manager.load()
-    return controls_manager
+    ctrls_mgr = controls.ControlsManager(controls_dir, product_yaml)
+    ctrls_mgr.load()
+    return ctrls_mgr
 
 
 def get_formatted_name(text_name):
@@ -264,9 +264,9 @@ def print_stats_json(product, id, level, control_list):
 
 
 def stats(args):
-    controls_manager = load_controls_manager(args.controls_dir, args.product)
-    validate_args(controls_manager, args)
-    ctrls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
+    ctrls_mgr = load_controls_manager(args.controls_dir, args.product)
+    validate_args(ctrls_mgr, args)
+    ctrls = set(ctrls_mgr.get_all_controls_of_level(args.id, args.level))
     total = len(ctrls)
 
     if total == 0:
@@ -294,14 +294,14 @@ def append_prometheus_policy_metric(
 
 
 def get_prometheus_metrics_registry(
-        used_controls: list, controls_manager: controls.ControlsManager) -> CollectorRegistry:
+        used_controls: list, ctrls_mgr: controls.ControlsManager) -> CollectorRegistry:
     registry = CollectorRegistry()
     for policy_id in sorted(used_controls):
         metric_id = f'policy_requirements_status_{policy_id}'
         metric_description = f'{policy_id} Requirements Status'
         metric = create_prometheus_policy_metric(metric_id, metric_description, registry=registry)
-        for level in get_policy_levels(controls_manager, policy_id):
-            ctrls = set(controls_manager.get_all_controls_of_level(policy_id, level))
+        for level in get_policy_levels(ctrls_mgr, policy_id):
+            ctrls = set(ctrls_mgr.get_all_controls_of_level(policy_id, level))
             status_count, _ = count_controls_by_status(ctrls)
             for status in status_count.keys():
                 metric = append_prometheus_policy_metric(
@@ -310,9 +310,9 @@ def get_prometheus_metrics_registry(
 
 
 def prometheus(args):
-    controls_manager = load_controls_manager(args.controls_dir, args.products[0])
-    used_controls = get_controls_used_by_products(controls_manager, args.products)
-    registry = get_prometheus_metrics_registry(used_controls, controls_manager)
+    ctrls_mgr = load_controls_manager(args.controls_dir, args.products[0])
+    used_controls = get_controls_used_by_products(ctrls_mgr, args.products)
+    registry = get_prometheus_metrics_registry(used_controls, ctrls_mgr)
     write_to_textfile(args.output_file, registry)
 
 
