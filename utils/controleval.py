@@ -2,8 +2,9 @@
 import argparse
 import collections
 import json
-import yaml
 import os
+import yaml
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
 # package. The ssg package we're referencing here is actually a relative import
@@ -86,6 +87,15 @@ def get_controls_from_profiles(controls: list, profiles_files: list, used_contro
         for selection in selections:
             if any(selection.startswith(control) for control in controls):
                 used_controls.add(selection.split(':')[0])
+    return used_controls
+
+
+def get_controls_used_by_products(controls_manager, products: list) -> list:
+    used_controls = set()
+    controls = controls_manager.policies.keys()
+    for product in products:
+        profiles_files = get_product_profiles_files(product)
+        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
     return used_controls
 
 
@@ -271,21 +281,36 @@ def stats(args):
         print_stats(status_count, control_list, args)
 
 
-def prometheus(args):
-    used_controls = set()
-    controls_manager = load_controls_manager(args.controls_dir, args.products[0])
-    controls = controls_manager.policies.keys()
-    for product in args.products:
-        profiles_files = get_product_profiles_files(product)
-        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
+def create_prometheus_policy_metric(unit: str, description: str, registry: CollectorRegistry):
+    metric = Gauge(unit, description, ['level', 'status'], registry=registry)
+    return metric
 
+
+def append_prometheus_policy_metric(metric: object, level: str, status: str, value: float):
+    metric.labels(level=level, status=status).set(value)
+    return metric
+
+
+def get_prometheus_metrics_registry(used_controls: list, controls_manager: object):
+    registry = CollectorRegistry()
     for policy_id in sorted(used_controls):
-        levels = get_policy_levels(controls_manager, policy_id)
-        for level in levels:
+        metric_id = f'policy_requirements_status_{policy_id}'
+        metric_description = f'{policy_id} Requirements Status'
+        metric = create_prometheus_policy_metric(metric_id, metric_description, registry=registry)
+        for level in get_policy_levels(controls_manager, policy_id):
             ctrls = set(controls_manager.get_all_controls_of_level(policy_id, level))
             status_count, _ = count_controls_by_status(ctrls)
             for status in status_count.keys():
-                print_specific_stat(status, status_count[status], status_count['all'])
+                metric = append_prometheus_policy_metric(
+                    metric, level, status, status_count[status])
+    return registry
+
+
+def prometheus(args):
+    controls_manager = load_controls_manager(args.controls_dir, args.products[0])
+    used_controls = get_controls_used_by_products(controls_manager, args.products)
+    registry = get_prometheus_metrics_registry(used_controls, controls_manager)
+    write_to_textfile(args.output_file, registry)
 
 
 subcmds = dict(
@@ -331,6 +356,9 @@ def parse_arguments():
     prometheus_parser.add_argument(
         '-p', '--products', nargs='+', required=True,
         help="list of products to process the respective controls files")
+    prometheus_parser.add_argument(
+        '-f', '--output-file', default='policies_metrics',
+        help="resulting file with policy metrics in Prometheus format")
     return parser.parse_args()
 
 
