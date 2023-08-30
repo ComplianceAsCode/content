@@ -137,6 +137,7 @@ find_package(PythonInterp REQUIRED)
 
 find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
+find_python_module(lxml)
 find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
