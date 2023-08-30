@@ -93,8 +93,6 @@ refer to their help text for more information and usage:
 
 - `build_all_guides.py` -- generates separate HTML guides for every profile
   in an XCCDF document.
-- `build_profile_remediations.py` -- generates separate remediation content
-  for each profile.
 - `build_rule_playbooks.py` -- generates per-rule per-profile playbooks in
   Ansible content.
 - `build_sce.py` -- outputs SCE content and combined metadata.
