@@ -40,6 +40,11 @@ ocil: |-
     The output should return the following:
     <pre>name_format = {{{ xccdf_value("var_auditd_name_format") }}}</pre>
 
+warnings:
+    - general: |-
+        Whenever the variable <pre>var_auditd_name_format</pre> uses a multiple value option, for example
+        <pre>A|B|C</pre>, the first value will be used when remediating this rule.
+
 fixtext: |-
     {{{ fixtext_audit_configuration(param="name_format", value=xccdf_value("var_auditd_name_format")) | indent(4) }}}
 
