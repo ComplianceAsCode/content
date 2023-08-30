@@ -81,31 +81,31 @@ def validate_product(product):
         exit(1)
 
 
-def get_controls_from_profiles(controls: list, profiles_files: list, used_controls: set) -> set:
-    for file in profiles_files:
-        selections = get_parameter_from_yml(file, 'selections')
-        for selection in selections:
-            if any(selection.startswith(control) for control in controls):
-                used_controls.add(selection.split(':')[0])
-    return used_controls
-
-
-def get_controls_used_by_products(controls_manager, products: list) -> list:
-    used_controls = set()
-    controls = controls_manager.policies.keys()
-    for product in products:
-        profiles_files = get_product_profiles_files(product)
-        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
-    return used_controls
-
-
-def get_parameter_from_yml(yaml_file: str, section: str) -> list:
+def get_parameter_from_yaml(yaml_file: str, section: str) -> list:
     with open(yaml_file, 'r') as file:
         try:
             yaml_content = yaml.safe_load(file)
             return yaml_content[section]
         except yaml.YAMLError as e:
             print(e)
+
+
+def get_controls_from_profiles(controls: list, profiles_files: list, used_controls: set) -> set:
+    for file in profiles_files:
+        selections = get_parameter_from_yaml(file, 'selections')
+        for selection in selections:
+            if any(selection.startswith(control) for control in controls):
+                used_controls.add(selection.split(':')[0])
+    return used_controls
+
+
+def get_controls_used_by_products(controls_manager: controls.ControlsManager, products: list) -> list:
+    used_controls = set()
+    controls = controls_manager.policies.keys()
+    for product in products:
+        profiles_files = get_product_profiles_files(product)
+        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
+    return used_controls
 
 
 def get_policy_levels(control_manager: object, control_id: str) -> list:
@@ -132,12 +132,12 @@ def get_product_yaml(product):
     exit(1)
 
 
-def load_product_yaml(product):
+def load_product_yaml(product: str) -> yaml:
     product_yaml = get_product_yaml(product)
     return ssg.products.load_product_yaml(product_yaml)
 
 
-def load_controls_manager(controls_dir, product):
+def load_controls_manager(controls_dir: str, product: str) -> object:
     product_yaml = load_product_yaml(product)
     controls_manager = controls.ControlsManager(controls_dir, product_yaml)
     controls_manager.load()
@@ -281,17 +281,20 @@ def stats(args):
         print_stats(status_count, control_list, args)
 
 
-def create_prometheus_policy_metric(unit: str, description: str, registry: CollectorRegistry):
+def create_prometheus_policy_metric(
+        unit: str, description: str, registry: CollectorRegistry) -> Gauge:
     metric = Gauge(unit, description, ['level', 'status'], registry=registry)
     return metric
 
 
-def append_prometheus_policy_metric(metric: object, level: str, status: str, value: float):
+def append_prometheus_policy_metric(
+        metric: object, level: str, status: str, value: float) -> Gauge:
     metric.labels(level=level, status=status).set(value)
     return metric
 
 
-def get_prometheus_metrics_registry(used_controls: list, controls_manager: object):
+def get_prometheus_metrics_registry(
+        used_controls: list, controls_manager: controls.ControlsManager) -> CollectorRegistry:
     registry = CollectorRegistry()
     for policy_id in sorted(used_controls):
         metric_id = f'policy_requirements_status_{policy_id}'
