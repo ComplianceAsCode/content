@@ -37,17 +37,26 @@ def oval_generated_header(product_name, schema_version, ssg_version):
                        schema_version, timestamp)
 
 
-def register_namespaces():
+def register_namespaces(ns=None):
     """
     Register all possible namespaces
     """
     try:
-        for prefix, uri in PREFIX_TO_NS.items():
+        if ns is None:
+            ns = PREFIX_TO_NS
+        for prefix, uri in ns.items():
             ElementTree.register_namespace(prefix, uri)
     except Exception:
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
         pass
+
+
+def get_namespaces_from(file):
+    return {
+        key: value
+        for _, (key, value) in ElementTree.iterparse(file, events=["start-ns"])
+    }
 
 
 def open_xml(filename):
