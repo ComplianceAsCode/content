@@ -13,6 +13,8 @@
 
 {{{ bash_instantiate_variables("var_auditd_name_format") }}}
 
+var_auditd_name_format="$(echo $var_auditd_name_format | cut -d \| -f 1)"
+
 {{{set_config_file(path=auditd_conf_path,
                   parameter="name_format",
                   value="$var_auditd_name_format",
