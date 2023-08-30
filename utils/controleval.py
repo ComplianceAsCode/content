@@ -2,6 +2,7 @@
 import argparse
 import collections
 import json
+import yaml
 import os
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
@@ -79,9 +80,37 @@ def validate_product(product):
         exit(1)
 
 
+def get_controls_from_profiles(controls: list, profiles_files: list, used_controls: set) -> set:
+    for file in profiles_files:
+        selections = get_parameter_from_yml(file, 'selections')
+        for selection in selections:
+            if any(selection.startswith(control) for control in controls):
+                used_controls.add(selection.split(':')[0])
+    return used_controls
+
+
+def get_parameter_from_yml(yaml_file: str, section: str) -> list:
+    with open(yaml_file, 'r') as file:
+        try:
+            yaml_content = yaml.safe_load(file)
+            return yaml_content[section]
+        except yaml.YAMLError as e:
+            print(e)
+
+
+def get_policy_levels(control_manager: object, control_id: str) -> list:
+    policy = control_manager._get_policy(control_id)
+    return policy.levels_by_id.keys()
+
+
 def get_product_dir(product):
     validate_product(product)
     return os.path.join(SSG_ROOT, "products", product)
+
+
+def get_product_profiles_files(product: str) -> list:
+    product_yaml = load_product_yaml(product)
+    return ssg.products.get_profile_files_from_root(product_yaml, product_yaml)
 
 
 def get_product_yaml(product):
@@ -243,8 +272,20 @@ def stats(args):
 
 
 def prometheus(args):
+    used_controls = set()
+    controls_manager = load_controls_manager(args.controls_dir, args.products[0])
+    controls = controls_manager.policies.keys()
     for product in args.products:
-        print(product)
+        profiles_files = get_product_profiles_files(product)
+        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
+
+    for policy_id in sorted(used_controls):
+        levels = get_policy_levels(controls_manager, policy_id)
+        for level in levels:
+            ctrls = set(controls_manager.get_all_controls_of_level(policy_id, level))
+            status_count, _ = count_controls_by_status(ctrls)
+            for status in status_count.keys():
+                print_specific_stat(status, status_count[status], status_count['all'])
 
 
 subcmds = dict(
