@@ -49,14 +49,6 @@ ssg.build\_profile module
    :undoc-members:
    :show-inheritance:
 
-ssg.build\_profile\_remediations module
----------------------------------------
-
-.. automodule:: ssg.build_profile_remediations
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 ssg.build\_remediations module
 ------------------------------
 
