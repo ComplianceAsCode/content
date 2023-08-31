@@ -277,7 +277,7 @@ def clusterTestFunc(args):
         print('* Pushing image build to cluster')
         # execute the build_ds_container script
         buildp = subprocess.run(
-            ['utils/build_ds_container.sh', '-P', 'ocp4', '-P', 'rhcos4'])
+            ['utils/build_ds_container.py', '-P', 'ocp4', 'rhcos4'])
         if buildp.returncode != 0:
             try:
                 os.remove(PROFILE_PATH)
