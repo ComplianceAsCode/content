@@ -30,6 +30,9 @@ jobs:
         run: wget $SCAPVAL_URL/$SCAPVAL_FILENAME.zip
       - name: Unpack SCAPVAL
         run: mkdir -p /opt/scapval/ && unar $SCAPVAL_FILENAME.zip -o /opt/scapval/
+      - name: Run SCAPVal
+        # Runs SCAPVal on all built datastream
+        run: ctest -j2 -R scapval --output-on-failure
       - name: Lint Check
         # Performs ansible-lint and yamllint checks on generated ansible playbooks
         run: ctest -j2 -R ansible-playbook --output-on-failure
