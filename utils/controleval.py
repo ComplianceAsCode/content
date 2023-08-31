@@ -4,7 +4,8 @@ import collections
 import json
 import os
 import yaml
-from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
+
+from prometheus_client import CollectorRegistry, Gauge, generate_latest, write_to_textfile
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
 # package. The ssg package we're referencing here is actually a relative import
@@ -313,7 +314,11 @@ def prometheus(args):
     ctrls_mgr = load_controls_manager(args.controls_dir, args.products[0])
     used_controls = get_controls_used_by_products(ctrls_mgr, args.products)
     registry = get_prometheus_metrics_registry(used_controls, ctrls_mgr)
-    write_to_textfile(args.output_file, registry)
+    if args.output_file:
+        write_to_textfile(args.output_file, registry)
+    else:
+        metrics = generate_latest(registry)
+        print(metrics.decode('utf-8'))
 
 
 subcmds = dict(
@@ -360,8 +365,8 @@ def parse_arguments():
         '-p', '--products', nargs='+', required=True,
         help="list of products to process the respective controls files")
     prometheus_parser.add_argument(
-        '-f', '--output-file', default='policies_metrics',
-        help="resulting file with policy metrics in Prometheus format")
+        '-f', '--output-file',
+        help="save policy metrics in a file instead of showing in stdout")
     return parser.parse_args()
 
 
