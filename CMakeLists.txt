@@ -137,6 +137,7 @@ find_package(PythonInterp REQUIRED)
 
 find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
+find_python_module(lxml)
 find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
@@ -245,6 +246,8 @@ message(STATUS "python myst-parser module (optional): ${PY_MYST_PARSER}")
 message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
 message(STATUS "python pandas module (optional): ${PY_PANDAS}")
 message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
+message(STATUS "python lxml module (optional): ${PY_LXML}")
+
 message(STATUS " ")
 
 message(STATUS "Build options:")
