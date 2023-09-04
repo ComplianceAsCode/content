@@ -103,6 +103,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
@@ -120,6 +122,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
