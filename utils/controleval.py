@@ -5,8 +5,6 @@ import json
 import os
 import yaml
 
-from prometheus_client import CollectorRegistry, Gauge, generate_latest, write_to_textfile
-
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
 # package. The ssg package we're referencing here is actually a relative import
 # within this repository. Because of this, you need to ensure
@@ -282,48 +280,8 @@ def stats(args):
         print_stats(status_count, control_list, args)
 
 
-def create_prometheus_policy_metric(
-        unit: str, description: str, registry: CollectorRegistry) -> Gauge:
-    metric = Gauge(unit, description, ['level', 'status'], registry=registry)
-    return metric
-
-
-def append_prometheus_policy_metric(
-        metric: object, level: str, status: str, value: float) -> Gauge:
-    metric.labels(level=level, status=status).set(value)
-    return metric
-
-
-def get_prometheus_metrics_registry(
-        used_controls: list, ctrls_mgr: controls.ControlsManager) -> CollectorRegistry:
-    registry = CollectorRegistry()
-    for policy_id in sorted(used_controls):
-        metric_id = f'policy_requirements_status_{policy_id}'
-        metric_description = f'{policy_id} Requirements Status'
-        metric = create_prometheus_policy_metric(metric_id, metric_description, registry=registry)
-        for level in get_policy_levels(ctrls_mgr, policy_id):
-            ctrls = set(ctrls_mgr.get_all_controls_of_level(policy_id, level))
-            status_count, _ = count_controls_by_status(ctrls)
-            for status in status_count.keys():
-                metric = append_prometheus_policy_metric(
-                    metric, level, status, status_count[status])
-    return registry
-
-
-def prometheus(args):
-    ctrls_mgr = load_controls_manager(args.controls_dir, args.products[0])
-    used_controls = get_controls_used_by_products(ctrls_mgr, args.products)
-    registry = get_prometheus_metrics_registry(used_controls, ctrls_mgr)
-    if args.output_file:
-        write_to_textfile(args.output_file, registry)
-    else:
-        metrics = generate_latest(registry)
-        print(metrics.decode('utf-8'))
-
-
 subcmds = dict(
-    stats=stats,
-    prometheus=prometheus
+    stats=stats
 )
 
 
@@ -358,15 +316,6 @@ def parse_arguments():
     stats_parser.add_argument(
         '-s', '--status', default='all',
         help="status used to filter the controls list output")
-    prometheus_parser = subparsers.add_parser(
-        'prometheus',
-        help="calculate and return benchmarks metrics in Prometheus format")
-    prometheus_parser.add_argument(
-        '-p', '--products', nargs='+', required=True,
-        help="list of products to process the respective controls files")
-    prometheus_parser.add_argument(
-        '-f', '--output-file',
-        help="save policy metrics in a file instead of showing in stdout")
     return parser.parse_args()
 
 
