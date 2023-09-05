@@ -697,6 +697,7 @@ class Rule(XCCDFEntity, Templatable):
         "rationale",
         "ocil",
         "ocil_clause",
+        "warnings",
     }
 
     GENERIC_FILENAME = "rule.yml"

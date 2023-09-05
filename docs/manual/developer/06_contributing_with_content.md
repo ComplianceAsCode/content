@@ -447,6 +447,8 @@ However, the number of attributes which can be overridden in this way is limited
 
 - ocil_clause
 
+- warnings
+
 Attributes mentioned in the overriding file will replace attributes in rule.yml
 for the given product.
 
