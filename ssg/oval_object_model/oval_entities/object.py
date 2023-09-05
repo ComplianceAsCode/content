@@ -1,8 +1,8 @@
 from ..general import (
     OVAL_NAMESPACES,
     STR_TO_BOOL,
-    OVALEndPoint,
-    load_end_point_property,
+    OVALEntity,
+    load_OVAL_entity_property,
     load_notes,
     required_attribute,
 )
@@ -15,7 +15,7 @@ def load_object(oval_object_xml_el):
     for child_node_el in oval_object_xml_el:
         if notes_el == child_node_el:
             continue
-        object_property.append(load_end_point_property(child_node_el))
+        object_property.append(load_OVAL_entity_property(child_node_el))
 
     return ObjectOVAL(
         oval_object_xml_el.tag,
@@ -28,7 +28,7 @@ def load_object(oval_object_xml_el):
     )
 
 
-class ObjectOVAL(OVALEndPoint):
+class ObjectOVAL(OVALEntity):
     def __init__(
         self,
         tag,

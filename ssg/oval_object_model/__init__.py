@@ -6,8 +6,9 @@ from .general import (
     Notes,
     OVALBaseObject,
     OVALComponent,
-    OVALEndPoint,
-    load_end_point_property,
+    OVALEntity,
+    OVALEntityProperty,
+    load_OVAL_entity_property,
     load_notes,
 )
 from .oval_document import (

@@ -1,8 +1,8 @@
 from ..general import (
     OVAL_NAMESPACES,
     STR_TO_BOOL,
-    OVALEndPoint,
-    load_end_point_property,
+    OVALEntity,
+    load_OVAL_entity_property,
     load_notes,
     required_attribute,
 )
@@ -15,7 +15,7 @@ def load_variable(oval_variable_xml_el):
     for child_node_el in oval_variable_xml_el:
         if notes_el == child_node_el:
             continue
-        variable_property.append(load_end_point_property(child_node_el))
+        variable_property.append(load_OVAL_entity_property(child_node_el))
 
     return Variable(
         oval_variable_xml_el.tag,
@@ -29,7 +29,7 @@ def load_variable(oval_variable_xml_el):
     )
 
 
-class Variable(OVALEndPoint):
+class Variable(OVALEntity):
     def __init__(
         self,
         tag,

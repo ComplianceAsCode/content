@@ -73,7 +73,7 @@ class OVALComponent(OVALBaseObject):
         return el
 
 
-class OVALEndPoint(OVALComponent):
+class OVALEntity(OVALComponent):
     def __init__(
         self,
         tag,
@@ -86,7 +86,7 @@ class OVALEndPoint(OVALComponent):
     ):
         super().__init__(tag, id_, version, deprecated, notes)
         self.comment: str = comment
-        self.properties: list[EndPointProperty] = properties
+        self.properties: list[OVALEntityProperty] = properties
 
     def get_xml_element(self):
         el = super().get_xml_element()
@@ -138,24 +138,24 @@ class Notes(OVALBaseObject):
 # -----
 
 
-def load_end_point_property(end_point_property_el):
-    data = EndPointProperty(
+def load_OVAL_entity_property(end_point_property_el):
+    data = OVALEntityProperty(
         end_point_property_el.tag,
         end_point_property_el.attrib,
         end_point_property_el.text,
     )
     for child_end_point_property_el in end_point_property_el:
-        data.add_child_property(load_end_point_property(child_end_point_property_el))
+        data.add_child_property(load_OVAL_entity_property(child_end_point_property_el))
     return data
 
 
-class EndPointProperty(OVALBaseObject):
+class OVALEntityProperty(OVALBaseObject):
     def __init__(self, tag, attributes=None, text=None):
         super().__init__(tag)
         self.attributes: dict = attributes
         self.text: str = text
 
-        self.properties: list[EndPointProperty] = []
+        self.properties: list[OVALEntityProperty] = []
 
     def add_child_property(self, property_):
         self.properties.append(property_)
