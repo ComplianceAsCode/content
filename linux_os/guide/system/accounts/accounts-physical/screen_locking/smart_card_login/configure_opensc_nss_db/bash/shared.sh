@@ -7,5 +7,5 @@
 PKCSSW=$(/usr/bin/pkcs11-switch)
 
 if [ ${PKCSSW} != "opensc" ] ; then
-    ${PKCSSW} opensc
+    echo -e "\n" | ${PKCSSW} opensc
 fi

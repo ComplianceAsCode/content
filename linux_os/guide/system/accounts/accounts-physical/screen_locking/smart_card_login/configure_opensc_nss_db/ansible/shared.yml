@@ -3,17 +3,17 @@
 # strategy = configure
 # complexity = low
 # disruption = low
--   name: Check existence of pkcs11-switch
-    stat:
-        path: /usr/bin/pkcs11-switch
-    register: pkcs11switch
+- name: "{{{ rule_title }}} - Check Existence of pkcs11-switch"
+  ansible.builtin.stat:
+    path: /usr/bin/pkcs11-switch
+  register: pkcs11switch
 
-- name: Get NSS database smart card configuration
-  command: /usr/bin/pkcs11-switch
+- name: "{{{ rule_title }}} - Get NSS Database Smart Card Configuration"
+  ansible.builtin.command: /usr/bin/pkcs11-switch
   changed_when: True
   register: pkcsw_output
   when: pkcs11switch.stat.exists
 
-- name: "{{{ rule_title }}}"
-  command: /usr/bin/pkcs11-switch opensc
+- name: "{{{ rule_title }}} - Select opensc Module"
+  ansible.builtin.shell: echo -e "\n" | /usr/bin/pkcs11-switch opensc
   when: pkcs11switch.stat.exists and pkcsw_output.stdout != "opensc"
