@@ -183,6 +183,9 @@ jobs:
     steps:
       -   name: Run Updates
           run: dnf update -y
+      -   name: Ensure dnf Command
+          run: dnf5 install -y dnf
+          # https://discussion.fedoraproject.org/t/rawhide-psa-what-to-do-if-dnf-goes-missing/87133
       -   name: Install Deps
           run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git
       -   name: Checkout
