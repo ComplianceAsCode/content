@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='utf-8'?>
+<oval-def:oval_definitions xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+ <oval-def:generator>
+  <oval:product_name>combine_ovals.py from SCAP Security Guide</oval:product_name>
+  <oval:product_version>ssg: [0, 1, 70], python: 3.11.4</oval:product_version>
+  <oval:schema_version>5.11</oval:schema_version>
+  <oval:timestamp>2023-09-09T16:41:20</oval:timestamp>
+ </oval-def:generator>
+ <oval-def:definitions>
+  <oval-def:definition id="oval:ssg-sshd_rekey_limit:def:1" version="1" class="compliance">
+   <oval-def:metadata>
+    <oval-def:title>Force frequent session key renegotiation</oval-def:title>
+    <oval-def:affected family="unix">
+     <oval-def:platform>Fedora</oval-def:platform>
+    </oval-def:affected>
+    <oval-def:reference ref_id="sshd_rekey_limit" source="ssg" />
+    <oval-def:description>Ensure RekeyLimit is configured with the appropriate value in /etc/ssh/sshd_config or in /etc/ssh/sshd_config.d</oval-def:description>
+   </oval-def:metadata>
+   <oval-def:criteria comment="sshd is configured correctly or is not installed" operator="OR">
+    <oval-def:criteria comment="sshd is not installed" operator="AND">
+     <oval-def:extend_definition comment="sshd is not required or requirement is unset" definition_ref="oval:ssg-sshd_not_required_or_unset:def:1" />
+     <oval-def:extend_definition comment="rpm package openssh-server removed" definition_ref="oval:ssg-package_openssh-server_removed:def:1" />
+    </oval-def:criteria>
+    <oval-def:criteria comment="sshd is installed and configured" operator="AND">
+     <oval-def:extend_definition comment="sshd is required or requirement is unset" definition_ref="oval:ssg-sshd_required_or_unset:def:1" />
+     <oval-def:extend_definition comment="rpm package openssh-server installed" definition_ref="oval:ssg-package_openssh-server_installed:def:1" />
+     <oval-def:criteria comment="sshd is configured corectly" operator="OR">
+      <oval-def:criterion comment="Check the RekeyLimit in /etc/ssh/sshd_config" test_ref="oval:ssg-test_sshd_rekey_limit:tst:1" />
+      <oval-def:criterion comment="Check the RekeyLimit in /etc/ssh/sshd_config.d" test_ref="oval:ssg-test_sshd_rekey_limit_config_dir:tst:1" />
+     </oval-def:criteria>
+    </oval-def:criteria>
+   </oval-def:criteria>
+  </oval-def:definition>
+  <oval-def:definition id="oval:ssg-package_openssh-server_installed:def:1" version="1" class="compliance">
+   <oval-def:metadata>
+    <oval-def:title>Install the OpenSSH Server Package</oval-def:title>
+    <oval-def:affected family="unix">
+     <oval-def:platform>Fedora</oval-def:platform>
+    </oval-def:affected>
+    <oval-def:reference ref_id="package_openssh-server_installed" source="ssg" />
+    <oval-def:description>The RPM package openssh-server should be installed.</oval-def:description>
+   </oval-def:metadata>
+   <oval-def:criteria operator="AND">
+    <oval-def:criterion comment="package openssh-server is installed" test_ref="oval:ssg-test_package_openssh-server_installed:tst:1" />
+   </oval-def:criteria>
+  </oval-def:definition>
+  <oval-def:definition id="oval:ssg-package_openssh-server_removed:def:1" version="1" class="compliance">
+   <oval-def:metadata>
+    <oval-def:title>Remove the OpenSSH Server Package</oval-def:title>
+    <oval-def:affected family="unix">
+     <oval-def:platform>Fedora</oval-def:platform>
+    </oval-def:affected>
+    <oval-def:reference ref_id="package_openssh-server_removed" source="ssg" />
+    <oval-def:description>The RPM package openssh-server should be removed.</oval-def:description>
+   </oval-def:metadata>
+   <oval-def:criteria operator="AND">
+    <oval-def:criterion comment="package openssh-server is removed" test_ref="oval:ssg-test_package_openssh-server_removed:tst:1" />
+   </oval-def:criteria>
+  </oval-def:definition>
+  <oval-def:definition id="oval:ssg-sshd_not_required_or_unset:def:1" version="1" class="compliance">
+   <oval-def:metadata>
+    <oval-def:title>SSHD is not required to be installed or requirement not set</oval-def:title>
+    <oval-def:affected family="unix">
+     <oval-def:platform>Fedora</oval-def:platform>
+    </oval-def:affected>
+    <oval-def:reference ref_id="sshd_not_required_or_unset" source="ssg" />
+    <oval-def:description>If SSHD is not required, we check it is not installed. If SSH requirement is unset, we are good.</oval-def:description>
+   </oval-def:metadata>
+   <oval-def:criteria comment="SSH not required or not set" operator="OR">
+    <oval-def:criterion test_ref="oval:ssg-test_sshd_not_required:tst:1" />
+    <oval-def:extend_definition comment="SSH requirement is unset" definition_ref="oval:ssg-sshd_requirement_unset:def:1" />
+   </oval-def:criteria>
+  </oval-def:definition>
+  <oval-def:definition id="oval:ssg-sshd_required_or_unset:def:1" version="1" class="compliance">
+   <oval-def:metadata>
+    <oval-def:title>SSHD is required to be installed or requirement not set</oval-def:title>
+    <oval-def:affected family="unix">
+     <oval-def:platform>Fedora</oval-def:platform>
+    </oval-def:affected>
+    <oval-def:reference ref_id="sshd_required_or_unset" source="ssg" />
+    <oval-def:description>If SSHD is required, we check it is installed. If SSH requirement is unset, we are good.</oval-def:description>
+   </oval-def:metadata>
+   <oval-def:criteria comment="SSH required or not set" operator="OR">
+    <oval-def:criterion test_ref="oval:ssg-test_sshd_required:tst:1" />
+    <oval-def:extend_definition comment="SSH requirement is unset" definition_ref="oval:ssg-sshd_requirement_unset:def:1" />
+   </oval-def:criteria>
+  </oval-def:definition>
+  <oval-def:definition id="oval:ssg-sshd_requirement_unset:def:1" version="1" class="compliance">
+   <oval-def:metadata>
+    <oval-def:title>It doesn't matter if sshd is installed or not</oval-def:title>
+    <oval-def:affected family="unix">
+     <oval-def:platform>Fedora</oval-def:platform>
+    </oval-def:affected>
+    <oval-def:reference ref_id="sshd_requirement_unset" source="ssg" />
+    <oval-def:description>Test if value sshd_required is 0.</oval-def:description>
+   </oval-def:metadata>
+   <oval-def:criteria operator="AND">
+    <oval-def:criterion test_ref="oval:ssg-test_sshd_requirement_unset:tst:1" />
+   </oval-def:criteria>
+  </oval-def:definition>
+ </oval-def:definitions>
+ <oval-def:tests>
+  <ind:textfilecontent54_test id="oval:ssg-test_sshd_rekey_limit:tst:1" version="1" check="all" comment="tests the value of RekeyLimit setting in the file" check_existence="all_exist" state_operator="AND">
+   <ind:object object_ref="oval:ssg-obj_sshd_rekey_limit:obj:1" />
+   <ind:state state_ref="oval:ssg-state_sshd_rekey_limit:ste:1" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="oval:ssg-test_sshd_rekey_limit_config_dir:tst:1" version="1" check="all" comment="tests the value of RekeyLimit setting in SSHD config directory" check_existence="all_exist" state_operator="AND">
+   <ind:object object_ref="oval:ssg-obj_sshd_rekey_limit_config_dir:obj:1" />
+   <ind:state state_ref="oval:ssg-state_sshd_rekey_limit:ste:1" />
+  </ind:textfilecontent54_test>
+  <linux:rpminfo_test id="oval:ssg-test_package_openssh-server_installed:tst:1" version="1" check="all" comment="package openssh-server is installed" check_existence="all_exist" state_operator="AND">
+   <linux:object object_ref="oval:ssg-obj_test_package_openssh-server_installed:obj:1" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_test id="oval:ssg-test_package_openssh-server_removed:tst:1" version="1" check="all" comment="package openssh-server is removed" check_existence="none_exist" state_operator="AND">
+   <linux:object object_ref="oval:ssg-obj_test_package_openssh-server_removed:obj:1" />
+  </linux:rpminfo_test>
+  <ind:variable_test id="oval:ssg-test_sshd_not_required:tst:1" version="1" check="all" comment="Verify if Profile set Value sshd_required as not required" state_operator="AND">
+   <ind:object object_ref="oval:ssg-object_sshd_not_required:obj:1" />
+   <ind:state state_ref="oval:ssg-state_sshd_not_required:ste:1" />
+  </ind:variable_test>
+  <ind:variable_test id="oval:ssg-test_sshd_required:tst:1" version="1" check="all" comment="Verify if Profile set Value sshd_required as required" state_operator="AND">
+   <ind:object object_ref="oval:ssg-object_sshd_required:obj:1" />
+   <ind:state state_ref="oval:ssg-state_sshd_required:ste:1" />
+  </ind:variable_test>
+  <ind:variable_test id="oval:ssg-test_sshd_requirement_unset:tst:1" version="1" check="all" comment="Verify if Value of sshd_required is the default" state_operator="AND">
+   <ind:object object_ref="oval:ssg-object_sshd_requirement_unknown:obj:1" />
+   <ind:state state_ref="oval:ssg-state_sshd_requirement_unset:ste:1" />
+  </ind:variable_test>
+ </oval-def:tests>
+ <oval-def:objects>
+  <ind:textfilecontent54_object id="oval:ssg-obj_sshd_rekey_limit:obj:1" version="1">
+   <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+   <ind:pattern operation="pattern match">^[\s]*RekeyLimit[\s]+(.*)$</ind:pattern>
+   <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="oval:ssg-obj_sshd_rekey_limit_config_dir:obj:1" version="1">
+   <ind:path>/etc/ssh/sshd_config.d</ind:path>
+   <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+   <ind:pattern operation="pattern match">^[\s]*RekeyLimit[\s]+(.*)$</ind:pattern>
+   <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <linux:rpminfo_object id="oval:ssg-obj_test_package_openssh-server_installed:obj:1" version="1">
+   <linux:name>openssh-server</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_object id="oval:ssg-obj_test_package_openssh-server_removed:obj:1" version="1">
+   <linux:name>openssh-server</linux:name>
+  </linux:rpminfo_object>
+  <ind:variable_object id="oval:ssg-object_sshd_not_required:obj:1" version="1">
+   <ind:var_ref>oval:ssg-sshd_required:var:1</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_object id="oval:ssg-object_sshd_required:obj:1" version="1">
+   <ind:var_ref>oval:ssg-sshd_required:var:1</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_object id="oval:ssg-object_sshd_requirement_unknown:obj:1" version="1">
+   <ind:var_ref>oval:ssg-sshd_required:var:1</ind:var_ref>
+  </ind:variable_object>
+ </oval-def:objects>
+ <oval-def:states>
+  <ind:textfilecontent54_state id="oval:ssg-state_sshd_rekey_limit:ste:1" version="1" operator="AND">
+   <ind:subexpression operation="pattern match" var_ref="oval:ssg-sshd_line_regex:var:1" />
+  </ind:textfilecontent54_state>
+  <ind:variable_state id="oval:ssg-state_sshd_not_required:ste:1" version="1" operator="AND">
+   <ind:value operation="equals" datatype="int">1</ind:value>
+  </ind:variable_state>
+  <ind:variable_state id="oval:ssg-state_sshd_required:ste:1" version="1" operator="AND">
+   <ind:value operation="equals" datatype="int">2</ind:value>
+  </ind:variable_state>
+  <ind:variable_state id="oval:ssg-state_sshd_requirement_unset:ste:1" version="1" operator="AND">
+   <ind:value operation="equals" datatype="int">0</ind:value>
+  </ind:variable_state>
+ </oval-def:states>
+ <oval-def:variables>
+  <oval-def:local_variable id="oval:ssg-sshd_line_regex:var:1" version="1" comment="The regex of the directive" datatype="string">
+   <oval-def:concat>
+    <oval-def:literal_component>^</oval-def:literal_component>
+    <oval-def:variable_component var_ref="oval:ssg-var_rekey_limit_size:var:1" />
+    <oval-def:literal_component>[\s]+</oval-def:literal_component>
+    <oval-def:variable_component var_ref="oval:ssg-var_rekey_limit_time:var:1" />
+    <oval-def:literal_component>[\s]*$</oval-def:literal_component>
+   </oval-def:concat>
+  </oval-def:local_variable>
+  <oval-def:external_variable id="oval:ssg-var_rekey_limit_size:var:1" version="1" comment="Size component of the rekey limit" datatype="string" />
+  <oval-def:external_variable id="oval:ssg-var_rekey_limit_time:var:1" version="1" comment="Time component of the rekey limit" datatype="string" />
+  <oval-def:external_variable id="oval:ssg-sshd_required:var:1" version="1" comment="May be defined by Profiles to explicitly say if sshd is required or not" datatype="int" />
+ </oval-def:variables>
+</oval-def:oval_definitions>
