@@ -300,3 +300,18 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
 )
 endif()
+
+add_test(
+    NAME "verify-override-valid"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/verify_override_true_profile.py" "${CMAKE_CURRENT_SOURCE_DIR}/data/verify_override/valid.xml"
+)
+
+add_test(
+    NAME "verify-override-invalid"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/verify_override_true_profile.py" "${CMAKE_CURRENT_SOURCE_DIR}/data/verify_override/fail.xml"
+)
+set_tests_properties(
+    "verify-override-invalid"
+    PROPERTIES
+    WILL_FAIL true
+)
