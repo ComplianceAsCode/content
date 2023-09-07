@@ -13,7 +13,8 @@
              "diffie-hellman-group-exchange-sha256"]  %}}
 {{% endif %}}
 
-{{% set kex_algos_regex=prefix_conf %}}
+{{% set kex_algos_regex=prefix_conf ~ "(?=[\w-])" "(\\b" ~ kex_algos|join("\\b,?)?(\\b") ~ ")?" ~
+                        sufix_conf ~ "[\\s]*(?:#.*)?$" %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
@@ -26,10 +27,10 @@
           <extend_definition comment="sshd is not required or requirement is unset"
             definition_ref="sshd_not_required_or_unset" />
           {{% if product in ['sle12', 'sle15'] %}}
-          <extend_definition comment="rpm package openssh removed"
+          <extend_definition comment="package openssh removed"
             definition_ref="package_openssh_removed" />
           {{% else %}}
-          <extend_definition comment="rpm package openssh-server removed"
+          <extend_definition comment="package openssh-server removed"
             definition_ref="package_openssh-server_removed" />
           {{% endif %}}
         </criteria>
@@ -37,10 +38,10 @@
           <extend_definition comment="sshd is required or requirement is unset"
             definition_ref="sshd_required_or_unset" />
           {{% if product in ['sle12', 'sle15'] %}}
-          <extend_definition comment="rpm package openssh installed"
+          <extend_definition comment="package openssh installed"
             definition_ref="package_openssh_installed" />
           {{% else %}}
-          <extend_definition comment="rpm package openssh-server installed"
+          <extend_definition comment="package openssh-server installed"
             definition_ref="package_openssh-server_installed" />
           {{% endif %}}
           <criterion comment="Check Kex in {{{ path }}}"
