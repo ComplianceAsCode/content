@@ -16,7 +16,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync python3-lxml
       - name: Install deps python
-        run: pip3 install json2html
+        run: pip3 install json2html prometheus_client
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
