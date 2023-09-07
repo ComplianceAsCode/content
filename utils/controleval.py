@@ -3,6 +3,7 @@ import argparse
 import collections
 import json
 import os
+import yaml
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
 # package. The ssg package we're referencing here is actually a relative import
@@ -79,9 +80,46 @@ def validate_product(product):
         exit(1)
 
 
+def get_parameter_from_yaml(yaml_file: str, section: str) -> list:
+    with open(yaml_file, 'r') as file:
+        try:
+            yaml_content = yaml.safe_load(file)
+            return yaml_content[section]
+        except yaml.YAMLError as e:
+            print(e)
+
+
+def get_controls_from_profiles(controls: list, profiles_files: list, used_controls: set) -> set:
+    for file in profiles_files:
+        selections = get_parameter_from_yaml(file, 'selections')
+        for selection in selections:
+            if any(selection.startswith(control) for control in controls):
+                used_controls.add(selection.split(':')[0])
+    return used_controls
+
+
+def get_controls_used_by_products(ctrls_mgr: controls.ControlsManager, products: list) -> list:
+    used_controls = set()
+    controls = ctrls_mgr.policies.keys()
+    for product in products:
+        profiles_files = get_product_profiles_files(product)
+        used_controls = get_controls_from_profiles(controls, profiles_files, used_controls)
+    return used_controls
+
+
+def get_policy_levels(ctrls_mgr: object, control_id: str) -> list:
+    policy = ctrls_mgr._get_policy(control_id)
+    return policy.levels_by_id.keys()
+
+
 def get_product_dir(product):
     validate_product(product)
     return os.path.join(SSG_ROOT, "products", product)
+
+
+def get_product_profiles_files(product: str) -> list:
+    product_yaml = load_product_yaml(product)
+    return ssg.products.get_profile_files_from_root(product_yaml, product_yaml)
 
 
 def get_product_yaml(product):
@@ -91,6 +129,18 @@ def get_product_yaml(product):
         return product_yml
     print(f"'{product_yml}' file was not found.")
     exit(1)
+
+
+def load_product_yaml(product: str) -> yaml:
+    product_yaml = get_product_yaml(product)
+    return ssg.products.load_product_yaml(product_yaml)
+
+
+def load_controls_manager(controls_dir: str, product: str) -> object:
+    product_yaml = load_product_yaml(product)
+    ctrls_mgr = controls.ControlsManager(controls_dir, product_yaml)
+    ctrls_mgr.load()
+    return ctrls_mgr
 
 
 def get_formatted_name(text_name):
@@ -212,13 +262,14 @@ def print_stats_json(product, id, level, control_list):
     print(json.dumps(data))
 
 
-def stats(controls_manager, args):
-    validate_args(controls_manager, args)
-    ctrls = set(controls_manager.get_all_controls_of_level(args.id, args.level))
+def stats(args):
+    ctrls_mgr = load_controls_manager(args.controls_dir, args.product)
+    validate_args(ctrls_mgr, args)
+    ctrls = set(ctrls_mgr.get_all_controls_of_level(args.id, args.level))
     total = len(ctrls)
 
     if total == 0:
-        print("No controls founds with the given inputs. Maybe try another level.")
+        print("No controls found with the given inputs. Maybe try another level.")
         exit(1)
 
     status_count, control_list = count_controls_by_status(ctrls)
@@ -270,12 +321,7 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    product_yaml = get_product_yaml(args.product)
-    env_yaml = ssg.products.load_product_yaml(product_yaml)
-    controls_manager = controls.ControlsManager(
-        args.controls_dir, env_yaml=env_yaml)
-    controls_manager.load()
-    subcmds[args.subcmd](controls_manager, args)
+    subcmds[args.subcmd](args)
 
 
 if __name__ == "__main__":
