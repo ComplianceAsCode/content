@@ -1060,23 +1060,23 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 {{{ ansible_check_authselect_presence() }}}
 
-- name: {{{ rule_title }}} - Set /etc/pam.d/ path facts
-  set_fact:
+- name: {{{ rule_title }}} - Set /etc/pam.d/ Path Facts
+  ansible.builtin.set_fact:
     {{% if 'ubuntu' in product %}}
     pam_path: ['/etc/pam.d/common-auth']
     {{% else %}}
     pam_path: ['/etc/pam.d/system-auth', '/etc/pam.d/password-auth']
     {{% endif %}}
 
-- name: {{{ rule_title }}} - Remediation where authselect tool is present
+- name: {{{ rule_title }}} - Remediation Where Authselect Tool Is Present
   block:
     {{{ ansible_enable_authselect_feature('with-faillock') | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
-- name: {{{ rule_title }}} - Remediation where authselect tool is not present
+- name: {{{ rule_title }}} - Remediation Where Authselect Tool Is Not Present
   block:
-    - name: {{{ rule_title }}} - Check if pam_faillock.so is already enabled
+    - name: {{{ rule_title }}} - Check if pam_faillock.so Is Already Enabled
       ansible.builtin.lineinfile:
         {{% if 'ubuntu' in product %}}
         path: /etc/pam.d/common-auth
@@ -1089,7 +1089,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       changed_when: false
       register: result_pam_faillock_is_enabled
 
-    - name: {{{ rule_title }}} - Enable pam_faillock.so preauth editing PAM files
+    - name: {{{ rule_title }}} - Enable pam_faillock.so preauth Editing PAM Files
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: auth        required      pam_faillock.so preauth
@@ -1104,7 +1104,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - result_pam_faillock_is_enabled.found == 0
 
     {{% if 'ubuntu' in product %}}
-    - name: {{{ rule_title }}} - Enable pam_faillock.so authsucc editing PAM files
+    - name: {{{ rule_title }}} - Enable pam_faillock.so authsucc Editing PAM Files
       ansible.builtin.lineinfile:
         path: /etc/pam.d/common-auth
         line: auth        sufficient      pam_faillock.so authsucc
@@ -1114,7 +1114,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - not result_authselect_present.stat.exists
     {{% endif %}}
 
-    - name: {{{ rule_title }}} - Enable pam_faillock.so authfail editing PAM files
+    - name: {{{ rule_title }}} - Enable pam_faillock.so authfail Editing PAM Files
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         {{% if 'ubuntu' in product %}}
@@ -1129,7 +1129,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - result_pam_faillock_is_enabled.found == 0
 
     {{% if 'ubuntu' not in product %}}
-    - name: {{{ rule_title }}} - Enable pam_faillock.so account section editing PAM files
+    - name: {{{ rule_title }}} - Enable pam_faillock.so account Section Editing PAM Files
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: account     required      pam_faillock.so
@@ -1163,20 +1163,20 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{{ ansible_instantiate_variables( faillock_var_name ) }}}
 {{%- endif %}}
 
-- name: {{{ rule_title }}} - Set /etc/pam.d/ path facts
-  set_fact:
+- name: {{{ rule_title }}} - Set /etc/pam.d/ Path Facts
+  ansible.builtin.set_fact:
     {{% if 'ubuntu' in product %}}
     pam_path: ['/etc/pam.d/common-auth']
     {{% else %}}
     pam_path: ['/etc/pam.d/system-auth', '/etc/pam.d/password-auth']
     {{% endif %}}
 
-- name: {{{ rule_title }}} - Check the presence of /etc/security/faillock.conf file
+- name: {{{ rule_title }}} - Check The Presence of /etc/security/faillock.conf File
   ansible.builtin.stat:
     path: /etc/security/faillock.conf
   register: result_faillock_conf_check
 
-- name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter in /etc/security/faillock.conf
+- name: {{{ rule_title }}} - Ensure The pam_faillock.so {{{ parameter }}} Parameter in /etc/security/faillock.conf
   ansible.builtin.lineinfile:
     path: /etc/security/faillock.conf
     {{%- if faillock_var_name == '' %}}
@@ -1190,7 +1190,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - result_faillock_conf_check.stat.exists
 
-- name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter not in PAM files
+- name: {{{ rule_title }}} - Ensure The pam_faillock.so {{{ parameter }}} Parameter Not in PAM Files
   block:
     {{% if 'ubuntu' in product %}}
     {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/common-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
@@ -1201,8 +1201,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - result_faillock_conf_check.stat.exists
 
-
-- name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter in PAM files
+- name: {{{ rule_title }}} - Ensure The pam_faillock.so {{{ parameter }}} Parameter in PAM Files
   block:
     - name: {{{ rule_title }}} - Check if pam_faillock.so {{{ parameter }}} parameter is already enabled in pam files
       ansible.builtin.lineinfile:
@@ -1217,7 +1216,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       changed_when: false
       register: result_pam_faillock_{{{ parameter }}}_parameter_is_present
 
-    - name: {{{ rule_title }}} - Ensure the inclusion of pam_faillock.so preauth {{{ parameter }}} parameter in auth section
+    - name: {{{ rule_title }}} - Ensure The Inclusion of pam_faillock.so preauth {{{ parameter }}} Parameter in auth Section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
@@ -1233,7 +1232,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found == 0
 
     {{%- if authfail %}}
-    - name: {{{ rule_title }}} - Ensure the inclusion of pam_faillock.so authfail {{{ parameter }}} parameter in auth section
+    - name: {{{ rule_title }}} - Ensure The Inclusion of pam_faillock.so authfail {{{ parameter }}} Parameter in auth Section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
@@ -1250,7 +1249,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{%- endif %}}
 
     {{%- if faillock_var_name != '' %}}
-    - name: {{{ rule_title }}} - Ensure the desired value for pam_faillock.so preauth {{{ parameter }}} parameter in auth section
+    - name: {{{ rule_title }}} - Ensure The Desired Value for pam_faillock.so preauth {{{ parameter }}} Parameter in auth Section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
@@ -1262,7 +1261,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found > 0
 
     {{%- if authfail %}}
-    - name: {{{ rule_title }}} - Ensure the desired value for pam_faillock.so authfail {{{ parameter }}} parameter in auth section
+    - name: {{{ rule_title }}} - Ensure The Desired Value for pam_faillock.so authfail {{{ parameter }}} Parameter in auth Section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
