@@ -544,24 +544,10 @@ macro(ssg_build_sds PRODUCT)
         endif()
     endif()
     add_test(
-        NAME "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-titles"
-        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"title\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        NAME "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/verify_override_true_profile.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
-    set_tests_properties("verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-titles" PROPERTIES LABELS quick)
-    add_test(
-        NAME "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-descriptions"
-        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"description\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-    )
-    set_tests_properties("verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-descriptions" PROPERTIES LABELS quick)
-    # Sets WILL_FAIL property for all '*-override-true-all-profile-*' tests to
-    # true as it is expected that XPath of a passing test will be empty (and
-    # non-zero exit code is returned in such case).
-    set_tests_properties(
-        "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-titles"
-        "verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile-descriptions"
-        PROPERTIES
-        WILL_FAIL true
-    )
+    set_tests_properties("verify-ssg-${PRODUCT}-ds.xml-override-true-all-profile" PROPERTIES LABELS quick)
     add_test(
         NAME "verify-references-ssg-${PRODUCT}-ds.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
