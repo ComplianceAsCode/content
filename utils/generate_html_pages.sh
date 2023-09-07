@@ -115,7 +115,7 @@ fi
 # Generate Prometheus Stats
 PROMETHEUS_STATS_DIR="$PAGES_DIR/prometheus_stats"
 mkdir -p "$PROMETHEUS_STATS_DIR"
-mv "$PAGES_DIR/policies_metrics" "$PROMETHEUS_STATS_DIR"
+mv build/policies_metrics "$PROMETHEUS_STATS_DIR"
 
 
 pushd $PAGES_DIR
