@@ -153,6 +153,8 @@ find_python_module(sphinxcontrib.autojinja)
 find_python_module(sphinx_rtd_theme)
 find_python_module(myst_parser)
 
+# prometheus_metrics requirements
+find_python_module(prometheus_client)
 
 include(CMakeDependentOption)
 cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
@@ -247,7 +249,7 @@ message(STATUS "python openpyxl module (optional): ${PY_OPENPYXL}")
 message(STATUS "python pandas module (optional): ${PY_PANDAS}")
 message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
 message(STATUS "python lxml module (optional): ${PY_LXML}")
-
+message(STATUS "python prometheus-client module (optional): ${PY_PROMETHEUS_CLIENT}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
