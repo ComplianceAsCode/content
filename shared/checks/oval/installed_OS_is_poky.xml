@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_poky" version="1">
+    <metadata>
+      <title>Poky</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed is a Poky based System</description>
+    </metadata>
+    <criteria comment="System is Poky based distribution" operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Poky based distro" test_ref="test_os_poky" />
+      <criterion comment="Poky based distribution is installed" test_ref="test_poky" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/os-release exists" id="test_os_poky" version="1">
+    <unix:object object_ref="obj_os_poky" />
+  </unix:file_test>
+  <unix:file_object comment="check /etc/os-release file" id="obj_os_poky" version="1">
+    <unix:filepath>/etc/os-release</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check OpenEmbedded" id="test_poky" version="1">
+    <ind:object object_ref="obj_poky" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_poky" version="1" comment="Check Poky">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^ID=poky$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
