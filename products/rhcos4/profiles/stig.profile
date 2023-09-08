@@ -10,12 +10,11 @@ metadata:
 
 reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Container_Platform_V1R3_SRG.zip
 
-title: 'DRAFT - DISA STIG for Red Hat Enterprise Linux CoreOS'
+title: 'DISA STIG for Red Hat Enterprise Linux CoreOS'
 
 description: |-
-    This is a draft profile for experimental purposes
-    It is not based on the DISA STIG for RHCOS4, because this one was not available at time of
-    the release
+    This profile contains configuration checks that align to the DISA STIG for
+    Red Hat Enterprise Linux CoreOS 4.
 
 selections:
   - srg_ctr:all
