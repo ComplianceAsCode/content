@@ -16,7 +16,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt python3-pip rsync python3-lxml
       - name: Install deps python
-        run: pip3 install json2html
+        run: pip3 install json2html prometheus_client
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
@@ -31,6 +31,10 @@ jobs:
       - name: Render Policies (Using control files)
         run: ninja render-policies -j2
         working-directory: ./build
+      - name: Generate Prometheus Metrics
+        run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel9 rhel8 rhel7 sle12 sle15 -f ./build/policies_metrics
+        env:
+          PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML pages
         run: utils/generate_html_pages.sh $PAGES_DIR
         shell: bash
