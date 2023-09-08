@@ -1297,7 +1297,7 @@ To import changes by a third-party you can import the changes by using the follo
     $ ./utils/import_srg_spreadsheet.py --current build/1694088261_stig_export.xlsx --changed changed.xlsx --product rhel9 --changed-name "RHEL 9"
 
 ```{note}
-The STIG ID column needs to be a CCE as that how the script finds the rules.
+The STIG ID column needs to contain a valid CCE ID and that CCE ID must be defined in a rule in the project as that how the script matches rows to rules.
 ```
 
 The `--changed-name` is the name that used in the spreadsheet for the product.
