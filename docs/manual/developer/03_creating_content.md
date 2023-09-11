@@ -1224,7 +1224,7 @@ $ utils/controleval.py stats -i cis_rhel7 -l l2_server
 
 For more details about the `controleval.py` too, run `utils/controleval.py --help`.
 
-### Creating spreadsheets for submission
+### Creating Spreadsheets for Submission
 Sometimes a control file needs to be exported to format specific for review.
 
 #### DISA STIGs
@@ -1237,7 +1237,7 @@ If you have an existing product that you want to base your new STIG you can crea
 
 The manual (`-m`) should be an SRG XML from DISA.
 
-##### Filling out content
+##### Filling Out Content
 Every control in the policy file will create at least one row in the export.
 For every rule on the control there will be a row in the exported SRG.
 
@@ -1276,7 +1276,34 @@ To export the spreadsheet use the following command:
     $ ./utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9
 
 The output by default will be out in CSV file in build directory.
-The file will be a csv file named as the UNIX timestamp of when the file was created.
+By passing the `--format` flag you are able to output HTML, Markdown, or Excel files.
+By default the generated file will be in the `build` folder.
+
+#### Comparing
+To compare two spreadsheets use the following command below:
+
+    $ ./utils/srg_diff.py --base first_rhel9.xlsx --target build/1694088261_stig_export.xlsx --product rhel9
+
+The output will be a html in the build folder with the name `srg_diff.html`.
+The output will have the following sections:
+
+* `Missing in Base` - This lists rules that are in the target spreadsheet but are not in the base spreadsheet
+* `Missing in Target` - This lists rules that are int the base spreadsheet but are in the target spreadsheet
+* `Deltas` - Any fields don't match between base and target will be listed here formatted as a diff.
+
+#### Importing
+To import changes by a third-party you can import the changes by using the following command:
+
+    $ ./utils/import_srg_spreadsheet.py --current build/1694088261_stig_export.xlsx --changed changed.xlsx --product rhel9 --changed-name "RHEL 9"
+
+```{note}
+The STIG ID column needs to contain a valid CCE ID and that CCE ID must be defined in a rule in the project as that how the script matches rows to rules.
+```
+
+The `--changed-name` is the name that used in the spreadsheet for the product.
+For example in the spreadsheet for RHEL9 "Red Hat Enterprise Linux 9" was changed to "RHEL 9".
+You may need to pass `--end-row` with the correct end row number if your spreadsheet has more than 600 rows.
+After the script is ran you will need to review changes made to the rules using Git and make changes as needed.
 
 ## Components
 
