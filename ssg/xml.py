@@ -53,10 +53,21 @@ def register_namespaces(ns=None):
 
 
 def get_namespaces_from(file):
-    return {
-        key: value
-        for _, (key, value) in ElementTree.iterparse(file, events=["start-ns"])
-    }
+    """
+    Return dictionary of namespaces in file. Return empty dictionary in case of error.
+    """
+    result = {}
+    try:
+        result = {
+            key: value
+            for _, (key, value) in ElementTree.iterparse(file, events=["start-ns"])
+        }
+    except Exception:
+        # Probably an old version of Python
+        # Doesn't matter, as this is non-essential.
+        pass
+    finally:
+        return result
 
 
 def open_xml(filename):

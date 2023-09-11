@@ -37,9 +37,9 @@ def required_attribute(_xml_el, _key):
 # ----- General Objects
 
 
-class OVALBaseObject:
+class OVALBaseObject(object):
     def __init__(self, tag):
-        self.tag: str = tag
+        self.tag = tag
 
     def __eq__(self, __value):
         return self.__dict__ == __value.__dict__
@@ -55,12 +55,13 @@ class OVALBaseObject:
 
 
 class OVALComponent(OVALBaseObject):
-    def __init__(self, tag, id_, version, deprecated=False, notes=None):
-        super().__init__(tag)
-        self.id_: str = id_
-        self.version: str = version
-        self.deprecated: bool = deprecated
-        self.notes: Notes = notes
+    deprecated = False
+    notes = None
+    version = "0"
+
+    def __init__(self, tag, id_):
+        super(OVALComponent, self).__init__(tag)
+        self.id_ = id_
 
     def get_xml_element(self):
         el = ElementTree.Element(self.tag)
@@ -74,22 +75,17 @@ class OVALComponent(OVALBaseObject):
 
 
 class OVALEntity(OVALComponent):
-    def __init__(
-        self,
-        tag,
-        id_,
-        version,
-        properties,
-        comment="",
-        deprecated=False,
-        notes=None,
-    ):
-        super().__init__(tag, id_, version, deprecated, notes)
-        self.comment: str = comment
-        self.properties: list[OVALEntityProperty] = properties
+    comment = ""
 
-    def get_xml_element(self):
-        el = super().get_xml_element()
+    def __init__(self, tag, id_, properties):
+        super(OVALEntity, self).__init__(tag, id_)
+        self.properties = properties
+
+    def get_xml_element(self, **attributes):
+        el = super(OVALEntity, self).get_xml_element()
+
+        for key, value in attributes.items():
+            el.set(key, value)
 
         if self.comment:
             el.set("comment", self.comment)
@@ -118,13 +114,13 @@ class ExceptionEmptyNote(Exception):
 
 class Notes(OVALBaseObject):
     def __init__(self, tag, note_tag, notes):
-        super().__init__(tag)
-        self.note_tag: str = note_tag
+        super(Notes, self).__init__(tag)
+        self.note_tag = note_tag
         if len(notes) == 0:
             raise ExceptionEmptyNote(
                 "Element notes should contain at least one element note."
             )
-        self.notes: list[str] = notes
+        self.notes = notes
 
     def get_xml_element(self):
         notes_el = ElementTree.Element(self.tag)
@@ -138,31 +134,31 @@ class Notes(OVALBaseObject):
 # -----
 
 
-def load_OVAL_entity_property(end_point_property_el):
-    data = OVALEntityProperty(
-        end_point_property_el.tag,
-        end_point_property_el.attrib,
-        end_point_property_el.text,
+def load_oval_entity_property(end_point_property_el):
+    data = OVALEntityProperty(end_point_property_el.tag)
+    data.attributes = (
+        end_point_property_el.attrib if end_point_property_el.attrib else None
     )
+    data.text = end_point_property_el.text
     for child_end_point_property_el in end_point_property_el:
-        data.add_child_property(load_OVAL_entity_property(child_end_point_property_el))
+        data.add_child_property(load_oval_entity_property(child_end_point_property_el))
     return data
 
 
 class OVALEntityProperty(OVALBaseObject):
-    def __init__(self, tag, attributes=None, text=None):
-        super().__init__(tag)
-        self.attributes: dict = attributes
-        self.text: str = text
+    attributes = None
+    text = None
 
-        self.properties: list[OVALEntityProperty] = []
+    def __init__(self, tag):
+        super(OVALEntityProperty, self).__init__(tag)
+        self.properties = []
 
     def add_child_property(self, property_):
         self.properties.append(property_)
 
     def get_xml_element(self):
         property_el = ElementTree.Element(self.tag)
-        for key, val in self.attributes.items():
+        for key, val in self.attributes.items() if self.attributes is not None else {}:
             property_el.set(key, val)
 
         if self.text is not None:

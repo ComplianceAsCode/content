@@ -8,7 +8,7 @@ from .general import (
     OVALComponent,
     OVALEntity,
     OVALEntityProperty,
-    load_OVAL_entity_property,
+    load_oval_entity_property,
     load_notes,
 )
 from .oval_document import (

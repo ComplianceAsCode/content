@@ -15,14 +15,17 @@ def load_test(oval_test_xml_el):
     test = Test(
         oval_test_xml_el.tag,
         required_attribute(oval_test_xml_el, "id"),
-        required_attribute(oval_test_xml_el, "version"),
         required_attribute(oval_test_xml_el, "check"),
-        required_attribute(oval_test_xml_el, "comment"),
-        STR_TO_BOOL.get(oval_test_xml_el.get("deprecated", ""), False),
-        load_notes(notes_el),
-        oval_test_xml_el.get("check_existence", "at_least_one_exists"),
-        oval_test_xml_el.get("state_operator", "AND"),
     )
+    test.check_existence = oval_test_xml_el.get(
+        "check_existence", "at_least_one_exists"
+    )
+    test.state_operator = oval_test_xml_el.get("state_operator", "AND")
+    test.comment = required_attribute(oval_test_xml_el, "comment")
+    test.deprecated = STR_TO_BOOL.get(oval_test_xml_el.get("deprecated", ""), False)
+    test.notes = load_notes(notes_el)
+    test.version = required_attribute(oval_test_xml_el, "version")
+
     for child_node_el in oval_test_xml_el:
         if child_node_el.tag.endswith("object"):
             test.set_object_ref(child_node_el.get("object_ref"))
@@ -46,28 +49,18 @@ class ExceptionMissingObjectReferenceInTest(Exception):
 
 
 class Test(OVALComponent):
-    def __init__(
-        self,
-        tag,
-        id_,
-        version,
-        check,
-        comment,
-        deprecated=False,
-        notes=None,
-        check_existence="at_least_one_exists",
-        state_operator="AND",
-    ):
-        super().__init__(tag, id_, version, deprecated, notes)
-        self.check: str = check
-        self.check_existence: str = check_existence
-        self.state_operator: str = state_operator
-        self.comment: str = comment
+    check_existence = "at_least_one_exists"
+    state_operator = "AND"
+    comment = ""
+    object_ref_tag = "object"
+    state_ref_tag = "state"
 
-        self.object_ref_tag: str = ""
-        self.object_ref: str = ""
-        self.state_ref_tag: str = ""
-        self.state_refs: list[str] = []
+    def __init__(self, tag, id_, check):
+        super(Test, self).__init__(tag, id_)
+        self.check = check
+
+        self.object_ref = ""
+        self.state_refs = []
 
     def set_object_ref(self, object_ref):
         if self.object_ref != "":
@@ -80,7 +73,7 @@ class Test(OVALComponent):
         self.state_refs.append(state_ref)
 
     def get_xml_element(self):
-        test_el = super().get_xml_element()
+        test_el = super(Test, self).get_xml_element()
         test_el.set("check", self.check)
         test_el.set("comment", self.comment)
         if self.check_existence != "at_least_one_exists":

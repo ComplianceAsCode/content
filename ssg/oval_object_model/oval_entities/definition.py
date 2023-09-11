@@ -13,11 +13,12 @@ from ..general import (
 
 
 class GeneralCriteriaNode(OVALBaseObject):
-    def __init__(self, tag, negate=False, comment="", applicability_check=False):
-        super().__init__(tag)
-        self.negate: bool = negate
-        self.comment: str = comment
-        self.applicability_check: bool = applicability_check
+    negate = False
+    comment = ""
+    applicability_check = False
+
+    def __init__(self, tag):
+        super(GeneralCriteriaNode, self).__init__(tag)
 
     def get_xml_element(self):
         el = ElementTree.Element(self.tag)
@@ -31,78 +32,68 @@ class GeneralCriteriaNode(OVALBaseObject):
         return el
 
 
+def load_terminate_criteria(xml_el, class_, ref_prefix):
+    terminate_criteria = class_(
+        xml_el.tag,
+        required_attribute(xml_el, "{}_ref".format(ref_prefix)),
+    )
+    terminate_criteria.negate = STR_TO_BOOL.get(xml_el.get("negate"), False)
+    terminate_criteria.comment = xml_el.get("comment", "")
+    terminate_criteria.applicability_check = STR_TO_BOOL.get(
+        xml_el.get("applicability_check"), False
+    )
+    return terminate_criteria
+
+
+class TerminateCriteriaNode(GeneralCriteriaNode):
+    prefix_ref = ""
+
+    def __init__(self, tag, ref):
+        super(TerminateCriteriaNode, self).__init__(tag)
+        self.ref = ref
+
+    def get_xml_element(self):
+        el = super(TerminateCriteriaNode, self).get_xml_element()
+        el.set("{}_ref".format(self.prefix_ref), self.ref)
+        return el
+
+
 # -----
 
 
-def load_criterion(oval_criterion_xml_el):
-    return Criterion(
-        oval_criterion_xml_el.tag,
-        required_attribute(oval_criterion_xml_el, "test_ref"),
-        STR_TO_BOOL.get(oval_criterion_xml_el.get("negate"), False),
-        oval_criterion_xml_el.get("comment", ""),
-        STR_TO_BOOL.get(oval_criterion_xml_el.get("applicability_check"), False),
-    )
-
-
-class Criterion(GeneralCriteriaNode):
-    def __init__(
-        self, tag, test_ref, negate=False, comment="", applicability_check=False
-    ):
-        super().__init__(tag, negate, comment, applicability_check)
-        self.test_ref: str = test_ref
-
-    def get_xml_element(self):
-        criterion_el = super().get_xml_element()
-        criterion_el.set("test_ref", self.test_ref)
-        return criterion_el
+class Criterion(TerminateCriteriaNode):
+    prefix_ref = "test"
 
 
 # -----
 
 
-def load_extend_definition(oval_extend_definition_xml_el):
-    return ExtendDefinition(
-        oval_extend_definition_xml_el.tag,
-        required_attribute(oval_extend_definition_xml_el, "definition_ref"),
-        STR_TO_BOOL.get(oval_extend_definition_xml_el.get("negate"), False),
-        oval_extend_definition_xml_el.get("comment", ""),
-        STR_TO_BOOL.get(
-            oval_extend_definition_xml_el.get("applicability_check"), False
-        ),
-    )
-
-
-class ExtendDefinition(GeneralCriteriaNode):
-    def __init__(
-        self, tag, definition_ref, negate=False, comment="", applicability_check=False
-    ):
-        super().__init__(tag, negate, comment, applicability_check)
-        self.definition_ref: str = definition_ref
-
-    def get_xml_element(self):
-        extend_definition_el = super().get_xml_element()
-        extend_definition_el.set("definition_ref", self.definition_ref)
-        return extend_definition_el
+class ExtendDefinition(TerminateCriteriaNode):
+    prefix_ref = "definition"
 
 
 # -----
 
 
 def load_criteria(oval_criteria_xml_el):
-    criteria = Criteria(
-        oval_criteria_xml_el.tag,
-        oval_criteria_xml_el.get("operator", "AND"),
-        STR_TO_BOOL.get(oval_criteria_xml_el.get("negate"), False),
-        oval_criteria_xml_el.get("comment", ""),
-        STR_TO_BOOL.get(oval_criteria_xml_el.get("applicability_check"), False),
+    criteria = Criteria(oval_criteria_xml_el.tag)
+    criteria.operator = oval_criteria_xml_el.get("operator", "AND")
+    criteria.negate = STR_TO_BOOL.get(oval_criteria_xml_el.get("negate"), False)
+    criteria.comment = oval_criteria_xml_el.get("comment", "")
+    criteria.applicability_check = STR_TO_BOOL.get(
+        oval_criteria_xml_el.get("applicability_check"), False
     )
     for child_node_el in oval_criteria_xml_el:
         if child_node_el.tag.endswith("criteria"):
             criteria.add_child_criteria_node(load_criteria(child_node_el))
         elif child_node_el.tag.endswith("criterion"):
-            criteria.add_child_criteria_node(load_criterion(child_node_el))
+            criteria.add_child_criteria_node(
+                load_terminate_criteria(child_node_el, Criterion, "test")
+            )
         elif child_node_el.tag.endswith("extend_definition"):
-            criteria.add_child_criteria_node(load_extend_definition(child_node_el))
+            criteria.add_child_criteria_node(
+                load_terminate_criteria(child_node_el, ExtendDefinition, "definition")
+            )
         else:
             sys.stderr.write(
                 "Warning: Unknown element '{}'\n".format(child_node_el.tag)
@@ -111,13 +102,12 @@ def load_criteria(oval_criteria_xml_el):
 
 
 class Criteria(GeneralCriteriaNode):
-    def __init__(
-        self, tag, operator="AND", negate=False, comment="", applicability_check=False
-    ):
-        super().__init__(tag, negate, comment, applicability_check)
-        self.operator: str = operator
+    operator = "AND"
 
-        self.child_criteria_nodes: list[Criteria, ExtendDefinition, Criterion] = []
+    def __init__(self, tag):
+        super(Criteria, self).__init__(tag)
+
+        self.child_criteria_nodes = []
 
     def add_child_criteria_node(self, child):
         if not isinstance(child, (Criteria, Criterion, ExtendDefinition)):
@@ -125,7 +115,7 @@ class Criteria(GeneralCriteriaNode):
         self.child_criteria_nodes.append(child)
 
     def get_xml_element(self):
-        criteria_el = super().get_xml_element()
+        criteria_el = super(Criteria, self).get_xml_element()
 
         criteria_el.set("operator", self.operator)
 
@@ -141,23 +131,23 @@ class Criteria(GeneralCriteriaNode):
 def load_references(all_reference_elements):
     out = []
     for ref_el in all_reference_elements:
-        out.append(
-            Reference(
-                ref_el.tag,
-                required_attribute(ref_el, "source"),
-                required_attribute(ref_el, "ref_id"),
-                ref_el.get("ref_url", ""),
-            )
+        ref = Reference(
+            ref_el.tag,
+            required_attribute(ref_el, "source"),
+            required_attribute(ref_el, "ref_id"),
         )
+        ref.ref_url = ref_el.get("ref_url", "")
+        out.append(ref)
     return out if out else None
 
 
 class Reference(OVALBaseObject):
-    def __init__(self, tag, source, ref_id, ref_url=""):
-        super().__init__(tag)
-        self.source: str = source
-        self.ref_id: str = ref_id
-        self.ref_url: str = ref_url
+    ref_url = ""
+
+    def __init__(self, tag, source, ref_id):
+        super(Reference, self).__init__(tag)
+        self.source = source
+        self.ref_id = ref_id
 
     def get_xml_element(self):
         reference_el = ElementTree.Element(self.tag)
@@ -173,66 +163,47 @@ class Reference(OVALBaseObject):
 
 def _get_tag(el):
     if el is None:
-        return ""
+        return None
     return el.tag
 
 
 def _get_list_of_affected(affected_el, element_name):
-    return [
-        el.text
-        for el in affected_el.findall(
-            "./{%s}%s" % (OVAL_NAMESPACES.definition, element_name)
-        )
-    ]
+    elements = affected_el.findall(
+        "./{%s}%s" % (OVAL_NAMESPACES.definition, element_name)
+    )
+    if len(elements) == 0:
+        return None
+    return [el.text for el in elements]
 
 
 def load_affected(all_affected_elements):
     out = []
     for affected_el in all_affected_elements:
-        platforms = _get_list_of_affected(affected_el, "platform")
-
-        products = _get_list_of_affected(affected_el, "product")
-
-        platform_tag = _get_tag(
+        affected = Affected(
+            affected_el.tag,
+            required_attribute(affected_el, "family"),
+        )
+        affected.platform_tag = _get_tag(
             affected_el.find("./{%s}platform" % OVAL_NAMESPACES.definition)
         )
-        product_tag = _get_tag(
+        affected.product_tag = _get_tag(
             affected_el.find("./{%s}product" % OVAL_NAMESPACES.definition)
         )
-        if not platforms:
-            platforms = None
-        if not products:
-            products = None
-        out.append(
-            Affected(
-                affected_el.tag,
-                required_attribute(affected_el, "family"),
-                platform_tag,
-                product_tag,
-                platforms,
-                products,
-            )
-        )
+        affected.platforms = _get_list_of_affected(affected_el, "platform")
+        affected.products = _get_list_of_affected(affected_el, "product")
+        out.append(affected)
     return out if out else None
 
 
 class Affected(OVALBaseObject):
-    def __init__(
-        self,
-        tag,
-        family,
-        platform_tag="",
-        product_tag="",
-        platforms=None,
-        products=None,
-    ):
-        super().__init__(tag)
-        self.family: str = family
+    platform_tag = "platform"
+    product_tag = "product"
+    platforms = None
+    products = None
 
-        self.platforms: list[str] = platforms
-        self.products: list[str] = products
-        self.platform_tag: str = platform_tag
-        self.product_tag: str = product_tag
+    def __init__(self, tag, family):
+        super(Affected, self).__init__(tag)
+        self.family = family
 
     def finalize_affected_platforms(self, type_, full_name):
         """
@@ -272,49 +243,33 @@ class Affected(OVALBaseObject):
 def load_metadata(oval_metadata_xml_el):
     title_el = oval_metadata_xml_el.find("./{%s}title" % OVAL_NAMESPACES.definition)
     title_str = title_el.text
-    title_tag = title_el.tag
     description_el = oval_metadata_xml_el.find(
         "./{%s}description" % OVAL_NAMESPACES.definition
     )
     description_str = description_el.text
-    description_tag = description_el.tag
     all_affected_elements = oval_metadata_xml_el.findall(
         "./{%s}affected" % OVAL_NAMESPACES.definition
     )
     all_reference_elements = oval_metadata_xml_el.findall(
         "./{%s}reference" % OVAL_NAMESPACES.definition
     )
-    return Metadata(
-        oval_metadata_xml_el.tag,
-        title_str,
-        title_tag,
-        description_str,
-        description_tag,
-        load_affected(all_affected_elements),
-        load_references(all_reference_elements),
-    )
+    metadata = Metadata(oval_metadata_xml_el.tag)
+    metadata.title = title_str
+    metadata.description = description_str
+    metadata.array_of_affected = load_affected(all_affected_elements)
+    metadata.array_of_references = load_references(all_reference_elements)
+    metadata.description_tag = description_el.tag
+    metadata.title_tag = title_el.tag
+    return metadata
 
 
 class Metadata(OVALBaseObject):
-    def __init__(
-        self,
-        tag,
-        title,
-        title_tag,
-        description,
-        description_tag,
-        array_of_affected=None,
-        array_of_references=None,
-    ):
-        super().__init__(tag)
-        self.title: str = title
-        self.description: str = description
-
-        self.array_of_affected: list[Affected] = array_of_affected
-        self.array_of_references: list[Reference] = array_of_references
-
-        self.title_tag: str = title_tag
-        self.description_tag: str = description_tag
+    array_of_affected = None
+    array_of_references = None
+    title = ""
+    description = ""
+    title_tag = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}title"
+    description_tag = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}description"
 
     def finalize_affected_platforms(self, type_, full_name):
         """
@@ -362,37 +317,31 @@ def load_definition(oval_definition_xml_el):
     criteria_el = oval_definition_xml_el.find(
         "./{%s}criteria" % OVAL_NAMESPACES.definition
     )
-    return Definition(
+    definition = Definition(
         oval_definition_xml_el.tag,
         required_attribute(oval_definition_xml_el, "id"),
         required_attribute(oval_definition_xml_el, "class"),
-        required_attribute(oval_definition_xml_el, "version"),
         load_metadata(metadata_el),
-        STR_TO_BOOL.get(oval_definition_xml_el.get("deprecated", ""), False),
-        load_notes(notes_el),
-        load_criteria(criteria_el),
     )
+    definition.deprecated = STR_TO_BOOL.get(
+        oval_definition_xml_el.get("deprecated", ""), False
+    )
+    definition.notes = load_notes(notes_el)
+    definition.version = required_attribute(oval_definition_xml_el, "version")
+    definition.criteria = load_criteria(criteria_el)
+    return definition
 
 
 class Definition(OVALComponent):
-    def __init__(
-        self,
-        tag,
-        id_,
-        class_,
-        version,
-        metadata,
-        deprecated=False,
-        notes=None,
-        criteria=None,
-    ):
-        super().__init__(tag, id_, version, deprecated, notes)
-        self.class_: str = class_
-        self.metadata: Metadata = metadata
-        self.criteria: Criteria = criteria
+    criteria = None
+
+    def __init__(self, tag, id_, class_, metadata):
+        super(Definition, self).__init__(tag, id_)
+        self.class_ = class_
+        self.metadata = metadata
 
     def get_xml_element(self):
-        definition_el = super().get_xml_element()
+        definition_el = super(Definition, self).get_xml_element()
         definition_el.set("class", self.class_)
         definition_el.append(self.metadata.get_xml_element())
         if self.criteria:

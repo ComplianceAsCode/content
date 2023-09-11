@@ -208,18 +208,15 @@ def test_content_criteria(criteria, oval_document):
 
     for child_criteria_node in criteria.child_criteria_nodes:
         if isinstance(child_criteria_node, Criterion):
-            assert (
-                child_criteria_node.test_ref == "oval:ssg-test_sshd_not_required:tst:1"
-            )
-            assert child_criteria_node.test_ref in oval_document.tests
+            assert child_criteria_node.ref == "oval:ssg-test_sshd_not_required:tst:1"
+            assert child_criteria_node.prefix_ref == "test"
+            assert child_criteria_node.ref in oval_document.tests
             assert not child_criteria_node.negate
             assert child_criteria_node.comment == ""
         if isinstance(child_criteria_node, ExtendDefinition):
-            assert (
-                child_criteria_node.definition_ref
-                == "oval:ssg-sshd_requirement_unset:def:1"
-            )
-            assert child_criteria_node.definition_ref in oval_document.definitions
+            assert child_criteria_node.ref == "oval:ssg-sshd_requirement_unset:def:1"
+            assert child_criteria_node.prefix_ref == "definition"
+            assert child_criteria_node.ref in oval_document.definitions
             assert not child_criteria_node.negate
             assert child_criteria_node.comment == "SSH requirement is unset"
 
@@ -276,11 +273,11 @@ def test_content_info_rpm_object(rpm_info_object):
     assert rpm_info_object.comment == ""
     assert not rpm_info_object.deprecated
     assert len(rpm_info_object.properties) == 1
-    name_property = OVALEntityProperty(
-        "{{{}}}name".format(OVAL_NAMESPACES.linux),
-        {},
-        "openssh-server",
-    )
+
+    name_property = OVALEntityProperty("{{{}}}name".format(OVAL_NAMESPACES.linux))
+    name_property.text = "openssh-server"
+    name_property.attributes = None
+
     assert rpm_info_object.properties[0] == name_property
 
 
@@ -291,23 +288,27 @@ def test_content_text_file_content_object(text_file_content_object):
     assert text_file_content_object.comment == ""
     assert not text_file_content_object.deprecated
     assert text_file_content_object.properties
-    properties = [
-        OVALEntityProperty(
-            "{{{}}}filepath".format(OVAL_NAMESPACES.independent),
-            {},
-            "/etc/ssh/sshd_config",
-        ),
-        OVALEntityProperty(
-            "{{{}}}pattern".format(OVAL_NAMESPACES.independent),
-            {"operation": "pattern match"},
-            r"^[\s]*RekeyLimit[\s]+(.*)$",
-        ),
-        OVALEntityProperty(
-            "{{{}}}instance".format(OVAL_NAMESPACES.independent),
-            {"datatype": "int", "operation": "greater than or equal"},
-            "1",
-        ),
-    ]
+
+    property_file_path = OVALEntityProperty(
+        "{{{}}}filepath".format(OVAL_NAMESPACES.independent)
+    )
+    property_file_path.attributes = None
+    property_file_path.text = "/etc/ssh/sshd_config"
+    property_pattern = OVALEntityProperty(
+        "{{{}}}pattern".format(OVAL_NAMESPACES.independent)
+    )
+    property_pattern.attributes = {"operation": "pattern match"}
+    property_pattern.text = r"^[\s]*RekeyLimit[\s]+(.*)$"
+    property_instance = OVALEntityProperty(
+        "{{{}}}instance".format(OVAL_NAMESPACES.independent)
+    )
+    property_instance.attributes = {
+        "datatype": "int",
+        "operation": "greater than or equal",
+    }
+    property_instance.text = "1"
+    properties = [property_file_path, property_pattern, property_instance]
+
     assert all(i in properties for i in text_file_content_object.properties)
 
 
@@ -328,32 +329,42 @@ def test_content_local_variable(local_variable):
     concat = local_variable.properties.pop()
     assert "concat" in concat.tag
     assert len(concat.properties) == 5
+
+    property_literal_component = OVALEntityProperty(
+        "{{{}}}literal_component".format(OVAL_NAMESPACES.definition)
+    )
+    property_literal_component.attributes = None
+    property_literal_component.text = "^"
+    property_variable_component = OVALEntityProperty(
+        "{{{}}}variable_component".format(OVAL_NAMESPACES.definition)
+    )
+    property_variable_component.attributes = {
+        "var_ref": "oval:ssg-var_rekey_limit_size:var:1"
+    }
+    property_variable_component.text = None
+    property_literal_component_1 = OVALEntityProperty(
+        "{{{}}}literal_component".format(OVAL_NAMESPACES.definition)
+    )
+    property_literal_component_1.attributes = None
+    property_literal_component_1.text = r"[\s]+"
+    property_variable_component_1 = OVALEntityProperty(
+        "{{{}}}variable_component".format(OVAL_NAMESPACES.definition)
+    )
+    property_variable_component_1.attributes = {
+        "var_ref": "oval:ssg-var_rekey_limit_time:var:1"
+    }
+    property_variable_component_1.text = None
+    property_literal_component_2 = OVALEntityProperty(
+        "{{{}}}literal_component".format(OVAL_NAMESPACES.definition)
+    )
+    property_literal_component_2.attributes = None
+    property_literal_component_2.text = r"[\s]*$"
     properties = [
-        OVALEntityProperty(
-            "{{{}}}literal_component".format(OVAL_NAMESPACES.definition),
-            {},
-            "^",
-        ),
-        OVALEntityProperty(
-            "{{{}}}variable_component".format(OVAL_NAMESPACES.definition),
-            {"var_ref": "oval:ssg-var_rekey_limit_size:var:1"},
-            None,
-        ),
-        OVALEntityProperty(
-            "{{{}}}literal_component".format(OVAL_NAMESPACES.definition),
-            {},
-            r"[\s]+",
-        ),
-        OVALEntityProperty(
-            "{{{}}}variable_component".format(OVAL_NAMESPACES.definition),
-            {"var_ref": "oval:ssg-var_rekey_limit_time:var:1"},
-            None,
-        ),
-        OVALEntityProperty(
-            "{{{}}}literal_component".format(OVAL_NAMESPACES.definition),
-            {},
-            r"[\s]*$",
-        ),
+        property_literal_component,
+        property_variable_component,
+        property_literal_component_1,
+        property_variable_component_1,
+        property_literal_component_2,
     ]
     assert all(i in properties for i in concat.properties)
 
@@ -364,14 +375,17 @@ def test_content_text_file_content_state(text_file_content_state):
     assert text_file_content_state.comment == ""
     assert text_file_content_state.operator == "AND"
     assert len(text_file_content_state.properties) == 1
-    properties = [
-        OVALEntityProperty(
-            "{{{}}}subexpression".format(OVAL_NAMESPACES.independent),
-            {"operation": "pattern match", "var_ref": "oval:ssg-sshd_line_regex:var:1"},
-            None,
-        ),
-    ]
-    assert all(i in properties for i in text_file_content_state.properties)
+
+    property_subexpression = OVALEntityProperty(
+        "{{{}}}subexpression".format(OVAL_NAMESPACES.independent)
+    )
+    property_subexpression.attributes = {
+        "operation": "pattern match",
+        "var_ref": "oval:ssg-sshd_line_regex:var:1",
+    }
+    property_subexpression.text = None
+
+    assert text_file_content_state.properties[0] == property_subexpression
 
 
 def test_content_variable_state(variable_state):
@@ -380,11 +394,11 @@ def test_content_variable_state(variable_state):
     assert variable_state.comment == ""
     assert variable_state.operator == "AND"
     assert len(variable_state.properties) == 1
-    properties = [
-        OVALEntityProperty(
-            "{{{}}}value".format(OVAL_NAMESPACES.independent),
-            {"operation": "equals", "datatype": "int"},
-            "1",
-        ),
-    ]
-    assert all(i in properties for i in variable_state.properties)
+
+    property_value = OVALEntityProperty(
+        "{{{}}}value".format(OVAL_NAMESPACES.independent)
+    )
+    property_value.attributes = {"operation": "equals", "datatype": "int"}
+    property_value.text = "1"
+
+    assert variable_state.properties[0] == property_value
