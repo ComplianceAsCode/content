@@ -14,6 +14,9 @@ selections:
     - rpm_verify_hashes
     - security_patches_up_to_date
     - no_empty_passwords
+    - file_permissions_etc_group
+    - file_permissions_etc_passwd
+    - file_permissions_etc_shadow
     - file_permissions_unauthorized_sgid
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_world_writable
