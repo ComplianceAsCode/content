@@ -387,15 +387,10 @@ selections:
 
     # UBTU-20-010267 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of unlink system call.
     - audit_rules_file_deletion_events_unlink
-
-    # UBTU-20-010268 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of unlinkat system call.
-    - audit_rules_file_deletion_events_unlinkat
-
-    # UBTU-20-010269 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of rename system call.
-    - audit_rules_file_deletion_events_rename
-
-    # UBTU-20-010270 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of renameat system call.
+    - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_renameat
+    - audit_rules_file_deletion_events_rename
+    - audit_rules_file_deletion_events_unlinkat
 
     # UBTU-20-010276 The Ubuntu operating system must generate audit records when loading dynamic kernel modules.
 
