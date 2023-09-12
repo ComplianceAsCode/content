@@ -109,4 +109,5 @@ selections:
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_auditd_flush=incremental_async
+- var_accounts_passwords_pam_faillock_dir=run
 title: Australian Cyber Security Centre (ACSC) Essential Eight
