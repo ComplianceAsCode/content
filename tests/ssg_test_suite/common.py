@@ -602,11 +602,7 @@ def install_packages(test_env, packages):
             "Couldn't install required packages: {packages}".format(packages=",".join(packages)))
 
 
-def cpe_to_platform(cpe):
-    trivials = ["fedora", "sles", "ubuntu"]
-    for platform in trivials:
-        if platform in cpe:
-            return platform
+def _match_rhel_version(cpe):
     rhel_cpe = {
         "redhat:enterprise_linux": r":enterprise_linux:([^:]+):",
         "centos:centos": r"centos:centos:([0-9]+)"}
@@ -616,6 +612,16 @@ def cpe_to_platform(cpe):
             if match:
                 major_version = match.groups()[0].split(".")[0]
                 return "rhel" + major_version
+
+
+def cpe_to_platform(cpe):
+    trivials = ["fedora", "sles", "ubuntu"]
+    for platform in trivials:
+        if platform in cpe:
+            return platform
+    rhel_version = _match_rhel_version(cpe)
+    if rhel_version is not None:
+        return rhel_version
     if "oracle:linux" in cpe:
         match = re.search(r":linux:([^:]+):", cpe)
         if match:
