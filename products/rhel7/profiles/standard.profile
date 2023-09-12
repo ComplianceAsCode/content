@@ -62,3 +62,4 @@ selections:
     - service_oddjobd_disabled
     - service_qpidd_disabled
     - service_rdisc_disabled
+    - service_auditd_enabled
