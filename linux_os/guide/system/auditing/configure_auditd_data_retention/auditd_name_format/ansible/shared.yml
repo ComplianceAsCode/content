@@ -12,30 +12,13 @@
 
 {{{ ansible_instantiate_variables("var_auditd_name_format") }}}
 
-- name: "{{{ rule_title }}} - Set type of computer node name logging in audit logs"
-  block:
-  - name: Check for duplicate values
-    ansible.builtin.lineinfile:
-      path: "{{{ auditd_conf_path }}}"
-      create: true
-      regexp: (?i)^\s*name_format\s*=\s*
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
+- name: "{{{ rule_title }}} - Define Value to Be Used in the Remediation"
+  ansible.builtin.set_fact: auditd_name_format_split="{{ var_auditd_name_format.split('|')[0] }}"
 
-  - name: "{{{ rule_title }}} - Deduplicate values from {{{ auditd_conf_path }}}"
-    ansible.builtin.lineinfile:
-      path: "{{{ auditd_conf_path }}}"
-      create: true
-      regexp: (?i)^\s*name_format\s*=\s*
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-
-  - name: "{{{ rule_title }}} - Insert correct line to {{{ auditd_conf_path }}}"
-    ansible.builtin.lineinfile:
-      path: "{{{ auditd_conf_path }}}"
-      create: true
-      regexp: (?i)^\s*name_format\s*=\s*
-      line: name_format = {{ var_auditd_name_format.split('|')[0] }}
-      state: present
+{{{ ansible_set_config_file(file=auditd_conf_path,
+                  parameter="name_format",
+                  value="{{ auditd_name_format_split }}",
+                  create=true,
+                  separator=" = ",
+                  separator_regex="\s*=\s*",
+                  prefix_regex="(?i)^\s*") }}}
