@@ -580,6 +580,7 @@ INSTALL_COMMANDS = dict(
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
+    sles=("zypper", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
@@ -606,6 +607,8 @@ def cpes_to_platform(cpes):
     for cpe in cpes:
         if "fedora" in cpe:
             return "fedora"
+        if "sles" in cpe:
+            return "sles"
         for cpe_item in rhel_cpe.keys():
             if cpe_item in cpe:
                 match = re.search(rhel_cpe.get(cpe_item), cpe)
