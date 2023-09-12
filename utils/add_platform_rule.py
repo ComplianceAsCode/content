@@ -72,7 +72,7 @@ MOCK_VERSION = ('''status:
     version: 4.6.0-0.ci-2020-06-15-112708
 ''')
 
-RULE_TEMPLATE = ('''prodtype: ocp4
+RULE_BASE = ('''prodtype: ocp4
 
 title: {TITLE}
 
@@ -88,7 +88,9 @@ warnings:
 - general: |-
     {{{{{{ openshift_cluster_setting("{URL}") | indent(4) }}}}}}
 
-template:
+''')
+
+YAML_TEMPLATE = ('''template:
   name: yamlfile_value
   vars:
     ocp_data: "true"{ENTITY_CHECK}{CHECK_EXISTENCE}
@@ -98,6 +100,14 @@ template:
     - value: "{MATCH}"{CHECK_TYPE}
 ''')
 
+YAML_TEMPLATE_W_VARIABLE = ('''template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"{ENTITY_CHECK}{CHECK_EXISTENCE}
+    filepath: {URL}
+    yamlpath: "{YAMLPATH}"
+    xccdf_variable: {VARIABLE}
+''')
 
 def operation_value(value):
     if value:
@@ -241,8 +251,18 @@ def createFunc(args):
 
     mkdir_p(rule_path)
     with open(rule_yaml_path, 'w') as f:
-        f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
-                                     DESC=args.description, YAMLPATH=args.yamlpath, MATCH=args.match,
+        f.write(RULE_BASE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
+                                     DESC=args.description, YAMLPATH=args.yamlpath,
+                                     ))
+        if args.match:
+            f.write(YAML_TEMPLATE.format(URL=url, YAMLPATH=args.yamlpath, MATCH=args.match,
+                                     NEGATE=str(args.negate).lower(),
+                                     CHECK_TYPE=operation_value(args.regex),
+                                     CHECK_EXISTENCE=check_existence_value(args.check_existence),
+                                     ENTITY_CHECK=entity_value(args.match_entity)))
+        else:
+            f.write(YAML_TEMPLATE_W_VARIABLE.format(URL=url, YAMLPATH=args.yamlpath,
+                                     VARIABLE=(args.variable),
                                      NEGATE=str(args.negate).lower(),
                                      CHECK_TYPE=operation_value(args.regex),
                                      CHECK_EXISTENCE=check_existence_value(args.check_existence),
@@ -377,8 +397,11 @@ def main():
         '--type', required=True, help='The type of Kubernetes object, e.g., configmap. Required.')
     create_parser.add_argument('--yamlpath', required=True,
                                help='The yaml-path of the element to match against.')
-    create_parser.add_argument(
-        '--match', required=True, help='A string value or regex providing the matching criteria. Required')
+    value_or_variable = create_parser.add_mutually_exclusive_group()
+    value_or_variable.add_argument(
+        '--match', help='A string value or regex providing the matching criteria. One of "match" or "variable" are required')
+    value_or_variable.add_argument(
+        '--variable', help='A string name of the XCCDF variable to with the value to check for. Mutually exclusive with "match" option')
     create_parser.add_argument(
         '--namespace', help='The namespace of the Kubernetes object (optional for cluster-scoped objects)', default=None)
     create_parser.add_argument(
