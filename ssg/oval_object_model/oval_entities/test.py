@@ -1,13 +1,8 @@
 import sys
 
 from ...xml import ElementTree
-from ..general import (
-    OVAL_NAMESPACES,
-    STR_TO_BOOL,
-    OVALComponent,
-    load_notes,
-    required_attribute,
-)
+from ...constants import OVAL_NAMESPACES, STR_TO_BOOL
+from ..general import OVALComponent, load_notes, required_attribute
 
 
 def load_test(oval_test_xml_el):

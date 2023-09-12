@@ -4,11 +4,8 @@ import sys
 
 from ..constants import oval_footer, oval_header, timestamp
 from ..xml import ElementTree, register_namespaces
-from .general import (
-    OVAL_NAMESPACES,
-    OVALBaseObject,
-    required_attribute,
-)
+from ..constants import OVAL_NAMESPACES, xsi_namespace
+from .general import OVALBaseObject, required_attribute
 from .oval_entities import (
     load_definition,
     load_object,
@@ -251,7 +248,7 @@ class OVALDocument(OVALBaseObject):
             "{%s}oval_definitions" % OVAL_NAMESPACES.definition
         )
 
-        register_namespaces({"xsi": "http://www.w3.org/2001/XMLSchema-instance"})
+        register_namespaces({"xsi": xsi_namespace})
 
         space = "         "
         oval_definition_el.set(

@@ -1,15 +1,8 @@
 import sys
 
+from ...constants import BOOL_TO_STR, OVAL_NAMESPACES, STR_TO_BOOL
 from ...xml import ElementTree
-from ..general import (
-    BOOL_TO_STR,
-    OVAL_NAMESPACES,
-    STR_TO_BOOL,
-    OVALBaseObject,
-    OVALComponent,
-    load_notes,
-    required_attribute,
-)
+from ..general import OVALBaseObject, OVALComponent, load_notes, required_attribute
 
 
 class GeneralCriteriaNode(OVALBaseObject):

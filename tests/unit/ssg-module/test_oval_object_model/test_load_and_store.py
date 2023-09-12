@@ -3,14 +3,9 @@ import pytest
 import tempfile
 from ssg.xml import ElementTree
 
-from ssg.oval_object_model import (
-    load_oval_document,
-    OVALDocument,
-    OVALEntityProperty,
-    OVAL_NAMESPACES,
-)
+from ssg.oval_object_model import load_oval_document, OVALDocument, OVALEntityProperty
 from ssg.oval_object_model.oval_entities import Criterion, ExtendDefinition
-
+from ssg.constants import OVAL_NAMESPACES
 from ssg.xml import open_xml, get_namespaces_from, register_namespaces
 
 

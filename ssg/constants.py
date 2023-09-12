@@ -477,3 +477,24 @@ DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
 DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE = 'false'
+
+
+# Constants for OVAL object model
+STR_TO_BOOL = {
+    "false": False,
+    "False": False,
+    "true": True,
+    "True": True,
+}
+
+BOOL_TO_STR = {True: "true", False: "false"}
+
+
+class OvalNamespaces:
+    oval = "http://oval.mitre.org/XMLSchema/oval-common-5"
+    definition = oval_namespace
+    independent = "http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
+    linux = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
+
+
+OVAL_NAMESPACES = OvalNamespaces()

@@ -1,7 +1,4 @@
 from .general import (
-    BOOL_TO_STR,
-    OVAL_NAMESPACES,
-    STR_TO_BOOL,
     ExceptionEmptyNote,
     Notes,
     OVALBaseObject,

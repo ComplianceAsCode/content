@@ -1,27 +1,6 @@
-from ..constants import oval_namespace as oval_ns
+from ..constants import BOOL_TO_STR
 from ..xml import ElementTree
 
-# ----- Constants
-
-
-STR_TO_BOOL = {
-    "false": False,
-    "False": False,
-    "true": True,
-    "True": True,
-}
-
-BOOL_TO_STR = {True: "true", False: "false"}
-
-
-class OvalNamespaces:
-    oval = "http://oval.mitre.org/XMLSchema/oval-common-5"
-    definition = oval_ns
-    independent = "http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-    linux = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-
-
-OVAL_NAMESPACES = OvalNamespaces()
 
 # ----- General functions
 

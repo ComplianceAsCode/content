@@ -1,6 +1,5 @@
+from ...constants import OVAL_NAMESPACES, STR_TO_BOOL
 from ..general import (
-    OVAL_NAMESPACES,
-    STR_TO_BOOL,
     OVALEntity,
     load_oval_entity_property,
     load_notes,
