@@ -14,7 +14,7 @@ jobs:
       - name: Install Deps
         run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build
         run: |-
           ./build_product rhel7 rhel8 rhel9 --derivatives
@@ -47,7 +47,7 @@ jobs:
       - name: Install deps python
         run: pip install pytest pytest-cov
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build
         run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
       - name: Test
@@ -63,7 +63,7 @@ jobs:
       - name: Install Deps
         run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build
         run: ./build_product sle12 sle15
         env:
@@ -83,7 +83,7 @@ jobs:
       - name: Install Deps
         run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -102,7 +102,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -121,7 +121,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -142,7 +142,7 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install deps python
         run: pip install pcre2 -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -193,7 +193,7 @@ jobs:
       -   name: Install Deps
           run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git
       -   name: Checkout
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
       -   name: Install deps python
           run: pip install -r requirements-base.txt -r test-requirements.txt
       -   name: Build

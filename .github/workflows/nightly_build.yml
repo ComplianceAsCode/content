@@ -13,7 +13,7 @@ jobs:
             -   name: Install Dependencies
                 run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint libxslt ansible
             -   name: Checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
             -   name: Configure
                 run: cmake -G Ninja ..
                 working-directory: ./build
