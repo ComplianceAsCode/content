@@ -7,7 +7,7 @@ title: 'Ensure auditd Collects Information on Kernel Module Unloading - delete_m
 description: |-
     To capture kernel module unloading events, use following line, setting ARCH to
     either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
-    {{% if "ol" in product or 'rhel' in product %}}
+    {{% if "ol" in product or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
     {{% else %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F key=modules</pre>
@@ -67,7 +67,7 @@ references:
     stigid@rhel8: RHEL-08-030390
     stigid@sle12: SLES-12-020730
     stigid@sle15: SLES-15-030520
-    stigid@ubuntu2004: UBTU-20-010302
+    stigid@ubuntu2004: UBTU-20-010181
 
 {{{ complete_ocil_entry_audit_syscall(syscall="delete_module") }}}
 
