@@ -69,3 +69,4 @@ selections:
     - configure_ssh_crypto_policy
     - configure_kerberos_crypto_policy
     - service_auditd_enabled
+    - gid_passwd_group_same

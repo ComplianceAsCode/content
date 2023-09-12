@@ -63,3 +63,4 @@ selections:
     - service_qpidd_disabled
     - service_rdisc_disabled
     - service_auditd_enabled
+    - gid_passwd_group_same
