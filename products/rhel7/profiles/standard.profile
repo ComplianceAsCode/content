@@ -70,3 +70,15 @@ selections:
     - service_rdisc_disabled
     - service_auditd_enabled
     - gid_passwd_group_same
+    - file_groupowner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_permissions_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
+    - file_owner_efi_grub2_cfg
+    - file_permissions_efi_grub2_cfg
+    - file_groupowner_efi_user_cfg
+    - file_groupowner_user_cfg
+    - file_owner_efi_user_cfg
+    - file_owner_user_cfg
+    - file_permissions_efi_user_cfg
+    - file_permissions_user_cfg
