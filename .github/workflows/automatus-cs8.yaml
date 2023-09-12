@@ -37,7 +37,7 @@ jobs:
       - name: Test if there are no content changes
         run: echo "CTF_OUTPUT_SIZE=$(stat --printf="%s" output.json)" >> $GITHUB_OUTPUT
         id: ctf
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: output.json
@@ -55,7 +55,7 @@ jobs:
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product rhel8 --derivatives
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
           name: ${{ env.DATASTREAM }}
@@ -148,7 +148,7 @@ jobs:
         continue-on-error: true
       - name: Upload logs in case of failure
         if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: logs_bash
           path: logs_bash/
@@ -164,7 +164,7 @@ jobs:
         continue-on-error: true
       - name: Upload logs in case of failure
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: logs_ansible
           path: logs_ansible/
