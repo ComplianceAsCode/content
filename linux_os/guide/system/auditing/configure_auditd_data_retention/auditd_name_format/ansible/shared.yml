@@ -12,10 +12,10 @@
 
 {{{ ansible_instantiate_variables("var_auditd_name_format") }}}
 
-- name: Set type of computer node name logging in audit logs
+- name: "{{{ rule_title }}} - Set type of computer node name logging in audit logs"
   block:
   - name: Check for duplicate values
-    lineinfile:
+    ansible.builtin.lineinfile:
       path: "{{{ auditd_conf_path }}}"
       create: true
       regexp: (?i)^\s*name_format\s*=\s*
@@ -24,16 +24,16 @@
     changed_when: false
     register: dupes
 
-  - name: Deduplicate values from {{{ auditd_conf_path }}}
-    lineinfile:
+  - name: "{{{ rule_title }}} - Deduplicate values from {{{ auditd_conf_path }}}"
+    ansible.builtin.lineinfile:
       path: "{{{ auditd_conf_path }}}"
       create: true
       regexp: (?i)^\s*name_format\s*=\s*
       state: absent
     when: dupes.found is defined and dupes.found > 1
 
-  - name: Insert correct line to {{{ auditd_conf_path }}}
-    lineinfile:
+  - name: "{{{ rule_title }}} - Insert correct line to {{{ auditd_conf_path }}}"
+    ansible.builtin.lineinfile:
       path: "{{{ auditd_conf_path }}}"
       create: true
       regexp: (?i)^\s*name_format\s*=\s*
