@@ -153,6 +153,7 @@ selections:
     - audit_rules_networkconfig_modification
     - audit_rules_mac_modification
     - audit_rules_login_events
+    - var_accounts_passwords_pam_faillock_dir=run
     - audit_rules_session_events
     - audit_rules_dac_modification_chmod
     - audit_rules_dac_modification_chown
