@@ -14,7 +14,7 @@ jobs:
       - name: Install deps python
         run: pip install gitpython xmldiff
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
@@ -27,12 +27,12 @@ jobs:
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Checkout fork point
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.fork_point.outputs.FORK_POINT }}
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -47,7 +47,7 @@ jobs:
       - name: Get product attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: product
-        uses: notiz-dev/github-action-json-property@v0.1.0
+        uses: notiz-dev/github-action-json-property@v0.2.0
         with:
           path: 'output.json'
           prop_path: 'product'
@@ -59,7 +59,7 @@ jobs:
         run: cp build/ssg-${{steps.product.outputs.prop}}-ds.xml ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Checkout
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           clean: false
