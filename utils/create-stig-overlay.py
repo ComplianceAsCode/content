@@ -29,7 +29,7 @@ def yes_no_prompt():
     prompt = "Would you like to proceed? (Y/N): "
 
     while True:
-        data = str(raw_input(prompt)).lower()
+        data = str(input(prompt)).lower()
 
         if data in ("yes", "y"):
             return True
