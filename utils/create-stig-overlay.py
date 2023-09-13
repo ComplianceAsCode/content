@@ -142,7 +142,7 @@ def parse_args():
                         action="store", dest="ssg_xccdf_filename",
                         help="A SSG generated XCCDF file. Can be XCCDF 1.1 or XCCDF 1.2 \
                               For example: ssg-rhel8-xccdf.xml")
-    parser.add_argument("-o", "--output", default=outfile,
+    parser.add_argument("-o", "--output", required=True,
                         action="store", dest="output_file",
                         help="STIG overlay XML content file \
                             [default: %s]" % outfile)
