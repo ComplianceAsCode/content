@@ -9,6 +9,8 @@ description: |-
     <tt>nullok</tt> in
     {{% if product in ["sle12", "sle15"] %}}
     password authentication configurations in <tt>/etc/pam.d/</tt>
+    {{% elif 'ubuntu' in product %}}
+    <tt>/etc/pam.d/common-password</tt>
     {{% else %}}
     <tt>/etc/pam.d/system-auth</tt> and
     <tt>/etc/pam.d/password-auth</tt>
@@ -57,6 +59,7 @@ references:
     stigid@rhel8: RHEL-08-020331,RHEL-08-020332
     stigid@sle12: SLES-12-010231
     stigid@sle15: SLES-15-020300
+    stigid@ubuntu2004: UBTU-20-010463
 
 ocil_clause: 'NULL passwords can be used'
 
@@ -64,6 +67,8 @@ ocil: |-
     To verify that null passwords cannot be used, run the following command:
     {{% if product in ["sle12", "sle15"] %}}
     <pre>$ grep pam_unix.so /etc/pam.d/* | grep nullok</pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>grep nullok /etc/pam.d/common-password</pre>
     {{% else %}}
     <pre>$ grep nullok /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
     {{% endif %}}
@@ -72,17 +77,21 @@ ocil: |-
     prevent logins with empty passwords.
 
 fixtext: |-
-    Configure {{{ full_name }}} in the system-auth and password-auth files to not allow null
+    Configure {{{ full_name }}} in the {{% if 'ubuntu' in product %}}common-password file {{% else %}}system-auth and password-auth files {{% endif %}} to not allow null
     passwords.
-
+    {{% if 'ubuntu' in product %}}
+    Remove any instances of the "nullok" option in "/etc/pam.d/common-password"
+    {{% else %}}
     Remove any instances of the "nullok" option in the "/etc/pam.d/system-auth" and
-    "/etc/pam.d/password-auth" files to prevent logons with empty passwords.
+    "/etc/pam.d/password-auth" files 
+    {{% endif %}} 
+    to prevent logons with empty passwords.
 
     Note: Manual changes to the listed file may be overwritten by the "authselect" program.
 
 srg_requirement: |-
-    '{{{ full_name }}} must not allow blank or null passwords in the system-auth file nor
-    password-auth.'
+    '{{{ full_name }}} must not allow blank or null passwords in the {{% if 'ubuntu' in product %}} common-password file.{{% else %}} system-auth file nor
+    password-auth. {{% endif %}}'
 
 warnings:
     - general: |-

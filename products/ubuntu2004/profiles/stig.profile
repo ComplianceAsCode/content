@@ -596,3 +596,6 @@ selections:
 
     # UBTU-20-010461 The Ubuntu operating system must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
     - kernel_module_usb-storage_disabled
+
+    # UBTU-20-010463 The Ubuntu operating system must not allow accounts configured with blank or null passwords.
+    - no_empty_passwords
