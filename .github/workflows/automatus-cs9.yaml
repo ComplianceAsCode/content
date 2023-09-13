@@ -133,7 +133,7 @@ jobs:
           name: ${{ env.DATASTREAM }}
       - name: Run tests in a container - Bash
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream $DATASTREAM ${{join(steps.rules.outputs.prop)}}
+        run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream $DATASTREAM ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
           ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified centos9 --product rhel9"
       - name: Check for ERROR in logs
@@ -154,7 +154,7 @@ jobs:
           path: logs_bash/
       - name: Run tests in a container - Ansible
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream $DATASTREAM ${{join(steps.rules.outputs.prop)}}
+        run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream $DATASTREAM ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
           ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified centos9 --product rhel9"
       - name: Check for ERROR in logs
