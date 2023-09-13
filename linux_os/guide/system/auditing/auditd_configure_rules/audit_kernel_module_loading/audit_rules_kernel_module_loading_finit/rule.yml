@@ -9,7 +9,7 @@ description: |-
     to read audit rules during daemon startup (the default), add the following lines to a file
     with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
     loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
-    {{% if "ol" in product or 'rhel' in product %}}
+    {{% if "ol" in product or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
     {{% else %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
@@ -17,7 +17,7 @@ description: |-
     rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
     in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
     b64 as appropriate for your system:
-    {{% if "ol" in product or 'rhel' in product %}}
+    {{% if "ol" in product or 'rhel' in product or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F auid>={{{ uid_min }}} -F auid!=unset -F key=modules</pre>
     {{% else %}}
     <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
@@ -65,7 +65,7 @@ references:
     stigid@rhel8: RHEL-08-030360
     stigid@sle12: SLES-12-020740
     stigid@sle15: SLES-15-030530
-    stigid@ubuntu2004: UBTU-20-010180
+    stigid@ubuntu2004: UBTU-20-010179
 
 {{{ complete_ocil_entry_audit_syscall(syscall="finit_module") }}}
 
