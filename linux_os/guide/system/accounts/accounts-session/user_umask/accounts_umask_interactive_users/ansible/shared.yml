@@ -10,7 +10,7 @@
       for dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $6}' /etc/passwd); do
         for file in $(find $dir -maxdepth 1 -type f -name ".*"); do
           if [ "$(basename $file)" != ".bash_history" ]; then
-            sed -i 's/^\([\s]*umask\s*\)/#\1/g' $file
+            sed -i 's/^\(\s*umask\s*\)/#\1/g' $file
           fi
         done
       done
