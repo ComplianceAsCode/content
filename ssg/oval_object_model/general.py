@@ -1,3 +1,4 @@
+import re
 from ..constants import BOOL_TO_STR
 from ..xml import ElementTree
 
@@ -17,8 +18,26 @@ def required_attribute(_xml_el, _key):
 
 
 class OVALBaseObject(object):
+    __namespace = ""
+    tag = ""
+
     def __init__(self, tag):
-        self.tag = tag
+        match_ns = re.match(r"\{.*\}", tag)
+        self.namespace = match_ns.group(0) if match_ns else ""
+        self.tag = tag.replace(self.namespace, "")
+
+    @property
+    def namespace(self):
+        return self.__namespace
+
+    @namespace.setter
+    def namespace(self, __value):
+        if isinstance(__value, str):
+            if not __value.startswith("{"):
+                __value = "{" + __value
+            if not __value.endswith("}"):
+                __value = __value + "}"
+        self.__namespace = __value
 
     def __eq__(self, __value):
         return self.__dict__ == __value.__dict__
@@ -43,7 +62,7 @@ class OVALComponent(OVALBaseObject):
         self.id_ = id_
 
     def get_xml_element(self):
-        el = ElementTree.Element(self.tag)
+        el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         el.set("id", self.id_)
         el.set("version", self.version)
         if self.deprecated:
@@ -102,7 +121,7 @@ class Notes(OVALBaseObject):
         self.notes = notes
 
     def get_xml_element(self):
-        notes_el = ElementTree.Element(self.tag)
+        notes_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         for note in self.notes:
             note_el = ElementTree.Element(self.note_tag)
             note_el.text = note
@@ -136,7 +155,7 @@ class OVALEntityProperty(OVALBaseObject):
         self.properties.append(property_)
 
     def get_xml_element(self):
-        property_el = ElementTree.Element(self.tag)
+        property_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         for key, val in self.attributes.items() if self.attributes is not None else {}:
             property_el.set(key, val)
 

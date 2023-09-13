@@ -14,7 +14,7 @@ class GeneralCriteriaNode(OVALBaseObject):
         super(GeneralCriteriaNode, self).__init__(tag)
 
     def get_xml_element(self):
-        el = ElementTree.Element(self.tag)
+        el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         if self.applicability_check:
             el.set("applicability_check", BOOL_TO_STR[self.applicability_check])
         if self.negate:
@@ -143,7 +143,7 @@ class Reference(OVALBaseObject):
         self.ref_id = ref_id
 
     def get_xml_element(self):
-        reference_el = ElementTree.Element(self.tag)
+        reference_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         reference_el.set("ref_id", self.ref_id)
         reference_el.set("source", self.source)
         if self.ref_url != "":
@@ -221,7 +221,7 @@ class Affected(OVALBaseObject):
             affected_el.append(platform_el)
 
     def get_xml_element(self):
-        affected_el = ElementTree.Element(self.tag)
+        affected_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         affected_el.set("family", self.family)
 
         self._add_to_affected_element(affected_el, self.platforms)
@@ -251,8 +251,6 @@ def load_metadata(oval_metadata_xml_el):
     metadata.description = description_str
     metadata.array_of_affected = load_affected(all_affected_elements)
     metadata.array_of_references = load_references(all_reference_elements)
-    metadata.description_tag = description_el.tag
-    metadata.title_tag = title_el.tag
     return metadata
 
 
@@ -261,8 +259,8 @@ class Metadata(OVALBaseObject):
     array_of_references = None
     title = ""
     description = ""
-    title_tag = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}title"
-    description_tag = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}description"
+    title_tag = "title"
+    description_tag = "description"
 
     def finalize_affected_platforms(self, type_, full_name):
         """
@@ -283,16 +281,18 @@ class Metadata(OVALBaseObject):
             el.append(item.get_xml_element())
 
     def get_xml_element(self):
-        metadata_el = ElementTree.Element(self.tag)
+        metadata_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
 
-        title_el = ElementTree.Element(self.title_tag)
+        title_el = ElementTree.Element("{}{}".format(self.namespace, self.title_tag))
         title_el.text = self.title
         metadata_el.append(title_el)
 
         self._add_sub_elements_from_arrays(metadata_el, self.array_of_affected)
         self._add_sub_elements_from_arrays(metadata_el, self.array_of_references)
 
-        description_el = ElementTree.Element(self.description_tag)
+        description_el = ElementTree.Element(
+            "{}{}".format(self.namespace, self.description_tag)
+        )
         description_el.text = self.description
         metadata_el.append(description_el)
 

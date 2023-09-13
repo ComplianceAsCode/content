@@ -13,14 +13,6 @@ DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data")
 OVAL_DOCUMENT_PATH = os.path.join(
     DATA_DIR, "minimal_oval_of_oval_ssg-sshd_rekey_limit_def.xml"
 )
-
-PROJECT_ROOT = os.path.join(
-    os.path.dirname(__file__),
-    "..",
-    "..",
-    "..",
-    "..",
-)
 TEST_BUILD_DIR = tempfile.mkdtemp()
 
 
@@ -284,19 +276,16 @@ def test_content_text_file_content_object(text_file_content_object):
     assert not text_file_content_object.deprecated
     assert text_file_content_object.properties
 
-    property_file_path = OVALEntityProperty(
-        "{{{}}}filepath".format(OVAL_NAMESPACES.independent)
-    )
+    property_file_path = OVALEntityProperty("filepath")
+    property_file_path.namespace = OVAL_NAMESPACES.independent
     property_file_path.attributes = None
     property_file_path.text = "/etc/ssh/sshd_config"
-    property_pattern = OVALEntityProperty(
-        "{{{}}}pattern".format(OVAL_NAMESPACES.independent)
-    )
+    property_pattern = OVALEntityProperty("pattern")
+    property_pattern.namespace = OVAL_NAMESPACES.independent
     property_pattern.attributes = {"operation": "pattern match"}
     property_pattern.text = r"^[\s]*RekeyLimit[\s]+(.*)$"
-    property_instance = OVALEntityProperty(
-        "{{{}}}instance".format(OVAL_NAMESPACES.independent)
-    )
+    property_instance = OVALEntityProperty("instance")
+    property_instance.namespace = OVAL_NAMESPACES.independent
     property_instance.attributes = {
         "datatype": "int",
         "operation": "greater than or equal",
@@ -325,33 +314,28 @@ def test_content_local_variable(local_variable):
     assert "concat" in concat.tag
     assert len(concat.properties) == 5
 
-    property_literal_component = OVALEntityProperty(
-        "{{{}}}literal_component".format(OVAL_NAMESPACES.definition)
-    )
+    property_literal_component = OVALEntityProperty("literal_component")
+    property_literal_component.namespace = OVAL_NAMESPACES.definition
     property_literal_component.attributes = None
     property_literal_component.text = "^"
-    property_variable_component = OVALEntityProperty(
-        "{{{}}}variable_component".format(OVAL_NAMESPACES.definition)
-    )
+    property_variable_component = OVALEntityProperty("variable_component")
+    property_variable_component.namespace = OVAL_NAMESPACES.definition
     property_variable_component.attributes = {
         "var_ref": "oval:ssg-var_rekey_limit_size:var:1"
     }
     property_variable_component.text = None
-    property_literal_component_1 = OVALEntityProperty(
-        "{{{}}}literal_component".format(OVAL_NAMESPACES.definition)
-    )
+    property_literal_component_1 = OVALEntityProperty("literal_component")
+    property_literal_component_1.namespace = OVAL_NAMESPACES.definition
     property_literal_component_1.attributes = None
     property_literal_component_1.text = r"[\s]+"
-    property_variable_component_1 = OVALEntityProperty(
-        "{{{}}}variable_component".format(OVAL_NAMESPACES.definition)
-    )
+    property_variable_component_1 = OVALEntityProperty("variable_component")
+    property_variable_component_1.namespace = OVAL_NAMESPACES.definition
     property_variable_component_1.attributes = {
         "var_ref": "oval:ssg-var_rekey_limit_time:var:1"
     }
     property_variable_component_1.text = None
-    property_literal_component_2 = OVALEntityProperty(
-        "{{{}}}literal_component".format(OVAL_NAMESPACES.definition)
-    )
+    property_literal_component_2 = OVALEntityProperty("literal_component")
+    property_literal_component_2.namespace = OVAL_NAMESPACES.definition
     property_literal_component_2.attributes = None
     property_literal_component_2.text = r"[\s]*$"
     properties = [
@@ -371,9 +355,8 @@ def test_content_text_file_content_state(text_file_content_state):
     assert text_file_content_state.operator == "AND"
     assert len(text_file_content_state.properties) == 1
 
-    property_subexpression = OVALEntityProperty(
-        "{{{}}}subexpression".format(OVAL_NAMESPACES.independent)
-    )
+    property_subexpression = OVALEntityProperty("subexpression")
+    property_subexpression.namespace = OVAL_NAMESPACES.independent
     property_subexpression.attributes = {
         "operation": "pattern match",
         "var_ref": "oval:ssg-sshd_line_regex:var:1",
@@ -390,9 +373,8 @@ def test_content_variable_state(variable_state):
     assert variable_state.operator == "AND"
     assert len(variable_state.properties) == 1
 
-    property_value = OVALEntityProperty(
-        "{{{}}}value".format(OVAL_NAMESPACES.independent)
-    )
+    property_value = OVALEntityProperty("value")
+    property_value.namespace = OVAL_NAMESPACES.independent
     property_value.attributes = {"operation": "equals", "datatype": "int"}
     property_value.text = "1"
 
