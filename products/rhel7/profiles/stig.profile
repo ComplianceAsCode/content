@@ -335,6 +335,7 @@ selections:
     - accounts_authorized_local_users
     - auditd_overflow_action
     - auditd_name_format
+    - var_auditd_name_format=stig
     - sebool_ssh_sysadm_login
     - sudoers_default_includedir
     - package_aide_installed

@@ -10,9 +10,14 @@
   {{%- set auditd_conf_path=audisp_conf_path + "/auditd.conf" %}}
 {{%- endif %}}
 
+{{{ ansible_instantiate_variables("var_auditd_name_format") }}}
+
+- name: "{{{ rule_title }}} - Define Value to Be Used in the Remediation"
+  ansible.builtin.set_fact: auditd_name_format_split="{{ var_auditd_name_format.split('|')[0] }}"
+
 {{{ ansible_set_config_file(file=auditd_conf_path,
                   parameter="name_format",
-                  value="hostname",
+                  value="{{ auditd_name_format_split }}",
                   create=true,
                   separator=" = ",
                   separator_regex="\s*=\s*",

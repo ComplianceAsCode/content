@@ -707,6 +707,7 @@ selections:
 
     # RHEL-08-030062
     - auditd_name_format
+    - var_auditd_name_format=stig
 
     # RHEL-08-030063
     - auditd_log_format
