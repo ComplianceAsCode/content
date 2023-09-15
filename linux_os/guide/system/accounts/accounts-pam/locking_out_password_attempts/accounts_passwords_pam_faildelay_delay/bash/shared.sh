@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_ubuntu
 
 {{{ bash_instantiate_variables("var_password_pam_delay") }}}
 
