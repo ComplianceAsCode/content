@@ -362,8 +362,10 @@ class AnsibleRemediation(Remediation):
                     has_ansible_facts_packages_clause = True
 
         if has_ansible_facts_packages_clause and not has_package_facts_task:
-            facts_task = OrderedDict({'name': 'Gather the package facts',
-                                      'package_facts': {'manager': 'auto'}})
+            facts_task = OrderedDict([
+                ('name', 'Gather the package facts'),
+                ('package_facts', {'manager': 'auto'})
+            ])
             parsed_snippet.insert(0, facts_task)
 
     def update_when_from_rule(self, to_update, cpe_platforms):
