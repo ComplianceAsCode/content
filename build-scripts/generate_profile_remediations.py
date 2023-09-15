@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import collections
 import os
 import re
 import xml.etree.ElementTree as ET
@@ -192,7 +193,7 @@ class ScriptGenerator:
         self.variables = get_all_variables(benchmark)
 
     def load_all_remediations(self, benchmark):
-        self.remediations = {}
+        self.remediations = collections.OrderedDict()
         rule_xpath = ".//{%s}Rule" % (XCCDF12_NS)
         for rule_el in benchmark.findall(rule_xpath):
             rule_id = rule_el.get("id")
@@ -238,7 +239,7 @@ class ScriptGenerator:
     def collect_ansible_vars_and_tasks(self, profile_el):
         selected_rules = get_selected_rules(profile_el)
         refinements = get_value_refinenements(profile_el)
-        all_vars = {}
+        all_vars = collections.OrderedDict()
         all_tasks = []
         for rule_id, fix_el in self.remediations.items():
             if rule_id not in selected_rules:
