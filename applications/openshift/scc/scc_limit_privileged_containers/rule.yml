@@ -59,10 +59,10 @@ ocil: |-
     Finally, determine if there are any role bindings to cluster or local
     roles that allow use of non-permitted SCCs.
 
-    > oc get clusterrolebinding.rbac -ojson | jq -r '.items[]|select(.roleRef.kind == ("ClusterRole","Role") and .roleRef.name == (<CLUSTER_ROLE_LIST>))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
-    > oc get rolebinding.rbac --all-namespaces -ojson | jq -r '.items[]|select(.roleRef.kind == ("ClusterRole","Role") and .roleRef.name == (<LOCAL_ROLE_LIST>))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
+    > oc get clusterrolebinding.rbac -ojson | jq -r '.items[]|select(.roleRef.kind == ("ClusterRole","Role") and .roleRef.name == ("[CLUSTER_ROLE_LIST]"))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
+    > oc get rolebinding.rbac --all-namespaces -ojson | jq -r '.items[]|select(.roleRef.kind == ("ClusterRole","Role") and .roleRef.name == ("[LOCAL_ROLE_LIST]"))|{ "crb": .metadata.name, "roleRef": .roleRef, "subjects": .subjects}'
 
-    Where <tt>CLUSTER_ROLE_LIST</tt> and <tt>LOCAL_ROLE_LIST</tt> are
+    Where "[CLUSTER_ROLE_LIST]" and "[LOCAL_ROLE_LIST]" are
     comma-separated lists of the roles allowing use of non-permitted SCC
     policies as identified above. For example:
 
