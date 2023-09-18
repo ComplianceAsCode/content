@@ -103,7 +103,8 @@ def load_resolve_and_validate_profiles(env_yaml, profile_files, loader, controls
     return profiles_by_id
 
 
-def save_everything(base_dir, loader, profiles):
+def save_everything(base_dir, loader, controls_manager, profiles):
+    controls_manager.save_everything(os.path.join(base_dir, "controls"))
     loader.save_all_entities(base_dir)
     for p in profiles:
         dump_compiled_profile(base_dir, p)
@@ -130,8 +131,8 @@ def main():
     profiles_by_id = get_all_resolved_profiles_by_id(
         env_yaml, product_yaml, loader, product_cpes, controls_manager, args.controls_dir)
 
-    save_everything(args.resolved_base, loader, profiles_by_id.values())
-    controls_manager.save_everything(os.path.join(args.resolved_base, "controls"))
+    save_everything(
+        args.resolved_base, loader, controls_manager, profiles_by_id.values())
 
 
 if __name__ == "__main__":
