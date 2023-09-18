@@ -1,8 +1,6 @@
 from __future__ import print_function
 
 import argparse
-import logging
-import sys
 import os.path
 from glob import glob
 
@@ -120,13 +118,6 @@ def main():
     product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(env_yaml)
     product_cpes.load_content_cpes(env_yaml)
-
-    build_root = os.path.dirname(args.build_config_yaml)
-
-    logfile = "{build_root}/{product}/control_profiles.log".format(
-            build_root=build_root,
-            product=env_yaml["product"])
-    logging.basicConfig(filename=logfile, level=logging.INFO)
 
     loader = ssg.build_yaml.BuildLoader(
         None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
