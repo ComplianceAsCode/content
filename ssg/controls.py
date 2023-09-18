@@ -1,5 +1,4 @@
 import collections
-import logging
 import os
 import copy
 from glob import glob
@@ -354,7 +353,6 @@ class ControlsManager():
         if not os.path.exists(self.controls_dir):
             return
         for filename in sorted(glob(os.path.join(self.controls_dir, "*.yml"))):
-            logging.info("Found file %s" % (filename))
             filepath = os.path.join(self.controls_dir, filename)
             policy = Policy(filepath, self.env_yaml)
             policy.load()
