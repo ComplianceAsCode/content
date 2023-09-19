@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import sys
 
 from ..constants import oval_footer, oval_header, timestamp
-from ..xml import ElementTree, register_namespaces
+from ..xml import ElementTree
 from ..constants import OVAL_NAMESPACES, xsi_namespace
 from .general import OVALBaseObject, required_attribute
 from .oval_entities import (
@@ -248,19 +248,15 @@ class OVALDocument(OVALBaseObject):
             "{%s}oval_definitions" % OVAL_NAMESPACES.definition
         )
 
-        register_namespaces({"xsi": xsi_namespace})
-
-        space = "         "
         oval_definition_el.set(
-            "xsi:schemaLocation",
+            ElementTree.QName(xsi_namespace, "schemaLocation"),
             (
-                "{0} oval-common-schema.xsd{1}{2} oval-definitions-schema.xsd"
-                "{1}{2}#independent independent-definitions-schema.xsd"
-                "{1}{2}#unix unix-definitions-schema.xsd"
-                "{1}{2}#linux linux-definitions-schema.xsd"
+                "{0} oval-common-schema.xsd  {1} oval-definitions-schema.xsd"
+                "  {1}#independent independent-definitions-schema.xsd"
+                "  {1}#unix unix-definitions-schema.xsd"
+                "  {1}#linux linux-definitions-schema.xsd"
             ).format(
                 OVAL_NAMESPACES.oval,
-                space,
                 OVAL_NAMESPACES.definition,
             ),
         )

@@ -1,5 +1,5 @@
 import re
-from ..constants import BOOL_TO_STR
+from ..constants import BOOL_TO_STR, xsi_namespace
 from ..xml import ElementTree
 
 
@@ -83,6 +83,8 @@ class OVALEntity(OVALComponent):
         el = super(OVALEntity, self).get_xml_element()
 
         for key, value in attributes.items():
+            if "xsi" in key:
+                key = ElementTree.QName(xsi_namespace, key.split(":")[-1])
             el.set(key, value)
 
         if self.comment:
