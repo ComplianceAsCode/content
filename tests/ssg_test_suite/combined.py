@@ -62,6 +62,23 @@ class CombinedChecker(rule.RuleChecker):
             params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
         return params
 
+    def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
+        """
+        This function overrides the rule.RuleChecker function because combined
+        mode ensures some extra applicability checking. We are interested only
+        in test scenarios which are either applicable to the selected profile or
+        their applicability is not limited at all.
+        """
+        sc_profiles = scenario.script_params["profiles"]
+        logging.debug("the scenario defines {0} profile".format(sc_profiles))
+        if self.profile in sc_profiles or "(all)" in sc_profiles:
+            super(CombinedChecker, self)._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
+        else:
+            logging.warning("The script {0} is not applicable for the {1} profile.".format(scenario.script, self.profile))
+            return
+
+
+
     def _generate_target_rules(self, profile):
         # check if target is a complete profile ID, if not prepend profile prefix
         if not profile.startswith(OSCAP_PROFILE):

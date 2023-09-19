@@ -538,6 +538,9 @@ class RuleChecker(oscap.Checker):
                     "Rule {0} isn't part of profile {1} requested by "
                     "script {2}.".format(rule_id, profile_id, script)
                 )
+                return False
+        return True
+
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
         if not _apply_script(
@@ -554,17 +557,11 @@ class RuleChecker(oscap.Checker):
         logging.debug('Using test script {0} with context {1}'
                       .format(scenario.script, scenario.context))
 
-        if scenario.script_params['profiles']:
-            profiles = get_viable_profiles(
-                scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
-            self._verify_rule_presence(rule_id, scenario.script, profiles)
-        else:
-            # Special case for combined mode when scenario.script_params['profiles']
-            # is empty which means scenario is not applicable on given profile.
-            logging.warning('Script {0} is not applicable on given profile'
-                            .format(scenario.script))
+        profiles = get_viable_profiles(
+            scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
+        logging.debug("viable profiles are {0}".format(profiles))
+        if not self._verify_rule_presence(rule_id, scenario.script, profiles):
             return
-
         test_data = dict(scenario=scenario,
                          rule_id=rule_id,
                          remediation_available=remediation_available)
