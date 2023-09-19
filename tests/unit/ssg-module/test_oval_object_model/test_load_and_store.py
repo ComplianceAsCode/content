@@ -23,15 +23,25 @@ def _load_oval_document(path):
     return load_oval_document(root_el)
 
 
+def _read_shorthand(path_):
+    if not os.path.isdir(path_):
+        with open(path_, "r") as fd:
+            return fd.read()
+    return ""
+
+
 def _list_of_shorthands():
     out = []
     dir_with_shorthands = os.path.join(DATA_DIR, "group_dir/rule_dir/oval")
 
+    static_paths_to_shorthands = [
+        os.path.join(DATA_DIR, "shorthand_with_all_components.xml"),
+    ]
     for file_name in os.listdir(dir_with_shorthands):
-        path_ = os.path.join(dir_with_shorthands, file_name)
-        if not os.path.isdir(path_):
-            with open(path_, "r") as fd:
-                out.append(fd.read())
+        static_paths_to_shorthands.append(os.path.join(dir_with_shorthands, file_name))
+
+    for path_ in static_paths_to_shorthands:
+        out.append(_read_shorthand(path_))
 
     return out
 
@@ -160,8 +170,14 @@ def test_load_shorthands(oval_document_from_shorthand):
     assert "object_nopasswd_etc_sudoers_d" in oval_document_from_shorthand.objects
     assert "object_nopasswd_etc_sudoers" in oval_document_from_shorthand.objects
 
-    assert not oval_document_from_shorthand.variables
-    assert not oval_document_from_shorthand.states
+    assert (
+        "var_account_password_selinux_faillock_dir_collector"
+        in oval_document_from_shorthand.variables
+    )
+    assert (
+        "state_account_password_selinux_faillock_dir"
+        in oval_document_from_shorthand.states
+    )
 
 
 def test_content_definition(definition):
