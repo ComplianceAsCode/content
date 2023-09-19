@@ -1,20 +1,15 @@
-from ...constants import OVAL_NAMESPACES, STR_TO_BOOL
+from ...constants import STR_TO_BOOL
 from ..general import (
     OVALEntity,
-    load_oval_entity_property,
-    load_notes,
+    load_property_and_notes_of_oval_entity,
     required_attribute,
 )
 
 
 def load_variable(oval_variable_xml_el):
-    notes_el = oval_variable_xml_el.find("./{%s}notes" % OVAL_NAMESPACES.definition)
-
-    variable_property = []
-    for child_node_el in oval_variable_xml_el:
-        if notes_el == child_node_el:
-            continue
-        variable_property.append(load_oval_entity_property(child_node_el))
+    variable_property, notes = load_property_and_notes_of_oval_entity(
+        oval_variable_xml_el
+    )
 
     variable = Variable(
         oval_variable_xml_el.tag,
@@ -26,7 +21,7 @@ def load_variable(oval_variable_xml_el):
     variable.deprecated = STR_TO_BOOL.get(
         oval_variable_xml_el.get("deprecated", ""), False
     )
-    variable.notes = load_notes(notes_el)
+    variable.notes = notes
     variable.version = required_attribute(oval_variable_xml_el, "version")
     return variable
 

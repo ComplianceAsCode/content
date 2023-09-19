@@ -132,6 +132,17 @@ class Notes(OVALBaseObject):
 # -----
 
 
+def load_property_and_notes_of_oval_entity(oval_entity_el):
+    notes = None
+    object_property = []
+    for child_node_el in oval_entity_el:
+        if "notes" in child_node_el.tag:
+            notes = load_notes(child_node_el)
+        else:
+            object_property.append(load_oval_entity_property(child_node_el))
+    return object_property, notes
+
+
 def load_oval_entity_property(end_point_property_el):
     data = OVALEntityProperty(end_point_property_el.tag)
     data.attributes = (

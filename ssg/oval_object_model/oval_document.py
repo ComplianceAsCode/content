@@ -17,7 +17,7 @@ from .oval_entities import (
 
 def _get_xml_el(tag_name, xml_el):
     el = xml_el.find("./{%s}%s" % (OVAL_NAMESPACES.definition, tag_name))
-    return el if el else []
+    return el if el else ElementTree.Element("empty-element")
 
 
 def _load_definitions(oval_document, oval_document_xml_el):
