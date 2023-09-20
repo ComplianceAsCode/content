@@ -383,12 +383,12 @@ def get_unique_datastream():
         "e.g. {1}".format(len(datastreams), datastreams))
 
 
-def get_product_id(datastream):
+def get_product_id(ds_filename):
     product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
-    match = product_regex.match(datastream)
+    match = product_regex.match(ds_filename)
     if not match:
         msg = "Unable to detect product without explicit --product: "
-        msg += "datastream {0} lacks product name".format(datastream)
+        msg += "datastream {0} lacks product name".format(ds_filename)
         raise RuntimeError(msg)
     product = match.group(1)
     if product in DERIVATIVES_PRODUCT_MAPPING:
