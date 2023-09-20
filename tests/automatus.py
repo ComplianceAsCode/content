@@ -24,6 +24,7 @@ import ssg_test_suite.rule
 import ssg_test_suite.combined
 import ssg_test_suite.template
 from ssg_test_suite import xml_operations
+from ssg.constants import DERIVATIVES_PRODUCT_MAPPING
 
 
 def parse_args():
@@ -390,6 +391,8 @@ def get_product_id(datastream):
         msg += "datastream {0} lacks product name".format(datastream)
         raise RuntimeError(msg)
     product = match.group(1)
+    if product in DERIVATIVES_PRODUCT_MAPPING:
+        product = DERIVATIVES_PRODUCT_MAPPING[product]
     return product
 
 

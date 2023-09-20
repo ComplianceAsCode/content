@@ -498,3 +498,10 @@ class OvalNamespaces:
 
 
 OVAL_NAMESPACES = OvalNamespaces()
+
+DERIVATIVES_PRODUCT_MAPPING = {
+    "centos7": "rhel7",
+    "centos8": "rhel8",
+    "cs9": "rhel9",
+    "sl7": "rhel7"
+}
