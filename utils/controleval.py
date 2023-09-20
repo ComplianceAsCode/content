@@ -183,15 +183,23 @@ def create_implicit_control_lists(ctrls, control_list):
 
 
 def count_rules_and_vars_in_control(ctrl):
-    rules = [item for item in ctrl.rules if "=" not in item]
-    variables = [item for item in ctrl.rules if "=" in item]
-    return len(rules), len(variables)
+    Counts = collections.namedtuple('Counts', ['rules', 'variables'])
+    rules_count = variables_count = 0
+    for item in ctrl.rules:
+        if "=" in item:
+            variables_count += 1
+        else:
+            rules_count += 1
+    return Counts(rules_count, variables_count)
 
 
 def count_rules_and_vars(ctrls):
-    rules_count = sum(count_rules_and_vars_in_control(ctrl)[0] for ctrl in ctrls)
-    vars_count = sum(count_rules_and_vars_in_control(ctrl)[1] for ctrl in ctrls)
-    return rules_count, vars_count
+    rules_total = variables_total = 0
+    for ctrl in ctrls:
+        content_counts = count_rules_and_vars_in_control(ctrl)
+        rules_total += content_counts.rules
+        variables_total += content_counts.variables
+    return rules_total, variables_total
 
 
 def count_controls_by_status(ctrls):
