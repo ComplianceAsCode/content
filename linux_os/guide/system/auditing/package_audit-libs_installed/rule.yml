@@ -1,5 +1,5 @@
 {{% if product in ["sle12","sle15"] %}}
-{{% set package_name = "libaudit" %}}
+{{% set package_name = "libaudit1" %}}
 {{% else %}} 
 {{% set package_name = "audit-libs" %}}
 {{% endif %}}
@@ -37,7 +37,7 @@ references:
 ocil_clause: 'the {{{ package_name }}} package is not installed'
 
 {{% if product in ["sle12","sle15"] %}}
-ocil: '{{{ ocil_package("libaudit") }}}'
+ocil: '{{{ ocil_package("libaudit1") }}}'
 {{% else %}}
 ocil: '{{{ ocil_package("audit-libs") }}}'
 {{% endif %}}
@@ -45,7 +45,7 @@ ocil: '{{{ ocil_package("audit-libs") }}}'
 fixtext: |-
     Install the {{{ package_name }}} package (if {{{ package_name }}} package is not already installed) with the following command:
 {{% if product in ["sle12","sle15"] %}}
-    {{{ package_install("libaudit") }}}
+    {{{ package_install("libaudit1") }}}
 {{% else %}}
     {{{ package_install("audit-libs") }}}
 {{% endif %}}
@@ -54,4 +54,4 @@ template:
     name: package_installed
     vars:
         pkgname: audit-libs
-        pkgname@sle15: libaudit
+        pkgname@sle15: libaudit1
