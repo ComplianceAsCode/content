@@ -88,6 +88,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         tickets=list,
         original_title=str,
         related_rules=list,
+        rules=list,
         controls=list,
     )
 
@@ -114,6 +115,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         self.tickets = []
         self.original_title = ""
         self.related_rules = []
+        self.rules = []
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -145,6 +147,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.tickets = control_dict.get('tickets')
         control.original_title = control_dict.get('original_title')
         control.related_rules = control_dict.get('related_rules')
+        control.rules = control_dict.get('rules')
 
         if control.status == "automated":
             control.automated = "yes"
@@ -161,6 +164,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
+        control.rules = control_dict.get("rules", [])
         return control
 
     def represent_as_dict(self):
