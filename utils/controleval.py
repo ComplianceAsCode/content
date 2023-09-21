@@ -182,6 +182,26 @@ def create_implicit_control_lists(ctrls, control_list):
     return control_list
 
 
+def count_rules_and_vars_in_control(ctrl):
+    Counts = collections.namedtuple('Counts', ['rules', 'variables'])
+    rules_count = variables_count = 0
+    for item in ctrl.rules:
+        if "=" in item:
+            variables_count += 1
+        else:
+            rules_count += 1
+    return Counts(rules_count, variables_count)
+
+
+def count_rules_and_vars(ctrls):
+    rules_total = variables_total = 0
+    for ctrl in ctrls:
+        content_counts = count_rules_and_vars_in_control(ctrl)
+        rules_total += content_counts.rules
+        variables_total += content_counts.variables
+    return rules_total, variables_total
+
+
 def count_controls_by_status(ctrls):
     status_count = collections.defaultdict(int)
     control_list = collections.defaultdict(set)
@@ -229,7 +249,7 @@ def print_controls(status_count, control_list, args):
         print("There is no controls with {status} status.".format(status=status))
 
 
-def print_stats(status_count, control_list, args):
+def print_stats(status_count, control_list, rules_count, vars_count, args):
     implicit_status = controls.Status.get_status_list()
     explicit_status = status_count.keys() - implicit_status
 
@@ -240,6 +260,10 @@ def print_stats(status_count, control_list, args):
     print("\nStats grouped by status:")
     for status in sorted(implicit_status):
         print_specific_stat(status, status_count[status], status_count['applicable'])
+
+    print(f"\nRules and Variables in {args.id} - {args.level}:")
+    print(f'{rules_count} rules are selected')
+    print(f'{vars_count} variables are explicitly defined')
 
     if args.show_controls:
         print_controls(status_count, control_list, args)
@@ -273,11 +297,12 @@ def stats(args):
         exit(1)
 
     status_count, control_list = count_controls_by_status(ctrls)
+    rules_count, vars_count = count_rules_and_vars(ctrls)
 
     if args.output_format == 'json':
         print_stats_json(args.product, args.id, args.level, control_list)
     else:
-        print_stats(status_count, control_list, args)
+        print_stats(status_count, control_list, rules_count, vars_count, args)
 
 
 subcmds = dict(

@@ -4,6 +4,7 @@ import argparse
 from prometheus_client import CollectorRegistry, Gauge, generate_latest, write_to_textfile
 from utils.controleval import (
     count_controls_by_status,
+    count_rules_and_vars,
     get_controls_used_by_products,
     get_policy_levels,
     load_controls_manager
@@ -25,9 +26,23 @@ HINT: $ source .pyenv.sh
     raise
 
 
-def create_prometheus_policy_metric(
-        unit: str, description: str, registry: CollectorRegistry) -> Gauge:
-    metric = Gauge(unit, description, ['level', 'status'], registry=registry)
+def create_prometheus_content_metric(policy_id: str, registry: CollectorRegistry) -> Gauge:
+    metric_id = f'policy_requirements_content_{policy_id}'
+    metric_description = f'Requirements Content for {policy_id}'
+    metric = Gauge(metric_id, metric_description, ['level', 'content_type'], registry=registry)
+    return metric
+
+
+def append_prometheus_content_metric(
+        metric: object, level: str, content_type: str, value: float) -> Gauge:
+    metric.labels(level=level, content_type=content_type).set(value)
+    return metric
+
+
+def create_prometheus_policy_metric(policy_id: str, registry: CollectorRegistry) -> Gauge:
+    metric_id = f'policy_requirements_status_{policy_id}'
+    metric_description = f'Requirements Status for {policy_id}'
+    metric = Gauge(metric_id, metric_description, ['level', 'status'], registry=registry)
     return metric
 
 
@@ -37,19 +52,28 @@ def append_prometheus_policy_metric(
     return metric
 
 
+def get_prometheus_metrics(
+    ctrls_mgr: controls.ControlsManager, policy_id: str, registry: CollectorRegistry
+) -> CollectorRegistry:
+    policy_metric = create_prometheus_policy_metric(policy_id, registry=registry)
+    content_metric = create_prometheus_content_metric(policy_id, registry=registry)
+    for level in get_policy_levels(ctrls_mgr, policy_id):
+        ctrls = set(ctrls_mgr.get_all_controls_of_level(policy_id, level))
+        status_count, _ = count_controls_by_status(ctrls)
+        for status in status_count.keys():
+            policy_metric = append_prometheus_policy_metric(
+                policy_metric, level, status, status_count[status])
+        rules, vars = count_rules_and_vars(ctrls)
+        content_metric = append_prometheus_content_metric(content_metric, level, 'rules', rules)
+        content_metric = append_prometheus_content_metric(content_metric, level, 'vars', vars)
+    return registry
+
+
 def get_prometheus_metrics_registry(
         used_controls: list, ctrls_mgr: controls.ControlsManager) -> CollectorRegistry:
     registry = CollectorRegistry()
     for policy_id in sorted(used_controls):
-        metric_id = f'policy_requirements_status_{policy_id}'
-        metric_description = f'{policy_id} Requirements Status'
-        metric = create_prometheus_policy_metric(metric_id, metric_description, registry=registry)
-        for level in get_policy_levels(ctrls_mgr, policy_id):
-            ctrls = set(ctrls_mgr.get_all_controls_of_level(policy_id, level))
-            status_count, _ = count_controls_by_status(ctrls)
-            for status in status_count.keys():
-                metric = append_prometheus_policy_metric(
-                    metric, level, status, status_count[status])
+        registry = get_prometheus_metrics(ctrls_mgr, policy_id, registry)
     return registry
 
 
