@@ -9,7 +9,8 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - NetworkManager
+    #- NetworkManager
+    - "{{{ platform_package_overrides.NetworkManager }}}"
 
 - name: Deactivate Wireless Network Interfaces
   command: nmcli radio wifi off
