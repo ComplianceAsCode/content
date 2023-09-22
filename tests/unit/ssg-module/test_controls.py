@@ -98,6 +98,15 @@ def test_controls_load(controls_manager):
     _load_test(controls_manager, "abcd")
 
 
+def test_controls_invalid_rules(env_yaml):
+    existing_rules = {"accounts_tmout", "configure_crypto_policy"}
+    controls_manager = ssg.controls.ControlsManager(
+        controls_dir, env_yaml, existing_rules)
+    with pytest.raises(ValueError) as exc:
+        controls_manager.load()
+    assert str(exc.value) == \
+        "Control abcd:R1 contains nonexisting rule(s) sshd_set_idle_timeout"
+
 def test_controls_levels(controls_manager):
     # Default level is the lowest level
     c_1 = controls_manager.get_control("abcd-levels", "S1")
