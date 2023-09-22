@@ -9,7 +9,6 @@
     name: "{{ item }}"
     state: present
   with_items:
-    #- NetworkManager
     - "{{{ platform_package_overrides.NetworkManager }}}"
 
 - name: Deactivate Wireless Network Interfaces
