@@ -67,7 +67,6 @@ selections:
     - accounts_password_pam_retry
     - var_password_pam_minclass=4
     - var_password_pam_minlen=14
-    - locking_out_password_attempts
     - accounts_password_pam_pwhistory_remember_password_auth
     - accounts_password_pam_pwhistory_remember_system_auth
     - var_password_pam_remember_control_flag=required
