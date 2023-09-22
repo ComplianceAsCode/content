@@ -222,6 +222,14 @@ class Policy(ssg.entities.common.XCCDFEntity):
             result = [self.levels[0].id]
         return result
 
+    def check_all_rules_exist(self, existing_rules):
+        for c in self.controls:
+            nonexisting_rules = set(c.selected) - existing_rules
+            if nonexisting_rules:
+                msg = "Control %s:%s contains nonexisting rule(s) %s" % (
+                    self.id, c.id, ", ".join(nonexisting_rules))
+                raise ValueError(msg)
+
     def remove_selections_not_known(self, known_rules):
         for c in self.controls:
             selections = set(c.selected).intersection(known_rules)
@@ -348,9 +356,10 @@ class Policy(ssg.entities.common.XCCDFEntity):
 
 
 class ControlsManager():
-    def __init__(self, controls_dir, env_yaml=None):
+    def __init__(self, controls_dir, env_yaml=None, existing_rules=None):
         self.controls_dir = os.path.abspath(controls_dir)
         self.env_yaml = env_yaml
+        self.existing_rules = existing_rules
         self.policies = {}
 
     def load(self):
@@ -361,7 +370,14 @@ class ControlsManager():
             policy = Policy(filepath, self.env_yaml)
             policy.load()
             self.policies[policy.id] = policy
+        self.check_all_rules_exist()
         self.resolve_controls()
+
+    def check_all_rules_exist(self):
+        if self.existing_rules is None:
+            return
+        for p in self.policies.values():
+            p.check_all_rules_exist(self.existing_rules)
 
     def remove_selections_not_known(self, known_rules):
         known_rules = set(known_rules)

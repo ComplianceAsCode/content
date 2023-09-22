@@ -506,3 +506,11 @@ DERIVATIVES_PRODUCT_MAPPING = {
     "cs9": "rhel9",
     "sl7": "rhel7"
 }
+
+BENCHMARKS = {
+    "apple_os",
+    "applications",
+    "linux_os/guide",
+    "products/chromium/guide",
+    "products/firefox/guide",
+}
