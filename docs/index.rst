@@ -61,6 +61,14 @@ ComplianceAsCode/content
     modules/*
 
 .. toctree::
+    :maxdepth: 4
+    :glob:
+    :caption: Python SSG Module API Reference
+    :name: SSG API Reference
+
+    api/modules
+
+.. toctree::
     :maxdepth: 2
     :glob:
     :caption: Release Documentation
