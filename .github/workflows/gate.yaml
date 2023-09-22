@@ -1,7 +1,9 @@
 name: Gate
 on:
+  merge_group:
+    branches: [ 'master' ]
   push:
-    branches: [ 'master', '*', '!stabilization*', '!stable*' ]
+    branches: ['*', '!stabilization*', '!stable*', '!master' ]
   pull_request:
     branches: [ 'master', 'stabilization*' ]
 jobs:
