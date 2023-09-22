@@ -49,7 +49,6 @@ selections:
     - package_telnet-server_removed
     - package_xinetd_removed
     - service_crond_enabled
-    - service_rexec_disabled
     - service_rlogin_disabled
     - service_telnet_disabled
     - service_xinetd_disabled
