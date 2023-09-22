@@ -52,7 +52,6 @@ selections:
     - service_rlogin_disabled
     - service_telnet_disabled
     - service_xinetd_disabled
-    - service_zebra_disabled
     - use_kerberos_security_all_exports
     - var_authselect_profile=sssd
     - enable_authselect
