@@ -56,4 +56,4 @@ selections:
     - firefox_policy-user_messaging
     - firefox_policy-verification
     - firefox_preferences-auto-download_actions
-    - firefox_preferences-dod_root_certificate
+    - firefox_preferences-dod_root_certificate_installed
