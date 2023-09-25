@@ -8,12 +8,12 @@ metadata:
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'DRAFT - DISA STIG with GUI for Red Hat Enterprise Linux 9'
+title: 'DISA STIG with GUI for Red Hat Enterprise Linux 9'
 
 description: |-
-    This is a draft profile based on its RHEL8 version for experimental purposes.
-    It is not based on the DISA STIG for RHEL9, because this one was not available at time of
-    the release.
+    This profile contains configuration checks that align to the
+    DISA STIG for Red Hat Enterprise Linux 9 V1R1.
+
 
     In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -34,15 +34,11 @@ description: |-
 extends: stig
 
 selections:
-    # RHEL-08-040320
+    # RHEL-09-215070
     - '!xwindows_remove_packages'
 
-    # RHEL-08-040321
+    # RHEL-09-211030
     - '!xwindows_runlevel_target'
 
-    # SRG-OS-000480-GPOS-00227
-    - '!package_gdm_removed'
-    - '!package_xorg-x11-server-common_removed'
-
-    # SRG-OS-000095-GPOS-00049
+    # RHEL-09-215025
     - '!package_nfs-utils_removed'
