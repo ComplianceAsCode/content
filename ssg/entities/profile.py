@@ -34,7 +34,6 @@ class ResolvableProfile(Profile):
         if controls_manager:
             self.resolve_controls(controls_manager)
 
-
         if self.extends:
             if self.extends not in all_profiles:
                 msg = (
