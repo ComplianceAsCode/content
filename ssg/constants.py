@@ -52,6 +52,7 @@ product_directories = [
     'rhcos4',
     'ol7', 'ol8', 'ol9',
     'opensuse',
+    'openembedded',
     'rhel7', 'rhel8', 'rhel9',
     'rhv4',
     'sle12', 'sle15',
