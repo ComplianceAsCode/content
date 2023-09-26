@@ -169,7 +169,7 @@ def create_tailoring(args):
         if selection.attrib['idref'].startswith(ssg.constants.OSCAP_RULE):
             cac_rule_id = selection.attrib['idref'].replace(ssg.constants.OSCAP_RULE, '')
             desired_value = str([cac_rule_id] in list(needed_rules.values())).lower()
-            if not selection.get('selected') == desired_value:
+            if not bool(selection.get('selected')) == desired_value:
                 selection.set('selected', desired_value)
                 tailoring_profile.append(selection)
                 if not args.quiet:
