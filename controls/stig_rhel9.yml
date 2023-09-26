@@ -14,6 +14,7 @@ controls:
         rules:
             - installed_OS_is_vendor_supported
         status: automated
+
     -   id: RHEL-09-211015
         levels:
             - medium
@@ -23,6 +24,7 @@ controls:
         rules:
             - security_patches_up_to_date
         status: automated
+
     -   id: RHEL-09-211020
         levels:
             - medium
@@ -31,7 +33,9 @@ controls:
             before granting local or remote access to the system via a command line user logon.
         rules:
             - banner_etc_issue
+            - login_banner_text=dod_banners
         status: automated
+
     -   id: RHEL-09-211025
         levels:
             - medium
@@ -39,6 +43,7 @@ controls:
         rules:
             - package_mcafeetp_installed
         status: automated
+
     -   id: RHEL-09-211030
         levels:
             - medium
@@ -48,6 +53,7 @@ controls:
         rules:
             - xwindows_runlevel_target
         status: automated
+
     -   id: RHEL-09-211035
         levels:
             - low
@@ -57,6 +63,7 @@ controls:
         rules:
             - service_rngd_enabled
         status: automated
+
     -   id: RHEL-09-211040
         levels:
             - medium
@@ -64,6 +71,7 @@ controls:
         rules:
             - service_systemd-journald_enabled
         status: automated
+
     -   id: RHEL-09-211045
         levels:
             - high
@@ -71,6 +79,7 @@ controls:
         rules:
             - disable_ctrlaltdel_burstaction
         status: automated
+
     -   id: RHEL-09-211050
         levels:
             - high
@@ -78,11 +87,13 @@ controls:
         rules:
             - disable_ctrlaltdel_reboot
         status: automated
+
     -   id: RHEL-09-211055
         levels:
             - medium
         title: RHEL 9 debug-shell systemd service must be disabled.
         status: automated
+
         rules:
             - service_debug-shell_disabled
     -   id: RHEL-09-212010
@@ -92,6 +103,7 @@ controls:
         rules:
             - grub2_password
         status: automated
+
     -   id: RHEL-09-212015
         levels:
             - medium
@@ -99,6 +111,7 @@ controls:
         rules:
             - grub2_disable_interactive_boot
         status: automated
+
     -   id: RHEL-09-212020
         levels:
             - high
@@ -108,6 +121,7 @@ controls:
         rules:
             - grub2_admin_username
         status: automated
+
     -   id: RHEL-09-212025
         levels:
             - medium
@@ -115,6 +129,7 @@ controls:
         rules:
             - file_groupowner_grub2_cfg
         status: automated
+
     -   id: RHEL-09-212030
         levels:
             - medium
@@ -122,6 +137,7 @@ controls:
         rules:
             - file_owner_grub2_cfg
         status: automated
+
     -   id: RHEL-09-212035
         levels:
             - medium
@@ -129,6 +145,7 @@ controls:
         rules:
             - grub2_vsyscall_argument
         status: automated
+
     -   id: RHEL-09-212040
         levels:
             - medium
@@ -136,6 +153,7 @@ controls:
         rules:
             - kernel_config_page_poisoning
         status: automated
+
     -   id: RHEL-09-212045
         levels:
             - medium
@@ -143,6 +161,7 @@ controls:
         rules:
             - grub2_slub_debug_argument
         status: automated
+
     -   id: RHEL-09-212050
         levels:
             - low
@@ -150,6 +169,7 @@ controls:
         rules:
             - grub2_pti_argument
         status: automated
+
     -   id: RHEL-09-212055
         levels:
             - low
@@ -157,6 +177,7 @@ controls:
         rules:
             - grub2_audit_argument
         status: automated
+
     -   id: RHEL-09-213010
         levels:
             - medium
@@ -164,6 +185,7 @@ controls:
         rules:
             - sysctl_kernel_dmesg_restrict
         status: automated
+
     -   id: RHEL-09-213015
         levels:
             - medium
@@ -171,6 +193,7 @@ controls:
         rules:
             - sysctl_kernel_perf_event_paranoid
         status: automated
+
     -   id: RHEL-09-213020
         levels:
             - medium
@@ -178,6 +201,7 @@ controls:
         rules:
             - sysctl_kernel_kexec_load_disabled
         status: automated
+
     -   id: RHEL-09-213025
         levels:
             - medium
@@ -185,6 +209,7 @@ controls:
         rules:
             - sysctl_kernel_kptr_restrict
         status: automated
+
     -   id: RHEL-09-213030
         levels:
             - medium
@@ -194,6 +219,7 @@ controls:
         rules:
             - sysctl_fs_protected_hardlinks
         status: automated
+
     -   id: RHEL-09-213035
         levels:
             - medium
@@ -203,6 +229,7 @@ controls:
         rules:
             - sysctl_fs_protected_symlinks
         status: automated
+
     -   id: RHEL-09-213040
         levels:
             - medium
@@ -210,6 +237,7 @@ controls:
         rules:
             - sysctl_kernel_core_pattern_empty_string
         status: automated
+
     -   id: RHEL-09-213045
         levels:
             - medium
@@ -219,6 +247,7 @@ controls:
         rules:
             - kernel_module_atm_disabled
         status: automated
+
     -   id: RHEL-09-213050
         levels:
             - medium
@@ -226,6 +255,7 @@ controls:
         rules:
             - kernel_module_can_disabled
         status: automated
+
     -   id: RHEL-09-213055
         levels:
             - medium
@@ -233,6 +263,7 @@ controls:
         rules:
             - kernel_module_firewire-core_disabled
         status: automated
+
     -   id: RHEL-09-213060
         levels:
             - medium
@@ -242,6 +273,7 @@ controls:
         rules:
             - kernel_module_sctp_disabled
         status: automated
+
     -   id: RHEL-09-213065
         levels:
             - medium
@@ -251,6 +283,7 @@ controls:
         rules:
             - kernel_module_tipc_disabled
         status: automated
+
     -   id: RHEL-09-213070
         levels:
             - medium
@@ -260,6 +293,7 @@ controls:
         rules:
             - sysctl_kernel_randomize_va_space
         status: automated
+
     -   id: RHEL-09-213075
         levels:
             - medium
@@ -269,6 +303,7 @@ controls:
         rules:
             - sysctl_kernel_unprivileged_bpf_disabled_accept_default
         status: automated
+
     -   id: RHEL-09-213080
         levels:
             - medium
@@ -276,6 +311,7 @@ controls:
         rules:
             - sysctl_kernel_yama_ptrace_scope
         status: automated
+
     -   id: RHEL-09-213085
         levels:
             - medium
@@ -283,6 +319,7 @@ controls:
         rules:
             - coredump_disable_backtraces
         status: automated
+
     -   id: RHEL-09-213090
         levels:
             - medium
@@ -290,6 +327,7 @@ controls:
         rules:
             - coredump_disable_storage
         status: automated
+
     -   id: RHEL-09-213095
         levels:
             - medium
@@ -297,6 +335,7 @@ controls:
         rules:
             - disable_users_coredumps
         status: automated
+
     -   id: RHEL-09-213100
         levels:
             - medium
@@ -304,6 +343,7 @@ controls:
         rules:
             - service_systemd-coredump_disabled
         status: automated
+
     -   id: RHEL-09-213105
         levels:
             - medium
@@ -311,6 +351,7 @@ controls:
         rules:
             - sysctl_user_max_user_namespaces
         status: automated
+
     -   id: RHEL-09-213110
         levels:
             - medium
@@ -320,6 +361,7 @@ controls:
         rules:
             - sysctl_kernel_exec_shield
         status: automated
+
     -   id: RHEL-09-213115
         levels:
             - medium
@@ -327,6 +369,7 @@ controls:
         rules:
             - service_kdump_disabled
         status: automated
+
     -   id: RHEL-09-214010
         levels:
             - medium
@@ -334,6 +377,7 @@ controls:
         rules:
             - ensure_redhat_gpgkey_installed
         status: automated
+
     -   id: RHEL-09-214015
         levels:
             - high
@@ -343,6 +387,7 @@ controls:
         rules:
             - ensure_gpgcheck_globally_activated
         status: automated
+
     -   id: RHEL-09-214020
         levels:
             - high
@@ -352,6 +397,7 @@ controls:
         rules:
             - ensure_gpgcheck_local_packages
         status: automated
+
     -   id: RHEL-09-214025
         levels:
             - high
@@ -359,6 +405,7 @@ controls:
         rules:
             - ensure_gpgcheck_never_disabled
         status: automated
+
     -   id: RHEL-09-214030
         levels:
             - medium
@@ -368,6 +415,7 @@ controls:
         rules:
             - rpm_verify_hashes
         status: automated
+
     -   id: RHEL-09-214035
         levels:
             - low
@@ -377,6 +425,7 @@ controls:
         rules:
             - clean_components_post_updating
         status: automated
+
     -   id: RHEL-09-215010
         levels:
             - medium
@@ -384,6 +433,7 @@ controls:
         rules:
             - package_subscription-manager_installed
         status: automated
+
     -   id: RHEL-09-215015
         levels:
             - high
@@ -391,6 +441,7 @@ controls:
         rules:
             - package_vsftpd_removed
         status: automated
+
     -   id: RHEL-09-215020
         levels:
             - medium
@@ -398,6 +449,7 @@ controls:
         rules:
             - package_sendmail_removed
         status: automated
+
     -   id: RHEL-09-215025
         levels:
             - medium
@@ -405,6 +457,7 @@ controls:
         rules:
             - package_nfs-utils_removed
         status: automated
+
     -   id: RHEL-09-215030
         levels:
             - medium
@@ -412,6 +465,7 @@ controls:
         rules:
             - package_ypserv_removed
         status: automated
+
     -   id: RHEL-09-215035
         levels:
             - medium
@@ -419,6 +473,7 @@ controls:
         rules:
             - package_rsh-server_removed
         status: automated
+
     -   id: RHEL-09-215040
         levels:
             - medium
@@ -426,6 +481,7 @@ controls:
         rules:
             - package_telnet-server_removed
         status: automated
+
     -   id: RHEL-09-215045
         levels:
             - medium
@@ -433,6 +489,7 @@ controls:
         rules:
             - package_gssproxy_removed
         status: automated
+
     -   id: RHEL-09-215050
         levels:
             - medium
@@ -440,6 +497,7 @@ controls:
         rules:
             - package_iprutils_removed
         status: automated
+
     -   id: RHEL-09-215055
         levels:
             - medium
@@ -447,6 +505,7 @@ controls:
         rules:
             - package_tuned_removed
         status: automated
+
     -   id: RHEL-09-215060
         levels:
             - high
@@ -454,8 +513,9 @@ controls:
             RHEL 9 must not have a Trivial File Transfer Protocol (TFTP) server package
             installed.
         rules:
-            - package_tftp_removed
+            - package_tftp-server_removed
         status: automated
+
     -   id: RHEL-09-215065
         levels:
             - medium
@@ -463,6 +523,7 @@ controls:
         rules:
             - package_quagga_removed
         status: automated
+
     -   id: RHEL-09-215070
         levels:
             - medium
@@ -470,6 +531,7 @@ controls:
         rules:
             - xwindows_remove_packages
         status: automated
+
     -   id: RHEL-09-215075
         levels:
             - medium
@@ -477,6 +539,7 @@ controls:
         rules:
             - install_smartcard_packages
         status: automated
+
     -   id: RHEL-09-215080
         levels:
             - medium
@@ -484,6 +547,7 @@ controls:
         rules:
             - package_gnutls-utils_installed
         status: automated
+
     -   id: RHEL-09-215085
         levels:
             - medium
@@ -491,6 +555,7 @@ controls:
         rules:
             - package_nss-tools_installed
         status: automated
+
     -   id: RHEL-09-215090
         levels:
             - medium
@@ -498,6 +563,7 @@ controls:
         rules:
             - package_rng-tools_installed
         status: automated
+
     -   id: RHEL-09-215095
         levels:
             - medium
@@ -512,6 +578,7 @@ controls:
         rules:
             - partition_for_home
         status: automated
+
     -   id: RHEL-09-231015
         levels:
             - medium
@@ -519,6 +586,7 @@ controls:
         rules:
             - partition_for_tmp
         status: automated
+
     -   id: RHEL-09-231020
         levels:
             - low
@@ -526,6 +594,7 @@ controls:
         rules:
             - partition_for_var
         status: automated
+
     -   id: RHEL-09-231025
         levels:
             - low
@@ -533,6 +602,7 @@ controls:
         rules:
             - partition_for_var_log
         status: automated
+
     -   id: RHEL-09-231030
         levels:
             - low
@@ -540,6 +610,7 @@ controls:
         rules:
             - partition_for_var_log_audit
         status: automated
+
     -   id: RHEL-09-231035
         levels:
             - medium
@@ -547,6 +618,7 @@ controls:
         rules:
             - partition_for_var_tmp
         status: automated
+
     -   id: RHEL-09-231040
         levels:
             - medium
@@ -554,6 +626,7 @@ controls:
         rules:
             - service_autofs_disabled
         status: automated
+
     -   id: RHEL-09-231045
         levels:
             - medium
@@ -563,6 +636,7 @@ controls:
         rules:
             - mount_option_home_nodev
         status: automated
+
     -   id: RHEL-09-231050
         levels:
             - medium
@@ -572,6 +646,7 @@ controls:
         rules:
             - mount_option_home_nosuid
         status: automated
+
     -   id: RHEL-09-231055
         levels:
             - medium
@@ -581,6 +656,7 @@ controls:
         rules:
             - mount_option_home_noexec
         status: automated
+
     -   id: RHEL-09-231060
         levels:
             - medium
@@ -590,6 +666,7 @@ controls:
         rules:
             - mount_option_krb_sec_remote_filesystems
         status: automated
+
     -   id: RHEL-09-231065
         levels:
             - medium
@@ -599,6 +676,7 @@ controls:
         rules:
             - mount_option_nodev_remote_filesystems
         status: automated
+
     -   id: RHEL-09-231070
         levels:
             - medium
@@ -608,6 +686,7 @@ controls:
         rules:
             - mount_option_noexec_remote_filesystems
         status: automated
+
     -   id: RHEL-09-231075
         levels:
             - medium
@@ -617,6 +696,7 @@ controls:
         rules:
             - mount_option_nosuid_remote_filesystems
         status: automated
+
     -   id: RHEL-09-231080
         levels:
             - medium
@@ -626,6 +706,7 @@ controls:
         rules:
             - mount_option_noexec_removable_partitions
         status: automated
+
     -   id: RHEL-09-231085
         levels:
             - medium
@@ -635,6 +716,7 @@ controls:
         rules:
             - mount_option_nodev_removable_partitions
         status: automated
+
     -   id: RHEL-09-231090
         levels:
             - medium
@@ -644,6 +726,7 @@ controls:
         rules:
             - mount_option_nosuid_removable_partitions
         status: automated
+
     -   id: RHEL-09-231095
         levels:
             - medium
@@ -651,6 +734,7 @@ controls:
         rules:
             - mount_option_boot_nodev
         status: automated
+
     -   id: RHEL-09-231100
         levels:
             - medium
@@ -660,6 +744,7 @@ controls:
         rules:
             - mount_option_boot_nosuid
         status: automated
+
     -   id: RHEL-09-231105
         levels:
             - medium
@@ -669,6 +754,7 @@ controls:
         rules:
             - mount_option_boot_efi_nosuid
         status: automated
+
     -   id: RHEL-09-231110
         levels:
             - medium
@@ -676,6 +762,7 @@ controls:
         rules:
             - mount_option_dev_shm_nodev
         status: automated
+
     -   id: RHEL-09-231115
         levels:
             - medium
@@ -683,6 +770,7 @@ controls:
         rules:
             - mount_option_dev_shm_noexec
         status: automated
+
     -   id: RHEL-09-231120
         levels:
             - medium
@@ -690,6 +778,7 @@ controls:
         rules:
             - mount_option_dev_shm_nosuid
         status: automated
+
     -   id: RHEL-09-231125
         levels:
             - medium
@@ -697,6 +786,7 @@ controls:
         rules:
             - mount_option_tmp_nodev
         status: automated
+
     -   id: RHEL-09-231130
         levels:
             - medium
@@ -704,6 +794,7 @@ controls:
         rules:
             - mount_option_tmp_noexec
         status: automated
+
     -   id: RHEL-09-231135
         levels:
             - medium
@@ -711,6 +802,7 @@ controls:
         rules:
             - mount_option_tmp_nosuid
         status: automated
+
     -   id: RHEL-09-231140
         levels:
             - medium
@@ -718,6 +810,7 @@ controls:
         rules:
             - mount_option_var_nodev
         status: automated
+
     -   id: RHEL-09-231145
         levels:
             - medium
@@ -725,6 +818,7 @@ controls:
         rules:
             - mount_option_var_log_noexec
         status: automated
+
     -   id: RHEL-09-231150
         levels:
             - medium
@@ -732,6 +826,7 @@ controls:
         rules:
             - mount_option_var_noexec
         status: automated
+
     -   id: RHEL-09-231155
         levels:
             - medium
@@ -739,6 +834,7 @@ controls:
         rules:
             - mount_option_var_log_nosuid
         status: automated
+
     -   id: RHEL-09-231160
         levels:
             - medium
@@ -746,6 +842,7 @@ controls:
         rules:
             - mount_option_var_log_audit_nodev
         status: automated
+
     -   id: RHEL-09-231165
         levels:
             - medium
@@ -753,6 +850,7 @@ controls:
         rules:
             - mount_option_var_log_audit_noexec
         status: automated
+
     -   id: RHEL-09-231170
         levels:
             - medium
@@ -760,6 +858,7 @@ controls:
         rules:
             - mount_option_var_log_audit_nosuid
         status: automated
+
     -   id: RHEL-09-231175
         levels:
             - medium
@@ -767,6 +866,7 @@ controls:
         rules:
             - mount_option_var_tmp_nodev
         status: automated
+
     -   id: RHEL-09-231180
         levels:
             - medium
@@ -774,6 +874,7 @@ controls:
         rules:
             - mount_option_var_tmp_noexec
         status: automated
+
     -   id: RHEL-09-231185
         levels:
             - medium
@@ -781,6 +882,7 @@ controls:
         rules:
             - mount_option_var_tmp_nosuid
         status: automated
+
     -   id: RHEL-09-231190
         levels:
             - high
@@ -791,6 +893,7 @@ controls:
         rules:
             - encrypt_partitions
         status: automated
+
     -   id: RHEL-09-231195
         levels:
             - low
@@ -798,6 +901,7 @@ controls:
         rules:
             - kernel_module_cramfs_disabled
         status: automated
+
     -   id: RHEL-09-231200
         levels:
             - medium
@@ -805,6 +909,7 @@ controls:
         rules:
             - mount_option_nodev_nonroot_local_partitions
         status: automated
+
     -   id: RHEL-09-232010
         levels:
             - medium
@@ -812,6 +917,7 @@ controls:
         rules:
             - file_permissions_binary_dirs
         status: automated
+
     -   id: RHEL-09-232015
         levels:
             - medium
@@ -819,6 +925,7 @@ controls:
         rules:
             - dir_permissions_library_dirs
         status: automated
+
     -   id: RHEL-09-232020
         levels:
             - medium
@@ -826,6 +933,7 @@ controls:
         rules:
             - file_permissions_library_dirs
         status: automated
+
     -   id: RHEL-09-232025
         levels:
             - medium
@@ -833,6 +941,7 @@ controls:
         rules:
             - file_permissions_var_log
         status: automated
+
     -   id: RHEL-09-232030
         levels:
             - medium
@@ -840,6 +949,7 @@ controls:
         rules:
             - file_permissions_var_log_messages
         status: automated
+
     -   id: RHEL-09-232035
         levels:
             - medium
@@ -847,6 +957,7 @@ controls:
         rules:
             - file_audit_tools_permissions
         status: automated
+
     -   id: RHEL-09-232040
         levels:
             - medium
@@ -858,6 +969,7 @@ controls:
             - file_permissions_cron_monthly
             - file_permissions_cron_weekly
         status: automated
+
     -   id: RHEL-09-232045
         levels:
             - medium
@@ -865,6 +977,7 @@ controls:
         rules:
             - file_permission_user_init_files
         status: automated
+
     -   id: RHEL-09-232050
         levels:
             - medium
@@ -874,6 +987,7 @@ controls:
         rules:
             - file_permissions_home_directories
         status: automated
+
     -   id: RHEL-09-232055
         levels:
             - medium
@@ -883,6 +997,7 @@ controls:
         rules:
             - file_permissions_etc_group
         status: automated
+
     -   id: RHEL-09-232060
         levels:
             - medium
@@ -892,6 +1007,7 @@ controls:
         rules:
             - file_permissions_backup_etc_group
         status: automated
+
     -   id: RHEL-09-232065
         levels:
             - medium
@@ -901,6 +1017,7 @@ controls:
         rules:
             - file_permissions_etc_gshadow
         status: automated
+
     -   id: RHEL-09-232070
         levels:
             - medium
@@ -910,6 +1027,7 @@ controls:
         rules:
             - file_permissions_backup_etc_gshadow
         status: automated
+
     -   id: RHEL-09-232075
         levels:
             - medium
@@ -919,6 +1037,7 @@ controls:
         rules:
             - file_permissions_etc_passwd
         status: automated
+
     -   id: RHEL-09-232080
         levels:
             - medium
@@ -928,6 +1047,7 @@ controls:
         rules:
             - file_permissions_backup_etc_passwd
         status: automated
+
     -   id: RHEL-09-232085
         levels:
             - medium
@@ -937,6 +1057,7 @@ controls:
         rules:
             - file_permissions_backup_etc_shadow
         status: automated
+
     -   id: RHEL-09-232090
         levels:
             - medium
@@ -944,6 +1065,7 @@ controls:
         rules:
             - file_owner_etc_group
         status: automated
+
     -   id: RHEL-09-232095
         levels:
             - medium
@@ -951,6 +1073,7 @@ controls:
         rules:
             - file_groupowner_etc_group
         status: automated
+
     -   id: RHEL-09-232100
         levels:
             - medium
@@ -958,6 +1081,7 @@ controls:
         rules:
             - file_owner_backup_etc_group
         status: automated
+
     -   id: RHEL-09-232105
         levels:
             - medium
@@ -965,6 +1089,7 @@ controls:
         rules:
             - file_groupowner_backup_etc_group
         status: automated
+
     -   id: RHEL-09-232110
         levels:
             - medium
@@ -972,6 +1097,7 @@ controls:
         rules:
             - file_owner_etc_gshadow
         status: automated
+
     -   id: RHEL-09-232115
         levels:
             - medium
@@ -979,6 +1105,7 @@ controls:
         rules:
             - file_groupowner_etc_gshadow
         status: automated
+
     -   id: RHEL-09-232120
         levels:
             - medium
@@ -986,6 +1113,7 @@ controls:
         rules:
             - file_owner_backup_etc_gshadow
         status: automated
+
     -   id: RHEL-09-232125
         levels:
             - medium
@@ -993,6 +1121,7 @@ controls:
         rules:
             - file_groupowner_backup_etc_gshadow
         status: automated
+
     -   id: RHEL-09-232130
         levels:
             - medium
@@ -1000,6 +1129,7 @@ controls:
         rules:
             - file_owner_etc_passwd
         status: automated
+
     -   id: RHEL-09-232135
         levels:
             - medium
@@ -1007,6 +1137,7 @@ controls:
         rules:
             - file_groupowner_etc_passwd
         status: automated
+
     -   id: RHEL-09-232140
         levels:
             - medium
@@ -1014,6 +1145,7 @@ controls:
         rules:
             - file_owner_backup_etc_passwd
         status: automated
+
     -   id: RHEL-09-232145
         levels:
             - medium
@@ -1021,6 +1153,7 @@ controls:
         rules:
             - file_groupowner_backup_etc_passwd
         status: automated
+
     -   id: RHEL-09-232150
         levels:
             - medium
@@ -1028,6 +1161,7 @@ controls:
         rules:
             - file_owner_etc_shadow
         status: automated
+
     -   id: RHEL-09-232155
         levels:
             - medium
@@ -1035,6 +1169,7 @@ controls:
         rules:
             - file_groupowner_etc_shadow
         status: automated
+
     -   id: RHEL-09-232160
         levels:
             - medium
@@ -1042,6 +1177,7 @@ controls:
         rules:
             - file_owner_backup_etc_shadow
         status: automated
+
     -   id: RHEL-09-232165
         levels:
             - medium
@@ -1049,6 +1185,7 @@ controls:
         rules:
             - file_groupowner_backup_etc_shadow
         status: automated
+
     -   id: RHEL-09-232170
         levels:
             - medium
@@ -1056,6 +1193,7 @@ controls:
         rules:
             - file_owner_var_log
         status: automated
+
     -   id: RHEL-09-232175
         levels:
             - medium
@@ -1063,6 +1201,7 @@ controls:
         rules:
             - file_groupowner_var_log
         status: automated
+
     -   id: RHEL-09-232180
         levels:
             - medium
@@ -1070,6 +1209,7 @@ controls:
         rules:
             - file_owner_var_log_messages
         status: automated
+
     -   id: RHEL-09-232185
         levels:
             - medium
@@ -1077,6 +1217,7 @@ controls:
         rules:
             - file_groupowner_var_log_messages
         status: automated
+
     -   id: RHEL-09-232190
         levels:
             - medium
@@ -1084,6 +1225,7 @@ controls:
         rules:
             - file_ownership_binary_dirs
         status: automated
+
     -   id: RHEL-09-232195
         levels:
             - medium
@@ -1091,6 +1233,7 @@ controls:
         rules:
             - file_groupownership_system_commands_dirs
         status: automated
+
     -   id: RHEL-09-232200
         levels:
             - medium
@@ -1098,6 +1241,7 @@ controls:
         rules:
             - file_ownership_library_dirs
         status: automated
+
     -   id: RHEL-09-232205
         levels:
             - medium
@@ -1105,6 +1249,7 @@ controls:
         rules:
             - root_permissions_syslibrary_files
         status: automated
+
     -   id: RHEL-09-232210
         levels:
             - medium
@@ -1112,6 +1257,7 @@ controls:
         rules:
             - dir_ownership_library_dirs
         status: automated
+
     -   id: RHEL-09-232215
         levels:
             - medium
@@ -1119,6 +1265,7 @@ controls:
         rules:
             - dir_group_ownership_library_dirs
         status: automated
+
     -   id: RHEL-09-232220
         levels:
             - medium
@@ -1126,6 +1273,7 @@ controls:
         rules:
             - file_audit_tools_ownership
         status: automated
+
     -   id: RHEL-09-232225
         levels:
             - medium
@@ -1148,6 +1296,7 @@ controls:
             - file_groupowner_cron_weekly
             - file_groupowner_crontab
         status: automated
+
     -   id: RHEL-09-232240
         levels:
             - medium
@@ -1157,6 +1306,7 @@ controls:
         rules:
             - dir_perms_world_writable_root_owned
         status: automated
+
     -   id: RHEL-09-232245
         levels:
             - medium
@@ -1164,6 +1314,7 @@ controls:
         rules:
             - dir_perms_world_writable_sticky_bits
         status: automated
+
     -   id: RHEL-09-232250
         levels:
             - medium
@@ -1171,6 +1322,7 @@ controls:
         rules:
             - file_permissions_ungroupowned
         status: automated
+
     -   id: RHEL-09-232255
         levels:
             - medium
@@ -1178,6 +1330,7 @@ controls:
         rules:
             - no_files_unowned_by_user
         status: automated
+
     -   id: RHEL-09-232260
         levels:
             - medium
@@ -1187,6 +1340,7 @@ controls:
         rules:
             - selinux_all_devicefiles_labeled
         status: automated
+
     -   id: RHEL-09-232265
         levels:
             - medium
@@ -1194,6 +1348,7 @@ controls:
         rules:
             - file_permissions_crontab
         status: automated
+
     -   id: RHEL-09-232270
         levels:
             - medium
@@ -1201,6 +1356,7 @@ controls:
         rules:
             - file_permissions_etc_shadow
         status: automated
+
     -   id: RHEL-09-251010
         levels:
             - medium
@@ -1208,6 +1364,7 @@ controls:
         rules:
             - package_firewalld_installed
         status: automated
+
     -   id: RHEL-09-251015
         levels:
             - medium
@@ -1215,6 +1372,7 @@ controls:
         rules:
             - service_firewalld_enabled
         status: automated
+
     -   id: RHEL-09-251020
         levels:
             - medium
@@ -1224,6 +1382,7 @@ controls:
         rules:
             - configured_firewalld_default_deny
         status: automated
+
     -   id: RHEL-09-251025
         levels:
             - medium
@@ -1231,6 +1390,7 @@ controls:
         rules:
             - configure_firewalld_ports
         status: automated
+
     -   id: RHEL-09-251030
         levels:
             - medium
@@ -1241,6 +1401,7 @@ controls:
         rules:
             - firewalld-backend
         status: automated
+
     -   id: RHEL-09-251035
         levels:
             - medium
@@ -1251,6 +1412,7 @@ controls:
         rules:
             - firewalld_sshd_port_enabled
         status: automated
+
     -   id: RHEL-09-251040
         levels:
             - medium
@@ -1258,6 +1420,7 @@ controls:
         rules:
             - network_sniffer_disabled
         status: automated
+
     -   id: RHEL-09-251045
         levels:
             - medium
@@ -1267,6 +1430,7 @@ controls:
         rules:
             - sysctl_net_core_bpf_jit_harden
         status: automated
+
     -   id: RHEL-09-252010
         levels:
             - medium
@@ -1274,6 +1438,7 @@ controls:
         rules:
             - package_chrony_installed
         status: automated
+
     -   id: RHEL-09-252015
         levels:
             - medium
@@ -1281,6 +1446,7 @@ controls:
         rules:
             - service_chronyd_enabled
         status: automated
+
     -   id: RHEL-09-252020
         levels:
             - medium
@@ -1290,6 +1456,7 @@ controls:
         rules:
             - chronyd_or_ntpd_set_maxpoll
         status: automated
+
     -   id: RHEL-09-252025
         levels:
             - low
@@ -1297,6 +1464,7 @@ controls:
         rules:
             - chronyd_client_only
         status: automated
+
     -   id: RHEL-09-252030
         levels:
             - low
@@ -1304,6 +1472,7 @@ controls:
         rules:
             - chronyd_no_chronyc_network
         status: automated
+
     -   id: RHEL-09-252035
         levels:
             - medium
@@ -1313,6 +1482,7 @@ controls:
         rules:
             - network_configure_name_resolution
         status: automated
+
     -   id: RHEL-09-252040
         levels:
             - medium
@@ -1325,6 +1495,7 @@ controls:
         rules:
             - libreswan_approved_tunnels
         status: automated
+
     -   id: RHEL-09-252050
         levels:
             - medium
@@ -1332,6 +1503,7 @@ controls:
         rules:
             - postfix_prevent_unrestricted_relay
         status: automated
+
     -   id: RHEL-09-252055
         levels:
             - medium
@@ -1341,6 +1513,7 @@ controls:
         rules:
             - tftpd_uses_secure_mode
         status: automated
+
     -   id: RHEL-09-252060
         levels:
             - medium
@@ -1350,6 +1523,7 @@ controls:
         rules:
             - postfix_client_configure_mail_alias_postmaster
         status: automated
+
     -   id: RHEL-09-252065
         levels:
             - medium
@@ -1357,6 +1531,7 @@ controls:
         rules:
             - package_libreswan_installed
         status: automated
+
     -   id: RHEL-09-252070
         levels:
             - high
@@ -1364,6 +1539,7 @@ controls:
         rules:
             - no_host_based_files
         status: automated
+
     -   id: RHEL-09-252075
         levels:
             - high
@@ -1371,6 +1547,7 @@ controls:
         rules:
             - no_user_host_based_files
         status: automated
+
     -   id: RHEL-09-253010
         levels:
             - medium
@@ -1378,6 +1555,7 @@ controls:
         rules:
             - sysctl_net_ipv4_tcp_syncookies
         status: automated
+
     -   id: RHEL-09-253015
         levels:
             - medium
@@ -1387,6 +1565,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_all_accept_redirects
         status: automated
+
     -   id: RHEL-09-253020
         levels:
             - medium
@@ -1396,6 +1575,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_all_accept_source_route
         status: automated
+
     -   id: RHEL-09-253025
         levels:
             - medium
@@ -1403,6 +1583,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_all_log_martians
         status: automated
+
     -   id: RHEL-09-253030
         levels:
             - medium
@@ -1410,6 +1591,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_default_log_martians
         status: automated
+
     -   id: RHEL-09-253035
         levels:
             - medium
@@ -1417,6 +1599,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_all_rp_filter
         status: automated
+
     -   id: RHEL-09-253040
         levels:
             - medium
@@ -1426,6 +1609,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_default_accept_redirects
         status: automated
+
     -   id: RHEL-09-253045
         levels:
             - medium
@@ -1433,6 +1617,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_default_accept_source_route
         status: automated
+
     -   id: RHEL-09-253050
         levels:
             - medium
@@ -1442,6 +1627,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_default_rp_filter
         status: automated
+
     -   id: RHEL-09-253055
         levels:
             - medium
@@ -1451,6 +1637,7 @@ controls:
         rules:
             - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
         status: automated
+
     -   id: RHEL-09-253060
         levels:
             - medium
@@ -1460,6 +1647,7 @@ controls:
         rules:
             - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
         status: automated
+
     -   id: RHEL-09-253065
         levels:
             - medium
@@ -1467,6 +1655,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_all_send_redirects
         status: automated
+
     -   id: RHEL-09-253070
         levels:
             - medium
@@ -1476,6 +1665,7 @@ controls:
         rules:
             - sysctl_net_ipv4_conf_default_send_redirects
         status: automated
+
     -   id: RHEL-09-253075
         levels:
             - medium
@@ -1483,6 +1673,7 @@ controls:
         rules:
             - sysctl_net_ipv4_ip_forward
         status: automated
+
     -   id: RHEL-09-254010
         levels:
             - medium
@@ -1490,6 +1681,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_all_accept_ra
         status: automated
+
     -   id: RHEL-09-254015
         levels:
             - medium
@@ -1499,6 +1691,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_all_accept_redirects
         status: automated
+
     -   id: RHEL-09-254020
         levels:
             - medium
@@ -1506,6 +1699,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_all_accept_source_route
         status: automated
+
     -   id: RHEL-09-254025
         levels:
             - medium
@@ -1513,6 +1707,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_all_forwarding
         status: automated
+
     -   id: RHEL-09-254030
         levels:
             - medium
@@ -1520,6 +1715,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_default_accept_ra
         status: automated
+
     -   id: RHEL-09-254035
         levels:
             - medium
@@ -1529,6 +1725,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_default_accept_redirects
         status: automated
+
     -   id: RHEL-09-254040
         levels:
             - medium
@@ -1536,6 +1733,7 @@ controls:
         rules:
             - sysctl_net_ipv6_conf_default_accept_source_route
         status: automated
+
     -   id: RHEL-09-255010
         levels:
             - medium
@@ -1543,6 +1741,7 @@ controls:
         rules:
             - package_openssh-server_installed
         status: automated
+
     -   id: RHEL-09-255015
         levels:
             - medium
@@ -1553,6 +1752,7 @@ controls:
         rules:
             - service_sshd_enabled
         status: automated
+
     -   id: RHEL-09-255020
         levels:
             - medium
@@ -1560,6 +1760,7 @@ controls:
         rules:
             - package_openssh-clients_installed
         status: automated
+
     -   id: RHEL-09-255025
         levels:
             - medium
@@ -1569,6 +1770,7 @@ controls:
         rules:
             - sshd_enable_warning_banner
         status: automated
+
     -   id: RHEL-09-255030
         levels:
             - medium
@@ -1576,6 +1778,7 @@ controls:
         rules:
             - sshd_set_loglevel_verbose
         status: automated
+
     -   id: RHEL-09-255035
         levels:
             - medium
@@ -1583,6 +1786,7 @@ controls:
         rules:
             - sshd_enable_pubkey_auth
         status: automated
+
     -   id: RHEL-09-255040
         levels:
             - high
@@ -1590,6 +1794,7 @@ controls:
         rules:
             - sshd_disable_empty_passwords
         status: automated
+
     -   id: RHEL-09-255045
         levels:
             - medium
@@ -1599,6 +1804,7 @@ controls:
         rules:
             - sshd_disable_root_login
         status: automated
+
     -   id: RHEL-09-255050
         levels:
             - high
@@ -1608,6 +1814,7 @@ controls:
         rules:
             - sshd_enable_pam
         status: automated
+
     -   id: RHEL-09-255055
         levels:
             - medium
@@ -1615,6 +1822,7 @@ controls:
         rules:
             - configure_ssh_crypto_policy
         status: automated
+
     -   id: RHEL-09-255060
         levels:
             - medium
@@ -1623,7 +1831,9 @@ controls:
             of SSH client connections.
         rules:
             - harden_sshd_ciphers_openssh_conf_crypto_policy
+            - sshd_approved_ciphers=stig_extended
         status: automated
+
     -   id: RHEL-09-255065
         levels:
             - medium
@@ -1633,6 +1843,7 @@ controls:
         rules:
             - harden_sshd_ciphers_opensshserver_conf_crypto_policy
         status: automated
+
     -   id: RHEL-09-255070
         levels:
             - medium
@@ -1654,6 +1865,7 @@ controls:
         rules:
             - disable_host_auth
         status: automated
+
     -   id: RHEL-09-255085
         levels:
             - medium
@@ -1661,6 +1873,7 @@ controls:
         rules:
             - sshd_do_not_permit_user_env
         status: automated
+
     -   id: RHEL-09-255090
         levels:
             - medium
@@ -1670,6 +1883,7 @@ controls:
         rules:
             - sshd_rekey_limit
         status: automated
+
     -   id: RHEL-09-255095
         levels:
             - medium
@@ -1679,6 +1893,7 @@ controls:
         rules:
             - sshd_set_keepalive
         status: automated
+
     -   id: RHEL-09-255100
         levels:
             - medium
@@ -1688,6 +1903,7 @@ controls:
         rules:
             - sshd_set_idle_timeout
         status: automated
+
     -   id: RHEL-09-255105
         levels:
             - medium
@@ -1695,6 +1911,7 @@ controls:
         rules:
             - file_groupowner_sshd_config
         status: automated
+
     -   id: RHEL-09-255110
         levels:
             - medium
@@ -1702,6 +1919,7 @@ controls:
         rules:
             - file_owner_sshd_config
         status: automated
+
     -   id: RHEL-09-255115
         levels:
             - medium
@@ -1709,6 +1927,7 @@ controls:
         rules:
             - file_permissions_sshd_config
         status: automated
+
     -   id: RHEL-09-255120
         levels:
             - medium
@@ -1716,6 +1935,7 @@ controls:
         rules:
             - file_permissions_sshd_private_key
         status: automated
+
     -   id: RHEL-09-255125
         levels:
             - medium
@@ -1723,6 +1943,7 @@ controls:
         rules:
             - file_permissions_sshd_pub_key
         status: automated
+
     -   id: RHEL-09-255130
         levels:
             - medium
@@ -1731,7 +1952,9 @@ controls:
             after successful authentication.
         rules:
             - sshd_disable_compression
+            - var_sshd_disable_compression=no
         status: automated
+
     -   id: RHEL-09-255135
         levels:
             - medium
@@ -1739,6 +1962,7 @@ controls:
         rules:
             - sshd_disable_gssapi_auth
         status: automated
+
     -   id: RHEL-09-255140
         levels:
             - medium
@@ -1746,6 +1970,7 @@ controls:
         rules:
             - sshd_disable_kerb_auth
         status: automated
+
     -   id: RHEL-09-255145
         levels:
             - medium
@@ -1753,6 +1978,7 @@ controls:
         rules:
             - sshd_disable_rhosts
         status: automated
+
     -   id: RHEL-09-255150
         levels:
             - medium
@@ -1760,6 +1986,7 @@ controls:
         rules:
             - sshd_disable_user_known_hosts
         status: automated
+
     -   id: RHEL-09-255155
         levels:
             - medium
@@ -1767,6 +1994,7 @@ controls:
         rules:
             - sshd_disable_x11_forwarding
         status: automated
+
     -   id: RHEL-09-255160
         levels:
             - medium
@@ -1776,6 +2004,7 @@ controls:
         rules:
             - sshd_enable_strictmodes
         status: automated
+
     -   id: RHEL-09-255165
         levels:
             - medium
@@ -1785,6 +2014,7 @@ controls:
         rules:
             - sshd_print_last_log
         status: automated
+
     -   id: RHEL-09-255170
         levels:
             - medium
@@ -1792,6 +2022,7 @@ controls:
         rules:
             - sshd_use_priv_separation
         status: automated
+
     -   id: RHEL-09-255175
         levels:
             - medium
@@ -1801,6 +2032,7 @@ controls:
         rules:
             - sshd_x11_use_localhost
         status: automated
+
     -   id: RHEL-09-271010
         levels:
             - medium
@@ -1810,6 +2042,7 @@ controls:
         rules:
             - dconf_gnome_banner_enabled
         status: automated
+
     -   id: RHEL-09-271015
         levels:
             - medium
@@ -1819,6 +2052,7 @@ controls:
         rules:
             - dconf_gnome_banner_enabled
         status: automated
+
     -   id: RHEL-09-271020
         levels:
             - medium
@@ -1828,6 +2062,7 @@ controls:
         rules:
             - dconf_gnome_disable_automount_open
         status: automated
+
     -   id: RHEL-09-271025
         levels:
             - medium
@@ -1837,6 +2072,7 @@ controls:
         rules:
             - dconf_gnome_disable_automount_open
         status: automated
+
     -   id: RHEL-09-271030
         levels:
             - medium
@@ -1846,6 +2082,7 @@ controls:
         rules:
             - dconf_gnome_disable_automount
         status: automated
+
     -   id: RHEL-09-271035
         levels:
             - medium
@@ -1855,6 +2092,7 @@ controls:
         rules:
             - dconf_gnome_disable_automount
         status: automated
+
     -   id: RHEL-09-271040
         levels:
             - high
@@ -1864,6 +2102,7 @@ controls:
         rules:
             - gnome_gdm_disable_automatic_login
         status: automated
+
     -   id: RHEL-09-271045
         levels:
             - medium
@@ -1873,6 +2112,7 @@ controls:
         rules:
             - dconf_gnome_lock_screen_on_smartcard_removal
         status: automated
+
     -   id: RHEL-09-271050
         levels:
             - medium
@@ -1882,6 +2122,7 @@ controls:
         rules:
             - dconf_gnome_lock_screen_on_smartcard_removal
         status: automated
+
     -   id: RHEL-09-271055
         levels:
             - medium
@@ -1892,6 +2133,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_lock_enabled
         status: automated
+
     -   id: RHEL-09-271060
         levels:
             - medium
@@ -1901,6 +2143,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_lock_enabled
         status: automated
+
     -   id: RHEL-09-271065
         levels:
             - medium
@@ -1910,6 +2153,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_idle_delay
         status: automated
+
     -   id: RHEL-09-271070
         levels:
             - medium
@@ -1919,6 +2163,7 @@ controls:
         rules:
             - dconf_gnome_session_idle_user_locks
         status: automated
+
     -   id: RHEL-09-271075
         levels:
             - medium
@@ -1928,6 +2173,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_lock_delay
         status: automated
+
     -   id: RHEL-09-271080
         levels:
             - medium
@@ -1937,6 +2183,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_user_locks
         status: automated
+
     -   id: RHEL-09-271085
         levels:
             - medium
@@ -1946,6 +2193,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_mode_blank
         status: automated
+
     -   id: RHEL-09-271090
         levels:
             - medium
@@ -1953,6 +2201,7 @@ controls:
         rules:
             - dconf_gnome_screensaver_mode_blank
         status: automated
+
     -   id: RHEL-09-271095
         levels:
             - medium
@@ -1962,6 +2211,7 @@ controls:
         rules:
             - dconf_gnome_disable_restart_shutdown
         status: automated
+
     -   id: RHEL-09-271100
         levels:
             - medium
@@ -1971,6 +2221,7 @@ controls:
         rules:
             - dconf_gnome_disable_restart_shutdown
         status: automated
+
     -   id: RHEL-09-271105
         levels:
             - medium
@@ -1980,6 +2231,7 @@ controls:
         rules:
             - dconf_gnome_disable_ctrlaltdel_reboot
         status: automated
+
     -   id: RHEL-09-271110
         levels:
             - medium
@@ -1989,6 +2241,7 @@ controls:
         rules:
             - dconf_gnome_disable_ctrlaltdel_reboot
         status: automated
+
     -   id: RHEL-09-271115
         levels:
             - medium
@@ -1996,6 +2249,7 @@ controls:
         rules:
             - dconf_gnome_disable_user_list
         status: automated
+
     -   id: RHEL-09-291010
         levels:
             - medium
@@ -2003,6 +2257,7 @@ controls:
         rules:
             - kernel_module_usb-storage_disabled
         status: automated
+
     -   id: RHEL-09-291015
         levels:
             - medium
@@ -2010,6 +2265,7 @@ controls:
         rules:
             - package_usbguard_installed
         status: automated
+
     -   id: RHEL-09-291020
         levels:
             - medium
@@ -2017,6 +2273,7 @@ controls:
         rules:
             - service_usbguard_enabled
         status: automated
+
     -   id: RHEL-09-291025
         levels:
             - low
@@ -2024,6 +2281,7 @@ controls:
         rules:
             - configure_usbguard_auditbackend
         status: automated
+
     -   id: RHEL-09-291030
         levels:
             - medium
@@ -2031,6 +2289,7 @@ controls:
         rules:
             - usbguard_generate_policy
         status: automated
+
     -   id: RHEL-09-291035
         levels:
             - medium
@@ -2038,6 +2297,7 @@ controls:
         rules:
             - kernel_module_bluetooth_disabled
         status: automated
+
     -   id: RHEL-09-291040
         levels:
             - medium
@@ -2045,6 +2305,7 @@ controls:
         rules:
             - wireless_disable_interfaces
         status: automated
+
     -   id: RHEL-09-411010
         levels:
             - medium
@@ -2054,6 +2315,7 @@ controls:
         rules:
             - accounts_maximum_age_login_defs
         status: automated
+
     -   id: RHEL-09-411015
         levels:
             - medium
@@ -2063,6 +2325,7 @@ controls:
         rules:
             - accounts_password_set_max_life_existing
         status: automated
+
     -   id: RHEL-09-411020
         levels:
             - medium
@@ -2072,6 +2335,7 @@ controls:
         rules:
             - accounts_have_homedir_login_defs
         status: automated
+
     -   id: RHEL-09-411025
         levels:
             - medium
@@ -2079,6 +2343,7 @@ controls:
         rules:
             - accounts_umask_interactive_users
         status: automated
+
     -   id: RHEL-09-411030
         levels:
             - medium
@@ -2086,6 +2351,7 @@ controls:
         rules:
             - account_unique_id
         status: automated
+
     -   id: RHEL-09-411035
         levels:
             - medium
@@ -2093,6 +2359,7 @@ controls:
         rules:
             - no_shelllogin_for_systemaccounts
         status: automated
+
     -   id: RHEL-09-411040
         levels:
             - medium
@@ -2100,6 +2367,7 @@ controls:
         rules:
             - account_temp_expire_date
         status: automated
+
     -   id: RHEL-09-411045
         levels:
             - medium
@@ -2107,6 +2375,7 @@ controls:
         rules:
             - gid_passwd_group_same
         status: automated
+
     -   id: RHEL-09-411050
         levels:
             - medium
@@ -2116,6 +2385,7 @@ controls:
         rules:
             - account_disable_post_pw_expiration
         status: automated
+
     -   id: RHEL-09-411055
         levels:
             - medium
@@ -2126,6 +2396,7 @@ controls:
         rules:
             - accounts_user_home_paths_only
         status: automated
+
     -   id: RHEL-09-411060
         levels:
             - medium
@@ -2135,6 +2406,7 @@ controls:
         rules:
             - accounts_user_interactive_home_directory_defined
         status: automated
+
     -   id: RHEL-09-411065
         levels:
             - medium
@@ -2144,6 +2416,7 @@ controls:
         rules:
             - accounts_user_interactive_home_directory_exists
         status: automated
+
     -   id: RHEL-09-411070
         levels:
             - medium
@@ -2153,6 +2426,7 @@ controls:
         rules:
             - file_groupownership_home_directories
         status: automated
+
     -   id: RHEL-09-411075
         levels:
             - medium
@@ -2162,6 +2436,7 @@ controls:
         rules:
             - accounts_passwords_pam_faillock_deny
         status: automated
+
     -   id: RHEL-09-411080
         levels:
             - medium
@@ -2172,6 +2447,7 @@ controls:
         rules:
             - accounts_passwords_pam_faillock_deny_root
         status: automated
+
     -   id: RHEL-09-411085
         levels:
             - medium
@@ -2181,6 +2457,7 @@ controls:
         rules:
             - accounts_passwords_pam_faillock_interval
         status: automated
+
     -   id: RHEL-09-411090
         levels:
             - medium
@@ -2190,6 +2467,7 @@ controls:
         rules:
             - accounts_passwords_pam_faillock_unlock_time
         status: automated
+
     -   id: RHEL-09-411095
         levels:
             - medium
@@ -2197,6 +2475,7 @@ controls:
         rules:
             - accounts_authorized_local_users
         status: automated
+
     -   id: RHEL-09-411100
         levels:
             - high
@@ -2206,6 +2485,7 @@ controls:
         rules:
             - accounts_no_uid_except_zero
         status: automated
+
     -   id: RHEL-09-411105
         levels:
             - medium
@@ -2213,6 +2493,7 @@ controls:
         rules:
             - accounts_passwords_pam_faillock_dir
         status: automated
+
     -   id: RHEL-09-411110
         levels:
             - medium
@@ -2220,6 +2501,7 @@ controls:
         rules:
             - group_unique_id
         status: automated
+
     -   id: RHEL-09-411115
         levels:
             - medium
@@ -2227,6 +2509,7 @@ controls:
         rules:
             - accounts_user_dot_no_world_writable_programs
         status: automated
+
     -   id: RHEL-09-412010
         levels:
             - medium
@@ -2234,6 +2517,7 @@ controls:
         rules:
             - package_tmux_installed
         status: automated
+
     -   id: RHEL-09-412015
         levels:
             - medium
@@ -2241,6 +2525,7 @@ controls:
         rules:
             - configure_bashrc_exec_tmux
         status: automated
+
     -   id: RHEL-09-412020
         levels:
             - medium
@@ -2251,6 +2536,7 @@ controls:
         rules:
             - configure_tmux_lock_command
         status: automated
+
     -   id: RHEL-09-412025
         levels:
             - medium
@@ -2260,6 +2546,7 @@ controls:
         rules:
             - configure_tmux_lock_after_time
         status: automated
+
     -   id: RHEL-09-412030
         levels:
             - low
@@ -2267,6 +2554,7 @@ controls:
         rules:
             - no_tmux_in_shells
         status: automated
+
     -   id: RHEL-09-412035
         levels:
             - medium
@@ -2276,6 +2564,7 @@ controls:
         rules:
             - accounts_tmout
         status: automated
+
     -   id: RHEL-09-412040
         levels:
             - low
@@ -2285,6 +2574,7 @@ controls:
         rules:
             - accounts_max_concurrent_login_sessions
         status: automated
+
     -   id: RHEL-09-412045
         levels:
             - medium
@@ -2292,6 +2582,7 @@ controls:
         rules:
             - accounts_passwords_pam_faillock_audit
         status: automated
+
     -   id: RHEL-09-412050
         levels:
             - medium
@@ -2301,6 +2592,7 @@ controls:
         rules:
             - accounts_logon_fail_delay
         status: automated
+
     -   id: RHEL-09-412055
         levels:
             - medium
@@ -2308,6 +2600,7 @@ controls:
         rules:
             - accounts_umask_etc_bashrc
         status: automated
+
     -   id: RHEL-09-412060
         levels:
             - medium
@@ -2315,6 +2608,7 @@ controls:
         rules:
             - accounts_umask_etc_csh_cshrc
         status: automated
+
     -   id: RHEL-09-412065
         levels:
             - medium
@@ -2324,6 +2618,7 @@ controls:
         rules:
             - accounts_umask_etc_login_defs
         status: automated
+
     -   id: RHEL-09-412070
         levels:
             - medium
@@ -2331,6 +2626,7 @@ controls:
         rules:
             - accounts_umask_etc_profile
         status: automated
+
     -   id: RHEL-09-412075
         levels:
             - low
@@ -2340,6 +2636,7 @@ controls:
         rules:
             - display_login_attempts
         status: automated
+
     -   id: RHEL-09-412080
         levels:
             - medium
@@ -2347,6 +2644,7 @@ controls:
         rules:
             - logind_session_timeout
         status: automated
+
     -   id: RHEL-09-431010
         levels:
             - high
@@ -2356,6 +2654,7 @@ controls:
         rules:
             - selinux_state
         status: automated
+
     -   id: RHEL-09-431015
         levels:
             - medium
@@ -2363,6 +2662,7 @@ controls:
         rules:
             - selinux_policytype
         status: automated
+
     -   id: RHEL-09-431020
         levels:
             - medium
@@ -2372,6 +2672,7 @@ controls:
         rules:
             - account_password_selinux_faillock_dir
         status: automated
+
     -   id: RHEL-09-431025
         levels:
             - medium
@@ -2379,6 +2680,7 @@ controls:
         rules:
             - package_policycoreutils_installed
         status: automated
+
     -   id: RHEL-09-431030
         levels:
             - medium
@@ -2386,6 +2688,7 @@ controls:
         rules:
             - package_policycoreutils-python-utils_installed
         status: automated
+
     -   id: RHEL-09-432010
         levels:
             - medium
@@ -2393,6 +2696,7 @@ controls:
         rules:
             - package_sudo_installed
         status: automated
+
     -   id: RHEL-09-432015
         levels:
             - medium
@@ -2400,6 +2704,7 @@ controls:
         rules:
             - sudo_require_reauthentication
         status: automated
+
     -   id: RHEL-09-432020
         levels:
             - medium
@@ -2409,6 +2714,7 @@ controls:
         rules:
             - sudoers_validate_passwd
         status: automated
+
     -   id: RHEL-09-432025
         levels:
             - medium
@@ -2416,6 +2722,7 @@ controls:
         rules:
             - sudo_remove_no_authenticate
         status: automated
+
     -   id: RHEL-09-432030
         levels:
             - medium
@@ -2423,6 +2730,7 @@ controls:
         rules:
             - sudo_restrict_privilege_elevation_to_authorized
         status: automated
+
     -   id: RHEL-09-432035
         levels:
             - medium
@@ -2430,6 +2738,7 @@ controls:
         rules:
             - use_pam_wheel_for_su
         status: automated
+
     -   id: RHEL-09-433010
         levels:
             - medium
@@ -2437,6 +2746,7 @@ controls:
         rules:
             - package_fapolicyd_installed
         status: automated
+
     -   id: RHEL-09-433015
         levels:
             - medium
@@ -2444,6 +2754,7 @@ controls:
         rules:
             - service_fapolicyd_enabled
         status: automated
+
     -   id: RHEL-09-611010
         levels:
             - medium
@@ -2453,6 +2764,7 @@ controls:
         rules:
             - accounts_password_pam_retry
         status: automated
+
     -   id: RHEL-09-611015
         levels:
             - medium
@@ -2462,6 +2774,7 @@ controls:
         rules:
             - accounts_password_pam_pwhistory_remember_password_auth
         status: automated
+
     -   id: RHEL-09-611020
         levels:
             - medium
@@ -2471,6 +2784,7 @@ controls:
         rules:
             - accounts_password_pam_pwhistory_remember_system_auth
         status: automated
+
     -   id: RHEL-09-611025
         levels:
             - high
@@ -2478,6 +2792,7 @@ controls:
         rules:
             - no_empty_passwords
         status: automated
+
     -   id: RHEL-09-611030
         levels:
             - medium
@@ -2487,6 +2802,7 @@ controls:
         rules:
             - account_password_pam_faillock_system_auth
         status: automated
+
     -   id: RHEL-09-611035
         levels:
             - medium
@@ -2496,6 +2812,7 @@ controls:
         rules:
             - account_password_pam_faillock_password_auth
         status: automated
+
     -   id: RHEL-09-611040
         levels:
             - medium
@@ -2505,6 +2822,7 @@ controls:
         rules:
             - accounts_password_pam_pwquality_password_auth
         status: automated
+
     -   id: RHEL-09-611045
         levels:
             - medium
@@ -2514,6 +2832,7 @@ controls:
         rules:
             - accounts_password_pam_pwquality_system_auth
         status: automated
+
     -   id: RHEL-09-611050
         levels:
             - medium
@@ -2523,6 +2842,7 @@ controls:
         rules:
             - accounts_password_pam_unix_rounds_password_auth
         status: automated
+
     -   id: RHEL-09-611055
         levels:
             - medium
@@ -2532,6 +2852,7 @@ controls:
         rules:
             - accounts_password_pam_unix_rounds_system_auth
         status: automated
+
     -   id: RHEL-09-611060
         levels:
             - medium
@@ -2539,6 +2860,7 @@ controls:
         rules:
             - accounts_password_pam_enforce_root
         status: automated
+
     -   id: RHEL-09-611065
         levels:
             - medium
@@ -2548,6 +2870,7 @@ controls:
         rules:
             - accounts_password_pam_lcredit
         status: automated
+
     -   id: RHEL-09-611070
         levels:
             - medium
@@ -2557,6 +2880,7 @@ controls:
         rules:
             - accounts_password_pam_dcredit
         status: automated
+
     -   id: RHEL-09-611075
         levels:
             - medium
@@ -2566,6 +2890,7 @@ controls:
         rules:
             - accounts_minimum_age_login_defs
         status: automated
+
     -   id: RHEL-09-611080
         levels:
             - medium
@@ -2575,6 +2900,7 @@ controls:
         rules:
             - accounts_password_set_min_life_existing
         status: automated
+
     -   id: RHEL-09-611085
         levels:
             - medium
@@ -2582,6 +2908,7 @@ controls:
         rules:
             - sudo_remove_nopasswd
         status: automated
+
     -   id: RHEL-09-611090
         levels:
             - medium
@@ -2589,6 +2916,7 @@ controls:
         rules:
             - accounts_password_pam_minlen
         status: automated
+
     -   id: RHEL-09-611095
         levels:
             - medium
@@ -2596,6 +2924,7 @@ controls:
         rules:
             - accounts_password_minlen_login_defs
         status: automated
+
     -   id: RHEL-09-611100
         levels:
             - medium
@@ -2605,6 +2934,7 @@ controls:
         rules:
             - accounts_password_pam_ocredit
         status: automated
+
     -   id: RHEL-09-611105
         levels:
             - medium
@@ -2612,6 +2942,7 @@ controls:
         rules:
             - accounts_password_pam_dictcheck
         status: automated
+
     -   id: RHEL-09-611110
         levels:
             - medium
@@ -2621,6 +2952,7 @@ controls:
         rules:
             - accounts_password_pam_ucredit
         status: automated
+
     -   id: RHEL-09-611115
         levels:
             - medium
@@ -2630,6 +2962,7 @@ controls:
         rules:
             - accounts_password_pam_difok
         status: automated
+
     -   id: RHEL-09-611120
         levels:
             - medium
@@ -2639,6 +2972,7 @@ controls:
         rules:
             - accounts_password_pam_maxclassrepeat
         status: automated
+
     -   id: RHEL-09-611125
         levels:
             - medium
@@ -2648,6 +2982,7 @@ controls:
         rules:
             - accounts_password_pam_maxrepeat
         status: automated
+
     -   id: RHEL-09-611130
         levels:
             - medium
@@ -2657,6 +2992,7 @@ controls:
         rules:
             - accounts_password_pam_minclass
         status: automated
+
     -   id: RHEL-09-611135
         levels:
             - medium
@@ -2666,6 +3002,7 @@ controls:
         rules:
             - set_password_hashing_algorithm_libuserconf
         status: automated
+
     -   id: RHEL-09-611140
         levels:
             - medium
@@ -2674,7 +3011,9 @@ controls:
             representations of passwords.
         rules:
             - set_password_hashing_algorithm_logindefs
+            - var_password_hashing_algorithm=SHA512
         status: automated
+
     -   id: RHEL-09-611145
         levels:
             - medium
@@ -2684,6 +3023,7 @@ controls:
         rules:
             - disallow_bypass_password_sudo
         status: automated
+
     -   id: RHEL-09-611150
         levels:
             - medium
@@ -2693,6 +3033,7 @@ controls:
         rules:
             - set_password_hashing_min_rounds_logindefs
         status: automated
+
     -   id: RHEL-09-611155
         levels:
             - medium
@@ -2700,13 +3041,16 @@ controls:
         rules:
             - no_empty_passwords_etc_shadow
         status: automated
+
     -   id: RHEL-09-611160
         levels:
             - medium
         title: RHEL 9 must use the CAC smart card driver.
         rules:
             - configure_opensc_card_drivers
+            - var_smartcard_drivers=cac
         status: automated
+
     -   id: RHEL-09-611165
         levels:
             - medium
@@ -2714,6 +3058,7 @@ controls:
         rules:
             - sssd_enable_smartcards
         status: automated
+
     -   id: RHEL-09-611170
         levels:
             - medium
@@ -2721,6 +3066,7 @@ controls:
         rules:
             - sssd_certificate_verification
         status: automated
+
     -   id: RHEL-09-611175
         levels:
             - medium
@@ -2728,6 +3074,7 @@ controls:
         rules:
             - package_pcsc-lite_installed
         status: automated
+
     -   id: RHEL-09-611180
         levels:
             - medium
@@ -2735,6 +3082,7 @@ controls:
         rules:
             - service_pcscd_enabled
         status: automated
+
     -   id: RHEL-09-611185
         levels:
             - medium
@@ -2742,6 +3090,7 @@ controls:
         rules:
             - package_opensc_installed
         status: automated
+
     -   id: RHEL-09-611190
         levels:
             - medium
@@ -2751,6 +3100,7 @@ controls:
         rules:
             - ssh_keys_passphrase_protected
         status: automated
+
     -   id: RHEL-09-611195
         levels:
             - medium
@@ -2758,6 +3108,7 @@ controls:
         rules:
             - require_emergency_target_auth
         status: automated
+
     -   id: RHEL-09-611200
         levels:
             - medium
@@ -2765,6 +3116,7 @@ controls:
         rules:
             - require_singleuser_auth
         status: automated
+
     -   id: RHEL-09-611205
         levels:
             - medium
@@ -2772,6 +3124,7 @@ controls:
         rules:
             - kerberos_disable_no_keytab
         status: automated
+
     -   id: RHEL-09-631010
         levels:
             - medium
@@ -2782,6 +3135,7 @@ controls:
         rules:
             - sssd_has_trust_anchor
         status: automated
+
     -   id: RHEL-09-631015
         levels:
             - medium
@@ -2791,6 +3145,7 @@ controls:
         rules:
             - sssd_enable_certmap
         status: automated
+
     -   id: RHEL-09-631020
         levels:
             - medium
@@ -2798,6 +3153,7 @@ controls:
         rules:
             - sssd_offline_cred_expiration
         status: automated
+
     -   id: RHEL-09-651010
         levels:
             - medium
@@ -2805,6 +3161,7 @@ controls:
         rules:
             - package_aide_installed
         status: automated
+
     -   id: RHEL-09-651015
         levels:
             - medium
@@ -2815,6 +3172,7 @@ controls:
         rules:
             - aide_periodic_cron_checking
         status: automated
+
     -   id: RHEL-09-651020
         levels:
             - medium
@@ -2824,6 +3182,7 @@ controls:
         rules:
             - aide_use_fips_hashes
         status: automated
+
     -   id: RHEL-09-651025
         levels:
             - medium
@@ -2833,6 +3192,7 @@ controls:
         rules:
             - aide_check_audit_tools
         status: automated
+
     -   id: RHEL-09-651030
         levels:
             - low
@@ -2842,6 +3202,7 @@ controls:
         rules:
             - aide_verify_acls
         status: automated
+
     -   id: RHEL-09-651035
         levels:
             - low
@@ -2851,6 +3212,7 @@ controls:
         rules:
             - aide_verify_ext_attributes
         status: automated
+
     -   id: RHEL-09-652010
         levels:
             - medium
@@ -2858,6 +3220,7 @@ controls:
         rules:
             - package_rsyslog_installed
         status: automated
+
     -   id: RHEL-09-652015
         levels:
             - medium
@@ -2867,6 +3230,7 @@ controls:
         rules:
             - package_rsyslog-gnutls_installed
         status: automated
+
     -   id: RHEL-09-652020
         levels:
             - medium
@@ -2874,6 +3238,7 @@ controls:
         rules:
             - service_rsyslog_enabled
         status: automated
+
     -   id: RHEL-09-652025
         levels:
             - medium
@@ -2883,6 +3248,7 @@ controls:
         rules:
             - rsyslog_nolisten
         status: automated
+
     -   id: RHEL-09-652030
         levels:
             - medium
@@ -2890,6 +3256,7 @@ controls:
         rules:
             - rsyslog_remote_access_monitoring
         status: automated
+
     -   id: RHEL-09-652035
         levels:
             - medium
@@ -2899,6 +3266,7 @@ controls:
         rules:
             - auditd_audispd_syslog_plugin_activated
         status: automated
+
     -   id: RHEL-09-652040
         levels:
             - medium
@@ -2908,6 +3276,7 @@ controls:
         rules:
             - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
         status: automated
+
     -   id: RHEL-09-652045
         levels:
             - medium
@@ -2917,6 +3286,7 @@ controls:
         rules:
             - rsyslog_encrypt_offload_actionsendstreamdrivermode
         status: automated
+
     -   id: RHEL-09-652050
         levels:
             - medium
@@ -2926,6 +3296,7 @@ controls:
         rules:
             - rsyslog_encrypt_offload_defaultnetstreamdriver
         status: automated
+
     -   id: RHEL-09-652055
         levels:
             - medium
@@ -2935,6 +3306,7 @@ controls:
         rules:
             - rsyslog_remote_loghost
         status: automated
+
     -   id: RHEL-09-652060
         levels:
             - medium
@@ -2942,6 +3314,7 @@ controls:
         rules:
             - rsyslog_cron_logging
         status: automated
+
     -   id: RHEL-09-653010
         levels:
             - medium
@@ -2949,6 +3322,7 @@ controls:
         rules:
             - package_audit_installed
         status: automated
+
     -   id: RHEL-09-653015
         levels:
             - medium
@@ -2956,6 +3330,7 @@ controls:
         rules:
             - service_auditd_enabled
         status: automated
+
     -   id: RHEL-09-653020
         levels:
             - medium
@@ -2964,7 +3339,9 @@ controls:
             the audit storage volume occurs.
         rules:
             - auditd_data_disk_error_action_stig
+            - var_auditd_disk_error_action=halt
         status: automated
+
     -   id: RHEL-09-653025
         levels:
             - medium
@@ -2973,7 +3350,9 @@ controls:
             is full.
         rules:
             - auditd_data_disk_full_action_stig
+            - var_auditd_disk_full_action=halt
         status: automated
+
     -   id: RHEL-09-653030
         levels:
             - medium
@@ -2983,6 +3362,7 @@ controls:
         rules:
             - auditd_audispd_configure_sufficiently_large_partition
         status: automated
+
     -   id: RHEL-09-653035
         levels:
             - medium
@@ -2991,7 +3371,9 @@ controls:
             75 percent of the repository maximum audit record storage capacity.
         rules:
             - auditd_data_retention_space_left_percentage
+            - var_auditd_space_left_percentage=25pc
         status: automated
+
     -   id: RHEL-09-653040
         levels:
             - medium
@@ -3001,7 +3383,9 @@ controls:
             utilization.
         rules:
             - auditd_data_retention_space_left_action
+            - var_auditd_space_left_action=email
         status: automated
+
     -   id: RHEL-09-653045
         levels:
             - medium
@@ -3010,7 +3394,9 @@ controls:
             95 percent of the audit record storage capacity.
         rules:
             - auditd_data_retention_admin_space_left_percentage
+            - var_auditd_admin_space_left_percentage=5pc
         status: automated
+
     -   id: RHEL-09-653050
         levels:
             - medium
@@ -3019,7 +3405,9 @@ controls:
             95 percent of the repository maximum audit record storage capacity.
         rules:
             - auditd_data_retention_admin_space_left_action
+            - var_auditd_admin_space_left_action=halt
         status: automated
+
     -   id: RHEL-09-653055
         levels:
             - medium
@@ -3028,7 +3416,9 @@ controls:
             reached maximum size.
         rules:
             - auditd_data_retention_max_log_file_action_stig
+            - var_auditd_max_log_file_action=
         status: automated
+
     -   id: RHEL-09-653060
         levels:
             - medium
@@ -3037,7 +3427,9 @@ controls:
             log server.
         rules:
             - auditd_name_format
+            - var_auditd_name_format=stig
         status: automated
+
     -   id: RHEL-09-653065
         levels:
             - medium
@@ -3045,6 +3437,7 @@ controls:
         rules:
             - auditd_overflow_action
         status: automated
+
     -   id: RHEL-09-653070
         levels:
             - medium
@@ -3053,7 +3446,9 @@ controls:
             (ISSO) (at a minimum) must be alerted of an audit processing failure event.
         rules:
             - auditd_data_retention_action_mail_acct
+            - var_auditd_action_mail_acct=root
         status: automated
+
     -   id: RHEL-09-653075
         levels:
             - medium
@@ -3061,6 +3456,7 @@ controls:
         rules:
             - auditd_local_events
         status: automated
+
     -   id: RHEL-09-653080
         levels:
             - medium
@@ -3070,6 +3466,7 @@ controls:
         rules:
             - directory_group_ownership_var_log_audit
         status: automated
+
     -   id: RHEL-09-653085
         levels:
             - medium
@@ -3079,6 +3476,7 @@ controls:
         rules:
             - directory_ownership_var_log_audit
         status: automated
+
     -   id: RHEL-09-653090
         levels:
             - medium
@@ -3088,6 +3486,7 @@ controls:
         rules:
             - file_permissions_var_log_audit
         status: automated
+
     -   id: RHEL-09-653095
         levels:
             - medium
@@ -3096,7 +3495,9 @@ controls:
             of audit records.
         rules:
             - auditd_freq
+            - var_auditd_freq=100
         status: automated
+
     -   id: RHEL-09-653100
         levels:
             - medium
@@ -3106,6 +3507,7 @@ controls:
         rules:
             - auditd_log_format
         status: automated
+
     -   id: RHEL-09-653105
         levels:
             - medium
@@ -3113,6 +3515,7 @@ controls:
         rules:
             - auditd_write_logs
         status: automated
+
     -   id: RHEL-09-653110
         levels:
             - medium
@@ -3123,6 +3526,7 @@ controls:
         rules:
             - file_permissions_etc_audit_rulesd
         status: automated
+
     -   id: RHEL-09-653115
         levels:
             - medium
@@ -3132,6 +3536,7 @@ controls:
         rules:
             - file_permissions_etc_audit_auditd
         status: automated
+
     -   id: RHEL-09-653120
         levels:
             - low
@@ -3141,6 +3546,7 @@ controls:
         rules:
             - grub2_audit_backlog_limit_argument
         status: automated
+
     -   id: RHEL-09-653125
         levels:
             - medium
@@ -3151,6 +3557,7 @@ controls:
         rules:
             - postfix_client_configure_mail_alias
         status: automated
+
     -   id: RHEL-09-653130
         levels:
             - medium
@@ -3158,6 +3565,7 @@ controls:
         rules:
             - package_audispd-plugins_installed
         status: automated
+
     -   id: RHEL-09-654010
         levels:
             - medium
@@ -3165,6 +3573,7 @@ controls:
         rules:
             - audit_rules_suid_privilege_function
         status: automated
+
     -   id: RHEL-09-654015
         levels:
             - medium
@@ -3172,6 +3581,7 @@ controls:
         rules:
             - audit_rules_dac_modification_chmod
         status: automated
+
     -   id: RHEL-09-654020
         levels:
             - medium
@@ -3181,6 +3591,7 @@ controls:
         rules:
             - audit_rules_dac_modification_chown
         status: automated
+
     -   id: RHEL-09-654025
         levels:
             - medium
@@ -3190,6 +3601,7 @@ controls:
         rules:
             - audit_rules_dac_modification_fremovexattr
         status: automated
+
     -   id: RHEL-09-654030
         levels:
             - medium
@@ -3197,6 +3609,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_umount
         status: automated
+
     -   id: RHEL-09-654035
         levels:
             - medium
@@ -3204,6 +3617,7 @@ controls:
         rules:
             - audit_rules_execution_chacl
         status: automated
+
     -   id: RHEL-09-654040
         levels:
             - medium
@@ -3211,6 +3625,7 @@ controls:
         rules:
             - audit_rules_execution_setfacl
         status: automated
+
     -   id: RHEL-09-654045
         levels:
             - medium
@@ -3218,6 +3633,7 @@ controls:
         rules:
             - audit_rules_execution_chcon
         status: automated
+
     -   id: RHEL-09-654050
         levels:
             - medium
@@ -3225,6 +3641,7 @@ controls:
         rules:
             - audit_rules_execution_semanage
         status: automated
+
     -   id: RHEL-09-654055
         levels:
             - medium
@@ -3232,6 +3649,7 @@ controls:
         rules:
             - audit_rules_execution_setfiles
         status: automated
+
     -   id: RHEL-09-654060
         levels:
             - medium
@@ -3239,6 +3657,7 @@ controls:
         rules:
             - audit_rules_execution_setsebool
         status: automated
+
     -   id: RHEL-09-654065
         levels:
             - medium
@@ -3248,6 +3667,7 @@ controls:
         rules:
             - audit_rules_file_deletion_events_rename
         status: automated
+
     -   id: RHEL-09-654070
         levels:
             - medium
@@ -3257,6 +3677,7 @@ controls:
         rules:
             - audit_rules_unsuccessful_file_modification_creat
         status: automated
+
     -   id: RHEL-09-654075
         levels:
             - medium
@@ -3264,6 +3685,7 @@ controls:
         rules:
             - audit_rules_kernel_module_loading_delete
         status: automated
+
     -   id: RHEL-09-654080
         levels:
             - medium
@@ -3271,6 +3693,7 @@ controls:
         rules:
             - audit_rules_kernel_module_loading_finit
         status: automated
+
     -   id: RHEL-09-654085
         levels:
             - medium
@@ -3278,6 +3701,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_chage
         status: automated
+
     -   id: RHEL-09-654090
         levels:
             - medium
@@ -3285,6 +3709,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_chsh
         status: automated
+
     -   id: RHEL-09-654095
         levels:
             - medium
@@ -3292,6 +3717,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_crontab
         status: automated
+
     -   id: RHEL-09-654100
         levels:
             - medium
@@ -3299,6 +3725,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_gpasswd
         status: automated
+
     -   id: RHEL-09-654105
         levels:
             - medium
@@ -3306,6 +3733,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_kmod
         status: automated
+
     -   id: RHEL-09-654110
         levels:
             - medium
@@ -3313,6 +3741,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_newgrp
         status: automated
+
     -   id: RHEL-09-654115
         levels:
             - medium
@@ -3320,6 +3749,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_pam_timestamp_check
         status: automated
+
     -   id: RHEL-09-654120
         levels:
             - medium
@@ -3327,6 +3757,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_passwd
         status: automated
+
     -   id: RHEL-09-654125
         levels:
             - medium
@@ -3334,6 +3765,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_postdrop
         status: automated
+
     -   id: RHEL-09-654130
         levels:
             - medium
@@ -3341,6 +3773,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_postqueue
         status: automated
+
     -   id: RHEL-09-654135
         levels:
             - medium
@@ -3348,6 +3781,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_ssh_agent
         status: automated
+
     -   id: RHEL-09-654140
         levels:
             - medium
@@ -3355,6 +3789,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_ssh_keysign
         status: automated
+
     -   id: RHEL-09-654145
         levels:
             - medium
@@ -3362,6 +3797,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_su
         status: automated
+
     -   id: RHEL-09-654150
         levels:
             - medium
@@ -3369,6 +3805,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_sudo
         status: automated
+
     -   id: RHEL-09-654155
         levels:
             - medium
@@ -3376,6 +3813,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_sudoedit
         status: automated
+
     -   id: RHEL-09-654160
         levels:
             - medium
@@ -3383,6 +3821,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_unix_chkpwd
         status: automated
+
     -   id: RHEL-09-654165
         levels:
             - medium
@@ -3390,6 +3829,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_unix_update
         status: automated
+
     -   id: RHEL-09-654170
         levels:
             - medium
@@ -3397,6 +3837,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_userhelper
         status: automated
+
     -   id: RHEL-09-654175
         levels:
             - medium
@@ -3404,6 +3845,7 @@ controls:
         rules:
             - audit_rules_privileged_commands_usermod
         status: automated
+
     -   id: RHEL-09-654180
         levels:
             - medium
@@ -3411,6 +3853,7 @@ controls:
         rules:
             - audit_rules_media_export
         status: automated
+
     -   id: RHEL-09-654185
         levels:
             - medium
@@ -3420,6 +3863,7 @@ controls:
         rules:
             - audit_privileged_commands_init
         status: automated
+
     -   id: RHEL-09-654190
         levels:
             - medium
@@ -3429,6 +3873,7 @@ controls:
         rules:
             - audit_privileged_commands_poweroff
         status: automated
+
     -   id: RHEL-09-654195
         levels:
             - medium
@@ -3438,6 +3883,7 @@ controls:
         rules:
             - audit_privileged_commands_reboot
         status: automated
+
     -   id: RHEL-09-654200
         levels:
             - medium
@@ -3447,6 +3893,7 @@ controls:
         rules:
             - audit_privileged_commands_shutdown
         status: automated
+
     -   id: RHEL-09-654205
         levels:
             - medium
@@ -3456,6 +3903,7 @@ controls:
         rules:
             - audit_rules_dac_modification_umount
         status: automated
+
     -   id: RHEL-09-654210
         levels:
             - medium
@@ -3465,6 +3913,7 @@ controls:
         rules:
             - audit_rules_dac_modification_umount2
         status: automated
+
     -   id: RHEL-09-654215
         levels:
             - medium
@@ -3474,6 +3923,7 @@ controls:
         rules:
             - audit_rules_sudoers
         status: automated
+
     -   id: RHEL-09-654220
         levels:
             - medium
@@ -3483,6 +3933,7 @@ controls:
         rules:
             - audit_rules_sudoers_d
         status: automated
+
     -   id: RHEL-09-654225
         levels:
             - medium
@@ -3492,6 +3943,7 @@ controls:
         rules:
             - audit_rules_usergroup_modification_group
         status: automated
+
     -   id: RHEL-09-654230
         levels:
             - medium
@@ -3501,6 +3953,7 @@ controls:
         rules:
             - audit_rules_usergroup_modification_gshadow
         status: automated
+
     -   id: RHEL-09-654235
         levels:
             - medium
@@ -3510,6 +3963,7 @@ controls:
         rules:
             - audit_rules_usergroup_modification_opasswd
         status: automated
+
     -   id: RHEL-09-654240
         levels:
             - medium
@@ -3519,6 +3973,7 @@ controls:
         rules:
             - audit_rules_usergroup_modification_passwd
         status: automated
+
     -   id: RHEL-09-654245
         levels:
             - medium
@@ -3528,6 +3983,7 @@ controls:
         rules:
             - audit_rules_usergroup_modification_shadow
         status: automated
+
     -   id: RHEL-09-654250
         levels:
             - medium
@@ -3537,6 +3993,7 @@ controls:
         rules:
             - audit_rules_login_events_faillock
         status: automated
+
     -   id: RHEL-09-654255
         levels:
             - medium
@@ -3546,6 +4003,7 @@ controls:
         rules:
             - audit_rules_login_events_lastlog
         status: automated
+
     -   id: RHEL-09-654260
         levels:
             - medium
@@ -3555,6 +4013,7 @@ controls:
         rules:
             - audit_rules_login_events_tallylog
         status: automated
+
     -   id: RHEL-09-654265
         levels:
             - medium
@@ -3564,6 +4023,7 @@ controls:
         rules:
             - audit_rules_system_shutdown
         status: automated
+
     -   id: RHEL-09-654270
         levels:
             - medium
@@ -3571,6 +4031,7 @@ controls:
         rules:
             - audit_immutable_login_uids
         status: automated
+
     -   id: RHEL-09-654275
         levels:
             - medium
@@ -3578,13 +4039,16 @@ controls:
         rules:
             - audit_rules_immutable
         status: automated
+
     -   id: RHEL-09-671010
         levels:
             - high
         title: RHEL 9 must enable FIPS mode.
         rules:
+            - configure_crypto_policy
             - sysctl_crypto_fips_enabled
         status: automated
+
     -   id: RHEL-09-671015
         levels:
             - medium
@@ -3594,6 +4058,7 @@ controls:
         rules:
             - accounts_password_all_shadowed_sha512
         status: automated
+
     -   id: RHEL-09-671020
         levels:
             - medium
@@ -3601,6 +4066,7 @@ controls:
         rules:
             - configure_libreswan_crypto_policy
         status: automated
+
     -   id: RHEL-09-671025
         levels:
             - medium
@@ -3610,6 +4076,7 @@ controls:
         rules:
             - set_password_hashing_algorithm_passwordauth
         status: automated
+
     -   id: RHEL-09-672010
         levels:
             - medium
@@ -3617,6 +4084,7 @@ controls:
         rules:
             - package_crypto-policies_installed
         status: automated
+
     -   id: RHEL-09-672015
         levels:
             - high
@@ -3637,6 +4105,7 @@ controls:
         rules:
             - configure_kerberos_crypto_policy
         status: automated
+
     -   id: RHEL-09-672030
         levels:
             - high
@@ -3644,6 +4113,7 @@ controls:
         rules:
             - configure_gnutls_tls_crypto_policy
         status: automated
+
     -   id: RHEL-09-672035
         levels:
             - medium
@@ -3651,6 +4121,7 @@ controls:
         rules:
             - configure_openssl_crypto_policy
         status: automated
+
     -   id: RHEL-09-672040
         levels:
             - medium
@@ -3658,13 +4129,16 @@ controls:
         rules:
             - configure_openssl_tls_crypto_policy
         status: automated
+
     -   id: RHEL-09-672045
         levels:
             - medium
         title: RHEL 9 must implement a system-wide encryption policy.
         rules:
             - configure_crypto_policy
+            - var_system_crypto_policy=fips
         status: automated
+
     -   id: RHEL-09-672050
         levels:
             - medium
