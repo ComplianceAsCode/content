@@ -558,7 +558,8 @@ class RuleChecker(oscap.Checker):
                       .format(scenario.script, scenario.context))
 
         profiles = get_viable_profiles(
-            scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
+            scenario.script_params['profiles'],
+            self.datastream, self.benchmark_id, scenario.script)
         logging.debug("viable profiles are {0}".format(profiles))
         if not self._verify_rule_presence(rule_id, scenario.script, profiles):
             return

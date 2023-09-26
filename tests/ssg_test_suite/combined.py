@@ -54,10 +54,9 @@ class CombinedChecker(rule.RuleChecker):
         if self.profile in sc_profiles or "(all)" in sc_profiles:
             super(CombinedChecker, self)._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
         else:
-            logging.warning("The script {0} is not applicable for the {1} profile.".format(scenario.script, self.profile))
+            logging.warning("The script {0} is not applicable for the {1} profile.".format(
+                scenario.script, self.profile))
             return
-
-
 
     def _generate_target_rules(self, profile):
         # check if target is a complete profile ID, if not prepend profile prefix
