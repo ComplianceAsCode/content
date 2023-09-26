@@ -152,7 +152,6 @@ selections:
 
     ## 1.28-ensure-lockout-for-failed-password-attempts-is-configured
     ### Level 1
-    - locking_out_password_attempts
 
     ## 1.29-ensure-password-reuse-is-limited
     ### Level 1

@@ -11,6 +11,7 @@ import ssg.controls
 import ssg.products
 import ssg.environment
 from ssg.build_cpe import ProductCPEs
+from ssg.constants import BENCHMARKS
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -30,9 +31,9 @@ def create_parser():
         "--resolved-base", required=True,
         help="To which directory to put processed rule/group/value YAMLs.")
     parser.add_argument(
-        "--controls-dir",
-        help="Directory that contains control files with policy controls. "
-        "e.g.: ~/scap-security-guide/controls",
+        "--project-root",
+        help="Path to the repository ie. project root "
+        "e.g.: ~/scap-security-guide/",
     )
     parser.add_argument(
         "--sce-metadata",
@@ -110,6 +111,17 @@ def save_everything(base_dir, loader, controls_manager, profiles):
         dump_compiled_profile(base_dir, p)
 
 
+def find_existing_rules(project_root):
+    rules = set()
+    for benchmark in BENCHMARKS:
+        benchmark = os.path.join(project_root, benchmark)
+        for dirpath, _, filenames in os.walk(benchmark):
+            if "rule.yml" in filenames:
+                rule_id = os.path.basename(dirpath)
+                rules.add(rule_id)
+    return rules
+
+
 def main():
     parser = create_parser()
     args = parser.parse_args()
@@ -124,12 +136,18 @@ def main():
         None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
-    controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)
+    project_root_abspath = os.path.abspath(args.project_root)
+    controls_dir = os.path.join(project_root_abspath, "controls")
+
+    existing_rules = find_existing_rules(project_root_abspath)
+
+    controls_manager = ssg.controls.ControlsManager(
+        controls_dir, env_yaml, existing_rules)
     controls_manager.load()
     controls_manager.remove_selections_not_known(loader.all_rules)
 
     profiles_by_id = get_all_resolved_profiles_by_id(
-        env_yaml, product_yaml, loader, product_cpes, controls_manager, args.controls_dir)
+        env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir)
 
     save_everything(
         args.resolved_base, loader, controls_manager, profiles_by_id.values())

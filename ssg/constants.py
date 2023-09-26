@@ -52,6 +52,7 @@ product_directories = [
     'rhcos4',
     'ol7', 'ol8', 'ol9',
     'opensuse',
+    'openembedded',
     'rhel7', 'rhel8', 'rhel9',
     'rhv4',
     'sle12', 'sle15',
@@ -504,4 +505,12 @@ DERIVATIVES_PRODUCT_MAPPING = {
     "centos8": "rhel8",
     "cs9": "rhel9",
     "sl7": "rhel7"
+}
+
+BENCHMARKS = {
+    "apple_os",
+    "applications",
+    "linux_os/guide",
+    "products/chromium/guide",
+    "products/firefox/guide",
 }
