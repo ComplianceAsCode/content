@@ -225,6 +225,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "cis" "cis")
     ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
     ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
+    ssg_refcheck_test("rhel9" "stig" "stigid")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
@@ -261,6 +262,7 @@ if(SSG_PRODUCT_RHEL8)
 endif()
 if(SSG_PRODUCT_RHEL9)
     ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
+    ssg_controlrefcheck_test("rhel9" "stig_rhel9" "stigid")
 endif()
 
 
