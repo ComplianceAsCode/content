@@ -178,7 +178,7 @@ def create_tailoring(args):
 
     tailoring_root = ET.Element('xccdf-1.2:Tailoring')
     version = ET.SubElement(tailoring_root, 'xccdf-1.2:version',
-                            attrib={'time': datetime.datetime.utcnow().isoformat()})
+                            attrib={'time': datetime.datetime.now(datetime.UTC).isoformat()})
     version.text = '1'
     tailoring_root.set('id', args.tailoring_id)
     tailoring_root.append(tailoring_profile)
