@@ -38,6 +38,7 @@ def get_profile(product, profile_name):
     for profile in profiles:
         if profile.attrib['id'] == profile_name_fqdn:
             return profile
+    raise ValueError("Profile %s was not found." % profile_name_fqdn)
 
 
 get_profile.__annotations__ = {'product': str, 'profile_name': str, 'return': ET.Element}
