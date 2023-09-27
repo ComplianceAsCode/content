@@ -416,6 +416,10 @@ selections:
     - set_nftables_table
 
     #### 3.5.2.5 Ensure base chains exist (Automated)
+    - var_nftables_base_chain_names=chain_names
+    - var_nftables_base_chain_types=chain_types
+    - var_nftables_base_chain_hooks=chain_hooks
+    - var_nftables_base_chain_priorities=chain_priorities
     - set_nftables_base_chain
 
     #### 3.5.2.6 Ensure loopback traffic is configured (Automated)
