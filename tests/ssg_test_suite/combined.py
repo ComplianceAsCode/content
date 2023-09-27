@@ -42,25 +42,21 @@ class CombinedChecker(rule.RuleChecker):
     def _rule_matches_rule_spec(self, rule_short_id):
         return (rule_short_id in self.rule_spec)
 
-    def _modify_parameters(self, script, params):
-        # If there is no profiles metadata in a script we will use
-        # the ALL profile - this will prevent failures which might
-        # be caused by the tested profile selecting different values
-        # in tested variables compared to defaults. The ALL profile
-        # is always selecting default values.
-        # If there is profiles metadata we check the metadata and set
-        # it to self.profile (the tested profile) only if the metadata
-        # contains self.profile - otherwise scenario is not supposed to
-        # be tested using the self.profile and we return empty profiles
-        # metadata.
-        if not params["profiles"]:
-            params["profiles"].append(rule.OSCAP_PROFILE_ALL_ID)
-            logging.debug(
-                "Added the {0} profile to the list of available profiles for {1}"
-                .format(rule.OSCAP_PROFILE_ALL_ID, script))
+    def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
+        """
+        This function overrides the rule.RuleChecker function because combined
+        mode ensures some extra applicability checking. We are interested only
+        in test scenarios which are either applicable to the selected profile or
+        their applicability is not limited at all.
+        """
+        sc_profiles = scenario.script_params["profiles"]
+        logging.debug("the scenario defines {0} profile".format(sc_profiles))
+        if self.profile in sc_profiles or "(all)" in sc_profiles:
+            super(CombinedChecker, self)._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
         else:
-            params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
-        return params
+            logging.warning("The script {0} is not applicable for the {1} profile.".format(
+                scenario.script, self.profile))
+            return
 
     def _generate_target_rules(self, profile):
         # check if target is a complete profile ID, if not prepend profile prefix
