@@ -157,6 +157,13 @@ def setup_tailoring_profile(profile_id, profile_root):
 setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET.Element}
 
 
+def _get_datetime():
+    try:
+        return datetime.datetime.now(datetime.UTC).isoformat()
+    except AttributeError:
+        return datetime.datetime.utcnow().isoformat()
+
+
 def create_tailoring(args):
     benchmark_root = ET.parse(args.manual).getroot()
     known_rules = get_implemented_stigs(args.product, args.root, args.build_config_yaml,
@@ -179,7 +186,7 @@ def create_tailoring(args):
 
     tailoring_root = ET.Element('xccdf-1.2:Tailoring')
     version = ET.SubElement(tailoring_root, 'xccdf-1.2:version',
-                            attrib={'time': datetime.datetime.now(datetime.UTC).isoformat()})
+                            attrib={'time': _get_datetime()})
     version.text = '1'
     tailoring_root.set('id', args.tailoring_id)
     tailoring_root.append(tailoring_profile)
