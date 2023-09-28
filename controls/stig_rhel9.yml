@@ -3102,6 +3102,7 @@ controls:
         title: RHEL 9 must implement certificate status checking for multifactor authentication.
         rules:
             - sssd_certificate_verification
+            - var_sssd_certificate_verification_digest_function=sha512
         status: automated
 
     -   id: RHEL-09-611175
