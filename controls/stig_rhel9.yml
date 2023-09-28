@@ -1296,7 +1296,15 @@ controls:
         levels:
             - medium
         title: RHEL 9 cron configuration files directory must be owned by root.
-        status: pending
+        status: automated
+        rules:
+            - file_owner_cron_d
+            - file_owner_cron_daily
+            - file_owner_cron_hourly
+            - file_owner_cron_monthly
+            - file_owner_cron_weekly
+            - file_owner_crontab
+
     -   id: RHEL-09-232235
         levels:
             - medium
