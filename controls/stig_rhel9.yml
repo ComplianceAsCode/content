@@ -1904,6 +1904,7 @@ controls:
             SSH traffic are terminated after 10 minutes of becoming unresponsive.
         rules:
             - sshd_set_idle_timeout
+            - sshd_idle_timeout_value=10_minutes
         status: automated
 
     -   id: RHEL-09-255105
