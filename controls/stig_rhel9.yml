@@ -2657,6 +2657,7 @@ controls:
             services.
         rules:
             - selinux_state
+            - var_selinux_state=enforcing
         status: automated
 
     -   id: RHEL-09-431015
@@ -2665,6 +2666,7 @@ controls:
         title: RHEL 9 must enable the SELinux targeted policy.
         rules:
             - selinux_policytype
+            - var_selinux_policy_name=targeted
         status: automated
 
     -   id: RHEL-09-431020
