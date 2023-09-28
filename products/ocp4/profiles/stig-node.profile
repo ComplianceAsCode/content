@@ -3,6 +3,7 @@ documentation_complete: true
 platform: ocp4-node
 
 metadata:
+    version: V1R1
     SMEs:
         - jhrozek
         - Vincent056
