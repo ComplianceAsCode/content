@@ -11,6 +11,7 @@ metadata:
         - jhrozek
         - rhmdnd
         - Vincent056
+    version: 1.4.0
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
