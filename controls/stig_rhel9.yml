@@ -1882,6 +1882,8 @@ controls:
             to the server.
         rules:
             - sshd_rekey_limit
+            - var_rekey_limit_size=1G
+            - var_rekey_limit_time=1hour
         status: automated
 
     -   id: RHEL-09-255095
@@ -2915,6 +2917,7 @@ controls:
         title: RHEL 9 passwords must be created with a minimum of 15 characters.
         rules:
             - accounts_password_pam_minlen
+            - var_password_pam_minlen=15
         status: automated
 
     -   id: RHEL-09-611095
