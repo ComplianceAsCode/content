@@ -1,7 +1,5 @@
 {{%- if product in ["ol7", "rhel7", "rhel8", "rhel9"] %}}
     {{%- set kmod_audit="-a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=" ~ uid_min ~ " -F auid!=unset -F key=privileged" %}}
-{{%- elif product in ["ubuntu2004", "ubuntu2204"] %}}
-    {{%- set kmod_audit="-w /bin/kmod -p x -k modules" %}}
 {{%- else %}}
     {{%- set kmod_audit="-w /usr/bin/kmod -p x -k modules" %}}
 {{%- endif %}}
@@ -66,4 +64,3 @@ template:
     name: audit_rules_privileged_commands
     vars:
         path: /usr/bin/kmod
-        path@ubuntu2004: /bin/kmod
