@@ -2388,6 +2388,7 @@ controls:
             devices) after 35 days of inactivity.
         rules:
             - account_disable_post_pw_expiration
+            - var_account_disable_post_pw_expiration=35
         status: automated
 
     -   id: RHEL-09-411055
@@ -2600,6 +2601,7 @@ controls:
             following a failed logon attempt.
         rules:
             - accounts_logon_fail_delay
+            - var_accounts_fail_delay=4
         status: automated
 
     -   id: RHEL-09-412055
