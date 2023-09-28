@@ -1288,7 +1288,10 @@ controls:
         levels:
             - medium
         title: RHEL 9 audit tools must be group-owned by root.
-        status: pending
+        status: automated
+        rules:
+            - file_audit_tools_group_ownership
+
     -   id: RHEL-09-232230
         levels:
             - medium
