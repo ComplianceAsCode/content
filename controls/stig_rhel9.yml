@@ -575,7 +575,10 @@ controls:
         levels:
             - medium
         title: RHEL 9 must have the s-nail package installed.
-        status: pending
+        rules:
+            - package_s-nail_installed
+        status: automated
+
     -   id: RHEL-09-231010
         levels:
             - medium
