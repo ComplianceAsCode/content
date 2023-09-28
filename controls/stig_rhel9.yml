@@ -2439,6 +2439,7 @@ controls:
             occur.
         rules:
             - accounts_passwords_pam_faillock_deny
+            - var_accounts_passwords_pam_faillock_deny=3
         status: automated
 
     -   id: RHEL-09-411080
@@ -2460,6 +2461,7 @@ controls:
             occur during a 15-minute time period.
         rules:
             - accounts_passwords_pam_faillock_interval
+            - var_accounts_passwords_pam_faillock_fail_interval=900
         status: automated
 
     -   id: RHEL-09-411090
@@ -2470,6 +2472,7 @@ controls:
             by an administrator.
         rules:
             - accounts_passwords_pam_faillock_unlock_time
+            - var_accounts_passwords_pam_faillock_unlock_time=never
         status: automated
 
     -   id: RHEL-09-411095
@@ -2478,6 +2481,7 @@ controls:
         title: RHEL 9 must not have unauthorized accounts.
         rules:
             - accounts_authorized_local_users
+            - var_accounts_authorized_local_users_regex=rhel9
         status: automated
 
     -   id: RHEL-09-411100
