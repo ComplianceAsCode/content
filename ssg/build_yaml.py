@@ -113,13 +113,13 @@ def add_reference_elements(element, references, ref_uri_dict):
                 else:
                     raise ValueError("SRG {0} doesn't have a URI defined.".format(ref_val))
             else:
-                try:
-                    ref_href = ref_uri_dict[ref_type]
-                except KeyError as exc:
+                if ref_type not in ref_uri_dict.keys():
                     msg = (
-                        "Error processing reference {0}: {1} in Rule {2}."
-                        .format(ref_type, ref_vals, self.id_))
+                        "Error processing reference {0}: {1}. A reference type "
+                        "has been added that the project doesn't know about."
+                        .format(ref_type, ref_vals))
                     raise ValueError(msg)
+                ref_href = ref_uri_dict[ref_type]
 
             ref = ET.SubElement(element, '{%s}reference' % XCCDF12_NS)
             ref.set("href", ref_href)
