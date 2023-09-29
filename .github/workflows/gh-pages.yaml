@@ -4,6 +4,8 @@ on:
     branches: [ 'master' ]
   pull_request:
     branches: [ 'master' ]
+  merge_group:
+    branches: [ 'master' ]
 jobs:
   publish:
     name: Publish stats, tables and guides
@@ -44,7 +46,7 @@ jobs:
         run:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
-        if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' }}
+        if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' && github.ref == 'refs/heads/master'  }}
         uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           branch: main # The branch the action should deploy to.
