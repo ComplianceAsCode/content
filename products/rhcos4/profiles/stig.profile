@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: TBD
+    version: V1R1
     SMEs:
         - jhrozek
         - Vincent056
