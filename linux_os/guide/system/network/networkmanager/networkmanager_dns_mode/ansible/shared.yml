@@ -7,3 +7,8 @@
 {{{ ansible_instantiate_variables("var_networkmanager_dns_mode") }}}
 
 {{{ ansible_ini_file_set("/etc/NetworkManager/NetworkManager.conf", "main", "dns", "{{ networkmanager_dns_mode }}") }}}
+
+- name: "{{{ rule_title }}} - Ensure Network Manager"
+  ansible.builtin.systemd:
+      name: NetworkManager
+      state: reloaded
