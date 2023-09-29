@@ -225,6 +225,10 @@ controls:
             - set_firewalld_default_zone
             - firewalld_sshd_port_enabled
 
+            # NetworkManger
+            - networkmanager_dns_mode
+            - var_networkmanager_dns_mode=none
+
             # misc
             - enable_authselect
             - no_host_based_files
