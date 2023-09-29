@@ -1,0 +1,9 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_networkmanager_dns_mode") }}}
+
+{{{ ansible_ini_file_set("/etc/NetworkManager/NetworkManager.conf", "main", "dns", "{{ networkmanager_dns_mode }}") }}}
