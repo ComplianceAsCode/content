@@ -5,19 +5,19 @@
 # disruption = low
 {{% if 'sle' in product %}}
 {{%- set aide_init_command = "/usr/bin/aide --init" -%}}
-{{%- set packager_refresh_cmd = "zypper -q --no-remote ref" -%}}
 {{%- set aide_stage_src = "/var/lib/aide/aide.db.new" -%}}
 {{%- set aide_stage_dest = "/var/lib/aide/aide.db" -%}}
 {{% else %}}
 {{%- set aide_init_command = "/usr/sbin/aide --init" -%}}
-{{%- set packager_refresh_cmd = "echo" -%}}
 {{%- set aide_stage_src = "/var/lib/aide/aide.db.new.gz" -%}}
 {{%- set aide_stage_dest = "/var/lib/aide/aide.db.gz" -%}}
 {{% endif %}}
 
+{{% if 'sle' in product %}}
 - name: "{{{ rule_title }}} - Ensure Repositories Are Updated"
-  ansible.builtin.command: {{{ packager_refresh_cmd }}}
+  ansible.builtin.command: zypper -q --no-remote ref
   ignore_errors: True
+{{% endif %}}
 
 - name: "{{{ rule_title }}} - Ensure AIDE Is Installed"
   ansible.builtin.package:
