@@ -24,6 +24,7 @@
     name: "logrotate.timer"
     enabled: "yes"
     state: "started"
+    masked: "no"
 {{% else %}}
 - name: Configure cron.daily if not already
   block:
