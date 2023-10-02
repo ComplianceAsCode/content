@@ -390,6 +390,17 @@ class Definition(OVALComponent):
         self.class_ = class_
         self.metadata = metadata
 
+    def check_affected(self):
+        if (
+            self.metadata.array_of_affected is None
+            or not self.metadata.array_of_affected
+        ):
+            raise ValueError(
+                "Definition '{}' doesn't contain OVAL 'affected' element".format(
+                    self.id_
+                )
+            )
+
     def is_applicable_for_product(self, product):
         return self.metadata.is_applicable_for_product(product)
 
