@@ -4,6 +4,8 @@ on:
     branches: [ 'master' ]
   pull_request:
     branches: [ 'master', 'stabilization*' ]
+  merge_group:
+    branches: [ 'master' ]
 jobs:
   generate-data:
     name: SRG Mapping Table
