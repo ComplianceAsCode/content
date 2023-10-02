@@ -15,6 +15,7 @@ sed -i '/^\s*\(weekly\|monthly\|yearly\).*$/d' $LOGROTATE_CONF_FILE
 
 {{% if 'sle' in product %}}
 # enable logrotate timer service
+"$SYSTEMCTL_EXEC" unmask 'logrotate.timer'
 "$SYSTEMCTL_EXEC" start 'logrotate.timer'
 "$SYSTEMCTL_EXEC" enable 'logrotate.timer'
 {{% else %}}
