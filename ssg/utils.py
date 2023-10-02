@@ -179,6 +179,14 @@ def parse_name(product):
     return prod_tuple(_product, _product_version)
 
 
+def get_fixed_product_version(product, product_version):
+    # Some product versions have a dot in between the numbers
+    # While the prodtype doesn't have the dot, the full product name does
+    if product == "ubuntu" or product == "macos":
+        product_version = product_version[:2] + "." + product_version[2:]
+    return product_version
+
+
 def is_applicable_for_product(platform, product):
     """Based on the platform dict specifier of the remediation script to
     determine if this remediation script is applicable for this product.
@@ -203,9 +211,9 @@ def is_applicable_for_product(platform, product):
     product_name = ""
     # Get official name for product
     if product_version is not None:
-        if product == "ubuntu" or product == "macos":
-            product_version = product_version[:2] + "." + product_version[2:]
-        product_name = map_name(product) + ' ' + product_version
+        product_name = map_name(product) + ' ' + get_fixed_product_version(
+            product, product_version
+        )
     else:
         product_name = map_name(product)
 

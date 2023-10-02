@@ -7,6 +7,7 @@ from .general import (
     OVALEntityProperty,
     load_oval_entity_property,
     load_notes,
+    get_product_name,
 )
 from .oval_document import (
     ExceptionDuplicateOVALEntity,

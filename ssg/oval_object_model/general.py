@@ -1,6 +1,7 @@
 import re
 from ..constants import BOOL_TO_STR, xsi_namespace
 from ..xml import ElementTree
+from .. import utils
 
 
 # ----- General functions
@@ -12,6 +13,28 @@ def required_attribute(_xml_el, _key):
     raise ValueError(
         "%s is required but was not found in:\n%s" % (_key, repr(_xml_el.attrib))
     )
+
+
+def get_product_name(product, product_version=None):
+    # Current SSG checks aren't unified which element of '<platform>'
+    # and '<product>' to use as OVAL AffectedType metadata element,
+    # e.g. Chromium content uses both of them across the various checks
+    # Thus for now check both of them when checking concrete platform / product
+
+    # Get official name for product (prefixed with content of afftype)
+    product_name = utils.map_name(product)
+
+    # Append the product version to the official name
+    if product_version is not None:
+        product_name += " " + utils.get_fixed_product_version(product, product_version)
+    return product_name
+
+
+def is_product_name_in(list_, product_name):
+    for item in list_ if list_ is not None else []:
+        if product_name in item:
+            return True
+    return False
 
 
 # ----- General Objects
