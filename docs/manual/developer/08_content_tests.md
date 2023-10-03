@@ -22,6 +22,15 @@ To run only unit tests without any special steps beforehand with different Pytho
 The `tox` creates a virtual environment that handles all dependencies defined in the test requirement file and performs unit tests with multiple versions of Python.
 This way, you can test your changes with different versions of Python on your machine and don't have to wait for the upstream CI to check them for you.
 
+#### Execute Unit Tests via `ctest`
+
+```bash
+cd build
+rm -rf *
+cmake ..
+ctest -R python-unit-ssg-module
+```
+
 #### Execute Unit Tests via `tox`
 
 Installation of `tox` and more advanced usage is described in [documentation](https://tox.wiki/en/4.11.3/).
