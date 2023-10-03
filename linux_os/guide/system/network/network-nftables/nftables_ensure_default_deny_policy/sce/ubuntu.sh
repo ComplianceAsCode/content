@@ -5,9 +5,9 @@
 # Check if default policy is drop
 output=$(nft list ruleset)
 
-if ! (grep 'hook input' "$output" |& grep -w 'policy drop' &>/dev/null &&\
-     grep 'hook forward' "$output" |&  grep -w 'policy drop' &>/dev/null &&\
-     grep 'hook output' "$output" |& grep -w 'policy drop' &>/dev/null); then
+if ! (echo "$output" | grep 'hook input' |& grep -wq 'policy drop' &&\
+     echo "$output" | grep 'hook forward' |&  grep -wq 'policy drop' &&\
+     echo "$output" | grep 'hook output' |& grep -wq 'policy drop'); then
     exit "${XCCDF_RESULT_FAIL}"
 fi
 
