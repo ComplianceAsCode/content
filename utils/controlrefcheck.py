@@ -7,7 +7,6 @@ import re
 import sys
 
 try:
-    from ssg.build_cpe import ProductCPEs
     import ssg.build_profile
     import ssg.controls
     import ssg.environment

@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
-import re
 
 from .build_remediations import parse_from_file_without_jinja
 from .rule_yaml import parse_prodtype

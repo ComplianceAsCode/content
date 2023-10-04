@@ -3,7 +3,6 @@
 import argparse
 import collections
 import os
-import xml.etree.ElementTree as ET
 
 import ssg.build_stig
 import ssg.build_yaml

@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
-from glob import glob
 
 
 def get_rule_dir_yaml(dir_path):

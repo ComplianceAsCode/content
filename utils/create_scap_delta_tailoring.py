@@ -12,7 +12,6 @@ import ssg.build_yaml
 import ssg.constants
 import ssg.rules
 import ssg.yaml
-import ssg.build_yaml
 import ssg.environment
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
