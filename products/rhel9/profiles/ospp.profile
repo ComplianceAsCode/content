@@ -134,12 +134,12 @@ selections:
 
 
     ### Enable / Configure FIPS
-    - enable_fips_mode
-    - var_system_crypto_policy=fips_ospp
+    #- enable_fips_mode
+    - var_system_crypto_policy=default_policy
     - configure_crypto_policy
     - configure_ssh_crypto_policy
     - configure_openssl_crypto_policy
-    - enable_dracut_fips_module
+    #- enable_dracut_fips_module
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE
