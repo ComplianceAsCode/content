@@ -14,7 +14,11 @@ rationale: |-
 
 severity: medium
 
+{{% if 'rhel' in product %}}
+platform: package[logrotate] and os_linux[rhel]>=9
+{{% else %}}
 platform: package[logrotate]
+{{% endif %}}
 
 identifiers:
     cce@rhel7: CCE-86156-7
