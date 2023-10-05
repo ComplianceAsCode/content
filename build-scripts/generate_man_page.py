@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 import argparse
-import sys
 import ssg.build_profile
 import ssg.constants
 # ssg.xml provides ElementTree which is a wrapper for standard ElementTree

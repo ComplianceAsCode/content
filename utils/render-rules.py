@@ -3,12 +3,7 @@
 from __future__ import print_function
 
 from glob import glob
-import collections
 import os
-import re
-import pathlib
-
-import argparse
 
 import ssg.build_yaml
 import ssg.controls

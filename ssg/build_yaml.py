@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from copy import deepcopy
-import collections
 import datetime
 import json
 import os

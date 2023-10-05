@@ -9,7 +9,6 @@ import re
 
 from .constants import ansible_version_requirement_pre_task_name
 from .constants import min_ansible_version
-from .constants import REF_PREFIX_MAP
 
 
 def add_minimum_version(ansible_src):

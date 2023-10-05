@@ -4,7 +4,6 @@ from __future__ import print_function
 import os
 import os.path
 import sys
-import re
 from copy import deepcopy
 import collections
 
@@ -16,7 +15,7 @@ from .constants import MULTI_PLATFORM_LIST
 from .id_translate import IDTranslator
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
-from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
+from .rules import get_rule_dir_ovals, find_rule_dirs_in_paths
 from . import utils, products
 from .utils import mkdir_p
 from .xml import ElementTree, oval_generated_header

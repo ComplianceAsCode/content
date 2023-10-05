@@ -11,7 +11,7 @@ import hashlib
 from .constants import (FULL_NAME_TO_PRODUCT_MAPPING,
                         MAKEFILE_ID_TO_PRODUCT_MAP,
                         MULTI_PLATFORM_LIST,
-                        MULTI_PLATFORM_MAPPING)
+                        )
 
 
 class SSGError(RuntimeError):

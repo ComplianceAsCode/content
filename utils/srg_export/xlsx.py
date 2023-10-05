@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
-import datetime
-import os
 import openpyxl
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.styles.colors import Color
-import create_srg_export
 
 import utils.srg_export.data
 

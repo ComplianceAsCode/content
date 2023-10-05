@@ -2,7 +2,6 @@ from __future__ import print_function
 
 import argparse
 import os.path
-from glob import glob
 
 import ssg.build_profile
 import ssg.build_yaml
