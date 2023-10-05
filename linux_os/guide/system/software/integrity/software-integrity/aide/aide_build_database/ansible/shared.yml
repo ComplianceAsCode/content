@@ -13,6 +13,12 @@
 {{%- set aide_stage_dest = "/var/lib/aide/aide.db.gz" -%}}
 {{% endif %}}
 
+{{% if 'sle' in product %}}
+- name: "{{{ rule_title }}} - Ensure Repositories Are Updated"
+  ansible.builtin.command: zypper -q --no-remote ref
+  ignore_errors: True
+{{% endif %}}
+
 - name: "{{{ rule_title }}} - Ensure AIDE Is Installed"
   ansible.builtin.package:
     name: "{{ item }}"
@@ -27,7 +33,7 @@
 # mainly to allow ansible's check mode to work
 - name: "{{{ rule_title }}} - Check Whether the Stock AIDE Database Exists"
   ansible.builtin.stat:
-    path: /var/lib/aide/aide.db.new.gz
+     path: {{{ aide_stage_src }}}
   register: aide_database_stat
 
 - name: "{{{ rule_title }}} - Stage AIDE Database"
