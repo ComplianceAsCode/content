@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'NetworkManager DNS Mode Must Be Must Configured'
+
+description:
+    The DNS processing mode in NetworkManager describes how DNS is processed on the system.
+    Depending the mode some changes the system's DNS may not be respected.
+
+rationale:
+    To ensure that DNS resolver settings are respected, a DNS mode in NetworkManager must be configured.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86805-9
+
+references:
+    disa: CCI-000366
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'the dns key under main does not exist or is not set to "none" or "default"'
+
+
+ocil: |-
+    Verify that {{{ full_name }}} has a DNS mode configured in Network Manager.
+
+    $ NetworkManager --print-config
+    [main]
+    dns={{{ xccdf_value("var_networkmanager_dns_mode") }}}
+
+platform: package[NetworkManager]

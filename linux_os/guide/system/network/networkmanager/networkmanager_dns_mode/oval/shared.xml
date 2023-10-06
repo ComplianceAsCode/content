@@ -1,0 +1,12 @@
+{{{
+oval_check_ini_file(
+    path="/etc/NetworkManager/NetworkManager.conf",
+    section="main",
+    parameter="dns",
+    value="default|none",
+    missing_parameter_pass=false,
+    application="NetworkManager",
+    multi_value=false,
+    missing_config_file_fail=true
+)
+}}}

@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'NetoworkManager DNS Mode'
+
+type: string
+
+description: |-
+    This sets how NetworkManager handles DNS.
+
+    none -  NetworkManager will not modify resolv.conf.
+    default - NetworkManager will update /etc/resolv.conf to reflect the nameservers provided by currently active connections.
+
+interactive: true
+
+operator: 'equals'
+
+options:
+    none: none
+    default: default
