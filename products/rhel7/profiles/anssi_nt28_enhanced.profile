@@ -14,3 +14,4 @@ description: |-
 selections:
     - anssi:all:enhanced
     - '!selinux_state'
+    - '!timer_logrotate_enabled'
