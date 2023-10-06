@@ -12,7 +12,7 @@ cat > /etc/systemd/system/aidecheck.service <<CHECKEOF
         Wants=aidecheck-notify.service
         [Service]
         Type=forking
-        ExecStart={{{ aide_bin_path }}} --check -r file:/tmp/aide-report.log
+        ExecStart=/usr/bin/aide --check -r file:/tmp/aide-report.log
         [Install]
         WantedBy=multi-user.target
 CHECKEOF
@@ -22,7 +22,7 @@ cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
         After=aidecheck.service
         [Service]
         Type=forking
-        ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  {{ var_aide_scan_notification_email }}'
+        ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  $var_aide_scan_notification_email'
 NOTIFYEOF
 {{% else %}}
 # NOTE: on some platforms, /etc/crontab may not exist
