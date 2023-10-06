@@ -15,9 +15,56 @@ To add a script to be checked with mypy use the `mypy_test` macro in `tests/CMak
 
 ### Unit Tests
 
-`ctest` is used to run the unit tests for the `ssg` python package that is in the repo.
+The `ctest` tool is used to run unit tests for the `ssg` Python package that is in the repository.
+The `ctest` tool is not able to run unit tests with different versions of Python.
+To run only unit tests without any special steps beforehand with different Python versions for the `ssg` Python package, it is recommended to use `tox`.
+
+The `tox` creates a virtual environment that handles all dependencies defined in the test requirement file and performs unit tests with multiple versions of Python.
+This way, you can test your changes with different versions of Python on your machine and don't have to wait for the upstream CI to check them for you.
+
+#### Execute Unit Tests via `ctest`
+
+```bash
+cd build
+rm -rf *
+cmake ..
+ctest -R python-unit-ssg-module
+```
+
+#### Execute Unit Tests via `tox`
+
+Installation of `tox` and more advanced usage is described in [documentation](https://tox.wiki/en/4.11.3/).
+
+*You must be in the root directory of the project before running the `tox` command.*
+
+Runs tests with Python2.7, Python3.8, Python3.9 and Python3-latest on machine:
+
+```bash
+tox
+```
+
+With a specific Python version (replace `XX` with Python version):
+
+```bash
+tox -e pyXX
+```
+
+##### Other useful usage of Tox
+
+Run Flake8:
+
+```bash
+tox -e flake8
+```
+
+Build Docs:
+
+```bash
+tox -e docs
+```
 
 ## SCAPVal
+
 We use [SCAPVal](https://csrc.nist.gov/Projects/scap-validation-program/Validation-Test-Content) to valid our content.
 Since a separate download is required this test is disabled by default.
 A working Java installation is also required for SCAPVal to work.
