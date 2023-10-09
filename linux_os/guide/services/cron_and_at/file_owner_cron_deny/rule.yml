@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Verify Owner on cron.deny'
+
+description: |-
+    {{{ describe_file_owner(file="/etc/cron.deny", owner="root") }}}
+
+rationale: |-
+    Service configuration files enable or disable features of their respective services that if configured incorrectly
+    can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the
+    correct user to prevent unauthorized changes.
+
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86887-7
+
+references:
+    disa: CCI-000366
+    nist: CM-6 b
+    srg: SRG-OS-000480-GPOS-00227
+
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/cron.deny", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/cron.deny", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/cron.deny/", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/cron.deny", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/cron.deny
+        fileuid: '0'
+
