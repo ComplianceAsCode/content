@@ -1,13 +1,31 @@
 from __future__ import print_function
 
 from collections import defaultdict
-from functools import cache
 import os
 
 import ssg.yaml
 
+try:
+    from functools import lru_cache
+except ImportError:  # Viva la python 2.7
+    from functools import wraps
 
-@cache # A speed up cache. We have been opening these same 150 files 300 times per a product build.
+    def lru_cache(maxsize):
+
+        def support_maxsize_on_suse15_wrapper(user_function):
+            cache = {}
+
+            @wraps(user_function)
+            def wrapper(*args):
+                key = tuple(args)
+                if key not in cache:
+                    cache[key] = user_function(*args)
+                return cache[key]
+            return wrapper
+        return support_maxsize_on_suse15_wrapper
+
+
+@lru_cache(maxsize=16)
 def load(components_dir):
     components = {}
     for component_filename in os.listdir(components_dir):
