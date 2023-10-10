@@ -1,11 +1,13 @@
 from __future__ import print_function
 
 from collections import defaultdict
+from functools import cache
 import os
 
 import ssg.yaml
 
 
+@cache # A speed up cache. We have been opening these same 150 files 300 times per a product build.
 def load(components_dir):
     components = {}
     for component_filename in os.listdir(components_dir):
