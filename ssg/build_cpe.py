@@ -411,12 +411,12 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     reflist = []
     elementlist = []
 
-    for element in tree_with_refs.iter():
+    for element in tree_with_refs:
         value = element.get(attrname)
         if value is not None:
             reflist.append(value)
 
-    for element in tree_with_ids.iter():
+    for element in tree_with_ids:
         if element.get("id") in reflist:
             elementlist.append(element)
 

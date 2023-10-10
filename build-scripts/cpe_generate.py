@@ -64,27 +64,20 @@ def main():
     # Keep the list of 'id' attributes from untranslated inventory def elements
     inventory_defs_id_attrs = []
 
-    defs.clear()
-    [defs.append(inventory_def) for inventory_def in inventory_defs]
+    defs = inventory_defs
     # Fill in that list
     inventory_defs_id_attrs = \
         [inventory_def.get("id") for inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
-    cpe_tests = ssg.build_cpe.extract_referred_nodes(defs, tests, "test_ref")
-    tests.clear()
-    [tests.append(cpe_test) for cpe_test in cpe_tests]
+    tests = ssg.build_cpe.extract_referred_nodes(defs, tests, "test_ref")
 
     states = ovaltree.find("./{%s}states" % oval_ns)
-    cpe_states = ssg.build_cpe.extract_referred_nodes(tests, states, "state_ref")
-    states.clear()
-    [states.append(cpe_state) for cpe_state in cpe_states]
+    states = ssg.build_cpe.extract_referred_nodes(tests, states, "state_ref")
 
     objects = ovaltree.find("./{%s}objects" % oval_ns)
-    cpe_objects = ssg.build_cpe.extract_referred_nodes(tests, objects, "object_ref")
     env_objects = ssg.build_cpe.extract_referred_nodes(objects, objects, "id")
-    objects.clear()
-    [objects.append(cpe_object) for cpe_object in cpe_objects]
+    objects = ssg.build_cpe.extract_referred_nodes(tests, objects, "object_ref")
 
     variables = ovaltree.find("./{%s}variables" % oval_ns)
     if variables is not None:
