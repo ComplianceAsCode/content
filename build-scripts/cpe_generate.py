@@ -62,12 +62,8 @@ def main():
         inventory_defs.append(el)
 
     # Keep the list of 'id' attributes from untranslated inventory def elements
-    inventory_defs_id_attrs = []
-
+    inventory_defs_id_attrs = set(inventory_def.get("id") for inventory_def in inventory_defs)
     defs = inventory_defs
-    # Fill in that list
-    inventory_defs_id_attrs = \
-        [inventory_def.get("id") for inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
     tests = ssg.build_cpe.extract_referred_nodes(defs, tests, "test_ref")
