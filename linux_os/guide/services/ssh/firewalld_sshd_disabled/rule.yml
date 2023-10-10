@@ -9,7 +9,7 @@ description: |-
     the SSH server is not being used, this exception should be removed from the
     firewall configuration.
     <br /><br />
-    {{{ describe_firewalld_prevent(proto="tcp", service="ssh") }}}
+    {{{ describe_firewalld_prevent_service(service="ssh") }}}
 
 rationale: |-
     If inbound SSH connections are not expected, disallowing access to the SSH port will

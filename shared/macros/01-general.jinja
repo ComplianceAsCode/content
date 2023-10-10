@@ -4,7 +4,7 @@
   Operator to automatically figure out what resources to fetch.
 
 :param endpoint: The Kubernetes object path(s) to fetch
-:type endpoint: str/list
+:type endpoint: str | list[str]
 :param suppress: Whether to suppress the warning
 :type suppress: bool
 
@@ -13,6 +13,7 @@
 This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file. {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file {{% if suppress %}} {{{suppressed_warning()}}} {{% endif %}}{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
+
 
 {{% macro openshift_cluster_setting_kubeletconfig() -%}}
 This rule's check operates on the cluster configuration dump. This will be a Platform rule, var_role_worker and var_role_master needed to be set if scan is not expected to run on master, and worker nodes.
@@ -28,9 +29,9 @@ Therefore, you need to use a tool that can query the OCP API, retrieve KubeletCo
   by the jq command ( https://stedolan.github.io/jq/manual/ ).
 
 :param path_filter_pairs: Kubernetes object path/filter directive pairs
-:type path_filter_pairs: dict
+:type path_filter_pairs: dict[str, str]
 :param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
-:type path_filter_pairs: list
+:type varargs: list[dict[str, str]]
 
 #}}
 {{% macro openshift_filtered_cluster_setting(path_filter_pairs) -%}}
@@ -171,7 +172,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 #}}
 {{% macro hide_rule() -%}}
-This rule will be a hidden rule 
+This rule will be a hidden rule
 <code class="ocp-hide-rule" id="ocp-hide-rule">true</code>
 {{%- endmacro %}}
 
@@ -295,49 +296,45 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
-    Describe preventing access a port or service in firewalld. If the :code:`service` parameter is defined
-    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+Describe preventing access to service in firewalld.
 
-:param port: The port to allow
-:type port: int
-:param proto: The protocol to allow
-:type proto: str
 :param service: The service to allow
 :type service: str
 
 #}}
-{{%- macro describe_firewalld_prevent(port, proto, service) %}}
+{{%- macro describe_firewalld_prevent_service(service) %}}
     To configure <code>firewalld</code> to prevent access, run the following command(s):
-    {{% if port %}}
-    <code>firewall-cmd --permanent --remove-port={{{ port }}}/{{{ proto }}}</code>
-    {{% endif %}}
-    {{% if service %}}
     <code>firewall-cmd --permanent --remove-service={{{ service }}}</code>
-    {{% endif %}}
 {{%- endmacro %}}
 
 
 {{#
-    Describe allowing access a port or service in firewalld. If the :code:`service` parameter is defined
-    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+Describe allowing access to a port in firewalld.
 
 :param port: The port to allow
 :type port: int
 :param proto: The protocol to allow
 :type proto: str
+
+#}}
+{{%- macro describe_firewalld_allow_port(port, proto) %}}
+    To configure <code>firewalld</code> to allow <code>{{{ port }}}/{{{ proto }}}</code> access, run the following command(s):
+    <pre>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</pre>
+    Then run the following command to load the newly created rule(s):
+    <pre>firewall-cmd --reload</pre>
+{{%- endmacro %}}
+
+
+{{#
+Describe allowing access to a service in firewalld.
+
 :param service: The service to allow
 :type service: str
 
 #}}
-{{%- macro describe_firewalld_allow(port, proto, service) %}}
-    {{% if port %}}
-    To configure <code>firewalld</code> to allow <code>{{{ port }}}/{{{ proto }}}</code> access, run the following command(s):
-    <pre>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</pre>
-    {{% endif %}}
-    {{% if service %}}
+{{%- macro describe_firewalld_allow_service(service) %}}
     To configure <code>firewalld</code> to allow <code>{{{ service }}}</code> access, run the following command(s):
     <pre>firewall-cmd --permanent --add-service={{{ service }}}</pre>
-    {{% endif %}}
     Then run the following command to load the newly created rule(s):
     <pre>firewall-cmd --reload</pre>
 {{%- endmacro %}}
@@ -980,25 +977,6 @@ substituting the correct package management software.
 
 
 {{#
-    A warning about rule depending on another.
-
-:param rule_id: Rule id of the rule that must be selected.
-:type rule_id: str
-:param why: The reasoning for the dependency. Should fit into this part of the sentence "make sure that rule with ID is selected as well:".
-:type why: str
-
-#}}
-{{% macro body_of_warning_about_dependent_rule(rule_id, why) -%}}
-        When selecting this rule in a profile,
-        {{%- if why %}}
-            make sure that rule with ID <code>{{{ rule_id }}}</code> is selected as well: {{{ why }}}
-        {{%- else %}}
-            rule <code>{{{ rule_id }}}</code> has to be selected as well.
-        {{%- endif %}}
-{{% endmacro %}}
-
-
-{{#
     An openssl config file with strong entropy.
 
 #}}
@@ -1103,41 +1081,6 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
     The configuration that was used to build kernel is available at <tt>/boot/config-*</tt>.
     To check the configuration value for <tt>{{{ config }}}</tt>, run the following command:
     <tt>grep {{{ config }}} /boot/config-*</tt>
-    {{% if value == "n" %}}
-    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
-    lines should be returned.
-    {{% else %}}
-    For each kernel installed, a line with value "{{{ value }}}" should be returned.
-    {{% endif %}}
-{{%- endmacro %}}
-
-
-{{#
-    Adds a default "no easy remediation" warning for kernel_build_config warning.
-
-#}}
-{{% macro kernel_build_config_warning() %}}
-- general: |-
-    There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
-{{% endmacro %}}
-
-
-{{#
-    OCIL for a kernel build config rule.
-
-    Example usage::
-
-        ocil_kernel_build_config(config="config_kernel_strict_rwx", value="y")
-
-:param config: The kernel config parameter
-:type config: str
-:param value: The value for the given config
-:type value: str
-
-#}}
-{{% macro kernel_build_config_ocil(config, value) -%}}
-    To determine the config value the kernel was built with, run the following command:
-    <pre>$ grep {{{ config }}} /boot/config.*</pre>
     {{% if value == "n" %}}
     Configs with value 'n' are not explicitly set in the file, so either commented lines or no
     lines should be returned.
@@ -1262,8 +1205,8 @@ Part of the grub2_bootloader_argument(_absent) templates.
 Join list of items to create a human readable list in which the last item is
 separated by an and and others are separated by a comma.
 
-:param items: list of strings
-:type items: list
+:param items: list of strings to join
+:type items: list[str]
 
 #}}
 {{%- macro join_list(items) -%}}

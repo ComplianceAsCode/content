@@ -159,8 +159,11 @@ and keep these guidelines in mind when writing new code.
 * Shall use 4-space indentation
 * Shall have a docstring comment describe what the macro does
 * Shall have a docstring comment describing all parameters and their types
-    * Types shall be Python class names. (E.g. `str`, `bool`, `dict`, etc)
+    * Types shall be Python built-in types with | operator. (E.g. `str`,
+      `bool`, `dict`, `None | int`, `list[str]`, etc), with exceptions:
+        * `char`: `str` with length exactly 1
     * Shall be the last section of the docstring
+    * Shall start at the beginning of the line
     * Shall have one blank after a list before the close of the docstring block
 * Shall have two blank lines between macros
 

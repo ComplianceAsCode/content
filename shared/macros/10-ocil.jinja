@@ -640,14 +640,25 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
 {{# Firewalld macros #}}
 
 {{%- macro _firewalld_check(access_action, port, proto, service) %}}
-    To determine if <code>firewalld</code> is configured to {{{ access_action }}} to <code>{{{ service }}}</code>
+    To determine if <code>firewalld</code> is configured to {{{ access_action }}}
+    {{% if port is not none %}}
     on port <code>{{{ port }}}/{{{ proto }}}</code>, run the following command(s):
-    {{% if port %}}
         <code>firewall-cmd --list-ports</code>
     {{% endif %}}
-    {{% if service %}}
+    {{% if service is not none %}}
+    to <code>{{{ service }}}</code>
         <code>firewall-cmd --list-services</code>
     {{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro _firewalld_access_param_check(macroname, port, proto, service) %}}
+    {{%- if ((port is none) and (proto is not none)) or ((port is not none) and (proto is none)) %}}
+    {{{- raise(macroname ~ ": if you have proto/port you need respectively port/proto") }}}
+    {{%- endif %}}
+    {{%- if (service is none) and (port is none) %}}
+    {{{- raise(macroname ~ ": define either service, or port+proto") }}}
+    {{%- endif %}}
 {{%- endmacro %}}
 
 
@@ -663,14 +674,15 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
 :type service: str
 
 #}}
-{{%- macro ocil_firewalld_allow_access(port, proto, service) %}}
+{{%- macro ocil_firewalld_allow_access(port=none, proto=none, service=none) %}}
+{{{ _firewalld_access_param_check(name, port, proto, service) }}}
 {{{ _firewalld_check("allow access", port, proto, service) }}}
     If <code>firewalld</code> is configured to allow access through the firewall, something similar to the following will be output:
-    {{% if service %}}
+    {{% if service is not none %}}
     If it is a service:
     <code>{{{ service }}}</code>
     {{% endif %}}
-    {{% if port %}}
+    {{% if port is not none %}}
     If it is a port:
     <code>{{{ port }}}/{{{ proto }}}</code>
     {{% endif %}}
@@ -689,7 +701,8 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
 :type service: str
 
 #}}
-{{%- macro ocil_firewalld_prevent_access(port, proto, service) %}}
+{{%- macro ocil_firewalld_prevent_access(port=none, proto=none, service=none) %}}
+{{{ _firewalld_access_param_check(name, port, proto, service) }}}
 {{{ _firewalld_check("prevent access", port, proto, service) }}}
     If <code>firewalld</code> is configured to prevent access, no output will be returned.
 {{%- endmacro %}}
@@ -1085,39 +1098,6 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 
 
 {{# Firefox macros #}}
-
-{{#
-Write out the OCIL for generating the common check for Firefox configuration
-
-:param preference: Name of preference
-:type preference: str
-:param config: configuration item name in Firefox
-:type config: str
-:param value: Expected value for preference, "true" or "false"
-:type value: str
-
-#}}
-{{% macro ocil_firefox_config(preference, config, value) -%}}
-{{%- if value == "true" -%}}
-ocil_clause: 'it is not enabled'
-{{%- elif value == "false" %}}
-ocil_clause: 'it is not disabled'
-{{%- endif %}}
-
-ocil: |-
-    {{% if value == "true" -%}}
-    To verify that {{preference}} is enabled,
-    {{%- elif value == "false" %}}
-    To verify that {{preference}} is disabled,
-{{% else %}}
-    To verify the correct setting of {{preference}},
-{{% endif %}}
-    run the following command:
-    <pre>$ grep '{{config}}' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
-    The output should return:
-    <pre>lockPref("{{config}}", "{{value}}");</pre>
-{{%- endmacro %}}
-
 
 {{#
 Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification template
