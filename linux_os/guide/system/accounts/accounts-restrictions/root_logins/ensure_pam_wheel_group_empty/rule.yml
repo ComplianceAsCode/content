@@ -5,9 +5,11 @@ prodtype: rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 title: 'Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty'
 
 description: |-
-    Ensure that the <tt>{{{ xccdf_value("var_pam_wheel_group_for_su") }}}</tt> group referenced by
-    the <tt>pam_wheel.so</tt> <tt>group</tt> option exists and has no members. This ensures
-    that no user can run commands with altered privileges through the <tt>su</tt> command.
+    Ensure that the group <tt>{{{ xccdf_value("var_pam_wheel_group_for_su") }}}</tt> referenced by
+    <tt>var_pam_wheel_group_for_su</tt> variable and used as value for the <tt>pam_wheel.so</tt>
+    <tt>group</tt> option exists and has no members. This empty group used by
+    <tt>pam_wheel.so</tt> in <tt>/etc/pam.d/su</tt> ensures that no user can run commands with
+    altered privileges through the <tt>su</tt> command.
 
 rationale: |-
     The <tt>su</tt> program allows to run commands with a substitute user and group ID.
@@ -46,3 +48,9 @@ fixtext: |-
 
     Run the following command to ensure the {{{ var_pam_wheel_group_for_su }}} group has no members:
     <pre>groupmems -g {{{ var_pam_wheel_group_for_su }}} -p</pre>
+
+warnings:
+    - general: |-
+        Note that this rule just ensures the group exists and has no members. This rule does not
+        configure <tt>pam_wheel.so</tt> module. The <tt>pam_wheel.so</tt> module configuration is
+        accomplished by <tt>use_pam_wheel_group_for_su</tt> rule.
