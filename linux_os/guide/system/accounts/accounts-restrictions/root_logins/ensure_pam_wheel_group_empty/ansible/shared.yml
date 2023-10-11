@@ -6,12 +6,14 @@
 
 {{{ ansible_instantiate_variables("var_pam_wheel_group_for_su") }}}
 
-- name: {{{ rule_title }}} - Ensure group {{ var_pam_wheel_group_for_su }} is removed
-  group:
-    name: "{{ var_pam_wheel_group_for_su }}"
-    state: absent 
-
-- name: {{{ rule_title }}} - Ensure group {{ var_pam_wheel_group_for_su }} exist
-  group:
+- name: {{{ rule_title }}} - Ensure {{ var_pam_wheel_group_for_su }} Group Exists
+  ansible.builtin.group:
     name: "{{ var_pam_wheel_group_for_su }}"
     state: present
+
+- name: {{{ rule_title }}} - Ensure {{ var_pam_wheel_group_for_su }} Group is Empty
+  ansible.builtin.lineinfile:
+    path: /etc/group
+    regexp: '^({{ var_pam_wheel_group_for_su }}:[^:]+:[0-9]+:).*$'
+    line: '\1'
+    backrefs: true
