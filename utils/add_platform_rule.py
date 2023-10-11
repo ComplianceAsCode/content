@@ -178,7 +178,9 @@ def create_base_rule(args, url=None, node_rule=False):
     rule_yaml['rationale'] = 'TBD'
     rule_yaml['identifiers'] = dict()
     rule_yaml['severity'] = args.severity
-    if url:
+    if args.jqfilter:
+        rule_yaml['warnings'] = [{'general': JinjaString("{{{ openshift_filtered_cluster_setting({'%s': '%s'}) | indent(4) }}}" % (url, args.jqfilter))}]
+    elif url:
         rule_yaml['warnings'] = [{'general': JinjaString('{{{ openshift_cluster_setting("%s") | indent(4) }}}' % (url))}]
     rule_yaml['template'] = dict()
 
@@ -293,7 +295,10 @@ def createPlatformRuleFunc(args):
     template['vars'] = dict()
     template_vars = template['vars']
     template_vars['ocp_data'] = "true"
-    template_vars['filepath'] = url
+    if args.jqfilter:
+        template_vars['filepath'] = JinjaString("{{{ openshift_filtered_path('%s', '%s') }}}" % (url, args.jqfilter))
+    else:
+        template_vars['filepath'] = url
     template_vars['yamlpath'] = args.yamlpath
 
     set_entity_value(args.match_entity, template_vars)
@@ -309,6 +314,7 @@ def createPlatformRuleFunc(args):
         template_vars['xccdf_variable'] = args.variable
 
     save_rule(rule_yaml_path, rule_yaml)
+
     return 0
 
 
@@ -471,6 +477,8 @@ def main():
         '--check-existence', help='check_existence` value for the `yamlfilecontent_test`.')
     platform_parser.add_argument(
         '--negate', default=False, action="store_true", help='negate the given matching criteria (does NOT match). Default is false.')
+    platform_parser.add_argument(
+        '--jqfilter', default="", help='A JQ filter to select the data passed down for OVAL evaluation.')
     platform_parser.set_defaults(func=createPlatformRuleFunc)
 
     node_parser = type_parser.add_parser('node', help='Creates a Node rule',  parents=[common_rule_args])
