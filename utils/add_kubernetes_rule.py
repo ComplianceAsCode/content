@@ -42,7 +42,7 @@ for OCP4/Kubernetes.
 
 Example workflow:
 
-$ utils/add_platform_rule.py create --rule=ocp_proxy_has_ca \
+$ utils/add_kubernetes_rule.py create --rule=ocp_proxy_has_ca \
   --type="proxies.config" --name="cluster" \
   --yamlpath=".spec.trustedCA.name" --match="[a-zA-Z0-9]*"
 creating check for "/apis/config.openshift.io/v1/proxies/cluster" with yamlpath ".spec.trustedCA.name" satisfying match of "[a-zA-Z0-9]*"
@@ -50,7 +50,7 @@ wrote applications/openshift/ocp_proxy_has_ca/rule.yml
 
 $ mkdir -p /tmp/apis/config.openshift.io/v1/proxies/
 $ oc get proxies.config/cluster -o yaml > /tmp/apis/config.openshift.io/v1/proxies/cluster
-$ utils/add_platform_rule.py test --rule=ocp_proxy_has_ca
+$ utils/add_kubernetes_rule.py test --rule=ocp_proxy_has_ca
 testing rule ocp_proxy_has_ca locally
 Title
         None
@@ -61,7 +61,7 @@ Ident
 Result
         pass
 
-$ utils/add_platform_rule.py cluster-test --rule=ocp_proxy_has_ca
+$ utils/add_kubernetes_rule.py cluster-test --rule=ocp_proxy_has_ca
 testing rule ocp_proxy_has_ca in-cluster
 deploying compliance-operator
 pushing image build to cluster
@@ -427,7 +427,7 @@ def testFunc(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="add_platform_rule.py",
+        prog="add_kubernetes_rule.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(PROG_DESC))
     subparser = parser.add_subparsers(

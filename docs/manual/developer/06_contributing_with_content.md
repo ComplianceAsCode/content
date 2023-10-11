@@ -640,19 +640,22 @@ fixes with the following commands:
 This utility requires an up-to-date JSON tree created by
 `rule_dir_json.py`.
 
-#### `utils/add_platform_rule.py`
+#### `utils/add_kubernetes_rule.py`
 
 This utility can be used to bootstrap and test Kubernetes/OpenShift
 application checks. See the help output for more detailed usage examples
 of each of the supported subcommands:
 
--   `utils/add_platform_rule.py create --rule=<rule_name> <options>` -
-    creates files for a new rule.
+-   `utils/add_kubernetes_rule.py create platform --rule=<rule_name> <options>` -
+    creates files for a new platform rule.
 
--   `utils/add_platform_rule.py test --rule=<rule_name> <options>` -
+-   `utils/add_kubernetes_rule.py create node --rule=<rule_name> <options>` -
+    creates files for a new node rule.
+
+-   `utils/add_kubernetes_rule.py test --rule=<rule_name> <options>` -
     tests a rule against local files using an oscap container.
 
--   `utils/add_platform_rule.py cluster-test --rule=<rule_name> <options>`
+-   `utils/add_kubernetes_rule.py cluster-test --rule=<rule_name> <options>`
     - tests a rule against a running OCP4 cluster using
     compliance-operator.
 
