@@ -5,17 +5,15 @@ prodtype: rhel8,rhel9,sle12,sle15,ubuntu2004,ubuntu2204
 title: 'Enforce Usage of pam_wheel with Group Parameter for su Authentication'
 
 description: |-
-    To ensure that only users who are members of the group set in the
-    <tt>group</tt> pam_wheel parameter can run commands with altered
-    privileges through the <tt>su</tt> command, make sure that the
-    following line exists in the file <tt>/etc/pam.d/su</tt>:
+    To ensure that only users who are members of the group set in the <tt>group</tt> option of
+    <tt>pam_wheel.so</tt> module can run commands with altered privileges through the <tt>su</tt>
+    command, make sure that the following line exists in the file <tt>/etc/pam.d/su</tt>:
     <pre>auth required pam_wheel.so use_uid group={{{ xccdf_value("var_pam_wheel_group_for_su") }}}</pre>
 
 rationale: |-
-    The <tt>su</tt> program allows to run commands with a substitute
-    user and group ID. It is commonly used to run commands as the root
-    user. Limiting access to such command is considered a good security
-    practice.
+    The <tt>su</tt> program allows to run commands with a substitute user and group ID.
+    It is commonly used to run commands as the root user.
+    Limiting access to such command is considered a good security practice.
 
 severity: medium
 
@@ -42,3 +40,8 @@ ocil: |-
     <pre>grep pam_wheel /etc/pam.d/su</pre>
     The output should contain the following line:
     <pre>auth required pam_wheel.so use_uid group={{{ xccdf_value("var_pam_wheel_group_for_su") }}}</pre>
+
+warnings:
+    - general: |-
+        Note that <tt>ensure_pam_wheel_group_empty</tt> rule complements this requirement by
+        ensuring the referenced group exists and has no members.
