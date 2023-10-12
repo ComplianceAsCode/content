@@ -66,18 +66,17 @@ controls:
         - set_firewalld_default_zone
 
     - id: 1.2.2
-      title: 'All changes to network connections and to configurations of NSCs are
-        approved and managed in accordance with the change control process defined at
-        Requirement 6.5.1.Changes to network connections and NSCs cannot result in
-        misconfiguration, implementation of insecure services, or unauthorized network
-        connections.Changes to network connections include the addition, removal, or
-        modification of a connection.  Changes to NSC configurations include those
-        related to the component itself as well as those affecting how it performs its
-        security function.'
+      title: 'All changes to network connections and to configurations of NSCs are approved and
+        managed in accordance with the change control process defined at Requirement 6.5.1.'
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Changes to network connections and NSCs cannot result in misconfiguration, implementation
+        of insecure services, or unauthorized network connections. Changes to network connections
+        include the addition, removal, or modification of a connection. Changes to NSC
+        configurations include those related to the component itself as well as those affecting
+        how it performs its security function. A formal change control process should be in place.
 
     - id: 1.2.3
       title: 'An accurate network diagram(s) is maintained that shows all connections
