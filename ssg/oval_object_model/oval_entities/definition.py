@@ -125,6 +125,21 @@ class Criteria(GeneralCriteriaNode):
 
         return criteria_el
 
+    def _get_reference(self, ref_type):
+        out = []
+        for child_criteria_node in self.child_criteria_nodes:
+            if isinstance(child_criteria_node, ref_type):
+                out.append(child_criteria_node.ref)
+            elif isinstance(child_criteria_node, Criteria):
+                out.extend(child_criteria_node._get_reference(ref_type))
+        return out
+
+    def get_test_references(self):
+        return self._get_reference(Criterion)
+
+    def get_extend_definition_references(self):
+        return self._get_reference(ExtendDefinition)
+
 
 # -----
 

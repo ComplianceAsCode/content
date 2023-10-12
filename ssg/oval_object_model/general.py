@@ -102,6 +102,12 @@ class OVALEntity(OVALComponent):
         super(OVALEntity, self).__init__(tag, id_)
         self.properties = properties
 
+    def _get_references(self, key):
+        out = []
+        for property_ in self.properties:
+            out.extend(property_.get_values_by_key(key))
+        return out
+
     def get_xml_element(self, **attributes):
         el = super(OVALEntity, self).get_xml_element()
 
@@ -202,3 +208,13 @@ class OVALEntityProperty(OVALBaseObject):
             property_el.append(child.get_xml_element())
 
         return property_el
+
+    def get_values_by_key(self, key):
+        out = []
+        if self.attributes and key in self.attributes:
+            out.append(self.attributes.get(key))
+        if key in self.tag:
+            out.append(self.text)
+        for property_ in self.properties:
+            out.extend(property_.get_values_by_key(key))
+        return out
