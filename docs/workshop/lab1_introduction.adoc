@@ -8,7 +8,7 @@
 
 In this lab, you will become familiar with the `ComplianceAsCode` project. The purpose of this project is to help content authors create security policy content for various platforms. The `ComplianceAsCode` project enables content authors to efficiently develop and share security content.
 
-Using the powerful build system, you can generate output in various formats such as Ansible^(R)^ Playbooks or SCAP datastreams
+Using the powerful build system, you can generate output in various formats such as Ansible^(R)^ Playbooks or SCAP data streams
 that you can use to automate security auditing and hardening.
 The project contains many useful rules and checks that form various security policies and enables content authors to easily add new rules and checks.
 
@@ -165,7 +165,7 @@ Just as you did in the previous step, you can search for the variable definition
 Though the `var_accounts_tmout.var` file contains the variable description--which is helpful--you cannot be sure what the number `600` means. However, the contents of the file indicate that it is the same as 10 minutes, which is 600 seconds.
 
 . The rule is parameterized per profile.
-This is because there can be multiple profiles in one datastream file, one rule can exist in multiple profiles, and it can be parameterized differently in different profiles.
+This is because there can be multiple profiles in one data stream file, one rule can exist in multiple profiles, and it can be parameterized differently in different profiles.
 +
 To see how the rule is connected to its variable, you have to review the respective profile definition, 
 press `Ctrl+P` and open `products/rhel8/profiles/ospp.profile`. 

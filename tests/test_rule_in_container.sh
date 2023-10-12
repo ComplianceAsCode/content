@@ -3,7 +3,7 @@
 # Created by argbash-init v2.9.0
 # ARG_OPTIONAL_SINGLE([name],[n],[Name of the test image],[ssg_test_suite])
 # ARG_OPTIONAL_SINGLE([scenarios],[s],[Regex to reduce selection of tested scenarios],[])
-# ARG_OPTIONAL_SINGLE([datastream],[d],[Path to the datastream to use in tests. Autodetected by default.])
+# ARG_OPTIONAL_SINGLE([datastream],[d],[Path to the data stream to use in tests. Autodetected by default.])
 # ARG_OPTIONAL_SINGLE([remediate-using],[r],[What to remediate with],[oscap])
 # ARG_OPTIONAL_SINGLE([logdir],[l],[Directory where logs will be stored])
 # ARG_OPTIONAL_BOOLEAN([dontclean],[],[Don't remove HTML reports from the log directory.])
@@ -77,7 +77,7 @@ print_help()
 	printf '\t%s\n' "<rule>: The short rule ID. Wildcards are supported."
 	printf '\t%s\n' "-n, --name: Name of the test image (default: 'ssg_test_suite')"
 	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (no default)"
-	printf '\t%s\n' "-d, --datastream: Path to the datastream to use in tests. Autodetected by default. (no default)"
+	printf '\t%s\n' "-d, --datastream: Path to the data stream to use in tests. Autodetected by default. (no default)"
 	printf '\t%s\n' "-r, --remediate-using: What to remediate with. Can be one of: 'oscap', 'bash' and 'ansible' (default: 'oscap')"
 	printf '\t%s\n' "-l, --logdir: Directory where logs will be stored (no default)"
 	printf '\t%s\n' "--dontclean, --no-dontclean: Don't remove HTML reports from the log directory. (off by default)"

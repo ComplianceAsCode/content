@@ -442,7 +442,7 @@ if(SSG_PRODUCT_OPENEMBEDDED)
     add_subdirectory("products/openembedded" "openembedded")
 endif()
 
-# ZIP only contains source datastreams and kickstarts, people who
+# ZIP only contains source data streams and kickstarts, people who
 # want sources to build from should get the tarball instead.
 ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
 

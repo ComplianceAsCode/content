@@ -34,7 +34,7 @@ def get_all_xccdf_ids_in_datastream(datastream):
     checklists_node = root.find(".//ds:checklists", PREFIX_TO_NS)
     if checklists_node is None:
         logging.error(
-            "Checklists not found within DataStream")
+            "Checklists not found within data stream")
 
     all_checklist_components = checklists_node.findall('ds:component-ref',
                                                        PREFIX_TO_NS)
@@ -48,7 +48,7 @@ def infer_benchmark_id_from_component_ref_id(datastream, ref_id):
                                    .format(ref_id), PREFIX_TO_NS)
     if component_ref_node is None:
         msg = (
-            'Component reference of Ref-Id {} not found within datastream'
+            'Component reference of Ref-Id {} not found within data stream'
             .format(ref_id))
         raise RuntimeError(msg)
 
@@ -192,7 +192,7 @@ def add_platform_to_benchmark(root, cpe_regex):
     benchmarks = root.findall(benchmark_query, PREFIX_TO_NS)
     if not benchmarks:
         msg = (
-            "No benchmarks found in the datastream"
+            "No benchmarks found in the data stream"
         )
         raise RuntimeError(msg)
 
@@ -239,7 +239,7 @@ def _get_benchmark_node(datastream, benchmark_id, logging):
     if benchmark_node is None:
         if logging is not None:
             logging.error(
-                "Benchmark ID '{}' not found within DataStream"
+                "Benchmark ID '{}' not found within data stream"
                 .format(benchmark_id))
     return benchmark_node
 

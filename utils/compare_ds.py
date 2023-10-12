@@ -10,14 +10,14 @@ import xml.etree.ElementTree as ET
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Compares two datastreams with regards to presence of"
+        description="Compares two data streams with regards to presence of"
         "OVAL checks and all remediations")
     parser.add_argument(
         "old", metavar="OLD_DS_PATH",
-        help="Path to the old datastream")
+        help="Path to the old data stream")
     parser.add_argument(
         "new", metavar="NEW_DS_PATH",
-        help="Path to the new datastream")
+        help="Path to the new data stream")
     parser.add_argument(
         "--rule", metavar="RULE_ID",
         help="Compare only the rule specified by given RULE_ID"
@@ -74,7 +74,7 @@ def main():
         if not new_benchmark:
             print(
                 "Warning: Skipping comparison of the following benchmark "
-                "because it was not found in the new datastream: {}".format(old_benchmark_id))
+                "because it was not found in the new data stream: {}".format(old_benchmark_id))
             continue
 
         content_differ.compare_rules(old_benchmark, new_benchmark)

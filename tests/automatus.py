@@ -50,12 +50,12 @@ def parse_args():
 
     common_parser.add_argument(
         "--datastream", dest="datastream", metavar="DATASTREAM",
-        help="Path to the Source DataStream on this machine which is going to be tested. "
+        help="Path to the Source data stream on this machine which is going to be tested. "
         "If not supplied, autodetection is attempted by looking into the build directory.")
 
     common_parser.add_argument(
         "--product", dest="product", metavar="PRODUCT", default=None,
-        help="Product to interpret tests as being run under; autodetected from datastream "
+        help="Product to interpret tests as being run under; autodetected from data stream "
         "if it follows the ssg-<product>-ds*.xml naming convention.")
 
     benchmarks = common_parser.add_mutually_exclusive_group()
@@ -74,7 +74,7 @@ def parse_args():
             help="DEPRECATED: Use --remove-platforms instead; "
             "Find all CPEs that are present in local OpenSCAP's CPE dictionary "
             "that match the provided regex, "
-            "and add them as platforms to all datastream benchmarks. "
+            "and add them as platforms to all data stream benchmarks. "
             "If the regex doesn't match anything, it will be treated "
             "as a literal CPE, and added as a platform. "
             "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
@@ -156,7 +156,7 @@ def parse_args():
                                            epilog=textwrap.dedent("""\
                     In case that tested profile contains rules which might prevent root ssh access
                     to the testing VM consider unselecting these rules. To unselect certain rules
-                    from a datastream use `ds_unselect_rules.sh` script. List of such rules already
+                    from a data stream use `ds_unselect_rules.sh` script. List of such rules already
                     exists, see `unselect_rules_list` file.
                     Example usage:
                         ./ds_unselect_rules.sh ../build/ssg-fedora-ds.xml unselect_rules_list
@@ -332,7 +332,7 @@ def get_logging_dir(options):
 
 
 def _print_available_benchmarks(xccdf_ids, n_xccdf_ids):
-    logging.info("The DataStream contains {0} Benchmarks".format(n_xccdf_ids))
+    logging.info("The data stream contains {0} Benchmarks".format(n_xccdf_ids))
     for i in range(0, n_xccdf_ids):
         logging.info("{0} - {1}".format(i, xccdf_ids[i]))
 
@@ -342,7 +342,7 @@ def auto_select_xccdf_id(datastream, bench_number):
     n_xccdf_ids = len(xccdf_ids)
 
     if n_xccdf_ids == 0:
-        msg = ("The provided DataStream doesn't contain any Benchmark")
+        msg = ("The provided data stream doesn't contain any Benchmark")
         raise RuntimeError(msg)
 
     if bench_number < 0 or bench_number >= n_xccdf_ids:
@@ -374,7 +374,7 @@ def get_unique_datastream():
     datastreams = get_datastreams()
     if len(datastreams) == 1:
         return datastreams[0]
-    msg = ("Autodetection of the datastream file is possible only when there is "
+    msg = ("Autodetection of the data stream file is possible only when there is "
            "a single one in the build dir, but")
     if not datastreams:
         raise RuntimeError(msg + " there is none.")
@@ -388,7 +388,7 @@ def get_product_id(ds_filename):
     match = product_regex.match(ds_filename)
     if not match:
         msg = "Unable to detect product without explicit --product: "
-        msg += "datastream {0} lacks product name".format(ds_filename)
+        msg += "data stream {0} lacks product name".format(ds_filename)
         raise RuntimeError(msg)
     product = match.group(1)
     if product in DERIVATIVES_PRODUCT_MAPPING:

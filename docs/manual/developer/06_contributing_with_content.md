@@ -882,10 +882,10 @@ machine, so that previously non-passing rules can pass. There can be
 multiple versions of the same remediation meant to be executed by
 different applications, more specifically Ansible, Bash, Anaconda,
 Puppet, Ignition and Kubernetes. By default all remediation languages
-are built and included in the DataStream.
+are built and included in the data stream.
 
 But each product can specify its own set of remediation to include in
-the DataStream via a CMake Variable in the product's `CMakeLists.txt`.
+the data stream via a CMake Variable in the product's `CMakeLists.txt`.
 See example below, from OCP4 product, `ocp4/CMakeLists.txt`:
 
     set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
@@ -997,7 +997,7 @@ enabled in grub:
         regexp: selinux=0
 
 The Ansible remediation will get included by our build system to the
-SCAP datastream in the `fix` element of respective rule.
+SCAP data stream in the `fix` element of respective rule.
 
 The build system generates an Ansible Playbook from the remediation for
 all profiles. The generated Playbook is located in
@@ -1156,7 +1156,7 @@ you can see reference of all available templates [here](../../templates/template
 
 ## Applicability of content
 
-All profiles and rules included in a products' DataStream are applicable
+All profiles and rules included in a products' data stream are applicable
 by default. For example, all profiles and rules included in a `rhel8` DS
 will apply and evaluate in a RHEL 8 host.
 

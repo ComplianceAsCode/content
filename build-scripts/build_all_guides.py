@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 """
-Takes given XCCDF or DataStream and for every profile in it it generates one
+Takes given XCCDF or data stream and for every profile in it it generates one
 OpenSCAP HTML guide. Also generates an index file that lists all the profiles
 and allows the user to navigate between them.
 
@@ -39,7 +39,7 @@ def parse_args():
                    default=ssg.utils.get_cpu_count(),
                    help="how many jobs should be processed in parallel")
     p.add_argument("-i", "--input", action="store", required=True,
-                   help="input file, can be XCCDF or Source DataStream")
+                   help="input file, can be XCCDF or Source data stream")
     p.add_argument("-o", "--output", action="store", required=True,
                    help="output directory")
 
