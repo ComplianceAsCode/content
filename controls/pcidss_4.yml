@@ -100,6 +100,15 @@ controls:
         - base
       status: manual
 
+    - id: 1.2.5
+      title: 'All services, protocols, and ports allowed are identified, approved, and have a
+        defined business need.'
+      levels:
+        - base
+      status: manual
+      related_rules:
+        - configure_firewalld_ports
+
     - id: 1.2.6
       title: 'Security features are defined and implemented for all services, protocols,
         and ports that are in use and considered to be insecure, such that the risk is
