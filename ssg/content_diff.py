@@ -71,7 +71,7 @@ class StandardContentDiffer(object):
             new_rule = new_benchmark.find_rule(rule_id)
             if new_rule is None:
                 missing_rules.append(rule_id)
-                print("%s is missing in new datastream." % (rule_id))
+                print("%s is missing in new data stream." % (rule_id))
                 continue
             if self.only_rules:
                 continue
@@ -174,14 +174,14 @@ class StandardContentDiffer(object):
         except (KeyError, TypeError):
             print(
                 "Rule '%s' points to '%s' which isn't a part of the "
-                "old datastream" % (identifier, old_check_file_name))
+                "old data stream" % (identifier, old_check_file_name))
             old_check_doc = None
         try:
             new_check_doc = self.new_content.components.get(system)[new_check_file_name]
         except (KeyError, TypeError):
             print(
                 "Rule '%s' points to '%s' which isn't a part of the "
-                "new datastream" % (identifier, new_check_file_name))
+                "new data stream" % (identifier, new_check_file_name))
             new_check_doc = None
         return old_check_doc, new_check_doc
 
@@ -190,10 +190,10 @@ class StandardContentDiffer(object):
         old_check = old_rule.get_check_element(check_system_uri)
         new_check = new_rule.get_check_element(check_system_uri)
         if (old_check is None and new_check is not None):
-            print("New datastream adds %s for rule '%s'." % (system, identifier))
+            print("New data stream adds %s for rule '%s'." % (system, identifier))
         elif (old_check is not None and new_check is None):
             print(
-                "New datastream is missing %s for rule '%s'." % (system, identifier))
+                "New data stream is missing %s for rule '%s'." % (system, identifier))
         elif (old_check is not None and new_check is not None):
             old_check_content_ref = old_rule.get_check_content_ref_element(old_check)
             new_check_content_ref = new_rule.get_check_content_ref_element(new_check)
@@ -251,10 +251,10 @@ class StandardContentDiffer(object):
         old_fix = old_rule.get_fix_element(system)
         new_fix = new_rule.get_fix_element(system)
         if (old_fix is None and new_fix is not None):
-            print("New datastream adds %s remediation for rule '%s'." % (
+            print("New data stream adds %s remediation for rule '%s'." % (
                 remediation_type, identifier))
         elif (old_fix is not None and new_fix is None):
-            print("New datastream is missing %s remediation for rule '%s'." % (
+            print("New data stream is missing %s remediation for rule '%s'." % (
                 remediation_type, identifier))
         elif (old_fix is not None and new_fix is not None):
             self._compare_fix_elements(
@@ -279,7 +279,7 @@ class StandardContentDiffer(object):
             self.output_diff(identifier, diff)
 
     def generate_diff_text(self, old_r, new_r,
-                           fromfile="old datastream", tofile="new datastream", n=3):
+                           fromfile="old data stream", tofile="new data stream", n=3):
         if old_r != new_r:
             diff = "".join(difflib.unified_diff(
                 old_r.splitlines(keepends=True), new_r.splitlines(keepends=True),
@@ -348,7 +348,7 @@ class StigContentDiffer(StandardContentDiffer):
                 new_sv_rule_id = new_rule_mapping[old_sv_rule_id]
             except KeyError:
                 missing_rules.append(old_sv_rule_id)
-                print("%s is missing in new datastream." % old_stig_id)
+                print("%s is missing in new data stream." % old_stig_id)
                 continue
             if self.only_rules:
                 continue
@@ -368,7 +368,7 @@ class StigContentDiffer(StandardContentDiffer):
             try:
                 old_sv_rule_id = old_rule_mapping[new_sv_rule_id]
             except KeyError:
-                print("%s was added in new datastream." % (new_stig_id))
+                print("%s was added in new data stream." % (new_stig_id))
 
                 # Compare against empty rule so that a diff is generated
                 empty_rule = ssg.xml.XMLRule(ET.Element("{%s}Rule" % XCCDF12_NS))

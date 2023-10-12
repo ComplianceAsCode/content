@@ -31,10 +31,10 @@ def compare_ds_with_playbooks_dir(ds_path, playbooks_dir_path):
 def main():
     parser = argparse.ArgumentParser(
         description="Tests if Ansible Playbooks were generated for all rules"
-        "that have an Ansible remediation available in datastream."
+        "that have an Ansible remediation available in data stream."
     )
     parser.add_argument("--build-dir", required=True,
-                        help="Build directory containing built datastreams"
+                        help="Build directory containing built data streams"
                         "and playbooks subdirectory")
     parser.add_argument("--product", required=True,
                         help="Product ID")

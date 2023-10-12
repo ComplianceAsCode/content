@@ -491,7 +491,7 @@ def main():
     cluster_test_parser.add_argument(
         '--skip-deploy', default=False, action="store_true", help='Skip deploying the compliance-operator. Default is to deploy.')
     cluster_test_parser.add_argument(
-        '--skip-build', default=False, action="store_true", help='Skip building and pushing the datastream. Default is true.')
+        '--skip-build', default=False, action="store_true", help='Skip building and pushing the data stream. Default is true.')
     cluster_test_parser.add_argument(
         '--scan-type', help='Type of scan to execute.', dest="scantype",
         default="Platform",
@@ -503,9 +503,9 @@ def main():
     test_parser.add_argument('--rule', required=True,
                              help='The name of the rule to test.')
     test_parser.add_argument(
-        '--contentdir', default="./build", help='The path to the directory containing the datastream')
+        '--contentdir', default="./build", help='The path to the directory containing the data stream')
     test_parser.add_argument(
-        '--skip-build', default=False, action="store_true", help='Skip building the datastream. Default is false.')
+        '--skip-build', default=False, action="store_true", help='Skip building the data stream. Default is false.')
     test_parser.add_argument('--objectdir', default="/tmp",
                              help='The path to a directory structure of yaml objects to test against.')
     test_parser.add_argument('--verbosity', default="INFO",

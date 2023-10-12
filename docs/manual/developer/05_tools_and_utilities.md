@@ -17,7 +17,7 @@ OVAL check implemented, how many have a remediation available, shows
 rule IDs which are missing them and other useful information.
 
 To use the script, first build the content, then pass the built XCCDF
-(not DataStream) to the script.
+(not data stream) to the script.
 
 For example, to check which rules in RHEL8 OSPP profile are missing
 remediations, run this command:
@@ -382,7 +382,7 @@ Compare current DISA's manual benchmark, and generate per file diffs:
     $ utils/compare_ds.py --disa-content --rule-diffs ./disa-stig-rhel8-v1r6-xccdf-manual.xml shared/references/disa-stig-rhel8-v1r7-xccdf-manual.xml
 ```
 
-Compare two datastreams:
+Compare two data streams:
 
 ```bash
     $ utils/compare_ds.py /tmp/ssg-rhel8-ds.xml build/ssg-rhel8-ds.xml > content.diff

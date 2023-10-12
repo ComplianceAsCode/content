@@ -33,7 +33,7 @@ Several integrations for continuous scanning also exist, but in this lab exercis
 * The following OpenSCAP ecosystem packages were installed using `yum install`:
 ** The scanner: `openscap-scanner`
 // ** Utilities for scanning remote systems: `openscap-utils`
-// ** The GUI front end and datastream tool: `scap-workbench`
+// ** The GUI front end and data stream tool: `scap-workbench`
 
 IMPORTANT: Content used in this lab has been altered to increase its educative potential, and is therefore different from the content in ComplianceAsCode upstream repository or the content in the scap-security-guide package shipped in Red Hat^(R)^ products for example.
 
@@ -109,7 +109,7 @@ tests
 ubuntu2004
 ----
 +
-There are multiple files produced by the build. The file that is going to be used with the OpenSCAP scanner is `ssg-ubuntu2004-ds.xml`. This file is called a SCAP Datastream.
+There are multiple files produced by the build. The file that is going to be used with the OpenSCAP scanner is `ssg-ubuntu2004-ds.xml`. This file is called a SCAP source data stream.
 +
 . Check which compliance profiles are available for Ubuntu 20.04.
 +
@@ -132,8 +132,8 @@ There are multiple files produced by the build. The file that is going to be use
 ...
 ----
 +
-In the "Profiles:" section, you can see a list of profiles contained in the datastream.
-The datastream contains multiple profiles that cover different security baselines for different purposes.
+In the "Profiles:" section, you can see a list of profiles contained in the data stream.
+The data stream contains multiple profiles that cover different security baselines for different purposes.
 Each profile is identified by a profile ID.
 +
 The built `ComplianceAsCode` content is available as `scap-security-guide` package in Linux distributions (e.g. RHEL, Ubuntu, Suse, etc).

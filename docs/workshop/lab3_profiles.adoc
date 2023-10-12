@@ -628,15 +628,15 @@ For more information about the templating system, including the list of currentl
 
 In the final section, you use the new profile that you just created to scan your machine using OpenSCAP.
 
-You have examined only the HTML guide so far, but for automated scanning, you use a datastream instead.
-A datastream is an XML file that contains all of the data (rules, checks, remediations, and metadata) in a single file.
-The datastream that contains your new profile was also built during the content build.
+You have examined only the HTML guide so far, but for automated scanning, you use a datas tream instead.
+A data stream is an XML file that contains all of the data (rules, checks, remediations, and metadata) in a single file.
+The data stream that contains your new profile was also built during the content build.
 It is called `ssg-rhel8-ds.xml` and is located in the `build` directory.
 
 . Run an OpenSCAP scan using the built content.
 +
 `oscap` is the command line tool that you use to scan the machine.
-You need to give `oscap` the name of the profile (`travel`) and the path to the built datastream (`ssg-rhel8-ds.xml`) as arguments.
+You need to give `oscap` the name of the profile (`travel`) and the path to the built data stream (`ssg-rhel8-ds.xml`) as arguments.
 You also add arguments to turn on full reporting, which generates XML and HTML results that you can review later.
 +
 [subs="attributes"]

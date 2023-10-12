@@ -9,7 +9,7 @@
 # ARG_OPTIONAL_BOOLEAN([derivatives],[],[Also build derivatives of products if applicable],[off])
 # ARG_OPTIONAL_BOOLEAN([ansible-playbooks],[],[Build Ansible Playbooks for every profile],[on])
 # ARG_OPTIONAL_BOOLEAN([bash-scripts],[],[Build Bash remediation scripts for every profile],[on])
-# ARG_OPTIONAL_BOOLEAN([datastream-only],[d],[Build the datastream only. Do not build any of the guides, tables, etc],[off])
+# ARG_OPTIONAL_BOOLEAN([datastream-only],[d],[Build the data stream only. Do not build any of the guides, tables, etc],[off])
 # ARG_OPTIONAL_BOOLEAN([profiling],[p],[Use ninja and call the build_profiler.sh util],[off])
 # ARG_USE_ENV([ADDITIONAL_CMAKE_OPTIONS],[],[Whitespace-separated string of arguments to pass to CMake])
 # ARG_POSITIONAL_INF([product],[Products to build, ALL means all products],[0],[ALL])
@@ -92,7 +92,7 @@ print_help()
 	printf '\t%s\n' "--derivatives, --no-derivatives: Also build derivatives of products if applicable (off by default)"
 	printf '\t%s\n' "--ansible-playbooks, --no-ansible-playbooks: Build Ansible Playbooks for every profile (on by default)"
 	printf '\t%s\n' "--bash-scripts, --no-bash-scripts: Build Bash remediation scripts for every profile (on by default)"
-	printf '\t%s\n' "-d, --datastream-only, --no-datastream-only: Build the datastream only. Do not build any of the guides, tables, etc (off by default)"
+	printf '\t%s\n' "-d, --datastream-only, --no-datastream-only: Build the data stream only. Do not build any of the guides, tables, etc (off by default)"
 	printf '\t%s\n' "-p, --profiling, --no-profiling: Use ninja and call the build_profiler.sh util (off by default)"
 	printf '\t%s\n' "-h, --help: Prints help"
 	printf '\nEnvironment variables that are supported:\n'
