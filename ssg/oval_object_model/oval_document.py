@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import sys
+import platform
 
 from ..constants import oval_footer, oval_header, timestamp
 from ..xml import ElementTree
@@ -52,9 +53,10 @@ def load_oval_document(oval_document_xml_el):
     product_name = generator_el.find("./{%s}product_name" % OVAL_NAMESPACES.oval)
     schema_version = generator_el.find("./{%s}schema_version" % OVAL_NAMESPACES.oval)
     product_version = generator_el.find("./{%s}product_version" % OVAL_NAMESPACES.oval)
-    oval_document = OVALDocument(
-        product_name.text, schema_version.text, product_version.text
-    )
+    oval_document = OVALDocument()
+    oval_document.product_version = product_version.text
+    oval_document.schema_version = schema_version.text
+    oval_document.product_name = product_name.text
 
     _load_definitions(oval_document, oval_document_xml_el)
     _load_tests(oval_document, oval_document_xml_el)
@@ -70,16 +72,39 @@ class ExceptionDuplicateOVALEntity(Exception):
 
 
 class OVALDocument(OVALBaseObject):
-    def __init__(self, product_name, schema_version, product_version):
-        self.product_name = product_name
-        self.schema_version = schema_version
-        self.product_version = product_version
+    schema_version = "5.11"
+    __product_name = "OVAL Object Model from SCAP Security Guide"
+    product_version = ""
+    __ssg_version = ""
 
+    def __init__(self):
         self.definitions = {}
         self.tests = {}
         self.objects = {}
         self.states = {}
         self.variables = {}
+
+    @property
+    def ssg_version(self):
+        return self.__ssg_version
+
+    @ssg_version.setter
+    def ssg_version(self, __value):
+        self.__ssg_version = __value
+        self.product_version = "ssg: {}, python: {}".format(
+            self.__ssg_version, platform.python_version()
+        )
+
+    @property
+    def product_name(self):
+        return self.__product_name
+
+    @product_name.setter
+    def product_name(self, __value):
+        if "from SCAP Security Guide" in __value:
+            self.__product_name = __value
+            return
+        self.__product_name = "{} from SCAP Security Guide".format(__value)
 
     def _get_xml_element_from_string_shorthand(self, shorthand):
         valid_oval_xml_string = "{}{}{}".format(
@@ -234,7 +259,7 @@ class OVALDocument(OVALBaseObject):
         schema_version_el = ElementTree.Element(
             "{%s}schema_version" % OVAL_NAMESPACES.oval
         )
-        schema_version_el.text = str(self.schema_version)
+        schema_version_el.text = self.schema_version
         generator_el.append(schema_version_el)
 
         timestamp_el = ElementTree.Element("{%s}timestamp" % OVAL_NAMESPACES.oval)
