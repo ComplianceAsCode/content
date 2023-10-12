@@ -37,17 +37,33 @@ controls:
         by the assigned personnel.
 
   - id: 1.2
-    title: 'Network security controls (NSCs) are configured and maintained.'
+    title: 'Network Security Controls (NSCs) are configured and maintained.'
     levels:
       - base
     status: pending
     controls:
     - id: 1.2.1
-      title: 'Configuration standards for NSC rulesets'
+      title: 'Configuration standards for NSC rulesets are Defined, Implemented and Maintained.'
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      notes: |-
+        Examples of NSCs covered by these configuration standards include, but are not limited to,
+        firewalls, routers configured with access control lists, and cloud virtual networks. The
+        objective of this requirement is to ensure the way that NSCs are configured and operate
+        are defined and consistently applied. While the tooling and standards can be automated,
+        the review of allowed accesses should be manual as different sites may have different
+        policies.
+      rules:
+        - service_firewalld_enabled
+        - service_nftables_disabled
+        - configure_firewalld_ports
+        - firewalld_loopback_traffic_trusted
+        - firewalld_loopback_traffic_restricted
+      related_rules:
+        # This rule is already defined in 1.5.1.
+        # It should be reviewed to confirm where it fits better.
+        - set_firewalld_default_zone
 
     - id: 1.2.2
       title: 'All changes to network connections and to configurations of NSCs are
@@ -226,6 +242,8 @@ controls:
         - base
       status: partial
       rules:
+        # This rule is also related to 1.2.1.
+        # It should be reviewed to confirm where it fits better.
         - set_firewalld_default_zone
         - ensure_firewall_rules_for_open_ports
 
