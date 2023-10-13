@@ -168,11 +168,18 @@ controls:
         - nftables_ensure_default_deny_policy
 
     - id: 1.3.2
-      title: 'Outbound traffic from the CDE is restricted as follows'
+      title: Outbound traffic from the CDE is restricted to only traffic that is necessary
+      description: |-
+        Outbound traffic from the CDE is restricted as follows:
+        - To only traffic that is necessary.
+        - All other traffic is specifically denied.
       levels:
         - base
       status: pending
-      rules: []
+      notes: |-
+        It appears there is no rule in the project to restrict outbound traffic on the firewall.
+        Perhaps a rule to automates this would do more harm than good. Probably a manual
+        assessment is more reasonable here.
 
     - id: 1.3.3
       title: 'NSCs are installed between all wireless networks and the CDE, regardless
