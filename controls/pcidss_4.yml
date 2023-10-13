@@ -199,22 +199,29 @@ controls:
         - wireless_disable_interfaces
 
   - id: 1.4
-    title: 'Network connections between trusted and untrusted networks are controlled.'
+    title: Network connections between trusted and untrusted networks are controlled.
     levels:
       - base
     status: partial
     controls:
     - id: 1.4.1
-      title: 'NSCs are implemented between trusted and untrusted networks.Unauthorized
-        traffic cannot traverse network boundaries between trusted and untrusted
-        networks.'
+      title: NSCs are implemented between trusted and untrusted networks.
+      description: |-
+        Unauthorized traffic cannot traverse network boundaries between trusted and untrusted
+        networks.
       levels:
         - base
-      status: partial
+      status: automated
+      notes: |-
+        Trusted and untrusted networks are expected to be different for each environment.
+        But loopback traffic is assumed to be trusted and even necessary for some services.
+        This requirement is complements 1.2.1 and 1.3.1 requirements.
       rules:
+        - firewalld_loopback_traffic_restricted
+        - firewalld_loopback_traffic_trusted
         - set_ipv6_loopback_traffic
-        - set_loopback_traffic
         - set_ip6tables_default_rule
+        - set_loopback_traffic
 
     - id: 1.4.2
       title: 'Inbound traffic from untrusted networks to trusted networks is restricted'
