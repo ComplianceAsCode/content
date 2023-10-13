@@ -40,13 +40,13 @@ controls:
     title: 'Network Security Controls (NSCs) are configured and maintained.'
     levels:
       - base
-    status: partial
+    status: automated
     controls:
     - id: 1.2.1
       title: 'Configuration standards for NSC rulesets are Defined, Implemented and Maintained.'
       levels:
         - base
-      status: partial
+      status: automated
       notes: |-
         Examples of NSCs covered by these configuration standards include, but are not limited to,
         firewalls, routers configured with access control lists, and cloud virtual networks. The
@@ -57,13 +57,6 @@ controls:
       rules:
         - service_firewalld_enabled
         - service_nftables_disabled
-        - configure_firewalld_ports
-        - firewalld_loopback_traffic_trusted
-        - firewalld_loopback_traffic_restricted
-      related_rules:
-        # This rule is already defined in 1.5.1.
-        # It should be reviewed to confirm where it fits better.
-        - set_firewalld_default_zone
 
     - id: 1.2.2
       title: 'All changes to network connections and to configurations of NSCs are approved and
@@ -154,17 +147,25 @@ controls:
         - network_nmcli_permissions
 
   - id: 1.3
-    title: 'Network access to and from the cardholder data environment is restricted.'
+    title: Network access to and from the cardholder data environment is restricted.
     levels:
       - base
     status: pending
     controls:
     - id: 1.3.1
-      title: 'Inbound traffic to the CDE is restricted as follows'
+      title: Inbound traffic to the CDE is restricted to only traffic that is necessary
+      description: |-
+        Inbound traffic to the CDE is restricted as follows:
+        - To only traffic that is necessary.
+        - All other traffic is specifically denied.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - configure_firewalld_ports
+        - ensure_firewall_rules_for_open_ports
+        - set_firewalld_default_zone
+        - nftables_ensure_default_deny_policy
 
     - id: 1.3.2
       title: 'Outbound traffic from the CDE is restricted as follows'
