@@ -40,7 +40,7 @@ controls:
     title: 'Network Security Controls (NSCs) are configured and maintained.'
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 1.2.1
       title: 'Configuration standards for NSC rulesets are Defined, Implemented and Maintained.'
@@ -142,11 +142,16 @@ controls:
         Some configuration automation solution, such as Ansible could be helpful here.
 
     - id: 1.2.8
-      title: 'Configuration files for NSCs'
+      title: Configuration files for NSCs are secured from unauthorized access and kept consistent
+        with active network configurations.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - file_groupowner_etc_issue_net
+        - file_owner_etc_issue_net
+        - file_permissions_etc_issue_net
+        - network_nmcli_permissions
 
   - id: 1.3
     title: 'Network access to and from the cardholder data environment is restricted.'
