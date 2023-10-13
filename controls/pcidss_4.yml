@@ -224,20 +224,24 @@ controls:
         - set_loopback_traffic
 
     - id: 1.4.2
-      title: 'Inbound traffic from untrusted networks to trusted networks is restricted'
+      title: Inbound traffic from untrusted networks to trusted networks is restricted.
+      description: |-
+        Inbound traffic from untrusted networks to trusted networks is restricted to:
+        - Communications with system components that are authorized to provide publicly accessible
+        services, protocols, and ports.
+        - Stateful responses to communications initiated by system components in a trusted network.
+        - All other traffic is denied.
       levels:
         - base
       status: automated
       rules:
-        - grub2_ipv6_disable_argument
-        - sysctl_net_ipv4_ip_forward
-        - package_iptables_installed
-        - kernel_module_sctp_disabled
-        - kernel_module_dccp_disabled
+        - postfix_network_listening_disabled
+        - var_postfix_inet_interfaces=loopback-only
         - kernel_module_sctp_disabled
         - kernel_module_dccp_disabled
         - sysctl_net_ipv4_conf_all_send_redirects
         - sysctl_net_ipv4_conf_default_send_redirects
+        - sysctl_net_ipv4_ip_forward
 
     - id: 1.4.3
       title: 'Anti-spoofing measures are implemented to detect and block forged source
@@ -385,7 +389,6 @@ controls:
         - package_xinetd_removed
         - package_ypbind_removed
         - package_ypserv_removed
-        - postfix_network_listening_disabled
         - service_avahi-daemon_disabled
         - service_cups_disabled
         - service_rpcbind_disabled
