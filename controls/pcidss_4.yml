@@ -129,14 +129,17 @@ controls:
         - selinux_confinement_of_daemons
 
     - id: 1.2.7
-      title: 'Configurations of NSCs are reviewed at least once every six months to
-        confirm they are relevant and effective.NSC configurations that allow or
-        restrict access to trusted networks are verified periodically to ensure that
-        only authorized connections with a current business justification are permitted.'
+      title: Configurations of NSCs are reviewed at least once every six months to confirm they
+        are relevant and effective.
+      description: |-
+        NSC configurations that allow or restrict access to trusted networks are verified
+        periodically to ensure that only authorized connections with a current business
+        justification are permitted.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Some configuration automation solution, such as Ansible could be helpful here.
 
     - id: 1.2.8
       title: 'Configuration files for NSCs'
