@@ -17,7 +17,7 @@ cat > /etc/systemd/system/aidecheck.service <<CHECKEOF
         WantedBy=multi-user.target
 CHECKEOF
 cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
-[Unit]        
+[Unit]
         Description=Status email for AIDE check result
         After=aidecheck.service
         [Service]

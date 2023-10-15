@@ -39,13 +39,13 @@
       group: root
       mode: '0644'
       block: |
-        [Unit]        
+        [Unit]
         Description=Status email for AIDE check result
         After=aidecheck.service
         [Service]
         Type=forking
         ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  {{ var_aide_scan_notification_email }}'
-        
+
 {{% else %}}
 - name: "{{{ rule_title }}}"
   cron:

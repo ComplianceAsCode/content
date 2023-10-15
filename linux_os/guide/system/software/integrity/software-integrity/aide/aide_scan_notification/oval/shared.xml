@@ -11,6 +11,7 @@
           test_ref="test_aide_var_cron_notification" />
         <criterion comment="notify personnel when aide completes in cron.(d|daily|weekly|monthly)"
           test_ref="test_aide_crontabs_notification" />
+{{% if product in ["sle15"] %}}
         <criteria operator="AND">
           <criterion comment="notification started after check"
             test_ref="test_aidecheck_systemd_scan_before_notification"/>
@@ -19,6 +20,7 @@
           <criterion comment="systemd aidecheck scan notification test"
             test_ref="test_aidecheck_systemd_scan_report"/>
         </criteria>
+{{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -50,6 +52,7 @@
     <ind:pattern operation="pattern match">^.*{{{ aide_bin_path }}}[\s]*\-\-check.*\|.*/bin/mail[\s]*-s[\s]*".*"[\s]*.+@.+$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% if product in ["sle15"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     id="test_aidecheck_systemd_scan_report" version="1"
     comment="report results of aide check, when started by systemd">
@@ -83,4 +86,5 @@
     <ind:pattern operation="pattern match">^Wants\=.*aidecheck-notify.service.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>
