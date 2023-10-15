@@ -13,7 +13,11 @@
   </linux:rpmverifyfile_test>
   <linux:rpmverifyfile_object id="object_files_fail_mode" version="1" comment="rpm verify of all files">
     <linux:behaviors nomd5="true" noghostfiles="true"/>
-    <linux:name operation="pattern match">.*</linux:name>
+    {{% if product in ["sle12", "sle15"] %}}
+      <linux:name operation="not equal">fontconfig</linux:name>
+    {{% else %}}
+      <linux:name operation="pattern match">.*</linux:name>
+    {{% endif %}}
     <linux:epoch operation="pattern match">.*</linux:epoch>
     <linux:version operation="pattern match">.*</linux:version>
     <linux:release operation="pattern match">.*</linux:release>
