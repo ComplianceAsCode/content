@@ -252,8 +252,6 @@ controls:
       rules:
         - sysctl_net_ipv4_conf_all_rp_filter
         - sysctl_net_ipv4_conf_all_secure_redirects
-        - sysctl_net_ipv4_conf_all_send_redirects
-        - sysctl_net_ipv4_conf_default_send_redirects
         - sysctl_net_ipv4_conf_default_accept_redirects
         - sysctl_net_ipv4_ip_forward
         - sysctl_net_ipv4_tcp_syncookies
@@ -274,13 +272,17 @@ controls:
         - configure_firewalld_ports
 
     - id: 1.4.5
-      title: 'The disclosure of internal IP addresses and routing information is limited
-        to only authorized parties.Internal network information is protected from
-        unauthorized disclosure.'
+      title: The disclosure of internal IP addresses and routing information is limited to only
+        authorized parties.
+      description: |-
+        Internal network information is protected from unauthorized disclosure.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - sysctl_net_ipv4_conf_all_send_redirects
+        - sysctl_net_ipv4_conf_default_send_redirects
+        - network_sniffer_disabled
 
   - id: 1.5
     title: 'Risks to the CDE from computing devices that are able to connect to both
