@@ -1,7 +1,7 @@
-import sys
+import logging
 
-from ...xml import ElementTree
 from ...constants import OVAL_NAMESPACES, STR_TO_BOOL
+from ...xml import ElementTree
 from ..general import OVALComponent, load_notes, required_attribute
 
 
@@ -29,9 +29,7 @@ def load_test(oval_test_xml_el):
             test.add_state_ref(child_node_el.get("state_ref"))
             test.state_ref_tag = child_node_el.tag
         else:
-            sys.stderr.write(
-                "Warning: Unknown element '{}'\n".format(child_node_el.tag)
-            )
+            logging.warning("Unknown element '{}'\n".format(child_node_el.tag))
     return test
 
 

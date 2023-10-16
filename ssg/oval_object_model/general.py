@@ -1,8 +1,8 @@
 import re
+
 from ..constants import BOOL_TO_STR, xsi_namespace
 from ..xml import ElementTree
 from .. import utils
-
 
 # ----- General functions
 

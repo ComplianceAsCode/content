@@ -1,6 +1,7 @@
-import sys
+import logging
 
-from ...constants import BOOL_TO_STR, OVAL_NAMESPACES, STR_TO_BOOL, MULTI_PLATFORM_LIST
+from ... import utils
+from ...constants import BOOL_TO_STR, MULTI_PLATFORM_LIST, OVAL_NAMESPACES, STR_TO_BOOL
 from ...xml import ElementTree
 from ..general import (
     OVALBaseObject,
@@ -10,7 +11,6 @@ from ..general import (
     is_product_name_in,
     get_product_name,
 )
-from ... import utils
 
 
 class GeneralCriteriaNode(OVALBaseObject):
@@ -96,9 +96,7 @@ def load_criteria(oval_criteria_xml_el):
                 load_terminate_criteria(child_node_el, ExtendDefinition, "definition")
             )
         else:
-            sys.stderr.write(
-                "Warning: Unknown element '{}'\n".format(child_node_el.tag)
-            )
+            logging.warning("Unknown element '{}'\n".format(child_node_el.tag))
     return criteria
 
 

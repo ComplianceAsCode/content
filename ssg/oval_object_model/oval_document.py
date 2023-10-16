@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import sys
 import platform
 
 from ..constants import oval_footer, oval_header, timestamp
