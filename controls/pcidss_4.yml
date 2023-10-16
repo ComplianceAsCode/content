@@ -239,27 +239,24 @@ controls:
         - var_postfix_inet_interfaces=loopback-only
         - kernel_module_sctp_disabled
         - kernel_module_dccp_disabled
-        - sysctl_net_ipv4_conf_all_send_redirects
-        - sysctl_net_ipv4_conf_default_send_redirects
-        - sysctl_net_ipv4_ip_forward
+        - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+        - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+        - sysctl_net_ipv6_conf_default_accept_source_route
 
     - id: 1.4.3
-      title: 'Anti-spoofing measures are implemented to detect and block forged source
-        IP addresses from entering the trusted network.Packets with forged IP source
-        addresses cannot enter a trusted network.'
+      title: Anti-spoofing measures are implemented to detect and block forged source IP
+        addresses from entering the trusted network.
       levels:
         - base
       status: automated
       rules:
-        - wireless_disable_interfaces
-        - package_iptables_installed
-        - sysctl_net_ipv4_tcp_syncookies
-        - sysctl_net_ipv4_conf_default_accept_redirects
-        - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-        - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-        - sysctl_net_ipv6_conf_default_accept_source_route
         - sysctl_net_ipv4_conf_all_rp_filter
         - sysctl_net_ipv4_conf_all_secure_redirects
+        - sysctl_net_ipv4_conf_all_send_redirects
+        - sysctl_net_ipv4_conf_default_send_redirects
+        - sysctl_net_ipv4_conf_default_accept_redirects
+        - sysctl_net_ipv4_ip_forward
+        - sysctl_net_ipv4_tcp_syncookies
 
     - id: 1.4.4
       title: 'System components that store cardholder data are not directly accessible
