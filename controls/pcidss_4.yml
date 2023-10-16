@@ -233,7 +233,9 @@ controls:
         - All other traffic is denied.
       levels:
         - base
-      status: automated
+      status: partial
+      notes: |-
+        Probably missing some relevant IPv6 related rules. Needs to be investigated.
       rules:
         - postfix_network_listening_disabled
         - var_postfix_inet_interfaces=loopback-only
@@ -248,7 +250,9 @@ controls:
         addresses from entering the trusted network.
       levels:
         - base
-      status: automated
+      status: partial
+      notes: |-
+        Probably missing some relevant IPv6 related rules. Needs to be investigated.
       rules:
         - sysctl_net_ipv4_conf_all_rp_filter
         - sysctl_net_ipv4_conf_all_secure_redirects
