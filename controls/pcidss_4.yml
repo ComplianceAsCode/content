@@ -259,17 +259,19 @@ controls:
         - sysctl_net_ipv4_tcp_syncookies
 
     - id: 1.4.4
-      title: 'System components that store cardholder data are not directly accessible
-        from untrusted networks.Stored cardholder data cannot be accessed from untrusted
-        networks.This requirement is not intended to apply to storage of account data in
-        volatile memory but does apply where memory is being treated as persistent
-        storage (for example, RAM disk). Account data can only be stored in volatile
-        memory during the time necessary to support the associated business process (for
-        example, until completion of the related payment card transaction).'
+      title: System components that store cardholder data are not directly accessible from
+        untrusted networks.
       levels:
         - base
       status: pending
-      rules: []
+      notes: |-
+        This requirement is not intended to apply to storage of account data in volatile memory
+        but does apply where memory is being treated as persistent storage (for example, RAM
+        disk). Account data can only be stored in volatile memory during the time necessary to
+        support the associated business process (for example, until completion of the related
+        payment card transaction).
+      related_rules:
+        - configure_firewalld_ports
 
     - id: 1.4.5
       title: 'The disclosure of internal IP addresses and routing information is limited
