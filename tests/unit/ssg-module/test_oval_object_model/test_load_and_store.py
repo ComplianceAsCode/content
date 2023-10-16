@@ -53,10 +53,10 @@ def oval_document():
 
 @pytest.fixture
 def oval_document_from_shorthand():
-    oval_doc = OVALDocument("Test", "1.2", "1")
+    oval_doc = OVALDocument()
 
     for shorthand in _list_of_shorthands():
-        oval_doc.load_shorthand(shorthand)
+        oval_doc.load_shorthand(shorthand, "rhel")
 
     return oval_doc
 
