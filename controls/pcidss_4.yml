@@ -367,11 +367,24 @@ controls:
       - configure_openssl_crypto_policy
     controls:
     - id: 2.2.1
-      title: 'Configuration standards are developed, implemented, and maintained to cover
-        all system components'
+      title: Configuration standards are developed, implemented, and maintained
+      description: |-
+        Configuration standards are developed, implemented, and maintained to:
+        - Cover all system components.
+        - Address all known security vulnerabilities.
+        - Be consistent with industry-accepted system hardening standards or vendor hardening
+        recommendations.
+        - Be updated as new vulnerability issues are identified, as defined in Requirement 6.3.1.
+        - Be applied when new systems are configured and verified as in place before or
+        immediately after a system component is connected to a production environment.
       levels:
         - base
       status: partial
+      notes: |-
+        Interestingly this requirement recommends other standards, such as Center for Internet
+        Security (CIS), International Organization for Standardization (ISO), National Institute
+        of Standards and Technology (NIST), Cloud Security Alliance, and product vendors. So, the
+        rules included here are very generic in terms of hardening.
       rules:
         - bios_enable_execution_restrictions
         - install_PAE_kernel_on_x86-32
