@@ -390,11 +390,22 @@ controls:
         - install_PAE_kernel_on_x86-32
 
     - id: 2.2.2
-      title: 'Vendor default accounts are managed as follows'
+      title: Vendor default accounts are managed.
+      description: |-
+        Vendor default accounts are managed as follows:
+        - If the vendor default account(s) will be used, the default password is changed per
+        Requirement 8.3.6.
+        - If the vendor default account(s) will not be used, the account is removed or disabled.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      rules:
+        - accounts_no_uid_except_zero
+        - accounts_password_last_change_is_in_past
+        - accounts_set_post_pw_existing
+        - ensure_root_password_configured
+        - no_empty_passwords_etc_shadow
+        - sudo_require_authentication
 
     - id: 2.2.3
       title: 'Primary functions requiring different security levels are managed'
