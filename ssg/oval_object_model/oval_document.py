@@ -2,17 +2,11 @@ from __future__ import absolute_import
 
 import platform
 
-from ..constants import oval_footer, oval_header, timestamp
+from ..constants import OVAL_NAMESPACES, timestamp, xsi_namespace
+from ..utils import required_key
 from ..xml import ElementTree
-from ..constants import OVAL_NAMESPACES, xsi_namespace
-from .general import OVALBaseObject, required_attribute
-from .oval_entities import (
-    load_definition,
-    load_object,
-    load_state,
-    load_test,
-    load_variable,
-)
+from .oval_container import OVALContainer
+from .oval_shorthand import OVALShorthand
 
 
 def _get_xml_el(tag_name, xml_el):
@@ -66,22 +60,18 @@ def load_oval_document(oval_document_xml_el):
     return oval_document
 
 
-class ExceptionDuplicateOVALEntity(Exception):
+class MissingOVALComponent(Exception):
     pass
 
 
-class OVALDocument(OVALBaseObject):
+class OVALDocument(OVALContainer):
     schema_version = "5.11"
     __product_name = "OVAL Object Model from SCAP Security Guide"
     product_version = ""
     __ssg_version = ""
 
     def __init__(self):
-        self.definitions = {}
-        self.tests = {}
-        self.objects = {}
-        self.states = {}
-        self.variables = {}
+        super(OVALDocument, self).__init__()
 
     @property
     def ssg_version(self):
@@ -105,81 +95,20 @@ class OVALDocument(OVALBaseObject):
             return
         self.__product_name = "{} from SCAP Security Guide".format(__value)
 
-    def _get_xml_element_from_string_shorthand(self, shorthand):
-        valid_oval_xml_string = "{}{}{}".format(
-            oval_header, shorthand, oval_footer
-        ).encode("utf-8")
-        xml_element = ElementTree.fromstring(valid_oval_xml_string)
-        return xml_element.findall("./{%s}def-group/*" % OVAL_NAMESPACES.definition)
-
-    def _load_element(self, xml_el):
-        if xml_el.tag.endswith("definition"):
-            self.load_definition(xml_el)
-        elif xml_el.tag.endswith("_test"):
-            self.load_test(xml_el)
-        elif xml_el.tag.endswith("_object"):
-            self.load_object(xml_el)
-        elif xml_el.tag.endswith("_state"):
-            self.load_state(xml_el)
-        elif xml_el.tag.endswith("_variable"):
-            self.load_variable(xml_el)
-        elif xml_el.tag is not ElementTree.Comment:
-            sys.stderr.write("Warning: Unknown element '{}'\n".format(xml_el.tag))
-
-    def load_shorthand(self, xml_string):
-        for xml_el in self._get_xml_element_from_string_shorthand(xml_string):
-            self._load_element(xml_el)
-
     @staticmethod
-    def _is_external_variable(component):
-        return "external_variable" in component.tag
+    def _skip_if_is_none(value, component_id):
+        if value is None:
+            raise MissingOVALComponent(component_id)
+        return False
 
-    @staticmethod
-    def _handle_existing_id(component, component_dict):
-        # ID is identical, but OVAL entities are semantically difference =>
-        # report and error and exit with failure
-        # Fixes: https://github.com/ComplianceAsCode/content/issues/1275
-        if (
-            component != component_dict[component.id_]
-            and not OVALDocument._is_external_variable(component)
-            and not OVALDocument._is_external_variable(component_dict[component.id_])
-        ):
-            # This is an error scenario - since by skipping second
-            # implementation and using the first one for both references,
-            # we might evaluate wrong requirement for the second entity
-            # => report an error and exit with failure in that case
-            # See
-            #   https://github.com/ComplianceAsCode/content/issues/1275
-            # for a reproducer and what could happen in this case
-            raise ExceptionDuplicateOVALEntity(
-                (
-                    "ERROR: it's not possible to use the same ID: {} for two semantically"
-                    " different OVAL entities:\nFirst entity:\n{}\nSecond entity:\n{}\n"
-                    "Use different ID for the second entity!!!\n"
-                ).format(
-                    component.id_,
-                    str(component),
-                    str(component_dict[component.id_]),
-                )
-            )
-        elif not OVALDocument._is_external_variable(component):
-            # If OVAL entity is identical, but not external_variable, the
-            # implementation should be rewritten each entity to be present
-            # just once
-            raise ExceptionDuplicateOVALEntity(
-                (
-                    "ERROR: OVAL ID {} is used multiple times and should represent "
-                    "the same elements.\n Rewrite the OVAL checks. Place the identical IDs"
-                    " into their own definition and extend this definition by it.\n"
-                ).format(component.id_)
-            )
+    def load_shorthand(self, xml_string, product, rule_id=None):
+        shorthand = OVALShorthand()
+        shorthand.load_shorthand(xml_string)
 
-    @staticmethod
-    def _add_oval_component(component, component_dict):
-        if component.id_ not in component_dict:
-            component_dict[component.id_] = component
-        else:
-            OVALDocument._handle_existing_id(component, component_dict)
+        is_valid = shorthand.validate(product, rule_id)
+        if is_valid:
+            self.add_content_of_container(shorthand)
+        return is_valid
 
     def finalize_affected_platforms(self, env_yaml):
         """
@@ -191,30 +120,10 @@ class OVALDocument(OVALBaseObject):
         from given OVAL tree. It then adds one platform of the product we are
         building.
         """
-        type_ = required_attribute(env_yaml, "type")
-        full_name = required_attribute(env_yaml, "full_name")
+        type_ = required_key(env_yaml, "type")
+        full_name = required_key(env_yaml, "full_name")
         for definition in self.definitions.values():
             definition.metadata.finalize_affected_platforms(type_, full_name)
-
-    def load_definition(self, oval_definition_xml_el):
-        definition = load_definition(oval_definition_xml_el)
-        self._add_oval_component(definition, self.definitions)
-
-    def load_test(self, oval_test_xml_el):
-        test = load_test(oval_test_xml_el)
-        self._add_oval_component(test, self.tests)
-
-    def load_object(self, oval_object_xml_el):
-        object_ = load_object(oval_object_xml_el)
-        self._add_oval_component(object_, self.objects)
-
-    def load_state(self, oval_state_xml_element):
-        state = load_state(oval_state_xml_element)
-        self._add_oval_component(state, self.states)
-
-    def load_variable(self, oval_variable_xml_element):
-        variable = load_variable(oval_variable_xml_element)
-        self._add_oval_component(variable, self.variables)
 
     def get_xml_element(self):
         root = self._get_oval_definition_el()

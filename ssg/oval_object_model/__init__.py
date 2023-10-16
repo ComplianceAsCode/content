@@ -10,7 +10,7 @@ from .general import (
     load_oval_entity_property,
 )
 from .oval_container import ExceptionDuplicateOVALEntity
-from .oval_document import OVALDocument, load_oval_document
+from .oval_document import MissingOVALComponent, OVALDocument, load_oval_document
 from .oval_entities import (
     ExceptionDuplicateObjectReferenceInTest,
     ExceptionMissingObjectReferenceInTest,
