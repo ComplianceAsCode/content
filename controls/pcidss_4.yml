@@ -414,36 +414,46 @@ controls:
       status: manual
 
     - id: 2.2.4
-      title: 'Only necessary services, protocols, daemons, and functions are enabled,
-        and all unnecessary functionality is removed or disabled.System components
-        cannot be compromised by exploiting unnecessary functionality present in the
-        system component.'
+      title: Only necessary services, protocols, daemons, and functions are enabled, and all
+        unnecessary functionality is removed or disabled
+      description: |-
+        System components cannot be compromised by exploiting unnecessary functionality present in
+        the system component.
       levels:
         - base
       status: automated
       rules:
-        - package_bind_removed
+        - mask_nonessential_services
         - package_dhcp_removed
-        - package_httpd_removed
+        - package_ftp_removed
         - package_net-snmp_removed
-        - package_nfs-utils_removed
-        - package_openldap-servers_removed
-        - package_openldap-clients_removed
         - package_rsh_removed
-        - package_samba_removed
+        - package_rsh-server_removed
         - package_talk_removed
+        - package_talk-server_removed
         - package_telnet_removed
         - package_telnet-server_removed
-        - package_vsftpd_removed
+        - package_tftp_removed
+        - package_tftp-server_removed
         - package_xinetd_removed
         - package_ypbind_removed
         - package_ypserv_removed
         - service_avahi-daemon_disabled
-        - service_cups_disabled
         - service_rpcbind_disabled
         - service_rsyncd_disabled
-        - mask_nonessential_services
-
+      related_rules:
+        - package_bind_removed
+        - package_dnsmasq_removed
+        - package_httpd_removed
+        - package_nfs-utils_removed
+        - package_openldap-clients_removed
+        - package_openldap-servers_removed
+        - package_rsync_removed
+        - package_samba_removed
+        - package_squid_removed
+        - package_vsftpd_removed
+        - service_cups_disabled
+        - service_nfs_disabled
 
     - id: 2.2.5
       title: 'If any insecure services, protocols, or daemons are present'
