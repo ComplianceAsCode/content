@@ -4,7 +4,7 @@
   ansible.builtin.command: nft add rule inet filter input iif lo accept
 
 - name: Create Rule to Drop Input IP Address from Loopback
-  ansible.builtin.command: nft insert rule inet filter input ip saddr 127.0.0.0/8 counter drop
+  ansible.builtin.command: nft add rule inet filter input ip saddr 127.0.0.0/8 counter drop
 
 - name: Check if IPv6 is Disabled in grub Configuration
   ansible.builtin.shell: |
