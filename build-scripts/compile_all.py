@@ -133,6 +133,7 @@ def main():
 
     loader = ssg.build_yaml.BuildLoader(
         None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
+    loader.load_components()
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
     project_root_abspath = os.path.abspath(args.project_root)

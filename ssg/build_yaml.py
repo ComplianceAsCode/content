@@ -1331,9 +1331,9 @@ class BuildLoader(DirectoryLoader):
         if stig_reference_path:
             self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
         self.components_dir = None
-        self.rule_to_components = self._load_components()
+        self.rule_to_components = None
 
-    def _load_components(self):
+    def load_components(self):
         if "components_root" not in self.env_yaml:
             return None
         product_dir = self.env_yaml["product_dir"]
@@ -1341,9 +1341,8 @@ class BuildLoader(DirectoryLoader):
         self.components_dir = os.path.abspath(
             os.path.join(product_dir, components_root))
         components = ssg.components.load(self.components_dir)
-        rule_to_components = ssg.components.rule_component_mapping(
+        self.rule_to_components = ssg.components.rule_component_mapping(
             components)
-        return rule_to_components
 
     def _process_values(self):
         for value_yaml in self.value_files:
