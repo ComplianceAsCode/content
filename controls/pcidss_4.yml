@@ -747,25 +747,29 @@ controls:
           - sysctl_fs_suid_dumpable
 
     - id: 3.3.2
-      title: 'SAD that is stored electronically prior to completion of authorization is
-        encrypted using strong cryptography.This requirement is not eligible for the
-        customized approach.Whether SAD is permitted to be stored prior to authorization
-        is determined by the organizations that manage compliance programs (for example,
-        payment brands and acquirers). Contact the organizations of interest for any
-        additional criteria. This requirement applies to all storage of SAD, even if no
-        PAN is present in the environment. Refer to Requirement 3.2.1 for an additional
-        requirement that applies if SAD is stored prior to completion of authorization.
-        This requirement does not apply to issuers and companies that support issuing
-        services where there is a legitimate issuing business justification to store
-        SAD).  Refer to Requirement 3.3.3 for requirements specifically for issuers.
-        This requirement does not replace how PIN blocks are required to be managed, nor
-        does it mean that a properly encrypted PIN block needs to be encrypted again.
-        This requirement is a best practice until 31 March 2025, after which it will be
-        required and must be fully considered during a PCI DSS assessment.'
+      title: SAD that is stored electronically prior to completion of authorization is encrypted
+        using strong cryptography.
+      description: |-
+        This requirement is not eligible for the customized approach. Whether SAD is permitted to
+        be stored prior to authorization is determined by the organizations that manage compliance
+        programs (for example, payment brands and acquirers). Contact the organizations of
+        interest for any additional criteria. This requirement applies to all storage of SAD, even
+        if no PAN is present in the environment. Refer to Requirement 3.2.1 for an additional
+        requirement that applies if SAD is stored prior to completion of authorization. This
+        requirement does not apply to issuers and companies that support issuing services where
+        there is a legitimate issuing business justification to store SAD. Refer to Requirement
+        3.3.3 for requirements specifically for issuers. This requirement does not replace how PIN
+        blocks are required to be managed, nor does it mean that a properly encrypted PIN block
+        needs to be encrypted again.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+        This requirement consists of auditing information stored during a relatively short period
+        of time. Where and how the information is possibly stored depends in each Business and
+        local policies so the check is not actually automatable.
 
     - id: 3.3.3
       title: 'Additional requirement for issuers and companies that support issuing
