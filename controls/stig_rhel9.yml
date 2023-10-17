@@ -3734,6 +3734,11 @@ controls:
             and open_by_handle_at system calls.
         rules:
             - audit_rules_unsuccessful_file_modification_creat
+            - audit_rules_unsuccessful_file_modification_truncate
+            - audit_rules_unsuccessful_file_modification_ftruncate
+            - audit_rules_unsuccessful_file_modification_open
+            - audit_rules_unsuccessful_file_modification_openat
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at
         status: automated
 
     -   id: RHEL-09-654075
