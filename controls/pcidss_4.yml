@@ -664,33 +664,45 @@ controls:
         Local policies should be consulted and audited. Manual checking is reasonable.
 
   - id: 3.3
-    title: 'Sensitive authentication data (SAD) is not stored after authorization.'
+    title: Sensitive authentication data (SAD) is not stored after authorization.
     levels:
       - base
     status: pending
     controls:
     - id: 3.3.1
-      title: 'SAD is not retained after authorization, even if encrypted. All sensitive
+      title: SAD is not retained after authorization, even if encrypted. All sensitive
         authentication data received is rendered unrecoverable upon completion of the
-        authorization process.This requirement is not eligible for the customized
-        approach.This requirement does not apply to issuers and companies that support
-        issuing services (where SAD is needed for a legitimate issuing business need)
-        and have a business justification to store the sensitive authentication data.
-        Refer to Requirement 3.3.3 for additional requirements specifically for issuers.
-         Sensitive authentication data includes the data cited in Requirements 3.3.1.1
-        through 3.3.1.3.'
+        authorization process.
+      description: |-
+        This requirement is not eligible for the customized approach. This requirement does not
+        apply to issuers and companies that support issuing services (where SAD is needed for a
+        legitimate issuing business need) and have a business justification to store the sensitive
+        authentication data. Refer to Requirement 3.3.3 for additional requirements specifically
+        for issuers. Sensitive authentication data includes the data cited in Requirements 3.3.1.1
+        through 3.3.1.3.
       levels:
         - base
       status: partial
       controls:
       - id: 3.3.1.1
-        title: 'The full contents of any track are not retained upon completion of the
-          authorization process.This requirement is not eligible for the customized
-          approach.In the normal course of business, the following data elements from
-          the track may need to be retained'
+        title: The full contents of any track are not retained upon completion of the
+          authorization process.
+        description: |-
+          This requirement is not eligible for the customized approach. In the normal course of
+          business, the following data elements from the track may need to be retained:
+          - Cardholder name.
+          - Primary account number (PAN).
+          - Expiration date.
+          - Service code.
+          To minimize risk, store securely only these data elements as needed for business.
         levels:
           - base
         status: partial
+        notes: |-
+          This requirement consists in auditing files, databases and memory to make sure the full
+          content of any track is not unnecessarily retained. It involves manual auditing but some
+          automated rules fit this requirement in order to reduce the chances if this data be
+          unintentionally stored in memory.
         rules:
           - coredump_disable_backtraces
           - coredump_disable_storage
@@ -698,31 +710,37 @@ controls:
           - sysctl_fs_suid_dumpable
 
       - id: 3.3.1.2
-        title: 'The card verification code is not retained upon completion of the
-          authorization process.This requirement is not eligible for the customized
-          approach.The card verification code is the three- or four-digit number printed
-          on the front or back of a payment card used to verify card-not-present
-          transactions.'
+        title: The card verification code is not retained upon completion of the authorization
+          process.
+        description: |-
+          This requirement is not eligible for the customized approach. The card verification code
+          is the three- or four-digit number printed on the front or back of a payment card used
+          to verify card-not-present transactions.
         levels:
           - base
         status: partial
-        rules:
+        notes: |-
+          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+        related_rules:
           - coredump_disable_backtraces
           - coredump_disable_storage
           - disable_users_coredumps
           - sysctl_fs_suid_dumpable
 
       - id: 3.3.1.3
-        title: 'The personal identification number (PIN) and the PIN block are not
-          retained upon completion of the authorization process.This requirement is not
-          eligible for the customized approach.PIN blocks are encrypted during the
-          natural course of transaction processes, but even if an entity encrypts the
-          PIN block again, it is still not allowed to be stored after the completion of
-          the authorization process.'
+        title: The personal identification number (PIN) and the PIN block are not retained upon
+          completion of the authorization process.
+        description: |-
+          This requirement is not eligible for the customized approach. PIN blocks are encrypted
+          during the natural course of transaction processes, but even if an entity encrypts the
+          PIN block again, it is still not allowed to be stored after the completion of the
+          authorization process.
         levels:
           - base
         status: partial
-        rules:
+        notes: |-
+          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+        related_rules:
           - coredump_disable_backtraces
           - coredump_disable_storage
           - disable_users_coredumps
