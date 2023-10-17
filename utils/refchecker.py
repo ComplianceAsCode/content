@@ -36,10 +36,13 @@ def parse_args():
                         help="Directory that contains control files with policy controls.")
     parser.add_argument("-p", "--profiles-root",
                         help="Override where to look for profile files.")
-    parser.add_argument("product", type=str, help="Product to check has required references")
+    parser.add_argument("product", type=str,
+                        help="Product to check has required references")
     parser.add_argument("profile", type=str, help="Profile to iterate over")
-    parser.add_argument("reference", type=str, help="Required reference system to check for")
-
+    parser.add_argument("reference", type=str,
+                        help="Required reference system to check for")
+    parser.add_argument("--exclude", "-e", type=str,
+                        help="A comma separated list  of rules to be ignored")
     return parser.parse_args()
 
 
@@ -65,11 +68,13 @@ def load_for_product(rule_obj, product, env_yaml=None):
 
 
 def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, reference,
-                    profiles_root, controls_manager=None):
+                    excludes, controls_manager=None):
     profile = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(profile_path, env_yaml)
     product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(env_yaml)
     product_cpes.load_content_cpes(env_yaml)
+
+    exc = _process_excludes(excludes)
 
     if controls_manager:
         profile_files = ssg.products.get_profile_files_from_root(env_yaml, product_yaml)
@@ -86,6 +91,9 @@ def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, re
 
         rule = load_for_product(rule_dirs[rule_id], product, env_yaml=env_yaml)
 
+        if rule_id in exc:
+            continue
+
         if reference not in rule.references:
             ok = False
             msg = "Rule {0} lacks required reference {1} or {1}@{2}"
@@ -93,6 +101,18 @@ def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, re
             print(msg, file=sys.stderr)
 
     return ok
+
+
+def _process_excludes(excludes):
+    if not excludes or excludes == '':
+        return list()
+    result = list()
+    if ',' not in excludes:
+        result.append(excludes)
+        return result
+    for item in excludes.split(','):
+        result.append(item.strip())
+    return result
 
 
 def main():
@@ -132,7 +152,7 @@ def main():
         raise ValueError(msg)
 
     ok = reference_check(env_yaml, all_rules, profile_path, args.product, product_yaml,
-                         args.reference, profiles_root, controls_manager)
+                         args.reference,  args.exclude, controls_manager)
     if not ok:
         sys.exit(1)
 

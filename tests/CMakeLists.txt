@@ -225,7 +225,14 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "cis" "cis")
     ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
     ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
-    ssg_refcheck_test("rhel9" "stig" "stigid")
+    # This can moved back the macro once enable_authselect has a stigid
+    add_test(
+        NAME "refchecker-rhel9-stig"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/refchecker.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "--exclude" "enable_authselect" "rhel9" "stig" "stigid"
+    )
+    set_tests_properties("refchecker-rhel9-stig" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("refchecker-rhel9-stig" PROPERTIES DEPENDS "test-rule-dir-json")
+    set_tests_properties("refchecker-rhel9-stig" PROPERTIES LABELS quick)
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
