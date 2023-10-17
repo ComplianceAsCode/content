@@ -79,6 +79,10 @@ def get_controls_env(args):
     return controls_manager, env_yaml
 
 
+def check_stig(reference: str, control_id: str) -> bool:
+    return reference == 'stigid' and not re.match(r'(\w){4}-\w{2}-\d{6}', control_id)
+
+
 def check_cis(reference: str, control_id: str) -> bool:
     return reference == 'cis' and not re.match(r"\d(\.\d+){0,3}", control_id)
 
@@ -86,6 +90,9 @@ def check_cis(reference: str, control_id: str) -> bool:
 def should_rule_be_checked(reference: str, control_id: str) -> bool:
     if check_cis(reference, control_id):
         print(f'Skipping {control_id} as it does not match a CIS id.')
+        return False
+    if check_stig(reference, control_id):
+        print(f'Skipping {control_id} as it does not match a STIG id.')
         return False
     return True
 
