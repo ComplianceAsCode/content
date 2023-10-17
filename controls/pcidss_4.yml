@@ -456,11 +456,20 @@ controls:
         - service_nfs_disabled
 
     - id: 2.2.5
-      title: 'If any insecure services, protocols, or daemons are present'
+      title: If any insecure services, protocols, or daemons are present, business justification
+        is documented and the risk is reduced.
+      description: |-
+        If any insecure services, protocols, or daemons are present:
+        - Business justification is documented.
+        - Additional security features are documented and implemented that reduce the risk of
+        using insecure services, protocols, or daemons.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Known insecure services are removed or disabled by 2.2.4
+        General security measures are covered by 1.2.6
+        This requirement is more about checking exceptions and their respective documentation.
 
     - id: 2.2.6
       title: 'System security parameters are configured to prevent misuse.System
