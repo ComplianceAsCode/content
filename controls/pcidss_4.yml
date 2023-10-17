@@ -567,27 +567,43 @@ controls:
         - configure_openssl_crypto_policy
 
   - id: 2.3
-    title: 'Wireless environments are configured and managed securely.'
+    title: Wireless environments are configured and managed securely.
     levels:
       - base
-    status: pending
+    status: supported
     controls:
     - id: 2.3.1
-      title: 'For wireless environments connected to the CDE or transmitting account
-        data, all wireless vendor defaults are changed at installation or are confirmed
-        to be secure.'
+      title: For wireless environments connected to the CDE or transmitting account data, all
+        wireless vendor defaults are changed at installation or are confirmed to be secure.
+      description: |-
+        For wireless environments connected to the CDE or transmitting account data, all wireless
+        vendor defaults are changed at installation or are confirmed to be secure, including but
+        not limited to:
+        - Default wireless encryption keys.
+        - Passwords on wireless access points.
+        - SNMP defaults.
+        - Any other security-related wireless vendor defaults.
       levels:
         - base
-      status: pending
-      rules: []
+      status: supported
+      notes: |-
+        Wireless interfaces are disabled by 1.3.3.
+      related_rules:
+        - wireless_disable_interfaces
 
     - id: 2.3.2
-      title: 'For wireless environments connected to the CDE or transmitting account
-        data, wireless encryption keys are changed'
+      title: For wireless environments connected to the CDE or transmitting account data, wireless
+        encryption keys are changed
+      description: |-
+        For wireless environments connected to the CDE or transmitting account
+        data, wireless encryption keys are changed
       levels:
         - base
-      status: pending
-      rules: []
+      status: supported
+      notes: |-
+        Wireless interfaces are disabled by 1.3.3.
+      related_rules:
+        - wireless_disable_interfaces
 
   - id: 3.1
     title: 'Processes and mechanisms for protecting stored account data are defined and
