@@ -361,10 +361,6 @@ controls:
     levels:
       - base
     status: partial
-    rules:
-      - configure_libreswan_crypto_policy
-      - configure_ssh_crypto_policy
-      - configure_openssl_crypto_policy
     controls:
     - id: 2.2.1
       title: Configuration standards are developed, implemented, and maintained
@@ -551,17 +547,24 @@ controls:
         - ensure_pam_wheel_group_empty
 
     - id: 2.2.7
-      title: 'All non-console administrative access is encrypted using strong
-        cryptography. Cleartext administrative authorization factors cannot be read or
-        intercepted from any network transmissions.This includes administrative access
-        via browser-based interfaces and application programming interfaces (APIs).'
+      title: All non-console administrative access is encrypted using strong cryptography.
+      description: |-
+        Cleartext administrative authorization factors cannot be read or intercepted from any
+        network transmissions. This includes administrative access via browser-based interfaces
+        and application programming interfaces (APIs).
       levels:
         - base
-      status: partial
+      status: automated
       rules:
+        - configure_crypto_policy
+        - var_system_crypto_policy=default_policy
+        - configure_ssh_crypto_policy
         - sshd_use_approved_ciphers
         - sshd_use_approved_macs
         - sshd_use_strong_kex
+      related_rules:
+        - configure_libreswan_crypto_policy
+        - configure_openssl_crypto_policy
 
   - id: 2.3
     title: 'Wireless environments are configured and managed securely.'
