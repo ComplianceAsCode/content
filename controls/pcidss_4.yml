@@ -634,19 +634,34 @@ controls:
         by the assigned personnel.
 
   - id: 3.2
-    title: 'Storage of account data is kept to a minimum.'
+    title: Storage of account data is kept to a minimum.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 3.2.1
-      title: 'Account data storage is kept to a minimum through implementation of data
-        retention and disposal policies, procedures, and processes that include at least
-        the following'
+      title: Account data storage is kept to a minimum through implementation of data retention
+        and disposal policies, procedures, and processes.
+      description: |-
+        Account data storage is kept to a minimum through implementation of data retention and
+        disposal policies, procedures, and processes that include at least the following:
+        - Coverage for all locations of stored account data.
+        - Coverage for any sensitive authentication data (SAD) stored prior to completion of
+        authorization.
+        - Limiting data storage amount and retention time to that which is required for legal or
+        regulatory, and/or business requirements.
+        - Specific retention requirements for stored account data that defines length of retention
+        period and includes a documented business justification.
+        - Processes for secure deletion or rendering account data unrecoverable when no longer
+        needed per the retention policy.
+        - A process for verifying, at least once every three months, that stored account data
+        exceeding the defined retention period has been securely deleted or rendered unrecoverable.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        This requirement is very dependent on each site policies and business model.
+        Local policies should be consulted and audited. Manual checking is reasonable.
 
   - id: 3.3
     title: 'Sensitive authentication data (SAD) is not stored after authorization.'
