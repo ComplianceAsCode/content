@@ -405,7 +405,6 @@ controls:
         - accounts_set_post_pw_existing
         - ensure_root_password_configured
         - no_empty_passwords_etc_shadow
-        - sudo_require_authentication
 
     - id: 2.2.3
       title: 'Primary functions requiring different security levels are managed'
@@ -472,37 +471,62 @@ controls:
         This requirement is more about checking exceptions and their respective documentation.
 
     - id: 2.2.6
-      title: 'System security parameters are configured to prevent misuse.System
-        components cannot be compromised because of incorrect security parameter
-        configuration.'
+      title: System security parameters are configured to prevent misuse.
+      description: |-
+        System components cannot be compromised because of incorrect security parameter
+        configuration.
       levels:
         - base
-      status: partial
+      status: automated
+      notes: |-
+        This requirement is not specific but also points to 2.2.1, where other policies are
+        referenced. Therefore, the most common rules related to system configuration in order to
+        prevent misuse and selected in main profiles are also selected here.
       rules:
+        # bootloader files protection
+        - file_groupowner_grub2_cfg
+        - file_owner_grub2_cfg
+        - file_permissions_grub2_cfg
+        - file_groupowner_user_cfg
+        - file_owner_user_cfg
+        - file_permissions_user_cfg
+        # at files protection
         - file_at_deny_not_exist
-        - file_cron_deny_not_exist
         - file_groupowner_at_allow
         - file_owner_at_allow
-        - file_groupowner_cron_allow
         - file_permissions_at_allow
+        # cron files protection
+        - file_cron_deny_not_exist
+        - file_groupowner_cron_allow
+        - file_owner_cron_allow
         - file_permissions_cron_allow
-        - file_permissions_cron_d
-        - file_permissions_cron_daily
-        - file_permissions_cron_hourly
-        - file_permissions_cron_monthly
-        - file_permissions_cron_weekly
+        - file_groupowner_crontab
+        - file_owner_crontab
         - file_permissions_crontab
+        - file_groupowner_cron_d
+        - file_owner_cron_d
+        - file_permissions_cron_d
+        - file_groupowner_cron_hourly
+        - file_owner_cron_hourly
+        - file_permissions_cron_hourly
+        - file_groupowner_cron_daily
+        - file_owner_cron_daily
+        - file_permissions_cron_daily
+        - file_groupowner_cron_weekly
+        - file_owner_cron_weekly
+        - file_permissions_cron_weekly
+        - file_groupowner_cron_monthly
+        - file_owner_cron_monthly
+        - file_permissions_cron_monthly
+        # ssh files protection
         - file_permissions_sshd_config
         - file_permissions_sshd_private_key
         - file_permissions_sshd_pub_key
-        - file_permissions_unauthorized_world_writable
+        # general files protection
         - file_permissions_ungroupowned
-        - file_groupowner_grub2_cfg
-        - file_owner_cron_allow
-        - file_owner_grub2_cfg
         - no_files_unowned_by_user
-        - package_cron_installed
-        - service_cron_enabled
+        - dir_perms_world_writable_sticky_bits
+        # ssh settings
         - sshd_disable_empty_passwords
         - sshd_disable_rhosts
         - sshd_disable_root_login
@@ -510,12 +534,21 @@ controls:
         - sshd_disable_x11_forwarding
         - sshd_do_not_permit_user_env
         - sshd_enable_pam
-        - sshd_enable_warning_banner
         - sshd_limit_user_access
         - sshd_set_loglevel_verbose
         - sshd_set_max_auth_tries
         - sshd_set_max_sessions
         - sshd_set_maxstartups
+        - sshd_set_login_grace_time
+        - var_sshd_set_login_grace_time=60
+        # sudo settings
+        - sudo_add_use_pty
+        - sudo_custom_logfile
+        - sudo_require_authentication
+        - sudo_require_reauthentication
+        # su command limitation
+        - use_pam_wheel_group_for_su
+        - ensure_pam_wheel_group_empty
 
     - id: 2.2.7
       title: 'All non-console administrative access is encrypted using strong
@@ -2271,8 +2304,6 @@ controls:
         - audit_rules_usergroup_modification_shadow
         - audit_rules_sysadmin_actions
         - package_sudo_installed
-        - sudo_add_use_pty
-        - sudo_custom_logfile
 
       - id: 10.2.1.6
         title: 'Audit logs capture the initialization of new audit logs, and starting,
