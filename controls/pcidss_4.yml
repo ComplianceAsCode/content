@@ -786,40 +786,49 @@ controls:
       status: manual
 
   - id: 3.4
-    title: 'Access to displays of full PAN and ability to copy PAN is restricted.'
+    title: Access to displays of full PAN and ability to copy PAN is restricted.
     levels:
       - base
-    status: pending
+    status: automated
     controls:
     - id: 3.4.1
-      title: 'PAN is masked when displayed (the BIN and last four digits are the maximum
-        number of digits to be displayed), such that only personnel with a legitimate
-        business need can see more than the BIN and last four digits of the PAN.PAN
-        displays are restricted to the minimum number of digits necessary to meet a
-        defined business need.This requirement does not supersede stricter requirements
-        in place for displays of cardholder data—for example, legal or payment brand
-        requirements for point-of-sale (POS) receipts. This requirement relates to
-        protection of PAN where it is displayed on screens, paper receipts, printouts,
-        etc., and is not to be confused with Requirement 3.5.1 for protection of PAN
-        when stored, processed, or transmitted.'
+      title: PAN is masked when displayed (the BIN and last four digits are the maximum number of
+        digits to be displayed), such that only personnel with a legitimate business need can see
+        more than the BIN and last four digits of the PAN.
+      description: |-
+        PAN displays are restricted to the minimum number of digits necessary to meet a defined
+        business need. This requirement does not supersede stricter requirements in place for
+        displays of cardholder data — for example, legal or payment brand requirements for
+        point-of-sale (POS) receipts. This requirement relates to protection of PAN where it is
+        displayed on screens, paper receipts, printouts, etc., and is not to be confused with
+        Requirement 3.5.1 for protection of PAN when stored, processed, or transmitted.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Consists on examining documented policies and procedures, checking system configurations
+        and observing relevant applications.
 
     - id: 3.4.2
-      title: 'When using remote-access technologies, technical controls prevent copy
-        and/or relocation of PAN for all personnel, except for those with documented,
-        explicit authorization and a legitimate, defined business need.PAN cannot be
-        copied or relocated by unauthorized personnel using remote-access
-        technologies.Storing or relocating PAN onto local hard drives, removable
-        electronic media, and other storage devices brings these devices into scope for
-        PCI DSS. This requirement is a best practice until 31 March 2025, after which it
-        will be required and must be fully considered during a PCI DSS assessment.'
+      title: When using remote-access technologies, technical controls prevent copy and/or
+        relocation of PAN for all personnel, except for those with documented, explicit
+        authorization and a legitimate, defined business need.
+      description: |-  
+        PAN cannot be copied or relocated by unauthorized personnel using remote-access
+        technologies. Storing or relocating PAN onto local hard drives, removable electronic
+        media, and other storage devices brings these devices into scope for PCI DSS.
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      notes: |-
+        There are technical rules to disable removable storage devices. However, this requirement
+        still demand some manual auditing in documentation and eventual exceptions.
+      rules:
+        - kernel_module_usb-storage_disabled
+        - dconf_gnome_disable_automount
+        - dconf_gnome_disable_automount_open
 
   - id: 3.5
     title: 'Primary account number (PAN) is secured wherever it is stored.'
