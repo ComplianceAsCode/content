@@ -67,40 +67,15 @@ def load_for_product(rule_obj, product, env_yaml=None):
     return rule
 
 
-def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, reference,
-                    excludes, controls_manager=None):
-    profile = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(profile_path, env_yaml)
+def _process_controls_manager(controls_manager, env_yaml, product_yaml, profile, rule_dirs):
     product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(env_yaml)
     product_cpes.load_content_cpes(env_yaml)
-
-    exc = _process_excludes(excludes)
-
     if controls_manager:
         profile_files = ssg.products.get_profile_files_from_root(env_yaml, product_yaml)
         all_profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml,
                                                                       product_cpes)
         profile.resolve(all_profiles, rule_dirs, controls_manager)
-
-    ok = True
-    for rule_id in profile.selected + profile.unselected:
-        if rule_id not in rule_dirs:
-            msg = "Unable to find rule in rule_dirs.json: {0}"
-            msg = msg.format(rule_id)
-            raise ValueError(msg)
-
-        rule = load_for_product(rule_dirs[rule_id], product, env_yaml=env_yaml)
-
-        if rule_id in exc:
-            continue
-
-        if reference not in rule.references:
-            ok = False
-            msg = "Rule {0} lacks required reference {1} or {1}@{2}"
-            msg = msg.format(rule_id, reference, product)
-            print(msg, file=sys.stderr)
-
-    return ok
 
 
 def _process_excludes(excludes):
@@ -113,6 +88,34 @@ def _process_excludes(excludes):
     for item in excludes.split(','):
         result.append(item.strip())
     return result
+
+
+def reference_check(env_yaml, rule_dirs, profile_path, product, product_yaml, reference,
+                    excludes, controls_manager=None):
+    profile = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(profile_path, env_yaml)
+    _process_controls_manager(controls_manager, env_yaml, product_yaml, profile, rule_dirs)
+
+    ok = True
+    processed_excludes = _process_excludes(excludes)
+
+    for rule_id in profile.selected + profile.unselected:
+        if rule_id not in rule_dirs:
+            msg = "Unable to find rule in rule_dirs.json: {0}"
+            msg = msg.format(rule_id)
+            raise ValueError(msg)
+
+        rule = load_for_product(rule_dirs[rule_id], product, env_yaml=env_yaml)
+
+        if rule_id in processed_excludes:
+            continue
+
+        if reference not in rule.references:
+            ok = False
+            msg = "Rule {0} lacks required reference {1} or {1}@{2}"
+            msg = msg.format(rule_id, reference, product)
+            print(msg, file=sys.stderr)
+
+    return ok
 
 
 def main():
