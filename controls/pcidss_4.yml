@@ -907,25 +907,43 @@ controls:
           To properly check this requirement, site policies and documentation should be consulted.
 
   - id: 3.6
-    title: 'Cryptographic keys used to protect stored account data are secured.'
+    title: Cryptographic keys used to protect stored account data are secured.
     levels:
       - base
     status: pending
     controls:
     - id: 3.6.1
-      title: 'Procedures are defined and implemented to protect cryptographic keys used
-        to protect stored account data against disclosure and misuse that include'
+      title: Procedures are defined and implemented to protect cryptographic keys used to protect
+        stored account data against disclosure and misuse.
+      description: |-
+        Procedures are defined and implemented to protect cryptographic keys used to protect
+        stored account data against disclosure and misuse that include:
+        - Access to keys is restricted to the fewest number of custodians necessary.
+        - Key-encrypting keys are at least as strong as the data-encrypting keys they protect.
+        - Key-encrypting keys are stored separately from data-encrypting keys.
+        - Keys are stored securely in the fewest possible locations and forms.
       levels:
         - base
       status: pending
       controls:
       - id: 3.6.1.1
-        title: 'Additional requirement for service providers only: A documented
-          description of the cryptographic architecture is maintained that includes'
+        title: 'Additional requirement for service providers only: A documented description of the
+          cryptographic architecture is maintained'
+        description: |-
+          Additional requirement for service providers only: A documented description of the
+          cryptographic architecture is maintained that includes:
+          - Details of all algorithms, protocols, and keys used for the protection of stored
+          account data, including key strength and expiry date.
+          - Preventing the use of the same cryptographic keys in production and test environments.
+          This bullet is a best practice until 31 March 2025, after which it will be required as
+          part of Requirement 3.6.1.1 and must be fully considered during a PCI DSS assessment.
+          - Description of the key usage for each key.
+          - Inventory of any hardware security modules (HSMs), key management systems (KMS), and
+          other secure cryptographic devices (SCDs) used for key management, including type and
+          location of devices, as outlined in Requirement 12.3.4.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
 
       - id: 3.6.1.2
         title: 'Secret and private keys used to encrypt/decrypt stored account data
