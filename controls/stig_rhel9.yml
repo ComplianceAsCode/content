@@ -3659,7 +3659,12 @@ controls:
             RHEL 9 must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr,
             fremovexattr, and lremovexattr system calls.
         rules:
+            - audit_rules_dac_modification_setxattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
             - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_lremovexattr
         status: automated
 
     -   id: RHEL-09-654030
