@@ -985,73 +985,89 @@ controls:
         status: manual
 
   - id: 3.7
-    title: 'Where cryptography is used to protect stored account data, key management
-      processes and procedures covering all aspects of the key lifecycle are defined and
-      implemented.'
+    title: Where cryptography is used to protect stored account data, key management processes and
+      procedures covering all aspects of the key lifecycle are defined and implemented.
     levels:
       - base
     status: pending
     controls:
     - id: 3.7.1
-      title: 'Key-management policies and procedures are implemented to include
-        generation of strong cryptographic keys used to protect stored account
-        data.Strong cryptographic keys are generated.'
+      title: Key-management policies and procedures are implemented to include generation of
+        strong cryptographic keys used to protect stored account data.
+      description: |-
+        Strong cryptographic keys are generated.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 3.7.2
-      title: 'Key-management policies and procedures are implemented to include secure
-        distribution of cryptographic keys used to protect stored account
-        data.Cryptographic keys are secured during distribution.'
+      title: Key-management policies and procedures are implemented to include secure distribution
+        of cryptographic keys used to protect stored account data.
+      description: |-
+        Cryptographic keys are secured during distribution.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 3.7.3
-      title: 'Key-management policies and procedures are implemented to include secure
-        storage of cryptographic keys used to protect stored account data.Cryptographic
-        keys are secured when stored.'
+      title: Key-management policies and procedures are implemented to include secure storage of
+        cryptographic keys used to protect stored account data.
+      description: |-
+        Cryptographic keys are secured when stored.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        The scope of this requirement seems much wider going even to application level, which
+        might be different for each site. Regarding local system there are some technical measures
+        ensured by 2.2.6.
 
     - id: 3.7.4
-      title: 'Key management policies and procedures are implemented for cryptographic
-        key changes for keys that have reached the end of their cryptoperiod, as defined
-        by the associated application vendor or key owner, and based on industry best
-        practices and guidelines, including the following'
+      title: Key management policies and procedures are implemented for cryptographic key changes
+        for keys that have reached the end of their cryptoperiod, as defined by the associated
+        application vendor or key owner, and based on industry best practices and guidelines.
+      description: |-
+        Key management policies and procedures are implemented for cryptographic key changes for
+        keys that have reached the end of their cryptoperiod, as defined by the associated
+        application vendor or key owner, and based on industry best practices and guidelines,
+        including the following:
+        - A defined cryptoperiod for each key type in use.
+        - A process for key changes at the end of the defined cryptoperiod.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 3.7.5
-      title: 'Key management policies procedures are implemented to include the
-        retirement, replacement, or destruction of keys used to protect stored account
-        data, as deemed necessary when'
+      title: Key management policies procedures are implemented to include the retirement,
+        replacement, or destruction of keys used to protect stored account data, as deemed
+        necessary.
+      description: |-
+        Key management policies procedures are implemented to include the retirement, replacement,
+        or destruction of keys used to protect stored account data, as deemed necessary when:
+        - The key has reached the end of its defined cryptoperiod.
+        - The integrity of the key has been weakened, including when personnel with knowledge of a
+        cleartext key component leaves the company, or the role for which the key component was
+        known.
+        - The key is suspected of or known to be compromised.
+        - Retired or replaced keys are not used for encryption operations.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 3.7.6
-      title: 'Where manual cleartext cryptographic key-management operations are
-        performed by personnel, key-management policies and procedures are implemented
-        include managing these operations using split knowledge and dual
-        control. Cleartext secret or private keys cannot be known by anyone. Operations
-        involving cleartext keys cannot be carried out by a single person.This control
-        is applicable for manual key-management operations or where key management is
-        not controlled by the encryption product.  A cryptographic key that is simply
-        split into two parts does not meet this requirement. Secret or private keys
-        stored as key components or key shares must be generated via one of the following'
+      title: Where manual cleartext cryptographic key-management operations are performed by
+        personnel, key-management policies and procedures are implemented include managing these
+        operations using split knowledge and dual control.
+      description: |-
+        Cleartext secret or private keys cannot be known by anyone. Operations involving cleartext
+        keys cannot be carried out by a single person. This control is applicable for manual
+        key-management operations or where key management is not controlled by the encryption
+        product. A cryptographic key that is simply split into two parts does not meet this
+        requirement. Secret or private keys stored as key components or key shares must be
+        generated via one of the following
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 3.7.8
       title: 'Key management policies and procedures are implemented to include that
