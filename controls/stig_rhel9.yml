@@ -159,7 +159,7 @@ controls:
             - medium
         title: RHEL 9 must clear the page allocator to prevent use-after-free attacks.
         rules:
-            - kernel_config_page_poisoning
+            - grub2_page_poison_argument
         status: automated
 
     -   id: RHEL-09-212045
