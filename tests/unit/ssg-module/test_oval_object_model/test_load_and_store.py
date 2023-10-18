@@ -395,3 +395,12 @@ def test_content_variable_state(variable_state):
     property_value.text = "1"
 
     assert variable_state.properties[0] == property_value
+
+
+def test_load_shorthand_with_several_oval_definitions():
+    oval_doc = OVALDocument()
+    path_ = os.path.join(DATA_DIR, "shorthand_installed_OS_is_rhel8.xml")
+    shorthand_string = _read_shorthand(path_)
+    oval_doc.load_shorthand(shorthand_string, "fedora")
+    assert len(oval_doc.definitions.keys()) == 12
+    assert "installed_OS_is_rhel8" in oval_doc.definitions
