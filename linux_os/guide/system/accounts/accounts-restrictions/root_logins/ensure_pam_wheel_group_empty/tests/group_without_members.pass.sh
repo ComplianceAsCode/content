@@ -3,4 +3,4 @@
 
 GRP_NAME=sugroup
 groupadd ${GRP_NAME}
-groupmems -g ${GRP_NAME} -p
+sed -i -E "s/^(${GRP_NAME}:[^:]*:[^:]*:)[^:]*/\1/" /etc/group
