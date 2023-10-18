@@ -1700,7 +1700,7 @@ controls:
             - medium
         title: RHEL 9 must not enable IPv4 packet forwarding unless the system is a router.
         rules:
-            - sysctl_net_ipv4_ip_forward
+            - sysctl_net_ipv4_conf_all_forwarding
         status: automated
 
     -   id: RHEL-09-254010
