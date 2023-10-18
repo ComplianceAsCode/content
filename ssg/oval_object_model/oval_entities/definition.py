@@ -229,11 +229,10 @@ class Affected(OVALBaseObject):
         from given OVAL tree. It then adds one platform of the product we are
         building.
         """
-        if type_ == "platform":
-            self.platforms = [full_name]
-
-        if type_ == "product":
-            self.products = [full_name]
+        setattr(self, "{}s".format(type_), [full_name])
+        setattr(
+            self, "{}_tag".format(type_), "{%s}%s" % (OVAL_NAMESPACES.definition, type_)
+        )
 
     def _is_in_platforms(self, multi_prod, product):
         for platform in self.platforms if self.platforms is not None else []:
@@ -273,9 +272,9 @@ class Affected(OVALBaseObject):
         # for this product => return False to indicate that
         return False
 
-    def _add_to_affected_element(self, affected_el, elements):
+    def _add_to_affected_element(self, affected_el, elements, tag):
         for platform in elements if elements is not None else []:
-            platform_el = ElementTree.Element(self.platform_tag)
+            platform_el = ElementTree.Element(tag)
             platform_el.text = platform
             affected_el.append(platform_el)
 
@@ -283,9 +282,8 @@ class Affected(OVALBaseObject):
         affected_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
         affected_el.set("family", self.family)
 
-        self._add_to_affected_element(affected_el, self.platforms)
-        self._add_to_affected_element(affected_el, self.products)
-
+        self._add_to_affected_element(affected_el, self.platforms, self.platform_tag)
+        self._add_to_affected_element(affected_el, self.products, self.product_tag)
         return affected_el
 
 
