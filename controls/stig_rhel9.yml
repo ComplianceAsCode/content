@@ -3634,6 +3634,8 @@ controls:
         title: RHEL 9 must audit all uses of the chmod, fchmod, and fchmodat system calls.
         rules:
             - audit_rules_dac_modification_chmod
+            - audit_rules_dac_modification_fchmod
+            - audit_rules_dac_modification_fchmodat
         status: automated
 
     -   id: RHEL-09-654020
