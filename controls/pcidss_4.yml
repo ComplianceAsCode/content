@@ -831,34 +831,52 @@ controls:
         - dconf_gnome_disable_automount_open
 
   - id: 3.5
-    title: 'Primary account number (PAN) is secured wherever it is stored.'
+    title: Primary account number (PAN) is secured wherever it is stored.
     levels:
       - base
     status: pending
     controls:
     - id: 3.5.1
-      title: 'PAN is rendered unreadable anywhere it is stored by using any of the
-        following approaches'
+      title: PAN is rendered unreadable anywhere it is stored
+      description: |-
+        PAN is rendered unreadable anywhere it is stored by using any of the following approaches:
+        - One-way hashes based on strong cryptography of the entire PAN.
+        - Truncation (hashing cannot be used to replace the truncated segment of PAN).
+          - If hashed and truncated versions of the same PAN, or different truncation formats of
+          the same PAN, are present in an environment, additional controls are in place such that
+          the different versions cannot be correlated to reconstruct the original PAN.
+        - Indexes tokens.
+        - Strong cryptography with associated key-management processes and procedures.
       levels:
         - base
       status: pending
       controls:
       - id: 3.5.1.1
-        title: 'Hashes used to render PAN unreadable (per the first bullet of
-          Requirement 3.5.1) are keyed cryptographic hashes of the entire PAN, with
-          associated key-management processes and procedures in accordance with
-          Requirements 3.6 and 3.7.This requirement applies to PANs stored in primary
-          storage (databases, or flat files such as text files spreadsheets) as well as
-          non-primary storage (backup, audit logs, exception, or troubleshooting logs)
-          must all be protected.  This requirement does not preclude the use of
-          temporary files containing cleartext PAN while encrypting and decrypting PAN.
-          This requirement is considered a best practice until 31 March 2025, after
-          which it will be required and must be fully considered during a PCI DSS
-          assessment.'
+        title: Hashes used to render PAN unreadable (per the first bullet of Requirement 3.5.1)
+          are keyed cryptographic hashes of the entire PAN, with associated key-management
+          processes and procedures in accordance with Requirements 3.6 and 3.7.
+        description: |-
+          This requirement applies to PANs stored in primary storage (databases, or flat files
+          such as text files spreadsheets) as well as non-primary storage (backup, audit logs,
+          exception, or troubleshooting logs) must all be protected. This requirement does not
+          preclude the use of temporary files containing cleartext PAN while encrypting and
+          decrypting PAN. This requirement is considered a best practice until 31 March 2025,
+          after which it will be required and must be fully considered during a PCI DSS
+          assessment.
         levels:
           - base
-        status: pending
-        rules: []
+        status: planned
+        notes: |-
+          This requirement likely demand assessment in application level for some environments and
+          this would be too specific to be automated. However, on system level we can ensure some
+          strong cryptographic algorithms. This is also generally covered by 2.2.7 but here would
+          be possible to include more specific rules, for openssl and libreswan for example.
+          However it would be first necessary to include a platform conditional in these rules
+          before selecting them so they are applicable only if the respective packages are
+          installed.
+        related_rules:
+          - configure_libreswan_crypto_policy
+          - configure_openssl_crypto_policy
 
       - id: 3.5.1.2
         title: 'If disk-level or partition-level encryption (rather than file-,
