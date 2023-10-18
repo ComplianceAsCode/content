@@ -879,13 +879,15 @@ controls:
           - configure_openssl_crypto_policy
 
       - id: 3.5.1.2
-        title: 'If disk-level or partition-level encryption (rather than file-,
-          column-, or field-level database encryption) is used to render PAN unreadable,
-          it is implemented only'
+        title: If disk-level or partition-level encryption (rather than file-, column-, or
+          field-level database encryption) is used to render PAN unreadable, it is implemented
+          only on removable electronic media or complemented by another mechanism that meets
+          Requirement 3.5.1
         levels:
           - base
-        status: pending
-        rules: []
+        status: automated
+        rules:
+          - package_cryptsetup-luks_installed
 
       - id: 3.5.1.3
         title: 'If disk-level or partition-level encryption is used (rather than
