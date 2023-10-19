@@ -3,4 +3,4 @@
 
 GRP_NAME=sugroup
 groupadd ${GRP_NAME}
-sed -i -E "s/^(${GRP_NAME}:[^:]*:[^:]*:)[^:]*/\1/" /etc/group
+gpasswd -M '' ${GRP_NAME}
