@@ -1258,24 +1258,30 @@ controls:
       status: manual
 
     - id: 5.2.3
-      title: 'Any system components that are not at risk for malware are evaluated
-        periodically to include the following'
+      title: Any system components that are not at risk for malware are evaluated periodically.
+      description: |-
+        Any system components that are not at risk for malware are evaluated periodically to
+        include the following:
+        - A documented list of all system components not at risk for malware.
+        - Identification and evaluation of evolving malware threats for those system components.
+        - Confirmation whether such system components continue to not require anti-malware
+        protection.
       levels:
         - base
-      status: pending
+      status: manual
       controls:
       - id: 5.2.3.1
-        title: 'The frequency of periodic evaluations of system components identified
-          as not at risk for malware is defined in the entity’s targeted risk analysis,
-          which is performed according to all elements specified in Requirement
-          12.3.1.Systems not known to be at risk from malware are re-evaluated at a
-          frequency that addresses the entity’s risk.This requirement is a best practice
-          until 31 March 2025, after which it will be required and must be fully
-          considered during a PCI DSS assessment.'
+        title: The frequency of periodic evaluations of system components identified as not at
+          risk for malware is defined in the entity’s targeted risk analysis, which is performed
+          according to all elements specified in Requirement 12.3.1.
+        description: |-
+          Systems not known to be at risk from malware are re-evaluated at a frequency that
+          addresses the entity’s risk. This requirement is a best practice until 31 March 2025,
+          after which it will be required and must be fully considered during a PCI DSS
+          assessment.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
 
   - id: 5.3
     title: 'Anti-malware mechanisms and processes are active, maintained, and monitored.'
