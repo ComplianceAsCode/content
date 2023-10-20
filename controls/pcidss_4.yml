@@ -1845,22 +1845,27 @@ controls:
         by the assigned personnel.
 
   - id: 8.2
-    title: 'User identification and related accounts for users and administrators are
-      strictly managed throughout an account’s lifecycle.'
+    title: User identification and related accounts for users and administrators are strictly
+      managed throughout an account’s lifecycle.
     levels:
       - base
     status: partial
     controls:
     - id: 8.2.1
-      title: 'All users are assigned a unique ID before access to system components or
-        cardholder data is allowed.All actions by all users are attributable to an
-        individual.This requirement is not intended to apply to user accounts within
-        point-of-sale terminals that have access to only one card number at a time to
-        facilitate a single transaction (such as IDs used by cashiers on point-of-sale
-        terminals).'
+      title: All users are assigned a unique ID before access to system components or cardholder
+        data is allowed.
+      description: |-
+        All actions by all users are attributable to an individual. This requirement is not
+        intended to apply to user accounts within point-of-sale terminals that have access to only
+        one card number at a time to facilitate a single transaction (such as IDs used by cashiers
+        on point-of-sale terminals).
       levels:
         - base
-      status: partial
+      status: planned
+      notes: |-
+        The rules selected in this requirement are incomplete. Missing remediation and test
+        scenarios. They should include test scenarios and likely remediation or a warning
+        informing why a remediation is not present.
       rules:
         - account_unique_id
         - accounts_root_gid_zero
