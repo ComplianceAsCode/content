@@ -1131,7 +1131,7 @@ controls:
     title: PAN is protected with strong cryptography during transmission.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 4.2.1
       title: Strong cryptography and security protocols are implemented as follows to safeguard
@@ -1166,14 +1166,17 @@ controls:
         status: manual
 
       - id: 4.2.1.2
-        title: 'Wireless networks transmitting PAN or connected to the CDE use
-          industry best practices to implement strong cryptography for authentication
-          and transmission. Cleartext PAN cannot be read or intercepted from wireless
-          network transmissions.'
+        title: Wireless networks transmitting PAN or connected to the CDE use industry best
+          practices to implement strong cryptography for authentication and transmission.
+        description: |-
+          Cleartext PAN cannot be read or intercepted from wireless network transmissions.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
+        notes: |-
+          Wireless interfaces are disabled by 1.3.3.
+        related_rules:
+          - wireless_disable_interfaces
 
     - id: 4.2.2
       title: 'PAN is secured with strong cryptography whenever it is sent via end-user
