@@ -1968,19 +1968,19 @@ controls:
         - sshd_set_keepalive_0
 
   - id: 8.3
-    title: 'Strong authentication for users and administrators is established and managed.'
+    title: Strong authentication for users and administrators is established and managed.
     levels:
       - base
     status: partial
     controls:
     - id: 8.3.1
-      title: 'All user access to system components for users and administrators is
-        authenticated.'
+      title: All user access to system components for users and administrators is authenticated.
       levels:
         - base
-      status: partial
+      status: automated
       rules:
         - disable_host_auth
+        - no_empty_passwords
 
     - id: 8.3.2
       title: 'Strong cryptography is used to render all authentication factors
@@ -2049,7 +2049,6 @@ controls:
         - accounts_password_pam_ucredit
         - accounts_password_pam_dcredit
         - accounts_password_pam_lcredit
-        - no_empty_passwords
         - accounts_password_pam_minlen
         - cracklib_accounts_password_pam_dcredit
         - cracklib_accounts_password_pam_lcredit
@@ -2091,7 +2090,6 @@ controls:
         - accounts_password_pam_ucredit
         - accounts_password_pam_dcredit
         - accounts_password_pam_lcredit
-        - no_empty_passwords
         - accounts_password_pam_minlen
         - accounts_minimum_age_login_defs
         - accounts_password_warn_age_login_defs
