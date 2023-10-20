@@ -395,9 +395,10 @@ controls:
       levels:
         - base
       status: automated
+      notes: |-
+        Also related to requirement 8.2.6.
       rules:
         - accounts_password_last_change_is_in_past
-        - accounts_set_post_pw_existing
         - ensure_root_password_configured
         - no_empty_passwords_etc_shadow
 
@@ -1918,14 +1919,18 @@ controls:
         This requirement depends on site policies for user termination.
 
     - id: 8.2.6
-      title: 'Inactive user accounts are removed or disabled within 90 days of
-        inactivity.Inactive user accounts cannot be used.'
+      title: Inactive user accounts are removed or disabled within 90 days of inactivity.
+      description: |-
+        Inactive user accounts cannot be used.
       levels:
         - base
       status: automated
+      notes: |-
+        Also related to requirement 2.2.2.
       rules:
         - var_account_disable_post_pw_expiration=90
         - account_disable_post_pw_expiration
+        - accounts_set_post_pw_existing
 
     - id: 8.2.7
       title: 'Accounts used by third parties to access, support, or maintain system
