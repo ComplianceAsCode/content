@@ -1728,19 +1728,26 @@ controls:
       status: manual
 
     - id: 7.2.5
-      title: 'All application and system accounts and related access privileges are
-        assigned and managed'
+      title: All application and system accounts and related access privileges are assigned and
+        managed.
+      description: |-
+        All application and system accounts and related access privileges are assigned and managed
+        as follows:
+        - Based on the least privileges necessary for the operability of the system or application.
+        - Access is limited to the systems, applications, or processes that specifically require
+        their use.
       levels:
         - base
-      status: pending
+      status: manual
+      notes: |-
+        General access are restricted by 2.2.6 and 8.2 section.
       controls:
       - id: 7.2.5.1
-        title: 'All access by application and system accounts and related access
-          privileges are reviewed as follows'
+        title: All access by application and system accounts and related access privileges are
+          reviewed.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
 
     - id: 7.2.6
       title: 'All user access to query repositories of stored cardholder data is
