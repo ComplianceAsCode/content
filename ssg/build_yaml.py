@@ -31,6 +31,7 @@ from .constants import (XCCDF12_NS,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
                         SSG_REF_URIS,
+                        SSG_IDENT_URIS,
                         PREFIX_TO_NS,
                         FIX_TYPE_TO_SYSTEM
                         )
@@ -960,6 +961,15 @@ class Rule(XCCDFEntity, Templatable):
             # into corresponding XCCDF <sub> elements
             ssg.build_remediations.expand_xccdf_subs(fix_el, fix_type)
 
+    def _add_ident_elements(self, rule):
+        for ident_type, ident_val in self.identifiers.items():
+            if ident_type not in SSG_IDENT_URIS:
+                msg = "Invalid identifier type '%s' in rule '%s'" % (ident_type, self.id_)
+                raise ValueError(msg)
+            ident = ET.SubElement(rule, '{%s}ident' % XCCDF12_NS)
+            ident.set("system", SSG_IDENT_URIS[ident_type])
+            ident.text = ident_val
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
@@ -988,11 +998,7 @@ class Rule(XCCDFEntity, Templatable):
             rule, "conflicts", "idref",
             list(map(lambda x: OSCAP_RULE + x, self.conflicts)))
 
-        for ident_type, ident_val in self.identifiers.items():
-            ident = ET.SubElement(rule, '{%s}ident' % XCCDF12_NS)
-            if ident_type == 'cce':
-                ident.set('system', cce_uri)
-                ident.text = ident_val
+        self._add_ident_elements(rule)
         self._add_fixes_elements(rule)
 
         ocil_parent = rule
