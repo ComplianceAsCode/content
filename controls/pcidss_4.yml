@@ -1676,17 +1676,26 @@ controls:
         by the assigned personnel.
 
   - id: 7.2
-    title: 'Access to system components and data is appropriately defined and assigned.'
+    title: Access to system components and data is appropriately defined and assigned.
     levels:
       - base
     status: pending
     controls:
     - id: 7.2.1
-      title: 'An access control model is defined and includes granting access'
+      title: An access control model is defined and includes granting access
+      description: |-
+        An access control model is defined and includes granting access as follows:
+        - Appropriate access depending on the entity’s business and access needs.
+        - Access to system components and data resources that is based on users’ job
+        classification and functions.
+        - The least privileges required (for example, user, administrator) to perform a job
+        function.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        General access are restricted by 2.2.6 and 8.2 section. This requirement is more about
+        checking granting access process.
 
     - id: 7.2.2
       title: 'Access is assigned to users, including privileged users, based on'
