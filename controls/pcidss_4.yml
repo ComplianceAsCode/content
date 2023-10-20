@@ -396,7 +396,6 @@ controls:
         - base
       status: automated
       rules:
-        - accounts_no_uid_except_zero
         - accounts_password_last_change_is_in_past
         - accounts_set_post_pw_existing
         - ensure_root_password_configured
@@ -1868,20 +1867,31 @@ controls:
         informing why a remediation is not present.
       rules:
         - account_unique_id
+        - account_unique_name
+        - accounts_no_uid_except_zero
         - accounts_root_gid_zero
         - group_unique_id
         - group_unique_name
-        - account_unique_name
 
     - id: 8.2.2
-      title: 'Group, shared, or generic accounts, or other shared authentication
-        credentials are only used when necessary on an exception basis, and are managed'
+      title: Group, shared, or generic accounts, or other shared authentication credentials are
+        only used when necessary on an exception basis, and are managed.
+      description: |-
+        - Account use is prevented unless needed for an exceptional circumstance.
+        - Use is limited to the time needed for the exceptional circumstance.
+        - Business justification for use is documented.
+        - Use is explicitly approved by management.
+        - Individual user identity is confirmed before access to an account is granted.
+        - Every action taken is attributable to an individual user.
       levels:
         - base
-      status: partial
+      status: automated
+      notes: |-
+        This requirement is complemented by 8.2.1.
       rules:
         - gid_passwd_group_same
-        - accounts_no_uid_except_zero
+        - no_password_auth_for_systemaccounts
+        - no_shelllogin_for_systemaccounts
 
     - id: 8.2.3
       title: 'Additional requirement for service providers only: Service providers with
@@ -1890,8 +1900,7 @@ controls:
       levels:
         - base
       status: partial
-      rules:
-        - accounts_no_uid_except_zero
+      rules: []
 
     - id: 8.2.4
       title: 'Addition, deletion, and modification of user IDs, authentication factors,
@@ -2163,7 +2172,6 @@ controls:
         - accounts_umask_etc_profile
         - no_direct_root_logins
         - securetty_root_login_console_only
-        - no_shelllogin_for_systemaccounts
         - use_pam_wheel_for_su
 
     - id: 8.6.2
