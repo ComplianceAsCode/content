@@ -1228,21 +1228,27 @@ controls:
         by the assigned personnel.
 
   - id: 5.2
-    title: 'Malicious software (malware) is prevented, or detected and addressed.'
+    title: Malicious software (malware) is prevented, or detected and addressed.
     levels:
       - base
-    status: pending
+    status: automated
+    notes: |-
+      Related measures are covered by 1.2.6, 1.4.5 and 3.4.2.
     controls:
     - id: 5.2.1
-      title: 'An anti-malware solution(s) is deployed on all system components, except
-        for those system components identified in periodic evaluations per Requirement
-        5.2.3 that concludes the system components are not at risk from
-        malware.Automated mechanisms are implemented to prevent systems from becoming an
-        attack vector for malware.'
+      title: An anti-malware solution(s) is deployed on all system components, except for those
+        system components identified in periodic evaluations per Requirement 5.2.3 that concludes
+        the system components are not at risk from malware.
+      description: |-
+        Automated mechanisms are implemented to prevent systems from becoming an attack vector for
+        malware.
       levels:
         - base
-      status: pending
-      rules: []
+      status: supported
+      notes: |-
+        There are many options of anti-malware and the criteria for any adopted solution or
+        approach relies on each site policy. Technologies are supported but manual assessment is
+        required.
 
     - id: 5.2.2
       title: 'The deployed anti-malware solution(s)'
