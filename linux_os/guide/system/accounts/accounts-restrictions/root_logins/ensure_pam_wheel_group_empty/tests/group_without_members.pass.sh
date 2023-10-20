@@ -3,4 +3,4 @@
 
 GRP_NAME=sugroup
 groupadd ${GRP_NAME}
-groupmems -g ${GRP_NAME} -p
+gpasswd -M '' ${GRP_NAME}

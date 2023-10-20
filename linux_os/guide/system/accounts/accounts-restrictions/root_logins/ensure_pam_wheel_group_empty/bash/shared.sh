@@ -7,4 +7,4 @@ if ! grep -q "^${var_pam_wheel_group_for_su}:[^:]*:[^:]*:[^:]*" /etc/group; then
 fi
 
 # group must be empty
-groupmems -g ${var_pam_wheel_group_for_su} -p
+gpasswd -M '' ${var_pam_wheel_group_for_su}
