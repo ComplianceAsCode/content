@@ -514,3 +514,8 @@ BENCHMARKS = {
     "products/chromium/guide",
     "products/firefox/guide",
 }
+
+
+SSG_IDENT_URIS = {
+    'cce': cce_uri
+}
