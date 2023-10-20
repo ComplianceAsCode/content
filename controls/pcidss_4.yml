@@ -1179,20 +1179,24 @@ controls:
           - wireless_disable_interfaces
 
     - id: 4.2.2
-      title: 'PAN is secured with strong cryptography whenever it is sent via end-user
-        messaging technologies. Cleartext PAN cannot be read or intercepted from
-        transmissions using end-user messaging technologies.This requirement also
-        applies if a customer, or other third-party, requests that PAN is sent to them
-        via end-user messaging technologies. There could be occurrences where an entity
-        receives unsolicited cardholder data via an insecure communication channel that
-        was not intended for transmissions of sensitive data. In this situation, the
-        entity can choose to either include the channel in the scope of their CDE and
-        secure it according to PCI DSS or delete the cardholder data and implement
-        measures to prevent the channel from being used for cardholder data.'
+      title: PAN is secured with strong cryptography whenever it is sent via end-user messaging
+        technologies.
+      description: |-
+        Cleartext PAN cannot be read or intercepted from transmissions using end-user messaging
+        technologies. This requirement also applies if a customer, or other third-party, requests
+        that PAN is sent to them via end-user messaging technologies. There could be occurrences
+        where an entity receives unsolicited cardholder data via an insecure communication channel
+        that was not intended for transmissions of sensitive data. In this situation, the entity
+        can choose to either include the channel in the scope of their CDE and secure it according
+        to PCI DSS or delete the cardholder data and implement measures to prevent the channel
+        from being used for cardholder data.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Some known insecure services and protocols are disabled by 2.2.4.
+        If any specific end-user messaging technology is used, it should be manually checked in
+        alignment to site policies.
 
   - id: 5.1
     title: 'Processes and mechanisms for protecting all systems and networks from
