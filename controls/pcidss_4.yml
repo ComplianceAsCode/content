@@ -1940,27 +1940,31 @@ controls:
       status: manual
 
     - id: 8.2.8
-      title: 'If a user session has been idle for more than 15 minutes, the user is
-        required to re-authenticate to re-activate the terminal or session.A user
-        session cannot be used except by the authorized user.This requirement is not
-        intended to apply to user accounts on point-of-sale terminals that have access
-        to only one card number at a time to facilitate a single transaction (such as
-        IDs used by cashiers on point-of-sale terminals). This requirement is not meant
-        to prevent legitimate activities from being performed while the console/PC is
-        unattended.'
+      title: If a user session has been idle for more than 15 minutes, the user is required to
+        re-authenticate to re-activate the terminal or session.
+      description: |-
+        A user session cannot be used except by the authorized user. This requirement is not
+        intended to apply to user accounts on point-of-sale terminals that have access to only one
+        card number at a time to facilitate a single transaction (such as IDs used by cashiers on
+        point-of-sale terminals). This requirement is not meant to prevent legitimate activities
+        from being performed while the console/PC is unattended.
       levels:
         - base
       status: automated
       rules:
-        - var_sshd_set_keepalive=0
-        - sshd_idle_timeout_value=15_minutes
         - dconf_gnome_session_idle_user_locks
-        - sshd_set_keepalive
-        - sshd_set_idle_timeout
-        - dconf_gnome_screensaver_lock_enabled
         - dconf_gnome_screensaver_idle_activation_enabled
         - dconf_gnome_screensaver_idle_delay
+        - inactivity_timeout_value=15_minutes
+        - dconf_gnome_screensaver_lock_delay
+        - var_screensaver_lock_delay=10_seconds
+        - dconf_gnome_screensaver_lock_enabled
         - dconf_gnome_screensaver_mode_blank
+        - sshd_set_idle_timeout
+        - sshd_idle_timeout_value=15_minutes
+        - sshd_set_keepalive
+        - var_sshd_set_keepalive=0
+      related_rules:
         - sshd_set_keepalive_0
 
   - id: 8.3
