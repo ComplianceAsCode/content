@@ -420,9 +420,9 @@ controls:
         title:
             RHEL 9 must be configured so that the cryptographic hashes of system files
             match vendor values.
-        rules:
-            - rpm_verify_hashes
-        status: automated
+        related_rules:
+            - rpm_verify_hashes # Due to crypto policies this cannot be selected at this time
+        status: pending
 
     -   id: RHEL-09-214035
         levels:
