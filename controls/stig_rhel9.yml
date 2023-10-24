@@ -68,9 +68,9 @@ controls:
         title:
             RHEL 9 must enable the hardware random number generator entropy gatherer
             service.
-        rules:
-            - service_rngd_enabled
-        status: automated
+        related_rules:
+            - service_rngd_enabled # This rule is causing test failures, See https://github.com/ComplianceAsCode/content/pull/10153
+        status: pending
 
     -   id: RHEL-09-211040
         levels:
