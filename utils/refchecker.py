@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument("reference", type=str,
                         help="Required reference system to check for")
     parser.add_argument("--exclude", "-e", type=str,
-                        help="A comma separated list  of rules to be ignored")
+                        help="A comma separated list of rules to be ignored")
     return parser.parse_args()
 
 
