@@ -5,14 +5,12 @@ from .general import (
     OVALComponent,
     OVALEntity,
     OVALEntityProperty,
-    load_oval_entity_property,
     load_notes,
+    get_product_name,
+    load_oval_entity_property,
 )
-from .oval_document import (
-    ExceptionDuplicateOVALEntity,
-    OVALDocument,
-    load_oval_document,
-)
+from .oval_container import ExceptionDuplicateOVALEntity
+from .oval_document import MissingOVALComponent, OVALDocument, load_oval_document
 from .oval_entities import (
     ExceptionDuplicateObjectReferenceInTest,
     ExceptionMissingObjectReferenceInTest,

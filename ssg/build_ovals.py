@@ -19,6 +19,7 @@ from .rules import get_rule_dir_ovals, find_rule_dirs_in_paths
 from . import utils, products
 from .utils import mkdir_p
 from .xml import ElementTree, oval_generated_header
+from .oval_object_model import get_product_name
 
 
 def _create_subtree(shorthand_tree, category):
@@ -74,14 +75,7 @@ def _check_is_applicable_for_product(oval_check_def, product):
 
     for afftype in affected_type_elements:
         # Get official name for product (prefixed with content of afftype)
-        product_name = afftype + utils.map_name(product)
-        # Append the product version to the official name
-        if product_version is not None:
-            # Some product versions have a dot in between the numbers
-            # While the prodtype doesn't have the dot, the full product name does
-            if product == "ubuntu" or product == "macos":
-                product_version = product_version[:2] + "." + product_version[2:]
-            product_name += ' ' + product_version
+        product_name = afftype + get_product_name(product, product_version)
 
         # Test if this OVAL check is for the concrete product version
         if product_name in oval_check_def:

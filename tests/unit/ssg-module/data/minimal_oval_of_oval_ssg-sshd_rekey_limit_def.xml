@@ -16,6 +16,9 @@
     <oval-def:reference ref_id="sshd_rekey_limit" source="ssg" />
     <oval-def:description>Ensure RekeyLimit is configured with the appropriate value in /etc/ssh/sshd_config or in /etc/ssh/sshd_config.d</oval-def:description>
    </oval-def:metadata>
+   <oval-def:notes>
+     <oval-def:note>This is note.</oval-def:note>
+   </oval-def:notes>
    <oval-def:criteria comment="sshd is configured correctly or is not installed" operator="OR">
     <oval-def:criteria comment="sshd is not installed" operator="AND">
      <oval-def:extend_definition comment="sshd is not required or requirement is unset" definition_ref="oval:ssg-sshd_not_required_or_unset:def:1" />
