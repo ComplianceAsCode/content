@@ -120,12 +120,61 @@
       var_ref="var_{{{ _RULE_ID }}}_log_files_paths"/>
   </unix:file_object>
 
+  {{% if ATTRIBUTE == "groupowner" %}}
+    {{% if VALUE is number %}}
+  <!-- store groupowner GID in variable -->
+  <constant_variable id="var_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_gid" datatype="int" version="1" comment="GID of {{{ ATTRIBUTE }}}"><value>{{{ VALUE }}}</value></constant_variable>
+
+    {{% else %}}
+  <!-- get groupowner GID from name -->
+  <ind:textfilecontent54_object id="obj_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_gid" version="1" comment="GID of group {{{ VALUE }}}">
+      {{# Copied from file_groupowner template, assuming logic is still valid #}}
+      {{%- if product in ["rhcos4","ocp4"] %}}
+    <ind:filepath>/usr/lib/group</ind:filepath>
+      {{%- else %}}
+    <ind:filepath>/etc/group</ind:filepath>
+      {{%- endif %}}
+    <ind:pattern operation="pattern match">^{{{ VALUE }}}:\w+:(\w+):.*</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_gid" datatype="int" version="1"
+      comment="GID of group {{{ VALUE }}}">
+    <object_component item_field="subexpression" object_ref="obj_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_gid"/>
+  </local_variable>
+    {{% endif %}}
+
+  {{% elif ATTRIBUTE == "owner" %}}
+    {{% if VALUE is number %}}
+  <!-- store owner UID in variable -->
+  <constant_variable id="var_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_uid" datatype="int" version="1" comment="UID of {{{ ATTRIBUTE }}}"><value>{{{ VALUE }}}</value></constant_variable>
+
+    {{% else %}}
+  <!-- get owner UID from name -->
+  <ind:textfilecontent54_object id="obj_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_uid" version="1" comment="UID of user {{{ VALUE }}}">
+      {{# Assuming same logic as above applies to users #}}
+      {{%- if product in ["rhcos4","ocp4"] %}}
+    <ind:filepath>/usr/lib/passwd</ind:filepath>
+      {{%- else %}}
+    <ind:filepath>/etc/passwd</ind:filepath>
+      {{%- endif %}}
+    <ind:pattern operation="pattern match">^{{{ VALUE }}}:\w+:(\w+):.*</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_uid" datatype="int" version="1"
+          comment="UID of user {{{ VALUE }}}">
+    <object_component item_field="subexpression" object_ref="obj_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_uid"/>
+  </local_variable>
+    {{% endif %}}
+  {{% endif %}}
+
   <unix:file_state id="state_{{{ _RULE_ID }}}" version="1">
     <unix:type operation="equals">regular</unix:type>
     {{% if ATTRIBUTE == "groupowner" %}}
-    <unix:group_id datatype="int">{{{ VALUE }}}</unix:group_id>
+    <unix:group_id datatype="int" var_ref="var_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_gid"></unix:group_id>
     {{% elif ATTRIBUTE == "owner" %}}
-    <unix:user_id datatype="int">{{{ VALUE }}}</unix:user_id>
+    <unix:user_id datatype="int" var_ref="var_{{{ _RULE_ID }}}_{{{ ATTRIBUTE }}}_uid"></unix:user_id>
     {{% else %}}
     {{{ STATEMODE | indent(4) }}}
    {{% endif %}}
