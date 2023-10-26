@@ -7,7 +7,14 @@ RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
 readarray -t OLD_INC < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
 readarray -t RSYSLOG_INCLUDE_CONFIG < <(for INCPATH in "${OLD_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
+
+{{# ubuntu ships with mawk which doesn't support gensub; use sed instead #}}
+{{% if product in ["ubuntu2004", "ubuntu2204"] %}}
+readarray -t NEW_INC < <(sed -n '/include/,/)/Ip' /etc/rsyslog.conf | sed -n 's@.*file\s*=\s*"\([/[:alnum:][:punct:]]*\)".*@\1@Ip')
+{{% else %}}
 readarray -t NEW_INC < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf)
+{{% endif %}}
+
 readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
 
 # Declare an array to hold the final list of different log file paths
