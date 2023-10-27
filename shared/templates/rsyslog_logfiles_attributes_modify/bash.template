@@ -7,7 +7,7 @@ RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
 readarray -t OLD_INC < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
 readarray -t RSYSLOG_INCLUDE_CONFIG < <(for INCPATH in "${OLD_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
-readarray -t NEW_INC < <(sed -n '/^\s*include(/,/)/Ip' /etc/rsyslog.conf | sed -n 's@.*file\s*=\s*"\([/[:alnum:][:punct:]]*\)".*@\1@Ip'
+readarray -t NEW_INC < <(sed -n '/^\s*include(/,/)/Ip' /etc/rsyslog.conf | sed -n 's@.*file\s*=\s*"\([/[:alnum:][:punct:]]*\)".*@\1@Ip')
 readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf '%s\\n' "${INCPATH}"; done)
 
 # Declare an array to hold the final list of different log file paths
