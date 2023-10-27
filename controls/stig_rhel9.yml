@@ -1290,15 +1290,14 @@ controls:
         levels:
             - medium
         title: RHEL 9 audit tools must be group-owned by root.
-        status: automated
         rules:
             - file_audit_tools_group_ownership
+        status: automated
 
     -   id: RHEL-09-232230
         levels:
             - medium
         title: RHEL 9 cron configuration files directory must be owned by root.
-        status: automated
         rules:
             - file_owner_cron_d
             - file_owner_cron_daily
@@ -1307,6 +1306,7 @@ controls:
             - file_owner_cron_weekly
             - file_owner_crontab
             - file_owner_cron_deny
+        status: automated
 
     -   id: RHEL-09-232235
         levels:
@@ -1514,9 +1514,9 @@ controls:
         levels:
             - medium
         title: RHEL 9 must configure a DNS processing mode set be Network Manager.
-        status: automated
         rules:
             - networkmanager_dns_mode
+        status: automated
 
     -   id: RHEL-09-252045
         levels:
@@ -1881,6 +1881,7 @@ controls:
             RHEL 9 SSH client must be configured to use only Message Authentication Codes
             (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
         status: pending
+
     -   id: RHEL-09-255075
         levels:
             - medium
