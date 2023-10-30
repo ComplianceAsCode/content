@@ -1,0 +1,36 @@
+product: debian12
+full_name: Debian 12
+type: platform
+
+families:
+  - debian
+  - debian-like
+
+major_version_ordinal: 12
+
+benchmark_id: DEBIAN-12
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+
+init_system: "systemd"
+
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - debian12:
+      name: "cpe:/o:debian:debian_linux:12"
+      title: "Debian Linux 12"
+      check_id: installed_OS_is_debian12
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  gdm: gdm3
+  grub2: grub2-common
+  net-snmp: snmp
+  nss-pam-ldapd: libpam-ldap
+  pam: libpam-runtime
+  shadow: login
+  sssd: sssd-common

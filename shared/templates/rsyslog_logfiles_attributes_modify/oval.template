@@ -2,7 +2,7 @@
   <definition class="compliance" id="{{{_RULE_ID }}}" version="1">
     {{{ oval_metadata("All syslog log files should have appropriate ownership.") }}}
     <criteria operator="AND">
-      {{% if product in ["debian10", "debian11", "ubuntu1604"] %}}
+      {{% if product in ["debian10", "debian11", "debian12", "ubuntu1604"] %}}
       <extend_definition definition_ref="package_rsyslog_installed"
         comment="rsyslog daemon is used as local logging daemon"/>
       {{% endif %}}
