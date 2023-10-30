@@ -450,6 +450,8 @@ def main():
         '--severity', default="unknown", help='the severity of the rule.')
     common_rule_args.add_argument(
         '--identifiers', default="TBD", help='an identifier for the rule (CCE number)')
+    common_rule_args.add_argument(
+        '--jqfilter', default="", help='A JQ filter to select the data passed down for OVAL evaluation.')
 
     type_parser = create_parser.add_subparsers(dest='rule types', title='Creates a rule', help='Types of rules')
     platform_parser = type_parser.add_parser('platform', help='Creates a Platform rule',  parents=[common_rule_args])
@@ -477,8 +479,6 @@ def main():
         '--check-existence', help='check_existence` value for the `yamlfilecontent_test`.')
     platform_parser.add_argument(
         '--negate', default=False, action="store_true", help='negate the given matching criteria (does NOT match). Default is false.')
-    platform_parser.add_argument(
-        '--jqfilter', default="", help='A JQ filter to select the data passed down for OVAL evaluation.')
     platform_parser.set_defaults(func=createPlatformRuleFunc)
 
     node_parser = type_parser.add_parser('node', help='Creates a Node rule',  parents=[common_rule_args])
