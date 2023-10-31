@@ -209,10 +209,21 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
 endif()
 
 macro(ssg_refcheck_test PRODUCT PROFILE KEY)
-    add_test(
+    # If you pass comma separated list as the fourth argument those rules will be excluded from the check.
+    set(extra_args ${ARGN})
+    list(LENGTH extra_args extra_args_length)
+    if(${extra_args_length} EQUAL 1)
+        list(GET extra_args 0 excludes)
+        add_test(
+            NAME "refchecker-${PRODUCT}-${PROFILE}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/refchecker.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "--exclude" "${excludes}" "${PRODUCT}" "${PROFILE}" "${KEY}"
+        )
+    else()
+        add_test(
         NAME "refchecker-${PRODUCT}-${PROFILE}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/refchecker.py" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" "${PRODUCT}" "${PROFILE}" "${KEY}"
-    )
+        )
+    endif()
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES DEPENDS "test-rule-dir-json")
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
@@ -225,6 +236,8 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "cis" "cis")
     ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
     ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
+    # This exclude can be removed once enable_authselect has a stigid
+    ssg_refcheck_test("rhel9" "stig" "stigid" "enable_authselect")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
@@ -261,6 +274,7 @@ if(SSG_PRODUCT_RHEL8)
 endif()
 if(SSG_PRODUCT_RHEL9)
     ssg_controlrefcheck_test("rhel9" "cis_rhel9" "cis")
+    ssg_controlrefcheck_test("rhel9" "stig_rhel9" "stigid")
 endif()
 
 

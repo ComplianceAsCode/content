@@ -43,6 +43,7 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010610
     stigid@rhel8: RHEL-08-010610
+    stigid@rhel9: RHEL-09-231080
 
 ocil_clause: 'removable media partitions are present'
 
@@ -53,7 +54,7 @@ ocil: |-
     in the output are not removable media.
 
 fixtext: |-
-    Configure the "/etc/fstab" to use the "noexec" option on file systems that are associated with removable media. 
+    Configure the "/etc/fstab" to use the "noexec" option on file systems that are associated with removable media.
 
 srg_requirement: '{{{ full_name }}} must prevent code from being executed on file systems that are used with removable media.'
 
