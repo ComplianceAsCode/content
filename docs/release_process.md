@@ -53,6 +53,8 @@ Everyone is welcome to test the stabilization branch and propose fixes.
 This process reduces the risk of bringing a sudden breaking change into the release,
 and ultimately allows the release process to happen while development continues on master branch.
 
+More details about stabilization can be found in [Stabilization Phase](manual/developer/10_stabilization_phase.md).
+
 ## Preparing the stabilization
 
 ### Updating Contributors List
