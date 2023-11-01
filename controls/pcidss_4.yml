@@ -2213,17 +2213,26 @@ controls:
       status: manual
 
   - id: 8.5
-    title: 'Multi-factor authentication (MFA) systems are configured to prevent misuse.'
+    title: Multi-factor authentication (MFA) systems are configured to prevent misuse.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 8.5.1
-      title: 'MFA systems are implemented'
+      title: MFA systems are properly implemented.
+      description: |-
+        - The MFA system is not susceptible to replay attacks.
+        - MFA systems cannot be bypassed by any users, including administrative users unless
+        specifically documented, and authorized by management on an exception basis, for a limited
+        time period.
+        - At least two different types of authentication factors are used.
+        - Success of all authentication factors is required before access is granted.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Each site might have a different MFA solution and each solution has its own capabilities.
+        This requirement demands manual assessment based on site policies.
 
   - id: 8.6
     title: 'Use of application and system accounts and associated authentication factors
