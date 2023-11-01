@@ -103,7 +103,7 @@ class OVALDocument(OVALContainer):
             raise MissingOVALComponent(component_id)
         return False
 
-    def load_shorthand(self, xml_string, product, rule_id=None):
+    def load_shorthand(self, xml_string, product=None, rule_id=None):
         shorthand = OVALShorthand()
         shorthand.load_shorthand(xml_string)
 
