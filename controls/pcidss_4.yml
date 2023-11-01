@@ -2107,6 +2107,9 @@ controls:
         - var_password_pam_remember_control_flag=requisite_or_required
         - accounts_password_pam_pwhistory_remember_password_auth
         - accounts_password_pam_pwhistory_remember_system_auth
+      related_rules:
+        - var_accounts_minimum_age_login_defs=1
+        - accounts_minimum_age_login_defs
 
     - id: 8.3.8
       title: Authentication policies and procedures are documented and communicated to all users.
@@ -2115,15 +2118,30 @@ controls:
       status: manual
 
     - id: 8.3.9
-      title: 'If passwords/passphrases are used as the only authentication factor for
-        user access (i.e., in any single-factor authentication implementation) then
-        either'
+      title: If passwords/passphrases are used as the only authentication factor for user access
+        (i.e., in any single-factor authentication implementation) they should have a limited
+        lifetime.
+      description: |-
+        If passwords/passphrases are used as the only authentication factor for user access (i.e.,
+        in any single-factor authentication implementation) then either:
+        - Passwords/passphrases are changed at least once every 90 days,
+        OR
+        - The security posture of accounts is dynamically analyzed, and real-time access to
+        resources is automatically determined accordingly.
       levels:
         - base
       status: automated
+      notes: |-
+        The requirement does not explicitily asks to define the number of days before the password
+        expiration to warn the users, but the relevant rules were selected here as they do not
+        cause any problems in combination with password lifetime rules.
       rules:
-        - accounts_minimum_age_login_defs
+        - var_accounts_maximum_age_login_defs=90
+        - accounts_maximum_age_login_defs
+        - accounts_password_set_max_life_existing
+        - var_accounts_password_warn_age_login_defs=7
         - accounts_password_warn_age_login_defs
+        - accounts_password_set_warn_age_existing
 
     - id: 8.3.10.1
       title: 'Additional requirement for service providers only: If
