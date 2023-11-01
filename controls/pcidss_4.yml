@@ -2174,34 +2174,43 @@ controls:
       status: manual
 
   - id: 8.4
-    title: 'Multi-factor authentication (MFA) is implemented to secure access into the CDE.'
+    title: Multi-factor authentication (MFA) is implemented to secure access into the CDE.
     levels:
       - base
-    status: automated
-    rules:
-      - var_smartcard_drivers=cac
-      - install_smartcard_packages
-      - configure_opensc_card_drivers
-      - service_pcscd_enabled
-      - sssd_enable_smartcards
-      - force_opensc_card_drivers
+    status: supported
+    notes: |-
+      This parent requirement does not set one specific combination of Multi-factor authentication
+      (MFA), so we can't enforce the use of smartcards or any specific solution. The systems
+      usually support MFA but the chosen solution depends on site policies.
     controls:
-    - id: 8.4.2
-      title: 'MFA is implemented for all access into the CDE.Access into the CDE cannot
-        be obtained by the use of a single authentication factor.This requirement does
-        not apply to'
+    - id: 8.4.1
+      title: MFA is implemented for all non-console access into the CDE for personnel with
+        administrative access.
       levels:
         - base
-      status: pending
-      rules: []
+      status: supported
+      related_rules:
+        - var_smartcard_drivers=cac
+        - configure_opensc_card_drivers
+        - force_opensc_card_drivers
+        - install_smartcard_packages
+        - service_pcscd_enabled
+        - sssd_enable_smartcards
+
+    - id: 8.4.2
+      title: MFA is implemented for all access into the CDE.
+      desciption: |-
+        Access into the CDE cannot be obtained by the use of a single authentication factor.
+      levels:
+        - base
+      status: manual
 
     - id: 8.4.3
-      title: 'MFA is implemented for all remote network access originating from outside
-        the entity’s network that could access or impact the CDE'
+      title: MFA is implemented for all remote network access originating from outside the
+        entity’s network that could access or impact the CDE.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
   - id: 8.5
     title: 'Multi-factor authentication (MFA) systems are configured to prevent misuse.'
