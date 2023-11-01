@@ -2143,17 +2143,27 @@ controls:
         - accounts_password_warn_age_login_defs
         - accounts_password_set_warn_age_existing
 
-    - id: 8.3.10.1
-      title: 'Additional requirement for service providers only: If
-        passwords/passphrases are used as the only authentication factor for customer
-        user access (i.e., in any single-factor authentication implementation) then
-        either'
+    - id: 8.3.10
+      title: 'Additional requirement for service providers only: If passwords/passphrases are used
+        as the only authentication factor for customer user access to cardholder data (i.e., in
+        any single-factor authentication implementation) then guidance is provided to customer
+        users.'
       levels:
         - base
-      status: automated
-      rules:
-        - accounts_maximum_age_login_defs
-        - var_accounts_maximum_age_login_defs=90
+      status: manual
+      controls:
+      - id: 8.3.10.1
+        title: 'Additional requirement for service providers only: If passwords/passphrases are
+          used as the only authentication factor for customer user access (i.e., in any
+          single-factor authentication implementation) they should have a limited lifetime.'
+        levels:
+          - base
+        status: automated
+        notes: |-
+          This requirement is already covered by 8.3.9.
+        related_rules:
+          - accounts_maximum_age_login_defs
+          - var_accounts_maximum_age_login_defs=90
 
     - id: 8.3.11
       title: 'Where authentication factors such as physical or logical security tokens,
