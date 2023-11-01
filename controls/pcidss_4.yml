@@ -396,9 +396,8 @@ controls:
         - base
       status: automated
       notes: |-
-        Also related to requirement 8.2.6.
+        Also related to requirement 8.2.6 and 8.3.5.
       rules:
-        - accounts_password_last_change_is_in_past
         - ensure_root_password_configured
         - no_empty_passwords_etc_shadow
 
@@ -1888,7 +1887,7 @@ controls:
         - base
       status: automated
       notes: |-
-        This requirement is complemented by 8.2.1.
+        This requirement is complemented by 8.2.1 and related to 8.3.5.
       rules:
         - gid_passwd_group_same
         - no_password_auth_for_systemaccounts
@@ -1926,7 +1925,7 @@ controls:
         - base
       status: automated
       notes: |-
-        Also related to requirement 2.2.2.
+        Also related to requirements 2.2.2 and 8.3.5.
       rules:
         - var_account_disable_post_pw_expiration=90
         - account_disable_post_pw_expiration
@@ -2037,12 +2036,18 @@ controls:
         - cracklib_accounts_password_pam_retry
         
     - id: 8.3.5
-      title: 'If passwords/passphrases are used as authentication factors to meet
-        Requirement 8.3.1, they are set and reset for each user'
+      title: If passwords/passphrases are used as authentication factors to meet Requirement
+        8.3.1, they are set and reset for each user.
+      description: |-
+        - Set to a unique value for first-time use and upon reset.
+        - Forced to be changed immediately after the first use.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      notes: |-
+        Also related to requirement 2.2.2, 8.2.2 and 8.2.6.
+      rules:
+        - accounts_password_last_change_is_in_past
 
     - id: 8.3.6
       title: 'If passwords/passphrases are used as authentication factors to meet
