@@ -2085,18 +2085,28 @@ controls:
         - cracklib_accounts_password_pam_ucredit
 
     - id: 8.3.7
-      title: 'Individuals are not allowed to submit a new password/passphrase that is
-        the same as any of the last four passwords/passphrases used.A previously used
-        password cannot be used to gain access to an account for at least 12 months.This
-        requirement is not intended to apply to user accounts on point-of-sale terminals
-        that have access to only one card number at a time to facilitate a single
-        transaction (such as IDs used by cashiers on point-of-sale terminals).'
+      title: Individuals are not allowed to submit a new password/passphrase that is the same as
+        any of the last four passwords/passphrases used.
+      description: |-
+        A previously used password cannot be used to gain access to an account for at least 12
+        months.
       levels:
         - base
       status: automated
+      notes: |-
+        This requirement is not intended to apply to user accounts on point-of-sale terminals that
+        have access to only one card number at a time to facilitate a single transaction (such as
+        IDs used by cashiers on point-of-sale terminals).
+        For RHEL 8 and RHEL 8 systems, the accounts_password_pam_pwhistory_... rules should be
+        prefered in detriment of accounts_password_pam_unix_remember. Using both should not create
+        conflict but is unnecessary and the last should be filtered out from the profile.
       rules:
         - var_password_pam_unix_remember=4
         - accounts_password_pam_unix_remember
+        - var_password_pam_remember=4
+        - var_password_pam_remember_control_flag=requisite_or_required
+        - accounts_password_pam_pwhistory_remember_password_auth
+        - accounts_password_pam_pwhistory_remember_system_auth
 
     - id: 8.3.8
       title: 'Authentication policies and procedures are documented and communicated to
