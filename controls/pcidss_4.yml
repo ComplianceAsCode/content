@@ -1983,20 +1983,24 @@ controls:
         - no_empty_passwords
 
     - id: 8.3.2
-      title: 'Strong cryptography is used to render all authentication factors
-        unreadable during transmission and storage on all system components. Cleartext
-        authentication factors cannot be obtained, derived, or reused from the
-        interception of communications or from stored data.'
+      title: Strong cryptography is used to render all authentication factors unreadable during
+        transmission and storage on all system components.
+      description: |-
+        Cleartext authentication factors cannot be obtained, derived, or reused from the
+        interception of communications or from stored data.
       levels:
         - base
       status: automated
+      notes: |-
+        There are similar rules that might be redundant for some distros.
       rules:
-        - set_password_hashing_algorithm_systemauth
-        - set_password_hashing_algorithm_commonauth
-        - set_password_hashing_algorithm_logindefs
-        - set_password_hashing_algorithm_libuserconf
         - accounts_password_all_shadowed
         - ensure_shadow_group_empty
+        - set_password_hashing_algorithm_commonauth
+        - set_password_hashing_algorithm_libuserconf
+        - set_password_hashing_algorithm_logindefs
+        - var_password_hashing_algorithm=SHA512
+        - set_password_hashing_algorithm_systemauth
 
     - id: 8.3.3
       title: 'User identity is verified before modifying any authentication
