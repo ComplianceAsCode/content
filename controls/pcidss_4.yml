@@ -2362,13 +2362,17 @@ controls:
       status: not applicable
 
     - id: 9.2.4
-      title: 'Access to consoles in sensitive areas is restricted via locking when not
-        in use.Physical consoles within sensitive areas cannot be used by unauthorized
-        personnel.'
+      title: Access to consoles in sensitive areas is restricted via locking when not in use.
+      description: |-
+        Physical consoles within sensitive areas cannot be used by unauthorized personnel.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Related to requirement 8.2.8.
+        This requirement asks to observe a system administrator's attempt to log into consoles in
+        sensitive areas and verify that they are “locked” to prevent unauthorized use. Therefore
+        it is a manual requirement applicable only very specific circumstances.
 
   - id: 9.3
     title: 'Physical access for personnel and visitors is authorized and managed.'
