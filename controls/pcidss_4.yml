@@ -2003,13 +2003,18 @@ controls:
         - set_password_hashing_algorithm_systemauth
 
     - id: 8.3.3
-      title: 'User identity is verified before modifying any authentication
-        factor.Unauthorized individuals cannot gain system access by impersonating the
-        identity of an authorized user.'
+      title: User identity is verified before modifying any authentication factor.
+      description: |-
+        Unauthorized individuals cannot gain system access by impersonating the identity of an
+        authorized user.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        This requirement is about processes, such as password resets, provisioning new hardware or
+        software tokens, and generating new keys. It is common that these activities involve help
+        desk teams and administrators and the involved people should ensure identities are properly
+        verified.
 
     - id: 8.3.4
       title: 'Invalid authentication attempts are limited'
