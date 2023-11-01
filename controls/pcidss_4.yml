@@ -2235,26 +2235,34 @@ controls:
         This requirement demands manual assessment based on site policies.
 
   - id: 8.6
-    title: 'Use of application and system accounts and associated authentication factors
-      is strictly managed.'
+    title: Use of application and system accounts and associated authentication factors is
+      strictly managed.
     levels:
       - base
     status: partial
     controls:
     - id: 8.6.1
-      title: 'If accounts used by systems or applications can be used for interactive
-        login, they are managed as follows'
+      title: If accounts used by systems or applications can be used for interactive login, they
+        are managed.
+      description: |-
+        - Interactive use is prevented unless needed for an exceptional circumstance.
+        - Interactive use is limited to the time needed for the exceptional circumstance.
+        - Business justification for interactive use is documented.
+        - Interactive use is explicitly approved by management.
+        - Individual user identity is confirmed before access to account is granted.
+        - Every action taken is attributable to an individual user.
       levels:
         - base
-      status: partial
+      status: automated
+      notes: |-
+        This requirement is related to 2.2.2, 2.2.6, 8.2.1 and 8.2.2. Specifically on 8.2.2 system
+        accounts usage is restricted. Exceptions to system accounts should be manually checked to
+        ensure the requirements in description. This requirement although implements some extra
+        controls regarding root account.
       rules:
         - accounts_tmout
-        - accounts_umask_etc_bashrc
-        - accounts_umask_etc_login_defs
-        - accounts_umask_etc_profile
         - no_direct_root_logins
         - securetty_root_login_console_only
-        - use_pam_wheel_for_su
 
     - id: 8.6.2
       title: 'Passwords/passphrases for any application and system accounts that can be
