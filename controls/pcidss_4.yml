@@ -2239,7 +2239,7 @@ controls:
       strictly managed.
     levels:
       - base
-    status: partial
+    status: automated
     controls:
     - id: 8.6.1
       title: If accounts used by systems or applications can be used for interactive login, they
@@ -2276,12 +2276,19 @@ controls:
       status: manual
 
     - id: 8.6.3
-      title: 'Passwords/passphrases for any application and system accounts are
-        protected against misuse as follows'
+      title: Passwords/passphrases for any application and system accounts are protected against
+        misuse.
+      description: |-
+        - Passwords/passphrases are changed periodically (at the frequency defined in the entity's
+        targeted risk analysis, which is performed according to all elements specified in
+        Requirement 12.3.1) and upon suspicion or confirmation of compromise.
+        - Passwords/passphrases are constructed with sufficient complexity appropriate for how
+        frequently the entity changes the passwords/passphrases.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      notes: |-
+        Related to requirements 8.3.6 and 8.3.9.
 
   - id: 9.1
     title: 'Processes and mechanisms for restricting physical access to cardholder data
