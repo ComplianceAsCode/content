@@ -2017,15 +2017,21 @@ controls:
         verified.
 
     - id: 8.3.4
-      title: 'Invalid authentication attempts are limited'
+      title: Invalid authentication attempts are limited.
+      description: |-
+        - Locking out the user ID after not more than 10 attempts.
+        - Setting the lockout duration to a minimum of 30 minutes or until the user's identity is
+        confirmed.
       levels:
         - base
       status: automated
       rules:
         - accounts_passwords_pam_faillock_deny
-        - var_password_pam_tally2=3
-        - accounts_passwords_pam_tally2
+        - var_accounts_passwords_pam_faillock_deny=10
         - accounts_passwords_pam_faillock_unlock_time
+        - var_accounts_passwords_pam_faillock_unlock_time=1800
+        - accounts_passwords_pam_tally2
+        - var_password_pam_tally2=10
         - accounts_passwords_pam_tally2_unlock_time
         - var_accounts_passwords_pam_tally2_unlock_time=1800
         - cracklib_accounts_password_pam_retry
@@ -2555,8 +2561,6 @@ controls:
           - base
         status: automated
         rules:
-        - var_accounts_passwords_pam_faillock_deny=6
-        - var_accounts_passwords_pam_faillock_unlock_time=1800
         - audit_rules_login_events_tallylog
         - audit_rules_login_events_faillock
         - audit_rules_login_events_lastlog
