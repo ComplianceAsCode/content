@@ -2265,18 +2265,15 @@ controls:
         - securetty_root_login_console_only
 
     - id: 8.6.2
-      title: 'Passwords/passphrases for any application and system accounts that can be
-        used for interactive login are not hard coded in scripts, configuration/property
-        files, or bespoke and custom source code.Passwords/passphrases used by
-        application and system accounts cannot be used by unauthorized personnel.Stored
-        passwords/passphrases are required to be encrypted in accordance with PCI DSS
-        Requirement 8.3.2. This requirement is a best practice until 31 March 2025,
-        after which it will be required and must be fully considered during a PCI DSS
-        assessment.'
+      title: Passwords/passphrases for any application and system accounts that can be used for
+        interactive login are not hard coded in scripts, configuration/property files, or bespoke
+        and custom source code.
+      description: |-
+        Passwords/passphrases used by application and system accounts cannot be used by
+        unauthorized personnel.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 8.6.3
       title: 'Passwords/passphrases for any application and system accounts are
