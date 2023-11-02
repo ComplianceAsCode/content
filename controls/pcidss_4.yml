@@ -2515,55 +2515,53 @@ controls:
       status: manual
 
   - id: 9.5
-    title: 'Point-of-interaction (POI) devices are protected from tampering and
-      unauthorized substitution.'
+    title: Point-of-interaction (POI) devices are protected from tampering and unauthorized
+      substitution.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 9.5.1
-      title: 'POI devices that capture payment card data via direct physical interaction
-        with the payment card form factor are protected from tampering and unauthorized
-        substitution, including the following'
+      title: POI devices that capture payment card data via direct physical interaction with the
+        payment card form factor are protected from tampering and unauthorized substitution.
       levels:
         - base
-      status: pending
+      status: manual
       controls:
       - id: 9.5.1.1
-        title: 'An up-to-date list of POI devices is maintained.'
+        title: An up-to-date list of POI devices is maintained.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
 
       - id: 9.5.1.2
-        title: 'POI device surfaces are periodically inspected to detect tampering and
-          unauthorized substitution.Point of Interaction Devices cannot be tampered
-          with, substituted without authorization, or have skimming attachments
-          installed without timely detection.'
+        title: POI device surfaces are periodically inspected to detect tampering and unauthorized
+          substitution.
+        description: |-
+          Point of Interaction Devices cannot be tampered with, substituted without authorization,
+          or have skimming attachments installed without timely detection.
         levels:
           - base
-        status: pending
+        status: manual
         controls:
         - id: 9.5.1.2.1
-          title: 'The frequency of periodic POI device inspections and the type of
-            inspections performed is defined in the entity’s targeted risk analysis,
-            which is performed according to all elements specified in Requirement
-            12.3.1.POI devices are inspected at a frequency that addresses the entity’s
-            risk.This requirement is a best practice until 31 March 2025, after which it
-            will be required and must be fully considered during a PCI DSS assessment.'
+          title: The frequency of periodic POI device inspections and the type of inspections
+            performed is defined in the entity's targeted risk analysis, which is performed
+            according to all elements specified in Requirement 12.3.1.
+          description: |-
+            POI devices are inspected at a frequency that addresses the entity's risk.
+            This requirement is a best practice until 31 March 2025, after which it will be
+            required and must be fully considered during a PCI DSS assessment.
           levels:
             - base
-          status: pending
-          rules: []
+          status: manual
 
       - id: 9.5.1.3
-        title: 'Training is provided for personnel in POI environments to be aware of
-          attempted tampering or replacement of POI devices.'
+        title: Training is provided for personnel in POI environments to be aware of attempted
+          tampering or replacement of POI devices.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
 
   - id: 10.1
     title: 'Processes and mechanisms for logging and monitoring all access to system
