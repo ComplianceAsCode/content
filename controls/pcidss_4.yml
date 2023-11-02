@@ -2419,7 +2419,7 @@ controls:
     title: Media with cardholder data is securely stored, accessed, distributed, and destroyed.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 9.4.1
       title: All media with cardholder data is physically secured.
@@ -2505,12 +2505,14 @@ controls:
       status: manual
 
     - id: 9.4.7
-      title: 'Electronic media with cardholder data is destroyed when no longer needed
-        for business or legal reasons via one of the following'
+      title: Electronic media with cardholder data is destroyed when no longer needed for business
+        or legal reasons.
+      description: |-
+        - The electronic media is destroyed.
+        - The cardholder data is rendered unrecoverable so that it cannot be reconstructed.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
   - id: 9.5
     title: 'Point-of-interaction (POI) devices are protected from tampering and
