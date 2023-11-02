@@ -2897,32 +2897,40 @@ controls:
       status: manual
 
   - id: 10.5
-    title: 'Audit log history is retained and available for analysis.'
+    title: Audit log history is retained and available for analysis.
     levels:
       - base
-    status: partial
+    status: automated
     controls:
     - id: 10.5.1
-      title: 'Retain audit log history for at least 12 months, with at least the most
-        recent three months immediately available for analysis.Historical records of
-        activity are available immediately to support incident response and are retained
-        for at least 12 months.'
+      title: Retain audit log history for at least 12 months, with at least the most recent three
+        months immediately available for analysis.
+      description: |-
+        Historical records of activity are available immediately to support incident response and
+        are retained for at least 12 months.
       levels:
         - base
       status: automated
+      notes: |-
+        It is not simple to ensure 12 months history is present in each system but the rules in
+        this requirement ensures the logs are not lost without administrators awareness.
       rules:
-      - var_auditd_action_mail_acct=root
-      - auditd_data_retention_space_left_action
-      - package_logrotate_installed
-      - timer_logrotate_enabled
-      - ensure_logrotate_activated
-      - auditd_data_retention_max_log_file_action_stig
-      - auditd_data_retention_num_logs
-      - auditd_data_retention_max_log_file_action
-      - auditd_data_retention_max_log_file
-      - auditd_data_retention_space_left
-      - auditd_data_retention_admin_space_left_action
-      - auditd_data_retention_action_mail_acct
+        - var_auditd_admin_space_left_action=single
+        - var_auditd_space_left=100MB
+        - var_auditd_space_left_action=email
+        - auditd_data_retention_admin_space_left_action
+        - auditd_data_retention_space_left
+        - auditd_data_retention_space_left_action
+        - package_logrotate_installed
+        - timer_logrotate_enabled
+      related_rules:
+        - var_auditd_action_mail_acct=root
+        - auditd_data_retention_action_mail_acct
+        - auditd_data_retention_num_logs
+        - auditd_data_retention_max_log_file
+        - auditd_data_retention_max_log_file_action
+        - auditd_data_retention_max_log_file_action_stig
+        - ensure_logrotate_activated
 
   - id: 10.6
     title: 'Time-synchronization mechanisms support consistent time settings across all
