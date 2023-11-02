@@ -2739,11 +2739,23 @@ controls:
           - audit_rules_file_deletion_events
 
     - id: 10.2.2
-      title: 'Audit logs record the following details for each auditable event'
+      title: Audit logs record sufficient details for each auditable event.
+      description: |-
+        - User identification.
+        - Type of event.
+        - Date and time.
+        - Success and failure indication.
+        - Origination of event.
+        - Identity or name of affected data, system component, resource, or service (for example,
+          name and protocol).
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      notes: |-
+        Standard settings for audit should be enough.
+      rules:
+        - var_auditd_name_format=fqd
+        - auditd_name_format
 
   - id: 10.3
     title: 'Audit logs are protected from destruction and unauthorized modifications.'
