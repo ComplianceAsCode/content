@@ -2663,24 +2663,28 @@ controls:
           - directory_access_var_log_audit
 
       - id: 10.2.1.4
-        title: 'Audit logs capture all invalid logical access attempts.Records of all
-          invalid access attempts are captured.'
+        title: Audit logs capture all invalid logical access attempts.
+        description: |-
+          Records of all invalid access attempts are captured.
         levels:
           - base
         status: automated
         rules:
-        - display_login_attempts
-        - audit_rules_unsuccessful_file_modification_creat
-        - audit_rules_unsuccessful_file_modification_rename
-        - audit_rules_unsuccessful_file_modification_open
-        - audit_rules_unsuccessful_file_modification
-        - audit_rules_unsuccessful_file_modification_ftruncate
-        - audit_rules_unsuccessful_file_modification_renameat
-        - audit_rules_unsuccessful_file_modification_truncate
-        - audit_rules_unsuccessful_file_modification_unlink
-        - audit_rules_unsuccessful_file_modification_openat
-        - audit_rules_unsuccessful_file_modification_unlinkat
-        - audit_rules_unsuccessful_file_modification_open_by_handle_at
+          - display_login_attempts
+          - audit_rules_unsuccessful_file_modification_creat
+          - audit_rules_unsuccessful_file_modification_ftruncate
+          - audit_rules_unsuccessful_file_modification_open
+          - audit_rules_unsuccessful_file_modification_open_by_handle_at
+          - audit_rules_unsuccessful_file_modification_openat
+          - audit_rules_unsuccessful_file_modification_rename
+          - audit_rules_unsuccessful_file_modification_renameat
+          - audit_rules_unsuccessful_file_modification_truncate
+          - audit_rules_unsuccessful_file_modification_unlink
+          - audit_rules_unsuccessful_file_modification_unlinkat
+        related_rules:
+          # This rule incorportes creat, ftruncate and open. It is redundant to keep it here.
+          # The others are more granular and share the same template, so they were prefered here.
+          - audit_rules_unsuccessful_file_modification
 
       - id: 10.2.1.5
         title: 'Audit logs capture all changes to identification and authentication
