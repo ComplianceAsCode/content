@@ -2789,16 +2789,25 @@ controls:
         - audit_rules_immutable
 
     - id: 10.3.3
-      title: 'Audit log files, including those for external-facing technologies, are
-        promptly backed up to a secure, central, internal log server(s) or other media
-        that is difficult to modify.Stored activity records are secured and preserved in
-        a central location to prevent unauthorized modification.'
+      title: Audit log files, including those for external-facing technologies, are promptly
+        backed up to a secure, central, internal log server(s) or other media that is difficult to
+        modify.
+      description: |-
+        Stored activity records are secured and preserved in a central location to prevent
+        unauthorized modification.
       levels:
         - base
-      status: automated
+      status: partial
+      notes: |-
+        Although the technologies in general allow to send logs to a centralized server, some
+        parameters for this configuration are specific to each site policy and therefore the
+        requirement demands manual assessment.
       rules:
-      - auditd_audispd_syslog_plugin_activated
-      - package_audit-audispd-plugins_installed
+        - auditd_audispd_syslog_plugin_activated
+        - package_audit-audispd-plugins_installed
+      related_rules:
+        - rsyslog_remote_loghost
+        - rsyslog_nolisten
 
     - id: 10.3.4
       title: 'File integrity monitoring or change-detection mechanisms is used on audit
