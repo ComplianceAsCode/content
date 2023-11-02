@@ -2715,24 +2715,28 @@ controls:
           modified and audit service state is changed.
 
       - id: 10.2.1.7
-        title: 'Audit logs capture all creation and deletion of system-level
-          objects.Records of alterations that indicate a system has been modified from
-          its intended functionality are captured.'
+        title: Audit logs capture all creation and deletion of system-level objects.
+        description: |-
+          Records of alterations that indicate a system has been modified from its intended
+          functionality are captured.
         levels:
           - base
-        status: automated
+        status: partial
+        notes: |-
+          There are enough rules to capture deletion events but not for creation events.
+          This requirement needs to be better investigated to confirm which additional rules would
+          satistfy the requirement.
         rules:
-        - audit_rules_file_deletion_events
-        - audit_rules_file_deletion_events_rmdir
-        - audit_rules_media_export
-        - audit_rules_kernel_module_loading_delete
-        - audit_rules_file_deletion_events_unlinkat
-        - audit_rules_kernel_module_loading
-        - audit_rules_file_deletion_events_renameat
-        - audit_rules_file_deletion_events_unlink
-        - audit_rules_kernel_module_loading_init
-        - audit_rules_kernel_module_loading_finit
-        - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_rename
+          - audit_rules_file_deletion_events_renameat
+          - audit_rules_file_deletion_events_rmdir
+          - audit_rules_file_deletion_events_unlink
+          - audit_rules_file_deletion_events_unlinkat
+          - audit_rules_media_export
+        related_rules:
+          # This rule incorportes rmdir, unlink and unlinkat. It is redundant to keep it here.
+          # The others are more granular and share the same template, so they were prefered here.
+          - audit_rules_file_deletion_events
 
     - id: 10.2.2
       title: 'Audit logs record the following details for each auditable event'
