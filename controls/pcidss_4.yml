@@ -3050,12 +3050,22 @@ controls:
         - grub2_audit_argument
 
     - id: 10.7.3
-      title: 'Failures of any critical security controls systems are responded to
-        promptly, including but not limited to'
+      title: Failures of any critical security controls systems are responded to restore security
+        functions, ensure documentation, address security issues and prevent other failures.
+      description: |-
+        It includes but is not limited to:
+        - Restoring security functions.
+        - Identifying and documenting the duration (date and time from start to end) of the
+          security failure.
+        - Identifying and documenting the cause(s) of failure and documenting required
+          remediation.
+        - Identifying and addressing any security issues that arose during the failure.
+        - Determining whether further actions are required as a result of the security failure.
+        - Implementing controls to prevent the cause of failure from reoccurring.
+        - Resuming monitoring of security controls.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
   - id: 11.1
     title: 'Processes and mechanisms for regularly testing security of systems and
