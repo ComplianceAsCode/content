@@ -58,23 +58,41 @@ ocil_clause: 'AIDE has not been configured or has not been configured to notify 
 
 ocil: |-
     To determine that periodic AIDE execution has been scheduled, run the following command:
+{{% if product in ["sle15"] %}}
+    <pre>$ sudo systemctl status  aidecheck-notify|grep loaded</pre>
+    The output should return that the service is loaded.
+    Also we should make sure that notification service is started by the check:
+    <pre>$ sudo systemctl list-dependencies --reverse aidecheck-notify</pre>,
+    which should display the aidecheck.service in the dependency tree
+{{% else %}}
     <pre>$ grep aide /etc/crontab</pre>
     The output should return something similar to the following:
     <pre>05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
     The email address that the notifications are sent to can be changed by overriding
     <pre><sub idref="var_aide_scan_notification_email" /></pre>.
+{{% endif %}}
 
 fixtext: |-
     Configure the file integrity tool to run automatically on the system at least weekly and to notify designated personnel if baseline configurations are changed in an unauthorized manner.
     The AIDE tool can be configured to email designated personnel with the use of the cron system.
 
     The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the analysis.
-
+{{% if product in ["sle15"] %}}
+    $ cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
+    [Unit]
+        Description=Status email for AIDE check result
+        After=aidecheck.service
+        [Service]
+        Type=forking
+        ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  $var_aide_scan_notification_email'
+    NOTIFYEOF
+{{% else %}}
     $ sudo more /etc/cron.daily/aide
 
     #!/bin/bash
 
     /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+{{% endif %}}
 
 srg_requirement: |-
     The {{{ full_name }}} file integrity tool must notify the system administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered within an organizationally defined frequency.
