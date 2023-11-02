@@ -2933,28 +2933,28 @@ controls:
         - ensure_logrotate_activated
 
   - id: 10.6
-    title: 'Time-synchronization mechanisms support consistent time settings across all
-      systems.'
+    title: Time-synchronization mechanisms support consistent time settings across all systems.
     levels:
       - base
     status: automated
     controls:
     - id: 10.6.1
-      title: 'System clocks and time are synchronized using time-synchronization
-        technology.Common time is established across all systems.Keeping
-        time-synchronization technology current includes managing vulnerabilities and
-        patching the technology according to PCI DSS Requirements 6.3.1 and 6.3.3.'
+      title: System clocks and time are synchronized using time-synchronization technology.
+      description: |-
+        Common time is established across all systems. Keeping time-synchronization technology
+        current includes managing vulnerabilities and patching the technology according to PCI DSS
+        Requirements 6.3.1 and 6.3.3.
       levels:
         - base
       status: automated
+      notes: |-
+        Maybe it is possible to optmize some similar rules related to ntp.
       rules:
-      - service_chronyd_or_ntpd_enabled
-      - ntpd_specify_remote_server
-      - package_chrony_installed
-      - service_ntp_enabled
-      - service_ntpd_enabled
-      - service_timesyncd_enabled
-      - chronyd_configure_pool_and_server      
+        - package_chrony_installed
+        - service_chronyd_or_ntpd_enabled
+        - service_ntp_enabled
+        - service_ntpd_enabled
+        - service_timesyncd_enabled
 
     - id: 10.6.2
       title: 'Systems are configured to the correct and consistent time'
@@ -2967,6 +2967,8 @@ controls:
       - ntpd_specify_multiple_servers
       - chronyd_specify_remote_server
       - chronyd_or_ntpd_specify_multiple_servers
+      related_rules:
+        - chronyd_configure_pool_and_server
 
     - id: 10.6.3
       title: 'Time synchronization settings and data are protected'
