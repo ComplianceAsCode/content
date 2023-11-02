@@ -2651,11 +2651,11 @@ controls:
           - base
         status: automated
         rules:
-        - audit_rules_login_events_faillock
-        - audit_rules_login_events_lastlog
-        - audit_rules_login_events_tallylog
-        - audit_rules_session_events
-        - audit_sudo_log_events
+          - audit_rules_login_events_faillock
+          - audit_rules_login_events_lastlog
+          - audit_rules_login_events_tallylog
+          - audit_rules_session_events
+          - audit_sudo_log_events
         related_rules:
           # This rule incorportes faillock, lastlog and tallylog. It is redundant to keep it.
           # The others are more granular and share the same template, so they were prefered here.
