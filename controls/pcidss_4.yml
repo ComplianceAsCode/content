@@ -2835,27 +2835,35 @@ controls:
         - audit_rules_networkconfig_modification
 
   - id: 10.4
-    title: 'Audit logs are reviewed to identify anomalies or suspicious activity.'
+    title: Audit logs are reviewed to identify anomalies or suspicious activity.
     levels:
       - base
     status: pending
     controls:
     - id: 10.4.1
-      title: 'The following audit logs are reviewed at least once daily'
+      title: The audit logs are reviewed at least once daily.
+      description: |-
+        - All security events.
+        - Logs of all system components that store, process, or transmit CHD and/or SAD.
+        - Logs of all critical system components.
+        - Logs of all servers and system components that perform security functions (for example,
+          network security controls, intrusion-detection systems/intrusion-prevention systems
+          (IDS/IPS), authentication servers).
       levels:
         - base
-      status: pending
+      status: manual
       controls:
       - id: 10.4.1.1
-        title: 'Automated mechanisms are used to perform audit log
-          reviews.Potentially suspicious or anomalous activities are identified via a
-          repeatable and consistent mechanism.This requirement is a best practice until
-          31 March 2025, after which it will be required and must be fully considered
-          during a PCI DSS assessment.'
+        title: Automated mechanisms are used to perform audit log reviews.
+        description: |-
+          Potentially suspicious or anomalous activities are identified via a repeatable and
+          consistent mechanism. This requirement is a best practice until 31 March 2025, after
+          which it will be required and must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
+        notes: |-
+          Automation mechanisms, solutions and approaches vary for each organizarion.
 
     - id: 10.4.2
       title: 'Logs of all other system components (those not specified in Requirement
