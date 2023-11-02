@@ -322,9 +322,7 @@ def get_virt_install_command(data):
         boot_opts.append("uefi")
         if data.uefi == "secureboot":
             boot_opts.extend([
-                "loader_secure=yes",
-                "loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd",
-                "nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd",
+                "loader.secure=yes",
             ])
             features_opts.append("smm=on")
 
