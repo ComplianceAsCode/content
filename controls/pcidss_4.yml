@@ -556,6 +556,7 @@ controls:
         - sshd_set_login_grace_time
         - var_sshd_set_login_grace_time=60
         # sudo settings
+        - package_sudo_installed
         - sudo_add_use_pty
         - sudo_custom_logfile
         - sudo_require_authentication
@@ -2687,20 +2688,21 @@ controls:
           - audit_rules_unsuccessful_file_modification
 
       - id: 10.2.1.5
-        title: 'Audit logs capture all changes to identification and authentication
-          credentials'
+        title: Audit logs capture all changes to identification and authentication credentials.
         levels:
           - base
         status: automated
         rules:
-        - audit_rules_usergroup_modification_gshadow
-        - audit_rules_usergroup_modification_opasswd
-        - audit_rules_usergroup_modification
-        - audit_rules_usergroup_modification_passwd
-        - audit_rules_usergroup_modification_group
-        - audit_rules_usergroup_modification_shadow
-        - audit_rules_sysadmin_actions
-        - package_sudo_installed
+          - audit_rules_usergroup_modification_group
+          - audit_rules_usergroup_modification_gshadow
+          - audit_rules_usergroup_modification_opasswd
+          - audit_rules_usergroup_modification_passwd
+          - audit_rules_usergroup_modification_shadow
+          - audit_rules_sysadmin_actions
+        related_rules:
+          # This rule incorportes group, gshadow and passwd. It is redundant to keep it here.
+          # The others are more granular and share the same template, so they were prefered here.
+          - audit_rules_usergroup_modification
 
       - id: 10.2.1.6
         title: 'Audit logs capture the initialization of new audit logs, and starting,
@@ -2734,9 +2736,8 @@ controls:
       title: 'Audit logs record the following details for each auditable event'
       levels:
         - base
-      status: partial
-      rules:
-        - audit_rules_sysadmin_actions
+      status: pending
+      rules: []
 
   - id: 10.3
     title: 'Audit logs are protected from destruction and unauthorized modifications.'
