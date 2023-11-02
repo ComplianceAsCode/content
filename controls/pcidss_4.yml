@@ -2986,17 +2986,21 @@ controls:
         - chronyd_configure_pool_and_server
 
     - id: 10.6.3
-      title: 'Time synchronization settings and data are protected'
+      title: Time synchronization settings and data are protected.
+      description: |-
+        - Access to time data is restricted to only personnel with a business need.
+        - Any changes to time settings on critical systems are logged, monitored, and reviewed.
       levels:
         - base
       status: automated
       rules:
-      - audit_rules_time_watch_localtime
-      - audit_rules_time_watch_localtime
-      - audit_rules_time_settimeofday
-      - audit_rules_time_clock_settime
-      - audit_rules_time_stime
-      - audit_rules_time_adjtimex
+        - audit_rules_time_watch_localtime
+        - audit_rules_time_watch_localtime
+        - audit_rules_time_settimeofday
+        - audit_rules_time_clock_settime
+        - audit_rules_time_stime
+        - audit_rules_time_adjtimex
+        - chronyd_run_as_chrony_user
 
   - id: 10.7
     title: 'Failures of critical security control systems are detected, reported, and
