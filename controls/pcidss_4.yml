@@ -2838,7 +2838,7 @@ controls:
     title: Audit logs are reviewed to identify anomalies or suspicious activity.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 10.4.1
       title: The audit logs are reviewed at least once daily.
@@ -2889,12 +2889,12 @@ controls:
         status: manual
 
     - id: 10.4.3
-      title: 'Exceptions and anomalies identified during the review process are
-        addressed.Suspicious or anomalous activities are addressed.'
+      title: Exceptions and anomalies identified during the review process are addressed.
+      description: |-
+        Suspicious or anomalous activities are addressed.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
   - id: 10.5
     title: 'Audit log history is retained and available for analysis.'
