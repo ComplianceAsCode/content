@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
-platform: ocp4
+platform: ocp4-node
 
 metadata:
     SMEs:
@@ -20,9 +20,12 @@ description: |-
     This profile includes Center for Internet Security®
     Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
 
-    Note that this part of the profile is meant to run on the Platform that
+    Note that this part of the profile is meant to run on the Operating System that
     Red Hat OpenShift Container Platform 4 runs on top of.
 
     This profile is applicable to OpenShift versions 4.10 and greater.
 
-extends: cis-1-4
+filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
+
+selections:
+    - cis_ocp_1_4_0:all

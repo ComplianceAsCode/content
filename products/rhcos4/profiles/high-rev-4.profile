@@ -9,14 +9,12 @@ metadata:
 
 reference: https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/release-search#!/controls?version=5.1&security_baseline=High
 
-title: 'NIST 800-53 High-Impact Baseline for Red Hat OpenShift - Platform level'
-
-platform: ocp4
+title: 'NIST 800-53 High-Impact Baseline for Red Hat Enterprise Linux CoreOS'
 
 description: |-
     This compliance profile reflects the core set of High-Impact Baseline
-    configuration settings for deployment of Red Hat OpenShift Container
-    Platform into U.S. Defense, Intelligence, and Civilian agencies.
+    configuration settings for deployment of Red Hat Enterprise
+    Linux CoreOS into U.S. Defense, Intelligence, and Civilian agencies.
     Development partners and sponsors include the U.S. National Institute
     of Standards and Technology (NIST), U.S. Department of Defense,
     the National Security Agency, and Red Hat.
@@ -38,6 +36,5 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
-# CM-6 CONFIGURATION SETTINGS
-# CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
-extends: high-rev-4
+selections:
+    - nist_rhcos4:all:high

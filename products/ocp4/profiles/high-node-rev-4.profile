@@ -1,17 +1,17 @@
 documentation_complete: true
 
+reference: https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/release-search#!/controls?version=5.1&security_baseline=High
+
+title: 'NIST 800-53 High-Impact Baseline for Red Hat OpenShift - Node level'
+
+platform: ocp4-node
+
 metadata:
     version: Revision 4
     SMEs:
         - JAORMX
         - mrogers950
         - jhrozek
-
-reference: https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/release-search#!/controls?version=5.1&security_baseline=High
-
-title: 'NIST 800-53 High-Impact Baseline for Red Hat OpenShift - Platform level'
-
-platform: ocp4
 
 description: |-
     This compliance profile reflects the core set of High-Impact Baseline
@@ -40,4 +40,9 @@ description: |-
 
 # CM-6 CONFIGURATION SETTINGS
 # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
-extends: high-rev-4
+extends: cis-node
+
+filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
+
+selections:
+    - nist_ocp4:all:high
