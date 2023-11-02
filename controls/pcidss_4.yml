@@ -3124,7 +3124,7 @@ controls:
       addressed.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 11.3.1
       title: Internal vulnerability scans are performed.
@@ -3152,18 +3152,16 @@ controls:
         status: manual
 
     - id: 11.3.2
-      title: 'External vulnerability scans are performed as follows'
+      title: External vulnerability scans are performed.
       levels:
         - base
-      status: pending
+      status: manual
       controls:
       - id: 11.3.2.1
-        title: 'External vulnerability scans are performed after any significant
-          change'
+        title: External vulnerability scans are performed after any significant change.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
 
   - id: 11.4
     title: 'External and internal penetration testing is regularly performed, and
