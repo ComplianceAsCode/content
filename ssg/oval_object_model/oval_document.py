@@ -1,12 +1,14 @@
 from __future__ import absolute_import
 
 import platform
+import logging
 
 from ..constants import OVAL_NAMESPACES, timestamp, xsi_namespace
 from ..utils import required_key
 from ..xml import ElementTree
 from .oval_container import OVALContainer
 from .oval_shorthand import OVALShorthand
+from .oval_definition_references import OVALDefinitionReference
 
 
 def _get_xml_el(tag_name, xml_el):
@@ -101,7 +103,7 @@ class OVALDocument(OVALContainer):
             raise MissingOVALComponent(component_id)
         return False
 
-    def load_shorthand(self, xml_string, product, rule_id=None):
+    def load_shorthand(self, xml_string, product=None, rule_id=None):
         shorthand = OVALShorthand()
         shorthand.load_shorthand(xml_string)
 
@@ -124,6 +126,18 @@ class OVALDocument(OVALContainer):
         full_name = required_key(env_yaml, "full_name")
         for definition in self.definitions.values():
             definition.metadata.finalize_affected_platforms(type_, full_name)
+
+    def validate_references(self):
+        ref = OVALDefinitionReference()
+        ref.save_definitions(self.definitions)
+        try:
+            self._process_definition_references(ref)
+            self._process_test_references(ref)
+            self._process_objects_states_variables_references(ref)
+        except MissingOVALComponent as error:
+            logging.warning("Missing OVAL component: {}".format(error))
+            return False
+        return True
 
     def get_xml_element(self):
         root = self._get_oval_definition_el()

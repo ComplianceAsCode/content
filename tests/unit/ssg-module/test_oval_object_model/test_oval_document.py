@@ -56,3 +56,24 @@ def test_keep_referenced_components(oval_document):
     assert "oval:ssg-state_sshd_rekey_limit:ste:1" not in oval_document.states
     assert "oval:ssg-sshd_required:var:1" in oval_document.variables
     assert "oval:ssg-var_rekey_limit_size:var:1" not in oval_document.variables
+
+
+@pytest.mark.parametrize(
+    "path, expected_result",
+    [
+        (
+           OVAL_DOCUMENT_PATH, True,
+        ),
+        (
+            os.path.join(DATA_DIR, "oval_with_broken_extend_definition.xml"),
+            False
+        ),
+        (
+            os.path.join(DATA_DIR, "oval_with_correct_extend_definition.xml"),
+            True
+        )
+    ]
+)
+def test_validation(path, expected_result):
+    oval_doc = _load_oval_document(path)
+    assert oval_doc.validate_references() == expected_result
