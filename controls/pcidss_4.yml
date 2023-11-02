@@ -2611,23 +2611,21 @@ controls:
         - service_auditd_enabled
       controls:
       - id: 10.2.1.1
-        title: 'Audit logs capture all individual user access to cardholder
-          data.Records of all individual user access to cardholder data are captured.'
+        title: Audit logs capture all individual user access to cardholder data.
+        description: |-
+          Records of all individual user access to cardholder data are captured.
         levels:
           - base
-        status: automated
-        rules:
-          - audit_rules_unsuccessful_file_modification_creat
-          - audit_rules_unsuccessful_file_modification_rename
-          - audit_rules_unsuccessful_file_modification_open
-          - audit_rules_unsuccessful_file_modification
-          - audit_rules_unsuccessful_file_modification_ftruncate
-          - audit_rules_unsuccessful_file_modification_renameat
-          - audit_rules_unsuccessful_file_modification_truncate
-          - audit_rules_unsuccessful_file_modification_unlink
-          - audit_rules_unsuccessful_file_modification_openat
-          - audit_rules_unsuccessful_file_modification_unlinkat
-          - audit_rules_unsuccessful_file_modification_open_by_handle_at
+        status: planned
+        notes: |-
+          Differently than 10.2.1.4, this requirement is about logginh successful access to
+          cardholder data. This kind of events can easily hit performance issues and are usually
+          not necessary if a good access policy is in place. More clarification is needed about
+          this requirement.
+        related_rules:
+          # There are already many rules related to successful access, if we need to include them.
+          # e.g.:
+          - audit_rules_successful_file_modification_open
 
       - id: 10.2.1.2
         title: 'Audit logs capture all actions taken by any individual with
