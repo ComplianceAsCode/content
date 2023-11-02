@@ -2705,12 +2705,14 @@ controls:
           - audit_rules_usergroup_modification
 
       - id: 10.2.1.6
-        title: 'Audit logs capture the initialization of new audit logs, and starting,
-          stopping, or pausing of the existing audit logs.'
+        title: Audit logs capture the initialization of new audit logs, and starting, stopping, or
+          pausing of the existing audit logs.
         levels:
           - base
-        status: pending
-        rules: []
+        status: planned
+        notes: |-
+          Ideally should exist rules specifically logging when audit configuration files are
+          modified and audit service state is changed.
 
       - id: 10.2.1.7
         title: 'Audit logs capture all creation and deletion of system-level
