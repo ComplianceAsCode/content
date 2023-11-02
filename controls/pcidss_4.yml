@@ -2957,16 +2957,31 @@ controls:
         - service_timesyncd_enabled
 
     - id: 10.6.2
-      title: 'Systems are configured to the correct and consistent time'
+      title: Systems are configured to the correct and consistent time.
+      description: |-
+        - One or more designated time servers are in use.
+        - Only the designated central time server(s) receives time from external sources.
+        - Time received from external sources is based on International Atomic Time or Coordinated
+          Universal Time (UTC).
+        - The designated time server(s) accept time updates only from specific industry-accepted
+          external sources.
+        - Where there is more than one designated time server, the time servers peer with one
+          another to keep accurate time.
+        - Internal systems receive time information only from designated central time server(s).
       levels:
         - base
       status: automated
+      notes: |-
+        The selected rules might need updates in order to restrict their applicabilities or their
+        prodtypes to avoid conflicts.
       rules:
-      - var_multiple_time_servers=suse
-      - ntpd_specify_remote_server
-      - ntpd_specify_multiple_servers
-      - chronyd_specify_remote_server
-      - chronyd_or_ntpd_specify_multiple_servers
+        # specific products should update the variable value when defining the profile based on
+        # this control file.
+        - var_multiple_time_servers=generic
+        - chronyd_specify_remote_server
+        - chronyd_or_ntpd_specify_multiple_servers
+        - ntpd_specify_remote_server
+        - ntpd_specify_multiple_servers
       related_rules:
         - chronyd_configure_pool_and_server
 
