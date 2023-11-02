@@ -3226,7 +3226,7 @@ controls:
     title: Network intrusions and unexpected file changes are detected and responded to.
     levels:
       - base
-    status: manual
+    status: automated
     controls:
     - id: 11.5.1
       title: Intrusion-detection and/or intrusion-prevention techniques are used to detect and/or
@@ -3257,20 +3257,20 @@ controls:
           - package_MFEhiplsm_installed
 
   - id: 11.5.2
-    title: 'A change-detection mechanism (for example, file integrity monitoring tools)
-      is deployed'
+    title: A change-detection mechanism (for example, file integrity monitoring tools) is deployed.
     levels:
       - base
-    status: partial
+    status: automated
     rules:
-    - rpm_verify_permissions
-    - disable_prelink
-    - package_aide_installed
-    - aide_periodic_cron_checking
-    - aide_periodic_checking_systemd_timer
-    - rpm_verify_ownership
-    - rpm_verify_hashes
-    - aide_build_database
+      - aide_build_database
+      - aide_periodic_cron_checking
+      - aide_periodic_checking_systemd_timer
+      - package_aide_installed
+      - rpm_verify_hashes
+      - rpm_verify_ownership
+      - rpm_verify_permissions
+    related_rules:
+      - disable_prelink
 
   - id: 11.6
     title: 'Unauthorized changes on payment pages are detected and responded to.'
