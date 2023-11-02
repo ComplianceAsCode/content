@@ -2810,29 +2810,29 @@ controls:
         - rsyslog_nolisten
 
     - id: 10.3.4
-      title: 'File integrity monitoring or change-detection mechanisms is used on audit
-        logs to ensure that existing log data cannot be changed without generating
-        alerts.Stored activity records cannot be modified without an alert being
-        generated.'
+      title: File integrity monitoring or change-detection mechanisms is used on audit logs to
+        ensure that existing log data cannot be changed without generating alerts.
+      description: |-
+        Stored activity records cannot be modified without an alert being generated.
       levels:
         - base
       status: automated
       rules:
-      - audit_rules_dac_modification_fremovexattr
-      - audit_rules_dac_modification_fchownat
-      - audit_rules_dac_modification_fchown
-      - audit_rules_dac_modification_lremovexattr
-      - audit_rules_dac_modification_lchown
-      - audit_rules_dac_modification_fsetxattr
-      - audit_rules_dac_modification_setxattr
-      - audit_rules_networkconfig_modification
-      - audit_rules_dac_modification_chmod
-      - audit_rules_dac_modification_fchmod
-      - audit_rules_dac_modification_lsetxattr
-      - audit_rules_dac_modification_chown
-      - audit_rules_dac_modification_removexattr
-      - audit_rules_mac_modification
-      - audit_rules_dac_modification_fchmodat
+        - audit_rules_mac_modification
+        - audit_rules_dac_modification_chmod
+        - audit_rules_dac_modification_chown
+        - audit_rules_dac_modification_fchmod
+        - audit_rules_dac_modification_fchmodat
+        - audit_rules_dac_modification_fchown
+        - audit_rules_dac_modification_fchownat
+        - audit_rules_dac_modification_fremovexattr
+        - audit_rules_dac_modification_fsetxattr
+        - audit_rules_dac_modification_lremovexattr
+        - audit_rules_dac_modification_lchown
+        - audit_rules_dac_modification_lsetxattr
+        - audit_rules_dac_modification_removexattr
+        - audit_rules_dac_modification_setxattr
+        - audit_rules_networkconfig_modification
 
   - id: 10.4
     title: 'Audit logs are reviewed to identify anomalies or suspicious activity.'
