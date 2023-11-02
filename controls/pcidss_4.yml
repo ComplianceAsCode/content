@@ -2758,35 +2758,35 @@ controls:
         - auditd_name_format
 
   - id: 10.3
-    title: 'Audit logs are protected from destruction and unauthorized modifications.'
+    title: Audit logs are protected from destruction and unauthorized modifications.
     levels:
       - base
     status: partial
     controls:
     - id: 10.3.1
-      title: 'Read access to audit logs files is limited to those with a job-related
-        need.Stored activity records cannot be accessed by unauthorized personnel.'
+      title: Read access to audit logs files is limited to those with a job-related need.
+      description: |-
+        Stored activity records cannot be accessed by unauthorized personnel.
       levels:
         - base
       status: automated
       rules:
-      - file_permissions_var_log_audit
-      - file_ownership_var_log_audit
-      - rsyslog_files_ownership
-      - rsyslog_files_permissions
-      - rsyslog_files_groupownership
+        - file_permissions_var_log_audit
+        - rsyslog_files_permissions
 
     - id: 10.3.2
-      title: 'Audit log files are protected to prevent modifications by
-        individuals.Stored activity records cannot be modified by personnel.'
+      title: Audit log files are protected to prevent modifications by individuals.
+      description: |-
+        Stored activity records cannot be modified by personnel.
       levels:
         - base
       status: automated
       rules:
-      - rsyslog_files_ownership
-      - rsyslog_files_permissions
-      - rsyslog_files_groupownership
-      - audit_rules_immutable
+        - file_group_ownership_var_log_audit
+        - file_ownership_var_log_audit
+        - rsyslog_files_ownership
+        - rsyslog_files_groupownership
+        - audit_rules_immutable
 
     - id: 10.3.3
       title: 'Audit log files, including those for external-facing technologies, are
