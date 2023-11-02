@@ -25,6 +25,9 @@ cat > /etc/systemd/system/aidecheck-notify.service <<NOTIFYEOF
         ExecStart=/bin/sh -c 'cat /tmp/aide-report.log | /bin/mail -s "$(hostname) - AIDE Integrity Check"  $var_aide_scan_notification_email'
 NOTIFYEOF
 {{% else %}}
+CRONTAB=/etc/crontab
+CRONDIRS='/etc/cron.d /etc/cron.daily /etc/cron.weekly /etc/cron.monthly'
+
 # NOTE: on some platforms, /etc/crontab may not exist
 if [ -f /etc/crontab ]; then
 	CRONTAB_EXIST=/etc/crontab
