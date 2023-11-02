@@ -3003,23 +3003,31 @@ controls:
         - chronyd_run_as_chrony_user
 
   - id: 10.7
-    title: 'Failures of critical security control systems are detected, reported, and
-      responded to promptly.'
+    title: Failures of critical security control systems are detected, reported, and responded to
+      promptly.
     levels:
       - base
     status: partial
     rules:
-    - grub2_audit_argument
+      - grub2_audit_argument
     controls:
     - id: 10.7.1
-      title: 'Additional requirement for service providers only: Failures of critical
-        security control systems are detected, alerted, and addressed promptly,
-        including but not limited to failure of the following critical security control
-        systems'
+      title: 'Additional requirement for service providers only: Failures of critical security
+        control systems are detected, alerted, and addressed promptly.'
+      description: |-
+        It includes but is not limited to failure of the following critical security control
+        systems:
+        - Network security controls.
+        - IDS/IPS.
+        - FIM.
+        - Anti-malware solutions.
+        - Physical access controls.
+        - Logical access controls.
+        - Audit logging mechanisms.
+        - Segmentation controls (if used).
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: 10.7.2
       title: 'Failures of critical security control systems are detected, alerted, and
