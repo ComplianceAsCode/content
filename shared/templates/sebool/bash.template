@@ -6,6 +6,10 @@
 
 {{% if product == "sle15" %}}
 {{{ bash_package_install("policycoreutils") }}}
+{{{ bash_package_install("policycoreutils-python-utils") }}}
+{{{ bash_package_install("selinux-tools") }}}
+{{{ bash_package_install("python3-selinux") }}}
+{{{ bash_package_install("python3-semanage") }}}
 {{% endif %}}
 
 {{% if SEBOOL_BOOL %}}
