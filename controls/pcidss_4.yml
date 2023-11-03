@@ -3959,7 +3959,7 @@ controls:
     title: PCI DSS is incorporated into business-as-usual (BAU) activities.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: A3.3.1
       title: Failures of critical security control systems are detected, alerted, and addressed
@@ -3990,13 +3990,16 @@ controls:
           PCI DSS Reference: Requirements 2, 6, 12.
 
     - id: A3.3.3
-      title: 'Reviews are performed at least once every three months to verify BAU
-        activities are being followed. Reviews are performed by personnel assigned to
-        the PCI DSS compliance program (as identified in A3.1.3).'
+      title: Reviews are performed at least once every three months to verify BAU activities are
+        being followed.
+      description: |-
+        Reviews are performed by personnel assigned to the PCI DSS compliance program (as
+        identified in A3.1.3).
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+          PCI DSS Reference: Requirements 1-12.
 
   - id: A3.4
     title: 'Logical access to the cardholder data environment is controlled and managed.'
