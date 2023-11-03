@@ -3702,7 +3702,7 @@ controls:
     title: Multi-tenant service providers protect and separate all customer environments and data.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: A1.1.1
       title: Logical separation is implemented.
@@ -3732,18 +3732,17 @@ controls:
       status: manual
 
     - id: A1.1.4
-      title: 'The effectiveness of logical separation controls used to separate
-        customer environments is confirmed at least once every six months via
-        penetration testing.Segmentation of customer environments from other
-        environments is periodically validated to be effective.The testing of adequate
-        separation between customers in a multi-tenant service provider environment is
-        in addition to the penetration tests specified in Requirement 11.4.6. This
-        requirement is a best practice until 31 March 2025, after which it will be
-        required and must be fully considered during a PCI DSS assessment.'
+      title: The effectiveness of logical separation controls used to separate customer
+        environments is confirmed at least once every six months via penetration testing.
+      description: |-
+        Segmentation of customer environments from other environments is periodically validated to
+        be effective. The testing of adequate separation between customers in a multi-tenant
+        service provider environment is in addition to the penetration tests specified in
+        Requirement 11.4.6. This requirement is a best practice until 31 March 2025, after which
+        it will be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
   - id: A1.2
     title: 'Multi-tenant service providers facilitate logging and incident response for
