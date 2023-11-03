@@ -3956,26 +3956,29 @@ controls:
           PCI DSS Reference: Requirement 12
 
   - id: A3.3
-    title: 'PCI DSS is incorporated into business-as-usual (BAU) activities.'
+    title: PCI DSS is incorporated into business-as-usual (BAU) activities.
     levels:
       - base
     status: pending
     controls:
     - id: A3.3.1
-      title: 'Failures of critical security control systems are detected, alerted, and
-        addressed promptly.'
+      title: Failures of critical security control systems are detected, alerted, and addressed
+        promptly.
       levels:
         - base
-      status: pending
+      status: manual
+      notes: |-
+          PCI DSS Reference: Requirement 12
       controls:
       - id: A3.3.1.2
-        title: 'Failures of any critical security control systems are responded to
-          promptly. Processes for responding to failures in security control systems
-          include'
+        title: Failures of any critical security control systems are responded to promptly.
         levels:
           - base
-        status: pending
-        rules: []
+        status: manual
+        notes: |-
+          PCI DSS Reference: Requirements 1-12
+          If you noticed, this requirement should be A3.3.1.1 instead of A3.3.1.2 but it was kept
+          this way to be aligned to the policy.
 
     - id: A3.3.2
       title: 'Hardware and software technologies are reviewed at least once every 12
