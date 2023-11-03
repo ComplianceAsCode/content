@@ -3699,18 +3699,19 @@ controls:
       status: manual
 
   - id: A1.1
-    title: 'Multi-tenant service providers protect and separate all customer environments
-      and data.'
+    title: Multi-tenant service providers protect and separate all customer environments and data.
     levels:
       - base
     status: pending
     controls:
     - id: A1.1.1
-      title: 'Logical separation is implemented as follows'
+      title: Logical separation is implemented.
+      description: |-
+        - The provider cannot access its customers' environments without authorization.
+        - Customers cannot access the provider's environment without authorization.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
     - id: A1.1.2
       title: 'Controls are implemented such that each customer only has permission to
