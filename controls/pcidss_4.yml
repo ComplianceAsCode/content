@@ -725,10 +725,18 @@ controls:
           automated rules fit this requirement in order to reduce the chances if this data be
           unintentionally stored in memory.
         rules:
+          - sysctl_kernel_core_pattern
           - coredump_disable_backtraces
           - coredump_disable_storage
           - disable_users_coredumps
           - sysctl_fs_suid_dumpable
+        related_rules:
+          # These next three rules are interesting but can hit performance so it is better to
+          # investigate the performance impact before enabling them.
+          - kernel_config_page_poisoning
+          - kernel_config_page_poisoning_no_sanity
+          - kernel_config_page_poisoning_zero
+          - sysctl_kernel_core_uses_pid
 
       - id: 3.3.1.2
         title: The card verification code is not retained upon completion of the authorization
