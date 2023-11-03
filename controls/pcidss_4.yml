@@ -2756,6 +2756,7 @@ controls:
       rules:
         - var_auditd_name_format=fqd
         - auditd_name_format
+        - audit_profile_set
 
   - id: 10.3
     title: Audit logs are protected from destruction and unauthorized modifications.
@@ -3319,15 +3320,14 @@ controls:
       status: manual
 
     - id: 12.1.4
-      title: 'Responsibility for information security is formally assigned to a Chief
-        Information Security Officer or other information security knowledgeable member
-        of executive management.A designated member of executive management is
-        responsible for information security.'
+      title: Responsibility for information security is formally assigned to a Chief Information
+        Security Officer or other information security knowledgeable member of executive
+        management.
+      description: |-
+        A designated member of executive management is responsible for information security.
       levels:
         - base
-      status: pending
-      rules:
-      - audit_profile_set
+      status: manual
 
   - id: 12.2
     title: 'Acceptable use policies for end-user technologies are defined and implemented.'
