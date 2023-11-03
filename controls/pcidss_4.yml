@@ -3776,25 +3776,50 @@ controls:
         - base
       status: manual
 
-  - id: A2.1.2
-    title: 'Additional requirement for service providers only: All service providers
-      with existing connection points to POS POI terminals that use SSL and/or early TLS
-      as defined in A2.1 have a formal Risk Mitigation and Migration Plan in place that
-      includes'
+  - id: A2.1
+    title: POI terminals using SSL and/or early TLS are confirmed as not susceptible to known
+      SSL/TLS exploits.
+    description: |-
+      Appendix A2: Additional PCI DSS Requirements for Entities Using SSL/Early TLS for
+      Card-Present POS POI Terminal Connections.
     levels:
       - base
-    status: pending
-    rules: []
+    status: manual
+    controls:
+    - id: A2.1.1
+      title: Where POS POI terminals at the merchant or payment acceptance location use SSL and/or
+        early TLS, the entity confirms the devices are not susceptible to any known exploits for
+        those protocols.
+      levels:
+        - base
+      status: manual
+      notes: |-
+        Related to requirements 2.2.7 and 3.5.1.1.
+        Service level settings for web servers such as Apache and NGINX should also be checked.
+      related_rules:
+        - configure_openssl_crypto_policy
+        - configure_openssl_tls_crypto_policy
+        - harden_openssl_crypto_policy
 
-  - id: A2.1.3
-    title: 'Additional requirement for service providers only: All service providers
-      provide a secure service offering.This requirement is not eligible for the
-      customized approach.This requirement applies only when the entity being assessed
-      is a service provider.'
-    levels:
-      - base
-    status: pending
-    rules: []
+    - id: A2.1.2
+      title: 'Additional requirement for service providers only: All service providers
+        with existing connection points to POS POI terminals that use SSL and/or early TLS
+        as defined in A2.1 have a formal Risk Mitigation and Migration Plan in place that
+        includes'
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: A2.1.3
+      title: 'Additional requirement for service providers only: All service providers
+        provide a secure service offering.This requirement is not eligible for the
+        customized approach.This requirement applies only when the entity being assessed
+        is a service provider.'
+      levels:
+        - base
+      status: pending
+      rules: []
 
   - id: A3.1
     title: 'A PCI DSS compliance program is implemented.'
