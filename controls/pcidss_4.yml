@@ -2111,7 +2111,7 @@ controls:
         This requirement is not intended to apply to user accounts on point-of-sale terminals that
         have access to only one card number at a time to facilitate a single transaction (such as
         IDs used by cashiers on point-of-sale terminals).
-        For RHEL 8 and RHEL 8 systems, the accounts_password_pam_pwhistory_... rules should be
+        For RHEL 8 and RHEL 9 systems, the accounts_password_pam_pwhistory_... rules should be
         prefered in detriment of accounts_password_pam_unix_remember. Using both should not create
         conflict but is unnecessary and the last should be filtered out from the profile.
       rules:
@@ -2146,7 +2146,7 @@ controls:
         - base
       status: automated
       notes: |-
-        The requirement does not explicitily asks to define the number of days before the password
+        The requirement does not explicitily define the number of days before the password
         expiration to warn the users, but the relevant rules were selected here as they do not
         cause any problems in combination with password lifetime rules.
       rules:
