@@ -574,6 +574,8 @@ controls:
       levels:
         - base
       status: automated
+      notes: |-
+        Related to requirement 12.3.3.
       rules:
         - configure_crypto_policy
         - var_system_crypto_policy=default_policy
@@ -3364,12 +3366,13 @@ controls:
       status: manual
 
     - id: 12.3.3
-      title: 'Cryptographic cipher suites and protocols in use are documented and
-        reviewed at least once every 12 months, including at least the following'
+      title: Cryptographic cipher suites and protocols in use are documented and reviewed at least
+        once every 12 months.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Related to requirement 2.2.7.
 
     - id: 12.3.4
       title: 'Hardware and software technologies in use are reviewed at least once
