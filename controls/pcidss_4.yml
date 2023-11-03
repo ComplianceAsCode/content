@@ -3538,7 +3538,7 @@ controls:
       relationships is managed.
     levels:
       - base
-    status: pending
+    status: manual
     controls:
     - id: 12.8.1
       title: A list of all third-party service providers (TPSPs) with which account data is shared
@@ -3582,15 +3582,14 @@ controls:
       status: manual
 
     - id: 12.8.5
-      title: 'Information is maintained about which PCI DSS requirements are managed by
-        each TPSP, which are managed by the entity, and any that are shared between the
-        TPSP and the entity.Records detailing the PCI DSS requirements and related
-        system components for which each TPSP is solely or jointly responsible, are
-        maintained and reviewed periodically.'
+      title: Information is maintained about which PCI DSS requirements are managed by each TPSP,
+        which are managed by the entity, and any that are shared between the TPSP and the entity.
+      description: |-
+        Records detailing the PCI DSS requirements and related system components for which each
+        TPSP is solely or jointly responsible, are maintained and reviewed periodically.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
 
   - id: 12.9
     title: 'Third-party service providers (TPSPs) support their customers’ PCI DSS
