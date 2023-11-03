@@ -55,6 +55,7 @@ controls:
         the review of allowed accesses should be manual as different sites may have different
         policies.
       rules:
+        - package_nftables_installed
         - service_firewalld_enabled
         - service_nftables_disabled
 
@@ -537,6 +538,7 @@ controls:
         - file_permissions_etc_shadow
         - file_permissions_backup_etc_shadow
         # general files protection
+        - file_permissions_unauthorized_world_writable
         - file_permissions_ungroupowned
         - no_files_unowned_by_user
         - dir_perms_world_writable_sticky_bits
@@ -725,11 +727,12 @@ controls:
           automated rules fit this requirement in order to reduce the chances if this data be
           unintentionally stored in memory.
         rules:
-          - sysctl_kernel_core_pattern
           - coredump_disable_backtraces
           - coredump_disable_storage
           - disable_users_coredumps
           - sysctl_fs_suid_dumpable
+          - sysctl_kernel_core_pattern
+          - sysctl_kernel_randomize_va_space
         related_rules:
           # These next three rules are interesting but can hit performance so it is better to
           # investigate the performance impact before enabling them.
