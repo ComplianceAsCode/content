@@ -33,7 +33,7 @@
     path: {{{ PATH }}}
     line: '{{{ TYPE }}} {{{ CONTROL_FLAG }}} {{{ MODULE }}}'
     state: present
-  when: check_pam_module_result is not skipped and '"{{{ MODULE }}}" not in check_pam_module_result.stdout'
+  when: check_pam_module_result.stdout is defined and '"{{{ MODULE }}}" not in check_pam_module_result.stdout'
 
 - name: Ensure '{{{ MODULE }}}' module has conforming control flag
   lineinfile:

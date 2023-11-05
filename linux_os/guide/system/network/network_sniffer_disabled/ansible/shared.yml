@@ -13,4 +13,5 @@
   ansible.builtin.command:
     cmd: ip link set dev {{ item.split(':')[1] }} multicast off promisc off
   loop: "{{ network_interfaces.stdout_lines }}"
-  when: "item.split(':')"
+  when: network_interfaces.stdout_lines is defined and "item.split(':') | length == 3"
+

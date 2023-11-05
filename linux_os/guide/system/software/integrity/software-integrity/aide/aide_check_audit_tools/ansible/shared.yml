@@ -35,6 +35,7 @@
     line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"
 
+
 - name: Configure AIDE to properly protect audit tools
   lineinfile:
     path: {{{ aide_conf_path }}}
