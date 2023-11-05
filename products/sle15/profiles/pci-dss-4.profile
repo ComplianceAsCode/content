@@ -16,10 +16,10 @@ selections:
     -  ensure_pam_wheel_group_empty
     -  sshd_strong_kex=pcidss
     -  sshd_approved_macs=cis_sle15
-    -  sshd_approved_ciphers=cis_sle15 
+    -  sshd_approved_ciphers=cis_sle15
     -  var_multiple_time_servers=suse
-    -  var_multiple_time_pools=suse      
-# Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only 
+    -  var_multiple_time_pools=suse
+# Exclude from PCI DISS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_specify_multiple_servers'
     - '!ntpd_specify_remote_server'
@@ -30,7 +30,8 @@ selections:
     - '!use_pam_wheel_for_su'
     -  use_pam_wheel_group_for_su
     -  var_pam_wheel_group_for_su=cis
-    # Following rules once had a prodtype incompatible with the sle15 product
+    -  var_accounts_tmout=15_min
+# Following rules once had a prodtype incompatible with the sle15 product
     - '!aide_periodic_cron_checking'
     - '!accounts_password_pam_dcredit'
     - '!dconf_gnome_screensaver_lock_delay'
@@ -62,3 +63,4 @@ selections:
     - '!dconf_gnome_disable_automount_open'
     - '!network_nmcli_permissions'
     - '!package_cryptsetup-luks_installed'
+
