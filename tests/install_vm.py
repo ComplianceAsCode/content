@@ -325,6 +325,8 @@ def get_virt_install_command(data):
                 "loader.secure=yes",
             ])
             features_opts.append("smm=on")
+        else:
+            boot_opts.append("loader.secure=no")
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
