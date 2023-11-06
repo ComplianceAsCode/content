@@ -37,7 +37,6 @@
       operation="equals">noexec</linux:mount_options>
   </linux:partition_state>
 
-
   <!-- This object is created mainly to improve performance when collecting file objects.
        Here all mount points are collected and filtered to include only devices under /dev in
        order to ignore special file systems. Then, the mount options are checked to exclude
@@ -61,6 +60,10 @@
     <unix:sgid datatype="boolean">true</unix:sgid>
   </unix:file_state>
 
+  <unix:file_state id="state_dracut_tmp_files" version="1">
+    <unix:filepath operation="pattern match">^/var/tmp/dracut.*</unix:filepath>
+  </unix:file_state>
+
   <!-- This file_object will only find privileged commands located only in file systems that allow
        their execution. The recurse_file_system parameter is set to defined in order to make sure
        the probe doesn't leave the scope of that mount point. For example, when probing "/", the
@@ -74,6 +77,7 @@
       var_ref="var_audit_rules_privileged_commands_exec_mountpoints"/>
     <unix:filename operation="pattern match">^\w+</unix:filename>
     <filter action="include">state_setuid_or_setgid_set</filter>
+    <filter action="exclude">state_dracut_tmp_files</filter>
   </unix:file_object>
 
   <local_variable id="var_audit_rules_privileged_commands_priv_cmds" version="1"
