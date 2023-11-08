@@ -54,7 +54,7 @@ def _handle_existing_id(component, component_dict):
             (
                 "OVAL ID {} is used multiple times and should represent "
                 "the same elements.\nRewrite the OVAL checks. Place the identical IDs"
-                " into their own definition and extend this definition by it.\n"
+                " into their own definition and extend this definition by it."
             ).format(component.id_)
         )
 
