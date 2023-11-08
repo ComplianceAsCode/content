@@ -8,6 +8,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
         "MinSizeRel" "RelWithDebInfo")
 endif()
 
+set(LOG_LEVEL "WARNING")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(LOG_LEVEL "DEBUG")
+endif()
+
 project(scap-security-guide NONE)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
