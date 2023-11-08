@@ -62,6 +62,9 @@ class OVALBaseObject(object):
                 __value = __value + "}"
         self.__namespace = __value
 
+    def __ne__(self, __value):
+        return self.__dict__ != __value.__dict__
+
     def __eq__(self, __value):
         return self.__dict__ == __value.__dict__
 
