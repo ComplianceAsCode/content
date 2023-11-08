@@ -29,4 +29,8 @@
 
 - name: Implement IPv6 loopback rules
   ansible.builtin.command: nft add rule inet filter input ip6 saddr ::1 counter drop
-  when: ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
+  when:
+    - ipv6_status is not skipped
+    - sysctl_ipv6_default is not skipped
+    - sysctl_ipv6_all is not skipped
+    - ipv6_status.rc == 0 or sysctl_ipv6_all.found > 0 or sysctl_ipv6_default.found > 0
