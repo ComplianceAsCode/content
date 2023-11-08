@@ -498,7 +498,7 @@ selections:
     # RHEL-08-020000
     - account_temp_expire_date
 
-    # RHEL-08-020010, RHEL-08-020011, RHEL-08-020025, RHEL-08-020026
+    # RHEL-08-020010, RHEL-08-020011
     - accounts_passwords_pam_faillock_deny
 
     # RHEL-08-020012, RHEL-08-020013
@@ -521,6 +521,12 @@ selections:
 
     # RHEL-08-020024
     - accounts_max_concurrent_login_sessions
+
+    # RHEL-08-020025
+    - account_password_pam_faillock_system_auth
+
+    # RHEL-08-020026
+    - account_password_pam_faillock_password_auth
 
     # RHEL-08-020027, RHEL-08-020028
     - account_password_selinux_faillock_dir
@@ -565,6 +571,9 @@ selections:
 
     # RHEL-08-020081
     - dconf_gnome_session_idle_user_locks
+
+    # RHEL-08-020082
+    - dconf_gnome_screensaver_lock_locked
 
     # RHEL-08-020090
     - sssd_enable_certmap
@@ -988,6 +997,7 @@ selections:
     - package_rsh-server_removed
 
     # RHEL-08-040020
+    - kernel_module_uvcvideo_disabled
 
     # RHEL-08-040021
     - kernel_module_atm_disabled
@@ -1020,6 +1030,8 @@ selections:
     - kernel_module_usb-storage_disabled
 
     # RHEL-08-040090
+    - configured_firewalld_default_deny
+    - set_firewalld_default_zone
 
     # RHEL-08-040100
     - package_firewalld_installed
@@ -1097,6 +1109,7 @@ selections:
     - service_usbguard_enabled
 
     # RHEL-08-040150
+    - firewalld-backend
 
     # RHEL-08-040159
     - package_openssh-server_installed
