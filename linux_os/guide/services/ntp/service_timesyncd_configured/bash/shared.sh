@@ -15,13 +15,11 @@ IFS=" " mapfile -t current_cfg_arr < <(ls -1 /etc/systemd/timesyncd.d/* 2>/dev/n
 config_file="/etc/systemd/timesyncd.d/oscap-remedy.conf"
 current_cfg_arr+=( "/etc/systemd/timesyncd.conf" )
 # Comment existing NTP FallbackNTP settings
-if [ ${#current_cfg_arr[@]} -ne 0 ]; then
-    for current_cfg in "${current_cfg_arr[@]}"
-    do
-        sed -i 's/^NTP/#&/g' "$current_cfg"
-        sed -i 's/^FallbackNTP/#&/g' "$current_cfg"
-    done
-fi
+for current_cfg in "${current_cfg_arr[@]}"
+do
+    sed -i 's/^NTP/#&/g' "$current_cfg"
+    sed -i 's/^FallbackNTP/#&/g' "$current_cfg"
+done
 # Set primary fallback NTP servers in drop-in configuration
 echo "NTP=$preferred_ntp_servers" >> "$config_file"
 echo "FallbackNTP=$fallback_ntp_servers" >> "$config_file"
