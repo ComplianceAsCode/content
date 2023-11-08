@@ -92,20 +92,24 @@ set_tests_properties("fix_rules" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules" PROPERTIES DEPENDS "test-rule-dir-json")
 set_tests_properties("fix_rules" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
 
-macro(mypy_test SCRIPT)
+macro(mypy_test SCRIPT FOLLOW_IMPORTS)
     if(PY_MYPY)
         add_test(
             NAME "test-mypy-${SCRIPT}"
-            COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/${SCRIPT}"
+            COMMAND env "${PYTHON_EXECUTABLE}" -m mypy "${CMAKE_SOURCE_DIR}/${SCRIPT}" "--follow-imports=${FOLLOW_IMPORTS}"
         )
         set_tests_properties("test-mypy-${SCRIPT}" PROPERTIES LABELS quick)
         set_tests_properties("test-mypy-${SCRIPT}" PROPERTIES LABELS mypy)
     endif()
 endmacro()
 
-mypy_test("utils/import_srg_spreadsheet.py")
-mypy_test("utils/check_eof.py")
-mypy_test("utils/no_new_global_applicable_rules.py")
+mypy_test("utils/import_srg_spreadsheet.py" "normal")
+mypy_test("utils/check_eof.py" "normal")
+mypy_test("utils/no_new_global_applicable_rules.py" "normal")
+
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
+    mypy_test("utils/oscal/" "skip")
+endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
