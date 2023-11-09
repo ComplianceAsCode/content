@@ -2697,6 +2697,9 @@ controls:
         status: automated
         rules:
           - display_login_attempts
+        related_rules:
+          # The following rules are related to unauthorized attempts to modify files but for
+          # already logged users and could be useful but the requirement is more about logins.
           - audit_rules_unsuccessful_file_modification_creat
           - audit_rules_unsuccessful_file_modification_ftruncate
           - audit_rules_unsuccessful_file_modification_open
@@ -2707,7 +2710,6 @@ controls:
           - audit_rules_unsuccessful_file_modification_truncate
           - audit_rules_unsuccessful_file_modification_unlink
           - audit_rules_unsuccessful_file_modification_unlinkat
-        related_rules:
           # This rule incorportes creat, ftruncate and open. It is redundant to keep it here.
           # The others are more granular and share the same template, so they were prefered here.
           - audit_rules_unsuccessful_file_modification
