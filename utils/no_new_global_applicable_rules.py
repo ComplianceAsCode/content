@@ -32,19 +32,21 @@ def _get_expected_set() -> set:
     return expected_set
 
 
-def _get_current_noprodtypes(rule_dirs):
-    current_no_prodtypes = set()
+def _process_current_rule(current_no_prodtypes: set, rule: dict, rule_id: str):
+    rule_yaml = ssg.rule_yaml.get_yaml_contents(rule)
+    has_prodtype = False
+    for line in rule_yaml.contents:
+        if 'prodtype:' in line:
+            has_prodtype = True
+            break
+    if not has_prodtype:
+        current_no_prodtypes.add(rule_id)
+
+
 def _get_current_noprodtypes(rule_dirs: dict) -> set:
     current_no_prodtypes: Set[str] = set()
     for rule_id, rule in rule_dirs.items():
-        rule_yaml = ssg.rule_yaml.get_yaml_contents(rule)
-        has_prodtype = False
-        for line in rule_yaml.contents:
-            if 'prodtype:' in line:
-                has_prodtype = True
-                break
-        if not has_prodtype:
-            current_no_prodtypes.add(rule_id)
+        _process_current_rule(current_no_prodtypes, rule, rule_id)
     return current_no_prodtypes
 
 
