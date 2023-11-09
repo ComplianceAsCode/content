@@ -1268,21 +1268,21 @@ Part of the grub2_bootloader_argument template.
     dest: /etc/default/grub
     create: yes
     mode: '0644'
-  when: argcheck.rc != 0 and linecheck.rc != 0
+  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc != 0
 
 - name: Replace existing {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
       regexp: '{{{ arg_name }}}=\w+'
       replace: '{{{ arg_name_value }}}'
-  when: argcheck.rc == 0 and linecheck.rc == 0
+  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc == 0 and linecheck.rc == 0
 
 - name: Add {{{ arg_name }}} argument
   replace:
       path: /etc/default/grub
       regexp: '(^\s*GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 {{{ arg_name_value }}}"'
-  when: argcheck.rc != 0 and linecheck.rc == 0
+  when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc == 0
 
 {{% endif -%}}
 
@@ -1316,7 +1316,7 @@ Part of the grub2_bootloader_argument_absent template.
       path: /etc/default/grub
       regexp: '\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)'
       replace: '\1 \2'
-  when: argcheck.rc == 0
+  when: argcheck is not skipped and argcheck.rc == 0
 
 {{% endif -%}}
 
