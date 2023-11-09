@@ -45,6 +45,7 @@
       regexp: '\(^GRUB_CMDLINE_LINUX=".*\)noexec=?[^[:space:]]*\(.*"\)'
       replace: '\1 \2'
   when:
+    - argcheck is not skipped
     - argcheck.rc == 0
     - kexec_arch == "b64"
 
