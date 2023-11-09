@@ -2687,7 +2687,6 @@ controls:
           # This rule incorportes faillock, lastlog and tallylog. It is redundant to keep it.
           # The others are more granular and share the same template, so they were prefered here.
           - audit_rules_login_events
-          - directory_access_var_log_audit
 
       - id: 10.2.1.4
         title: Audit logs capture all invalid logical access attempts.
@@ -2798,6 +2797,7 @@ controls:
         - base
       status: automated
       rules:
+        - directory_access_var_log_audit
         - file_permissions_var_log_audit
         - rsyslog_files_permissions
 
