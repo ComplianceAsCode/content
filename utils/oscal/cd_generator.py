@@ -9,7 +9,7 @@ import pathlib
 import re
 from typing import Any, Dict, Optional, Set, Tuple
 
-from trestle.common.common_types import TypeWithProps
+from trestle.common.common_types import TypeWithProps, TypeWithParts
 from trestle.common.const import TRESTLE_HREF_HEADING, IMPLEMENTATION_STATUS
 from trestle.common.list_utils import as_list
 from trestle.core.generators import generate_sample_model
@@ -65,6 +65,63 @@ class OscalStatus:
     STATUSES = {PLANNED, NOT_APPLICABLE, ALTERNATIVE, IMPLEMENTED, PARTIAL}
 
 
+class OSCALProfileHelper:
+    """Helper class to handle OSCAL profile."""
+
+    def __init__(self, trestle_root: pathlib.Path) -> None:
+        """Initialize."""
+        self._root = trestle_root
+        self.profile_controls: Set[str] = set()
+        self.controls_by_label: Dict[str, str] = dict()
+
+    def load(self, profile_path: str) -> None:
+        """Load the profile catalog."""
+        profile_resolver = ProfileResolver()
+        resolved_catalog: cat.Catalog = profile_resolver.get_resolved_profile_catalog(
+            self._root,
+            profile_path,
+            block_params=False,
+            params_format='[.]',
+            show_value_warnings=True,
+        )
+
+        for control in CatalogInterface(resolved_catalog).get_all_controls_from_dict():
+            self.profile_controls.add(control.id)
+            label = ControlInterface.get_label(control)
+            if label:
+                self.controls_by_label[label] = control.id
+                self._handle_parts(control)
+
+    def _handle_parts(
+        self,
+        control: TypeWithParts,
+    ) -> None:
+        """Handle parts of a control."""
+        if control.parts:
+            for part in control.parts:
+                if not part.id:
+                    continue
+                self.profile_controls.add(part.id)
+                label = ControlInterface.get_label(part)
+                # Avoiding key collision here. The higher level control object will take
+                # precedence.
+                if label and label not in self.controls_by_label.keys():
+                    self.controls_by_label[label] = part.id
+                self._handle_parts(part)
+
+    def validate(self, control_id: str) -> Optional[str]:
+        """Validate that the control id exists in the catalog and return the id"""
+        if control_id in self.controls_by_label.keys():
+            logger.debug(f"Found control {control_id} in control labels")
+            return self.controls_by_label.get(control_id)
+        elif control_id in self.profile_controls:
+            logger.debug(f"Found control {control_id} in profile control ids")
+            return control_id
+
+        logger.debug(f"Control {control_id} does not exist in the profile")
+        return None
+
+
 class ComponentDefinitionGenerator:
     """Generate a component definition from a product"""
 
@@ -94,14 +151,10 @@ class ComponentDefinitionGenerator:
         self.product = product
 
         profile_path, profile_href = self.get_source(profile_name_or_href)
-        self.profile_path = profile_path
         self.profile_href = profile_href
 
-        # Used to match by profile control id and then by label property
-        (
-            self.profile_controls,
-            self.controls_by_label,
-        ) = self.resolve_profile_to_controls()
+        self.profile = OSCALProfileHelper(self.trestle_root)
+        self.profile.load(profile_path)
 
         self.env_yaml = self.get_env_yaml(build_config_yaml)
         self.policy_id = control
@@ -146,86 +199,13 @@ class ComponentDefinitionGenerator:
             raise ValueError(f"Policy {control} not found in controls")
         return controls_manager
 
-    def resolve_profile_to_controls(self) -> Tuple[Set[str], Dict[str, str]]:
-        """
-        Resolve the profile to a list of control ids.
-
-        Returns:
-            profile_controls: List of control ids in the profile
-            controls_by_label: Dictionary of controls by label
-        """
-        profile_resolver = ProfileResolver()
-        resolved_catalog: cat.Catalog = profile_resolver.get_resolved_profile_catalog(
-            self.trestle_root,
-            self.profile_path,
-            block_params=False,
-            params_format='[.]',
-            show_value_warnings=True,
-        )
-        profile_controls = set()
-        controls_by_label = dict()
-
-        for control in CatalogInterface(resolved_catalog).get_all_controls_from_dict():
-            profile_controls.add(control.id)
-            label = ControlInterface.get_label(control)
-            if label:
-                controls_by_label[label] = control.id
-                self._handle_parts(control, profile_controls, controls_by_label)
-        return profile_controls, controls_by_label
-
-    def _handle_parts(
-        self,
-        control: cat.Control,
-        profile_controls: Set[str],
-        controls_by_label: Dict[str, str],
-    ) -> None:
-        """Handle parts of a control."""
-        if control.parts:
-            for part in control.parts:
-                profile_controls.add(part.id)  # type: ignore
-                label = ControlInterface.get_label(part)
-                if label:
-                    controls_by_label[label] = part.id  # type: ignore
-                self._handle_parts(part, profile_controls, controls_by_label)  # type: ignore
-
-    def handle_rule_yaml(self, rule_id: str) -> Dict[str, str]:
-        """Create rule object from rule yaml."""
-        rule_dir = self.rule_json[rule_id]['dir']
-        guide_dir = self.rule_json[rule_id]['guide']
-        product = self.env_yaml['product']
-        rule_obj = {'id': rule_id, 'dir': rule_dir, 'guide': guide_dir}
-        rule_file = ssg.rules.get_rule_dir_yaml(rule_dir)
-
-        rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, env_yaml=self.env_yaml)
-        rule_yaml.normalize(product)
-        rule_obj['description'] = rule_yaml.description
-        rule_obj['fixtext'] = rule_yaml.fixtext
-        return rule_obj
-
-    def get_profile_control_id(self, control_name: str) -> Optional[str]:
-        """
-        Get control info if it is in the parent profile.
-
-        Returns:
-            control_id: The control id if it is in the profile
-        """
-        if control_name in self.controls_by_label.keys():
-            logging.debug(f"Found control {control_name} in control labels")
-            return self.controls_by_label.get(control_name)
-        elif control_name in self.profile_controls:
-            logging.debug(f"Found control {control_name} in profile control ids")
-            return control_name
-
-        logger.debug(f"Control {control_name} does not exist in the profile")
-        return None
-
     def create_implemented_requirement(
         self, control: Control
     ) -> Optional[ImplementedRequirement]:
         """Create implemented requirement from a control object"""
 
         logger.info(f"Creating implemented requirement for {control.id}")
-        control_id = self.get_profile_control_id(control.id)
+        control_id = self.profile.validate(control.id)
         if control_id:
             implemented_req = generate_sample_model(ImplementedRequirement)
             implemented_req.control_id = control_id
@@ -268,7 +248,7 @@ class ComponentDefinitionGenerator:
             # process into statements
             implemented_req.statements = list()
             for section_label, section_content in sections_dict.items():
-                statement_id = self.get_profile_control_id(
+                statement_id = self.profile.validate(
                     f"{implemented_req.control_id}_smt.{section_label}"
                 )
                 if statement_id is None:
@@ -296,8 +276,8 @@ class ComponentDefinitionGenerator:
         """
 
         status_prop = Property(
-            name=IMPLEMENTATION_STATUS,
-            value=implementation_status)  # type: ignore
+            name=IMPLEMENTATION_STATUS, value=implementation_status
+        )  # type: ignore
         if (
             implementation_status == OscalStatus.IMPLEMENTED
             or implementation_status == OscalStatus.PARTIAL

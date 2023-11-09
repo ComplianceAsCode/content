@@ -18,7 +18,11 @@ from trestle.oscal.component import ImplementedRequirement
 
 from ssg.controls import Control, Status
 
-from utils.oscal.cd_generator import ComponentDefinitionGenerator, OscalStatus
+from utils.oscal.cd_generator import (
+    ComponentDefinitionGenerator,
+    OscalStatus,
+    OSCALProfileHelper,
+)
 
 
 DATADIR = os.path.join(os.path.dirname(__file__), "data")
@@ -69,18 +73,13 @@ def load_oscal_test_data(trestle_dir, model_name, model_type):
         ('AC-200', None),
     ],
 )
-def test_get_control_profile_id(vendor_dir, input, response):
-    "Test get_control_profile_id"
-    cd_generator = ComponentDefinitionGenerator(
-        product='test_product',
-        vendor_dir=vendor_dir,
-        build_config_yaml=TEST_BUILD_CONFIG,
-        json_path=TEST_RULE_JSON,
-        root=TEST_ROOT,
-        profile_name_or_href='simplified_nist_profile',
-        control="test_policy",
-    )
-    result_id = cd_generator.get_profile_control_id(input)
+def test_oscal_profile_helper(vendor_dir, input, response):
+    "Test the OSCALProfileHelper class validate method."
+    trestle_root = pathlib.Path(vendor_dir)
+    oscal_profile_helper = OSCALProfileHelper(trestle_root=trestle_root)
+    profile_path = f'{vendor_dir}/profiles/simplified_nist_profile/profile.json'
+    oscal_profile_helper.load(profile_path=profile_path)
+    result_id = oscal_profile_helper.validate(input)
     assert result_id == response
 
 
