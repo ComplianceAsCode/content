@@ -4,12 +4,12 @@ import argparse
 import json
 import os
 import sys
+from typing import Set
 
 import ssg.rule_yaml
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
-BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
 
 
 def _parse_args() -> argparse.Namespace:
@@ -23,7 +23,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _get_expcted_set():
+def _get_expected_set() -> set:
     expected_path = os.path.join(SSG_ROOT, 'tests', 'data', 'utils',
                                  'no_new_global_applicable_rules.json')
     with open(expected_path, 'r') as f:
@@ -34,6 +34,8 @@ def _get_expcted_set():
 
 def _get_current_noprodtypes(rule_dirs):
     current_no_prodtypes = set()
+def _get_current_noprodtypes(rule_dirs: dict) -> set:
+    current_no_prodtypes: Set[str] = set()
     for rule_id, rule in rule_dirs.items():
         rule_yaml = ssg.rule_yaml.get_yaml_contents(rule)
         has_prodtype = False
@@ -46,7 +48,7 @@ def _get_current_noprodtypes(rule_dirs):
     return current_no_prodtypes
 
 
-def _get_rule_dir(json_path):
+def _get_rule_dir(json_path: str) -> dict:
     if not os.path.exists(json_path):
         print(f"Cannot find rule_dirs.json file at {json_path}.", file=sys.stderr)
         print(f"Hint: run {SSG_ROOT}/utils/rule_dir_json.py", file=sys.stderr)
@@ -61,7 +63,7 @@ def main():
     json_path = args.json
     rule_dirs = _get_rule_dir(json_path)
     current_no_prodtypes = _get_current_noprodtypes(rule_dirs)
-    expected_set = _get_expcted_set()
+    expected_set = _get_expected_set()
 
     delta = current_no_prodtypes - expected_set
     if len(delta) != 0:
