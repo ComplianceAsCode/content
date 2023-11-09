@@ -22,13 +22,17 @@
   block:
     - name: '{{{ rule_title }}} - Collect NetworkManager connections names'
       ansible.builtin.shell:
-        cmd: nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }'
+        cmd:
+          set -o pipefail
+          nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }'
       register: result_nmcli_cmd_connections_names
       changed_when: false
 
     - name: '{{{ rule_title }}} - Collect NetworkManager connections zones'
       ansible.builtin.shell:
-        cmd: nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
+        cmd:
+          set -o pipefail
+          nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
       register: result_nmcli_cmd_connections_zones
       changed_when: false
       with_items:
@@ -36,7 +40,9 @@
 
     - name: '{{{ rule_title }}} - Ensure NetworkManager connections are assigned to a firewalld zone'
       ansible.builtin.command:
-        cmd: nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
+        cmd:
+          set -o pipefail
+          nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
       register: result_nmcli_cmd_connections_assignment
       with_together:
         - "{{ result_nmcli_cmd_connections_names.stdout_lines }}"
@@ -53,13 +59,17 @@
 
     - name: '{{{ rule_title }}} - Collect firewalld active zones'
       ansible.builtin.shell:
-        cmd: firewall-cmd --get-active-zones | grep -v interfaces
+        cmd:
+          set -o pipefail
+          firewall-cmd --get-active-zones | grep -v interfaces
       register: result_firewall_cmd_zones_names
       changed_when: false
 
     - name: '{{{ rule_title }}} - Ensure firewalld zones allow SSH'
       ansible.builtin.command:
-        cmd: firewall-cmd --permanent --zone={{ item }} --add-service=ssh
+        cmd:
+          set -o pipefail
+          firewall-cmd --permanent --zone={{ item }} --add-service=ssh
       register: result_nmcli_cmd_connections_assignment
       changed_when:
           - "'ALREADY_ENABLED' not in result_nmcli_cmd_connections_assignment.stderr"

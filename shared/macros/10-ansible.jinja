@@ -203,6 +203,7 @@ value: :code:`Setting={{ varname1 }}`
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
   shell: |-
+    set -o pipefail
     included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
     [[ -n $included_files ]] && ls $included_files || true
   register: sshd_config_included_files
@@ -836,7 +837,9 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: '{{{ rule_title }}} - Get authselect Features Currently Enabled'
   ansible.builtin.shell:
-    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+    cmd: |
+        set -o pipefail
+        authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
   when:
@@ -867,7 +870,9 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: '{{{ rule_title }}} - Get authselect current features'
   ansible.builtin.shell:
-    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+    cmd:
+        set -o pipefail
+        authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
   when:
@@ -1544,7 +1549,9 @@ Part of the grub2_bootloader_argument_absent template.
 {{% macro ansible_ensure_authselect_custom_profile() -%}}
 - name: '{{{ rule_title }}} - Get authselect current profile'
   ansible.builtin.shell:
-    cmd: authselect current -r | awk '{ print $1 }'
+    cmd:
+        set -o pipefail
+        authselect current -r | awk '{ print $1 }'
   register: result_authselect_profile
   changed_when: false
   when:
@@ -1568,7 +1575,9 @@ Part of the grub2_bootloader_argument_absent template.
 
 - name: '{{{ rule_title }}} - Get authselect current features to also enable them in the custom profile'
   ansible.builtin.shell:
-    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+    cmd:
+        set -o pipefail
+        authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
   changed_when: false
   when:
