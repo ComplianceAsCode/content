@@ -3009,11 +3009,11 @@ controls:
         # this control file.
         - var_multiple_time_servers=generic
         - chronyd_specify_remote_server
-        - chronyd_or_ntpd_specify_multiple_servers
         - ntpd_specify_remote_server
         - ntpd_specify_multiple_servers
       related_rules:
         - chronyd_configure_pool_and_server
+        - chronyd_or_ntpd_specify_multiple_servers
 
     - id: 10.6.3
       title: Time synchronization settings and data are protected.
