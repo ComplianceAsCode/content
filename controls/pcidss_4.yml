@@ -2665,8 +2665,9 @@ controls:
           Not all privileged commands have suid or sgid enabled. We probably want to include more
           rules for this requirement.
         rules:
-          - audit_rules_privileged_commands
+          - audit_rules_suid_privilege_function
         related_rules:
+          - audit_rules_privileged_commands
           - audit_rules_privileged_commands_usermod
 
       - id: 10.2.1.3
