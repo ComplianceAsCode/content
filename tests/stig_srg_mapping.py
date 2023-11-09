@@ -27,7 +27,9 @@ SRG_PREFIX = "SRG-OS"
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Ensure that rules with STIG IDs also have SRG references."
+    )
     parser.add_argument(
         "-r",
         "--root",
@@ -37,18 +39,18 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-b",
         "--build-root",
-        help=f"Path to the root the cmake " f"build directory.Defaults to {BINARY_DIR}",
+        help=f"Path to the root the cmake build directory. Defaults to {BINARY_DIR}.",
         default=BINARY_DIR,
     )
     parser.add_argument(
         "-u",
         "--srg-url",
-        help="URL for the SRG reference defaults to {SRG_GPOS_URL}",
+        help=f"URL for the SRG reference. Defaults to {SRG_GPOS_URL.replace('%', '%%')}.",
         default=SRG_GPOS_URL,
     )
     parser.add_argument(
         "--prefix",
-        help=f"Prefix used for the SRG reference defaults to {SRG_PREFIX}",
+        help=f"Prefix used for the SRG reference. Defaults to {SRG_PREFIX}.",
         default=SRG_PREFIX,
     )
     parser.add_argument("product")
