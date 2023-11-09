@@ -2627,6 +2627,14 @@ controls:
       rules:
         - package_audit_installed
         - service_auditd_enabled
+      related_rules:
+        # The policy is not specific about products or solutions but the level of information
+        # necessary, as defined in 10.2.2. These rsyslog rules might be good candidates to be
+        # selected in the future.
+        - rsyslog_cron_logging
+        - rsyslog_logging_configured
+        - service_systemd-journald_enabled
+        - service_rsyslog_enabled
       controls:
       - id: 10.2.1.1
         title: Audit logs capture all individual user access to cardholder data.
@@ -3066,6 +3074,7 @@ controls:
       status: partial
       rules:
         - grub2_audit_argument
+        - grub2_audit_backlog_limit_argument
 
     - id: 10.7.3
       title: Failures of any critical security controls systems are responded to restore security
