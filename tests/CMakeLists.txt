@@ -229,7 +229,7 @@ macro(ssg_refcheck_test PRODUCT PROFILE KEY)
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
 endmacro()
 
-macro(stig_srg_mapping PRODUCT)
+macro(stig_srg_mapping_test PRODUCT)
     add_test(
         NAME "stig-srg-mapping-${PRODUCT}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stig_srg_mapping.py" --prefix "SRG-OS" --build-root "${CMAKE_BINARY_DIR}" --root "${CMAKE_SOURCE_DIR}" ${PRODUCT}
@@ -247,7 +247,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
     # This exclude can be removed once enable_authselect has a stigid
     ssg_refcheck_test("rhel9" "stig" "stigid" "enable_authselect")
-    stig_srg_mapping("rhel9")
+    stig_srg_mapping_test("rhel9")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
@@ -255,7 +255,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel8" "cis" "cis")
-    stig_srg_mapping("rhel8")
+    stig_srg_mapping_test("rhel8")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
@@ -263,7 +263,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
     ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel7" "cis" "cis")
-    stig_srg_mapping("rhel7")
+    stig_srg_mapping_test("rhel7")
 endif()
 
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
