@@ -55,6 +55,10 @@ class Profile(XCCDFEntity, SelectionHandler):
         "selections",
     }
 
+    ALTERNATIVE_KEYS = {
+        "selections": "extends",
+    }
+
     @classmethod
     def process_input_dict(cls, input_contents, env_yaml, product_cpes):
         input_contents = super(Profile, cls).process_input_dict(input_contents, env_yaml)
@@ -245,7 +249,9 @@ class Profile(XCCDFEntity, SelectionHandler):
         profile_rules = set(self.selected)
         is_empty, empty_groups = self._find_empty_groups(root_group, profile_rules)
         if is_empty:
-            msg = "Profile {0} unselects all groups.".format(self.id_)
+            msg = ("Profile {0} unselects all groups. "
+                   "Check whether it selects any rule or extends any profile."
+                   .format(self.id_))
             raise ValueError(msg)
         self.unselected_groups.extend(sorted(empty_groups))
 
