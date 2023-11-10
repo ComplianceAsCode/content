@@ -229,6 +229,7 @@ Rules sections must be in the following order, if they are present.
     * Comma separated list
     * No spaces between items
     * Items must be in alphabetical order
+    * Required on all new rules
 * `title`
     * Must be one line
     * Must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
