@@ -6,6 +6,7 @@ import shutil
 
 from tempfile import TemporaryDirectory
 
+from trestle.common.const import IMPLEMENTATION_STATUS, REPLACE_ME
 from trestle.common.err import TrestleError
 from trestle.core.generators import generate_sample_model
 from trestle.common.model_utils import ModelUtils
@@ -15,7 +16,10 @@ from trestle.oscal import catalog as cat
 from trestle.oscal import profile as prof
 from trestle.oscal.component import ImplementedRequirement
 
-from utils.oscal.cd_generator import ComponentDefinitionGenerator
+from ssg.controls import Control, Status
+
+from utils.oscal.cd_generator import ComponentDefinitionGenerator, OscalStatus
+
 
 DATADIR = os.path.join(os.path.dirname(__file__), "data")
 TEST_ROOT = os.path.abspath(os.path.join(DATADIR, "test_root"))
@@ -63,7 +67,7 @@ def load_oscal_test_data(trestle_dir, model_name, model_type):
         ('AC-2(2)', 'ac-2.2'),
         ('ac-1_smt.a', 'ac-1_smt.a'),
         ('AC-200', None),
-    ]
+    ],
 )
 def test_get_control_profile_id(vendor_dir, input, response):
     "Test get_control_profile_id"
@@ -74,7 +78,7 @@ def test_get_control_profile_id(vendor_dir, input, response):
         json_path=TEST_RULE_JSON,
         root=TEST_ROOT,
         profile_name_or_href='simplified_nist_profile',
-        control="test_policy"
+        control="test_policy",
     )
     result_id = cd_generator.get_profile_control_id(input)
     assert result_id == response
@@ -92,8 +96,29 @@ A single response with no sections
 """
 
 
-def test_handle_response(vendor_dir):
-    """Test handling responses"""
+@pytest.mark.parametrize(
+    "notes, input_status, description, status, remarks",
+    [
+        (
+            single_response,
+            Status.MANUAL,
+            REPLACE_ME,
+            OscalStatus.ALTERNATIVE,
+            'A single response with no sections',
+        ),
+        (
+            single_response,
+            Status.INHERENTLY_MET,
+            'A single response with no sections',
+            OscalStatus.IMPLEMENTED,
+            None,
+        ),
+    ],
+)
+def test_handle_response_with_implemented_requirements(
+    vendor_dir, notes, input_status, description, status, remarks
+):
+    """Test handling responses with various scenarios."""
     cd_generator = ComponentDefinitionGenerator(
         product='test_product',
         vendor_dir=vendor_dir,
@@ -101,23 +126,99 @@ def test_handle_response(vendor_dir):
         json_path=TEST_RULE_JSON,
         root=TEST_ROOT,
         profile_name_or_href='simplified_nist_profile',
-        control="test_policy"
+        control="test_policy",
     )
 
-    # test with sections
+    control = Control()
+    control.notes = notes
+    control.status = input_status
+
     implemented_req = generate_sample_model(ImplementedRequirement)
     implemented_req.control_id = 'ac-1'
-    cd_generator.handle_response(implemented_req, section_response)
-
-    assert len(implemented_req.statements) == 2
-    assert implemented_req.statements[0].description == 'My response is a single statement'
-    expected_text = "My response is a list of statements\n\nThis link for section b."
-    assert implemented_req.statements[1].description == expected_text
-
-    # test single
-    implemented_req = generate_sample_model(ImplementedRequirement)
-    implemented_req.control_id = 'ac-1'
-    cd_generator.handle_response(implemented_req, single_response)
+    cd_generator.handle_response(implemented_req, control)
 
     assert implemented_req.statements is None
-    assert implemented_req.description == 'A single response with no sections'
+    assert implemented_req.description == description
+
+    prop = next(
+        (prop for prop in implemented_req.props if prop.name == IMPLEMENTATION_STATUS),
+        None,
+    )
+
+    assert prop is not None
+    assert prop.value == status
+    assert prop.remarks == remarks
+
+
+@pytest.mark.parametrize(
+    "notes, status, id, results",
+    [
+        (
+            section_response,
+            Status.PARTIAL,
+            'ac-1',
+            {
+                'ac-1_smt.a': (
+                    'My response is a single statement',
+                    OscalStatus.PARTIAL,
+                    None,
+                ),
+                'ac-1_smt.b': (
+                    'My response is a list of statements\n\nThis link for section b.',
+                    OscalStatus.PARTIAL,
+                    None,
+                ),
+            },
+        ),
+        (
+            section_response,
+            Status.MANUAL,
+            'ac-1',
+            {
+                'ac-1_smt.a': (
+                    REPLACE_ME,
+                    OscalStatus.ALTERNATIVE,
+                    'My response is a single statement',
+                ),
+                'ac-1_smt.b': (
+                    REPLACE_ME,
+                    OscalStatus.ALTERNATIVE,
+                    'My response is a list of statements\n\nThis link for section b.',
+                ),
+            },
+        ),
+    ],
+)
+def test_handle_response_with_statements(vendor_dir, notes, status, id, results):
+    """Test handling responses with various scenarios."""
+    cd_generator = ComponentDefinitionGenerator(
+        product='test_product',
+        vendor_dir=vendor_dir,
+        build_config_yaml=TEST_BUILD_CONFIG,
+        json_path=TEST_RULE_JSON,
+        root=TEST_ROOT,
+        profile_name_or_href='simplified_nist_profile',
+        control="test_policy",
+    )
+
+    control = Control()
+    control.notes = notes
+    control.status = status
+
+    implemented_req = generate_sample_model(ImplementedRequirement)
+    implemented_req.control_id = id
+    cd_generator.handle_response(implemented_req, control)
+
+    assert len(implemented_req.statements) == len(results)
+
+    for stm in implemented_req.statements:
+        description, status, remarks = results.get(stm.statement_id)
+        assert stm.description == description
+
+        prop = next(
+            (prop for prop in stm.props if prop.name == IMPLEMENTATION_STATUS), None
+        )
+
+        assert prop is not None
+        assert prop.value == status
+        assert prop.remarks == remarks

@@ -9,11 +9,13 @@ import pathlib
 import re
 import uuid
 
-from trestle.common.const import TRESTLE_HREF_HEADING
+from trestle.common.const import TRESTLE_HREF_HEADING, IMPLEMENTATION_STATUS
+from trestle.common.list_utils import as_list
 from trestle.core.generators import generate_sample_model
 from trestle.core.catalog.catalog_interface import CatalogInterface
 from trestle.core.control_interface import ControlInterface
 from trestle.core.profile_resolver import ProfileResolver
+from trestle.oscal.common import Property
 from trestle.oscal.component import (
     ComponentDefinition,
     DefinedComponent,
@@ -26,7 +28,7 @@ import ssg.components
 import ssg.environment
 import ssg.rules
 import ssg.build_yaml
-from ssg.controls import ControlsManager
+from ssg.controls import ControlsManager, Status
 
 from utils.oscal import LOGGER_NAME
 
@@ -34,6 +36,31 @@ from utils.oscal import LOGGER_NAME
 logger = logging.getLogger(LOGGER_NAME)
 
 SECTION_PATTERN = r'Section ([a-z]):'
+
+
+class OscalStatus:
+    PLANNED = "planned"
+    NOT_APPLICABLE = "not-applicable"
+    ALTERNATIVE = "alternative"
+    IMPLEMENTED = "implemented"
+    PARTIAL = "partial"
+
+    @staticmethod
+    def from_string(source: str) -> str:
+        data = {
+            Status.INHERENTLY_MET: OscalStatus.IMPLEMENTED,
+            Status.DOES_NOT_MEET: OscalStatus.ALTERNATIVE,
+            Status.DOCUMENTATION: OscalStatus.IMPLEMENTED,
+            Status.AUTOMATED: OscalStatus.IMPLEMENTED,
+            Status.MANUAL: OscalStatus.ALTERNATIVE,
+            Status.PLANNED: OscalStatus.PLANNED,
+            Status.PARTIAL: OscalStatus.PARTIAL,
+            Status.SUPPORTED: OscalStatus.IMPLEMENTED,
+            Status.PENDING: OscalStatus.ALTERNATIVE,
+        }
+        return data.get(source, source)
+
+    STATUSES = {PLANNED, NOT_APPLICABLE, ALTERNATIVE, IMPLEMENTED, PARTIAL}
 
 
 class ComponentDefinitionGenerator:
@@ -193,13 +220,12 @@ class ComponentDefinitionGenerator:
         if control_id:
             implemented_req = generate_sample_model(ImplementedRequirement)
             implemented_req.control_id = control_id
-            self.handle_response(implemented_req, control.notes)
+            self.handle_response(implemented_req, control)
             # TODO(jpower432): Setup rules in the properties file
-            # TODO(jpower432): Set the implementation status property
             return implemented_req
         return None
 
-    def handle_response(self, implemented_req, control_response):
+    def handle_response(self, implemented_req, control):
         """
         Break down the response into parts.
 
@@ -207,6 +233,7 @@ class ComponentDefinitionGenerator:
             implemented_req: The implemented requirement to add the response and statements to.
             control_response: The control response to add to the implemented requirement.
         """
+        control_response = control.notes
         pattern = re.compile(SECTION_PATTERN, re.IGNORECASE)
         lines = control_response.split('\n')
 
@@ -222,8 +249,12 @@ class ComponentDefinitionGenerator:
             elif current_section_label is not None:
                 sections_dict[current_section_label].append(line)
 
+        oscal_status = OscalStatus.from_string(control.status)
+
         if not sections_dict:
-            implemented_req.description = control_response.strip()
+            self.add_response_by_status(
+                implemented_req, oscal_status, control_response.strip()
+            )
         else:
             # process into statements
             implemented_req.statements = list()
@@ -236,16 +267,40 @@ class ComponentDefinitionGenerator:
 
                 section_content_str = '\n'.join(section_content)
                 section_content_str = pattern.sub('', section_content_str)
-                statement = self.create_statement(
-                    statement_id, section_content_str.strip()
+                statement = self.create_statement(statement_id)
+                self.add_response_by_status(
+                    statement, oscal_status, section_content_str.strip()
                 )
                 implemented_req.statements.append(statement)
 
-    def create_statement(self, statement_id, description):
+    def add_response_by_status(
+        self, type_with_props, implementation_status, control_response
+    ):
+        """
+        Add the response to the implemented requirement depending on the status.
+
+        Notes: Per OSCAL requirements, any status other than implemented and partial should have
+        remarks with justification for the status.
+        """
+
+        status_prop = Property(name=IMPLEMENTATION_STATUS, value=implementation_status)
+        if (
+            implementation_status == OscalStatus.IMPLEMENTED
+            or implementation_status == OscalStatus.PARTIAL
+        ):
+            type_with_props.description = control_response
+        else:
+            status_prop.remarks = control_response
+
+        type_with_props.props = as_list(type_with_props.props)
+        type_with_props.props.append(status_prop)
+
+    def create_statement(self, statement_id, description=""):
         """Create a statement."""
         statement = generate_sample_model(Statement)
         statement.statement_id = statement_id
-        statement.description = description
+        if description:
+            statement.description = description
         return statement
 
     def create_control_implementation(self):
