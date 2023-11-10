@@ -5,16 +5,15 @@
 # disruption = low
 
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
-
 IFS=',' read -r -a time_servers_array <<< "$var_multiple_time_servers"
 preferred_ntp_servers_array=("${time_servers_array[@]:0:2}")
 preferred_ntp_servers=$( echo "${preferred_ntp_servers_array[@]}"|sed -e 's/\s\+/,/g' )
 fallback_ntp_servers_array=("${time_servers_array[@]:2}")
 fallback_ntp_servers=$( echo "${fallback_ntp_servers_array[@]}"|sed -e 's/\s\+/,/g' )
 
+IFS=" " mapfile -t current_cfg_arr < <(ls -1 /etc/systemd/timesyncd.d/* 2>/dev/null)
 config_file="/etc/systemd/timesyncd.d/oscap-remedy.conf"
-current_cfg_arr=( "/etc/systemd/timesyncd.conf" )
-current_cfg_arr+=("$(ls /etc/systemd/timesyncd.d/*)")
+current_cfg_arr+=( "/etc/systemd/timesyncd.conf" )
 # Comment existing NTP FallbackNTP settings
 for current_cfg in "${current_cfg_arr[@]}"
 do
