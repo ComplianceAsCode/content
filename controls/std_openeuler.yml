@@ -1,0 +1,34 @@
+---
+policy: 'Standard Benchmark for openEuler'
+title: 'Standard Benchmark for openEuler'
+id: std_openeuler
+version: '1.0'
+levels:
+  - id: base
+
+controls:
+  - id: 1.2.1_ftp_not_installed
+    title: Ensure FTP is not installed
+    levels:
+      - base
+    status: automated
+    rules:
+      - package_ftp_removed
+
+  - id: 1.2.2_tftp_server_not_installed
+    title: Ensure TFTP Server is not installed
+    levels:
+      - base
+    status: automated
+    rules:
+      - package_tftp_removed
+      - package_tftp-server_removed
+
+  - id: 1.2.3_telnet_server_not_installed
+    title: Ensure Telnet Server is not installed
+    levels:
+      - base
+    status: automated
+    rules:
+      - package_telnet_removed
+      - package_telnet-server_removed
