@@ -1,17 +1,16 @@
-#! /usr/bin/python3
+#!/usr/bin/env python3
 
 """Build a component definition for a product from pre-existing profiles"""
 
-import json
 import logging
 import os
 import pathlib
 import re
-from typing import Any, Dict, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from trestle.common.common_types import TypeWithProps, TypeWithParts
 from trestle.common.const import TRESTLE_HREF_HEADING, IMPLEMENTATION_STATUS
-from trestle.common.list_utils import as_list
+from trestle.common.list_utils import as_list, none_if_empty
 from trestle.core.generators import generate_sample_model
 from trestle.core.catalog.catalog_interface import CatalogInterface
 from trestle.core.control_interface import ControlInterface
@@ -24,20 +23,23 @@ from trestle.oscal.component import (
     ControlImplementation,
     ImplementedRequirement,
     Statement,
+    SetParameter,
 )
 
-import ssg.components
 import ssg.environment
-import ssg.rules
-import ssg.build_yaml
 from ssg.controls import ControlsManager, Status, Control
+import ssg.products
+
+from utils.oscal import add_prop
+from utils.oscal.params_extractor import ParameterExtractor
+from utils.oscal.rules_transformer import RulesTransformer, RuleInfo
 
 from utils.oscal import LOGGER_NAME
 
 
 logger = logging.getLogger(LOGGER_NAME)
 
-SECTION_PATTERN = r'Section ([a-z]):'
+SECTION_PATTERN = r"Section ([a-z]):"
 
 
 class OscalStatus:
@@ -81,7 +83,7 @@ class OSCALProfileHelper:
             self._root,
             profile_path,
             block_params=False,
-            params_format='[.]',
+            params_format="[.]",
             show_value_warnings=True,
         )
 
@@ -160,14 +162,14 @@ class ComponentDefinitionGenerator:
         self.policy_id = control
         self.controls_mgr = self.get_controls_mgr(control)
 
-        with open(json_path, 'r') as f:
-            rule_dir_json = json.load(f)
-        self.rule_json = rule_dir_json
+        self.params_extractor = ParameterExtractor(root, self.env_yaml)
+        self.rules_transformer = RulesTransformer(
+            root, self.env_yaml, json_path, self.params_extractor
+        )
 
     def get_env_yaml(self, build_config_yaml: str) -> Dict[str, Any]:
         """Get the environment yaml."""
-        product_dir = os.path.join(self.ssg_root, "products", self.product)
-        product_yaml_path = os.path.join(product_dir, "product.yml")
+        product_yaml_path = ssg.products.product_yaml_path(self.ssg_root, self.product)
         env_yaml = ssg.environment.open_environment(
             build_config_yaml,
             product_yaml_path,
@@ -177,10 +179,10 @@ class ComponentDefinitionGenerator:
 
     def get_source(self, profile_name_or_href: str) -> Tuple[str, str]:
         """Get the source of the profile."""
-        profile_in_trestle_dir = '://' not in profile_name_or_href
+        profile_in_trestle_dir = "://" not in profile_name_or_href
         profile_href = profile_name_or_href
         if profile_in_trestle_dir:
-            local_path = f'profiles/{profile_name_or_href}/profile.json'
+            local_path = f"profiles/{profile_name_or_href}/profile.json"
             profile_href = TRESTLE_HREF_HEADING + local_path
             profile_path = str(self.trestle_root / local_path)
         else:
@@ -210,7 +212,9 @@ class ComponentDefinitionGenerator:
             implemented_req = generate_sample_model(ImplementedRequirement)
             implemented_req.control_id = control_id
             self.handle_response(implemented_req, control)
-            # TODO(jpower432): Setup rules in the properties file
+
+            rule_ids, params_values = self._process_rule_ids(control.rules)
+            self.add_rules(implemented_req, rule_ids, params_values)
             return implemented_req
         return None
 
@@ -224,7 +228,7 @@ class ComponentDefinitionGenerator:
         """
         control_response = control.notes
         pattern = re.compile(SECTION_PATTERN, re.IGNORECASE)
-        lines = control_response.split('\n')
+        lines = control_response.split("\n")
 
         sections_dict = dict()
         current_section_label = None
@@ -254,13 +258,51 @@ class ComponentDefinitionGenerator:
                 if statement_id is None:
                     continue
 
-                section_content_str = '\n'.join(section_content)
-                section_content_str = pattern.sub('', section_content_str)
+                section_content_str = "\n".join(section_content)
+                section_content_str = pattern.sub("", section_content_str)
                 statement = self.create_statement(statement_id)
                 self._add_response_by_status(
                     statement, oscal_status, section_content_str.strip()
                 )
                 implemented_req.statements.append(statement)
+
+    def add_rules(
+        self,
+        type_with_props: TypeWithProps,
+        rule_ids: List[str],
+        params_values: Optional[Dict[str, str]] = None,
+    ) -> None:
+        """Add rules to a type with props."""
+        all_props: List[Property] = as_list(type_with_props.props)
+        self.rules_transformer.add_rules(rule_ids, params_values)
+        rule_properties: List[Property] = self.rules_transformer.get_rule_id_props(
+            rule_ids
+        )
+        all_props.extend(rule_properties)
+        type_with_props.props = none_if_empty(all_props)
+
+    def _process_rule_ids(
+        self, rule_ids: List[str]
+    ) -> Tuple[List[str], Dict[str, str]]:
+        """
+        Process rule ids.
+
+        Returns:
+            A tuple of processed rule ids and parameter selection values.
+
+        Notes: Rule ids with an "=" are parameters and should not be included when searching for
+        rules.
+        """
+        processed_rule_ids: List[str] = list()
+        params_values: Dict[str, str] = dict()
+        for rule_id in rule_ids:
+            parts = rule_id.split("=")
+            if len(parts) == 2:
+                param_id, value = parts
+                params_values[param_id] = value
+            else:
+                processed_rule_ids.append(rule_id)
+        return (processed_rule_ids, params_values)
 
     @staticmethod
     def _add_response_by_status(
@@ -275,9 +317,8 @@ class ComponentDefinitionGenerator:
         remarks with justification for the status.
         """
 
-        status_prop = Property(
-            name=IMPLEMENTATION_STATUS, value=implementation_status
-        )  # type: ignore
+        status_prop = add_prop(IMPLEMENTATION_STATUS, implementation_status, "")
+
         if (
             implementation_status == OscalStatus.IMPLEMENTED
             or implementation_status == OscalStatus.PARTIAL
@@ -297,6 +338,22 @@ class ComponentDefinitionGenerator:
             statement.description = description
         return statement
 
+    def add_set_parameters(self, control_implementation: ControlImplementation) -> None:
+        """Add set parameters to a type with props."""
+        param_selections: Dict[
+            str, str
+        ] = self.params_extractor.get_all_selected_values()
+        if param_selections:
+            all_set_params: List[SetParameter] = as_list(
+                control_implementation.set_parameters
+            )
+            for param_id, value in param_selections.items():
+                set_param = generate_sample_model(SetParameter)
+                set_param.param_id = param_id
+                set_param.values = [value]
+                all_set_params.append(set_param)
+            control_implementation.set_parameters = none_if_empty(all_set_params)
+
     def create_control_implementation(self) -> ControlImplementation:
         """Get the control implementation for a component."""
         ci = generate_sample_model(ControlImplementation)
@@ -307,6 +364,7 @@ class ComponentDefinitionGenerator:
             if implemented_req:
                 all_implement_reqs.append(implemented_req)
         ci.implemented_requirements = all_implement_reqs
+        self.add_set_parameters(ci)
         return ci
 
     def create_cd(
@@ -333,6 +391,11 @@ class ComponentDefinitionGenerator:
         oscal_component.type = component_definition_type
         oscal_component.description = self.product
         oscal_component.control_implementations = [control_implementation]
+
+        # Create all of the top-level component properties for rules
+        rules: List[RuleInfo] = self.rules_transformer.get_all_rules()
+        all_rule_properties: List[Property] = self.rules_transformer.transform(rules)
+        oscal_component.props = none_if_empty(all_rule_properties)
 
         component_definition.components.append(oscal_component)
 
