@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: openeuler,openeuler2203
+
+title: 'Check Warning Banners Correctly'
+
+description: |-
+    <p><tt>It can not be scanned automatically, please check it manually.</tt></p>
+    Warning banners contain warning information added on the system login page and are marked by all users who log in to the system.
+    <br />
+    Proper security warning information may increase the risk of system attacks or violate local laws and regulations.
+    <br />
+    openEuler security warning banners must be formulated by security department personnel and comply with local laws and regulations.
+    <br />
+    In addition, don't expose the system version, application server type, functions through warning banners, to prevent attackers from obtaining system information and launching attacks.
+    <br />
+    Run the <tt>cat</tt> command to check the warning banners in the <tt>/etc/motd</tt>, <tt>/etc/issue</tt>, and <tt>/etc/issue.net</tt> files. Check whether the information is reasonable.
+
+rationale: |-
+    None
+
+severity: high
+
+platform: machine
