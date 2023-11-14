@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure AppArmor profiles are in enforce complain mode") }}}
+    <criteria operator="AND">
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_object id="obj_apparmor_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_apparmor_enforced_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^\(enforce\)*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_apparmor_complaining_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">^\(complain\)*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable datatype="int" id="var_num_apparmor_profiles" version="1" comment="apparmor profiles">
+    <object_component item_field="subexpression" object_ref="obj_apparmor_profiles" />
+  </local_variable>
+  <local_variable datatype="int" id="var_num_apparmor_enforced_profiles" version="1" comment="enforce apparmor profiles">
+    <object_component item_field="subexpression" object_ref="obj_apparmor_enforced_profiles" />
+  </local_variable>
+  <local_variable datatype="int" id="var_num_apparmor_complaining_profiles" version="1" comment="enforce apparmor profiles">
+    <object_component item_field="subexpression" object_ref="obj_apparmor_complaining_profiles" />
+  </local_variable>
+</def-group>
