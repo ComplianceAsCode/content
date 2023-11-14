@@ -34,3 +34,10 @@
     line: 'Defaults timestamp_timeout={{ var_sudo_timestamp_timeout }}'
     validate: /usr/sbin/visudo -cf %s
   when: edit_sudoers_timestamp_timeout_option is defined and not edit_sudoers_timestamp_timeout_option.changed
+
+- name: Remove timestamp_timeout wrong values in /etc/sudoers
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=[\s]*(?!{{ var_sudo_timestamp_timeout }}\b)[-]?\w+\b.*$'
+    state: absent
+    validate: /usr/sbin/visudo -cf %s
