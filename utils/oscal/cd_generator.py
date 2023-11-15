@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-"""Build a component definition for a product from pre-existing profiles"""
+"""Build a component definition for a product from pre-existing OSCAL profiles"""
 
 import logging
-import os
 import pathlib
 import re
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -26,11 +25,12 @@ from trestle.oscal.component import (
     SetParameter,
 )
 
-import ssg.environment
-from ssg.controls import ControlsManager, Status, Control
-import ssg.products
+
+from ssg.controls import Status, Control
+from ssg.utils import required_key
 
 from utils.oscal import add_prop
+from utils.oscal.control_selector import ControlSelector
 from utils.oscal.params_extractor import ParameterExtractor
 from utils.oscal.rules_transformer import RulesTransformer, RuleInfo
 
@@ -129,28 +129,29 @@ class ComponentDefinitionGenerator:
 
     def __init__(
         self,
-        product: str,
         root: str,
         json_path: str,
-        build_config_yaml: str,
+        env_yaml: Dict[str, Any],
         vendor_dir: str,
         profile_name_or_href,
-        control: str,
+        control_selector: ControlSelector,
     ) -> None:
         """
         Initialize the component definition generator and load the necessary files.
 
         Args:
-            product: Product to generate the component definition for
             root: Root of the SSG project
             json_path: Path to the rules_dir.json file
-            build_config_yaml: Path to the build_config.yml file
+            env_yaml: Yaml file with environment information
             vendor_dir: Path to the vendor directory
             profile_name_or_href: Name or href of the profile to use
+            control_selector: Control selector that contains control responses
         """
         self.ssg_root = root
         self.trestle_root = pathlib.Path(vendor_dir)
-        self.product = product
+        self.product = required_key(env_yaml, "product")
+        self.env_yaml = env_yaml
+        self.control_selector = control_selector
 
         profile_path, profile_href = self.get_source(profile_name_or_href)
         self.profile_href = profile_href
@@ -158,24 +159,10 @@ class ComponentDefinitionGenerator:
         self.profile = OSCALProfileHelper(self.trestle_root)
         self.profile.load(profile_path)
 
-        self.env_yaml = self.get_env_yaml(build_config_yaml)
-        self.policy_id = control
-        self.controls_mgr = self.get_controls_mgr(control)
-
         self.params_extractor = ParameterExtractor(root, self.env_yaml)
         self.rules_transformer = RulesTransformer(
             root, self.env_yaml, json_path, self.params_extractor
         )
-
-    def get_env_yaml(self, build_config_yaml: str) -> Dict[str, Any]:
-        """Get the environment yaml."""
-        product_yaml_path = ssg.products.product_yaml_path(self.ssg_root, self.product)
-        env_yaml = ssg.environment.open_environment(
-            build_config_yaml,
-            product_yaml_path,
-            os.path.join(self.ssg_root, "product_properties"),
-        )
-        return env_yaml
 
     def get_source(self, profile_name_or_href: str) -> Tuple[str, str]:
         """Get the source of the profile."""
@@ -189,17 +176,6 @@ class ComponentDefinitionGenerator:
             profile_path = profile_href
 
         return profile_path, profile_href
-
-    def get_controls_mgr(self, control):
-        """Get the control response and implementation status from the policy."""
-        controls_dir = os.path.join(self.ssg_root, "controls")
-        controls_manager = ControlsManager(
-            controls_dir=controls_dir, env_yaml=self.env_yaml
-        )
-        controls_manager.load()
-        if control not in controls_manager.policies:
-            raise ValueError(f"Policy {control} not found in controls")
-        return controls_manager
 
     def create_implemented_requirement(
         self, control: Control
@@ -359,7 +335,8 @@ class ComponentDefinitionGenerator:
         ci = generate_sample_model(ControlImplementation)
         ci.source = self.profile_href
         all_implement_reqs = list()
-        for control in self.controls_mgr.get_all_controls(self.policy_id):
+
+        for control in self.control_selector.get_controls():
             implemented_req = self.create_implemented_requirement(control)
             if implemented_req:
                 all_implement_reqs.append(implemented_req)

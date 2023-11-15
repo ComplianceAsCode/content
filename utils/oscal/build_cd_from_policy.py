@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
-"""CLI for building a component definition for a product."""
+"""CLI for building a component definition for a product using a policy for control responses."""
 
 import argparse
 import logging
 import os
 import sys
+from typing import Any, Dict
+
+import ssg.environment
 
 from utils.oscal import SSG_ROOT, VENDOR_ROOT, RULES_JSON, BUILD_CONFIG, LOGGER_NAME
+from utils.oscal.control_selector import PolicyControlSelector
 from utils.oscal.cd_generator import ComponentDefinitionGenerator
 
 
@@ -48,7 +52,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-c",
         "--control",
-        help="Control to use as the source for control responses amd implementation status",
+        help="Control to use as the source for control responses. \
+        To optionally filter by level, use the format <control_id>:<level>.",
         required=True,
     )
     parser.add_argument(
@@ -69,7 +74,6 @@ def _parse_args() -> argparse.Namespace:
         "--component-definition-type",
         choices=["service", "validation"],
         default="service",
-        required=False,
         help="Type of component definition to create",
     )
     return parser.parse_args()
@@ -97,18 +101,42 @@ def configure_logger(log_file=None, log_level=logging.INFO):
     logger.addHandler(console_handler)
 
 
+def get_env_yaml(ssg_root: str, build_config_yaml: str, product: str) -> Dict[str, Any]:
+    """Get the environment yaml."""
+    product_yaml_path = ssg.products.product_yaml_path(ssg_root, product)
+    env_yaml = ssg.environment.open_environment(
+        build_config_yaml,
+        product_yaml_path,
+        os.path.join(ssg_root, "product_properties"),
+    )
+    return env_yaml
+
+
 def main():
     """Main function."""
     args = _parse_args()
     configure_logger(LOG_FILE, log_level=logging.INFO)
+
+    filter_by_level = None
+    if ":" in args.control:
+        args.control, filter_by_level = args.control.split(":")
+
+    env_yaml = get_env_yaml(args.root, args.build_config_yaml, args.product)
+
+    control_selector = PolicyControlSelector(
+        args.control,
+        args.root,
+        env_yaml,
+        filter_by_level,
+    )
+
     cd_generator = ComponentDefinitionGenerator(
-        args.product,
         args.root,
         args.json,
-        args.build_config_yaml,
+        env_yaml,
         args.vendor_dir,
         args.profile,
-        args.control,
+        control_selector,
     )
 
     try:

@@ -1,11 +1,13 @@
 import argparse
 import os
-import pytest
 import pathlib
 import shutil
-
+from typing import Any, Dict, Generator
 from tempfile import TemporaryDirectory
+from unittest.mock import Mock
 
+import pytest
+from trestle.common.common_types import TopLevelOscalModel
 from trestle.common.const import IMPLEMENTATION_STATUS, REPLACE_ME
 from trestle.common.err import TrestleError
 from trestle.core.generators import generate_sample_model
@@ -17,6 +19,8 @@ from trestle.oscal import profile as prof
 from trestle.oscal.component import ComponentDefinition
 from trestle.oscal.component import ImplementedRequirement
 
+import ssg.environment
+import ssg.products
 from ssg.controls import Control, Status
 
 from utils.oscal.cd_generator import (
@@ -24,6 +28,7 @@ from utils.oscal.cd_generator import (
     OscalStatus,
     OSCALProfileHelper,
 )
+from utils.oscal.control_selector import ControlSelector, PolicyControlSelector
 
 
 DATADIR = os.path.join(os.path.dirname(__file__), "data")
@@ -33,7 +38,7 @@ TEST_RULE_JSON = os.path.join(DATADIR, "rule_dirs.json")
 
 
 @pytest.fixture(scope="function")
-def vendor_dir():
+def vendor_dir() -> Generator[str, None, None]:
     """Create a temporary trestle directory for testing."""
     with TemporaryDirectory(prefix="temp_vendor") as tmpdir:
         tmp_path = pathlib.Path(tmpdir)
@@ -47,8 +52,8 @@ def vendor_dir():
             )
             init = InitCmd()
             init._run(args)
-            load_oscal_test_data(tmp_path, "simplified_nist_catalog", cat.Catalog)
-            load_oscal_test_data(tmp_path, "simplified_nist_profile", prof.Profile)
+            load_oscal_test_data(tmp_path, "simplified_nist_catalog", cat.Catalog)  # type: ignore
+            load_oscal_test_data(tmp_path, "simplified_nist_profile", prof.Profile)  # type: ignore
         except Exception as e:
             raise TrestleError(
                 f"Initialization failed for temporary trestle directory: {e}."
@@ -56,10 +61,25 @@ def vendor_dir():
         yield tmpdir
 
 
-def load_oscal_test_data(trestle_dir, model_name, model_type):
+@pytest.fixture(scope="function")
+def env_yaml() -> Generator[Dict[str, Any], None, None]:
+    product_yaml_path = ssg.products.product_yaml_path(TEST_ROOT, "test_product")
+    env_yaml = ssg.environment.open_environment(
+        TEST_BUILD_CONFIG,
+        product_yaml_path,
+        os.path.join(TEST_ROOT, "product_properties"),
+    )
+    yield env_yaml
+
+
+def load_oscal_test_data(
+    trestle_dir: pathlib.Path, model_name: str, model_type: TopLevelOscalModel
+) -> None:
     dst_path = ModelUtils.get_model_path_for_name_and_class(
         trestle_dir, model_name, model_type, FileContentType.JSON  # type: ignore
     )
+    if dst_path is None:
+        raise TrestleError(f"Unable to get model path for {model_name}")
     dst_path.parent.mkdir(parents=True, exist_ok=True)
     src_path = os.path.join(DATADIR, model_name + ".json")
     shutil.copy2(src_path, dst_path)
@@ -74,7 +94,7 @@ def load_oscal_test_data(trestle_dir, model_name, model_type):
         ("AC-200", None),
     ],
 )
-def test_oscal_profile_helper(vendor_dir, input, response):
+def test_oscal_profile_helper(vendor_dir: str, input: str, response: str) -> None:
     "Test the OSCALProfileHelper class validate method."
     trestle_root = pathlib.Path(vendor_dir)
     oscal_profile_helper = OSCALProfileHelper(trestle_root=trestle_root)
@@ -116,22 +136,31 @@ A single response with no sections
     ],
 )
 def test_handle_response_with_implemented_requirements(
-    vendor_dir, notes, input_status, description, status, remarks
-):
+    vendor_dir: str,
+    env_yaml: Dict[str, Any],
+    notes: str,
+    input_status: str,
+    description: str,
+    status: str,
+    remarks: str,
+) -> None:
     """Test handling responses with various scenarios."""
-    cd_generator = ComponentDefinitionGenerator(
-        product="test_product",
-        vendor_dir=vendor_dir,
-        build_config_yaml=TEST_BUILD_CONFIG,
-        json_path=TEST_RULE_JSON,
-        root=TEST_ROOT,
-        profile_name_or_href="simplified_nist_profile",
-        control="test_policy",
-    )
 
     control = Control()
     control.notes = notes
     control.status = input_status
+
+    mock_selector = Mock(spec=ControlSelector)
+    mock_selector.get_controls = [control]
+
+    cd_generator = ComponentDefinitionGenerator(
+        vendor_dir=vendor_dir,
+        json_path=TEST_RULE_JSON,
+        root=TEST_ROOT,
+        profile_name_or_href="simplified_nist_profile",
+        env_yaml=env_yaml,
+        control_selector=mock_selector,
+    )
 
     implemented_req = generate_sample_model(ImplementedRequirement)
     implemented_req.control_id = "ac-1"
@@ -139,6 +168,7 @@ def test_handle_response_with_implemented_requirements(
 
     assert implemented_req.statements is None
     assert implemented_req.description == description
+    assert implemented_req.props is not None
 
     prop = next(
         (prop for prop in implemented_req.props if prop.name == IMPLEMENTATION_STATUS),
@@ -189,31 +219,49 @@ def test_handle_response_with_implemented_requirements(
         ),
     ],
 )
-def test_handle_response_with_statements(vendor_dir, notes, status, id, results):
+def test_handle_response_with_statements(
+    vendor_dir: str,
+    env_yaml: Dict[str, Any],
+    notes: str,
+    status: str,
+    id: str,
+    results: Dict[str, Any],
+) -> None:
     """Test handling responses with various scenarios."""
-    cd_generator = ComponentDefinitionGenerator(
-        product="test_product",
-        vendor_dir=vendor_dir,
-        build_config_yaml=TEST_BUILD_CONFIG,
-        json_path=TEST_RULE_JSON,
-        root=TEST_ROOT,
-        profile_name_or_href="simplified_nist_profile",
-        control="test_policy",
+    product_yaml_path = ssg.products.product_yaml_path(TEST_ROOT, "test_product")
+    env_yaml = ssg.environment.open_environment(
+        TEST_BUILD_CONFIG,
+        product_yaml_path,
+        os.path.join(TEST_ROOT, "product_properties"),
     )
 
     control = Control()
     control.notes = notes
     control.status = status
 
+    mock_selector = Mock(spec=ControlSelector)
+    mock_selector.get_controls = [control]
+
+    cd_generator = ComponentDefinitionGenerator(
+        vendor_dir=vendor_dir,
+        json_path=TEST_RULE_JSON,
+        root=TEST_ROOT,
+        profile_name_or_href="simplified_nist_profile",
+        env_yaml=env_yaml,
+        control_selector=mock_selector,
+    )
+
     implemented_req = generate_sample_model(ImplementedRequirement)
     implemented_req.control_id = id
     cd_generator.handle_response(implemented_req, control)
 
+    assert implemented_req.statements is not None
     assert len(implemented_req.statements) == len(results)
 
     for stm in implemented_req.statements:
-        description, status, remarks = results.get(stm.statement_id)
+        description, status, remarks = results.get(stm.statement_id)  # type: ignore
         assert stm.description == description
+        assert stm.props is not None
 
         prop = next(
             (prop for prop in stm.props if prop.name == IMPLEMENTATION_STATUS), None
@@ -224,29 +272,99 @@ def test_handle_response_with_statements(vendor_dir, notes, status, id, results)
         assert prop.remarks == remarks
 
 
-def test_create_cd(vendor_dir):
-    """Test creating a component definition."""
+def test_create_control_implementation(
+    vendor_dir: str, env_yaml: Dict[str, Any]
+) -> None:
+    """Test the create_control_implementation with PolicyControlSelection."""
+    control_selector = PolicyControlSelector(
+        control="test_policy",
+        ssg_root=TEST_ROOT,
+        env_yaml=env_yaml,
+    )
+
     cd_generator = ComponentDefinitionGenerator(
-        product="test_product",
         vendor_dir=vendor_dir,
-        build_config_yaml=TEST_BUILD_CONFIG,
         json_path=TEST_RULE_JSON,
         root=TEST_ROOT,
         profile_name_or_href="simplified_nist_profile",
-        control="test_policy",
+        env_yaml=env_yaml,
+        control_selector=control_selector,
     )
 
+    control_impl = cd_generator.create_control_implementation()
+
+    assert len(control_impl.implemented_requirements) == 2
+    assert control_impl.implemented_requirements[0].control_id == "ac-1"
+    assert control_impl.implemented_requirements[1].control_id == "ac-2.1"
+
+    # Check set parameters
+    assert control_impl.set_parameters is not None
+    assert len(control_impl.set_parameters) == 1
+    assert control_impl.set_parameters[0].param_id == "var_test"
+    assert "default" in control_impl.set_parameters[0].values
+
+
+def test_create_control_implementation_with_level(
+    vendor_dir: str, env_yaml: Dict[str, Any]
+) -> None:
+    """Test the create_component_definition with a level filter on the control file."""
+    control_selector = PolicyControlSelector(
+        control="test_policy",
+        ssg_root=TEST_ROOT,
+        env_yaml=env_yaml,
+        filter_by_level="low",
+    )
+
+    cd_generator = ComponentDefinitionGenerator(
+        vendor_dir=vendor_dir,
+        json_path=TEST_RULE_JSON,
+        root=TEST_ROOT,
+        profile_name_or_href="simplified_nist_profile",
+        env_yaml=env_yaml,
+        control_selector=control_selector,
+    )
+
+    control_impl = cd_generator.create_control_implementation()
+
+    assert len(control_impl.implemented_requirements) == 1
+    assert control_impl.implemented_requirements[0].control_id == "ac-1"
+
+
+def test_create_cd(vendor_dir: str, env_yaml: Dict[str, Any]) -> None:
+    """Test creating a component definition."""
+    control_selector = PolicyControlSelector(
+        control="test_policy",
+        ssg_root=TEST_ROOT,
+        env_yaml=env_yaml,
+    )
+
+    cd_generator = ComponentDefinitionGenerator(
+        vendor_dir=vendor_dir,
+        json_path=TEST_RULE_JSON,
+        root=TEST_ROOT,
+        profile_name_or_href="simplified_nist_profile",
+        env_yaml=env_yaml,
+        control_selector=control_selector,
+    )
     cd_output = os.path.join(vendor_dir, "test_comp.json")
     cd_path = pathlib.Path(cd_output)
     cd_generator.create_cd(cd_output)
 
-    component_definition: ComponentDefinition = ComponentDefinition.oscal_read(cd_path)
+    component_definition: ComponentDefinition
+    component_definition = ComponentDefinition.oscal_read(cd_path)  # type: ignore
     assert component_definition is not None
 
+    assert component_definition.components is not None
     assert len(component_definition.components) == 1
     component = component_definition.components[0]
 
     assert component.title == "test_product"
     assert component.description == "test_product"
     assert component.type == "service"
+
+    assert component.control_implementations is not None
     assert len(component.control_implementations) == 1
+    assert len(component.control_implementations[0].implemented_requirements) == 2
+
+    assert component.props is not None
+    assert len(component.props) == 7

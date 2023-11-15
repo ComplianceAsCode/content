@@ -1,5 +1,5 @@
-policy: Simplied NIST Policy
-title: Simplified NIST Reccomendations for OCP4
+policy: Simplified NIST Policy
+title: Simplified NIST Recommendations for Test Product
 id: test_policy
 version: Revision 4
 source: https://www.fedramp.gov/assets/resources/documents/FedRAMP_Security_Controls_Baseline.xlsx
@@ -11,9 +11,9 @@ controls:
 - id: AC-1
   status: not applicable
   notes: |-
-    Section a: AC-1(a) is an organizational control outside the scope of OpenShift configuration.
+    Section a: AC-1(a) is an organizational control outside the scope of Test Product configuration.
 
-    Section b: AC-1(b) is an organizational control outside the scope of OpenShift configuration.
+    Section b: AC-1(b) is an organizational control outside the scope of Test Product configuration.
   rules: []
   description: "The organization:\n a. Develops, documents, and disseminates to [Assignment:\
     \ organization-defined personnel or roles]:\n   1. An access control policy that\
@@ -43,32 +43,20 @@ controls:
   - high
   - moderate
   - low
-- id: AU-6(3)
+- id: AC-2(1)
   status: automated
   notes: |-
-    Organizational analysis and correlation of audit records across
-    different repositories to gain organization-wide
-    situational awareness is outside the scope
-    of OpenShift configuration.
-
-    To aide in such organizational processes, note that OpenShift's
-    Cluster Logging Operator enables OpenShift administrators to
-    configure custom pipelines to send OpenShift cluster logs to remote
-    log stores. These remote destinations, such as Elastic or
-    Splunk endpoints, could be used for information system-wide correlation.
-
-    Documentation regarding how to forward cluster logs using the
-    Cluster Logging Operator to specific endpoints can be found at:
-
-    https://docs.openshift.com/container-platform/latest/logging/cluster-logging.html
+    This is a test notes that details the AC-2(1) control implementation for Test Product and
+    how it is automated.
   rules:
-  - audit_log_forwarding_enabled
+  - rule_1
+  - rule_2
   description: |-
-    The organization analyzes and correlates audit records across different repositories to gain organization-wide situational awareness.
+    The organization employs automated mechanisms to support the management of information system accounts.
 
-    Supplemental Guidance:  Organization-wide situational awareness includes awareness across all three tiers of risk management (i.e., organizational, mission/business process, and information system) and supports cross-organization awareness. Related controls: AU-12, IR-4.
+    Supplemental Guidance: The use of automated mechanisms can include, for example: using email or text messaging to automatically notify account managers when users are terminated or transferred; using the information system to monitor account usage; and using telephonic notification to report atypical system account usage.
   title: >-
-    AU-6(3) - AUDIT REVIEW, ANALYSIS, AND REPORTING | CORRELATE AUDIT REPOSITORIES
+    AC-2(1) - ACCOUNT MANAGEMENT | AUTOMATED SYSTEM ACCOUNT MANAGEMENT
   levels:
   - high
   - moderate

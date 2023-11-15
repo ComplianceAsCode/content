@@ -50,7 +50,7 @@ def test_rule_objs() -> List[RuleInfo]:
     return [rule_with_parameter, rule_with_no_parameter]
 
 
-def test_rule_transformer_load(env_yaml: Dict[str, Any]):
+def test_rule_transformer_load(env_yaml: Dict[str, Any]) -> None:
     """Test loading rules from a set of rules ids."""
     transformer = RulesTransformer(
         TEST_ROOT,
@@ -80,7 +80,7 @@ def test_rule_transformer_load(env_yaml: Dict[str, Any]):
     assert not rule_objs[1].parameters
 
 
-def test_rule_transformer_load_with_param(env_yaml: Dict[str, Any]):
+def test_rule_transformer_load_with_param(env_yaml: Dict[str, Any]) -> None:
     """Test loading rules from a set of rules ids with a parameter override."""
     transformer = RulesTransformer(
         TEST_ROOT,
@@ -108,7 +108,7 @@ def test_rule_transformer_load_with_param(env_yaml: Dict[str, Any]):
 
 def test_rules_transformer_transform(
     test_rule_objs: List[RuleInfo], env_yaml: Dict[str, Any]
-):
+) -> None:
     """Test transforming a set of rules into properties."""
     transformer = RulesTransformer(
         TEST_ROOT,
