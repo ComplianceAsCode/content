@@ -8,7 +8,7 @@ import re
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from trestle.common.common_types import TypeWithProps, TypeWithParts
-from trestle.common.const import TRESTLE_HREF_HEADING, IMPLEMENTATION_STATUS
+from trestle.common.const import TRESTLE_HREF_HEADING, IMPLEMENTATION_STATUS, REPLACE_ME
 from trestle.common.list_utils import as_list, none_if_empty
 from trestle.core.generators import generate_sample_model
 from trestle.core.catalog.catalog_interface import CatalogInterface
@@ -194,54 +194,6 @@ class ComponentDefinitionGenerator:
             return implemented_req
         return None
 
-    def handle_response(self, implemented_req, control: Control) -> None:
-        """
-        Break down the response into parts.
-
-        Args:
-            implemented_req: The implemented requirement to add the response and statements to.
-            control_response: The control response to add to the implemented requirement.
-        """
-        control_response = control.notes
-        pattern = re.compile(SECTION_PATTERN, re.IGNORECASE)
-        lines = control_response.split("\n")
-
-        sections_dict = dict()
-        current_section_label = None
-
-        for line in lines:
-            match = pattern.match(line)
-
-            if match:
-                current_section_label = match.group(1)
-                sections_dict[current_section_label] = [line]
-            elif current_section_label is not None:
-                sections_dict[current_section_label].append(line)
-
-        oscal_status = OscalStatus.from_string(control.status)
-
-        if not sections_dict:
-            self._add_response_by_status(
-                implemented_req, oscal_status, control_response.strip()
-            )
-        else:
-            # process into statements
-            implemented_req.statements = list()
-            for section_label, section_content in sections_dict.items():
-                statement_id = self.profile.validate(
-                    f"{implemented_req.control_id}_smt.{section_label}"
-                )
-                if statement_id is None:
-                    continue
-
-                section_content_str = "\n".join(section_content)
-                section_content_str = pattern.sub("", section_content_str)
-                statement = self.create_statement(statement_id)
-                self._add_response_by_status(
-                    statement, oscal_status, section_content_str.strip()
-                )
-                implemented_req.statements.append(statement)
-
     def add_rules(
         self,
         type_with_props: TypeWithProps,
@@ -280,9 +232,66 @@ class ComponentDefinitionGenerator:
                 processed_rule_ids.append(rule_id)
         return (processed_rule_ids, params_values)
 
+    def handle_response(self, implemented_req, control: Control) -> None:
+        """
+        Break down the response into parts.
+
+        Args:
+            implemented_req: The implemented requirement to add the response and statements to.
+            control_response: The control response to add to the implemented requirement.
+        """
+        control_response = control.notes
+        pattern = re.compile(SECTION_PATTERN, re.IGNORECASE)
+
+        sections_dict = self.build_sections_dict(control_response, pattern)
+        oscal_status = OscalStatus.from_string(control.status)
+
+        if sections_dict:
+            self._add_response_by_status(implemented_req, oscal_status, REPLACE_ME)
+            # process into statements
+            implemented_req.statements = list()
+            for section_label, section_content in sections_dict.items():
+                statement_id = self.profile.validate(
+                    f"{implemented_req.control_id}_smt.{section_label}"
+                )
+                if statement_id is None:
+                    continue
+
+                section_content_str = "\n".join(section_content)
+                section_content_str = pattern.sub("", section_content_str)
+                statement = self.create_statement(
+                    statement_id, section_content_str.strip()
+                )
+                implemented_req.statements.append(statement)
+        else:
+            self._add_response_by_status(
+                implemented_req, oscal_status, control_response.strip()
+            )
+
+    @staticmethod
+    def build_sections_dict(
+        control_response: str, section_pattern: re.Pattern
+    ) -> Dict[str, List[str]]:
+        """Find all sections in the control response and build a dictionary of them."""
+        lines = control_response.split("\n")
+
+        sections_dict: Dict[str, List[str]] = dict()
+        current_section_label = None
+
+        for line in lines:
+            match = section_pattern.match(line)
+
+            if match:
+                current_section_label = match.group(1)
+                sections_dict[current_section_label] = [line]
+            elif current_section_label is not None:
+                sections_dict[current_section_label].append(line)
+
+        return sections_dict
+
     @staticmethod
     def _add_response_by_status(
-        type_with_props: TypeWithProps,
+        impl_req: ImplementedRequirement,
         implementation_status: str,
         control_response: str,
     ) -> None:
@@ -299,12 +308,12 @@ class ComponentDefinitionGenerator:
             implementation_status == OscalStatus.IMPLEMENTED
             or implementation_status == OscalStatus.PARTIAL
         ):
-            type_with_props.description = control_response  # type: ignore
+            impl_req.description = control_response
         else:
             status_prop.remarks = control_response
 
-        type_with_props.props = as_list(type_with_props.props)
-        type_with_props.props.append(status_prop)
+        impl_req.props = as_list(impl_req.props)
+        impl_req.props.append(status_prop)
 
     def create_statement(self, statement_id, description="") -> Statement:
         """Create a statement."""

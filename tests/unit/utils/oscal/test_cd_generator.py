@@ -2,7 +2,7 @@ import argparse
 import os
 import pathlib
 import shutil
-from typing import Any, Dict, Generator
+from typing import Any, Dict, Generator, Tuple
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock
 
@@ -187,35 +187,27 @@ def test_handle_response_with_implemented_requirements(
             section_response,
             Status.PARTIAL,
             "ac-1",
-            {
-                "ac-1_smt.a": (
-                    "My response is a single statement",
-                    OscalStatus.PARTIAL,
-                    None,
-                ),
-                "ac-1_smt.b": (
-                    "My response is a list of statements\n\nThis link for section b.",
-                    OscalStatus.PARTIAL,
-                    None,
-                ),
-            },
+            (
+                OscalStatus.PARTIAL,
+                None,
+                {
+                    "ac-1_smt.a": "My response is a single statement",
+                    "ac-1_smt.b": "My response is a list of statements\n\nThis link for section b.",
+                },
+            ),
         ),
         (
             section_response,
             Status.MANUAL,
             "ac-1",
-            {
-                "ac-1_smt.a": (
-                    REPLACE_ME,
-                    OscalStatus.ALTERNATIVE,
-                    "My response is a single statement",
-                ),
-                "ac-1_smt.b": (
-                    REPLACE_ME,
-                    OscalStatus.ALTERNATIVE,
-                    "My response is a list of statements\n\nThis link for section b.",
-                ),
-            },
+            (
+                OscalStatus.ALTERNATIVE,
+                REPLACE_ME,
+                {
+                    "ac-1_smt.a": "My response is a single statement",
+                    "ac-1_smt.b": "My response is a list of statements\n\nThis link for section b.",
+                },
+            ),
         ),
     ],
 )
@@ -225,7 +217,7 @@ def test_handle_response_with_statements(
     notes: str,
     status: str,
     id: str,
-    results: Dict[str, Any],
+    results: Tuple[str, str, Dict[str, str]],
 ) -> None:
     """Test handling responses with various scenarios."""
     product_yaml_path = ssg.products.product_yaml_path(TEST_ROOT, "test_product")
@@ -255,21 +247,25 @@ def test_handle_response_with_statements(
     implemented_req.control_id = id
     cd_generator.handle_response(implemented_req, control)
 
+    status, remarks, statements = results
+
+    assert implemented_req.description == REPLACE_ME
+    assert implemented_req.props is not None
+
+    prop = next(
+        (prop for prop in implemented_req.props if prop.name == IMPLEMENTATION_STATUS),
+        None,
+    )
+
+    assert prop is not None
+    assert prop.value == status
+    assert prop.remarks == remarks
+
     assert implemented_req.statements is not None
-    assert len(implemented_req.statements) == len(results)
+    assert len(implemented_req.statements) == len(statements)
 
     for stm in implemented_req.statements:
-        description, status, remarks = results.get(stm.statement_id)  # type: ignore
-        assert stm.description == description
-        assert stm.props is not None
-
-        prop = next(
-            (prop for prop in stm.props if prop.name == IMPLEMENTATION_STATUS), None
-        )
-
-        assert prop is not None
-        assert prop.value == status
-        assert prop.remarks == remarks
+        assert stm.description == statements.get(stm.statement_id)  # type: ignore
 
 
 def test_create_control_implementation(
