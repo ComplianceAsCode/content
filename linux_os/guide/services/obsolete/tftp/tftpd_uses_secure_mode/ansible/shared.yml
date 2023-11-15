@@ -7,14 +7,14 @@
 {{{ ansible_instantiate_variables("var_tftpd_secure_directory") }}}
 
 - name: "Find out if the file exists and contains the line configuring server arguments"
-  find:
+  ansible.builtin.find:
     path: "/etc/xinetd.d"
     patterns: "tftp"
     contains: '^[\s]+server_args.*$'
   register: tftpd_secure_config_line
 
 - name: "Ensure that TFTP server is configured to start with secure directory"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/xinetd.d/tftp"
     regexp: '^[\s]*(server_args[\s]+=[\s]+.*?)(-s[\s]+[/\.\w]+)*(.*)$'
     line: '\1 -s {{ var_tftpd_secure_directory }} \3'
@@ -23,7 +23,7 @@
   when: tftpd_secure_config_line is defined and tftpd_secure_config_line.matched > 0
 
 - name: "Insert correct config line to start TFTP server with secure directory"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/xinetd.d/tftp"
     line: "server_args = -s {{ var_tftpd_secure_directory }}"
     state: present
