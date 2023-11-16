@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R7
+    version: V1R8
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R7.
+    DISA STIG for Oracle Linux 8 V1R8.
 
 selections:
     ### Variables
