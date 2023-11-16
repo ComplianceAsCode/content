@@ -104,6 +104,28 @@ def test_oscal_profile_helper(vendor_dir: str, input: str, response: str) -> Non
     assert result_id == response
 
 
+@pytest.mark.parametrize(
+    "ssg_status, oscal_status, err_msg",
+    [
+        (Status.INHERENTLY_MET, OscalStatus.IMPLEMENTED, ""),
+        (Status.PARTIAL, OscalStatus.PARTIAL, ""),
+        (Status.MANUAL, OscalStatus.ALTERNATIVE, ""),
+        ("fake_status", "", "Invalid status: fake_status.*"),
+    ],
+)
+def test_oscal_status(ssg_status: str, oscal_status: str, err_msg: str) -> None:
+    """
+    Test OSCALStatus class mapping.
+
+    Test a few valid mappings and an invalid mapping.
+    """
+    if not err_msg:
+        assert OscalStatus.from_string(ssg_status) == oscal_status
+    else:
+        with pytest.raises(ValueError, match=err_msg):
+            OscalStatus.from_string(ssg_status)
+
+
 section_response = """
 Section a: My response is a single statement
 Section b: My response is a list of statements

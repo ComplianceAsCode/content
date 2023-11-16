@@ -43,6 +43,14 @@ SECTION_PATTERN = r"Section ([a-z]):"
 
 
 class OscalStatus:
+    """
+    Represent the status of a control in OSCAL.
+
+    Notes:
+        This transforms the status from SSG to OSCAL in the from
+        string method.
+    """
+
     PLANNED = "planned"
     NOT_APPLICABLE = "not-applicable"
     ALTERNATIVE = "alternative"
@@ -61,8 +69,11 @@ class OscalStatus:
             Status.PARTIAL: OscalStatus.PARTIAL,
             Status.SUPPORTED: OscalStatus.IMPLEMENTED,
             Status.PENDING: OscalStatus.ALTERNATIVE,
+            Status.NOT_APPLICABLE: OscalStatus.NOT_APPLICABLE,
         }
-        return data.get(source, source)
+        if source not in data.keys():
+            raise ValueError(f"Invalid status: {source}. Use one of {data.keys()}")
+        return data.get(source)  # type: ignore
 
     STATUSES = {PLANNED, NOT_APPLICABLE, ALTERNATIVE, IMPLEMENTED, PARTIAL}
 
