@@ -837,7 +837,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: '{{{ rule_title }}} - Get authselect Features Currently Enabled'
   ansible.builtin.shell:
-    cmd: |
+    cmd: |-
         set -o pipefail
         authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
@@ -870,7 +870,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: '{{{ rule_title }}} - Get authselect current features'
   ansible.builtin.shell:
-    cmd:
+    cmd: |-
         set -o pipefail
         authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
@@ -1549,7 +1549,7 @@ Part of the grub2_bootloader_argument_absent template.
 {{% macro ansible_ensure_authselect_custom_profile() -%}}
 - name: '{{{ rule_title }}} - Get authselect current profile'
   ansible.builtin.shell:
-    cmd:
+    cmd: |-
         set -o pipefail
         authselect current -r | awk '{ print $1 }'
   register: result_authselect_profile
@@ -1575,7 +1575,7 @@ Part of the grub2_bootloader_argument_absent template.
 
 - name: '{{{ rule_title }}} - Get authselect current features to also enable them in the custom profile'
   ansible.builtin.shell:
-    cmd:
+    cmd: |-
         set -o pipefail
         authselect current | tail -n+3 | awk '{ print $2 }'
   register: result_authselect_features
