@@ -23,7 +23,7 @@
 
 * Should follow [the template](https://github.com/ComplianceAsCode/content/blob/master/.github/pull_request_template.md)
 * Shall remove the sample text from the template pull request
-* Shall not have merge commits; they should have to be taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
+* Shall not have merge commits; they should have been taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
 * Should target `master` unless pulling an already merged pull request to a stabilization branch
 * Shall have a useful title so that it can used in the changelog
 
