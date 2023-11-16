@@ -8,6 +8,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
         "MinSizeRel" "RelWithDebInfo")
 endif()
 
+set(LOG_LEVEL "WARNING")
+if(SSG_LOG)
+    set(LOG_LEVEL "DEBUG")
+endif()
+
 project(scap-security-guide NONE)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -223,6 +228,7 @@ message(STATUS "build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "generator: ${CMAKE_GENERATOR}")
 message(STATUS "source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
+message(STATUS "Logging: ${SSG_LOG}")
 message(STATUS " ")
 
 message(STATUS "Tools:")
