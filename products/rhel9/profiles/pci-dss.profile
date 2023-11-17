@@ -22,3 +22,6 @@ description: |-
 
 selections:
     - pcidss_4:all
+    # audit-audispd-plugins package does not exist in RHEL 9
+    # use only package_audispd-plugins_installed
+    - '!package_audit-audispd-plugins_installed'
