@@ -10,9 +10,11 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible ansible-lint libxslt
+        run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible ansible-lint libxslt
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install python deps
+        run: pip install -r requirements-base.txt -r test-requirements.txt
       - name: Configure
         run: cmake ..
         working-directory: ./build
