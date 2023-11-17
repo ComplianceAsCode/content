@@ -3,41 +3,65 @@
     {{{ oval_metadata("All files should be owned by a group") }}}
     <criteria>
       <criterion test_ref="test_file_permissions_ungroupowned"
-        comment="Check all files and make sure they are owned by a group"/>
+        comment="Check all local files and make sure they are owned by a group"/>
     </criteria>
   </definition>
 
-  <unix:file_test id="test_file_permissions_ungroupowned" version="1"
-    check="all" check_existence="none_exist" comment="files with no group owner">
-    <unix:object object_ref="object_file_permissions_ungroupowned"/>
-  </unix:file_test>
-
-  <unix:file_state id="state_file_permissions_ungroupowned" version="1"
-    comment="Files that are owned by a group.">
-    <unix:group_id datatype="int" var_check="at least one"
-      var_ref="variable_file_permissions_ungroupowned"/>
-  </unix:file_state>
-
-  <unix:file_object id="object_file_permissions_ungroupowned" version="1"
-    comment="all local files">
-    <!-- We can't traverse symlinks here since e.g. /sys file system might contain symlink loops
-         resulting into excessive memory use by the scanner process & possible subsequent OOM killer
-         termination of it. See e.g.: https://www.redhat.com/archives/open-scap-list/2014-May/msg00005.html
-         Therefore traverse only directories -->
-    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local"/>
-    <unix:path>/</unix:path>
-    <unix:filename operation="pattern match">.*</unix:filename>
-    <filter action="exclude">state_file_permissions_ungroupowned</filter>
-  </unix:file_object>
-
-  <ind:textfilecontent54_object id="etc_group_object" version="1">
+  <!-- Create a file_state to filter out files group-owned by known groups. -->
+  <ind:textfilecontent54_object id="etc_group_objects" version="1">
     <ind:filepath>/etc/group</ind:filepath>
     <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <local_variable id="variable_file_permissions_ungroupowned" version="1"
-    datatype="int" comment="all GIDs on the target system">
-    <object_component object_ref="etc_group_object" item_field="subexpression"/>
+  <local_variable id="var_all_local_gids" version="1"
+    datatype="int" comment="all GIDs extracted from /etc/group on the target system">
+    <object_component object_ref="etc_group_objects" item_field="subexpression"/>
   </local_variable>
+
+  <unix:file_state id="state_file_permissions_ungroupowned_local_group_owner" version="1"
+    comment="Used to filter out all files group-owned by a group defined in /etc/group">
+    <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids"/>
+  </unix:file_state>
+
+  <!-- Create a partition_state to filter out remote and special file systems. -->
+  <linux:partition_state id="state_file_permissions_ungroupowned_dev_partitons" version="1">
+    <linux:device operation="pattern match">^/dev/.*$</linux:device>
+  </linux:partition_state>
+
+  <!-- This object is created mainly to improve performance when collecting file objects.
+       Here all mount points are collected and filtered to include only devices under /dev in
+       order to ignore special file systems. -->
+  <linux:partition_object id="object_file_permissions_ungroupowned_local_partitions" version="1">
+    <linux:mount_point operation="pattern match">.*</linux:mount_point>
+    <filter action="include">state_file_permissions_ungroupowned_dev_partitons</filter>
+  </linux:partition_object>
+
+  <!-- Create a variable composed by mount points to local and not special file systems. -->
+  <local_variable id="var_file_permissions_ungroupowned_local_mountpoints" version="1"
+    datatype="string" comment="Mount points for local devices">
+    <object_component item_field="mount_point"
+      object_ref="object_file_permissions_ungroupowned_local_partitions"/>
+  </local_variable>
+
+  <!-- This file_object will only find files located in local and not special file systems. The
+       recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+       leave the scope of that mount point. For example, when probing "/", the probe will ignore
+       any child directory which is a mount point for any other partition. This will ensure
+       considerable performance improvement. -->
+  <unix:file_object id="object_file_permissions_ungroupowned" version="2"
+    comment="all local files without a known group owner">
+    <unix:behaviors recurse="directories" recurse_direction="down"
+      recurse_file_system="defined" max_depth="-1"/>
+    <unix:path operation="equals" var_check="at least one"
+      var_ref="var_file_permissions_ungroupowned_local_mountpoints"/>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner</filter>
+  </unix:file_object>
+
+  <unix:file_test id="test_file_permissions_ungroupowned" version="1"
+    check="all" check_existence="none_exist"
+    comment="there are no files with group owner different than local groups">
+    <unix:object object_ref="object_file_permissions_ungroupowned"/>
+  </unix:file_test>
 </def-group>
