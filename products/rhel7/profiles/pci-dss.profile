@@ -22,3 +22,6 @@ description: |-
 
 selections:
     - pcidss_4:all
+    # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
+    # https://github.com/ComplianceAsCode/content/issues/11285
+    - '!rpm_verify_permissions'

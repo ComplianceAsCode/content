@@ -25,3 +25,6 @@ selections:
     # audit-audispd-plugins package does not exist in RHEL 9
     # use only package_audispd-plugins_installed
     - '!package_audit-audispd-plugins_installed'
+    # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
+    # https://github.com/ComplianceAsCode/content/issues/11285
+    - '!rpm_verify_permissions'
