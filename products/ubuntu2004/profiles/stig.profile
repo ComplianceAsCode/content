@@ -591,11 +591,11 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
 
-    # UBTU-20-010462 The Ubuntu operating system must not have accounts configured with blank or null passwords.
-    - no_empty_passwords_etc_shadow
-
     # UBTU-20-010461 The Ubuntu operating system must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
     - kernel_module_usb-storage_disabled
+
+    # UBTU-20-010462 The Ubuntu operating system must not have accounts configured with blank or null passwords.
+    - no_empty_passwords_etc_shadow
 
     # UBTU-20-010463 The Ubuntu operating system must not allow accounts configured with blank or null passwords.
     - no_empty_passwords
