@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import sys
-import collections
 import os
 
 
@@ -9,8 +8,8 @@ from .constants import (
     OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs,
     ocil_namespace, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
 )
-from .parse_oval import resolve_definition, find_extending_defs, get_container_groups
 from .xml import parse_file, map_elements_to_their_ids
+from .oval_object_model import load_oval_document
 
 
 from .checks import get_content_ref_if_exists_and_not_remote
@@ -120,14 +119,24 @@ class OVALFileLinker(FileLinker):
     def __init__(self, translator, xccdftree, checks, output_file_name):
         super(OVALFileLinker, self).__init__(
             translator, xccdftree, checks, output_file_name)
-        self.oval_groups = None
+        self.oval_document = None
 
     def _get_checkid_string(self):
         return "{%s}definition" % self.CHECK_NAMESPACE
 
+    def _translate_name_to_oval_definition_id(self, name):
+        return self.translator.generate_id(self._get_checkid_string(), name)
+
+    def save_linked_tree(self):
+        """
+        Write internal tree to the file in self.linked_fname.
+        """
+        with open(self.linked_fname, "wb+") as fd:
+            self.oval_document.save_as_xml(fd)
+
     def link(self):
-        self.oval_groups = get_container_groups(self.fname)
-        self.tree = parse_file(self.fname)
+        self.oval_document = load_oval_document(parse_file(self.fname))
+        self.oval_document.product_name = "OVALFileLinker"
         try:
             self._link_oval_tree()
 
@@ -135,34 +144,27 @@ class OVALFileLinker(FileLinker):
             # (either CCE-XXXX-X, or CCE-XXXXX-X). Drop from XCCDF those who don't follow it
             verify_correct_form_of_referenced_cce_identifiers(self.xccdftree)
         except SSGError as exc:
-            raise SSGError(
-                "Error processing {0}: {1}"
-                .format(self.fname, str(exc)))
-        self.tree = self.translator.translate(self.tree, store_defname=True)
+            raise SSGError("Error processing {0}: {1}".format(self.fname, str(exc)))
+
+        self.oval_document = self.translator.translate_oval_document(
+            self.oval_document, store_defname=True
+        )
 
     def _link_oval_tree(self):
+
+        self.oval_document.validate_references()
+
         xccdf_to_cce_id_mapping = create_xccdf_id_to_cce_id_mapping(self.xccdftree)
-
-        indexed_oval_defs = map_elements_to_their_ids(
-            self.tree, ".//{0}".format(self._get_checkid_string()))
-
-        defs_miss = get_oval_checks_extending_non_existing_checks(self.tree, indexed_oval_defs)
-        if defs_miss:
-            msg = ["Following extending definitions are missing:"]
-            for missing, broken in transpose_dict_with_sets(defs_miss).items():
-                broken = [b.get("id") for b in broken]
-                msg.append("\t'{missing}' needed by: {broken}"
-                           .format(missing=missing, broken=broken))
-            raise RuntimeError("\n".join(msg))
 
         self._add_cce_id_refs_to_oval_checks(xccdf_to_cce_id_mapping)
 
         # Verify all by XCCDF referenced (local) OVAL checks are defined in OVAL file
         # If not drop the <check-content> OVAL checksystem reference from XCCDF
-        self._ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
-            indexed_oval_defs)
+        self._ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file()
 
-        check_and_correct_xccdf_to_oval_data_export_matching_constraints(self.xccdftree, self.tree)
+        check_and_correct_xccdf_to_oval_data_export_matching_constraints(
+            self.xccdftree, self.oval_document
+        )
 
     def _add_cce_id_refs_to_oval_checks(self, idmappingdict):
         """
@@ -176,68 +178,40 @@ class OVALFileLinker(FileLinker):
         where "CCE-ID" is the CCE identifier for that particular rule
         retrieved from the XCCDF file
         """
-        ovalrules = self.tree.findall(".//{0}".format(self._get_checkid_string()))
-        for rule in ovalrules:
-            ovalid = rule.get("id")
-            assert ovalid is not None, \
-                "An OVAL rule doesn't have an ID"
+        for oval_definition in self.oval_document.definitions.values():
+            ovalid = oval_definition.id_
+            assert ovalid is not None, "An OVAL rule doesn't have an ID"
 
             if ovalid not in idmappingdict:
                 continue
-
-            ovaldesc = rule.find(".//{%s}description" % self.CHECK_NAMESPACE)
-            assert ovaldesc is not None, \
-                "OVAL rule '{0}' doesn't have a description, which is mandatory".format(ovalid)
 
             xccdfcceid = idmappingdict[ovalid]
             if is_cce_format_valid(xccdfcceid) and is_cce_value_valid(xccdfcceid):
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
-                ccerefelem = ET.Element('{%s}reference' % self.CHECK_NAMESPACE, ref_id=xccdfcceid,
-                                        source="CCE")
-                metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
-                metadata.append(ccerefelem)
-
-    def get_nested_definitions(self, oval_def_id):
-        processed_def_ids = set()
-        queue = set([oval_def_id])
-        while queue:
-            def_id = queue.pop()
-            processed_def_ids.add(def_id)
-            definition_tree = self.oval_groups["definitions"].get(def_id)
-            if definition_tree is None:
-                print("WARNING: Definition '%s' was not found, can't figure "
-                      "out what depends on it." % (def_id), file=sys.stderr)
-                continue
-            extensions = find_extending_defs(self.oval_groups, definition_tree)
-            if not extensions:
-                continue
-            queue |= extensions - processed_def_ids
-        return processed_def_ids
+                oval_definition.metadata.add_reference(xccdfcceid, "CCE")
 
     def add_missing_check_exports(self, check, checkcontentref):
         check_name = checkcontentref.get("name")
         if check_name is None:
             return
-        oval_def = self.oval_groups["definitions"].get(check_name)
+        oval_def_id = self._translate_name_to_oval_definition_id(check_name)
+        oval_def = self.oval_document.definitions.get(oval_def_id)
         if oval_def is None:
             return
         all_vars = set()
-        for def_id in self.get_nested_definitions(check_name):
-            extended_def = self.oval_groups["definitions"].get(def_id)
-            if extended_def is None:
-                print("WARNING: Definition '%s' was not found, can't figure "
-                      "out which variables it needs." % (def_id), file=sys.stderr)
-                continue
-            all_vars |= resolve_definition(self.oval_groups, extended_def)
+        references = self.oval_document.get_all_references_of_definition(oval_def_id)
+        for var_id in references.variables:
+            variable = self.oval_document.variables[var_id]
+            if "external_variable" in variable.tag:
+                all_vars.add(variable.name)
         for varname in sorted(all_vars):
             export = ET.Element("{%s}check-export" % XCCDF12_NS)
             export.attrib["export-name"] = varname
             export.attrib["value-id"] = OSCAP_VALUE + varname
             check.insert(0, export)
 
-    def _ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
-            self, indexed_oval_defs):
+    def _ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(self):
         # Ensure all OVAL checks referenced by XCCDF are implemented in OVAL file
         # Drop the reference from XCCDF to OVAL definition if:
         # * Particular OVAL definition isn't present in OVAL file,
@@ -246,7 +220,7 @@ class OVALFileLinker(FileLinker):
 
         for xccdfid, rule in rules_with_ids_generator(self.xccdftree):
             # Search OVAL ID in OVAL document
-            ovalid = indexed_oval_defs.get(xccdfid)
+            ovalid = self.oval_document.definitions.get(xccdfid)
             if ovalid is not None:
                 # The OVAL check was found, we can continue
                 continue
@@ -313,48 +287,9 @@ def create_xccdf_id_to_cce_id_mapping(xccdftree):
     return xccdftocce_idmapping
 
 
-def get_nonexisting_check_definition_extends(definition, indexed_oval_defs):
-    # TODO: handle multiple levels of referrals.
-    # OVAL checks that go beyond one level of extend_definition won't be properly identified
-    for extdefinition in definition.findall(".//{%s}extend_definition" % oval_ns):
-        # Verify each extend_definition in the definition
-        extdefinitionref = extdefinition.get("definition_ref")
-
-        # Search the OVAL tree for a definition with the referred ID
-        referreddefinition = indexed_oval_defs.get(extdefinitionref)
-
-        if referreddefinition is None:
-            # There is no oval satisfying the extend_definition referal
-            return extdefinitionref
-    return None
-
-
-def get_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
-    # Incomplete OVAL checks are as useful as non existing checks
-    # Here we check if all extend_definition refs from a definition exists in local OVAL file
-    definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
-    definitions_misses = collections.defaultdict(set)
-    for definition in definitions:
-        nonexisting_ref = get_nonexisting_check_definition_extends(definition, indexed_oval_defs)
-        if nonexisting_ref is not None:
-            definitions_misses[definition].add(nonexisting_ref)
-
-    return definitions_misses
-
-
-def transpose_dict_with_sets(dict_in):
-    """
-    Given a mapping X: key -> set of values, produce a mapping Y of the same type, where
-        for every combination of a, b for which a in X[b], the following holds: b in Y[a].
-    """
-    result = collections.defaultdict(set)
-    for key, values in dict_in.items():
-        for val in values:
-            result[val].add(key)
-    return result
-
-
-def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
+def check_and_correct_xccdf_to_oval_data_export_matching_constraints(
+    xccdftree, oval_document
+):
     """
     Verify if <xccdf:Value> 'type' to corresponding OVAL variable
     'datatype' export matching constraint:
@@ -376,58 +311,66 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
     http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
     """
     indexed_xccdf_values = map_elements_to_their_ids(
-        xccdftree, ".//{%s}Value" % (XCCDF12_NS))
+        xccdftree, ".//{%s}Value" % (XCCDF12_NS)
+    )
 
     # Loop through all <external_variables> in the OVAL document
-    ovalextvars = ovaltree.findall(".//{%s}external_variable" % oval_ns)
-    if ovalextvars is None:
-        return
+    oval_extvars = [
+        var
+        for var in oval_document.variables.values()
+        if "external_variable" in var.tag
+    ]
 
-    for ovalextvar in ovalextvars:
-        # Verify the found external variable has both 'id' and 'datatype' set
-        if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
-            msg = "Invalid OVAL <external_variable> found - either without 'id' or 'datatype'."
-            raise SSGError(msg)
+    for oval_extvar in oval_extvars:
 
-        ovalvarid = ovalextvar.get('id')
-        ovalvartype = ovalextvar.get('datatype')
+        oval_var_id = oval_extvar.id_
+        oval_var_type = oval_extvar.data_type
 
         # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
-        xccdfvar = indexed_xccdf_values.get(ovalvarid)
+        xccdf_var = indexed_xccdf_values.get(oval_var_id)
 
-        if xccdfvar is None:
+        if xccdf_var is None:
             return
 
-        xccdfvartype = xccdfvar.get('type')
+        xccdf_var_type = xccdf_var.get("type")
         # Verify the found value has 'type' attribute set
-        if xccdfvartype is None:
-            msg = (
-                "Invalid XCCDF variable '{0}': Missing the 'type' attribute."
-                .format(xccdfvar.get("id")))
+        if xccdf_var_type is None:
+            msg = "Invalid XCCDF variable '{0}': Missing the 'type' attribute.".format(
+                xccdf_var.get("id")
+            )
             raise SSGError(msg)
 
         # This is the required XCCDF 'type' for <xccdf:Value> derived
         # from OVAL variable 'datatype' and mapping above
-        assert ovalvartype in OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS, \
-            ('datatype not known: "%s" "%s known types "%s"' %
-             (ovalvarid, ovalvartype, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS))
-        reqxccdftype = OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS[ovalvartype]
+        assert (
+            oval_var_type in OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
+        ), 'datatype not known: "%s" "%s known types "%s"' % (
+            oval_var_id,
+            oval_var_type,
+            OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS,
+        )
+        req_xccdf_type = OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS[oval_var_type]
         # Compare the actual value of 'type' of <xccdf:Value> with the requirement
-        if xccdfvartype != reqxccdftype:
+        if xccdf_var_type != req_xccdf_type:
             # If discrepancy is found, issue a warning
             sys.stderr.write(
                 "Warning: XCCDF 'type' of \"%s\" value does "
                 "not meet the XCCDF value 'type' to OVAL "
                 "variable 'datatype' export matching "
-                "constraint! Got: \"%s\", Expected: \"%s\". "
+                'constraint! Got: "%s", Expected: "%s". '
                 "Resetting it! Set 'type' of \"%s\" "
                 "<xccdf:value> to '%s' directly in the XCCDF "
-                "content to dismiss this warning!\n" %
-                (ovalvarid, xccdfvartype, reqxccdftype,
-                 ovalvarid, reqxccdftype)
+                "content to dismiss this warning!\n"
+                % (
+                    oval_var_id,
+                    xccdf_var_type,
+                    req_xccdf_type,
+                    oval_var_id,
+                    req_xccdf_type,
+                )
             )
             # And reset the 'type' attribute of such a <xccdf:Value> to the required type
-            xccdfvar.attrib['type'] = reqxccdftype
+            xccdf_var.attrib["type"] = req_xccdf_type
 
 
 def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
