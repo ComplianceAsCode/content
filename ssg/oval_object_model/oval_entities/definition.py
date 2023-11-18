@@ -299,13 +299,26 @@ class Affected(OVALBaseObject):
 # -----
 
 
-def load_metadata(oval_metadata_xml_el):
+def _get_string_of(element, definition_id, type_):
+    out = ""
+    if element.text is not None:
+        out = element.text
+    else:
+        logging.info(
+            "OVAL definition '{0}' have empty a {1}, which is mandatory".format(
+                definition_id, type_
+            )
+        )
+    return out
+
+
+def load_metadata(oval_metadata_xml_el, definition_id):
     title_el = oval_metadata_xml_el.find("./{%s}title" % OVAL_NAMESPACES.definition)
-    title_str = title_el.text
+    title_str = _get_string_of(title_el, definition_id, "title")
     description_el = oval_metadata_xml_el.find(
         "./{%s}description" % OVAL_NAMESPACES.definition
     )
-    description_str = description_el.text
+    description_str = _get_string_of(description_el, definition_id, "description")
     all_affected_elements = oval_metadata_xml_el.findall(
         "./{%s}affected" % OVAL_NAMESPACES.definition
     )
@@ -398,11 +411,12 @@ def load_definition(oval_definition_xml_el):
     criteria_el = oval_definition_xml_el.find(
         "./{%s}criteria" % OVAL_NAMESPACES.definition
     )
+    definition_id = required_attribute(oval_definition_xml_el, "id")
     definition = Definition(
         oval_definition_xml_el.tag,
-        required_attribute(oval_definition_xml_el, "id"),
+        definition_id,
         required_attribute(oval_definition_xml_el, "class"),
-        load_metadata(metadata_el),
+        load_metadata(metadata_el, definition_id),
     )
     definition.deprecated = STR_TO_BOOL.get(
         oval_definition_xml_el.get("deprecated", ""), False
