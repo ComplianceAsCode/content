@@ -22,7 +22,7 @@ class GeneralCriteriaNode(OVALBaseObject):
         super(GeneralCriteriaNode, self).__init__(tag)
 
     def get_xml_element(self):
-        el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        el = ElementTree.Element(self.tag_name)
         if self.applicability_check:
             el.set("applicability_check", BOOL_TO_STR[self.applicability_check])
         if self.negate:
@@ -57,6 +57,11 @@ class TerminateCriteriaNode(GeneralCriteriaNode):
         el = super(TerminateCriteriaNode, self).get_xml_element()
         el.set("{}_ref".format(self.prefix_ref), self.ref)
         return el
+
+    def translate_id(self, translator, store_defname=False):
+        self.ref = translator.generate_id(
+            "{}{}".format(self.namespace, self.prefix_ref), self.ref
+        )
 
 
 # -----
@@ -138,6 +143,10 @@ class Criteria(GeneralCriteriaNode):
     def get_extend_definition_references(self):
         return self._get_reference(ExtendDefinition)
 
+    def translate_id(self, translator, store_defname=False):
+        for child_criteria_node in self.child_criteria_nodes:
+            child_criteria_node.translate_id(translator)
+
 
 # -----
 
@@ -164,7 +173,7 @@ class Reference(OVALBaseObject):
         self.ref_id = ref_id
 
     def get_xml_element(self):
-        reference_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        reference_el = ElementTree.Element(self.tag_name)
         reference_el.set("ref_id", self.ref_id)
         reference_el.set("source", self.source)
         if self.ref_url != "":
@@ -279,7 +288,7 @@ class Affected(OVALBaseObject):
             affected_el.append(platform_el)
 
     def get_xml_element(self):
-        affected_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        affected_el = ElementTree.Element(self.tag_name)
         affected_el.set("family", self.family)
 
         self._add_to_affected_element(affected_el, self.platforms, self.platform_tag)
@@ -343,13 +352,24 @@ class Metadata(OVALBaseObject):
                 return True
         return False
 
+    def add_reference(self, ref_id, source):
+        if self.array_of_references is None:
+            self.array_of_references = []
+        self.array_of_references.append(
+            Reference(
+                "{%s}reference" % OVAL_NAMESPACES.definition,
+                source,
+                ref_id,
+            )
+        )
+
     @staticmethod
     def _add_sub_elements_from_arrays(el, array):
         for item in array if array is not None else []:
             el.append(item.get_xml_element())
 
     def get_xml_element(self):
-        metadata_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        metadata_el = ElementTree.Element(self.tag_name)
 
         title_el = ElementTree.Element("{}{}".format(self.namespace, self.title_tag))
         title_el.text = self.title
@@ -422,3 +442,9 @@ class Definition(OVALComponent):
         if self.criteria:
             definition_el.append(self.criteria.get_xml_element())
         return definition_el
+
+    def translate_id(self, translator, store_defname=False):
+        super(Definition, self).translate_id(translator, store_defname)
+        self.criteria.translate_id(translator)
+        if store_defname:
+            self.metadata.add_reference(self.id_, translator.content_id)
