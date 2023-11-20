@@ -16,6 +16,7 @@ from .checks import get_content_ref_if_exists_and_not_remote
 from .cce import is_cce_value_valid, is_cce_format_valid
 from .utils import SSGError
 from .xml import ElementTree as ET
+
 oval_ns = oval_namespace
 oval_cs = oval_namespace
 
@@ -127,12 +128,42 @@ class OVALFileLinker(FileLinker):
     def _translate_name_to_oval_definition_id(self, name):
         return self.translator.generate_id(self._get_checkid_string(), name)
 
+    def _get_path_for_oval_document(self, name):
+        path = os.path.join(
+            self.linked_fname.replace(self.linked_fname_basename, ""),
+            "checks/oval_documents_for_each_rule/",
+        )
+        if not os.path.exists(path):
+            os.makedirs(path)
+        return os.path.join(path, name + ".xml")
+
+    def _get_list_of_names_of_oval_checks(self):
+        out = []
+        for _, rule in rules_with_ids_generator(self.xccdftree):
+            for check in rule.findall(".//{%s}check" % (XCCDF12_NS)):
+                checkcontentref = get_content_ref_if_exists_and_not_remote(check)
+                if checkcontentref is None or check.get("system") != oval_cs:
+                    continue
+
+                out.append(checkcontentref.get("name"))
+        return out
+
+    def _save_oval_document_for_each_xccdf_rule(self):
+        for name in self._get_list_of_names_of_oval_checks():
+            oval_id = self._translate_name_to_oval_definition_id(name)
+
+            refs = self.oval_document.get_all_references_of_definition(oval_id)
+            path = self._get_path_for_oval_document(name)
+            with open(path, "wb+") as fd:
+                self.oval_document.save_as_xml(fd, refs)
+
     def save_linked_tree(self):
         """
         Write internal tree to the file in self.linked_fname.
         """
         with open(self.linked_fname, "wb+") as fd:
             self.oval_document.save_as_xml(fd)
+        self._save_oval_document_for_each_xccdf_rule()
 
     def link(self):
         self.oval_document = load_oval_document(parse_file(self.fname))
