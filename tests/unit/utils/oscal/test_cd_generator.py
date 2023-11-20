@@ -137,6 +137,12 @@ single_response = """
 A single response with no sections
 """
 
+expected_single_response = "A single response with no sections"
+expected_section_a_response = "My response is a single statement"
+expected_section_b_response = (
+    "My response is a list of statements\n\nThis link for section b."
+)
+
 
 @pytest.mark.parametrize(
     "notes, input_status, description, status, remarks",
@@ -146,12 +152,12 @@ A single response with no sections
             Status.MANUAL,
             REPLACE_ME,
             OscalStatus.ALTERNATIVE,
-            "A single response with no sections",
+            expected_single_response,
         ),
         (
             single_response,
             Status.INHERENTLY_MET,
-            "A single response with no sections",
+            expected_single_response,
             OscalStatus.IMPLEMENTED,
             None,
         ),
@@ -213,8 +219,8 @@ def test_handle_response_with_implemented_requirements(
                 OscalStatus.PARTIAL,
                 None,
                 {
-                    "ac-1_smt.a": "My response is a single statement",
-                    "ac-1_smt.b": "My response is a list of statements\n\nThis link for section b.",
+                    "ac-1_smt.a": expected_section_a_response,
+                    "ac-1_smt.b": expected_section_b_response,
                 },
             ),
         ),
@@ -226,8 +232,8 @@ def test_handle_response_with_implemented_requirements(
                 OscalStatus.ALTERNATIVE,
                 REPLACE_ME,
                 {
-                    "ac-1_smt.a": "My response is a single statement",
-                    "ac-1_smt.b": "My response is a list of statements\n\nThis link for section b.",
+                    "ac-1_smt.a": expected_section_a_response,
+                    "ac-1_smt.b": expected_section_b_response,
                 },
             ),
         ),
