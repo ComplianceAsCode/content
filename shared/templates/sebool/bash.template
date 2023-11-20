@@ -12,10 +12,15 @@
 {{{ bash_package_install("python3-semanage") }}}
 {{% endif %}}
 
-{{% if SEBOOL_BOOL %}}
-setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
-{{% else %}}
-{{{ bash_instantiate_variables("var_" + SEBOOLID) }}}
 
-setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
+if selinuxenabled; then    
+{{% if SEBOOL_BOOL %}}
+    setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
+{{% else %}}
+    {{{ bash_instantiate_variables("var_" + SEBOOLID) }}}
+    setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
 {{% endif %}}
+else
+        echo "Skipping remediation, SELinux is disabled";
+        false
+fi
