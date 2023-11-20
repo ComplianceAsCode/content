@@ -24,7 +24,7 @@ description: |-
     setting in a file loaded by <tt>/etc/profile</tt>
     {{{- "or <tt>/etc/bashrc</tt>" if product in ["ol7", "rhel7"] }}}, e.g.
     <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
-    <pre>declare -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    <pre>typeset -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     {{% endif %}}
 
 rationale: |-
