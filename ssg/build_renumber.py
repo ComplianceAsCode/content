@@ -8,6 +8,7 @@ from .constants import (
     OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs,
     ocil_namespace, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
 )
+from . import utils
 from .xml import parse_file, map_elements_to_their_ids
 from .oval_object_model import load_oval_document
 
@@ -116,6 +117,7 @@ class FileLinker(object):
 class OVALFileLinker(FileLinker):
     CHECK_SYSTEM = oval_cs
     CHECK_NAMESPACE = oval_ns
+    build_ovals_dir = None
 
     def __init__(self, translator, xccdftree, checks, output_file_name):
         super(OVALFileLinker, self).__init__(
@@ -129,13 +131,9 @@ class OVALFileLinker(FileLinker):
         return self.translator.generate_id(self._get_checkid_string(), name)
 
     def _get_path_for_oval_document(self, name):
-        path = os.path.join(
-            self.linked_fname.replace(self.linked_fname_basename, ""),
-            "checks/oval_documents_for_each_rule/",
-        )
-        if not os.path.exists(path):
-            os.makedirs(path)
-        return os.path.join(path, name + ".xml")
+        if self.build_ovals_dir:
+            utils.mkdir_p(self.build_ovals_dir)
+        return os.path.join(self.build_ovals_dir, name + ".xml")
 
     def _get_list_of_names_of_oval_checks(self):
         out = []
@@ -163,7 +161,9 @@ class OVALFileLinker(FileLinker):
         """
         with open(self.linked_fname, "wb+") as fd:
             self.oval_document.save_as_xml(fd)
-        self._save_oval_document_for_each_xccdf_rule()
+
+        if self.build_ovals_dir:
+            self._save_oval_document_for_each_xccdf_rule()
 
     def link(self):
         self.oval_document = load_oval_document(parse_file(self.fname))

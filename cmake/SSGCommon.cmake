@@ -146,7 +146,7 @@ macro(ssg_build_xccdf_oval_ocil PRODUCT)
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_xccdf.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --xccdf "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_xccdf.py" --build-ovals-dir "${CMAKE_CURRENT_BINARY_DIR}/checks/oval" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --xccdf "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --oval "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         COMMAND sync
         DEPENDS ${PRODUCT}-compile-all "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
         DEPENDS generate-internal-${PRODUCT}-all-fixes "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
