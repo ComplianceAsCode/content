@@ -52,7 +52,6 @@ selections:
 - dconf_gnome_session_idle_user_locks
 - sshd_set_maxstartups
 - audit_rules_time_stime
-- ntpd_specify_remote_server
 - accounts_password_pam_pwhistory_remember_system_auth
 - service_rpcbind_disabled
 - chronyd_run_as_chrony_user
@@ -200,7 +199,6 @@ selections:
 - package_telnet_removed
 - audit_sudo_log_events
 - package_ypbind_removed
-- ntpd_specify_multiple_servers
 - dconf_gnome_screensaver_idle_activation_enabled
 - sysctl_net_ipv4_tcp_syncookies
 - sshd_set_max_auth_tries
