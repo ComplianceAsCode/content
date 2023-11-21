@@ -19,6 +19,7 @@ metadata:
     - vojtapolasek
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
 selections:
+- enable_authselect
 - package_sudo_installed
 - sshd_set_loglevel_verbose
 - accounts_password_warn_age_login_defs
