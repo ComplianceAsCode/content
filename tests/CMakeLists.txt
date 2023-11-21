@@ -2,10 +2,16 @@ if(ENABLE_PYTHON_COVERAGE)
     set(PYTEST_COVERAGE_OPTIONS --cov-append --cov-report=xml --cov "${CMAKE_SOURCE_DIR}/ssg")
 endif()
 
-macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH)
+macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH IGNORE_SUBDIR)
+    if(NOT "${IGNORE_SUBDIR}" STREQUAL "")
+        set(IGNORE "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT_ID}/${IGNORE_SUBDIR}")
+        set(TEST_COMMAND "${PYTHON_EXECUTABLE}" -m pytest "--ignore=${IGNORE}" ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT_ID}")
+    else()
+        set(TEST_COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT_ID}")
+    endif()
     add_test(
         NAME "python-unit-${PYTHON_COMPONENT_ID}"
-        COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT_ID}"
+        COMMAND ${TEST_COMMAND}
     )
     set_tests_properties("python-unit-${PYTHON_COMPONENT_ID}" PROPERTIES ENVIRONMENT
         "PYTHONPATH=${CMAKE_SOURCE_DIR}/${RELATIVE_PYTHONPATH}:$ENV{PYTHONPATH}"
@@ -14,9 +20,12 @@ macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH)
 endmacro()
 
 if(PY_PYTEST)
-    ssg_python_unit_tests("utils" "utils")
-    ssg_python_unit_tests("ssg-module" ".")
-    ssg_python_unit_tests("ssg_test_suite" "tests")
+    ssg_python_unit_tests("utils" "utils" "oscal/")
+    ssg_python_unit_tests("ssg-module" "." "")
+    ssg_python_unit_tests("ssg_test_suite" "tests" "")
+    if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
+        ssg_python_unit_tests("utils/oscal" "utils/oscal" "")
+    endif()
 endif()
 
 add_test(
@@ -97,7 +106,6 @@ endmacro()
 mypy_test("utils/import_srg_spreadsheet.py")
 mypy_test("utils/check_eof.py")
 mypy_test("utils/no_new_global_applicable_rules.py")
-
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
