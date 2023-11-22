@@ -461,4 +461,4 @@ class Definition(OVALComponent):
         super(Definition, self).translate_id(translator, store_defname)
         self.criteria.translate_id(translator)
         if store_defname:
-            self.metadata.add_reference(self.id_, translator.content_id)
+            self.metadata.add_reference(self.name, translator.content_id)
