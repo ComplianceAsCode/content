@@ -25,3 +25,10 @@ selections:
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'
+    # these rules does not apply to RHEL but it has to keep the prodtype for historical reasons
+    - '!package_audit-audispd-plugins_installed'
+    - '!service_ntp_enabled'
+    - '!ntpd_specify_remote_server'
+    - '!ntpd_specify_multiple_servers'
+    - '!set_ipv6_loopback_traffic'
+    - '!set_loopback_traffic'

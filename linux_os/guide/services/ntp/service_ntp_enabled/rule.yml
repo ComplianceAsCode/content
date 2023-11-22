@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: debian10,debian11,debian12,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
+prodtype: debian10,debian11,debian12,rhel8,rhel9,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
 
 title: 'Enable the NTP Daemon'
 
@@ -49,3 +49,10 @@ template:
     name: service_enabled
     vars:
         servicename: ntp
+
+{{% if prodtype in ["rhel8", "rhel9", "sle15"] %}}
+warnings:
+    - general:
+        The <pre>ntp</pre> package is not available in {{{ full_name }}}. Please
+        consider the <pre>chrony</pre> package instead.
+{{% endif %}}
