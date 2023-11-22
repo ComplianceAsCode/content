@@ -114,6 +114,13 @@ class OVALContainer(OVALBaseObject):
         self.objects = {}
         self.states = {}
         self.variables = {}
+        self.MAP_COMPONENT_DICT = {
+            "definitions": self.definitions,
+            "tests": self.tests,
+            "objects": self.objects,
+            "states": self.states,
+            "variables": self.variables,
+        }
 
     def _call_function_for_every_component(self, _function, object_):
         _function(self.definitions, object_.definitions)
@@ -150,14 +157,7 @@ class OVALContainer(OVALBaseObject):
         raise NotImplementedError()
 
     def _process_component(self, ref, type_, function_save_refs):
-        MAP_COMPONENT_DICT = {
-            "definitions": self.definitions,
-            "tests": self.tests,
-            "objects": self.objects,
-            "states": self.states,
-            "variables": self.variables,
-        }
-        source = MAP_COMPONENT_DICT.get(type_)
+        source = self.MAP_COMPONENT_DICT.get(type_)
         to_process, id_getter = ref.get_to_process_dict_and_id_getter(type_)
         while to_process:
             id_ = id_getter()
@@ -222,3 +222,15 @@ class OVALContainer(OVALBaseObject):
 
     def keep_referenced_components(self, ref):
         self._call_function_for_every_component(_keep_keys_in_dict, ref)
+
+    def _translate(self, translator, dict_, store_defname=False):
+        for component_id in list(dict_.keys()):
+            component = dict_[component_id]
+            component.translate_id(translator, store_defname)
+            translated_id = translator.generate_id(component.tag_name, component_id)
+            del dict_[component_id]
+            dict_[translated_id] = component
+
+    def translate_id(self, translator, store_defname=False):
+        for dict_ in self.MAP_COMPONENT_DICT.values():
+            self._translate(translator, dict_, store_defname)

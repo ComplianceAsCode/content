@@ -1,6 +1,7 @@
 import logging
 
-from ...constants import OVAL_NAMESPACES, STR_TO_BOOL
+from ...constants import OVAL_NAMESPACES, STR_TO_BOOL, OVALREFATTR_TO_TAG
+
 from ...xml import ElementTree
 from ..general import OVALComponent, load_notes, required_attribute
 
@@ -88,3 +89,20 @@ class Test(OVALComponent):
             test_el.append(state_ref_el)
 
         return test_el
+
+    def translate_id(self, translator, store_defname=False):
+        super(Test, self).translate_id(translator)
+        self.object_ref = translator.generate_id(
+            "{%s}%s" % (OVAL_NAMESPACES.definition, OVALREFATTR_TO_TAG["object_ref"]),
+            self.object_ref,
+        )
+        translated_state_refs = []
+        for state_ref in self.state_refs:
+            translated_state_refs.append(
+                translator.generate_id(
+                    "{%s}%s"
+                    % (OVAL_NAMESPACES.definition, OVALREFATTR_TO_TAG["state_ref"]),
+                    state_ref,
+                )
+            )
+        self.state_refs = translated_state_refs
