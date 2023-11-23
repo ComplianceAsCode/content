@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: debian10,debian11,debian12,rhel8,rhel9,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
+prodtype: debian10,debian11,debian12,rhel7,rhel8,rhel9,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004,ubuntu2204
 
 title: 'Enable the NTP Daemon'
 
@@ -50,9 +50,14 @@ template:
     vars:
         servicename: ntp
 
-{{% if prodtype in ["rhel8", "rhel9", "sle15"] %}}
+{{% if prodtype in ["rhel7", "rhel8", "rhel9", "sle15"] %}}
 warnings:
     - general:
+        {{% if prodtype == "rhel7" %}}
+        The <pre>ntp.service</pre> Systemd unit is not available in {{{
+        full_name }}}. <pre>ntpd.service</pre> should be used instead together with the respective <pre>service_ntpd_enabled</pre> rule..
+        {{% else %}}
         The <pre>ntp</pre> package is not available in {{{ full_name }}}. Please
-        consider the <pre>chrony</pre> package instead.
+        consider the <pre>chrony</pre> package instead together with the respective <pre>service_chronyd_enabled</pre> rule.
+        {{% endif %}}
 {{% endif %}}
