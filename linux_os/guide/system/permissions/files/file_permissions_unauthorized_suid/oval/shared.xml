@@ -1,53 +1,73 @@
 <def-group>
-    <definition id="file_permissions_unauthorized_suid" version="1" class="compliance">
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("Evaluates to true if all files with SUID set are owned by RPM packages.") }}}
         <criteria>
-            <criterion comment="Check all suid files" test_ref="test_file_permissions_unauthorized_suid"/>
+            <criterion test_ref="test_file_permissions_unauthorized_suid"
+                comment="Check if all suid files present in the system are authorized"/>
         </criteria>
     </definition>
 
-    <unix:file_test check="all" check_existence="none_exist" comment="suid files outside system RPMs" id="test_file_permissions_unauthorized_suid" version="1">
+    <!-- Collect all suid files in the system. -->
+    <unix:file_state id="state_file_permissions_unauthorized_suid_suid_set" version="1">
+        <unix:suid datatype="boolean">true</unix:suid>
+    </unix:file_state>
+
+    <unix:file_object id="obj_file_permissions_unauthorized_suid_all_suid_files" version="1"
+        comment="all files with suid set">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+            recurse_file_system="local"/>
+        <unix:path operation="equals">/</unix:path>
+        <unix:filename operation="pattern match">^.*$</unix:filename>
+        <filter action="include">state_file_permissions_unauthorized_suid_suid_set</filter>
+    </unix:file_object>
+
+    <local_variable id="var_file_permissions_unauthorized_suid_all_suid_files" version="1"
+        datatype="string" comment="all files with suid set">
+        <object_component item_field="filepath"
+            object_ref="obj_file_permissions_unauthorized_suid_all_suid_files"/>
+    </local_variable>
+
+    <!-- Locate all rpm packages including system suid files. -->
+    <linux:rpmverifyfile_object id="obj_file_permissions_unauthorized_suid_rpms" version="1"
+        comment="all files with suid set that come from a RPM package">
+        <linux:behaviors nolinkto="true" nomd5="true" nosize="true" nouser="true" nogroup="true"
+            nomtime="true" nomode="true" nordev="true"/>
+        <linux:name operation="pattern match">.*</linux:name>
+        <linux:epoch operation="pattern match">.*</linux:epoch>
+        <linux:version operation="pattern match">.*</linux:version>
+        <linux:release operation="pattern match">.*</linux:release>
+        <linux:arch operation="pattern match">.*</linux:arch>
+        <linux:filepath operation="equals" var_check="all"
+            var_ref="var_file_permissions_unauthorized_suid_all_suid_files"/>
+    </linux:rpmverifyfile_object>
+
+    <!-- Extract the filepaths of rpm packages containing system suid files. -->
+    <local_variable id="var_file_permissions_unauthorized_suid_rpms" version="1"
+        datatype="string" comment="all files with suid set that come from a RPM package">
+        <object_component item_field="filepath"
+            object_ref="obj_file_permissions_unauthorized_suid_rpms"/>
+    </local_variable>
+
+
+    <unix:file_state id="state_file_permissions_unauthorized_suid_filepaths" version="1">
+        <unix:filepath var_check="at least one"
+            var_ref="var_file_permissions_unauthorized_suid_rpms"/>
+    </unix:file_state>
+
+    <unix:file_test id="test_file_permissions_unauthorized_suid" version="1"
+        check="all" check_existence="none_exist"
+        comment="There is no suid files outside system RPMs">
         <unix:object object_ref="obj_file_permissions_unauthorized_suid_unowned" />
     </unix:file_test>
 
-    <unix:file_object comment="files with suid set which are not owned by any RPM package" id="obj_file_permissions_unauthorized_suid_unowned" version="1">
-        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:file_object id="obj_file_permissions_unauthorized_suid_unowned" version="1"
+        comment="files with suid set which are not owned by any RPM package">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+            recurse_file_system="local"/>
         <unix:path operation="equals">/</unix:path>
         <unix:filename operation="pattern match">^.*$</unix:filename>
         <filter action="include">state_file_permissions_unauthorized_suid_suid_set</filter>
         <filter action="exclude">state_file_permissions_unauthorized_suid_filepaths</filter>
     </unix:file_object>
 
-    <linux:rpmverifyfile_object id="obj_file_permissions_unauthorized_suid_rpms" version="1" comment="all files with suid set that come from a RPM package">
-        <linux:behaviors nolinkto="true" nomd5="true" nosize="true" nouser="true" nogroup="true" nomtime="true" nomode="true" nordev="true" />
-        <linux:name operation="pattern match">.*</linux:name>
-        <linux:epoch operation="pattern match">.*</linux:epoch>
-        <linux:version operation="pattern match">.*</linux:version>
-        <linux:release operation="pattern match">.*</linux:release>
-        <linux:arch operation="pattern match">.*</linux:arch>
-        <linux:filepath var_ref="var_file_permissions_unauthorized_suid_all" operation="equals" var_check="all" />
-    </linux:rpmverifyfile_object>
-
-    <unix:file_object comment="all files with suid set" id="obj_file_permissions_unauthorized_suid_files" version="1">
-        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-        <unix:path operation="equals">/</unix:path>
-        <unix:filename operation="pattern match">^.*$</unix:filename>
-        <filter action="include">state_file_permissions_unauthorized_suid_suid_set</filter>
-    </unix:file_object>
-
-    <unix:file_state id="state_file_permissions_unauthorized_suid_suid_set" version="1">
-        <unix:suid datatype="boolean">true</unix:suid>
-    </unix:file_state>
-
-    <unix:file_state id="state_file_permissions_unauthorized_suid_filepaths" version="1">
-        <unix:filepath var_ref="var_file_permissions_unauthorized_suid_rpms" var_check="at least one" />
-    </unix:file_state>
-
-    <local_variable id="var_file_permissions_unauthorized_suid_rpms" datatype="string" version="1" comment="all files with suid set that come from a RPM package">
-        <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_suid_rpms" />
-    </local_variable>
-
-    <local_variable id="var_file_permissions_unauthorized_suid_all" datatype="string" version="1" comment="all files with suid set">
-        <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_suid_files" />
-    </local_variable>
 </def-group>
