@@ -83,5 +83,10 @@ srg_requirement: 'All {{{ full_name }}} local files and directories must have a 
 
 warnings:
     - general: |-
-        This rule only considers local groups and valid groups.
+        This rule only considers local groups as valid groups.
         If you have your groups defined outside <code>/etc/group</code>, the rule won't consider those.
+    - general: |-
+        This rule can take a long time to perform the check and might consume a considerable
+        amount of resources depending on the number of files present on the system. It is not a
+        problem in most cases, but especially systems with a large number of files can be affected.
+        See <code>https://access.redhat.com/articles/6999111</code>.
