@@ -24,25 +24,8 @@
     <unix:group_id datatype="int" var_check="at least one" var_ref="var_all_local_gids"/>
   </unix:file_state>
 
-  <!-- Create a partition_state to filter out remote and special file systems. -->
-  <linux:partition_state id="state_file_permissions_ungroupowned_dev_partitons" version="1">
-    <linux:device operation="pattern match">^/dev/.*$</linux:device>
-  </linux:partition_state>
-
-  <!-- This object is created mainly to improve performance when collecting file objects.
-       Here all mount points are collected and filtered to include only devices under /dev in
-       order to ignore special file systems. -->
-  <linux:partition_object id="object_file_permissions_ungroupowned_local_partitions" version="1">
-    <linux:mount_point operation="pattern match">.*</linux:mount_point>
-    <filter action="include">state_file_permissions_ungroupowned_dev_partitons</filter>
-  </linux:partition_object>
-
-  <!-- Create a variable composed by mount points to local and not special file systems. -->
-  <local_variable id="var_file_permissions_ungroupowned_local_mountpoints" version="1"
-    datatype="string" comment="Mount points for local devices">
-    <object_component item_field="mount_point"
-      object_ref="object_file_permissions_ungroupowned_local_partitions"/>
-  </local_variable>
+  {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+  {{{ create_local_mount_points_list(var_local_mount_points) }}}
 
   <!-- This file_object will only find files located in local and not special file systems. The
        recurse_file_system parameter is set to defined in order to make sure the probe doesn't
@@ -54,7 +37,7 @@
     <unix:behaviors recurse="directories" recurse_direction="down"
       recurse_file_system="defined" max_depth="-1"/>
     <unix:path operation="equals" var_check="at least one"
-      var_ref="var_file_permissions_ungroupowned_local_mountpoints"/>
+      var_ref="{{{ var_local_mount_points }}}"/>
     <unix:filename operation="pattern match">.*</unix:filename>
     <filter action="exclude">state_file_permissions_ungroupowned_local_group_owner</filter>
   </unix:file_object>
