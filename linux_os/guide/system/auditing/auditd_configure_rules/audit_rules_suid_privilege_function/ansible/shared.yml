@@ -47,7 +47,7 @@
         regex: {{{ rx_beg + rx_b64 + rx_uid + rx_end }}}
 
 
-- name: {{{ rule_id }}} - Update /etc/audit/rules.d/privileged.rules to audit privileged functions when there exists uncommented ExecStartPost line in auditd.service
+- name: {{{ rule_id }}} - Update /etc/audit/rules.d/privileged.rules to audit privileged functions when check_rules_scripts_result is not empty
   ansible.builtin.lineinfile:
     path: /etc/audit/rules.d/privileged.rules
     line: "{{  item.rule  }}"
@@ -60,7 +60,7 @@
   register: augenrules_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
 
-- name: {{{ rule_id }}} - Update /etc/audit/audit.rules to audit privileged functions when there exists uncommented ExecStartPost line in auditd.service
+- name: {{{ rule_id }}} - Update Update /etc/audit/audit.rules to audit privileged functions when check_rules_scripts_result is not empty
   ansible.builtin.lineinfile:
     path: /etc/audit/audit.rules
     line: "{{  item.rule  }}"
@@ -73,7 +73,7 @@
   register: auditctl_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
 
-- name: {{{ rule_id }}} - Update /etc/audit/rules.d/privileged.rules to audit privileged functions when there exists commented ExecStartPost line in auditd.service
+- name: {{{ rule_id }}} - Update /etc/audit/rules.d/privileged.rules to audit privileged functions when check_rules_scripts_result is empty
   ansible.builtin.lineinfile:
     path: /etc/audit/rules.d/privileged.rules
     line: "{{  item.rule  }}"
@@ -86,7 +86,7 @@
   register: augenrules_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
 
-- name: {{{ rule_id }}} - Update /etc/audit/audit.rules to audit privileged functions when there exists commented ExecStartPost line in auditd.service
+- name: {{{ rule_id }}} - Update Update /etc/audit/audit.rules to audit privileged functions when check_rules_scripts_result is not empty
   ansible.builtin.lineinfile:
     path: /etc/audit/audit.rules
     line: "{{  item.rule  }}"
