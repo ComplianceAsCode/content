@@ -2061,6 +2061,7 @@ Example macro invocation(s)::
 
     {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1") }}}
     {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd") }}}
+    {{{ bash_ensure_ini_config("/etc/systemd/system/tftp.service", "Service", "ExecStart", "/usr/sbin/in.tftpd -s /var/lib/tftpboot", "#") }}}
 
 :param files:   list of space-separated files to add key = value to (may contain wildcards)
                 if none contain section, create and append to FIRST file
@@ -2071,9 +2072,11 @@ Example macro invocation(s)::
 :type key: str
 :param value:   value
 :type value: str
+:param sed_separator: the separator to use in sed expression. Defaults to "/".
+:type sed_separator: str
 
 #}}
-{{% macro bash_ensure_ini_config(files, section, key, value) -%}}
+{{% macro bash_ensure_ini_config(files, section, key, value, sed_separator="/") -%}}
 found=false
 
 # set value in all files if they contain section or key
@@ -2084,12 +2087,12 @@ for f in $(echo -n "{{{ files }}}"); do
 
     # find key in section and change value
     if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
-            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}} = {{{ value }}}/" "$f"
+            sed -i "s{{{ sed_separator }}}{{{ key }}}[^(\n)]*{{{ sed_separator }}}{{{ key }}} = {{{ value }}}{{{ sed_separator }}}" "$f"
             found=true
 
     # find section and add key = value to it
     elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
-            sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}} = {{{ value }}}" "$f"
+            sed -i "{{{ sed_separator }}}[[:space:]]*\[{{{ section }}}\]{{{ sed_separator }}}a {{{ key }}} = {{{ value }}}" "$f"
             found=true
     fi
 done
