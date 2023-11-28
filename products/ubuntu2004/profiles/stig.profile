@@ -567,6 +567,7 @@ selections:
     - aide_build_database
 
     # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.
+    # Same as UBTU-20-010437
 
     # UBTU-20-010453 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
     - display_login_attempts
