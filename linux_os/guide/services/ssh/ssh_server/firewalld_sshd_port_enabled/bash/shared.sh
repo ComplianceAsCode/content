@@ -38,5 +38,4 @@ else
     firewalld and NetworkManager services are not active. Remediation aborted!
     This remediation could not be applied because it depends on firewalld and NetworkManager services running.
     The service is not started by this remediation in order to prevent connection issues."
-    exit 1
 fi
