@@ -721,7 +721,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     mode: 0644
 {{%- endmacro %}}
 
+{{#
+    This macro comments out a given line of the sudoers and then validates it before saving.
 
+:param parameter: The parameter to remove
+:type parameter: str
+:param pattern: The pattern to remove
+:type pattern: str
+
+#}}
 {{%- macro ansible_sudo_remove_config(parameter, pattern) -%}}
 
 - name: Find /etc/sudoers.d/ files
