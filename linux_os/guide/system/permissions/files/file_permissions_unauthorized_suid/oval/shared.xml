@@ -8,17 +8,26 @@
     </definition>
 
     <!-- Collect all suid files in the system. -->
-    <unix:file_state id="state_file_permissions_unauthorized_suid_suid_set" version="1">
+    <unix:file_state id="state_file_permissions_unauthorized_suid_set" version="1">
         <unix:suid datatype="boolean">true</unix:suid>
     </unix:file_state>
 
+    {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+    {{{ create_local_mount_points_list(var_local_mount_points) }}}
+
+    <!-- This file_object will only find files located in local and not special file systems. The
+         recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+         leave the scope of that mount point. For example, when probing "/", the probe will ignore
+         any child directory which is a mount point for any other partition. This will ensure
+         considerable performance improvement. -->
     <unix:file_object id="object_file_permissions_unauthorized_suid_all_suid_files" version="1"
         comment="all files with suid set">
         <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
-            recurse_file_system="local"/>
-        <unix:path operation="equals">/</unix:path>
+            recurse_file_system="defined"/>
+            <unix:path operation="equals" var_check="at least one"
+                var_ref="{{{ var_local_mount_points }}}"/>
         <unix:filename operation="pattern match">^.*$</unix:filename>
-        <filter action="include">state_file_permissions_unauthorized_suid_suid_set</filter>
+        <filter action="include">state_file_permissions_unauthorized_suid_set</filter>
     </unix:file_object>
 
     <local_variable id="var_file_permissions_unauthorized_suid_all_suid_files" version="1"
