@@ -733,13 +733,13 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- macro ansible_sudo_remove_config(parameter, pattern) -%}}
 
 - name: Find /etc/sudoers.d/ files
-  find:
+  ansible.builtin.find:
     paths:
       - /etc/sudoers.d/
   register: sudoers
 
 - name: "Remove lines containing {{{ parameter }}} from sudoers files"
-  replace:
+  ansible.builtin.replace:
     regexp: '(^(?!#).*[\s]+{{{ pattern }}}.*$)'
     replace: '# \g<1>'
     path: "{{ item.path }}"
