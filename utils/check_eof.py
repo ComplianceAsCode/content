@@ -8,7 +8,7 @@ import sys
 EXTENSIONS = ['adoc', 'anaconda', 'conf', 'html', 'json', 'md', 'pp', 'profile', 'py', 'rb',
               'rst', 'rules', 'sh', 'template', 'toml', 'var', 'xml', 'yaml', 'yml']
 
-EXCLUSIONS = ['/shared/references/', '/logs/', '/tests/data/utils/']
+EXCLUSIONS = ['/shared/references/', '/logs/', '/tests/data/utils/', '/tests/.mypy_cache/']
 
 
 def parse_args() -> argparse.Namespace:
