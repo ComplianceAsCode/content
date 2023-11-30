@@ -6,13 +6,13 @@ title: 'Build and Test AIDE Database'
 
 description: |-
     Run the following command to generate a new database:
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     <pre>$ sudo aideinit</pre>
     {{% else %}}
     <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
     {{% endif %}}
     By default, the database will be written to the file
-    {{% if 'ubuntu' in product or 'sle' in product %}}
+    {{% if 'ubuntu' in product or 'sle' in product or 'debian' in product %}}
     <tt>/var/lib/aide/aide.db.new</tt>.
     {{% else %}}
     <tt>/var/lib/aide/aide.db.new.gz</tt>.
@@ -21,7 +21,7 @@ description: |-
     <tt>{{{ aide_bin_path }}}</tt>
     (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
     The newly-generated database can be installed as follows:
-    {{% if 'ubuntu' in product or 'sle' in product %}}
+    {{% if 'ubuntu' in product or 'sle' in product or 'debian' in product %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db</pre>
     {{% else %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
