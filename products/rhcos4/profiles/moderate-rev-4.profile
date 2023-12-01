@@ -5,18 +5,15 @@ metadata:
     SMEs:
         - JAORMX
         - mrogers950
-        - jhrozek
 
-reference: https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/release-search#!/controls?version=5.1&security_baseline=High
+reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
 
-title: 'NIST 800-53 High-Impact Baseline for Red Hat OpenShift - Platform level'
-
-platform: ocp4
+title: 'NIST 800-53 Moderate-Impact Baseline for Red Hat Enterprise Linux CoreOS'
 
 description: |-
-    This compliance profile reflects the core set of High-Impact Baseline
-    configuration settings for deployment of Red Hat OpenShift Container
-    Platform into U.S. Defense, Intelligence, and Civilian agencies.
+    This compliance profile reflects the core set of Moderate-Impact Baseline
+    configuration settings for deployment of Red Hat Enterprise
+    Linux CoreOS into U.S. Defense, Intelligence, and Civilian agencies.
     Development partners and sponsors include the U.S. National Institute
     of Standards and Technology (NIST), U.S. Department of Defense,
     the National Security Agency, and Red Hat.
@@ -24,7 +21,7 @@ description: |-
     This baseline implements configuration requirements from the following
     sources:
 
-    - NIST 800-53 control selections for High-Impact systems (NIST 800-53)
+    - NIST 800-53 control selections for Moderate-Impact systems (NIST 800-53)
 
     For any differing configuration requirements, e.g. password lengths, the stricter
     security setting was chosen. Security Requirement Traceability Guides (RTMs) and
@@ -38,6 +35,5 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
-# CM-6 CONFIGURATION SETTINGS
-# CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
-extends: high-rev-4
+selections:
+    - nist_rhcos4:all:moderate
