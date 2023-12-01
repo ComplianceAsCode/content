@@ -448,6 +448,13 @@ Instead of:
 * Must use 4-space indentation
 * Shall put `do` or `then` on the same line as `for` or `if` respectively, e.g. `for file in *; do`
 
+### GitHub Actions
+* Shall follow all the rules in the [YAML](#yaml) section, expect the following:
+  * Existing files may use the `.yaml` prefix
+* Job names should be in [Title case](https://en.wikipedia.org/wiki/Title_case)
+* Shall use explicit version numbers for actions
+  * Updates are handled on a weekly basis by [Dependabot](https://github.com/ComplianceAsCode/content/network/updates)
+
 ### Kubernetes
 
 * Shall follow all the rules in the [YAML](#yaml) section
