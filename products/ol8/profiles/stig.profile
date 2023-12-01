@@ -1144,7 +1144,7 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # OL08-00-040259
-    - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv4_conf_all_forwarding
 
     # OL08-00-040260
     - sysctl_net_ipv6_conf_all_forwarding
