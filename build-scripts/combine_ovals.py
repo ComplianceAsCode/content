@@ -42,7 +42,6 @@ def parse_args():
     )
     p.add_argument(
         "--build-ovals-dir",
-        required=True,
         dest="build_ovals_dir",
         help="Directory to store intermediate built OVAL files.",
     )

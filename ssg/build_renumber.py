@@ -8,6 +8,7 @@ from .constants import (
     OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs,
     ocil_namespace, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
 )
+from . import utils
 from .xml import parse_file, map_elements_to_their_ids
 from .oval_object_model import load_oval_document
 
@@ -16,6 +17,7 @@ from .checks import get_content_ref_if_exists_and_not_remote
 from .cce import is_cce_value_valid, is_cce_format_valid
 from .utils import SSGError
 from .xml import ElementTree as ET
+
 oval_ns = oval_namespace
 oval_cs = oval_namespace
 
@@ -115,6 +117,7 @@ class FileLinker(object):
 class OVALFileLinker(FileLinker):
     CHECK_SYSTEM = oval_cs
     CHECK_NAMESPACE = oval_ns
+    build_ovals_dir = None
 
     def __init__(self, translator, xccdftree, checks, output_file_name):
         super(OVALFileLinker, self).__init__(
@@ -127,12 +130,40 @@ class OVALFileLinker(FileLinker):
     def _translate_name_to_oval_definition_id(self, name):
         return self.translator.generate_id(self._get_checkid_string(), name)
 
+    def _get_path_for_oval_document(self, name):
+        if self.build_ovals_dir:
+            utils.mkdir_p(self.build_ovals_dir)
+        return os.path.join(self.build_ovals_dir, name + ".xml")
+
+    def _get_list_of_names_of_oval_checks(self):
+        out = []
+        for _, rule in rules_with_ids_generator(self.xccdftree):
+            for check in rule.findall(".//{%s}check" % (XCCDF12_NS)):
+                checkcontentref = get_content_ref_if_exists_and_not_remote(check)
+                if checkcontentref is None or check.get("system") != oval_cs:
+                    continue
+
+                out.append(checkcontentref.get("name"))
+        return out
+
+    def _save_oval_document_for_each_xccdf_rule(self):
+        for name in self._get_list_of_names_of_oval_checks():
+            oval_id = self._translate_name_to_oval_definition_id(name)
+
+            refs = self.oval_document.get_all_references_of_definition(oval_id)
+            path = self._get_path_for_oval_document(name)
+            with open(path, "wb+") as fd:
+                self.oval_document.save_as_xml(fd, refs)
+
     def save_linked_tree(self):
         """
         Write internal tree to the file in self.linked_fname.
         """
         with open(self.linked_fname, "wb+") as fd:
             self.oval_document.save_as_xml(fd)
+
+        if self.build_ovals_dir:
+            self._save_oval_document_for_each_xccdf_rule()
 
     def link(self):
         self.oval_document = load_oval_document(parse_file(self.fname))
