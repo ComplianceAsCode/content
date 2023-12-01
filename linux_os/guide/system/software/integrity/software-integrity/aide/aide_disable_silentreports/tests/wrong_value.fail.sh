@@ -4,8 +4,8 @@
 
 FILE=/etc/default/aide
 
-if grep -Eq "SILENTREPORTS=" $FILE; then
-    sed -i "s/^.*SILENTREPORTS=.*$/SILENTREPORTS=wrong/g" $FILE
+if grep -q "^SILENTREPORTS=" $FILE; then
+    sed -i "s/^SILENTREPORTS=.*$/SILENTREPORTS=wrong/g" $FILE
 else
     echo "SILENTREPORTS=wrong" >> $FILE
 fi

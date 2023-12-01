@@ -42,8 +42,10 @@ srg_requirement:
     {{{ full_name }}} must notify designated personnel if baseline configurations are changed in an unauthorized manner.
 
 template:
-    name: lineinfile
+    name: key_value_pair_in_file
     vars:
-      text: 'SILENTREPORTS=no'
       path: '{{{ aide_default_path }}}'
-
+      key: 'SILENTREPORTS'
+      value: 'no'
+      sep: '='
+      sep_regex: '='
