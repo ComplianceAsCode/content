@@ -13,4 +13,3 @@ description: |-
 
 selections:
     - anssi:all:high
-    - '!mount_option_nodev_nonroot_local_partitions'
