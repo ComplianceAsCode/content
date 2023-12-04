@@ -1,0 +1,406 @@
+policy: 'BSI-SYS-1-6'
+title: 'SYS.1.6 Containerisation'
+id: bsi_sys_1_6
+version: '1.0'
+source: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+levels:
+  - id: basic
+  - id: standard
+    inherits_from:
+    - basic
+  - id: elevated
+    inherits_from:
+    - standard
+
+controls:
+  - id: SYS.1.6.A1
+    title: Planning Container Use
+    levels:
+    - basic
+    description: >-
+      Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
+      disposable containers for safety or CI/CD) SHOULD be determined so that all the security-
+      related aspects of installation, operation, and decommissioning can be planned. The planning
+      SHOULD also take into account the operational overhead resulting from container
+      deployment or mixed operation. The planning MUST be adequately documented
+    notes: >-
+      This requirement can not be checked
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A2
+    title: Container Management Planning
+    levels:
+    - basic
+    description: >-
+      The management of containers MUST ONLY be carried out in line with appropriate planning.
+      This planning MUST cover the entire lifecycle from commissioning to decommissioning,
+      including operation and updates. When planning container management, it MUST be taken
+      into account that the creator of a container is to be considered like an administrator due to the
+      effects they have on parts of the operation.
+      Containers MUST be started, stopped, and monitored via the management software used.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A3
+    title: Secure Use of Containerised IT Systems
+    levels:
+    - intermediary
+    description: >-
+      In the case of containerised IT systems, consideration MUST be given to how containerisation
+      affects the IT systems and applications operated, in particular the management and suitability
+      of the applications.
+      Based on the protection needs of the applications, it MUST be checked whether the
+      requirements for isolation and encapsulation of the containerised IT systems, virtual
+      networks, and operated applications are sufficiently fulfilled. The mechanisms of the
+      operating system in question SHOULD be included in this check. Since the host performs the
+      function of a network component for virtual networks, the modules of the sub-layers NET.1
+      Networks and NET.3 Network Components MUST be considered accordingly. Logical and
+      overlay networks MUST also be considered and modelled. Furthermore, the containerised IT
+      systems used MUST meet the requirements at hand regarding availability and data
+      throughput.
+      During operation, the performance and the state of the containerised IT systems SHOULD be
+      monitored (health checks).
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A4
+    title: Planning the Provision and Distribution of Images
+    levels:
+    - basic
+    description: >-
+      The process for the provision and distribution of images MUST be planned and appropriately
+      documented.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A5
+    title: Separation of Administration and Access Networks for Containers
+    levels:
+    - basic
+    description: >-
+      Networks for the administration of the host, the administration of the containers, and their
+      access networks MUST be separated according to the protection needs at hand. In principle, at
+      least the administration of the host SHOULD only be possible from the administration
+      network.
+      Only the communication relationships necessary for operation SHOULD be allowed.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A6
+    title: Use of Secure Images
+    levels:
+    - basic
+    description: >-
+      It MUST be ensured that all images used originate from trusted sources. The creator of each
+      image MUST be clearly identifiable.
+      Sources MUST be selected on the basis of whether the creator of a given image regularly
+      checks the included software for security problems, fixes and documents them, and provides
+      corresponding guarantees to customers.
+      The utilised version of base images MUST NOT be deprecated. Unique version numbers MUST
+      be provided. If an image with a newer version number is available, a patch and change
+      management process MUST check whether and how it can be rolled out
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A7
+    title: Persistence of Container Logging Data
+    levels:
+    - basic
+    description: >-
+      Container logging data MUST be stored outside of the respective container (on the container
+      host at minimum)
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A8
+    title: Secure Storage of Container Access Data
+    levels:
+    - basic
+    description: >-
+      Access data MUST be stored and managed in such a way that only authorised persons and
+      containers can access it. In particular, it MUST be ensured that access data is only stored in
+      specially protected locations and not in images. The access data management mechanisms
+      provided by container service management software SHOULD be used.
+      At minimum, the following credentials MUST be stored securely:
+      • Passwords of any accounts
+      • API keys for services used by the application
+      • Keys for symmetric encryption
+      • Private keys for public key authentication
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A9
+    title: Suitability for Container Operation
+    levels:
+    - standard
+    description: >-
+      An application or service to be operated in a container SHOULD be suitable for such operation.
+      It SHOULD be considered that containers can often be terminated unexpectedly, with
+      corresponding consequences for the application run therein. The results of the checking
+      described under SYS.1.6.A3 Secure Use of Containerised IT Systems SHOULD be documented in
+      a comprehensible manner.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A10
+    title: Policy for Images and Container Operation
+    levels:
+    - standard
+    description: >-
+      A policy SHOULD be established and applied that specifies the requirements for container
+      operation and permitted images. The policy SHOULD also include requirements for the
+      operation and deployment of images.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A11
+    title:  Only One Service per Container
+    levels:
+    - standard
+    description: >-
+      Each container SHOULD only provide one service at a time.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A12
+    title: Distribution of Secure Images
+    levels:
+    - standard
+    description: >-
+      The sources of images that have been classified as trusted and SHOULD be adequately
+      documented along with the corresponding reasons. In addition, the process of how images or
+      the software components contained in an image are obtained from trusted sources and
+      eventually deployed to a productive environment SHOULD be adequately documented.
+      Images used SHOULD have metadata that makes their function and history traceable. Digital
+      signatures SHOULD secure each image against modification.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+
+  - id: SYS.1.6.A13
+    title: Release of Images
+    levels:
+    - standard
+    description: >-
+      All images for productive operation SHOULD undergo a test and release process in the same
+      way as software products in accordance with module OPS.1.1.6 Software Tests and Approvals
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A14
+    title: Updating Images
+    levels:
+    - standard
+    description: >-
+      When establishing a concept for patch and change management according to OPS.1.1.3 Patch
+      and Change Management, it SHOULD be decided when and how the updates of images or the
+      software or service operated are to be rolled out. For persistent containers, checks SHOULD be
+      made as to whether an update of a container is more appropriate than completely re-
+      provisioning the container in exceptional cases.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A15
+    title: Limitation of Resources per Container
+    levels:
+    - standard
+    description: >-
+      Resources on the host system such as CPU, volatile and persistent memory, and network
+      bandwidth SHOULD be appropriately reserved and limited for each container. How the
+      system should react if these limits are exceeded SHOULD be defined and documented.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A16
+    title: Administrative Remote Access to Containers
+    levels:
+    - standard
+    description: >-
+      In principle, administrative access from a container to the container host and vice versa
+      SHOULD be considered as administrative remote access. Remote administrative access
+      SHOULD NOT be established from a container to the container host. Application containers
+      SHOULD NOT contain remote maintenance access points. Administrative access to
+      application containers SHOULD always be carried out via the container runtime.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A17
+    title: Running Containers Without Privileges
+    levels:
+    - standard
+    description: >-
+      A container runtime and any instantiated containers SHOULD only be executed by a non-
+      privileged system account that does not have (and cannot gain) elevated rights to the
+      container service or host operating system. The container runtime SHOULD be encapsulated
+      by additional measures, such as using the virtualisation extensions of CPUs.
+      If containers are to take over tasks of the host system in exceptional cases, privileges on the
+      host system SHOULD be limited to the minimum necessary. Exceptions SHOULD be
+      adequately documented.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A18
+    title: Application Services Accounts
+    levels:
+    - standard
+    description: >-
+      System accounts within a container SHOULD have no permissions on the host system. If such
+      authorisation is required for operational reasons, it SHOULD only apply to the data and
+      system access that is absolutely necessary. The account in the container that is necessary to
+      exchange data SHOULD be known in the host system
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A19
+    title:  Including Data Stores in Containers
+    levels:
+    - standard
+    description: >-
+      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
+      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
+      runtime for a container includes local storage, the access rights in the file system SHOULD be
+      restricted to the service account of the container. If network storage is used, the permissions
+      SHOULD be set on the network storage itself
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A20
+    title: Protection of Configuration Data
+    levels:
+    - standard
+    description: >-
+      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
+      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
+      runtime for a container includes local storage, the access rights in the file system SHOULD be
+      restricted to the service account of the container. If network storage is used, the permissions
+      SHOULD be set on the network storage itself
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A21
+    title: Compile options for the compiler plugins
+    levels:
+    - elevated
+    description: >-
+      Extended policies SHOULD restrict the permissions of containers. Mandatory Access Control
+      (MAC) or a comparable technology SHOULD enforce these policies. At minimum, policies
+      SHOULD restrict the following types of access:
+      • Incoming and outgoing network connections
+      • File system access attempts
+      • Kernel requests (syscalls)
+      A runtime SHOULD start containers in such a way that the kernel of the host system prevents
+      all activities of the containers that are not allowed by the relevant policy (e.g. by setting up
+      local packet filters or revoking permissions), or at least reports violations appropriately.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A22
+    title: Provision for Investigations
+    levels:
+    - elevated
+    description: >-
+      In order to have containers available for later investigation in case they are needed, an image
+      of each container's state SHOULD be created according to specified rules.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A23
+    title: Compile options for various kernel behaviors
+    levels:
+    - elevated
+    description: >-
+      Containers SHOULD not be able to change their file system during runtime. File systems
+      SHOULD not be integrated with write permissions.
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A24
+    title: Host-Based Attack Detection
+    levels:
+    - elevated
+    description: >-
+      The behaviour of containers and the applications or services running in them SHOULD be
+      monitored. Deviations from normal behaviour SHOULD be noticed and reported. The reports
+      SHOULD be handled appropriately in a centralised process for security incident handling.
+      At minimum, the behaviour to be monitored SHOULD cover:
+      • Network connections
+      • Created processes
+      • File system access attempts
+      • Kernel requests (syscalls)
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A25
+    title: High Availability of Containerised Applications
+    levels:
+    - elevated
+    description: >-
+      In cases involving containerised applications with high availability requirements, the
+      necessary level of availability SHOULD be defined (e.g. redundant at the host level)
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
+
+  - id: SYS.1.6.A26
+    title: Advanced Isolation and Encapsulation of Containers
+    levels:
+    - elevated
+    description: >-
+      If further isolation and encapsulation of containers is required, the following measures
+      SHOULD be considered for increased effectiveness:
+      • Fixed assignment of containers to container hosts
+      • Execution of the individual containers and/or the container host by means of
+      hypervisors
+      • Fixed assignment of a single container to a single container host
+    notes: >-
+      ToDo
+    status: manual
+    #rules:
