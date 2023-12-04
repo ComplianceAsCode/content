@@ -35,3 +35,4 @@ selections:
     - '!ntpd_specify_multiple_servers'
     - '!set_ipv6_loopback_traffic'
     - '!set_loopback_traffic'
+    - '!service_ntpd_enabled'
