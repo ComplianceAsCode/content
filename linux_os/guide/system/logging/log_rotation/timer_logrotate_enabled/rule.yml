@@ -54,3 +54,11 @@ template:
     vars:
         timername: logrotate
         packagename: logrotate
+
+{{% if product in ["rhel7", "rhel8"] %}}
+warnings:
+    - general:
+        The Systemd unit <tt>logrotate.timer</tt> does not exist in
+        {{{ full_name }}}. The rule <tt>ensure_logrotate_activated</tt> is
+        suggested instead.
+{{% endif %}}

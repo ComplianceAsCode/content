@@ -145,7 +145,6 @@ selections:
 - file_permissions_var_log_audit
 - package_telnet-server_removed
 - file_permissions_unauthorized_world_writable
-- timer_logrotate_enabled
 - package_tftp-server_removed
 - file_permissions_sshd_private_key
 - sshd_disable_tcp_forwarding
