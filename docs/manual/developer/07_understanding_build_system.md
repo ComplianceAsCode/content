@@ -86,21 +86,6 @@ of occurrence:
 - Generate content for derived products (such as CentOS and Scientific Linux).
 - Generate HTML tables, Bash scripts, Ansible Playbooks and other secondary artifacts.
 
-## How OVAL is Built
-
-Creating OVAL checks is done in two steps.
-First, all available OVAL checks are combined into a one unlinked OVAL document.
-The OVAL shorthands are loaded into the OVAL Document object and, in the case of template shorthand, extended using jinja macros before loading.
-If the shorthand is already loaded into the OVAL Document object, it is skipped.
-Shorthands are loaded in the order that benchmark checks are loaded first, followed by shared directory checks.
-
-The second step is to link the generated document from the previous step with the XCCDF document.
-The unlinked OVAL document is loaded into the OVAL Document object while the XML file is being loaded into the object instance.
-Validation of the OVAL document is performed during and after loading (for example, whether all the checks listed in the XCCDF are present in the OVAL document).
-After validation of the OVAL document, the IDs are converted to valid OVAL IDs.
-The OVAL document is then saved as an XML file. During saving, a minimal OVAL document is generated for each rule as an artifact.
-The last step is to link the file to the XCCDF document.
-
 ### Python Build Scripts
 
 Various Python utilities under `/build-scripts` contribute to this process;
@@ -137,3 +122,18 @@ refer to their help text for more information and usage:
 
 Many of these utilities are simply front-ends over code in the SSG Python
 module located under `ssg/`.
+
+## How OVAL is Built
+
+Creating OVAL checks is done in two steps.
+First, all available OVAL checks are combined into a one unlinked OVAL document.
+The OVAL shorthands are loaded into the OVAL Document object and, in the case of template shorthand, extended using jinja macros before loading.
+If the shorthand is already loaded into the OVAL Document object, it is skipped.
+Shorthands are loaded in the order that benchmark checks are loaded first, followed by shared directory checks.
+
+The second step is to link the generated document from the previous step with the XCCDF document.
+The unlinked OVAL document is loaded into the OVAL Document object while the XML file is being loaded into the object instance.
+Validation of the OVAL document is performed during and after loading (for example, whether all the checks listed in the XCCDF are present in the OVAL document).
+After validation of the OVAL document, the IDs are converted to valid OVAL IDs.
+The OVAL document is then saved as an XML file. During saving, a minimal OVAL document is generated for each rule as an artifact.
+The last step is to link the file to the XCCDF document.
