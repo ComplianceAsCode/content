@@ -1,3 +1,4 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 pam_files=("password-auth" "system-auth")
 
 authselect create-profile testingProfile --base-on minimal
