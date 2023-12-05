@@ -5,22 +5,23 @@
 # disruption = low
 
 {{{ ansible_instantiate_variables("var_sudo_timestamp_timeout") }}}
-- name: "Find out if /etc/sudoers.d/* files contain 'Defaults timestamp_timeout' to be deduplicated"
-  find:
+
+- name: "{{{ rule_title }}} - Find /etc/sudoers.d/* files containing 'Defaults timestamp_timeout'"
+  ansible.builtin.find:
     path: "/etc/sudoers.d"
     patterns: "*"
     contains: '^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=.*'
   register: sudoers_d_defaults_timestamp_timeout
 
-- name: "Remove found occurrences of 'Defaults timestamp_timeout' from /etc/sudoers.d/* files"
-  lineinfile:
+- name: "{{{ rule_title }}} - Remove 'Defaults timestamp_timeout' from /etc/sudoers.d/* files"
+  ansible.builtin.lineinfile:
     path: "{{ item.path }}"
     regexp: '^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=.*'
     state: absent
   with_items: "{{ sudoers_d_defaults_timestamp_timeout.files }}"
 
-- name: Ensure timestamp_timeout is enabled with the appropriate value in /etc/sudoers
-  lineinfile:
+- name: "{{{ rule_title }}} - Ensure timestamp_timeout has the appropriate value in /etc/sudoers"
+  ansible.builtin.lineinfile:
     path: /etc/sudoers
     regexp: '^[\s]*Defaults\s(.*)\btimestamp_timeout[\s]*=[\s]*[-]?\w+\b(.*)$'
     line: 'Defaults \1timestamp_timeout={{ var_sudo_timestamp_timeout }}\2'
@@ -28,9 +29,19 @@
     backrefs: yes
   register: edit_sudoers_timestamp_timeout_option
 
-- name: Enable timestamp_timeout option with appropriate value in /etc/sudoers
-  lineinfile: # noqa 503
+- name: "{{{ rule_title }}} - Enable timestamp_timeout option with correct value in /etc/sudoers"
+  ansible.builtin.lineinfile: # noqa 503
     path: /etc/sudoers
     line: 'Defaults timestamp_timeout={{ var_sudo_timestamp_timeout }}'
     validate: /usr/sbin/visudo -cf %s
-  when: edit_sudoers_timestamp_timeout_option is defined and not edit_sudoers_timestamp_timeout_option.changed
+  when: >
+    edit_sudoers_timestamp_timeout_option is defined and
+    not edit_sudoers_timestamp_timeout_option.changed
+
+- name: "{{{ rule_title }}} - Remove timestamp_timeout wrong values in /etc/sudoers"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: '^[\s]*Defaults\s.*\btimestamp_timeout[\s]*=[\s]*(?!{{
+            var_sudo_timestamp_timeout }}\b)[-]?\w+\b.*$'
+    state: absent
+    validate: /usr/sbin/visudo -cf %s

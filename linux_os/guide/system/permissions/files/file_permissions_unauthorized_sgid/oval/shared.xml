@@ -1,53 +1,77 @@
 <def-group>
-    <definition id="file_permissions_unauthorized_sgid" version="1" class="compliance">
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("Evaluates to true if all files with SGID set are owned by RPM packages.") }}}
         <criteria>
-            <criterion comment="Check all sgid files" test_ref="test_file_permissions_unauthorized_sgid"/>
+            <criterion test_ref="test_file_permissions_unauthorized_sgid"
+                comment="Check if all sgid files present in the system are authorized"/>
         </criteria>
     </definition>
 
-    <unix:file_test check="all" check_existence="none_exist" comment="sgid files outside system RPMs" id="test_file_permissions_unauthorized_sgid" version="1">
-        <unix:object object_ref="obj_file_permissions_unauthorized_sgid_unowned" />
-    </unix:file_test>
+    <!-- Collect all sgid files in the system. -->
+    <unix:file_state id="state_file_permissions_unauthorized_sgid_set" version="1">
+        <unix:sgid datatype="boolean">true</unix:sgid>
+    </unix:file_state>
 
-    <unix:file_object comment="files with sgid set which are not owned by any RPM package" id="obj_file_permissions_unauthorized_sgid_unowned" version="1">
-        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-        <unix:path operation="equals">/</unix:path>
+    {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
+    {{{ create_local_mount_points_list(var_local_mount_points) }}}
+
+    <!-- This file_object will only find files located in local and not special file systems. The
+         recurse_file_system parameter is set to defined in order to make sure the probe doesn't
+         leave the scope of that mount point. For example, when probing "/", the probe will ignore
+         any child directory which is a mount point for any other partition. This will ensure
+         considerable performance improvement. -->
+    <unix:file_object id="object_file_permissions_unauthorized_sgid_all_sgid_files" version="1"
+        comment="all files with sgid set">
+        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+            recurse_file_system="defined"/>
+            <unix:path operation="equals" var_check="at least one"
+                var_ref="{{{ var_local_mount_points }}}"/>
         <unix:filename operation="pattern match">^.*$</unix:filename>
-        <filter action="include">state_file_permissions_unauthorized_sgid_sgid_set</filter>
-        <filter action="exclude">state_file_permissions_unauthorized_sgid_filepaths</filter>
+        <filter action="include">state_file_permissions_unauthorized_sgid_set</filter>
     </unix:file_object>
 
-    <linux:rpmverifyfile_object id="obj_file_permissions_unauthorized_sgid_rpms" version="1" comment="all files with sgid set that come from a RPM package">
-        <linux:behaviors nolinkto="true" nomd5="true" nosize="true" nouser="true" nogroup="true" nomtime="true" nomode="true" nordev="true" />
+    <local_variable id="var_file_permissions_unauthorized_sgid_all_sgid_files" version="1"
+        datatype="string" comment="all files with sgid set">
+        <object_component item_field="filepath"
+            object_ref="object_file_permissions_unauthorized_sgid_all_sgid_files"/>
+    </local_variable>
+
+    <!-- Locate all rpm packages including located system sgid files. -->
+    <linux:rpmverifyfile_object id="object_file_permissions_unauthorized_sgid_rpms" version="1"
+        comment="all files with sgid set that come from a RPM package">
+        <linux:behaviors nolinkto="true" nomd5="true" nosize="true" nouser="true" nogroup="true"
+            nomtime="true" nomode="true" nordev="true"/>
         <linux:name operation="pattern match">.*</linux:name>
         <linux:epoch operation="pattern match">.*</linux:epoch>
         <linux:version operation="pattern match">.*</linux:version>
         <linux:release operation="pattern match">.*</linux:release>
         <linux:arch operation="pattern match">.*</linux:arch>
-        <linux:filepath var_ref="var_file_permissions_unauthorized_sgid_all" operation="equals" var_check="all" />
+        <linux:filepath operation="equals" var_check="all"
+            var_ref="var_file_permissions_unauthorized_sgid_all_sgid_files"/>
     </linux:rpmverifyfile_object>
 
-    <unix:file_object comment="all files with sgid set" id="obj_file_permissions_unauthorized_sgid_files" version="1">
-        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-        <unix:path operation="equals">/</unix:path>
-        <unix:filename operation="pattern match">^.*$</unix:filename>
-        <filter action="include">state_file_permissions_unauthorized_sgid_sgid_set</filter>
-    </unix:file_object>
-
-    <unix:file_state id="state_file_permissions_unauthorized_sgid_sgid_set" version="1">
-        <unix:sgid datatype="boolean">true</unix:sgid>
-    </unix:file_state>
-
-    <unix:file_state id="state_file_permissions_unauthorized_sgid_filepaths" version="1">
-        <unix:filepath var_ref="var_file_permissions_unauthorized_sgid_rpms" var_check="at least one" />
-    </unix:file_state>
-
-    <local_variable id="var_file_permissions_unauthorized_sgid_rpms" datatype="string" version="1" comment="all files with sgid set that come from a RPM package">
-        <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_sgid_rpms" />
+    <!-- Extract the filepaths of rpm packages containing system sgid files. -->
+    <local_variable id="var_file_permissions_unauthorized_sgid_rpms" version="1"
+        datatype="string" comment="all files with sgid set that are managed by a RPM package">
+        <object_component item_field="filepath"
+            object_ref="object_file_permissions_unauthorized_sgid_rpms"/>
     </local_variable>
 
-    <local_variable id="var_file_permissions_unauthorized_sgid_all" datatype="string" version="1" comment="all files with sgid set">
-        <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_sgid_files" />
-    </local_variable>
+    <!-- Convert the local variable to a variable state which will be used below as a filter. -->
+    <ind:variable_state id="state_file_permissions_unauthorized_sgid_rpm_filepaths" version="1">
+        <ind:value datatype="string" operation="equals" var_check="at least one"
+            var_ref="var_file_permissions_unauthorized_sgid_rpms"/>
+    </ind:variable_state>
+
+    <!-- Variable object containing only system sgid files not include in rpm packages. -->
+    <ind:variable_object id="object_file_permissions_unauthorized_sgid_no_rpm_files" version="1">
+        <ind:var_ref>var_file_permissions_unauthorized_sgid_all_sgid_files</ind:var_ref>
+        <filter action="exclude">state_file_permissions_unauthorized_sgid_rpm_filepaths</filter>
+    </ind:variable_object>
+
+    <ind:variable_test id="test_file_permissions_unauthorized_sgid" version="1"
+        check="all" check_existence="none_exist"
+        comment="Check the existence of sgid files not included in rpm packages.">
+        <ind:object object_ref="object_file_permissions_unauthorized_sgid_no_rpm_files"/>
+    </ind:variable_test>
 </def-group>
