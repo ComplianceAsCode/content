@@ -30,3 +30,4 @@ selections:
     - '!service_ntp_enabled'
     - '!set_ipv6_loopback_traffic'
     - '!set_loopback_traffic'
+    - '!timer_logrotate_enabled'
