@@ -9,7 +9,7 @@
 {{% set description = "The unlock time after number of failed logins should be set correctly." %}}
 
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+  <definition class="compliance" id="{{{ rule_id }}}" version="4">
     {{{ oval_metadata(description) }}}
     <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
       <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
@@ -98,7 +98,7 @@
   </ind:textfilecontent54_object>
 
   <!-- Check common definition of pam_faillock.so in common-auth -->
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
         id="test_accounts_passwords_pam_faillock_{{{ prm_name }}}_common_pam_faillock_auth"
         comment="One and only one occurrence is expected in auth section of common-auth">
     <ind:object
@@ -115,7 +115,7 @@
   </ind:textfilecontent54_object>
 
   <!-- Check account definition of pam_faillock.so in common-account -->
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
         id="test_accounts_passwords_pam_faillock_{{{ prm_name }}}_common_pam_faillock_account"
         comment="One and only one occurrence is expected in common-account">
     <ind:object
