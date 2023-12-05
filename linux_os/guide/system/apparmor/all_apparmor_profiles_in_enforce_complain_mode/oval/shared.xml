@@ -2,30 +2,58 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure AppArmor profiles are in enforce complain mode") }}}
     <criteria operator="AND">
+      <criterion comment="Check sum of complaining and enforced profiles equals all profiles"
+        test_ref="test_sum_complain_n_enforced_equal_all" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_object id="obj_apparmor_profiles" version="1">
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_profiles" version="1">
     <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
     <ind:pattern operation="pattern match" datatype="string">^.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="obj_apparmor_enforced_profiles" version="1">
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_enforced_profiles" version="1">
     <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">^\(enforce\)*$</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">^\(enforce\)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="obj_apparmor_complaining_profiles" version="1">
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_complaining_profiles" version="1">
     <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">^\(complain\)*$</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">^\(complain\)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <local_variable datatype="int" id="var_num_apparmor_profiles" version="1" comment="apparmor profiles">
-    <object_component item_field="subexpression" object_ref="obj_apparmor_profiles" />
+  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_unconfined_profiles" version="1">
+    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
+    <ind:pattern operation="pattern match"
+      datatype="string">^\.*processes are unconfined.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable datatype="int" id="{{{ rule_id }}}_var_num_apparmor_profiles" version="1"
+    comment="apparmor profiles">
+    <object_component item_field="subexpression"
+     object_ref="{{{ rule_id }}}_obj_apparmor_profiles" />
   </local_variable>
-  <local_variable datatype="int" id="var_num_apparmor_enforced_profiles" version="1" comment="enforce apparmor profiles">
-    <object_component item_field="subexpression" object_ref="obj_apparmor_enforced_profiles" />
+  <local_variable datatype="int" comment="enforced apparmor profiles"
+    id="{{{ rule_id }}}_var_num_apparmor_enforced_complaining_profiles" version="1" >
+    <arithmetic arithmetic_operation="add">
+      <object_component item_field="subexpression"
+        object_ref="{{{ rule_id }}}_obj_apparmor_enforced_profiles" />
+      <object_component item_field="subexpression"
+        object_ref="{{{ rule_id }}}_obj_apparmor_complaining_profiles" />
+    </arithmetic>
   </local_variable>
-  <local_variable datatype="int" id="var_num_apparmor_complaining_profiles" version="1" comment="enforce apparmor profiles">
-    <object_component item_field="subexpression" object_ref="obj_apparmor_complaining_profiles" />
+  <local_variable datatype="int" id="{{{ rule_id }}}_var_num_apparmor_unconfined_profiles"
+    version="1" comment="apparmor profiles with unconfined processes">
+    <object_component item_field="subexpression"
+     object_ref="{{{ rule_id }}}_obj_apparmor_unconfined_profiles" />
   </local_variable>
+
+  <ind:variable_object id="{{{ rule_id }}}_obj_all_apparmor_profiles" version="1">
+    <ind:var_ref>{{{ rule_id }}}_var_num_apparmor_profiles</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_object id="{{{ rule_id }}}_obj_num_apparmor_enforced_complaining_profiles"
+    version="1">
+    <ind:var_ref>{{{ rule_id }}}_var_num_apparmor_enforced_complaining_profiles</ind:var_ref>
+  </ind:variable_object>
+
 </def-group>
