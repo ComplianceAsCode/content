@@ -36,5 +36,4 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
-selections:
-    - nist_rhcos4:all:high
+extends: high-rev-4

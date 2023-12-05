@@ -44,6 +44,11 @@ def parse_args():
         help="Output OVAL file. "
         "e.g.:  ~/scap-security-guide/build/rhel7/ssg-rhel7-oval.xml"
     )
+    parser.add_argument(
+        "--build-ovals-dir",
+        dest="build_ovals_dir",
+        help="Directory to store OVAL document for each rule.",
+    )
     parser.add_argument("--resolved-base",
                         help="To which directory to put processed rule/group/value YAMLs.")
     return parser.parse_args()
@@ -78,6 +83,7 @@ def main():
 
     oval_linker = ssg.build_renumber.OVALFileLinker(
         translator, xccdftree, checks, args.oval)
+    oval_linker.build_ovals_dir = args.build_ovals_dir
     oval_linker.link()
     oval_linker.save_linked_tree()
     oval_linker.link_xccdf()
