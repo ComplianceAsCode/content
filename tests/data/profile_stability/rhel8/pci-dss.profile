@@ -232,7 +232,6 @@ selections:
 - audit_rules_sysadmin_actions
 - display_login_attempts
 - file_permissions_backup_etc_shadow
-- service_ntpd_enabled
 - audit_rules_dac_modification_fremovexattr
 - sshd_disable_x11_forwarding
 - file_at_deny_not_exist
