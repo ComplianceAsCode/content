@@ -13,12 +13,26 @@
         <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_common_pam_faillock_account"
             comment="pam_faillock.so is properly defined in common-account"/>
       </criteria>
-      <criteria operator="OR"
-                comment="Check expected value for pam_faillock.so unlock_time parameter">
-        <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_common"
-            comment="Check the unlock_time parameter is not present common-auth file"/>
-        <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
-            comment="Ensure the unlock_time parameter is present in /etc/security/faillock.conf"/>
+
+      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+           possible. But due to backwards compatibility, they are also allowed in pam files
+           directly. In case they are defined in both places, pam files have precedence and this
+           may confuse the assessment. The following tests ensure only one option is used. -->
+      <criteria operator="OR" comment="Check expected value for pam_faillock.so unlock_time parameter">
+        <criteria operator="AND"
+            comment="Check expected pam_faillock.so unlock_time parameter in pam files">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_common"
+              comment="Check the unlock_time parameter is present common-auth file"/>
+          <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_faillock_conf"
+              comment="Ensure the unlock_time parameter is not present in /etc/security/faillock.conf"/>
+        </criteria>
+        <criteria operator="AND"
+            comment="Check expected pam_faillock.so unlock_time parameter in faillock.conf">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_common"
+              comment="Check the unlock_time parameter is not present common-auth file"/>
+          <criterion test_ref="test_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
+              comment="Ensure the unlock_time parameter is present in /etc/security/faillock.conf"/>
+        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -107,6 +121,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
+
   <!-- boundaries to test the parameter value -->
   <!-- Specify the required external variable & create corresponding state from it -->
   <external_variable id="var_accounts_passwords_pam_faillock_unlock_time" datatype="int"
@@ -118,11 +133,20 @@
                        var_ref="var_accounts_passwords_pam_faillock_unlock_time"/>
   </ind:textfilecontent54_state>
 
-  <!-- Check the pam_faillock.so no unlock_time parameter in common-auth -->
+
+  <!-- Check absence of unlock_time parameter in common-auth -->
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
         id="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_pamd_common"
         comment="Check the absence of unlock_time parameter in common-auth">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_common"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check expected value of unlock_time parameter in common-auth -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_common"
+        comment="Check the expected unlock_time value in common-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_pamd_common"/>
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_parameter_lower_bound"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object version="1"
@@ -134,7 +158,15 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Check pam_faillock.so unlock_time parameter in /etc/security/faillock.conf -->
+
+  <!-- Check absence of unlock_time parameter in /etc/security/faillock.conf -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_unlock_time_parameter_no_faillock_conf"
+        comment="Check the absence of unlock_time parameter in in /etc/security/faillock.conf">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check expected value of unlock_time parameter in /etc/security/faillock.conf -->
   <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
         id="test_accounts_passwords_pam_faillock_unlock_time_parameter_faillock_conf"
         comment="Check the expected unlock_time value in in /etc/security/faillock.conf">
