@@ -33,3 +33,4 @@ selections:
     - '!set_ipv6_loopback_traffic'
     - '!set_loopback_traffic'
     - '!service_ntpd_enabled'
+    - '!timer_logrotate_enabled'
