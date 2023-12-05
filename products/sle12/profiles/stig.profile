@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R5
+    version: V2R12
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V2R5.
+    DISA STIG for SUSE Linux Enterprise 12 V2R12.
 
 selections:
     - sshd_approved_macs=stig
