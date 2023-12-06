@@ -18,7 +18,7 @@
     state: present
 
 {{% if product == "sle15" %}}
-- name: "{{{ product }}} - Ensure Additional Packages installed"
+- name: "{{{ rule_title }}} - Ensure Additional Packages installed"
   become: yes
   package:
     name:
