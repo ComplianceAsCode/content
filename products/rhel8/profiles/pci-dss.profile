@@ -34,3 +34,7 @@ selections:
     - '!set_loopback_traffic'
     - '!service_ntpd_enabled'
     - '!timer_logrotate_enabled'
+    - '!package_talk_removed'
+    - '!package_talk-server_removed'
+    - '!package_rsh_removed'
+    - '!package_rsh-server_removed'
