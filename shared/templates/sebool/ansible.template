@@ -12,13 +12,13 @@
 {{% set PACKAGE_NAME = "libsemanage-python" %}}
 {{% endif %}}
 
-- name: Ensure {{{PACKAGE_NAME}}} installed
+- name: Ensure {{{ PACKAGE_NAME }}} installed
   package:
-    name: "{{{ PACKAGE_NAME}}}"
+    name: "{{{ PACKAGE_NAME }}}"
     state: present
 
 {{% if product == "sle15" %}}
-- name: Ensure list of additional packages are installed on SLE 15
+- name: "{{{ product }}} - Ensure Additional Packages installed"
   become: yes
   package:
     name:
