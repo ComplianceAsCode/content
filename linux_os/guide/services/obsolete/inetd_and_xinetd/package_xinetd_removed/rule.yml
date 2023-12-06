@@ -49,3 +49,9 @@ template:
     name: package_removed
     vars:
         pkgname: xinetd
+
+{{% if product in ["rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}
