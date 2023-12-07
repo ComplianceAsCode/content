@@ -153,7 +153,14 @@ selections:
     - accounts_password_pam_unix_remember
 
     # UBTU-20-010072 The Ubuntu operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts have been made.
-    - accounts_passwords_pam_tally2
+    - var_accounts_passwords_pam_faillock_deny=3
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - var_accounts_passwords_pam_faillock_unlock_time=never
+    - accounts_passwords_pam_faillock_audit
+    - accounts_passwords_pam_faillock_silent
+    - accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_interval
+    - accounts_passwords_pam_faillock_unlock_time
 
     # UBTU-20-010074 The Ubuntu operating system must be configured so that the script which runs each 30 days or less to check file integrity is the default one.
     - aide_periodic_cron_checking

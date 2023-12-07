@@ -2,11 +2,10 @@
 {{# For transferability, we define the parameter and corresponding regular expressions in jinja. #}}
 {{# The rules should ideally use a single template. #}}
 
-{{% set prm_name = "fail_interval" %}}
-{{% set prm_regex_conf = "^[\s]*fail_interval[\s]*=[\s]*([0-9]+)" %}}
-{{% set prm_regex_pamd = "^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*fail_interval=([0-9]+)" %}}
-{{% set ext_variable = "var_accounts_passwords_pam_faillock_fail_interval" %}}
-{{% set description = "The number of allowed failed logins should be set correctly." %}}
+{{% set prm_name = "audit" %}}
+{{% set prm_regex_conf = "^[\s]*audit" %}}
+{{% set prm_regex_pamd = "^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*audit" %}}
+{{% set description = "Account Lockouts Must Be Logged" %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="4">
@@ -132,18 +131,6 @@
   </ind:textfilecontent54_object>
 
 
-  <!-- boundaries to test the parameter value -->
-  <!-- Specify the required external variable & create corresponding state from it -->
-  <external_variable id="{{{ ext_variable }}}" datatype="int"
-                     comment="number of failed login attempts allowed" version="1"/>
-
-  <ind:textfilecontent54_state version="1"
-        id="state_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_lower_bound">
-    <ind:subexpression datatype="int" operation="greater than or equal"
-          var_ref="{{{ ext_variable }}}"/>
-  </ind:textfilecontent54_state>
-
-
   <!-- Check absence of {{{ prm_name }}} parameter in common-auth -->
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
         id="test_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_no_pamd_common"
@@ -156,7 +143,6 @@
         id="test_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_pamd_common"
         comment="Check the expected {{{ prm_name }}} value in common-auth">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_pamd_common"/>
-    <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_lower_bound"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object version="1"
@@ -181,7 +167,6 @@
         id="test_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_faillock_conf"
         comment="Check the expected {{{ prm_name }}} value in /etc/security/faillock.conf">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_faillock_conf"/>
-    <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ prm_name }}}_parameter_lower_bound"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object version="1"
