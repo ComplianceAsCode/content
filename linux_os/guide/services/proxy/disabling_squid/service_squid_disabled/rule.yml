@@ -33,7 +33,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="squid") }}}
 
-platform: machine
+platform: machine and package[squid]
 
 template:
     name: service_disabled
