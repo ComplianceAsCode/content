@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_ubuntu,multi_platform_debian
 # check-import = stdout
 
 # If apparmor or apparmor-utils are not installed, then this test fails.
