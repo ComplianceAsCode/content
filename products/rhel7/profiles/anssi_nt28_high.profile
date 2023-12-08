@@ -1,5 +1,9 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - marcusburghardt
+
 title: 'ANSSI-BP-028 (high)'
 
 description: |-
@@ -10,6 +14,9 @@ description: |-
 
     A copy of the ANSSI-BP-028 can be found at the ANSSI website:
     https://www.ssi.gouv.fr/administration/guide/recommandations-de-securite-relatives-a-un-systeme-gnulinux/
+
+    An English version of the ANSSI-BP-028 can also be found at the ANSSI website:
+    https://cyber.gouv.fr/publications/configuration-recommendations-gnulinux-system
 
 selections:
     - anssi:all:high
