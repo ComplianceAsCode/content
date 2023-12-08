@@ -67,7 +67,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="autofs") }}}
 
-platform: machine
+platform: machine and package[autofs]
 
 template:
     name: service_disabled
