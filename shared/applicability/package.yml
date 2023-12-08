@@ -101,6 +101,12 @@ args:
     pkgname: openssh
   networkmanager:
     pkgname: NetworkManager
+  snmpd:
+    {{% if 'debian' in product %}}
+    pkgname: snmpd
+    {{% else %}}
+    pkgname: net-snmp
+    {{% endif %}}
   squid:
     pkgname: squid
   telnet-server:
