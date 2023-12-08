@@ -12,13 +12,13 @@
 {{% set PACKAGE_NAME = "libsemanage-python" %}}
 {{% endif %}}
 
-- name: Ensure {{{ PACKAGE_NAME }}} installed
+- name: "{{{ rule_title }}} - Ensure {{{ PACKAGE_NAME }}} Installed"
   package:
     name: "{{{ PACKAGE_NAME }}}"
     state: present
 
 {{% if product == "sle15" %}}
-- name: "{{{ rule_title }}} - Ensure Additional Packages installed"
+- name: "{{{ rule_title }}} - Ensure Additional Packages Installed"
   become: yes
   package:
     name:
@@ -30,7 +30,7 @@
 {{% endif %}}
 
 {{% if SEBOOL_BOOL %}}
-- name: Set SELinux boolean {{{ SEBOOLID }}} to {{{ SEBOOL_BOOL }}}
+- name: "{{{ rule_title }}} - Set SELinux Boolean {{{ SEBOOLID }}} to {{{ SEBOOL_BOOL }}}"
   seboolean:
     name: "{{{ SEBOOLID }}}"
     state: "{{{ SEBOOL_BOOL }}}"
@@ -38,7 +38,7 @@
   when: ansible_facts.selinux.status == 'enabled'  
 {{% else %}}
 - (xccdf-var var_{{{ SEBOOLID }}})
-- name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
+- name: "{{{ rule_title }}} - Set SELinux Boolean {{{ SEBOOLID }}} Accordingly"
   seboolean:
     name: {{{ SEBOOLID }}}
     state: "{{ var_{{{ SEBOOLID }}} }}"
