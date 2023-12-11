@@ -7,7 +7,7 @@ ARG ADDITIONAL_PACKAGES
 
 RUN true \
         && zypper --non-interactive in openssh-clients openssh-server openscap-utils \
-        python3 python3-rpm tar \
+        python3 python3-rpm tar gawk\
         $ADDITIONAL_PACKAGES \
 && true
 
