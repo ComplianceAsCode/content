@@ -5,9 +5,6 @@ on:
     schedule:
         # Run weekly at 05:00 on Sunday
         - cron: "0 5 * * 0"
-env:
-  NIST_REPO_REF: "690f517daaf3a6cbb4056d3cde6eae2756765620"
-  FEDRAMP_REPO_REF: "master"
 
 jobs:
     update-oscal:
@@ -19,12 +16,12 @@ jobs:
         strategy:
             matrix:
                 variables:
-                    - catalog-source: "https://raw.githubusercontent.com/usnistgov/oscal-content/${{env.NIST_REPO_REF}}/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json"
-                      profile-source: "https://raw.githubusercontent.com/GSA/fedramp-automation/${{env.FEDRAMP_REPO_REF}}/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline_profile.json"
+                    - catalog-source: "https://raw.githubusercontent.com/usnistgov/oscal-content/690f517daaf3a6cbb4056d3cde6eae2756765620/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json"
+                      profile-source: "https://raw.githubusercontent.com/GSA/fedramp-automation/master/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline_profile.json"
                       profile-name: "fedramp_rev5_high"
                       catalog-name: "nist_rev5_800_53"
-                    - catalog-source: "https://raw.githubusercontent.com/usnistgov/oscal-content/${{env.NIST_REPO_REF}}/nist.gov/SP800-53/rev4/json/NIST_SP-800-53_rev4_catalog.json"
-                      profile-source: "https://raw.githubusercontent.com/GSA/fedramp-automation/${{env.FEDRAMP_REPO_REF}}/dist/content/rev4/baselines/json/FedRAMP_rev4_HIGH-baseline_profile.json"
+                    - catalog-source: "https://raw.githubusercontent.com/usnistgov/oscal-content/690f517daaf3a6cbb4056d3cde6eae2756765620/nist.gov/SP800-53/rev4/json/NIST_SP-800-53_rev4_catalog.json"
+                      profile-source: "https://raw.githubusercontent.com/GSA/fedramp-automation/master/dist/content/rev4/baselines/json/FedRAMP_rev4_HIGH-baseline_profile.json"
                       profile-name: "fedramp_rev4_high"
                       catalog-name: "nist_rev4_800_53"
         steps:
