@@ -81,16 +81,9 @@ controls:
       minimum, this isolation MUST include process IDs, inter-process communication, user IDs,
       the file system, and the network (including the hostname).
     notes: >-
-      TBD
+      Since these are OS based requirements, they are included in the rhcos4 bsi profile
     status: pending
-    rules:
-      - coreos_enable_selinux_kernel_argument
-      # the following var is in repo, but unknown to build scripts
-      # - var_selinux_policy_name=targeted
-      - selinux_policytype
-      # the following var is in repo, but unknown to build scripts
-      # - var_selinux_state=enforcing
-      - selinux_state
+    # rules:
 
   - id: APP.4.4.A5
     title: Backup in the Cluster
