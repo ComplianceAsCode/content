@@ -4,6 +4,11 @@ name: Kubernetes content
 on:
   push:
     branches: [ 'master' ]
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
 
 jobs:
   container-main:
