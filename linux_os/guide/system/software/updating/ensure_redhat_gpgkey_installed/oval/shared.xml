@@ -12,63 +12,63 @@
           <extend_definition comment="{{{ product }}} installed" definition_ref="installed_OS_is_{{{ product }}}" />
         </criteria>
         <criterion comment="package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"
-        test_ref="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
+        test_ref="test_redhat_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
         <criteria comment="Auxiliary Red Hat Key Installed" operator="OR">
           <criterion comment="package gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}} is installed"
-          test_ref="test_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
+          test_ref="test_redhat_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
         </criteria>
       </criteria>
       {{%- if centos_major_version %}}
       <criteria comment="CentOS Vendor Keys" operator="AND">
         <extend_definition comment="CentOS{{{ centos_major_version }}} installed" definition_ref="installed_OS_is_centos{{{ centos_major_version }}}" />
         <criterion comment="package gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}} is installed"
-        test_ref="test_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" />
+        test_ref="test_redhat_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" />
       </criteria>
       {{%- endif %}}
     </criteria>
   </definition>
 
-  <!-- First define global "object_package_gpg-pubkey" to be shared (reused) across multiple tests -->
-  <linux:rpminfo_object id="object_package_gpg-pubkey" version="1">
+  <!-- First define global "object_redhat_package_gpg-pubkey" to be shared (reused) across multiple tests -->
+  <linux:rpminfo_object id="object_redhat_package_gpg-pubkey" version="1">
     <linux:name>gpg-pubkey</linux:name>
   </linux:rpminfo_object>
 
   <!-- Perform the particular tests themselves -->
   <!-- Test for Red Hat release key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" version="1"
+  id="test_redhat_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" version="1"
   comment="Red Hat release key package is installed">
-    <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" />
+    <linux:object object_ref="object_redhat_package_gpg-pubkey" />
+    <linux:state state_ref="state_redhat_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" />
   </linux:rpminfo_test>
 
-  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" version="1">
+  <linux:rpminfo_state id="state_redhat_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" version="1">
     <linux:release>{{{ pkg_release }}}</linux:release>
     <linux:version>{{{ pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
   <!-- Test for Red Hat auxiliary key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" version="1"
+  id="test_redhat_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" version="1"
   comment="Red Hat auxiliary key package is installed">
-    <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}" />
+    <linux:object object_ref="object_redhat_package_gpg-pubkey" />
+    <linux:state state_ref="state_redhat_package_gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}" />
   </linux:rpminfo_test>
 
-  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}" version="1">
+  <linux:rpminfo_state id="state_redhat_package_gpg-pubkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}" version="1">
     <linux:release>{{{ aux_pkg_release }}}</linux:release>
     <linux:version>{{{ aux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
   {{%- if centos_major_version %}}
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" version="1"
+  id="test_redhat_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" version="1"
   comment="CentOS{{{ centos_major_version }}} key package is installed">
-    <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" />
+    <linux:object object_ref="object_redhat_package_gpg-pubkey" />
+    <linux:state state_ref="state_redhat_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" />
   </linux:rpminfo_test>
 
-  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" version="1">
+  <linux:rpminfo_state id="state_redhat_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" version="1">
     <linux:release>{{{ centos_pkg_release }}}</linux:release>
     <linux:version>{{{ centos_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
