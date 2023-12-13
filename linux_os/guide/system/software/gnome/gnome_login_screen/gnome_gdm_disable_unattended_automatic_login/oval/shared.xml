@@ -3,17 +3,17 @@
     {{{ oval_metadata("Disable the GNOME Display Manager (GDM) ability to allow users to
       automatically login.") }}}
     <criteria operator="AND">
-      <criterion comment="Disable GDM Automatic Login" test_ref="test_disable_automatic_login" />
+      <criterion comment="Disable GDM Automatic Login" test_ref="test_disable_unattended_automatic_login" />
       <criterion comment="Disable GDM Password Less Login" test_ref="test_disable_unattended_login" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Disable GDM Automatic Login"
-  id="test_disable_automatic_login" version="1">
-    <ind:object object_ref="obj_disable_automatic_login" />
+  id="test_disable_unattended_automatic_login" version="1">
+    <ind:object object_ref="obj_disable_unattended_automatic_login" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_disable_automatic_login"
+  <ind:textfilecontent54_object id="obj_disable_unattended_automatic_login"
   version="1">
     <ind:filepath>/etc/sysconfig/displaymanager</ind:filepath>
     <ind:pattern operation="pattern match">^DISPLAYMANAGER_AUTOLOGIN=""$</ind:pattern>
