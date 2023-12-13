@@ -1,10 +1,10 @@
-# platform = multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_ol,multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_ol,multi_platform_ubuntu,multi_platform_debian
 # reboot = false
 # complexity = low
 # disruption = low
 # strategy = configure
 
-{{% if "ol" in product or 'rhel' in product or 'ubuntu' in product %}}
+{{% if "ol" in product or 'rhel' in product or 'ubuntu' in product or 'debian' in product %}}
 {{% set auid_filters = "-F auid>=" ~ auid ~ " -F auid!=unset" %}}
 {{% else %}}
 {{% set auid_filters = "" %}}
