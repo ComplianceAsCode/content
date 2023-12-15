@@ -30,7 +30,7 @@ jobs:
                 run: ninja -j2 package_source
                 working-directory: ./build
             -   name: 'Upload Artifact'
-                uses: actions/upload-artifact@v3
+                uses: actions/upload-artifact@v4
                 with:
                   name: Nightly Build
                   path: |
