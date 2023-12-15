@@ -706,7 +706,7 @@ def parse_arguments():
         epilog="Example: release_helper.py -c ~/secrets.ini -r ComplianceAsCode/content stats",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
-        '-c', '--creds-file', default='~/secret.ini',
+        '-c', '--creds-file', default='~/secrets.ini',
         help="INI file containing Github token.")
     parser.add_argument(
         '-r', '--repository', action='store', default='ComplianceAsCode/content',
