@@ -10,7 +10,9 @@ import ssg.build_guides
 
 BenchmarkData = collections.namedtuple(
     "BenchmarkData", ["title", "profiles", "product"])
-XSLT_PATH = "/usr/share/openscap/xsl/xccdf-guide.xsl"
+
+XSLT_PREFIX = os.getenv('XSLT_PREFIX', default='/usr')
+XSLT_PATH = os.path.join(XSLT_PREFIX, "share/openscap/xsl/xccdf-guide.xsl")
 
 
 def get_benchmarks(ds, product):
