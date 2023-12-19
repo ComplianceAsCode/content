@@ -79,9 +79,6 @@ class OVALDocument(OVALContainer):
     product_version = ""
     __ssg_version = ""
 
-    def __init__(self):
-        super(OVALDocument, self).__init__()
-
     @property
     def ssg_version(self):
         return self.__ssg_version
