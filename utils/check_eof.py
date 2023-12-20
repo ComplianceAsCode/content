@@ -34,7 +34,7 @@ def get_all_files(paths: list) -> list:
         p = pathlib.Path(path)
         if not p.exists():
             sys.stderr.write(f"The path {p.absolute()} does not exist!\n")
-            exit(3)
+            continue
         files.extend(get_files(p))
     return files
 
