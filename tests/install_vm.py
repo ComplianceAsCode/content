@@ -380,11 +380,11 @@ Add:
 option to your ssh command and export the:
   export SSH_ADDITIONAL_OPTIONS='-o IdentityFile={ssh_pubkey}'
 
-before running the SSG Test Suite.""".format(** data.__dict__))
+before running the Automatus.""".format(** data.__dict__))
 
         if data.libvirt == "qemu:///system":
             print("""
-IMPORTANT: When running SSG Test Suite use:
+IMPORTANT: When running Automatus use:
   sudo -E
 to make sure that your SSH key is used.""")
 
