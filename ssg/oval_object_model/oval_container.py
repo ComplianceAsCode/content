@@ -109,6 +109,7 @@ def _save_variable_references(ref, variable):
 
 class OVALContainer(OVALBaseObject):
     def __init__(self):
+        super(OVALContainer, self).__init__("")
         self.definitions = {}
         self.tests = {}
         self.objects = {}

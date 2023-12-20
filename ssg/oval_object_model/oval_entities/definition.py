@@ -18,9 +18,6 @@ class GeneralCriteriaNode(OVALBaseObject):
     comment = ""
     applicability_check = False
 
-    def __init__(self, tag):
-        super(GeneralCriteriaNode, self).__init__(tag)
-
     def get_xml_element(self):
         el = ElementTree.Element(self.tag_name)
         if self.applicability_check:
