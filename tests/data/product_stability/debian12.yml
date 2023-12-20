@@ -5,45 +5,52 @@ aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 auid: 1000
 basic_properties_derived: true
-benchmark_id: EXAMPLE
+benchmark_id: DEBIAN-12
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
-components_root: ../../components
 cpes:
-- example:
-    check_id: installed_OS_is_part_of_Unix_family
-    name: cpe:/o:example
-    title: Example
+- debian12:
+    check_id: installed_OS_is_debian12
+    name: cpe:/o:debian:debian_linux:12
+    title: Debian Linux 12
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 faillock_path: /var/run/faillock
-full_name: Example
+families:
+- debian
+- debian-like
+full_name: Debian 12
 gid_min: 1000
 groups: {}
-grub2_boot_path: /boot/grub2
+grub2_boot_path: /boot/grub
 grub2_uefi_boot_path: /boot/grub2
-grub_helper_executable: grubby
+grub_helper_executable: update-grub
 init_system: systemd
+major_version_ordinal: 12
 nobody_gid: 65534
 nobody_uid: 65534
-pkg_manager: dnf
-pkg_manager_config_file: /etc/dnf/dnf.conf
-pkg_system: rpm
+pkg_manager: apt_get
+pkg_system: dpkg
 platform_package_overrides:
   aarch64_arch: null
+  gdm: gdm3
   grub2: grub2-common
   login_defs: login
+  net-snmp: snmp
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
   not_s390x_arch: null
+  nss-pam-ldapd: libpam-ldap
   ovirt: null
+  pam: libpam-runtime
   s390x_arch: null
+  shadow: login
   sssd: sssd-common
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: example
+product: debian12
 profiles_root: ./profiles
 reference_uris:
   anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
