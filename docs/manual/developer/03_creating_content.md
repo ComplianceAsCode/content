@@ -624,27 +624,20 @@ requirements or how it is applied.
 A profile should define these attributes:
 
 -   `title`: Human-readable title of the profile.
-
 -   `description`: Human-readable HTML description, which provides
     broader context for non-experts than the rationale.
-
 -   `extends`: The `id` of a profile to be extended. A profile can make
     incremental changes based on another profile, via `extends`
     attribute. The extendee can then, via the `selections` attribute,
     select/unselect rules and change XCCDF Value selectors.
-
--   `selections`: List composed of items of these types:
-
--   `` id`s of rules to be included in the profile, e.g. `accounts_tmout ``,
+-  `selections`: List composed of items of these types:
+    -   IDs of rules to be included in the profile, e.g. `accounts_tmout `,
     or
-
--   `` id`s of rules to be excluded from the profile prefixed by an exclamation mark, e.g. `!accounts_tmout ``,
+    - IDs of rules to be excluded from the profile prefixed by an exclamation mark, e.g. `!accounts_tmout`,
     or
-
--   changes to XCCDF Value selectors, e.g. `var_accounts_tmout=10_min`,
+    -   changes to XCCDF Value selectors, e.g. `var_accounts_tmout=10_min`,
     or
-
--   rule refinements, e.g. `accounts_tmout.severity=high`.
+    -   rule refinements, e.g. `accounts_tmout.severity=high`.
 
 
 ## Controls
