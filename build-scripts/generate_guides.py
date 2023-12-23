@@ -14,6 +14,7 @@ BenchmarkData = collections.namedtuple(
 OPENSCAP_POSSIBLE_ROOT_DIRS = [
     os.getenv("OPENSCAP_ROOT_DIR"),
     os.getenv("ProgramFiles"),
+    os.getenv("XSLT_PREFIX"),
     "/usr",
     "/usr/bin",
     "/usr/sbin",
@@ -34,7 +35,10 @@ for name in OPENSCAP_POSSIBLE_ROOT_DIRS:
         continue
     break
 else:
-    exit("ERROR: The OPENSCAP XSL XCCDF GUIDE file was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
+    exit("ERROR: The OPENSCAP XSL XCCDF GUIDE file was not found. "
+        "Please specify the OPENSCAP ROOT DIR with the "
+        "OPENSCAP_ROOT_DIR environment variable.")
+
 
 def get_benchmarks(ds, product):
     benchmarks = {}
