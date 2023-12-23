@@ -35,9 +35,7 @@ for name in OPENSCAP_POSSIBLE_ROOT_DIRS:
         continue
     break
 else:
-    exit("ERROR: The OPENSCAP XSL XCCDF GUIDE file was not found. "
-        "Please specify the OPENSCAP ROOT DIR with the "
-        "OPENSCAP_ROOT_DIR environment variable.")
+    XCCDF_GUIDE_XSL = None
 
 
 def get_benchmarks(ds, product):
