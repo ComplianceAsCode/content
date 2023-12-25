@@ -168,7 +168,7 @@ jobs:
           path: logs_ansible/
       - name: Delete datastream artifact
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: geekyeggo/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v4
         with:
           name: ssg-${{steps.product.outputs.prop}}-ds.xml
           useGlob: false
