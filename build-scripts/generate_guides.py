@@ -25,9 +25,11 @@ OPENSCAP_POSSIBLE_ROOT_DIRS = [
     "/opt/local",
 ]
 
-for name in OPENSCAP_POSSIBLE_ROOT_DIRS:
+for root_dir in OPENSCAP_POSSIBLE_ROOT_DIRS:
+    if root_dir is None:
+        continue
     for subpath in [os.path.join("share", "openscap", "xsl"), "xsl"]:
-        file_path = os.path.join(name, subpath, "xccdf-guide.xsl")
+        file_path = os.path.join(root_dir, subpath, "xccdf-guide.xsl")
         if os.path.exists(file_path):
             XCCDF_GUIDE_XSL = file_path
             break
