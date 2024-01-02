@@ -170,3 +170,29 @@ jobs:
       -   name: Test
           run: ctest -j2 --output-on-failure -E unique-stigids
           working-directory: ./build
+
+  validate-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+    env:
+      OPENSCAP_VERSION: "1.3.10"
+      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.3.10"
+    steps:
+        - name: Install Deps
+          run: choco install xsltproc
+        - name: Get Latest OpenSCAP
+          shell: powershell
+          run: "Invoke-WebRequest -Uri https://nightly.link/OpenSCAP/openscap/workflows/build/maint-1.3/openscap-win64.zip -OutFile ${{ github.workspace }}\\openscap-win.zip"
+        - name: Extract Latest OpenSCAP
+          shell: powershell
+          run: "Expand-Archive -LiteralPath ${{ github.workspace }}\\openscap-win.zip -DestinationPath ${{ github.workspace }}\\openscap-win -Verbose:$true"
+        - name: Install OpenSCAP
+          shell: powershell
+          run: "msiexec.exe /norestart /q /i ${{ github.workspace }}\\openscap-win\\OpenSCAP-${env:OPENSCAP_VERSION}-win64.msi"
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Install Python Deps
+          run: pip install -r requirements.txt -r test-requirements.txt
+        - name: Build
+          shell: bash
+          run: ./build_product -j2 fedora
