@@ -263,8 +263,8 @@ tooling and helped transform SSG into a more general-purpose security content
 project. This change happened over time in 2017 and 2018. In September 2018, we
 decided to change the name of the project to `ComplianceAsCode`, in order to avoid confusion.
 
-We envision that the future will be format-agnostic. That's why opted for an
-abstraction instead of using XCCDF for the input format.
+We envision that the future will be format-agnostic.
+That's why opted for an abstraction instead of using XCCDF for the input format.
 
 ## Contributors
 This project is welcome to new contributors. We are continually trying to remove the complexities to make contributions easier and more enjoyable for everyone. This is a nice project and a friendly community.
