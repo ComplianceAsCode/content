@@ -20,7 +20,7 @@ KNOWN_DISTROS = [
 
 DISTRO_URL = {
     "fedora":
-        "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Everything/x86_64/os",
+        "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Everything/x86_64/os",
     "centos7": "http://mirror.centos.org/centos/7/os/x86_64",
     "centos8": "http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/",
     "centos9": "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/",
