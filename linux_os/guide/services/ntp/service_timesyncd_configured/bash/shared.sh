@@ -20,6 +20,11 @@ do
     sed -i 's/^NTP/#&/g' "$current_cfg"
     sed -i 's/^FallbackNTP/#&/g' "$current_cfg"
 done
+# Create /etc/systemd/timesyncd.d if it doesn't exist
+if [ ! -d "/etc/systemd/timesyncd.d" ]
+then 
+    mkdir /etc/systemd/timesyncd.d
+fi
 # Set primary fallback NTP servers in drop-in configuration
 echo "NTP=$preferred_ntp_servers" >> "$config_file"
 echo "FallbackNTP=$fallback_ntp_servers" >> "$config_file"
