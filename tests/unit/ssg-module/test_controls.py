@@ -511,3 +511,13 @@ def test_control_with_bad_key():
     except ValueError as e:
         assert type(e) is ValueError
     assert control_obj is None
+
+
+def test_control_with_bad_level():
+    control = {'id': 'abcd', 'levels': 'medium', }
+    control_obj = None
+    try:
+        control_obj = ssg.controls.Control.from_control_dict(control)
+    except ValueError as e:
+        assert type(e) is ValueError
+    assert control_obj is None
