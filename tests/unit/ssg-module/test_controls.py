@@ -1,12 +1,10 @@
 import pytest
-import logging
 import os
 import sys
 
 import ssg.controls
 import ssg.build_yaml
 from ssg.environment import open_environment
-from ssg.products import load_product_yaml
 
 ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
