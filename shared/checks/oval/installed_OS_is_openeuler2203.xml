@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_openeuler2203" version="1">
+    <metadata>
+      <title>openEuler 22.03 LTS</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed on the system is openEuler 22.03 LTS.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="openEuler 22.03 LTS is installed" test_ref="test_openeuler2203_installed" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="openEuler 22.03 LTS is installed" id="test_openeuler2203_installed" version="1">
+    <linux:object object_ref="obj_openeuler2203_installed" />
+    <linux:state state_ref="state_openeuler2203_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_openeuler2203_installed" version="1">
+    <linux:version operation="pattern match">^22\.03.*$</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_openeuler2203_installed" version="1">
+    <linux:name>openEuler-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>
