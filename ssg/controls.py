@@ -158,6 +158,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 % (control.automated,  control.id, control.title))
             raise ValueError(msg)
         control.levels = control_dict.get("levels", default_level)
+        if type(control.levels) is not list:
+            msg = "Levels for %s must be an array" % control.id
+            raise ValueError(msg)
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", {})
 

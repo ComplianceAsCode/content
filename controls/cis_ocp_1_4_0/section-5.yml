@@ -14,37 +14,37 @@ controls:
       status: manual
       rules:
         - rbac_limit_cluster_admin
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.1.2
       title: Minimize access to secrets
       status: manual
       rules:
         - rbac_limit_secrets_access
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.1.3
       title: Minimize wildcard use in Roles and ClusterRoles
       status: manual
       rules:
         - rbac_wildcard_use
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.1.4
       title: Minimize access to create pods
       status: manual
       rules:
         - rbac_pod_creation_access
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.1.5
       title: Ensure that default service accounts are not actively used.
       status: manual
       rules:
         - accounts_unique_service_account
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.1.6
       title: Ensure that Service Account Tokens are only mounted where necessary
       status: manual
       rules:
         - accounts_restrict_service_account_tokens
-      levels: level_1
+      levels: [ level_1, ]
   - id: '5.2'
     title: Security Context Constraints
     status: pending
@@ -55,61 +55,61 @@ controls:
       status: manual
       rules:
         - scc_limit_privileged_containers
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.2
       title: Minimize the admission of containers wishing to share the host process ID namespace
       status: manual
       rules:
         - scc_limit_process_id_namespace
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.3
       title: Minimize the admission of containers wishing to share the host IPC namespace
       status: manual
       rules:
         - scc_limit_ipc_namespace
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.4
       title: Minimize the admission of containers wishing to share the host network namespace
       status: manual
       rules:
         - scc_limit_network_namespace
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.5
       title: Minimize the admission of containers with allowPrivilegeEscalation
       status: manual
       rules:
         - scc_limit_privilege_escalation
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.6
       title: Minimize the admission of root containers
       status: manual
       rules:
         - scc_limit_root_containers
-      levels: level_2
+      levels: [ level_2, ]
     - id: 5.2.7
       title: Minimize the admission of containers with the NET_RAW capability
       status: manual
       rules:
         - scc_limit_net_raw_capability
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.8
       title: Minimize the admission of containers with added capabilities
       status: automated
       rules:
         - scc_limit_container_allowed_capabilities
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.2.9
       title: Minimize the admission of containers with capabilities assigned
       status: manual
       rules:
         - scc_drop_container_capabilities
-      levels: level_2
+      levels: [ level_2, ]
     - id: 5.2.10
       title: Minimize access to privileged Security Context Constraints
       status: manual
       rules:
         - rbac_least_privilege
-      levels: level_2
+      levels: [ level_2, ]
   - id: '5.3'
     title: Network Policies and CNI
     status: pending
@@ -120,14 +120,14 @@ controls:
       status: automated
       rules:
         - configure_network_policies
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.3.2
       title: Ensure that all Namespaces have Network Policies defined
       status: partial
       rules:
         - configure_network_policies_namespaces
         - configure_network_policies_hypershift_hosted
-      levels: level_2
+      levels: [ level_2, ]
   - id: '5.4'
     title: Secrets Management
     status: manual
@@ -138,13 +138,13 @@ controls:
       status: manual
       rules:
         - secrets_no_environment_variables
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.4.2
       title: Consider external secret storage
       status: manual
       rules:
         - secrets_consider_external_storage
-      levels: level_2
+      levels: [ level_2, ]
   - id: '5.5'
     title: Extensible Admission Control
     status: automated
@@ -158,7 +158,7 @@ controls:
         - ocp_allowed_registries_for_import
         - ocp_insecure_registries
         - ocp_insecure_allowed_registries_for_import
-      levels: level_2
+      levels: [ level_2, ]
   - id: '5.7'
     title: General Policies
     status: partial
@@ -169,23 +169,23 @@ controls:
       status: manual
       rules:
         - general_namespaces_in_use
-      levels: level_1
+      levels: [ level_1, ]
     - id: 5.7.2
       title: Ensure that the seccomp profile is set to docker/default in your pod definitions
       status: manual
       rules:
         - general_default_seccomp_profile
-      levels: level_2
+      levels: [ level_2, ]
     - id: 5.7.3
       title: Apply Security Context to Your Pods and Containers
       status: manual
       rules:
         - general_apply_scc
-      levels: level_2
+      levels: [ level_2, ]
     - id: 5.7.4
       title: The default namespace should not be used
       status: manual
       rules:
         - general_default_namespace_use
-      levels: level_2
+      levels: [ level_2, ]
 
