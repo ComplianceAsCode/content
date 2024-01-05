@@ -126,6 +126,17 @@ def add_reference_elements(element, references, ref_uri_dict):
             ref.text = ref_val
 
 
+def add_reference_title_elements(benchmark_el, env_yaml):
+    if env_yaml:
+        ref_uri_dict = env_yaml['reference_uris']
+    else:
+        ref_uri_dict = SSG_REF_URIS
+    for title, uri in ref_uri_dict.items():
+        reference = ET.SubElement(benchmark_el, "{%s}reference" % XCCDF12_NS)
+        reference.set("href", uri)
+        reference.text = title
+
+
 def add_benchmark_metadata(element, contributors_file):
     metadata = ET.SubElement(element, "{%s}metadata" % XCCDF12_NS)
 
@@ -356,6 +367,7 @@ class Benchmark(XCCDFEntity):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", XCCDF12_NS, self.front_matter)
         add_sub_element(root, "rear-matter",  XCCDF12_NS, self.rear_matter)
+        add_reference_title_elements(root, env_yaml)
         # if there are no platforms, do not output platform-specification at all
         if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
