@@ -515,6 +515,12 @@ macro(ssg_build_sds PRODUCT)
     )
     set_tests_properties("xccdf-values-${PRODUCT}" PROPERTIES LABELS "quick")
 
+    add_test(
+        NAME "reference-titles-in-benchmark-${PRODUCT}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/test_reference_titles_in_benchmark.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/product.yml"
+    )
+    set_tests_properties("reference-titles-in-benchmark-${PRODUCT}" PROPERTIES LABELS quick)
+
     if("${PRODUCT}" MATCHES "rhel(7|8|9)|sle(12|15)")
         if("${PRODUCT}" MATCHES "sle(12|15)")
             add_test(
