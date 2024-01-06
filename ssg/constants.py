@@ -460,7 +460,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
-    'openeuler2203': 'openEuler 2203',
+    'openeuler': 'openEuler',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'example': 'Example',
