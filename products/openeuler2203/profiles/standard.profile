@@ -11,4 +11,4 @@ description: |-
     all of these checks should pass.
 
 selections:
-    - std_openeuler:all:l2_server
+    - std_openeuler2203:all:l2_server
