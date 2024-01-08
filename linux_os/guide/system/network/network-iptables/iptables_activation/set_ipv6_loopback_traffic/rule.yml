@@ -18,11 +18,7 @@ rationale: |-
 
 severity: medium
 
-{{% if product in ['openeuler2203'] %}}
-platform: machine
-{{% else %}}
 platform: not package[nftables] and not package[ufw] and package[iptables]
-{{% endif %}}
 
 identifiers:
     cce@sle12: CCE-92215-3
