@@ -23,14 +23,12 @@ except ImportError:
     exit(1)
 
 
-def parse_args():
+def parse_stats(subparsers):
     script_desc = \
         "Obtains and displays XCCDF profile statistics. Namely number " + \
         "of rules in the profile, how many of these rules have their OVAL " + \
         "check implemented, how many have a remediation available, ..."
 
-    parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
-    subparsers = parser.add_subparsers(title='subcommands', dest="subcommand")
     parser_stats = subparsers.add_parser("stats", description=script_desc,
                                            help=("Show profile statistics"))
     parser_stats.add_argument("--profile", "-p",
@@ -111,6 +109,8 @@ def parse_args():
     parser_stats.add_argument("--output",
                         help="If defined, statistics will be stored under this directory.")
 
+
+def parse_sub(subparsers):
     subtracted_profile_desc = \
         "Subtract rules and variable selections from profile1 based on rules present in " + \
         "profile2. As a result, a new profile is generated. It doesn't support profile " + \
@@ -141,11 +141,14 @@ def parse_args():
     parser_sub.add_argument('--profile2', type=str, dest="profile2",
                         required=True, help='YAML profile')
 
-    args = parser.parse_args()
 
-    if not args.subcommand:
-        parser.print_help()
-        exit(0)
+def parse_args():
+    parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
+    subparsers = parser.add_subparsers(title='subcommands', dest="subcommand", required=True)
+    parse_stats(subparsers)
+    parse_sub(subparsers)
+
+    args = parser.parse_args()
 
     if args.subcommand == "stats":
         if args.all:
