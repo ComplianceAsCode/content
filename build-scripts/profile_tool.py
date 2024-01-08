@@ -176,47 +176,43 @@ def parse_args():
     return args
 
 
-def main():
-    args = parse_args()
+def sub(args):
+    product_yaml = os.path.join(args.ssg_root, "products", args.product, "product.yml")
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
+    try:
+        profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1, env_yaml)
+        profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2, env_yaml)
+    except jinja2.exceptions.TemplateNotFound as e:
+        print("Error: Profile {} could not be found.".format(str(e)))
+        exit(1)
 
-    if args.subcommand == "sub":
-        product_yaml = os.path.join(args.ssg_root, "products", args.product, "product.yml")
-        env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
-        try:
-            profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1, env_yaml)
-            profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2, env_yaml)
-        except jinja2.exceptions.TemplateNotFound as e:
-            print("Error: Profile {} could not be found.".format(str(e)))
-            exit(1)
+    subtracted_profile = profile1 - profile2
 
-        subtracted_profile = profile1 - profile2
+    exclusive_rules = len(subtracted_profile.get_rule_selectors())
+    exclusive_vars = len(subtracted_profile.get_variable_selectors())
+    if exclusive_rules > 0:
+        print("{} rules were left after subtraction.".format(exclusive_rules))
+    if exclusive_vars > 0:
+        print("{} variables were left after subtraction.".format(exclusive_vars))
 
-        exclusive_rules = len(subtracted_profile.get_rule_selectors())
-        exclusive_vars = len(subtracted_profile.get_variable_selectors())
-        if exclusive_rules > 0:
-            print("{} rules were left after subtraction.".format(exclusive_rules))
-        if  exclusive_vars > 0:
-            print("{} variables were left after subtraction.".format(exclusive_vars))
+    if exclusive_rules > 0 or exclusive_vars > 0:
+        profile1_basename = os.path.splitext(
+            os.path.basename(args.profile1))[0]
+        profile2_basename = os.path.splitext(
+            os.path.basename(args.profile2))[0]
+        subtracted_profile_filename = "{}_sub_{}.profile".format(
+            profile1_basename, profile2_basename)
+        print("Creating a new profile containing the exclusive selections: {}".format(
+            subtracted_profile_filename))
+        subtracted_profile.title = profile1.title + " subtracted by " + profile2.title
+        subtracted_profile.dump_yaml(subtracted_profile_filename)
+        print("Profile {} was created successfully".format(
+            subtracted_profile_filename))
+    else:
+        print("Subtraction would produce an empty profile. No new profile was generated")
 
-        if exclusive_rules > 0 or exclusive_vars > 0:
-            profile1_basename = os.path.splitext(
-                os.path.basename(args.profile1))[0]
-            profile2_basename = os.path.splitext(
-                os.path.basename(args.profile2))[0]
 
-            subtracted_profile_filename = "{}_sub_{}.profile".format(
-                profile1_basename, profile2_basename)
-            print("Creating a new profile containing the exclusive selections: {}".format(
-                subtracted_profile_filename))
-
-            subtracted_profile.title = profile1.title + " subtracted by " + profile2.title
-            subtracted_profile.dump_yaml(subtracted_profile_filename)
-            print("Profile {} was created successfully".format(
-                subtracted_profile_filename))
-        else:
-            print("Subtraction would produce an empty profile. No new profile was generated")
-        exit(0)
-
+def stats(args):
     benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark, args.product)
     ret = []
     if args.profile:
@@ -291,6 +287,17 @@ def main():
         print(",".join(ret[0].keys()))
         for line in ret:
             print(",".join([str(value) for value in line.values()]))
+
+
+SUBCMDS = dict(
+    stats=stats,
+    sub=sub
+)
+
+
+def main():
+    args = parse_args()
+    SUBCMDS[args.subcommand](args)
 
 
 if __name__ == '__main__':
