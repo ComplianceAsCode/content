@@ -83,7 +83,7 @@ jobs:
       - name: Update the package repository
         run: apt-get update
       - name: Install Deps
-        run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc libxslt1-dev libxml2-dev
+        run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install deps python
