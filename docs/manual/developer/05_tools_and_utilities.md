@@ -687,12 +687,12 @@ $ ctest --output-on-failure -R test-no-new-global-applicable-rules
 
 ### `utils/oscal/build_cd_from_policy.py` &ndash; Build a Component Definition from a Policy
 
-This script builds an OSCAL Component Definition (version `1.0.4`) for an existing OSCAL profile from a policy. The script uses the
+This script builds an OSCAL Component Definition (cd) (version `1.0.4`) for an existing OSCAL profile from a policy. The script uses the
 [compliance-trestle](https://ibm.github.io/compliance-trestle/) library to build the component definition. The component definition can be used with the `compliance-trestle` CLI after generation.
 
 Some assumption made by this script:
 
-- The script maps SSG statuses to valid OSCAL [statuses](https://pages.nist.gov/OSCAL-Reference/models/v1.1.1/system-security-plan/json-reference/#/system-security-plan/control-implementation/implemented-requirements/by-components/implementation-status) as follows:
+- The script maps control file statuses to valid OSCAL [statuses](https://pages.nist.gov/OSCAL-Reference/models/v1.1.1/system-security-plan/json-reference/#/system-security-plan/control-implementation/implemented-requirements/by-components/implementation-status) as follows:
 
   * `pending` - `alternative`
 
