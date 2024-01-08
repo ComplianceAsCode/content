@@ -30,7 +30,7 @@ value: :code:`Setting={{ varname1 }}`
 #}}
 {{%- macro ansible_lineinfile(msg='', path='', mode='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False) -%}}
 - name: "{{{ msg or rule_title }}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{{ path }}}'
     create: {{{ create }}}
     {{%- if regex %}}
@@ -82,7 +82,7 @@ value: :code:`Setting={{ varname1 }}`
 #}}
 {{%- macro ansible_stat(msg='', path='', register='') %}}
 - name: '{{{ msg or rule_title }}}'
-  stat:
+  ansible.builtin.stat:
     path: '{{{ path }}}'
   {{%- if register %}}
   register: '{{{ register }}}'
@@ -96,7 +96,7 @@ value: :code:`Setting={{ varname1 }}`
 #}}
 {{%- macro ansible_find(msg='', paths='', recurse='yes', follow='no', contains='', register='', when='') %}}
 - name: '{{{ msg or rule_title }}}'
-  find:
+  ansible.builtin.find:
     paths: '{{{ paths }}}'
     recurse: '{{{ recurse }}}'
     follow: '{{{ follow }}}'
@@ -202,13 +202,13 @@ value: :code:`Setting={{ varname1 }}`
 {{%- else %}}
 {{% if product in ["ol8", "ol9"] %}}
 - name: "Find sshd_config included files"
-  shell: |-
+  ansible.builtin.shell: |-
     included_files=$(grep -oP "^\s*(?i)include.*" /etc/ssh/sshd_config | sed -e 's/\s*Include\s*//i' | sed -e 's|^[^/]|/etc/ssh/&|')
     [[ -n $included_files ]] && ls $included_files || true
   register: sshd_config_included_files
 
 - name: "Comment conf from included files"
-  replace:
+  ansible.builtin.replace:
     path: '{{ item }}'
     regexp: '^(\s*{{{ parameter }}}.*)$'
     replace: '# \1'
@@ -334,7 +334,7 @@ value: :code:`Setting={{ varname1 }}`
 #}}
 {{%- macro ansible_file_contents(filepath='', contents='') %}}
 - name: "Put contents into {{{ filepath }}} according to policy"
-  copy:
+  ansible.builtin.copy:
     dest: "{{{ filepath }}}"
     content: |+
         {{{ contents|indent(8) }}}
@@ -427,14 +427,14 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
 #}}
 {{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='') -%}}
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/rules.d"
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
     patterns: "*.rules"
   register: find_existing_watch_rules_d
 
 - name: Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/rules.d"
     contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
     patterns: "*.rules"
@@ -442,19 +442,19 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
 - name: Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
-  set_fact:
+  ansible.builtin.set_fact:
     all_files:
       - /etc/audit/rules.d/{{{ key }}}.rules
   when: find_watch_key.matched is defined and find_watch_key.matched == 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
 - name: Use matched file as the recipient for the rule
-  set_fact:
+  ansible.builtin.set_fact:
     all_files:
       - "{{ find_watch_key.files | map(attribute='path') | list | first }}"
   when: find_watch_key.matched is defined and find_watch_key.matched > 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 
 - name: Add watch rule for {{{ path }}} in /etc/audit/rules.d/
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ all_files[0] }}"
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
     create: yes
@@ -476,14 +476,14 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
 #}}
 {{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
-  find:
+  ansible.builtin.find:
     paths: "/etc/audit/"
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
     patterns: "audit.rules"
   register: find_existing_watch_audit_rules
 
 - name: Add watch rule for {{{ path }}} in /etc/audit/audit.rules
-  lineinfile:
+  ansible.builtin.lineinfile:
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
     state: present
     dest: /etc/audit/audit.rules
@@ -529,7 +529,7 @@ The macro requires following parameters:
     syscall_grouping: {{{ syscall_grouping }}}
 
 - name: Check existence of {{{ syscalls | join(", ") }}} in /etc/audit/rules.d/
-  find:
+  ansible.builtin.find:
     paths: /etc/audit/rules.d
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
     patterns: '*.rules'
@@ -537,38 +537,38 @@ The macro requires following parameters:
   loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
 - name: Reset syscalls found per file
-  set_fact:
+  ansible.builtin.set_fact:
     syscalls_per_file: {}
     found_paths_dict: {}
 
 - name: Declare syscalls found per file
-  set_fact: syscalls_per_file="{{ syscalls_per_file | combine( {item.files[0].path :[item.item] + syscalls_per_file.get(item.files[0].path, []) } ) }}"
+  ansible.builtin.set_fact: syscalls_per_file="{{ syscalls_per_file | combine( {item.files[0].path :[item.item] + syscalls_per_file.get(item.files[0].path, []) } ) }}"
   loop: "{{ find_command.results | selectattr('matched') | list }}"
 
 - name: Declare files where syscalls were found
-  set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
+  ansible.builtin.set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
 - name: Count occurrences of syscalls in paths
-  set_fact: found_paths_dict="{{ found_paths_dict | combine({ item:1+found_paths_dict.get(item, 0) }) }}"
+  ansible.builtin.set_fact: found_paths_dict="{{ found_paths_dict | combine({ item:1+found_paths_dict.get(item, 0) }) }}"
   loop: "{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
 - name: Get path with most syscalls
-  set_fact: audit_file="{{ (found_paths_dict | dict2items() | sort(attribute='value') | last).key }}"
+  ansible.builtin.set_fact: audit_file="{{ (found_paths_dict | dict2items() | sort(attribute='value') | last).key }}"
   when: found_paths | length >= 1
 
 - name: No file with syscall found, set path to /etc/audit/rules.d/{{{ key }}}.rules
-  set_fact: audit_file="/etc/audit/rules.d/{{{ key }}}.rules"
+  ansible.builtin.set_fact: audit_file="/etc/audit/rules.d/{{{ key }}}.rules"
   when: found_paths | length == 0
 
 - name: Declare found syscalls
-  set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+  ansible.builtin.set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
 
 - name: Declare missing syscalls
   set_fact:
     missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
 
 - name: Replace the audit rule in {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     regexp: '({{{ action_arch_filters }}})(?=.*(?:(?:-S |,)(?:{{ syscalls_per_file[audit_file] | join("|") }}))\b)((?:( -S |,)\w+)+)({{{ other_filters }}}{{{ auid_filters }}} (?:-k |-F key=)\w+)'
     line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
@@ -577,7 +577,7 @@ The macro requires following parameters:
   when: syscalls_found | length > 0 and missing_syscalls | length > 0
 
 - name: Add the audit rule to {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
@@ -622,12 +622,12 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{% set syscall_flag = " -S " %}}
 {{% endif %}}
 - name: Declare list of syscalls
-  set_fact:
+  ansible.builtin.set_fact:
     syscalls: {{{ syscalls }}}
     syscall_grouping: {{{ syscall_grouping }}}
 
 - name: Check existence of {{{ syscalls | join(", ") }}} in /etc/audit/audit.rules
-  find:
+  ansible.builtin.find:
     paths: /etc/audit
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
     patterns: 'audit.rules'
@@ -635,17 +635,17 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
 - name: Set path to /etc/audit/audit.rules
-  set_fact: audit_file="/etc/audit/audit.rules"
+  ansible.builtin.set_fact: audit_file="/etc/audit/audit.rules"
 
 - name: Declare found syscalls
-  set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+  ansible.builtin.set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
 
 - name: Declare missing syscalls
-  set_fact:
+  ansible.builtin.set_fact:
     missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
 
 - name: Replace the audit rule in {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     regexp: '({{{ action_arch_filters }}})(?=.*(?:(?:-S |,)(?:{{ syscalls_found | join("|") }}))\b)((?:( -S |,)\w+)+)({{{ other_filters }}}{{{ auid_filters }}} (?:-k |-F key=)\w+)'
     line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
@@ -654,7 +654,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when: syscalls_found | length > 0 and missing_syscalls | length > 0
 
 - name: Add the audit rule to {{ audit_file }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
@@ -666,21 +666,21 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 {{% macro ansible_sssd_ldap_config(parameter, value) -%}}
 - name: "Test for id_provider different than Active Directory (ad)"
-  command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
   register: test_id_provider
   failed_when: false
   changed_when: false
   check_mode: no
 
 - name: "Test for domain group"
-  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  ansible.builtin.command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   failed_when: false
   changed_when: false
   check_mode: no
 
 - name: "Add default domain group and set {{{ parameter }}} in sssd configuration (if no domain there)"
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: "{{ item.section }}"
     option: "{{ item.option }}"
@@ -696,7 +696,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - test_id_provider.stdout | length < 1
 
 - name: "Set {{{ parameter }}} in sssd configuration"
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
     option: {{{ parameter }}}
@@ -712,7 +712,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 {{% macro ansible_ini_file_set(filename, section, key, value, description="") -%}}
 - name: "{{{ description if description else ("Set '" + key + "' to '" + value + "' in the [" + section + "] section of '" + filename + "'") }}}"
-  ini_file:
+  community.general.ini_file:
     path: "{{{ filename }}}"
     section: "{{{ section }}}"
     option: "{{{ key }}}"
@@ -1252,7 +1252,7 @@ Part of the grub2_bootloader_argument template.
 {{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
+  ansible.builtin.command: grep '^\s*GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=' /etc/default/grub
   failed_when: False
   register: argcheck
 
@@ -1271,14 +1271,14 @@ Part of the grub2_bootloader_argument template.
   when: argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc != 0
 
 - name: Replace existing {{{ arg_name }}} argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '{{{ arg_name }}}=[a-zA-Z0-9,]+'
       replace: '{{{ arg_name_value }}}'
   when: argcheck is not skipped and linecheck is not skipped and argcheck.rc == 0 and linecheck.rc == 0
 
 - name: Add {{{ arg_name }}} argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '(^\s*GRUB_CMDLINE_LINUX=.*)"'
       replace: '\1 {{{ arg_name_value }}}"'
@@ -1288,13 +1288,13 @@ Part of the grub2_bootloader_argument template.
 
 {{% if product in ['sle12', 'sle15'] %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/update-grub
+  ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
-  command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
+  ansible.builtin.command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
 {{% endif -%}}
 {{%- endmacro -%}}
 
@@ -1310,12 +1310,12 @@ Part of the grub2_bootloader_argument_absent template.
 {{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
 {{% if 'ubuntu' in product or 'debian' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 - name: Check {{{ arg_name }}} argument exists
-  command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  ansible.builtin.command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
   failed_when: False
   register: argcheck
 
 - name: Replace existing {{{ arg_name }}} argument
-  replace:
+  ansible.builtin.replace:
       path: /etc/default/grub
       regexp: '\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)'
       replace: '\1 \2'
@@ -1325,13 +1325,13 @@ Part of the grub2_bootloader_argument_absent template.
 
 {{% if product in ['sle12', 'sle15'] %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  ansible.builtin.command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% elif 'debian' in product %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/update-grub
+  ansible.builtin.command: /usr/sbin/update-grub
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
-  command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
+  ansible.builtin.command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
 {{% endif -%}}
 {{%- endmacro -%}}
 
