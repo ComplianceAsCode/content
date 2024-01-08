@@ -233,6 +233,22 @@ class Policy(ssg.entities.common.XCCDFEntity):
                     self.id, c.id, ", ".join(nonexisting_rules))
                 raise ValueError(msg)
 
+    def check_levels_validity(self):
+        """
+        This function goes through all controls in the policy and checks if all
+        levels defined for individual controls are valid for the policy.
+        If the policy has no levels defined, then all controls should have the
+        "default" level defined (this is defined implicitly).
+        """
+        for c in self.controls:
+            expected_levels = [lvl.id for lvl in self.levels]
+            for lvl in c.levels:
+                if lvl not in expected_levels:
+                    msg = ("Invalid level {0} used in control {1} "
+                           "defined at {2}. Allowed levels are: {3}".format(
+                            lvl, c.id, self.filepath, expected_levels))
+                    raise ValueError(msg)
+
     def remove_selections_not_known(self, known_rules):
         for c in self.controls:
             selections = set(c.selected).intersection(known_rules)
@@ -325,6 +341,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         else:
             controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         self.save_controls_tree(controls_tree)
+        self.check_levels_validity()
 
     def get_control(self, control_id):
         try:
