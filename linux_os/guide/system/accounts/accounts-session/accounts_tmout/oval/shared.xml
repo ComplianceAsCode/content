@@ -37,8 +37,10 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
-    {{% if product in ['sle12', 'sle15'] or "ubuntu" in product %}}
+    {{% if product in ['sle12', 'sle15'] or product in ['ubuntu1804', 'ubuntu2204'] %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
+    {{% elif 'ubuntu2004' in product %}}
+    <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+).*$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*declare[\s]+-xr[\s]+TMOUT=([\w$]+).*$</ind:pattern>
     {{% endif %}}
