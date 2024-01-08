@@ -24,4 +24,10 @@ description: |-
 
     THIS DOES NOT INCLUDE REQUIREMENTS FOR A HARDENED LINUX FROM SYS.1.3 LINUX
 
-extends: bsi-2022
+selections:
+    - bsi_app_4_4:all
+    - bsi_sys_1_6:all
+
+    # BSI APP.4.4.A4
+    - var_selinux_policy_name=targeted
+    - var_selinux_state=enforcing

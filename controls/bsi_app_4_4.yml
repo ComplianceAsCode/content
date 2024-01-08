@@ -83,7 +83,10 @@ controls:
     notes: >-
       Since these are OS based requirements, they are included in the rhcos4 bsi profile
     status: pending
-    # rules:
+    rules:
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
 
   - id: APP.4.4.A5
     title: Backup in the Cluster
