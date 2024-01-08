@@ -521,3 +521,14 @@ def test_control_with_bad_level():
     except ValueError as e:
         assert type(e) is ValueError
     assert control_obj is None
+
+
+def test_validating_policy_levels(env_yaml):
+    c1_path = os.path.join(data_dir, "policy_with_different_than_implicit_default_level.yml")
+    c2_path = os.path.join(data_dir, "policy_with_invalid_level.yml")
+    for policy_path in [c1_path, c2_path]:
+        policy = ssg.controls.Policy(policy_path, env_yaml)
+        with pytest.raises(ValueError):
+            policy.load()
+
+
