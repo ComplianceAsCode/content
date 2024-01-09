@@ -12,6 +12,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_AIDE_BIN_PATH,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_CHRONY_CONF_PATH,
+                        DEFAULT_JOURNALD_CONF_DIR_PATH,
                         DEFAULT_AUDISP_CONF_PATH,
                         DEFAULT_FAILLOCK_PATH,
                         DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE,
@@ -74,6 +75,9 @@ def _get_implied_properties(existing_properties):
 
     if "sysctl_remediate_drop_in_file" not in existing_properties:
         result["sysctl_remediate_drop_in_file"] = DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE
+
+    if "journald_conf_dir_path" not in existing_properties:
+        result["journald_conf_dir_path"] = DEFAULT_JOURNALD_CONF_DIR_PATH
 
     return result
 

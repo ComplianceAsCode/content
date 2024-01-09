@@ -30,7 +30,7 @@
 
 - name: Deduplicate values from {{{ COMPONENT }}} {{{ PARAM }}} dropin configuration
   ansible.builtin.lineinfile:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     create: false
     regexp: ^\s*{{{ PARAM }}}=
     state: absent
