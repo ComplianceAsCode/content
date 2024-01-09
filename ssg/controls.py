@@ -313,7 +313,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
 
-        level_list = yaml_contents.get("levels", [])
+        default_level_dict = {"id": "default"}
+        level_list = yaml_contents.get("levels", [default_level_dict])
         for lv in level_list:
             level = Level.from_level_dict(lv)
             self.levels.append(level)
