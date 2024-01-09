@@ -78,7 +78,7 @@ template:
         #
         # Finally, we check for regular word boundary (with \b), ensuring the
         # next character isn't yet another word character.
-        option_regex_suffix: '=("(?:\\"|\\\\|[^"\\\n])*"\B|[^"](?:(?:\\,|\\"|\\ |\\\\|[^", \\\n])*)\b)'
+        option_regex_suffix: '\s*=\s*("(?:\\"|\\\\|[^"\\\n])*"\B|[^"](?:(?:\\,|\\"|\\ |\\\\|[^", \\\n])*)\b)'
         variable_name: var_sudo_logfile
 
 platform: package[sudo]
