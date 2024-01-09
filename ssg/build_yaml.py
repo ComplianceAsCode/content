@@ -768,7 +768,11 @@ class Rule(XCCDFEntity, Templatable):
                 product_cpes and not rule.cpe_platform_names):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
-                cpe_platform = Platform.from_text(platform, product_cpes)
+                try:
+                    cpe_platform = Platform.from_text(platform, product_cpes)
+                except Exception as e:
+                    raise Exception("Unable to process platforms in rule '%s': " %
+                                    (rule.id_, str(e)))
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
         # Only load policy specific content if rule doesn't have it defined yet
