@@ -5,7 +5,7 @@ from __future__ import print_function
 import argparse
 
 try:
-    from utils.profile_tool import command_stats, command_sub
+    from utils.profile_tool import command_stats, command_sub, command_most_used_rules
 except ImportError:
     print("The ssg module could not be found.")
     print(
@@ -316,7 +316,11 @@ def parse_args():
     return args
 
 
-SUBCMDS = dict(stats=command_stats, sub=command_sub)
+SUBCMDS = {
+    "stats": command_stats,
+    "sub": command_sub,
+    "most-used-rules": command_most_used_rules,
+}
 
 
 def main():
