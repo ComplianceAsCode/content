@@ -1,13 +1,9 @@
 summary:
   Destructive ANSSI BP-028 (high) profile test (Ansible)
-discover:
-  how: fmf
-  url: https://github.com/RHSecurityCompliance/contest.git
+discover+:
   test:
-  - /hardening/host-os/ansible/anssi_bp28_high
-execute:
-  how: tmt
-adjust:
+  - /hardening/host-os/ansible/cis
+adjust+:
 - enabled: false
   when: distro == fedora
   continue: false

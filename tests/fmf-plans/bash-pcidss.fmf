@@ -1,12 +1,8 @@
 summary:
   Destructive PCI-DSS profile test (Bash)
-discover:
-  how: fmf
-  url: https://github.com/RHSecurityCompliance/contest.git
+discover+:
   test:
   - /hardening/host-os/oscap/pci-dss
-execute:
-  how: tmt
-adjust:
+adjust+:
 - enabled: false
   when: distro == fedora

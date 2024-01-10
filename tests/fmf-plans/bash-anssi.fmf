@@ -1,13 +1,9 @@
 summary:
   Destructive ANSSI-BP-028 (high) profile test (Bash)
-discover:
-  how: fmf
-  url: https://github.com/RHSecurityCompliance/contest.git
+discover+:
   test:
   - /hardening/host-os/oscap/anssi_bp28_high
-execute:
-  how: tmt
-adjust:
+adjust+:
 - enabled: false
   when: distro == fedora
   continue: false

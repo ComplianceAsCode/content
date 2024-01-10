@@ -1,13 +1,9 @@
 summary:
   Destructive STIG profile test (Ansible)
-discover:
-  how: fmf
-  url: https://github.com/RHSecurityCompliance/contest.git
+discover+:
   test:
   - /hardening/host-os/ansible/stig
-execute:
-  how: tmt
-adjust:
+adjust+:
 - enabled: false
   when: distro == fedora
   continue: false
