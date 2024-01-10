@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """Abstract and concrete classes for control selection to extract control responses."""
 
 import os

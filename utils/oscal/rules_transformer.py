@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """Transform rules from existing Compliance as Code locations into OSCAL properties."""
 
 import json
