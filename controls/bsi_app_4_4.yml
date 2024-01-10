@@ -1,3 +1,9 @@
+# In BSI Basic Protection are multiple Requirements in one control.
+# i.e. there are multiple sentences, some including a RFC2119 keyword
+# Since we must increase granularity to create a precise control,
+# we number each sentence with a RFC2119 keyword as a section, grouping sentences, which are logically connected.
+# we number inline in brackets, so the lookup is easy
+# we reference these numbers in comments over each rule or group of rules
 policy: 'BSI-APP-4-4'
 title: 'BSI APP.4.4 Kubernetes'
 id: bsi_app_4_4
@@ -222,7 +228,7 @@ controls:
         • Regular data backups.
     notes: >-
       This requirement needs to be adressed in the respective separate systems.
-      However, one requirement (Encrypted communication on all network ports) can partitially be 
+      However, one requirement (Encrypted communication on all network ports) can partitially be
       checked by ensuring that no registry is allowed in over insecure protocols
     status: partial
     rules:
