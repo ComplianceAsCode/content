@@ -212,28 +212,25 @@ def sub(args):
         print("Subtraction would produce an empty profile. No new profile was generated")
 
 
-def stats(args):
-    benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark, args.product)
-    ret = []
-    if args.profile:
-        ret.append(benchmark.show_profile_stats(args.profile, args))
-    else:
-        ret.extend(benchmark.show_all_profile_stats(args))
+def _process_stats_content(profile, bash_fixes_count, content, content_filepath):
+    link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
+    count = len(profile[content])
+    if content == "ansible_parity":
+        # custom text link for ansible parity
+        count = link.format(
+            content_filepath,
+            "{} out of {} ({}%)".format(
+                bash_fixes_count - count,
+                bash_fixes_count,
+                int(((bash_fixes_count-count)/bash_fixes_count)*100)
+            )
+        )
+    count_href_element = link.format(content_filepath, count)
+    profile['{}_count'.format(content)] = count_href_element
 
-    if args.format == "json":
-        print(json.dumps(ret, indent=4))
-    if args.format == "html":
-        from json2html import json2html
-        filtered_output = []
-        output_path = "./"
-        if args.output:
-            output_path = args.output
-            mkdir_p(output_path)
 
-        content_path = os.path.join(output_path, "content")
-        mkdir_p(content_path)
-
-        content_list = [
+def _filter_profile_for_html_stats(profile, filtered_output, content_path):
+    content_list = [
             'rules',
             'missing_stig_ids',
             'missing_cis_refs',
@@ -256,36 +253,65 @@ def stats(args):
             'missing_checks',
             'missing_fixes'
             ]
-        link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
-        for profile in ret:
-            bash_fixes_count = profile['rules_count'] - profile['missing_bash_fixes_count']
-            for content in content_list:
-                content_file = "{}_{}.txt".format(profile['profile_id'], content)
-                content_filepath = os.path.join("content", content_file)
-                count = len(profile[content])
-                if count > 0:
-                    if content == "ansible_parity":
-                        #custom text link for ansible parity
-                        count = link.format(content_filepath, "{} out of {} ({}%)".format(bash_fixes_count-count, bash_fixes_count, int(((bash_fixes_count-count)/bash_fixes_count)*100)))
-                    count_href_element = link.format(content_filepath, count)
-                    profile['{}_count'.format(content)] = count_href_element
-                    with open(os.path.join(content_path, content_file), 'w+') as f:
-                        f.write('\n'.join(profile[content]))
-                else:
-                    profile['{}_count'.format(content)] = count
+    bash_fixes_count = profile['rules_count'] - profile['missing_bash_fixes_count']
 
-                del profile[content]
-            filtered_output.append(profile)
+    for content in content_list:
+        content_file = "{}_{}.txt".format(profile['profile_id'], content)
+        content_filepath = os.path.join("content", content_file)
+        count = len(profile[content])
+        if count > 0:
+            _process_stats_content(profile, bash_fixes_count, content, content_filepath)
+            with open(os.path.join(content_path, content_file), 'w+') as f:
+                f.write('\n'.join(profile[content]))
+        else:
+            profile['{}_count'.format(content)] = count
+        del profile[content]
+    filtered_output.append(profile)
 
-        with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
-            f.write(json2html.convert(json=json.dumps(filtered_output), escape=False))
+
+def _get_profiles(args):
+    benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark, args.product)
+    ret = []
+    if args.profile:
+        ret.append(benchmark.show_profile_stats(args.profile, args))
+    else:
+        ret.extend(benchmark.show_all_profile_stats(args))
+    return ret
+
+
+def _generate_html_stats(args, profiles):
+    from json2html import json2html
+    filtered_output = []
+    output_path = "./"
+    if args.output:
+        output_path = args.output
+        mkdir_p(output_path)
+
+    content_path = os.path.join(output_path, "content")
+    mkdir_p(content_path)
+
+    for profile in profiles:
+        _filter_profile_for_html_stats(profile, filtered_output, content_path)
+
+    with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
+        f.write(json2html.convert(json=json.dumps(filtered_output), escape=False))
+
+
+def stats(args):
+    profiles = _get_profiles(args)
+
+    if args.format == "json":
+        print(json.dumps(profiles, indent=4))
+
+    elif args.format == "html":
+        _generate_html_stats(args, profiles)
 
     elif args.format == "csv":
         # we can assume ret has at least one element
         # CSV header
-        print(",".join(ret[0].keys()))
-        for line in ret:
+        print(",".join(profiles[0].keys()))
+        for line in profiles:
             print(",".join([str(value) for value in line.values()]))
 
 
