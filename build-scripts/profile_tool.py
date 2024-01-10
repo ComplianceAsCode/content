@@ -250,11 +250,40 @@ def parse_sub_subcommand(subparsers):
     )
 
 
+def parse_most_used_rules_subcommand(subparsers):
+    parser_most_used_rules = subparsers.add_parser(
+        "most-used-rules",
+        description=(
+            "Generates list of all rules used by the existing profiles. "
+            "In various formats."
+        ),
+        help=("Generates list of all rules used by the existing profiles."),
+    )
+    parser_most_used_rules.add_argument(
+        "--benchmarks",
+        "-b",
+        metavar="benchmark",
+        type=str,
+        nargs="+",
+        required=True,
+        action="store",
+        help="Specify XCCDF files or a SCAP source data stream files to act on.",
+    )
+    parser_most_used_rules.add_argument(
+        "--format",
+        default="plain",
+        choices=["plain", "json", "csv"],
+        help="Which format to use for output.",
+    )
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand", required=True)
+
     parse_stats_subcommand(subparsers)
     parse_sub_subcommand(subparsers)
+    parse_most_used_rules_subcommand(subparsers)
 
     args = parser.parse_args()
 
