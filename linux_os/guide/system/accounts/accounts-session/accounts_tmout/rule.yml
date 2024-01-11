@@ -27,6 +27,7 @@ description: |-
     <pre>typeset -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     or
     <pre>declare -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    Using the <code>typeset</code> keyword is preferred for wider compatibility with ksh and other shells.
     {{% endif %}}
 
 rationale: |-
