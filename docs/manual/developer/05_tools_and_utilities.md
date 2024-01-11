@@ -38,10 +38,22 @@ rules selected by another profile, run this command:
 
 ```bash
     $ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile
-````
+```
 
 This will result in a new YAML profile containing exclusive rules to the
 profile pointed by the `--profile1` option.
+
+The tool can also generate a list of the most used rules contained in profiles from a given data stream or benchmark.
+
+For example, to get a list of the most used rules in the benchmark for `rhel8`, run this command:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-rules --benchmarks build/ssg-rhel8-xccdf.xml
+```
+
+The result will be a list of rules with the number of uses in the profiles.
+The list can be generated as plain text, JSON or CVS.
+Via the `--format FORMAT` parameter.
 
 ## Generating Controls from DISA's XCCDF Files
 
