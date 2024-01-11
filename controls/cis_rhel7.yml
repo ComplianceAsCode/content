@@ -171,6 +171,33 @@ controls:
     rules:
     - mount_option_dev_shm_noexec
 
+  - id: 1.1.2.3.1
+    title: Ensure separate partition exists for /home (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - partition_for_home
+
+  - id: 1.1.2.3.2
+    title: Ensure /home partition includes the nodev option (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - mount_option_home_nodev
+
+  - id: 1.1.2.3.3
+    title: Ensure /home partition includes the nosuid option (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - mount_option_home_nosuid
+
   - id: 1.1.10
     title: Ensure separate partition exists for /var (Automated)
     levels:
@@ -233,24 +260,6 @@ controls:
     status: automated
     rules:
     - partition_for_var_log_audit
-
-  - id: 1.1.17
-    title: Ensure separate partition exists for /home (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - partition_for_home
-
-  - id: 1.1.18
-    title: Ensure /home partition includes the nodev option (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - mount_option_home_nodev
 
   - id: 1.1.19
     title: Ensure removable media partitions include noexec option (Automated)
