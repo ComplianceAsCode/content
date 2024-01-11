@@ -174,7 +174,7 @@ jobs:
           working-directory: ./build
 
   validate-windows:
-    name: Build on Windows
+    name: Build, Test on Windows
     runs-on: windows-latest
     env:
       OPENSCAP_VERSION: "1.3.10"
@@ -198,3 +198,7 @@ jobs:
         - name: Build
           shell: bash
           run: ./build_product -j2 fedora
+        - name: Test
+          shell: bash
+          run: ctest --output-on-failure -j2
+          working-directory: ./build
