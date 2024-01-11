@@ -23,8 +23,9 @@
 
 * Should follow [the template](https://github.com/ComplianceAsCode/content/blob/master/.github/pull_request_template.md)
 * Shall remove the sample text from the template pull request
-* Shall not have merge commits; they should have to be taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
+* Shall not have merge commits; they should have been taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
 * Should target `master` unless pulling an already merged pull request to a stabilization branch
+* Shall have a useful title so that it can be used in the changelog
 
 ### Before Merging
 
@@ -229,6 +230,7 @@ Rules sections must be in the following order, if they are present.
     * Comma separated list
     * No spaces between items
     * Items must be in alphabetical order
+    * Required on all new rules
 * `title`
     * Must be one line
     * Must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
@@ -446,6 +448,13 @@ Instead of:
 * Must use 4-space indentation
 * Shall put `do` or `then` on the same line as `for` or `if` respectively, e.g. `for file in *; do`
 
+### GitHub Actions
+* Shall follow all the rules in the [YAML](#yaml) section, expect the following:
+  * Existing files may use the `.yaml` prefix
+* Job names should be in [Title case](https://en.wikipedia.org/wiki/Title_case)
+* Shall use explicit version numbers for actions
+  * Updates are handled on a weekly basis by [Dependabot](https://github.com/ComplianceAsCode/content/network/updates)
+
 ### Kubernetes
 
 * Shall follow all the rules in the [YAML](#yaml) section
@@ -516,7 +525,8 @@ or
 * Shall use commands, including `if` etc., without extra spaces before or after `(` and `)` (Eg. `command(<args>)`
 * `endif`, `endforeach`, and similar commands shall not have any arguments
 * Shall keep flowing `)` at same indentation as starting clause
-* Shall use no more than 2 empty lines (Eg. 1 empty to mark part and 2 empty to mark sections)
+* Shall use no more than 2 empty lines (e.g. 1 empty to mark part and 2 empty to mark sections)
+* Shall be written to pass [CMakeLint](https://pypi.org/project/cmakelint/)
 
 ## Markup Languages
 

@@ -22,7 +22,7 @@ class SnapshotStack(object):
     SNAPSHOT_BASE = ("<domainsnapshot>"
                      "  <name>{name}</name>"
                      "  <description>"
-                     "     Full snapshot by SSG Test Suite"
+                     "     Full snapshot by Automatus"
                      "  </description>"
                      "</domainsnapshot>")
     CREATE_FLAGS = libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC

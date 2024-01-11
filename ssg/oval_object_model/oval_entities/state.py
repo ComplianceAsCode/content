@@ -25,9 +25,6 @@ def load_state(oval_state_xml_el):
 class State(OVALEntity):
     operator = "AND"
 
-    def __init__(self, tag, id_, properties):
-        super(State, self).__init__(tag, id_, properties)
-
     def get_xml_element(self):
         return super(State, self).get_xml_element(operator=self.operator)
 

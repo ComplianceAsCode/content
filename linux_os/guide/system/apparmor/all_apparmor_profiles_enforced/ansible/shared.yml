@@ -1,8 +1,15 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_debian
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
+
+{{% if 'debian' in product %}}
+- name: Ensure apparmor-utils is installed
+  package:
+    name: "apparmor-utils"
+    state: present
+{{% endif %}}
 
 - name: {{{ rule_title }}} - Ensure all AppArmor Profiles are reloaded
   ansible.builtin.command: apparmor_parser -q -r /etc/apparmor.d/
@@ -10,14 +17,15 @@
 - name:  {{{ rule_title }}} - Ensure all AppArmor Profiles are enforcing
   ansible.builtin.command: aa-enforce /etc/apparmor.d/*
 
-- name: {{{ rule_title }}} - Collect unconfined processes 
+- name: {{{ rule_title }}} - Collect unconfined processes
   ansible.builtin.command: aa-unconfined
   register: unconfined_processes
 
-- name: {{{ rule_title }}} - Provide details about unconfined processes 
-  ansible.builtin.assert: 
+- name: {{{ rule_title }}} - Provide details about unconfined processes
+  ansible.builtin.assert:
     that:
-       - unconfined_processes.stdout_lines | length > 0 
+       - unconfined_processes.stdout_lines | length > 0
     success_msg: "The process {{ item }} may need to have a profile created or activated for them and then be restarted."
     fail_msg: ""
   with_items: "{{ unconfined_processes.stdout_lines }}"
+  when: unconfined_processes is not skipped

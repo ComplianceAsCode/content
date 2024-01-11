@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_ubuntu,multi_platform_debian
 
 # make sure apparmor-utils is installed for aa-complain and aa-enforce
 {{{ bash_package_install("apparmor-utils") }}}

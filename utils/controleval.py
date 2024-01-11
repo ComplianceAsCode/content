@@ -84,7 +84,7 @@ def get_parameter_from_yaml(yaml_file: str, section: str) -> list:
     with open(yaml_file, 'r') as file:
         try:
             yaml_content = yaml.safe_load(file)
-            return yaml_content[section]
+            return yaml_content.get(section, [])
         except yaml.YAMLError as e:
             print(e)
 

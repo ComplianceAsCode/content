@@ -5,6 +5,7 @@ import pytest
 import xml.etree.ElementTree as ET
 
 import ssg.id_translate
+from ssg.oval_object_model import load_oval_document
 from ssg.constants import XCCDF12_NS, oval_namespace, ocil_namespace
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
@@ -110,6 +111,27 @@ def _parse_interesting_ids(oval_tree):
 
 
 def test_idtranslator_translate_oval_ids(idtranslator, oval_tree):
+    expected_definition_id = "oval:ssg-kerberos_disable_no_keytab:def:1"
+    expected_test_id = "oval:ssg-test_kerberos_disable_no_keytab:tst:1"
+    expected_object_id = "oval:ssg-obj_kerberos_disable_no_keytab:obj:1"
+    expected_state_id = "oval:ssg-filter_ssh_key_owner_root:ste:1"
+    oval_document = load_oval_document(oval_tree)
+    new_oval_document = idtranslator.translate_oval_document(oval_document)
+    new_tree = new_oval_document.get_xml_element()
+    real = _parse_interesting_ids(new_tree)
+    assert real.definition_id == expected_definition_id
+    assert real.criterion_test_ref == expected_test_id
+    assert real.criterion_test_ref == real.test_id
+    assert real.test_id == expected_test_id
+    assert real.object_ref == expected_object_id
+    assert real.object_ref == real.object_id
+    assert real.object_id == expected_object_id
+    assert real.filter_ref == expected_state_id
+    assert real.filter_ref == real.state_id
+    assert real.state_id == expected_state_id
+
+
+def test_idtranslator_translate_oval_ids_using_oval_object_model(idtranslator, oval_tree):
     expected_definition_id = "oval:ssg-kerberos_disable_no_keytab:def:1"
     expected_test_id = "oval:ssg-test_kerberos_disable_no_keytab:tst:1"
     expected_object_id = "oval:ssg-obj_kerberos_disable_no_keytab:obj:1"

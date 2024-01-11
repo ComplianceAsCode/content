@@ -10,16 +10,21 @@
 
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
+# note: on debian operating systems, /bin/sh is a symlink that point to /bin/dash shell. Dash lacks the pipefail option, so the
+#   set -o pipefail
+# line should be escaped.
 - name: '{{{ rule_title }}} - Get IncludeConfig directive'
   ansible.builtin.shell: |
-    set -o pipefail
+    {{%- if not 'debian' in product %}}
+    set -o pipefail{{% endif %}}
     grep -e '$IncludeConfig' {{ rsyslog_etc_config }} | cut -d ' ' -f 2 || true
   register: rsyslog_old_inc
   changed_when: False
 
 - name: '{{{ rule_title }}} - Get include files directives'
   ansible.builtin.shell: |
-    set -o pipefail
+    {{%- if not 'debian' in product %}}
+    set -o pipefail{{% endif %}}
     awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' {{ rsyslog_etc_config }} || true
   register: rsyslog_new_inc
   changed_when: False
@@ -27,6 +32,7 @@
 - name: '{{{ rule_title }}} - Aggregate rsyslog includes'
   ansible.builtin.set_fact:
     include_config_output: "{{ rsyslog_old_inc.stdout_lines + rsyslog_new_inc.stdout_lines }}"
+  when: rsyslog_old_inc is not skipped and rsyslog_new_inc is not skipped
 
 - name: '{{{ rule_title }}} - List all config files'
   ansible.builtin.find:
@@ -35,30 +41,35 @@
     hidden: no
     follow: yes
   loop: "{{ include_config_output | list + [rsyslog_etc_config] }}"
+  when: include_config_output is defined
   register: rsyslog_config_files
   failed_when: False
   changed_when: False
 
 - name: '{{{ rule_title }}} - Extract log files old format'
   ansible.builtin.shell: |
-    set -o pipefail
+    {{%- if not 'debian' in product %}}
+    set -o pipefail{{% endif %}}
     grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item.1.path }} | \
     awk '{print $NF}' | \
     sed -e 's/^-//' || true
-  loop: "{{ rsyslog_config_files.results | subelements('files') }}"
+  loop: "{{ rsyslog_config_files.results | default([]) | subelements('files') }}"
   register: log_files_old
   changed_when: False
+  when: rsyslog_config_files is not skipped
 
 - name: '{{{ rule_title }}} - Extract log files new format'
   ansible.builtin.shell: |
-    set -o pipefail
+    {{%- if not 'debian' in product %}}
+    set -o pipefail{{% endif %}}
     grep -ozP "action\s*\(\s*type\s*=\s*\"omfile\"[^\)]*\)" {{ item.1.path }} | \
     grep -aoP "File\s*=\s*\"([/[:alnum:][:punct:]]*)\"\s*\)" | \
     grep -oE "\"([/[:alnum:][:punct:]]*)\"" | \
     tr -d "\""|| true
-  loop: "{{ rsyslog_config_files.results | subelements('files') }}"
+  loop: "{{ rsyslog_config_files.results | default([]) | subelements('files') }}"
   register: log_files_new
   changed_when: False
+  when: rsyslog_config_files is not skipped
 
 - name: '{{{ rule_title }}} - Sum all log files found'
   ansible.builtin.set_fact:

@@ -1,0 +1,61 @@
+# platform = multi_platform_debian
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Ensure AIDE Is Installed"
+  ansible.builtin.apt:
+    name: aide
+    state: present
+
+- name: "{{{ rule_title }}} - Check if DB Path in /etc/aide/aide.conf Is Already Set"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    regexp: ^#?(\s*)(database=)(.*)$
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: database_replace
+
+- name: "{{{ rule_title }}} - Check if DB Out Path in /etc/aide/aide.conf Is Already Set"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    regexp: ^#?(\s*)(database_out=)(.*)$
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: database_out_replace
+
+- name: "{{{ rule_title }}} - Fix DB Path in Config File if Necessary"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    regexp: ^#?(\s*)(database)(\s*)=(\s*)(.*)$
+    line: \2\3=\4file:/var/lib/aide/aide.db
+    backrefs: true
+  when: database_replace.found > 0
+
+- name: "{{{ rule_title }}} - Fix DB Out Path in Config File if Necessary"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    regexp: ^#?(\s*)(database_out)(\s*)=(\s*)(.*)$
+    line: \2\3=\4file:/var/lib/aide/aide.db.new
+    backrefs: true
+  when: database_out_replace.found > 0
+
+- name: "{{{ rule_title }}} - Ensure the Default DB Path is Added"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    line: database=file:/var/lib/aide/aide.db
+    create: true
+  when: database_replace.found == 0
+
+- name: "{{{ rule_title }}} - Ensure the Default Out Path is Added"
+  ansible.builtin.lineinfile:
+    path: /etc/aide/aide.conf
+    line: database_out=file:/var/lib/aide/aide.db.new
+    create: true
+  when: database_out_replace.found == 0
+
+- name: "{{{ rule_title }}} - Build and Test AIDE Database"
+  ansible.builtin.command: /usr/sbin/aideinit -y -f

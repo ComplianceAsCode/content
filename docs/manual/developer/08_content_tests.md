@@ -75,3 +75,12 @@ To enable this test pass following options to cmake:
 You will need to replace `/opt/scapval/SCAP-Content-Validation-Tool-1.3.5/scapval-1.3.5.jar` with the actual path the SCAPVAL jar on your system.
 
 SCAPVal can be run with ctest using the following command `ctest -R 'scapval' --output-on-failure`.
+
+## SRG and STIG Mapping
+This test ensures that rules with `stigid` reference also have a `srg` reference.
+This test is an opt-in test per product, but ran by default.
+This uses the build datastreams so the project must be rebuilt in order for changes to be reflected in the results.
+
+The macro `stig_srg_mapping` in `tests/CMakeList.txt` should be used when adding a product for this test.
+
+This script uses `tests/stig_srg_mapping.py` to run the test.

@@ -67,7 +67,6 @@ references:
     nist: AC-2(4),AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     nist-csf: DE.AE-2,DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,DE.DP-4,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4,RS.CO-2
     pcidss: Req-10.2.2
-    pcidss4: "10.2.1.2"
     srg: SRG-OS-000327-GPOS-00127
 
 ocil_clause: "any setuid or setgid programs doesn't have a line in the audit rules"
@@ -99,7 +98,7 @@ warnings:
         </ul>
     - general: |-
         Note that OVAL check and Bash / Ansible remediation of this rule
-        explicitly excludes file systems mounted at <pre>/proc</pre> directory
+        explicitly excludes file systems mounted at <code>/proc</code> directory
         and its subdirectories. It is a virtual file system and it doesn't
         contain executable applications. At the same time, interacting with this
         file system during check or remediation caused undesirable errors.

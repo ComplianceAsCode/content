@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R11.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R12.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -33,13 +33,15 @@ description: 'This profile contains configuration checks that align to the
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
 extends: null
 metadata:
-    version: V1R11
+    version: V1R12
     SMEs:
     - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
+- account_password_pam_faillock_password_auth
+- account_password_pam_faillock_system_auth
 - account_password_selinux_faillock_dir
 - account_temp_expire_date
 - account_unique_id
@@ -190,6 +192,7 @@ selections:
 - configure_tmux_lock_command
 - configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
+- configured_firewalld_default_deny
 - coredump_disable_backtraces
 - coredump_disable_storage
 - dconf_gnome_banner_enabled
@@ -200,6 +203,7 @@ selections:
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_delay
 - dconf_gnome_screensaver_lock_enabled
+- dconf_gnome_screensaver_lock_locked
 - dconf_gnome_screensaver_user_locks
 - dconf_gnome_session_idle_user_locks
 - dir_group_ownership_library_dirs
@@ -250,6 +254,7 @@ selections:
 - file_permissions_var_log
 - file_permissions_var_log_audit
 - file_permissions_var_log_messages
+- firewalld-backend
 - gnome_gdm_disable_automatic_login
 - grub2_admin_username
 - grub2_audit_argument
@@ -276,6 +281,7 @@ selections:
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
+- kernel_module_uvcvideo_disabled
 - logind_session_timeout
 - mount_option_boot_efi_nosuid
 - mount_option_boot_nosuid
@@ -375,6 +381,7 @@ selections:
 - service_sshd_enabled
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
+- set_firewalld_default_zone
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
@@ -489,6 +496,7 @@ selections:
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P
 - var_screensaver_lock_delay=5_seconds
+- var_auditd_name_format=stig
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}

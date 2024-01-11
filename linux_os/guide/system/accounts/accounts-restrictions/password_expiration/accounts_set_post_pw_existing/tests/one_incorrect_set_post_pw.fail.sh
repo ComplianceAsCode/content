@@ -6,7 +6,7 @@ INCORRECT_VALUE=60
 TEST_USER="cac_testuser"
 
 # ensure existing users with a password defined have the correct value defined
-users_to_set=($(awk -v var=\"$INACTIVE_VALUE\" -F: '(($7 <= var || $7 == \"\") && $2 ~ /^\$/) {print $1}' /etc/shadow))
+users_to_set=($(awk -v var=\"$INACTIVE_VALUE\" -F: '(($7 <= var || $7 == "") && $2 ~ /^\$/) {print $1}' /etc/shadow))
 for user in ${users_to_set[@]};
 do
    chage --inactive $INACTIVE_VALUE $user

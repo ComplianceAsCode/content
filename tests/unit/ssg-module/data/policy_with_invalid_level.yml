@@ -1,0 +1,28 @@
+policy: ABCD Benchmark for securing Linux systems with levels
+title: ABCD Benchmark for securing Linux systems with levels
+id: abcd-levels
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+levels:
+  - id: low
+  - id: medium
+    inherits_from:
+    - low
+  - id: high
+    inherits_from:
+    - medium
+
+controls:
+  - id: S1
+    title: User session timeout
+
+  - id: S2
+    levels:
+    - invalid
+    rules:
+      - var_password_pam_minlen=1
+      - var_some_variable=1
+
+  - id: S3
+    levels:
+    - medium

@@ -45,7 +45,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="avahi-daemon") }}}
 
-platform: machine
+platform: machine and package[avahi]
 
 template:
     name: service_disabled

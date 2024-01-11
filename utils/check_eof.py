@@ -8,7 +8,7 @@ import sys
 EXTENSIONS = ['adoc', 'anaconda', 'conf', 'html', 'json', 'md', 'pp', 'profile', 'py', 'rb',
               'rst', 'rules', 'sh', 'template', 'toml', 'var', 'xml', 'yaml', 'yml']
 
-EXCLUSIONS = ['/shared/references/', '/logs/', '/tests/data/utils/']
+EXCLUSIONS = ['/shared/references/', '/logs/', '/tests/data/utils/', '/tests/.mypy_cache/']
 
 
 def parse_args() -> argparse.Namespace:
@@ -34,12 +34,12 @@ def get_all_files(paths: list) -> list:
         p = pathlib.Path(path)
         if not p.exists():
             sys.stderr.write(f"The path {p.absolute()} does not exist!\n")
-            exit(3)
+            continue
         files.extend(get_files(p))
     return files
 
 
-def should_skip_file(file: pathlib.Path):
+def should_skip_file(file: pathlib.Path) -> bool:
     for exclude in EXCLUSIONS:
         if exclude in str(file.absolute()):
             return True
@@ -65,7 +65,7 @@ def get_files_with_no_newline(files: list) -> list:
     return bad_files
 
 
-def fix_file(file: pathlib.Path):
+def fix_file(file: pathlib.Path) -> None:
     with open(file.absolute(), 'a') as f:
         f.write('\n')
 

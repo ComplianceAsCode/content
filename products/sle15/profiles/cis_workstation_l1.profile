@@ -21,10 +21,11 @@ description: |-
 
 selections:
     - cis_sle15:all:l1_workstation
-# Exclude from CIS profile all rules related to ntp and timesyncd and keep only 
+# Exclude from CIS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_configure_restrictions'
     - '!ntpd_run_as_ntp_user'
     - '!ntpd_specify_remote_server'
-    - '!service_ntpd_enabled'    
+    - '!service_ntpd_enabled'
     - '!service_timesyncd_enabled'
+    - '!service_timesyncd_configured'

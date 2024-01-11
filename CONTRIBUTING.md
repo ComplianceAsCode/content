@@ -69,11 +69,11 @@ The PR ...
 * ... passes PR gating tests, or failing tests are waived in a comment by the reviewer explaining the reasoning.
 * ... adheres to the [coding style](docs/manual/developer/04_style_guide.md#complianceascode-style-guide).
 * ... has been tested. The following options allow for testing various aspects of the project:
-  * [SSG Test Suite](tests/README.md) for rule tests to ensure that OVAL checks are correct and test the ability of remediations to satisfy those checks.
+  * [Automatus](tests/README.md) for rule tests to ensure that OVAL checks are correct and test the ability of remediations to satisfy those checks.
     Every testable rule that is newly created or that just got modified has to have at least one test scenario.
     If a PR interacts with a testable rule without tests, the author shall supply a test scenario as part of the PR to get it merged.
   * [BATS framework](tests/unit/bash) for bash tests that allows for fast and exhaustive testing of remediations that are parametrized by Jinja2.
-  * [Unit tests](tests/unit) that test components of the build system as well as components of the SSG Test Suite.
+  * [Unit tests](tests/unit) that test components of the build system as well as components of the Automatus.
   * Ad-hoc tests that are integrated into the `ctest` chain directly, i.e. the shellcheck test.
 * ... updates READMEs, man pages or other documentation when changes of described behavior are introduced.
 * ... doesn't contain merge commits - those can be removed by rebasing.

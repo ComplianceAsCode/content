@@ -96,6 +96,8 @@ endmacro()
 
 mypy_test("utils/import_srg_spreadsheet.py")
 mypy_test("utils/check_eof.py")
+mypy_test("utils/no_new_global_applicable_rules.py")
+
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_OPENPYXL AND PY_PANDAS AND SSG_PRODUCT_RHEL9)
     add_test(
@@ -229,6 +231,15 @@ macro(ssg_refcheck_test PRODUCT PROFILE KEY)
     set_tests_properties("refchecker-${PRODUCT}-${PROFILE}" PROPERTIES LABELS quick)
 endmacro()
 
+macro(stig_srg_mapping_test PRODUCT)
+    add_test(
+        NAME "stig-srg-mapping-${PRODUCT}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/stig_srg_mapping.py" --prefix "SRG-OS" --build-root "${CMAKE_BINARY_DIR}" --root "${CMAKE_SOURCE_DIR}" ${PRODUCT}
+    )
+    set_tests_properties("stig-srg-mapping-${PRODUCT}" PROPERTIES LABELS quick)
+endmacro()
+
+
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "cis_workstation_l1" "cis")
     ssg_refcheck_test("rhel9" "cis_workstation_l2" "cis")
@@ -238,6 +249,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
     ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
     # This exclude can be removed once enable_authselect has a stigid
     ssg_refcheck_test("rhel9" "stig" "stigid" "enable_authselect")
+    stig_srg_mapping_test("rhel9")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
@@ -245,6 +257,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel8" "cis" "cis")
+    stig_srg_mapping_test("rhel8")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
@@ -252,6 +265,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
     ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
     ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
     ssg_refcheck_test("rhel7" "cis" "cis")
+    stig_srg_mapping_test("rhel7")
 endif()
 
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
@@ -281,7 +295,7 @@ endif()
 if(PYTHON_VERSION_MAJOR GREATER 2)
     add_test(
         NAME "test-check-eof"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_eof.py" "${CMAKE_SOURCE_DIR}/ssg" "${CMAKE_SOURCE_DIR}/linux_os" "${CMAKE_SOURCE_DIR}/utils" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/products" "${CMAKE_SOURCE_DIR}/shared" "${CMAKE_SOURCE_DIR}/docs" "${CMAKE_SOURCE_DIR}/apple_os" "${CMAKE_SOURCE_DIR}/applications" "${CMAKE_SOURCE_DIR}/build-scripts" "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/Dockerfiles" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/controls"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/check_eof.py" "${CMAKE_SOURCE_DIR}/ssg" "${CMAKE_SOURCE_DIR}/linux_os" "${CMAKE_SOURCE_DIR}/utils" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/products" "${CMAKE_SOURCE_DIR}/shared" "${CMAKE_SOURCE_DIR}/docs" "${CMAKE_SOURCE_DIR}/apple_os" "${CMAKE_SOURCE_DIR}/applications" "${CMAKE_SOURCE_DIR}/build-scripts" "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/Dockerfiles" "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_SOURCE_DIR}/controls" "${CMAKE_SOURCE_DIR}/.github"
     )
 endif()
 
@@ -312,4 +326,13 @@ add_test(
     NAME "components"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
 )
+endif()
+
+if(PYTHON_VERSION_MAJOR GREATER 2)
+    add_test(
+        NAME "test-no-new-global-applicable-rules"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/no_new_global_applicable_rules.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+    )
+    set_tests_properties("test-no-new-global-applicable-rules" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("test-no-new-global-applicable-rules" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()

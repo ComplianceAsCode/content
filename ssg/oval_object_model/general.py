@@ -1,6 +1,6 @@
 import re
 
-from ..constants import BOOL_TO_STR, xsi_namespace
+from ..constants import BOOL_TO_STR, xsi_namespace, OVAL_NAMESPACES, OVALREFATTR_TO_TAG
 from ..xml import ElementTree
 from .. import utils
 
@@ -62,6 +62,13 @@ class OVALBaseObject(object):
                 __value = __value + "}"
         self.__namespace = __value
 
+    @property
+    def tag_name(self):
+        return "{}{}".format(self.namespace, self.tag)
+
+    def __ne__(self, __value):
+        return self.__dict__ != __value.__dict__
+
     def __eq__(self, __value):
         return self.__dict__ == __value.__dict__
 
@@ -72,6 +79,9 @@ class OVALBaseObject(object):
         return str(self.__dict__)
 
     def get_xml_element(self):
+        raise NotImplementedError
+
+    def translate_id(self, translator, store_defname=False):
         raise NotImplementedError
 
 
@@ -85,7 +95,7 @@ class OVALComponent(OVALBaseObject):
         self.id_ = id_
 
     def get_xml_element(self):
-        el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        el = ElementTree.Element(self.tag_name)
         el.set("id", self.id_)
         el.set("version", self.version)
         if self.deprecated:
@@ -93,6 +103,13 @@ class OVALComponent(OVALBaseObject):
         if self.notes:
             el.append(self.notes.get_xml_element())
         return el
+
+    def translate_id(self, translator, store_defname=False):
+        self.id_ = translator.generate_id(self.tag_name, self.id_)
+
+    @property
+    def name(self):
+        return re.search(r"(?<=-)[^:]+(?=:)", self.id_).group()
 
 
 class OVALEntity(OVALComponent):
@@ -124,6 +141,11 @@ class OVALEntity(OVALComponent):
 
         return el
 
+    def translate_id(self, translator, store_defname=False):
+        super(OVALEntity, self).translate_id(translator)
+        for property_ in self.properties:
+            property_.translate_id(translator)
+
 
 # ----- OVAL Objects
 
@@ -152,7 +174,7 @@ class Notes(OVALBaseObject):
         self.notes = notes
 
     def get_xml_element(self):
-        notes_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        notes_el = ElementTree.Element(self.tag_name)
         for note in self.notes:
             note_el = ElementTree.Element(self.note_tag)
             note_el.text = note
@@ -197,7 +219,7 @@ class OVALEntityProperty(OVALBaseObject):
         self.properties.append(property_)
 
     def get_xml_element(self):
-        property_el = ElementTree.Element("{}{}".format(self.namespace, self.tag))
+        property_el = ElementTree.Element(self.tag_name)
         for key, val in self.attributes.items() if self.attributes is not None else {}:
             property_el.set(key, val)
 
@@ -218,3 +240,30 @@ class OVALEntityProperty(OVALBaseObject):
         for property_ in self.properties:
             out.extend(property_.get_values_by_key(key))
         return out
+
+    def _translate_attributes(self, translator):
+        for attr in self.attributes.keys() if self.attributes is not None else {}:
+            if attr in OVALREFATTR_TO_TAG.keys():
+                self.attributes[attr] = translator.generate_id(
+                    "{%s}%s" % (OVAL_NAMESPACES.definition, OVALREFATTR_TO_TAG[attr]),
+                    self.attributes[attr],
+                )
+
+    def translate_id(self, translator, store_defname=False):
+        if self.tag == "var_ref":
+            self.text = translator.generate_id(
+                "{%s}variable" % OVAL_NAMESPACES.definition, self.text
+            )
+        elif self.tag == "filter":
+            self.text = translator.generate_id(
+                "{%s}state" % OVAL_NAMESPACES.definition, self.text
+            )
+        elif self.tag == "object_reference":
+            self.text = translator.generate_id(
+                "{%s}object" % OVAL_NAMESPACES.definition, self.text
+            )
+
+        for property_ in self.properties:
+            property_.translate_id(translator)
+
+        self._translate_attributes(translator)

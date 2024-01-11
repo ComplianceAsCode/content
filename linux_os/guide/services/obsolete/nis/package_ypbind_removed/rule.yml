@@ -43,3 +43,9 @@ template:
     name: package_removed
     vars:
         pkgname: ypbind
+
+{{% if product in ["rhel9"] %}}
+warnings:
+    - general:
+        The package is not available in {{{ full_name }}}.
+{{% endif %}}

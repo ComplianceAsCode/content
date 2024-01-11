@@ -13,7 +13,7 @@ from .oval_definition_references import OVALDefinitionReference
 
 def _get_xml_el(tag_name, xml_el):
     el = xml_el.find("./{%s}%s" % (OVAL_NAMESPACES.definition, tag_name))
-    return el if el else ElementTree.Element("empty-element")
+    return el if el is not None else ElementTree.Element("empty-element")
 
 
 def _load_definitions(oval_document, oval_document_xml_el):
@@ -62,6 +62,13 @@ def load_oval_document(oval_document_xml_el):
     return oval_document
 
 
+def selection_of_oval_components_generator(component_dict, id_selection):
+    for component_id, component in component_dict.items():
+        if component_id not in id_selection:
+            continue
+        yield component_id, component
+
+
 class MissingOVALComponent(Exception):
     pass
 
@@ -71,9 +78,6 @@ class OVALDocument(OVALContainer):
     __product_name = "OVAL Object Model from SCAP Security Guide"
     product_version = ""
     __ssg_version = ""
-
-    def __init__(self):
-        super(OVALDocument, self).__init__()
 
     @property
     def ssg_version(self):
@@ -139,28 +143,48 @@ class OVALDocument(OVALContainer):
             return False
         return True
 
-    def get_xml_element(self):
+    def get_xml_element(self, oval_definition_references=None):
+        definitions_selection = self.definitions.keys()
+        tests_selection = self.tests.keys()
+        objects_selection = self.objects.keys()
+        states_selection = self.states.keys()
+        variables_selection = self.variables.keys()
+        if oval_definition_references is not None:
+            definitions_selection = oval_definition_references.definitions
+            tests_selection = oval_definition_references.tests
+            objects_selection = oval_definition_references.objects
+            states_selection = oval_definition_references.states
+            variables_selection = oval_definition_references.variables
+
         root = self._get_oval_definition_el()
         root.append(self._get_generator_el())
-        root.append(self._get_component_el("definitions", self.definitions.values()))
-        root.append(self._get_component_el("tests", self.tests.values()))
-        root.append(self._get_component_el("objects", self.objects.values()))
-        if self.states:
-            root.append(self._get_component_el("states", self.states.values()))
-        if self.variables:
-            root.append(self._get_component_el("variables", self.variables.values()))
+        root.append(
+            self._get_component_el(
+                "definitions", self.definitions, definitions_selection
+            )
+        )
+        root.append(self._get_component_el("tests", self.tests, tests_selection))
+        root.append(self._get_component_el("objects", self.objects, objects_selection))
+        if states_selection:
+            root.append(self._get_component_el("states", self.states, states_selection))
+        if variables_selection:
+            root.append(
+                self._get_component_el("variables", self.variables, variables_selection)
+            )
         return root
 
-    def save_as_xml(self, fd):
-        root = self.get_xml_element()
+    def save_as_xml(self, fd, oval_definition_references=None):
+        root = self.get_xml_element(oval_definition_references)
         if hasattr(ElementTree, "indent"):
             ElementTree.indent(root, space=" ", level=0)
         ElementTree.ElementTree(root).write(fd, xml_declaration=True, encoding="utf-8")
 
-    def _get_component_el(self, tag, values):
+    def _get_component_el(self, tag, component_dict, id_selection):
         xml_el = ElementTree.Element("{%s}%s" % (OVAL_NAMESPACES.definition, tag))
-        for val in values:
-            xml_el.append(val.get_xml_element())
+        for _, component in selection_of_oval_components_generator(
+            component_dict, id_selection
+        ):
+            xml_el.append(component.get_xml_element())
         return xml_el
 
     def _get_generator_el(self):

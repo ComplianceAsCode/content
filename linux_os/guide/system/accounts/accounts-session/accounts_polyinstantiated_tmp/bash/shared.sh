@@ -1,4 +1,3 @@
-#!/bin/bash
 # platform = multi_platform_all
 
 # shellcheck disable=SC2174
