@@ -1,5 +1,6 @@
 import os
 import json
+from json2html import json2html
 
 from ssg.build_profile import XCCDFBenchmark
 from ssg.utils import mkdir_p
@@ -74,8 +75,6 @@ def _get_profiles(args):
 
 
 def _generate_html_stats(args, profiles):
-    from json2html import json2html
-
     filtered_output = []
     output_path = "./"
     if args.output:
