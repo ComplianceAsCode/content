@@ -16,7 +16,7 @@ except ImportError:
     exit(1)
 
 
-def parse_stats(subparsers):
+def parse_stats_subcommand(subparsers):
     parser_stats = subparsers.add_parser(
         "stats",
         description=(
@@ -190,7 +190,7 @@ def parse_stats(subparsers):
     )
 
 
-def parse_sub(subparsers):
+def parse_sub_subcommand(subparsers):
     parser_sub = subparsers.add_parser(
         "sub",
         description=(
@@ -232,8 +232,8 @@ def parse_sub(subparsers):
 def parse_args():
     parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand", required=True)
-    parse_stats(subparsers)
-    parse_sub(subparsers)
+    parse_stats_subcommand(subparsers)
+    parse_sub_subcommand(subparsers)
 
     args = parser.parse_args()
 
