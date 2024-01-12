@@ -333,33 +333,6 @@ controls:
     rules:
     - mount_option_var_log_audit_noexec
 
-  - id: 1.1.19
-    title: Ensure removable media partitions include noexec option (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - mount_option_noexec_removable_partitions
-
-  - id: 1.1.20
-    title: Ensure nodev option set on removable media partitions (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - mount_option_nodev_removable_partitions
-
-  - id: 1.1.21
-    title: Ensure nosuid option set on removable media partitions (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - mount_option_nosuid_removable_partitions
-
   - id: 1.1.22
     title: Ensure sticky bit is set on all world-writable directories (Automated)
     levels:
