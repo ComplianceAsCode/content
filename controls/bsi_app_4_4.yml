@@ -169,14 +169,27 @@ controls:
     levels:
     - standard
     description: >-
-      The configuration files of a Kubernetes cluster, including all its extensions and applications,
+      (1) The configuration files of a Kubernetes cluster, including all its extensions and applications,
       SHOULD be versioned and annotated.
-      Access rights to configuration file management software SHOULD be granted in a restrictive
-      manner. Read and write access rights to the configuration files of the control plane SHOULD
+      (2) Access rights to configuration file management software SHOULD be granted in a restrictive
+      manner. (3) Read and write access rights to the configuration files of the control plane SHOULD
       be assigned and restricted with particular care.
     notes: >-
-      TBD
-    status: pending
+      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All 
+      resources that are created after the initial cluster installation can be considered configuration
+      files as described in this control. 
+
+      Section 1: This control needs to be adressed on an organizational level. To achieve versioning,
+      the configuration files should be stored in a Git repository. The Git repository is considered 
+      the only source of truth and provides a visible and auditable trail of changes. To automatically
+      apply the configuration, GitOps processes and tools like OpenShift GitOps can be used.
+
+      Section 2: This control needs to be adressed in the respective external systems. Access rights
+      to the Git repository and GitOps controller should be granted in a restrictive manner.
+      
+      Section 3: The relevant Kubernetes resources for configuring the control plane are inherently
+      protected by Kubernetes RBAC and can only be modified by cluster administrators.
+    status: manual
     rules: []
 
   - id: APP.4.4.A9
@@ -184,30 +197,56 @@ controls:
     levels:
     - standard
     description: >-
-      Pods SHOULD NOT use the "default" service account. Rights SHOULD NOT be granted to the
-      "default" service account. Pods for different applications SHOULD run under their own service
-      accounts. Access rights for the service accounts of the applications' pods SHOULD be limited
+      (1) Pods SHOULD NOT use the "default" service account. (2) Rights SHOULD NOT be granted to the
+      "default" service account. (3) Pods for different applications SHOULD run under their own service
+      accounts. (4) Access rights for the service accounts of the applications' pods SHOULD be limited
       to those that are strictly necessary.
-      Pods that do not require a service account SHOULD not be able to view it or have access to
+      (5) Pods that do not require a service account SHOULD not be able to view it or have access to
       corresponding tokens.
-      Only control plane pods and pods that absolutely need them SHOULD use privileged service
+      (6) Only control plane pods and pods that absolutely need them SHOULD use privileged service
       accounts.
-      Automation programs SHOULD each receive their own tokens, even if they share a common
+      (7) Automation programs SHOULD each receive their own tokens, even if they share a common
       service account due to similar tasks.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1-5: This needs to be adressed in the individual application deployments. The
+      associated rules provide additional guidance.
+
+      Section 6: The usage of privileged service accounts is controlled by Security Context 
+      Constraints (SCC), which should be configured and granted according to the principle of least 
+      privilege.
+
+      Section 7: This control needs to be adressed on an organizational level.      
+    status: partial
+    rules:
+      # Section 1-3:
+      - accounts_unique_service_account
+      # Section 4:
+      - rbac_least_privilege
+      - rbac_wildcard_use
+      # Section 5:
+      - accounts_restrict_service_account_tokens
+      # Section 6:
+      - scc_drop_container_capabilities
+      - scc_limit_container_allowed_capabilities
+      - scc_limit_host_dir_volume_plugin
+      - scc_limit_host_ports
+      - scc_limit_ipc_namespace
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      - scc_limit_privilege_escalation
+      - scc_limit_privileged_containers
+      - scc_limit_process_id_namespace
+      - scc_limit_root_containers
 
   - id: APP.4.4.A10
     title: Securing Automation Processes
     levels:
     - standard
     description: >-
-      All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
-      with the rights that are strictly necessary. If different user groups can change configurations or
-      start pods via automation software, this SHOULD be done for each group through separate
-      processes that only have the rights necessary for the respective user group.
+      (1) All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
+      with the rights that are strictly necessary. (2) If different user groups can change 
+      configurations or start pods via automation software, this SHOULD be done for each group 
+      through separate processes that only have the rights necessary for the respective user group.
     notes: >-
       This control needs to be adressed on an organizational level. All service accounts used by 
       automation software need to adhere to the principle of least privilege.
@@ -219,16 +258,25 @@ controls:
     levels:
     - standard
     description: >-
-      In pods, each container SHOULD define a health check for start-up and operation ("readiness"
-      and "liveness"). These checks SHOULD provide information about the availability of the
-      software running in a pod. The checks SHOULD fail if the monitored software cannot perform
-      its tasks properly. For each of these checks, a time period SHOULD be defined that is
-      appropriate for the service running in the pod. Based on these checks, Kubernetes SHOULD
+      (1) In pods, each container SHOULD define a health check for start-up and operation ("readiness"
+      and "liveness"). (2) These checks SHOULD provide information about the availability of the
+      software running in a pod. (3) The checks SHOULD fail if the monitored software cannot perform
+      its tasks properly. (4) For each of these checks, a time period SHOULD be defined that is
+      appropriate for the service running in the pod. (5) Based on these checks, Kubernetes SHOULD
       delete or restart the pods.
     notes: >-
-      TBD
-    status: pending
+      Section 1-3: The existance of readiness und liveness probes can be validated technically. This
+      check needs to be performed for each container in every pod individually.
+      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by 
+      the application owner.
+      Section 5: This functionality is inherently met by OpenShift.
+    status: manual
     rules: []
+      # Section 1-4:
+      # - liveness_readiness_probe_in_deployment
+      # TODO:
+      # - liveness_readiness_probe_in_statefulset
+      # - liveness_readiness_probe_in_daemonset
 
   - id: APP.4.4.A12
     title: Securing Infrastructure Applications
