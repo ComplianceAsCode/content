@@ -18,12 +18,11 @@ def command_sub(args):
 
     exclusive_rules = len(subtracted_profile.get_rule_selectors())
     exclusive_vars = len(subtracted_profile.get_variable_selectors())
-    if exclusive_rules > 0:
-        print("{} rules were left after subtraction.".format(exclusive_rules))
-    if exclusive_vars > 0:
-        print("{} variables were left after subtraction.".format(exclusive_vars))
-
     if exclusive_rules > 0 or exclusive_vars > 0:
+        print(
+            "{} rules were left after subtraction.\n"
+            "{} variables were left after subtraction.".format(exclusive_rules, exclusive_vars)
+        )
         profile1_basename = os.path.splitext(os.path.basename(args.profile1))[0]
         profile2_basename = os.path.splitext(os.path.basename(args.profile2))[0]
         subtracted_profile_filename = "{}_sub_{}.profile".format(
