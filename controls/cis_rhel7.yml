@@ -297,7 +297,7 @@ controls:
     rules:
     - mount_option_var_log_noexec
 
-  - id: 1.1.16
+  - id: 1.1.2.7.1
     title: Ensure separate partition exists for /var/log/audit (Automated)
     levels:
     - l2_server
@@ -305,6 +305,33 @@ controls:
     status: automated
     rules:
     - partition_for_var_log_audit
+
+  - id: 1.1.2.7.2
+    title: Ensure /var/log/audit partition includes the nodev option (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - mount_option_var_log_audit_nodev
+
+  - id: 1.1.2.7.3
+    title: Ensure /var/log/audit partition includes the nosuid option (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - mount_option_var_log_audit_nosuid
+
+  - id: 1.1.2.7.4
+    title: Ensure /var/log/audit partition includes the noexec option (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - mount_option_var_log_audit_noexec
 
   - id: 1.1.19
     title: Ensure removable media partitions include noexec option (Automated)
