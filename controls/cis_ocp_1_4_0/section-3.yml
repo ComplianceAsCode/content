@@ -15,7 +15,7 @@ controls:
       rules:
         - idp_is_configured
         - kubeadmin_removed
-      levels: level_2
+      levels: [ level_2, ]
   - id: '3.2'
     title: Logging
     status: automated
@@ -26,11 +26,11 @@ controls:
       status: automated
       rules:
         - audit_profile_set
-      levels: level_1
+      levels: [ level_1, ]
     - id: 3.2.2
       title: Ensure that the audit policy covers key security concerns
       status: automated
       rules:
         - audit_profile_set
-      levels: level_2
+      levels: [ level_2, ]
 

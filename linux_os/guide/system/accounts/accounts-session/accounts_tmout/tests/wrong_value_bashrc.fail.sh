@@ -5,4 +5,4 @@
 
 sed -i "/.*TMOUT.*/d" /etc/profile /etc/profile.d/*.sh /etc/bashrc
 
-echo "declare -xr TMOUT=800" >> /etc/bashrc
+echo "typeset -xr TMOUT=800" >> /etc/bashrc

@@ -3,6 +3,9 @@
 
 function perform_remediation {
     {{% if MOUNT_HAS_TO_EXIST %}}
+        # the mount point {{{ MOUNTPOINT }}} has to be defined in /etc/fstab
+        # before this remediation can be executed. In case it is not defined, the
+        # remediation aborts and no changes regarding the mount point are done.
         {{{ bash_assert_mount_point_in_fstab( MOUNTPOINT ) | indent(4) }}}
     {{% endif %}}
 

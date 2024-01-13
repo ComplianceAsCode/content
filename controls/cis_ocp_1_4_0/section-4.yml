@@ -14,33 +14,33 @@ controls:
       status: automated
       rules:
         - file_permissions_worker_service
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.2
       title: Ensure that the kubelet service file ownership is set to root:root
       status: automated
       rules:
         - file_owner_worker_service
         - file_groupowner_worker_service
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.3
       title: If proxy kube proxy configuration file exists ensure permissions are set to 644 or more restrictive
       status: automated
       rules:
         - file_permissions_proxy_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.4
       title: If proxy kubeconfig file exists ensure ownership is set to root:root
       status: automated
       rules:
         - file_owner_proxy_kubeconfig
         - file_groupowner_proxy_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.5
       title: Ensure that the --kubeconfig kubelet.conf file permissions are set to 644 or more restrictive
       status: automated
       rules:
         - file_permissions_kubelet_conf
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.6
       title: Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root
       status: automated
@@ -49,33 +49,33 @@ controls:
         - file_owner_kubelet_conf
         #- file_groupowner_kubelet
         - file_owner_kubelet
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.7
       title: Ensure that the certificate authorities file permissions are set to 644 or more restrictive
       status: automated
       rules:
         - file_permissions_worker_ca
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.8
       title: Ensure that the client certificate authorities file ownership is set to root:root
       status: automated
       rules:
         - file_owner_worker_ca
         - file_groupowner_worker_ca
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.9
       title: Ensure that the kubelet --config configuration file has permissions set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_worker_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.1.10
       title: Ensure that the kubelet configuration file ownership is set to root:root
       status: automated
       rules:
         - file_owner_worker_kubeconfig
         - file_groupowner_worker_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
   - id: '4.2'
     title: Kubelet
     status: pending
@@ -89,73 +89,73 @@ controls:
         - kubelet_eviction_thresholds_set_hard_nodefs_available
         - kubelet_eviction_thresholds_set_hard_nodefs_inodesfree
         - kubelet_eviction_thresholds_set_hard_imagefs_available
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.2
       title: Ensure that the --anonymous-auth argument is set to false
       status: automated
       rules:
         - kubelet_anonymous_auth
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.3
       title: Ensure that the --authorization-mode argument is not set to AlwaysAllow
       status: automated
       rules:
         - kubelet_authorization_mode
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.4
       title: Ensure that the --client-ca-file argument is set as appropriate
       status: automated
       rules:
         - kubelet_configure_client_ca
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.5
       title: Verify that the read only port is not used or is set to 0
       status: automated
       rules:
         - kubelet_disable_readonly_port
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.6
       title: Ensure that the --streaming-connection-idle-timeout argument is not set to 0
       status: automated
       rules:
         - kubelet_enable_streaming_connections
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.7
       title: Ensure that the --make-iptables-util-chains argument is set to true
       status: automated
       rules:
         - kubelet_enable_iptables_util_chains
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.8
       title: Ensure that the kubeAPIQPS [--event-qps] argument is set to 0 or a level which ensures appropriate event capture
       status: automated
       rules:
         - kubelet_configure_event_creation
-      levels: level_2
+      levels: [ level_2, ]
     - id: 4.2.9
       title: Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
       status: automated
       rules:
         - kubelet_configure_tls_cert
         - kubelet_configure_tls_key
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.10
       title: Ensure that the --rotate-certificates argument is not set to false
       status: automated
       rules:
         - kubelet_enable_client_cert_rotation
         - kubelet_enable_cert_rotation
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.11
       title: Verify that the RotateKubeletServerCertificate argument is set to true
       status: automated
       rules:
         - kubelet_enable_server_cert_rotation
-      levels: level_1
+      levels: [ level_1, ]
     - id: 4.2.12
       title: Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
       status: automated
       rules:
         - kubelet_configure_tls_cipher_suites
-      levels: level_1
+      levels: [ level_1, ]
 

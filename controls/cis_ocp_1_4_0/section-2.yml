@@ -10,42 +10,42 @@ controls:
     rules:
       - etcd_cert_file
       - etcd_key_file
-    levels: level_1
+    levels: [ level_1, ]
   - id: '2.2'
     title: Ensure that the --client-cert-auth argument is set to true
     status: automated
     rules:
       - etcd_client_cert_auth
-    levels: level_1
+    levels: [ level_1, ]
   - id: '2.3'
     title: Ensure that the --auto-tls argument is not set to true
     status: automated
     rules:
       - etcd_auto_tls
-    levels: level_1
+    levels: [ level_1, ]
   - id: '2.4'
     title: Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate
     status: automated
     rules:
       - etcd_peer_cert_file
       - etcd_peer_key_file
-    levels: level_1
+    levels: [ level_1, ]
   - id: '2.5'
     title: Ensure that the --peer-client-cert-auth argument is set to true
     status: automated
     rules:
       - etcd_peer_client_cert_auth
-    levels: level_1
+    levels: [ level_1, ]
   - id: '2.6'
     title: Ensure that the --peer-auto-tls argument is not set to true
     status: automated
     rules:
       - etcd_peer_auto_tls
-    levels: level_1
+    levels: [ level_1, ]
   - id: '2.7'
     title: Ensure that a unique Certificate Authority is used for etcd
     status: automated
     rules:
       - etcd_unique_ca
-    levels: level_2
+    levels: [ level_2, ]
 

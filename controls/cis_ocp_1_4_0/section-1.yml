@@ -14,53 +14,53 @@ controls:
       status: automated
       rules:
         - file_permissions_kube_apiserver
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.2
       title: Ensure that the API server pod specification file ownership is set to root:root
       status: automated
       rules:
         - file_owner_kube_apiserver
         - file_groupowner_kube_apiserver
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.3
       title: Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_kube_controller_manager
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.4
       title: Ensure that the controller manager pod specification file ownership is set to root:root
       status: automated
       rules:
         - file_owner_kube_controller_manager
         - file_groupowner_kube_controller_manager
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.5
       title: Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_scheduler
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.6
       title: Ensure that the scheduler pod specification file ownership is set to root:root
       status: automated
       rules:
         - file_owner_kube_scheduler
         - file_groupowner_kube_scheduler
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.7
       title: Ensure that the etcd pod specification file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_etcd_member
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.8
       title: Ensure that the etcd pod specification file ownership is set to root:root
       status: automated
       rules:
         - file_groupowner_etcd_member
         - file_owner_etcd_member
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.9
       title: Ensure that the Container Network Interface file permissions are set to 600 or more restrictive
       status: automated
@@ -77,7 +77,7 @@ controls:
         - file_permissions_ovsdb_server_pid
         - file_permissions_ovn_cni_server_sock
         - file_permissions_ovn_db_files
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.10
       title: Ensure that the Container Network Interface file ownership is set to root:root
       status: automated
@@ -106,14 +106,14 @@ controls:
         - file_owner_ovn_cni_server_sock
         - file_owner_ovn_db_files
         - file_groupowner_ovn_db_files
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.11
       title: Ensure that the etcd data directory permissions are set to 700 or more restrictive
       status: automated
       rules:
         - file_permissions_etcd_data_dir
         - file_permissions_etcd_data_files
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.12
       title: Ensure that the etcd data directory ownership is set to etcd:etcd
       status: automated
@@ -122,46 +122,46 @@ controls:
         - file_groupowner_etcd_data_dir
         - file_owner_etcd_data_files
         - file_groupowner_etcd_data_files
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.13
       title: Ensure that the kubeconfig file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_master_admin_kubeconfigs
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.14
       title: Ensure that the kubeconfig file ownership is set to root:root
       status: automated
       rules:
         - file_owner_master_admin_kubeconfigs
         - file_groupowner_master_admin_kubeconfigs
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.15
       title: Ensure that the Scheduler kubeconfig file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_scheduler_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.16
       title: Ensure that the Scheduler kubeconfig file ownership is set to root:root
       status: automated
       rules:
         - file_owner_scheduler_kubeconfig
         - file_groupowner_scheduler_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.17
       title: Ensure that the Controller Manager kubeconfig file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_controller_manager_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.18
       title: Ensure that the Controller Manager kubeconfig file ownership is set to root:root
       status: automated
       rules:
         - file_owner_controller_manager_kubeconfig
         - file_groupowner_controller_manager_kubeconfig
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.19
       title: Ensure that the OpenShift PKI directory and file ownership is set to root:root
       status: automated
@@ -172,20 +172,20 @@ controls:
         - file_groupowner_openshift_pki_cert_files
         - file_owner_etcd_pki_cert_files
         - file_groupowner_etcd_pki_cert_files
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.20
       title: Ensure that the OpenShift PKI certificate file permissions are set to 600 or more restrictive
       status: automated
       rules:
         - file_permissions_openshift_pki_cert_files
         - file_permissions_etcd_pki_cert_files
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.1.21
       title: Ensure that the OpenShift PKI key file permissions are set to 600
       status: automated
       rules:
         - file_permissions_openshift_pki_key_files
-      levels: level_1
+      levels: [ level_1, ]
   - id: '1.2'
     title: API Server
     status: pending
@@ -196,19 +196,19 @@ controls:
       status: automated
       rules:
         - api_server_anonymous_auth
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.2
       title: Ensure that the --basic-auth-file argument is not set
       status: automated
       rules:
         - api_server_basic_auth
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.3
       title: Ensure that the --token-auth-file parameter is not set
       status: automated
       rules:
         - api_server_token_auth
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.4
       title: Use https for kubelet connections
       status: automated
@@ -216,7 +216,7 @@ controls:
         - api_server_https_for_kubelet_conn
         - api_server_openshift_https_serving_cert
         - api_server_oauth_https_serving_cert
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.5
       title: Ensure that the kubelet uses certificates to authenticate
       status: automated
@@ -225,169 +225,169 @@ controls:
         - api_server_kubelet_client_cert_pre_4_9
         - api_server_kubelet_client_key
         - api_server_kubelet_client_key_pre_4_9
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.6
       title: Verify that the kubelet certificate authority is set as appropriate
       status: automated
       rules:
         - api_server_kubelet_certificate_authority
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.7
       title: Ensure that the --authorization-mode argument is not set to AlwaysAllow
       status: automated
       rules:
         - api_server_auth_mode_no_aa
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.8
       title: Verify that RBAC is enabled
       status: automated
       rules:
         - api_server_auth_mode_rbac
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.9
       title: Ensure that the APIPriorityAndFairness feature gate is enabled
       status: automated
       rules:
         - api_server_api_priority_gate_enabled
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.10
       title: Ensure that the admission control plugin AlwaysAdmit is not set
       status: automated
       rules:
         - api_server_admission_control_plugin_alwaysadmit
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.11
       title: Ensure that the admission control plugin AlwaysPullImages is not set
       status: automated
       rules:
         - api_server_admission_control_plugin_alwayspullimages
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.12
       title: Ensure that the admission control plugin ServiceAccount is set
       status: automated
       rules:
         - api_server_admission_control_plugin_service_account
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.13
       title: Ensure that the admission control plugin NamespaceLifecycle is set
       status: automated
       rules:
         - api_server_admission_control_plugin_namespacelifecycle
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.14
       title: Ensure that the admission control plugin SecurityContextConstraint is set
       status: automated
       rules:
         - api_server_admission_control_plugin_scc
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.15
       title: Ensure that the admission control plugin NodeRestriction is set
       status: automated
       rules:
         - api_server_admission_control_plugin_noderestriction
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.16
       title: Ensure that the --insecure-bind-address argument is not set
       status: automated
       rules:
         - api_server_insecure_bind_address
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.17
       title: Ensure that the --insecure-port argument is set to 0
       status: automated
       rules:
         - api_server_insecure_port
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.18
       title: Ensure that the --secure-port argument is not set to 0
       status: automated
       rules:
         - api_server_bind_address
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.19
       title: Ensure that the healthz endpoint is protected by RBAC
       status: automated
       rules:
         - api_server_profiling_protected_by_rbac
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.20
       title: Ensure that the --audit-log-path argument is set
       status: automated
       rules:
         - api_server_audit_log_path
         - openshift_api_server_audit_log_path
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.21
       title: Ensure that the audit logs are forwarded off the cluster for retention
       status: automated
       rules:
         - audit_log_forwarding_enabled
         - audit_log_forwarding_webhook
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.22
       title: Ensure that the maximumRetainedFiles argument is set to 10 or as appropriate
       status: automated
       rules:
         - api_server_audit_log_maxbackup
         - ocp_api_server_audit_log_maxbackup
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.23
       title: Ensure that the maximumFileSizeMegabytes argument is set to 100
       status: automated
       rules:
         - api_server_audit_log_maxsize
         - ocp_api_server_audit_log_maxsize
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.24
       title: Ensure that the --request-timeout argument is set
       status: automated
       rules:
         - api_server_request_timeout
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.25
       title: Ensure that the --service-account-lookup argument is set to true
       status: automated
       rules:
         - api_server_service_account_lookup
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.26
       title: Ensure that the --service-account-key-file argument is set as appropriate
       status: automated
       rules:
         - api_server_service_account_public_key
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.27
       title: Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate
       status: automated
       rules:
         - api_server_etcd_cert
         - api_server_etcd_key
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.28
       title: Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
       status: automated
       rules:
         - api_server_tls_cert
         - api_server_tls_private_key
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.29
       title: Ensure that the --client-ca-file argument is set as appropriate
       status: automated
       rules:
         - api_server_client_ca
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.30
       title: Ensure that the --etcd-cafile argument is set as appropriate
       status: automated
       rules:
         - api_server_etcd_ca
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.31
       title: Ensure that encryption providers are appropriately configured
       status: partial
       rules:
         - api_server_encryption_provider_cipher
-      levels: level_1
+      levels: [ level_1, ]
       # Remove this comment once https://github.com/ComplianceAsCode/content/issues/10868 is fixed.
       # tickets:
       #   - https://issues.redhat.com/browse/CMP-1973
@@ -398,12 +398,12 @@ controls:
       status: automated
       rules:
         - api_server_tls_cipher_suites
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.2.33
       title: Ensure unsupported configuration overrides are not used
       status: pending
       rules: []
-      levels: level_1
+      levels: [ level_1, ]
   - id: '1.3'
     title: Controller Manager
     status: pending
@@ -414,32 +414,32 @@ controls:
       status: automated
       rules:
         - rbac_debug_role_protects_pprof
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.3.2
       title: Ensure that the --use-service-account-credentials argument is set to true
       status: automated
       rules:
         - controller_use_service_account
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.3.3
       title: Ensure that the --service-account-private-key-file argument is set as appropriate
       status: automated
       rules:
         - controller_service_account_private_key
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.3.4
       title: Ensure that the --root-ca-file argument is set as appropriate
       status: automated
       rules:
         - controller_service_account_ca
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.3.5
       title: Ensure that the --bind-address argument is set to 127.0.0.1
       status: automated
       rules:
         - controller_secure_port
         - controller_insecure_port_disabled
-      levels: level_1
+      levels: [ level_1, ]
   - id: '1.4'
     title: Scheduler
     status: automated
@@ -450,11 +450,11 @@ controls:
       status: automated
       rules:
         - scheduler_profiling_protected_by_rbac
-      levels: level_1
+      levels: [ level_1, ]
     - id: 1.4.2
       title: Verify that the scheduler API service is protected by RBAC
       status: automated
       rules:
         - scheduler_service_protected_by_rbac
-      levels: level_1
+      levels: [ level_1, ]
 

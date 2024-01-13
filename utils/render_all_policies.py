@@ -71,8 +71,8 @@ def load_policy(controls_dir: str, policy_id: str) -> ssg.controls.Policy:
 
 
 def render_policy(
-        policy: ssg.controls.Policy, product_id: str, rules: list,
-        values: list, output_dir: str) -> None:
+        policy: ssg.controls.Policy, product_id: str, rules: dict,
+        values: dict, output_dir: str) -> None:
     output_path = os.path.join(output_dir, policy.id + ".html")
     data = {
         "policy": policy,
