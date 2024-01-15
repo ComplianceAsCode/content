@@ -534,8 +534,7 @@ controls:
     rules:
     - package_setroubleshoot_removed
 
-
-  - id: 1.7.1
+  - id: 1.6.1
     title: Ensure message of the day is configured properly (Automated)
     levels:
     - l1_server
@@ -545,7 +544,7 @@ controls:
     - banner_etc_motd
     - motd_banner_text=cis_banners
 
-  - id: 1.7.2
+  - id: 1.6.2
     title: Ensure local login warning banner is configured properly (Automated)
     levels:
     - l1_server
@@ -555,7 +554,7 @@ controls:
     - banner_etc_issue
     - login_banner_text=cis_banners
 
-  - id: 1.7.3
+  - id: 1.6.3
     title: Ensure remote login warning banner is configured properly (Automated)
     levels:
     - l1_server
@@ -565,8 +564,8 @@ controls:
       - banner_etc_issue_net
       - remote_login_banner_text=cis_banners
 
-  - id: 1.7.4
-    title: Ensure permissions on /etc/motd are configured (Automated)
+  - id: 1.6.4
+    title: Ensure access on /etc/motd are configured (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -576,8 +575,8 @@ controls:
     - file_owner_etc_motd
     - file_permissions_etc_motd
 
-  - id: 1.7.5
-    title: Ensure permissions on /etc/issue are configured (Automated)
+  - id: 1.6.5
+    title: Ensure access on /etc/issue are configured (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -587,7 +586,7 @@ controls:
     - file_owner_etc_issue
     - file_permissions_etc_issue
 
-  - id: 1.7.6
+  - id: 1.6.6
     title: Ensure permissions on /etc/issue.net are configured (Automated)
     levels:
     - l1_server
