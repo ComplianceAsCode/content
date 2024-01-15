@@ -344,24 +344,6 @@ controls:
     rules:
       - mount_option_var_log_audit_noexec
 
-  - id: 1.1.9
-    title: Disable Automounting (Automated)
-    levels:
-      - l1_server
-      - l2_workstation
-    status: automated
-    rules:
-      - service_autofs_disabled
-
-  - id: 1.1.10
-    title: Disable USB Storage (Automated)
-    levels:
-      - l1_server
-      - l2_workstation
-    status: automated
-    rules:
-      - kernel_module_usb-storage_disabled
-
   - id: 1.2.1
     title: Ensure Red Hat Subscription Manager connection is configured (Manual)
     levels:
