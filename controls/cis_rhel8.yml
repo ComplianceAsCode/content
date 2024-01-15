@@ -805,6 +805,17 @@ controls:
     rules:
       - package_dnsmasq_removed
 
+  - id: 2.2.6
+    title: Ensure samba file server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_samba_removed
+    related_rules:
+      - service_smb_disabled
+
   # NEEDS RULE
   - id: 2.2.7
     title: Ensure FTP Server is not installed (Automated)
@@ -852,15 +863,6 @@ controls:
     rules:
       - package_dovecot_removed
       - package_cyrus-imapd_removed
-
-  - id: 2.2.12
-    title: Ensure Samba is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_samba_removed
 
   - id: 2.2.13
     title: Ensure HTTP Proxy Server is not installed (Automated)
