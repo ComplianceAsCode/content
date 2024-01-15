@@ -593,16 +593,6 @@ controls:
     rules:
     - package_chrony_installed
 
-  - id: 2.2.1
-    title: Ensure autofs services are not in use (Automated)
-    levels:
-    - l1_server
-    - l2_workstation
-    status: partial
-    # we need package_autofs_removed to complete this control
-    rules:
-    - service_autofs_disabled
-
   - id: 2.1.2
     title: Ensure chrony is configured (Automated)
     levels:
@@ -621,6 +611,16 @@ controls:
     status: automated
     rules:
     - chronyd_run_as_chrony_user
+
+  - id: 2.2.1
+    title: Ensure autofs services are not in use (Automated)
+    levels:
+    - l1_server
+    - l2_workstation
+    status: partial
+    # we need package_autofs_removed to complete this control
+    rules:
+    - service_autofs_disabled
 
   - id: 2.2.2
     title: Ensure avahi daemon services are not in use (Automated)
