@@ -386,25 +386,6 @@ controls:
       - security_patches_up_to_date
 
   - id: 1.3.1
-    title: Ensure AIDE is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_aide_installed
-      - aide_build_database
-
-  - id: 1.3.2
-    title: Ensure filesystem integrity is regularly checked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - aide_periodic_cron_checking
-
-  - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
     levels:
       - l1_server
@@ -414,7 +395,7 @@ controls:
       - grub2_password
       - grub2_uefi_password
 
-  - id: 1.4.2
+  - id: 1.3.2
     title: Ensure permissions on bootloader config are configured (Automated)
     levels:
       - l1_server
@@ -2179,6 +2160,25 @@ controls:
       - sshd_set_idle_timeout
       - sshd_set_keepalive
       - var_sshd_set_keepalive=0
+
+  - id: 5.3.1
+    title: Ensure AIDE is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_aide_installed
+      - aide_build_database
+
+  - id: 5.3.2
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_periodic_cron_checking
 
   - id: 5.3.1
     title: Ensure sudo is installed (Automated)
