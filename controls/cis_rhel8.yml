@@ -774,6 +774,16 @@ controls:
     related_rules:
       - service_avahi-daemon_disabled
 
+  - id: 2.2.3
+    title: Ensure dhcp server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_dhcp_removed
+    related_rules:
+      - service_dhcpd_disabled
   - id: 2.2.4
     title: Ensure CUPS is not installed (Automated)
     levels:
@@ -783,17 +793,6 @@ controls:
       - package_cups_removed
     related_rules:
       - service_cups_disabled
-
-  - id: 2.2.5
-    title: Ensure DHCP Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_dhcp_removed
-    related_rules:
-      - service_dhcpd_disabled
 
   - id: 2.2.6
     title: Ensure DNS Server is not installed (Automated)
