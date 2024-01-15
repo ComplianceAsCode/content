@@ -796,6 +796,15 @@ controls:
     related_rules:
       - service_named_disabled
 
+  - id: 2.2.5
+    title: Ensure dnsmasq services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_dnsmasq_removed
+
   # NEEDS RULE
   - id: 2.2.7
     title: Ensure FTP Server is not installed (Automated)
