@@ -763,24 +763,14 @@ controls:
     rules:
       - service_autofs_disabled
 
-  
   - id: 2.2.2
-    title: Ensure xorg-x11-server-common is not installed (Automated)
-    levels:
-      - l1_server
-    status: automated
-    rules:
-      - package_xorg-x11-server-common_removed
-
-  - id: 2.2.3
-    title: Ensure Avahi Server is not installed (Automated)
+    title: Ensure avahi daemon services are not in use (Automated)
     levels:
       - l1_server
       - l2_workstation
     status: automated
     rules:
       - package_avahi_removed
-      - package_avahi-autoipd_removed
     related_rules:
       - service_avahi-daemon_disabled
 
