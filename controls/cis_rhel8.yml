@@ -784,18 +784,9 @@ controls:
       - package_dhcp_removed
     related_rules:
       - service_dhcpd_disabled
-  - id: 2.2.4
-    title: Ensure CUPS is not installed (Automated)
-    levels:
-      - l1_server
-    status: automated
-    rules:
-      - package_cups_removed
-    related_rules:
-      - service_cups_disabled
 
-  - id: 2.2.6
-    title: Ensure DNS Server is not installed (Automated)
+  - id: 2.2.4
+    title: Ensure dns server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
