@@ -754,14 +754,16 @@ controls:
       - chronyd_run_as_chrony_user
 
   - id: 2.2.1
-    title: Ensure xinetd is not installed (Automated)
+    title: Ensure autofs services are not in use (Automated)
     levels:
       - l1_server
-      - l1_workstation
-    status: automated
+      - l2_workstation
+    status: partial
+    # we need package_autofs_removed to complete this control
     rules:
-      - package_xinetd_removed
+      - service_autofs_disabled
 
+  
   - id: 2.2.2
     title: Ensure xorg-x11-server-common is not installed (Automated)
     levels:
