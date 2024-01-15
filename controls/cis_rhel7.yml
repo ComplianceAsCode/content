@@ -585,13 +585,13 @@ controls:
       - security_patches_up_to_date
 
   - id: 2.1.1
-    title: Ensure xinetd is not installed (Automated)
+    title: Ensure time synchronization is in use (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
-    - package_xinetd_removed
+    - package_chrony_installed
 
   - id: 2.2.1.1
     title: Ensure time synchronization is in use (Manual)
