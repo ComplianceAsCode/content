@@ -454,18 +454,6 @@ controls:
     rules:
       - coredump_disable_storage
 
-  - id: 1.5.2
-    title: Ensure XD/NX support is enabled (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: partial
-    notes: >-
-      Automatic remediation of these rules is not available.
-    rules:
-    - bios_enable_execution_restrictions
-    - install_PAE_kernel_on_x86-32
-
   - id: 1.5.4
     title: Ensure prelink is not installed (Automated)
     levels:
