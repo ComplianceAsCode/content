@@ -871,6 +871,15 @@ controls:
     - service_bluetooth_disabled
 
   - id: 3.2.1
+    title: Ensure dccp kernel module is not available (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - kernel_module_dccp_disabled
+
+  - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
     levels:
     - l1_server
@@ -1000,15 +1009,6 @@ controls:
     - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
     - sysctl_net_ipv6_conf_default_accept_ra
     - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
-
-  - id: 3.4.1
-    title: Ensure DCCP is disabled (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - kernel_module_dccp_disabled
 
   - id: 3.4.2
     title: Ensure SCTP is disabled (Automated)
