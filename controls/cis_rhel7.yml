@@ -937,6 +937,16 @@ controls:
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
 
+  - id: 3.3.4
+    title: Ensure broadcast ICMP requests are ignored (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+
   - id: 3.3.1
     title: Ensure source routed packets are not accepted (Automated)
     levels:
@@ -992,16 +1002,6 @@ controls:
     - sysctl_net_ipv4_conf_all_log_martians_value=enabled
     - sysctl_net_ipv4_conf_default_log_martians
     - sysctl_net_ipv4_conf_default_log_martians_value=enabled
-
-  - id: 3.3.5
-    title: Ensure broadcast ICMP requests are ignored (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
 
   - id: 3.3.7
     title: Ensure Reverse Path Filtering is enabled (Automated)
