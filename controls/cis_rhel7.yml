@@ -718,26 +718,14 @@ controls:
     rules:
     - chronyd_run_as_chrony_user
 
-
   - id: 2.2.2
-    title: Ensure X11 Server components are not installed (Automated)
-    levels:
-    - l1_server
-    status: automated
-    notes: >-
-      The rule also configures correct run level to prevent unbootable system.
-    rules:
-    - xwindows_remove_packages
-
-  - id: 2.2.3
-    title: Ensure Avahi Server is not installed (Automated)
+    title: Ensure avahi daemon services are not in use (Automated)
     levels:
     - l1_server
     - l2_workstation
     status: automated
     rules:
       - package_avahi_removed
-      - package_avahi-autoipd_removed
     related_rules:
       - service_avahi-daemon_disabled
 
