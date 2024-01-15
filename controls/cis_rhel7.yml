@@ -418,17 +418,41 @@ controls:
     - require_emergency_target_auth
     - require_singleuser_auth
 
-  - id: 1.5.1
-    title: Ensure core dumps are restricted (Automated)
+  - id: 1.4.1
+    title: Ensure address space layout randomization (ASLR) is enabled (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
-    - disable_users_coredumps
-    - sysctl_fs_suid_dumpable
+    - sysctl_kernel_randomize_va_space
+
+  - id: 1.4.2
+    title: Ensure ptrace_scope is restricted
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - sysctl_kernel_yama_ptrace_scope
+
+  - id: 1.4.3
+    title: Ensure core dump backtraces are disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
     - coredump_disable_backtraces
-    - coredump_disable_storage
+
+  - id: 1.4.4
+    title: Ensure core dump storage is disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - coredump_disable_storage
 
   - id: 1.5.2
     title: Ensure XD/NX support is enabled (Automated)
@@ -441,15 +465,6 @@ controls:
     rules:
     - bios_enable_execution_restrictions
     - install_PAE_kernel_on_x86-32
-
-  - id: 1.5.3
-    title: Ensure address space layout randomization (ASLR) is enabled (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - sysctl_kernel_randomize_va_space
 
   - id: 1.5.4
     title: Ensure prelink is not installed (Automated)
