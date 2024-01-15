@@ -1,0 +1,24 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata(
+        "Configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.")
+    }}}
+        <criteria>
+            <criterion test_ref="test_{{{ rule_id }}}"
+                    comment="The faillock module is present in /etc/pam.d/system-auth"/>
+        </criteria>
+    </definition>
+    <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
+    id="test_{{{ rule_id }}}"
+    comment="Check the presence of pam_faillock.so in system-auth">
+        <ind:object
+        object_ref="obj_{{{ rule_id }}}"/>
+    </ind:textfilecontent54_test>
+    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}"
+    comment="Obtain pam_faillock.so ocurrences in system-auth" version="1">
+        <ind:filepath >/etc/pam.d/system-auth</ind:filepath>
+        <!-- pam_faillock.so needs to be before pam_unix\.so -->
+        <ind:pattern operation="pattern match">\s*auth\s*\S+\s*pam_faillock\.so\s*preauth[\s\S]*?pam_unix\.so</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+</def-group>
