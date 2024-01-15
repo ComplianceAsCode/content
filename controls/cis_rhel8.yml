@@ -451,7 +451,7 @@ controls:
     rules:
       - coredump_disable_storage
 
-  - id: 1.6.1.1
+  - id: 1.5.1.1
     title: Ensure SELinux is installed (Automated)
     levels:
       - l1_server
@@ -460,7 +460,7 @@ controls:
     rules:
       - package_libselinux_installed
 
-  - id: 1.6.1.2
+  - id: 1.5.1.2
     title: Ensure SELinux is not disabled in bootloader configuration (Automated)
     levels:
       - l1_server
@@ -469,7 +469,7 @@ controls:
     rules:
       - grub2_enable_selinux
 
-  - id: 1.6.1.3
+  - id: 1.5.1.3
     title: Ensure SELinux policy is configured (Automated)
     levels:
       - l1_server
@@ -479,7 +479,7 @@ controls:
       - var_selinux_policy_name=targeted
       - selinux_policytype
 
-  - id: 1.6.1.4
+  - id: 1.5.1.4
     title: Ensure the SELinux mode is not disabled (Automated)
     levels:
       - l1_server
@@ -488,7 +488,7 @@ controls:
     rules:
       - selinux_not_disabled
 
-  - id: 1.6.1.5
+  - id: 1.5.1.5
     title: Ensure the SELinux mode is enforcing (Automated)
     levels:
       - l2_server
@@ -498,7 +498,7 @@ controls:
       - var_selinux_state=enforcing
       - selinux_state
 
-  - id: 1.6.1.6
+  - id: 1.5.1.6
     title: Ensure no unconfined services exist (Automated)
     levels:
       - l1_server
@@ -507,15 +507,7 @@ controls:
     rules:
       - selinux_confinement_of_daemons
 
-  - id: 1.6.1.7
-    title: Ensure SETroubleshoot is not installed (Automated)
-    levels:
-      - l1_server
-    status: automated
-    rules:
-      - package_setroubleshoot_removed
-
-  - id: 1.6.1.8
+  - id: 1.5.1.7
     title: Ensure the MCS Translation Service (mcstrans) is not installed (Automated)
     levels:
       - l1_server
@@ -523,6 +515,15 @@ controls:
     status: automated
     rules:
       - package_mcstrans_removed
+
+  - id: 1.5.1.8
+    title: Ensure SETroubleshoot is not installed (Automated)
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - package_setroubleshoot_removed
+
 
   - id: 1.7.1
     title: Ensure message of the day is configured properly (Automated)
