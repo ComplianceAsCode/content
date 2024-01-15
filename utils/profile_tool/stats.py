@@ -1,9 +1,16 @@
 import os
 import json
-from json2html import json2html
 
 from ssg.build_profile import XCCDFBenchmark
 from ssg.utils import mkdir_p
+
+
+OFF_JSON_TO_HTML = False
+
+try:
+    from json2html import json2html
+except ImportError:
+    OFF_JSON_TO_HTML = True
 
 
 def _process_stats_content(profile, bash_fixes_count, content, content_filepath):
@@ -98,6 +105,9 @@ def command_stats(args):
         print(json.dumps(profiles, indent=4))
 
     elif args.format == "html":
+        if OFF_JSON_TO_HTML:
+            print("No module named 'json2html'. Please install module to enable this function.")
+            return
         _generate_html_stats(args, profiles)
 
     elif args.format == "csv":
