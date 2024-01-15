@@ -888,6 +888,15 @@ controls:
     rules:
     - kernel_module_tipc_disabled
 
+  - id: 3.2.3
+    title: Ensure rds kernel module is not available (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - kernel_module_rds_disabled
+
   - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
     levels:
