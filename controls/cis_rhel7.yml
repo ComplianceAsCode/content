@@ -897,6 +897,15 @@ controls:
     rules:
     - kernel_module_rds_disabled
 
+  - id: 3.2.4
+    title: Ensure sctp kernel module is not available (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - kernel_module_sctp_disabled
+
   - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
     levels:
@@ -1027,15 +1036,6 @@ controls:
     - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
     - sysctl_net_ipv6_conf_default_accept_ra
     - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
-
-  - id: 3.4.2
-    title: Ensure SCTP is disabled (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - kernel_module_sctp_disabled
 
   - id: 3.5.1.1
     title: Ensure firewalld is installed (Automated)
