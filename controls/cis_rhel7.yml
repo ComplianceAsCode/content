@@ -947,6 +947,22 @@ controls:
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
 
+  - id: 3.3.5
+    title: Ensure ICMP redirects are not accepted (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_accept_redirects
+    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_redirects
+    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv6_conf_all_accept_redirects
+    - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_redirects
+    - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+
   - id: 3.3.1
     title: Ensure source routed packets are not accepted (Automated)
     levels:
@@ -962,22 +978,6 @@ controls:
     - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv6_conf_default_accept_source_route
     - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
-
-  - id: 3.3.2
-    title: Ensure ICMP redirects are not accepted (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
-    - sysctl_net_ipv6_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
 
   - id: 3.3.3
     title: Ensure secure ICMP redirects are not accepted (Automated)
