@@ -1,0 +1,26 @@
+prodtype: ocp4
+
+title: 'rule_1'
+
+description: |-
+    This is a rule with a template <tt>example</tt>.
+    It has two lines.
+
+rationale: 'This is a rationale'
+
+severity: medium
+
+references:
+    nist: SC-12
+
+ocil_clause: 'Test rule'
+
+ocil: 'Test rule'
+
+template:
+    name: yamlfile_value
+    vars:
+        yamlpath: ".test"
+        check_existence: "all_exist"
+        xccdf_variable: var_test
+        regex_data: true
