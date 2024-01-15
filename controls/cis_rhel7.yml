@@ -861,6 +861,15 @@ controls:
     rules:
     - wireless_disable_interfaces # the rule remediation is not exactly on par with the benchmark
 
+  - id: 3.1.3
+    title: Ensure bluetooth services are not in use (Automated)
+    levels:
+    - l1_server
+    - l2_workstation
+    status: automated
+    rules:
+    - service_bluetooth_disabled
+
   - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
     levels:
