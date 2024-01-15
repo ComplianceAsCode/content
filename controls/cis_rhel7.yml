@@ -975,6 +975,18 @@ controls:
     - sysctl_net_ipv4_conf_default_secure_redirects
     - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
 
+  - id: 3.3.7
+    title: Ensure Reverse Path Filtering is enabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+    - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+
   - id: 3.3.1
     title: Ensure source routed packets are not accepted (Automated)
     levels:
@@ -1002,18 +1014,6 @@ controls:
     - sysctl_net_ipv4_conf_all_log_martians_value=enabled
     - sysctl_net_ipv4_conf_default_log_martians
     - sysctl_net_ipv4_conf_default_log_martians_value=enabled
-
-  - id: 3.3.7
-    title: Ensure Reverse Path Filtering is enabled (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - sysctl_net_ipv4_conf_all_rp_filter
-    - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
-    - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
 
   - id: 3.3.8
     title: Ensure TCP SYN Cookies is enabled (Automated)
