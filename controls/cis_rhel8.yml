@@ -971,15 +971,14 @@ controls:
       - service_xinetd_disabled
 
   - id: 2.2.20
-    title:  Ensure rsync is not installed or the rsyncd service is masked (Automated)
+    title: Ensure X window server services are not in use (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
     status: automated
+    notes: >-
+      The rule also configures correct run level to prevent unbootable system.
     rules:
-      - package_rsync_removed
-    related_rules:
-      - service_rsyncd_disabled
+      - xwindows_remove_packages
 
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
