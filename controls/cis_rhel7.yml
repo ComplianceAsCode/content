@@ -1073,6 +1073,13 @@ controls:
     rules:
       - service_firewalld_enabled
 
+  - id: 3.4.2.3
+    title: Ensure firewalld drops unnecessary services and ports (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: manual
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1110,13 +1117,6 @@ controls:
       - set_firewalld_appropriate_zone
     related_rules:
       - firewalld_sshd_port_enabled
-
-  - id: 3.5.1.7
-    title: Ensure firewalld drops unnecessary services and ports (Manual)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: manual
 
   - id: 3.5.2.1
     title: Ensure nftables is installed (Automated)
