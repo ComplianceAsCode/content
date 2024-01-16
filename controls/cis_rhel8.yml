@@ -1002,13 +1002,13 @@ controls:
     status: manual
 
   - id: 2.3.1
-    title: Ensure NIS Client is not installed (Automated)
+    title: Ensure ftp client is not installed (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - package_ypbind_removed
+      - package_ftp_removed
 
   - id: 2.3.2
     title: Ensure rsh client is not installed (Automated)
