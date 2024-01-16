@@ -1143,6 +1143,18 @@ controls:
       - var_nftables_base_chain_priorities=chain_priorities
       - var_nftables_base_chain_policies=chain_policies
 
+  - id: 3.4.3.5
+    title: Ensure nftables loopback traffic is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    related_rules:
+      - set_nftables_loopback_traffic
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
