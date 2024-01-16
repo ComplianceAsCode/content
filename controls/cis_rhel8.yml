@@ -960,15 +960,15 @@ controls:
     # rule would be nice to disable nginx service
 
   - id: 2.2.19
-    title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
+    title: Ensure xinetd services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - service_rpcbind_disabled
+      - package_xinetd_removed
     related_rules:
-      - package_rpcbind_removed
+      - service_xinetd_disabled
 
   - id: 2.2.20
     title:  Ensure rsync is not installed or the rsyncd service is masked (Automated)
