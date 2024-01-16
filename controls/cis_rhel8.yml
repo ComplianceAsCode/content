@@ -841,13 +841,18 @@ controls:
     # new rule would be nice to disable cyrus-imapd service
 
   - id: 2.2.9
-    title: Ensure TFTP Server is not installed (Automated)
+    title: Ensure network file system services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - package_tftp-server_removed
+      - service_nfs_disabled
+    related_rules:
+      - package_nfs-utils_removed
+    notes: |-
+      Many of the libvirt packages used by Enterprise Linux virtualization are
+      dependent on the nfs-utils package.
 
   - id: 2.2.10
     title: Ensure a web server is not installed (Automated)
@@ -906,17 +911,6 @@ controls:
       - var_postfix_inet_interfaces=loopback-only
       - has_nonlocal_mta
 
-  - id: 2.2.18
-    title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_nfs_disabled
-    related_rules:
-      - package_nfs-utils_removed
-      # The nfs-utils package is required for systems with GUI or by some libvirt packages
 
   - id: 2.2.19
     title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
