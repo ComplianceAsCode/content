@@ -809,6 +809,17 @@ controls:
       Many of the libvirt packages used by Enterprise Linux virtualization are
       dependent on the nfs-utils package.
 
+  - id: 2.2.10
+    title: Ensure nis server services are not in use (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_ypserv_removed
+    related_rules:
+    - service_ypserv_disabled
+
   - id: 2.2.12
     title: Ensure HTTP Proxy Server is not installed (Automated)
     levels:
@@ -826,15 +837,6 @@ controls:
     status: automated
     rules:
     - package_net-snmp_removed
-
-  - id: 2.2.14
-    title: Ensure NIS server is not installed (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - package_ypserv_removed
 
   - id: 2.2.15
     title: Ensure telnet-server is not installed (Automated)
