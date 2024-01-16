@@ -481,10 +481,6 @@ controls:
     - l1_server
     - l1_workstation
     status: automated
-    notes: >-
-      The SELinux mode is set to "enforcing" by default.
-      Configuring the "permissive" mode greatly lowers security of the system.
-      If necessary, the mode can be changed by tailoring the "var_selinux_state" XCCDF variable.
     rules:
       - selinux_not_disabled
 
