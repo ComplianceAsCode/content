@@ -869,13 +869,15 @@ controls:
     - service_snmpd_disabled
 
   - id: 2.2.15
-    title: Ensure telnet-server is not installed (Automated)
+    title: Ensure telnet server services are not in use (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
     - package_telnet-server_removed
+    related_rules:
+    - service_telnet_disabled
 
   - id: 2.2.16
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
