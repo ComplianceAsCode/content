@@ -892,13 +892,15 @@ controls:
       package.
 
   - id: 2.2.13
-    title: Ensure HTTP Proxy Server is not installed (Automated)
+    title: Ensure rsync services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - package_squid_removed
+      - package_rsync_removed
+    related_rules:
+      - service_rsyncd_disabled
 
   - id: 2.2.14
     title: Ensure net-snmp is not installed (Automated)
