@@ -1080,6 +1080,17 @@ controls:
     - l1_workstation
     status: manual
 
+  - id: 3.4.2.4
+    title: Ensure network interfaces are assigned to appropriate zone (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: manual
+    rules:
+      - set_firewalld_appropriate_zone
+    related_rules:
+      - firewalld_sshd_port_enabled
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1107,16 +1118,6 @@ controls:
     rules:
     - set_firewalld_default_zone
 
-  - id: 3.5.1.6
-    title: Ensure network interfaces are assigned to appropriate zone (Manual)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: manual
-    rules:
-      - set_firewalld_appropriate_zone
-    related_rules:
-      - firewalld_sshd_port_enabled
 
   - id: 3.5.2.1
     title: Ensure nftables is installed (Automated)
