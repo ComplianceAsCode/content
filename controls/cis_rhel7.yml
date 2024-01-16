@@ -1258,9 +1258,13 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated
-    rules:
-    - service_iptables_enabled
+    status: partial
+    notes: |-
+      The remediations conflicts with service_firewalld_enabled.
+      Related to 3.4.1.2 which needs to be implemented first.
+      The CPE template "platform_service_enabled" is missing remediation conditionals.
+    # rules:
+    # - service_iptables_enabled
 
   - id: 3.4.4.3.1
     title: Ensure ip6tables loopback traffic is configured (Automated)
