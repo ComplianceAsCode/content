@@ -890,6 +890,17 @@ controls:
     related_rules:
     - service_tftp_disabled
 
+  - id: 2.2.17
+    title: Ensure web proxy server services are not in use (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_squid_removed
+    related_rules:
+    - service_squid_disabled
+
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
     levels:
