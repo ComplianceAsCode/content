@@ -1276,6 +1276,17 @@ controls:
     - l1_workstation
     status: manual
 
+  - id: 3.4.4.3.3
+    title: Ensure ip6tables firewall rules exist for all open ports (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: partial
+    notes: |-
+      Currently the check is only available in SCE and an automated remediation is not expected.
+    rules:
+      - ip6tables_rules_for_open_ports
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1337,16 +1348,6 @@ controls:
     - l1_workstation
     status: pending # rule missing
 
-  - id: 3.5.3.3.3
-    title: Ensure ip6tables firewall rules exist for all open ports (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: partial
-    notes: |-
-      Currently the check is only available in SCE and an automated remediation is not expected.
-    rules:
-      - ip6tables_rules_for_open_ports
 
   - id: 3.5.3.3.4
     title: Ensure ip6tables default deny firewall policy (Automated)
