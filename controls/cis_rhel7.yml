@@ -1186,6 +1186,19 @@ controls:
     related_rules:
       - service_nftables_enabled
 
+  - id: 3.4.3.9
+    title: Ensure nftables rules are permanent (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    notes: |-
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    status: supported
+    related_rules:
+      - var_nftables_master_config_file=sysconfig
+      - nftables_rules_permanent
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1230,20 +1243,6 @@ controls:
       Already covered by requirement 3.5.1.2.
     related_rules:
       - package_iptables-services_removed
-
-
-  - id: 3.5.2.11
-    title: Ensure nftables rules are permanent (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    notes: |-
-      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
-      iptables. nftables is supported in RHEL7 but is not expected by default.
-    status: supported
-    related_rules:
-      - var_nftables_master_config_file=sysconfig
-      - nftables_rules_permanent
 
   - id: 3.5.3.1.1
     title: Ensure iptables packages are installed (Automated)
