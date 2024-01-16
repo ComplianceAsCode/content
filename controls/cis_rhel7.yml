@@ -782,6 +782,19 @@ controls:
     related_rules:
     - service_vsftpd_disabled
 
+  - id: 2.2.8
+    title: Ensure message access server services are not in use (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_dovecot_removed
+    - package_cyrus-imapd_removed
+    related_rules:
+    - service_dovecot_disabled
+    # we might add a rule disabling cyrus-imapd service
+
   - id: 2.2.9
     title: Ensure HTTP server is not installed (Automated)
     levels:
@@ -790,15 +803,6 @@ controls:
     status: automated
     rules:
     - package_httpd_removed
-
-  - id: 2.2.10
-    title: Ensure IMAP and POP3 server is not installed (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - package_dovecot_removed
 
   - id: 2.2.12
     title: Ensure HTTP Proxy Server is not installed (Automated)
