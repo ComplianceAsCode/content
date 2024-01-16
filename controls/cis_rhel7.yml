@@ -1237,6 +1237,15 @@ controls:
     rules:
       - iptables_rules_for_open_ports
 
+  - id: 3.4.4.2.4
+    title: Ensure iptables default deny firewall policy (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    related_rules:
+      - set_iptables_default_rule
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1297,15 +1306,6 @@ controls:
     - l1_server
     - l1_workstation
     status: pending # rule missing
-
-  - id: 3.5.3.2.4
-    title: Ensure iptables default deny firewall policy (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    related_rules:
-      - set_iptables_default_rule
 
   - id: 3.5.3.2.5
     title: Ensure iptables rules are saved (Automated)
