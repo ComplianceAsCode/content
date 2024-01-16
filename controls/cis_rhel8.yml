@@ -924,6 +924,17 @@ controls:
     related_rules:
       - service_telnet_disabled
 
+  - id: 2.2.16
+    title: Ensure tftp server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_tftp-server_removed
+    related_rules:
+      - service_tftp_disabled
+
   - id: 2.2.17
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
     levels:
