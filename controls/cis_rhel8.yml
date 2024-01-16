@@ -816,24 +816,16 @@ controls:
     related_rules:
       - service_smb_disabled
 
-  # NEEDS RULE
   - id: 2.2.7
-    title: Ensure FTP Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: planned
-    related_rules:
-      - service_vsftpd_disabled
-
-  - id: 2.2.8
-    title: Ensure VSFTP Server is not installed (Automated)
+    title: Ensure ftp server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
       - package_vsftpd_removed
+    related_rules:
+      - service_vsftpd_disabled
 
   - id: 2.2.9
     title: Ensure TFTP Server is not installed (Automated)
