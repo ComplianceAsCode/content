@@ -966,13 +966,13 @@ controls:
     - package_ftp_removed
 
   - id: 2.3.2
-    title: Ensure rsh client is not installed (Automated)
+    title: Ensure LDAP client is not installed (Automated)
     levels:
-    - l1_server
-    - l1_workstation
+    - l2_server
+    - l2_workstation
     status: automated
     rules:
-    - package_rsh_removed
+    - package_openldap-clients_removed
 
   - id: 2.3.3
     title: Ensure talk client is not installed (Automated)
@@ -992,14 +992,6 @@ controls:
     rules:
     - package_telnet_removed
 
-  - id: 2.3.5
-    title: Ensure LDAP client is not installed (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - package_openldap-clients_removed
 
   - id: "2.4"
     title: Ensure nonessential services are removed or masked (Manual)
