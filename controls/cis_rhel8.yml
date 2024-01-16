@@ -1978,7 +1978,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
+    notes: |-
+      This requirement is satisfied by 4.4.3.1 section.
+    related_rules:
       - accounts_passwords_pam_faillock_deny
 
   - id: 4.4.2.3
@@ -2021,6 +2023,35 @@ controls:
       pam_unix.so, so by the 4.4.2.1 this requirement is already attended.
     related_rules:
       - no_empty_passwords
+
+  - id: 4.4.3.1.1
+    title: Ensure password failed attempts lockout is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - var_accounts_passwords_pam_faillock_deny=5
+
+  - id: 4.4.3.1.2
+    title: Ensure password unlock time is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_unlock_time=900
+
+  - id: 4.4.3.1.3
+    title: Ensure password failed attempts lockout includes root account (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny_root
 
 
   - id: 4.1.1.1
@@ -2515,17 +2546,7 @@ controls:
       - var_password_pam_minclass=4
       - var_password_pam_minlen=14
 
-  - id: 5.5.2
-    title: Ensure lockout for failed password attempts is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_passwords_pam_faillock_deny
-      - var_accounts_passwords_pam_faillock_deny=3
-      - accounts_passwords_pam_faillock_unlock_time
-      - var_accounts_passwords_pam_faillock_unlock_time=900
+
 
   - id: 5.5.3
     title: Ensure password reuse is limited (Automated)
