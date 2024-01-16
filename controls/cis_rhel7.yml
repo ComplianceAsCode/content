@@ -1246,6 +1246,13 @@ controls:
     related_rules:
       - set_iptables_default_rule
 
+  - id: 3.4.4.2.5
+    title: Ensure iptables rules are saved (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: pending # rule missing
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1302,13 +1309,6 @@ controls:
 
   - id: 3.5.3.1.3
     title: Ensure firewalld is either not installed or masked with iptables
-    levels:
-    - l1_server
-    - l1_workstation
-    status: pending # rule missing
-
-  - id: 3.5.3.2.5
-    title: Ensure iptables rules are saved (Automated)
     levels:
     - l1_server
     - l1_workstation
