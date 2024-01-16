@@ -796,13 +796,18 @@ controls:
     # we might add a rule disabling cyrus-imapd service
 
   - id: 2.2.9
-    title: Ensure HTTP server is not installed (Automated)
+    title: Ensure network file system services are not in use (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
-    - package_httpd_removed
+    - service_nfs_disabled
+    related_rules:
+    - package_nfs-utils_removed
+    notes: |-
+      Many of the libvirt packages used by Enterprise Linux virtualization are
+      dependent on the nfs-utils package.
 
   - id: 2.2.12
     title: Ensure HTTP Proxy Server is not installed (Automated)
@@ -850,15 +855,6 @@ controls:
       - postfix_network_listening_disabled
       - var_postfix_inet_interfaces=loopback-only
       - has_nonlocal_mta
-
-  - id: 2.2.17
-    title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - package_nfs-utils_removed
 
   - id: 2.2.18
     title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
