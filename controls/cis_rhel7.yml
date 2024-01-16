@@ -1037,6 +1037,15 @@ controls:
     - sysctl_net_ipv6_conf_default_accept_ra
     - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
 
+  - id: 3.4.1.1
+    title: Ensure iptables is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_iptables_installed
+
   - id: 3.5.1.1
     title: Ensure firewalld is installed (Automated)
     levels:
