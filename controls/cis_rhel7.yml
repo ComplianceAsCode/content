@@ -820,6 +820,16 @@ controls:
     related_rules:
     - service_ypserv_disabled
 
+  - id: 2.2.11
+    title: Ensure print server services are not in use (Automated)
+    levels:
+    - l1_server
+    status: automated
+    rules:
+      - package_cups_removed
+    related_rules:
+      - service_cups_disabled
+
   - id: 2.2.12
     title: Ensure HTTP Proxy Server is not installed (Automated)
     levels:
