@@ -623,11 +623,11 @@ controls:
       - file_permissions_etc_issue_net
 
   - id: 1.8.1
-    title: Ensure GNOME Display Manager is removed (Manual)
+    title: Ensure GNOME Display Manager is removed (Automated)
     levels:
       - l2_server
-    status: manual
-    related_rules:
+    status: automated
+    rules:
       - package_gdm_removed
 
   - id: 1.8.2
@@ -642,7 +642,7 @@ controls:
       - login_banner_text=cis_default
 
   - id: 1.8.3
-    title: Ensure last logged in user display is disabled (Automated)
+    title: Ensure GDM disable-user-list option is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -651,16 +651,29 @@ controls:
       - dconf_gnome_disable_user_list
 
   - id: 1.8.4
-    title: Ensure XDMCP is not enabled (Automated)
+    title: Ensure GDM screen locks when the user is idle (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - gnome_gdm_disable_xdmcp
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=5_seconds
 
   - id: 1.8.5
-    title: Ensure automatic mounting of removable media is disabled (Automated)
+    title: Ensure GDM screen locks cannot be overridden (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - dconf_gnome_session_idle_user_locks
+      - dconf_gnome_screensaver_user_locks
+
+  - id: 1.8.6
+    title: Ensure GDM automatic mounting of removable media is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -668,6 +681,49 @@ controls:
     rules:
       - dconf_gnome_disable_automount
       - dconf_gnome_disable_automount_open
+
+  - id: 1.8.7
+    title: Ensure GDM disabling automatic mounting of removable media is not overridden (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The same rules used in 1.8.6 are applicable here since they configure and also lock the
+      settings.
+    related_rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
+
+  - id: 1.8.8
+    title: Ensure GDM autorun-never is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - dconf_gnome_disable_autorun
+
+  - id: 1.8.9
+    title: Ensure GDM autorun-never is not overridden (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The same rules used in 1.8.8 are applicable here since they configure and also lock the
+      settings.
+    related_rules:
+      - dconf_gnome_disable_autorun
+
+  - id: 1.8.10
+    title: Ensure XDMCP is not enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - gnome_gdm_disable_xdmcp
 
   - id: 2.1.1
     title: Ensure time synchronization is in use (Automated)
