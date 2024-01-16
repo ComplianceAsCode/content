@@ -831,13 +831,20 @@ controls:
       - service_cups_disabled
 
   - id: 2.2.12
-    title: Ensure HTTP Proxy Server is not installed (Automated)
+    title: Ensure rpcbind services are not in use (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
-    - package_squid_removed
+      - service_rpcbind_disabled
+    related_rules:
+      - package_rpcbind_removed
+    notes: |-
+      Many of the libvirt packages used by Enterprise Linux virtualization, and
+      the nfs-utils
+      package used for The Network File System (NFS), are dependent on the rpcbind
+      package.
 
   - id: 2.2.13
     title: Ensure net-snmp is not installed (Automated)
@@ -867,17 +874,6 @@ controls:
       - postfix_network_listening_disabled
       - var_postfix_inet_interfaces=loopback-only
       - has_nonlocal_mta
-
-  - id: 2.2.18
-    title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-      - service_rpcbind_disabled
-    related_rules:
-      - package_rpcbind_removed
 
   - id: 2.2.19
     title: Ensure rsync is not installed or the rsyncd service is masked (Automated)
