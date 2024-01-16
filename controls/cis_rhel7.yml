@@ -847,13 +847,15 @@ controls:
       package.
 
   - id: 2.2.13
-    title: Ensure net-snmp is not installed (Automated)
+    title: Ensure rsync services are not in use (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
-    - package_net-snmp_removed
+      - package_rsync_removed
+    related_rules:
+      - service_rsyncd_disabled
 
   - id: 2.2.15
     title: Ensure telnet-server is not installed (Automated)
@@ -874,17 +876,6 @@ controls:
       - postfix_network_listening_disabled
       - var_postfix_inet_interfaces=loopback-only
       - has_nonlocal_mta
-
-  - id: 2.2.19
-    title: Ensure rsync is not installed or the rsyncd service is masked (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-      - package_rsync_removed
-    related_rules:
-      - service_rsyncd_disabled
 
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
