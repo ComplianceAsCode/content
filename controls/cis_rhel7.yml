@@ -901,6 +901,19 @@ controls:
     related_rules:
     - service_squid_disabled
 
+  - id: 2.2.18
+    title: Ensure web server services are not in use (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_httpd_removed
+    - package_nginx_removed
+    related_rules:
+    - service_httpd_disabled
+    # rule would be nice to disable nginx service
+
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
     levels:
