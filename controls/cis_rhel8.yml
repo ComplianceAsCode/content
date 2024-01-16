@@ -980,6 +980,20 @@ controls:
     rules:
       - xwindows_remove_packages
 
+  - id: 2.2.21
+    title: Ensure mail transfer agents are configured for local-only mode (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes:  |-
+      The rule has_nonlocal_mta currently checks for services listening only on
+      port 25, but the policy checks also for ports 465 and 587
+    rules:
+      - postfix_network_listening_disabled
+      - var_postfix_inet_interfaces=loopback-only
+      - has_nonlocal_mta
+
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
     levels:
