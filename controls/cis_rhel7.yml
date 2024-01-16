@@ -925,6 +925,16 @@ controls:
     related_rules:
     - service_xinetd_disabled
 
+  - id: 2.2.20
+    title: Ensure X window server services are not in use (Automated)
+    levels:
+    - l2_server
+    status: automated
+    notes: >-
+      The rule also configures correct run level to prevent unbootable system.
+    rules:
+    - xwindows_remove_packages
+
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
     levels:
