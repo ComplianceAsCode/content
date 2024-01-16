@@ -880,15 +880,15 @@ controls:
     - service_telnet_disabled
 
   - id: 2.2.16
-    title: Ensure mail transfer agent is configured for local-only mode (Automated)
+    title: Ensure tftp server services are not in use (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
-      - postfix_network_listening_disabled
-      - var_postfix_inet_interfaces=loopback-only
-      - has_nonlocal_mta
+    - package_tftp-server_removed
+    related_rules:
+    - service_tftp_disabled
 
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
