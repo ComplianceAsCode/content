@@ -1162,6 +1162,18 @@ controls:
     - l1_workstation
     status: manual
 
+  - id: 3.4.3.7
+    title: Ensure nftables default deny firewall policy (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    notes: |-
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    related_rules:
+      - nftables_ensure_default_deny_policy
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1206,18 +1218,6 @@ controls:
       Already covered by requirement 3.5.1.2.
     related_rules:
       - package_iptables-services_removed
-
-  - id: 3.5.2.9
-    title: Ensure nftables default deny firewall policy (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: supported
-    notes: |-
-      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
-      iptables. nftables is supported in RHEL7 but is not expected by default.
-    related_rules:
-      - nftables_ensure_default_deny_policy
 
   - id: 3.5.2.10
     title: Ensure nftables service is enabled (Automated)
