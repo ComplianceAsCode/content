@@ -49,4 +49,6 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            :robot: The image for this PR is available at ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}
+            :robot: The image for this PR is available at:
+            `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`
+          comment_tag: kubernetes_content_image
