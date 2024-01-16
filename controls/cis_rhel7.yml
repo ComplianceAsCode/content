@@ -590,7 +590,7 @@ controls:
       - file_owner_etc_issue_net
       - file_permissions_etc_issue_net
 
-  - id: 1.8.1
+  - id: 1.7.1
     title: Ensure GNOME Display Manager is removed (Manual)
     levels:
     - l2_server
@@ -598,7 +598,7 @@ controls:
     related_rules:
       - package_gdm_removed
 
-  - id: 1.8.2
+  - id: 1.7.2
     title: Ensure GDM login banner is configured (Automated)
     levels:
     - l1_server
@@ -609,8 +609,8 @@ controls:
     - dconf_gnome_login_banner_text
     - login_banner_text=cis_default
 
-  - id: 1.8.3
-    title: Ensure last logged in user display is disabled (Automated)
+  - id: 1.7.3
+    title: Ensure GDM disable-user-list option is enabled (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -618,7 +618,72 @@ controls:
     rules:
     - dconf_gnome_disable_user_list
 
-  - id: 1.8.4
+  - id: 1.7.4
+    title: Ensure GDM screen locks when the user is idle
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - dconf_gnome_screensaver_idle_delay
+
+  - id: 1.7.5
+    title: Ensure GDM screen locks cannot be overridden
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - dconf_gnome_screensaver_user_locks
+
+  - id: 1.7.5
+    title: Ensure GDM screen locks cannot be overridden
+    levels:
+    - l1_server
+    - l2_workstation
+    status: automated
+    rules:
+      - dconf_gnome_screensaver_user_locks
+
+  - id: 1.7.6
+    title: Ensure GDM automatic mounting of removable media is disabled
+    levels:
+    - l1_server
+    - l2_workstation
+    status: automated
+    rules:
+        - dconf_gnome_disable_automount
+        - dconf_gnome_disable_automount_open
+
+  - id: 1.7.7
+    title: Ensure GDM disabling automatic mounting of removable media is not overridden
+    levels:
+    - l1_server
+    - l2_workstation
+    status: automated
+    notes: |-
+      The rules in "Ensure GDM automatic mounting of removable media is disabled" also
+      cover the locks.
+
+  - id: 1.7.8
+    title: Ensure GDM autorun-never is enabled
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - dconf_gnome_disable_autorun
+
+  - id: 1.7.9
+    title: Ensure GDM autorun-never is not overridden
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    notes: |-
+        Covered by "Ensure GDM autorun-never is enabled".
+
+  - id: 1.7.10
     title: Ensure XDCMP is not enabled (Automated)
     levels:
     - l1_server
@@ -626,10 +691,6 @@ controls:
     status: automated
     rules:
     - gnome_gdm_disable_xdmcp
-
-    levels:
-    - l1_server
-    - l1_workstation
 
   - id: 2.1.1
     title: Ensure xinetd is not installed (Automated)
