@@ -903,13 +903,15 @@ controls:
       - service_rsyncd_disabled
 
   - id: 2.2.14
-    title: Ensure net-snmp is not installed (Automated)
+    title: Ensure snmp services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
       - package_net-snmp_removed
+    related_rules:
+      - service_snmpd_disabled
 
   - id: 2.2.16
     title: Ensure telnet-server is not installed (Automated)
