@@ -1939,6 +1939,89 @@ controls:
       - use_pam_wheel_group_for_su
       - ensure_pam_wheel_group_empty
 
+  - id: 4.4.1.1
+    title: Ensure latest version of pam is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      It is necessary a new rule to ensure PAM package is updated.
+
+  - id: 4.4.1.2
+    title: Ensure latest version of authselect is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      It is necessary a new rule to ensure PAM package is updated.
+
+  - id: 4.4.2.1
+    title: Ensure active authselect profile includes pam modules (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      This requirement is hard to be automated without any specific requirement. The policy even
+      states that provided commands are examples, other custom settings might be in place and the
+      settings might be different depending on site policies. The other rules will already make
+      sure there is a correct autheselect profile regardless of the existing settings. It is
+      necessary to better discuss with CIS Community.
+    rules:
+      - no_empty_passwords
+
+  - id: 4.4.2.2
+    title: Ensure pam_faillock module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+
+  - id: 4.4.2.3
+    title: Ensure pam_pwquality module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      CIS requirement asks to enable an authselect feature called "with-pwquality" but this
+      feature is not present in RHEL 8. This needs to be discussed in CIS Community. For now the
+      requirement is attended by ensuring the libpwquality is present. Its configuration is
+      covered by other requirements.
+    rules:
+      - package_pam_pwquality_installed
+
+  - id: 4.4.2.4
+    title: Ensure pam_pwhistory module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The module is properly enabled by the rules mentioned in related_rules.
+      Requirements in 4.4.3.3 use these rules.
+    related_rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+
+  - id: 4.4.2.5
+    title: Ensure pam_unix module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      This module is always present by default. It is necessary to investigate if a new rule to
+      check its existence needs to be created. But so far the rule no_empty_passwords can ensure
+      this requirement is attended. The requirement 4.4.2.1 requires the nullok option for
+      pam_unix.so, so by the 4.4.2.1 this requirement is already attended.
+    related_rules:
+      - no_empty_passwords
+
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
@@ -2412,23 +2495,7 @@ controls:
 
 
 
-  - id: 5.4.1
-    title: Ensure custom authselect profile is used (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    rules:
-      - no_empty_passwords
 
-  - id: 5.4.2
-    title: Ensure authselect includes with-faillock (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_passwords_pam_faillock_deny
 
   - id: 5.5.1
     title: Ensure password creation requirements are configured (Automated)
