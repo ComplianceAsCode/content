@@ -855,14 +855,15 @@ controls:
       dependent on the nfs-utils package.
 
   - id: 2.2.10
-    title: Ensure a web server is not installed (Automated)
+    title: Ensure nis server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - package_httpd_removed
-      - package_nginx_removed
+      - package_ypserv_removed
+    related_rules:
+      - service_ypserv_disabled
 
   - id: 2.2.13
     title: Ensure HTTP Proxy Server is not installed (Automated)
@@ -881,15 +882,6 @@ controls:
     status: automated
     rules:
       - package_net-snmp_removed
-
-  - id: 2.2.15
-    title: Ensure NIS server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_ypserv_removed
 
   - id: 2.2.16
     title: Ensure telnet-server is not installed (Automated)
