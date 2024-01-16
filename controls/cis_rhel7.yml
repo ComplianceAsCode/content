@@ -1287,6 +1287,15 @@ controls:
     rules:
       - ip6tables_rules_for_open_ports
 
+  - id: 3.4.4.3.4
+    title: Ensure ip6tables default deny firewall policy (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - set_ip6tables_default_rule
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1347,16 +1356,6 @@ controls:
     - l1_server
     - l1_workstation
     status: pending # rule missing
-
-
-  - id: 3.5.3.3.4
-    title: Ensure ip6tables default deny firewall policy (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-      - set_ip6tables_default_rule
 
   - id: 3.5.3.3.5
     title: Ensure ip6tables rules are saved (Automated)
