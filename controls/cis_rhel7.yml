@@ -1124,6 +1124,25 @@ controls:
       - var_nftables_family=inet
       - var_nftables_table=filter
 
+  - id: 3.4.3.4
+    title: Ensure nftables base chains exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. The back-end for firewalld in RHEL7 is
+      iptables. nftables is supported in RHEL7 but is not expected by default.
+    related_rules:
+      - set_nftables_base_chain
+      - var_nftables_table=firewalld
+      - var_nftables_family=inet
+      - var_nftables_base_chain_names=chain_names
+      - var_nftables_base_chain_types=chain_types
+      - var_nftables_base_chain_hooks=chain_hooks
+      - var_nftables_base_chain_priorities=chain_priorities
+      - var_nftables_base_chain_policies=chain_policies
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
