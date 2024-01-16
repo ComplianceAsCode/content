@@ -1064,6 +1064,15 @@ controls:
     - package_iptables_installed
     - package_firewalld_installed
 
+  - id: 3.4.2.2
+    title: Ensure firewalld service enabled and running (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - service_firewalld_enabled
+
   - id: 3.5.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
     levels:
@@ -1081,15 +1090,6 @@ controls:
     status: automated
     rules:
       - service_nftables_disabled
-
-  - id: 3.5.1.4
-    title: Ensure firewalld service enabled and running (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-      - service_firewalld_enabled
 
   - id: 3.5.1.5
     title: Ensure firewalld default zone is set (Automated)
