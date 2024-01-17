@@ -2053,6 +2053,101 @@ controls:
     rules:
       - accounts_passwords_pam_faillock_deny_root
 
+  - id: 4.4.3.2.1
+    title: Ensure password number of changed characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_difok
+      - var_password_pam_difok=2
+
+  - id: 4.4.3.2.2
+    title: Ensure password length is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_minlen
+      - var_password_pam_minlen=14
+
+  - id: 4.4.3.2.3
+    title: Ensure password complexity is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      This requirement is expected to be manual. However, in previous versions of the policy
+      it was already automated the configuration of "minclass" option. This posture was kept for
+      RHEL 8 in this new version. Rules related to other options are informed in related_rules.
+      In short, minclass=4 alone can achieve the same result achieved by the combination of the
+      other 4 options mentioned in the policy.
+    rules:
+      - accounts_password_pam_minclass
+      - var_password_pam_minclass=4
+    related_rules:
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_lcredit
+      - accounts_password_pam_ocredit
+      - accounts_password_pam_ucredit
+
+  - id: 4.4.3.2.4
+    title: Ensure password same consecutive characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_maxrepeat
+      - var_password_pam_maxrepeat=3
+
+  - id: 4.4.3.2.5
+    title: Ensure password maximum sequential characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: planned
+    notes: |-
+      A new templated rule and variable are necessary for the maxsequence option.
+
+  - id: 4.4.3.2.6
+    title: Ensure password dictionary check is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_dictcheck
+      - var_password_pam_dictcheck=1
+
+  - id: 4.4.3.2.7
+    title: Ensure password quality is enforced for the root user (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_enforce_root
+
+
+  - id: 4.4.3.2.1
+    title: Ensure password number of changed characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
+      module. However, the pam_pwquality.so module, by default, is always the first module from in
+      the PAM password stack. Therefore, the option is useless and not necessary. It was already
+      proposed to update the requirement in the next CIS version.
+    rules:
+      - accounts_password_pam_retry
+
+
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
@@ -2523,30 +2618,6 @@ controls:
     status: automated
     rules:
       - aide_periodic_cron_checking
-
-
-
-
-
-  - id: 5.5.1
-    title: Ensure password creation requirements are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
-      module. However, the pam_pwquality.so module, by default, is always the first module from in
-      the PAM password stack. Therefore, the option is useless and not necessary. It was already
-      proposed to update the requirement in the next CIS version.
-    rules:
-      - accounts_password_pam_minclass
-      - accounts_password_pam_minlen
-      - accounts_password_pam_retry
-      - var_password_pam_minclass=4
-      - var_password_pam_minlen=14
-
-
 
   - id: 5.5.3
     title: Ensure password reuse is limited (Automated)
