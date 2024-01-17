@@ -2072,16 +2072,7 @@ controls:
     - l1_workstation
     status: manual
 
-  - id: 4.2.3
-    title: Ensure permissions on all logfiles are configured (Manual)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: manual
-    rules:
-      - rsyslog_files_permissions
-
-  - id: 4.2.4
+  - id: 5.1.3
     title: Ensure logrotate is configured (Manual)
     levels:
     - l1_server
@@ -2091,6 +2082,15 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
+
+  - id: 4.2.3
+    title: Ensure permissions on all logfiles are configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: manual
+    rules:
+      - rsyslog_files_permissions
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
