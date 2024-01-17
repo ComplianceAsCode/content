@@ -2404,22 +2404,14 @@ controls:
     rules:
     - file_permissions_unauthorized_world_writable
 
-  - id: 6.1.11
-    title: Ensure no unowned files or directories exist (Automated)
+  - id: 6.1.12
+    title: Ensure no unowned or ungrouped files or directories exist (Automated)
     levels:
     - l1_server
     - l1_workstation
     status: automated
     rules:
     - no_files_unowned_by_user
-
-  - id: 6.1.12
-    title: Ensure no ungrouped files or directories exist (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
     - file_permissions_ungroupowned
 
   - id: 6.1.13
