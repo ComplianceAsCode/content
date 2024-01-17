@@ -2324,6 +2324,17 @@ controls:
     - file_permissions_etc_group
 
   - id: 6.1.4
+    title: Ensure permissions on /etc/group- are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - file_groupowner_backup_etc_group
+    - file_owner_backup_etc_group
+    - file_permissions_backup_etc_group
+
+  - id: 6.1.5
     title: Ensure permissions on /etc/shadow are configured (Automated)
     levels:
     - l1_server
@@ -2366,17 +2377,6 @@ controls:
     - file_groupowner_etc_gshadow
     - file_owner_etc_gshadow
     - file_permissions_etc_gshadow
-
-  - id: 6.1.9
-    title: Ensure permissions on /etc/group- are configured (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - file_groupowner_backup_etc_group
-    - file_owner_backup_etc_group
-    - file_permissions_backup_etc_group
 
   - id: 6.1.10
     title: Ensure no world writable files exist (Automated)
