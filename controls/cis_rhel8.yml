@@ -2,7 +2,7 @@
 policy: 'CIS Benchmark for Red Hat Enterprise Linux 8'
 title: 'CIS Benchmark for Red Hat Enterprise Linux 8'
 id: cis_rhel8
-version: '2.0.0'
+version: '3.0.0'
 source: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
 levels:
   - id: l1_server
@@ -39,7 +39,7 @@ controls:
       - enable_authselect
 
   - id: 1.1.1.1
-    title: Ensure mounting of cramfs filesystems is disabled (Automated)
+    title: Ensure cramfs kernel module is not available (Automated)
     levels:
       - l1_workstation
       - l1_server
@@ -48,7 +48,43 @@ controls:
       - kernel_module_cramfs_disabled
 
   - id: 1.1.1.2
-    title: Ensure mounting of squashfs filesystems is disabled (Automated)
+    title: Ensure freevxfs kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_freevxfs_disabled
+
+  - id: 1.1.1.3
+    title: Ensure hfs kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_hfs_disabled
+
+  - id: 1.1.1.4
+    title: Ensure hfsplus kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_hfsplus_disabled
+
+  - id: 1.1.1.5
+    title: Ensure jffs2 kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_jffs2_disabled
+
+  - id: 1.1.1.6
+    title: Ensure squashfs kernel module is not available (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -56,8 +92,8 @@ controls:
     rules:
       - kernel_module_squashfs_disabled
 
-  - id: 1.1.1.3
-    title: Ensure mounting of udf filesystems is disabled (Automated)
+  - id: 1.1.1.7
+    title: Ensure udf kernel module is not available (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -65,7 +101,16 @@ controls:
     rules:
       - kernel_module_udf_disabled
 
-  - id: 1.1.2.1
+  - id: 1.1.1.8
+    title: Ensure usb-storage kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_usb-storage_disabled
+
+  - id: 1.1.2.1.1
     title: Ensure /tmp is a separate partition (Automated)
     levels:
       - l1_server
@@ -74,7 +119,7 @@ controls:
     rules:
       - partition_for_tmp
 
-  - id: 1.1.2.2
+  - id: 1.1.2.1.2
     title: Ensure nodev option set on /tmp partition (Automated)
     levels:
       - l1_server
@@ -83,16 +128,7 @@ controls:
     rules:
       - mount_option_tmp_nodev
 
-  - id: 1.1.2.3
-    title: Ensure noexec option set on /tmp partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_tmp_noexec
-
-  - id: 1.1.2.4
+  - id: 1.1.2.1.3
     title: Ensure nosuid option set on /tmp partition (Automated)
     levels:
       - l1_server
@@ -101,196 +137,25 @@ controls:
     rules:
       - mount_option_tmp_nosuid
 
-  - id: 1.1.3.1
-    title: Ensure separate partition exists for /var (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - partition_for_var
-
-  - id: 1.1.3.2
-    title: Ensure nodev option set on /var partition (Automated)
+  - id: 1.1.2.1.4
+    title: Ensure noexec option set on /tmp partition (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - mount_option_var_nodev
+      - mount_option_tmp_noexec
 
-  - id: 1.1.3.3
-    title: Ensure noexec option set on /var partition (Automated)
+  - id: 1.1.2.2.1
+    title: Ensure /dev/shm is a separate partition (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - mount_option_var_noexec
+      - partition_for_dev_shm
 
-  - id: 1.1.3.4
-    title: Ensure nosuid option set on /var partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_nosuid
-
-  - id: 1.1.4.1
-    title: Ensure separate partition exists for /var/tmp (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - partition_for_var_tmp
-
-  - id: 1.1.4.2
-    title: Ensure noexec option set on /var/tmp partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_tmp_noexec
-
-  - id: 1.1.4.3
-    title: Ensure nosuid option set on /var/tmp partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_tmp_nosuid
-
-  - id: 1.1.4.4
-    title: Ensure nodev option set on /var/tmp partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_tmp_nodev
-
-  - id: 1.1.5.1
-    title: Ensure separate partition exists for /var/log (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - partition_for_var_log
-
-  - id: 1.1.5.2
-    title: Ensure nodev option set on /var/log partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_log_nodev
-
-  - id: 1.1.5.3
-    title: Ensure noexec option set on /var/log partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_log_noexec
-
-  - id: 1.1.5.4
-    title: Ensure nosuid option set on /var/log partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_log_nosuid
-
-  - id: 1.1.6.1
-    title: Ensure separate partition exists for /var/log/audit (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - partition_for_var_log_audit
-
-  - id: 1.1.6.2
-    title: Ensure noexec option set on /var/log/audit partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_log_audit_noexec
-
-  - id: 1.1.6.3
-    title: Ensure nodev option set on /var/log/audit partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_log_audit_nodev
-
-  - id: 1.1.6.4
-    title: Ensure nosuid option set on /var/log/audit partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_var_log_audit_nosuid
-
-  - id: 1.1.7.1
-    title: Ensure separate partition exists for /home (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - partition_for_home
-
-  - id: 1.1.7.2
-    title: Ensure nodev option set on /home partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_home_nodev
-
-  - id: 1.1.7.3
-    title: Ensure nosuid option set on /home partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_home_nosuid
-
-  - id: 1.1.7.4
-    title: Ensure usrquota option set on /home partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_home_usrquota
-
-  - id: 1.1.7.5
-    title: Ensure grpquota option set on /home partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_home_grpquota
-
-  - id: 1.1.8.1
+  - id: 1.1.2.2.2
     title: Ensure nodev option set on /dev/shm partition (Automated)
     levels:
       - l1_server
@@ -299,16 +164,7 @@ controls:
     rules:
       - mount_option_dev_shm_nodev
 
-  - id: 1.1.8.2
-    title: Ensure noexec option set on /dev/shm partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_dev_shm_noexec
-
-  - id: 1.1.8.3
+  - id: 1.1.2.2.3
     title: Ensure nosuid option set on /dev/shm partition (Automated)
     levels:
       - l1_server
@@ -317,32 +173,178 @@ controls:
     rules:
       - mount_option_dev_shm_nosuid
 
-  - id: 1.1.9
-    title: Disable Automounting (Automated)
-    levels:
-      - l1_server
-      - l2_workstation
-    status: automated
-    rules:
-      - service_autofs_disabled
-
-  - id: 1.1.10
-    title: Disable USB Storage (Automated)
-    levels:
-      - l1_server
-      - l2_workstation
-    status: automated
-    rules:
-      - kernel_module_usb-storage_disabled
-
-  - id: 1.2.1
-    title: Ensure Red Hat Subscription Manager connection is configured (Manual)
+  - id: 1.1.2.2.4
+    title: Ensure noexec option set on /dev/shm partition (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: manual
+    status: automated
+    rules:
+      - mount_option_dev_shm_noexec
 
-  - id: 1.2.2
+  - id: 1.1.2.3.1
+    title: Ensure separate partition exists for /home (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - partition_for_home
+
+  - id: 1.1.2.3.2
+    title: Ensure nodev option set on /home partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_home_nodev
+
+  - id: 1.1.2.3.3
+    title: Ensure nosuid option set on /home partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_home_nosuid
+
+  - id: 1.1.2.4.1
+    title: Ensure separate partition exists for /var (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - partition_for_var
+
+  - id: 1.1.2.4.2
+    title: Ensure nodev option set on /var partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_nodev
+
+  - id: 1.1.2.4.3
+    title: Ensure nosuid option set on /var partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_nosuid
+
+  - id: 1.1.2.5.1
+    title: Ensure separate partition exists for /var/tmp (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - partition_for_var_tmp
+
+  - id: 1.1.2.5.2
+    title: Ensure nodev option set on /var/tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_tmp_nodev
+
+  - id: 1.1.2.5.3
+    title: Ensure nosuid option set on /var/tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_tmp_nosuid
+
+  - id: 1.1.3.5.4
+    title: Ensure noexec option set on /var/tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_tmp_noexec
+
+  - id: 1.1.2.6.1
+    title: Ensure separate partition exists for /var/log (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - partition_for_var_log
+
+  - id: 1.1.2.6.2
+    title: Ensure nodev option set on /var/log partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_log_nodev
+
+  - id: 1.1.2.6.3
+    title: Ensure nosuid option set on /var/log partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_log_nosuid
+
+  - id: 1.1.2.6.4
+    title: Ensure noexec option set on /var/log partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_log_noexec
+
+  - id: 1.1.2.7.1
+    title: Ensure separate partition exists for /var/log/audit (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - partition_for_var_log_audit
+
+  - id: 1.1.2.7.2
+    title: Ensure nodev option set on /var/log/audit partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_log_audit_nodev
+
+  - id: 1.1.2.7.3
+    title: Ensure nosuid option set on /var/log/audit partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_log_audit_nosuid
+
+  - id: 1.1.2.7.4
+    title: Ensure noexec option set on /var/log/audit partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_log_audit_noexec
+
+  - id: 1.2.1
     title: Ensure GPG keys are configured (Manual)
     levels:
       - l1_server
@@ -351,7 +353,7 @@ controls:
     related_rules:
       - ensure_redhat_gpgkey_installed
 
-  - id: 1.2.3
+  - id: 1.2.2
     title: Ensure gpgcheck is globally activated (Automated)
     levels:
       - l1_server
@@ -360,6 +362,13 @@ controls:
     rules:
       - ensure_gpgcheck_globally_activated
 
+  - id: 1.2.3
+    title: Ensure repo_gpgcheck is globally activated (Manual)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: manual
+
   - id: 1.2.4
     title: Ensure package manager repositories are configured (Manual)
     levels:
@@ -367,26 +376,16 @@ controls:
       - l1_workstation
     status: manual
 
+  - id: 1.2.5
+    title: Ensure updates, patches, and additional security software are installed (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - security_patches_up_to_date
+
   - id: 1.3.1
-    title: Ensure AIDE is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_aide_installed
-      - aide_build_database
-
-  - id: 1.3.2
-    title: Ensure filesystem integrity is regularly checked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - aide_periodic_cron_checking
-
-  - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
     levels:
       - l1_server
@@ -396,7 +395,7 @@ controls:
       - grub2_password
       - grub2_uefi_password
 
-  - id: 1.4.2
+  - id: 1.3.2
     title: Ensure permissions on bootloader config are configured (Automated)
     levels:
       - l1_server
@@ -416,35 +415,7 @@ controls:
       - file_permissions_efi_user_cfg
       - file_permissions_user_cfg
 
-  - id: 1.4.3
-    title: Ensure authentication is required when booting into rescue mode (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - require_singleuser_auth
-      - require_emergency_target_auth
-
-  - id: 1.5.1
-    title: Ensure core dump storage is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - coredump_disable_storage
-
-  - id: 1.5.2
-    title: Ensure core dump backtraces are disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - coredump_disable_backtraces
-
-  - id: 1.5.3
+  - id: 1.4.1
     title: Ensure address space layout randomization (ASLR) is enabled (Automated)
     levels:
       - l1_server
@@ -453,7 +424,34 @@ controls:
     rules:
       - sysctl_kernel_randomize_va_space
 
-  - id: 1.6.1.1
+  - id: 1.4.2
+    title: Ensure ptrace_scope is restricted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_kernel_yama_ptrace_scope
+
+  - id: 1.4.3
+    title: Ensure core dump backtraces are disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - coredump_disable_backtraces
+
+  - id: 1.4.4
+    title: Ensure core dump storage is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - coredump_disable_storage
+
+  - id: 1.5.1.1
     title: Ensure SELinux is installed (Automated)
     levels:
       - l1_server
@@ -462,7 +460,7 @@ controls:
     rules:
       - package_libselinux_installed
 
-  - id: 1.6.1.2
+  - id: 1.5.1.2
     title: Ensure SELinux is not disabled in bootloader configuration (Automated)
     levels:
       - l1_server
@@ -471,7 +469,7 @@ controls:
     rules:
       - grub2_enable_selinux
 
-  - id: 1.6.1.3
+  - id: 1.5.1.3
     title: Ensure SELinux policy is configured (Automated)
     levels:
       - l1_server
@@ -481,7 +479,7 @@ controls:
       - var_selinux_policy_name=targeted
       - selinux_policytype
 
-  - id: 1.6.1.4
+  - id: 1.5.1.4
     title: Ensure the SELinux mode is not disabled (Automated)
     levels:
       - l1_server
@@ -490,7 +488,7 @@ controls:
     rules:
       - selinux_not_disabled
 
-  - id: 1.6.1.5
+  - id: 1.5.1.5
     title: Ensure the SELinux mode is enforcing (Automated)
     levels:
       - l2_server
@@ -500,7 +498,7 @@ controls:
       - var_selinux_state=enforcing
       - selinux_state
 
-  - id: 1.6.1.6
+  - id: 1.5.1.6
     title: Ensure no unconfined services exist (Automated)
     levels:
       - l1_server
@@ -509,15 +507,7 @@ controls:
     rules:
       - selinux_confinement_of_daemons
 
-  - id: 1.6.1.7
-    title: Ensure SETroubleshoot is not installed (Automated)
-    levels:
-      - l1_server
-    status: automated
-    rules:
-      - package_setroubleshoot_removed
-
-  - id: 1.6.1.8
+  - id: 1.5.1.7
     title: Ensure the MCS Translation Service (mcstrans) is not installed (Automated)
     levels:
       - l1_server
@@ -525,6 +515,49 @@ controls:
     status: automated
     rules:
       - package_mcstrans_removed
+
+  - id: 1.5.1.8
+    title: Ensure SETroubleshoot is not installed (Automated)
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - package_setroubleshoot_removed
+
+  - id: 1.6.1
+    title: Ensure system wide crypto policy is not set to legacy (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: The selected crypto-policy cannot be legacy
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=default_policy
+
+  - id: 1.6.2
+    title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: More investigation is necessary on this new requirement.
+
+  - id: 1.6.3
+    title: Ensure system wide crypto policy disables cbc for ssh (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: More investigation is necessary on this new requirement.
+
+  - id: 1.6.4
+    title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: More investigation is necessary on this new requirement.
 
   - id: 1.7.1
     title: Ensure message of the day is configured properly (Automated)
@@ -557,7 +590,7 @@ controls:
       - remote_login_banner_text=cis_banners
 
   - id: 1.7.4
-    title: Ensure permissions on /etc/motd are configured (Automated)
+    title: Ensure access to /etc/motd is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -568,7 +601,7 @@ controls:
       - file_permissions_etc_motd
 
   - id: 1.7.5
-    title: Ensure permissions on /etc/issue are configured (Automated)
+    title: Ensure access to /etc/issue is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -579,7 +612,7 @@ controls:
       - file_permissions_etc_issue
 
   - id: 1.7.6
-    title: Ensure permissions on /etc/issue.net are configured (Automated)
+    title: Ensure access to /etc/issue.net is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -590,11 +623,11 @@ controls:
       - file_permissions_etc_issue_net
 
   - id: 1.8.1
-    title: Ensure GNOME Display Manager is removed (Manual)
+    title: Ensure GNOME Display Manager is removed (Automated)
     levels:
       - l2_server
-    status: manual
-    related_rules:
+    status: automated
+    rules:
       - package_gdm_removed
 
   - id: 1.8.2
@@ -609,7 +642,7 @@ controls:
       - login_banner_text=cis_default
 
   - id: 1.8.3
-    title: Ensure last logged in user display is disabled (Automated)
+    title: Ensure GDM disable-user-list option is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -618,16 +651,29 @@ controls:
       - dconf_gnome_disable_user_list
 
   - id: 1.8.4
-    title: Ensure XDMCP is not enabled (Automated)
+    title: Ensure GDM screen locks when the user is idle (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - gnome_gdm_disable_xdmcp
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=5_seconds
 
   - id: 1.8.5
-    title: Ensure automatic mounting of removable media is disabled (Automated)
+    title: Ensure GDM screen locks cannot be overridden (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - dconf_gnome_session_idle_user_locks
+      - dconf_gnome_screensaver_user_locks
+
+  - id: 1.8.6
+    title: Ensure GDM automatic mounting of removable media is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -636,25 +682,48 @@ controls:
       - dconf_gnome_disable_automount
       - dconf_gnome_disable_automount_open
 
-  - id: "1.9"
-    title: Ensure updates, patches, and additional security software are installed (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    related_rules:
-      - security_patches_up_to_date
-
-  - id: "1.10"
-    title: Ensure system-wide crypto policy is not legacy (Automated)
+  - id: 1.8.7
+    title: Ensure GDM disabling automatic mounting of removable media is not overridden (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
-    notes: The selected crypto-policy cannot be legacy
+    notes: |-
+      The same rules used in 1.8.6 are applicable here since they configure and also lock the
+      settings.
+    related_rules:
+      - dconf_gnome_disable_automount
+      - dconf_gnome_disable_automount_open
+
+  - id: 1.8.8
+    title: Ensure GDM autorun-never is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
     rules:
-      - configure_crypto_policy
-      - var_system_crypto_policy=default_policy
+      - dconf_gnome_disable_autorun
+
+  - id: 1.8.9
+    title: Ensure GDM autorun-never is not overridden (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The same rules used in 1.8.8 are applicable here since they configure and also lock the
+      settings.
+    related_rules:
+      - dconf_gnome_disable_autorun
+
+  - id: 1.8.10
+    title: Ensure XDMCP is not enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - gnome_gdm_disable_xdmcp
 
   - id: 2.1.1
     title: Ensure time synchronization is in use (Automated)
@@ -2170,6 +2239,25 @@ controls:
       - sshd_set_idle_timeout
       - sshd_set_keepalive
       - var_sshd_set_keepalive=0
+
+  - id: 5.3.1
+    title: Ensure AIDE is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_aide_installed
+      - aide_build_database
+
+  - id: 5.3.2
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_periodic_cron_checking
 
   - id: 5.3.1
     title: Ensure sudo is installed (Automated)
