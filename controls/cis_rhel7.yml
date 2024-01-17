@@ -2291,22 +2291,6 @@ controls:
     - aide_periodic_cron_checking
 
   - id: 6.1.1
-    title: Ensure world writable files and directories are secured (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - dir_perms_world_writable_sticky_bits
-
-  - id: 10.1.1 # TODO: Fix
-    title: Audit system file permissions (Manual)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: manual
-
-  - id: 6.1.2
     title: Ensure permissions on /etc/passwd are configured (Automated)
     levels:
     - l1_server
@@ -2433,6 +2417,13 @@ controls:
     levels:
     - l1_server
     - l1_workstation
+    status: manual
+
+  - id: 6.1.1
+    title: Audit system file permissions (Manual)
+    levels:
+    - l2_server
+    - l2_workstation
     status: manual
 
   - id: 6.2.1
