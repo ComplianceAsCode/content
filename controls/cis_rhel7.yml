@@ -2521,6 +2521,19 @@ controls:
     - file_ownership_home_directories
     - file_permissions_home_directories
 
+  - id: 6.2.11
+    title: Ensure local interactive user dot files access is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: partial
+    # TODO: add rule checking that .bash_history is mode 0600 or more restrictive
+    rules:
+    - accounts_user_dot_no_world_writable_programs
+    - no_forward_files
+    - no_rsh_trust_files
+    - no_netrc_files
+
   - id: 6.2.4
     title: Ensure shadow group is empty (Automated)
     levels:
