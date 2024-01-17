@@ -693,16 +693,11 @@ controls:
     levels:
     - l1_server
     - l2_workstation
-    status: automated
+    status: partial
+    notes: |-
+      We need package_autofs_removed to complete this control
     rules:
     - service_autofs_disabled
-
-  - id: 2.2.1.1
-    title: Ensure time synchronization is in use (Manual)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: manual
 
   - id: 2.1.2
     title: Ensure chrony is configured (Automated)
