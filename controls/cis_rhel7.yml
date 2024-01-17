@@ -1999,6 +1999,15 @@ controls:
     rules:
     - rsyslog_nolisten
 
+  - id: 5.1.2.1.1
+    title: Ensure systemd-journal-remote is installed (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_systemd-journal-remote_installed
+
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
