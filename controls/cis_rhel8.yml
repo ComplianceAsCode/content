@@ -2306,11 +2306,38 @@ controls:
     rules:
       - ensure_root_password_configured
 
+  - id: 4.5.3.1
+    title: Ensure nologin is not listed in /etc/shells (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: pending
+    notes: |-
+      It is necessary to create a new rule to check and remove nologin from /etc/shells.
+      The no_tmux_in_shells rule can be used as referece.
 
+  - id: 4.5.3.2
+    title: Ensure default user shell timeout is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=15_min
 
-
-
-
+  - id: 4.5.3.3
+    title: Ensure default user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - accounts_umask_interactive_users
+      - var_accounts_user_umask=027
 
 
 
@@ -2827,27 +2854,9 @@ controls:
 
 
 
-  - id: 5.6.3
-    title: Ensure default user shell timeout is 900 seconds or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_tmout
-      - var_accounts_tmout=15_min
 
-  - id: 5.6.5
-    title: Ensure default user umask is 027 or more restrictive (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_umask_etc_bashrc
-      - accounts_umask_etc_login_defs
-      - accounts_umask_etc_profile
-      - var_accounts_user_umask=027
+
+
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
