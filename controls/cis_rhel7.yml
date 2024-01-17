@@ -2491,6 +2491,16 @@ controls:
     rules:
       - group_unique_name
 
+  - id: 6.2.8
+    title: Ensure root path integrity (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - accounts_root_path_dirs_no_write
+    - root_path_no_dot
+
   - id: 6.2.4
     title: Ensure shadow group is empty (Automated)
     levels:
@@ -2509,15 +2519,6 @@ controls:
     rules:
     - accounts_no_uid_except_zero
 
-  - id: 6.2.10
-    title: Ensure root PATH Integrity (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - accounts_root_path_dirs_no_write
-    - root_path_no_dot
 
   - id: 6.2.11
     title: Ensure all users' home directories exist (Automated)
