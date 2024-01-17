@@ -2456,6 +2456,15 @@ controls:
     - gid_passwd_group_same
 
   - id: 6.2.4
+    title: Ensure no duplicate UIDs exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - account_unique_id
+
+  - id: 6.2.4
     title: Ensure shadow group is empty (Automated)
     levels:
     - l1_server
@@ -2481,15 +2490,6 @@ controls:
     status: automated
     rules:
       - group_unique_name
-
-  - id: 6.2.7
-    title: Ensure no duplicate UIDs exist (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-    - account_unique_id
 
   - id: 6.2.8
     title: Ensure no duplicate GIDs exist (Automated)
