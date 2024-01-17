@@ -2510,6 +2510,17 @@ controls:
     rules:
     - accounts_no_uid_except_zero
 
+  - id: 6.2.10
+    title: Ensure local interactive user home directories are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - accounts_user_interactive_home_directory_exists
+    - file_ownership_home_directories
+    - file_permissions_home_directories
+
   - id: 6.2.4
     title: Ensure shadow group is empty (Automated)
     levels:
