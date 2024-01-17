@@ -2031,6 +2031,15 @@ controls:
     rules:
     - socket_systemd-journal-remote_disabled
 
+  - id: 5.1.2.2
+    title: Ensure journald service is enabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - service_systemd-journald_enabled
+
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
