@@ -2387,6 +2387,15 @@ controls:
     # new rule needed
 
   - id: 6.1.10
+    title: Ensure permissions on /etc/security/opasswd are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - file_etc_security_opasswd
+
+  - id: 6.1.10
     title: Ensure no world writable files exist (Automated)
     levels:
     - l1_server
