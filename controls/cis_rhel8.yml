@@ -2268,6 +2268,51 @@ controls:
     rules:
       - accounts_password_last_change_is_in_past
 
+  - id: 4.5.2.1
+    title: Ensure default group for the root account is GID 0 (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_root_gid_zero
+
+  - id: 4.5.2.2
+    title: Ensure root user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      There is no rule to ensure umask in /root/.bash_profile and /root/.bashrc. A new rule have
+      to be created. It can be based on accounts_umask_interactive_users.
+
+  - id: 4.5.2.3
+    title: Ensure system accounts are secured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
+
+  - id: 4.5.2.4
+    title: Ensure root password is set (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - ensure_root_password_configured
+
+
+
+
+
+
+
+
 
 
 
@@ -2780,15 +2825,7 @@ controls:
 
 
 
-  - id: 5.6.2
-    title: Ensure system accounts are secured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - no_password_auth_for_systemaccounts
-      - no_shelllogin_for_systemaccounts
+
 
   - id: 5.6.3
     title: Ensure default user shell timeout is 900 seconds or less (Automated)
@@ -2799,15 +2836,6 @@ controls:
     rules:
       - accounts_tmout
       - var_accounts_tmout=15_min
-
-  - id: 5.6.4
-    title: Ensure default group for the root account is GID 0 (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_root_gid_zero
 
   - id: 5.6.5
     title: Ensure default user umask is 027 or more restrictive (Automated)
