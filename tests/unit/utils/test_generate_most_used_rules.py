@@ -10,7 +10,7 @@ DATA_STREAM_PATH = os.path.join(DATA_DIR, "simple_data_stream.xml")
 
 def get_fake_args():
     return Namespace(
-        subcommand="most-used-rules", benchmarks=[str(DATA_STREAM_PATH)], format="plain"
+        subcommand="most-used-rules", BENCHMARKS=[str(DATA_STREAM_PATH)], format="plain"
     )
 
 

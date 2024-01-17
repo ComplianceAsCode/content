@@ -254,20 +254,19 @@ def parse_most_used_rules_subcommand(subparsers):
     parser_most_used_rules = subparsers.add_parser(
         "most-used-rules",
         description=(
-            "Generates list of all rules used by the existing profiles. "
-            "In various formats."
+            "Generates list of all rules used by the existing profiles. In various formats."
         ),
-        help=("Generates list of all rules used by the existing profiles."),
+        help="Generates list of all rules used by the existing profiles.",
     )
     parser_most_used_rules.add_argument(
-        "--benchmarks",
-        "-b",
-        metavar="benchmark",
+        "BENCHMARKS",
         type=str,
-        nargs="+",
-        required=True,
-        action="store",
-        help="Specify XCCDF files or a SCAP source data stream files to act on.",
+        nargs="*",
+        default=[],
+        help=(
+            "Specify XCCDF files or a SCAP source data stream files to act on. "
+            "If not provided are used control files. e.g.: ~/scap-security-guide/controls"
+        ),
     )
     parser_most_used_rules.add_argument(
         "--format",
