@@ -1969,7 +1969,7 @@ controls:
       settings might be different depending on site policies. The other rules will already make
       sure there is a correct autheselect profile regardless of the existing settings. It is
       necessary to better discuss with CIS Community.
-    rules:
+    related_rules:
       - no_empty_passwords
 
   - id: 4.4.2.2
@@ -2015,12 +2015,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: partial
     notes: |-
       This module is always present by default. It is necessary to investigate if a new rule to
-      check its existence needs to be created. But so far the rule no_empty_passwords can ensure
-      this requirement is attended. The requirement 4.4.2.1 requires the nullok option for
-      pam_unix.so, so by the 4.4.2.1 this requirement is already attended.
+      check its existence needs to be created. But so far the rule no_empty_passwords, used in
+      4.4.3.4.1 can ensure this requirement is attended.
     related_rules:
       - no_empty_passwords
 
@@ -2167,6 +2166,55 @@ controls:
     related_rules:
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
+
+  - id: 4.4.3.4.1
+    title: Ensure pam_unix does not include nullok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The rule more specifically used in this requirement also satify the requirements 4.4.2.1
+      and 4.4.2.5.
+    rules:
+      - no_empty_passwords
+
+  - id: 4.4.3.4.2
+    title: Ensure pam_unix does not include remember (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Usage of pam_unix.so module together with "remember" option is deprecated and is not
+      recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+      module, as required in 4.4.3.3.1. See here for more details about pam_unix.so:
+      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
+      A new rule needs to be created to remove the remember option from pam_unix module.
+
+  - id: 4.4.3.4.3
+    title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
+
+  - id: 4.4.3.4.4
+    title: Ensure pam_unix includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      In RHEL 8 pam_unix is enabled by default in all authselect profiles already with the
+      use_authtok option set. In any case, we don't have a rule to check this option specifically,
+      like in 4.4.3.3.3.
+
 
   - id: 4.4.3.2.1
     title: Ensure password number of changed characters is configured (Automated)
@@ -2656,17 +2704,7 @@ controls:
 
 
 
-  - id: 5.5.4
-    title: Ensure password hashing algorithm is SHA-512 (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - set_password_hashing_algorithm_systemauth
-      - set_password_hashing_algorithm_passwordauth
-      - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=SHA512
+
 
   - id: 5.6.1.1
     title: Ensure password expiration is 365 days or less (Automated)
