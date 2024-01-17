@@ -1956,6 +1956,15 @@ controls:
     rules:
     - service_rsyslog_enabled
 
+  - id: 5.1.1.3
+    title: Ensure journald is configured to send logs to rsyslog (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+      - journald_forward_to_syslog
+
   - id: 4.2.1.3
     title: Ensure rsyslog default file permissions configured (Automated)
     levels:
@@ -1987,15 +1996,6 @@ controls:
     - l1_server
     - l1_workstation
     status: manual
-
-  - id: 4.2.2.1
-    title: Ensure journald is configured to send logs to rsyslog (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    status: automated
-    rules:
-      - journald_forward_to_syslog
 
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
