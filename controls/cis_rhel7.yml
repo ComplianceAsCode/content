@@ -2022,6 +2022,15 @@ controls:
     - l1_workstation
     status: manual
 
+  - id: 5.1.2.1.4
+    title: Ensure journald is not configured to receive logs from a remote client (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - socket_systemd-journal-remote_disabled
+
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
