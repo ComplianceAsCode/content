@@ -1990,6 +1990,15 @@ controls:
     rules:
     - rsyslog_remote_loghost
 
+  - id: 5.1.1.7
+    title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - rsyslog_nolisten
+
   - id: 4.2.1.6
     title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
     levels:
