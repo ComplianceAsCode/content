@@ -48,7 +48,13 @@ The tool can also generate a list of the most used rules contained in profiles f
 For example, to get a list of the most used rules in the benchmark for `rhel8`, run this command:
 
 ```bash
-    $ ./build-scripts/profile_tool.py most-used-rules --benchmarks build/ssg-rhel8-xccdf.xml
+    $ ./build-scripts/profile_tool.py most-used-rules build/ssg-rhel8-xccdf.xml
+```
+
+Or you can also run this command to get a list of the most used rules in the entire project:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-rules
 ```
 
 The result will be a list of rules with the number of uses in the profiles.
