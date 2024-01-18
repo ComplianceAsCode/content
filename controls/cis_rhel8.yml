@@ -2137,11 +2137,17 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      Although mentioned in the section 4.4.3.3, there is no explicit requirement to configure
+      retry option of pam_pwhistory. If come in the future, the rule accounts_password_pam_retry
+      can be used.
     rules:
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
       - var_password_pam_remember_control_flag=requisite_or_required
       - var_password_pam_remember=24
+    related_rules:
+      - accounts_password_pam_retry
 
   - id: 4.4.3.3.2
     title: Ensure password history is enforced for the root user (Automated)
@@ -2343,30 +2349,6 @@ controls:
 
 
 
-
-
-  - id: 4.4.3.2.1
-    title: Ensure password number of changed characters is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
-      module. However, the pam_pwquality.so module, by default, is always the first module from in
-      the PAM password stack. Therefore, the option is useless and not necessary. It was already
-      proposed to update the requirement in the next CIS version.
-    rules:
-      - accounts_password_pam_retry
-
-  - id: 4.1.1.1
-    title: Ensure auditd is installed (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - package_audit_installed
 
   - id: 4.1.1.2
     title: Ensure auditd service is enabled (Automated)
@@ -2783,22 +2765,6 @@ controls:
       - l1_workstation
     status: manual
 
-  - id: 4.2.2.7
-    title: Ensure journald default file permissions configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.3
-    title: Ensure permissions on all logfiles are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_files_permissions
-
   - id: 4.3
     title: Ensure logrotate is configured (Manual)
     levels:
@@ -2828,35 +2794,6 @@ controls:
     status: automated
     rules:
       - aide_periodic_cron_checking
-
-
-
-
-
-
-
-  - id: 5.6.1.2
-    title: Ensure minimum days between password changes is 7 or more (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_minimum_age_login_defs
-      - var_accounts_minimum_age_login_defs=7
-      - accounts_password_set_min_life_existing
-
-
-
-
-
-
-
-
-
-
-
-
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
