@@ -2288,6 +2288,15 @@ controls:
     - package_aide_installed
     - aide_build_database
 
+  - id: 5.3.2
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - aide_periodic_cron_checking
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
