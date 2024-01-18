@@ -1501,27 +1501,6 @@ controls:
     rules:
     - audit_rules_session_events
 
-  - id: 4.1.9
-    title: Ensure discretionary access control permission modification events are collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - audit_rules_dac_modification_fchmod
-    - audit_rules_dac_modification_fchmodat
-    - audit_rules_dac_modification_chmod
-    - audit_rules_dac_modification_fchown
-    - audit_rules_dac_modification_fchownat
-    - audit_rules_dac_modification_chown
-    - audit_rules_dac_modification_lchown
-    - audit_rules_dac_modification_fremovexattr
-    - audit_rules_dac_modification_fsetxattr
-    - audit_rules_dac_modification_lremovexattr
-    - audit_rules_dac_modification_lsetxattr
-    - audit_rules_dac_modification_removexattr
-    - audit_rules_dac_modification_setxattr
-
   - id: 4.1.12
     title: Ensure successful file system mounts are collected (Automated)
     levels:
@@ -2123,6 +2102,27 @@ controls:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+
+  - id: 5.2.3.9
+    title: Ensure discretionary access control permission modification events are collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
