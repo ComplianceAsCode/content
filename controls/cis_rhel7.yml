@@ -1482,18 +1482,6 @@ controls:
     - audit_rules_mac_modification
     - audit_rules_mac_modification_usr_share
 
-  - id: 4.1.13
-    title: Ensure file deletion events by users are collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - audit_rules_file_deletion_events_rename
-    - audit_rules_file_deletion_events_renameat
-    - audit_rules_file_deletion_events_unlink
-    - audit_rules_file_deletion_events_unlinkat
-
   - id: 4.1.15
     title: Ensure system administrator command executions (sudo) are collected (Automated)
     levels:
@@ -2123,6 +2111,18 @@ controls:
     rules:
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
+
+  - id: 5.2.3.13
+    title: Ensure file deletion events by users are collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_file_deletion_events_rename
+    - audit_rules_file_deletion_events_renameat
+    - audit_rules_file_deletion_events_unlink
+    - audit_rules_file_deletion_events_unlinkat
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
