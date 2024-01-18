@@ -1472,19 +1472,6 @@ controls:
     related_rules:
     - service_ip6tables_enabled
 
-  - id: 4.1.4
-    title: Ensure events that modify user/group information are collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - audit_rules_usergroup_modification_group
-    - audit_rules_usergroup_modification_gshadow
-    - audit_rules_usergroup_modification_opasswd
-    - audit_rules_usergroup_modification_passwd
-    - audit_rules_usergroup_modification_shadow
-
   - id: 4.1.6
     title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
     levels:
@@ -2123,6 +2110,19 @@ controls:
     - audit_rules_unsuccessful_file_modification_openat
     - audit_rules_unsuccessful_file_modification_truncate
     - audit_rules_unsuccessful_file_modification_ftruncate
+
+  - id: 5.2.3.8
+    title: Ensure events that modify user/group information are collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
