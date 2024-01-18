@@ -2506,19 +2506,16 @@ controls:
       - rsyslog_files_ownership
       - rsyslog_files_permissions
 
-
-
-
-  - id: 4.1.1.2
-    title: Ensure auditd service is enabled (Automated)
+  - id: 5.2.1.1
+    title: Ensure audit is installed (Automated)
     levels:
       - l2_server
       - l2_workstation
     status: automated
     rules:
-      - service_auditd_enabled
+      - package_audit_installed
 
-  - id: 4.1.1.3
+  - id: 5.2.1.2
     title: Ensure auditing for processes that start prior to auditd is enabled (Automated)
     levels:
       - l2_server
@@ -2527,7 +2524,7 @@ controls:
     rules:
       - grub2_audit_argument
 
-  - id: 4.1.1.4
+  - id: 5.2.1.3
     title: Ensure audit_backlog_limit is sufficient (Automated)
     levels:
       - l2_server
@@ -2535,6 +2532,17 @@ controls:
     status: automated
     rules:
       - grub2_audit_backlog_limit_argument
+
+  - id: 5.2.1.4
+    title: Ensure auditd service is enabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - service_auditd_enabled
+
+
 
   - id: 4.1.2.1
     title: Ensure audit log storage size is configured (Automated)
