@@ -2197,6 +2197,15 @@ controls:
     rules:
       - directory_permissions_var_log_audit
 
+  - id: 5.2.4.2
+    title: Ensure audit log files are mode 0640 or less permissive (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_permissions_var_log_audit
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
