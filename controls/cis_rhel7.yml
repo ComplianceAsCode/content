@@ -2260,6 +2260,15 @@ controls:
     rules:
       - file_permissions_audit_binaries
 
+  - id: 5.2.4.9
+    title: Ensure audit tools are owned by root (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_ownership_audit_binaries
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
