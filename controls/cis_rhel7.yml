@@ -2278,6 +2278,16 @@ controls:
     rules:
       - file_groupownership_audit_binaries
 
+  - id: 5.3.1
+    title: Ensure AIDE is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - package_aide_installed
+    - aide_build_database
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
