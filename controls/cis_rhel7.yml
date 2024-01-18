@@ -2215,6 +2215,15 @@ controls:
     rules:
       - file_ownership_var_log_audit_stig
 
+  - id: 5.2.4.4
+    title: Ensure only authorized groups are assigned ownership of audit log files (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_group_ownership_var_log_audit
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
