@@ -2017,6 +2017,97 @@ controls:
       - accounts_password_pam_dictcheck
       - var_password_pam_dictcheck=1
 
+  - id: 4.4.2.3.1
+    title: Ensure pam_pwhistory module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The module is properly enabled by the rules mentioned in related_rules.
+      Requirement 4.4.2.3.2 uses these rules more specifically.
+    related_rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+
+  - id: 4.4.2.3.2
+    title: Ensure password history remember is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+      - var_password_pam_remember_control_flag=requisite_or_required
+      - var_password_pam_remember=24
+
+  - id: 4.4.2.3.3
+    title: Ensure password history is enforced for the root user (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: planned
+    notes: |-
+      A new rule needs to be created to check and remediate the enforce_for_root option in
+      /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
+
+  - id: 4.4.2.3.4
+    title: Ensure pam_pwhistory includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      We don't have a rule to check and remediate this option specifically in RHEL7.
+    related_rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+
+  - id: 4.4.2.4.1
+    title: Ensure pam_unix does not include nullok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - no_empty_passwords
+
+  - id: 4.4.2.4.2
+    title: Ensure pam_unix does not include remember (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Usage of pam_unix.so module together with "remember" option is deprecated and is not
+      recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+      module, as required in 4.4.2.3.2. See here for more details about pam_unix.so:
+      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
+      A new rule needs to be created to remove the remember option from pam_unix module.
+
+  - id: 4.4.2.4.3
+    title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_passwordauth
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
+
+  - id: 4.4.2.4.4
+    title: Ensure pam_unix includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      In RHEL 7 pam_unix is enabled by default already with the use_authtok option set.
+      In any case, we don't have a rule to check this option specifically. Similar to 4.4.2.3.4.
+
   - id: 5.1.1.1
     title: Ensure rsyslog is installed (Automated)
     levels:
