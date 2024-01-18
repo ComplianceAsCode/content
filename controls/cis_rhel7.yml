@@ -1472,16 +1472,6 @@ controls:
     related_rules:
     - service_ip6tables_enabled
 
-  - id: 4.1.1.1
-    title: Ensure auditd is installed (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-      - package_audit_installed
-      - package_audit-libs_installed
-
   - id: 4.1.1.2
     title: Ensure auditd service is enabled and running (Automated)
     levels:
@@ -2092,6 +2082,16 @@ controls:
     # TODO: we need to add more rules so that all files in /var/log have appropriate code permissions and ownership
     rules:
       - rsyslog_files_permissions
+
+  - id: 5.2.1.1
+    title: Ensure auditd is installed (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+      - package_audit_installed
+      - package_audit-libs_installed
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
