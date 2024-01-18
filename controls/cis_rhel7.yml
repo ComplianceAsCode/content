@@ -1472,15 +1472,6 @@ controls:
     related_rules:
     - service_ip6tables_enabled
 
-  - id: 4.1.1.2
-    title: Ensure auditd service is enabled and running (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - service_auditd_enabled
-
   - id: 4.1.2.1
     title: Ensure audit log storage size is configured (Automated)
     levels:
@@ -2092,6 +2083,15 @@ controls:
       Note that currently the value is hardcoded to 8192
     rules:
     - grub2_audit_backlog_limit_argument
+
+  - id: 5.2.1.4
+    title: Ensure auditd service is enabled and running (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - service_auditd_enabled
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
