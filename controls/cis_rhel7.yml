@@ -2092,11 +2092,11 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      Changes in logindefs mentioned in this requirement are more specifically covered by 4.5.1.1.
     rules:
       - set_password_hashing_algorithm_systemauth
       - set_password_hashing_algorithm_passwordauth
-      - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=SHA512
 
   - id: 4.4.2.4.4
     title: Ensure pam_unix includes use_authtok (Automated)
@@ -2107,6 +2107,97 @@ controls:
     notes: |-
       In RHEL 7 pam_unix is enabled by default already with the use_authtok option set.
       In any case, we don't have a rule to check this option specifically. Similar to 4.4.2.3.4.
+
+  - id: 4.5.1.1
+    title: Ensure strong password hashing algorithm is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_libuserconf
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
+
+  - id: 4.5.1.2
+    title: Ensure password expiration is 365 days or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_maximum_age_login_defs
+      - accounts_password_set_max_life_existing
+      - var_accounts_maximum_age_login_defs=365
+
+  - id: 4.5.1.3
+    title: Ensure password expiration warning days is 7 or more (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_set_warn_age_existing
+      - accounts_password_warn_age_login_defs
+      - var_accounts_password_warn_age_login_defs=7
+
+  - id: 4.5.1.4
+    title: Ensure inactive password lock is 30 days or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - account_disable_post_pw_expiration
+      - accounts_set_post_pw_existing
+      - var_account_disable_post_pw_expiration=30
+
+  - id: 4.5.1.5
+    title: Ensure all users last password change date is in the past (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_last_change_is_in_past
+
+  - id: 4.5.2.1
+    title: Ensure default group for the root account is GID 0 (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_root_gid_zero
+
+  - id: 4.5.2.2
+    title: Ensure root user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      There is no rule to ensure umask in /root/.bash_profile and /root/.bashrc. A new rule have
+      to be created. It can be based on accounts_umask_interactive_users.
+
+  - id: 4.5.2.3
+    title: Ensure system accounts are secured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
+
+  - id: 4.5.2.4
+    title: Ensure root password is set (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - ensure_root_password_configured
 
   - id: 5.1.1.1
     title: Ensure rsyslog is installed (Automated)
