@@ -100,7 +100,7 @@ controls:
     - kernel_module_usb-storage_disabled
 
   - id: 1.1.2.1.1
-    title: Ensure /tmp is configured (Automated)
+    title: Ensure /tmp is a separate partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -136,7 +136,7 @@ controls:
     - mount_option_tmp_noexec
 
   - id: 1.1.2.2.1
-    title: Ensure /dev/shm is configured (Automated)
+    title: Ensure /dev/shm is a separate partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -181,7 +181,7 @@ controls:
     - partition_for_home
 
   - id: 1.1.2.3.2
-    title: Ensure /home partition includes the nodev option (Automated)
+    title: Ensure nodev option set on /home partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -190,7 +190,7 @@ controls:
     - mount_option_home_nodev
 
   - id: 1.1.2.3.3
-    title: Ensure /home partition includes the nosuid option (Automated)
+    title: Ensure nosuid option set on /home partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -208,7 +208,7 @@ controls:
     - partition_for_var
 
   - id: 1.1.2.4.2
-    title: Ensure /var partition includes the nodev option (Automated)
+    title: Ensure nodev option set on /var partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -217,7 +217,7 @@ controls:
     - mount_option_var_nodev
 
   - id: 1.1.2.4.3
-    title: Ensure /var partition includes the nosuid option (Automated)
+    title: Ensure nosuid option set on /var partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -235,7 +235,7 @@ controls:
     - partition_for_var_tmp
 
   - id: 1.1.2.5.2
-    title: Ensure /var/tmp partition includes the nodev option (Automated)
+    title: Ensure nodev option set on /var/tmp partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -244,7 +244,7 @@ controls:
     - mount_option_var_tmp_nodev
 
   - id: 1.1.2.5.3
-    title: Ensure /var/tmp partition includes the nosuid option (Automated)
+    title: Ensure nosuid option set on /var/tmp partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -253,7 +253,7 @@ controls:
     - mount_option_var_tmp_nosuid
 
   - id: 1.1.2.5.4
-    title: Ensure /var/tmp partition includes the noexec option (Automated)
+    title: Ensure noexec option set on /var/tmp partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -271,7 +271,7 @@ controls:
     - partition_for_var_log
 
   - id: 1.1.2.6.2
-    title: Ensure /var/log partition includes the nodev option (Automated)
+    title: Ensure nodev option set on /var/log partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -280,7 +280,7 @@ controls:
     - mount_option_var_log_nodev
 
   - id: 1.1.2.6.3
-    title: Ensure /var/log partition includes the nosuid option (Automated)
+    title: Ensure nosuid option set on /var/log partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -289,7 +289,7 @@ controls:
     - mount_option_var_log_nosuid
 
   - id: 1.1.2.6.4
-    title: Ensure /var/log partition includes the noexec option (Automated)
+    title: Ensure noexec option set on /var/log partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -307,7 +307,7 @@ controls:
     - partition_for_var_log_audit
 
   - id: 1.1.2.7.2
-    title: Ensure /var/log/audit partition includes the nodev option (Automated)
+    title: Ensure noexec option set on /var/log/audit partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -316,7 +316,7 @@ controls:
     - mount_option_var_log_audit_nodev
 
   - id: 1.1.2.7.3
-    title: Ensure /var/log/audit partition includes the nosuid option (Automated)
+    title: Ensure nosuid option set on /var/log/audit partition (Automated)
     levels:
     - l1_server
     - l1_workstation
@@ -325,7 +325,7 @@ controls:
     - mount_option_var_log_audit_nosuid
 
   - id: 1.1.2.7.4
-    title: Ensure /var/log/audit partition includes the noexec option (Automated)
+    title: Ensure noexec option set on /var/log/audit partition (Automated)
     levels:
     - l1_server
     - l1_workstation
