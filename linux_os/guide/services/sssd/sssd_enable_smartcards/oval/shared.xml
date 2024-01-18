@@ -17,13 +17,18 @@
   comment="tests the value of pam_cert_auth setting in the /etc/sssd/sssd.conf file"
   id="test_sssd_enable_smartcards" version="1">
     <ind:object object_ref="obj_sssd_enable_smartcards" />
+    <ind:state state_ref="state_sssd_enable_smartcards" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*pam_cert_auth[\s]*=[\s]*(?i)true\s*$</ind:pattern>
+  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards" version="2">
+    <ind:filepath operation="pattern match">/etc/sssd/(sssd\.conf|conf.d/[^/]+\.conf)</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*pam_cert_auth[\s]*=[\s]*(\w+)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_enable_smartcards" version="1">
+    <ind:subexpression operation="pattern match">(?i)true</ind:subexpression>
+  </ind:textfilecontent54_state>
 
   {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
