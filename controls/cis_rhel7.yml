@@ -2114,6 +2114,15 @@ controls:
     rules:
       - audit_rules_suid_auid_privilege_function
 
+  - id: 5.2.3.3
+    title: Ensure events that modify the sudo log file are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - audit_sudo_log_events
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
