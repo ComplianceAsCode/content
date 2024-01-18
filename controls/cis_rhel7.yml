@@ -2091,6 +2091,20 @@ controls:
     - auditd_data_disk_error_action
     - var_auditd_disk_error_action=cis_rhel7
 
+  - id: 5.2.2.4
+    title: Ensure system warns when audit logs are low on space (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - auditd_data_retention_space_left_action
+    - var_auditd_space_left_action=cis_rhel7
+    - auditd_data_retention_action_mail_acct
+    - var_auditd_action_mail_acct=root
+    - auditd_data_retention_admin_space_left_action
+    - var_auditd_admin_space_left_action=halt
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
