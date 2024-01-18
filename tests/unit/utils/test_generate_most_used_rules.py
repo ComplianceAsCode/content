@@ -1,4 +1,6 @@
 import os
+import sys
+import pytest
 from argparse import Namespace
 from utils.profile_tool import command_most_used_rules
 
@@ -14,6 +16,7 @@ def get_fake_args():
     )
 
 
+@pytest.mark.skipif(sys.version_info[0] < 3, reason="requires python3")
 def test_command(capsys):
     command_most_used_rules(get_fake_args())
     captured = capsys.readouterr()

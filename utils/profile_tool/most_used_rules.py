@@ -1,12 +1,18 @@
+import sys
 import json
 
 from ssg.build_profile import XCCDFBenchmark
-from .profile import get_profile
-from ..controleval import (
-    load_controls_manager,
-    get_available_products,
-    get_product_profiles_files,
-)
+
+
+PYTHON_2 = sys.version_info[0] < 3
+
+if not PYTHON_2:
+    from .profile import get_profile
+    from ..controleval import (
+        load_controls_manager,
+        get_available_products,
+        get_product_profiles_files,
+    )
 
 
 def _count_rules_per_rules_list(rules_list, rules):
@@ -33,6 +39,9 @@ def _get_profiles_for_product(ctrls_mgr, product):
 
 
 def _process_all_products_from_controls(rules):
+    if PYTHON_2:
+        raise Exception("This feature is not supported for python2.")
+
     for product in get_available_products():
         controls_manager = load_controls_manager("./controls/", product)
         for profile in _get_profiles_for_product(controls_manager, product):
