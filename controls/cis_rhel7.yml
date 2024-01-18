@@ -2251,6 +2251,15 @@ controls:
     rules:
       - file_groupownership_audit_configuration
 
+  - id: 5.2.4.8
+    title: Ensure audit tools are 755 or more restrictive (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_permissions_audit_binaries
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
