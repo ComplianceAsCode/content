@@ -2345,8 +2345,71 @@ controls:
       - accounts_umask_interactive_users
       - var_accounts_user_umask=027
 
+  - id: 5.1.1.1
+    title: Ensure rsyslog is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_rsyslog_installed
 
+  - id: 5.1.1.1
+    title: Ensure rsyslog service is enabled (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      This requirement is expected to be manual in the policy because there are valid cases where
+      other solutions are used for logging. rsyslog is the default in RHEL 8 and so far other
+      solutions are not expected to be incompatible with rsyslog. If so, for these particular
+      cases, this rule should be removed for those systems by a tailored file.
+    rules:
+      - service_rsyslog_enabled
 
+  - id: 5.1.1.3
+    title: Ensure journald is configured to send logs to rsyslog (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_forward_to_syslog
+
+  - id: 5.1.1.4
+    title: Ensure rsyslog default file permissions are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_filecreatemode
+
+  - id: 5.1.1.5
+    title: Ensure logging is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 5.1.1.6
+    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - rsyslog_remote_loghost
+
+  - id: 5.1.1.7
+    title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_nolisten
 
 
 
@@ -2633,66 +2696,8 @@ controls:
       - l2_workstation
     status: manual
 
-  - id: 4.2.1.1
-    title: Ensure rsyslog is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_rsyslog_installed
 
-  - id: 4.2.1.2
-    title: Ensure rsyslog Service is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_rsyslog_enabled
 
-  - id: 4.2.1.3
-    title: Ensure journald is configured to send logs to rsyslog (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_forward_to_syslog
-
-  - id: 4.2.1.4
-    title: Ensure rsyslog default file permissions configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_filecreatemode
-
-  - id: 4.2.1.5
-    title: Ensure logging is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.1.6
-    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    related_rules:
-      - rsyslog_remote_loghost
-
-  - id: 4.2.1.7
-    title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_nolisten
 
   - id: 4.2.2.1.1
     title:  Ensure systemd-journal-remote is installed (Manual)
