@@ -133,7 +133,7 @@ def test_templates(
     if sub_outcome is None:
         return result
     candidate, reason = sub_outcome
-    if candidate and candidate not in rule_components:
+    if candidate and candidate.lower() not in rule_components:
         result = False
         print(
             "Rule '%s' must be assigned to component '%s', because %s." %
