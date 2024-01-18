@@ -2391,8 +2391,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated
+    status: partial
     rules:
+    # We need another rule that checks /etc/security/opasswd.old
     - file_etc_security_opasswd
 
   - id: 6.1.11
