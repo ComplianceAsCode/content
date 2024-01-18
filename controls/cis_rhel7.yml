@@ -2133,6 +2133,15 @@ controls:
     rules:
       - audit_rules_execution_chcon
 
+  - id: 5.2.3.16
+    title: Ensure successful and unsuccessful attempts to use the setfacl command are recorded (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - audit_rules_execution_setfacl
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
