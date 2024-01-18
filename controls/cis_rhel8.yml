@@ -2484,7 +2484,7 @@ controls:
       - l1_workstation
     status: manual
 
-  - id: 4.3
+  - id: 5.1.3
     title: Ensure logrotate is configured (Manual)
     levels:
       - l1_server
@@ -2495,7 +2495,16 @@ controls:
       - package_logrotate_installed
       - timer_logrotate_enabled
 
-
+  - id: 5.1.4
+    title: Ensure all logfiles have appropriate access configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_files_groupownership
+      - rsyslog_files_ownership
+      - rsyslog_files_permissions
 
 
 
