@@ -10,11 +10,17 @@
   comment="Ensures that LDAP uses STARTTLS"
   id="test_use_starttls" version="1">
     <ind:object object_ref="object_use_starttls_sssd_conf" />
+    <ind:state state_ref="state_use_starttls_sssd_conf" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_use_starttls_sssd_conf" version="1">
+  <ind:textfilecontent54_object id="object_use_starttls_sssd_conf" version="2">
     <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*ldap_id_use_start_tls[ \t]*=[ \t]*((?i)true)[ \t]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*](?:[^\n\[\]]*\n+)+?[\s]*ldap_id_use_start_tls[ \t]*=[ \t]*((?i)\w+)[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_use_starttls_sssd_conf" version="1">
+    <ind:subexpression operation="pattern match">(?i)true</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 </def-group>
