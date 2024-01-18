@@ -1482,16 +1482,6 @@ controls:
     - audit_rules_mac_modification
     - audit_rules_mac_modification_usr_share
 
-  - id: 4.1.7
-    title: Ensure login and logout events are collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - audit_rules_login_events_faillock
-    - audit_rules_login_events_lastlog
-
   - id: 4.1.13
     title: Ensure file deletion events by users are collected (Automated)
     levels:
@@ -2123,6 +2113,16 @@ controls:
     status: automated
     rules:
     - audit_rules_session_events
+
+  - id: 5.2.3.12
+    title: Ensure login and logout events are collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
