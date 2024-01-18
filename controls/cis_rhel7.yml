@@ -1877,6 +1877,24 @@ controls:
       - use_pam_wheel_group_for_su
       - ensure_pam_wheel_group_empty
 
+  - id: 4.4.1.1
+    title: Ensure latest version of pam is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      It is necessary a new rule to ensure PAM package is updated.
+
+  - id: 4.4.1.2
+    title: Ensure libpwquality is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_pam_pwquality_installed
+
   - id: 5.1.1.1
     title: Ensure rsyslog is installed (Automated)
     levels:
