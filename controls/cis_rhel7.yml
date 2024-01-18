@@ -2242,6 +2242,15 @@ controls:
     rules:
       - file_ownership_audit_configuration
 
+  - id: 5.2.4.7
+    title: Ensure audit configuration files belong to group root (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_groupownership_audit_configuration
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
