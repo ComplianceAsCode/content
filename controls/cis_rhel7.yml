@@ -1561,6 +1561,18 @@ controls:
     - file_cron_deny_not_exist
     - file_permissions_cron_allow
 
+  - id: 4.1.2.1
+    title: Ensure at is restricted to authorized users (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - file_groupowner_at_allow
+    - file_owner_at_allow
+    - file_at_deny_not_exist
+    - file_permissions_at_allow
+
   - id: 4.2.1
     title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
     levels:
