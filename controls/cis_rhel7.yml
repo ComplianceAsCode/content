@@ -1481,15 +1481,6 @@ controls:
     rules:
     - service_auditd_enabled
 
-  - id: 4.1.1.3
-    title: Ensure auditing for processes that start prior to auditd is enabled (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - grub2_audit_argument
-
   - id: 4.1.2.1
     title: Ensure audit log storage size is configured (Automated)
     levels:
@@ -2092,6 +2083,15 @@ controls:
     rules:
       - package_audit_installed
       - package_audit-libs_installed
+
+  - id: 5.2.1.2
+    title: Ensure auditing for processes that start prior to auditd is enabled (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - grub2_audit_argument
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
