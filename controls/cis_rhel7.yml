@@ -1472,16 +1472,6 @@ controls:
     related_rules:
     - service_ip6tables_enabled
 
-  - id: 4.1.2.1
-    title: Ensure audit log storage size is configured (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - auditd_data_retention_max_log_file
-    - var_auditd_max_log_file=6
-
   - id: 4.1.2.2
     title: Ensure audit logs are not automatically deleted (Automated)
     levels:
@@ -2092,6 +2082,16 @@ controls:
     status: automated
     rules:
     - service_auditd_enabled
+
+  - id: 5.2.2.1
+    title: Ensure audit log storage size is configured (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - auditd_data_retention_max_log_file
+    - var_auditd_max_log_file=6
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
