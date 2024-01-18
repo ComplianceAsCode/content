@@ -2172,6 +2172,15 @@ controls:
       - audit_rules_kernel_module_loading_query
       - audit_rules_privileged_commands_kmod
 
+  - id: 5.2.3.20
+    title: Ensure the audit configuration is immutable (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_immutable
+
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
