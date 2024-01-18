@@ -1501,15 +1501,6 @@ controls:
     rules:
     - audit_rules_session_events
 
-  - id: 4.1.12
-    title: Ensure successful file system mounts are collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - audit_rules_media_export
-
   - id: 4.1.13
     title: Ensure file deletion events by users are collected (Automated)
     levels:
@@ -2123,6 +2114,15 @@ controls:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+
+  - id: 5.2.3.10
+    title: Ensure successful file system mounts are collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_media_export
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
