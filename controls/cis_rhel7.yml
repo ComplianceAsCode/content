@@ -1548,15 +1548,6 @@ controls:
     - audit_rules_unsuccessful_file_modification_truncate
     - audit_rules_unsuccessful_file_modification_ftruncate
 
-  - id: 4.1.11
-    title: Ensure use of privileged commands is collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-      - audit_rules_privileged_commands
-
   - id: 4.1.12
     title: Ensure successful file system mounts are collected (Automated)
     levels:
@@ -2123,6 +2114,15 @@ controls:
     rules:
     # TODO: we need to create a rule that adds audit rule for /etc/sysconfig/network-scripts/ directory as well
     - audit_rules_networkconfig_modification
+
+  - id: 5.2.3.6
+    title: Ensure use of privileged commands are collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+      - audit_rules_privileged_commands
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
