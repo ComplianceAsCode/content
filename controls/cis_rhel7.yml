@@ -1600,15 +1600,6 @@ controls:
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
 
-  - id: 4.1.14
-    title: Ensure changes to system administration scope (sudoers) is collected (Automated)
-    levels:
-    - l2_server
-    - l2_workstation
-    status: automated
-    rules:
-    - audit_rules_sysadmin_actions
-
   - id: 4.1.15
     title: Ensure system administrator command executions (sudo) are collected (Automated)
     levels:
@@ -2104,6 +2095,15 @@ controls:
     - var_auditd_action_mail_acct=root
     - auditd_data_retention_admin_space_left_action
     - var_auditd_admin_space_left_action=halt
+
+  - id: 5.2.3.1
+    title: Ensure changes to system administration scope (sudoers) is collected (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    status: automated
+    rules:
+    - audit_rules_sysadmin_actions
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled and running (Automated)
