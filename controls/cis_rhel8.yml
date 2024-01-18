@@ -2918,6 +2918,19 @@ controls:
     status: automated
     rules:
       - aide_periodic_cron_checking
+    related_rules:
+      - aide_periodic_checking_systemd_timer
+
+  - id: 5.3.3
+    title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_check_audit_tools
+    related_rules:
+      - aide_use_fips_hashes
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
