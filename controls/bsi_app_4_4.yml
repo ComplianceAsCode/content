@@ -217,9 +217,13 @@ controls:
         • Logging of changes
         • Regular data backups.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      This requirement needs to be adressed in the respective separate systems.
+      However, one requirement (Encrypted communication on all network ports) can partitially be 
+      checked by ensuring that no registry is allowed in over insecure protocols
+    status: partial
+    rules:
+      - ocp_insecure_registries
+      - ocp_insecure_allowed_registries_for_import
 
   - id: APP.4.4.A13
     title: Automated Configuration Auditing

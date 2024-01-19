@@ -5,19 +5,18 @@ aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 auid: 1000
 basic_properties_derived: true
-benchmark_id: EXAMPLE
+benchmark_id: ANOLIS-23
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
-components_root: ../../components
 cpes:
-- example:
-    check_id: installed_OS_is_part_of_Unix_family
-    name: cpe:/o:example
-    title: Example
+- anolis23:
+    check_id: installed_OS_is_anolis23
+    name: cpe:/o:anolis:anolis_os:23
+    title: Anolis OS 23
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 faillock_path: /var/run/faillock
-full_name: Example
+full_name: Anolis OS 23
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub2
@@ -26,13 +25,13 @@ grub_helper_executable: grubby
 init_system: systemd
 nobody_gid: 65534
 nobody_uid: 65534
-pkg_manager: dnf
-pkg_manager_config_file: /etc/dnf/dnf.conf
+pkg_manager: yum
+pkg_manager_config_file: /etc/yum.conf
 pkg_system: rpm
 platform_package_overrides:
   aarch64_arch: null
   grub2: grub2-common
-  login_defs: login
+  login_defs: shadow-utils
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
@@ -43,7 +42,7 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: example
+product: anolis23
 profiles_root: ./profiles
 reference_uris:
   anssi: http://www.ssi.gouv.fr/administration/bonnes-pratiques/
