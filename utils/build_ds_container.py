@@ -43,6 +43,11 @@ parser.add_argument(
     action='store_true',
     default=False)
 parser.add_argument(
+    '-i', '--push-content-image',
+    help=(
+        'Do not build any content. Create profile bundles from the referenced k8s content image'),
+    )
+parser.add_argument(
     '-d', '--debug',
     help=(
         'Provide debug output during the build process. This option is '
@@ -269,6 +274,10 @@ def get_image_repository():
     image_repo = subprocess.run(command, check=True, capture_output=True).stdout
     return image_repo.decode().strip()
 
+
+if args.push_content_image:
+    create_profile_bundles(args.products, args.push_content_image)
+    sys.exit(0)
 
 log.info(f'Building content for {", ".join(args.products)}')
 ensure_namespace_exists()
