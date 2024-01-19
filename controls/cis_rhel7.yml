@@ -2530,10 +2530,18 @@ controls:
     levels:
     - l1_server
     - l1_workstation
+    notes: |-
+      According to the RHEL 7 CIS Benchmark guidance, the incompliant .forward
+      and .rhost files should be investigated and remediated manually.
+      However, in other profiles we remediate the rule using the automated
+      remediation.
     status: partial
     # TODO: add rule checking that .bash_history is mode 0600 or more restrictive
     rules:
-    - accounts_user_dot_no_world_writable_programs
+    - accounts_user_dot_group_ownership
+    - accounts_user_dot_user_ownership
+    - file_permission_user_init_files
+    - var_user_initialization_files_regex=all_dotfiles
     - no_forward_files
     - no_rsh_trust_files
     - accounts_users_netrc_file_permissions
