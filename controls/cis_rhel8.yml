@@ -2553,6 +2553,17 @@ controls:
       - file_owner_backup_etc_group
       - file_permissions_backup_etc_group
 
+  - id: 6.1.6
+    title: Ensure permissions on /etc/shadow are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_owner_etc_shadow
+      - file_groupowner_etc_shadow
+      - file_permissions_etc_shadow
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2571,17 +2582,6 @@ controls:
     status: automated
     rules:
       - dir_perms_world_writable_sticky_bits
-
-  - id: 6.1.4
-    title: Ensure permissions on /etc/shadow are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_owner_etc_shadow
-      - file_groupowner_etc_shadow
-      - file_permissions_etc_shadow
 
   - id: 6.1.6
     title: Ensure permissions on /etc/gshadow are configured (Automated)
