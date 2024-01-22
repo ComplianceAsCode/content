@@ -2521,6 +2521,16 @@ controls:
       - file_owner_backup_etc_passwd
       - file_permissions_backup_etc_passwd
 
+  - id: 6.1.3
+    title: Ensure permissions on /etc/security/opasswd are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: partial
+    rules:
+    # TODO: We need another rule that checks /etc/security/opasswd.old
+    - file_etc_security_opasswd
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
