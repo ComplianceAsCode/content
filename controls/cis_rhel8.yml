@@ -2647,6 +2647,15 @@ controls:
       - rpm_verify_ownership
 
   - id: 6.2.1
+    title: Ensure accounts in /etc/passwd use shadowed passwords (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - accounts_password_all_shadowed
+
+  - id: 6.2.1
     title: Ensure password fields are not empty (Automated)
     levels:
       - l1_server
