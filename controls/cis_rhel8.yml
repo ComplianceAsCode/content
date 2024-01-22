@@ -2531,6 +2531,17 @@ controls:
     # TODO: We need another rule that checks /etc/security/opasswd.old
     - file_etc_security_opasswd
 
+  - id: 6.1.4
+    title: Ensure permissions on /etc/group are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_etc_group
+      - file_owner_etc_group
+      - file_permissions_etc_group
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2560,17 +2571,6 @@ controls:
       - file_owner_etc_shadow
       - file_groupowner_etc_shadow
       - file_permissions_etc_shadow
-
-  - id: 6.1.5
-    title: Ensure permissions on /etc/group are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_etc_group
-      - file_owner_etc_group
-      - file_permissions_etc_group
 
   - id: 6.1.6
     title: Ensure permissions on /etc/gshadow are configured (Automated)
