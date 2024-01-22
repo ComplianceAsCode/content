@@ -2728,33 +2728,16 @@ controls:
     rules:
       - accounts_no_uid_except_zero
 
-  - id: 6.2.9
-    title: Ensure all users' home directories exist (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_user_interactive_home_directory_exists
-
   - id: 6.2.10
-    title: Ensure users own their home directories (Automated)
+    title: Ensure local interactive user home directories are configured (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+    - l1_server
+    - l1_workstation
     status: automated
     rules:
-      - file_ownership_home_directories
-      - file_groupownership_home_directories
-
-  - id: 6.2.11
-    title: Ensure users' home directories permissions are 750 or more restrictive (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_home_directories
+    - accounts_user_interactive_home_directory_exists
+    - file_ownership_home_directories
+    - file_permissions_home_directories
 
   - id: 6.2.12
     title: Ensure users' dot files are not group or world writable (Automated)
