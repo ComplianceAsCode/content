@@ -2586,6 +2586,17 @@ controls:
       - file_owner_etc_gshadow
       - file_permissions_etc_gshadow
 
+  - id: 6.1.9
+    title: Ensure permissions on /etc/gshadow- are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_backup_etc_gshadow
+      - file_owner_backup_etc_gshadow
+      - file_permissions_backup_etc_gshadow
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2604,17 +2615,6 @@ controls:
     status: automated
     rules:
       - dir_perms_world_writable_sticky_bits
-
-  - id: 6.1.10
-    title: Ensure permissions on /etc/gshadow- are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_backup_etc_gshadow
-      - file_owner_backup_etc_gshadow
-      - file_permissions_backup_etc_gshadow
 
   - id: 6.1.11
     title: Ensure no world writable files exist (Automated)
