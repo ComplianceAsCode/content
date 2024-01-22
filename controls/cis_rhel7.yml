@@ -1864,9 +1864,13 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: partial
+    notes: |-
+      The OVAL check in sudo_require_reauthentication ensures the timestamp_timeout parameter but
+      is not precisely testing the value.
     rules:
       - sudo_require_reauthentication
+      - var_sudo_timestamp_timeout=15_minutes
 
   - id: 4.3.7
     title: Ensure access to the su command is restricted (Automated)
