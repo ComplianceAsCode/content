@@ -2605,6 +2605,16 @@ controls:
     status: pending
     # TODO: new rule needed
 
+  - id: 6.1.11
+    title: Ensure world writable files and directories are secured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: automated
+    rules:
+    - file_permissions_unauthorized_world_writable
+    - dir_perms_world_writable_sticky_bits
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2614,24 +2624,6 @@ controls:
     related_rules:
       - rpm_verify_permissions
       - rpm_verify_ownership
-
-  - id: 6.1.2
-    title: Ensure sticky bit is set on all world-writable directories (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - dir_perms_world_writable_sticky_bits
-
-  - id: 6.1.11
-    title: Ensure no world writable files exist (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_unauthorized_world_writable
 
   - id: 6.1.12
     title: Ensure no unowned files or directories exist (Automated)
