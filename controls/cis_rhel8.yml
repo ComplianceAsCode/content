@@ -2542,6 +2542,17 @@ controls:
       - file_owner_etc_group
       - file_permissions_etc_group
 
+  - id: 6.1.5
+    title: Ensure permissions on /etc/group- are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_backup_etc_group
+      - file_owner_backup_etc_group
+      - file_permissions_backup_etc_group
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2593,17 +2604,6 @@ controls:
       - file_groupowner_backup_etc_shadow
       - file_owner_backup_etc_shadow
       - file_permissions_backup_etc_shadow
-
-  - id: 6.1.9
-    title: Ensure permissions on /etc/group- are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_backup_etc_group
-      - file_owner_backup_etc_group
-      - file_permissions_backup_etc_group
 
   - id: 6.1.10
     title: Ensure permissions on /etc/gshadow- are configured (Automated)
