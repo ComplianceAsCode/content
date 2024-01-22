@@ -1566,7 +1566,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated
+    status: partial
+    notes: |-
+      It is necessary to create a rule to ensure the existence of at.allow.
+      file_cron_allow_exists can be used as reference for a new templated rule.
     rules:
     - file_groupowner_at_allow
     - file_owner_at_allow
@@ -1578,7 +1581,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: partial
+    notes: |-
+      These rules only check the /etc/ssh/sshd_config file but the policy also mentions files in
+      /etc/ssh/sshd_config.d directory. New templated rules should be created for sshd_config.d.
     rules:
       - file_groupowner_sshd_config
       - file_owner_sshd_config
@@ -1643,7 +1649,7 @@ controls:
     status: automated
     notes: |-
       The requirement gives an example of 45 seconds, but is flexible about the values. It is only
-      necessary to ensure there is a timeout is configured in alignment to the site policy.
+      necessary to ensure there is a timeout configured in alignment to the site policy.
     rules:
       - sshd_idle_timeout_value=5_minutes
       - sshd_set_idle_timeout
