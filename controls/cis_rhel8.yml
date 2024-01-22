@@ -2615,6 +2615,17 @@ controls:
     - file_permissions_unauthorized_world_writable
     - dir_perms_world_writable_sticky_bits
 
+  - id: 6.1.12
+    title: Ensure no unowned or ungrouped files or directories exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    status: partial
+    rules:
+    # TODO: add rules for unowned/ungrouped directories
+    - no_files_unowned_by_user
+    - file_permissions_ungroupowned
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2624,24 +2635,6 @@ controls:
     related_rules:
       - rpm_verify_permissions
       - rpm_verify_ownership
-
-  - id: 6.1.12
-    title: Ensure no unowned files or directories exist (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - no_files_unowned_by_user
-
-  - id: 6.1.13
-    title: Ensure no ungrouped files or directories exist (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_ungroupowned
 
   - id: 6.1.14
     title: Audit SUID executables (Manual)
