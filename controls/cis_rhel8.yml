@@ -2510,6 +2510,17 @@ controls:
       - file_owner_etc_passwd
       - file_permissions_etc_passwd
 
+  - id: 6.1.2
+    title: Ensure permissions on /etc/passwd- are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_backup_etc_passwd
+      - file_owner_backup_etc_passwd
+      - file_permissions_backup_etc_passwd
+
   - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
@@ -2561,17 +2572,6 @@ controls:
       - file_groupowner_etc_gshadow
       - file_owner_etc_gshadow
       - file_permissions_etc_gshadow
-
-  - id: 6.1.7
-    title: Ensure permissions on /etc/passwd- are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_backup_etc_passwd
-      - file_owner_backup_etc_passwd
-      - file_permissions_backup_etc_passwd
 
   - id: 6.1.8
     title: Ensure permissions on /etc/shadow- are configured (Automated)
