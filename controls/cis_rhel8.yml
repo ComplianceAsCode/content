@@ -2500,6 +2500,17 @@ controls:
       - var_accounts_user_umask=027
 
   - id: 6.1.1
+    title: Ensure permissions on /etc/passwd are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_etc_passwd
+      - file_owner_etc_passwd
+      - file_permissions_etc_passwd
+
+  - id: 6.1.1
     title: Audit system file permissions (Manual)
     levels:
       - l2_server
@@ -2517,17 +2528,6 @@ controls:
     status: automated
     rules:
       - dir_perms_world_writable_sticky_bits
-
-  - id: 6.1.3
-    title: Ensure permissions on /etc/passwd are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_etc_passwd
-      - file_owner_etc_passwd
-      - file_permissions_etc_passwd
 
   - id: 6.1.4
     title: Ensure permissions on /etc/shadow are configured (Automated)
