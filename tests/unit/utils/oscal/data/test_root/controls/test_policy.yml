@@ -1,0 +1,69 @@
+policy: Simplified NIST Policy
+title: Simplified NIST Recommendations for Test Product
+id: test_policy
+version: Revision 4
+source: https://www.fedramp.gov/assets/resources/documents/FedRAMP_Security_Controls_Baseline.xlsx
+levels:
+    - id: low
+    - id: moderate
+    - id: high
+controls:
+    - id: AC-1
+      status: not applicable
+      notes: |-
+          Section a: AC-1(a) is an organizational control outside the scope of
+          Test Product configuration.
+
+          Section b: AC-1(b) is an organizational control outside the scope of
+          Test Product configuration.
+      rules: []
+      description: "The organization:\n a. Develops, documents, and disseminates to [Assignment:\
+          \ organization-defined personnel or roles]:\n   1. An access control policy that\
+          \ addresses purpose, scope, roles, responsibilities, management commitment, coordination\
+          \ among organizational entities, and compliance; and\n   2. Procedures to facilitate\
+          \ the implementation of the access control policy and associated access controls;\
+          \ and\n b. Reviews and updates the current:\n   1. Access control policy [Assignment:\
+          \ organization-defined frequency]; and\n   2. Access control procedures [Assignment:\
+          \ organization-defined frequency].\n\nSupplemental Guidance: This control addresses\
+          \ the establishment of policy and procedures for the effective implementation\
+          \ of selected security controls and control enhancements in the AC family. Policy\
+          \ and procedures reflect applicable federal laws, Executive Orders, directives,\
+          \ regulations, policies, standards, and guidance. Security program policies and\
+          \ procedures at the organization level may make the need for system-specific policies\
+          \ and procedures unnecessary. The policy can be included as part of the general\
+          \ information security policy for organizations or conversely, can be represented\
+          \ by multiple policies reflecting the complex nature of certain organizations.\
+          \ The procedures can be established for the security program in general and for\
+          \ particular information systems, if needed. \n\nThe organizational risk management\
+          \ strategy is a key factor in establishing policy and procedures. Related control:\
+          \ PM-9.\nControl Enhancements: None.\nReferences: NIST Special Publications 800-12,\
+          \ 800-100.\n\nAC-1 (b) (1) [at least annually] \nAC-1 (b) (2) [at least annually\
+          \ or whenever a significant change occurs]"
+      title: >-
+          AC-1 - ACCESS CONTROL POLICY AND PROCEDURES
+      levels:
+          - high
+          - moderate
+          - low
+    - id: AC-2(1)
+      status: automated
+      notes: |-
+          This is a test notes that details the AC-2(1) control implementation for Test Product and
+          how it is automated.
+      rules:
+          - rule_1
+          - rule_2
+      description: |-
+          The organization employs automated mechanisms to support the
+          management of information system accounts.
+
+          Supplemental Guidance: The use of automated mechanisms can include, for example:
+          using email or text messaging to automatically notify account
+          managers when users are terminated or transferred; using the information
+          system to monitor account usage; and using telephonic notification to
+          report atypical system account usage.
+      title: >-
+          AC-2(1) - ACCOUNT MANAGEMENT | AUTOMATED SYSTEM ACCOUNT MANAGEMENT
+      levels:
+          - high
+          - moderate

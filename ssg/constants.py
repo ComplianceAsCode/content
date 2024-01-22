@@ -12,6 +12,7 @@ SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases
 
 SSG_REF_URIS = {
     'anssi': 'http://www.ssi.gouv.fr/administration/bonnes-pratiques/',
+    'bsi': 'https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf',
     'nist': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
     'nist-csf': 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf',
     'isa-62443-2013': 'https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu',

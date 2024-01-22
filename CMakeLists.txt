@@ -163,6 +163,10 @@ find_python_module(myst_parser)
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
 
+# compliance-trestle requirements
+find_python_module(trestle)
+find_python_module(requests)
+
 include(CMakeDependentOption)
 cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
 
@@ -258,6 +262,7 @@ message(STATUS "python pandas module (optional): ${PY_PANDAS}")
 message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
 message(STATUS "python lxml module (optional): ${PY_LXML}")
 message(STATUS "python prometheus-client module (optional): ${PY_PROMETHEUS_CLIENT}")
+message(STATUS "python compliance-trestle module (optional): ${PY_TRESTLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")

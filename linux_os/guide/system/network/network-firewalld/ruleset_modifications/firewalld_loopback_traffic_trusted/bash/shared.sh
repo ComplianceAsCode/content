@@ -14,5 +14,4 @@ else
     firewalld service is not active. Remediation aborted!
     This remediation could not be applied because it depends on firewalld service running.
     The service is not started by this remediation in order to prevent connection issues."
-    exit 1
 fi
