@@ -1871,6 +1871,8 @@ controls:
     # TODO: we need to add more rules so that all files in /var/log have appropriate permissions and ownership
     rules:
       - rsyslog_files_permissions
+      - rsyslog_files_ownership
+      - rsyslog_files_groupownership
 
   - id: 5.2.1.1
     title: Ensure auditd is installed (Automated)
