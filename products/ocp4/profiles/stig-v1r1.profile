@@ -25,6 +25,7 @@ selections:
     - srg_ctr:all
   ### Variables
     - var_openshift_audit_profile=WriteRequestBodies
+    - var_oauth_token_maxage=8h
   ### Helper Rules
   ### This is a helper rule to fetch the required api resource for detecting OCP version
     - version_detect_in_ocp
