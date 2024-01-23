@@ -1761,12 +1761,12 @@ controls:
     status: manual
 
   - id: 5.1.1.6
-    title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
+    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
     levels:
     - l1_server
     - l1_workstation
-    status: automated
-    rules:
+    status: manual
+    related_rules:
     - rsyslog_remote_loghost
 
   - id: 5.1.1.7
