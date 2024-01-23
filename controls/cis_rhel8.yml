@@ -977,7 +977,8 @@ controls:
     notes: >-
       The rule also configures correct run level to prevent unbootable system.
     rules:
-      - xwindows_remove_packages
+      - package_xorg-x11-server-common_removed
+      - xwindows_runlevel_target
 
   - id: 2.2.21
     title: Ensure mail transfer agents are configured for local-only mode (Automated)
