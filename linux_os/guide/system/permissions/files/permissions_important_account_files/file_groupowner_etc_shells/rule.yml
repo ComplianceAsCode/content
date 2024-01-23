@@ -28,7 +28,7 @@ ocil: |-
 
 fixtext: '{{{ fixtext_file_group_owner(file="/etc/shells", group="root") }}}'
 
-srg_requirement: 'The {{{ full_name }}} /etc/shells file must have a mode of 0640 to prevent unauthorized access.'
+srg_requirement: 'The {{{ full_name }}} /etc/shells file must have a group-owner of root to prevent unauthorized access.'
 
 template:
     name: file_groupowner
