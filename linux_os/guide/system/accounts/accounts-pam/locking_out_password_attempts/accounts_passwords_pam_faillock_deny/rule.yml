@@ -12,12 +12,12 @@ description: |-
     {{% if product in ["rhel7"] %}}
     Ensure that pam_faillock.so module entries in
     <tt>/etc/pam.d/password-auth</tt> and <tt>/etc/pam.d/system-auth</tt> are
-    followed by the assignment <tt>deny=&lt;count&gt;</tt> where count should be less than or equal to 
+    followed by the assignment <tt>deny=&lt;count&gt;</tt> where count should be less than or equal to
     {{{xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} and greater than 0.
     {{% else %}}
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>deny = &lt;count&gt;</tt>
-    Where count should be less than or equal to 
+    Where count should be less than or equal to
     {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} and greater than 0.
     {{% endif %}}
     {{% if 'ubuntu' not in product %}}
