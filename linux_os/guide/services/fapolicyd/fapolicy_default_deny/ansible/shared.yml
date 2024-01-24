@@ -7,7 +7,7 @@
 - name: {{{ rule_title }}} - Ensure a Final Rule Denying Everything
   ansible.builtin.copy:
     content: |
-      # Red Hat KCS 7003854 (https://access.redhat.com/solutions/7003854)
+      # Red Hat KCS 7003854 (https://access.redhat.com/solutions/7003854) test
       deny perm=any all : all
     dest: /etc/fapolicyd/rules.d/99-deny-everything.rules
     owner: root
