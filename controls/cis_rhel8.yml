@@ -1307,6 +1307,19 @@ controls:
     related_rules:
     - set_nftables_new_connections
 
+  - id: 3.4.2.5
+    title: Ensure nftables default deny firewall policy (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use.
+    related_rules:
+      - nftables_ensure_default_deny_policy
+
   - id: 3.4.1.5
     title: Ensure firewalld default zone is set (Automated)
     levels:
