@@ -1062,15 +1062,6 @@ controls:
       - wireless_disable_interfaces
 
   - id: 3.1.3
-    title: Ensure bluetooth services are not in use (Automated)
-    levels:
-      - l1_server
-      - l2_workstation
-    status: automated
-    rules:
-      - kernel_module_dccp_disabled
-
-  - id: 3.1.4
     title: Ensure wireless interfaces are disabled (Automated)
     levels:
       - l1_server
@@ -1080,15 +1071,13 @@ controls:
       # Missing rule package_bluez_removed
 
   - id: 3.2.1
-    title: Ensure IP forwarding is disabled (Automated)
+    title: Ensure dccp kernel module is not available(Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sysctl_net_ipv4_ip_forward
-      - sysctl_net_ipv6_conf_all_forwarding
-      - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+      - kernel_module_dccp_disabled
 
   - id: 3.2.2
     title: Ensure packet redirect sending is disabled (Automated)
