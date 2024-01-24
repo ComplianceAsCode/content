@@ -1225,6 +1225,18 @@ controls:
       - sysctl_net_ipv4_tcp_syncookies
       - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
+  - id: 3.3.11
+    title: Ensure IPv6 router advertisements are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+
   - id: 3.4.1.1
     title: Ensure firewalld is installed (Automated)
     levels:
