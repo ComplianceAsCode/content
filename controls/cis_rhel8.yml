@@ -1247,31 +1247,15 @@ controls:
       - package_nftables_installed
 
   - id: 3.4.1.2
-    title: Ensure iptables-services not installed with firewalld (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_iptables-services_removed
-
-  - id: 3.4.1.3
-    title: Ensure nftables is not enabled with firewalld (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_nftables_disabled
-
-  - id: 3.4.1.4
-    title: Ensure firewalld service is enabled and running (Automated)
+    title: Ensure a single firewall configuration utility is in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
       - service_firewalld_enabled
+      - package_firewalld_installed
+      - service_nftables_disabled
 
   - id: 3.4.1.5
     title: Ensure firewalld default zone is set (Automated)
