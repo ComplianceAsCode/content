@@ -1277,6 +1277,17 @@ controls:
       - var_nftables_base_chain_priorities=chain_priorities
       - var_nftables_base_chain_policies=chain_policies
 
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5246
+  - id: 3.4.2.2
+    title: Ensure host based firewall loopback traffic is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+
+
   - id: 3.4.1.5
     title: Ensure firewalld default zone is set (Automated)
     levels:
