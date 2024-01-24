@@ -2,6 +2,7 @@
 
 {{{ bash_instantiate_variables("var_auditd_space_left_action") }}}
 
+var_auditd_space_left_action="$(echo $var_auditd_space_left_action | cut -d \| -f 1)"
 #
 # If space_left_action present in /etc/audit/auditd.conf, change value
 # to var_auditd_space_left_action, else
