@@ -1238,13 +1238,13 @@ controls:
       - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
 
   - id: 3.4.1.1
-    title: Ensure firewalld is installed (Automated)
+    title: Ensure nftables is installed (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - package_firewalld_installed
+      - package_nftables_installed
 
   - id: 3.4.1.2
     title: Ensure iptables-services not installed with firewalld (Automated)
