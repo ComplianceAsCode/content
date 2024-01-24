@@ -1054,13 +1054,12 @@ controls:
     status: manual
 
   - id: 3.1.2
-    title: Ensure SCTP is disabled (Automated)
+    title: Ensure wireless interfaces are disabled (Automated)
     levels:
-      - l2_server
-      - l2_workstation
+      - l1_server
     status: automated
     rules:
-      - kernel_module_sctp_disabled
+      - wireless_disable_interfaces
 
   - id: 3.1.3
     title: Ensure DCCP is disabled (Automated)
