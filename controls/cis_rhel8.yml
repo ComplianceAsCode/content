@@ -1097,6 +1097,15 @@ controls:
     rules:
       - kernel_module_rds_disabled
 
+  - id: 3.2.4
+    title: Ensure sctp kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_sctp_disabled
+
   - id: 3.3.1
     title: Ensure source routed packets are not accepted (Automated)
     levels:
