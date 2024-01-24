@@ -1062,9 +1062,9 @@ controls:
       - wireless_disable_interfaces
 
   - id: 3.1.3
-    title: Ensure DCCP is disabled (Automated)
+    title: Ensure bluetooth services are not in use (Automated)
     levels:
-      - l2_server
+      - l1_server
       - l2_workstation
     status: automated
     rules:
@@ -1074,9 +1074,10 @@ controls:
     title: Ensure wireless interfaces are disabled (Automated)
     levels:
       - l1_server
-    status: automated
+    status: partial
     rules:
-      - wireless_disable_interfaces
+      - service_bluetooth_disabled
+      # Missing rule package_bluez_removed
 
   - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
