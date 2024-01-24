@@ -2602,8 +2602,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending
-    # TODO: new rule needed
+    status: automated
+    rules:
+      - file_groupowner_etc_shells
+      - file_owner_etc_shells
+      - file_permissions_etc_shells
 
   - id: 6.1.11
     title: Ensure world writable files and directories are secured (Automated)
