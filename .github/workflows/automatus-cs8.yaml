@@ -63,6 +63,8 @@ jobs:
   validate-ubuntu:
     name: Run Tests
     needs: build-content
+    permissions:
+      actions: write
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
@@ -172,6 +174,7 @@ jobs:
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: geekyeggo/delete-artifact@v4
         with:
+          token: ${{ github.token }}
           name: ${{ env.DATASTREAM }}
           useGlob: false
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
