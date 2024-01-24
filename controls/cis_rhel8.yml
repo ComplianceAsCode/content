@@ -1204,16 +1204,17 @@ controls:
       - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
 
   - id: 3.3.9
-    title: Ensure IPv6 router advertisements are not accepted (Automated)
+    title: Ensure suspicious packets are logged (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - sysctl_net_ipv6_conf_all_accept_ra
-      - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
-      - sysctl_net_ipv6_conf_default_accept_ra
-      - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+      - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+
 
   - id: 3.4.1.1
     title: Ensure firewalld is installed (Automated)
