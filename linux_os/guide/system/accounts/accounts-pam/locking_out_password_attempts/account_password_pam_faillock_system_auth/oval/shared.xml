@@ -3,22 +3,78 @@
     {{{ oval_metadata(
         "Configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.")
     }}}
-        <criteria>
-            <criterion test_ref="test_{{{ rule_id }}}"
-                    comment="The faillock module is present in /etc/pam.d/system-auth"/>
+        <criteria operator="AND">
+            <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+                as reference for the correct position of pam_faillock.so in auth section. If the
+                system is properly configured, it must appear only once in auth section. -->
+            <criterion test_ref="test_pam_faillock_system_auth_pam_unix_auth"
+                        comment="pam_unix.so appears only once in auth section of system-auth"/>
+            <criterion
+                test_ref="test_pam_faillock_system_auth_pam_faillock_auth"
+                comment="pam_faillock.so is defined in auth section of system-auth"/>
+            <criterion
+                test_ref="test_pam_faillock_system_auth_pam_faillock_account"
+                comment="pam_faillock.so is defined in account section of system-auth"/>
         </criteria>
     </definition>
-    <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" version="1"
-    id="test_{{{ rule_id }}}"
-    comment="Check the presence of pam_faillock.so in system-auth">
-        <ind:object
-        object_ref="obj_{{{ rule_id }}}"/>
+
+    <constant_variable id="var_pam_faillock_system_auth_pam_faillock_auth_regex"
+                    datatype="string" version="1"
+                    comment="regex to identify pam_faillock.so entries in auth section of pam files">
+        <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+    </constant_variable>
+    <constant_variable id="var_pam_faillock_system_auth_pam_faillock_account_regex"
+                    datatype="string" version="1"
+                    comment="regex to identify pam_faillock.so entry in account section of pam files">
+        <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
+    </constant_variable>
+
+    <!-- Check occurrences of pam_unix.so in auth section in system-auth -->
+    <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
+            id="test_pam_faillock_system_auth_pam_unix_auth"
+            comment="No more than one pam_unix.so is expected in auth section of system-auth">
+        <ind:object object_ref="obj_pam_faillock_system_auth_pam_unix_auth"/>
     </ind:textfilecontent54_test>
-    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}"
-    comment="Obtain pam_faillock.so ocurrences in system-auth" version="1">
-        <ind:filepath >/etc/pam.d/system-auth</ind:filepath>
-        <!-- pam_faillock.so needs to be before pam_unix\.so -->
-        <ind:pattern operation="pattern match">\s*auth\s*\S+\s*pam_faillock\.so\s*preauth[\s\S]*?pam_unix\.so</ind:pattern>
+
+    <ind:textfilecontent54_object version="1"
+            id="obj_pam_faillock_system_auth_pam_unix_auth"
+            comment="Get all occurrences of pam_unix.so in auth section of system-auth">
+        <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+        <ind:pattern operation="pattern match">^[\s]*auth\N+pam_unix\.so</ind:pattern>
         <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <!-- Check common definition of pam_faillock.so in system-auth -->
+    <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
+            id="test_pam_faillock_system_auth_pam_faillock_auth"
+            comment="One and only one occurrence is expected in auth section of system-auth">
+        <ind:object
+            object_ref="obj_pam_faillock_system_auth_pam_faillock_auth"/>
+    </ind:textfilecontent54_test>
+
+
+    <ind:textfilecontent54_object version="1"
+            id="obj_pam_faillock_system_auth_pam_faillock_auth"
+            comment="Check common definition of pam_faillock.so in auth section of system-auth">
+        <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+        <ind:pattern operation="pattern match"
+                    var_ref="var_pam_faillock_system_auth_pam_faillock_auth_regex"/>
+        <ind:instance datatype="int" operation="equals">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
+            id="test_pam_faillock_system_auth_pam_faillock_account"
+            comment="One and only one occurrence is expected in auth section of system-auth">
+        <ind:object
+            object_ref="obj_pam_faillock_system_auth_pam_faillock_account"/>
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object version="1"
+            id="obj_pam_faillock_system_auth_pam_faillock_account"
+            comment="Check common definition of pam_faillock.so in account section of system-auth">
+        <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+        <ind:pattern operation="pattern match"
+                    var_ref="var_pam_faillock_system_auth_pam_faillock_account_regex"/>
+        <ind:instance datatype="int" operation="equals">1</ind:instance>
     </ind:textfilecontent54_object>
 </def-group>
