@@ -1080,10 +1080,14 @@ controls:
       - kernel_module_dccp_disabled
 
   - id: 3.2.2
-    title: Ensure packet redirect sending is disabled (Automated)
+    title: Ensure tipc kernel module is not available (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_tipc_disabled
+
     status: automated
     rules:
       - sysctl_net_ipv4_conf_all_send_redirects
