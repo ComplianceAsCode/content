@@ -2383,8 +2383,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: pending
-    # TODO: new rule needed
+    status: automated
+    rules:
+    - file_owner_etc_shells
+    - file_groupowner_etc_shells
+    - file_permissions_etc_shells
 
   - id: 6.1.10
     title: Ensure permissions on /etc/security/opasswd are configured (Automated)
