@@ -1107,20 +1107,15 @@ controls:
       - kernel_module_sctp_disabled
 
   - id: 3.3.1
-    title: Ensure source routed packets are not accepted (Automated)
+    title: Ensure ip forwarding is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - sysctl_net_ipv4_conf_all_accept_source_route
-      - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
-      - sysctl_net_ipv4_conf_default_accept_source_route
-      - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
-      - sysctl_net_ipv6_conf_all_accept_source_route
-      - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
-      - sysctl_net_ipv6_conf_default_accept_source_route
-      - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv6_conf_all_forwarding
+      - sysctl_net_ipv6_conf_all_forwarding_value=disabled
 
   - id: 3.3.2
     title: Ensure ICMP redirects are not accepted (Automated)
