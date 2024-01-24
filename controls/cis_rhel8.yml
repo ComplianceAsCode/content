@@ -1215,6 +1215,15 @@ controls:
       - sysctl_net_ipv4_conf_default_log_martians
       - sysctl_net_ipv4_conf_default_log_martians_value=enabled
 
+  - id: 3.3.10
+    title: Ensure TCP SYN Cookies is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv4_tcp_syncookies
+      - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
   - id: 3.4.1.1
     title: Ensure firewalld is installed (Automated)
