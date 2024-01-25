@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8
+prodtype: rhel7,rhel8
 
 title: 'Verify Group Who Owns /etc/shells File'
 
@@ -14,9 +14,11 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-86624-4
     cce@rhel8: CCE-87030-3
 
 references:
+    cis@rhel7: 6.1.9
     cis@rhel8: 6.1.10
     nist: AC-3,MP-2
 
