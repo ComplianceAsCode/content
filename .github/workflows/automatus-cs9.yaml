@@ -168,12 +168,6 @@ jobs:
         with:
           name: logs_ansible
           path: logs_ansible/
-      - name: Delete datastream artifact
-        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: geekyeggo/delete-artifact@v4
-        with:
-          name: ${{ env.DATASTREAM }}
-          useGlob: false
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
         if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: |
