@@ -1531,7 +1531,998 @@ controls:
       # This requirement and respective rules should be reviewed.
 
   - id: 4.1.1.1
-    title: Ensure auditd is installed (Automated)
+    title: Ensure cron daemon is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - service_crond_enabled
+
+  - id: 4.1.1.2
+    title: Ensure permissions on /etc/crontab are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_crontab
+      - file_owner_crontab
+      - file_permissions_crontab
+
+  - id: 4.1.1.3
+    title: Ensure permissions on /etc/cron.hourly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_hourly
+      - file_owner_cron_hourly
+      - file_permissions_cron_hourly
+
+  - id: 4.1.1.4
+    title: Ensure permissions on /etc/cron.daily are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_daily
+      - file_owner_cron_daily
+      - file_permissions_cron_daily
+
+  - id: 4.1.1.5
+    title: Ensure permissions on /etc/cron.weekly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_weekly
+      - file_owner_cron_weekly
+      - file_permissions_cron_weekly
+
+  - id: 4.1.1.6
+    title: Ensure permissions on /etc/cron.monthly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_monthly
+      - file_owner_cron_monthly
+      - file_permissions_cron_monthly
+
+  - id: 4.1.1.7
+    title: Ensure permissions on /etc/cron.d are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_d
+      - file_owner_cron_d
+      - file_permissions_cron_d
+
+  - id: 4.1.1.8
+    title: Ensure cron is restricted to authorized users (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_cron_deny_not_exist
+      - file_cron_allow_exists
+      - file_groupowner_cron_allow
+      - file_owner_cron_allow
+      - file_permissions_cron_allow
+
+  - id: 4.1.2.1
+    title: Ensure at is restricted to authorized users (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      It is necessary to create a rule to ensure the existence of at.allow.
+      file_cron_allow_exists can be used as reference for a new templated rule.
+    rules:
+      - file_at_deny_not_exist
+      - file_groupowner_at_allow
+      - file_owner_at_allow
+      - file_permissions_at_allow
+
+  - id: 4.2.1
+    title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      These rules only check the /etc/ssh/sshd_config file but the policy also mentions files in
+      /etc/ssh/sshd_config.d directory. New templated rules should be created for sshd_config.d.
+    rules:
+      - file_groupowner_sshd_config
+      - file_owner_sshd_config
+      - file_permissions_sshd_config
+
+  - id: 4.2.2
+    title: Ensure permissions on SSH private host key files are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_permissions_sshd_private_key
+      - file_ownership_sshd_private_key
+      - file_groupownership_sshd_private_key
+
+  - id: 4.2.3
+    title: Ensure permissions on SSH public host key files are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_permissions_sshd_pub_key
+      - file_ownership_sshd_pub_key
+      - file_groupownership_sshd_pub_key
+
+  - id: 4.2.4
+    title: Ensure sshd access is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_limit_user_access
+
+  - id: 4.2.5
+    title: Ensure sshd Banner is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_enable_warning_banner_net
+    related_rules:
+      - sshd_enable_warning_banner
+
+  - id: 4.2.6
+    title: Ensure sshd Ciphers are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Introduced in CIS RHEL8 v3.0.0
+    rules:
+      - sshd_use_approved_ciphers
+      - sshd_approved_ciphers=cis_rhel8
+
+  - id: 4.2.7
+    title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The requirement gives an example of 45 seconds, but is flexible about the values. It is only
+      necessary to ensure there is a timeout is configured in alignment to the site policy.
+    rules:
+      - sshd_idle_timeout_value=5_minutes
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - var_sshd_set_keepalive=1
+
+  - id: 4.2.8
+    title: Ensure sshd DisableForwarding is enabled (Automated)
+    levels:
+      - l2_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      New templated rule is necessary for "disableforwarding" option.
+    related_rules:
+      - sshd_disable_tcp_forwarding
+      - sshd_disable_x11_forwarding
+
+  - id: 4.2.9
+    title: Ensure sshd HostbasedAuthentication is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - disable_host_auth
+
+  - id: 4.2.10
+    title: Ensure sshd IgnoreRhosts is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_disable_rhosts
+
+  - id: 4.2.11
+    title: Ensure sshd KexAlgorithms is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_use_strong_kex
+      - sshd_strong_kex=cis_rhel8
+
+  - id: 4.2.12
+    title: Ensure sshd LoginGraceTime is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
+
+  - id: 4.2.13
+    title: Ensure sshd LogLevel is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The CIS benchmark is not opinionated about which loglevel is selected here. Here, this
+      profile uses VERBOSE by default, as it allows for the capture of login and logout activity
+      as well as key fingerprints.
+    rules:
+      - sshd_set_loglevel_verbose
+    related_rules:
+      - sshd_set_loglevel_info
+
+  - id: 4.2.14
+    title: Ensure sshd MACs are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_use_strong_macs
+      - sshd_strong_macs=cis_rhel8
+
+  - id: 4.2.15
+    title: Ensure sshd MaxAuthTries is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_max_auth_tries_value=4
+      - sshd_set_max_auth_tries
+
+  - id: 4.2.16
+    title: Ensure sshd MaxSessions is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_set_max_sessions
+      - var_sshd_max_sessions=10
+
+  - id: 4.2.17
+    title: Ensure sshd MaxStartups is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_set_maxstartups
+      - var_sshd_set_maxstartups=10:30:60
+
+  - id: 4.2.18
+    title: Ensure sshd PermitEmptyPasswords is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_disable_empty_passwords
+
+  - id: 4.2.19
+    title: Ensure sshd PermitRootLogin is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_disable_root_login
+
+  - id: 4.2.20
+    title: Ensure sshd PermitUserEnvironment is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_do_not_permit_user_env
+
+  - id: 4.2.21
+    title: Ensure sshd UsePAM is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_enable_pam
+
+  - id: 4.2.22
+    title: Ensure sshd crypto_policy is not set (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - configure_ssh_crypto_policy
+
+  - id: 4.3.1
+    title: Ensure sudo is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_sudo_installed
+
+  - id: 4.3.2
+    title: Ensure sudo commands use pty (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_add_use_pty
+
+  - id: 4.3.3
+    title: Ensure sudo log file exists (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_custom_logfile
+
+  - id: 4.3.4
+    title: Ensure users must provide password for escalation (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    notes: |-
+      The rule sudo_require_authentication can probably be split to better attend requirements
+      4.3.4 and 4.3.5.
+    rules:
+      - sudo_require_authentication
+
+  - id: 4.3.5
+    title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The rule sudo_require_authentication can probably be split to better attend requirements
+      4.3.4 and 4.3.5.
+    rules:
+      - sudo_require_authentication
+
+  - id: 4.3.6
+    title: Ensure sudo authentication timeout is configured correctly (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_require_reauthentication
+
+  - id: 4.3.7
+    title: Ensure access to the su command is restricted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
+      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
+      use of "sudo" for privileged access. Therefore, members of these groups should be manually
+      checked or a different group should be informed.
+    rules:
+      - var_pam_wheel_group_for_su=cis
+      - use_pam_wheel_group_for_su
+      - ensure_pam_wheel_group_empty
+
+  - id: 4.4.1.1
+    title: Ensure latest version of pam is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      It is necessary a new rule to ensure PAM package is updated.
+
+  - id: 4.4.1.2
+    title: Ensure latest version of authselect is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      It is necessary a new rule to ensure PAM package is updated.
+
+  - id: 4.4.2.1
+    title: Ensure active authselect profile includes pam modules (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      This requirement is hard to be automated without any specific requirement. The policy even
+      states that provided commands are examples, other custom settings might be in place and the
+      settings might be different depending on site policies. The other rules will already make
+      sure there is a correct autheselect profile regardless of the existing settings. It is
+      necessary to better discuss with CIS Community.
+    related_rules:
+      - no_empty_passwords
+
+  - id: 4.4.2.2
+    title: Ensure pam_faillock module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      This requirement is satisfied by 4.4.3.1 section.
+    related_rules:
+      - accounts_passwords_pam_faillock_deny
+
+  - id: 4.4.2.3
+    title: Ensure pam_pwquality module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      CIS requirement asks to enable an authselect feature called "with-pwquality" but this
+      feature is not present in RHEL 8. This needs to be discussed in CIS Community. For now the
+      requirement is attended by ensuring the libpwquality is present. Its configuration is
+      covered by other requirements.
+    rules:
+      - package_pam_pwquality_installed
+
+  - id: 4.4.2.4
+    title: Ensure pam_pwhistory module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The module is properly enabled by the rules mentioned in related_rules.
+      Requirements in 4.4.3.3 use these rules.
+    related_rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+
+  - id: 4.4.2.5
+    title: Ensure pam_unix module is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      This module is always present by default. It is necessary to investigate if a new rule to
+      check its existence needs to be created. But so far the rule no_empty_passwords, used in
+      4.4.3.4.1 can ensure this requirement is attended.
+    related_rules:
+      - no_empty_passwords
+
+  - id: 4.4.3.1.1
+    title: Ensure password failed attempts lockout is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - var_accounts_passwords_pam_faillock_deny=5
+
+  - id: 4.4.3.1.2
+    title: Ensure password unlock time is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The policy also accepts value 0, which means the locked accounts should be manually unlocked
+      by an administrator. However, it also mentions that using value 0 can facilitate a DoS
+      attack to legitimate users.
+    rules:
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_unlock_time=900
+
+  - id: 4.4.3.1.3
+    title: Ensure password failed attempts lockout includes root account (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny_root
+
+  - id: 4.4.3.2.1
+    title: Ensure password number of changed characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_difok
+      - var_password_pam_difok=2
+
+  - id: 4.4.3.2.2
+    title: Ensure password length is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_minlen
+      - var_password_pam_minlen=14
+
+  - id: 4.4.3.2.3
+    title: Ensure password complexity is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      This requirement is expected to be manual. However, in previous versions of the policy
+      it was already automated the configuration of "minclass" option. This posture was kept for
+      RHEL 8 in this new version. Rules related to other options are informed in related_rules.
+      In short, minclass=4 alone can achieve the same result achieved by the combination of the
+      other 4 options mentioned in the policy.
+    rules:
+      - accounts_password_pam_minclass
+      - var_password_pam_minclass=4
+    related_rules:
+      - accounts_password_pam_dcredit
+      - accounts_password_pam_lcredit
+      - accounts_password_pam_ocredit
+      - accounts_password_pam_ucredit
+
+  - id: 4.4.3.2.4
+    title: Ensure password same consecutive characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_maxrepeat
+      - var_password_pam_maxrepeat=3
+
+  - id: 4.4.3.2.5
+    title: Ensure password maximum sequential characters is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: planned
+    notes: |-
+      A new templated rule and variable are necessary for the maxsequence option.
+
+  - id: 4.4.3.2.6
+    title: Ensure password dictionary check is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_dictcheck
+      - var_password_pam_dictcheck=1
+
+  - id: 4.4.3.2.7
+    title: Ensure password quality is enforced for the root user (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_pam_enforce_root
+
+  - id: 4.4.3.3.1
+    title: Ensure password history remember is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Although mentioned in the section 4.4.3.3, there is no explicit requirement to configure
+      retry option of pam_pwhistory. If come in the future, the rule accounts_password_pam_retry
+      can be used.
+    rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+      - var_password_pam_remember_control_flag=requisite_or_required
+      - var_password_pam_remember=24
+    related_rules:
+      - accounts_password_pam_retry
+
+  - id: 4.4.3.3.2
+    title: Ensure password history is enforced for the root user (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: planned
+    notes: |-
+      A new rule needs to be created to check and remediate the enforce_for_root option in
+      /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
+
+  - id: 4.4.3.3.3
+    title: Ensure pam_pwhistory includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      In RHEL 8 pam_pwhistory is enabled via authselect feature, as required in 4.4.3.3.1. The
+      feature automatically set "use_authok" option. In any case, we don't have a rule to check
+      this option specifically.
+    related_rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+
+  - id: 4.4.3.4.1
+    title: Ensure pam_unix does not include nullok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The rule more specifically used in this requirement also satify the requirements 4.4.2.1
+      and 4.4.2.5.
+    rules:
+      - no_empty_passwords
+
+  - id: 4.4.3.4.2
+    title: Ensure pam_unix does not include remember (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Usage of pam_unix.so module together with "remember" option is deprecated and is not
+      recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+      module, as required in 4.4.3.3.1. See here for more details about pam_unix.so:
+      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
+      A new rule needs to be created to remove the remember option from pam_unix module.
+
+  - id: 4.4.3.4.3
+    title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Changes in logindefs mentioned in this requirement are more specifically covered by 4.5.1.1.
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_passwordauth
+
+  - id: 4.4.3.4.4
+    title: Ensure pam_unix includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      In RHEL 8 pam_unix is enabled by default in all authselect profiles already with the
+      use_authtok option set. In any case, we don't have a rule to check this option specifically,
+      like in 4.4.3.3.3.
+
+  - id: 4.5.1.1
+    title: Ensure strong password hashing algorithm is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - set_password_hashing_algorithm_libuserconf
+      - set_password_hashing_algorithm_logindefs
+      - var_password_hashing_algorithm=SHA512
+
+  - id: 4.5.1.2
+    title: Ensure password expiration is 365 days or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_maximum_age_login_defs
+      - accounts_password_set_max_life_existing
+      - var_accounts_maximum_age_login_defs=365
+
+  - id: 4.5.1.3
+    title: Ensure password expiration warning days is 7 or more (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_set_warn_age_existing
+      - accounts_password_warn_age_login_defs
+      - var_accounts_password_warn_age_login_defs=7
+
+  - id: 4.5.1.4
+    title: Ensure inactive password lock is 30 days or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - account_disable_post_pw_expiration
+      - accounts_set_post_pw_existing
+      - var_account_disable_post_pw_expiration=30
+
+  - id: 4.5.1.5
+    title: Ensure all users last password change date is in the past (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_password_last_change_is_in_past
+
+  - id: 4.5.2.1
+    title: Ensure default group for the root account is GID 0 (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_root_gid_zero
+
+  - id: 4.5.2.2
+    title: Ensure root user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      There is no rule to ensure umask in /root/.bash_profile and /root/.bashrc. A new rule have
+      to be created. It can be based on accounts_umask_interactive_users.
+
+  - id: 4.5.2.3
+    title: Ensure system accounts are secured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
+
+  - id: 4.5.2.4
+    title: Ensure root password is set (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - ensure_root_password_configured
+
+  - id: 4.5.3.1
+    title: Ensure nologin is not listed in /etc/shells (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: pending
+    notes: |-
+      It is necessary to create a new rule to check and remove nologin from /etc/shells.
+      The no_tmux_in_shells rule can be used as referece.
+
+  - id: 4.5.3.2
+    title: Ensure default user shell timeout is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=15_min
+
+  - id: 4.5.3.3
+    title: Ensure default user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      It is missing a rule to check /etc/pam.d/postlogin. Files /etc/bash.bashrc and
+      /etc/default/login are not used in RHEL 8, but are mentioned in the policy. It has to be
+      clarified in CIS Community. The policy allows the user to override the default system umask
+      on its discretion. This is the reason the accounts_umask_interactive_users rule is in
+      related_rules. If this changes in the future, the rule can be used to ensure that users do
+      not override the system default.
+    rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=027
+    related_rules:
+      - accounts_umask_interactive_users
+
+  - id: 5.1.1.1
+    title: Ensure rsyslog is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_rsyslog_installed
+
+  - id: 5.1.1.2
+    title: Ensure rsyslog service is enabled (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      This requirement is expected to be manual in the policy because there are valid cases where
+      other solutions are used for logging. rsyslog is the default in RHEL 8 and so far other
+      solutions are not expected to be incompatible with rsyslog. If so, for these particular
+      cases, this rule should be removed for those systems by a tailored file.
+    rules:
+      - service_rsyslog_enabled
+
+  - id: 5.1.1.3
+    title: Ensure journald is configured to send logs to rsyslog (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_forward_to_syslog
+
+  - id: 5.1.1.4
+    title: Ensure rsyslog default file permissions are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_filecreatemode
+
+  - id: 5.1.1.5
+    title: Ensure logging is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 5.1.1.6
+    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - rsyslog_remote_loghost
+
+  - id: 5.1.1.7
+    title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_nolisten
+
+  - id: 5.1.2.1.1
+    title: Ensure systemd-journal-remote is installed (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - package_systemd-journal-remote_installed
+
+  - id: 5.1.2.1.2
+    title: Ensure systemd-journal-remote is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 5.1.2.1.3
+    title: Ensure systemd-journal-remote is enabled (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 5.1.2.1.4
+    title: Ensure journald is not configured to recieve logs from a remote client (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - socket_systemd-journal-remote_disabled
+
+  - id: 5.1.2.2
+    title: Ensure journald service is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - service_systemd-journald_enabled
+
+  - id: 5.1.2.3
+    title: Ensure journald is configured to compress large log files (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_compress
+
+  - id: 5.1.2.4
+    title: Ensure journald is configured to write logfiles to persistent disk (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_storage
+
+  - id: 5.1.2.5
+    title: Ensure journald is not configured to send logs to rsyslog (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 5.1.2.6
+    title: Ensure journald log rotation is configured per site policy (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 5.1.3
+    title: Ensure logrotate is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - ensure_logrotate_activated
+      - package_logrotate_installed
+      - timer_logrotate_enabled
+
+  - id: 5.1.4
+    title: Ensure all logfiles have appropriate access configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_files_groupownership
+      - rsyslog_files_ownership
+      - rsyslog_files_permissions
+
+  - id: 5.2.1.1
+    title: Ensure audit is installed (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -1539,16 +2530,7 @@ controls:
     rules:
       - package_audit_installed
 
-  - id: 4.1.1.2
-    title: Ensure auditd service is enabled (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - service_auditd_enabled
-
-  - id: 4.1.1.3
+  - id: 5.2.1.2
     title: Ensure auditing for processes that start prior to auditd is enabled (Automated)
     levels:
       - l2_server
@@ -1557,7 +2539,7 @@ controls:
     rules:
       - grub2_audit_argument
 
-  - id: 4.1.1.4
+  - id: 5.2.1.3
     title: Ensure audit_backlog_limit is sufficient (Automated)
     levels:
       - l2_server
@@ -1566,7 +2548,16 @@ controls:
     rules:
       - grub2_audit_backlog_limit_argument
 
-  - id: 4.1.2.1
+  - id: 5.2.1.4
+    title: Ensure auditd service is enabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - service_auditd_enabled
+
+  - id: 5.2.2.1
     title: Ensure audit log storage size is configured (Automated)
     levels:
       - l2_server
@@ -1576,7 +2567,7 @@ controls:
       - auditd_data_retention_max_log_file
       - var_auditd_max_log_file=6
 
-  - id: 4.1.2.2
+  - id: 5.2.2.2
     title: Ensure audit logs are not automatically deleted (Automated)
     levels:
       - l2_server
@@ -1586,8 +2577,20 @@ controls:
       - auditd_data_retention_max_log_file_action
       - var_auditd_max_log_file_action=keep_logs
 
-  - id: 4.1.2.3
+  - id: 5.2.2.3
     title: Ensure system is disabled when audit logs are full (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - auditd_data_disk_error_action
+      - auditd_data_disk_full_action
+      - var_auditd_disk_error_action=single
+      - var_auditd_disk_full_action=single
+
+  - id: 5.2.2.4
+    title: Ensure system warns when audit logs are low on space (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -1597,10 +2600,10 @@ controls:
       - auditd_data_retention_admin_space_left_action
       - auditd_data_retention_space_left_action
       - var_auditd_action_mail_acct=root
-      - var_auditd_admin_space_left_action=halt
+      - var_auditd_admin_space_left_action=single
       - var_auditd_space_left_action=email
 
-  - id: 4.1.3.1
+  - id: 5.2.3.1
     title: Ensure changes to system administration scope (sudoers) is collected (Automated)
     levels:
       - l2_server
@@ -1609,7 +2612,7 @@ controls:
     rules:
       - audit_rules_sysadmin_actions
 
-  - id: 4.1.3.2
+  - id: 5.2.3.2
     title: Ensure actions as another user are always logged (Automated)
     levels:
       - l2_server
@@ -1618,7 +2621,7 @@ controls:
     rules:
       - audit_rules_suid_auid_privilege_function
 
-  - id: 4.1.3.3
+  - id: 5.2.3.3
     title: Ensure events that modify the sudo log file are collected (Automated)
     levels:
       - l2_server
@@ -1627,7 +2630,7 @@ controls:
     rules:
       - audit_sudo_log_events
 
-  - id: 4.1.3.4
+  - id: 5.2.3.4
     title: Ensure events that modify date and time information are collected (Automated)
     levels:
       - l2_server
@@ -1640,17 +2643,18 @@ controls:
       - audit_rules_time_stime
       - audit_rules_time_watch_localtime
 
-  - id: 4.1.3.5
+  - id: 5.2.3.5
     title: Ensure events that modify the system's network environment are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    status: automated
+    status: partial
     rules:
-      - audit_rules_networkconfig_modification
+    # TODO: we need to create a rule that adds audit rule for /etc/sysconfig/network-scripts/ directory as well
+    - audit_rules_networkconfig_modification
 
-  - id: 4.1.3.6
-    title: Ensure use of privileged commands is collected (Automated)
+  - id: 5.2.3.6
+    title: Ensure use of privileged commands are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -1658,7 +2662,7 @@ controls:
     rules:
       - audit_rules_privileged_commands
 
-  - id: 4.1.3.7
+  - id: 5.2.3.7
     title: Ensure unsuccessful file access attempts are collected (Automated)
     levels:
       - l2_server
@@ -1671,7 +2675,7 @@ controls:
       - audit_rules_unsuccessful_file_modification_openat
       - audit_rules_unsuccessful_file_modification_truncate
 
-  - id: 4.1.3.8
+  - id: 5.2.3.8
     title: Ensure events that modify user/group information are collected (Automated)
     levels:
       - l2_server
@@ -1684,7 +2688,7 @@ controls:
       - audit_rules_usergroup_modification_passwd
       - audit_rules_usergroup_modification_shadow
 
-  - id: 4.1.3.9
+  - id: 5.2.3.9
     title: Ensure discretionary access control permission modification events are collected (Automated)
     levels:
       - l2_server
@@ -1705,7 +2709,7 @@ controls:
       - audit_rules_dac_modification_removexattr
       - audit_rules_dac_modification_setxattr
 
-  - id: 4.1.3.10
+  - id: 5.2.3.10
     title: Ensure successful file system mounts are collected (Automated)
     levels:
       - l2_server
@@ -1714,7 +2718,7 @@ controls:
     rules:
       - audit_rules_media_export
 
-  - id: 4.1.3.11
+  - id: 5.2.3.11
     title: Ensure session initiation information is collected (Automated)
     levels:
       - l2_server
@@ -1723,7 +2727,7 @@ controls:
     rules:
       - audit_rules_session_events
 
-  - id: 4.1.3.12
+  - id: 5.2.3.12
     title: Ensure login and logout events are collected (Automated)
     levels:
       - l2_server
@@ -1734,7 +2738,7 @@ controls:
       - audit_rules_login_events_lastlog
       - var_accounts_passwords_pam_faillock_dir=run
 
-  - id: 4.1.3.13
+  - id: 5.2.3.13
     title: Ensure file deletion events by users are collected (Automated)
     levels:
       - l2_server
@@ -1746,7 +2750,7 @@ controls:
       - audit_rules_file_deletion_events_unlink
       - audit_rules_file_deletion_events_unlinkat
 
-  - id: 4.1.3.14
+  - id: 5.2.3.14
     title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
     levels:
       - l2_server
@@ -1756,7 +2760,7 @@ controls:
       - audit_rules_mac_modification
       - audit_rules_mac_modification_usr_share
 
-  - id: 4.1.3.15
+  - id: 5.2.3.15
     title: Ensure successful and unsuccessful attempts to use the chcon command are recorded (Automated)
     levels:
       - l2_server
@@ -1765,7 +2769,7 @@ controls:
     rules:
       - audit_rules_execution_chcon
 
-  - id: 4.1.3.16
+  - id: 5.2.3.16
     title: Ensure successful and unsuccessful attempts to use the setfacl command are recorded (Automated)
     levels:
       - l2_server
@@ -1774,7 +2778,7 @@ controls:
     rules:
       - audit_rules_execution_setfacl
 
-  - id: 4.1.3.17
+  - id: 5.2.3.17
     title: Ensure successful and unsuccessful attempts to use the chacl command are recorded (Automated)
     levels:
       - l2_server
@@ -1783,7 +2787,7 @@ controls:
     rules:
       - audit_rules_execution_chacl
 
-  - id: 4.1.3.18
+  - id: 5.2.3.18
     title: Ensure successful and unsuccessful attempts to use the usermod command are recorded (Automated)
     levels:
       - l2_server
@@ -1792,7 +2796,7 @@ controls:
     rules:
       - audit_rules_privileged_commands_usermod
 
-  - id: 4.1.3.19
+  - id: 5.2.3.19
     title: Ensure kernel module loading, unloading and modification is collected (Automated)
     levels:
       - l2_server
@@ -1806,7 +2810,7 @@ controls:
       - audit_rules_kernel_module_loading_query
       - audit_rules_privileged_commands_kmod
 
-  - id: 4.1.3.20
+  - id: 5.2.3.20
     title: Ensure the audit configuration is immutable (Automated)
     levels:
       - l2_server
@@ -1815,471 +2819,102 @@ controls:
     rules:
       - audit_rules_immutable
 
-  - id: 4.1.3.21
+  - id: 5.2.3.21
     title: Ensure the running and on disk configuration is the same (Manual)
     levels:
       - l2_server
       - l2_workstation
     status: manual
 
-  - id: 4.2.1.1
-    title: Ensure rsyslog is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_rsyslog_installed
-
-  - id: 4.2.1.2
-    title: Ensure rsyslog Service is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_rsyslog_enabled
-
-  - id: 4.2.1.3
-    title: Ensure journald is configured to send logs to rsyslog (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_forward_to_syslog
-
-  - id: 4.2.1.4
-    title: Ensure rsyslog default file permissions configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_filecreatemode
-
-  - id: 4.2.1.5
-    title: Ensure logging is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.1.6
-    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    related_rules:
-      - rsyslog_remote_loghost
-
-  - id: 4.2.1.7
-    title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_nolisten
-
-  - id: 4.2.2.1.1
-    title:  Ensure systemd-journal-remote is installed (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.1.2
-    title:  Ensure systemd-journal-remote is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.1.3
-    title:  Ensure systemd-journal-remote is enabled (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.1.4
-    title: Ensure journald is not configured to recieve logs from a remote client (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - socket_systemd-journal-remote_disabled
-
-  - id: 4.2.2.2
-    title: Ensure journald service is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_systemd-journald_enabled
-
-  - id: 4.2.2.3
-    title: Ensure journald is configured to compress large log files (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_compress
-
-  - id: 4.2.2.4
-    title: Ensure journald is configured to write logfiles to persistent disk (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_storage
-
-  - id: 4.2.2.5
-    title: Ensure journald is not configured to send logs to rsyslog (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.6
-    title: Ensure journald log rotation is configured per site policy (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.7
-    title: Ensure journald default file permissions configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.3
-    title: Ensure permissions on all logfiles are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_files_permissions
-
-  - id: 4.3
-    title: Ensure logrotate is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    related_rules:
-      - ensure_logrotate_activated
-      - package_logrotate_installed
-      - timer_logrotate_enabled
-
-  - id: 5.1.1
-    title: Ensure cron daemon is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_crond_enabled
-
-  - id: 5.1.2
-    title: Ensure permissions on /etc/crontab are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_crontab
-      - file_owner_crontab
-      - file_permissions_crontab
-
-  - id: 5.1.3
-    title: Ensure permissions on /etc/cron.hourly are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_hourly
-      - file_owner_cron_hourly
-      - file_permissions_cron_hourly
-
-  - id: 5.1.4
-    title: Ensure permissions on /etc/cron.daily are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_daily
-      - file_owner_cron_daily
-      - file_permissions_cron_daily
-
-  - id: 5.1.5
-    title: Ensure permissions on /etc/cron.weekly are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_weekly
-      - file_owner_cron_weekly
-      - file_permissions_cron_weekly
-
-  - id: 5.1.6
-    title: Ensure permissions on /etc/cron.monthly are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_monthly
-      - file_owner_cron_monthly
-      - file_permissions_cron_monthly
-
-  - id: 5.1.7
-    title: Ensure permissions on /etc/cron.d are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_d
-      - file_owner_cron_d
-      - file_permissions_cron_d
-
-  - id: 5.1.8
-    title: Ensure cron is restricted to authorized users (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_cron_deny_not_exist
-      - file_cron_allow_exists
-      - file_groupowner_cron_allow
-      - file_owner_cron_allow
-      - file_permissions_cron_allow
-
-  - id: 5.1.9
-    title: Ensure at is restricted to authorized users (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_at_deny_not_exist
-      - file_groupowner_at_allow
-      - file_owner_at_allow
-      - file_permissions_at_allow
-
-  - id: 5.2.1
-    title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_sshd_config
-      - file_owner_sshd_config
-      - file_permissions_sshd_config
-
-  - id: 5.2.2
-    title: Ensure permissions on SSH private host key files are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_sshd_private_key
-      - file_ownership_sshd_private_key
-      - file_groupownership_sshd_private_key
-
-  - id: 5.2.3
-    title: Ensure permissions on SSH public host key files are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_sshd_pub_key
-      - file_ownership_sshd_pub_key
-      - file_groupownership_sshd_pub_key
-
-  - id: 5.2.4
-    title: Ensure SSH access is limited (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_limit_user_access
-
-  - id: 5.2.5
-    title: Ensure SSH LogLevel is appropriate (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    # The CIS benchmark is not opinionated about which loglevel is selected
-    # here. Here, this profile uses VERBOSE by default, as it allows for
-    # the capture of login and logout activity as well as key fingerprints.
-    rules:
-      - sshd_set_loglevel_verbose
-    related_rules:
-      - sshd_set_loglevel_info
-
-  - id: 5.2.6
-    title: Ensure SSH PAM is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_enable_pam
-
-  - id: 5.2.7
-    title: Ensure SSH root login is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_root_login
-
-  - id: 5.2.8
-    title: Ensure SSH HostbasedAuthentication is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - disable_host_auth
-
-  - id: 5.2.9
-    title: Ensure SSH PermitEmptyPasswords is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_empty_passwords
-
-  - id: 5.2.10
-    title: Ensure SSH PermitUserEnvironment is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_do_not_permit_user_env
-
-  - id: 5.2.11
-    title: Ensure SSH IgnoreRhosts is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_rhosts
-
-  - id: 5.2.12
-    title: Ensure SSH X11 forwarding is disabled (Automated)
-    levels:
-      - l2_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_x11_forwarding
-
-  - id: 5.2.13
-    title: Ensure SSH AllowTcpForwarding is disabled (Automated)
+  - id: 5.2.4.1
+    title: Ensure the audit log directory is 0750 or more restrictive (Automated)
     levels:
       - l2_server
       - l2_workstation
     status: automated
     rules:
-      - sshd_disable_tcp_forwarding
+      - directory_permissions_var_log_audit
 
-  - id: 5.2.14
-    title: Ensure system-wide crypto policy is not over-ridden (Automated)
+  - id: 5.2.4.2
+    title: Ensure audit log files are mode 0640 or less permissive (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - configure_ssh_crypto_policy
+      - file_permissions_var_log_audit
 
-  - id: 5.2.15
-    title: Ensure SSH warning banner is configured (Automated)
+  - id: 5.2.4.3
+    title: Ensure only authorized users own audit log files (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sshd_enable_warning_banner_net
-    related_rules:
-      - sshd_enable_warning_banner
+      - file_ownership_var_log_audit_stig
 
-  - id: 5.2.16
-    title: Ensure SSH MaxAuthTries is set to 4 or less (Automated)
+  - id: 5.2.4.4
+    title: Ensure only authorized groups are assigned ownership of audit log files (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sshd_max_auth_tries_value=4
-      - sshd_set_max_auth_tries
+      - file_group_ownership_var_log_audit
 
-  - id: 5.2.17
-    title: Ensure SSH MaxStartups is configured (Automated)
+  - id: 5.2.4.5
+    title: Ensure audit configuration files are 640 or more restrictive (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sshd_set_maxstartups
-      - var_sshd_set_maxstartups=10:30:60
+      - file_permissions_audit_configuration
 
-  - id: 5.2.18
-    title: Ensure SSH MaxSessions is set to 10 or less (Automated)
+  - id: 5.2.4.6
+    title: Ensure audit configuration files are owned by root (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sshd_set_max_sessions
-      - var_sshd_max_sessions=10
+      - file_ownership_audit_configuration
 
-  - id: 5.2.19
-    title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
+  - id: 5.2.4.7
+    title: Ensure audit configuration files belong to group root (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sshd_set_login_grace_time
-      - var_sshd_set_login_grace_time=60
+      - file_groupownership_audit_configuration
 
-  - id: 5.2.20
-    title: Ensure SSH Idle Timeout Interval is configured (Automated)
+  - id: 5.2.4.8
+    title: Ensure audit tools are 755 or more restrictive (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+      - l2_server
+      - l2_workstation
     status: automated
     rules:
-      - sshd_idle_timeout_value=15_minutes
-      - sshd_set_idle_timeout
-      - sshd_set_keepalive
-      - var_sshd_set_keepalive=0
+      - file_permissions_audit_binaries
+
+  - id: 5.2.4.9
+    title: Ensure audit tools are owned by root (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_ownership_audit_binaries
+
+  - id: 5.2.4.10
+    title: Ensure audit tools belong to group root (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_groupownership_audit_binaries
 
   - id: 5.3.1
     title: Ensure AIDE is installed (Automated)
@@ -2299,246 +2934,19 @@ controls:
     status: automated
     rules:
       - aide_periodic_cron_checking
-
-  - id: 5.3.1
-    title: Ensure sudo is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_sudo_installed
-
-  - id: 5.3.2
-    title: Ensure sudo commands use pty (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_add_use_pty
+    related_rules:
+      - aide_periodic_checking_systemd_timer
 
   - id: 5.3.3
-    title: Ensure sudo log file exists (Automated)
+    title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - sudo_custom_logfile
-
-  - id: 5.3.4
-    title: Ensure users must provide password for escalation (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - sudo_require_authentication
-
-  - id: 5.3.5
-    title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_require_reauthentication
-
-  - id: 5.3.6
-    title: Ensure sudo authentication timeout is configured correctly (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_require_reauthentication
-
-  - id: 5.3.7
-    title: Ensure access to the su command is restricted (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
-      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
-      use of "sudo" for privileged access. Therefore, members of these groups should be manually
-      checked or a different group should be informed.
-    rules:
-      - var_pam_wheel_group_for_su=cis
-      - use_pam_wheel_group_for_su
-      - ensure_pam_wheel_group_empty
-
-  - id: 5.4.1
-    title: Ensure custom authselect profile is used (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    rules:
-      - no_empty_passwords
-
-  - id: 5.4.2
-    title: Ensure authselect includes with-faillock (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_passwords_pam_faillock_deny
-
-  - id: 5.5.1
-    title: Ensure password creation requirements are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      The Benchmark mentions that the try_first_pass option should be included in pam_pwquality.so
-      module. However, the pam_pwquality.so module, by default, is always the first module from in
-      the PAM password stack. Therefore, the option is useless and not necessary. It was already
-      proposed to update the requirement in the next CIS version.
-    rules:
-      - accounts_password_pam_minclass
-      - accounts_password_pam_minlen
-      - accounts_password_pam_retry
-      - var_password_pam_minclass=4
-      - var_password_pam_minlen=14
-
-  - id: 5.5.2
-    title: Ensure lockout for failed password attempts is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_passwords_pam_faillock_deny
-      - var_accounts_passwords_pam_faillock_deny=3
-      - accounts_passwords_pam_faillock_unlock_time
-      - var_accounts_passwords_pam_faillock_unlock_time=900
-
-  - id: 5.5.3
-    title: Ensure password reuse is limited (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
-      See here for more details about pam_unix.so:
-      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
-    rules:
-      - accounts_password_pam_pwhistory_remember_password_auth
-      - accounts_password_pam_pwhistory_remember_system_auth
-      - var_password_pam_remember_control_flag=requisite_or_required
-      - var_password_pam_remember=5
-
-  - id: 5.5.4
-    title: Ensure password hashing algorithm is SHA-512 (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - set_password_hashing_algorithm_systemauth
-      - set_password_hashing_algorithm_passwordauth
-      - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=SHA512
-
-  - id: 5.6.1.1
-    title: Ensure password expiration is 365 days or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_maximum_age_login_defs
-      - var_accounts_maximum_age_login_defs=365
-      - accounts_password_set_max_life_existing
-
-  - id: 5.6.1.2
-    title: Ensure minimum days between password changes is 7 or more (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_minimum_age_login_defs
-      - var_accounts_minimum_age_login_defs=7
-      - accounts_password_set_min_life_existing
-
-  - id: 5.6.1.3
-    title: Ensure password expiration warning days is 7 or more (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_password_warn_age_login_defs
-      - var_accounts_password_warn_age_login_defs=7
-      - accounts_password_set_warn_age_existing
-
-  - id: 5.6.1.4
-    title: Ensure inactive password lock is 30 days or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - account_disable_post_pw_expiration
-      - var_account_disable_post_pw_expiration=30
-      - accounts_set_post_pw_existing
-
-  - id: 5.6.1.5
-    title: Ensure all users last password change date is in the past (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_password_last_change_is_in_past
-
-  - id: 5.6.2
-    title: Ensure system accounts are secured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - no_password_auth_for_systemaccounts
-      - no_shelllogin_for_systemaccounts
-
-  - id: 5.6.3
-    title: Ensure default user shell timeout is 900 seconds or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_tmout
-      - var_accounts_tmout=15_min
-
-  - id: 5.6.4
-    title: Ensure default group for the root account is GID 0 (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_root_gid_zero
-
-  - id: 5.6.5
-    title: Ensure default user umask is 027 or more restrictive (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_umask_etc_bashrc
-      - accounts_umask_etc_login_defs
-      - accounts_umask_etc_profile
-      - var_accounts_user_umask=027
+      - aide_check_audit_tools
+    related_rules:
+      - aide_use_fips_hashes
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
