@@ -2042,6 +2042,10 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      The policy also accepts value 0, which means the locked accounts should be manually unlocked
+      by an administrator. However, it also mentions that using value 0 can facilitate a DoS
+      attack to legitimate users.
     rules:
       - accounts_passwords_pam_faillock_unlock_time
       - var_accounts_passwords_pam_faillock_unlock_time=900
