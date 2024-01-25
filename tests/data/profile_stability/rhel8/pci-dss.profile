@@ -19,6 +19,7 @@ metadata:
     - vojtapolasek
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
 selections:
+- package_ftp_removed
 - enable_authselect
 - package_sudo_installed
 - sshd_set_loglevel_verbose

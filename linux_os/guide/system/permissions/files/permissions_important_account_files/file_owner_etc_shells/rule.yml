@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Verify Who Owns /etc/shells File'
+
+description:  |-
+    {{{ describe_file_owner(file="/etc/shells", owner="root") }}}
+
+rationale: |-
+    The <tt>/etc/shells</tt> file contains the list of full pathnames to shells on the system.
+    Since this file is used by many system programs this file should be protected.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87055-0
+
+references:
+    cis@rhel8: 6.1.10
+    nist: AC-3,MP-2
+
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/shells", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/shells", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/shells", owner="root") }}}'
+
+srg_requirement: 'The {{{ full_name }}} /etc/shells file must have an owner of root to prevent unauthorized access.'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/shells
+        fileuid: '0'
