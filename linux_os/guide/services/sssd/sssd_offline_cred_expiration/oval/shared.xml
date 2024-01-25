@@ -16,7 +16,7 @@
     <ind:object object_ref="obj_sssd_offline_cred_expiration" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_offline_cred_expiration" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*1\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -28,7 +28,7 @@
     <ind:state state_ref="state_sssd_cache_credentials" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_cache_credentials" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*cache_credentials\s*=\s*(\w+)\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
