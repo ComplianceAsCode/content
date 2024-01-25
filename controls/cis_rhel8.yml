@@ -1638,7 +1638,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: partial
+    notes: |-
+      These rules only check the /etc/ssh/sshd_config file but the policy also mentions files in
+      /etc/ssh/sshd_config.d directory. New templated rules should be created for sshd_config.d.
     rules:
       - file_groupowner_sshd_config
       - file_owner_sshd_config
