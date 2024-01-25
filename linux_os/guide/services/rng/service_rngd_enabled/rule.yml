@@ -49,6 +49,16 @@ warnings:
       Consequently, the rngd service can't be started in FIPS mode.
 {{% endif %}}
 
+{{% if product == "rhel9" %}}
+platform: not runtime_kernel_fips_enabled
+warnings:
+  - general: |-
+      For RHEL 9 running with kernel FIPS mode enabled this rule is not applicable.
+      The in-kernel deterministic random bit generator (DRBG) is used in FIPS mode instead.
+      Consequently, the rngd service can't be started in FIPS mode.
+{{% endif %}}
+
+
 
 template:
     name: service_enabled
