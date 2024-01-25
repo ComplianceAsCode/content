@@ -1062,7 +1062,7 @@ controls:
       - wireless_disable_interfaces
 
   - id: 3.1.3
-    title: Ensure bluetooth services are not in use(Automated)
+    title: Ensure bluetooth services are not in use (Automated)
     levels:
       - l1_server
       - l2_workstation
@@ -1071,7 +1071,7 @@ controls:
       - service_bluetooth_disabled
 
   - id: 3.2.1
-    title: Ensure dccp kernel module is not available(Automated)
+    title: Ensure dccp kernel module is not available (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -1216,7 +1216,7 @@ controls:
       - sysctl_net_ipv4_conf_default_log_martians_value=enabled
 
   - id: 3.3.10
-    title: Ensure tcp sync Cookies is enabled (Automated)
+    title: Ensure tcp sync cookies is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -1286,8 +1286,6 @@ controls:
     rules:
       - firewalld_loopback_traffic_trusted
       - firewalld_loopback_traffic_restricted
-
-
 
   - id: 3.4.2.3
     title: Ensure firewalld drops unnecessary services and ports (Manual)
