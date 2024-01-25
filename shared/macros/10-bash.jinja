@@ -786,7 +786,8 @@ authselect enable-feature {{{ feature }}}
 {{% if 'ubuntu' in product %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
-    sed -i --follow-symlinks '/^auth.*pam_unix\.so.*/i auth        required      pam_faillock.so preauth' "$pam_file"
+    # insert at the top
+    sed -i --follow-symlinks '/^# here are the per-package modules/i auth        required      pam_faillock.so preauth' "$pam_file"
 fi
 if ! grep -qE '^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*$' "$pam_file" ; then
     num_lines=$(sed -n 's/^auth.*success=\([0-9]\).*pam_unix\.so.*/\1/p' "$pam_file")
