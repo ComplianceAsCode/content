@@ -1285,7 +1285,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - firewalld_loopback_traffic_trusted
+      - firewalld_loopback_traffic_restricted
+
+
 
   - id: 3.4.2.3
     title: Ensure firewalld drops unnecessary services and ports (Manual)
