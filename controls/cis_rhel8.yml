@@ -1786,12 +1786,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    notes: |-
-      Rule sshd_use_strong_macs needs to be enabled for rhel8.
-      Variable sshd_strong_macs likely needs to be updated to include a new option.
-    related_rules:
+    status: automated
+    rules:
       - sshd_use_strong_macs
+      - sshd_strong_macs=cis_rhel8
 
   - id: 4.2.15
     title: Ensure sshd MaxAuthTries is configured (Automated)
