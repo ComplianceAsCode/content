@@ -1623,7 +1623,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: partial
+    notes: |-
+      It is necessary to create a rule to ensure the existence of at.allow.
+      file_cron_allow_exists can be used as reference for a new templated rule.
     rules:
       - file_at_deny_not_exist
       - file_groupowner_at_allow
