@@ -21,3 +21,7 @@ description: |-
 
 selections:
     - cis_rhel7:all:l1_workstation
+    # Following rules once had a prodtype incompatible with the rhel7 product
+    - '!file_groupowner_at_allow'
+    - '!file_permissions_at_allow'
+    - '!file_owner_at_allow'

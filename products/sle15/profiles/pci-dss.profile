@@ -26,3 +26,11 @@ selections:
     - '!service_ntpd_enabled'
     - '!service_timesyncd_enabled'
     - '!package_libreswan_installed'
+    # Following rules once had a prodtype incompatible with the sle15 product
+    - '!aide_periodic_cron_checking'
+    - '!accounts_password_pam_dcredit'
+    - '!accounts_password_pam_lcredit'
+    - '!accounts_passwords_pam_faillock_deny'
+    - '!accounts_passwords_pam_faillock_unlock_time'
+    - '!accounts_password_pam_ucredit'
+    - '!accounts_password_pam_minlen'

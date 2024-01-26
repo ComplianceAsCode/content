@@ -21,3 +21,6 @@ description: |-
 
 selections:
     - cis_rhel8:all:l2_workstation
+    # Following rules once had a prodtype incompatible with the rhel8 product
+    - '!file_owner_at_allow'
+    - '!package_dnsmasq_removed'

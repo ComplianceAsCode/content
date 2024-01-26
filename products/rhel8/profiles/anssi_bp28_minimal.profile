@@ -21,3 +21,13 @@ description: |-
 
 selections:
   - anssi:all:minimal
+  # Following rules once had a prodtype incompatible with the rhel8 product
+  - '!cracklib_accounts_password_pam_minlen'
+  - '!accounts_passwords_pam_tally2_deny_root'
+  - '!accounts_passwords_pam_tally2'
+  - '!cracklib_accounts_password_pam_ucredit'
+  - '!cracklib_accounts_password_pam_dcredit'
+  - '!cracklib_accounts_password_pam_lcredit'
+  - '!cracklib_accounts_password_pam_ocredit'
+  - '!accounts_passwords_pam_tally2_unlock_time'
+  - '!ensure_oracle_gpgkey_installed'

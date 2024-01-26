@@ -21,3 +21,5 @@ description: |-
 
 selections:
     - cis_alinux2:all:l1
+    # Following rules once had a prodtype incompatible with the alinux2 product
+    - '!no_legacy_plus_entries_etc_group'

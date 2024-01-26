@@ -1,0 +1,141 @@
+documentation_complete: true
+
+hidden: true
+
+title: Default Profile for SUSE Linux Enterprise 15
+
+description: |-
+    This profile contains all the rules that once belonged to the
+    sle15 product via 'prodtype'. This profile won't
+    be rendered into an XCCDF Profile entity, nor it will select any
+    of these rules by default. The only purpose of this profile
+    is to keep a rule in the product's XCCDF Benchmark.
+
+selections:
+    - accounts_user_dot_user_ownership
+    - service_timesyncd_enabled
+    - gnome_gdm_disable_xdmcp
+    - configure_user_data_backups
+    - dir_ownership_binary_dirs
+    - rsyslog_encrypt_offload_defaultnetstreamdriver
+    - sysctl_net_ipv6_conf_default_disable_ipv6
+    - kernel_module_uvcvideo_disabled
+    - auditd_local_events
+    - file_groupowner_var_log
+    - account_use_centralized_automated_auth
+    - sshd_rekey_limit
+    - sudo_vdsm_nopasswd
+    - package_mcstrans_removed
+    - fapolicyd_prevent_home_folder_access
+    - package_postfix_installed
+    - accounts_password_pam_unix_rounds_password_auth
+    - audit_privileged_commands_poweroff
+    - configure_etc_hosts_deny
+    - sudoers_no_root_target
+    - auditd_write_logs
+    - service_ntpd_enabled
+    - accounts_users_home_files_groupownership
+    - dconf_gnome_disable_user_list
+    - coreos_enable_selinux_kernel_argument
+    - kernel_disable_entropy_contribution_for_solid_state_drives
+    - avahi_disable_publishing
+    - rsyslog_nolisten
+    - ntpd_specify_multiple_servers
+    - sshd_use_priv_separation
+    - kernel_module_rds_disabled
+    - sudo_add_passwd_timeout
+    - audit_privileged_commands_shutdown
+    - file_groupownership_sshd_pub_key
+    - account_passwords_pam_faillock_dir
+    - directory_permissions_var_log_audit
+    - service_tftp_disabled
+    - file_permissions_var_log
+    - service_timesyncd_configured
+    - file_ownership_sshd_private_key
+    - sshd_enable_warning_banner_net
+    - file_groupowner_var_log_syslog
+    - accounts_users_home_files_ownership
+    - grub2_systemd_debug-shell_argument_absent
+    - service_netfs_disabled
+    - ftp_limit_users
+    - file_groupownership_sshd_private_key
+    - kernel_module_ipv6_option_disabled
+    - xwindows_runlevel_target
+    - file_groupownership_audit_configuration
+    - auditd_audispd_configure_remote_server
+    - rsyslog_accept_remote_messages_tcp
+    - auditd_data_disk_full_action_stig
+    - file_ownership_sshd_pub_key
+    - kernel_module_hfs_disabled
+    - sshd_disable_compression
+    - accounts_umask_interactive_users
+    - sshd_enable_gssapi_auth
+    - kernel_module_jffs2_disabled
+    - sshd_set_loglevel_info
+    - ftp_configure_firewall
+    - auditd_data_disk_error_action
+    - package_libreswan_installed
+    - auditd_overflow_action
+    - service_systemd-journald_enabled
+    - kernel_config_ipv6
+    - file_permissions_home_dirs
+    - grub2_disable_recovery
+    - postfix_client_configure_mail_alias_postmaster
+    - file_permissions_var_log_messages
+    - audit_rules_privileged_commands_mount
+    - use_pam_wheel_for_su
+    - selinux_not_disabled
+    - package_nss-tools_installed
+    - no_legacy_plus_entries_etc_group
+    - file_ownership_home_directories
+    - accounts_user_dot_group_ownership
+    - sshd_enable_pubkey_auth
+    - accounts_users_own_home_directories
+    - postfix_client_configure_relayhost
+    - audit_privileged_commands_init
+    - iptables_sshd_disabled
+    - chronyd_server_directive
+    - kernel_module_hfsplus_disabled
+    - service_postfix_enabled
+    - package_openssh-server_removed
+    - auditd_log_format
+    - service_syslogng_enabled
+    - account_passwords_pam_faillock_audit
+    - ntpd_specify_remote_server
+    - file_owner_var_log
+    - service_sshd_disabled
+    - sshd_disable_rhosts_rsa
+    - package_openssh_removed
+    - file_permissions_audit_configuration
+    - harden_ssh_client_crypto_policy
+    - dhcp_server_minimize_served_info
+    - no_all_squash_exports
+    - service_ufw_enabled
+    - package_openssh-server_installed
+    - package_tcp_wrappers_installed
+    - accounts_umask_etc_csh_cshrc
+    - file_groupowner_var_log_messages
+    - dir_permissions_binary_dirs
+    - accounts_password_pam_unix_rounds_system_auth
+    - sshd_disable_pubkey_auth
+    - package_gnutls-utils_installed
+    - dhcp_client_restrict_options
+    - audit_privileged_commands_reboot
+    - auditd_freq
+    - kernel_module_tipc_disabled
+    - accounts_passwords_pam_faillock_audit
+    - rsyslog_encrypt_offload_actionsendstreamdrivermode
+    - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+    - package_syslogng_installed
+    - kernel_module_freevxfs_disabled
+    - auditd_data_disk_error_action_stig
+    - rsyslog_accept_remote_messages_udp
+    - file_owner_var_log_messages
+    - file_permissions_var_log_syslog
+    - installed_OS_is_FIPS_certified
+    - sshd_disable_root_password_login
+    - harden_sshd_crypto_policy
+    - file_ownership_audit_configuration
+    - service_chronyd_enabled
+    - file_owner_var_log_syslog
+    - service_ip6tables_enabled

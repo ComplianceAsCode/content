@@ -22,3 +22,7 @@ description: |-
 selections:
     - cis_rhel9:all:l2_workstation
     - '!package_avahi_removed'
+    # Following rules once had a prodtype incompatible with the rhel9 product
+    - '!file_ownership_home_directories'
+    - '!group_unique_name'
+    - '!file_owner_at_allow'

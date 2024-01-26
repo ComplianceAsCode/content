@@ -94,3 +94,13 @@ selections:
     -  '!use_pam_wheel_for_su'
     -  use_pam_wheel_group_for_su
     -  var_pam_wheel_group_for_su=cis
+    # Following rules once had a prodtype incompatible with the sle12 product
+    - '!set_firewalld_default_zone'
+    - '!accounts_password_pam_dcredit'
+    - '!audit_rules_login_events'
+    - '!accounts_password_pam_lcredit'
+    - '!accounts_passwords_pam_faillock_deny'
+    - '!ensure_firewall_rules_for_open_ports'
+    - '!accounts_passwords_pam_faillock_unlock_time'
+    - '!accounts_password_pam_ucredit'
+    - '!accounts_password_pam_minlen'

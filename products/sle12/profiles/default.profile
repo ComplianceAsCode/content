@@ -1,0 +1,152 @@
+documentation_complete: true
+
+hidden: true
+
+title: Default Profile for SUSE Linux Enterprise 12
+
+description: |-
+    This profile contains all the rules that once belonged to the
+    sle12 product via 'prodtype'. This profile won't
+    be rendered into an XCCDF Profile entity, nor it will select any
+    of these rules by default. The only purpose of this profile
+    is to keep a rule in the product's XCCDF Benchmark.
+
+selections:
+    - accounts_user_dot_user_ownership
+    - service_timesyncd_enabled
+    - gnome_gdm_disable_xdmcp
+    - configure_user_data_backups
+    - dir_ownership_binary_dirs
+    - rsyslog_encrypt_offload_defaultnetstreamdriver
+    - sysctl_net_ipv6_conf_default_disable_ipv6
+    - kernel_module_vfat_disabled
+    - kernel_module_uvcvideo_disabled
+    - restrict_serial_port_logins
+    - auditd_local_events
+    - file_groupowner_var_log
+    - set_iptables_default_rule_forward
+    - set_ip6tables_default_rule
+    - account_use_centralized_automated_auth
+    - sudo_require_authentication
+    - sshd_rekey_limit
+    - sudo_vdsm_nopasswd
+    - ntpd_configure_restrictions
+    - fapolicyd_prevent_home_folder_access
+    - package_postfix_installed
+    - audit_privileged_commands_poweroff
+    - accounts_password_pam_unix_rounds_password_auth
+    - sudoers_no_root_target
+    - auditd_write_logs
+    - package_inetutils-telnetd_removed
+    - service_ntpd_enabled
+    - accounts_users_home_files_groupownership
+    - kernel_disable_entropy_contribution_for_solid_state_drives
+    - avahi_disable_publishing
+    - package_ntpdate_removed
+    - rsyslog_nolisten
+    - ntpd_specify_multiple_servers
+    - kernel_module_rds_disabled
+    - sudo_add_passwd_timeout
+    - audit_privileged_commands_shutdown
+    - file_groupownership_sshd_pub_key
+    - account_passwords_pam_faillock_dir
+    - directory_permissions_var_log_audit
+    - run_chkstat
+    - file_permissions_var_log
+    - service_timesyncd_configured
+    - file_ownership_sshd_private_key
+    - sshd_enable_warning_banner_net
+    - file_groupowner_var_log_syslog
+    - sysctl_kernel_exec_shield
+    - accounts_users_home_files_ownership
+    - grub2_systemd_debug-shell_argument_absent
+    - accounts_authorized_local_users
+    - service_netfs_disabled
+    - ftp_limit_users
+    - file_groupownership_sshd_private_key
+    - kernel_module_ipv6_option_disabled
+    - xwindows_runlevel_target
+    - file_groupownership_audit_configuration
+    - auditd_audispd_configure_remote_server
+    - rsyslog_accept_remote_messages_tcp
+    - auditd_data_disk_full_action_stig
+    - file_ownership_sshd_pub_key
+    - package_ntp_installed
+    - sshd_disable_gssapi_auth
+    - sshd_enable_gssapi_auth
+    - service_firewalld_enabled
+    - policy_temp_passwords_immediate_change
+    - sshd_set_loglevel_info
+    - mask_nonessential_services
+    - ftp_configure_firewall
+    - ntpd_run_as_ntp_user
+    - auditd_data_disk_error_action
+    - package_libreswan_installed
+    - auditd_overflow_action
+    - service_systemd-journald_enabled
+    - file_permissions_systemmap
+    - sshd_allow_only_protocol2
+    - kernel_config_ipv6
+    - file_permissions_home_dirs
+    - grub2_disable_recovery
+    - postfix_client_configure_mail_alias_postmaster
+    - file_permissions_var_log_messages
+    - package_telnetd_removed
+    - use_pam_wheel_for_su
+    - selinux_not_disabled
+    - package_nss-tools_installed
+    - file_ownership_home_directories
+    - no_rsh_trust_files
+    - accounts_user_dot_group_ownership
+    - sshd_enable_pubkey_auth
+    - accounts_users_own_home_directories
+    - postfix_client_configure_relayhost
+    - audit_privileged_commands_init
+    - iptables_sshd_disabled
+    - chronyd_server_directive
+    - service_postfix_enabled
+    - package_openssh-server_removed
+    - auditd_log_format
+    - service_syslogng_enabled
+    - account_passwords_pam_faillock_audit
+    - ntpd_specify_remote_server
+    - file_owner_var_log
+    - service_sshd_disabled
+    - sshd_disable_rhosts_rsa
+    - package_openssh_removed
+    - file_permissions_audit_configuration
+    - harden_ssh_client_crypto_policy
+    - dhcp_server_minimize_served_info
+    - no_all_squash_exports
+    - sshd_disable_kerb_auth
+    - service_ufw_enabled
+    - package_openssh-server_installed
+    - dir_permissions_binary_dirs
+    - file_groupowner_var_log_messages
+    - package_nis_removed
+    - accounts_password_pam_unix_rounds_system_auth
+    - sshd_disable_pubkey_auth
+    - package_gnutls-utils_installed
+    - package_firewalld_installed
+    - dhcp_client_restrict_options
+    - audit_privileged_commands_reboot
+    - auditd_freq
+    - kernel_module_tipc_disabled
+    - accounts_passwords_pam_faillock_audit
+    - rsyslog_encrypt_offload_actionsendstreamdrivermode
+    - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+    - package_syslogng_installed
+    - auditd_data_disk_error_action_stig
+    - rsyslog_accept_remote_messages_udp
+    - file_owner_var_log_messages
+    - file_permissions_var_log_syslog
+    - sshd_disable_root_password_login
+    - harden_sshd_crypto_policy
+    - file_ownership_audit_configuration
+    - package_telnetd-ssl_removed
+    - ftp_present_banner
+    - service_ntp_enabled
+    - service_chronyd_enabled
+    - package_openssh_installed
+    - file_owner_var_log_syslog
+    - service_ip6tables_enabled
