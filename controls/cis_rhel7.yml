@@ -622,7 +622,10 @@ controls:
     - l1_workstation
     status: automated
     rules:
-    - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=5_seconds
 
   - id: 1.7.5
     title: Ensure GDM screen locks cannot be overridden
