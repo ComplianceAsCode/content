@@ -7,7 +7,4 @@
 <xsl:variable name="product_stig_id_name">ALINUX_2_STIG</xsl:variable>
 <xsl:variable name="prod_type">alinux2</xsl:variable>
 
-<!-- Define URI of official Center for Internet Security Benchmark for Alibaba Cloud Linux 2 -->
-<xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/aliyun_linux</xsl:variable>
-
 </xsl:stylesheet>
