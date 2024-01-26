@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R13
+    version: V3R14
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R13.
+    DISA STIG for Red Hat Enterprise Linux V3R14.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -259,7 +259,6 @@ selections:
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
     - sssd_ldap_start_tls.severity=medium
-    - sssd_ldap_configure_tls_ca_dir
     - sssd_ldap_configure_tls_ca
     - sssd_ldap_configure_tls_reqcert
     - sysctl_kernel_randomize_va_space
