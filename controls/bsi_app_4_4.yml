@@ -82,17 +82,33 @@ controls:
     levels:
     - basic
     description: >-
-      The operating system kernel of nodes MUST have isolation mechanisms to restrict visibility
-      and resource usage among the corresponding pods (cf. Linux namespaces and cgroups). At
+      (1) The operating system kernel of nodes MUST have isolation mechanisms to restrict visibility
+      and resource usage among the corresponding pods (cf. Linux namespaces and cgroups). (2) At
       minimum, this isolation MUST include process IDs, inter-process communication, user IDs,
       the file system, and the network (including the hostname).
     notes: >-
-      Since these are OS based requirements, they are included in the rhcos4 bsi profile
-    status: pending
+      Since these are OS based requirements, they are included in the rhcos4 bsi profile.
+      One of the key mechanisms in OCP4 to separate Workloads is SELinux. Thus this should be
+      enforced. Furthermore a admin should check the SCCs as they might lift some of the separations
+      between workloads and/or hosts.
+    status: inherently met
     rules:
+      # Section 1
       - coreos_enable_selinux_kernel_argument
       - selinux_policytype
       - selinux_state
+      # Section 2
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
 
   - id: APP.4.4.A5
     title: Backup in the Cluster
