@@ -2269,17 +2269,22 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual
-    related_rules:
-    - service_rsyslog_enabled
+    status: automated
+    notes: |-
+      This requirement is expected to be manual in the policy because there are valid cases where
+      other solutions are used for logging. rsyslog is the default in RHEL 8 and so far other
+      solutions are not expected to be incompatible with rsyslog. If so, for these particular
+      cases, this rule should be removed for those systems by a tailored file.
+    rules:
+      - service_rsyslog_enabled
 
   - id: 5.1.1.3
     title: Ensure journald is configured to send logs to rsyslog (Manual)
     levels:
     - l1_server
     - l1_workstation
-    status: manual
-    related_rules:
+    status: automated
+    rules:
       - journald_forward_to_syslog
 
   - id: 5.1.1.4
