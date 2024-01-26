@@ -588,11 +588,11 @@ controls:
       - file_permissions_etc_issue_net
 
   - id: 1.7.1
-    title: Ensure GNOME Display Manager is removed (Manual)
+    title: Ensure GNOME Display Manager is removed (Automated)
     levels:
     - l2_server
-    status: manual
-    related_rules:
+    status: automated
+    rules:
       - package_gdm_removed
 
   - id: 1.7.2
@@ -622,7 +622,10 @@ controls:
     - l1_workstation
     status: automated
     rules:
-    - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_delay
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=5_seconds
 
   - id: 1.7.5
     title: Ensure GDM screen locks cannot be overridden
@@ -631,6 +634,7 @@ controls:
     - l1_workstation
     status: automated
     rules:
+      - dconf_gnome_session_idle_user_locks
       - dconf_gnome_screensaver_user_locks
 
   - id: 1.7.6
@@ -2265,17 +2269,22 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: manual
-    related_rules:
-    - service_rsyslog_enabled
+    status: automated
+    notes: |-
+      This requirement is expected to be manual in the policy because there are valid cases where
+      other solutions are used for logging. rsyslog is the default in RHEL 8 and so far other
+      solutions are not expected to be incompatible with rsyslog. If so, for these particular
+      cases, this rule should be removed for those systems by a tailored file.
+    rules:
+      - service_rsyslog_enabled
 
   - id: 5.1.1.3
     title: Ensure journald is configured to send logs to rsyslog (Manual)
     levels:
     - l1_server
     - l1_workstation
-    status: manual
-    related_rules:
+    status: automated
+    rules:
       - journald_forward_to_syslog
 
   - id: 5.1.1.4
@@ -2490,7 +2499,7 @@ controls:
     - auditd_data_retention_action_mail_acct
     - var_auditd_action_mail_acct=root
     - auditd_data_retention_admin_space_left_action
-    - var_auditd_admin_space_left_action=halt
+    - var_auditd_admin_space_left_action=cis_rhel7
 
   - id: 5.2.3.1
     title: Ensure changes to system administration scope (sudoers) is collected (Automated)

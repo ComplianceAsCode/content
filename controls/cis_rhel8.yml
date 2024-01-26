@@ -361,6 +361,7 @@ controls:
     status: automated
     rules:
       - ensure_gpgcheck_globally_activated
+      - ensure_gpgcheck_never_disabled
 
   - id: 1.2.3
     title: Ensure repo_gpgcheck is globally activated (Manual)
@@ -2376,8 +2377,8 @@ controls:
     rules:
       - auditd_data_disk_error_action
       - auditd_data_disk_full_action
-      - var_auditd_disk_error_action=single
-      - var_auditd_disk_full_action=single
+      - var_auditd_disk_error_action=cis_rhel8
+      - var_auditd_disk_full_action=cis_rhel8
 
   - id: 5.2.2.4
     title: Ensure system warns when audit logs are low on space (Automated)
@@ -2390,8 +2391,8 @@ controls:
       - auditd_data_retention_admin_space_left_action
       - auditd_data_retention_space_left_action
       - var_auditd_action_mail_acct=root
-      - var_auditd_admin_space_left_action=single
-      - var_auditd_space_left_action=email
+      - var_auditd_admin_space_left_action=cis_rhel8
+      - var_auditd_space_left_action=cis_rhel8
 
   - id: 5.2.3.1
     title: Ensure changes to system administration scope (sudoers) is collected (Automated)
