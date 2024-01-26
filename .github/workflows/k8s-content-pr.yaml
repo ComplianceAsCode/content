@@ -1,12 +1,10 @@
----
 name: Kubernetes content image for PR
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: [Kubernetes content image for PR Trigger]
     types:
-    - opened
-    - reopened
-    - synchronize
+      - completed
 
 jobs:
   get-pr-number:
@@ -15,40 +13,71 @@ jobs:
     outputs:
       pr-number: ${{ steps.get-pr-number.outputs.pr-number }}
     steps:
-      - name: Get PR number
-        id: get-pr-number
-        run: echo "::set-output name=pr-number::$(echo ${GITHUB_REF#refs/pull/} | cut -d'/' -f1)"
+      - name: 'Download artifacts'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr_number"
+            })[0];
+            let download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/pr_number.zip`, Buffer.from(download.data));
+      - name: 'Unzip artifact'
+        run: unzip pr_number.zip
+      - name: 'Read PR number'
+        run: |
+          echo "::set-output name=pr-number::$(cat pr/pr_number)"
 
   container-main:
-    needs: get-pr-number
+    needs: 
+      - get-pr-number
     permissions:
       contents: read
       id-token: write
       packages: write
-    uses: metal-toolbox/container-push/.github/workflows/container-push.yml@main
-    with:
-      name: k8scontent
-      tag: ${{ needs.get-pr-number.outputs.pr-number }}
-      latest: false
-      registry_org: complianceascode
-      dockerfile_path: ./Dockerfiles/ocp4_content
-      licenses: BSD
-      vendor: ComplianceAsCode authors
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ needs.get-pr-number.outputs.pr-number }}/head
+      - name: Build and push container image
+        uses: metal-toolbox/container-push/.github/workflows/container-push.yml@main
+        with:
+          name: k8scontent
+          tag: ${{ needs.get-pr-number.outputs.pr-number }}
+          latest: false
+          registry_org: complianceascode
+          dockerfile_path: ./Dockerfiles/ocp4_content
+          licenses: BSD
+          vendor: ComplianceAsCode authors
 
   comment-pr:
     needs: 
-    - container-main
-    - get-pr-number
+      - container-main
+      - get-pr-number
     runs-on: ubuntu-latest
     name: Comment on the PR
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
+      - uses: actions/github-script@v6
         with:
-          message: |
-            :robot: The image for this PR is available at:
-            `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`
-          comment_tag: kubernetes_content_image
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ needs.get-pr-number.outputs.pr-number }},
+              body: ':robot: The image for this PR is available at:
+            `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`'
+            });
