@@ -1047,31 +1047,13 @@ controls:
       - package_tftp_removed
 
   - id: 3.1.1
-    title: Verify if IPv6 is enabled on the system (Manual)
+    title: Ensure IPv6 status is identified (Manual)
     levels:
       - l1_server
       - l1_workstation
     status: manual
 
   - id: 3.1.2
-    title: Ensure SCTP is disabled (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - kernel_module_sctp_disabled
-
-  - id: 3.1.3
-    title: Ensure DCCP is disabled (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - kernel_module_dccp_disabled
-
-  - id: 3.1.4
     title: Ensure wireless interfaces are disabled (Automated)
     levels:
       - l1_server
@@ -1079,8 +1061,53 @@ controls:
     rules:
       - wireless_disable_interfaces
 
+  - id: 3.1.3
+    title: Ensure bluetooth services are not in use (Automated)
+    levels:
+      - l1_server
+      - l2_workstation
+    status: automated
+    rules:
+      - service_bluetooth_disabled
+
   - id: 3.2.1
-    title: Ensure IP forwarding is disabled (Automated)
+    title: Ensure dccp kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_dccp_disabled
+
+  - id: 3.2.2
+    title: Ensure tipc kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_tipc_disabled
+
+  - id: 3.2.3
+    title: Ensure rds kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_rds_disabled
+
+  - id: 3.2.4
+    title: Ensure sctp kernel module is not available (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - kernel_module_sctp_disabled
+
+  - id: 3.3.1
+    title: Ensure ip forwarding is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -1090,7 +1117,7 @@ controls:
       - sysctl_net_ipv6_conf_all_forwarding
       - sysctl_net_ipv6_conf_all_forwarding_value=disabled
 
-  - id: 3.2.2
+  - id: 3.3.2
     title: Ensure packet redirect sending is disabled (Automated)
     levels:
       - l1_server
@@ -1100,7 +1127,67 @@ controls:
       - sysctl_net_ipv4_conf_all_send_redirects
       - sysctl_net_ipv4_conf_default_send_redirects
 
-  - id: 3.3.1
+  - id: 3.3.3
+    title: Ensure bogus icmp responses are ignored (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+
+  - id: 3.3.4
+    title: Ensure broadcast icmp requests are ignored(Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+
+  - id: 3.3.5
+    title: Ensure icmp redirects are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+      - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+      - sysctl_net_ipv6_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+
+  - id: 3.3.6
+    title: Ensure secure icmp redirects are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+      - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+
+  - id: 3.3.7
+    title: Ensure reverse path filtering is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+      - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+
+  - id: 3.3.8
     title: Ensure source routed packets are not accepted (Automated)
     levels:
       - l1_server
@@ -1116,35 +1203,7 @@ controls:
       - sysctl_net_ipv6_conf_default_accept_source_route
       - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
 
-  - id: 3.3.2
-    title: Ensure ICMP redirects are not accepted (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sysctl_net_ipv4_conf_all_accept_redirects
-      - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
-      - sysctl_net_ipv4_conf_default_accept_redirects
-      - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
-      - sysctl_net_ipv6_conf_all_accept_redirects
-      - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
-      - sysctl_net_ipv6_conf_default_accept_redirects
-      - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
-
-  - id: 3.3.3
-    title: Ensure secure ICMP redirects are not accepted (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sysctl_net_ipv4_conf_all_secure_redirects
-      - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
-      - sysctl_net_ipv4_conf_default_secure_redirects
-      - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
-
-  - id: 3.3.4
+  - id: 3.3.9
     title: Ensure suspicious packets are logged (Automated)
     levels:
       - l1_server
@@ -1156,40 +1215,8 @@ controls:
       - sysctl_net_ipv4_conf_default_log_martians
       - sysctl_net_ipv4_conf_default_log_martians_value=enabled
 
-  - id: 3.3.5
-    title: Ensure broadcast ICMP requests are ignored (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
-
-  - id: 3.3.6
-    title: Ensure bogus ICMP responses are ignored (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
-
-  - id: 3.3.7
-    title: Ensure Reverse Path Filtering is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sysctl_net_ipv4_conf_all_rp_filter
-      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
-      - sysctl_net_ipv4_conf_default_rp_filter
-      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
-
-  - id: 3.3.8
-    title: Ensure TCP SYN Cookies is enabled (Automated)
+  - id: 3.3.10
+    title: Ensure tcp sync cookies is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -1198,7 +1225,7 @@ controls:
       - sysctl_net_ipv4_tcp_syncookies
       - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
-  - id: 3.3.9
+  - id: 3.3.11
     title: Ensure IPv6 router advertisements are not accepted (Automated)
     levels:
       - l1_server
@@ -1211,69 +1238,6 @@ controls:
       - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
 
   - id: 3.4.1.1
-    title: Ensure firewalld is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_firewalld_installed
-
-  - id: 3.4.1.2
-    title: Ensure iptables-services not installed with firewalld (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_iptables-services_removed
-
-  - id: 3.4.1.3
-    title: Ensure nftables is not enabled with firewalld (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_nftables_disabled
-
-  - id: 3.4.1.4
-    title: Ensure firewalld service is enabled and running (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_firewalld_enabled
-
-  - id: 3.4.1.5
-    title: Ensure firewalld default zone is set (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - set_firewalld_default_zone
-
-  - id: 3.4.1.6
-    title: Ensure network interfaces are assigned to appropriate zone (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    rules:
-      - set_firewalld_appropriate_zone
-    related_rules:
-      - firewalld_sshd_port_enabled
-
-  - id: 3.4.1.7
-    title: Ensure firewalld drops unnecessary services and ports (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 3.4.2.1
     title: Ensure nftables is installed (Automated)
     levels:
       - l1_server
@@ -1282,49 +1246,18 @@ controls:
     rules:
       - package_nftables_installed
 
-  # NEEDS RULE
-  - id: 3.4.2.2
-    title: Ensure firewalld is either not installed or masked with nftables (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  - id: 3.4.2.3
-    title: Ensure iptables-services not installed with nftables (Automated)
+  - id: 3.4.1.2
+    title: Ensure a single firewall configuration utility is in use (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
-    notes: <-
-      Already covered by requirement 3.4.1.2.
-    related_rules:
-      - package_iptables-services_removed
-
-  - id: 3.4.2.4
-    title: Ensure iptables are flushed with nftables (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 3.4.2.5
-    title: Ensure an nftables table exists (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: supported
-    notes:
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use. firewalld uses the inet firewalld that is created when firewalld is installed.
-      The OVAL check cannot be automated but an SCE is availble.
     rules:
-      - set_nftables_table
-      - var_nftables_family=inet
-      - var_nftables_table=firewalld
+      - service_firewalld_enabled
+      - package_firewalld_installed
+      - service_nftables_disabled
 
-  - id: 3.4.2.6
+  - id: 3.4.2.1
     title: Ensure nftables base chains exist (Automated)
     levels:
       - l1_server
@@ -1344,23 +1277,37 @@ controls:
       - var_nftables_base_chain_priorities=chain_priorities
       - var_nftables_base_chain_policies=chain_policies
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5246
-  - id: 3.4.2.7
-    title: Ensure nftables loopback traffic is configured (Automated)
+  - id: 3.4.2.2
+    title: Ensure host based firewall loopback traffic is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
+    status: automated
+    rules:
+      - firewalld_loopback_traffic_trusted
+      - firewalld_loopback_traffic_restricted
 
-  - id: 3.4.2.8
-    title: Ensure nftables outbound and established connections are configured (Manual)
+  - id: 3.4.2.3
+    title: Ensure firewalld drops unnecessary services and ports (Manual)
     levels:
       - l1_server
       - l1_workstation
     status: manual
 
-  - id: 3.4.2.9
+  - id: 3.4.2.4
+    title: Ensure nftables established connections are configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use. When using firewalld the base chains are installed by default.
+    related_rules:
+    - set_nftables_new_connections
+
+  - id: 3.4.2.5
     title: Ensure nftables default deny firewall policy (Automated)
     levels:
       - l1_server
@@ -1372,163 +1319,6 @@ controls:
       is in use.
     related_rules:
       - nftables_ensure_default_deny_policy
-
-  - id: 3.4.2.10
-    title: Ensure nftables service is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    notes: |-
-      nftables is actually the backend for firewalld but its service does not need to be running.
-      Otherwise, it will conflict with firewalld service. The preferred service to manage firewall
-      rules is firewalld.
-    status: automated
-    related_rules:
-      - service_nftables_enabled
-
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5250
-  - id: 3.4.2.11
-    title: Ensure nftables rules are permanent (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  - id: 3.4.3.1.1
-    title: Ensure iptables packages are installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    related_rules:
-      - package_iptables_installed
-      - package_iptables-services_installed
-
-  # NEEDS RULE
-  - id: 3.4.3.1.2
-    title: Ensure nftables is not installed with iptables (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  # NEEDS RULE
-  - id: 3.4.3.1.3
-    title: Ensure firewalld is either not installed or masked with iptables (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5253
-  - id: 3.4.3.2.1
-    title: Ensure iptables loopback traffic is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  - id: 3.4.3.2.2
-    title: Ensure iptables outbound and established connections are configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 3.4.3.2.3
-    title: Ensure iptables rules exist for all open ports (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: partial
-    notes: |-
-      Currently the check is only available in SCE and an automated remediation is not expected.
-    rules:
-      - iptables_rules_for_open_ports
-
-  - id: 3.4.3.2.4
-    title: Ensure iptables default deny firewall policy (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    related_rules:
-      - set_iptables_default_rule
-
-  # NEEDS RULE
-  - id: 3.4.3.2.5
-    title: Ensure iptables rules are saved (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  - id: 3.4.3.2.6
-    title: Ensure iptables is enabled and active (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    related_rules:
-      - service_iptables_enabled
-
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5258
-  - id: 3.4.3.3.1
-    title: Ensure ip6tables loopback traffic is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  - id: 3.4.3.3.2
-    title: Ensure ip6tables outbound and established connections are configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 3.4.3.3.3
-    title: Ensure ip6tables firewall rules exist for all open ports (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: partial
-    notes: |-
-      Currently the check is only available in SCE and an automated remediation is not expected.
-    rules:
-      - ip6tables_rules_for_open_ports
-
-  - id: 3.4.3.3.4
-    title: Ensure ip6tables default deny firewall policy (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - set_ip6tables_default_rule
-
-  # NEEDS RULE
-  - id: 3.4.3.3.5
-    title: Ensure ip6tables rules are saved (Automated
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-
-  # NEEDS RULE
-  - id: 3.4.3.3.6
-    title: Ensure ip6tables is enabled and active (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: pending
-    related_rules:
-      - service_ip6tables_enabled
-      # This rule returns error in RHEL8 because the ip6tables service is not there.
-      # This requirement and respective rules should be reviewed.
 
   - id: 4.1.1.1
     title: Ensure cron daemon is enabled and active (Automated)
