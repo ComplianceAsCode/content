@@ -26,3 +26,13 @@ selections:
   # karg is not suitable for people who still run legacy 32bit apps.
   - coreos_vsyscall_kernel_argument.role=unscored
   - coreos_vsyscall_kernel_argument.severity=info
+  # Following rules once had a prodtype incompatible with the rhcos4 product
+  - '!audit_rules_suid_privilege_function'
+  - '!audit_rules_sudoers'
+  - '!audit_rules_privileged_commands_kmod'
+  - '!audit_rules_sudoers_d'
+  - '!audit_rules_execution_setfacl'
+  - '!audit_rules_privileged_commands_usermod'
+  - '!audit_rules_privileged_commands_unix_update'
+  - '!audit_rules_execution_chacl'
+  - '!audit_rules_privileged_commands_ssh_agent'

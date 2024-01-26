@@ -21,3 +21,8 @@ description: |-
 
 selections:
     - cis_rhel7:all:l2_workstation
+    # Following rules once had a prodtype incompatible with the rhel7 product
+    - '!file_groupowner_at_allow'
+    - '!audit_rules_execution_setfacl'
+    - '!file_permissions_at_allow'
+    - '!file_owner_at_allow'

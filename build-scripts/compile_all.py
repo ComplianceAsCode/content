@@ -125,10 +125,22 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
+    project_root_abspath = os.path.abspath(args.project_root)
+
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
     product_yaml = ssg.products.Product(args.product_yaml)
+
     product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(env_yaml)
+
+    # Rules in the same benchmark_root might have a product CPE set as
+    # a platform and could be shared between all the products.
+    # TODO: This is a hackish feature of 'ocp4' and 'eks' products
+    #       we should fix that as it brings implicit dependency between
+    #       products with shared guide directory
+    for extra_product_yaml in ssg.products.get_all_products_with_same_guide_directory(
+                                           project_root_abspath, product_yaml):
+        product_cpes.load_cpes_from_list(extra_product_yaml.get("cpes", []))
     product_cpes.load_content_cpes(env_yaml)
 
     loader = ssg.build_yaml.BuildLoader(
@@ -136,7 +148,6 @@ def main():
     loader.load_components()
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
-    project_root_abspath = os.path.abspath(args.project_root)
     controls_dir = os.path.join(project_root_abspath, "controls")
 
     existing_rules = find_existing_rules(project_root_abspath)

@@ -21,3 +21,5 @@ description: |-
 
 selections:
     - cis_alinux3:all:l2
+    # Following rules once had a prodtype incompatible with the alinux3 product
+    - '!banner_etc_issue_net'

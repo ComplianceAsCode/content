@@ -673,17 +673,6 @@ $ python3 utils/compare_versions.py compare_tags v0.1.67 v0.1.68 rhel9
 
 It will internally clone the upstream project, checkout these tags, generate ComplianceAsCode JSON manifests, compare them and print the output.
 
-`utils/no_new_global_applicable_rules.py` - Ensure That New Rules Have a `prodtype` Key
-
-This script checks the rules in `utils/rule_dir_json.py` (created by `utils/rule_dir_json.py`) and checks if rules not on the allow list have prodtypes.
-Rules that have no `prodtype` and are not on the allow list in `tests/data/utils/no_new_global_applicable_rules.json` will cause the script to return an error.
-This script is ran as part of the `ctest` run.
-
-To run the test (assuming that the content is built)
-```
-$ cd build
-$ ctest --output-on-failure -R test-no-new-global-applicable-rules
-```
 
 ### `utils/oscal/build_cd_from_policy.py` &ndash; Build a Component Definition from a Policy
 

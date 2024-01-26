@@ -41,23 +41,33 @@ class ProductCPEs(object):
         self.cpe_oval_href = "ssg-" + env_yaml["product"] + "-cpe-oval.xml"
         try:
             product_cpes_list = env_yaml["cpes"]
-            for cpe_dict_repr in product_cpes_list:
-                for cpe_id, cpe in cpe_dict_repr.items():
-                    # these product CPEs defined in product.yml are defined
-                    # differently than CPEs in shared/applicability/*.yml
-                    # therefore we have to place the ID at the place where it is expected
-                    cpe["id_"] = cpe_id
-                    cpe_item = CPEItem.get_instance_from_full_dict(cpe)
-                    cpe_item.is_product_cpe = True
-                    self.add_cpe_item(cpe_item)
+            self.load_product_cpes_from_list(product_cpes_list)
         except KeyError as exc:
-            raise exc("Product %s does not define 'cpes'" % (env_yaml["product"]))
+            raise Exception("Product %s does not define 'cpes'" % (env_yaml["product"]))
+
+    def load_product_cpes_from_list(self, product_cpes_list):
+        for cpe_dict_repr in product_cpes_list:
+            for cpe_id, cpe in cpe_dict_repr.items():
+                # these product CPEs defined in product.yml are defined
+                # differently than CPEs in shared/applicability/*.yml
+                # therefore we have to place the ID at the place where it is expected
+                cpe["id_"] = cpe_id
+                cpe_item = CPEItem.get_instance_from_full_dict(cpe)
+                cpe_item.is_product_cpe = True
+                self.add_cpe_item(cpe_item)
 
     def load_content_cpes(self, env_yaml):
         cpes_root = required_key(env_yaml, "cpes_root")
         if not os.path.isabs(cpes_root):
             cpes_root = os.path.join(env_yaml["product_dir"], cpes_root)
         self.load_cpes_from_directory_tree(cpes_root, env_yaml)
+
+    def load_cpes_from_list(self, cpes_list):
+        for cpe_dict_repr in cpes_list:
+            for cpe_id, cpe in cpe_dict_repr.items():
+                cpe["id_"] = cpe_id
+                cpe_item = CPEItem.get_instance_from_full_dict(cpe)
+                self.add_cpe_item(cpe_item)
 
     def load_cpes_from_directory_tree(self, root_path, env_yaml):
         for dir_item in sorted(os.listdir(root_path)):
