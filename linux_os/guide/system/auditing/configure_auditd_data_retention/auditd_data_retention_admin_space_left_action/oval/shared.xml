@@ -22,8 +22,16 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_auditd_data_retention_admin_space_left_action" version="1">
-    <ind:subexpression operation="case insensitive equals" var_ref="var_auditd_admin_space_left_action" />
+    <ind:subexpression operation="pattern match" var_ref="var_auditd_admin_space_left_action_regex" />
   </ind:textfilecontent54_state>
+
+  <local_variable datatype="string" id="var_auditd_admin_space_left_action_regex" version="1"
+  comment="Build regex to be case insensitive">
+    <concat>
+      <literal_component>(?i)</literal_component>
+      <variable_component var_ref="var_auditd_admin_space_left_action"/>
+    </concat>
+  </local_variable>
 
   <external_variable comment="audit admin_space_left_action setting" datatype="string" id="var_auditd_admin_space_left_action" version="1" />
 
