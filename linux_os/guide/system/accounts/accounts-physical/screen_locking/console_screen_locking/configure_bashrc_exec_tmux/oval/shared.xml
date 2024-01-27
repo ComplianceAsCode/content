@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="configure_bashrc_exec_tmux" version="1">
     {{{ oval_metadata("Check if tmux is configured to exec at the end of bashrc.") }}}
-    <criteria comment="Check exec tmux configured at the end of bashrc" operator="AND">
+    <criteria comment="Check tmux configured at the end of bashrc" operator="AND">
       <criterion comment="check tmux is configured to exec on the last line of /etc/bashrc"
         test_ref="test_configure_bashrc_exec_tmux" />
     </criteria>
@@ -14,7 +14,7 @@
   <ind:textfilecontent54_object id="obj_configure_bashrc_exec_tmux" version="1">
     <ind:behaviors singleline="true" multiline="false" />
     <ind:filepath operation="pattern match">^/etc/bashrc$|^/etc/profile\.d/.*$</ind:filepath>
-    <ind:pattern operation="pattern match">if \[ "\$PS1" \]; then\n\s+parent=\$\(ps -o ppid= -p \$\$\)\n\s+name=\$\(ps -o comm= -p \$parent\)\n\s+case "\$name" in sshd\|login\) exec tmux ;; esac\nfi</ind:pattern>
+    <ind:pattern operation="pattern match">if \[ "\$PS1" \]; then\n\s+parent=\$\(ps -o ppid= -p \$\$\)\n\s+name=\$\(ps -o comm= -p \$parent\)\n\s+case "\$name" in sshd\|login\) tmux ;; esac\nfi</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

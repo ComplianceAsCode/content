@@ -10,8 +10,7 @@ from .constants import (
 )
 from . import utils
 from .xml import parse_file, map_elements_to_their_ids
-from .oval_object_model import load_oval_document
-
+from .oval_object_model import load_oval_document, OVALDefinitionReference
 
 from .checks import get_content_ref_if_exists_and_not_remote
 from .cce import is_cce_value_valid, is_cce_format_valid
@@ -192,6 +191,7 @@ class OVALFileLinker(FileLinker):
         # Verify all by XCCDF referenced (local) OVAL checks are defined in OVAL file
         # If not drop the <check-content> OVAL checksystem reference from XCCDF
         self._ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file()
+        self._ensure_by_xccdf_referenced_oval_no_extra_def_in_oval_file()
 
         check_and_correct_xccdf_to_oval_data_export_matching_constraints(
             self.xccdftree, self.oval_document
@@ -268,6 +268,21 @@ class OVALFileLinker(FileLinker):
                 # * OVAL definition is referenced from XCCDF file,
                 # * But not defined in OVAL file
                 rule.remove(check)
+
+    def _ensure_by_xccdf_referenced_oval_no_extra_def_in_oval_file(self):
+        # Remove all OVAL checks that are not referenced by XCCDF Rules (checks)
+        # or internally via extend-definition
+
+        xccdf_oval_check_refs = [name for name in self._get_list_of_names_of_oval_checks()]
+        document_def_keys = list(self.oval_document.definitions.keys())
+
+        references_from_xccdf_to_keep = OVALDefinitionReference()
+        for def_id in document_def_keys:
+            if def_id in xccdf_oval_check_refs:
+                oval_def_refs = self.oval_document.get_all_references_of_definition(def_id)
+                references_from_xccdf_to_keep += oval_def_refs
+
+        self.oval_document.keep_referenced_components(references_from_xccdf_to_keep)
 
 
 class OCILFileLinker(FileLinker):

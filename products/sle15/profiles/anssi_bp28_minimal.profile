@@ -29,3 +29,16 @@ selections:
   - '!accounts_password_pam_unix_rounds_system_auth'
   - '!accounts_password_pam_unix_rounds_password_auth'
   -  set_password_hashing_min_rounds_logindefs
+  # Following rules once had a prodtype incompatible with the sle15 product
+  - '!accounts_password_pam_dcredit'
+  - '!accounts_passwords_pam_faillock_deny_root'
+  - '!accounts_password_pam_ocredit'
+  - '!accounts_password_pam_lcredit'
+  - '!ensure_redhat_gpgkey_installed'
+  - '!accounts_passwords_pam_faillock_deny'
+  - '!accounts_passwords_pam_faillock_unlock_time'
+  - '!accounts_passwords_pam_faillock_interval'
+  - '!accounts_password_pam_ucredit'
+  - '!accounts_password_pam_minlen'
+  - '!ensure_oracle_gpgkey_installed'
+  - '!enable_authselect'

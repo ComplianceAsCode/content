@@ -105,7 +105,6 @@ endmacro()
 
 mypy_test("utils/import_srg_spreadsheet.py" "normal")
 mypy_test("utils/check_eof.py" "normal")
-mypy_test("utils/no_new_global_applicable_rules.py" "normal")
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -338,13 +337,4 @@ add_test(
     NAME "components"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
 )
-endif()
-
-if(PYTHON_VERSION_MAJOR GREATER 2)
-    add_test(
-        NAME "test-no-new-global-applicable-rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/no_new_global_applicable_rules.py" --root "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
-    )
-    set_tests_properties("test-no-new-global-applicable-rules" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
-    set_tests_properties("test-no-new-global-applicable-rules" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()

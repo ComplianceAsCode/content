@@ -215,6 +215,23 @@ def get_all(ssg_root):
     return products(linux_products, other_products)
 
 
+def get_all_product_yamls(ssg_root):
+    for product in product_directories:
+        path = product_yaml_path(ssg_root, product)
+        product_yaml = load_product_yaml(path)
+        yield product, product_yaml
+
+
+def get_all_products_with_same_guide_directory(ssg_root, product_yaml):
+    for extra_product_id, extra_product_yaml in get_all_product_yamls(ssg_root):
+        guide_dir = os.path.join(product_yaml["product_dir"], product_yaml['benchmark_root'])
+        extra_guide_dir = os.path.join(extra_product_yaml["product_dir"],
+                                       extra_product_yaml['benchmark_root'])
+        if os.path.abspath(guide_dir) == os.path.abspath(extra_guide_dir):
+            if extra_product_id != product_yaml["product"]:
+                yield extra_product_yaml
+
+
 def get_profiles_directory(env_yaml):
     profiles_root = None
     if env_yaml:

@@ -15,3 +15,9 @@ description: |-
 selections:
   - srg_gpos:all
   - var_accounts_authorized_local_users_regex=ol8
+  # Following rules once had a prodtype incompatible with the ol9 product
+  - '!package_subscription-manager_installed'
+  - '!file_owner_cron_deny'
+  - '!package_s-nail_installed'
+  - '!networkmanager_dns_mode'
+  - '!file_groupowner_cron_deny'

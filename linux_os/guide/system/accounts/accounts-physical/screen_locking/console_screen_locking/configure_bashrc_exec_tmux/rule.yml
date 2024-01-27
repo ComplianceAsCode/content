@@ -1,6 +1,5 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Support session locking with tmux'
 
@@ -40,7 +39,7 @@ ocil: |-
 
     <pre>$ sudo grep tmux /etc/bashrc /etc/profile.d/*
 
-    /etc/profile.d/tmux.sh:  case "$name" in (sshd|login) exec tmux ;; esac</pre>
+    /etc/profile.d/tmux.sh:  case "$name" in (sshd|login) tmux ;; esac</pre>
 
     Review the tmux script by using the following example:
 
@@ -49,7 +48,7 @@ ocil: |-
     if [ "$PS1" ]; then
     parent=$(ps -o ppid= -p $$)
     name=$(ps -o comm= -p $parent)
-    case "$name" in (sshd|login) exec tmux ;; esac
+    case "$name" in (sshd|login) tmux ;; esac
     fi</pre>
 
     If the shell file is not configured as the example above, is commented out, or is missing, this is a finding.
@@ -64,7 +63,7 @@ fixtext: |-
     if [ "$PS1" ]; then
         parent=$(ps -o ppid= -p $$)
         name=$(ps -o comm= -p $parent)
-        case "$name" in sshd|login) exec tmux ;; esac
+        case "$name" in sshd|login) tmux ;; esac
     fi
 
     Then, ensure a correct mode of /etc/profile.d/tmux.sh using this command:

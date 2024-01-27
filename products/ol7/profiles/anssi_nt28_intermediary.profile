@@ -13,3 +13,26 @@ description: |-
 
 selections:
     - anssi:all:intermediary
+    # Following rules once had a prodtype incompatible with the ol7 product
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!sysctl_kernel_unprivileged_bpf_disabled'
+    - '!ensure_redhat_gpgkey_installed'
+    - '!package_dnf-automatic_installed'
+    - '!grub2_mds_argument'
+    - '!dnf-automatic_security_updates_only'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!sysctl_fs_protected_regular'
+    - '!dnf-automatic_apply_updates'
+    - '!cracklib_accounts_password_pam_ocredit'
+    - '!sysctl_net_ipv4_conf_all_drop_gratuitous_arp'
+    - '!timer_dnf-automatic_enabled'
+    - '!accounts_passwords_pam_tally2'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    - '!enable_authselect'
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!sysctl_fs_protected_fifos'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!grub2_page_alloc_shuffle_argument'
+    - '!sysctl_net_core_bpf_jit_harden'
+    - '!grub2_pti_argument'
