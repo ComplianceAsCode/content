@@ -3,6 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- name: "{{{ rule_title }}} - Gather List of Packages"
+  tags:
+  - aide_check_audit_tools
+  ansible.builtin.package_facts:
+    manager: auto
+
 
 - name: Ensure aide is installed
   package:
