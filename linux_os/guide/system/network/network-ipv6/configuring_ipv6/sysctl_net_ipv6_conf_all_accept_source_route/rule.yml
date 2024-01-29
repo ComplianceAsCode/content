@@ -70,3 +70,6 @@ template:
     vars:
         sysctlvar: net.ipv6.conf.all.accept_source_route
         datatype: int
+{{% if "openeuler" in product %}}
+        missing_parameter_pass: 'true'
+{{% endif %}}

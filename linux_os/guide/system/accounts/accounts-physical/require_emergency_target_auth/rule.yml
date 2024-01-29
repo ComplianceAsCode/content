@@ -83,7 +83,7 @@ fixtext: |-
     Configure {{{ full_name }}} to require authentication for system emergency mode.
 
     Add or edit the following line in "/usr/lib/systemd/system/emergency.service":
-    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"

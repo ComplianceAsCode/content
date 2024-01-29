@@ -52,6 +52,7 @@ product_directories = [
     'ocp4',
     'rhcos4',
     'ol7', 'ol8', 'ol9',
+    'openeuler2203',
     'opensuse',
     'openembedded',
     'rhel7', 'rhel8', 'rhel9',
@@ -212,6 +213,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
     "Oracle Linux 9": "ol9",
+    "openEuler 2203": "openeuler2203",
     "openSUSE": "opensuse",
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
@@ -275,6 +277,7 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
+                       "openeuler",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "uos", "anolis", "openembedded"]
 
@@ -285,6 +288,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
+    "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
     "multi_platform_ocp": ["ocp4"],
@@ -457,6 +461,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
+    'openeuler': 'openEuler',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'example': 'Example',

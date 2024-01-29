@@ -36,7 +36,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_emergency_service" version="1">
     <ind:filepath>/usr/lib/systemd/system/emergency.service</ind:filepath>
-    {{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
+    {{%- if product in ["fedora", "ol8", "ol9", "openeuler2203", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/usr/lib/systemd/systemd-sulogin-shell[\s]+emergency</ind:pattern>
     {{%- else -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>
