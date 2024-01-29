@@ -35,7 +35,8 @@ def create_ini_file_template(creds_file):
         with open(new_creds_file, mode='w', encoding='utf-8') as file:
             file.write(
                 '[DEFAULT]\n'
-                'github_token = <generate your token in https://github.com/settings/tokens>\n')
+                'github_token = <generate your token in https://github.com/settings/tokens>\n'
+                '# Include these scopes: "repo:status", "repo_deployment" and "public_repo"')
         print(f'Great! {new_creds_file} was created! Edit it to include your personal token.')
     except Exception as e:
         print(f'Error: {e}')

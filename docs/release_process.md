@@ -9,6 +9,12 @@ While any task can be performed manually, it is highly recommended to use the `r
 The script interacts with the GitHub API, so an [API token](https://github.com/settings/tokens) is required for most tasks.
 Instructions for generating a GitHub API token can be found directly in the [GitHub documentation](https://docs.github.com/), but some hints are also provided by the script.
 
+In short, these are the minimal scopes to enable in the API Token (classic):
+- repo
+  - repo:status
+  - repo_deployment
+  - public_repo
+
 The `release_helper.py` script can also be used to check the current status of the project regarding releases:
 
 ```bash
