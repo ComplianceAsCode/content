@@ -69,22 +69,31 @@ controls:
     levels:
     - basic
     description: >-
-      Kubernetes and all other control plane applications MUST authenticate and authorise each
+      (1) Kubernetes and all other control plane applications MUST authenticate and authorise each
       action taken by a user or, in automated mode, corresponding software. This applies whether
       the actions are taken via a client, a web interface, or a corresponding API. Administrative
       actions MUST NOT be performed anonymously.
-      Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
+      (2) Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
       rights MUST be granted in a very restrictive manner.
-      Only a small group of people SHOULD be authorised to define automation processes. Only
+      (3) Only a small group of people SHOULD be authorised to define automation processes. Only
       selected administrators SHOULD be given the right to create or change shares for persistent
       volumes in Kubernetes.
     notes: >-
-      TBD
-    status: pending
+      Section 1: In the default configuration, OpenShift restricts the use of the web console and APIs only to authenticated and authorized users.|
+      Connection to external directory services (LDAP, OIDC and others) is possible.
+      Section 2: OpenShift already offers roles for a least privilege concept. The RBAC roles can be adapted or supplemented with new roles.
+      The preconfigured roles enable easy authorization assignment according to the least-privilege and need-to-know principles.
+      User actions can be tracked via the audit log.
+      Section 3: In the default configuration, persistent storage can only be integrated by cluster administrators.
+      For dynamically provisioned storage, the corresponding provisioners have the necessary authorizations.
+      These provisioners must be set up and configured by an admin. Storage requirements are controlled and restricted using quota mechanisms.
+    status: partial
     rules:
+      # Section 1
       - api_server_anonymous_auth
       - kubelet_anonymous_auth
       - kubeadmin_removed
+      # Section 2 + 3
       - rbac_least_privilege
 
   - id: APP.4.4.A4
