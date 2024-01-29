@@ -232,6 +232,15 @@ def add_product_to_fips_certified(root, product="fedora"):
         criteria.append(e)
 
 
+def remove_fips_certified(root):
+    def_id = "oval:ssg-installed_OS_is_FIPS_certified:def:1"
+    parent_query = ".//oval-def:extend_definition[@definition_ref='{0}']/..".format(def_id)
+    child_query = "oval-def:extend_definition[@definition_ref='{0}']".format(def_id)
+    for parent in root.findall(parent_query, PREFIX_TO_NS):
+        for child in parent.findall(child_query, PREFIX_TO_NS):
+            parent.remove(child)
+
+
 def _get_benchmark_node(datastream, benchmark_id, logging):
     root = ET.parse(datastream).getroot()
     benchmark_node = root.find(

@@ -84,6 +84,11 @@ def parse_args():
             help="Add installed_OS_is_$product extend_definition to the "
             "installed_OS_is_FIPS_certified OVAL criteria definition.")
     common_parser.add_argument(
+        "--remove-fips-certified",
+        action="store_true",
+        help="Remove dependencies on rule installed_OS_is_FIPS_certified from "
+        "all OVAL definitions that depend on it.")
+    common_parser.add_argument(
             "--remove-platforms",
             default=False,
             action="store_true",
@@ -511,6 +516,8 @@ def main():
             if options.add_product_to_fips_certified:
                 xml_operations.add_product_to_fips_certified(
                     root, options.add_product_to_fips_certified)
+            if options.remove_fips_certified:
+                xml_operations.remove_fips_certified(root)
 
         options.func(options)
 
