@@ -363,6 +363,13 @@ def get_date_for_message(date) -> datetime:
     return date.strftime("%B %d, %Y")
 
 
+def get_git_config_username() -> str:
+    user_name = subprocess.run(
+        ['git', 'config', 'user.name'],
+        capture_output=True, text=True, cwd=get_repo_root_path())
+    return user_name.stdout
+
+
 def get_release_highlights(release) -> str:
     highlights = []
     for line in release.body.split('\r\n'):
@@ -388,6 +395,8 @@ def get_release_start_message(repo) -> str:
     future_stabilization_date = get_next_stabilization_date(future_release_date)
     future_date_stabilization = get_date_for_message(future_stabilization_date)
 
+    message_author = get_git_config_username()
+
     template = f'''
         Subject: stabilization of v{next_release_version}
 
@@ -404,7 +413,9 @@ def get_release_start_message(repo) -> str:
         The next version, {future_version}, is scheduled to be released on {future_date},
         with the stabilization phase starting on {future_date_stabilization}.
 
-        Regards,'''
+        Regards,
+
+        {message_author}'''
     return template
 
 
@@ -415,6 +426,7 @@ def get_release_end_message(repo) -> str:
     last_commit = get_contributors_last_commit()
     new_contributors = get_new_contributors(last_commit)
     released_version = get_latest_version(repo)
+    message_author = get_git_config_username()
 
     for asset in latest_release.get_assets():
         if asset.content_type == 'application/x-bzip2':
@@ -454,7 +466,9 @@ SHA-512 hash: {source_tarball_hash}
 
 Thank you to everyone who contributed!
 
-Regards,'''
+Regards,
+
+{message_author}'''
     return template
 
 

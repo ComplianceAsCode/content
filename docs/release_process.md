@@ -42,8 +42,6 @@ This script was created targeting automation of boring tasks and reduction of hu
 
 There is still space for improvement and any contribution is welcome. Here are some ideas to start contributing:
 * Include an option to automate the process of updating the **stable** branch
-* Improve the messages to include the name of maintainer
-  * Thanks [Matthew](https://github.com/ComplianceAsCode/content/pull/10076#discussion_r1165956665) for this idea.
 * Introduce a checklist of steps during the release
   * Something similar to **stats** but related to the steps in process.
   * Some steps depend on other steps and may be concluded after some days. It would be great to know precisely in which step of the process we are.
