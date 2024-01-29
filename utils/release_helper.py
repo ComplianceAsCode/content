@@ -334,8 +334,8 @@ def get_next_stabilization_date(release_date) -> datetime:
 
 
 def get_next_release_date(latest_release_date) -> datetime:
-    two_months_ahead = latest_release_date + timedelta(days=60)
-    return get_friday_that_follows(two_months_ahead)
+    three_months_ahead = latest_release_date + timedelta(days=90)
+    return get_friday_that_follows(three_months_ahead)
 
 
 def is_next_release_in_progress(repo) -> bool:
