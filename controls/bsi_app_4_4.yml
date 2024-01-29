@@ -45,13 +45,23 @@ controls:
     levels:
     - basic
     description: >-
-      Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
-      after appropriate planning. The planning MUST cover the entire lifecycle from commissioning
-      to decommissioning, including development, testing, operation, monitoring, and updates. A
+      (1) Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
+      after appropriate planning. (2) The planning MUST cover the entire lifecycle from commissioning
+      to decommissioning, including development, testing, operation, monitoring, and updates. (3) A
       roles and rights concept and the securing of Kubernetes Secrets MUST be part of the planning
     notes: >-
-      TBD
-    status: pending
+      Since this requirement is a plan only, we cannot test this with compliance checks.
+      Section 1: This requirement must be implemented organizationally.
+      The documentation at https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html
+      provides information on the planning
+      Section 2: The protective measure is primarily of an organizational nature. OpenShift fully supports them.
+      With the integrated CI/CD technologies Jenkins, Tekton and OpenShift GitOps, OpenShift already offers preconfigured solutions
+      for automated CI/CD pipelines. Of course, other technologies such as Gitlab CI and GitHub Actions can also be integrated.
+      Section 3: Kubernetes secrets are secured by a Role Based Access Control (RBAC) system.
+      Depending on the protection requirement, Kubernetes secrets can be secured via an (encrypted) etcd metadata store or
+      additionally via an integration of Vault components or "sealed secrets" for CD and GitOps mechanisms.
+      Secrets and roles can also be managed centrally using ACM and rolled out consistently to the managed clusters using policies.
+    status: documentation
     rules: []
 
   - id: APP.4.4.A3
