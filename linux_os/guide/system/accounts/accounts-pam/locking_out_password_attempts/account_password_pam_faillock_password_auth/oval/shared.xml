@@ -8,7 +8,7 @@
                 as reference for the correct position of pam_faillock.so in auth section. If the
                 system is properly configured, it must appear only once in auth section. -->
             <criterion test_ref="test_pam_faillock_password_auth_pam_unix_auth"
-                        comment="pam_unix.so appears only once in auth section of password-auth"/>
+                comment="pam_unix.so appears only once in auth section of password-auth"/>
             <criterion
                 test_ref="test_pam_faillock_password_auth_pam_faillock_auth"
                 comment="pam_faillock.so is defined in auth section of password-auth"/>
@@ -19,13 +19,13 @@
     </definition>
 
     <constant_variable id="var_pam_faillock_password_auth_pam_faillock_auth_regex"
-                    datatype="string" version="1"
-                    comment="regex to identify pam_faillock.so entries in auth section of pam files">
+            datatype="string" version="1"
+            comment="regex to identify pam_faillock.so entries in auth section of pam files">
         <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
     </constant_variable>
     <constant_variable id="var_pam_faillock_password_auth_pam_faillock_account_regex"
-                    datatype="string" version="1"
-                    comment="regex to identify pam_faillock.so entry in account section of pam files">
+            datatype="string" version="1"
+            comment="regex to identify pam_faillock.so entry in account section of pam files">
         <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
     </constant_variable>
 
@@ -52,13 +52,12 @@
             object_ref="obj_pam_faillock_password_auth_pam_faillock_auth"/>
     </ind:textfilecontent54_test>
 
-
     <ind:textfilecontent54_object version="1"
             id="obj_pam_faillock_password_auth_pam_faillock_auth"
             comment="Check common definition of pam_faillock.so in auth section of password-auth">
         <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
         <ind:pattern operation="pattern match"
-                    var_ref="var_pam_faillock_password_auth_pam_faillock_auth_regex"/>
+            var_ref="var_pam_faillock_password_auth_pam_faillock_auth_regex"/>
         <ind:instance datatype="int" operation="equals">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -74,7 +73,7 @@
             comment="Check common definition of pam_faillock.so in account section of password-auth">
         <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
         <ind:pattern operation="pattern match"
-                    var_ref="var_pam_faillock_password_auth_pam_faillock_account_regex"/>
+            var_ref="var_pam_faillock_password_auth_pam_faillock_account_regex"/>
         <ind:instance datatype="int" operation="equals">1</ind:instance>
     </ind:textfilecontent54_object>
 </def-group>
