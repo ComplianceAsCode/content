@@ -59,8 +59,7 @@
           "${input:pickRemediationType}",
           "--remove-machine-only",
           "--remove-ocp4-only",
-          "--add-product-to-fips-certified",
-          "fedora",
+          "--remove-fips-certified",
           "--remove-platforms",
           "${command:content-navigator.getRuleId}"
       ],
@@ -85,7 +84,7 @@
           "${command:content-navigator.getRuleId}"
       ],
       "env": {
-        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --add-product-to-fips-certified fedora",
+        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --remove-fips-certified",
         "SSH_ADDITIONAL_OPTIONS": "-o IdentityFile=${workspaceFolder}/&&PRIVATE_KEY_FILEPATH&&"
       }
     }

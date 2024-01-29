@@ -143,7 +143,7 @@ jobs:
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream $DATASTREAM ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
-          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified sle15 --product sle15"
+          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --remove-fips-certified --product sle15"
       - name: Check for ERROR in logs
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_bash/test_suite.log
@@ -164,7 +164,7 @@ jobs:
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream $DATASTREAM ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
-          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified sle15 --product sle15"
+          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --remove-fips-certified --product sle15"
       - name: Check for ERROR in logs
         if: ${{steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_ansible/test_suite.log
