@@ -20,7 +20,6 @@ from ssg.constants import OSCAP_RULE
 from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml, is_rule_dir
-from ssg.rule_yaml import parse_prodtype
 from ssg.utils import mkdir_p
 from ssg_test_suite.log import LogHelper
 
@@ -309,19 +308,13 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     rule = RuleYAML.from_yaml(rule_path, env_yaml)
     rule.normalize(product)
 
-    # Note that most places would check prodtype, but we don't care
-    # about that here: if the rule is available to the product, we
-    # load and parse it anyways as we have no knowledge of the
-    # top-level profile or rule passed into the test suite.
-    prodtypes = parse_prodtype(rule.prodtype)
-
     # Our local copy of env_yaml needs some properties from rule.yml
     # for completeness.
     local_env_yaml = dict()
     local_env_yaml.update(env_yaml)
     local_env_yaml['rule_id'] = rule.id_
     local_env_yaml['rule_title'] = rule.title
-    local_env_yaml['products'] = prodtypes
+    local_env_yaml["products"] = {product}
 
     return rule, local_env_yaml
 

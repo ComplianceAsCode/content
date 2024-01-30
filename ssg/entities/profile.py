@@ -58,7 +58,6 @@ class ResolvableProfile(Profile):
             if rid not in rules_by_id:
                 msg = (
                     "Rule {rid} is selected by {profile}, but the rule is not available. "
-                    "This may be caused by a discrepancy of prodtypes."
                     .format(rid=rid, profile=self.id_))
                 raise ValueError(msg)
 

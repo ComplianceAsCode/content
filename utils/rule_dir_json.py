@@ -100,8 +100,7 @@ def handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir):
     rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, env_yaml)
     rule_products = set()
     for product in product_list:
-        if ssg.utils.is_applicable(rule_yaml.prodtype, product):
-            rule_products.add(product)
+        rule_products.add(product)
 
     rule_products = sorted(rule_products)
     rule_obj['products'] = rule_products

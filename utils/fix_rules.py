@@ -47,8 +47,6 @@ def has_empty_identifier(rule_path, rule, rule_lines):
 def has_no_cce(yaml_file, product_yaml=None):
     rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
     product = product_yaml["product"]
-    if "prodtype" in rule and product not in rule["prodtype"]:
-        return False
     if 'identifiers' in rule and rule['identifiers'] is None:
         return True
 
@@ -417,15 +415,6 @@ def fix_invalid_cce(file_contents, yaml_contents):
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
 
 
-def fix_prodtypes(file_contents, yaml_contents):
-    section = 'prodtype'
-    sorted_prodtypes = yaml_contents[section].split(",")
-    sorted_prodtypes.sort()
-    out = ",".join(sorted_prodtypes)
-
-    return rewrite_keyless_section(file_contents, yaml_contents, section, out)
-
-
 def has_product_cce(yaml_contents, product):
     section = 'identifiers'
 
@@ -586,13 +575,6 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
             cce_pool.remove_cce_from_file(cce)
 
 
-def has_unsorted_prodtype(rule_path, rule, rule_lines):
-    if 'prodtype' in rule:
-        prodtypes = rule['prodtype'].split(',')
-        return prodtypes != sorted(prodtypes)
-    return False
-
-
 @command("empty_identifiers", "check and fix rules with empty identifiers")
 def fix_empty_identifiers(args, product_yaml):
     results = find_rules(args, has_empty_identifier)
@@ -733,22 +715,6 @@ def sort_subkeys(args, product_yaml):
     exit(int(len(results) > 0))
 
 
-@command("sort_prodtypes", "sorts the products in the prodtype")
-def sort_prodtypes(args, product_yaml):
-    results = find_rules(args, has_unsorted_prodtype)
-    for result in results:
-        rule_path = result[0]
-        product_yaml = result[2]
-
-        if args.dry_run:
-            print(rule_path + " prodtype is unsorted")
-            continue
-
-        fix_file(rule_path, product_yaml, fix_prodtypes)
-
-    exit(int(len(results) > 0))
-
-
 @command("test_all", "Perform all checks on all rules")
 def test_all(args, product_yaml):
     result = 0
@@ -759,8 +725,7 @@ def test_all(args, product_yaml):
         (has_empty_references, "empty references"),
         (has_int_reference, "unsorted references"),
         (has_duplicated_subkeys, "duplicated subkeys"),
-        (has_unordered_sections, "unsorted references"),
-        (has_unsorted_prodtype, "unsorted prodtype")
+        (has_unordered_sections, "unsorted references")
     ]
     for item in rule_data_generator(args):
         rule_path, rule, rule_lines, _, _ = item

@@ -414,56 +414,6 @@ def two_plus_remediation(rule_obj, r_type):
                (rule_id, r_type, ','.join(rule_obj['remediations'][r_type]))
 
 
-def prodtypes_oval(rule_obj):
-    """
-    For a rule object, check if the prodtypes match between the YAML and the
-    OVALs.
-    """
-
-    rule_id = rule_obj['id']
-
-    rule_products = set(rule_obj.get('products', []))
-    if not rule_products:
-        return
-
-    oval_products = set()
-    for oval in rule_obj.get('ovals', []):
-        oval_products.update(rule_obj['ovals'][oval].get('products', []))
-    if not oval_products:
-        return
-
-    sym_diff = sorted(rule_products.symmetric_difference(oval_products))
-    check = len(sym_diff) > 0
-    if check:
-        return "\trule_id:%s has a different prodtypes between YAML and OVALs: %s" % \
-               (rule_id, ','.join(sym_diff))
-
-
-def prodtypes_remediation(rule_obj, r_type):
-    """
-    For a rule object, check if the prodtypes match between the YAML and the
-    remediations of type r_type.
-    """
-
-    rule_id = rule_obj['id']
-
-    rule_products = set(rule_obj.get('products', []))
-    if not rule_products:
-        return
-
-    remediation_products = set()
-    for remediation in rule_obj.get('remediations', dict()).get(r_type, dict()):
-        remediation_products.update(rule_obj['remediations'][r_type][remediation]['products'])
-    if not remediation_products:
-        return
-
-    sym_diff = sorted(rule_products.symmetric_difference(remediation_products))
-    check = len(sym_diff) > 0 and rule_products and remediation_products
-    if check:
-        return "\trule_id:%s has a different prodtypes between YAML and %s remediations: %s" % \
-               (rule_id, r_type, ','.join(sym_diff))
-
-
 def product_names_oval(rule_obj):
     """
     For a rule_obj, check the scope of the platforms versus the product name
