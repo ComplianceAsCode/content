@@ -489,7 +489,7 @@ selections:
     # OL08-00-020000
     - account_temp_expire_date
 
-    # OL08-00-020010, OL08-00-020011, OL08-00-020025, OL08-00-020026
+    # OL08-00-020010, OL08-00-020011
     - accounts_passwords_pam_faillock_deny
 
     # OL08-00-020012, OL08-00-020013
@@ -513,6 +513,12 @@ selections:
 
     # OL08-00-020024
     - accounts_max_concurrent_login_sessions
+
+    # OL08-00-020025
+    - account_password_pam_faillock_system_auth
+
+    # OL08-00-020026
+    - account_password_pam_faillock_password_auth
 
     # OL08-00-020027, OL08-00-020028
     - account_password_selinux_faillock_dir
