@@ -2102,8 +2102,11 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      This requirement is also indirectly satisfied by the requirement 5.5.2.
     rules:
-      - accounts_passwords_pam_faillock_deny
+      - account_password_pam_faillock_password_auth
+      - account_password_pam_faillock_system_auth
 
   - id: 5.5.1
     title: Ensure password creation requirements are configured (Automated)

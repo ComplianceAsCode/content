@@ -1773,9 +1773,10 @@ controls:
       - l1_workstation
     status: automated
     notes: |-
-      This requirement is satisfied by 4.4.3.1 section.
-    related_rules:
-      - accounts_passwords_pam_faillock_deny
+      This requirement is also indirectly satisfied by the requirement 4.4.3.1.
+    rules:
+      - account_password_pam_faillock_password_auth
+      - account_password_pam_faillock_system_auth
 
   - id: 4.4.2.3
     title: Ensure pam_pwquality module is enabled (Automated)
