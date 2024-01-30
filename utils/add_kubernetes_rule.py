@@ -170,7 +170,6 @@ def which(program):
 def create_base_rule(args, url=None, node_rule=False):
     rule_yaml = dict()
     rule_yaml['documentation_complete'] = True
-    rule_yaml['prodtype'] = 'ocp4'
     rule_yaml['title'] = args.title
     if node_rule:
         rule_yaml['platform'] = 'ocp4-node'
