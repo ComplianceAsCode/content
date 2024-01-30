@@ -1457,7 +1457,11 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: automated
+    status: partial
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although the back-end for firewalld in
+      RHEL 7 is iptables, firewall-cmd is the recommended tool to manage firewall rules. This rule
+      is also missing OVAL: https://github.com/ComplianceAsCode/content/issues/11054
     rules:
       - set_ip6tables_default_rule
 
