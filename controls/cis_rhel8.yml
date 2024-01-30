@@ -531,18 +531,20 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    notes: The selected crypto-policy cannot be legacy
     rules:
       - configure_crypto_policy
-      - var_system_crypto_policy=default_policy
+      - var_system_crypto_policy=default_nosha1
 
   - id: 1.6.2
     title: Ensure system wide crypto policy disables sha1 hash and signature support (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    notes: More investigation is necessary on this new requirement.
+    status: automated
+    notes: |-
+      This requirement is already satisfied by 1.6.1.
+    related_rules:
+      - configure_crypto_policy
 
   - id: 1.6.3
     title: Ensure system wide crypto policy disables cbc for ssh (Automated)
@@ -550,7 +552,11 @@ controls:
       - l1_server
       - l1_workstation
     status: pending
-    notes: More investigation is necessary on this new requirement.
+    notes: |-
+      It is necessary a new rule to ensure a module disabling CBC in
+      /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
+    related_rules:
+      - configure_crypto_policy
 
   - id: 1.6.4
     title: Ensure system wide crypto policy disables macs less than 128 bits (Automated)
@@ -558,7 +564,11 @@ controls:
       - l1_server
       - l1_workstation
     status: pending
-    notes: More investigation is necessary on this new requirement.
+    notes: |-
+      It is necessary a new rule to ensure a module disabling weak MACs in
+      /etc/crypto-policies/policies/modules/ so it can be used by update-crypto-policies command.
+    related_rules:
+      - configure_crypto_policy
 
   - id: 1.7.1
     title: Ensure message of the day is configured properly (Automated)
