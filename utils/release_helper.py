@@ -241,10 +241,15 @@ def create_repo_milestone(repo, name) -> None:
     latest_release = get_latest_release(repo)
     estimated_release_date = get_next_release_date(latest_release.published_at)
     if get_confirmation(f'Are you sure about creating the "{name}" milestone?'):
+        future_release_date = get_next_release_date(estimated_release_date)
+        future_stabilization_date = get_next_stabilization_date(future_release_date)
+        formatted_date_stabilization = get_date_for_message(future_stabilization_date)
+        milestone_description = (
+            f'Milestone for the release {name}'
+            f'Stabilization phase starts on {formatted_date_stabilization}')
         try:
             repo.create_milestone(
-                title=name, description=f'Milestone for the release {name}',
-                due_on=estimated_release_date)
+                title=name, description=milestone_description, due_on=estimated_release_date)
         except Exception as e:
             print(f'Error: {e}')
             exit(1)
