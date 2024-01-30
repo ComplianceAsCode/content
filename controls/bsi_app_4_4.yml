@@ -36,9 +36,18 @@ controls:
       programs of the application. Only applications with similar protection needs and similar
       possible attack vectors SHOULD share a Kubernetes cluster.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      These requirements must be implemented organizationally. OpenShift fully supports them.
+      OpenShift simplifies the implementation of the stated requirements for separating applications
+      as well as development and production environments by setting up projects (tenants).
+      Namespaces, networks/network separation, meta tags as well as CPU and memory separation are already
+      configured by OpenShift as required (security-by-design). Special requirements for protection and
+      network zone concepts can also be flexibly and easily mapped using additional measures.
+      This particularly includes the ability to define application classes, operate in multiple,
+      separate clusters, and automatically distribute workloads to protection zones and fire compartments.
+      Particularly in the case of separate clusters, ACM can support rule-based distribution of applications using labels.
+    status: manual
+    rules:
+      - general_namespace_separation
 
   - id: APP.4.4.A2
     title: Planning Automation with CI/CD
