@@ -2690,6 +2690,7 @@ controls:
         title: RHEL 9 must terminate idle user sessions.
         rules:
             - logind_session_timeout
+            - var_logind_session_timeout=15_minutes
         status: automated
 
     -   id: RHEL-09-431010
