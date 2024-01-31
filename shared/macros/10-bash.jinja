@@ -1269,7 +1269,6 @@ for f in /etc/sudoers /etc/sudoers.d/* ; do
 done
 {{%- endmacro -%}}
 
-
 {{% macro bash_sssd_ldap_config(parameter, value) -%}}
 SSSD_CONF="/etc/sssd/sssd.conf"
 LDAP_REGEX='[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*{{{ parameter }}}'
@@ -1296,6 +1295,12 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
                 fi
         fi
 fi
+
+readarray -t SSSD_CONF_D_FILES < <(find /etc/sssd/conf.d/ -name "*.conf")
+for SSSD_CONF_D_FILE in "${SSSD_CONF_D_FILES[@]}"; do
+    sed -i "s#{{{ parameter }}}[^(\n)]*#{{{ parameter }}} = {{{ value }}}#" "$SSSD_CONF_D_FILE"
+done
+
 {{%- endmacro %}}
 
 

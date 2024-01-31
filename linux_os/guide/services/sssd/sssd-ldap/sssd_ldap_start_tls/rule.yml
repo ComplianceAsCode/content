@@ -12,7 +12,7 @@ description: |-
     <br /><br />
     To check if LDAP is configured to use TLS when <tt>id_provider</tt> is
     set to <tt>ldap</tt> or <tt>ipa</tt>, use the following command:
-    <pre>$ sudo grep -i ldap_id_use_start_tls /etc/sssd/sssd.conf</pre>
+    <pre>$ sudo grep -i ldap_id_use_start_tls /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf</pre>
 
 rationale: |-
     Without cryptographic integrity protections, information can be

@@ -707,6 +707,20 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - test_grep_domain.stdout | length > 0
     - test_id_provider.stdout is defined
     - test_id_provider.stdout | length < 1
+
+- name: Find all the conf files inside /etc/sssd/conf.d/
+  find:
+    paths: "/etc/sssd/conf.d/"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: Set {{{ parameter }}} to {{{ value }}} in /etc/sssd/conf.d/ if exists
+  ansible.builtin.replace:
+    path: "{{ item.path }}"
+    regexp: '[^#]*{{{ parameter }}}.*'
+    replace: '{{{ parameter }}} = {{{ value }}}'
+  with_items: "{{ sssd_conf_d_files.files }}"
+
 {{%- endmacro %}}
 
 
