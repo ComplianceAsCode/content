@@ -10,6 +10,7 @@
     </metadata>
     <criteria operator="AND">
       <criterion comment="enforce is disabled" test_ref="test_etc_selinux_configured" />
+      <criterion comment="/sys/fs/selinux is present" test_ref="test_selinux_sys_fs_exist" />
     </criteria>
   </definition>
 
@@ -29,4 +30,12 @@
     <ind:subexpression datatype="string"
       operation="pattern match">^(enforcing|permissive)$</ind:subexpression>
   </ind:textfilecontent54_state>
+  <unix:file_test check="all" check_existence="all_exist" comment="check if /sys/fs/selinux exists" id="test_selinux_sys_fs_exist" version="1">
+    <unix:object object_ref="object_selinux_sys_fs_exist" />
+  </unix:file_test>
+
+  <unix:file_object comment="/sys/fs/selinux" id="object_selinux_sys_fs_exist" version="1">
+    <unix:path>/sys/fs/selinux</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
 </def-group>
