@@ -14,7 +14,7 @@ jobs:
       pr-number: ${{ steps.get-pr-number.outputs.pr-number }}
     steps:
       - name: 'Download artifacts'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Comment on the PR
     steps:
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
