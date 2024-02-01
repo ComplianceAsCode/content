@@ -156,6 +156,7 @@ def main():
         controls_dir, env_yaml, existing_rules)
     controls_manager.load()
     controls_manager.remove_selections_not_known(loader.all_rules)
+    controls_manager.add_references(loader.all_rules)
 
     profiles_by_id = get_all_resolved_profiles_by_id(
         env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir)

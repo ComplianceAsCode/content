@@ -1008,6 +1008,14 @@ class Rule(XCCDFEntity, Templatable):
             ident.set("system", SSG_IDENT_URIS[ident_type])
             ident.text = ident_val
 
+    def add_extra_reference(self, ref_type, ref_value):
+        if ref_type == "anssi":
+            ref_value = "BP28(%s)" % ref_value
+        if ref_type in self.references:
+            self.references[ref_type].append(ref_value)
+        else:
+            self.references[ref_type] = [ref_value]
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
