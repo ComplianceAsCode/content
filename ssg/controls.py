@@ -207,6 +207,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.levels_by_id = dict()
         self.title = ""
         self.source = ""
+        self.reference_type = None
+        self.product = None
 
     def represent_as_dict(self):
         data = dict()
@@ -328,6 +330,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.id = ssg.utils.required_key(yaml_contents, "id")
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
+        self.reference_type = yaml_contents.get("reference_type", None)
+        self.product = yaml_contents.get("product", None)
 
         default_level_dict = {"id": "default"}
         level_list = yaml_contents.get("levels", [default_level_dict])

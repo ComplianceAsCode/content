@@ -979,6 +979,8 @@ title: short title (required key)
 original_title: used as a reference for policies not yet available in English
 source: a link to the original policy, eg. a URL of a PDF document
 controls_dir: a directory containing files representing controls that will be imported into this policy
+reference_type: Reference type represented by control IDs in this policy.
+product: product ID, set if the policy is specific to a single product.
 levels: a list of levels, the first one is default
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
@@ -1002,6 +1004,7 @@ Full example of a controls file:
 id: abcd
 title: ABCD Benchmark for securing Linux systems
 source: https://www.abcd.com/linux.pdf
+reference_type: abcd
 levels:
   - id: low
   - id: high
