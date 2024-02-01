@@ -3,7 +3,7 @@
 # platform = Oracle Linux 7,Red Hat Enterprise Linux 7
 # profiles = xccdf_org.ssgproject.content_profile_cis
 
-remember_cnt=5
+remember_cnt=24
 control_flag='requisite'
 
 config_file=/etc/pam.d/system-auth
