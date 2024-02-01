@@ -126,11 +126,12 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
                 continue
 
         if reference_str in rule_obj['references'].keys():
-            ref = rule_obj['references'][reference_str]
-            if ref in known_rules:
-                known_rules[ref].append(rule['id'])
-            else:
-                known_rules[ref] = [rule['id']]
+            refs = rule_obj['references'][reference_str]
+            for ref in refs:
+                if ref in known_rules:
+                    known_rules[ref].append(rule['id'])
+                else:
+                    known_rules[ref] = [rule['id']]
     return known_rules
 
 

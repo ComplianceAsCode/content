@@ -331,11 +331,8 @@ class AnsibleRemediation(Remediation):
         return result
 
     def _get_rule_reference(self, ref_class):
-        refs = self.associated_rule.references.get(ref_class, "")
-        if refs:
-            return refs.split(",")
-        else:
-            return []
+        refs = self.associated_rule.references.get(ref_class, [])
+        return refs
 
     def inject_package_facts_task(self, parsed_snippet):
         """ Injects a package_facts task only if

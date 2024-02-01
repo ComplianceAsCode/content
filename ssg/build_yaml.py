@@ -103,7 +103,7 @@ def check_warnings(xccdf_structure):
 
 def add_reference_elements(element, references, ref_uri_dict):
     for ref_type, ref_vals in references.items():
-        for ref_val in ref_vals.split(","):
+        for ref_val in ref_vals:
             # This assumes that a single srg key may have items from multiple SRG types
             if ref_type == 'srg':
                 if ref_val.startswith('SRG-OS-'):
@@ -748,6 +748,12 @@ class Rule(XCCDFEntity, Templatable):
         # we need them to convert to set again
         rule.platforms = set(rule.platforms)
 
+        # references are represented as a comma separated string
+        # we need to split the string to form an actual list
+        for ref_type, val in rule.references.items():
+            if isinstance(val, str):
+                rule.references[ref_type] = val.split(",")
+
         # rule.platforms.update(set(rule.inherited_platforms))
 
         check_warnings(rule)
@@ -794,7 +800,7 @@ class Rule(XCCDFEntity, Templatable):
         if not cci_id:
             return
         cci_ex = re.compile(r'^CCI-[0-9]{6}$')
-        for cci in cci_id.split(","):
+        for cci in cci_id:
             if not cci_ex.match(cci):
                 raise ValueError("CCI '{}' is in the wrong format! "
                                  "Format should be similar to: "
@@ -818,14 +824,14 @@ class Rule(XCCDFEntity, Templatable):
             return
 
         references = []
-        for id in stig_id.split(","):
+        for id in stig_id:
             reference = stig_references.get(id, None)
             if not reference:
                 continue
             references.append(reference)
 
         if references:
-            self.references["stigref"] = ",".join(references)
+            self.references["stigref"] = references
 
     def _get_product_only_references(self):
         product_references = dict()
@@ -951,15 +957,15 @@ class Rule(XCCDFEntity, Templatable):
             raise ValueError("Empty references section in file %s" % yaml_file)
 
         for ref_type, ref_val in self.references.items():
-            if not isinstance(ref_type, str) or not isinstance(ref_val, str):
-                raise ValueError("References and values must be strings: %s in file %s"
+            if not isinstance(ref_type, str):
+                raise ValueError("References must be strings: %s in file %s"
                                  % (ref_type, yaml_file))
-            if ref_val.strip() == "":
+            if len(ref_val) == 0:
                 raise ValueError("References must not be empty: %s in file %s"
                                  % (ref_type, yaml_file))
 
         for ref_type, ref_val in self.references.items():
-            for ref in ref_val.split(","):
+            for ref in ref_val:
                 if ref.strip() != ref:
                     msg = (
                         "Comma-separated '{ref_type}' reference "

@@ -40,7 +40,7 @@ def get_rules_by_srgid(build_dir, product):
         rule_filename = os.path.join(rules_root, rule_id + ".yml")
         rule = ssg.build_yaml.Rule.from_yaml(rule_filename)
         if "srg" in rule.references:
-            for srgid in rule.references["srg"].split(","):
+            for srgid in rule.references["srg"]:
                 rules[srgid].append(rule)
     return rules
 
