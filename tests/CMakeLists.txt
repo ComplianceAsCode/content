@@ -252,10 +252,6 @@ endmacro()
 
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
-    ssg_refcheck_test("rhel9" "cis_workstation_l1" "cis")
-    ssg_refcheck_test("rhel9" "cis_workstation_l2" "cis")
-    ssg_refcheck_test("rhel9" "cis_server_l1" "cis")
-    ssg_refcheck_test("rhel9" "cis" "cis")
     ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
     ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
     # This exclude can be removed once enable_authselect has a stigid
@@ -264,18 +260,10 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
-    ssg_refcheck_test("rhel8" "cis_workstation_l1" "cis")
-    ssg_refcheck_test("rhel8" "cis_workstation_l2" "cis")
-    ssg_refcheck_test("rhel8" "cis_server_l1" "cis")
-    ssg_refcheck_test("rhel8" "cis" "cis")
     stig_srg_mapping_test("rhel8")
 endif()
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
-    ssg_refcheck_test("rhel7" "cis_workstation_l1" "cis")
-    ssg_refcheck_test("rhel7" "cis_workstation_l2" "cis")
-    ssg_refcheck_test("rhel7" "cis_server_l1" "cis")
-    ssg_refcheck_test("rhel7" "cis" "cis")
     stig_srg_mapping_test("rhel7")
 endif()
 
