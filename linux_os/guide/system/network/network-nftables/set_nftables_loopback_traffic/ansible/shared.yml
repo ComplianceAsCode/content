@@ -16,11 +16,7 @@
   register: ipv6_status
 
 - name: Check sysctl value of net.ipv6.conf.all.disable_ipv6
-{{% if product == "rhel7" %}}
-  ansible.builtin.sysctl:
-{{% else %}}
-  ansible.posix.sysctl:
-{{%endif %}}
+  sysctl:
     name: net.ipv6.conf.all.disable_ipv6
     state: present
     value: "1"
@@ -28,11 +24,7 @@
   register: sysctl_ipv6_all
 
 - name: Check sysctl value of net.ipv6.conf.default.disable_ipv6
-{{% if product == "rhel7" %}}
-  ansible.builtin.sysctl:
-{{% else %}}
-  ansible.posix.sysctl:
-{{%endif %}}
+  sysctl:
     name: net.ipv6.conf.default.disable_ipv6
     state: present
     value: "1"
