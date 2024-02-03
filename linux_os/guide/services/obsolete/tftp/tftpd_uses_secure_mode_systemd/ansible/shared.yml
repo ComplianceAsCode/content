@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+
+-   name: "{{{ rule_title }}} - Set ExecStart"
+    community.general.ini_file:
+        path: /etc/systemd/system/tftp.service
+        section: 'Service'
+        option: 'ExecStart'
+        value: '/usr/sbin/in.tftpd -s /var/lib/tftpboot'
+
+-   name: "{{{ rule_title }}} - Restart The Service"
+    ansible.builtin.systemd_service:
+        daemon-reload: true
+        service: tftp
+        state: restarted
