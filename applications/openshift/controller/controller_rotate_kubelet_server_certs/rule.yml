@@ -28,6 +28,8 @@ description: |-
     ...
     </pre>
 
+    This feature gate is enabled by default as of Kubernetes 1.12.
+
 rationale: |-
     Enabling kubelet certificate rotation causes the kubelet to both request
     a serving certificate after bootstrapping its client credentials and rotate the
@@ -67,6 +69,10 @@ references:
     pcidss: Req-2.2
     srg: SRG-APP-000516-CTR-001325
 
+# Since RotateKubeletServerCertificate is enabled by default, let's make sure
+# it's not being disabled explicitly. If we only check for it to be enabled,
+# we'll miss clusters that rely on the default and result in a false positive
+# finding.
 template:
   name: yamlfile_value
   vars:
@@ -75,7 +81,7 @@ template:
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '[:]'
     values:
-    - value: 'RotateKubeletServerCertificate=true'
+    - value: 'RotateKubeletServerCertificate=false'
       type: "string"
       operation: "pattern match"
-      entity_check: "at least one"
+      entity_check: "none satisfy"
