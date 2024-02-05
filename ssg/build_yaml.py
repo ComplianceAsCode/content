@@ -741,16 +741,22 @@ class Rule(XCCDFEntity, Templatable):
         return result
 
     @staticmethod
-    def _convert_platform_names(env_yaml, rule, product_cpes):
+    def _has_platforms_to_convert(env_yaml, rule, product_cpes):
         # Convert the platform names to CPE names
         # But only do it if an env_yaml was specified (otherwise there would
         # be no product CPEs to lookup), and the rule's prodtype matches the
         # product being built also if the rule already has cpe_platform_names
         # specified (compiled rule) do not evaluate platforms again
-        if (not env_yaml or
-                (env_yaml["product"] not in parse_prodtype(rule.prodtype)
-                    and rule.prodtype != "all") or
-                (not product_cpes or rule.cpe_platform_names)):
+        return (
+            env_yaml and
+            (env_yaml["product"] in parse_prodtype(rule.prodtype) or
+                rule.prodtype == "all") and
+            (product_cpes and not rule.cpe_platform_names)
+        )
+
+    @staticmethod
+    def _convert_platform_names(env_yaml, rule, product_cpes):
+        if not Rule._has_platforms_to_convert(env_yaml, rule, product_cpes):
             return
         # parse platform definition and get CPEAL platform
         for platform in rule.platforms:
