@@ -185,6 +185,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 continue
             rule.add_extra_reference(reference_type, self.id)
 
+
 class Level(ssg.entities.common.XCCDFEntity):
     KEYS = dict(
         id=lambda: str,
