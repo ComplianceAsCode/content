@@ -740,6 +740,30 @@ class Rule(XCCDFEntity, Templatable):
                 setattr(result, k, v)
         return result
 
+    @staticmethod
+    def _convert_platform_names(env_yaml, rule, product_cpes):
+        # Convert the platform names to CPE names
+        # But only do it if an env_yaml was specified (otherwise there would
+        # be no product CPEs to lookup), and the rule's prodtype matches the
+        # product being built also if the rule already has cpe_platform_names
+        # specified (compiled rule) do not evaluate platforms again
+        if (not env_yaml or
+                (env_yaml["product"] not in parse_prodtype(rule.prodtype)
+                    and rule.prodtype != "all") or
+                (not product_cpes or rule.cpe_platform_names)):
+            return
+        # parse platform definition and get CPEAL platform
+        for platform in rule.platforms:
+            try:
+                cpe_platform = Platform.from_text(platform, product_cpes)
+            except Exception as e:
+                msg = "Unable to process platforms in rule '%s': %s" % (
+                    rule.id_, str(e))
+                raise Exception(msg)
+            cpe_platform = add_platform_if_not_defined(
+                cpe_platform, product_cpes)
+            rule.cpe_platform_names.add(cpe_platform.id_)
+
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, sce_metadata=None):
         rule = super(Rule, cls).from_yaml(yaml_file, env_yaml, product_cpes)
@@ -763,24 +787,7 @@ class Rule(XCCDFEntity, Templatable):
         if rule.platform is not None:
             rule.platforms.add(rule.platform)
 
-        # Convert the platform names to CPE names
-        # But only do it if an env_yaml was specified (otherwise there would be no product CPEs
-        # to lookup), and the rule's prodtype matches the product being built
-        # also if the rule already has cpe_platform_names specified (compiled rule)
-        # do not evaluate platforms again
-        if env_yaml and (
-            env_yaml["product"] in parse_prodtype(rule.prodtype)
-            or rule.prodtype == "all") and (
-                product_cpes and not rule.cpe_platform_names):
-            # parse platform definition and get CPEAL platform
-            for platform in rule.platforms:
-                try:
-                    cpe_platform = Platform.from_text(platform, product_cpes)
-                except Exception as e:
-                    raise Exception("Unable to process platforms in rule '%s': " %
-                                    (rule.id_, str(e)))
-                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                rule.cpe_platform_names.add(cpe_platform.id_)
+        cls._convert_platform_names(env_yaml, rule, product_cpes)
         # Only load policy specific content if rule doesn't have it defined yet
         if not rule.policy_specific_content:
             rule.load_policy_specific_content(yaml_file, env_yaml)
