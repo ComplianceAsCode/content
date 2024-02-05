@@ -1072,6 +1072,23 @@ controls:
       - other-policy:other-control
 ```
 
+### Using controls to add references to rules
+
+Naturally, control files map requirements of a given policy to individual rules.
+That is a reverse mapping to what the `references` key in rules is used for.
+The `references` key in `rule.yml` maps the rule to a requirement of an external policy.
+If a control file is used to map the policy requirements, then the references don't need to be specified in `rule.yml`.
+The build system is able to assign the references to rules automatically at the build time.
+This feature of the build system saves time and avoids data duplication, because the references are specified in a single place which is the control file, and they are not specified in `rule.yml` files.
+To use the automated reference assignement, the `reference_type` key must be added to the control file.
+The value of this key is the type of reference that will be assigned.
+
+For example, to instruct the build system to use the control file to automatically assign `anssi` references to all rules listed in the control file, add the following line to the control file:
+
+```
+reference_type: anssi
+```
+
 ### Using controls in profiles
 
 Later, we can use the policy requirements in profile YAML. Let's say that we
