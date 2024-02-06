@@ -13,6 +13,10 @@ if(SSG_LOG)
     set(LOG_LEVEL "DEBUG")
 endif()
 
+if(NOT SSG_THIN_DS)
+    set(SSG_THIN_DS_RULE_ID "off")
+endif()
+
 project(scap-security-guide NONE)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -275,6 +279,7 @@ message(STATUS "Separate SCAP files: ${SSG_SEPARATE_SCAP_FILES_ENABLED}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
 message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
 message(STATUS "Bash scripts: ${SSG_BASH_SCRIPTS_ENABLED}")
+message(STATUS "Thin data streams: ${SSG_THIN_DS}")
 if(SSG_JINJA2_CACHE_ENABLED)
     message(STATUS "jinja2 cache: enabled")
     message(STATUS "jinja2 cache dir: ${SSG_JINJA2_CACHE_DIR}")

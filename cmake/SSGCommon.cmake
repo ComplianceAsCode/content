@@ -118,7 +118,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --project-root "${CMAKE_SOURCE_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --project-root "${CMAKE_SOURCE_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --rule-id "${SSG_THIN_DS_RULE_ID}"
             COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
             DEPENDS generate-internal-${PRODUCT}-sce-metadata.json "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
@@ -128,7 +128,7 @@ macro(ssg_build_compiled_artifacts PRODUCT)
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --project-root "${CMAKE_SOURCE_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --project-root "${CMAKE_SOURCE_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}" --rule-id "${SSG_THIN_DS_RULE_ID}"
             COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
             DEPENDS generate-internal-${PRODUCT}-sce-metadata.json "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
