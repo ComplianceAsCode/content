@@ -101,8 +101,12 @@ def get_all_resolved_profiles_by_id(
     return profiles_by_id
 
 
-def load_resolve_and_validate_profiles(env_yaml, profile_files, loader, controls_manager, product_cpes):
-    profiles_by_id = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml, product_cpes)
+def load_resolve_and_validate_profiles(
+        env_yaml, profile_files, loader, controls_manager, product_cpes
+        ):
+    profiles_by_id = ssg.build_profile.make_name_to_profile_mapping(
+        profile_files, env_yaml, product_cpes
+    )
 
     for p in profiles_by_id.values():
         p.resolve(profiles_by_id, loader.all_rules, controls_manager)
