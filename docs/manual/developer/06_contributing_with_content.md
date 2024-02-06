@@ -518,9 +518,9 @@ the use of unversioned products here (e.g., `rhel` applies to `rhel7`,
 correct extension for content of that type (e.g., `.sh` for `bash`
 content). Further, all of these directories are optional and will only
 be searched for content if present. Lastly, the product naming of
-content will not override the contents of `platform` or `prodtype`
-fields in the content itself (e.g., if `rhel7` is not present in the
-`rhel7.xml` OVAL check platform specifier, it will be included in the
+content will not override the contents of `platform` field in
+the content itself (e.g., if `rhel7` is not present in the `rhel7.xml`
+OVAL check platform specifier, it will be included in the
 build artifacts but later removed because it doesn't match the platform).
 This means that any shared (or templated) checks won't be searched if
 a product-specific file is present but has the wrong applicability;
@@ -541,31 +541,6 @@ For more information about these utilities, please see their help text.
 
 To interact with `rule.yml` files and the OVALs inside a rule directory,
 the following utilities are provided:
-
-#### `utils/mod_prodtype.py`
-
-This utility modifies the prodtype field of rules. It supports several
-commands:
-
--   `mod_prodtype.py <rule_id> list` - list the computed and actual
-    prodtype of the rule specified by `rule_id`.
-
--   `mod_prodtype.py <rule_id> add <product> [<product> ...]` - add
-    additional products to the prodtype of the rule specified by
-    `rule_id`.
-
--   `mod_prodtype.py <rule_id> remove <product> [<product> ...]` -
-    remove products to the prodtype of the rule specified by `rule_id`.
-
--   `mod_prodtype.py <rule_id> replace <replacement> [<replacement> ...]` -
-    do the specified replacement transformations. A replacement
-    transformation is of the form `match~replace` where `match` and
-    `replace` are a comma separated list of products. If all of the
-    products in `match` exist in the original `prodtype` of the rule,
-    they are removed and the products in `replace` are added.
-
-This utility requires an up to date JSON tree created by
-`rule_dir_json.py`.
 
 #### `utils/mod_checks.py`
 
@@ -597,8 +572,10 @@ OVAL with the following commands:
 
 -   `mod_checks.py <rule_id> replace <replacement> [<replacement ...]` -
     do the specified replacement against the platforms in the shared
-    OVAL. See the description of `replace` under `mod_prodtype.py` for
-    more information about the format of a replacement.
+    OVAL. A replacement transformation is of the form `match~replace`
+    where `match` and `replace` are a comma separated list of products.
+    If all of the platforms in `match` exist in the original `platform`
+    of the rule, they are removed and the platforms in `replace` are added.
 
 This utility requires an up to date JSON tree created by
 `rule_dir_json.py`.
@@ -634,7 +611,7 @@ fixes with the following commands:
 
 -   `mod_fixes.py <rule_id> <lang> replace <replacement> [<replacement ...]` -
     do the specified replacement against the platforms in the shared
-    fix. See the description of `replace` under `mod_prodtype.py` for
+    fix. See the description of `replace` under `mod_checks.py` for
     more information about the format of a replacement.
 
 This utility requires an up-to-date JSON tree created by

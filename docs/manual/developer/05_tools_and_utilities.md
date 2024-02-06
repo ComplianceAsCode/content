@@ -123,7 +123,6 @@ These sub-commands are:
 - `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
   `identifiers` or `references`.
 - `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
-- `sort_prodtypes`: sorts the products in prodtype.
 - `add-cce`: automatically assign CCE identifiers to rules.
 
 To execute:
@@ -156,7 +155,6 @@ Then based on the available pool you want to assign the CCEs, you can run someth
 ```
 
 Note: Multiple rules can have the CCE at the same time by just adding space separated rule IDs.
-Note: The rule should have the product assigned to the `prodtype` attribute or the `prodtype` should be empty.
 
 Example for `sle15` product:
 
@@ -164,34 +162,6 @@ Example for `sle15` product:
     $ python utils/fix_rules.py --product products/sle15/product.yml add-cce --cce-pool sle15 audit_rules_privileged_commands_newuidmap audit_rules_privileged_commands_newuidmap
 ```
 
-
-### `utils/autoprodtyper.py` &ndash; automatically add product to `prodtype`
-
-When building a profile for a new product version (such as forking
-`ubuntu1804` into `ubuntu2004`), it is helpful to be able to build a
-profile (adding in all rules that are necessary) and then attempt a
-build.
-
-However, usually lots of rules will lack the new product in its `prodtype`
-field.
-
-This is where `utils/autoprodtyper.py` comes in: point it at a product and
-a profile and it will automatically modify the prodtype, adding this product.
-
-To execute:
-
-```bash
-    $ ./utils/autoprodtyper.py <product> <profile>
-```
-
-For example:
-
-```bash
-    $ ./utils/autoprodtyper.py ubuntu2004 cis_level1_server
-```
-
-Note that it is generally good practice to commit all changes prior to running
-one of these commands and then commit the results separately.
 
 ### `utils/refchecker.py` &ndash; automatically check `rule.yml` for references
 
@@ -218,52 +188,12 @@ product-independent.
 
 Note that this utility does not modify the rule directories at all.
 
-### `utils/mod_prodtype.py` &ndash; programmatically modify prodtype in `rule.yml`
-
-`utils/mod_prodtype.py` is a command-based utility for modifying `rule.yml`
-files. It supports the following sub-commands:
-
-- `add`: add the given product(s) to the specified rule's prodtype.
-- `list`: list computed and actual products in the specified rule's prodtype.
-- `replace`: perform a pattern-match replacement on the specified rule's
-  prodtype.
-- `remove`: remove the given product(s) from the specified rule's prodtype.
-
-To execute:
-
-```bash
-    $ ./utils/mod_prodtype.py <rule_id> <command> [...other arguments...]
-```
-
-For an example of `add`:
-
-```bash
-    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 add ubuntu2004
-```
-
-For an example of `list`:
-
-```bash
-    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 list
-```
-
-For an example of `replace`:
-
-```bash
-    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 replace ubuntu2004~ubuntu1604,ubuntu1804,ubuntu2004
-```
-
-For an example of `remove`:
-
-```bash
-    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 remove ubuntu1604 ubuntu1804 ubuntu2004
-````
 
 ### `utils/mod_checks.py` and `utils/mod_fixes.py` &ndash; programmatically modify check and fix applicability
 
 These two utilities have identical usage. Both modifies the platform/product
-applicability of various files (either OVAL or hardening content), similar to
-`utils/mod_prodtype.py` above. They supports the following sub-commands:
+applicability of various files (either OVAL or hardening content). They support
+the following sub-commands:
 
 - `add`: add the given platform(s) to the specified rule's OVAL check.
   **Note**: Only applies to shared content.
@@ -613,9 +543,8 @@ $ python utils/generate_profile.py -i benchmark.xlsx list
 To generate a rule for a specific control:
 
 ```
-$ python utils/generate_profile.py -i benchmark.xlsx generate --product-type ocp -c 1.1.2
+$ python utils/generate_profile.py -i benchmark.xlsx generate -c 1.1.2
 documentation_complete: false
-prodtype: ocp
 title: |-
   Ensure that the API server pod specification file ownership is set to root:root
 description: 'Ensure that the API server pod specification file ownership is set to
@@ -646,7 +575,7 @@ template: PLACEHOLDER
 To generate an entire section:
 
 ```
-$ python utils/generate_profile.py -i benchmark.xlsx generate --product-type ocp -s 1
+$ python utils/generate_profile.py -i benchmark.xlsx generate -s 1
 ```
 
 The `PLACEHOLDER` values must be filled in later, ideally when the rules are
