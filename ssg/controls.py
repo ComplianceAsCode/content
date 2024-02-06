@@ -388,6 +388,16 @@ class Policy(ssg.entities.common.XCCDFEntity):
                     levels[l] = ""
         return list(levels.keys())
 
+    def _check_conflict_in_rules(self, rules):
+        for rule_id, rule in rules.items():
+            if self.reference_type in rule.references:
+                msg = (
+                    "Rule %s contains %s reference, but this reference "
+                    "type is provided by %s controls. Please remove the "
+                    "reference from rule.yml." % (
+                        rule_id, self.reference_type, self.id))
+                raise ValueError(msg)
+
     def add_references(self, rules):
         if not self.reference_type:
             return
@@ -398,6 +408,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if self.reference_type not in allowed_reference_types:
             msg = "Unknown reference type %s" % (self.reference_type)
             raise(ValueError(msg))
+        self._check_conflict_in_rules(rules)
         for control in self.controls_by_id.values():
             control.add_references(self.reference_type, rules)
 
