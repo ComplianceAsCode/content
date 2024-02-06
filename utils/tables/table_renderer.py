@@ -79,6 +79,8 @@ class TableHtmlOutput(template_renderer.Renderer):
         raise NotImplementedError
 
     def _generate_shortened_ref(self, reference, rule):
+        if not rule.relevant_refs:
+            return self.DEFAULT_SHORTENED_REF
         shortened_ref = shorten_relevant_ref(reference.regex_with_groups, rule.relevant_refs[0])
         if not shortened_ref:
             shortened_ref = self.DEFAULT_SHORTENED_REF
@@ -89,12 +91,8 @@ class TableHtmlOutput(template_renderer.Renderer):
 
         output_rules = collections.defaultdict(list)
         for rule in eligible_rules:
-            rid = rule.id_
             self._resolve_var_substitutions(rule)
-
             relevant_refs = rule.references.get(reference.id, "")
-            relevant_refs = relevant_refs.split(",")
-
             rule.relevant_refs = process_refs(reference.regex_with_groups, relevant_refs)
             shortened_ref = self._generate_shortened_ref(reference, rule)
             output_rules[shortened_ref].append(rule)

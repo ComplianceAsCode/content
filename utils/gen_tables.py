@@ -13,8 +13,7 @@ class References:
     def __init__(self):
         self.ref_by_family = collections.defaultdict(lambda: collections.defaultdict(set))
 
-    def handle_rule_ref_family(self, rule_name, family, rule_content):
-        ids = rule_content.split(",")
+    def handle_rule_ref_family(self, rule_name, family, ids):
         for id in ids:
             self.ref_by_family[family][id].add(rule_name)
 

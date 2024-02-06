@@ -979,6 +979,8 @@ title: short title (required key)
 original_title: used as a reference for policies not yet available in English
 source: a link to the original policy, eg. a URL of a PDF document
 controls_dir: a directory containing files representing controls that will be imported into this policy
+reference_type: Reference type represented by control IDs in this policy.
+product: product ID, set if the policy is specific to a single product.
 levels: a list of levels, the first one is default
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
@@ -1002,6 +1004,7 @@ Full example of a controls file:
 id: abcd
 title: ABCD Benchmark for securing Linux systems
 source: https://www.abcd.com/linux.pdf
+reference_type: abcd
 levels:
   - id: low
   - id: high
@@ -1067,6 +1070,37 @@ controls:
           - accounts_password_pam_ocredit
           - var_password_pam_ocredit=1
       - other-policy:other-control
+```
+
+### Using Controls for Automated Reference Assignment to Rules
+
+Control files inherently establish the correspondence between the requirements of a specified policy and individual rules.
+That represents a reverse mapping compared to the function of the `references` key in `rule.yml` files.
+The `references` key in `rule.yml` maps the rule to a requirement of an external policy.
+If a control file is used to map the policy requirements, then the references don't need to be specified in `rule.yml`.
+Instead, the build system is able to assign the references to rules automatically at the build time.
+This feature of the build system saves time and avoids data duplication, because the references are centralized in the control file, and they are not specified in `rule.yml` files.
+To use the automated reference assignement, the `reference_type` key must be added to the control file.
+The value of this key represents the type of reference that will be assigned.
+
+For example, to instruct the build system to use the control file to automatically assign `anssi` references to all rules listed in the control file, add the following line to the control file:
+
+```
+reference_type: anssi
+```
+
+The usage of `reference_type` key results in adding a reference to all rules in that control file across all products.
+This is a useful behavior for the control files that represent a product agnostic policy, for example ANSSI.
+However, some policies, for example CIS Benchmarks, are specific for a single product, so we represent them by separate control files, eg. `cis_rhel8.yml` and `cis_rhel9.yml`.
+These files define the same `reference_type`.
+To ensure the correct reference source for a given product we need to label the control file as product-specific.
+Product-specific control files need to have the `product` key set.
+
+For example, to instruct the build system to automatically assign `cis` references to all rules listed in the control file when building the `rhel9` product, include the following lines to the control file:
+
+```
+product: rhel9
+reference_type: cis
 ```
 
 ### Using controls in profiles

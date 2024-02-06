@@ -103,7 +103,7 @@ def check_warnings(xccdf_structure):
 
 def add_reference_elements(element, references, ref_uri_dict):
     for ref_type, ref_vals in references.items():
-        for ref_val in ref_vals.split(","):
+        for ref_val in ref_vals:
             # This assumes that a single srg key may have items from multiple SRG types
             if ref_type == 'srg':
                 if ref_val.startswith('SRG-OS-'):
@@ -740,6 +740,36 @@ class Rule(XCCDFEntity, Templatable):
                 setattr(result, k, v)
         return result
 
+    @staticmethod
+    def _has_platforms_to_convert(env_yaml, rule, product_cpes):
+        # Convert the platform names to CPE names
+        # But only do it if an env_yaml was specified (otherwise there would
+        # be no product CPEs to lookup), and the rule's prodtype matches the
+        # product being built also if the rule already has cpe_platform_names
+        # specified (compiled rule) do not evaluate platforms again
+        return (
+            env_yaml and
+            (env_yaml["product"] in parse_prodtype(rule.prodtype) or
+                rule.prodtype == "all") and
+            (product_cpes and not rule.cpe_platform_names)
+        )
+
+    @staticmethod
+    def _convert_platform_names(env_yaml, rule, product_cpes):
+        if not Rule._has_platforms_to_convert(env_yaml, rule, product_cpes):
+            return
+        # parse platform definition and get CPEAL platform
+        for platform in rule.platforms:
+            try:
+                cpe_platform = Platform.from_text(platform, product_cpes)
+            except Exception as e:
+                msg = "Unable to process platforms in rule '%s': %s" % (
+                    rule.id_, str(e))
+                raise Exception(msg)
+            cpe_platform = add_platform_if_not_defined(
+                cpe_platform, product_cpes)
+            rule.cpe_platform_names.add(cpe_platform.id_)
+
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, sce_metadata=None):
         rule = super(Rule, cls).from_yaml(yaml_file, env_yaml, product_cpes)
@@ -747,6 +777,12 @@ class Rule(XCCDFEntity, Templatable):
         # platforms are read as list from the yaml file
         # we need them to convert to set again
         rule.platforms = set(rule.platforms)
+
+        # references are represented as a comma separated string
+        # we need to split the string to form an actual list
+        for ref_type, val in rule.references.items():
+            if isinstance(val, str):
+                rule.references[ref_type] = val.split(",")
 
         # rule.platforms.update(set(rule.inherited_platforms))
 
@@ -757,24 +793,7 @@ class Rule(XCCDFEntity, Templatable):
         if rule.platform is not None:
             rule.platforms.add(rule.platform)
 
-        # Convert the platform names to CPE names
-        # But only do it if an env_yaml was specified (otherwise there would be no product CPEs
-        # to lookup), and the rule's prodtype matches the product being built
-        # also if the rule already has cpe_platform_names specified (compiled rule)
-        # do not evaluate platforms again
-        if env_yaml and (
-            env_yaml["product"] in parse_prodtype(rule.prodtype)
-            or rule.prodtype == "all") and (
-                product_cpes and not rule.cpe_platform_names):
-            # parse platform definition and get CPEAL platform
-            for platform in rule.platforms:
-                try:
-                    cpe_platform = Platform.from_text(platform, product_cpes)
-                except Exception as e:
-                    raise Exception("Unable to process platforms in rule '%s': " %
-                                    (rule.id_, str(e)))
-                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                rule.cpe_platform_names.add(cpe_platform.id_)
+        cls._convert_platform_names(env_yaml, rule, product_cpes)
         # Only load policy specific content if rule doesn't have it defined yet
         if not rule.policy_specific_content:
             rule.load_policy_specific_content(yaml_file, env_yaml)
@@ -794,7 +813,7 @@ class Rule(XCCDFEntity, Templatable):
         if not cci_id:
             return
         cci_ex = re.compile(r'^CCI-[0-9]{6}$')
-        for cci in cci_id.split(","):
+        for cci in cci_id:
             if not cci_ex.match(cci):
                 raise ValueError("CCI '{}' is in the wrong format! "
                                  "Format should be similar to: "
@@ -818,14 +837,14 @@ class Rule(XCCDFEntity, Templatable):
             return
 
         references = []
-        for id in stig_id.split(","):
+        for id in stig_id:
             reference = stig_references.get(id, None)
             if not reference:
                 continue
             references.append(reference)
 
         if references:
-            self.references["stigref"] = ",".join(references)
+            self.references["stigref"] = references
 
     def _get_product_only_references(self):
         product_references = dict()
@@ -951,15 +970,15 @@ class Rule(XCCDFEntity, Templatable):
             raise ValueError("Empty references section in file %s" % yaml_file)
 
         for ref_type, ref_val in self.references.items():
-            if not isinstance(ref_type, str) or not isinstance(ref_val, str):
-                raise ValueError("References and values must be strings: %s in file %s"
+            if not isinstance(ref_type, str):
+                raise ValueError("References must be strings: %s in file %s"
                                  % (ref_type, yaml_file))
-            if ref_val.strip() == "":
+            if len(ref_val) == 0:
                 raise ValueError("References must not be empty: %s in file %s"
                                  % (ref_type, yaml_file))
 
         for ref_type, ref_val in self.references.items():
-            for ref in ref_val.split(","):
+            for ref in ref_val:
                 if ref.strip() != ref:
                     msg = (
                         "Comma-separated '{ref_type}' reference "
@@ -1001,6 +1020,14 @@ class Rule(XCCDFEntity, Templatable):
             ident = ET.SubElement(rule, '{%s}ident' % XCCDF12_NS)
             ident.set("system", SSG_IDENT_URIS[ident_type])
             ident.text = ident_val
+
+    def add_extra_reference(self, ref_type, ref_value):
+        if ref_type == "anssi":
+            ref_value = "BP28(%s)" % ref_value
+        if ref_type in self.references:
+            self.references[ref_type].append(ref_value)
+        else:
+            self.references[ref_type] = [ref_value]
 
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)

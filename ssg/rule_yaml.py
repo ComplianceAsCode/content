@@ -199,6 +199,8 @@ def has_duplicated_subkeys(file_path, file_contents, sections):
 
         # Sort the YAML parser's subkeys.
         parent_key = list(parsed_section.keys())[0]
+        if not parsed_section[parent_key]:
+            continue
         subkeys = parsed_section[parent_key].keys()
 
         # Create a dictionary for counting them.
@@ -257,6 +259,8 @@ def sort_section_keys(file_path, file_contents, sections, sort_func=None):
 
         # Sort the parsed subkeys.
         parent_key = list(parsed_section.keys())[0]
+        if not parsed_section[parent_key]:
+            continue
         subkeys = sorted(parsed_section[parent_key].keys(), key=sort_func)
 
         # Don't bother if there are zero or one subkeys. Sorting order thus

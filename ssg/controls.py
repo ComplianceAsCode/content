@@ -176,6 +176,15 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         data["controls"] = self.controls
         return data
 
+    def add_references(self, reference_type, rules):
+        for selection in self.rules:
+            if "=" in selection:
+                continue
+            rule = rules.get(selection)
+            if not rule:
+                continue
+            rule.add_extra_reference(reference_type, self.id)
+
 
 class Level(ssg.entities.common.XCCDFEntity):
     KEYS = dict(
@@ -207,6 +216,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.levels_by_id = dict()
         self.title = ""
         self.source = ""
+        self.reference_type = None
+        self.product = None
 
     def represent_as_dict(self):
         data = dict()
@@ -328,6 +339,8 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.id = ssg.utils.required_key(yaml_contents, "id")
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
+        self.reference_type = yaml_contents.get("reference_type", None)
+        self.product = yaml_contents.get("product", None)
 
         default_level_dict = {"id": "default"}
         level_list = yaml_contents.get("levels", [default_level_dict])
@@ -374,6 +387,19 @@ class Policy(ssg.entities.common.XCCDFEntity):
                 for l in eligible_levels:
                     levels[l] = ""
         return list(levels.keys())
+
+    def add_references(self, rules):
+        if not self.reference_type:
+            return
+        product = self.env_yaml["product"]
+        if self.product and self.product != product:
+            return
+        allowed_reference_types = self.env_yaml["reference_uris"].keys()
+        if self.reference_type not in allowed_reference_types:
+            msg = "Unknown reference type %s" % (self.reference_type)
+            raise(ValueError(msg))
+        for control in self.controls_by_id.values():
+            control.add_references(self.reference_type, rules)
 
 
 class ControlsManager():
@@ -474,3 +500,7 @@ class ControlsManager():
         for policy_id, policy in self.policies.items():
             filename = os.path.join(output_dir, "{}.{}".format(policy_id, "yml"))
             policy.dump_yaml(filename)
+
+    def add_references(self, rules):
+        for policy in self.policies.values():
+            policy.add_references(rules)
