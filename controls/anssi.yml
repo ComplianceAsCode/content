@@ -579,6 +579,9 @@ controls:
     - kernel_config_hibernation
     - kernel_config_binfmt_misc
     - kernel_config_legacy_ptys
+    related_rules:
+    # This rule isn't included in any profile therefore it won't appear in the built data stream.
+    - kernel_config_modules
 
 
   - id: R24
