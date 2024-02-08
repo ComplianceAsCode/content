@@ -220,6 +220,9 @@ controls:
     rules:
       # Section 1-3:
       - accounts_unique_service_account
+      # Section 2:
+      - accounts_no_rolebindings_default_service_account
+      - accounts_no_clusterrolebindings_default_service_account
       # Section 4:
       - rbac_least_privilege
       - rbac_wildcard_use
@@ -271,12 +274,9 @@ controls:
       the application owner.
       Section 5: This functionality is inherently met by OpenShift.
     status: manual
-    rules: []
+    rules:
       # Section 1-4:
-      # - liveness_readiness_probe_in_deployment
-      # TODO:
-      # - liveness_readiness_probe_in_statefulset
-      # - liveness_readiness_probe_in_daemonset
+      - liveness_readiness_probe_in_workload
 
   - id: APP.4.4.A12
     title: Securing Infrastructure Applications
