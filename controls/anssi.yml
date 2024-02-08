@@ -912,15 +912,13 @@ controls:
     - sudo_add_env_reset
 
   - id: R40
-    title: User authentication running sudo
+    title: Privileges of target sudo users
+    description: The targeted users of a rule should be, as much as possible, non privileged users.
     levels:
-    - minimal
-    description: >-
-      The calling user must be authenticated before running any command with sudo.
+    - intermediary
     status: automated
     rules:
-    - sudo_remove_nopasswd
-    - sudo_remove_no_authenticate
+    - sudoers_no_root_target
 
   - id: R41
     title: Limiting the number of commands requiring the use of the EXEC option
