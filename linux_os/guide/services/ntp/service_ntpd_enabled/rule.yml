@@ -50,7 +50,7 @@ template:
 
 platform: package[ntp]
 
-{{% if prodtype in ["rhel8", "rhel9", "sle15"] %}}
+{{% if product in ["rhel8", "rhel9", "sle15"] %}}
 warnings:
     - general:
         The <pre>ntp</pre> package is not available in {{{ full_name }}}. Please
