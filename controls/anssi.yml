@@ -727,9 +727,9 @@ controls:
     # enable authselect to support following rules
     - enable_authselect
 
-    # Renew passwords every 90 days
-    - var_accounts_maximum_age_login_defs=90
-    - accounts_maximum_age_login_defs
+    # Set the maximum password age for the root account to 1 year
+    - var_accounts_maximum_age_root=365
+    - accounts_password_set_max_life_root
 
     # Ensure passwords with minimum of 15 characters
     - var_password_pam_minlen=15
