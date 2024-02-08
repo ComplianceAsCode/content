@@ -731,12 +731,12 @@ controls:
     - var_accounts_maximum_age_login_defs=90
     - accounts_maximum_age_login_defs
 
-    # Ensure passwords with minimum of 18 characters
-    - var_password_pam_minlen=18
+    # Ensure passwords with minimum of 15 characters
+    - var_password_pam_minlen=15
     - accounts_password_pam_minlen
     - cracklib_accounts_password_pam_minlen
     # Enforce password lenght for new accounts
-    - var_accounts_password_minlen_login_defs=18
+    - var_accounts_password_minlen_login_defs=15
     - accounts_password_minlen_login_defs
     # Require at Least 1 Special Character in Password
     - var_password_pam_ocredit=1
