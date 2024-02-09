@@ -572,8 +572,7 @@ controls:
     levels:
     - high
     notes: >-
-      As R18 configures hardened management of kernel modules we don't check nor remediate
-      for CONFIG_MODULES=n
+      If the system can function without support for kernel modules, module support should be disabled by setting CONFIG_MODULES=n.
     status: automated
     rules:
     - kernel_config_kexec
