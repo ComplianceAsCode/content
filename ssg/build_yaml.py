@@ -420,6 +420,8 @@ class Benchmark(XCCDFEntity):
         for rule in self.rules.values():
             root.append(rule.to_xml_element(env_yaml))
 
+        if hasattr(ET, "indent"):
+            ET.indent(root, space=" ", level=0)
         return root
 
     def to_file(self, file_name, env_yaml=None):
