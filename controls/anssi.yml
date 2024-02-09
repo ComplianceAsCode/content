@@ -776,30 +776,19 @@ controls:
     - accounts_password_pam_unix_remember
 
   - id: R32
-    title: User session timeout
+    title: Configuring a timeout on local user sessions
     levels:
     - intermediary
     description: >-
-      Remote user sessions (shell access, graphical clients) must be closed
-      after a certain period of inactivity.
+      Local user sessions (console TTY, graphical session) must be locked after a certain period of inactivity.
     notes: >-
-      There is no specific capability to check remote user inactivity, but some shells allow the
-      session inactivity time out to be configured via TMOUT variable.
-      In OpenSSH < 8.2 the inactivity of the user is implied from the network inactivity.
-      The server is configured to disconnect sessions if no data has been received within the idle timeout,
-      regardless of liveness status (ClientAliveCountMax is 0 and ClientAliveInterval is > 0).
-      In OpenSSH >= 8.2 there is no way to disconnect sessions based on client liveness.
-      The semantics of "ClientAliveCountMax 0" has changed from "disconnect on first timeout" to
-      "don't disconnect network inactive sessions". The server either probes for the client liveness
-      or keeps inactive sessions connected.
-    status: supported
+      ANSSI doesn't specify the length of the inactivity period, we are choosing 10 minutes as reasonable number.
+    status: automated
     rules:
+    - logind_session_timeout
+    - var_logind_session_timeout=10_minutes
     - accounts_tmout
     - var_accounts_tmout=10_min
-    - sshd_set_idle_timeout
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_keepalive
-    - var_sshd_set_keepalive=0
 
   - id: R33
     title: Use of dedicated administration accounts

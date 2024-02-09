@@ -20,6 +20,7 @@ description: |-
 
 selections:
     - anssi:all:minimal
+    - '!logind_session_timeout'
     # Following rules once had a prodtype incompatible with the rhel7 product
     - '!cracklib_accounts_password_pam_minlen'
     - '!package_dnf-automatic_installed'
