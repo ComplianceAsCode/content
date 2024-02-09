@@ -49,9 +49,46 @@ def parse_args():
         dest="build_ovals_dir",
         help="Directory to store OVAL document for each rule.",
     )
-    parser.add_argument("--resolved-base",
-                        help="To which directory to put processed rule/group/value YAMLs.")
+    parser.add_argument(
+        "--resolved-base",
+        help="To which directory to put processed rule/group/value YAMLs."
+    )
     return parser.parse_args()
+
+
+def link_oval(xccdftree, checks, output_file_name, build_ovals_dir):
+    translator = ssg.id_translate.IDTranslator("ssg")
+    oval_linker = ssg.build_renumber.OVALFileLinker(
+        translator, xccdftree, checks, output_file_name
+    )
+    oval_linker.build_ovals_dir = build_ovals_dir
+    oval_linker.link()
+    oval_linker.save_linked_tree()
+    oval_linker.link_xccdf()
+
+
+def link_ocil(xccdftree, checks, output_file_name, ocil):
+    translator = ssg.id_translate.IDTranslator("ssg")
+    ocil_linker = ssg.build_renumber.OCILFileLinker(
+        translator, xccdftree, checks, output_file_name
+    )
+    ocil_linker.link(ocil)
+    ocil_linker.save_linked_tree()
+    ocil_linker.link_xccdf()
+
+
+def link_benchmark(loader, xccdftree, paths, benchmark=None):
+    if benchmark is None:
+        benchmark = loader.benchmark
+
+    checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
+
+    link_oval(xccdftree, checks, paths.oval, paths.build_ovals_dir)
+
+    ocil = loader.export_ocil_to_xml()
+    link_ocil(xccdftree, checks, paths.ocil, ocil)
+
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(paths.xccdf)
 
 
 def main():
@@ -74,27 +111,9 @@ def main():
     loader.load_benchmark(benchmark_root)
 
     loader.add_fixes_to_rules()
+
     xccdftree = loader.export_benchmark_to_xml()
-    ocil = loader.export_ocil_to_xml()
-
-    checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
-
-    translator = ssg.id_translate.IDTranslator("ssg")
-
-    oval_linker = ssg.build_renumber.OVALFileLinker(
-        translator, xccdftree, checks, args.oval)
-    oval_linker.build_ovals_dir = args.build_ovals_dir
-    oval_linker.link()
-    oval_linker.save_linked_tree()
-    oval_linker.link_xccdf()
-
-    ocil_linker = ssg.build_renumber.OCILFileLinker(
-        translator, xccdftree, checks, args.ocil)
-    ocil_linker.link(ocil)
-    ocil_linker.save_linked_tree()
-    ocil_linker.link_xccdf()
-
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf)
+    link_benchmark(loader, xccdftree, args)
 
 
 if __name__ == "__main__":
