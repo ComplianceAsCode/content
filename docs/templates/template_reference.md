@@ -894,6 +894,9 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **sysctlval_regex** - if **operation** is `pattern match`, this
         parameter is used instead of **sysctlval**.
 
+    -   **check_runtime** - whether to generate checks for runtime configuration.
+        Default value: `true`.
+
     In case the **sysctl_remediate_drop_in_file** property is set to true in the product file,
     the remediation scripts will set the variable with correct value to a drop-in file in
     `/etc/sysctl.d/var_name.conf` file.

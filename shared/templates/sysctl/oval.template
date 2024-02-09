@@ -24,12 +24,14 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
-    {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
+    {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in system configuration" + (" and system runtime." if CHECK_RUNTIME == "true" else ".")) }}}
     <criteria operator="AND">
       <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
                          definition_ref="{{{ rule_id }}}_static"/>
+{{% if CHECK_RUNTIME == "true" %}}
       <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
                          definition_ref="{{{ rule_id }}}_runtime"/>
+{{%- endif %}}
     </criteria>
   </definition>
 </def-group>
@@ -38,7 +40,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="4">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in system configuration" + (" and system runtime." if CHECK_RUNTIME == "true" else ".")) }}}
     <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
 {{% if product in ["ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="is IPv6 enabled?"
@@ -50,8 +52,10 @@
       <criteria operator="AND">
         <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
                            definition_ref="{{{ rule_id }}}_static"/>
+{{% if CHECK_RUNTIME == "true" %}}
         <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
                            definition_ref="{{{ rule_id }}}_runtime"/>
+{{%- endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -60,6 +64,7 @@
 {{%- endif %}}
 {{%- if "R" in FLAGS -%}}
 
+{{% if CHECK_RUNTIME == "true" %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_runtime" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
@@ -114,6 +119,7 @@
 {{% endfor %}}
 {{% endif %}}
 </def-group>
+{{% endif %}}
 
 {{%- endif -%}}
 {{%- if "S" in FLAGS -%}}
