@@ -454,6 +454,13 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
+    def get_benchmark_for_profile(self, profile):
+        b = deepcopy(self)
+        b.profiles = [profile]
+        b.drop_rules_not_included_in_a_profile()
+        b.unselect_empty_groups()
+        return profile.id_, b
+
 
 class Group(XCCDFEntity):
     """Represents XCCDF Group
@@ -1488,6 +1495,17 @@ class LinearLoader(object):
         self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
+    def get_benchmark_by_profile(self):
+        if self.benchmark is None:
+            raise Exception(
+                "Before generating benchmarks for each profile, you need to load "
+                "the initial benchmark using the load_benchmark method."
+            )
+
+        for profile in self.benchmark.profiles:
+            profile_id, benchmark = self.benchmark.get_benchmark_for_profile(profile)
+            yield profile_id, benchmark
+
     def load_compiled_content(self):
         self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
 
@@ -1548,9 +1566,13 @@ class LinearLoader(object):
     def _get_rules_from_benchmark(self, benchmark):
         return [self.rules[rule_id] for rule_id in benchmark.get_rules_selected_in_all_profiles()]
 
-    def export_ocil_to_xml(self):
+    def export_ocil_to_xml(self, benchmark=None):
         root = self._create_ocil_xml_skeleton()
-        rules = self._get_rules_from_benchmark(self.benchmark)
+
+        if benchmark is None:
+            benchmark = self.benchmark
+
+        rules = self._get_rules_from_benchmark(benchmark)
         self._add_ocil_rules(rules, root)
 
         if hasattr(ET, "indent"):
