@@ -18,7 +18,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_offline_cred_expiration" version="1">
     <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*1\s*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*(\d+)\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
