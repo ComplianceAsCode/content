@@ -135,7 +135,7 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
 
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
-        local_env_yaml["products"] = {product}
+        local_env_yaml['products'] = {product}
 
         for _path in get_rule_dir_sces(_dir_path, product):
             # To be compatible with later checks, use the rule_id (i.e., the

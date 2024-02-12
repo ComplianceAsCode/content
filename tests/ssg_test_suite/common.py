@@ -314,7 +314,7 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     local_env_yaml.update(env_yaml)
     local_env_yaml['rule_id'] = rule.id_
     local_env_yaml['rule_title'] = rule.title
-    local_env_yaml["products"] = {product}
+    local_env_yaml['products'] = {product}
 
     return rule, local_env_yaml
 

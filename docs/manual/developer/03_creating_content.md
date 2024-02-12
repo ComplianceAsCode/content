@@ -736,6 +736,9 @@ between XCCDF rules which directly implement the given controls (represented by
 The `rules` and `related_rules` keys consist of a list of rule IDs and variable
 selections.
 
+If a rule needs to be chosen only in some of the products we can use Jinja macros
+inside the controls file to choose products.
+
 After we finish our analysis, we will insert our findings to the controls file,
 the file will look like this:
 
