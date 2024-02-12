@@ -12,7 +12,12 @@ description: |-
     -w /etc/issue -p wa -k audit_rules_networkconfig_modification
     -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
     -w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+    {{% if 'ubuntu' in product -%}}
+    -w /etc/networks -p wa -k audit_rules_networkconfig_modification
+    -w /etc/network/ -p wa -k audit_rules_networkconfig_modification</pre>
+    {{% else -%}}
     -w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
+    {{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
@@ -21,7 +26,12 @@ description: |-
     -w /etc/issue -p wa -k audit_rules_networkconfig_modification
     -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
     -w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+    {{% if 'ubuntu' in product -%}}
+    -w /etc/networks -p wa -k audit_rules_networkconfig_modification
+    -w /etc/network/ -p wa -k audit_rules_networkconfig_modification</pre>
+    {{% else -%}}
     -w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification</pre>
+    {{% endif %}}
 
 rationale: |-
     The network environment should not be modified by anything other
@@ -61,7 +71,11 @@ ocil_clause: 'the system is not configured to audit changes of the network confi
 ocil: |-
     To determine if the system is configured to audit changes to its network configuration,
     run the following command:
+    {{% if 'ubuntu' in product -%}}
+    <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/networks|/etc/network/)'</pre>
+    {{% else -%}}
     <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/sysconfig/network)'</pre>
+    {{% endif %}}
     If the system is configured to watch for network configuration changes, a line should be returned for
     each file specified (and <tt>perm=wa</tt> should be indicated for each).
 

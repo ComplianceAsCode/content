@@ -63,5 +63,13 @@
 {{{ ansible_audit_auditctl_add_watch_rule(path='/etc/issue.net', permissions='wa', key='audit_rules_networkconfig_modification') }}}
 {{{ ansible_audit_augenrules_add_watch_rule(path='/etc/hosts', permissions='wa', key='audit_rules_networkconfig_modification') }}}
 {{{ ansible_audit_auditctl_add_watch_rule(path='/etc/hosts', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+
+{{% if 'ubuntu' in product -%}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/networks', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/networks', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/etc/network/', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/etc/network/', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{% else -%}}
 {{{ ansible_audit_augenrules_add_watch_rule(path='/etc/sysconfig/network', permissions='wa', key='audit_rules_networkconfig_modification') }}}
 {{{ ansible_audit_auditctl_add_watch_rule(path='/etc/sysconfig/network', permissions='wa', key='audit_rules_networkconfig_modification') }}}
+{{% endif %}}
