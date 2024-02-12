@@ -1294,44 +1294,46 @@ controls:
     status: manual
 
   - id: R71
-    title: Implementation of a logging system
+    title: Implement a logging system
     levels:
     - enhanced
     description: >-
       The configuration of the service must be performed according to the
-      'Security Recommendations for the implementation of a logging system' (DAT-NT-012) accessible on the ANSSI website.
+      'Security Recommendations for the architecture of a logging system'
+      (DAT-PA-012 v2.0) accessible on the ANSSI website
+      (https://www.ssi.gouv.fr/journalisation).
     notes: >-
-      A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
+      A lot of recommendations and requirements from the DAT-PA-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
     status: automated
     rules:
-    # Based on DAT-NT-012 R3
+    # Based on DAT-PA-012 R5
     - package_chrony_installed
     - service_chronyd_or_ntpd_enabled
     - chronyd_specify_remote_server
     - chronyd_configure_pool_and_server
 
-    # Derived from DAT-NT-012 R4
-    - partition_for_var_log_audit
-
-    # Derived from DAT-NT-012 R5, these are also covered in R7
+    # Derived from DAT-PA-012 R9
     # The default remote loghost is logcollector.
     # Change the default value to the hostname or IP of the system to send the logs to
     - rsyslog_remote_loghost
 
-    # Derived from DAT-NT-012 R12
+    # Derived from DAT-PA-012 R17
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
 
-    # Based on DAT-NT-012 R18
+    # Derived from DAT-PA-012 R21
+    - partition_for_var_log_audit
+
+    # Based on DAT-PA-012 R24
     # The rules sets the rotation frequency to daily
     - package_logrotate_installed
     - timer_logrotate_enabled
     - ensure_logrotate_activated
 
-    # Based on DAT-NT-012 R20
+    # Based on DAT-PA-012 R26, R27
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
