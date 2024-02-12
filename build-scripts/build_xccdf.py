@@ -5,6 +5,8 @@ from __future__ import print_function
 import argparse
 import os
 import os.path
+from collections import namedtuple
+
 
 import ssg.build_yaml
 import ssg.utils
@@ -12,6 +14,9 @@ import ssg.environment
 import ssg.id_translate
 import ssg.build_renumber
 import ssg.products
+
+
+Paths_ = namedtuple("Paths_", ["xccdf", "oval", "ocil", "build_ovals_dir"])
 
 
 def parse_args():
@@ -53,6 +58,12 @@ def parse_args():
         "--resolved-base",
         help="To which directory to put processed rule/group/value YAMLs."
     )
+    parser.add_argument(
+        "--thin-ds-components-dir",
+        help="Directory to store XCCDF, OVAL, OCIL, for thin data stream. (off: to disable)"
+        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/"
+        "Fake profiles are used to create thin DS. Components are generated for each profile.",
+    )
     return parser.parse_args()
 
 
@@ -77,18 +88,34 @@ def link_ocil(xccdftree, checks, output_file_name, ocil):
     ocil_linker.link_xccdf()
 
 
-def link_benchmark(loader, xccdftree, paths, benchmark=None):
-    if benchmark is None:
-        benchmark = loader.benchmark
-
+def link_benchmark(loader, xccdftree, args, benchmark=None):
     checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
 
-    link_oval(xccdftree, checks, paths.oval, paths.build_ovals_dir)
+    link_oval(xccdftree, checks, args.oval, args.build_ovals_dir)
 
-    ocil = loader.export_ocil_to_xml()
-    link_ocil(xccdftree, checks, paths.ocil, ocil)
+    ocil = loader.export_ocil_to_xml(benchmark)
+    link_ocil(xccdftree, checks, args.ocil, ocil)
 
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(paths.xccdf)
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf)
+
+
+def get_path(path, file_name):
+    return os.path.join(path, file_name)
+
+
+def link_benchmark_per_profile(loader, args):
+    if not os.path.exists(args.thin_ds_components_dir):
+        os.makedirs(args.thin_ds_components_dir)
+
+    for id_, benchmark in loader.get_benchmark_by_profile():
+        xccdftree = benchmark.to_xml_element(loader.env_yaml)
+        p = Paths_(
+            xccdf=get_path(args.thin_ds_components_dir, "xccdf_{}.xml".format(id_)),
+            oval=get_path(args.thin_ds_components_dir, "oval_{}.xml".format(id_)),
+            ocil=get_path(args.thin_ds_components_dir, "ocil_{}.xml".format(id_)),
+            build_ovals_dir=args.build_ovals_dir
+        )
+        link_benchmark(loader, xccdftree, p, benchmark)
 
 
 def main():
@@ -111,6 +138,9 @@ def main():
     loader.load_benchmark(benchmark_root)
 
     loader.add_fixes_to_rules()
+
+    if args.thin_ds_components_dir != "off":
+        link_benchmark_per_profile(loader, args)
 
     xccdftree = loader.export_benchmark_to_xml()
     link_benchmark(loader, xccdftree, args)
