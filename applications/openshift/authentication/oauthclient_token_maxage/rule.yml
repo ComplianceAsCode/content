@@ -63,6 +63,4 @@ template:
         check_existence_yamlpath: ".items[:].grantMethod"
         check_existence: "all_exist"
         entity_check: "all"
-        values:
-            - value: ".*"
-              operation: "pattern match"
+        xccdf_variable: var_oauth_token_maxage
