@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/sestatus.conf File
+
+description: '{{{ describe_file_group_owner(file="/etc/sestatus.conf", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/sestatus.conf file by the root group is important
+    because this file hosts SELinux configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the SELinux configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86287-0
+    cce@rhel8: CCE-86288-8
+    cce@rhel9: CCE-86289-6
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/sestatus.conf", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/sestatus.conf", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/sestatus.conf", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/sestatus.conf", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/sestatus.conf
+        gid_or_name: root
