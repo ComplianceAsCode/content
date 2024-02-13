@@ -4,8 +4,7 @@ from __future__ import print_function
 import os
 
 from .build_remediations import parse_from_file_without_jinja
-from .rule_yaml import parse_prodtype
-from .utils import read_file_list
+from .utils import read_file_list, parse_platform
 
 from .build_remediations import REMEDIATION_TO_EXT_MAP as REMEDIATION_MAP
 
@@ -48,10 +47,10 @@ def applicable_platforms(fix_path):
     if 'platform' not in config:
         raise ValueError("Malformed fix: missing platform" % fix_path)
 
-    return parse_prodtype(config['platform'])
+    return parse_platform(config['platform'])
 
 
-def parse_platform(fix_contents):
+def find_platform_line(fix_contents):
     """
     Parses the platform configuration item to determine the line number that
     the platforms configuration option is on. If this key is not found, None
@@ -81,7 +80,7 @@ def set_applicable_platforms(fix_contents, new_platforms):
     platforms.
     """
 
-    platform_line = parse_platform(fix_contents)
+    platform_line = find_platform_line(fix_contents)
     if platform_line is None:
         raise ValueError("When parsing config file, unable to find platform "
                          "line!\n\n%s" % "\n".join(fix_contents))

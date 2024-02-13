@@ -328,7 +328,7 @@ The value is also automatically substituted into OVAL checks, Ansible^(R)^ Playb
 
 . In order to learn more about the parameterization, find and review the variable definition file.
 . Press `Ctrl+P` and paste the value `var_accounts_tmout.var`.
-. Click in the shown item to open the file. 
+. Click in the shown item to open the file.
 
 . The variable has multiple options, which you can see in the options list:
 +
@@ -349,7 +349,7 @@ Later, you add a new pair--variable name and selector--into the profile and you 
 
 . To apply the variable parameterization, the variable and the selector have to be added to the `travel` profile.
 . Press `Ctrl+P` and paste the value `products/rhel8/profiles/travel.profile`.
-. Click in the shown item to open the file. 
+. Click in the shown item to open the file.
 +
 As with the rule IDs, the variable values also belong to the `selections` list in the profile.
 However, the entry for a variable has the format `variable=selector`. So in this case, the format of the list entry is `var_accounts_tmout=5_min`.
@@ -855,10 +855,6 @@ controls:
 Let's use those new controls in our `travel` profile.
 We do it by replacing respective selections with security controls invocations.
 A security control is identified by `policy id:control id`, and when we select it, all rules that are applicable for the product that we build get selected by the profile.
-
-Security controls can contain rules that are built only for a limited set of products by means of restricting the rule's `prodtype`, which is an link:https://complianceascode.readthedocs.io/en/latest/manual/developer/06_contributing_with_content.html#rules[optional rule attribute].
-Such rules are skipped when expanding security controls into profiles, so a profiles that are defined using the same security controls on different products can vary.
-This may surprise content authors, but it is a useful way how to make security controls reusable despite product differences s.a. different names of packages.
 
 So let's modify the profile definition and alter its `selections`.
 

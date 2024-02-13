@@ -11,7 +11,6 @@ from .constants import (
     xlink_namespace, XCCDF12_NS, SCE_SYSTEM
 )
 from .jinja import process_file_with_macros
-from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
 from . import utils, products
 
@@ -134,15 +133,9 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
             # and move on.
             continue
 
-        prodtypes = parse_prodtype(rule.prodtype)
-        if prodtypes and 'all' not in prodtypes and product not in prodtypes:
-            # The prodtype exists, isn't all and doesn't contain this current
-            # product, so we're best to skip this rule altogether.
-            continue
-
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
-        local_env_yaml['products'] = prodtypes  # default is all
+        local_env_yaml['products'] = {product}
 
         for _path in get_rule_dir_sces(_dir_path, product):
             # To be compatible with later checks, use the rule_id (i.e., the

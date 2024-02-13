@@ -322,17 +322,6 @@ class RuleChecker(oscap.Checker):
             rule, local_env_yaml = common.load_rule_and_env(
                 dirpath, product_yaml, product)
 
-            # Before we get too far, we wish to search the rule YAML to see if
-            # it is applicable to the current product. If we have a product
-            # and the rule isn't applicable for the product, there's no point
-            # in continuing with the rest of the loading. This should speed up
-            # the loading of the templated tests. Note that we've already
-            # parsed the prodtype into local_env_yaml
-            if product and local_env_yaml['products']:
-                prodtypes = local_env_yaml['products']
-                if "all" not in prodtypes and product not in prodtypes:
-                    continue
-
             tests_dir = os.path.join(dirpath, "tests")
             template_name = None
             if rule.template and rule.template['vars']:

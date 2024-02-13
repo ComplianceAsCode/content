@@ -151,14 +151,6 @@ def get_yaml_contents(rule_obj):
     return file_description(yaml_file, yaml_contents)
 
 
-def parse_prodtype(prodtype):
-    """
-    From a prodtype line, returns the set of products listed.
-    """
-
-    return set(map(lambda x: x.strip(), prodtype.split(',')))
-
-
 def get_section_lines(file_path, file_contents, key_name):
     """
     From the given file_path and file_contents, find the lines describing the section

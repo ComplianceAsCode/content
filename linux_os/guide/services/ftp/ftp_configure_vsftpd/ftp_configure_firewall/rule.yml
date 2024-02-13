@@ -21,7 +21,7 @@ description: |-
 rationale: |-
     These settings configure the firewall to allow connections to an FTP server.
 
-    {{% if prodtype != "rhel7" %}}
+    {{% if product != "rhel7" %}}
     The first line allows initial connections to the FTP server port.
     FTP is an older protocol which is not very compatible with firewalls. During the initial FTP dialogue, the client
     and server negotiate an arbitrary port to be used for data transfer. The <tt>ip_conntrack_ftp</tt>  module is used by

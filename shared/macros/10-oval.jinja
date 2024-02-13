@@ -7,7 +7,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 #}}
 {{%- macro oval_affected(products) %}}
 <affected family="unix">
-{{{ prodtype_to_platform(products)|indent(2) }}}
+{{{ product_to_platform(products)|indent(2) }}}
 </affected>
 {{%- endmacro %}}
 
@@ -132,7 +132,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
-    {{% set dir_path = path + ".d" %}}          
+    {{% set dir_path = path + ".d" %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
         {{{- oval_line_in_file_criterion(path, parameter) }}}
@@ -1057,9 +1057,9 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
         {{% if product in ['opensuse', 'sle12','sle15'] %}}
-        <extend_definition comment="rpm package openssh installed" 
+        <extend_definition comment="rpm package openssh installed"
           definition_ref="package_openssh_installed" />
-        {{% else %}}  
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
         {{% endif %}}

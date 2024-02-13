@@ -50,6 +50,6 @@ if __name__ == "__main__":
     data = dict()
     data["srgs"] = ssg.build_stig.parse_srgs(args.srgs)
     data["rules_by_srgid"] = get_rules_by_srgid(args.build_dir, args.product)
-    data["full_name"] = ssg.utils.prodtype_to_name(args.product)
+    data["full_name"] = ssg.utils.product_to_name(args.product)
     render_template(data, SRGMAP_TEMPLATE, args.srgmap)
     render_template(data, SRGMAP_FLAT_TEMPLATE, args.srgmap_flat)

@@ -16,9 +16,9 @@ except ImportError:
 
 from .constants import JINJA_MACROS_DIRECTORY
 from .utils import (required_key,
-                    prodtype_to_name,
+                    product_to_name,
                     name_to_platform,
-                    prodtype_to_platform,
+                    product_to_platform,
                     banner_regexify,
                     banner_anchor_wrap,
                     escape_id,
@@ -135,9 +135,9 @@ def process_file(filepath, substitutions_dict):
 
 
 def add_python_functions(substitutions_dict):
-    substitutions_dict['prodtype_to_name'] = prodtype_to_name
+    substitutions_dict['product_to_name'] = product_to_name
     substitutions_dict['name_to_platform'] = name_to_platform
-    substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
+    substitutions_dict['product_to_platform'] = product_to_platform
     substitutions_dict['url_encode'] = url_encode
     substitutions_dict['raise'] = raise_exception
     substitutions_dict['expand_yaml_path'] = expand_yaml_path

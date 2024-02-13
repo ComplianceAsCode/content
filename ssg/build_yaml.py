@@ -36,7 +36,6 @@ from .constants import (XCCDF12_NS,
                         FIX_TYPE_TO_SYSTEM
                         )
 from .rules import get_rule_dir_yaml, is_rule_dir
-from .rule_yaml import parse_prodtype
 
 from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_macro_expand
@@ -461,7 +460,6 @@ class Group(XCCDFEntity):
     GENERIC_FILENAME = "group.yml"
 
     KEYS = dict(
-        prodtype=lambda: "all",
         description=lambda: "",
         warnings=lambda: list(),
         requires=lambda: list(),
@@ -682,7 +680,6 @@ class Rule(XCCDFEntity, Templatable):
     """Represents XCCDF Rule
     """
     KEYS = dict(
-        prodtype=lambda: "all",
         description=lambda: "",
         rationale=lambda: "",
         severity=lambda: "",
@@ -741,22 +738,16 @@ class Rule(XCCDFEntity, Templatable):
         return result
 
     @staticmethod
-    def _has_platforms_to_convert(env_yaml, rule, product_cpes):
+    def _has_platforms_to_convert(rule, product_cpes):
         # Convert the platform names to CPE names
         # But only do it if an env_yaml was specified (otherwise there would
-        # be no product CPEs to lookup), and the rule's prodtype matches the
-        # product being built also if the rule already has cpe_platform_names
+        # be no product CPEs to lookup) and if the rule already has cpe_platform_names
         # specified (compiled rule) do not evaluate platforms again
-        return (
-            env_yaml and
-            (env_yaml["product"] in parse_prodtype(rule.prodtype) or
-                rule.prodtype == "all") and
-            (product_cpes and not rule.cpe_platform_names)
-        )
+        return product_cpes and not rule.cpe_platform_names
 
     @staticmethod
-    def _convert_platform_names(env_yaml, rule, product_cpes):
-        if not Rule._has_platforms_to_convert(env_yaml, rule, product_cpes):
+    def _convert_platform_names(rule, product_cpes):
+        if not Rule._has_platforms_to_convert(rule, product_cpes):
             return
         # parse platform definition and get CPEAL platform
         for platform in rule.platforms:
@@ -793,7 +784,8 @@ class Rule(XCCDFEntity, Templatable):
         if rule.platform is not None:
             rule.platforms.add(rule.platform)
 
-        cls._convert_platform_names(env_yaml, rule, product_cpes)
+        cls._convert_platform_names(rule, product_cpes)
+
         # Only load policy specific content if rule doesn't have it defined yet
         if not rule.policy_specific_content:
             rule.load_policy_specific_content(yaml_file, env_yaml)
@@ -803,7 +795,6 @@ class Rule(XCCDFEntity, Templatable):
             rule.sce_metadata["relative_path"] = os.path.join(
                 env_yaml["product"], "checks/sce", rule.sce_metadata['filename'])
 
-        rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)
         rule.validate_references(yaml_file)
         return rule
@@ -985,15 +976,6 @@ class Rule(XCCDFEntity, Templatable):
                         "in {yaml_file} contains whitespace."
                         .format(ref_type=ref_type, yaml_file=yaml_file))
                     raise ValueError(msg)
-
-    def validate_prodtype(self, yaml_file):
-        for ptype in self.prodtype.split(","):
-            if ptype.strip() != ptype:
-                msg = (
-                    "Comma-separated '{prodtype}' prodtype "
-                    "in {yaml_file} contains whitespace."
-                    .format(prodtype=self.prodtype, yaml_file=yaml_file))
-                raise ValueError(msg)
 
     def add_fixes(self, fixes):
         self.fixes = fixes
@@ -1298,11 +1280,7 @@ class DirectoryLoader(object):
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml, self.product_cpes)
-            prodtypes = parse_prodtype(group.prodtype)
-            if "all" in prodtypes or self.product in prodtypes:
-                self.all_groups[group.id_] = group
-            else:
-                return None
+            self.all_groups[group.id_] = group
 
         return group
 
@@ -1421,10 +1399,6 @@ class BuildLoader(DirectoryLoader):
                 "The rule '%s' isn't mapped to any component! Insert the "
                 "rule ID to at least one file in '%s'." %
                 (rule.id_, self.components_dir))
-        prodtypes = parse_prodtype(rule.prodtype)
-        if "all" not in prodtypes and self.product not in prodtypes:
-            # TODO: remove prodtype
-            pass
         self.all_rules[rule.id_] = rule
         self.loaded_group.add_rule(
             rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
