@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/ipsec.conf File
+
+description: '{{{ describe_file_group_owner(file="/etc/ipsec.conf", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/ipsec.conf file by the root group is important
+    because this file hosts Libreswan configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the Libreswan configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86385-2
+    cce@rhel8: CCE-86386-0
+    cce@rhel9: CCE-86387-8
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/ipsec.conf", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/ipsec.conf", group="root") }}}
+
+platform: package[libreswan]
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/ipsec.conf", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/ipsec.conf", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/ipsec.conf
+        gid_or_name: root
