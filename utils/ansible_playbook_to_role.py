@@ -445,7 +445,7 @@ class RoleGithubUpdater(object):
         # We want the raw string to compare against _local_content
 
         # New repos use main instead of master
-        branch='master'
+        branch = 'master'
         if "rhel9" in self.remote_repo.full_name:
             branch = 'main'
 
