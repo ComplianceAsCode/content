@@ -1271,14 +1271,15 @@ controls:
       The selection of rules doesn't cover the use of hardware devices to protect the passwords.
     status: supported
     rules:
-    # ENCRYPT_METHOD, system default is SHA512
+    - var_password_hashing_algorithm=yescrypt
     - set_password_hashing_algorithm_systemauth
-    # The default salt size is secure enough:
-    # https://bugzilla.redhat.com/show_bug.cgi?id=1229472
-    # SHA_CRYPT_MIN_ROUNDS 65536
-    - var_password_pam_unix_rounds=65536
+    - var_password_pam_unix_rounds=11
     - accounts_password_pam_unix_rounds_system_auth
     - accounts_password_pam_unix_rounds_password_auth
+    - accounts_password_pam_minclass
+    - accounts_password_pam_minlen
+    - accounts_password_pam_retry
+    - var_password_pam_minclass=4
 
   - id: R69
     title: Securing access to remote user databases
