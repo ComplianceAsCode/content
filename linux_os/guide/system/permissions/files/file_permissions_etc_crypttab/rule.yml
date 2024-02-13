@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/crypttab File
+
+description: '{{{ describe_file_permissions(file="/etc/crypttab", perms="0600") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/crypttab file is important
+    because this file hosts encrypted block devices configuration. Protection
+    of this file is critical for system security. Assigning the ownership to
+    root ensures exclusive control of the encrypted block devices
+    configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86367-0
+    cce@rhel8: CCE-86369-6
+    cce@rhel9: CCE-86370-4
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/crypttab", perms="0600") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/crypttab", perms="0600") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/crypttab", mode="0600") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/crypttab", mode="0600") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/crypttab
+        filemode: '0600'
