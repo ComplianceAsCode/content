@@ -64,7 +64,7 @@ ocil: |-
     If "cache_credentials" is set to "false" or is missing no further checks are required.<br/>
     {{% endif %}}
     To verify that SSSD expires offline credentials, run the following command:
-    <pre>$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf</pre>
+    <pre>$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf</pre>
     If configured properly, output should be
     <pre>offline_credentials_expiration = 1</pre>
 
