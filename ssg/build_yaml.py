@@ -419,6 +419,8 @@ class Benchmark(XCCDFEntity):
         for rule in self.rules.values():
             root.append(rule.to_xml_element(env_yaml))
 
+        if hasattr(ET, "indent"):
+            ET.indent(root, space=" ", level=0)
         return root
 
     def to_file(self, file_name, env_yaml=None):
@@ -1521,7 +1523,7 @@ class LinearLoader(object):
         register_namespaces()
         return self.benchmark.to_file(filename, self.env_yaml)
 
-    def export_ocil_to_xml(self):
+    def _create_ocil_xml_skeleton(self):
         root = ET.Element('{%s}ocil' % ocil_namespace)
         root.set('xmlns:xsi', xsi_namespace)
         root.set("xmlns:xhtml", xhtml_namespace)
@@ -1534,16 +1536,32 @@ class LinearLoader(object):
         schema_version.text = "2.0"
         timestamp_el = ET.SubElement(generator, "{%s}timestamp" % ocil_namespace)
         timestamp_el.text = timestamp
+        return root
+
+    @staticmethod
+    def _add_ocil_rules(rules, root):
         questionnaires = ET.SubElement(root, "{%s}questionnaires" % ocil_namespace)
         test_actions = ET.SubElement(root, "{%s}test_actions" % ocil_namespace)
         questions = ET.SubElement(root, "{%s}questions" % ocil_namespace)
-        for rule in self.rules.values():
+
+        for rule in rules:
             if not rule.ocil and not rule.ocil_clause:
                 continue
             questionnaire, action, boolean_question = rule.to_ocil()
             questionnaires.append(questionnaire)
             test_actions.append(action)
             questions.append(boolean_question)
+
+    def _get_rules_from_benchmark(self, benchmark):
+        return [self.rules[rule_id] for rule_id in benchmark.get_rules_selected_in_all_profiles()]
+
+    def export_ocil_to_xml(self):
+        root = self._create_ocil_xml_skeleton()
+        rules = self._get_rules_from_benchmark(self.benchmark)
+        self._add_ocil_rules(rules, root)
+
+        if hasattr(ET, "indent"):
+            ET.indent(root, space=" ", level=0)
         return root
 
     def export_ocil_to_file(self, filename):
