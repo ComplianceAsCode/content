@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/sysctl.d Directory
+
+description: '{{{ describe_file_group_owner(file="/etc/sysctl.d", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/sysctl.d directory by the root group is important
+    because this directory hosts kernel configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the kernel configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86322-5
+    cce@rhel8: CCE-86324-1
+    cce@rhel9: CCE-86325-8
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/sysctl.d", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/sysctl.d", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/sysctl.d", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/sysctl.d", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/sysctl.d/
+        gid_or_name: root
