@@ -58,6 +58,7 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 PRODUCT_ALLOWLIST = set([
     "rhel7",
     "rhel8",
+    "rhel9",
 ])
 
 PROFILE_ALLOWLIST = set([
@@ -80,6 +81,8 @@ PROFILE_ALLOWLIST = set([
     "stig",
     "rhvh-stig",
     "rhvh-vpp",
+    "e8",
+    "ism",
 ])
 
 
@@ -118,7 +121,7 @@ def clone_and_init_repository(parent_dir, organization, repo):
         os.system('git add .')
         os.system('git commit -a -m "Initial commit" --author "%s <%s>"'
                   % (GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL))
-        os.system('git push origin master')
+        os.system('git push origin main')
     finally:
         os.chdir("..")
 
@@ -423,7 +426,7 @@ class RoleGithubUpdater(object):
         b64 = base64.b64decode(blob.content)
         return (b64.decode("utf8"), sha[0])
 
-    def _get_contents(self, path_name, branch='master'):
+    def _get_contents(self, path_name, branch='main'):
         """
         First try to use traditional's github API to get package contents,
         since this API can't fetch file size more than 1MB, use another API when failed.
@@ -440,7 +443,13 @@ class RoleGithubUpdater(object):
 
     def _remote_content(self, filepath):
         # We want the raw string to compare against _local_content
-        content, sha = self._get_contents(filepath)
+
+        # New repos use main instead of master
+        branch = 'master'
+        if "rhel9" in self.remote_repo.full_name:
+            branch = 'main'
+
+        content, sha = self._get_contents(filepath, branch)
         return content, sha
 
     def _update_content_if_needed(self, filepath):
