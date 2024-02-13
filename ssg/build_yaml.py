@@ -455,6 +455,7 @@ class Benchmark(XCCDFEntity):
         return self.id_
 
     def get_benchmark_for_profile(self, profile):
+        profile.unselected_groups = []
         b = deepcopy(self)
         b.profiles = [profile]
         b.drop_rules_not_included_in_a_profile()
