@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/sysctl.d Directory
+
+description: '{{{ describe_file_permissions(file="/etc/sysctl.d", perms="0644") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/sysctl.d directory is important
+    because this directory hosts kernel configuration. Protection of this
+    directory is critical for system security. Restricting the permissions
+    ensures exclusive control of the kernel configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86331-6
+    cce@rhel8: CCE-86332-4
+    cce@rhel9: CCE-86337-3
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/sysctl.d", perms="0644") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/sysctl.d", perms="0644") }}}
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/sysctl.d", mode="0644") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sysctl.d", mode="0644") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/sysctl.d/
+        filemode: '0644'
