@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/chrony.keys File
+
+description: '{{{ describe_file_group_owner(file="/etc/chrony.keys", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/chrony.keys file by the root group is important
+    because this file hosts chrony cryptographic keys. Protection
+    of this file is critical for system security. Assigning the ownership to
+    root ensures exclusive control of the chrony cryptography keys.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86371-2
+    cce@rhel8: CCE-86373-8
+    cce@rhel9: CCE-86374-6
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/chrony.keys", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/chrony.keys", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/chrony.keys", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/chrony.keys", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/chrony.keys
+        gid_or_name: root
