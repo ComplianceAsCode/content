@@ -105,6 +105,7 @@ endmacro()
 
 mypy_test("utils/import_srg_spreadsheet.py" "normal")
 mypy_test("utils/check_eof.py" "normal")
+mypy_test("tests/cces-removed.py" "normal")
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -326,3 +327,19 @@ add_test(
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
 )
 endif()
+
+macro(cce_avail_check TEST_NAME_SUFFIX PRODUCTS CCE_LIST_PATH)
+    if(PYTHON_VERSION_MAJOR GREATER 2)
+        add_test(
+            NAME "cce_avail_check-${TEST_NAME_SUFFIX}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/cces-removed.py" --root  "${CMAKE_SOURCE_DIR}" --json "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" --products "${PRODUCTS}" --cee-list "${CCE_LIST_PATH}"
+        )
+        set_tests_properties("cce_avail_check-${TEST_NAME_SUFFIX}" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+        set_tests_properties("cce_avail_check-${TEST_NAME_SUFFIX}" PROPERTIES DEPENDS "test-rule-dir-json")
+        set_tests_properties("cce_avail_check-${TEST_NAME_SUFFIX}" PROPERTIES LABELS quick)
+    endif()
+endmacro()
+
+cce_avail_check("rhel-all" "rhel7,rhel8,rhel9" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
+cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
+cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
