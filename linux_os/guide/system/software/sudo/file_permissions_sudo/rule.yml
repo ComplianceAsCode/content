@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Ensure That the sudo Binary Has the Correct Permissions'
+
+description: |-
+{{{ describe_file_permissions("/usr/bin/sudo", "4111") | indent(4) }}}
+
+rationale: |-
+    The sudoers program should only be usable by people who have the correct permissions.
+
+identifiers:
+    cce@rhel7: CCE-86949-5
+    cce@rhel8: CCE-86950-3
+    cce@rhel9: CCE-86951-1
+
+severity: medium
+
+platform: package[sudo]
+
+template:
+    name: "file_permissions"
+    vars:
+        filepath: "/usr/bin/sudo"
+        filemode: '4111'
