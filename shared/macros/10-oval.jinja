@@ -1179,7 +1179,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of specified fields of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
@@ -1220,7 +1220,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
       regular expression which ensures that the third field in the entry
       contains at least 4 digits (or more) and therefore the regular
       expression doesn't match entries with values 999 or less. -->
-    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d{4,}:(?:[^:]*:){3}(?!\/sbin\/nologin)[^:]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^([^:]*):[^:]*:\d{4,}:(?:[^:]*:){3}(?!(\/usr)?(\/sbin\/nologin|\/bin\/false))[^:]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_{{{ object_id }}}_users_ignored</filter>
   </ind:textfilecontent54_object>
@@ -1235,7 +1235,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of home directories of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
@@ -1254,7 +1254,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of User IDs of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
@@ -1273,7 +1273,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{#
   Extract from /etc/passwd a list of Group IDs of local interactive users.
-  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin shell.
+  The list contains only items related to non-system UIDs and is filtered to exclude some special usernames and users with /sbin/nologin and /bin/false shell.
 
   Unlike macro create_interactive_users_list_object, this macro gives list that contains only local users, because it doesn't use the OVAL "unix:password_object" element, but it merely parses /etc/passwd using "ind:textfilecontent54_object".
 
