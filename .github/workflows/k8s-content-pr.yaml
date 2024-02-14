@@ -37,7 +37,7 @@ jobs:
         run: unzip pr_number.zip
       - name: 'Read PR number'
         run: |
-          echo "pr-number=$(cat pr/pr_number)" >> "$GITHUB_OUTPUT"
+          echo "pr-number=$(cat pr_number)" >> "$GITHUB_OUTPUT"
 
   container-main:
     needs: 
