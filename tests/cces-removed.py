@@ -26,13 +26,17 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _process_rule(cces_in_use, products, rule_obj):
+    for identifier_key, identifier_value in rule_obj['identifiers'].items():
+        for product in products.split(","):
+            if identifier_key.endswith(product):
+                cces_in_use.add(identifier_value)
+
+
 def _get_cces_in_use(data, products) -> Set[str]:
     cces_in_use: Set[str] = set()
     for rule_id, rule_obj in data.items():
-        for identifier_key, identifier_value in rule_obj['identifiers'].items():
-            for product in products.split(","):
-                if identifier_key.endswith(product):
-                    cces_in_use.add(identifier_value)
+        _process_rule(cces_in_use, products, rule_obj)
     return cces_in_use
 
 
