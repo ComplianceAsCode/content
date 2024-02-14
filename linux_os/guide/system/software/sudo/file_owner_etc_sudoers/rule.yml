@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/sudoers File
+
+description: '{{{ describe_file_owner(file="/etc/sudoers", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/sudoers file by the root user is important
+    because this file hosts sudo configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the sudo configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86415-7
+    cce@rhel8: CCE-86416-5
+    cce@rhel9: CCE-86417-3
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/sudoers", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/sudoers", owner="root") }}}
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/sudoers", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/sudoers", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/sudoers
+        fileuid: '0'
