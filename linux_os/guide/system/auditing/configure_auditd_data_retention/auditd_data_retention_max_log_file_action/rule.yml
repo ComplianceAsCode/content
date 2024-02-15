@@ -16,8 +16,8 @@ description: |-
     <li><tt>rotate</tt></li>
     <li><tt>keep_logs</tt></li>
     </ul>
-    Set the <tt><i>ACTION</i></tt> to <tt>rotate</tt> to ensure log rotation
-    occurs. This is the default. The setting is case-insensitive.
+    Set the <tt><i>ACTION</i></tt> to <tt>{{{ xccdf_value("var_auditd_max_log_file_action") }}}</tt>.
+    The setting is case-insensitive.
 
 rationale: |-
     Automatically rotating logs (by setting this to <tt>rotate</tt>)
