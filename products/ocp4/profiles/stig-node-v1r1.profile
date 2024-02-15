@@ -22,4 +22,4 @@ description: |-
 filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
 
 selections:
-    - srg_ctr:all
+    - stig_ocp4:all

@@ -22,7 +22,7 @@ description: |-
 filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platforms and "ocp4-node-on-sdn" not in platforms and "ocp4-node-on-ovn" not in platforms'
 
 selections:
-    - srg_ctr:all
+    - stig_ocp4:all
   ### Variables
     - var_openshift_audit_profile=WriteRequestBodies
     - var_oauth_token_maxage=8h
