@@ -80,13 +80,8 @@ def get_platform_rules(args):
     return platform_rules
 
 
-def get_implemented_stigs(args):
+def get_implemented_stigs(args, env_yaml):
     platform_rules = get_platform_rules(args)
-
-    product_dir = os.path.join(args.root, "products", args.product)
-    product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(
-        args.build_config_yaml, product_yaml_path, os.path.join(args.root, "product_properties"))
 
     known_rules = dict()
     for rule in platform_rules:
@@ -143,8 +138,13 @@ def main():
     args = parse_args()
     check_files(args)
 
+    product_dir = os.path.join(args.root, "products", args.product)
+    product_yaml_path = os.path.join(product_dir, "product.yml")
+    env_yaml = ssg.environment.open_environment(
+        args.build_config_yaml, product_yaml_path, os.path.join(args.root, "product_properties"))
+
     ns = {'checklist': 'http://checklists.nist.gov/xccdf/1.1'}
-    known_rules = get_implemented_stigs(args)
+    known_rules = get_implemented_stigs(args, env_yaml)
     tree = ET.parse(args.manual)
     root = tree.getroot()
     output = dict()
