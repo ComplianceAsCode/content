@@ -157,6 +157,13 @@ def get_controls(known_rules, ns, root, srg_controls=None) -> list:
     return controls
 
 
+def get_disa_stig_version(root, ns):
+    version = root.find('checklist:version', ns).text
+    release_string = root.find('checklist:plain-text[@id="release-info"]', ns).text
+    release = re.match(r'Release: (\d+) Benchmark', release_string)
+    return f"V{version}R{release.group(1)}"
+
+
 def main():
     args = parse_args()
     check_files(args)
@@ -174,6 +181,7 @@ def main():
     output['policy'] = root.find('checklist:title', ns).text
     output['title'] = root.find('checklist:title', ns).text
     output['id'] = 'stig_%s' % args.product
+    output['version'] = get_disa_stig_version(root, ns)
     output['source'] = 'https://public.cyber.mil/stigs/downloads/'
     output['levels'] = list()
     for level in ['high', 'medium', 'low']:
