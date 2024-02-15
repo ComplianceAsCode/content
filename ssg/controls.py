@@ -402,7 +402,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if not self.reference_type:
             return
         product = self.env_yaml["product"]
-        if self.product and self.product != product:
+        if self.product and product not in self.product:
             return
         allowed_reference_types = self.env_yaml["reference_uris"].keys()
         if self.reference_type not in allowed_reference_types:
