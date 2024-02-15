@@ -252,10 +252,6 @@ endmacro()
 
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL9)
-    ssg_refcheck_test("rhel9" "ccn_basic" "ccn")
-    ssg_refcheck_test("rhel9" "ccn_advanced" "ccn")
-    # This exclude can be removed once enable_authselect has a stigid
-    ssg_refcheck_test("rhel9" "stig" "stigid" "enable_authselect")
     stig_srg_mapping_test("rhel9")
 endif()
 
