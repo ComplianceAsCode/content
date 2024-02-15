@@ -1587,7 +1587,7 @@ class LinearLoader(object):
         if root is None:
             return
         tree = ET.ElementTree(root)
-        tree.write(filename)
+        tree.write(filename, xml_declaration=True)
 
 
 class Platform(XCCDFEntity):
