@@ -1,4 +1,4 @@
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 {{% set configuration_files = ["common-password"] %}}
 {{% elif product in ['ol8','ol9','rhel8', 'rhel9'] %}}
 {{% set configuration_files = ["password-auth","system-auth"] %}}

@@ -9,7 +9,7 @@ description: |-
     Edit the <tt>/etc/security/pwquality.conf</tt> to include
     {{% else %}}
     Edit the <tt>pam_pwquality.so</tt> statement in
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     <tt>/etc/pam.d/system-auth</tt> to show
     {{% else %}}
     <tt>/etc/pam.d/common-password</tt> to show
@@ -63,7 +63,7 @@ ocil: |-
     <pre>$ grep retry /etc/security/pwquality.conf</pre>
     {{% else %}}
     Check for the use of the "pwquality" retry option in the PAM files with the following command:
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     <pre>$ grep pam_pwquality /etc/pam.d/common-password</pre>
     {{% else %}}
     <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
@@ -82,7 +82,7 @@ fixtext: |-
 
     retry={{{ xccdf_value("var_password_pam_retry") }}}
     {{% else %}}
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     Add the following line to the "/etc/pam.d/common-password" file (or modify the line to have the required value):
     {{% else %}}
     Add the following line to the "/etc/pam.d/system-auth" file (or modify the line to have the required value):
