@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 import yaml
 
 import ssg.build_yaml
+import ssg.controls
 import ssg.environment
 import ssg.rules
 from ssg.utils import mkdir_p
@@ -44,6 +45,8 @@ def parse_args() -> argparse.Namespace:
                         help="What product to get STIGs for")
     parser.add_argument("-m", "--manual", type=str, action="store", required=True,
                         help="Path to XML XCCDF manual file to use as the source of the STIGs")
+    parser.add_argument("-g", "--srg-control", type=str, action="store", default=None,
+                        help="Path to the SRG control file relevant to the STIG")
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
                         help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-c", "--build-config-yaml", default=BUILD_CONFIG,
@@ -116,20 +119,40 @@ def check_files(args):
         exit(-1)
 
 
-def get_controls(known_rules, ns, root) -> list:
+def get_extra_srgs(rule, ns) -> list:
+    pattern = re.compile(r'SRG-[A-Z]{2,}-\d{5,}-[A-Z]{3,}-\d{5,}')
+
+    description = rule.find('checklist:description', ns).text
+    return pattern.findall(description)
+
+
+def get_controls(known_rules, ns, root, srg_controls=None) -> list:
     controls = list()
     for group in root.findall('checklist:Group', ns):
+        # There is alwayst at least one SRG associated
+        srgs = [group.find('checklist:title', ns).text]
+
         for stig in group.findall('checklist:Rule', ns):
             stig_id = stig.find('checklist:version', ns).text
             control = dict()
             control['id'] = stig_id
             control['levels'] = [stig.attrib['severity']]
             control['title'] = stig.find('checklist:title', ns).text
+            control['rules'] = []
             if stig_id in known_rules.keys():
-                control['rules'] = known_rules.get(stig_id)
+                control['rules'] += known_rules.get(stig_id)
+
+            # Let's add any rule selected in the SRG control file
+            if srg_controls:
+                srgs += get_extra_srgs(stig, ns)
+                for srg in srgs:
+                    control['rules'] += srg_controls.get_control(srg).rules
+
+            if len(control['rules']) > 0:
                 control['status'] = 'automated'
             else:
                 control['status'] = 'pending'
+
             controls.append(control)
     return controls
 
@@ -155,7 +178,12 @@ def main():
     output['levels'] = list()
     for level in ['high', 'medium', 'low']:
         output['levels'].append({'id': level})
-    controls = get_controls(known_rules, ns, root)
+
+    srg_controls = None
+    if args.srg_control:
+        srg_controls = ssg.controls.Policy(args.srg_control, env_yaml)
+        srg_controls.load()
+    controls = get_controls(known_rules, ns, root, srg_controls)
 
     if args.split:
         with open(args.output, 'w') as f:
