@@ -183,6 +183,8 @@ def main():
     output['id'] = 'stig_%s' % args.product
     output['version'] = get_disa_stig_version(root, ns)
     output['source'] = 'https://public.cyber.mil/stigs/downloads/'
+    output['reference_type'] = "stigid"
+    output['product'] = args.product
     output['levels'] = list()
     for level in ['high', 'medium', 'low']:
         output['levels'].append({'id': level})
