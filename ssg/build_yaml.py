@@ -1366,15 +1366,12 @@ class DirectoryLoader(object):
 class BuildLoader(DirectoryLoader):
     def __init__(
             self, profiles_dir, env_yaml, product_cpes,
-            sce_metadata_path=None, stig_reference_path=None):
+            sce_metadata_path=None):
         super(BuildLoader, self).__init__(profiles_dir, env_yaml, product_cpes)
 
         self.sce_metadata = None
         if sce_metadata_path and os.path.getsize(sce_metadata_path):
             self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
-        self.stig_references = None
-        if stig_reference_path:
-            self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
         self.components_dir = None
         self.rule_to_components = None
 
@@ -1405,8 +1402,6 @@ class BuildLoader(DirectoryLoader):
         self.loaded_group.add_rule(
             rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
         rule.normalize(self.env_yaml["product"])
-        if self.stig_references:
-            rule.add_stig_references(self.stig_references)
         if self.rule_to_components is not None:
             rule.components = self.rule_to_components[rule.id_]
         return True
@@ -1427,8 +1422,6 @@ class BuildLoader(DirectoryLoader):
             self.profiles_dir, self.env_yaml, self.product_cpes)
         # Do it this way so we only have to parse the SCE metadata once.
         loader.sce_metadata = self.sce_metadata
-        # Do it this way so we only have to parse the STIG references once.
-        loader.stig_references = self.stig_references
         # Do it this way so we only have to parse the component metadata once.
         loader.rule_to_components = self.rule_to_components
         return loader
