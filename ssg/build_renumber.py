@@ -158,6 +158,9 @@ class OVALFileLinker(FileLinker):
         """
         Write internal tree to the file in self.linked_fname.
         """
+        if self.oval_document.is_empty():
+            return
+
         with open(self.linked_fname, "wb+") as fd:
             self.oval_document.save_as_xml(fd)
 

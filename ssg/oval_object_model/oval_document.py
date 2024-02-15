@@ -173,6 +173,13 @@ class OVALDocument(OVALContainer):
             )
         return root
 
+    def is_empty(self):
+        return all([
+            len(self.definitions) == 0,
+            len(self.tests) == 0,
+            len(self.objects) == 0,
+        ])
+
     def save_as_xml(self, fd, oval_definition_references=None):
         root = self.get_xml_element(oval_definition_references)
         if hasattr(ElementTree, "indent"):

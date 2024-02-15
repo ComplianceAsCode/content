@@ -94,7 +94,8 @@ def link_benchmark(loader, xccdftree, args, benchmark=None):
     link_oval(xccdftree, checks, args.oval, args.build_ovals_dir)
 
     ocil = loader.export_ocil_to_xml(benchmark)
-    link_ocil(xccdftree, checks, args.ocil, ocil)
+    if ocil is not None:
+        link_ocil(xccdftree, checks, args.ocil, ocil)
 
     ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf)
 

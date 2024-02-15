@@ -203,6 +203,8 @@ def get_timestamp(file_name):
 def add_component(
         ds_collection, component_ref_parent, component_file_name,
         dependencies=None):
+    if not os.path.exists(component_file_name):
+        return
     component_id = "scap_%s_comp_%s" % (
         ID_NS, os.path.basename(component_file_name))
     component = ET.SubElement(
@@ -222,6 +224,9 @@ def add_component(
 
 
 def create_catalog(component_ref, dependencies):
+    dependencies = [dep for dep in dependencies if os.path.exists(dep)]
+    if len(dependencies) == 0:
+        return
     catalog = ET.SubElement(component_ref, "{%s}catalog" % cat_namespace)
     for dep in dependencies:
         uri = ET.SubElement(catalog, "{%s}uri" % cat_namespace)
@@ -303,11 +308,9 @@ def _get_thin_ds_output_path(output, file_name):
 
 def _compose_multiple_ds(args):
 
-    for xccdf, oval, ocil in zip(
-        glob.glob("{}/xccdf*.xml".format(args.multiple_ds)),
-        glob.glob("{}/oval*.xml".format(args.multiple_ds)),
-        glob.glob("{}/ocil*.xml".format(args.multiple_ds))
-    ):
+    for xccdf in glob.glob("{}/xccdf*.xml".format(args.multiple_ds)):
+        oval = xccdf.replace("xccdf", "oval")
+        ocil = xccdf.replace("xccdf", "ocil")
         ds = compose_ds(
             xccdf, oval, ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
         )

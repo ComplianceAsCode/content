@@ -1574,6 +1574,8 @@ class LinearLoader(object):
             benchmark = self.benchmark
 
         rules = self._get_rules_from_benchmark(benchmark)
+        if len(rules) == 0:
+            return None
         self._add_ocil_rules(rules, root)
 
         if hasattr(ET, "indent"):
@@ -1582,6 +1584,8 @@ class LinearLoader(object):
 
     def export_ocil_to_file(self, filename):
         root = self.export_ocil_to_xml()
+        if root is None:
+            return
         tree = ET.ElementTree(root)
         tree.write(filename)
 
