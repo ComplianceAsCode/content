@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Install pam_pwquality Package'
 
 description: |-
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     {{{ describe_package_install(package="libpwquality") }}}
     {{% else %}}
     {{{ describe_package_install(package="libpam-pwquality") }}}
@@ -34,7 +34,7 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: |-
-{{%- if 'ubuntu' not in product %}}
+{{%- if 'ubuntu' not in product and 'debian' not in product %}}
     {{{ ocil_package(package="libpwquality") }}}
 {{%- else %}}
     {{{ ocil_package(package="libpam-pwquality") }}}
@@ -46,5 +46,6 @@ template:
         pkgname: libpwquality
         pkgname@ubuntu2004: libpam-pwquality
         pkgname@ubuntu2204: libpam-pwquality
+        pkgname@debian12: libpam-pwquality
 
 platform: package[pam]
