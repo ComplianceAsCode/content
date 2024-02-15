@@ -37,7 +37,7 @@ jobs:
         run: unzip pr_number.zip
       - name: 'Read PR number'
         run: |
-          echo "pr-number=$(cat pr/pr_number)" >> "$GITHUB_OUTPUT"
+          echo "pr-number=$(cat pr_number)" >> "$GITHUB_OUTPUT"
 
   container-main:
     needs: 
@@ -101,16 +101,24 @@ jobs:
       - container-main
       - get-pr-number
     runs-on: ubuntu-latest
-    name: Comment on the PR
+    name: Upsert comment on the PR
     steps:
-      - uses: actions/github-script@v7
+      - uses: thollander/actions-comment-pull-request@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ needs.get-pr-number.outputs.pr-number }},
-              body: ':robot: The image for this PR is available at:
-            `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`'
-            });
+          message: |
+            :robot: A k8s content image for this PR is available at:
+            `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`
+
+            <details>
+            <summary>Click here to see how to deploy it</summary>
+
+            If you alread have Compliance Operator deployed:
+            ```utils/build_ds_container.py -i ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}```
+
+            Otherwise deploy the content and operator together by checking out ComplianceAsCode/compliance-operator and:
+            ```CONTENT_IMAGE=ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }} make deploy-local```
+
+            </details>
+          comment_tag: kubernetes_content_image
+          pr_number: ${{ needs.get-pr-number.outputs.pr-number }}
