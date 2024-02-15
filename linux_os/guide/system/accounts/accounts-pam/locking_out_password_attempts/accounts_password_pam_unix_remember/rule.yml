@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Limit Password Reuse'
 
-{{% if 'ubuntu' not in product %}}
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
 {{% set configFile = "/etc/pam.d/system-auth" %}}
 {{% else %}}
 {{% set configFile = "/etc/pam.d/common-password" %}}
