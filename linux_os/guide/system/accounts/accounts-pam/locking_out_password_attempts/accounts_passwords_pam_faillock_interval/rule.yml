@@ -17,7 +17,7 @@ description: |-
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>fail_interval = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
     {{% endif %}}
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     In order to avoid errors when manually editing these files, it is
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
