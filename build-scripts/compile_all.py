@@ -121,6 +121,14 @@ def find_existing_rules(project_root):
     return rules
 
 
+def add_stig_references(stig_reference_path, all_rules):
+    if not stig_reference_path:
+        return
+    stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
+    for rule in all_rules:
+        rule.add_stig_references(stig_references)
+
+
 def main():
     parser = create_parser()
     args = parser.parse_args()
@@ -144,7 +152,7 @@ def main():
     product_cpes.load_content_cpes(env_yaml)
 
     loader = ssg.build_yaml.BuildLoader(
-        None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
+        None, env_yaml, product_cpes, args.sce_metadata)
     loader.load_components()
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, product_yaml)
 
@@ -157,6 +165,8 @@ def main():
     controls_manager.load()
     controls_manager.remove_selections_not_known(loader.all_rules)
     controls_manager.add_references(loader.all_rules)
+
+    add_stig_references(args.stig_references, loader.all_rules.values())
 
     profiles_by_id = get_all_resolved_profiles_by_id(
         env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir)
