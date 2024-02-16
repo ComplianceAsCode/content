@@ -1,4 +1,4 @@
-# Welcome!
+# Welcome to the project!
 
 [![Docs](https://img.shields.io/readthedocs/complianceascode)](https://complianceascode.readthedocs.io/en/latest/)
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
