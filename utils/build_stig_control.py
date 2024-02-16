@@ -138,16 +138,17 @@ def get_controls(known_rules, ns, root, srg_controls=None) -> list:
             control['id'] = stig_id
             control['levels'] = [stig.attrib['severity']]
             control['title'] = stig.find('checklist:title', ns).text
-            control['rules'] = []
+            rule_set = set()
             if stig_id in known_rules.keys():
-                control['rules'] += known_rules.get(stig_id)
+                rule_set.update(known_rules.get(stig_id))
 
             # Let's add any rule selected in the SRG control file
             if srg_controls:
                 srgs += get_extra_srgs(stig, ns)
                 for srg in srgs:
-                    control['rules'] += srg_controls.get_control(srg).rules
+                    rule_set.update(srg_controls.get_control(srg).rules)
 
+            control['rules'] = sorted(list(rule_set))
             if len(control['rules']) > 0:
                 control['status'] = 'automated'
             else:
