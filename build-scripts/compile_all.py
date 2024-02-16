@@ -150,7 +150,7 @@ def get_relevant_benchmarks(env_yaml, product_yaml):
     out = set()
     for benchmark in BENCHMARKS:
         for path in benchmark_paths:
-            if benchmark in path:
+            if benchmark in os.path.normpath(path):
                 out.add(benchmark)
     return out
 
