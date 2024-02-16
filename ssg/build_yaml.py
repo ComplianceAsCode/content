@@ -1118,6 +1118,11 @@ class Rule(XCCDFEntity, Templatable):
 
     def add_extra_reference(self, ref_type, ref_value):
         if ref_type in self.references:
+            if ref_value in self.references[ref_type]:
+                msg = (
+                    "Rule %s already contains a '%s' reference with value '%s'." % (
+                        self.id_, ref_type, ref_value))
+                raise ValueError(msg)
             self.references[ref_type].append(ref_value)
         else:
             self.references[ref_type] = [ref_value]

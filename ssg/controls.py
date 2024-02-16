@@ -183,7 +183,14 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
             rule = rules.get(selection)
             if not rule:
                 continue
-            rule.add_extra_reference(reference_type, self.id)
+            try:
+                rule.add_extra_reference(reference_type, self.id)
+            except Exception as exc:
+                msg = (
+                    "Please remove any duplicate listing of rule '%s' in "
+                    "control '%s'." % (
+                        rule.id_, self.id))
+                raise ValueError(msg) from exc
 
 
 class Level(ssg.entities.common.XCCDFEntity):
