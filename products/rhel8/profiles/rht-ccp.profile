@@ -1,5 +1,7 @@
 documentation_complete: true
 
+hidden: true
+
 title: 'Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)'
 
 description: |-

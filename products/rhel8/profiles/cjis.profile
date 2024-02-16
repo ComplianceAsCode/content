@@ -1,5 +1,7 @@
 documentation_complete: true
 
+hidden: true
+
 metadata:
     version: 5.4
     SMEs:
