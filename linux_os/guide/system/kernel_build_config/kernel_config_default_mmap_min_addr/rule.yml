@@ -1,13 +1,18 @@
 documentation_complete: true
 
-title: 'Configure low address space to protect from user allocation'
+title: Configure Low Address Space To Protect From User Allocation
 
 description: |-
     This is the portion of low virtual memory which should be protected from userspace allocation.
     This configuration is available from kernel 3.14, but may be available if backported
     by distros.
 
-    {{{ describe_kernel_build_config("CONFIG_DEFAULT_MMAP_MIN_ADDR", "65536") | indent(4) }}}
+    The configuration that was used to build kernel is available at <tt>/boot/config-*</tt>.
+    To check the configuration value for <tt>CONFIG_DEFAULT_MMAP_MIN_ADDR</tt>, run the following command:
+    <tt>grep CONFIG_DEFAULT_MMAP_MIN_ADDR /boot/config-*</tt>
+    For each kernel installed, a line with value should be returned.
+    If the system architecture is x86_64, the value should be 65536.
+    If the system architecture is aarch64, the value should be 32768.
 
 rationale: |-
     Keeping a user from writing to low pages can help reduce the impact of kernel NULL pointer bugs.
@@ -22,15 +27,13 @@ identifiers:
     cce@rhel8: CCE-88160-7
     cce@rhel9: CCE-88161-5
 
+platform: x86_64_arch or aarch64_arch
 
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ ocil_kernel_build_config("CONFIG_DEFAULT_MMAP_MIN_ADDR", "65536") | indent(4) }}}
-
-template:
-    name: kernel_build_config
-    vars:
-        config: CONFIG_DEFAULT_MMAP_MIN_ADDR
-        value: '65536'
-
+    To determine the config value the kernel was built with, run the following command:
+    <pre>$ grep CONFIG_DEFAULT_MMAP_MIN_ADDR /boot/config.*</pre>
+    For each kernel installed, a line with value should be returned.
+    If the system architecture is x86_64, the value should be 65536.
+    If the system architecture is aarch64, the value should be 32768.
