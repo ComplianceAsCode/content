@@ -100,10 +100,7 @@ def get_implemented_stigs(args):
 
         if args.reference in rule_obj['references'].keys():
             refs = rule_obj['references'][args.reference]
-            if ',' in refs:
-                refs = refs.split(',')
-            else:
-                refs = [refs]
+
             for ref in refs:
                 if ref in known_rules:
                     known_rules[ref].append(rule['id'])
