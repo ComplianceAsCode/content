@@ -11,7 +11,7 @@ jobs:
     name: Get PR number
     runs-on: ubuntu-latest
     outputs:
-      pr-number: ${{ steps.read-pr-number.outputs.pr-number }}
+      pr-number: ${{ steps.pr_number.outputs.pr-number }}
     steps:
       - name: 'Download artifacts'
         uses: actions/github-script@v7
@@ -36,6 +36,7 @@ jobs:
       - name: 'Unzip artifact'
         run: unzip pr_number.zip
       - name: 'Read PR number'
+        id: pr_number
         run: |
           echo "pr-number=$(cat pr_number)" >> "$GITHUB_OUTPUT"
 
