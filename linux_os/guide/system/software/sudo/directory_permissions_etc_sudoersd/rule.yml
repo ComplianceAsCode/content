@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: Verify Permissions On /etc/sudoers.d Directory
 
-description: '{{{ describe_file_permissions(file="/etc/sudoers.d", perms="0600") }}}'
+description: '{{{ describe_file_permissions(file="/etc/sudoers.d", perms="0750") }}}'
 
 rationale: |-
     Setting correct permissions on the /etc/sudoers.d directory is important
@@ -17,17 +17,17 @@ identifiers:
     cce@rhel8: CCE-86359-7
     cce@rhel9: CCE-86360-5
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/sudoers.d", perms="0600") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/sudoers.d", perms="0750") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/sudoers.d", perms="0600") }}}
+    {{{ ocil_file_permissions(file="/etc/sudoers.d", perms="0750") }}}
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/sudoers.d", mode="0600") }}}'
+fixtext: '{{{ fixtext_file_permissions(file="/etc/sudoers.d", mode="0750") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sudoers.d", mode="0600") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sudoers.d", mode="0750") }}}'
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/sudoers.d/
-        filemode: '0600'
+        filemode: '0750'
