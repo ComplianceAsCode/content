@@ -1006,8 +1006,6 @@ class Rule(XCCDFEntity, Templatable):
             ident.text = ident_val
 
     def add_extra_reference(self, ref_type, ref_value):
-        if ref_type == "anssi":
-            ref_value = "BP28(%s)" % ref_value
         if ref_type in self.references:
             self.references[ref_type].append(ref_value)
         else:
