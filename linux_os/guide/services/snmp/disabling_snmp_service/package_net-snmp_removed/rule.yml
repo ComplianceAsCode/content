@@ -27,12 +27,10 @@ identifiers:
     cce@sle15: CCE-91288-1
 
 references:
-    ccn@rhel9: A.8.SEC-RHEL4
     cis@sle12: 2.2.15
     cis@sle15: 2.2.15
     cis@ubuntu2004: 2.2.14
     cis@ubuntu2204: 2.2.13
-    pcidss4: "2.2.4"
 
 {{% if pkg_manager != "apt_get" %}}
 {{{ complete_ocil_entry_package(package="net-snmp") }}}
