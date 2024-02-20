@@ -99,6 +99,13 @@ def parse_stats_subcommand(subparsers):
         help="Show rules in OSPP profiles that don't have OSPP references.",
     )
     parser_stats.add_argument(
+        "--missing-pcidss4-refs",
+        default=False,
+        action="store_true",
+        dest="missing_pcidss4_refs",
+        help="Show rules in PCI-DSS profiles that don't have pcidss4 references.",
+    )
+    parser_stats.add_argument(
         "--missing-cui-refs",
         default=False,
         action="store_true",
@@ -266,6 +273,7 @@ def parse_args():
             args.missing_hipaa_refs = True
             args.missing_anssi_refs = True
             args.missing_ospp_refs = True
+            args.missing_pcidss4_refs = True
             args.missing_cui_refs = True
 
     return args

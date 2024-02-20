@@ -560,7 +560,7 @@ macro(ssg_build_sds PRODUCT)
         elseif("${PRODUCT}" MATCHES "rhel8")
             set(REFERENCES_CHECK_PROFILE_LIST cis anssi_bp28_high hipaa)
         elseif("${PRODUCT}" MATCHES "rhel9")
-            set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high ccn_advanced cis)
+            set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high ccn_advanced cis pci-dss)
         endif()
         add_test(
                 NAME "missing-references-ssg-${PRODUCT}-ds.xml"

@@ -18,7 +18,7 @@ from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
 from .constants import ssg_version_uri
 from .constants import stig_ns, cis_ns, generic_stig_ns, hipaa_ns, anssi_ns
-from .constants import ospp_ns, cui_ns, xslt_ns, ccn_ns
+from .constants import ospp_ns, cui_ns, xslt_ns, ccn_ns, pcidss4_ns
 from .constants import OSCAP_PROFILE
 from .yaml import DocumentationNotComplete
 console_width = 80
@@ -50,7 +50,8 @@ class RuleStats(object):
                  rignition_fix=None, rkubernetes_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None, rcce=None,
                  stig_id=None, ccn_ref= None, cis_ref=None, hipaa_ref=None,
-                 anssi_ref=None, ospp_ref=None, cui_ref=None):
+                 anssi_ref=None, ospp_ref=None, pcidss4_ref=None,
+                 cui_ref=None):
         self.dict = {
             'id': rid,
             'oval': roval,
@@ -70,6 +71,7 @@ class RuleStats(object):
             'hipaa_ref': hipaa_ref,
             'anssi_ref': anssi_ref,
             'ospp_ref': ospp_ref,
+            'pcidss4_ref': pcidss4_ref,
             'cui_ref': cui_ref,
         }
 
@@ -194,6 +196,7 @@ class XCCDFBenchmark(object):
             'missing_hipaa_refs': [],
             'missing_anssi_refs': [],
             'missing_ospp_refs': [],
+            'missing_pcidss4_refs': [],
             'missing_cui_refs': [],
             'ansible_parity': [],
         }
@@ -265,6 +268,8 @@ class XCCDFBenchmark(object):
                                       (self.xccdf_ns, anssi_ns))
                 ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                      (self.xccdf_ns, ospp_ns))
+                pcidss4_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
+                                     (self.xccdf_ns, pcidss4_ns))
                 cui_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (self.xccdf_ns, cui_ns))
 
@@ -273,7 +278,7 @@ class XCCDFBenchmark(object):
                               bash_fix, ansible_fix, ignition_fix,
                               kubernetes_fix, puppet_fix, anaconda_fix,
                               cce, stig_id, ccn_ref, cis_ref, hipaa_ref,
-                              anssi_ref, ospp_ref, cui_ref)
+                              anssi_ref, ospp_ref, pcidss4_ref, cui_ref)
                 )
 
         if not rule_stats:
@@ -395,6 +400,11 @@ class XCCDFBenchmark(object):
             profile_stats['missing_ospp_refs'] = \
                 [x.dict['id'] for x in rule_stats if x.dict['ospp_ref'] is None]
 
+        profile_stats['missing_pcidss4_refs'] = []
+        if 'pci-dss' in profile_stats['profile_id']:
+            profile_stats['missing_pcidss4_refs'] = \
+                [x.dict['id'] for x in rule_stats if x.dict['pcidss4_ref'] is None]
+
         profile_stats['missing_cui_refs'] = []
         if 'cui' in profile_stats['profile_id']:
             profile_stats['missing_cui_refs'] = \
@@ -446,6 +456,7 @@ class XCCDFBenchmark(object):
         missing_hipaa_refs_count = len(profile_stats['missing_hipaa_refs'])
         missing_anssi_refs_count = len(profile_stats['missing_anssi_refs'])
         missing_ospp_refs_count = len(profile_stats['missing_ospp_refs'])
+        missing_pcidss4_refs_count = len(profile_stats['missing_pcidss4_refs'])
         missing_cui_refs_count = len(profile_stats['missing_cui_refs'])
         impl_cces_count = len(profile_stats['assigned_cces'])
 
@@ -695,6 +706,15 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['missing_ospp_refs'],
                                    console_width)
 
+            if options.missing_pcidss4_refs and profile_stats['missing_pcidss4_refs']:
+                print("*** rules of '%s' profile missing "
+                      "PCI-DSS v4 Refs: %d of %d have them [%d%% missing]"
+                      % (profile, rules_count - missing_pcidss4_refs_count,
+                         rules_count,
+                         (100.0 * missing_pcidss4_refs_count / rules_count)))
+                self.console_print(profile_stats['missing_pcidss4_refs'],
+                                   console_width)
+
             if options.missing_cui_refs and profile_stats['missing_cui_refs']:
                 print("*** rules of '%s' profile missing "
                       "CUI Refs: %d of %d have them [%d%% missing]"
@@ -738,6 +758,7 @@ class XCCDFBenchmark(object):
             profile_stats['missing_hipaa_refs_count'] = missing_hipaa_refs_count
             profile_stats['missing_anssi_refs_count'] = missing_anssi_refs_count
             profile_stats['missing_ospp_refs_count'] = missing_ospp_refs_count
+            profile_stats['missing_pcidss4_refs_count'] = missing_pcidss4_refs_count
             profile_stats['missing_cui_refs_count'] = missing_cui_refs_count
             profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
             profile_stats['missing_sces_count'] = len(profile_stats['missing_sces'])
@@ -784,6 +805,7 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_hipaa_refs']
                 del profile_stats['missing_anssi_refs']
                 del profile_stats['missing_ospp_refs']
+                del profile_stats['missing_pcidss4_refs']
                 del profile_stats['missing_cui_refs']
             if not options.missing_cces:
                 del profile_stats['missing_cces']
