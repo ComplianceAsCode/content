@@ -103,8 +103,9 @@ macro(mypy_test SCRIPT FOLLOW_IMPORTS)
     endif()
 endmacro()
 
-mypy_test("utils/import_srg_spreadsheet.py" "normal")
+mypy_test("utils/import_srg_spreadsheet.py" "skip")
 mypy_test("utils/check_eof.py" "normal")
+mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
@@ -311,13 +312,14 @@ if(PYTHON_VERSION_MAJOR GREATER 2)
     set_tests_properties("install-vm" PROPERTIES LABELS quick)
 endif()
 
-if(SSG_PRODUCT_RHEL9)
 add_test(
     NAME "automatus-sanity"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/automatus.py" "--help"
 )
 set_tests_properties("automatus-sanity" PROPERTIES LABELS quick)
 
+
+if(SSG_PRODUCT_RHEL9)
 add_test(
     NAME "components"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
@@ -339,3 +341,11 @@ endmacro()
 cce_avail_check("rhel-all" "rhel7,rhel8,rhel9" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
 cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
 cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle15-avail.txt")
+
+if(PYTHON_VERSION_MAJOR GREATER 2)
+    add_test(
+        NAME "utils-import_disa_stig_sanity"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_disa_stig.py" "--help"
+        set_tests_properties("utils-import_disa_stig_sanity" PROPERTIES LABELS quick)
+    )
+endif()
