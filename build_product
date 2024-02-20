@@ -415,6 +415,7 @@ fi
 
 
 set -e
+[ -d build ] || mkdir build
 rm -rf build/*
 cd build
 cmake .. "${CMAKE_OPTIONS[@]}"
