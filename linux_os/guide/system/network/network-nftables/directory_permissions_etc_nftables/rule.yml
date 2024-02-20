@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: Verify Permissions On /etc/nftables Directory
 
-description: '{{{ describe_file_permissions(file="/etc/nftables", perms="0600") }}}'
+description: '{{{ describe_file_permissions(file="/etc/nftables", perms="0700") }}}'
 
 rationale: |-
     Setting correct permissions on the /etc/nftables directory is important
@@ -17,19 +17,19 @@ identifiers:
     cce@rhel8: CCE-86318-3
     cce@rhel9: CCE-86320-9
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/nftables", perms="0600") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/nftables", perms="0700") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/nftables", perms="0600") }}}
+    {{{ ocil_file_permissions(file="/etc/nftables", perms="0700") }}}
 
 platform: package[nftables]
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/nftables", mode="0600") }}}'
+fixtext: '{{{ fixtext_file_permissions(file="/etc/nftables", mode="0700") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/nftables", mode="0600") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/nftables", mode="0700") }}}'
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/nftables/
-        filemode: '0600'
+        filemode: '0700'

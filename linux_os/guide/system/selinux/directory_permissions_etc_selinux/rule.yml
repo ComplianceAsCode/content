@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: Verify Permissions On /etc/selinux Directory
 
-description: '{{{ describe_file_permissions(file="/etc/selinux", perms="0644") }}}'
+description: '{{{ describe_file_permissions(file="/etc/selinux", perms="0755") }}}'
 
 rationale: |-
     Setting correct permissions on the /etc/selinux directory is important
@@ -17,17 +17,17 @@ identifiers:
     cce@rhel8: CCE-86278-9
     cce@rhel9: CCE-86279-7
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/selinux", perms="0644") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/selinux", perms="0755") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/selinux", perms="0644") }}}
+    {{{ ocil_file_permissions(file="/etc/selinux", perms="0755") }}}
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/selinux", mode="0644") }}}'
+fixtext: '{{{ fixtext_file_permissions(file="/etc/selinux", mode="0755") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/selinux", mode="0644") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/selinux", mode="0755") }}}'
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/selinux/
-        filemode: '0644'
+        filemode: '0755'
