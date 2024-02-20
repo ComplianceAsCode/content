@@ -140,14 +140,6 @@ class XCCDFBenchmark(object):
                 if cis_var is not None and cis_var.text:
                     self.cis_ns = cis_var.text
 
-                stig_var = root.find('./{%s}variable[@name="disa-stigs-uri"]' % (xslt_ns))
-                if stig_var is not None and stig_var.text:
-                    self.stig_ns = stig_var.text
-                elif (stig_var and 'select' in stig_var.attrib and
-                      stig_var.attrib['select'] == '$disa-stigs-os-unix-linux-uri'):
-                    self.stig_ns = generic_stig_ns
-
-
     def get_profile_stats(self, profile):
         """Obtain statistics for the profile"""
 
