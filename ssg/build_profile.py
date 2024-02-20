@@ -17,7 +17,7 @@ from .constants import puppet_system as puppet_rem_system
 from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
 from .constants import ssg_version_uri
-from .constants import stig_ns, cis_ns, generic_stig_ns, hipaa_ns, anssi_ns
+from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns
 from .constants import ospp_ns, cui_ns, xslt_ns, ccn_ns, pcidss4_ns
 from .constants import OSCAP_PROFILE
 from .yaml import DocumentationNotComplete
