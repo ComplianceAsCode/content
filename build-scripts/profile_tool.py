@@ -57,6 +57,13 @@ def parse_stats_subcommand(subparsers):
         help="Show IDs of implemented SCE checks.",
     )
     parser_stats.add_argument(
+        "--missing-stigid-refs",
+        default=False,
+        action="store_true",
+        dest="missing_stigid_refs",
+        help="Show rules in STIG profiles that don't have stigid references.",
+    )
+    parser_stats.add_argument(
         "--missing-stigref-refs",
         default=False,
         action="store_true",
@@ -267,6 +274,7 @@ def parse_args():
             args.missing_sces = True
             args.missing_fixes = True
             args.missing_cces = True
+            args.missing_stigid_refs = True
             args.missing_stigref_refs = True
             args.missing_ccn_refs = True
             args.missing_cis_refs = True

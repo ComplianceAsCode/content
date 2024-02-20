@@ -20,6 +20,7 @@ from .constants import ssg_version_uri
 from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns
 from .constants import ospp_ns, cui_ns, xslt_ns, ccn_ns, pcidss4_ns
 from .constants import OSCAP_PROFILE
+from .constants import SSG_REF_URIS
 from .yaml import DocumentationNotComplete
 console_width = 80
 
@@ -49,9 +50,9 @@ class RuleStats(object):
                  rbash_fix=None, ransible_fix=None,
                  rignition_fix=None, rkubernetes_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None, rcce=None,
-                 stigref_ref=None, ccn_ref= None, cis_ref=None, hipaa_ref=None,
-                 anssi_ref=None, ospp_ref=None, pcidss4_ref=None,
-                 cui_ref=None):
+                 stigid_ref=None, stigref_ref=None, ccn_ref= None,
+                 cis_ref=None, hipaa_ref=None, anssi_ref=None, ospp_ref=None,
+                 pcidss4_ref=None, cui_ref=None):
         self.dict = {
             'id': rid,
             'oval': roval,
@@ -65,6 +66,7 @@ class RuleStats(object):
             'anaconda_fix': ranaconda_fix,
             'fix': None,
             'cce': rcce,
+            'stigid_ref': stigid_ref,
             'stigref_ref': stigref_ref,
             'ccn_ref': ccn_ref,
             'cis_ref': cis_ref,
@@ -181,6 +183,7 @@ class XCCDFBenchmark(object):
             'assigned_cces': [],
             'assigned_cces_pct': 0,
             'missing_cces': [],
+            'missing_stigid_refs': [],
             'missing_stigref_refs': [],
             'missing_ccn_refs': [],
             'missing_cis_refs': [],
@@ -247,6 +250,8 @@ class XCCDFBenchmark(object):
                                          (self.xccdf_ns, anaconda_rem_system))
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
                                 (self.xccdf_ns, cce_uri))
+                stigid_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
+                                    (self.xccdf_ns, SSG_REF_URIS["stigid"]))
                 stigref_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (self.xccdf_ns, stig_ns))
                 ccn_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
@@ -268,7 +273,7 @@ class XCCDFBenchmark(object):
                     RuleStats(rule.get("id"), oval, sce,
                               bash_fix, ansible_fix, ignition_fix,
                               kubernetes_fix, puppet_fix, anaconda_fix,
-                              cce, stigref_ref, ccn_ref, cis_ref, hipaa_ref,
+                              cce, stigid_ref, stigref_ref, ccn_ref, cis_ref, hipaa_ref,
                               anssi_ref, ospp_ref, pcidss4_ref, cui_ref)
                 )
 
@@ -361,6 +366,11 @@ class XCCDFBenchmark(object):
         profile_stats['missing_fixes'] = \
             [x.dict['id'] for x in rule_stats if x.dict['fix'] is None]
 
+        profile_stats['missing_stigid_refs'] = []
+        if 'stig' in profile_stats['profile_id']:
+            profile_stats['missing_stigid_refs'] = \
+                [x.dict['id'] for x in rule_stats if x.dict['stigid_ref'] is None]
+
         profile_stats['missing_stigref_refs'] = []
         if 'stig' in profile_stats['profile_id']:
             profile_stats['missing_stigref_refs'] = \
@@ -441,6 +451,7 @@ class XCCDFBenchmark(object):
         impl_puppet_fixes_count = len(profile_stats['implemented_puppet_fixes'])
         impl_anaconda_fixes_count = len(profile_stats['implemented_anaconda_fixes'])
         impl_fixes_count = len(profile_stats['implemented_fixes'])
+        missing_stigid_refs_count = len(profile_stats['missing_stigid_refs'])
         missing_stigref_refs_count = len(profile_stats['missing_stigref_refs'])
         missing_ccn_refs_count = len(profile_stats['missing_ccn_refs'])
         missing_cis_refs_count = len(profile_stats['missing_cis_refs'])
@@ -643,6 +654,15 @@ class XCCDFBenchmark(object):
                     self.console_print(profile_stats['missing_anaconda_fixes'],
                                        console_width)
 
+            if options.missing_stigid_refs and profile_stats['missing_stigid_refs']:
+                print("*** rules of '%s' profile missing "
+                      "stigid references: %d of %d have them [%d%% missing]"
+                      % (profile, rules_count - missing_stigid_refs_count,
+                         rules_count,
+                         (100.0 * missing_stigid_refs_count / rules_count)))
+                self.console_print(profile_stats['missing_stigid_refs'],
+                                   console_width)
+
             if options.missing_stigref_refs and profile_stats['missing_stigref_refs']:
                 print("*** rules of '%s' profile missing "
                       "stigref references: %d of %d have them [%d%% missing]"
@@ -743,6 +763,7 @@ class XCCDFBenchmark(object):
             del profile_stats['implemented_anaconda_fixes']
             del profile_stats['assigned_cces']
 
+            profile_stats['missing_stigid_refs_count'] = missing_stigid_refs_count
             profile_stats['missing_stigref_refs_count'] = missing_stigref_refs_count
             profile_stats['missing_ccn_refs_count'] = missing_ccn_refs_count
             profile_stats['missing_cis_refs_count'] = missing_cis_refs_count
@@ -790,6 +811,7 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_kubernetes_fixes']
                 del profile_stats['missing_puppet_fixes']
                 del profile_stats['missing_anaconda_fixes']
+                del profile_stats['missing_stigid_refs']
                 del profile_stats['missing_stigref_refs']
                 del profile_stats['missing_ccn_refs']
                 del profile_stats['missing_cis_refs']
