@@ -108,6 +108,8 @@ def link_benchmark_per_profile(loader, args):
     if not os.path.exists(args.thin_ds_components_dir):
         os.makedirs(args.thin_ds_components_dir)
 
+    loader.off_ocil = True
+
     for id_, benchmark in loader.get_benchmark_by_profile():
         xccdftree = benchmark.to_xml_element(loader.env_yaml)
         p = Paths_(
@@ -117,6 +119,8 @@ def link_benchmark_per_profile(loader, args):
             build_ovals_dir=args.build_ovals_dir
         )
         link_benchmark(loader, xccdftree, p, benchmark)
+
+    loader.off_ocil = False
 
 
 def main():

@@ -1464,6 +1464,7 @@ class LinearLoader(object):
         self.benchmark = None
         self.env_yaml = env_yaml
         self.product_cpes = ProductCPEs()
+        self.off_ocil = False
 
     def find_first_groups_ids(self, start_dir):
         group_files = glob.glob(os.path.join(start_dir, "*", "group.yml"))
@@ -1568,6 +1569,8 @@ class LinearLoader(object):
         return [self.rules[rule_id] for rule_id in benchmark.get_rules_selected_in_all_profiles()]
 
     def export_ocil_to_xml(self, benchmark=None):
+        if self.off_ocil:
+            return None
         root = self._create_ocil_xml_skeleton()
 
         if benchmark is None:
