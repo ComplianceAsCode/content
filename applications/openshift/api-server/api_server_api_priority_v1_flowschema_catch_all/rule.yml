@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Ensure catch-all FlowSchema object for API Priority and Fairness Exists'
 
 description: |-
@@ -23,10 +22,10 @@ rationale: |-
   of events that the API Server will accept.
 
 identifiers:
-  cce@ocp4: CCE-86390-2
+  cce@ocp4: CCE-86097-3
 
 platforms:
-  - ocp4.11 or ocp4.12 or ocp4.13 or ocp4.14 or ocp4.15
+  - ocp4.16
 
 severity: medium
 
@@ -48,16 +47,16 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta2/flowschemas/catch-all", true) | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/catch-all", true) | indent(4) }}}
 - dependency: |-
-    Note that this is only applicable in OpenShift Container Platform version 4.11
+    Note that this is only applicable in OpenShift Container Platform version 4.16
     and higher
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1beta2/flowschemas/catch-all"
+    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/catch-all"
     yamlpath: '.spec.rules[0].subjects[:].group["name"]'
     check_existence: "at_least_one_exists"
     entity_check: "at least one"
