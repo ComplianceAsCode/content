@@ -131,7 +131,6 @@ class XCCDFBenchmark(object):
             self.indexed_rules[rule_id] = rule
 
         self.cis_ns = cis_ns
-        self.stig_ns = stig_ns
         if product:
             constants_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "products", product, "transforms/constants.xslt")
             if os.path.exists(constants_path):
@@ -249,7 +248,7 @@ class XCCDFBenchmark(object):
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
                                 (self.xccdf_ns, cce_uri))
                 stig_id = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (self.xccdf_ns, self.stig_ns))
+                                    (self.xccdf_ns, stig_ns))
                 ccn_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (self.xccdf_ns, ccn_ns))
                 cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
