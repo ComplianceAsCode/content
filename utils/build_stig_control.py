@@ -83,6 +83,14 @@ def get_platform_rules(args):
     return platform_rules
 
 
+def map_rule_id_to_ref(rule_id, refs, known_rules):
+    for ref in refs:
+        if ref in known_rules:
+            known_rules[ref].append(rule_id)
+        else:
+            known_rules[ref] = [rule_id]
+
+
 def get_implemented_stigs(args, env_yaml):
     platform_rules = get_platform_rules(args)
 
@@ -96,14 +104,8 @@ def get_implemented_stigs(args, env_yaml):
             # Happens on non-debug build when a rule is "documentation-incomplete"
             continue
 
-        if args.reference in rule_obj['references'].keys():
-            refs = rule_obj['references'][args.reference]
-
-            for ref in refs:
-                if ref in known_rules:
-                    known_rules[ref].append(rule['id'])
-                else:
-                    known_rules[ref] = [rule['id']]
+        refs = rule_obj['references'].get(args.reference, [])
+        map_rule_id_to_ref(rule['id'], refs, known_rules)
     return known_rules
 
 
@@ -126,29 +128,35 @@ def get_extra_srgs(rule, ns) -> list:
     return pattern.findall(description)
 
 
+def get_rules_for_control(stig_id, known_rules, srgs, srg_controls):
+    # Add any known rule with the same STIG ID reference
+    rule_set = set()
+    if stig_id in known_rules.keys():
+        rule_set.update(known_rules.get(stig_id))
+
+    # Let's also add any rule selected in the SRG control file
+    if srg_controls:
+        for srg in srgs:
+            rule_set.update(srg_controls.get_control(srg).rules)
+
+    return sorted(list(rule_set))
+
+
 def get_controls(known_rules, ns, root, srg_controls=None) -> list:
     controls = list()
     for group in root.findall('checklist:Group', ns):
-        # There is alwayst at least one SRG associated
+        # There is always at least one SRG associated
         srgs = [group.find('checklist:title', ns).text]
 
         for stig in group.findall('checklist:Rule', ns):
             stig_id = stig.find('checklist:version', ns).text
+            # Add any other SRG associated mentioned in description
+            srgs += get_extra_srgs(stig, ns)
             control = dict()
             control['id'] = stig_id
             control['levels'] = [stig.attrib['severity']]
             control['title'] = stig.find('checklist:title', ns).text
-            rule_set = set()
-            if stig_id in known_rules.keys():
-                rule_set.update(known_rules.get(stig_id))
-
-            # Let's add any rule selected in the SRG control file
-            if srg_controls:
-                srgs += get_extra_srgs(stig, ns)
-                for srg in srgs:
-                    rule_set.update(srg_controls.get_control(srg).rules)
-
-            control['rules'] = sorted(list(rule_set))
+            control['rules'] = get_rules_for_control(stig_id, known_rules, srgs, srg_controls)
             if len(control['rules']) > 0:
                 control['status'] = 'automated'
             else:
