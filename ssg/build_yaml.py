@@ -49,6 +49,14 @@ from .entities.common import add_sub_element, make_items_product_specific, \
 from .entities.profile import Profile, ProfileWithInlinePolicies
 
 
+def _get_cpe_platforms_of_sub_groups(group, rule_ids_list):
+    cpe_platforms = set()
+    for sub_group in group.groups.values():
+        cpe_platforms_of_sub_group = sub_group.get_used_cpe_platforms(rule_ids_list)
+        cpe_platforms.update(cpe_platforms_of_sub_group)
+    return cpe_platforms
+
+
 def reorder_according_to_ordering(unordered, ordering, regex=None):
     ordered = []
     if regex is None:
@@ -365,6 +373,19 @@ class Benchmark(XCCDFEntity):
             rules.update(rules_of_sub_group)
             groups.update(groups_of_sub_group)
         return rules, groups
+
+    def get_used_cpe_platforms(self, profiles):
+        selected_rules = self.get_rules_selected_in_all_profiles(profiles)
+        cpe_platforms = _get_cpe_platforms_of_sub_groups(self, selected_rules)
+        return cpe_platforms
+
+    def get_not_used_cpe_platforms(self, profiles):
+        used_cpe_platforms = self.get_used_cpe_platforms(profiles)
+        out = set()
+        for cpe_platform in self.product_cpes.platforms.keys():
+            if cpe_platform not in used_cpe_platforms:
+                out.add(cpe_platform)
+        return out
 
     def get_rules_selected_in_all_profiles(self, profiles=None):
         selected_rules = set()
@@ -772,6 +793,18 @@ class Group(XCCDFEntity):
             rules.update(rules_of_sub_group)
             groups.update(groups_of_sub_group)
         return rules, groups
+
+    def get_used_cpe_platforms(self, rule_ids_list):
+        cpe_platforms = set()
+        for rule_id in rule_ids_list:
+            if rule_id not in self.rules:
+                continue
+            rule = self.rules[rule_id]
+            cpe_platforms.update(rule.cpe_platform_names)
+            cpe_platforms.update(rule.inherited_cpe_platform_names)
+
+        cpe_platforms.update(_get_cpe_platforms_of_sub_groups(self, rule_ids_list))
+        return cpe_platforms
 
     def __str__(self):
         return self.id_
