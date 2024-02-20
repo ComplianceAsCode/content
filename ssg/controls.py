@@ -190,7 +190,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
                         rule.id_, self.id))
-                raise ValueError(msg) from exc
+                raise ValueError(msg)
 
 
 class Level(ssg.entities.common.XCCDFEntity):
