@@ -17,6 +17,8 @@ function check_missing_references() {
         refs_argument="--missing-stig-ids"
     elif [[ "$profile" == "anssi"* ]]; then
         refs_argument="--missing-anssi-refs"
+    elif [[ "$profile" == "ccn"* ]]; then
+        refs_argument="--missing-ccn-refs"
     else
         refs_argument="--missing-$profile-refs"
     fi

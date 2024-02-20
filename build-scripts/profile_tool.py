@@ -64,6 +64,13 @@ def parse_stats_subcommand(subparsers):
         help="Show rules in STIG profiles that don't have STIG IDs.",
     )
     parser_stats.add_argument(
+        "--missing-ccn-refs",
+        default=False,
+        action="store_true",
+        dest="missing_ccn_refs",
+        help="Show rules in CCN profiles that don't have CCN references.",
+    )
+    parser_stats.add_argument(
         "--missing-cis-refs",
         default=False,
         action="store_true",
@@ -254,6 +261,7 @@ def parse_args():
             args.missing_fixes = True
             args.missing_cces = True
             args.missing_stig_ids = True
+            args.missing_ccn_refs = True
             args.missing_cis_refs = True
             args.missing_hipaa_refs = True
             args.missing_anssi_refs = True
