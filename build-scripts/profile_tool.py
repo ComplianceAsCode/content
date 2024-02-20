@@ -57,11 +57,11 @@ def parse_stats_subcommand(subparsers):
         help="Show IDs of implemented SCE checks.",
     )
     parser_stats.add_argument(
-        "--missing-stig-ids",
+        "--missing-stigref-refs",
         default=False,
         action="store_true",
-        dest="missing_stig_ids",
-        help="Show rules in STIG profiles that don't have STIG IDs.",
+        dest="missing_stigref_refs",
+        help="Show rules in STIG profiles that don't have stigref references.",
     )
     parser_stats.add_argument(
         "--missing-ccn-refs",
@@ -267,7 +267,7 @@ def parse_args():
             args.missing_sces = True
             args.missing_fixes = True
             args.missing_cces = True
-            args.missing_stig_ids = True
+            args.missing_stigref_refs = True
             args.missing_ccn_refs = True
             args.missing_cis_refs = True
             args.missing_hipaa_refs = True
