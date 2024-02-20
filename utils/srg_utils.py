@@ -7,15 +7,15 @@ from pathlib import Path
 
 import yaml
 
+from ssg.build_stig import get_severity
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 from ssg.utils import mkdir_p, read_file_list
 from ssg.yaml import yaml_Loader
+
 from openpyxl.worksheet.worksheet import Worksheet
 
 # The start row is 2, to avoid importing the header
 START_ROW = 2
-
-SEVERITY = {'CAT III': 'low', 'CAT II': 'medium', 'CAT I': 'high'}
 
 class Row:
     row_id = 0
@@ -128,13 +128,9 @@ def fix_changed_text(replacement: str, changed_name: str) -> str:
 
 def create_output(rule_dir: str) -> str:
     path_dir_parent = os.path.join(rule_dir, "policy")
-    err = mkdir_p(path_dir_parent)
-    if err is False:
-        raise EnvironmentError(f"Could not create {path_dir_parent}")
+    mkdir_p(path_dir_parent)
     path_dir = os.path.join(path_dir_parent, "stig")
-    err = mkdir_p(path_dir)
-    if err is False:
-        raise EnvironmentError(f"Could not create {path_dir}")
+    mkdir_p(path_dir)
     path = os.path.join(path_dir, 'shared.yml')
     Path(path).touch()
     return path
@@ -166,7 +162,7 @@ def cleanup_end_of_file(rule_dir: str) -> None:
 def update_severity(changed, current, rule_dir_json):
     if changed.Severity != current.Severity and changed.Severity is not None and \
             current.Severity is not None:
-        cac_severity = get_cac_status(changed.Severity)
+        cac_severity = get_severity(changed.Severity)
         replace_yaml_key('severity', cac_severity, rule_dir_json)
 
 
@@ -223,10 +219,6 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
         for line in result:
             f.write(line.rstrip())
             f.write('\n')
-
-
-def get_cac_status(disa: str) -> str:
-    return SEVERITY.get(disa, 'Unknown')
 
 
 def add_replacement_to_result(replacement, result):
