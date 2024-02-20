@@ -14,7 +14,7 @@ RETURN_CODE=0
 function check_missing_references() {
     profile="$1"
     if [[ "$profile" == "stig" ]]; then
-        refs_argument="--missing-stigref-refs"
+        refs_argument="--missing-stigid-refs"
     elif [[ "$profile" == "anssi"* ]]; then
         refs_argument="--missing-anssi-refs"
     elif [[ "$profile" == "ccn"* ]]; then
