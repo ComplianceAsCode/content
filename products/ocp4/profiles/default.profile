@@ -43,6 +43,7 @@ selections:
     - kubelet_eviction_thresholds_set_soft_imagefs_inodesfree
     - file_groupowner_kubeconfig
     - api_server_api_priority_v1alpha1_flowschema_catch_all
+    - api_server_api_priority_v1_flowschema_catch_all
     - file_groupowner_openvswitch
     - gcp_disk_encryption_enabled
     - kubelet_configure_tls_cipher_suites_ingresscontroller
