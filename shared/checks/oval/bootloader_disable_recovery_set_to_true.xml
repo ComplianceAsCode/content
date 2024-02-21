@@ -24,7 +24,11 @@
 
   <ind:textfilecontent54_object id="object_bootloader_disable_recovery_argument"
   version="1">
+    {{%- if 'ubuntu' in product %}}
+    <ind:filepath operation="pattern match">^/etc/default/grub(\.d/[^/]+\.cfg)?$</ind:filepath>
+    {{%- else %}}
     <ind:filepath>/etc/default/grub</ind:filepath>
+    {{%- endif %}}
     <ind:pattern operation="pattern match">^\s*GRUB_DISABLE_RECOVERY=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
