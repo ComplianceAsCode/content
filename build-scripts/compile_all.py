@@ -11,6 +11,8 @@ import ssg.products
 import ssg.environment
 from ssg.build_cpe import ProductCPEs
 from ssg.constants import BENCHMARKS
+from ssg.entities.profile import ProfileWithInlinePolicies
+
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -40,6 +42,14 @@ def create_parser():
     )
     parser.add_argument(
         "--stig-references", help="DISA STIG Reference XCCDF file"
+    )
+    parser.add_argument(
+        "--rule-id",
+        type=str,
+        help="Creates a profile with the specified rule and does not use other profiles."
+        "The profile ID is identical to the rule ID of the selected rule."
+        " If you want to process all rules in benchmark of the product, "
+        "you can use 'ALL_RULES'.",
     )
     return parser
 
@@ -91,8 +101,12 @@ def get_all_resolved_profiles_by_id(
     return profiles_by_id
 
 
-def load_resolve_and_validate_profiles(env_yaml, profile_files, loader, controls_manager, product_cpes):
-    profiles_by_id = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml, product_cpes)
+def load_resolve_and_validate_profiles(
+        env_yaml, profile_files, loader, controls_manager, product_cpes
+        ):
+    profiles_by_id = ssg.build_profile.make_name_to_profile_mapping(
+        profile_files, env_yaml, product_cpes
+    )
 
     for p in profiles_by_id.values():
         p.resolve(profiles_by_id, loader.all_rules, controls_manager)
@@ -110,9 +124,11 @@ def save_everything(base_dir, loader, controls_manager, profiles):
         dump_compiled_profile(base_dir, p)
 
 
-def find_existing_rules(project_root):
+def find_existing_rules(project_root, relevant_benchmarks=None):
     rules = set()
-    for benchmark in BENCHMARKS:
+    if relevant_benchmarks is None:
+        relevant_benchmarks = BENCHMARKS
+    for benchmark in relevant_benchmarks:
         benchmark = os.path.join(project_root, benchmark)
         for dirpath, _, filenames in os.walk(benchmark):
             if "rule.yml" in filenames:
@@ -127,6 +143,40 @@ def add_stig_references(stig_reference_path, all_rules):
     stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
     for rule in all_rules:
         rule.add_stig_references(stig_references)
+
+
+def get_relevant_benchmarks(env_yaml, product_yaml):
+    benchmark_paths = get_all_content_directories(env_yaml, product_yaml)
+    out = set()
+    for benchmark in BENCHMARKS:
+        for path in benchmark_paths:
+            if benchmark in os.path.normpath(path):
+                out.add(benchmark)
+    return out
+
+
+def get_minimal_profiles_by_id(rules, variables):
+    out = {}
+    for rule in rules:
+        data = {
+              'documentation_complete': True,
+              'variables': variables,
+              'selected': [rule],
+              'id_': rule,
+        }
+        profile = ProfileWithInlinePolicies.get_instance_from_full_dict(data)
+        out[profile.id_] = profile
+    return out
+
+
+def get_profiles_per_rule_by_id(rule_id, project_root_abspath, env_yaml, product_yaml):
+    relevant_benchmarks = get_relevant_benchmarks(env_yaml, product_yaml)
+    rules = find_existing_rules(project_root_abspath, relevant_benchmarks)
+    if rule_id not in rules and "ALL_RULES" not in rule_id:
+        raise Exception("Rule ID: {} not found!".format(rule_id))
+    if "ALL_RULES" not in rule_id:
+        rules = {rule_id}
+    return get_minimal_profiles_by_id(rules, {})
 
 
 def main():
@@ -168,8 +218,14 @@ def main():
 
     add_stig_references(args.stig_references, loader.all_rules.values())
 
-    profiles_by_id = get_all_resolved_profiles_by_id(
-        env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir)
+    if args.rule_id is None or args.rule_id == "off":
+        profiles_by_id = get_all_resolved_profiles_by_id(
+            env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir
+        )
+    else:
+        profiles_by_id = get_profiles_per_rule_by_id(
+            args.rule_id, project_root_abspath, env_yaml, product_yaml
+        )
 
     save_everything(
         args.resolved_base, loader, controls_manager, profiles_by_id.values())
