@@ -482,13 +482,13 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_for_profile(self, profile):
+    def get_benchmark_xml_for_profile(self, profile):
         profile.unselected_groups = []
         b = deepcopy(self)
         b.profiles = [profile]
         b.drop_rules_not_included_in_a_profile()
         b.unselect_empty_groups()
-        return profile.id_, b
+        return profile.id_, b.to_xml_element()
 
 
 class Group(XCCDFEntity):
@@ -1525,7 +1525,7 @@ class LinearLoader(object):
         self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
-    def get_benchmark_by_profile(self):
+    def get_benchmark_xml_by_profile(self):
         if self.benchmark is None:
             raise Exception(
                 "Before generating benchmarks for each profile, you need to load "
@@ -1533,7 +1533,7 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profile_id, benchmark = self.benchmark.get_benchmark_for_profile(profile)
+            profile_id, benchmark = self.benchmark.get_benchmark_xml_for_profile(profile)
             yield profile_id, benchmark
 
     def load_compiled_content(self):

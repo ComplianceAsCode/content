@@ -31,14 +31,14 @@ class FileLinker(object):
 
     def __init__(self, translator, xccdftree, checks, output_file_name):
         self.translator = translator
-        self.checks_related_to_us = self._get_related_checks(checks)
+        self.checks_related_to_us = self.get_related_checks(checks)
         self.fname = self._get_input_fname()
         self.tree = None
         self.linked_fname = output_file_name
         self.linked_fname_basename = os.path.basename(self.linked_fname)
         self.xccdftree = xccdftree
 
-    def _get_related_checks(self, checks):
+    def get_related_checks(self, checks):
         """
         Returns a list of checks which have the same check system as this
         class.
@@ -89,6 +89,7 @@ class FileLinker(object):
         pass
 
     def link_xccdf(self):
+
         for check in self.checks_related_to_us:
             checkcontentref = get_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is None:
