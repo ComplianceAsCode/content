@@ -342,7 +342,7 @@ cce_avail_check("rhel-all" "rhel7,rhel8,rhel9" "${CMAKE_SOURCE_DIR}/shared/refer
 cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
 cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle15-avail.txt")
 
-if(PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "utils-import_disa_stig_sanity"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_disa_stig.py" "--help"

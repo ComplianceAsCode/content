@@ -17,6 +17,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 # The start row is 2, to avoid importing the header
 START_ROW = 2
 
+
 class Row:
     row_id = 0
     IA_Control = ""
