@@ -357,7 +357,7 @@ class Benchmark(XCCDFEntity):
             selected_rules.update(p.selected)
         return selected_rules
 
-    def to_xml_element(self, env_yaml=None, product_cpes=None):
+    def _create_benchmark_xml_skeleton(self):
         root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
         root.set('id', OSCAP_BENCHMARK + self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
@@ -367,18 +367,27 @@ class Benchmark(XCCDFEntity):
         root.set('style', 'SCAP_1.2')
         root.set('resolved', 'true')
         root.set('xml:lang', 'en-US')
+
         status = ET.SubElement(root, '{%s}status' % XCCDF12_NS)
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
         status.text = self.status
+
         add_sub_element(root, "title", XCCDF12_NS, self.title)
         add_sub_element(root, "description", XCCDF12_NS, self.description)
+
         notice = add_sub_element(
-            root, "notice", XCCDF12_NS, self.notice_description)
+            root, "notice", XCCDF12_NS, self.notice_description
+        )
         notice.set('id', self.notice_id)
+
         add_sub_element(root, "front-matter", XCCDF12_NS, self.front_matter)
         add_sub_element(root, "rear-matter",  XCCDF12_NS, self.rear_matter)
-        add_reference_title_elements(root, env_yaml)
+
+        return root
+
+    def _add_cpe_xml(self, root, product_cpes=None):
         # if there are no platforms, do not output platform-specification at all
+
         if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
                 "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
@@ -392,19 +401,15 @@ class Benchmark(XCCDFEntity):
             plat = ET.SubElement(root, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-        version = ET.SubElement(root, '{%s}version' % XCCDF12_NS)
-        version.text = self.version
-        version.set('update', SSG_BENCHMARK_LATEST_URI)
-
-        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
-        add_benchmark_metadata(root, contributors_file)
-
+    def _add_profiles_xml(self, root):
         for profile in self.profiles:
             root.append(profile.to_xml_element())
 
+    def _add_values_xml(self, root):
         for value in self.values.values():
             root.append(value.to_xml_element())
 
+    def _add_groups_xml(self, root, env_yaml=None):
         groups_in_bench = list(self.groups.keys())
         priority_order = ["system", "services"]
         groups_in_bench = reorder_according_to_ordering(groups_in_bench, priority_order)
@@ -416,8 +421,31 @@ class Benchmark(XCCDFEntity):
             if group is not None:
                 root.append(group.to_xml_element(env_yaml))
 
+    def _add_rules_xml(self, root, env_yaml=None):
         for rule in self.rules.values():
             root.append(rule.to_xml_element(env_yaml))
+
+    def _add_version_xml(self, root):
+        version = ET.SubElement(root, '{%s}version' % XCCDF12_NS)
+        version.text = self.version
+        version.set('update', SSG_BENCHMARK_LATEST_URI)
+
+    def to_xml_element(self, env_yaml=None, product_cpes=None):
+        root = self._create_benchmark_xml_skeleton()
+
+        add_reference_title_elements(root, env_yaml)
+
+        self._add_cpe_xml(root, product_cpes)
+
+        self._add_version_xml(root)
+
+        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
+        add_benchmark_metadata(root, contributors_file)
+
+        self._add_profiles_xml(root)
+        self._add_values_xml(root)
+        self._add_groups_xml(root, env_yaml)
+        self._add_rules_xml(root, env_yaml)
 
         if hasattr(ET, "indent"):
             ET.indent(root, space=" ", level=0)
