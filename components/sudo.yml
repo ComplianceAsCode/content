@@ -4,6 +4,12 @@ name: sudo
 packages:
 - sudo
 rules:
+- directory_groupowner_etc_sudoersd
+- directory_owner_etc_sudoersd
+- directory_permissions_etc_sudoersd
+- file_groupowner_etc_sudoers
+- file_owner_etc_sudoers
+- file_permissions_etc_sudoers
 - package_sudo_installed
 - sudo_add_env_reset
 - sudo_add_ignore_dot

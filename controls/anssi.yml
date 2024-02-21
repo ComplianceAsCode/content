@@ -1027,12 +1027,76 @@ controls:
     status: automated
     rules:
     - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow
+    - file_groupowner_etc_gshadow
     - file_permissions_etc_gshadow
+    - file_owner_etc_passwd
+    - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
+    - file_owner_etc_group
+    - file_groupowner_etc_group
     - file_permissions_etc_group
+    - file_owner_etc_shells
+    - file_groupowner_etc_shells
+    - file_permissions_etc_shells
+    - accounts_user_dot_group_ownership
+    - accounts_user_dot_user_ownership
+    - accounts_users_home_files_groupownership
+    - accounts_users_home_files_ownership
+    - accounts_users_home_files_permissions
+    - file_permission_user_init_files
+    - dir_system_commands_group_root_owned
+    - dir_system_commands_root_owned
+    - file_groupownership_system_commands_dirs
+    - file_ownership_binary_dirs
+    - file_permissions_binary_dirs
+    - file_ownership_sshd_private_key
+    - file_groupownership_sshd_private_key
     - file_permissions_sshd_private_key
+    - file_ownership_sshd_pub_key
+    - file_groupownership_sshd_pub_key
+    - file_permissions_sshd_pub_key
+    - file_owner_sshd_config
+    - file_groupowner_sshd_config
+    - file_permissions_sshd_config
+    - directory_owner_etc_selinux
+    - directory_groupowner_etc_selinux
+    - directory_permissions_etc_selinux
+    - file_owner_etc_sestatus_conf
+    - file_groupowner_etc_sestatus_conf
+    - file_permissions_etc_sestatus_conf
+    - directory_owner_etc_ipsecd
+    - directory_groupowner_etc_ipsecd
+    - directory_permissions_etc_ipsecd
+    - file_owner_etc_ipsec_conf
+    - file_groupowner_etc_ipsec_conf
+    - file_permissions_etc_ipsec_conf
+    - file_owner_etc_ipsec_secrets
+    - file_groupowner_etc_ipsec_secrets
+    - file_permissions_etc_ipsec_secrets
+    - directory_owner_etc_iptables
+    - directory_groupowner_etc_iptables
+    - directory_permissions_etc_iptables
+    - directory_owner_etc_nftables
+    - directory_groupowner_etc_nftables
+    - directory_permissions_etc_nftables
+    - directory_owner_etc_sysctld
+    - directory_groupowner_etc_sysctld
+    - directory_permissions_etc_sysctld
+    - file_owner_etc_sudoers
+    - file_groupowner_etc_sudoers
+    - file_permissions_etc_sudoers
+    - directory_owner_etc_sudoersd
+    - directory_groupowner_etc_sudoersd
+    - directory_permissions_etc_sudoersd
+    - file_owner_etc_crypttab
+    - file_groupowner_etc_crypttab
+    - file_permissions_etc_crypttab
+    - file_owner_etc_chrony_keys
+    - file_groupowner_etc_chrony_keys
+    - file_permissions_etc_chrony_keys
 
   - id: R51
     title: Sensitive and trusted files

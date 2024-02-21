@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/iptables Directory
+
+description: '{{{ describe_file_owner(file="/etc/iptables", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/iptables directory by the root user is important
+    because this directory hosts iptables configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the iptables configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86428-0
+    cce@rhel8: CCE-86429-8
+    cce@rhel9: CCE-86430-6
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/iptables", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/iptables", owner="root") }}}
+
+platform: package[iptables]
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/iptables", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/iptables", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/iptables/
+        fileuid: '0'
