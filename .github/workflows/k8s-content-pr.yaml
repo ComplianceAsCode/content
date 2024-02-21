@@ -106,7 +106,6 @@ jobs:
     steps:
       - uses: thollander/actions-comment-pull-request@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
             :robot: A k8s content image for this PR is available at:
             `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`
