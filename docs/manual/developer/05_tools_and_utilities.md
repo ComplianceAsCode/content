@@ -389,6 +389,16 @@ To execute:
     $ ./utils/import_srg_spreadsheet.py --changed 20220811_submission.xlsx --current build/cac_stig_output.xlsx -p rhel9
 ```
 
+### `utils/import_disa_stig.py` &ndash; Import Content from DISA's XML Content
+
+This script imports SRG Requirements, Check Text, and Fix Text from a DISA STIG XML File.
+This script only updates STIG items that only have one rule assigned to them.
+
+To execute:
+```bash
+$ ./utils/import_disa_stig.py --product rhel9 --control stig_rhel9 shared/references/disa-stig-rhel9-v1r2-xccdf-manual.xml
+```
+
 ## Profiling the Build System
 
 The goal of `utils/build_profiler.sh` and `utils/build_profiler_report.py` is to help developers measure and compare build times of a single product or a group of products and determine what impact their changes had on the speed of the buildsystem.
