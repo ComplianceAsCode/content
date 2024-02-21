@@ -578,31 +578,21 @@ class Group(XCCDFEntity):
 
         return yaml_contents
 
-    def to_xml_element(self, env_yaml=None):
+    def _create_group_xml_skeleton(self):
         group = ET.Element('{%s}Group' % XCCDF12_NS)
         group.set('id', OSCAP_GROUP + self.id_)
         title = ET.SubElement(group, '{%s}title' % XCCDF12_NS)
         title.text = self.title
         add_sub_element(group, 'description', XCCDF12_NS, self.description)
         add_warning_elements(group, self.warnings)
+        return group
 
-        # This is where references should be put if there are any
-        # This is where rationale should be put if there are any
-
+    def _add_cpe_platforms_xml(self, group):
         for cpe_platform_name in self.cpe_platform_names:
             platform_el = ET.SubElement(group, "{%s}platform" % XCCDF12_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
-        add_nondata_subelements(
-            group, "requires", "idref",
-            list(map(lambda x: OSCAP_GROUP + x, self.requires)))
-        add_nondata_subelements(
-            group, "conflicts", "idref",
-            list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
-        for _value in self.values.values():
-            if _value is not None:
-                group.append(_value.to_xml_element())
-
+    def _add_rules_xml(self, group, env_yaml):
         # Rules that install or remove packages affect remediation
         # of other rules.
         # When packages installed/removed rules come first:
@@ -626,6 +616,7 @@ class Group(XCCDFEntity):
             if rule is not None:
                 group.append(rule.to_xml_element(env_yaml))
 
+    def _add_sub_groups(self, group, env_yaml):
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
         # top level group, this ensures groups that further configure a package or service
@@ -665,6 +656,25 @@ class Group(XCCDFEntity):
             _group = self.groups[group_id]
             if _group is not None:
                 group.append(_group.to_xml_element(env_yaml))
+
+    def to_xml_element(self, env_yaml=None):
+
+        group = self._create_group_xml_skeleton()
+
+        self._add_cpe_platforms_xml(group)
+
+        add_nondata_subelements(
+            group, "requires", "idref",
+            list(map(lambda x: OSCAP_GROUP + x, self.requires)))
+        add_nondata_subelements(
+            group, "conflicts", "idref",
+            list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
+        for _value in self.values.values():
+            if _value is not None:
+                group.append(_value.to_xml_element())
+
+        self._add_rules_xml(group, env_yaml)
+        self._add_sub_groups(group, env_yaml)
 
         return group
 
