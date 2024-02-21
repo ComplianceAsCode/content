@@ -46,26 +46,53 @@ class RuleStats(object):
     Class representing the content of a rule for statistics generation
     purposes.
     """
-    def __init__(self, rid=None, roval=None, rsce=None,
-                 rbash_fix=None, ransible_fix=None,
-                 rignition_fix=None, rkubernetes_fix=None,
-                 rpuppet_fix=None, ranaconda_fix=None, rcce=None,
-                 stigid_ref=None, stigref_ref=None, ccn_ref=None,
-                 cis_ref=None, hipaa_ref=None, anssi_ref=None, ospp_ref=None,
-                 pcidss4_ref=None, cui_ref=None):
+    def __init__(self, rule, cis_ns):
+        rid = rule.get("id")
+        oval = rule.find('./{%s}check[@system="%s"]' % (XCCDF12_NS, oval_ns))
+        sce = rule.find('./{%s}check[@system="%s"]' % (XCCDF12_NS, sce_ns))
+        bash_fix = rule.find('./{%s}fix[@system="%s"]' % (XCCDF12_NS, bash_rem_system))
+        ansible_fix = rule.find(
+            './{%s}fix[@system="%s"]' % (XCCDF12_NS, ansible_rem_system)
+        )
+        ignition_fix = rule.find(
+            './{%s}fix[@system="%s"]' % (XCCDF12_NS, ignition_rem_system)
+        )
+        kubernetes_fix = rule.find(
+            './{%s}fix[@system="%s"]' % (XCCDF12_NS, kubernetes_rem_system)
+        )
+        puppet_fix = rule.find(
+            './{%s}fix[@system="%s"]' % (XCCDF12_NS, puppet_rem_system)
+        )
+        anaconda_fix = rule.find(
+            './{%s}fix[@system="%s"]' % (XCCDF12_NS, anaconda_rem_system)
+        )
+        cce = rule.find('./{%s}ident[@system="%s"]' % (XCCDF12_NS, cce_uri))
+        stigid_ref = rule.find(
+            './{%s}reference[@href="%s"]' % (XCCDF12_NS, SSG_REF_URIS["stigid"])
+        )
+        stigref_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, stig_ns))
+        ccn_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, ccn_ns))
+        cis_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cis_ns))
+        hipaa_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, hipaa_ns))
+        anssi_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, anssi_ns))
+        ospp_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, ospp_ns))
+        pcidss4_ref = rule.find(
+            './{%s}reference[@href="%s"]' % (XCCDF12_NS, pcidss4_ns)
+        )
+        cui_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cui_ns))
         self.dict = {
             'id': rid,
-            'oval': roval,
-            'sce': rsce,
+            'oval': oval,
+            'sce': sce,
             'check': None,
-            'bash_fix': rbash_fix,
-            'ansible_fix': ransible_fix,
-            'ignition_fix': rignition_fix,
-            'kubernetes_fix': rkubernetes_fix,
-            'puppet_fix': rpuppet_fix,
-            'anaconda_fix': ranaconda_fix,
+            'bash_fix': bash_fix,
+            'ansible_fix': ansible_fix,
+            'ignition_fix': ignition_fix,
+            'kubernetes_fix': kubernetes_fix,
+            'puppet_fix': puppet_fix,
+            'anaconda_fix': anaconda_fix,
             'fix': None,
-            'cce': rcce,
+            'cce': cce,
             'stigid_ref': stigid_ref,
             'stigref_ref': stigref_ref,
             'ccn_ref': ccn_ref,
@@ -77,23 +104,23 @@ class RuleStats(object):
             'cui_ref': cui_ref,
         }
 
-        if roval is not None:
-            self.dict['check'] = roval
-        elif rsce is not None:
-            self.dict['check'] = rsce
+        if oval is not None:
+            self.dict['check'] = oval
+        elif sce is not None:
+            self.dict['check'] = sce
 
-        if rbash_fix is not None:
-            self.dict['fix'] = rbash_fix
-        elif ransible_fix is not None:
-            self.dict['fix'] = ransible_fix
-        elif rignition_fix is not None:
-            self.dict['fix'] = rignition_fix
-        elif rkubernetes_fix is not None:
-            self.dict['fix'] = rkubernetes_fix
-        elif rpuppet_fix is not None:
-            self.dict['fix'] = rpuppet_fix
-        elif ranaconda_fix is not None:
-            self.dict['fix'] = ranaconda_fix
+        if bash_fix is not None:
+            self.dict['fix'] = bash_fix
+        elif ansible_fix is not None:
+            self.dict['fix'] = ansible_fix
+        elif ignition_fix is not None:
+            self.dict['fix'] = ignition_fix
+        elif kubernetes_fix is not None:
+            self.dict['fix'] = kubernetes_fix
+        elif puppet_fix is not None:
+            self.dict['fix'] = puppet_fix
+        elif anaconda_fix is not None:
+            self.dict['fix'] = anaconda_fix
 
 
 def get_cis_uri(product):
@@ -236,50 +263,7 @@ class XCCDFBenchmark(object):
 
         for rule in rules:
             if rule is not None:
-                oval = rule.find("./{%s}check[@system=\"%s\"]" %
-                                 (XCCDF12_NS, oval_ns))
-                sce = rule.find("./{%s}check[@system=\"%s\"]" %
-                                (XCCDF12_NS, sce_ns))
-                bash_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                     (XCCDF12_NS, bash_rem_system))
-                ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                        (XCCDF12_NS, ansible_rem_system))
-                ignition_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                         (XCCDF12_NS, ignition_rem_system))
-                kubernetes_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                           (XCCDF12_NS, kubernetes_rem_system))
-                puppet_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                       (XCCDF12_NS, puppet_rem_system))
-                anaconda_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                         (XCCDF12_NS, anaconda_rem_system))
-                cce = rule.find("./{%s}ident[@system=\"%s\"]" %
-                                (XCCDF12_NS, cce_uri))
-                stigid_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                       (XCCDF12_NS, SSG_REF_URIS["stigid"]))
-                stigref_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                        (XCCDF12_NS, stig_ns))
-                ccn_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (XCCDF12_NS, ccn_ns))
-                cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (XCCDF12_NS, self.cis_ns))
-                hipaa_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                      (XCCDF12_NS, hipaa_ns))
-                anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                      (XCCDF12_NS, anssi_ns))
-                ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                     (XCCDF12_NS, ospp_ns))
-                pcidss4_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                     (XCCDF12_NS, pcidss4_ns))
-                cui_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (XCCDF12_NS, cui_ns))
-
-                rule_stats.append(
-                    RuleStats(rule.get("id"), oval, sce,
-                              bash_fix, ansible_fix, ignition_fix,
-                              kubernetes_fix, puppet_fix, anaconda_fix,
-                              cce, stigid_ref, stigref_ref, ccn_ref, cis_ref, hipaa_ref,
-                              anssi_ref, ospp_ref, pcidss4_ref, cui_ref)
-                )
+                rule_stats.append(RuleStats(rule, self.cis_ns))
 
         if not rule_stats:
             print('Unable to retrieve statistics for %s profile' % profile)
