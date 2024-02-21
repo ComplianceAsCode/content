@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: Verify Permissions On /etc/ipsec.d Directory
 
-description: '{{{ describe_file_permissions(file="/etc/ipsec.d", perms="0644") }}}'
+description: '{{{ describe_file_permissions(file="/etc/ipsec.d", perms="0700") }}}'
 
 rationale: |-
     Setting correct permissions on the /etc/ipsec.d directory is important
@@ -17,19 +17,19 @@ identifiers:
     cce@rhel8: CCE-86305-0
     cce@rhel9: CCE-86306-8
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ipsec.d", perms="0644") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ipsec.d", perms="0700") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/ipsec.d", perms="0644") }}}
+    {{{ ocil_file_permissions(file="/etc/ipsec.d", perms="0700") }}}
 
 platform: package[libreswan]
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/ipsec.d", mode="0644") }}}'
+fixtext: '{{{ fixtext_file_permissions(file="/etc/ipsec.d", mode="0700") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ipsec.d", mode="0644") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ipsec.d", mode="0700") }}}'
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/ipsec.d/
-        filemode: '0644'
+        filemode: '0700'
