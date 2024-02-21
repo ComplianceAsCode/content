@@ -50,7 +50,7 @@ class RuleStats(object):
                  rbash_fix=None, ransible_fix=None,
                  rignition_fix=None, rkubernetes_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None, rcce=None,
-                 stigid_ref=None, stigref_ref=None, ccn_ref= None,
+                 stigid_ref=None, stigref_ref=None, ccn_ref=None,
                  cis_ref=None, hipaa_ref=None, anssi_ref=None, ospp_ref=None,
                  pcidss4_ref=None, cui_ref=None):
         self.dict = {
@@ -99,7 +99,9 @@ class RuleStats(object):
 def get_cis_uri(product):
     cis_uri = cis_ns
     if product:
-        constants_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "products", product, "transforms/constants.xslt")
+        constants_path = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "products", product, "transforms/constants.xslt")
         if os.path.exists(constants_path):
             root = ElementTree.parse(constants_path)
             cis_var = root.find('./{%s}variable[@name="cisuri"]' % (xslt_ns))
@@ -255,9 +257,9 @@ class XCCDFBenchmark(object):
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
                                 (self.xccdf_ns, cce_uri))
                 stigid_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (self.xccdf_ns, SSG_REF_URIS["stigid"]))
+                                       (self.xccdf_ns, SSG_REF_URIS["stigid"]))
                 stigref_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (self.xccdf_ns, stig_ns))
+                                        (self.xccdf_ns, stig_ns))
                 ccn_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (self.xccdf_ns, ccn_ns))
                 cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
