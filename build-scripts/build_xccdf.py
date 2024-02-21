@@ -76,6 +76,7 @@ def link_oval(xccdftree, checks, output_file_name, build_ovals_dir):
     oval_linker.link()
     oval_linker.save_linked_tree()
     oval_linker.link_xccdf()
+    return oval_linker
 
 
 def link_ocil(xccdftree, checks, output_file_name, ocil):
