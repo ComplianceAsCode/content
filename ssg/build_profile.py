@@ -47,80 +47,59 @@ class RuleStats(object):
     purposes.
     """
     def __init__(self, rule, cis_ns):
-        rid = rule.get("id")
-        oval = rule.find('./{%s}check[@system="%s"]' % (XCCDF12_NS, oval_ns))
-        sce = rule.find('./{%s}check[@system="%s"]' % (XCCDF12_NS, sce_ns))
-        bash_fix = rule.find('./{%s}fix[@system="%s"]' % (XCCDF12_NS, bash_rem_system))
-        ansible_fix = rule.find(
+        self.id = rule.get("id")
+        self.oval = rule.find('./{%s}check[@system="%s"]' % (XCCDF12_NS, oval_ns))
+        self.sce = rule.find('./{%s}check[@system="%s"]' % (XCCDF12_NS, sce_ns))
+        self.bash_fix = rule.find('./{%s}fix[@system="%s"]' % (XCCDF12_NS, bash_rem_system))
+        self.ansible_fix = rule.find(
             './{%s}fix[@system="%s"]' % (XCCDF12_NS, ansible_rem_system)
         )
-        ignition_fix = rule.find(
+        self.ignition_fix = rule.find(
             './{%s}fix[@system="%s"]' % (XCCDF12_NS, ignition_rem_system)
         )
-        kubernetes_fix = rule.find(
+        self.kubernetes_fix = rule.find(
             './{%s}fix[@system="%s"]' % (XCCDF12_NS, kubernetes_rem_system)
         )
-        puppet_fix = rule.find(
+        self.puppet_fix = rule.find(
             './{%s}fix[@system="%s"]' % (XCCDF12_NS, puppet_rem_system)
         )
-        anaconda_fix = rule.find(
+        self.anaconda_fix = rule.find(
             './{%s}fix[@system="%s"]' % (XCCDF12_NS, anaconda_rem_system)
         )
-        cce = rule.find('./{%s}ident[@system="%s"]' % (XCCDF12_NS, cce_uri))
-        stigid_ref = rule.find(
+        self.cce = rule.find('./{%s}ident[@system="%s"]' % (XCCDF12_NS, cce_uri))
+        self.stigid_ref = rule.find(
             './{%s}reference[@href="%s"]' % (XCCDF12_NS, SSG_REF_URIS["stigid"])
         )
-        stigref_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, stig_ns))
-        ccn_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, ccn_ns))
-        cis_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cis_ns))
-        hipaa_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, hipaa_ns))
-        anssi_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, anssi_ns))
-        ospp_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, ospp_ns))
-        pcidss4_ref = rule.find(
+        self.stigref_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, stig_ns))
+        self.ccn_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, ccn_ns))
+        self.cis_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cis_ns))
+        self.hipaa_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, hipaa_ns))
+        self.anssi_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, anssi_ns))
+        self.ospp_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, ospp_ns))
+        self.pcidss4_ref = rule.find(
             './{%s}reference[@href="%s"]' % (XCCDF12_NS, pcidss4_ns)
         )
-        cui_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cui_ns))
-        self.dict = {
-            'id': rid,
-            'oval': oval,
-            'sce': sce,
-            'check': None,
-            'bash_fix': bash_fix,
-            'ansible_fix': ansible_fix,
-            'ignition_fix': ignition_fix,
-            'kubernetes_fix': kubernetes_fix,
-            'puppet_fix': puppet_fix,
-            'anaconda_fix': anaconda_fix,
-            'fix': None,
-            'cce': cce,
-            'stigid_ref': stigid_ref,
-            'stigref_ref': stigref_ref,
-            'ccn_ref': ccn_ref,
-            'cis_ref': cis_ref,
-            'hipaa_ref': hipaa_ref,
-            'anssi_ref': anssi_ref,
-            'ospp_ref': ospp_ref,
-            'pcidss4_ref': pcidss4_ref,
-            'cui_ref': cui_ref,
-        }
+        self.cui_ref = rule.find('./{%s}reference[@href="%s"]' % (XCCDF12_NS, cui_ns))
 
-        if oval is not None:
-            self.dict['check'] = oval
-        elif sce is not None:
-            self.dict['check'] = sce
+        self.check = None
+        if self.oval is not None:
+            self.check = self.oval
+        elif self.sce is not None:
+            self.check = self.sce
 
-        if bash_fix is not None:
-            self.dict['fix'] = bash_fix
-        elif ansible_fix is not None:
-            self.dict['fix'] = ansible_fix
-        elif ignition_fix is not None:
-            self.dict['fix'] = ignition_fix
-        elif kubernetes_fix is not None:
-            self.dict['fix'] = kubernetes_fix
-        elif puppet_fix is not None:
-            self.dict['fix'] = puppet_fix
-        elif anaconda_fix is not None:
-            self.dict['fix'] = anaconda_fix
+        self.fix = None
+        if self.bash_fix is not None:
+            self.fix = self.bash_fix
+        elif self.ansible_fix is not None:
+            self.fix = self.ansible_fix
+        elif self.ignition_fix is not None:
+            self.fix = self.ignition_fix
+        elif self.kubernetes_fix is not None:
+            self.fix = self.kubernetes_fix
+        elif self.puppet_fix is not None:
+            self.fix = self.puppet_fix
+        elif self.anaconda_fix is not None:
+            self.fix = self.anaconda_fix
 
 
 def get_cis_uri(product):
@@ -269,10 +248,10 @@ class XCCDFBenchmark(object):
             print('Unable to retrieve statistics for %s profile' % profile)
             sys.exit(1)
 
-        rule_stats.sort(key=lambda r: r.dict['id'])
+        rule_stats.sort(key=lambda r: r.id)
 
         for rule in rule_stats:
-            profile_stats['rules'].append(rule.dict['id'])
+            profile_stats['rules'].append(rule.id)
 
         profile_stats['profile_id'] = profile.replace(OSCAP_PROFILE, "")
         if ssg_version_elem is not None:
@@ -280,138 +259,138 @@ class XCCDFBenchmark(object):
                 'SCAP Security Guide %s' % ssg_version_elem.text
         profile_stats['rules_count'] = len(rule_stats)
         profile_stats['implemented_ovals'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['oval'] is not None]
+            [x.id for x in rule_stats if x.oval is not None]
         profile_stats['implemented_ovals_pct'] = \
             float(len(profile_stats['implemented_ovals'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_ovals'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['oval'] is None]
+            [x.id for x in rule_stats if x.oval is None]
 
         profile_stats['implemented_sces'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['sce'] is not None]
+            [x.id for x in rule_stats if x.sce is not None]
         profile_stats['implemented_sces_pct'] = \
             float(len(profile_stats['implemented_sces'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_sces'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['sce'] is None]
+            [x.id for x in rule_stats if x.sce is None]
 
         profile_stats['implemented_checks'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['check'] is not None]
+            [x.id for x in rule_stats if x.check is not None]
         profile_stats['implemented_checks_pct'] = \
             float(len(profile_stats['implemented_checks'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_checks'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['check'] is None]
+            [x.id for x in rule_stats if x.check is None]
 
         profile_stats['implemented_bash_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['bash_fix'] is not None]
+            [x.id for x in rule_stats if x.bash_fix is not None]
         profile_stats['implemented_bash_fixes_pct'] = \
             float(len(profile_stats['implemented_bash_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_bash_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['bash_fix'] is None]
+            [x.id for x in rule_stats if x.bash_fix is None]
 
         profile_stats['implemented_ansible_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['ansible_fix'] is not None]
+            [x.id for x in rule_stats if x.ansible_fix is not None]
         profile_stats['implemented_ansible_fixes_pct'] = \
             float(len(profile_stats['implemented_ansible_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_ansible_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['ansible_fix'] is None]
+            [x.id for x in rule_stats if x.ansible_fix is None]
 
         profile_stats['implemented_ignition_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['ignition_fix'] is not None]
+            [x.id for x in rule_stats if x.ignition_fix is not None]
         profile_stats['implemented_ignition_fixes_pct'] = \
             float(len(profile_stats['implemented_ignition_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_ignition_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['ignition_fix'] is None]
+            [x.id for x in rule_stats if x.ignition_fix is None]
 
         profile_stats['implemented_kubernetes_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['kubernetes_fix'] is not None]
+            [x.id for x in rule_stats if x.kubernetes_fix is not None]
         profile_stats['implemented_kubernetes_fixes_pct'] = \
             float(len(profile_stats['implemented_kubernetes_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_kubernetes_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['kubernetes_fix'] is None]
+            [x.id for x in rule_stats if x.kubernetes_fix is None]
 
         profile_stats['implemented_puppet_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['puppet_fix'] is not None]
+            [x.id for x in rule_stats if x.puppet_fix is not None]
         profile_stats['implemented_puppet_fixes_pct'] = \
             float(len(profile_stats['implemented_puppet_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_puppet_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['puppet_fix'] is None]
+            [x.id for x in rule_stats if x.puppet_fix is None]
 
         profile_stats['implemented_anaconda_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['anaconda_fix'] is not None]
+            [x.id for x in rule_stats if x.anaconda_fix is not None]
 
         profile_stats['implemented_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['fix'] is not None]
+            [x.id for x in rule_stats if x.fix is not None]
         profile_stats['implemented_fixes_pct'] = \
             float(len(profile_stats['implemented_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['fix'] is None]
+            [x.id for x in rule_stats if x.fix is None]
 
         profile_stats['missing_stigid_refs'] = []
         if 'stig' in profile_stats['profile_id']:
             profile_stats['missing_stigid_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['stigid_ref'] is None]
+                [x.id for x in rule_stats if x.stigid_ref is None]
 
         profile_stats['missing_stigref_refs'] = []
         if 'stig' in profile_stats['profile_id']:
             profile_stats['missing_stigref_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['stigref_ref'] is None]
+                [x.id for x in rule_stats if x.stigref_ref is None]
 
         profile_stats['missing_ccn_refs'] = []
         if 'ccn' in profile_stats['profile_id']:
             profile_stats['missing_ccn_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['ccn_ref'] is None]
+                [x.id for x in rule_stats if x.ccn_ref is None]
 
         profile_stats['missing_cis_refs'] = []
         if 'cis' in profile_stats['profile_id']:
             profile_stats['missing_cis_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['cis_ref'] is None]
+                [x.id for x in rule_stats if x.cis_ref is None]
 
         profile_stats['missing_hipaa_refs'] = []
         if 'hipaa' in profile_stats['profile_id']:
             profile_stats['missing_hipaa_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['hipaa_ref'] is None]
+                [x.id for x in rule_stats if x.hipaa_ref is None]
 
         profile_stats['missing_anssi_refs'] = []
         if 'anssi' in profile_stats['profile_id']:
             profile_stats['missing_anssi_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['anssi_ref'] is None]
+                [x.id for x in rule_stats if x.anssi_ref is None]
 
         profile_stats['missing_ospp_refs'] = []
         if 'ospp' in profile_stats['profile_id']:
             profile_stats['missing_ospp_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['ospp_ref'] is None]
+                [x.id for x in rule_stats if x.ospp_ref is None]
 
         profile_stats['missing_pcidss4_refs'] = []
         if 'pci-dss' in profile_stats['profile_id']:
             profile_stats['missing_pcidss4_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['pcidss4_ref'] is None]
+                [x.id for x in rule_stats if x.pcidss4_ref is None]
 
         profile_stats['missing_cui_refs'] = []
         if 'cui' in profile_stats['profile_id']:
             profile_stats['missing_cui_refs'] = \
-                [x.dict['id'] for x in rule_stats if x.dict['cui_ref'] is None]
+                [x.id for x in rule_stats if x.cui_ref is None]
 
         profile_stats['implemented_anaconda_fixes_pct'] = \
             float(len(profile_stats['implemented_anaconda_fixes'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_anaconda_fixes'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['anaconda_fix'] is None]
+            [x.id for x in rule_stats if x.anaconda_fix is None]
 
         profile_stats['assigned_cces'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['cce'] is not None]
+            [x.id for x in rule_stats if x.cce is not None]
         profile_stats['assigned_cces_pct'] = \
             float(len(profile_stats['assigned_cces'])) / \
             profile_stats['rules_count'] * 100
         profile_stats['missing_cces'] = \
-            [x.dict['id'] for x in rule_stats if x.dict['cce'] is None]
+            [x.id for x in rule_stats if x.cce is None]
 
         profile_stats['ansible_parity'] = \
             [rule_id for rule_id in profile_stats["missing_ansible_fixes"] if rule_id not in profile_stats["missing_bash_fixes"]]
