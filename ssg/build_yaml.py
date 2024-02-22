@@ -426,7 +426,7 @@ class Benchmark(XCCDFEntity):
     def to_file(self, file_name, env_yaml=None):
         root = self.to_xml_element(env_yaml)
         tree = ET.ElementTree(root)
-        tree.write(file_name)
+        tree.write(file_name, encoding="utf-8")
 
     def add_value(self, value):
         if value is None:
@@ -1590,7 +1590,7 @@ class LinearLoader(object):
         if root is None:
             return
         tree = ET.ElementTree(root)
-        tree.write(filename, xml_declaration=True)
+        tree.write(filename, encoding="utf-8", xml_declaration=True)
 
 
 class Platform(XCCDFEntity):
