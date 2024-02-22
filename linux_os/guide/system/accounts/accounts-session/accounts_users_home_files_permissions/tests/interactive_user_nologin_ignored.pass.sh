@@ -1,7 +1,5 @@
 #!/bin/bash
 
-USER="cac_user"
-useradd -m -s /sbin/nologin $USER
-echo "$USER" > /home/$USER/$USER.txt
-chmod -Rf 700 /home/$USER/.*
-chmod -f o+r /home/$USER/$USER.txt
+. "$SHARED/accounts_common.sh"
+
+run_foreach_noninteractive_shell_account "echo \$user > /home/\$user/\$user.txt; chmod -Rf 700 /home/\$user/.*; chmod -f o+r /home/\$user/\$user.txt"

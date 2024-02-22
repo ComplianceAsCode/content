@@ -1,6 +1,5 @@
 #!/bin/bash
 
-USER="cac_user"
-useradd -m -s /sbin/nologin $USER
-touch /home/$USER/.bashrc
-chgrp 10005 /home/$USER/.bashrc
+. "$SHARED/accounts_common.sh"
+
+run_foreach_noninteractive_shell_account "touch /home/\$user/.bashrc; chgrp 10005 /home/\$user/.bashrc"

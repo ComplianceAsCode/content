@@ -1,5 +1,5 @@
 #!/bin/bash
 
-USER="cac_user"
-useradd -m -s /sbin/nologin $USER
-echo "umask 022" >> /home/$USER/.bashrc
+. "$SHARED/accounts_common.sh"
+
+run_foreach_noninteractive_shell_account "echo 'umask 022' >> /home/\$user/.bashrc"
