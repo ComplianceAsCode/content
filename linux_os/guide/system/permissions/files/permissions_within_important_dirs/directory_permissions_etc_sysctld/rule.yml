@@ -26,6 +26,8 @@ fixtext: '{{{ fixtext_file_permissions(file="/etc/sysctl.d", mode="0755") }}}'
 
 srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/sysctl.d", mode="0755") }}}'
 
+platform: machine
+
 template:
     name: file_permissions
     vars:

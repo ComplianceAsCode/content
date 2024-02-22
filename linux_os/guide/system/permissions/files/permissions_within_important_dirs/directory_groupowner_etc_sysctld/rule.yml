@@ -26,6 +26,8 @@ fixtext: '{{{ fixtext_file_group_owner(file="/etc/sysctl.d", group="root") }}}'
 
 srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/sysctl.d", group="root") }}}'
 
+platform: machine
+
 template:
     name: file_groupowner
     vars:
