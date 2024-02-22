@@ -351,13 +351,25 @@ class Benchmark(XCCDFEntity):
         for g in self.groups.values():
             g.remove_rules_with_ids_not_listed(selected_rules)
 
-    def get_rules_selected_in_all_profiles(self):
+    def get_components_not_included_in_a_profiles(self, profiles):
+        selected_rules = self.get_rules_selected_in_all_profiles(profiles)
+        rules = set()
+        groups = set()
+        for g in self.groups.values():
+            rules_, groups_ = g.get_not_included_components(selected_rules)
+            rules.update(rules_)
+            groups.update(groups_)
+        return rules, groups
+
+    def get_rules_selected_in_all_profiles(self, profiles=None):
         selected_rules = set()
-        for p in self.profiles:
+        if profiles is None:
+            profiles = self.profiles
+        for p in profiles:
             selected_rules.update(p.selected)
         return selected_rules
 
-    def _create_benchmark_xml_skeleton(self):
+    def _create_benchmark_xml_skeleton(self, env_yaml):
         root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
         root.set('id', OSCAP_BENCHMARK + self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
@@ -401,28 +413,35 @@ class Benchmark(XCCDFEntity):
             plat = ET.SubElement(root, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-    def _add_profiles_xml(self, root):
+    def _add_profiles_xml(self, root, profiles_to_not_include):
         for profile in self.profiles:
+            if profile.id_ in profiles_to_not_include:
+                continue
             root.append(profile.to_xml_element())
 
     def _add_values_xml(self, root):
         for value in self.values.values():
             root.append(value.to_xml_element())
 
-    def _add_groups_xml(self, root, env_yaml=None):
+    def _add_groups_xml(self, root, components_to_not_include, env_yaml=None):
         groups_in_bench = list(self.groups.keys())
         priority_order = ["system", "services"]
         groups_in_bench = reorder_according_to_ordering(groups_in_bench, priority_order)
 
+        groups_to_not_include = components_to_not_include.get("groups", set())
         # Make system group the first, followed by services group
         for group_id in groups_in_bench:
+            if group_id in groups_to_not_include:
+                continue
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
-                root.append(group.to_xml_element(env_yaml))
+                root.append(group.to_xml_element(env_yaml, components_to_not_include))
 
-    def _add_rules_xml(self, root, env_yaml=None):
+    def _add_rules_xml(self, root, rules_to_not_include, env_yaml=None):
         for rule in self.rules.values():
+            if rule.id_ in rules_to_not_include:
+                continue
             root.append(rule.to_xml_element(env_yaml))
 
     def _add_version_xml(self, root):
@@ -430,8 +449,11 @@ class Benchmark(XCCDFEntity):
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
 
-    def to_xml_element(self, env_yaml=None, product_cpes=None):
-        root = self._create_benchmark_xml_skeleton()
+    def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None):
+        if components_to_not_include is None:
+            components_to_not_include = {}
+
+        root = self._create_benchmark_xml_skeleton(env_yaml)
 
         add_reference_title_elements(root, env_yaml)
 
@@ -442,10 +464,10 @@ class Benchmark(XCCDFEntity):
         contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
         add_benchmark_metadata(root, contributors_file)
 
-        self._add_profiles_xml(root)
+        self._add_profiles_xml(root, components_to_not_include.get("profiles", set()))
         self._add_values_xml(root)
-        self._add_groups_xml(root, env_yaml)
-        self._add_rules_xml(root, env_yaml)
+        self._add_groups_xml(root, components_to_not_include, env_yaml)
+        self._add_rules_xml(root, components_to_not_include.get("rules", set()),  env_yaml,)
 
         if hasattr(ET, "indent"):
             ET.indent(root, space=" ", level=0)
@@ -483,12 +505,19 @@ class Benchmark(XCCDFEntity):
         return self.id_
 
     def get_benchmark_xml_for_profile(self, profile):
-        profile.unselected_groups = []
-        b = deepcopy(self)
-        b.profiles = [profile]
-        b.drop_rules_not_included_in_a_profile()
-        b.unselect_empty_groups()
-        return profile.id_, b.to_xml_element()
+        rules, groups = self.get_components_not_included_in_a_profiles([profile])
+        profiles = set(filter(
+            lambda id_, profile_id=profile.id_: id_ != profile_id,
+            [profile.id_ for profile in self.profiles]
+        ))
+        components_to_not_include = {
+                "rules": rules,
+                "groups": groups,
+                "profiles": profiles
+            }
+        return profile.id_, self.to_xml_element(
+            components_to_not_include=components_to_not_include
+        )
 
 
 class Group(XCCDFEntity):
@@ -592,7 +621,7 @@ class Group(XCCDFEntity):
             platform_el = ET.SubElement(group, "{%s}platform" % XCCDF12_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
-    def _add_rules_xml(self, group, env_yaml):
+    def _add_rules_xml(self, group, rules_to_not_include, env_yaml):
         # Rules that install or remove packages affect remediation
         # of other rules.
         # When packages installed/removed rules come first:
@@ -612,11 +641,15 @@ class Group(XCCDFEntity):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
+            if rule_id in rules_to_not_include:
+                continue
             rule = self.rules.get(rule_id)
             if rule is not None:
                 group.append(rule.to_xml_element(env_yaml))
 
-    def _add_sub_groups(self, group, env_yaml):
+    def _add_sub_groups(self, group, components_to_not_include, env_yaml):
+        groups_to_not_include = components_to_not_include.get("groups", set())
+
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
         # top level group, this ensures groups that further configure a package or service
@@ -653,11 +686,21 @@ class Group(XCCDFEntity):
         ]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
+            if group_id in groups_to_not_include:
+                continue
             _group = self.groups[group_id]
             if _group is not None:
-                group.append(_group.to_xml_element(env_yaml))
+                group.append(_group.to_xml_element(env_yaml, components_to_not_include))
 
-    def to_xml_element(self, env_yaml=None):
+    def to_xml_element(self, env_yaml=None,  components_to_not_include=None):
+        if components_to_not_include is None:
+            components_to_not_include = {}
+
+        rules_to_not_include = components_to_not_include.get("rules", set())
+        groups_to_not_include = components_to_not_include.get("groups", set())
+
+        if self.id_ in groups_to_not_include:
+            return None
 
         group = self._create_group_xml_skeleton()
 
@@ -673,8 +716,8 @@ class Group(XCCDFEntity):
             if _value is not None:
                 group.append(_value.to_xml_element())
 
-        self._add_rules_xml(group, env_yaml)
-        self._add_sub_groups(group, env_yaml)
+        self._add_rules_xml(group, rules_to_not_include, env_yaml)
+        self._add_sub_groups(group, components_to_not_include, env_yaml)
 
         return group
 
@@ -704,6 +747,17 @@ class Group(XCCDFEntity):
         self.rules = dict(filter(lambda el, ids=rule_ids_list: el[0] in ids, self.rules.items()))
         for group in self.groups.values():
             group.remove_rules_with_ids_not_listed(rule_ids_list)
+
+    def get_not_included_components(self, rule_ids_list):
+        rules = set(filter(lambda id_, ids=rule_ids_list: id_ not in ids, self.rules.keys()))
+        groups = set()
+        for group in self.groups.values():
+            rules_, groups_ = group.get_not_included_components(rule_ids_list)
+            if len(rules) == len(self.rules) and len(rules_) == len(group.rules):
+                groups.add(group.id_)
+            rules.update(rules_)
+            groups.update(groups_)
+        return rules, groups
 
     def __str__(self):
         return self.id_
