@@ -6,6 +6,9 @@ on:
     branches: [ 'master' ]
   merge_group:
     branches: [ 'master' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 jobs:
   publish:
     name: Publish stats, tables and guides

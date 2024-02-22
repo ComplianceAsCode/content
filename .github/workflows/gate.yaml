@@ -6,6 +6,9 @@ on:
     branches: ['*', '!stabilization*', '!stable*', '!master' ]
   pull_request:
     branches: [ 'master', 'stabilization*' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 jobs:
   validate-centos7:
     name: Build, Test on CentOS 7 (Container)
