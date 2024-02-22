@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4'
 
-platform: ocp4
+platform: ocp4-node
 
 reference: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
 
@@ -24,4 +24,9 @@ description: |-
     - Building-Block SYS.1.6 Containerisation
     - Building-Block APP.4.4 Kubernetes
 
-extends: bsi-2022
+
+filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
+
+selections:
+    - bsi_app_4_4:all
+    - bsi_sys_1_6:all

@@ -24,8 +24,4 @@ description: |-
     - Building-Block SYS.1.6 Containerisation
     - Building-Block APP.4.4 Kubernetes
 
-
-filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
-
-selections:
-    - bsi_app_4_4:all
+extends: bsi-node-2022
