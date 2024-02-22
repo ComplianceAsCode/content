@@ -97,7 +97,7 @@ def link_benchmark(loader, xccdftree, args, benchmark=None):
     if ocil is not None:
         link_ocil(xccdftree, checks, args.ocil, ocil)
 
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf)
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf, encoding="utf-8")
 
 
 def get_path(path, file_name):

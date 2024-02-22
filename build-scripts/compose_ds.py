@@ -282,10 +282,10 @@ def upgrade_ds_to_scap_13(ds):
 
 def _store_ds(ds, output_13, output_12):
     if output_12:
-        ds.write(output_12, xml_declaration=True)
+        ds.write(output_12, xml_declaration=True, encoding="utf-8")
 
     ds_13 = upgrade_ds_to_scap_13(ds)
-    ds_13.write(output_13, xml_declaration=True)
+    ds_13.write(output_13, xml_declaration=True, encoding="utf-8")
 
 
 def append_id_to_file_name(path, id_):
