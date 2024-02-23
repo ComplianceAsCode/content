@@ -504,7 +504,7 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_xml_for_profile(self, profile):
+    def get_benchmark_xml_for_profile(self, env_yaml, profile):
         rules, groups = self.get_components_not_included_in_a_profiles([profile])
         profiles = set(filter(
             lambda id_, profile_id=profile.id_: id_ != profile_id,
@@ -516,6 +516,7 @@ class Benchmark(XCCDFEntity):
                 "profiles": profiles
             }
         return profile.id_, self.to_xml_element(
+            env_yaml,
             components_to_not_include=components_to_not_include
         )
 
@@ -1597,7 +1598,9 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profile_id, benchmark = self.benchmark.get_benchmark_xml_for_profile(profile)
+            profile_id, benchmark = self.benchmark.get_benchmark_xml_for_profile(
+                self.env_yaml, profile
+            )
             yield profile_id, benchmark
 
     def load_compiled_content(self):
