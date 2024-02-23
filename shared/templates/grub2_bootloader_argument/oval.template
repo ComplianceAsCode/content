@@ -88,7 +88,11 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" version="1">
+    {{%- if 'ubuntu' in product %}}
+    <ind:filepath operation="pattern match">^/etc/default/grub(\.d/[^/]+\.cfg)?$</ind:filepath>
+    {{%- else %}}
     <ind:filepath>/etc/default/grub</ind:filepath>
+    {{%- endif %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -102,7 +106,11 @@
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
   version="1">
+    {{%- if 'ubuntu' in product %}}
+    <ind:filepath operation="pattern match">^/etc/default/grub(\.d/[^/]+\.cfg)?$</ind:filepath>
+    {{%- else %}}
     <ind:filepath>/etc/default/grub</ind:filepath>
+    {{%- endif %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>

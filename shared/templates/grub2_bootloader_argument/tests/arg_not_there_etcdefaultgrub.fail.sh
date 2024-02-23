@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
+{{%- if 'ubuntu' in product %}}
+# packages = grub2
+{{%- else %}}
 # packages = grub2,grubby
+{{%- endif %}}
 
 source common.sh
 
