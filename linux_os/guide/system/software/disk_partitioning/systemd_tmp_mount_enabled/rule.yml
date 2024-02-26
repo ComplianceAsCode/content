@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Ensure tmp.mount unit is enabled'
+
+description: |-
+    The <tt>/tmp</tt> directory is a world-writable directory used
+    for temporary file storage. This directory is managed by <tt>systemd-tmpfiles</tt>.
+    Ensure that the <tt>tmp.mount</tt> systemd unit is enabled.
+
+rationale: |-
+    The <tt>/tmp</tt> directory is used as temporary storage by many programs.
+    Placing <tt>/tmp</tt> in a tmpfs filesystem enables the setting of more
+    restrictive mount options, which can help protect programs which use it.
+    The <tt>tmp.mount</tt> unit configures the tmpfs filesystem and ensures
+    the <tt>/tmp</tt> directory is wiped during reboot.
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-86889-3
+    cce@rhel8: CCE-86890-1
+    cce@rhel9: CCE-86891-9
+
+ocil: |-
+    {{{ systemd_mount_enabled("tmp") }}}
+
+ocil_clause: "the tmp.mount unit is masked or disabled"
+
+platform: machine
+
+template:
+    name: systemd_mount_enabled
+    vars:
+        mountname: tmp

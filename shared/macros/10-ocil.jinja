@@ -874,6 +874,22 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{%- endif -%}}
 {{%- endmacro %}}
 
+{{# Mount unit enabled macros #}}
+
+{{#
+    Describe how to check if mount unit is enabled in systemd.
+
+:param mount: The mount unit to check
+:type mount: str
+
+#}}
+{{%- macro systemd_mount_enabled(mount) %}}
+    Run the following command to determine the current status of the
+    <code>{{{ mount }}}</code> mount:
+    <pre>$ sudo systemctl is-active {{{ mount }}}.mount</pre>
+    If the mount unit is running, it should return the following: <pre>active</pre>
+{{%- endmacro %}}
+
 
 {{# File macros #}}
 

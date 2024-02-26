@@ -648,8 +648,8 @@ controls:
     - partition_for_opt
     - mount_option_opt_nosuid
 
-    # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
-    - partition_for_tmp
+    # /tmp nosuid, noexec temporary files. Must contain only non-executable elements. Cleaned after reboot. Prefferred tmpfs.
+    - systemd_tmp_mount_enabled
     - mount_option_tmp_nosuid
     - mount_option_tmp_noexec
 
