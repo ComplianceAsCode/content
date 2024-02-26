@@ -355,10 +355,12 @@ class Benchmark(XCCDFEntity):
         selected_rules = self.get_rules_selected_in_all_profiles(profiles)
         rules = set()
         groups = set()
-        for g in self.groups.values():
-            rules_, groups_ = g.get_not_included_components(selected_rules)
-            rules.update(rules_)
-            groups.update(groups_)
+        for sub_group in self.groups.values():
+            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
+                selected_rules
+            )
+            rules.update(rules_of_sub_group)
+            groups.update(groups_of_sub_group)
         return rules, groups
 
     def get_rules_selected_in_all_profiles(self, profiles=None):
@@ -749,15 +751,23 @@ class Group(XCCDFEntity):
         for group in self.groups.values():
             group.remove_rules_with_ids_not_listed(rule_ids_list)
 
+    def contains_rules(self, rule_ids):
+        intersection_of_rules = list(set(rule_ids) & set(self.rules.keys()))
+        if len(intersection_of_rules) > 0:
+            return True
+        return any([g.contains_rules(rule_ids) for g in self.groups.values()])
+
     def get_not_included_components(self, rule_ids_list):
         rules = set(filter(lambda id_, ids=rule_ids_list: id_ not in ids, self.rules.keys()))
         groups = set()
-        for group in self.groups.values():
-            rules_, groups_ = group.get_not_included_components(rule_ids_list)
-            if len(rules) == len(self.rules) and len(rules_) == len(group.rules):
-                groups.add(group.id_)
-            rules.update(rules_)
-            groups.update(groups_)
+        if not self.contains_rules(rule_ids_list):
+            groups.add(self.id_)
+        for sub_group in self.groups.values():
+            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
+                rule_ids_list
+            )
+            rules.update(rules_of_sub_group)
+            groups.update(groups_of_sub_group)
         return rules, groups
 
     def __str__(self):
