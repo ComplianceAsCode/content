@@ -11,7 +11,7 @@ SSG_PROJECT_NAME = "SCAP Security Guide Project"
 SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
 
 SSG_REF_URIS = {
-    'anssi': 'http://www.ssi.gouv.fr/administration/bonnes-pratiques/',
+    'anssi': 'https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf',
     'bsi': 'https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf',
     'nist': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
     'nist-csf': 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf',
@@ -91,7 +91,7 @@ stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
-anssi_ns = "http://www.ssi.gouv.fr/administration/bonnes-pratiques/"
+anssi_ns = "https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf"
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
 pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
 cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
@@ -247,7 +247,7 @@ Reference = collections.namedtuple("Reference", ("id", "name", "url", "regex_wit
 REFERENCES = dict(
     anssi=Reference(
         id="anssi", name="ANSSI", url=anssi_ns,
-        regex_with_groups=r"BP28\(R(\d+)\)"),
+        regex_with_groups=r"R(\d+)"),
     ccn=Reference(
         id="ccn", name="CCN", url="",
         regex_with_groups=r"A\.(\d+)\.SEC-(\w+)(\d+)"),
