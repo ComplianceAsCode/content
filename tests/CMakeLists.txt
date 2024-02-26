@@ -336,6 +336,6 @@ macro(cce_avail_check TEST_NAME_SUFFIX PRODUCTS CCE_LIST_PATH)
     endif()
 endmacro()
 
-cce_avail_check("rhel-all" "rhel7,rhel8,rhel9" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
+cce_avail_check("rhel-all" "rhel7,rhel8,rhel9,rhel10" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
 cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
 cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle15-avail.txt")
