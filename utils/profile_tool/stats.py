@@ -33,11 +33,14 @@ def _process_stats_content(profile, bash_fixes_count, content, content_filepath)
 def _filter_profile_for_html_stats(profile, filtered_output, content_path):
     content_list = [
         "rules",
-        "missing_stig_ids",
+        "missing_stigid_refs",
+        "missing_stigref_refs",
+        "missing_ccn_refs",
         "missing_cis_refs",
         "missing_hipaa_refs",
         "missing_anssi_refs",
         "missing_ospp_refs",
+        "missing_pcidss4_refs",
         "missing_cui_refs",
         "missing_ovals",
         "missing_sces",

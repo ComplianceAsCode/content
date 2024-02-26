@@ -57,11 +57,25 @@ def parse_stats_subcommand(subparsers):
         help="Show IDs of implemented SCE checks.",
     )
     parser_stats.add_argument(
-        "--missing-stig-ids",
+        "--missing-stigid-refs",
         default=False,
         action="store_true",
-        dest="missing_stig_ids",
-        help="Show rules in STIG profiles that don't have STIG IDs.",
+        dest="missing_stigid_refs",
+        help="Show rules in STIG profiles that don't have stigid references.",
+    )
+    parser_stats.add_argument(
+        "--missing-stigref-refs",
+        default=False,
+        action="store_true",
+        dest="missing_stigref_refs",
+        help="Show rules in STIG profiles that don't have stigref references.",
+    )
+    parser_stats.add_argument(
+        "--missing-ccn-refs",
+        default=False,
+        action="store_true",
+        dest="missing_ccn_refs",
+        help="Show rules in CCN profiles that don't have CCN references.",
     )
     parser_stats.add_argument(
         "--missing-cis-refs",
@@ -90,6 +104,13 @@ def parse_stats_subcommand(subparsers):
         action="store_true",
         dest="missing_ospp_refs",
         help="Show rules in OSPP profiles that don't have OSPP references.",
+    )
+    parser_stats.add_argument(
+        "--missing-pcidss4-refs",
+        default=False,
+        action="store_true",
+        dest="missing_pcidss4_refs",
+        help="Show rules in PCI-DSS profiles that don't have pcidss4 references.",
     )
     parser_stats.add_argument(
         "--missing-cui-refs",
@@ -253,11 +274,14 @@ def parse_args():
             args.missing_sces = True
             args.missing_fixes = True
             args.missing_cces = True
-            args.missing_stig_ids = True
+            args.missing_stigid_refs = True
+            args.missing_stigref_refs = True
+            args.missing_ccn_refs = True
             args.missing_cis_refs = True
             args.missing_hipaa_refs = True
             args.missing_anssi_refs = True
             args.missing_ospp_refs = True
+            args.missing_pcidss4_refs = True
             args.missing_cui_refs = True
 
     return args

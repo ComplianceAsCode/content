@@ -88,10 +88,12 @@ puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
+ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
 cis_ns = "https://www.cisecurity.org/benchmark/red_hat_linux/"
 hipaa_ns = "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf"
 anssi_ns = "http://www.ssi.gouv.fr/administration/bonnes-pratiques/"
 ospp_ns = "https://www.niap-ccevs.org/Profile/PP.cfm"
+pcidss4_ns = "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf"
 cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf'
 stig_refs = 'https://public.cyber.mil/stigs/'
 disa_cciuri = "https://public.cyber.mil/stigs/cci/"
@@ -116,8 +118,6 @@ ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
 xslt_ns = "http://www.w3.org/1999/XSL/Transform"
-generic_stig_ns = "https://public.cyber.mil/stigs/downloads/" + \
-                  "?_dl_facet_stigs=operating-systems%2Cunix-linux"
 SCE_SYSTEM = "http://open-scap.org/page/SCE"
 
 
