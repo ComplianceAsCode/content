@@ -56,3 +56,8 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
         for line in result:
             f.write(line.rstrip())
             f.write('\n')
+
+
+def update_row(changed: str, current: str, rule_dir_json: dict, section: str) -> None:
+    if changed != current and changed:
+        replace_yaml_section(section, changed, rule_dir_json)

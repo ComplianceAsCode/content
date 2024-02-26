@@ -32,11 +32,6 @@ def get_rule_dir_json(path: str) -> dict:
         return json.load(f)
 
 
-def update_row(changed: str, current: str, rule_dir_json: dict, section: str) -> None:
-    if changed != current and changed:
-        replace_yaml_section(section, changed, rule_dir_json)
-
-
 def fix_changed_text(replacement: str, changed_name: str) -> str:
     no_space_name = changed_name.replace(' ', '')
     return replacement.replace(changed_name, '{{{ full_name }}}')\

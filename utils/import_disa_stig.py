@@ -2,13 +2,15 @@
 
 import argparse
 import os
+import sys
 
 import ssg.build_yaml
 import ssg.controls
 import ssg.environment
 import ssg.products
 import ssg.build_stig
-from utils.srg_utils import get_rule_dir_json, update_row, fix_changed_text
+from utils.srg_utils import get_rule_dir_json, fix_changed_text
+from utils.srg_utils.yaml import update_row
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
@@ -27,7 +29,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
                         help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
-                        help="What product product id to use.")
+                        help="What product id to use.")
     parser.add_argument("-b", "--build-config-yaml", default=BUILD_CONFIG,
                         help="YAML file with information about the build configuration. "
                         f"Defaults to {BUILD_CONFIG}")
@@ -52,32 +54,37 @@ def _get_controls(control_name, ssg_root, env_yaml):
     return controls
 
 
+def _get_rule_obj(control, rule_dir_json):
+    rule_id = control.rules[0]
+    rule_obj = rule_dir_json[rule_id]
+    return rule_obj
+
+
+def _get_rule(env_yaml, rule_obj):
+    rule_path = os.path.join(rule_obj["dir"], "rule.yml")
+    rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
+    rule.load_policy_specific_content(rule_path, env_yaml)
+    return rule
+
+
 def main() -> int:
     args = _parse_args()
-    ssg_root = args.root
-    product = args.product
-    control_name = args.control
-    stig_filename = args.input
     build_config_yaml = args.build_config_yaml
     changed_name = args.changed_name
-    env_yaml = _get_env_yaml(ssg_root, product, build_config_yaml)
-    controls = _get_controls(control_name, ssg_root, env_yaml)
+    env_yaml = _get_env_yaml(args.root, args.product, build_config_yaml)
+    controls = _get_controls(args.control, args.root, env_yaml)
     rule_dir_json = get_rule_dir_json(args.json)
-    srgs = ssg.build_stig.parse_srgs(stig_filename)
+    srgs = ssg.build_stig.parse_srgs(args.input)
 
     for stig_id, stig_rule in srgs.items():
         control = controls[stig_id]
         if control is None or control.rules is None or len(control.rules) != 1:
             print(f"Warning: Unable to update {stig_id} since it doesn't have exactly one "
-                  f"rule.")
+                  f"rule.", file=sys.stderr)
             continue
 
-        rule_id = control.rules[0]
-        rule_obj = rule_dir_json[rule_id]
-        rule_path = os.path.join(rule_obj["dir"], "rule.yml")
-        rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
-        rule.load_policy_specific_content(rule_path, env_yaml)
-        rule_obj = rule_dir_json[rule_id]
+        rule_obj = _get_rule_obj(control, rule_dir_json)
+        rule = _get_rule(env_yaml, rule_obj)
 
         stig_srg_requirement = stig_rule['title']
         rule_srg_requirement = rule.policy_specific_content.get('srg_requirement')
@@ -93,7 +100,7 @@ def main() -> int:
 
         stig_checktext = stig_rule['check']
         rule_checktext = rule.policy_specific_content.get('checkfix')
-        if rule.checktext != stig_checktext:
+        if rule_checktext != stig_checktext:
             changed_checktext = fix_changed_text(stig_checktext, changed_name)
             update_row(changed_checktext, rule_checktext, rule_obj, 'checktext')
 

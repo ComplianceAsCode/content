@@ -9,8 +9,9 @@ from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
 
 from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, \
-    get_cce_dict, get_rule_dir_json, update_row, fix_changed_text, cleanup_end_of_file, \
+    get_cce_dict, get_rule_dir_json, fix_changed_text, cleanup_end_of_file, \
     update_severity
+from utils.srg_utils.yaml import update_row
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
@@ -28,7 +29,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
                         help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
-                        help="What product product id to use.")
+                        help="What product id to use.")
     parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
                         help="What row to end on, defaults to 600")
     return parser.parse_args()
