@@ -1097,6 +1097,22 @@ product: rhel9
 reference_type: cis
 ```
 
+#### Skipping automated reference assignment on individual Controls
+
+Sometimes we don't want a specific control to be added as a reference to the rules it is selecting.
+For example, the RHEL9 STIG selects rules that are not directly related to a STIG ID, but still are necessary for the correct evaluation of the Profile.
+
+To skip a control from assigning references to its rules, add the `skip_reference: true` to it:
+```
+    -   id: needed_rules
+        levels:
+            - medium
+        skip_reference: true
+        rules:
+            - enable_authselect
+            - var_authselect_profile=sssd
+```
+
 ### Using controls in profiles
 
 Later, we can use the policy requirements in profile YAML. Let's say that we

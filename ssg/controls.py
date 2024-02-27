@@ -90,6 +90,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         related_rules=list,
         rules=list,
         controls=list,
+        skip_reference=bool,
     )
 
     MANDATORY_KEYS = {
@@ -148,6 +149,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         control.original_title = control_dict.get('original_title')
         control.related_rules = control_dict.get('related_rules')
         control.rules = control_dict.get('rules')
+        control.skip_reference = control_dict.get('skip_reference', False)
 
         if control.status == "automated":
             control.automated = "yes"
@@ -177,6 +179,9 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         return data
 
     def add_references(self, reference_type, rules):
+        if self.skip_reference:
+            return
+
         for selection in self.rules:
             if "=" in selection:
                 continue
