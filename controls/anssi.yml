@@ -1120,7 +1120,15 @@ controls:
     title: Securing access for named sockets and pipes
     levels:
     - intermediary
-    notes: We cannot easily automate securing of named sockets and pipes in a general way.
+    notes: |-
+      The requirement states that all sockets and named pipes within all mounted
+      file systems should be checked. The check should look at the permissions
+      of the socket / pipe and compare them with permissions of the directory
+      which contains the particular socket. In case permissions of the directory
+      are less stricter than permissions of the socket, this should be
+      considered a finding. Since different use cases can require different
+      permissions for named pipes / sockets, it is not possible to perform this
+      check automatically.
     status: manual
 
   - id: R53
