@@ -688,16 +688,31 @@ controls:
   - id: R29
     title: Access Restrictions on /boot
     levels:
-    - enhanced
+      - enhanced
     description: >-
-      When possible, the /boot partition should not be mounted. In any case, access to
-      the /boot directory must only be allowed to the root user.
+      When possible, it is recommended not to automatically mount the /boot partition.
+      In any case, access to the /boot folder should only be allowed for the root user.
     notes: >-
-      The rule disabling auto-mount for /boot is commented until the rules checking for other
-      /boot mount options are updated to handle this usecase.
-    status: supported
-    #rules:
-    #- mount_option_boot_noauto
+      The /boot partition mounted is essential to perform certain administrative actions, for
+      example updating the kernel. Therefore, for better stability, in this requirement only rules
+      to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
+    status: partial
+    rules:
+      - file_groupowner_efi_grub2_cfg
+      - file_groupowner_grub2_cfg
+      - file_owner_efi_grub2_cfg
+      - file_owner_grub2_cfg
+      - file_permissions_efi_grub2_cfg
+      - file_permissions_grub2_cfg
+      - file_groupowner_efi_user_cfg
+      - file_groupowner_user_cfg
+      - file_owner_efi_user_cfg
+      - file_owner_user_cfg
+      - file_permissions_efi_user_cfg
+      - file_permissions_user_cfg
+    related_rules:
+      - file_permissions_systemmap # missing remediation
+      - mount_option_boot_noauto
 
   - id: R30
     title: Removal of unused user accounts
