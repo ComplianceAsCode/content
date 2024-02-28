@@ -55,12 +55,8 @@ def create_output(rule_dir: str) -> str:
 def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
     path_dir = rule_dir['dir']
     path = os.path.join(path_dir, 'rule.yml')
-    replace_yaml_key_file(key, replacement, path)
-
-
-def replace_yaml_key_file(key: str, replacement: str, path: str) -> None:
-    lines = read_file_list(path)
-    section_ranges = find_section_lines(lines, key)
+    lines = get_yaml_contents(rule_dir)
+    section_ranges = find_section_lines(lines.contents, key)
     replacement_line = f"{key}: {replacement}"
     if section_ranges:
         result = lines.contents[:section_ranges[0].start]
@@ -69,7 +65,7 @@ def replace_yaml_key_file(key: str, replacement: str, path: str) -> None:
         for line in lines.contents[end_line:]:
             result = (*result, line)
     else:
-        result = lines
+        result = lines.contents
         result = (*result, replacement_line)
 
     with open(path, 'w') as f:
@@ -89,7 +85,9 @@ def write_output(path: str, result: tuple) -> None:
             f.write('\n')
 
 
-def write_yaml_section_replacement(path: str, replacement: str, section: str) -> None:
+def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
+    path = create_output(rule_dir['dir'])
+
     lines = read_file_list(path)
     replacement = replacement.replace('<', '&lt').replace('>', '&gt')
     section_ranges = find_section_lines(lines, section)
@@ -107,11 +105,6 @@ def write_yaml_section_replacement(path: str, replacement: str, section: str) ->
         result = add_replacement_to_result(replacement, result)
 
     write_output(path, result)
-
-
-def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
-    path = create_output(rule_dir['dir'])
-    write_yaml_section_replacement(path, replacement, section)
 
 
 def add_replacement_to_result(replacement, result):
@@ -136,14 +129,14 @@ def get_common_set(changed_sheet: Worksheet, current_sheet: Worksheet, end_row: 
     return common_set
 
 
-def update_severity(changed, current, rule_dir_json) -> None:
+def update_severity(changed, current, rule_dir_json):
     if changed.Severity != current.Severity and changed.Severity is not None and \
             current.Severity is not None:
         cac_severity = get_cac_status(changed.Severity)
         replace_yaml_key('severity', cac_severity, rule_dir_json)
 
 
-def update_row(changed: str, current: str, rule_dir_json: dict, section: str) -> None:
+def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
     if changed != current and changed:
         replace_yaml_section(section, changed, rule_dir_json)
 
