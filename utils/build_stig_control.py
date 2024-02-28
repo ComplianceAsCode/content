@@ -52,7 +52,6 @@ def parse_args() -> argparse.Namespace:
                         help="Reference system to check for, defaults to stigid")
     parser.add_argument('-s', '--split', action='store_true',
                         help='Splits the each ID into its own file.')
-
     args = parser.parse_args()
     check_output(args.output)
     return args
