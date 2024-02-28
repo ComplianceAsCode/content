@@ -351,13 +351,27 @@ class Benchmark(XCCDFEntity):
         for g in self.groups.values():
             g.remove_rules_with_ids_not_listed(selected_rules)
 
-    def get_rules_selected_in_all_profiles(self):
+    def get_components_not_included_in_a_profiles(self, profiles):
+        selected_rules = self.get_rules_selected_in_all_profiles(profiles)
+        rules = set()
+        groups = set()
+        for sub_group in self.groups.values():
+            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
+                selected_rules
+            )
+            rules.update(rules_of_sub_group)
+            groups.update(groups_of_sub_group)
+        return rules, groups
+
+    def get_rules_selected_in_all_profiles(self, profiles=None):
         selected_rules = set()
-        for p in self.profiles:
+        if profiles is None:
+            profiles = self.profiles
+        for p in profiles:
             selected_rules.update(p.selected)
         return selected_rules
 
-    def to_xml_element(self, env_yaml=None, product_cpes=None):
+    def _create_benchmark_xml_skeleton(self, env_yaml):
         root = ET.Element('{%s}Benchmark' % XCCDF12_NS)
         root.set('id', OSCAP_BENCHMARK + self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
@@ -367,18 +381,27 @@ class Benchmark(XCCDFEntity):
         root.set('style', 'SCAP_1.2')
         root.set('resolved', 'true')
         root.set('xml:lang', 'en-US')
+
         status = ET.SubElement(root, '{%s}status' % XCCDF12_NS)
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
         status.text = self.status
+
         add_sub_element(root, "title", XCCDF12_NS, self.title)
         add_sub_element(root, "description", XCCDF12_NS, self.description)
+
         notice = add_sub_element(
-            root, "notice", XCCDF12_NS, self.notice_description)
+            root, "notice", XCCDF12_NS, self.notice_description
+        )
         notice.set('id', self.notice_id)
+
         add_sub_element(root, "front-matter", XCCDF12_NS, self.front_matter)
         add_sub_element(root, "rear-matter",  XCCDF12_NS, self.rear_matter)
-        add_reference_title_elements(root, env_yaml)
+
+        return root
+
+    def _add_cpe_xml(self, root, product_cpes=None):
         # if there are no platforms, do not output platform-specification at all
+
         if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
                 "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
@@ -392,32 +415,61 @@ class Benchmark(XCCDFEntity):
             plat = ET.SubElement(root, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-        version = ET.SubElement(root, '{%s}version' % XCCDF12_NS)
-        version.text = self.version
-        version.set('update', SSG_BENCHMARK_LATEST_URI)
-
-        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
-        add_benchmark_metadata(root, contributors_file)
-
+    def _add_profiles_xml(self, root, profiles_to_not_include):
         for profile in self.profiles:
+            if profile.id_ in profiles_to_not_include:
+                continue
             root.append(profile.to_xml_element())
 
+    def _add_values_xml(self, root):
         for value in self.values.values():
             root.append(value.to_xml_element())
 
+    def _add_groups_xml(self, root, components_to_not_include, env_yaml=None):
         groups_in_bench = list(self.groups.keys())
         priority_order = ["system", "services"]
         groups_in_bench = reorder_according_to_ordering(groups_in_bench, priority_order)
 
+        groups_to_not_include = components_to_not_include.get("groups", set())
         # Make system group the first, followed by services group
         for group_id in groups_in_bench:
+            if group_id in groups_to_not_include:
+                continue
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
-                root.append(group.to_xml_element(env_yaml))
+                root.append(group.to_xml_element(env_yaml, components_to_not_include))
 
+    def _add_rules_xml(self, root, rules_to_not_include, env_yaml=None):
         for rule in self.rules.values():
+            if rule.id_ in rules_to_not_include:
+                continue
             root.append(rule.to_xml_element(env_yaml))
+
+    def _add_version_xml(self, root):
+        version = ET.SubElement(root, '{%s}version' % XCCDF12_NS)
+        version.text = self.version
+        version.set('update', SSG_BENCHMARK_LATEST_URI)
+
+    def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None):
+        if components_to_not_include is None:
+            components_to_not_include = {}
+
+        root = self._create_benchmark_xml_skeleton(env_yaml)
+
+        add_reference_title_elements(root, env_yaml)
+
+        self._add_cpe_xml(root, product_cpes)
+
+        self._add_version_xml(root)
+
+        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
+        add_benchmark_metadata(root, contributors_file)
+
+        self._add_profiles_xml(root, components_to_not_include.get("profiles", set()))
+        self._add_values_xml(root)
+        self._add_groups_xml(root, components_to_not_include, env_yaml)
+        self._add_rules_xml(root, components_to_not_include.get("rules", set()),  env_yaml,)
 
         if hasattr(ET, "indent"):
             ET.indent(root, space=" ", level=0)
@@ -454,13 +506,21 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_for_profile(self, profile):
-        profile.unselected_groups = []
-        b = deepcopy(self)
-        b.profiles = [profile]
-        b.drop_rules_not_included_in_a_profile()
-        b.unselect_empty_groups()
-        return profile.id_, b
+    def get_benchmark_xml_for_profile(self, env_yaml, profile):
+        rules, groups = self.get_components_not_included_in_a_profiles([profile])
+        profiles = set(filter(
+            lambda id_, profile_id=profile.id_: id_ != profile_id,
+            [profile.id_ for profile in self.profiles]
+        ))
+        components_to_not_include = {
+                "rules": rules,
+                "groups": groups,
+                "profiles": profiles
+            }
+        return profile.id_, self.to_xml_element(
+            env_yaml,
+            components_to_not_include=components_to_not_include
+        )
 
 
 class Group(XCCDFEntity):
@@ -550,31 +610,21 @@ class Group(XCCDFEntity):
 
         return yaml_contents
 
-    def to_xml_element(self, env_yaml=None):
+    def _create_group_xml_skeleton(self):
         group = ET.Element('{%s}Group' % XCCDF12_NS)
         group.set('id', OSCAP_GROUP + self.id_)
         title = ET.SubElement(group, '{%s}title' % XCCDF12_NS)
         title.text = self.title
         add_sub_element(group, 'description', XCCDF12_NS, self.description)
         add_warning_elements(group, self.warnings)
+        return group
 
-        # This is where references should be put if there are any
-        # This is where rationale should be put if there are any
-
+    def _add_cpe_platforms_xml(self, group):
         for cpe_platform_name in self.cpe_platform_names:
             platform_el = ET.SubElement(group, "{%s}platform" % XCCDF12_NS)
             platform_el.set("idref", "#"+cpe_platform_name)
 
-        add_nondata_subelements(
-            group, "requires", "idref",
-            list(map(lambda x: OSCAP_GROUP + x, self.requires)))
-        add_nondata_subelements(
-            group, "conflicts", "idref",
-            list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
-        for _value in self.values.values():
-            if _value is not None:
-                group.append(_value.to_xml_element())
-
+    def _add_rules_xml(self, group, rules_to_not_include, env_yaml):
         # Rules that install or remove packages affect remediation
         # of other rules.
         # When packages installed/removed rules come first:
@@ -594,9 +644,14 @@ class Group(XCCDFEntity):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
+            if rule_id in rules_to_not_include:
+                continue
             rule = self.rules.get(rule_id)
             if rule is not None:
                 group.append(rule.to_xml_element(env_yaml))
+
+    def _add_sub_groups(self, group, components_to_not_include, env_yaml):
+        groups_to_not_include = components_to_not_include.get("groups", set())
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -634,9 +689,38 @@ class Group(XCCDFEntity):
         ]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
+            if group_id in groups_to_not_include:
+                continue
             _group = self.groups[group_id]
             if _group is not None:
-                group.append(_group.to_xml_element(env_yaml))
+                group.append(_group.to_xml_element(env_yaml, components_to_not_include))
+
+    def to_xml_element(self, env_yaml=None,  components_to_not_include=None):
+        if components_to_not_include is None:
+            components_to_not_include = {}
+
+        rules_to_not_include = components_to_not_include.get("rules", set())
+        groups_to_not_include = components_to_not_include.get("groups", set())
+
+        if self.id_ in groups_to_not_include:
+            return None
+
+        group = self._create_group_xml_skeleton()
+
+        self._add_cpe_platforms_xml(group)
+
+        add_nondata_subelements(
+            group, "requires", "idref",
+            list(map(lambda x: OSCAP_GROUP + x, self.requires)))
+        add_nondata_subelements(
+            group, "conflicts", "idref",
+            list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
+        for _value in self.values.values():
+            if _value is not None:
+                group.append(_value.to_xml_element())
+
+        self._add_rules_xml(group, rules_to_not_include, env_yaml)
+        self._add_sub_groups(group, components_to_not_include, env_yaml)
 
         return group
 
@@ -666,6 +750,25 @@ class Group(XCCDFEntity):
         self.rules = dict(filter(lambda el, ids=rule_ids_list: el[0] in ids, self.rules.items()))
         for group in self.groups.values():
             group.remove_rules_with_ids_not_listed(rule_ids_list)
+
+    def contains_rules(self, rule_ids):
+        intersection_of_rules = list(set(rule_ids) & set(self.rules.keys()))
+        if len(intersection_of_rules) > 0:
+            return True
+        return any([g.contains_rules(rule_ids) for g in self.groups.values()])
+
+    def get_not_included_components(self, rule_ids_list):
+        rules = set(filter(lambda id_, ids=rule_ids_list: id_ not in ids, self.rules.keys()))
+        groups = set()
+        if not self.contains_rules(rule_ids_list):
+            groups.add(self.id_)
+        for sub_group in self.groups.values():
+            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
+                rule_ids_list
+            )
+            rules.update(rules_of_sub_group)
+            groups.update(groups_of_sub_group)
+        return rules, groups
 
     def __str__(self):
         return self.id_
@@ -1495,7 +1598,7 @@ class LinearLoader(object):
         self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
-    def get_benchmark_by_profile(self):
+    def get_benchmark_xml_by_profile(self):
         if self.benchmark is None:
             raise Exception(
                 "Before generating benchmarks for each profile, you need to load "
@@ -1503,7 +1606,9 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profile_id, benchmark = self.benchmark.get_benchmark_for_profile(profile)
+            profile_id, benchmark = self.benchmark.get_benchmark_xml_for_profile(
+                self.env_yaml, profile
+            )
             yield profile_id, benchmark
 
     def load_compiled_content(self):

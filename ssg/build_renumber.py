@@ -31,14 +31,14 @@ class FileLinker(object):
 
     def __init__(self, translator, xccdftree, checks, output_file_name):
         self.translator = translator
-        self.checks_related_to_us = self._get_related_checks(checks)
+        self.checks_related_to_us = self.get_related_checks(checks)
         self.fname = self._get_input_fname()
         self.tree = None
         self.linked_fname = output_file_name
         self.linked_fname_basename = os.path.basename(self.linked_fname)
         self.xccdftree = xccdftree
 
-    def _get_related_checks(self, checks):
+    def get_related_checks(self, checks):
         """
         Returns a list of checks which have the same check system as this
         class.
@@ -89,6 +89,7 @@ class FileLinker(object):
         pass
 
     def link_xccdf(self):
+
         for check in self.checks_related_to_us:
             checkcontentref = get_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is None:
@@ -141,16 +142,19 @@ class OVALFileLinker(FileLinker):
                 checkcontentref = get_content_ref_if_exists_and_not_remote(check)
                 if checkcontentref is None or check.get("system") != oval_cs:
                     continue
-
                 out.append(checkcontentref.get("name"))
         return out
 
-    def _save_oval_document_for_each_xccdf_rule(self):
+    def save_oval_document_for_each_xccdf_rule(self, file_name_prefix=""):
         for name in self._get_list_of_names_of_oval_checks():
+            if name in self.oval_document.definitions:
+                oval_def = self.oval_document.definitions[name]
+                name = oval_def.name
+
             oval_id = self._translate_name_to_oval_definition_id(name)
 
             refs = self.oval_document.get_all_references_of_definition(oval_id)
-            path = self._get_path_for_oval_document(name)
+            path = self._get_path_for_oval_document(file_name_prefix + name)
             with open(path, "wb+") as fd:
                 self.oval_document.save_as_xml(fd, refs)
 
@@ -165,7 +169,7 @@ class OVALFileLinker(FileLinker):
             self.oval_document.save_as_xml(fd)
 
         if self.build_ovals_dir:
-            self._save_oval_document_for_each_xccdf_rule()
+            self.save_oval_document_for_each_xccdf_rule()
 
     def link(self):
         self.oval_document = load_oval_document(parse_file(self.fname))
@@ -276,7 +280,7 @@ class OVALFileLinker(FileLinker):
         # Remove all OVAL checks that are not referenced by XCCDF Rules (checks)
         # or internally via extend-definition
 
-        xccdf_oval_check_refs = [name for name in self._get_list_of_names_of_oval_checks()]
+        xccdf_oval_check_refs = self._get_list_of_names_of_oval_checks()
         document_def_keys = list(self.oval_document.definitions.keys())
 
         references_from_xccdf_to_keep = OVALDefinitionReference()

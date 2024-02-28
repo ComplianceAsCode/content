@@ -76,6 +76,7 @@ def link_oval(xccdftree, checks, output_file_name, build_ovals_dir):
     oval_linker.link()
     oval_linker.save_linked_tree()
     oval_linker.link_xccdf()
+    return oval_linker
 
 
 def link_ocil(xccdftree, checks, output_file_name, ocil):
@@ -88,39 +89,19 @@ def link_ocil(xccdftree, checks, output_file_name, ocil):
     ocil_linker.link_xccdf()
 
 
-def link_benchmark(loader, xccdftree, args, benchmark=None):
-    checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
+def store_xccdf_per_profile(loader, oval_linker, thin_ds_components_dir):
+    for id_, xccdftree in loader.get_benchmark_xml_by_profile():
+        xccdf_file_name = os.path.join(thin_ds_components_dir, "xccdf_{}.xml".format(id_))
+        oval_file_name = os.path.join(thin_ds_components_dir, "oval_{}.xml".format(id_))
 
-    link_oval(xccdftree, checks, args.oval, args.build_ovals_dir)
+        checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
+        oval_linker.linked_fname = oval_file_name
+        oval_linker.linked_fname_basename = os.path.basename(oval_file_name)
+        oval_linker.checks_related_to_us = oval_linker.get_related_checks(checks)
 
-    ocil = loader.export_ocil_to_xml(benchmark)
-    if ocil is not None:
-        link_ocil(xccdftree, checks, args.ocil, ocil)
+        oval_linker.link_xccdf()
 
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf, encoding="utf-8")
-
-
-def get_path(path, file_name):
-    return os.path.join(path, file_name)
-
-
-def link_benchmark_per_profile(loader, args):
-    if not os.path.exists(args.thin_ds_components_dir):
-        os.makedirs(args.thin_ds_components_dir)
-
-    loader.off_ocil = True
-
-    for id_, benchmark in loader.get_benchmark_by_profile():
-        xccdftree = benchmark.to_xml_element(loader.env_yaml)
-        p = Paths_(
-            xccdf=get_path(args.thin_ds_components_dir, "xccdf_{}.xml".format(id_)),
-            oval=get_path(args.thin_ds_components_dir, "oval_{}.xml".format(id_)),
-            ocil=get_path(args.thin_ds_components_dir, "ocil_{}.xml".format(id_)),
-            build_ovals_dir=args.build_ovals_dir
-        )
-        link_benchmark(loader, xccdftree, p, benchmark)
-
-    loader.off_ocil = False
+        ssg.xml.ElementTree.ElementTree(xccdftree).write(xccdf_file_name, encoding="utf-8")
 
 
 def main():
@@ -143,12 +124,23 @@ def main():
     loader.load_benchmark(benchmark_root)
 
     loader.add_fixes_to_rules()
+    xccdftree = loader.export_benchmark_to_xml()
+
+    checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
+
+    oval_linker = link_oval(xccdftree, checks, args.oval, args.build_ovals_dir)
+
+    ocil = loader.export_ocil_to_xml()
+    link_ocil(xccdftree, checks, args.ocil, ocil)
+
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf, encoding="utf-8")
 
     if args.thin_ds_components_dir != "off":
-        link_benchmark_per_profile(loader, args)
-
-    xccdftree = loader.export_benchmark_to_xml()
-    link_benchmark(loader, xccdftree, args)
+        if not os.path.exists(args.thin_ds_components_dir):
+            os.makedirs(args.thin_ds_components_dir)
+        store_xccdf_per_profile(loader, oval_linker, args.thin_ds_components_dir)
+        oval_linker.build_ovals_dir = args.thin_ds_components_dir
+        oval_linker.save_oval_document_for_each_xccdf_rule("oval_")
 
 
 if __name__ == "__main__":
