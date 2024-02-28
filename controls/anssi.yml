@@ -1352,11 +1352,32 @@ controls:
     status: manual
 
   - id: R67
-    title: Securing remote authentication by PAM
+    title: Secure remote authentication with PAM
     levels:
     - intermediary
+    description: |-
+      When authentication takes place through a remote application (network),
+      the authentication protocol used by PAM must be secure (flow encryption,
+      remote server authentication, anti-replay mechanisms, ...).
+    {{% if "rhel" in product %}}
+    notes: |-
+      In RHEL systems, remote authentication is handled through sssd service.
+      PAM delegates requests for remote authentication to this service through a
+      local Unix socket. The sssd service can use IPA, AD or LDAP as a remote
+      database containing information required for authentication. In case IPA or  AD is configured through a documented way, the connection is secured by default. In case LDAP is configured manually, there are several configuration options which should be chedked.
+    status: automated
+    rules:
+      - package_sssd_installed
+      - service_sssd_enabled
+      - sssd_enable_pam_services
+      - sssd_ldap_configure_tls_reqcert
+      - sssd_ldap_start_tls
+    related_rules:
+      - package_sssd-ipa_installed
+    {{% else %}}
     notes: We cannot automate securing of remote PAM authentication in a general way.
     status: manual
+    {{% endif %}}
 
   - id: R68
     title: Protecting stored passwords
