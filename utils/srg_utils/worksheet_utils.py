@@ -1,9 +1,5 @@
 from __future__ import annotations
 
-import json
-import os
-
-import yaml
 from openpyxl.worksheet.worksheet import Worksheet
 
 # The start row is 2, to avoid importing the header
@@ -61,13 +57,6 @@ class Row:
         return f'<Row {self.row_id}>'
 
 
-def get_full_name(root_dir: str, product: str) -> str:
-    product_yml_path = os.path.join(root_dir, 'products', product, 'product.yml')
-    with open(product_yml_path, 'r') as f:
-        data = yaml.load(f, Loader=yaml.SafeLoader)
-        return data['full_name']
-
-
 def get_stigid_set(sheet: Worksheet, end_row: int) -> set[str]:
     result = set()
     for i in range(START_ROW, end_row):
@@ -90,19 +79,3 @@ def get_cce_dict_to_row_dict(sheet: Worksheet, full_name: str, changed_name: str
         result[cci] = Row.from_row(sheet, i, full_name, changed_name)
 
     return result
-
-
-def get_cce_dict(data: dict, product: str) -> dict:
-    results = dict()
-    for rule_id in data.keys():
-        rule = data[rule_id]
-        cce_key = f'cce@{product}' in rule['identifiers']
-        if product in rule['products'] and cce_key:
-            results[rule['identifiers'][f'cce@{product}']] = rule_id
-
-    return results
-
-
-def get_rule_dir_json(path: str) -> dict:
-    with open(path, 'r') as f:
-        return json.load(f)

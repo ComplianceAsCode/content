@@ -3,21 +3,18 @@ from __future__ import annotations
 
 import argparse
 import os
-import re
-from pathlib import Path
 from typing import cast
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl import load_workbook
 
-from ssg.rule_yaml import find_section_lines, get_yaml_contents
-from ssg.utils import mkdir_p, read_file_list
 from utils.srg_utils import get_full_name, get_stigid_set, get_cce_dict_to_row_dict, \
-    get_cce_dict, get_rule_dir_json
+    get_cce_dict, get_rule_dir_json, fix_changed_text, cleanup_end_of_file, \
+    update_severity
+from utils.srg_utils.yaml import update_row
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
-SEVERITY = {'CAT III': 'low', 'CAT II': 'medium', 'CAT I': 'high'}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -32,88 +29,10 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
                         help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
-                        help="What product product id to use.")
+                        help="What product id to use.")
     parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
                         help="What row to end on, defaults to 600")
     return parser.parse_args()
-
-
-def get_cac_status(disa: str) -> str:
-    return SEVERITY.get(disa, 'Unknown')
-
-
-def create_output(rule_dir: str) -> str:
-    path_dir_parent = os.path.join(rule_dir, "policy")
-    mkdir_p(path_dir_parent)
-    path_dir = os.path.join(path_dir_parent, "stig")
-    mkdir_p(path_dir)
-    path = os.path.join(path_dir, 'shared.yml')
-    Path(path).touch()
-    return path
-
-
-def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
-    path_dir = rule_dir['dir']
-    path = os.path.join(path_dir, 'rule.yml')
-    lines = get_yaml_contents(rule_dir)
-    section_ranges = find_section_lines(lines.contents, key)
-    replacement_line = f"{key}: {replacement}"
-    if section_ranges:
-        result = lines.contents[:section_ranges[0].start]
-        result = (*result, replacement_line)
-        end_line = section_ranges[0].end
-        for line in lines.contents[end_line:]:
-            result = (*result, line)
-    else:
-        result = lines.contents
-        result = (*result, replacement_line)
-
-    with open(path, 'w') as f:
-        for line in result:
-            f.write(line.rstrip())
-            f.write('\n')
-
-
-def write_output(path: str, result: tuple) -> None:
-    with open(path, 'w') as f:
-        first_time = True
-        for line in result:
-            if first_time:
-                first_time = False
-                line = re.sub(r'^\n', '', result[0])
-            f.write(line.rstrip())
-            f.write('\n')
-
-
-def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
-    path = create_output(rule_dir['dir'])
-
-    lines = read_file_list(path)
-    replacement = replacement.replace('<', '&lt').replace('>', '&gt')
-    section_ranges = find_section_lines(lines, section)
-    if section_ranges:
-        result = lines[:section_ranges[0].start]
-        result = (*result, f"{section}: |-")
-        result = add_replacement_to_result(replacement, result)
-        end_line = section_ranges[0].end
-        for line in lines[end_line:]:
-            result = [*result, line]
-        result = [*result, '\n']
-    else:
-        result = lines
-        result = (*result, f"\n{section}: |-")
-        result = add_replacement_to_result(replacement, result)
-
-    write_output(path, result)
-
-
-def add_replacement_to_result(replacement, result):
-    for line in replacement.split("\n"):
-        if line != "":
-            result = (*result, f"    {line}",)
-        else:
-            result = (*result, "")
-    return result
 
 
 def fix_cac_cells(content: str, full_name: str, changed_name: str) -> str:
@@ -127,47 +46,6 @@ def get_common_set(changed_sheet: Worksheet, current_sheet: Worksheet, end_row: 
     current_set = get_stigid_set(current_sheet, end_row)
     common_set = current_set - (current_set - changed_set)
     return common_set
-
-
-def update_severity(changed, current, rule_dir_json):
-    if changed.Severity != current.Severity and changed.Severity is not None and \
-            current.Severity is not None:
-        cac_severity = get_cac_status(changed.Severity)
-        replace_yaml_key('severity', cac_severity, rule_dir_json)
-
-
-def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
-    if changed != current and changed:
-        replace_yaml_section(section, changed, rule_dir_json)
-
-
-def fix_changed_text(replacement: str, changed_name: str):
-    no_space_name = changed_name.replace(' ', '')
-    return replacement.replace(changed_name, '{{{ full_name }}}')\
-        .replace(no_space_name, '{{{ full_name }}}')
-
-
-def get_last_content_index(lines):
-    last_content_index = len(lines)
-    lines.reverse()
-    for line in lines:
-        if line == '\n':
-            last_content_index -= 1
-        else:
-            break
-    lines.reverse()
-    return last_content_index
-
-
-def cleanup_end_of_file(rule_dir: str) -> None:
-    path = create_output(rule_dir)
-    with open(path, 'r') as f:
-        lines = f.readlines()
-    last_content_index = get_last_content_index(lines)
-    lines = lines[:last_content_index]
-
-    with open(path, 'w') as f:
-        f.writelines(lines)
 
 
 def main() -> None:
