@@ -1,10 +1,12 @@
 controls:
     -   id: SRG-OS-000324-GPOS-00125
         levels:
-            - medium
-        title: {{{ full_name }}} must prevent non-privileged users from executing privileged
-            functions to include disabling, circumventing, or altering implemented security
+            - high
+        title: |-
+            {{{ full_name }}} must prevent nonprivileged users from executing privileged functions
+            to include disabling, circumventing, or altering implemented security
             safeguards/countermeasures.
+
         rules:
             - disable_ctrlaltdel_burstaction
             - disable_ctrlaltdel_reboot
