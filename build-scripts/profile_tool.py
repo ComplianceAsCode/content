@@ -5,7 +5,7 @@ from __future__ import print_function
 import argparse
 
 try:
-    from utils.profile_tool import command_stats, command_sub
+    from utils.profile_tool import command_stats, command_sub, command_most_used_rules
 except ImportError:
     print("The ssg module could not be found.")
     print(
@@ -250,11 +250,39 @@ def parse_sub_subcommand(subparsers):
     )
 
 
+def parse_most_used_rules_subcommand(subparsers):
+    parser_most_used_rules = subparsers.add_parser(
+        "most-used-rules",
+        description=(
+            "Generates list of all rules used by the existing profiles. In various formats."
+        ),
+        help="Generates list of all rules used by the existing profiles.",
+    )
+    parser_most_used_rules.add_argument(
+        "BENCHMARKS",
+        type=str,
+        nargs="*",
+        default=[],
+        help=(
+            "Specify XCCDF files or a SCAP source data stream files to act on. "
+            "If not provided are used control files. e.g.: ~/scap-security-guide/controls"
+        ),
+    )
+    parser_most_used_rules.add_argument(
+        "--format",
+        default="plain",
+        choices=["plain", "json", "csv"],
+        help="Which format to use for output.",
+    )
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand", required=True)
+
     parse_stats_subcommand(subparsers)
     parse_sub_subcommand(subparsers)
+    parse_most_used_rules_subcommand(subparsers)
 
     args = parser.parse_args()
 
@@ -287,7 +315,11 @@ def parse_args():
     return args
 
 
-SUBCMDS = dict(stats=command_stats, sub=command_sub)
+SUBCMDS = {
+    "stats": command_stats,
+    "sub": command_sub,
+    "most-used-rules": command_most_used_rules,
+}
 
 
 def main():

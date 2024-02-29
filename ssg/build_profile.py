@@ -807,14 +807,20 @@ class XCCDFBenchmark(object):
 
             return profile_stats
 
-    def show_all_profile_stats(self, options):
+    def _process_all_profile_stats(self, function_to_process_profile, *args):
         all_profile_elems = self.tree.findall("./{%s}Profile" % (XCCDF12_NS))
         ret = []
         for elem in all_profile_elems:
             profile = elem.get('id')
             if profile is not None:
-                ret.append(self.show_profile_stats(profile, options))
+                ret.append(function_to_process_profile(profile, *args))
         return ret
+
+    def show_all_profile_stats(self, options):
+        return self._process_all_profile_stats(self.show_profile_stats, options)
+
+    def get_all_profile_stats(self):
+        return self._process_all_profile_stats(self.get_profile_stats)
 
     def console_print(self, content, width):
         """Prints the 'content' array left aligned, each time 45 characters
