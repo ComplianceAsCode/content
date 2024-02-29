@@ -850,26 +850,25 @@ controls:
     status: manual
 
   - id: R36
-    title: umask value
+    title: Changing the default value of UMASK
     levels:
-    - enhanced
+      - enhanced
     description: >-
-      The system umask must be set to 0027 (by default, any created file can
-      only be read by the user and his group, and be editable only by his owner).
-      The umask for users must be set to 0077 (any file created by a user is
-      readable and editable only by him).
+      The default value of UMASK for the shells must be set to 0077 in order to allow read and
+      write access to its owner only. This value can be defined in the configuration file
+      /etc/profile that most shells (bash, dash, ksh…) will use.
+      The default value of UMASK for services must be determined for each service, but in most
+      cases, it should be set to 0027 (or more restrictive). This allows read access to its owner
+      and its group, and a full access to its owner. For services such as systemd, this value can
+      be defined directly in the configuration file of the service with the directive UMask=0027.
     notes: >-
-      There is no simple way to check and remediate different umask values for
-      system and standard users reliably.
-      The different values are set in a conditional clause in a shell script
-      (e.g. /etc/profile or /etc/bashrc).
-      The current implementation checks and fixes both umask to the same value.
-    status: supported
+      Currently there is no rule to check and remediate the UMask directive in systemd.
+    status: partial
     rules:
-    - var_accounts_user_umask=077
-    - accounts_umask_etc_login_defs
-    - accounts_umask_etc_profile
-    - accounts_umask_etc_bashrc
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=077
 
   - id: R37
     title: Using access control features
