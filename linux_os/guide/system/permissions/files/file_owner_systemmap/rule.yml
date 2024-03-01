@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns System.map Files'
+
+description: |-
+    The System.map files are symbol map files generated during the compilation of the Linux
+    kernel. They contain the mapping between kernel symbols and their corresponding memory
+    addresses. These files must be owned by root.
+
+    {{{ describe_file_owner(file="/boot/System.map*", owner="root") }}}
+
+rationale: |-
+    The purpose of <tt>System.map</tt> files is primarily for debugging and profiling the kernel.
+    Unrestricted access to these files might disclosure information useful to attackers and
+    malicious software leading to more sophisticated exploitation.
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-86585-7
+    cce@rhel8: CCE-86586-5
+    cce@rhel9: CCE-86587-3
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/boot/System.map*", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/boot/System.map*", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /boot/
+        file_regex: ^.*System\.map.*$
+        fileuid: '0'
+        missing_file_pass: 'true'
