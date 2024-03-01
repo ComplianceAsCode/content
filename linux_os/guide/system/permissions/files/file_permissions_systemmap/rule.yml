@@ -1,22 +1,35 @@
 documentation_complete: true
 
-title: 'Verify that local System.map file (if exists) is readable only by root'
+title: 'Verify Permissions on System.map Files'
 
 description: |-
-    Files containing sensitive informations should be protected by restrictive
-      permissions. Most of the time, there is no need that these files need to be read by any non-root user
-    {{{ describe_file_permissions(file="/boot/System.map-*", perms="0600") }}}
+    The System.map files are symbol map files generated during the compilation of the Linux
+    kernel. They contain the mapping between kernel symbols and their corresponding memory
+    addresses. In general, there is no need for non-root users to read these files.
+
+    {{{ describe_file_permissions(file="/boot/System.map*", perms="0600") }}}
 
 rationale: |-
-    The <tt>System.map</tt> file contains information about kernel symbols and
-      can give some hints to generate local exploitation.
+    The purpose of <tt>System.map</tt> files is primarily for debugging and profiling the kernel.
+    Unrestricted access to these files might disclosure information useful to attackers and
+    malicious software leading to more sophisticated exploitation.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel7: CCE-82350-0
     cce@rhel8: CCE-82892-1
 
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/boot/System.map*", perms="-rw-------") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/boot/Sysem.map-*", perms="-rw-------") }}}
+    {{{ ocil_file_permissions(file="/boot/System.map*", perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /boot/
+        file_regex: ^.*System\.map.*$
+        filemode: '0600'
+        allow_stricter_permissions: 'true'
+        missing_file_pass: 'true'
