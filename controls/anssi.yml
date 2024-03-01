@@ -863,7 +863,7 @@ controls:
       be defined directly in the configuration file of the service with the directive UMask=0027.
     notes: >-
       There are cases of Systemd services which would stop working in case umask
-      would be configured to 0027 for all services. One such example   is the
+      would be configured to 0027 for all services. One such example is the
       Cups service which needs to create sockets which need to be available for
       all users. Therefore, this part of the requirement can't be automated.
     status: partial
