@@ -25,24 +25,38 @@ cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
 
 
 def parse_args():
-    p = argparse.ArgumentParser(description="This script takes as input an "
-        "OVAL file and a CPE dictionary file and extracts any inventory "
-        "definitions and the tests, states objects and variables it "
-        "references, and then write them into a standalone OVAL CPE file, "
-        "along with a synchronized CPE dictionary file.")
+    p = argparse.ArgumentParser(
+        description="This script takes as input an OVAL file and a CPE dictionary file "
+        "and extracts any inventory definitions and the tests, states objects and variables it "
+        "references, and then write them into a standalone OVAL CPE file, along with "
+        "a synchronized CPE dictionary file."
+    )
     p.add_argument(
         "--product-yaml",
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml "
         "needed for autodetection of profile root"
     )
-    p.add_argument("idname", help="Identifier prefix")
-    p.add_argument("cpeoutdir", help="Artifact output directory")
-    p.add_argument("shorthandfile", help="shorthand xml to generate "
-                   "the CPE dictionary from")
-    p.add_argument("ovalfile", help="OVAL file to process")
-    p.add_argument("--cpe-items-dir", help="the directory where compiled CPE items are stored")
-
+    p.add_argument(
+        "idname",
+        help="Identifier prefix"
+    )
+    p.add_argument(
+        "cpeoutdir",
+        help="Artifact output directory"
+    )
+    p.add_argument(
+        "shorthandfile",
+        help="shorthand xml to generate the CPE dictionary from"
+    )
+    p.add_argument(
+        "ovalfile",
+        help="OVAL file to process"
+    )
+    p.add_argument(
+        "--cpe-items-dir",
+        help="the directory where compiled CPE items are stored"
+    )
     return p.parse_args()
 
 
