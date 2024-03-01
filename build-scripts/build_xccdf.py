@@ -133,7 +133,8 @@ def main():
     ocil = loader.export_ocil_to_xml()
     link_ocil(xccdftree, checks, args.ocil, ocil)
 
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf, encoding="utf-8")
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(
+        args.xccdf, xml_declaration=True, encoding="utf-8")
 
     if args.thin_ds_components_dir != "off":
         if not os.path.exists(args.thin_ds_components_dir):
