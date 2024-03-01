@@ -1,5 +1,6 @@
 import os
 import jinja2
+from ssg.build_cpe import ProductCPEs
 from ssg.build_yaml import Profile
 from ssg.environment import open_environment
 
@@ -7,9 +8,13 @@ from ssg.environment import open_environment
 def command_sub(args):
     product_yaml = os.path.join(args.ssg_root, "products", args.product, "product.yml")
     env_yaml = open_environment(args.build_config_yaml, product_yaml)
+
+    product_cpes = ProductCPEs()
+    product_cpes.load_product_cpes(env_yaml)
+    product_cpes.load_content_cpes(env_yaml)
     try:
-        profile1 = Profile.from_yaml(args.profile1, env_yaml)
-        profile2 = Profile.from_yaml(args.profile2, env_yaml)
+        profile1 = Profile.from_yaml(args.profile1, env_yaml, product_cpes)
+        profile2 = Profile.from_yaml(args.profile2, env_yaml, product_cpes)
     except jinja2.exceptions.TemplateNotFound as e:
         print("Error: Profile {} could not be found.".format(str(e)))
         exit(1)
