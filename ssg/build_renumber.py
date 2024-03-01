@@ -80,7 +80,9 @@ class FileLinker(object):
         """
         assert self.tree is not None, \
             "There is no tree to save, you have probably skipped the linking phase"
-        ET.ElementTree(self.tree).write(self.linked_fname)
+        if hasattr(ET, "indent"):
+            ET.indent(self.tree, space="  ", level=0)
+        ET.ElementTree(self.tree).write(self.linked_fname, xml_declaration=True, encoding="utf-8")
 
     def _get_checkid_string(self):
         raise NotImplementedError()
