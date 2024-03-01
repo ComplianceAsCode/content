@@ -71,6 +71,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/complianceascode/k8scontent
+          flavor: |
+            latest=false
           tags: |
             type=raw,value=${{ needs.get-pr-number.outputs.pr-number }}
             type=sha,format=long
