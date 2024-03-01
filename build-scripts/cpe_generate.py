@@ -13,6 +13,7 @@ import ssg.id_translate
 import ssg.products
 import ssg.xml
 import ssg.yaml
+import ssg.oval_object_model
 from ssg.constants import XCCDF12_NS
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
@@ -63,83 +64,34 @@ def parse_args():
 def main():
     args = parse_args()
 
-    # parse oval file
-    ovaltree = ssg.xml.parse_file(args.ovalfile)
-
-    # extract inventory definitions
-    # making (dubious) assumption that all inventory defs are CPE
-    defs = ovaltree.find("./{%s}definitions" % oval_ns)
-    inventory_defs = []
-    for el in defs.findall(".//{%s}definition" % oval_ns):
-        if el.get("class") != "inventory":
-            continue
-        inventory_defs.append(el)
-
     # Keep the list of 'id' attributes from untranslated inventory def elements
     inventory_defs_id_attrs = []
 
-    defs.clear()
-    [defs.append(inventory_def) for inventory_def in inventory_defs]
-    # Fill in that list
-    inventory_defs_id_attrs = \
-        [inventory_def.get("id") for inventory_def in inventory_defs]
+    # parse oval file
+    oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(args.ovalfile))
+    oval_document.product_name = __file__
 
-    tests = ovaltree.find("./{%s}tests" % oval_ns)
-    cpe_tests = ssg.build_cpe.extract_referred_nodes(defs, tests, "test_ref")
-    tests.clear()
-    [tests.append(cpe_test) for cpe_test in cpe_tests]
+    # extract inventory definitions
+    # making (dubious) assumption that all inventory defs are CPE
+    references_to_keep = ssg.oval_object_model.OVALDefinitionReference()
+    for oval_def in oval_document.definitions.values():
+        if oval_def.class_ != "inventory":
+            continue
+        references_to_keep += oval_document.get_all_references_of_definition(oval_def.id_)
+        inventory_defs_id_attrs.append(oval_def.id_)
 
-    states = ovaltree.find("./{%s}states" % oval_ns)
-    cpe_states = ssg.build_cpe.extract_referred_nodes(tests, states, "state_ref")
-    states.clear()
-    [states.append(cpe_state) for cpe_state in cpe_states]
-
-    objects = ovaltree.find("./{%s}objects" % oval_ns)
-    cpe_objects = ssg.build_cpe.extract_referred_nodes(tests, objects, "object_ref")
-    env_objects = ssg.build_cpe.extract_referred_nodes(objects, objects, "id")
-    objects.clear()
-    [objects.append(cpe_object) for cpe_object in cpe_objects]
-
-    variables = ovaltree.find("./{%s}variables" % oval_ns)
-    if variables is not None:
-        ref_var_elems = set(ssg.build_cpe.extract_referred_nodes(objects, variables, "var_ref"))
-        ref_var_elems.update(ssg.build_cpe.extract_referred_nodes(states, variables, "var_ref"))
-
-        if ref_var_elems:
-            variables.clear()
-            has_external_vars = False
-            for var in ref_var_elems:
-                if (var.tag == "{%s}external_variable" % oval_ns):
-                    error_msg = "Error: External variable (%s) is referenced in a"
-                    "CPE OVAL check\n" % var.get('id')
-                    sys.stderr.write(error_msg)
-                    has_external_vars = True
-
-                variables.append(var)
-
-                # Make sure to inlude objects referenced by a local variable
-                # But env_obj will return no objects if the local variable doesn't
-                # reference any object via object_ref
-                env_obj = ssg.build_cpe.extract_env_obj(env_objects, var)
-                if env_obj:
-                    objects.append(env_obj)
-
-            if has_external_vars:
-                error_msg = "Error: External variables cannot be used by CPE OVAL checks.\n"
-                sys.stderr.write(error_msg)
-                sys.exit(1)
-        else:
-            ovaltree.remove(variables)
+    oval_document.keep_referenced_components(references_to_keep)
 
     # turn IDs into meaningless numbers
     translator = ssg.id_translate.IDTranslator(args.idname)
-    ovaltree = translator.translate(ovaltree)
+    oval_document = translator.translate_oval_document(oval_document, store_defname=True)
 
     product_yaml = ssg.products.load_product_yaml(args.product_yaml)
     product = product_yaml["product"]
     newovalfile = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
     newovalfile = newovalfile.replace("cpe-oval-unlinked", "cpe-oval")
-    ssg.xml.ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
+
+    oval_document.save_as_xml(os.path.join(args.cpeoutdir, newovalfile))
 
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = set()
