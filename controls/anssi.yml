@@ -862,7 +862,10 @@ controls:
       and its group, and a full access to its owner. For services such as systemd, this value can
       be defined directly in the configuration file of the service with the directive UMask=0027.
     notes: >-
-      Currently there is no rule to check and remediate the UMask directive in systemd.
+      There are cases of Systemd services which would stop working in case umask
+      would be configured to 0027 for all services. One such example   is the
+      Cups service which needs to create sockets which need to be available for
+      all users. Therefore, this part of the requirement can't be automated.
     status: partial
     rules:
       - accounts_umask_etc_bashrc
