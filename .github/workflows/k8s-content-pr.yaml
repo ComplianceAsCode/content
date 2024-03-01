@@ -111,6 +111,7 @@ jobs:
           message: |
             :robot: A k8s content image for this PR is available at:
             `ghcr.io/complianceascode/k8scontent:${{ needs.get-pr-number.outputs.pr-number }}`
+            This image was built from commit: ${{ github.event.workflow_run.head_sha }}
 
             <details>
             <summary>Click here to see how to deploy it</summary>
