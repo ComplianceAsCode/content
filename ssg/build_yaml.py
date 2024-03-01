@@ -423,14 +423,17 @@ class Benchmark(XCCDFEntity):
 
         return root
 
-    def _add_cpe_xml(self, root, product_cpes=None):
+    def _add_cpe_xml(self, root, cpe_platforms_to_not_include, product_cpes=None):
         # if there are no platforms, do not output platform-specification at all
 
-        if len(self.product_cpes.platforms) > 0:
-            cpe_platform_spec = ET.Element(
-                "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
-            for platform in self.product_cpes.platforms.values():
-                cpe_platform_spec.append(platform.to_xml_element())
+        cpe_platform_spec = ET.Element(
+            "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
+        for platform_id, platform in self.product_cpes.platforms.items():
+            if platform_id in cpe_platforms_to_not_include:
+                continue
+            cpe_platform_spec.append(platform.to_xml_element())
+
+        if len(cpe_platform_spec) > 0:
             root.append(cpe_platform_spec)
 
         # The Benchmark applicability is determined by the CPEs
@@ -477,13 +480,16 @@ class Benchmark(XCCDFEntity):
 
     def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None):
         if components_to_not_include is None:
-            components_to_not_include = {}
+            cpe_platforms = self.get_not_used_cpe_platforms(self.profiles)
+            components_to_not_include = {"cpe_platforms": cpe_platforms}
 
         root = self._create_benchmark_xml_skeleton(env_yaml)
 
         add_reference_title_elements(root, env_yaml)
 
-        self._add_cpe_xml(root, product_cpes)
+        self._add_cpe_xml(
+            root, components_to_not_include.get("cpe_platforms", set()), product_cpes
+        )
 
         self._add_version_xml(root)
 
@@ -532,6 +538,7 @@ class Benchmark(XCCDFEntity):
 
     def get_benchmark_xml_for_profile(self, env_yaml, profile):
         rules, groups = self.get_components_not_included_in_a_profiles([profile])
+        cpe_platforms = self.get_not_used_cpe_platforms([profile])
         profiles = set(filter(
             lambda id_, profile_id=profile.id_: id_ != profile_id,
             [profile.id_ for profile in self.profiles]
@@ -539,7 +546,8 @@ class Benchmark(XCCDFEntity):
         components_to_not_include = {
                 "rules": rules,
                 "groups": groups,
-                "profiles": profiles
+                "profiles": profiles,
+                "cpe_platforms": cpe_platforms
             }
         return profile.id_, self.to_xml_element(
             env_yaml,
