@@ -61,13 +61,7 @@ def parse_args():
     return p.parse_args()
 
 
-def main():
-    args = parse_args()
-
-    # Keep the list of 'id' attributes from untranslated inventory def elements
-    inventory_defs_id_attrs = []
-
-    # parse oval file
+def load_oval(args, translator, inventory_defs_id_attrs):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(args.ovalfile))
     oval_document.product_name = __file__
 
@@ -83,20 +77,15 @@ def main():
     oval_document.keep_referenced_components(references_to_keep)
 
     # turn IDs into meaningless numbers
-    translator = ssg.id_translate.IDTranslator(args.idname)
     oval_document = translator.translate_oval_document(oval_document, store_defname=True)
 
-    product_yaml = ssg.products.load_product_yaml(args.product_yaml)
-    product = product_yaml["product"]
-    newovalfile = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
-    newovalfile = newovalfile.replace("cpe-oval-unlinked", "cpe-oval")
+    return oval_document
 
-    oval_document.save_as_xml(os.path.join(args.cpeoutdir, newovalfile))
 
-    # Lets scrape the shorthand for the list of platforms referenced
+def get_benchmark_cpe_names(shorthand_file):
     benchmark_cpe_names = set()
-    shorthandtree = ssg.xml.parse_file(args.shorthandfile)
-    for platform in shorthandtree.findall(".//{%s}platform" % XCCDF12_NS):
+    shorthand_tree = ssg.xml.parse_file(shorthand_file)
+    for platform in shorthand_tree.findall(".//{%s}platform" % XCCDF12_NS):
         cpe_name = platform.get("idref")
         # skip CPE AL platforms (they are handled later)
         # this is temporary solution until we get rid of old type of platforms in the benchmark
@@ -104,23 +93,51 @@ def main():
             continue
         benchmark_cpe_names.add(cpe_name)
     # add CPE names used by factref elements in CPEAL platforms
-    for factref in shorthandtree.findall(
-            ".//ns1:fact-ref", {"ns1":ssg.constants.PREFIX_TO_NS["cpe-lang"]}):
-        cpe_factref_name = factref.get("name")
-        benchmark_cpe_names.add(cpe_factref_name)
+    for fact_ref in shorthand_tree.findall(
+        ".//{%s}fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
+    ):
+        cpe_fact_ref_name = fact_ref.get("name")
+        benchmark_cpe_names.add(cpe_fact_ref_name)
+    return benchmark_cpe_names
 
+
+def load_cpe_dictionary(benchmark_cpe_names, product_yaml, args):
     product_cpes = ssg.build_cpe.ProductCPEs()
     product_cpes.load_cpes_from_directory_tree(args.cpe_items_dir, product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_list.add(product_cpes.get_cpe(cpe_name))
+    return cpe_list
 
-    cpedict_filename = "ssg-" + product + "-cpe-dictionary.xml"
-    cpedict_path = os.path.join(args.cpeoutdir, cpedict_filename)
-    cpe_list.to_file(cpedict_path, newovalfile)
+
+def main():
+    args = parse_args()
+
+    # Keep the list of 'id' attributes from untranslated inventory def elements
+    inventory_defs_id_attrs = []
+
+    translator = ssg.id_translate.IDTranslator(args.idname)
+
+    product_yaml = ssg.products.load_product_yaml(args.product_yaml)
+    product = product_yaml["product"]
+
+    oval_filename = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
+    oval_filename = oval_filename.replace("cpe-oval-unlinked", "cpe-oval")
+    oval_file_path = os.path.join(args.cpeoutdir, oval_filename)
+
+    cpe_dict_filename = "ssg-" + product + "-cpe-dictionary.xml"
+    cpe_dict_path = os.path.join(args.cpeoutdir, cpe_dict_filename)
+
+    oval_document = load_oval(args, translator, inventory_defs_id_attrs)
+    oval_document.save_as_xml(oval_file_path)
+
+    # Lets scrape the shorthand for the list of platforms referenced
+    benchmark_cpe_names = get_benchmark_cpe_names(args.shorthandfile)
+    cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args)
+    cpe_dict.to_file(cpe_dict_path, oval_filename)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
-    cpedicttree = ssg.xml.parse_file(cpedict_path)
+    cpedicttree = ssg.xml.parse_file(cpe_dict_path)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
         checkhref = check.get("href")
         # If CPE OVAL references another OVAL file
@@ -169,7 +186,7 @@ def main():
                 \n\tlist of OVAL checks for this product! Exiting..\n" % refovalfilename
                 sys.stderr.write(error_msg)
                 # sys.exit(1)
-        check.set("href", os.path.basename(newovalfile))
+        check.set("href", os.path.basename(oval_filename))
 
         # Sanity check to verify if inventory check OVAL id is present in the
         # list of known "id" attributes of inventory definitions. If not it
@@ -187,7 +204,7 @@ def main():
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
-    ssg.xml.ElementTree.ElementTree(cpedicttree).write(cpedict_path)
+    ssg.xml.ElementTree.ElementTree(cpedicttree).write(cpe_dict_path)
 
     sys.exit(0)
 
