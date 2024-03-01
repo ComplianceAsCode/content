@@ -410,87 +410,28 @@ macro(ssg_build_cpe_dictionary PRODUCT)
 endmacro()
 
 # If built with Python older than 3.9, apply a final xmllint pass over the
-# XCCDF document to pretty-format the output XCCDF document for the product.
-# If Python 3.9 or newer is used for the build, the output XCCDF is already
+# XML document to pretty-format the output XML document for the product.
+# If Python 3.9 or newer is used for the build, the output XML is already
 # generated pretty and doesn't need to be reformatted.
-macro(ssg_build_xccdf_final PRODUCT)
-    if (PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MINOR LESS 9)
+macro(ssg_build_xml_final PRODUCT LANGUAGE)
+    if(PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MINOR LESS 9)
         add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
+            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-${LANGUAGE}.xml"
         )
     else()
         add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-${LANGUAGE}.xml"
         )
     endif()
     add_custom_target(
-        generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-    )
-endmacro()
-
-# If built with Python older than 3.9, apply a final xmllint pass over the
-# OVAL document to pretty-format the output OVAL document for the product.
-# If Python 3.9 or newer is used for the build, the output OVAL is already
-# generated pretty and doesn't need to be reformatted.
-macro(ssg_build_oval_final PRODUCT)
-    if (PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MINOR LESS 9)
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-oval.xml"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-oval.xml"
-        )
-    endif()
-    add_custom_target(
-        generate-ssg-${PRODUCT}-oval.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-    )
-    define_validate_product("${PRODUCT}")
-    if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
-        add_test(
-            NAME "validate-ssg-${PRODUCT}-oval.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        )
-    endif()
-endmacro()
-
-# If built with Python older than 3.9, apply a final xmllint pass over the
-# OCIL document to pretty-format the output OCIL document for the product.
-# If Python 3.9 or newer is used for the build, the output OVAL is already
-# generated pretty and doesn't need to be reformatted.
-macro(ssg_build_ocil_final PRODUCT)
-    if (PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MINOR LESS 9)
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
-        )
-    endif()
-    add_custom_target(
-        generate-ssg-${PRODUCT}-ocil.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        generate-ssg-${PRODUCT}-${LANGUAGE}.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
     )
 endmacro()
 
@@ -805,10 +746,18 @@ macro(ssg_build_product PRODUCT)
     ssg_build_cpe_oval_unlinked(${PRODUCT})
     ssg_build_manifest(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
-    ssg_build_xccdf_final(${PRODUCT})
-    ssg_build_oval_final(${PRODUCT})
-    ssg_build_ocil_final(${PRODUCT})
+    ssg_build_xml_final(${PRODUCT} xccdf)
+    ssg_build_xml_final(${PRODUCT} oval)
+    ssg_build_xml_final(${PRODUCT} ocil)
     ssg_build_sds(${PRODUCT})
+
+    define_validate_product("${PRODUCT}")
+    if("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-oval.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        )
+    endif()
 
     add_custom_target(${PRODUCT} ALL)
     add_dependencies(${PRODUCT} ${PRODUCT}-content)
