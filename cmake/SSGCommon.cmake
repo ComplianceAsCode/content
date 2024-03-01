@@ -458,15 +458,26 @@ macro(ssg_build_oval_final PRODUCT)
     endif()
 endmacro()
 
-# Apply a final xmllint pass over the OCIL document to pretty-format the output
-# OCIL document for the product.
+# If built with Python older than 3.9, apply a final xmllint pass over the
+# OCIL document to pretty-format the output OCIL document for the product.
+# If Python 3.9 or newer is used for the build, the output OVAL is already
+# generated pretty and doesn't need to be reformatted.
 macro(ssg_build_ocil_final PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
-    )
+    if (PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MINOR LESS 9)
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
+        )
+    endif()
     add_custom_target(
         generate-ssg-${PRODUCT}-ocil.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
