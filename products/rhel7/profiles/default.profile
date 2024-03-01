@@ -410,7 +410,6 @@ selections:
     - audit_rules_unsuccessful_file_modification_fchownat
     - sebool_openvpn_enable_homedirs
     - bios_disable_usb_boot
-    - file_permissions_systemmap
     - service_docker_enabled
     - file_owner_etc_hosts_allow
     - audit_rules_unsuccessful_file_modification_open_o_creat

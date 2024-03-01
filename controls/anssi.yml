@@ -696,7 +696,7 @@ controls:
       The /boot partition mounted is essential to perform certain administrative actions, for
       example updating the kernel. Therefore, for better stability, in this requirement only rules
       to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
-    status: partial
+    status: automated
     rules:
       - file_groupowner_efi_grub2_cfg
       - file_groupowner_grub2_cfg
@@ -710,8 +710,10 @@ controls:
       - file_owner_user_cfg
       - file_permissions_efi_user_cfg
       - file_permissions_user_cfg
+      - file_groupowner_systemmap
+      - file_owner_systemmap
+      - file_permissions_systemmap
     related_rules:
-      - file_permissions_systemmap # missing remediation
       - mount_option_boot_noauto
 
   - id: R30
