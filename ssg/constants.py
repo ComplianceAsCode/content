@@ -34,6 +34,7 @@ SSG_REF_URIS = {
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    'app-srg-ctr': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform',
     'stigref': 'https://public.cyber.mil/stigs/srg-stig-tools/',
 }
 
