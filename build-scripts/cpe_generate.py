@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 
-import fnmatch
 import sys
 import os
 import ssg
@@ -61,7 +60,7 @@ def parse_args():
     return p.parse_args()
 
 
-def load_oval(args, translator, inventory_defs_id_attrs):
+def load_oval(args):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(args.ovalfile))
     oval_document.product_name = __file__
 
@@ -72,11 +71,11 @@ def load_oval(args, translator, inventory_defs_id_attrs):
         if oval_def.class_ != "inventory":
             continue
         references_to_keep += oval_document.get_all_references_of_definition(oval_def.id_)
-        inventory_defs_id_attrs.append(oval_def.id_)
 
     oval_document.keep_referenced_components(references_to_keep)
 
     # turn IDs into meaningless numbers
+    translator = ssg.id_translate.IDTranslator(args.idname)
     oval_document = translator.translate_oval_document(oval_document, store_defname=True)
 
     return oval_document
@@ -115,11 +114,6 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, args):
 def main():
     args = parse_args()
 
-    # Keep the list of 'id' attributes from untranslated inventory def elements
-    inventory_defs_id_attrs = []
-
-    translator = ssg.id_translate.IDTranslator(args.idname)
-
     product_yaml = ssg.products.load_product_yaml(args.product_yaml)
     product = product_yaml["product"]
 
@@ -130,83 +124,14 @@ def main():
     cpe_dict_filename = "ssg-" + product + "-cpe-dictionary.xml"
     cpe_dict_path = os.path.join(args.cpeoutdir, cpe_dict_filename)
 
-    oval_document = load_oval(args, translator, inventory_defs_id_attrs)
+    oval_document = load_oval(args)
     oval_document.save_as_xml(oval_file_path)
 
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = get_benchmark_cpe_names(args.shorthandfile)
     cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args)
+    cpe_dict.translate_cpe_oval_def_ids()
     cpe_dict.to_file(cpe_dict_path, oval_filename)
-
-    # replace and sync IDs, href filenames in input cpe dictionary file
-    cpedicttree = ssg.xml.parse_file(cpe_dict_path)
-    for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
-        checkhref = check.get("href")
-        # If CPE OVAL references another OVAL file
-        if checkhref == 'filename':
-            # Sanity check -- Verify the referenced OVAL is truly defined
-            # somewhere in the (sub)directory tree below CWD. In correct
-            # scenario is should be located:
-            # * either in input/oval/*.xml
-            # * or copied by former run of "combine_ovals.py" script from
-            #   shared/ directory into build/ subdirectory
-            refovalfilename = check.text
-            refovalfilefound = False
-            for dirpath, dirnames, filenames in os.walk(os.curdir, topdown=True):
-                dirnames.sort()
-                filenames.sort()
-                # Case when referenced OVAL file exists
-                for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
-                    refovalfilefound = True
-                    break                     # break from the inner for loop
-
-                if refovalfilefound:
-                    break                     # break from the outer for loop
-
-            shared_dir = \
-                os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-            if shared_dir is not None:
-                for dirpath, dirnames, filenames in os.walk(shared_dir, topdown=True):
-                    dirnames.sort()
-                    filenames.sort()
-                    # Case when referenced OVAL file exists
-                    for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
-                        refovalfilefound = True
-                        break                     # break from the inner for loop
-
-                    if refovalfilefound:
-                        break                     # break from the outer for loop
-
-            # Referenced OVAL doesn't exist in the subdirtree below CWD:
-            # * there's either typo in the refenced OVAL filename, or
-            # * is has been forgotten to be placed into input/oval, or
-            # * the <platform> tag of particular shared/ OVAL wasn't modified
-            #   to include the necessary referenced file.
-            # Therefore display an error and exit with failure in such cases
-            if not refovalfilefound:
-                error_msg = "\n\tError: Can't locate \"%s\" OVAL file in the \
-                \n\tlist of OVAL checks for this product! Exiting..\n" % refovalfilename
-                sys.stderr.write(error_msg)
-                # sys.exit(1)
-        check.set("href", os.path.basename(oval_filename))
-
-        # Sanity check to verify if inventory check OVAL id is present in the
-        # list of known "id" attributes of inventory definitions. If not it
-        # means provided ovalfile (sys.argv[1]) doesn't contain this OVAL
-        # definition (it wasn't included due to <platform> tag restrictions)
-        # Therefore display an error and exit with failure, since otherwise
-        # we might end up creating invalid $(ID)-$(PROD)-cpe-oval.xml file
-        if check.text not in inventory_defs_id_attrs:
-            error_msg = "\n\tError: Can't locate \"%s\" definition in \"%s\". \
-            \n\tEnsure <platform> element is configured properly for \"%s\".  \
-            \n\tExiting..\n" % (check.text, args.ovalfile, check.text)
-            sys.stderr.write(error_msg)
-            sys.exit(1)
-
-        # Referenced OVAL checks passed both of the above sanity tests
-        check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
-
-    ssg.xml.ElementTree.ElementTree(cpedicttree).write(cpe_dict_path)
 
     sys.exit(0)
 
