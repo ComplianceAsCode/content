@@ -2,6 +2,9 @@ name: Automatus Fedora
 on:
   pull_request:
     branches: [ master, 'stabilization*' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 jobs:
   build-content:
     name: Build Content

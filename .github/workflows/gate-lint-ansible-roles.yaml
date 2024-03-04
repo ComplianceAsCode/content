@@ -2,6 +2,9 @@ name: Gate (AR / RHEL)
 on:
   pull_request:
     branches: [ 'master' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 jobs:
   validate-fedora-ar:
     name: Build, Lint Ansible Roles on Fedora Latest (Container)

@@ -2,6 +2,9 @@ name: Automatus CS8
 on:
   pull_request:
     branches: [ master, 'stabilization*' ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 env:
   DATASTREAM: ssg-centos8-ds.xml
 jobs:
