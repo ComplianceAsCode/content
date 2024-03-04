@@ -107,6 +107,9 @@ def add_reference_elements(element, references, ref_uri_dict):
             if ref_type == 'srg':
                 if ref_val.startswith('SRG-OS-'):
                     ref_href = ref_uri_dict['os-srg']
+                elif re.match(r'SRG-APP-\d{5,}-CTR-\d{5,}', ref_val):
+                    # The more specific case needs to come first, otherwise the generic SRG-APP will catch everything
+                    ref_href = ref_uri_dict['app-srg-ctr']
                 elif ref_val.startswith('SRG-APP-'):
                     ref_href = ref_uri_dict['app-srg']
                 else:
