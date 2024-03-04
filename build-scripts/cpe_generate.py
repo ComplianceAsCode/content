@@ -56,7 +56,7 @@ def parse_args():
     return p.parse_args()
 
 
-def process_cpe_oval(oval_file_path):
+def process_cpe_oval(oval_file_path, used_cpe_oval_def_ids):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(oval_file_path))
     oval_document.product_name = os.path.basename(__file__)
 
@@ -74,9 +74,9 @@ def process_cpe_oval(oval_file_path):
     return oval_document
 
 
-def get_benchmark_cpe_names(xccdf_file):
+def get_benchmark_cpe_names(xccdf_el_root_xml):
     benchmark_cpe_names = set()
-    xccdf_el_root_xml = ssg.xml.parse_file(xccdf_file)
+
     for platform in xccdf_el_root_xml.findall(".//{%s}platform" % XCCDF12_NS):
         cpe_name = platform.get("idref")
         # skip CPE AL platforms (they are handled later)
@@ -103,6 +103,19 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, cpe_items_dir):
     return cpe_list
 
 
+def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict):
+    out = set()
+
+    for cpe_item in cpe_dict.cpe_items:
+        out.add(cpe_item.check_id)
+
+    for check_fact_ref in xccdf_el_root_xml.findall(
+        ".//{%s}check-fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
+    ):
+        out.add(check_fact_ref.get("id-ref"))
+    return out
+
+
 def main():
     args = parse_args()
 
@@ -116,13 +129,16 @@ def main():
     cpe_dict_filename = "ssg-{}-cpe-dictionary.xml".format(product)
     cpe_dict_path = os.path.join(args.cpeoutdir, cpe_dict_filename)
 
-    oval_document = process_cpe_oval(args.ovalfile)
-    oval_document.save_as_xml(oval_file_path)
+    xccdf_el_root_xml = ssg.xml.parse_file(args.xccdfFile)
 
-    benchmark_cpe_names = get_benchmark_cpe_names(args.xccdfFile)
+    benchmark_cpe_names = get_benchmark_cpe_names(xccdf_el_root_xml)
     cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args.cpe_items_dir)
     cpe_dict.translate_cpe_oval_def_ids()
     cpe_dict.to_file(cpe_dict_path, oval_filename)
+
+    used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict)
+    oval_document = process_cpe_oval(args.ovalfile, used_cpe_oval_def_ids)
+    oval_document.save_as_xml(oval_file_path)
 
     sys.exit(0)
 
