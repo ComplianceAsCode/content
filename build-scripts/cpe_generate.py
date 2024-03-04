@@ -56,7 +56,7 @@ def parse_args():
     return p.parse_args()
 
 
-def process_cpe_oval(oval_file_path, used_cpe_oval_def_ids):
+def process_cpe_oval(oval_file_path):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(oval_file_path))
     oval_document.product_name = os.path.basename(__file__)
 
@@ -64,7 +64,9 @@ def process_cpe_oval(oval_file_path, used_cpe_oval_def_ids):
     for oval_def in oval_document.definitions.values():
         if oval_def.class_ != "inventory":
             continue
-        references_to_keep += oval_document.get_all_references_of_definition(oval_def.id_)
+        references_to_keep += oval_document.get_all_references_of_definition(
+            oval_def.id_
+        )
 
     oval_document.keep_referenced_components(references_to_keep)
 
@@ -116,6 +118,14 @@ def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict):
     return out
 
 
+def _save_minimal_cpe_oval(oval_document, path, oval_def_ids):
+    references_to_keep = ssg.oval_object_model.OVALDefinitionReference()
+    for oval_def_id in oval_def_ids:
+        references_to_keep += oval_document.get_all_references_of_definition(oval_def_id)
+
+    oval_document.save_as_xml(path, references_to_keep)
+
+
 def main():
     args = parse_args()
 
@@ -137,8 +147,8 @@ def main():
     cpe_dict.to_file(cpe_dict_path, oval_filename)
 
     used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict)
-    oval_document = process_cpe_oval(args.ovalfile, used_cpe_oval_def_ids)
-    oval_document.save_as_xml(oval_file_path)
+    oval_document = process_cpe_oval(args.ovalfile)
+    _save_minimal_cpe_oval(oval_document, oval_file_path, used_cpe_oval_def_ids)
 
     sys.exit(0)
 
