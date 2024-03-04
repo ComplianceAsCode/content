@@ -165,6 +165,10 @@ class CPEList(object):
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
 
+    def translate_cpe_oval_def_ids(self):
+        for cpe_item in self.cpe_items:
+            cpe_item.set_cpe_oval_def_id()
+
 
 class CPEItem(XCCDFEntity, Templatable):
     """
@@ -179,6 +183,7 @@ class CPEItem(XCCDFEntity, Templatable):
         is_product_cpe=lambda: False,
         versioned=lambda: False,
         args=lambda: {},
+        content_id=lambda: "ssg",
         ** XCCDFEntity.KEYS
     )
     KEYS.update(**Templatable.KEYS)
@@ -196,10 +201,13 @@ class CPEItem(XCCDFEntity, Templatable):
 
     @property
     def cpe_oval_def_id(self):
-        translator = ssg.id_translate.IDTranslator("ssg")
+        translator = ssg.id_translate.IDTranslator(self.content_id)
         full_id = translator.generate_id(
             "{" + oval_namespace + "}definition", self.cpe_oval_short_def_id)
         return full_id
+
+    def set_cpe_oval_def_id(self):
+        self.check_id = self.cpe_oval_def_id
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)

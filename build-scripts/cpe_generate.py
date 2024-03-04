@@ -106,7 +106,9 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, args):
     product_cpes.load_cpes_from_directory_tree(args.cpe_items_dir, product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
-        cpe_list.add(product_cpes.get_cpe(cpe_name))
+        cpe_item = product_cpes.get_cpe(cpe_name)
+        cpe_item.content_id = args.idname
+        cpe_list.add(cpe_item)
     return cpe_list
 
 
