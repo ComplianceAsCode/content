@@ -11,9 +11,10 @@
         - name: Disable service {{{ SERVICENAME }}}
           systemd:
             name: "{{{ DAEMONNAME }}}.service"
-            enabled: "no"
+            enabled: false
             state: "stopped"
-            masked: "yes"
+            masked: true
+          when: ansible_facts.services["{{{ DAEMONNAME }}}.service"] is defined 
       rescue:
         - name: "Intentionally ignored previous 'Disable service {{{ SERVICENAME }}}' failure, service was already disabled"
           meta: noop
@@ -28,9 +29,9 @@
 - name: Disable socket {{{ SERVICENAME }}}
   systemd:
     name: "{{{ DAEMONNAME }}}.socket"
-    enabled: "no"
+    enabled: false
     state: "stopped"
-    masked: "yes"
+    masked: true
   when: 'socket_file_exists.stdout_lines is search("{{{ DAEMONNAME }}}.socket",multiline=True)' 
 {{%- else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
