@@ -117,11 +117,11 @@ def main():
     product_yaml = ssg.products.load_product_yaml(args.product_yaml)
     product = product_yaml["product"]
 
-    oval_filename = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
+    oval_filename = "{}-{}-{}".format(args.idname, product, os.path.basename(args.ovalfile))
     oval_filename = oval_filename.replace("cpe-oval-unlinked", "cpe-oval")
     oval_file_path = os.path.join(args.cpeoutdir, oval_filename)
 
-    cpe_dict_filename = "ssg-" + product + "-cpe-dictionary.xml"
+    cpe_dict_filename = "ssg-{}-cpe-dictionary.xml".format(product)
     cpe_dict_path = os.path.join(args.cpeoutdir, cpe_dict_filename)
 
     oval_document = load_oval(args)
