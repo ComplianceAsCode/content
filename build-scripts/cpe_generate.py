@@ -62,7 +62,7 @@ def parse_args():
 
 def load_oval(args):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(args.ovalfile))
-    oval_document.product_name = __file__
+    oval_document.product_name = os.path.basename(__file__)
 
     # extract inventory definitions
     # making (dubious) assumption that all inventory defs are CPE
