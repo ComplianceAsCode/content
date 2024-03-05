@@ -3259,3 +3259,333 @@ controls:
       levels:
         - base
       status: pending
+
+  - id: A1.1
+    title: Multi-tenant service providers protect and separate all customer environments and data.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A1.1.1
+      title: Logical separation is implemented.
+      description: |-
+        - The provider cannot access its customers' environments without authorization.
+        - Customers cannot access the provider's environment without authorization.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.1.2
+      title: Controls are implemented such that each customer only has permission to access its
+        own cardholder data and CDE.
+      description: |-
+        Customers cannot access other customers' environments.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.1.3
+      title: Controls are implemented such that each customer can only access resources allocated
+        to them.
+      description: |-
+        Customers cannot impact resources allocated to other customers.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.1.4
+      title: The effectiveness of logical separation controls used to separate customer
+        environments is confirmed at least once every six months via penetration testing.
+      description: |-
+        Segmentation of customer environments from other environments is periodically validated to
+        be effective. The testing of adequate separation between customers in a multi-tenant
+        service provider environment is in addition to the penetration tests specified in
+        Requirement 11.4.6. This requirement is a best practice until 31 March 2025, after which
+        it will be required and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: A1.2
+    title: Multi-tenant service providers facilitate logging and incident response for all
+      customers.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A1.2.1
+      title: Audit log capability is enabled for each customer's environment that is consistent
+        with PCI DSS Requirement 10.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.2.2
+      title: Processes or mechanisms are implemented to support and/or facilitate prompt forensic
+        investigations in the event of a suspected or confirmed security incident for any
+        customer.
+      description: |-
+        Forensic investigation is readily available to all customers in the event of a suspected
+        or confirmed security incident.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.2.3
+      title: Processes or mechanisms are implemented for reporting and addressing suspected or
+        confirmed security incidents and vulnerabilities.
+      levels:
+        - base
+      status: pending
+
+  - id: A2.1
+    title: POI terminals using SSL and/or early TLS are confirmed as not susceptible to known
+      SSL/TLS exploits.
+    description: |-
+      Appendix A2: Additional PCI DSS Requirements for Entities Using SSL/Early TLS for
+      Card-Present POS POI Terminal Connections.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A2.1.1
+      title: Where POS POI terminals at the merchant or payment acceptance location use SSL and/or
+        early TLS, the entity confirms the devices are not susceptible to any known exploits for
+        those protocols.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirements 2.2.7 and 3.5.1.1.
+        Service level settings for web servers such as Apache and NGINX should also be checked.
+
+    - id: A2.1.2
+      title: 'Additional requirement for service providers only: All service providers with
+        existing connection points to POS POI terminals that use SSL and/or early TLS as defined
+        in A2.1 have a formal Risk Mitigation and Migration Plan in place.'
+      levels:
+        - base
+      status: pending
+
+    - id: A2.1.3
+      title: 'Additional requirement for service providers only: All service providers provide a
+        secure service offering.'
+      description: |-
+        This requirement is not eligible for the customized approach. This requirement applies
+        only when the entity being assessed is a service provider.
+      levels:
+        - base
+      status: pending
+
+  - id: A3.1
+    title: A PCI DSS compliance program is implemented.
+    description: |-
+      Appendix A3: Designated Entities Supplemental Validation (DESV)
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.1.1
+      title: Responsibility is established by executive management for the protection of account
+        data and a PCI DSS compliance program.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+    - id: A3.1.2
+      title: A formal PCI DSS compliance program is in place.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirements 1-12
+
+    - id: A3.1.3
+      title: PCI DSS compliance roles and responsibilities are specifically defined and formally
+        assigned to one or more personnel.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+    - id: A3.1.4
+      title: Up-to-date PCI DSS and/or information security training is provided at least once
+        every 12 months to personnel with PCI DSS compliance responsibilities (as identified in
+        A3.1.3).
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+  - id: A3.2
+    title: PCI DSS scope is documented and validated.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.2.1
+      title: PCI DSS scope is documented and confirmed for accuracy at least once every three
+        months and upon significant changes to the in-scope environment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements, Requirement 12.
+
+    - id: A3.2.2
+      title: PCI DSS scope impact for all changes to systems or networks is determined, including
+        additions of new systems and new network connections.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements; Requirements 1-12
+      controls:
+      - id: A3.2.2.1
+        title: Upon completion of a change, all relevant PCI DSS requirements are confirmed to be
+          implemented on all new or changed systems and networks, and documentation is updated as
+          applicable.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Scope of PCI DSS Requirements; Requirements 1-12
+
+    - id: A3.2.3
+      title: Changes to organizational structure result in a formal (internal) review of the
+        impact to PCI DSS scope and applicability of controls.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+    - id: A3.2.4
+      title: If segmentation is used, PCI DSS scope is confirmed.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 11
+
+    - id: A3.2.5
+      title: A data-discovery methodology is implemented.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements.
+      controls:
+      - id: A3.2.5.1
+        title: Data discovery methods are confirmed.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Scope of PCI DSS Requirements.
+
+      - id: A3.2.5.2
+        title: Response procedures are implemented to be initiated upon the detection of cleartext
+          PAN outside the CDE.
+        levels:
+          - base
+        status: pending
+
+    - id: A3.2.6
+      title: Mechanisms are implemented for detecting and preventing cleartext PAN from leaving
+        the CDE via an unauthorized channel, method, or process.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements, Requirement 12
+      controls:
+      - id: A3.2.6.1
+        title: Response procedures are implemented to be initiated upon the detection of attempts
+          to remove cleartext PAN from the CDE via an unauthorized channel, method, or process.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Requirement 12
+
+  - id: A3.3
+    title: PCI DSS is incorporated into business-as-usual (BAU) activities.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.3.1
+      title: Failures of critical security control systems are detected, alerted, and addressed
+        promptly.
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirement 12
+      controls:
+      - id: A3.3.1.2
+        title: Failures of any critical security control systems are responded to promptly.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Requirements 1-12
+          If you noticed, this requirement should be A3.3.1.1 instead of A3.3.1.2 but it was kept
+          this way to be aligned to the policy.
+
+    - id: A3.3.2
+      title: Hardware and software technologies are reviewed at least once every 12 months to
+        confirm whether they continue to meet the organization's PCI DSS requirements.
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirements 2, 6, 12.
+
+    - id: A3.3.3
+      title: Reviews are performed at least once every three months to verify BAU activities are
+        being followed.
+      description: |-
+        Reviews are performed by personnel assigned to the PCI DSS compliance program (as
+        identified in A3.1.3).
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirements 1-12.
+
+  - id: A3.4
+    title: Logical access to the cardholder data environment is controlled and managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.4.1
+      title: User accounts and access privileges to in-scope system components are reviewed at
+        least once every six months to ensure user accounts and access privileges remain
+        appropriate based on job function, and that all access is authorized.
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirement 7.
+
+  - id: A3.5
+    title: Suspicious events are identified and responded to.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.5.1
+      title: A methodology is implemented for the prompt identification of attack patterns and
+        undesirable behavior across systems.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 10, 12.
