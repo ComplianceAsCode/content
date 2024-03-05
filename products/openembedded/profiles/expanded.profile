@@ -1,10 +1,11 @@
 documentation_complete: true
 
-title: 'Sample Security Profile for OpenEmbedded Distros'
+title: 'Sample expanded Security Profile for OpenEmbedded Distros'
 
 description: |-
-    This profile is an sample for use in documentation and example content.
-    The selected rules are standard and should pass quickly on most systems.
+    This profile is a sample for use in documentation and example content.
+    The selected rules include standard profile plus more network rules and
+    password aging; they should still pass quickly on most systems.
 
 selections:
     - file_owner_etc_passwd
@@ -72,10 +73,13 @@ selections:
     - var_password_pam_remember_control_flag=required
     - var_password_pam_remember=5
     - set_password_hashing_algorithm_systemauth
+    - accounts_maximum_age_login_defs
     - var_accounts_maximum_age_login_defs=365
     - accounts_password_set_max_life_existing
+    - accounts_minimum_age_login_defs
     - var_accounts_minimum_age_login_defs=7
     - accounts_password_set_min_life_existing
+    - accounts_password_warn_age_login_defs
     - var_accounts_password_warn_age_login_defs=7
     - account_disable_post_pw_expiration
     - var_account_disable_post_pw_expiration=30
@@ -84,6 +88,7 @@ selections:
     - var_accounts_tmout=15_min
     - accounts_root_gid_zero
     - accounts_umask_etc_bashrc
+    - accounts_umask_etc_login_defs
     - use_pam_wheel_for_su
     - sshd_allow_only_protocol2
     - journald_forward_to_syslog
@@ -125,6 +130,8 @@ selections:
     - require_singleuser_auth
     - require_emergency_target_auth
     - disable_users_coredumps
+    - configure_crypto_policy
+    - var_system_crypto_policy=default_policy
     - dir_perms_world_writable_sticky_bits
     - file_permissions_etc_passwd
     - file_owner_etc_shadow
@@ -157,7 +164,52 @@ selections:
     - account_unique_id
     - group_unique_id
     - group_unique_name
+    - kernel_module_sctp_disabled
+    - kernel_module_dccp_disabled
     - wireless_disable_interfaces
+    - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv6_conf_all_forwarding
+    - sysctl_net_ipv6_conf_all_forwarding_value=disabled
+    - sysctl_net_ipv4_conf_all_send_redirects
+    - sysctl_net_ipv4_conf_default_send_redirects
+    - sysctl_net_ipv4_conf_all_accept_source_route
+    - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_source_route
+    - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
+    - sysctl_net_ipv6_conf_all_accept_source_route
+    - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
+    - sysctl_net_ipv4_conf_all_accept_redirects
+    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_redirects
+    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv6_conf_all_accept_redirects
+    - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_redirects
+    - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_all_secure_redirects
+    - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_secure_redirects
+    - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
+    - sysctl_net_ipv4_conf_all_log_martians
+    - sysctl_net_ipv4_conf_all_log_martians_value=enabled
+    - sysctl_net_ipv4_conf_default_log_martians
+    - sysctl_net_ipv4_conf_default_log_martians_value=enabled
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
+    - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
+    - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv4_tcp_syncookies_value=enabled
+    - sysctl_net_ipv6_conf_all_accept_ra
+    - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
+    - sysctl_net_ipv6_conf_default_accept_ra
+    - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
     - package_firewalld_installed
     - service_firewalld_enabled
     - package_iptables_installed
