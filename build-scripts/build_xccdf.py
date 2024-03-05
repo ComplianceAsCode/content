@@ -136,7 +136,7 @@ def main():
     ssg.xml.ElementTree.ElementTree(xccdftree).write(
         args.xccdf, xml_declaration=True, encoding="utf-8")
 
-    if args.thin_ds_components_dir != "off":
+    if args.thin_ds_components_dir is not None and args.thin_ds_components_dir != "off":
         if not os.path.exists(args.thin_ds_components_dir):
             os.makedirs(args.thin_ds_components_dir)
         store_xccdf_per_profile(loader, oval_linker, args.thin_ds_components_dir)
