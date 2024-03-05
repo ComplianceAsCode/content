@@ -6,6 +6,7 @@ import sys
 import os
 import ssg
 import argparse
+import glob
 
 import ssg.build_cpe
 import ssg.id_translate
@@ -52,6 +53,14 @@ def parse_args():
     p.add_argument(
         "--cpe-items-dir",
         help="the directory where compiled CPE items are stored"
+    )
+    p.add_argument(
+        "--thin-ds-components-dir",
+        help="Directory to store CPE OVAL for thin data stream. (off: to disable)"
+        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/"
+        "Fake profiles are used to create thin DS. Components are generated for each profile."
+        "The minimal cpe will be generated from the minimal XCCDF, "
+        "which is in the same directory.",
     )
     return p.parse_args()
 
@@ -105,11 +114,12 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, cpe_items_dir):
     return cpe_list
 
 
-def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict):
+def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict, benchmark_cpe_names):
     out = set()
 
     for cpe_item in cpe_dict.cpe_items:
-        out.add(cpe_item.check_id)
+        if cpe_item.name in benchmark_cpe_names:
+            out.add(cpe_item.check_id)
 
     for check_fact_ref in xccdf_el_root_xml.findall(
         ".//{%s}check-fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
@@ -124,6 +134,20 @@ def _save_minimal_cpe_oval(oval_document, path, oval_def_ids):
         references_to_keep += oval_document.get_all_references_of_definition(oval_def_id)
 
     oval_document.save_as_xml(path, references_to_keep)
+
+
+def _generate_cpe_for_thin_xccdf(thin_ds_components_dir, oval_document, cpe_dict):
+    for xccdf_path in glob.glob("{}/xccdf*.xml".format(thin_ds_components_dir)):
+        cpe_oval_path = xccdf_path.replace("xccdf_", "cpe_oval_")
+        cpe_dict_path = xccdf_path.replace("xccdf_", "cpe_dict_")
+
+        xccdf_el_root_xml = ssg.xml.parse_file(xccdf_path)
+        benchmark_cpe_names = get_benchmark_cpe_names(xccdf_el_root_xml)
+        used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(
+            xccdf_el_root_xml, cpe_dict, benchmark_cpe_names
+        )
+        cpe_dict.to_file(cpe_dict_path, cpe_oval_path, benchmark_cpe_names)
+        _save_minimal_cpe_oval(oval_document, cpe_oval_path, used_cpe_oval_def_ids)
 
 
 def main():
@@ -146,9 +170,16 @@ def main():
     cpe_dict.translate_cpe_oval_def_ids()
     cpe_dict.to_file(cpe_dict_path, oval_filename)
 
-    used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict)
+    used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(
+        xccdf_el_root_xml, cpe_dict, benchmark_cpe_names
+    )
     oval_document = process_cpe_oval(args.ovalfile)
     _save_minimal_cpe_oval(oval_document, oval_file_path, used_cpe_oval_def_ids)
+
+    if args.thin_ds_components_dir is not None and args.thin_ds_components_dir != "off":
+        if not os.path.exists(args.thin_ds_components_dir):
+            os.makedirs(args.thin_ds_components_dir)
+        _generate_cpe_for_thin_xccdf(args.thin_ds_components_dir, oval_document, cpe_dict)
 
     sys.exit(0)
 
