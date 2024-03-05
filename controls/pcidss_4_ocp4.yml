@@ -1,0 +1,276 @@
+policy: PCI-DSS
+title: Payment Card Industry - Data Security Standard (PCI-DSS)
+id: pcidss_4_ocp4
+version: '4.0'
+source: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+levels:
+- id: base
+
+controls:
+  - id: '1.1'
+    title: 'Processes and mechanisms for installing and maintaining network security
+      controls are defined and understood.'
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.1.1
+      title: 'All security policies and operational procedures that are identified in
+        Requirement 1 are Documented, Kept up to date, In use and Known to all affected parties.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 1 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 1.1.2
+      title: 'Roles and responsibilities for performing activities in Requirement 1 are
+        documented, assigned, and understood.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 1 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '1.2'
+    title: 'Network Security Controls (NSCs) are configured and maintained.'
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.2.1
+      title: 'Configuration standards for NSC rulesets are Defined, Implemented and Maintained.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examples of NSCs covered by these configuration standards include, but are not limited to,
+        firewalls, routers configured with access control lists, and cloud virtual networks. The
+        objective of this requirement is to ensure the way that NSCs are configured and operate
+        are defined and consistently applied. While the tooling and standards can be automated,
+        the review of allowed accesses should be manual as different sites may have different
+        policies.
+      rules: []
+
+    - id: 1.2.2
+      title: 'All changes to network connections and to configurations of NSCs are approved and
+        managed in accordance with the change control process defined at Requirement 6.5.1.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Changes to network connections and NSCs cannot result in misconfiguration, implementation
+        of insecure services, or unauthorized network connections. Changes to network connections
+        include the addition, removal, or modification of a connection. Changes to NSC
+        configurations include those related to the component itself as well as those affecting
+        how it performs its security function. A formal change control process should be in place.
+
+    - id: 1.2.3
+      title: 'An accurate network diagram(s) is maintained that shows all connections between the
+        CDE and other networks, including any wireless networks.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        A representation of the boundaries between the CDE, all trusted networks, and all
+        untrusted networks, is maintained and available. A current network diagram(s) or other
+        technical or topological solution that identifies network connections and devices can be
+        used to meet this requirement.
+
+    - id: 1.2.4
+      title: 'An accurate data-flow diagram(s) is maintained'
+      description: |-
+        An accurate data-flow diagram(s) is maintained that meets the following:
+          - Shows all account data flows across systems and networks
+          - Updated as needed upon changes to the environment
+      levels:
+        - base
+      status: pending
+
+    - id: 1.2.5
+      title: 'All services, protocols, and ports allowed are identified, approved, and have a
+        defined business need.'
+      levels:
+        - base
+      status: pending
+
+    - id: 1.2.6
+      title: Security features are defined and implemented for all services, protocols, and ports
+        that are in use and considered to be insecure, such that the risk is mitigated.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The specific risks associated with the use of insecure services, protocols, and ports are
+        understood, assessed, and appropriately mitigated. The selected rules here basically
+        remove services without encryption and restricted some common services.
+      rules: []
+
+    - id: 1.2.7
+      title: Configurations of NSCs are reviewed at least once every six months to confirm they
+        are relevant and effective.
+      description: |-
+        NSC configurations that allow or restrict access to trusted networks are verified
+        periodically to ensure that only authorized connections with a current business
+        justification are permitted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Some configuration automation solution, such as Ansible could be helpful here.
+
+    - id: 1.2.8
+      title: Configuration files for NSCs are secured from unauthorized access and kept consistent
+        with active network configurations.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '1.3'
+    title: Network access to and from the cardholder data environment is restricted.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.3.1
+      title: Inbound traffic to the CDE is restricted to only traffic that is necessary
+      description: |-
+        Inbound traffic to the CDE is restricted as follows:
+        - To only traffic that is necessary.
+        - All other traffic is specifically denied.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 1.3.2
+      title: Outbound traffic from the CDE is restricted to only traffic that is necessary
+      description: |-
+        Outbound traffic from the CDE is restricted as follows:
+        - To only traffic that is necessary.
+        - All other traffic is specifically denied.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        It appears there is no rule in the project to restrict outbound traffic on the firewall.
+        Perhaps a rule to automates this would do more harm than good. Probably a manual
+        assessment is more reasonable here.
+
+    - id: 1.3.3
+      title: NSCs are installed between all wireless networks and the CDE, regardless of whether
+        the wireless network is a CDE.
+      description: |-
+        NSCs are installed between all wireless networks and the CDE, regardless of whether the
+        wireless network is a CDE, such that:
+        - All wireless traffic from wireless networks into the CDE is denied by default.
+        - Only wireless traffic with an authorized business purpose is allowed into the CDE.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Wireless interfaces are not expected in servers so they are disabled by default in this
+        policy.
+      rules: []
+
+  - id: '1.4'
+    title: Network connections between trusted and untrusted networks are controlled.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.4.1
+      title: NSCs are implemented between trusted and untrusted networks.
+      description: |-
+        Unauthorized traffic cannot traverse network boundaries between trusted and untrusted
+        networks.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Trusted and untrusted networks are expected to be different for each environment.
+        But loopback traffic is assumed to be trusted and even necessary for some services.
+        This requirement is complements 1.2.1 and 1.3.1 requirements.
+      rules: []
+
+    - id: 1.4.2
+      title: Inbound traffic from untrusted networks to trusted networks is restricted.
+      description: |-
+        Inbound traffic from untrusted networks to trusted networks is restricted to:
+        - Communications with system components that are authorized to provide publicly accessible
+        services, protocols, and ports.
+        - Stateful responses to communications initiated by system components in a trusted network.
+        - All other traffic is denied.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Probably missing some relevant IPv6 related rules. Needs to be investigated.
+      rules: []
+
+    - id: 1.4.3
+      title: Anti-spoofing measures are implemented to detect and block forged source IP
+        addresses from entering the trusted network.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Probably missing some relevant IPv6 related rules. Needs to be investigated.
+      rules: []
+
+    - id: 1.4.4
+      title: System components that store cardholder data are not directly accessible from
+        untrusted networks.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not intended to apply to storage of account data in volatile memory
+        but does apply where memory is being treated as persistent storage (for example, RAM
+        disk). Account data can only be stored in volatile memory during the time necessary to
+        support the associated business process (for example, until completion of the related
+        payment card transaction).
+
+    - id: 1.4.5
+      title: The disclosure of internal IP addresses and routing information is limited to only
+        authorized parties.
+      description: |-
+        Internal network information is protected from unauthorized disclosure.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '1.5'
+    title: Risks to the CDE from computing devices that are able to connect to both untrusted
+      networks and the CDE are mitigated.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.5.1
+      title: Security controls are implemented on any computing devices, including company- and
+        employee-owned devices, that connect to both untrusted networks (including the Internet)
+        and the CDE
+      description: |-
+        Security controls are implemented on any computing devices, including company- and
+        employee-owned devices, that connect to both untrusted networks (including the Internet)
+        and the CDE as follows:
+        - Specific configuration settings are defined to prevent threats being introduced into the
+        entity's network.
+        - Security controls are actively running.
+        - Security controls are not alterable by users of the computing devices unless
+        specifically documented and authorized by management on a case-by-case basis for a limited
+        period.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        To ensure this requirement, a manual analysis of site policy and topology is inevitable.
+        From the technical perspective, previous requirements should already cover this
+        requirement at some level.
