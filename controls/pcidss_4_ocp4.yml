@@ -2643,3 +2643,210 @@ controls:
       levels:
         - base
       status: pending
+
+  - id: '11.1'
+    title: Processes and mechanisms for regularly testing security of systems and networks are
+      defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.1.1
+      title: All security policies and operational procedures that are identified in Requirement
+        11 are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 11 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 11.1.2
+      title: Roles and responsibilities for performing activities in Requirement 11 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 11 are documented, assigned and
+        understood by the assigned personnel.
+
+  - id: '11.2'
+    title: Wireless access points are identified and monitored, and unauthorized wireless access
+      points are addressed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.2.1
+      title: Authorized and unauthorized wireless access points are managed.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.2.2
+      title: An inventory of authorized wireless access points is maintained, including a
+        documented business justification.
+      description: |-
+        Unauthorized wireless access points are not mistaken for authorized wireless access
+        points.
+      levels:
+        - base
+      status: pending
+
+  - id: '11.3'
+    title: External and internal vulnerabilities are regularly identified, prioritized, and
+      addressed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.3.1
+      title: Internal vulnerability scans are performed.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 11.3.1.1
+        title: All other applicable vulnerabilities (those not ranked as high-risk or critical per
+          the entity's vulnerability risk rankings defined at Requirement 6.3.1) are managed
+        levels:
+          - base
+        status: pending
+
+      - id: 11.3.1.2
+        title: Internal vulnerability scans are performed via authenticated scanning.
+        levels:
+          - base
+        status: pending
+
+      - id: 11.3.1.3
+        title: Internal vulnerability scans are performed after any significant change.
+        levels:
+          - base
+        status: pending
+
+    - id: 11.3.2
+      title: External vulnerability scans are performed.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 11.3.2.1
+        title: External vulnerability scans are performed after any significant change.
+        levels:
+          - base
+        status: pending
+
+  - id: '11.4'
+    title: External and internal penetration testing is regularly performed, and exploitable
+      vulnerabilities and security weaknesses are corrected.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.4.1
+      title: A penetration testing methodology is defined, documented, and implemented by the
+        entity.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.2
+      title: Internal penetration testing is performed.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.3
+      title: External penetration testing is performed.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.4
+      title: Exploitable vulnerabilities and security weaknesses found during penetration testing
+        are corrected
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.5
+      title: If segmentation is used to isolate the CDE from other networks, penetration tests are
+        performed on segmentation controls.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.6
+      title: 'Additional requirement for service providers only: If segmentation is used to
+        isolate the CDE from other networks, penetration tests are performed on segmentation
+        controls.'
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.7
+      title: 'Additional requirement for multi-tenant service providers only: Multi-tenant service
+        providers support their customers for external penetration testing per Requirement 11.4.3
+        and 11.4.4.'
+      description: |-
+        Multi-tenant service providers support their customers' need for technical testing either
+        by providing access or evidence that comparable technical testing has been undertaken.
+      levels:
+        - base
+      status: pending
+
+  - id: '11.5'
+    title: Network intrusions and unexpected file changes are detected and responded to.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.5.1
+      title: Intrusion-detection and/or intrusion-prevention techniques are used to detect and/or
+        prevent intrusions into the network.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 11.5.1.1
+        title: 'Additional requirement for service providers only: Intrusion-detection and/or
+          intrusion-prevention techniques detect, alert on/prevent, and address covert malware
+          communication channels.'
+        description: |-
+          Mechanisms are in place to detect and alert/prevent covert communications with
+          command-and-control systems. Alerts generated by these mechanisms are responded to by
+          personnel, or by automated means that ensure that such communications are blocked. This
+          requirement applies only when the entity being assessed is a service provider. This
+          requirement is a best practice until 31 March 2025, after which it will be required and
+          must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          The policy is not explicit about any specific solution. The solution might vary
+          depending on site policies.
+
+  - id: 11.5.2
+    title: A change-detection mechanism (for example, file integrity monitoring tools) is deployed.
+    levels:
+      - base
+    status: pending
+    rules: []
+
+  - id: '11.6'
+    title: Unauthorized changes on payment pages are detected and responded to.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.6.1
+      title: A change- and tamper-detection mechanism is deployed.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        It depends on controls in application level, which varies based on site policies.
