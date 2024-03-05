@@ -1453,3 +1453,153 @@ controls:
       levels:
         - base
       status: pending
+
+  - id: '7.1'
+    title: Processes and mechanisms for restricting access to system components and cardholder
+      data by business need to know are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 7.1.1
+      title: All security policies and operational procedures that are identified in Requirement 7
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 7 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 7.1.2
+      title: Roles and responsibilities for performing activities in Requirement 7 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 7 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '7.2'
+    title: Access to system components and data is appropriately defined and assigned.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 7.2.1
+      title: An access control model is defined and includes granting access
+      description: |-
+        An access control model is defined and includes granting access as follows:
+        - Appropriate access depending on the entity's business and access needs.
+        - Access to system components and data resources that is based on users' job
+        classification and functions.
+        - The least privileges required (for example, user, administrator) to perform a job
+        function.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        General access are restricted by 2.2.6 and 8.2 section. This requirement is more about
+        checking granting access process.
+
+    - id: 7.2.2
+      title: Access is assigned to users, including privileged users, based on job classification
+        and function, and least privileges necessary to perform job responsibilities.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.2.3
+      title: Required privileges are approved by authorized personnel.
+      description: |-
+        Access privileges cannot be granted to users without appropriate, documented
+        authorization.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.2.4
+      title: All user accounts and related access privileges, including third-party/vendor
+        accounts, are reviewed
+      description: |-
+        All user accounts and related access privileges, including third-party/vendor accounts,
+        are reviewed as follows:
+        - At least once every six months.
+        - To ensure user accounts and access remain appropriate based on job function.
+        - Any inappropriate access is addressed.
+        - Management acknowledges that access remains appropriate.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.2.5
+      title: All application and system accounts and related access privileges are assigned and
+        managed.
+      description: |-
+        All application and system accounts and related access privileges are assigned and managed
+        as follows:
+        - Based on the least privileges necessary for the operability of the system or application.
+        - Access is limited to the systems, applications, or processes that specifically require
+        their use.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        General access are restricted by 2.2.6 and 8.2 section.
+      controls:
+      - id: 7.2.5.1
+        title: All access by application and system accounts and related access privileges are
+          reviewed.
+        levels:
+          - base
+        status: pending
+
+    - id: 7.2.6
+      title: All user access to query repositories of stored cardholder data is restricted
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is specific about cardholder data, which can be available in different
+        formats, such as clear and binary files, and databases depending on site policies.
+        General system restrictions are covered in 2.2.6.
+
+  - id: '7.3'
+    title: 'Access to system components and data is managed via an access control
+      system(s).'
+    levels:
+      - base
+    status: planned
+    controls:
+    - id: 7.3.1
+      title: An access control system(s) is in place that restricts access based on a user's need
+        to know and covers all system components.
+      description: |-
+        Access rights and privileges are managed via mechanisms intended for that purpose.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.3.2
+      title: The access control system(s) is configured to enforce permissions assigned to
+        individuals, applications, and systems based on job classification and function.
+      description: |-
+        Individual account access rights and privileges to systems, applications, and data are
+        only inherited from group membership.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.3.3
+      title: The access control system(s) is set to "deny all" by default.
+      description: |-
+        Access rights and privileges are prohibited unless expressly permitted.
+      levels:
+        - base
+      status: planned
+      notes: |-
+        It is possible we can select some rules for this requirement but more investigation is
+        needed to confirm.
