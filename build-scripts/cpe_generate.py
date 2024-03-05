@@ -136,6 +136,13 @@ def _save_minimal_cpe_oval(oval_document, path, oval_def_ids):
     oval_document.save_as_xml(path, references_to_keep)
 
 
+def _update_oval_href_in_xccdf(xccdf_el_root_xml, file_name):
+    for check_fact_ref in xccdf_el_root_xml.findall(
+        ".//{%s}check-fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
+    ):
+        check_fact_ref.set("href", file_name)
+
+
 def _generate_cpe_for_thin_xccdf(thin_ds_components_dir, oval_document, cpe_dict):
     for xccdf_path in glob.glob("{}/xccdf*.xml".format(thin_ds_components_dir)):
         cpe_oval_path = xccdf_path.replace("xccdf_", "cpe_oval_")
@@ -146,8 +153,10 @@ def _generate_cpe_for_thin_xccdf(thin_ds_components_dir, oval_document, cpe_dict
         used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(
             xccdf_el_root_xml, cpe_dict, benchmark_cpe_names
         )
-        cpe_dict.to_file(cpe_dict_path, cpe_oval_path, benchmark_cpe_names)
+        cpe_dict.to_file(cpe_dict_path, os.path.basename(cpe_oval_path), benchmark_cpe_names)
         _save_minimal_cpe_oval(oval_document, cpe_oval_path, used_cpe_oval_def_ids)
+        _update_oval_href_in_xccdf(xccdf_el_root_xml, os.path.basename(cpe_oval_path))
+        ssg.xml.ElementTree.ElementTree(xccdf_el_root_xml).write(xccdf_path, encoding="utf-8")
 
 
 def main():
