@@ -147,21 +147,35 @@ class CPEList(object):
     def add(self, cpe_item):
         self.cpe_items.append(cpe_item)
 
-    def to_xml_element(self, cpe_oval_file):
+    @staticmethod
+    def _create_cpe_list_xml_skeleton():
         cpe_list = ET.Element("{%s}cpe-list" % CPEList.ns)
         cpe_list.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
         cpe_list.set("xsi:schemaLocation",
                      "http://cpe.mitre.org/dictionary/2.0 "
                      "http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd")
-
-        self.cpe_items.sort(key=lambda cpe: cpe.name)
-        for cpe_item in self.cpe_items:
-            cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
-
         return cpe_list
 
-    def to_file(self, file_name, cpe_oval_file):
-        root = self.to_xml_element(cpe_oval_file)
+    def _add_cpe_items_xml(self, cpe_list, cpe_oval_file, selection_of_cpe_names):
+        self.cpe_items.sort(key=lambda cpe: cpe.name)
+        for cpe_item in self.cpe_items:
+            if cpe_item.name in selection_of_cpe_names:
+                cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
+
+    def to_xml_element(self, cpe_oval_file, selection_of_cpe_names=None):
+        cpe_list = self._create_cpe_list_xml_skeleton()
+
+        if selection_of_cpe_names is None:
+            selection_of_cpe_names = [cpe_item.name for cpe_item in self.cpe_items]
+
+        self._add_cpe_items_xml(cpe_list, cpe_oval_file, selection_of_cpe_names)
+
+        if hasattr(ET, "indent"):
+            ET.indent(cpe_list, space="  ", level=0)
+        return cpe_list
+
+    def to_file(self, file_name, cpe_oval_file, selection_of_cpe_names=None):
+        root = self.to_xml_element(cpe_oval_file, selection_of_cpe_names)
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
 
