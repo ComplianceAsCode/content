@@ -443,3 +443,479 @@ controls:
       status: pending
       notes: |-
         Wireless interfaces are disabled by 1.3.3.
+
+  - id: '3.1'
+    title: Processes and mechanisms for protecting stored account data are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.1.1
+      title: All security policies and operational procedures that are identified in Requirement 3
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 3 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 3.1.2
+      title: Roles and responsibilities for performing activities in Requirement 3 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 3 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '3.2'
+    title: Storage of account data is kept to a minimum.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.2.1
+      title: Account data storage is kept to a minimum through implementation of data retention
+        and disposal policies, procedures, and processes.
+      description: |-
+        Account data storage is kept to a minimum through implementation of data retention and
+        disposal policies, procedures, and processes that include at least the following:
+        - Coverage for all locations of stored account data.
+        - Coverage for any sensitive authentication data (SAD) stored prior to completion of
+        authorization.
+        - Limiting data storage amount and retention time to that which is required for legal or
+        regulatory, and/or business requirements.
+        - Specific retention requirements for stored account data that defines length of retention
+        period and includes a documented business justification.
+        - Processes for secure deletion or rendering account data unrecoverable when no longer
+        needed per the retention policy.
+        - A process for verifying, at least once every three months, that stored account data
+        exceeding the defined retention period has been securely deleted or rendered unrecoverable.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is very dependent on each site policies and business model.
+        Local policies should be consulted and audited. Manual checking is reasonable.
+
+  - id: '3.3'
+    title: Sensitive authentication data (SAD) is not stored after authorization.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.3.1
+      title: SAD is not retained after authorization, even if encrypted. All sensitive
+        authentication data received is rendered unrecoverable upon completion of the
+        authorization process.
+      description: |-
+        This requirement is not eligible for the customized approach. This requirement does not
+        apply to issuers and companies that support issuing services (where SAD is needed for a
+        legitimate issuing business need) and have a business justification to store the sensitive
+        authentication data. Refer to Requirement 3.3.3 for additional requirements specifically
+        for issuers. Sensitive authentication data includes the data cited in Requirements 3.3.1.1
+        through 3.3.1.3.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 3.3.1.1
+        title: The full contents of any track are not retained upon completion of the
+          authorization process.
+        description: |-
+          This requirement is not eligible for the customized approach. In the normal course of
+          business, the following data elements from the track may need to be retained:
+          - Cardholder name.
+          - Primary account number (PAN).
+          - Expiration date.
+          - Service code.
+          To minimize risk, store securely only these data elements as needed for business.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          This requirement consists in auditing files, databases and memory to make sure the full
+          content of any track is not unnecessarily retained. It involves manual auditing but some
+          automated rules fit this requirement in order to reduce the chances if this data be
+          unintentionally stored in memory.
+        rules: []
+
+      - id: 3.3.1.2
+        title: The card verification code is not retained upon completion of the authorization
+          process.
+        description: |-
+          This requirement is not eligible for the customized approach. The card verification code
+          is the three- or four-digit number printed on the front or back of a payment card used
+          to verify card-not-present transactions.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+
+      - id: 3.3.1.3
+        title: The personal identification number (PIN) and the PIN block are not retained upon
+          completion of the authorization process.
+        description: |-
+          This requirement is not eligible for the customized approach. PIN blocks are encrypted
+          during the natural course of transaction processes, but even if an entity encrypts the
+          PIN block again, it is still not allowed to be stored after the completion of the
+          authorization process.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+
+    - id: 3.3.2
+      title: SAD that is stored electronically prior to completion of authorization is encrypted
+        using strong cryptography.
+      description: |-
+        This requirement is not eligible for the customized approach. Whether SAD is permitted to
+        be stored prior to authorization is determined by the organizations that manage compliance
+        programs (for example, payment brands and acquirers). Contact the organizations of
+        interest for any additional criteria. This requirement applies to all storage of SAD, even
+        if no PAN is present in the environment. Refer to Requirement 3.2.1 for an additional
+        requirement that applies if SAD is stored prior to completion of authorization. This
+        requirement does not apply to issuers and companies that support issuing services where
+        there is a legitimate issuing business justification to store SAD. Refer to Requirement
+        3.3.3 for requirements specifically for issuers. This requirement does not replace how PIN
+        blocks are required to be managed, nor does it mean that a properly encrypted PIN block
+        needs to be encrypted again.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+        This requirement consists of auditing information stored during a relatively short period
+        of time. Where and how the information is possibly stored depends in each Business and
+        local policies so the check is not actually automatable.
+
+    - id: 3.3.3
+      title: Additional requirement for issuers and companies that support issuing services and
+        store sensitive authentication data.
+      description: |-
+        Additional requirement for issuers and companies that support issuing services and store
+        sensitive authentication data: Any storage of sensitive authentication data is:
+        - Limited to that which is needed for a legitimate issuing business need and is secured.
+        - Encrypted using strong cryptography. This bullet is a best practice until until
+        31 March 2025, after which it will be required as part of Requirement 3.3.3 and must be
+        fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: '3.4'
+    title: Access to displays of full PAN and ability to copy PAN is restricted.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.4.1
+      title: PAN is masked when displayed (the BIN and last four digits are the maximum number of
+        digits to be displayed), such that only personnel with a legitimate business need can see
+        more than the BIN and last four digits of the PAN.
+      description: |-
+        PAN displays are restricted to the minimum number of digits necessary to meet a defined
+        business need. This requirement does not supersede stricter requirements in place for
+        displays of cardholder data — for example, legal or payment brand requirements for
+        point-of-sale (POS) receipts. This requirement relates to protection of PAN where it is
+        displayed on screens, paper receipts, printouts, etc., and is not to be confused with
+        Requirement 3.5.1 for protection of PAN when stored, processed, or transmitted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Consists on examining documented policies and procedures, checking system configurations
+        and observing relevant applications.
+
+    - id: 3.4.2
+      title: When using remote-access technologies, technical controls prevent copy and/or
+        relocation of PAN for all personnel, except for those with documented, explicit
+        authorization and a legitimate, defined business need.
+      description: |-
+        PAN cannot be copied or relocated by unauthorized personnel using remote-access
+        technologies. Storing or relocating PAN onto local hard drives, removable electronic
+        media, and other storage devices brings these devices into scope for PCI DSS.
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        There are technical rules to disable removable storage devices. However, this requirement
+        still demand some manual auditing in documentation and eventual exceptions.
+      rules: []
+
+  - id: '3.5'
+    title: Primary account number (PAN) is secured wherever it is stored.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.5.1
+      title: PAN is rendered unreadable anywhere it is stored
+      description: |-
+        PAN is rendered unreadable anywhere it is stored by using any of the following approaches:
+        - One-way hashes based on strong cryptography of the entire PAN.
+        - Truncation (hashing cannot be used to replace the truncated segment of PAN).
+          - If hashed and truncated versions of the same PAN, or different truncation formats of
+          the same PAN, are present in an environment, additional controls are in place such that
+          the different versions cannot be correlated to reconstruct the original PAN.
+        - Indexes tokens.
+        - Strong cryptography with associated key-management processes and procedures.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 3.5.1.1
+        title: Hashes used to render PAN unreadable (per the first bullet of Requirement 3.5.1)
+          are keyed cryptographic hashes of the entire PAN, with associated key-management
+          processes and procedures in accordance with Requirements 3.6 and 3.7.
+        description: |-
+          This requirement applies to PANs stored in primary storage (databases, or flat files
+          such as text files spreadsheets) as well as non-primary storage (backup, audit logs,
+          exception, or troubleshooting logs) must all be protected. This requirement does not
+          preclude the use of temporary files containing cleartext PAN while encrypting and
+          decrypting PAN. This requirement is considered a best practice until 31 March 2025,
+          after which it will be required and must be fully considered during a PCI DSS
+          assessment.
+        levels:
+          - base
+        status: planned
+        notes: |-
+          This requirement likely demand assessment in application level for some environments and
+          this would be too specific to be automated. However, on system level we can ensure some
+          strong cryptographic algorithms. This is also generally covered by 2.2.7 but here would
+          be possible to include more specific rules, for openssl and libreswan for example.
+          However it would be first necessary to include a platform conditional in these rules
+          before selecting them so they are applicable only if the respective packages are
+          installed.
+
+      - id: 3.5.1.2
+        title: If disk-level or partition-level encryption (rather than file-, column-, or
+          field-level database encryption) is used to render PAN unreadable, it is implemented
+          only on removable electronic media or complemented by another mechanism that meets
+          Requirement 3.5.1
+        levels:
+          - base
+        status: pending
+        rules: []
+
+      - id: 3.5.1.3
+        title: If disk-level or partition-level encryption is used (rather than file-, column-, or
+          field--level database encryption) to render PAN unreadable, it is managed.
+        description: |-
+          If disk-level or partition-level encryption is used (rather than file-, column-, or
+          field--level database encryption) to render PAN unreadable, it is managed as follows:
+          - Logical access is managed separately and independently of native operating system
+          authentication and access control mechanisms.
+          - Decryption keys are not associated with user accounts.
+          - Authentication factors (passwords, passphrases, or cryptographic keys) that allow
+          access to unencrypted data are stored securely.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          To properly check this requirement, site policies and documentation should be consulted.
+
+  - id: '3.6'
+    title: Cryptographic keys used to protect stored account data are secured.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.6.1
+      title: Procedures are defined and implemented to protect cryptographic keys used to protect
+        stored account data against disclosure and misuse.
+      description: |-
+        Procedures are defined and implemented to protect cryptographic keys used to protect
+        stored account data against disclosure and misuse that include:
+        - Access to keys is restricted to the fewest number of custodians necessary.
+        - Key-encrypting keys are at least as strong as the data-encrypting keys they protect.
+        - Key-encrypting keys are stored separately from data-encrypting keys.
+        - Keys are stored securely in the fewest possible locations and forms.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 3.6.1.1
+        title: 'Additional requirement for service providers only: A documented description of the
+          cryptographic architecture is maintained'
+        description: |-
+          Additional requirement for service providers only: A documented description of the
+          cryptographic architecture is maintained that includes:
+          - Details of all algorithms, protocols, and keys used for the protection of stored
+          account data, including key strength and expiry date.
+          - Preventing the use of the same cryptographic keys in production and test environments.
+          This bullet is a best practice until 31 March 2025, after which it will be required as
+          part of Requirement 3.6.1.1 and must be fully considered during a PCI DSS assessment.
+          - Description of the key usage for each key.
+          - Inventory of any hardware security modules (HSMs), key management systems (KMS), and
+          other secure cryptographic devices (SCDs) used for key management, including type and
+          location of devices, as outlined in Requirement 12.3.4.
+        levels:
+          - base
+        status: pending
+
+      - id: 3.6.1.2
+        title: Secret and private keys used to encrypt/decrypt stored account data are stored in
+          secure forms.
+        description: |-
+          Secret and private keys used to encrypt/decrypt stored account data are stored in one
+          (or more) of the following forms at all times:
+          - Encrypted with a key-encrypting key that is at least as strong as the data-encrypting
+          key, and that is stored separately from the data-encrypting key.
+          - Within a secure cryptographic device (SCD), such as a hardware security module (HSM)
+          or PTS-approved point-of-interaction device.
+          - As at least two full-length key components or key shares, in accordance with an
+          industry-accepted method.
+          Secret and private keys are stored in a secure form that prevents unauthorized retrieval
+          or access. It is not required that public keys be stored in one of these forms.
+          Cryptographic keys stored as part of a key management system (KMS) that employs SCDs are
+          acceptable. A cryptographic key that is split into two parts does not meet this
+          requirement. Secret or private keys stored as key components or key shares must be
+          generated via one of the following
+        levels:
+          - base
+        status: pending
+
+      - id: 3.6.1.3
+        title: Access to cleartext cryptographic key components is restricted to the fewest number
+          of custodians necessary.
+        description: |-
+          Access to cleartext cryptographic key components is restricted to necessary personnel.
+        levels:
+          - base
+        status: pending
+
+      - id: 3.6.1.4
+        title: Cryptographic keys are stored in the fewest possible locations.
+        description: |-
+          Cryptographic keys are retained only where necessary.
+        levels:
+          - base
+        status: pending
+
+  - id: '3.7'
+    title: Where cryptography is used to protect stored account data, key management processes and
+      procedures covering all aspects of the key lifecycle are defined and implemented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.7.1
+      title: Key-management policies and procedures are implemented to include generation of
+        strong cryptographic keys used to protect stored account data.
+      description: |-
+        Strong cryptographic keys are generated.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.2
+      title: Key-management policies and procedures are implemented to include secure distribution
+        of cryptographic keys used to protect stored account data.
+      description: |-
+        Cryptographic keys are secured during distribution.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.3
+      title: Key-management policies and procedures are implemented to include secure storage of
+        cryptographic keys used to protect stored account data.
+      description: |-
+        Cryptographic keys are secured when stored.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The scope of this requirement seems much wider going even to application level, which
+        might be different for each site. Regarding local system there are some technical measures
+        ensured by 2.2.6.
+
+    - id: 3.7.4
+      title: Key management policies and procedures are implemented for cryptographic key changes
+        for keys that have reached the end of their cryptoperiod, as defined by the associated
+        application vendor or key owner, and based on industry best practices and guidelines.
+      description: |-
+        Key management policies and procedures are implemented for cryptographic key changes for
+        keys that have reached the end of their cryptoperiod, as defined by the associated
+        application vendor or key owner, and based on industry best practices and guidelines,
+        including the following:
+        - A defined cryptoperiod for each key type in use.
+        - A process for key changes at the end of the defined cryptoperiod.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.5
+      title: Key management policies procedures are implemented to include the retirement,
+        replacement, or destruction of keys used to protect stored account data, as deemed
+        necessary.
+      description: |-
+        Key management policies procedures are implemented to include the retirement, replacement,
+        or destruction of keys used to protect stored account data, as deemed necessary when:
+        - The key has reached the end of its defined cryptoperiod.
+        - The integrity of the key has been weakened, including when personnel with knowledge of a
+        cleartext key component leaves the company, or the role for which the key component was
+        known.
+        - The key is suspected of or known to be compromised.
+        - Retired or replaced keys are not used for encryption operations.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.6
+      title: Where manual cleartext cryptographic key-management operations are performed by
+        personnel, key-management policies and procedures are implemented include managing these
+        operations using split knowledge and dual control.
+      description: |-
+        Cleartext secret or private keys cannot be known by anyone. Operations involving cleartext
+        keys cannot be carried out by a single person. This control is applicable for manual
+        key-management operations or where key management is not controlled by the encryption
+        product. A cryptographic key that is simply split into two parts does not meet this
+        requirement. Secret or private keys stored as key components or key shares must be
+        generated via one of the following
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.7
+      title: Key management policies and procedures are implemented to include the prevention of
+        unauthorized substitution of cryptographic keys.
+      description: |-
+        Cryptographic keys cannot be substituted by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.8
+      title: Key management policies and procedures are implemented to include that cryptographic
+        key custodians formally acknowledge (in writing or electronically) that they understand
+        and accept their key-custodian responsibilities.
+      description: |-
+        Key custodians are knowledgeable about their responsibilities in relation to cryptographic
+        operations and can access assistance and guidance when required.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.9
+      title: 'Additional requirement for service providers only: Where a service provider shares
+        cryptographic keys with its customers for transmission or storage of account data,
+        guidance on secure transmission, storage and updating of such keys is documented and
+        distributed to the service provider’s customers.'
+      description: |-
+        Customers are provided with appropriate key management guidance whenever they receive
+        shared cryptographic keys. This requirement applies only when the entity being assessed is
+        a service provider.
+      levels:
+        - base
+      status: pending
