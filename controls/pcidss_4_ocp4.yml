@@ -1010,3 +1010,184 @@ controls:
         Some known insecure services and protocols are disabled by 2.2.4.
         If any specific end-user messaging technology is used, it should be manually checked in
         alignment to site policies.
+
+  - id: '5.1'
+    title: Processes and mechanisms for protecting all systems and networks from malicious
+      software are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 5.1.1
+      title: All security policies and operational procedures that are identified in Requirement 5
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 5 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 5.1.2
+      title: Roles and responsibilities for performing activities in Requirement 5 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 5 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '5.2'
+    title: Malicious software (malware) is prevented, or detected and addressed.
+    levels:
+      - base
+    status: pending
+    notes: |-
+      Related measures are covered by 1.2.6, 1.4.5 and 3.4.2.
+    controls:
+    - id: 5.2.1
+      title: An anti-malware solution(s) is deployed on all system components, except for those
+        system components identified in periodic evaluations per Requirement 5.2.3 that concludes
+        the system components are not at risk from malware.
+      description: |-
+        Automated mechanisms are implemented to prevent systems from becoming an attack vector for
+        malware.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        There are many options of anti-malware and the criteria for any adopted solution or
+        approach relies on each site policy. Technologies are supported but manual assessment is
+        required.
+
+    - id: 5.2.2
+      title: The deployed anti-malware solution(s) detects all known types of malware and removes,
+        blocks, or contains all known types of malware.
+      levels:
+        - base
+      status: pending
+
+    - id: 5.2.3
+      title: Any system components that are not at risk for malware are evaluated periodically.
+      description: |-
+        Any system components that are not at risk for malware are evaluated periodically to
+        include the following:
+        - A documented list of all system components not at risk for malware.
+        - Identification and evaluation of evolving malware threats for those system components.
+        - Confirmation whether such system components continue to not require anti-malware
+        protection.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 5.2.3.1
+        title: The frequency of periodic evaluations of system components identified as not at
+          risk for malware is defined in the entity's targeted risk analysis, which is performed
+          according to all elements specified in Requirement 12.3.1.
+        description: |-
+          Systems not known to be at risk from malware are re-evaluated at a frequency that
+          addresses the entity's risk. This requirement is a best practice until 31 March 2025,
+          after which it will be required and must be fully considered during a PCI DSS
+          assessment.
+        levels:
+          - base
+        status: pending
+
+  - id: '5.3'
+    title: Anti-malware mechanisms and processes are active, maintained, and monitored.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 5.3.1
+      title: The anti-malware solution(s) is kept current via automatic updates.
+      description: |-
+        Anti-malware mechanisms can detect and address the latest malware threats.
+      levels:
+        - base
+      status: pending
+
+    - id: 5.3.2
+      title: The anti-malware solution(s) performs periodic scans and active or real-time scans or
+        performs continuous behavioral analysis of systems or processes.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 5.3.2.1
+        title: If periodic malware scans are performed to meet Requirement 5.3.2, the frequency of
+          scans is defined in the entity's targeted risk analysis, which is performed according to
+          all elements specified in Requirement 12.3.1.
+        description: |-
+          Scans by the malware solution are performed at a frequency that addresses the entity's
+          risk. This requirement applies to entities conducting periodic malware scans to meet
+          Requirement 5.3.2. This requirement is a best practice until 31 March 2025, after which
+          it will be required and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 5.3.3
+      title: For removable electronic media, the anti-malware solution(s) performs automatic scans
+        of when the media is inserted, connected, or logically mounted, or Performs continuous
+        behavioral analysis of systems or processes when the media is inserted, connected, or
+        logically mounted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related measures are covered by 3.4.2.
+
+    - id: 5.3.4
+      title: Audit logs for the anti-malware solution(s) are enabled and retained in accordance
+        with Requirement 10.5.1.
+      description: |-
+        Historical records of anti-malware actions are immediately available and retained for at
+        least 12 months.
+      levels:
+        - base
+      status: pending
+
+    - id: 5.3.5
+      title: Anti-malware mechanisms cannot be disabled or altered by users, unless specifically
+        documented, and authorized by management on a case-by-case basis for a limited time
+        period.
+      description: |-
+        Anti-malware mechanisms cannot be modified by unauthorized personnel.Anti-malware
+        solutions may be temporarily disabled only if there is a legitimate technical need, as
+        authorized by management on a case-by-case basis. If anti-malware protection needs to be
+        disabled for a specific purpose, it must be formally authorized. Additional security
+        measures may also need to be implemented for the period during which anti-malware
+        protection is not active.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related measures are covered by 2.2.6 requirement and 8.2 section.
+
+  - id: '5.4'
+    title: Anti-phishing mechanisms protect users against phishing attacks.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 5.4.1
+      title: Processes and automated mechanisms are in place to detect and protect personnel
+        against phishing attacks.
+      description: |-
+        Mechanisms are in place to protect against and mitigate risk posed by phishing attacks.
+        This requirement applies to the automated mechanism. It is not intended that the systems
+        and services providing such automated mechanisms (such as email servers) are brought into
+        scope for PCI DSS. The focus of this requirement is on protecting personnel with access to
+        system components in-scope for PCI DSS. Meeting this requirement for technical and
+        automated controls to detect and protect personnel against phishing is not the same as
+        Requirement 12.6.3.1 for security awareness training. Meeting this requirement does not
+        also meet the requirement for providing personnel with security awareness training, and
+        vice versa. This requirement is a best practice until 31 March 2025, after which it will
+        be required and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
