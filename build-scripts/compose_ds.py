@@ -311,8 +311,11 @@ def _compose_multiple_ds(args):
     for xccdf in glob.glob("{}/xccdf*.xml".format(args.multiple_ds)):
         oval = xccdf.replace("xccdf", "oval")
         ocil = xccdf.replace("xccdf", "ocil")
+        cpe_dict = xccdf.replace("xccdf", "cpe_dict")
+        cpe_oval = xccdf.replace("xccdf", "cpe_oval")
+
         ds = compose_ds(
-            xccdf, oval, ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
+            xccdf, oval, ocil, cpe_dict, cpe_oval, args.enable_sce
         )
         output_13 = _get_thin_ds_output_path(args.output_13, xccdf.replace("xccdf_", ""))
         output_12 = None
