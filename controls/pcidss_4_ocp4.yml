@@ -919,3 +919,94 @@ controls:
       levels:
         - base
       status: pending
+
+  - id: '4.1'
+    title: Processes and mechanisms for protecting cardholder data with strong cryptography during
+      transmission over open, public networks are defined and documented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 4.1.1
+      title: All security policies and operational procedures that are identified in Requirement 4
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+
+    - id: 4.1.2
+      title: Roles and responsibilities for performing activities in Requirement 4 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 4 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '4.2'
+    title: PAN is protected with strong cryptography during transmission.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 4.2.1
+      title: Strong cryptography and security protocols are implemented as follows to safeguard
+        PAN during transmission over open, public networks.
+      description: |-
+        Strong cryptography and security protocols are implemented as follows to safeguard PAN
+        during transmission over open, public networks:
+        - Only trusted keys and certificates are accepted.
+        - Certificates used to safeguard PAN during transmission over open, public networks are
+        confirmed as valid and are not expired or revoked. This bullet is a best practice until
+        31 March 2025, after which it will be required as part of Requirement 4.2.1 and must be
+        fully considered during a PCI DSS assessment.
+        - The protocol in use supports only secure versions or configurations and does not support
+        fallback to, or use of insecure versions, algorithms, key sizes, or implementations.
+        - The encryption strength is appropriate for the encryption methodology in use.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 4.2.1.1
+        title: An inventory of the entity's trusted keys and certificates used to protect PAN
+          during transmission is maintained.
+        description: |-
+          All keys and certificates used to protect PAN during transmission are identified and
+          confirmed as trusted. This requirement is a best practice until 31 March 2025, after
+          which it will be required and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+      - id: 4.2.1.2
+        title: Wireless networks transmitting PAN or connected to the CDE use industry best
+          practices to implement strong cryptography for authentication and transmission.
+        description: |-
+          Cleartext PAN cannot be read or intercepted from wireless network transmissions.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Wireless interfaces are disabled by 1.3.3.
+
+    - id: 4.2.2
+      title: PAN is secured with strong cryptography whenever it is sent via end-user messaging
+        technologies.
+      description: |-
+        Cleartext PAN cannot be read or intercepted from transmissions using end-user messaging
+        technologies. This requirement also applies if a customer, or other third-party, requests
+        that PAN is sent to them via end-user messaging technologies. There could be occurrences
+        where an entity receives unsolicited cardholder data via an insecure communication channel
+        that was not intended for transmissions of sensitive data. In this situation, the entity
+        can choose to either include the channel in the scope of their CDE and secure it according
+        to PCI DSS or delete the cardholder data and implement measures to prevent the channel
+        from being used for cardholder data.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Some known insecure services and protocols are disabled by 2.2.4.
+        If any specific end-user messaging technology is used, it should be manually checked in
+        alignment to site policies.
