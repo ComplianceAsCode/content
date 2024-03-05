@@ -1191,3 +1191,265 @@ controls:
       levels:
         - base
       status: pending
+
+  - id: '6.1'
+    title: Processes and mechanisms for developing and maintaining secure systems and software are
+      defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.1.1
+      title: All security policies and operational procedures that are identified in Requirement 6
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 6 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 6.1.2
+      title: Roles and responsibilities for performing activities in Requirement 6 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 6 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '6.2'
+    title: Bespoke and custom software are developed securely.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.2.1
+      title: Bespoke and custom software are developed securely.
+      description: |-
+        Bespoke and custom software are developed securely, as follows:
+        - Based on industry standards and/or best practices for secure development.
+        - In accordance with PCI DSS (for example, secure authentication and logging).
+        - Incorporating consideration of information security issues during each stage of the
+        software development lifecycle.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.2.2
+      title: Software development personnel working on bespoke and custom software are trained at
+        least once every 12 months
+      description: |-
+        Software development personnel working on bespoke and custom software are trained at least
+        once every 12 months as follows:
+        - On software security relevant to their job function and development languages.
+        - Including secure software design and secure coding techniques.
+        - Including, if security testing tools are used, how to use the tools for detecting
+        vulnerabilities in software.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.2.3
+      title: Bespoke and custom software is reviewed prior to being released into production or to
+        customers, to identify and correct potential coding vulnerabilities.
+      description: |-
+        Bespoke and custom software is reviewed prior to being released into production or to
+        customers, to identify and correct potential coding vulnerabilities, as follows:
+        - Code reviews ensure code is developed according to secure coding guidelines.
+        - Code reviews look for both existing and emerging software vulnerabilities.
+        - Appropriate corrections are implemented prior to release.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 6.2.3.1
+        title: If manual code reviews are performed for bespoke and custom software prior to
+          release to production code changes co-reviewed and approved.
+        description: |-
+          If manual code reviews are performed for bespoke and custom software prior to release
+          to production code changes are:
+          - Reviewed by individuals other than the originating code author, and who are
+          knowledgeable about code-review techniques and secure coding practices.
+          - Reviewed and approved by management prior to release.
+        levels:
+          - base
+        status: pending
+
+    - id: 6.2.4
+      title: Software engineering techniques or other methods are defined and in use by software
+        development personnel to prevent or mitigate common software attacks and related
+        vulnerabilities in bespoke and custom software.
+      levels:
+        - base
+      status: pending
+
+  - id: '6.3'
+    title: Security vulnerabilities are identified and addressed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.3.1
+      title: Security vulnerabilities are identified and managed
+      levels:
+        - base
+      status: pending
+
+    - id: 6.3.2
+      title: An inventory of bespoke and custom software, and third-party software components
+        incorporated into bespoke and custom software is maintained to facilitate vulnerability
+        and patch management.
+      description: |-
+        Known vulnerabilities in third-party software components cannot be exploited in bespoke
+        and custom software.This requirement is a best practice until 31 March 2025, after which
+        it will be required and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+
+    - id: 6.3.3
+      title: All system components are protected from known vulnerabilities by installing
+        applicable security patches/updates.
+      description: |-
+        All system components are protected from known vulnerabilities by installing
+        applicable security patches/updates as follows:
+        - Critical or high-security patches/updates (identified according to the risk ranking
+        process at Requirement 6.3.1) are installed within one month of release.
+        - All other applicable security patches/updates are installed within an appropriate time
+        frame as determined by the entity (for example, within three months of release).
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '6.4'
+    title: Public-facing web applications are protected against attacks.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.4.1
+      title: For public-facing web applications, new threats and vulnerabilities are addressed on
+        an ongoing basis and these applications are protected against known attacks.
+      description: |-
+        For public-facing web applications, new threats and vulnerabilities are addressed on an
+        ongoing basis and these applications are protected against known attacks as follows:
+        - Reviewing public-facing web applications via manual or automated application
+        vulnerability security assessment tools or methods as follows:
+          - At least once every 12 months and after significant changes.
+          – By an entity that specializes in application security.
+          – Including, at a minimum, all common software attacks in Requirement 6.2.4.
+          – All vulnerabilities are ranked in accordance with requirement 6.3.1.
+          – All vulnerabilities are corrected.
+          – The application is re-evaluated after the corrections
+        OR
+        - Installing an automated technical solution(s) that continually detects and prevents
+        web-based attacks as follows:
+          - Installed in front of public-facing web applications to detect and prevent web-based
+          attacks.
+          - Actively running and up to date as applicable.
+          - Generating audit logs.
+          - Configured to either block web-based attacks or generate an alert that is immediately
+          investigated.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.4.2
+      title: For public-facing web applications, an automated technical solution is deployed that
+        continually detects and prevents web-based attacks.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.4.3
+      title: All payment page scripts that are loaded and executed in the consumer's browser are
+        managed
+      description: |-
+        All payment page scripts that are loaded and executed in the consumer's browser are
+        managed as follows:
+        - A method is implemented to confirm that each script is authorized.
+        - A method is implemented to assure the integrity of each script.
+        - An inventory of all scripts is maintained with written justification as to why each is
+        necessary.
+      levels:
+        - base
+      status: pending
+
+  - id: '6.5'
+    title: Changes to all system components are managed securely.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.5.1
+      title: Changes to all system components in the production environment are made according to
+        established procedures.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.2
+      title: Upon completion of a significant change, all applicable PCI DSS requirements are
+        confirmed to be in place on all new or changed systems and networks, and documentation is
+        updated as applicable.
+      description: |-
+        All system components are verified after a significant change to be compliant with the
+        applicable PCI DSS requirements.These significant changes should also be captured and
+        reflected in the entity's annual PCI DSS scope confirmation activity per Requirement
+        12.5.2.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.3
+      title: Pre-production environments are separated from production environments and the
+        separation is enforced with access controls.
+      description: |-
+        Pre-production environments cannot introduce risks and vulnerabilities into production
+        environments.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.4
+      title: Roles and functions are separated between production and pre-production environments
+        to provide accountability such that only reviewed and approved changes are deployed.
+      description: |-
+        Job roles and accountability that differentiate between pre-production and production
+        activities are defined and managed to minimize the risk of unauthorized, unintentional,
+        or inappropriate actions. In environments with limited personnel where individuals perform
+        multiple roles or functions, this same goal can be achieved with additional procedural
+        controls that provide accountability. For example, a developer may also be an administrator
+        that uses an administrator-level account with elevated privileges in the development
+        environment and, for their developer role, they use a separate account with user-level
+        access to the production environment.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.5
+      title: Live PANs are not used in pre-production environments, except where those
+        environments are included in the CDE and protected in accordance with all applicable
+        PCI DSS requirements.
+      description: |-
+        Live PANs cannot be present in pre-production environments outside the CDE.s
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.6
+      title: Test data and test accounts are removed from system components before the system goes
+        into production.
+      description: |-
+        Test data and test accounts cannot exist in production environments.
+      levels:
+        - base
+      status: pending
