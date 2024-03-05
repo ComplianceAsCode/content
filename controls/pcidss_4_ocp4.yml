@@ -1603,3 +1603,388 @@ controls:
       notes: |-
         It is possible we can select some rules for this requirement but more investigation is
         needed to confirm.
+
+  - id: '8.1'
+    title: Processes and mechanisms for identifying users and authenticating access to system
+      components are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.1.1
+      title: All security policies and operational procedures that are identified in Requirement 8
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 8 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 8.1.2
+      title: Roles and responsibilities for performing activities in Requirement 8 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 8 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '8.2'
+    title: User identification and related accounts for users and administrators are strictly
+      managed throughout an account's lifecycle.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.2.1
+      title: All users are assigned a unique ID before access to system components or cardholder
+        data is allowed.
+      description: |-
+        All actions by all users are attributable to an individual. This requirement is not
+        intended to apply to user accounts within point-of-sale terminals that have access to only
+        one card number at a time to facilitate a single transaction (such as IDs used by cashiers
+        on point-of-sale terminals).
+      levels:
+        - base
+      status: planned
+      notes: |-
+        The rules selected in this requirement are incomplete. Missing remediation and test
+        scenarios. They should include test scenarios and likely remediation or a warning
+        informing why a remediation is not present.
+      rules: []
+
+    - id: 8.2.2
+      title: Group, shared, or generic accounts, or other shared authentication credentials are
+        only used when necessary on an exception basis, and are managed.
+      description: |-
+        - Account use is prevented unless needed for an exceptional circumstance.
+        - Use is limited to the time needed for the exceptional circumstance.
+        - Business justification for use is documented.
+        - Use is explicitly approved by management.
+        - Individual user identity is confirmed before access to an account is granted.
+        - Every action taken is attributable to an individual user.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is complemented by 8.2.1 and related to 8.3.5.
+      rules: []
+
+    - id: 8.2.3
+      title: 'Additional requirement for service providers only: Service providers with remote
+        access to customer premises use unique authentication factors for each customer premises.'
+      levels:
+        - base
+      status: pending
+
+    - id: 8.2.4
+      title: Addition, deletion, and modification of user IDs, authentication factors, and other
+        identifier objects are managed
+      levels:
+        - base
+      status: pending
+
+    - id: 8.2.5
+      title: Access for terminated users is immediately revoked.
+      description: |-
+        The accounts of terminated users cannot be used.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement depends on site policies for user termination.
+
+    - id: 8.2.6
+      title: Inactive user accounts are removed or disabled within 90 days of inactivity.
+      description: |-
+        Inactive user accounts cannot be used.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Also related to requirements 2.2.2 and 8.3.5.
+      rules: []
+
+    - id: 8.2.7
+      title: Accounts used by third parties to access, support, or maintain system components via
+        remote access are managed.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.2.8
+      title: If a user session has been idle for more than 15 minutes, the user is required to
+        re-authenticate to re-activate the terminal or session.
+      description: |-
+        A user session cannot be used except by the authorized user. This requirement is not
+        intended to apply to user accounts on point-of-sale terminals that have access to only one
+        card number at a time to facilitate a single transaction (such as IDs used by cashiers on
+        point-of-sale terminals). This requirement is not meant to prevent legitimate activities
+        from being performed while the console/PC is unattended.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '8.3'
+    title: Strong authentication for users and administrators is established and managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.3.1
+      title: All user access to system components for users and administrators is authenticated.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 8.3.2
+      title: Strong cryptography is used to render all authentication factors unreadable during
+        transmission and storage on all system components.
+      description: |-
+        Cleartext authentication factors cannot be obtained, derived, or reused from the
+        interception of communications or from stored data.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        There are similar rules that might be redundant for some distros.
+      rules: []
+
+    - id: 8.3.3
+      title: User identity is verified before modifying any authentication factor.
+      description: |-
+        Unauthorized individuals cannot gain system access by impersonating the identity of an
+        authorized user.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is about processes, such as password resets, provisioning new hardware or
+        software tokens, and generating new keys. It is common that these activities involve help
+        desk teams and administrators and the involved people should ensure identities are properly
+        verified.
+
+    - id: 8.3.4
+      title: Invalid authentication attempts are limited.
+      description: |-
+        - Locking out the user ID after not more than 10 attempts.
+        - Setting the lockout duration to a minimum of 30 minutes or until the user's identity is
+        confirmed.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 8.3.5
+      title: If passwords/passphrases are used as authentication factors to meet Requirement
+        8.3.1, they are set and reset for each user.
+      description: |-
+        - Set to a unique value for first-time use and upon reset.
+        - Forced to be changed immediately after the first use.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Also related to requirement 2.2.2, 8.2.2 and 8.2.6.
+      rules: []
+
+    - id: 8.3.6
+      title: If passwords/passphrases are used as authentication factors to meet Requirement
+        8.3.1, they meet the minimum level of complexity.
+      description: |-
+        - A minimum length of 12 characters (or IF the system does not support 12 characters, a
+        minimum length of eight characters).
+        - Contain both numeric and alphabetic characters.
+        A guessed password/passphrase cannot be verified by either an online or offline brute
+        force attack.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not intended to apply to:
+        - User accounts on point-of-sale terminals that have access to only one card number at a
+        time to facilitate a single transaction (such as IDs used by cashiers on point-of-sale
+        terminals).
+        - Application or system accounts, which are governed by requirements in section 8.6.
+      rules: []
+
+    - id: 8.3.7
+      title: Individuals are not allowed to submit a new password/passphrase that is the same as
+        any of the last four passwords/passphrases used.
+      description: |-
+        A previously used password cannot be used to gain access to an account for at least 12
+        months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not intended to apply to user accounts on point-of-sale terminals that
+        have access to only one card number at a time to facilitate a single transaction (such as
+        IDs used by cashiers on point-of-sale terminals).
+      rules: []
+
+    - id: 8.3.8
+      title: Authentication policies and procedures are documented and communicated to all users.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.3.9
+      title: If passwords/passphrases are used as the only authentication factor for user access
+        (i.e., in any single-factor authentication implementation) they should have a limited
+        lifetime.
+      description: |-
+        If passwords/passphrases are used as the only authentication factor for user access (i.e.,
+        in any single-factor authentication implementation) then either:
+        - Passwords/passphrases are changed at least once every 90 days,
+        OR
+        - The security posture of accounts is dynamically analyzed, and real-time access to
+        resources is automatically determined accordingly.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The requirement does not explicitily define the number of days before the password
+        expiration to warn the users, but the relevant rules were selected here as they do not
+        cause any problems in combination with password lifetime rules.
+      rules: []
+
+    - id: 8.3.10
+      title: 'Additional requirement for service providers only: If passwords/passphrases are used
+        as the only authentication factor for customer user access to cardholder data (i.e., in
+        any single-factor authentication implementation) then guidance is provided to customer
+        users.'
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 8.3.10.1
+        title: 'Additional requirement for service providers only: If passwords/passphrases are
+          used as the only authentication factor for customer user access (i.e., in any
+          single-factor authentication implementation) they should have a limited lifetime.'
+        levels:
+          - base
+        status: pending
+        notes: |-
+          This requirement is already covered by 8.3.9.
+
+    - id: 8.3.11
+      title: Where authentication factors such as physical or logical security tokens, smart
+        cards, or certificates are used, factors are not shared among multiple users and the usage
+        is controlled.'
+      levels:
+        - base
+      status: pending
+
+  - id: '8.4'
+    title: Multi-factor authentication (MFA) is implemented to secure access into the CDE.
+    levels:
+      - base
+    status: pending
+    notes: |-
+      This parent requirement does not set one specific combination of Multi-factor authentication
+      (MFA), so we can't enforce the use of smartcards or any specific solution. The systems
+      usually support MFA but the chosen solution depends on site policies.
+    controls:
+    - id: 8.4.1
+      title: MFA is implemented for all non-console access into the CDE for personnel with
+        administrative access.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.4.2
+      title: MFA is implemented for all access into the CDE.
+      description: |-
+        Access into the CDE cannot be obtained by the use of a single authentication factor.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.4.3
+      title: MFA is implemented for all remote network access originating from outside the
+        entity's network that could access or impact the CDE.
+      levels:
+        - base
+      status: pending
+
+  - id: '8.5'
+    title: Multi-factor authentication (MFA) systems are configured to prevent misuse.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.5.1
+      title: MFA systems are properly implemented.
+      description: |-
+        - The MFA system is not susceptible to replay attacks.
+        - MFA systems cannot be bypassed by any users, including administrative users unless
+        specifically documented, and authorized by management on an exception basis, for a limited
+        time period.
+        - At least two different types of authentication factors are used.
+        - Success of all authentication factors is required before access is granted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Each site might have a different MFA solution and each solution has its own capabilities.
+        This requirement demands manual assessment based on site policies.
+
+  - id: '8.6'
+    title: Use of application and system accounts and associated authentication factors is
+      strictly managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.6.1
+      title: If accounts used by systems or applications can be used for interactive login, they
+        are managed.
+      description: |-
+        - Interactive use is prevented unless needed for an exceptional circumstance.
+        - Interactive use is limited to the time needed for the exceptional circumstance.
+        - Business justification for interactive use is documented.
+        - Interactive use is explicitly approved by management.
+        - Individual user identity is confirmed before access to account is granted.
+        - Every action taken is attributable to an individual user.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is related to 2.2.2, 2.2.6, 8.2.1 and 8.2.2. Specifically on 8.2.2 system
+        accounts usage is restricted. Exceptions to system accounts should be manually checked to
+        ensure the requirements in description. This requirement although implements some extra
+        controls regarding root account.
+      rules: []
+
+    - id: 8.6.2
+      title: Passwords/passphrases for any application and system accounts that can be used for
+        interactive login are not hard coded in scripts, configuration/property files, or bespoke
+        and custom source code.
+      description: |-
+        Passwords/passphrases used by application and system accounts cannot be used by
+        unauthorized personnel.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.6.3
+      title: Passwords/passphrases for any application and system accounts are protected against
+        misuse.
+      description: |-
+        - Passwords/passphrases are changed periodically (at the frequency defined in the entity's
+        targeted risk analysis, which is performed according to all elements specified in
+        Requirement 12.3.1) and upon suspicion or confirmation of compromise.
+        - Passwords/passphrases are constructed with sufficient complexity appropriate for how
+        frequently the entity changes the passwords/passphrases.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirements 8.3.6 and 8.3.9.
