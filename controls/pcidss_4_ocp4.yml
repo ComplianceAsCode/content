@@ -2850,3 +2850,412 @@ controls:
       status: pending
       notes: |-
         It depends on controls in application level, which varies based on site policies.
+
+  - id: '12.1'
+    title: A comprehensive information security policy that governs and provides direction for
+      protection of the entity's information assets is known and current.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.1.1
+      title: An overall information security policy is established, published, maintained and
+        disseminated to all relevant personnel, as well as to relevant vendors and business
+        partners.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.1.2
+      title: The information security policy is updated and reviewed at least once every 12
+        months.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.1.3
+      title: The security policy clearly defines information security roles and responsibilities
+        for all personnel, and all personnel are aware of and acknowledge their information
+        security responsibilities.
+      description: |-
+        Personnel understand their role in protecting the entity's cardholder data.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.1.4
+      title: Responsibility for information security is formally assigned to a Chief Information
+        Security Officer or other information security knowledgeable member of executive
+        management.
+      description: |-
+        A designated member of executive management is responsible for information security.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.2'
+    title: Acceptable use policies for end-user technologies are defined and implemented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.2.1
+      title: Acceptable use policies for end-user technologies are documented and implemented.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.3'
+    title: Risks to the cardholder data environment are formally identified, evaluated, and
+      managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.3.1
+      title: Each PCI DSS requirement that provides flexibility for how frequently it is performed
+        (for example, requirements to be performed periodically) is supported by a targeted risk
+        analysis that is documented.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.3.2
+      title: A targeted risk analysis is performed for each PCI DSS requirement that the entity
+        meets with the customized approach
+      levels:
+        - base
+      status: pending
+
+    - id: 12.3.3
+      title: Cryptographic cipher suites and protocols in use are documented and reviewed at least
+        once every 12 months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirement 2.2.7.
+
+    - id: 12.3.4
+      title: Hardware and software technologies in use are reviewed at least once every 12 months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The technical requirement related to this is 6.3.3.
+
+  - id: '12.4'
+    title: PCI DSS compliance is managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.4.1
+      title: 'Additional requirement for service providers only: Responsibility is established by
+        executive management for the protection of cardholder data and a PCI DSS compliance
+        program.'
+      levels:
+        - base
+      status: pending
+
+    - id: 12.4.2
+      title: 'Additional requirement for service providers only: Reviews are performed at least
+        once every three months to confirm that personnel are performing their tasks in accordance
+        with all security policies and operational procedures.'
+      description: |-
+        Reviews are performed by personnel other than those responsible for performing the given
+        task.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.4.2.1
+        title: 'Additional requirement for service providers only: Reviews conducted in accordance
+          with Requirement 12.4.2 are documented.'
+        levels:
+          - base
+        status: pending
+
+  - id: '12.5'
+    title: PCI DSS scope is documented and validated.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.5.1
+      title: An inventory of system components that are in scope for PCI DSS, including a
+        description of function/use, is maintained and kept current.
+      description: |-
+        All system components in scope for PCI DSS are identified and known.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.5.2
+      title: PCI DSS scope is documented and confirmed by the entity at least once every 12 months
+        and upon significant change to the in-scope environment.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.5.2.1
+        title: 'Additional requirement for service providers only: PCI DSS scope is documented and
+          confirmed by the entity at least once every six months and upon significant change to
+          the in-scope environment. At a minimum, the scoping validation includes all the elements
+          specified in Requirement 12.5.2.'
+        description: |-
+          The accuracy of PCI DSS scope is verified to be continuously accurate by comprehensive
+          analysis and appropriate technical measures. This requirement applies only when the
+          entity being assessed is a service provider. This requirement is a best practice until
+          31 March 2025, after which it will be required and must be fully considered during a
+          PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 12.5.3
+      title: 'Additional requirement for service providers only: Significant changes to
+        organizational structure result in a documented (internal) review of the impact to PCI DSS
+        scope and applicability of controls, with results communicated to executive management.'
+      description: |-
+        PCI DSS scope is confirmed after significant organizational change. This requirement
+        applies only when the entity being assessed is a service provider. This requirement is a
+        best practice until 31 March 2025, after which it will be required and must be fully
+        considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.6'
+    title: Security awareness education is an ongoing activity.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.6.1
+      title: A formal security awareness program is implemented to make all personnel aware of the
+        entity's information security policy and procedures, and their role in protecting the
+        cardholder data.
+      description: |-
+        Personnel are knowledgeable about the threat landscape, their responsibility for the
+        operation of relevant security controls, and are able to access assistance and guidance
+        when required.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.6.2
+      title: The security awareness program is updated and reviewed at least once every 12 months.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.6.3
+      title: Personnel receive security awareness training upon hire and at least once every 12
+        months via multiple methods of communication.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.6.3.1
+        title: Security awareness training includes awareness of threats and vulnerabilities that
+          could impact the security of the CDE.
+        levels:
+          - base
+        status: pending
+
+      - id: 12.6.3.2
+        title: Security awareness training includes awareness about the acceptable use of end-user
+          technologies in accordance with Requirement 12.2.1.
+        description: |-
+          Personnel are knowledgeable about their responsibility for the security and operation of
+          end-user technologies and are able to access assistance and guidance when required. This
+          requirement is a best practice until 31 March 2025, after which it will be required and
+          must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+  - id: '12.7'
+    title: Personnel are screened to reduce risks from insider threats.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.7.1
+      title: Potential personnel who will have access to the CDE are screened, within the
+        constraints of local laws, prior to hire to minimize the risk of attacks from internal
+        sources.
+      description: |-
+        The risk related to allowing new members of staff access to the CDE is understood and
+        managed. For those potential personnel to be hired for positions such as store cashiers,
+        who only have access to one card number at a time when facilitating a transaction, this
+        requirement is a recommendation only.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.8'
+    title: Risk to information assets associated with third-party service provider (TPSP)
+      relationships is managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.8.1
+      title: A list of all third-party service providers (TPSPs) with which account data is shared
+        or that could affect the security of account data is maintained, including a description
+        for each of the services provided.
+      description: |-
+        Records are maintained of TPSPs and the services provided. The use of a PCI DSS compliant
+        TPSP does not make an entity PCI DSS compliant, nor does it remove the entit's
+        responsibility for its own PCI DSS compliance.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.2
+      title: Written agreements with TPSPs are maintained
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.3
+      title: An established process is implemented for engaging TPSPs, including proper due
+        diligence prior to engagement.
+      description: |-
+        The capability, intent, and resources of a prospective TPSP to adequately protect account
+        data are assessed before the TPSP is engaged.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.4
+      title: A program is implemented to monitor TPSPs' PCI DSS compliance status at least once
+        every 12 months.
+      description: |-
+        The PCI DSS compliance status of TPSPs is verified periodically. Where an entity has an
+        agreement with a TPSP for meeting PCI DSS requirements on behalf of the entity (for
+        example, via a firewall service), the entity must work with the TPSP to make sure the
+        applicable PCI DSS requirements are met. If the TPSP does not meet those applicable
+        PCI DSS requirements, then those requirements are also "not in place" for the entity.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.5
+      title: Information is maintained about which PCI DSS requirements are managed by each TPSP,
+        which are managed by the entity, and any that are shared between the TPSP and the entity.
+      description: |-
+        Records detailing the PCI DSS requirements and related system components for which each
+        TPSP is solely or jointly responsible, are maintained and reviewed periodically.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.9'
+    title: Third-party service providers (TPSPs) support their customers' PCI DSS compliance.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.9.1
+      title: |-
+        Additional requirement for service providers only: TPSPs acknowledge in writing to
+        customers that they are responsible for the security of account data the TPSP possesses or
+        otherwise stores, processes, or transmits on behalf of the customer, or to the extent that
+        they could impact the security of the customer's CDE.
+      description: |-
+        TPSPs formally acknowledge their security responsibilities to their customers. This
+        requirement applies only when the entity being assessed is a service provider. The exact
+        wording of an acknowledgment will depend on the agreement between the two parties, the
+        details of the service being provided, and the responsibilities assigned to each party.
+        The acknowledgment does not have to include the exact wording provided in this
+        requirement.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.9.2
+      title: |-
+        Additional requirement for service providers only: TPSPs support their customers' requests
+        for information to meet Requirements 12.8.4 and 12.8.5.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.10'
+    title: Suspected and confirmed security incidents that could impact the CDE are responded to
+      immediately.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.10.1
+      title: An incident response plan exists and is ready to be activated in the event of a
+        suspected or confirmed security incident.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.2
+      title: At least once every 12 months, the security incident response plan is reviewed,
+        updated, and tested.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.3
+      title: Specific personnel are designated to be available on a 24/7 basis to respond to
+        suspected or confirmed security incidents.
+      description: |-
+        Incidents are responded to immediately where appropriate.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.4
+      title: Personnel responsible for responding to suspected and confirmed security incidents
+        are appropriately and periodically trained on their incident response responsibilities.
+      description: |-
+        Personnel are knowledgeable about their role and responsibilities in incident response and
+        are able to access assistance and guidance when required.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.10.4.1
+        title: The frequency of periodic training for incident response personnel is defined in
+          the entity's targeted risk analysis, which is performed according to all elements
+          specified in Requirement 12.3.1.
+        description: |-
+          Incident response personnel are trained at a frequency that addresses the entity's risk.
+          This requirement is a best practice until 31 March 2025, after which it will be required
+          and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 12.10.5
+      title: The security incident response plan includes monitoring and responding to alerts from
+        security monitoring systems.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.6
+      title: The security incident response plan is modified and evolved according to lessons
+        learned and to incorporate industry developments.
+      description: |-
+        The effectiveness and accuracy of the incident response plan is reviewed and updated after
+        each invocation.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.7
+      title: Incident response procedures are in place, to be initiated upon the detection of
+        stored PAN anywhere it is not expected.
+      levels:
+        - base
+      status: pending
