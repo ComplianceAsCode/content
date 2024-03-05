@@ -23,6 +23,7 @@ from ssg.constants import XCCDF12_NS
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
+cpe_lang_ns = ssg.constants.PREFIX_TO_NS["cpe-lang"]
 
 
 def parse_args():
@@ -96,9 +97,7 @@ def get_benchmark_cpe_names(xccdf_el_root_xml):
             continue
         benchmark_cpe_names.add(cpe_name)
 
-    for fact_ref in xccdf_el_root_xml.findall(
-        ".//{%s}fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
-    ):
+    for fact_ref in xccdf_el_root_xml.findall(".//{%s}fact-ref" % cpe_lang_ns):
         cpe_fact_ref_name = fact_ref.get("name")
         benchmark_cpe_names.add(cpe_fact_ref_name)
     return benchmark_cpe_names
@@ -114,6 +113,10 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, cpe_items_dir):
     return cpe_list
 
 
+def _get_all_check_fact_ref(xccdf_el_root_xml):
+    return xccdf_el_root_xml.findall(".//{%s}check-fact-ref" % cpe_lang_ns)
+
+
 def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict, benchmark_cpe_names):
     out = set()
 
@@ -121,9 +124,7 @@ def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict, benchmark_cpe_names):
         if cpe_item.name in benchmark_cpe_names:
             out.add(cpe_item.check_id)
 
-    for check_fact_ref in xccdf_el_root_xml.findall(
-        ".//{%s}check-fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
-    ):
+    for check_fact_ref in _get_all_check_fact_ref(xccdf_el_root_xml):
         out.add(check_fact_ref.get("id-ref"))
     return out
 
@@ -137,9 +138,7 @@ def _save_minimal_cpe_oval(oval_document, path, oval_def_ids):
 
 
 def _update_oval_href_in_xccdf(xccdf_el_root_xml, file_name):
-    for check_fact_ref in xccdf_el_root_xml.findall(
-        ".//{%s}check-fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
-    ):
+    for check_fact_ref in _get_all_check_fact_ref(xccdf_el_root_xml):
         check_fact_ref.set("href", file_name)
 
 
