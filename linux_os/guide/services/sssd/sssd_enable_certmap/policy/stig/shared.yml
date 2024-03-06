@@ -10,11 +10,11 @@ checktext: |-
     $ sudo cat /etc/sssd/sssd.conf
 
     [certmap/testing.test/rule_name]
-    matchrule =&lt;SAN&gt;.*EDIPI@mil
+    matchrule =&ltSAN&gt.*EDIPI@mil
     maprule = (userCertificate;binary={cert!bin})
     domains = testing.test
 
-    If the certmap section does not exist, ask the System Administrator to indicate how certificates are mapped to accounts.  If there is no evidence of certificate mapping, this is a finding.
+    If the certmap section does not exist, ask the system administrator (SA) to indicate how certificates are mapped to accounts. If there is no evidence of certificate mapping, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to map the authenticated identity to the user or group account by adding or modifying the certmap section of the "/etc/sssd/sssd.conf" file based on the following example:
@@ -27,3 +27,6 @@ fixtext: |-
     The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
 
     $ sudo systemctl restart sssd.service
+
+vuln_discussion: |-
+    Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.

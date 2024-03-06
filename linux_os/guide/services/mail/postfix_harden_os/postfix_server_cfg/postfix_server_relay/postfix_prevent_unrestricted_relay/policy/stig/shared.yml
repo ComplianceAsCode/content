@@ -13,9 +13,12 @@ checktext: |-
 
     smtpd_client_restrictions = permit_mynetworks,reject
 
-    If the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject", and the additional entries have not been documented with the Information System Security Officer (ISSO), this is a finding.
+    If the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject", and the additional entries have not been documented with the information system security officer (ISSO), this is a finding.
 
 fixtext: |-
-    Modify the "postfix configuration file to restrict client connections to the local network with the following command:
+    Modify the postfix configuration file to restrict client connections to the local network with the following command:
 
     $ sudo postconf -e 'smtpd_client_restrictions = permit_mynetworks,reject'
+
+vuln_discussion: |-
+    If unrestricted mail relaying is permitted, unauthorized senders could use this host as a mail relay for the purpose of sending spam or other unauthorized activity.

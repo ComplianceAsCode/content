@@ -17,6 +17,8 @@ checktext: |-
 
     $ sudo openssl x509 -text -in /etc/sssd/pki/sssd_auth_ca_db.pem
 
+    Example output:
+
     Certificate:
         Data:
             Version: 3 (0x2)
@@ -37,3 +39,12 @@ fixtext: |-
 
     Obtain a valid copy of the DoD root CA file from the PKI CA certificate bundle from cyber.mil and copy the DoD_PKE_CA_chain.pem into the following file:
     /etc/sssd/pki/sssd_auth_ca_db.pem
+
+vuln_discussion: |-
+    Without path validation, an informed trust decision by the relying party cannot be made when presented with any certificate not already explicitly trusted.
+
+    A trust anchor is an authoritative entity represented via a public key and associated data. It is used in the context of public key infrastructures, X.509 digital certificates, and DNSSEC.
+
+    When there is a chain of trust, usually the top entity to be trusted becomes the trust anchor; it can be, for example, a Certification Authority (CA). A certification path starts with the subject certificate and proceeds through a number of intermediate certificates up to a trusted root certificate, typically issued by a trusted CA.
+
+    This requirement verifies that a certification path to an accepted trust anchor is used for certificate validation and that the path includes status information. Path validation is necessary for a relying party to make an informed trust decision when presented with any certificate not already explicitly trusted. Status information for certification paths includes certificate revocation lists or online certificate status protocol responses. Validation of the certificate status information is out of scope for this requirement.

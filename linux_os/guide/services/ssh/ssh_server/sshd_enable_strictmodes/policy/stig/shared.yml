@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} SSH daemon must perform strict mode checking of home directory configuration files.
+    {{{ full_name }}} SSH daemon must perform strict mode checking of home directory configuration files.
 
 vuldiscussion: |-
     If other users have access to modify user-specific SSH configuration files, they may be able to log into the system as another user.
@@ -14,7 +14,7 @@ checktext: |-
     If the "StrictModes" keyword is set to "no", the returned line is commented out, or no output is returned, this is a finding.
 
 fixtext: |-
-    Configure the SSH daemon to to perform strict mode checking of home directory configuration files.
+    Configure the SSH daemon to perform strict mode checking of home directory configuration files.
 
     Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes":
 
@@ -23,3 +23,6 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    If other users have access to modify user-specific SSH configuration files, they may be able to log into the system as another user.

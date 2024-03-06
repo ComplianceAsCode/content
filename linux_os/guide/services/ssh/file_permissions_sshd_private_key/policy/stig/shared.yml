@@ -8,13 +8,12 @@ vuldiscussion: |-
 checktext: |-
     Verify the SSH private host key files have a mode of "0640" or less permissive with the following command:
 
-    $ sudo stat -c "%a %n" /etc/ssh/ssh_host*key
+    $ ls -l /etc/ssh/*_key
 
     640 /etc/ssh/ssh_host_dsa_key
     640 /etc/ssh/ssh_host_ecdsa_key
     640 /etc/ssh/ssh_host_ed25519_key
     640 /etc/ssh/ssh_host_rsa_key
-
 
     If any private host key file has a mode more permissive than "0640", this is a finding.
 
@@ -26,3 +25,6 @@ fixtext: |-
     Restart the SSH daemon for the changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    If an unauthorized user obtains the private SSH host key file, the host could be impersonated.
