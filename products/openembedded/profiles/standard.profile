@@ -83,7 +83,7 @@ selections:
     - accounts_tmout
     - var_accounts_tmout=15_min
     - accounts_root_gid_zero
-    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_profile
     - use_pam_wheel_for_su
     - sshd_allow_only_protocol2
     - journald_forward_to_syslog
