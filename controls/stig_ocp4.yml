@@ -466,7 +466,18 @@ controls:
   - medium
   title: OpenShift must use multifactor authentication for network access to accounts.
   rules: []
-  status: pending
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  notes: |-
+    Satisfies SRG-APP-000149-CTR-000355, SRG-APP-000150-CTR-000360
+  status: not applicable
+  status_justification: |-
+    Not Applicable. Applicable to Identity Management Provider and not
+    OCP. Only configurable check is to ensure OCP is configured for an
+    IDP under SRG-APP-000023-CTR-000055. Verify with IdM service provider
+    admins that the IdM meets the requirements.
 
 - id: CNTR-OS-000440
   levels:
@@ -481,7 +492,26 @@ controls:
   - high
   title: OpenShift must use FIPS validated LDAP or OpenIDConnect.
   rules: []
-  status: pending
+  related_rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  notes: >-
+   Satisfies SRG-APP-000172-CTR-000440, SRG-APP-000024-CTR-000060, SRG-APP-000025-CTR-000065,
+   SRG-APP-000065-CTR-000115, SRG-APP-000151-CTR-000365, SRG-APP-000152-CTR-000370,
+   SRG-APP-000157-CTR-000385, SRG-APP-000163-CTR-000395, SRG-APP-000164-CTR-000400,
+   SRG-APP-000165-CTR-000405, SRG-APP-000166-CTR-000410, SRG-APP-000167-CTR-000415,
+   SRG-APP-000168-CTR-000420, SRG-APP-000169-CTR-000425, SRG-APP-000170-CTR-000430,
+   SRG-APP-000171-CTR-000435, SRG-APP-000173-CTR-000445, SRG-APP-000174-CTR-000450,
+   SRG-APP-000177-CTR-000465, SRG-APP-000317-CTR-000735, SRG-APP-000318-CTR-000740,
+   SRG-APP-000345-CTR-000785, SRG-APP-000391-CTR-000935, SRG-APP-000397-CTR-000955,
+   SRG-APP-000401-CTR-000965, SRG-APP-000402-CTR-000970
+  status: not applicable
+  status_justification: |-
+    Not Applicable. Applicable to Identity Management Provider and not
+    OCP. Only configurable check is to ensure OCP is configured for an
+    IDP under SRG-APP-000023-CTR-000055. Verify with IdM service provider
+    admins that the IdM meets the requirements.
 
 - id: CNTR-OS-000490
   levels:
