@@ -484,8 +484,14 @@ controls:
   - medium
   title: OpenShift must use FIPS-validated SHA-1 or higher hash function to provide
     replay-resistant authentication mechanisms for network access to privileged accounts.
-  rules: []
-  status: pending
+  notes: |-
+    Verify the authentication operator is configured to use a secure transport
+    to an OpenIDConnect provider.
+  rules:
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
+  - kubeadmin_removed
+  status: automated
 
 - id: CNTR-OS-000460
   levels:
