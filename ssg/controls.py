@@ -185,7 +185,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
                 continue
             try:
                 rule.add_extra_reference(reference_type, self.id)
-            except Exception as exc:
+            except ValueError as exc:
                 msg = (
                     "Please remove any duplicate listing of rule '%s' in "
                     "control '%s'." % (
