@@ -11,9 +11,12 @@ checktext: |-
 
     $ sudo grep pam_succeed_if /etc/pam.d/sudo
 
-    If any occurances of "pam_succeed_if" are returned, this is a finding.
+    If any occurrences of "pam_succeed_if" are returned, this is a finding.
 
 fixtext: |-
     Configure the operating system to require users to supply a password for privilege escalation.
 
     Remove any occurrences of " pam_succeed_if " in the  "/etc/pam.d/sudo" file.
+
+vuln_discussion: |-
+    Without reauthentication, users may access resources or perform tasks for which they do not have authorization. When operating systems provide the capability to escalate a functional capability, it is critical the user reauthenticate.

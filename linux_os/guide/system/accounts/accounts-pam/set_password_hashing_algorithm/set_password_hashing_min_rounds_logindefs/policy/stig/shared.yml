@@ -13,11 +13,11 @@ vuldiscussion: |-
     Using more hashing rounds makes password cracking attacks more difficult.
 
 checktext: |-
-    Inspect "/etc/login.defs" and ensure that if eihter
-    "SHA_CRYPT_MIN_ROUNDS" or "SHA_CRYPT_MAX_ROUNDS"
-    are set, they must have the minimum value of "5000".
+    Verify that {{{ full_name }}} has a minimum number of hash rounds configured with the following command:
 
-    If it does not, then this is a finding.
+    $ grep -i sha_crypt /etc/login.defs
+
+    If "SHA_CRYPT_MIN_ROUNDS" or "SHA_CRYPT_MAX_ROUNDS" is less than "5000", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
@@ -25,3 +25,8 @@ fixtext: |-
     Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "5000":
 
     SHA_CRYPT_MIN_ROUNDS 5000
+
+vuln_discussion: |-
+    Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
+
+    Using more hashing rounds makes password cracking attacks more difficult.

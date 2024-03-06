@@ -21,3 +21,6 @@ fixtext: |-
     Add or edit the lines for the "UMASK" parameter in the "/etc/login.defs" file to "077":
 
     UMASK 077
+
+vuln_discussion: |-
+    Setting the most restrictive default permissions ensures that when new accounts are created, they do not have unnecessary access.

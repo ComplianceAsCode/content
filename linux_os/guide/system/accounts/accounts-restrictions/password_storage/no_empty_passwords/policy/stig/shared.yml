@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must not allow blank or null passwords
+    {{{ full_name }}} must not allow blank or null passwords.
 
 vuldiscussion: |-
     If an account has an empty password, anyone could log in and
@@ -17,3 +17,6 @@ fixtext: |-
     Remove any instances of the "nullok" option in the "/etc/pam.d/password-auth" and "/etc/pam.d/system-auth" files to prevent logons with empty passwords.
 
     Note: Manual changes to the listed file may be overwritten by the "authselect" program.
+
+vuln_discussion: |-
+    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.

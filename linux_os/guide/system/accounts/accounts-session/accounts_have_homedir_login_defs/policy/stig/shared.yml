@@ -17,3 +17,6 @@ fixtext: |-
     Configure {{{ full_name }}} to assign home directories to all new local interactive users by setting the "CREATE_HOME" parameter in "/etc/login.defs" to "yes" as follows.
 
     CREATE_HOME yes
+
+vuln_discussion: |-
+    If local interactive users are not assigned a valid home directory, there is no place for the storage and control of files they should own.

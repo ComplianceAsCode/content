@@ -20,3 +20,6 @@ fixtext: |-
     Add the following line to the "/etc/pam.d/password-auth" file (or modify the line to have the required value):
 
     password required pam_pwquality.so
+
+vuln_discussion: |-
+    Enabling PAM password complexity permits enforcement of strong passwords and consequently makes the system less prone to dictionary attacks.

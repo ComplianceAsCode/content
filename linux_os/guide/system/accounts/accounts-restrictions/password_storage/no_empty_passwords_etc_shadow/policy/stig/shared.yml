@@ -23,3 +23,6 @@ fixtext: |-
     To lock an account:
 
     $ sudo passwd -l [username]
+
+vuln_discussion: |-
+    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.
