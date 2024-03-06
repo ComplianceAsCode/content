@@ -696,7 +696,7 @@ controls:
       The /boot partition mounted is essential to perform certain administrative actions, for
       example updating the kernel. Therefore, for better stability, in this requirement only rules
       to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
-    status: partial
+    status: automated
     rules:
       - file_groupowner_efi_grub2_cfg
       - file_groupowner_grub2_cfg
@@ -866,7 +866,7 @@ controls:
       would be configured to 0027 for all services. One such example is the
       Cups service which needs to create sockets which need to be available for
       all users. Therefore, this part of the requirement can't be automated.
-    status: partial
+    status: automated
     rules:
       - accounts_umask_etc_bashrc
       - accounts_umask_etc_login_defs
