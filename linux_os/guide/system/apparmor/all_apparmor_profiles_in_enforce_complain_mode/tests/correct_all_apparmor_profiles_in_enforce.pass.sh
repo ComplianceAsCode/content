@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform: package[apparmor]
+# packages = apparmor
 
 #Replace apparmor definitions
 apparmor_parser -q -r /etc/apparmor.d/
