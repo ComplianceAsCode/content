@@ -567,8 +567,10 @@ class RuleRunner(GenericRunner):
             if rule_result == 'notselected':
                 msg = (
                     'Rule {0} has not been evaluated! '
-                    'Wrong profile selected in test scenario?'
-                    .format(self.rule_id))
+                    'Wrong profile selected in test scenario or '
+                    'there has been problem starting the evaluation. Attaching output:\n'
+                    '{1}'
+                    .format(self.rule_id, self._oscap_output))
             else:
                 msg = (
                     'Rule evaluation resulted in {0}, '
