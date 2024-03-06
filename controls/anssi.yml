@@ -710,8 +710,10 @@ controls:
       - file_owner_user_cfg
       - file_permissions_efi_user_cfg
       - file_permissions_user_cfg
+      - file_groupowner_systemmap
+      - file_owner_systemmap
+      - file_permissions_systemmap
     related_rules:
-      - file_permissions_systemmap # missing remediation
       - mount_option_boot_noauto
 
   - id: R30

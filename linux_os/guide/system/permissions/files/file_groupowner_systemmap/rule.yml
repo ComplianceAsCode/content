@@ -1,13 +1,13 @@
 documentation_complete: true
 
-title: 'Verify Permissions on System.map Files'
+title: 'Verify Group Who Owns System.map Files'
 
 description: |-
     The System.map files are symbol map files generated during the compilation of the Linux
     kernel. They contain the mapping between kernel symbols and their corresponding memory
-    addresses. In general, there is no need for non-root users to read these files.
+    addresses. These files must be group-owned by root.
 
-    {{{ describe_file_permissions(file="/boot/System.map*", perms="0600") }}}
+    {{{ describe_file_group_owner(file="/boot/System.map*", group="root") }}}
 
 rationale: |-
     The purpose of <tt>System.map</tt> files is primarily for debugging and profiling the kernel.
@@ -17,20 +17,19 @@ rationale: |-
 severity: low
 
 identifiers:
-    cce@rhel7: CCE-82350-0
-    cce@rhel8: CCE-82892-1
-    cce@rhel9: CCE-86581-6
+    cce@rhel7: CCE-86582-4
+    cce@rhel8: CCE-86583-2
+    cce@rhel9: CCE-86584-0
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/boot/System.map*", perms="-rw-------") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/boot/System.map*", group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/boot/System.map*", perms="-rw-------") }}}
+    {{{ ocil_file_group_owner(file="/boot/System.map*", group="root") }}}
 
 template:
-    name: file_permissions
+    name: file_groupowner
     vars:
         filepath: /boot/
         file_regex: ^.*System\.map.*$
-        filemode: '0600'
-        allow_stricter_permissions: 'true'
+        gid_or_name: root
         missing_file_pass: 'true'
