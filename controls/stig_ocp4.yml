@@ -427,7 +427,17 @@ controls:
   title: OpenShift must contain only container images for those capabilities being
     offered by the container platform.
   rules: []
-  status: pending
+  related_rules:
+  - reject_unsigned_images_by_default
+  - ocp_allowed_registries_for_import
+  - ocp_allowed_registries
+  - ocp_insecure_registries
+  - ocp_insecure_allowed_registries_for_import
+  notes: >-
+   Satisfies SRG-APP-000141-CTR-000320
+  status: manual
+  status_justification: |-
+    The admin needs to validate whether the container platform images available are requried.
 
 - id: CNTR-OS-000390
   levels:
