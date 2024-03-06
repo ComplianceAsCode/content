@@ -83,7 +83,7 @@ selections:
     - package_postfix_installed
     - sysctl_kernel_kptr_restrict
     - audit_privileged_commands_poweroff
-    - accounts_umask_etc_profile
+    - accounts_umask_etc_bashrc
     - audit_rules_file_deletion_events_unlink
     - sudoers_no_root_target
     - auditd_write_logs
