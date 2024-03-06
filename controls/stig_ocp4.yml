@@ -445,7 +445,12 @@ controls:
   title: OpenShift runtime must enforce ports, protocols, and services that adhere
     to the PPSM CAL.
   rules: []
-  status: pending
+  notes: >-
+    Satisfies SRG-APP-000142-CTR-000325
+  status: manual
+  status_justification: |-
+    The admin needs to verify the accreditation documentation and register OpenShift's ports,
+    protocols, and services with PPSM.
 
 - id: CNTR-OS-000400
   levels:
