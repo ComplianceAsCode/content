@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} SSH daemon must be configured to use system-wide crypto policies.
+    {{{ full_name }}} SSH daemon must be configured to use system-wide crypto policies.
 
 vuldiscussion: |-
     Without cryptographic integrity protections, information can be altered
@@ -17,15 +17,23 @@ vuldiscussion: |-
     used to generate the hash.
 
 checktext: |-
-    Verify that system-wide crypto policies are in effect:
+    Verify that system-wide crypto policies are in effect with the following command:
 
     $ sudo grep Include /etc/ssh/sshd_config  /etc/ssh/sshd_config.d/*
+
     /etc/ssh/sshd_config:Include /etc/ssh/sshd_config.d/*.conf
     /etc/ssh/sshd_config.d/50-redhat.conf:Include /etc/crypto-policies/back-ends/opensshserver.config
 
-    If "Include /etc/ssh/sshd_config.d/*.conf" or "Include /etc/crypto-policies/back-ends/opensshserver.config" are not included in the system sshd config or the file /etc/ssh/sshd_config.d/50-redhat.conf is missing, this is a finding
+    If "Include /etc/ssh/sshd_config.d/*.conf" or "Include /etc/crypto-policies/back-ends/opensshserver.config" are not included in the system sshd config or the file /etc/ssh/sshd_config.d/50-redhat.conf is missing, this is a finding.
 
 fixtext: |-
     Configure the {{{ full_name }}} SSH daemon to use system-wide crypto policies by running the following commands:
 
     $ sudo dnf reinstall openssh-server
+
+vuln_discussion: |-
+    Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
+
+    Remote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+
+    Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.

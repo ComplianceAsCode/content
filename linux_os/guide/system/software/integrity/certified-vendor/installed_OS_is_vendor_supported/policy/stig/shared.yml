@@ -11,9 +11,16 @@ vuldiscussion: |-
 checktext: |-
     Verify that the version or {{{ full_name }}} is vendor supported with the following command:
 
-    $ grep PRETTY_NAME /etc/os-release
+    $ cat /etc/redhat-release
+
+    Red Hat Enterprise Linux release 9.2 (Plow)
 
     If the installed version of {{{ full_name }}} is not supported, this is a finding.
 
 fixtext: |-
     Upgrade to a supported version of {{{ full_name }}}.
+
+vuln_discussion: |-
+    An operating system release is considered "supported" if the vendor continues to provide security patches for the product. With an unsupported release, it will not be possible to resolve security issues discovered in the system software.
+
+    Red Hat offers the Extended Update Support (EUS) add-on to a Red Hat Enterprise Linux subscription, for a fee, for those customers who wish to standardize on a specific minor release for an extended period.

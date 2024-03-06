@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} initiates a session lock after a 15-minute period of inactivity for graphical user interfaces with the following command:
 
-    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
     $ sudo gsettings get org.gnome.desktop.session idle-delay
 
@@ -35,3 +35,6 @@ fixtext: |-
     Update the system databases:
 
     $ sudo dconf update
+
+vuln_discussion: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not logout because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, the GNOME desktop can be configured to identify when a user's session has idled and take action to initiate a session lock.

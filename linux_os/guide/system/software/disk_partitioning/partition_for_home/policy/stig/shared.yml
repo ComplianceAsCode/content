@@ -1,5 +1,5 @@
 srg_requirement: |-
-    A separate {{{ full_name }}} filesystem must be used for user home directories (such as /home or an equivalent).
+    A separate {{{ full_name }}} file system must be used for user home directories (such as /home or an equivalent).
 
 vuldiscussion: |-
     Ensuring that "/home" is mounted on its own partition enables the
@@ -17,3 +17,6 @@ checktext: |-
 
 fixtext: |-
     Migrate the "/home" directory onto a separate file system/partition.
+
+vuln_discussion: |-
+    Ensuring that "/home" is mounted on its own partition enables the setting of more restrictive mount options, and also helps ensure that users cannot trivially fill partitions used for log or audit data storage.
