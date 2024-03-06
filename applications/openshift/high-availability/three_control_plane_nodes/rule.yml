@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Ensure machine count of MachineConfigPool master is 3'
+
+description: |- 
+    To ensure, that the OpenShift control plane stays accessible on outage of a single master node, a 
+    number of 3 control plane nodes is required.
+
+rationale: |-
+    A highly-available OpenShift control plane requires 3 control plane nodes. This allows etcd to have
+    a functional quorum state, when a single control plane node is unavailable.
+
+identifiers: {}
+
+references:
+    bsi: APP.4.4.A19
+
+severity: medium
+
+ocil_clause: 'MachineConfigPool master has less than three nodes'
+
+ocil: |-
+    Run the following command to retrieve the count of nodes in the MachineConfigPool master.
+    <pre>$ oc get machineconfigpool master -o jsonpath='{.status.machineCount}'</pre>
+    Make sure that the number equals to 3.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/machineconfiguration.openshift.io/v1/machineconfigpools/master") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: 'true'
+    filepath: /apis/machineconfiguration.openshift.io/v1/machineconfigpools/master
+    yamlpath: .status.machineCount
+    entity_check: at least one
+    values:
+    - value: '3'
