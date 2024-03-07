@@ -56,7 +56,7 @@ def parse_args():
     return p.parse_args()
 
 
-def load_oval(oval_file_path):
+def process_cpe_oval(oval_file_path):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(oval_file_path))
     oval_document.product_name = os.path.basename(__file__)
 
@@ -119,7 +119,7 @@ def main():
     cpe_dict_filename = "ssg-{}-cpe-dictionary.xml".format(product)
     cpe_dict_path = os.path.join(args.cpeoutdir, cpe_dict_filename)
 
-    oval_document = load_oval(args.ovalfile)
+    oval_document = process_cpe_oval(args.ovalfile)
     oval_document.save_as_xml(oval_file_path)
 
     # Lets scrape the shorthand for the list of platforms referenced
