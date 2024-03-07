@@ -17,7 +17,7 @@ checktext: |-
 
     Check the value of the accept source route variable with the following command:
 
-    $ sysctl net.ipv4.conf.default.accept_source_route
+    $ sudo sysctl net.ipv4.conf.default.accept_source_route
 
     net.ipv4.conf.default.accept_source_route = 0
 
@@ -25,7 +25,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F net.ipv4.conf.default.accept_source_route | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.conf.default.accept_source_route | tail -1
 
     net.ipv4.conf.default.accept_source_route = 0
 
@@ -41,3 +41,8 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    Source-routed packets allow the source of the packet to suggest routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures.
+
+    Accepting source-routed packets in the IPv4 protocol has few legitimate uses. It must be disabled unless it is absolutely required, such as when IPv4 forwarding is enabled and the system is legitimately functioning as a router.
