@@ -472,7 +472,7 @@ class Benchmark(XCCDFEntity):
         self._add_rules_xml(root, components_to_not_include.get("rules", set()),  env_yaml,)
 
         if hasattr(ET, "indent"):
-            ET.indent(root, space=" ", level=0)
+            ET.indent(root, space="  ", level=0)
         return root
 
     def to_file(self, file_name, env_yaml=None):
