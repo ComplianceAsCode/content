@@ -22,6 +22,9 @@ checktext: |-
     If the audit log directory is not owned by "root", this is a finding.
 
 fixtext: |-
-    Configure the audit log to be protected from unauthorized read access, by setting the correct owner as "root" with the following command:
+    Configure the audit log to be protected from unauthorized read access by setting the correct owner as "root" with the following command:
 
     $ sudo chown root /var/log/audit
+
+vuln_discussion: |-
+    Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.

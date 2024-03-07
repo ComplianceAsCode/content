@@ -22,3 +22,6 @@ fixtext: |-
     write_logs = yes
 
     The audit daemon must be restarted for changes to take effect.
+
+vuln_discussion: |-
+    Audit data should be synchronously written to disk to ensure log integrity. This setting assures that all audit event data is written disk.

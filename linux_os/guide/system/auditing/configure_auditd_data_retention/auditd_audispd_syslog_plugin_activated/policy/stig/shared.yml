@@ -1,0 +1,21 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to offload audit records onto a different system from the system being audited via syslog.
+
+fixtext: |-
+    Edit the /etc/audit/plugins.d/syslog.conf file and add or update the "active" option:
+
+    active = yes
+
+    The audit daemon must be restarted for changes to take effect.
+
+checktext: |-
+    Verify {{{ full_name }}} is configured use the audisp-remote syslog service with the following command:
+
+    $ sudo grep active /etc/audit/plugins.d/syslog.conf
+
+    active = yes
+
+    If the "active" keyword does not have a value of "yes", the line is commented out, or the line is missing, this is a finding.
+
+vuln_discussion: |-
+    The auditd service does not include the ability to send audit records to a centralized server for management directly. However, it can use a plug-in for audit event multiplexor (audispd) to pass audit records to the local syslog server.
