@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must authenticate the remote logging server for off-loading audit logs via rsyslog.
+    {{{ full_name }}} must authenticate the remote logging server for offloading audit logs via rsyslog.
 
 vuldiscussion: |-
     Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
@@ -15,17 +15,30 @@ vuldiscussion: |-
     x509/name - certificate validation and subject name authentication
 
 checktext: |-
-    Verify {{{ full_name }}} authenticates the remote logging server for off-loading audit logs with the following command:
+    Verify {{{ full_name }}} authenticates the remote logging server for offloading audit logs with the following command:
 
-     $ sudo grep -i '$ActionSendStreamDriverAuthMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    $ sudo grep -i '$ActionSendStreamDriverAuthMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
      /etc/rsyslog.conf:$ActionSendStreamDriverAuthMode x509/name
 
-    If the value of the "$ActionSendStreamDriverAuthMode" option is not set to "x509/name" or the line is commented out, ask the System Administrator to indicate how the audit logs are off-loaded to a different system or media.
+    If the value of the "$ActionSendStreamDriverAuthMode" option is not set to "x509/name" or the line is commented out, ask the system administrator (SA) to indicate how the audit logs are offloaded to a different system or media.
 
-    If there is no evidence that the transfer of the audit logs being off-loaded to another system or media is encrypted, this is a finding.
+    If there is no evidence that the transfer of the audit logs being offloaded to another system or media is encrypted, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to authenticate the remote logging server for off-loading audit logs by setting the following option in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
+    Configure {{{ full_name }}} to authenticate the remote logging server for offloading audit logs by setting the following option in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
 
     $ActionSendStreamDriverAuthMode x509/name
+
+vuln_discussion: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+
+    Offloading is a common process in information systems with limited audit storage capacity.
+
+    {{{ full_name }}} installation media provides "rsyslogd", a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Coupling this utility with "gnutls" (a secure communications library implementing the SSL, TLS and DTLS protocols) creates a method to securely encrypt and offload auditing.
+
+    "Rsyslog" supported authentication modes include:
+    anon - anonymous authentication
+    x509/fingerprint - certificate fingerprint authentication
+    x509/certvalid - certificate validation only
+    x509/name - certificate validation and subject name authentication

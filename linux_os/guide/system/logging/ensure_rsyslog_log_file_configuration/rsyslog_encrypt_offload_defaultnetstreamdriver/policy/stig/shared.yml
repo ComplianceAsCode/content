@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must encrypt via the gtls driver the transfer of audit records off-loaded onto a different system or media from the system being audited via rsyslog.
+    {{{ full_name }}} must encrypt via the gtls driver the transfer of audit records offloaded onto a different system or media from the system being audited via rsyslog.
 
 vuldiscussion: |-
     Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
@@ -9,7 +9,7 @@ vuldiscussion: |-
     {{{ full_name }}} installation media provides "rsyslogd".  "rsyslogd" is a system utility providing support for message logging.  Support for both internet and UNIX domain sockets enables this utility to support both local and remote logging.  Couple this utility with "gnutls" (which is a secure communications library implementing the SSL, TLS and DTLS protocols), and you have a method to securely encrypt and off-load auditing.
 
 checktext: |-
-    Verify {{{ full_name }}} uses the gtls driver to encrypt audit records off-loaded onto a different system or media from the system being audited with the following command:
+    Verify {{{ full_name }}} uses the gtls driver to encrypt audit records offloaded onto a different system or media from the system being audited with the following command:
 
     $ sudo grep -i '$DefaultNetstreamDriver' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
@@ -18,6 +18,13 @@ checktext: |-
     If the value of the "$DefaultNetstreamDriver" option is not set to "gtls" or the line is commented out, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to use the gtls driver to encrypt off-loaded audit records by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
+    Configure {{{ full_name }}} to use the gtls driver to encrypt offloaded audit records by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
 
     $DefaultNetstreamDriver gtls
+
+vuln_discussion: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+
+    Offloading is a common process in information systems with limited audit storage capacity.
+
+    {{{ full_name }}} installation media provides "rsyslogd", a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Coupling this utility with "gnutls" (a secure communications library implementing the SSL, TLS and DTLS protocols) creates a method to securely encrypt and offload auditing.
