@@ -38,10 +38,6 @@ def parse_args():
         "needed for autodetection of profile root"
     )
     p.add_argument(
-        "idname",
-        help="Identifier prefix"
-    )
-    p.add_argument(
         "cpeoutdir",
         help="Artifact output directory"
     )
@@ -75,7 +71,7 @@ def load_oval(args):
     oval_document.keep_referenced_components(references_to_keep)
 
     # turn IDs into meaningless numbers
-    translator = ssg.id_translate.IDTranslator(args.idname)
+    translator = ssg.id_translate.IDTranslator("ssg")
     oval_document = translator.translate_oval_document(oval_document, store_defname=True)
 
     return oval_document
@@ -106,7 +102,6 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, args):
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_item = product_cpes.get_cpe(cpe_name)
-        cpe_item.content_id = args.idname
         cpe_list.add(cpe_item)
     return cpe_list
 
@@ -117,7 +112,7 @@ def main():
     product_yaml = ssg.products.load_product_yaml(args.product_yaml)
     product = product_yaml["product"]
 
-    oval_filename = "{}-{}-{}".format(args.idname, product, os.path.basename(args.ovalfile))
+    oval_filename = "ssg-{}-{}".format(product, os.path.basename(args.ovalfile))
     oval_filename = oval_filename.replace("cpe-oval-unlinked", "cpe-oval")
     oval_file_path = os.path.join(args.cpeoutdir, oval_filename)
 
