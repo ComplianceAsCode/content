@@ -1378,8 +1378,28 @@ controls:
     title: Securing access to remote user databases
     levels:
     - intermediary
-    notes: We cannot automate securing access to remote databases in a general way.
-    status: manual
+    description: |-
+      When the user databases are stored on a remote network service, NSS must
+      be configured to establish a secure link that allows, at minimum, to
+      authenticate the server and protect the communication channel.
+    {{% if "rhel" in product %}}
+    notes: |-
+      A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
+      Another such service is winbind which is by default configured to connect
+      securely to Samba domains.
+      Other relevant services are NIS and Hesiod. These should not be used.
+    status: automated
+    {{% if product in ["rhel7", "rhel8"] %}}
+    rules:
+      - no_nis_in_nsswitch
+      {{% if product == "rhel7" %}}
+      - no_hesiod_in_nsswitch
+      {{% endif %}}
+    {{% endif %}}
+    {{% else %}}
+    status: pending
+    {{% endif %}}
+
 
   - id: R70
     title: Separation of System Accounts and Directory Administrator
