@@ -46,8 +46,8 @@ def parse_args():
         help="Artifact output directory"
     )
     p.add_argument(
-        "shorthandfile",
-        help="shorthand xml to generate the CPE dictionary from"
+        "xccdfFile",
+        help="XCCDF file to generate the CPE dictionary from"
     )
     p.add_argument(
         "ovalfile",
@@ -81,10 +81,10 @@ def load_oval(args):
     return oval_document
 
 
-def get_benchmark_cpe_names(shorthand_file):
+def get_benchmark_cpe_names(xccdf_file):
     benchmark_cpe_names = set()
-    shorthand_tree = ssg.xml.parse_file(shorthand_file)
-    for platform in shorthand_tree.findall(".//{%s}platform" % XCCDF12_NS):
+    xccdf_el_root_xml = ssg.xml.parse_file(xccdf_file)
+    for platform in xccdf_el_root_xml.findall(".//{%s}platform" % XCCDF12_NS):
         cpe_name = platform.get("idref")
         # skip CPE AL platforms (they are handled later)
         # this is temporary solution until we get rid of old type of platforms in the benchmark
@@ -92,7 +92,7 @@ def get_benchmark_cpe_names(shorthand_file):
             continue
         benchmark_cpe_names.add(cpe_name)
     # add CPE names used by factref elements in CPEAL platforms
-    for fact_ref in shorthand_tree.findall(
+    for fact_ref in xccdf_el_root_xml.findall(
         ".//{%s}fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
     ):
         cpe_fact_ref_name = fact_ref.get("name")
@@ -128,7 +128,7 @@ def main():
     oval_document.save_as_xml(oval_file_path)
 
     # Lets scrape the shorthand for the list of platforms referenced
-    benchmark_cpe_names = get_benchmark_cpe_names(args.shorthandfile)
+    benchmark_cpe_names = get_benchmark_cpe_names(args.xccdfFile)
     cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args)
     cpe_dict.translate_cpe_oval_def_ids()
     cpe_dict.to_file(cpe_dict_path, oval_filename)
