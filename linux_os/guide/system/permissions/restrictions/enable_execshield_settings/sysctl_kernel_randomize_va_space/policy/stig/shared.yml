@@ -9,14 +9,14 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} is implementing ASLR with the following command:
 
-    $ sysctl kernel.randomize_va_space
+    $ sudo sysctl kernel.randomize_va_space
 
     kernel.randomize_va_space = 2
 
     Check that the configuration files are present to enable this kernel parameter.
     Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' |  grep -F kernel.randomize_va_space | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F kernel.randomize_va_space | tail -1
 
     kernel.randomize_va_space = 2
 
@@ -30,3 +30,6 @@ fixtext: |-
     Reload settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    Address space layout randomization (ASLR) makes it more difficult for an attacker to predict the location of attack code they have introduced into a process' address space during an attempt at exploitation. Additionally, ASLR makes it more difficult for an attacker to know the location of existing code in order to repurpose it using return oriented programming (ROP) techniques.

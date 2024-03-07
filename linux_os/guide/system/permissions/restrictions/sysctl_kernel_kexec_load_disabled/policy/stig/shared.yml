@@ -11,7 +11,7 @@ checktext: |-
 
     Check the status of the kernel.kexec_load_disabled kernel parameter with the following command:
 
-    $ sysctl kernel.kexec_load_disabled
+    $ sudo sysctl kernel.kexec_load_disabled
 
     kernel.kexec_load_disabled = 1
 
@@ -19,7 +19,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter with the following command:
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F kernel.kexec_load_disabled | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.kexec_load_disabled | tail -1
 
     kernel.kexec_load_disabled = 1
 
@@ -33,3 +33,8 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    Changes to any software components can have significant effects on the overall security of the operating system. This requirement ensures the software has not been tampered with and that it has been provided by a trusted vendor.
+
+    Disabling kexec_load prevents an unsigned kernel image (that could be a windows kernel or modified vulnerable kernel) from being loaded. Kexec can be used subvert the entire secureboot process and should be avoided at all costs especially since it can load unsigned kernel images.

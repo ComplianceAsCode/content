@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/gshadow- file must have mode 0000 or less permissive to prevent unauthorized access.
+    {{{ full_name }}} /etc/gshadow- file must have mode 0000 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
     The "/etc/gshadow-" file is a backup of "/etc/gshadow", and as such,
@@ -18,3 +18,6 @@ fixtext: |-
     Change the mode of the file "/etc/gshadow-" to "0000" by running the following command:
 
     $ sudo chmod 0000 /etc/gshadow-
+
+vuln_discussion: |-
+    The "/etc/gshadow-" file is a backup of "/etc/gshadow", and as such, contains group password hashes. Protection of this file is critical for system security.

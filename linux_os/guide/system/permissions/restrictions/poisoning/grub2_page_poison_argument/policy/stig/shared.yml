@@ -33,3 +33,6 @@ fixtext: |-
     Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
 
     GRUB_CMDLINE_LINUX="page_poison=1"
+
+vuln_discussion: |-
+    Poisoning writes an arbitrary value to freed pages, so any modification or reference to that page after being freed or before being initialized will be detected and prevented. This prevents many types of use-after-free vulnerabilities at little performance cost. Also prevents leak of data and detection of corrupted memory.

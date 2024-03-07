@@ -1,21 +1,24 @@
 srg_requirement: |-
-    {{{ full_name }}} file system automounter must be disabled unless required.
+    {{{ full_name }}} file system automount function must be disabled unless required.
 
 vuldiscussion: |-
     Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.
 
 checktext: |-
-    Verify that {{{ full_name }}} file system automounter has been disabled with the following command:
+    Verify that {{{ full_name }}} file system automount function has been disabled with the following command:
 
     $ sudo systemctl is-enabled  autofs
 
     masked
 
-    If the returned value is not "masked", "disabled", "Failed to get unit file state for autofs.service for autofs", or "enabled" is returned and is not documented as operational requirement with the Information System Security Officer ISSO, this is a finding.
+    If the returned value is not "masked", "disabled", "Failed to get unit file state for autofs.service for autofs", or "enabled", and is not documented as operational requirement with the information system security officer ISSO, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to disable the ability to automount devices.
 
-    The  autofs  service can be disabled with the following command:
+    The autofs service can be disabled with the following command:
 
-     $ sudo systemctl mask --now autofs.service
+    $ sudo systemctl mask --now autofs.service
+
+vuln_discussion: |-
+    An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message.

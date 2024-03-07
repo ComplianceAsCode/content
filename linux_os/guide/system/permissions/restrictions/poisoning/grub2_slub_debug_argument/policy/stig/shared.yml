@@ -13,7 +13,8 @@ checktext: |-
 
     Check that the current GRUB 2 configuration has poisoning of SLUB/SLAB objects enabled:
 
-    $  sudo grubby --info=ALL | grep args | grep -v 'slub_debug=P'
+    $ sudo grubby --info=ALL | grep args | grep -v 'slub_debug=P'
+
     If any output is returned, this is a finding.
 
     Check that poisoning of SLUB/SLAB objects is enabled by default to persist in kernel updates:
@@ -25,10 +26,17 @@ checktext: |-
     If "slub_debug" is not set to "P", is missing or commented out, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to enable poisoning of SLUB/SLAB objects with the following commands:
+    Configure RHEL  to enable poisoning of SLUB/SLAB objects with the following commands:
 
     $ sudo grubby --update-kernel=ALL --args="slub_debug=P"
 
     Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
 
     GRUB_CMDLINE_LINUX="slub_debug=P"
+
+vuln_discussion: |-
+    Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can be either hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.
+
+    Poisoning writes an arbitrary value to freed pages, so any modification or reference to that page after being freed or before being initialized will be detected and prevented. This prevents many types of use-after-free vulnerabilities at little performance cost. Also prevents leak of data and detection of corrupted memory.
+
+    SLAB objects are blocks of physically contiguous memory. SLUB is the unqueued SLAB allocator.

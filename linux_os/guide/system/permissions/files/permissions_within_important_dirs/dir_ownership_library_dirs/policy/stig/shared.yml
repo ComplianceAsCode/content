@@ -19,3 +19,8 @@ fixtext: |-
     Run the following command, replacing "[DIRECTORY]" with any library directory not owned by "root".
 
     $ sudo chown root [DIRECTORY]
+
+vuln_discussion: |-
+    If {{{ full_name }}} allowed any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.
+
+    This requirement applies to {{{ full_name }}} with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges.
