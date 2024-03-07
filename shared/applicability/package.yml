@@ -6,6 +6,12 @@ template:
 args:
   aide:
     pkgname: aide
+  apparmor:
+    {{% if product in ["sle12", "sle15"] %}}
+      pkgname: apparmor-profiles
+    {{% else %}}
+      pkgname: apparmor
+    {{% endif %}}
   apport:
     pkgname: apport
   audit:
