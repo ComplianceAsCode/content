@@ -1365,6 +1365,10 @@ controls:
       PAM delegates requests for remote authentication to this service through a
       local Unix socket. The sssd service can use IPA, AD or LDAP as a remote
       database containing information required for authentication. In case IPA or  AD is configured through a documented way, the connection is secured by default. In case LDAP is configured manually, there are several configuration options which should be chedked.
+      {{% if product in ["rhel7", "rhel8"] %}}
+      An allternative solution is to use nss-pam-ldapd package.
+      In case this package is used, we make sure that SSL is turned on and certificate is configured.
+      {{% endif %}}
     status: automated
     rules:
       - package_sssd_installed
@@ -1372,6 +1376,10 @@ controls:
       - sssd_enable_pam_services
       - sssd_ldap_configure_tls_reqcert
       - sssd_ldap_start_tls
+      {{% if product in ["rhel7", "rhel8"] %}}
+      - ldap_client_start_tls
+      - ldap_client_tls_cacertpath
+      {{% endif %}}
     related_rules:
       - package_sssd-ipa_installed
     {{% else %}}
