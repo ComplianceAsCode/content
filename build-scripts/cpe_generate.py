@@ -56,8 +56,8 @@ def parse_args():
     return p.parse_args()
 
 
-def load_oval(args):
-    oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(args.ovalfile))
+def load_oval(oval_file_path):
+    oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(oval_file_path))
     oval_document.product_name = os.path.basename(__file__)
 
     # extract inventory definitions
@@ -96,9 +96,9 @@ def get_benchmark_cpe_names(xccdf_file):
     return benchmark_cpe_names
 
 
-def load_cpe_dictionary(benchmark_cpe_names, product_yaml, args):
+def load_cpe_dictionary(benchmark_cpe_names, product_yaml, cpe_items_dir):
     product_cpes = ssg.build_cpe.ProductCPEs()
-    product_cpes.load_cpes_from_directory_tree(args.cpe_items_dir, product_yaml)
+    product_cpes.load_cpes_from_directory_tree(cpe_items_dir, product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_item = product_cpes.get_cpe(cpe_name)
@@ -119,12 +119,12 @@ def main():
     cpe_dict_filename = "ssg-{}-cpe-dictionary.xml".format(product)
     cpe_dict_path = os.path.join(args.cpeoutdir, cpe_dict_filename)
 
-    oval_document = load_oval(args)
+    oval_document = load_oval(args.ovalfile)
     oval_document.save_as_xml(oval_file_path)
 
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = get_benchmark_cpe_names(args.xccdfFile)
-    cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args)
+    cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args.cpe_items_dir)
     cpe_dict.translate_cpe_oval_def_ids()
     cpe_dict.to_file(cpe_dict_path, oval_filename)
 
