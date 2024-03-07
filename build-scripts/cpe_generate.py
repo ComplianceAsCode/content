@@ -60,8 +60,6 @@ def process_cpe_oval(oval_file_path):
     oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(oval_file_path))
     oval_document.product_name = os.path.basename(__file__)
 
-    # extract inventory definitions
-    # making (dubious) assumption that all inventory defs are CPE
     references_to_keep = ssg.oval_object_model.OVALDefinitionReference()
     for oval_def in oval_document.definitions.values():
         if oval_def.class_ != "inventory":
@@ -70,7 +68,6 @@ def process_cpe_oval(oval_file_path):
 
     oval_document.keep_referenced_components(references_to_keep)
 
-    # turn IDs into meaningless numbers
     translator = ssg.id_translate.IDTranslator("ssg")
     oval_document = translator.translate_oval_document(oval_document, store_defname=True)
 
@@ -87,7 +84,7 @@ def get_benchmark_cpe_names(xccdf_file):
         if cpe_name.startswith("#"):
             continue
         benchmark_cpe_names.add(cpe_name)
-    # add CPE names used by factref elements in CPEAL platforms
+
     for fact_ref in xccdf_el_root_xml.findall(
         ".//{%s}fact-ref" % ssg.constants.PREFIX_TO_NS["cpe-lang"]
     ):
@@ -122,7 +119,6 @@ def main():
     oval_document = process_cpe_oval(args.ovalfile)
     oval_document.save_as_xml(oval_file_path)
 
-    # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = get_benchmark_cpe_names(args.xccdfFile)
     cpe_dict = load_cpe_dictionary(benchmark_cpe_names, product_yaml, args.cpe_items_dir)
     cpe_dict.translate_cpe_oval_def_ids()
