@@ -324,6 +324,7 @@ add_test(
     NAME "components"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
 )
+set_tests_properties("components" PROPERTIES LABELS quick)
 endif()
 
 macro(cce_avail_check TEST_NAME_SUFFIX PRODUCTS CCE_LIST_PATH)
