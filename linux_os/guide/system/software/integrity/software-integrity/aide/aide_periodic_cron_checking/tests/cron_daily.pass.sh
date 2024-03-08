@@ -2,4 +2,4 @@
 # packages = aide,crontabs
 
 mkdir -p /etc/cron.daily
-echo "/usr/sbin/aide --check" > /etc/cron.daily/aide
+echo "{{{ aide_bin_path }}} --check" > /etc/cron.daily/aide

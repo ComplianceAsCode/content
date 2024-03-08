@@ -1,4 +1,4 @@
 #!/bin/bash
 # packages = aide,crontabs
 
-echo '21    21    *    *    3    root    /usr/sbin/aide --check &>/dev/null' >> /etc/crontab
+echo '21    21    *    *    3    root    {{{ aide_bin_path }}} --check &>/dev/null' >> /etc/crontab

@@ -1,4 +1,4 @@
 #!/bin/bash
 # packages = aide,crontabs
 
-echo '@weekly    root    /usr/sbin/aide --check &>/dev/null' >> /etc/crontab
+echo '@weekly    root    {{{ aide_bin_path }}} --check &>/dev/null' >> /etc/crontab

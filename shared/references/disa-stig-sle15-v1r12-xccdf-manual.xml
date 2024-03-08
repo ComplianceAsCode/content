@@ -1216,7 +1216,7 @@ If the "aide" package is not installed, install it with the following command:
 Configure the file integrity tool to automatically run on the system at least weekly. The following example output is generic. It will set cron to run AIDE weekly, but other file integrity tools may be used:
 
      &gt; cat /etc/cron.weekly/aide 
-     0 0 * * * /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+     0 0 * * * /usr/bin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
 
 Note: Per requirement SLES-15-010418, the "mailx" package must be installed on the system to enable email functionality.</fixtext><fix id="F-38002r902850_fix" /><check system="C-38039r880946_chk"><check-content-ref href="SUSE_Linux_Enterprise_Server_15_STIG.xml" name="M" /><check-content>Verify the SUSE operating system checks the baseline configuration for unauthorized changes at least once weekly.
 
@@ -1468,14 +1468,14 @@ This capability must take into account operational requirements for availability
 
 Create the aide crontab file in "/etc/cron.daily" and add following command replacing the "[E-MAIL]" parameter with a proper email address for the SA:
 
-     0 0 * * * /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+     0 0 * * * /usr/bin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
 
 Note: Per requirement SLES-15-010418, the "mailx" package must be installed on the system to enable email functionality.</fixtext><fix id="F-38015r902853_fix" /><check system="C-38052r902852_chk"><check-content-ref href="SUSE_Linux_Enterprise_Server_15_STIG.xml" name="M" /><check-content>Verify the SUSE operating system notifies the SA when AIDE discovers anomalies in the operation of any security functions.
 
 Check to see if the aide cron job sends an email when executed with the following command:
 
      &gt; grep -i "aide" /etc/cron.*/aide 
-     0 0 * * * /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+     0 0 * * * /usr/bin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
 
 If the "aide" file does not exist under the "/etc/cron" directory structure or the cron job is not configured to execute a binary to send an email (such as "/bin/mail"), this is a finding.</check-content></check></Rule></Group><Group id="V-234865"><title>SRG-OS-000479-GPOS-00224</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-234865r854211_rule" weight="10.0" severity="medium"><version>SLES-15-010580</version><title>The SUSE operating system must off-load rsyslog messages for networked systems in real time and off-load standalone systems at least weekly.</title><description>&lt;VulnDiscussion&gt;Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
 

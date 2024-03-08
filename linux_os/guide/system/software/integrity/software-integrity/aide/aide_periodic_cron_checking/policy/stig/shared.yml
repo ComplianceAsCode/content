@@ -27,7 +27,7 @@ checktext: |-
     $ sudo more /etc/cron.daily/aide
 
     #!/bin/bash
-    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+    {{{ aide_bin_path }}} --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
 
     If the file integrity application does not exist, or a script file controlling the execution of the file integrity application does not exist, or the file integrity application does not notify designated personnel of changes, this is a finding.
 
@@ -39,4 +39,4 @@ fixtext: |-
     $ sudo more /etc/cron.daily/aide
 
     #!/bin/bash
-    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+    {{{ aide_bin_path }}} --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
