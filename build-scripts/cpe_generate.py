@@ -81,7 +81,7 @@ def process_cpe_oval(oval_file_path):
     oval_document.keep_referenced_components(references_to_keep)
 
     translator = ssg.id_translate.IDTranslator("ssg")
-    oval_document = translator.translate_oval_document(oval_document, store_defname=True)
+    oval_document = translator.translate_oval_document(oval_document)
 
     return oval_document
 
