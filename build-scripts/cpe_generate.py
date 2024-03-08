@@ -14,16 +14,12 @@ import ssg.products
 import ssg.xml
 import ssg.yaml
 import ssg.oval_object_model
-from ssg.constants import XCCDF12_NS
+from ssg.constants import XCCDF12_NS, cpe_language_namespace
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
 # objects and variables it references and then write them into a standalone
 # OVAL CPE file, along with a synchronized CPE dictionary file.
-
-oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
-cpe_lang_ns = ssg.constants.PREFIX_TO_NS["cpe-lang"]
 
 
 def parse_args():
@@ -97,7 +93,7 @@ def get_benchmark_cpe_names(xccdf_el_root_xml):
             continue
         benchmark_cpe_names.add(cpe_name)
 
-    for fact_ref in xccdf_el_root_xml.findall(".//{%s}fact-ref" % cpe_lang_ns):
+    for fact_ref in xccdf_el_root_xml.findall(".//{%s}fact-ref" % cpe_language_namespace):
         cpe_fact_ref_name = fact_ref.get("name")
         benchmark_cpe_names.add(cpe_fact_ref_name)
     return benchmark_cpe_names
@@ -114,7 +110,7 @@ def load_cpe_dictionary(benchmark_cpe_names, product_yaml, cpe_items_dir):
 
 
 def _get_all_check_fact_ref(xccdf_el_root_xml):
-    return xccdf_el_root_xml.findall(".//{%s}check-fact-ref" % cpe_lang_ns)
+    return xccdf_el_root_xml.findall(".//{%s}check-fact-ref" % cpe_language_namespace)
 
 
 def get_all_cpe_oval_def_ids(xccdf_el_root_xml, cpe_dict, benchmark_cpe_names):
