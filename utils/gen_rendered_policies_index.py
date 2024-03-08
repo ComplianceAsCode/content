@@ -23,18 +23,17 @@ def get_rendered_policies_ids(rendered_policies_dir):
     return policy_ids
 
 
-def get_policy_names(ssg_root):
+def get_policy_names(ssg_root, products):
     policy_names = dict()
-    p = pathlib.Path(ssg_root)
-    for control_file in p.glob("controls/*.yml"):
-        # only process files, ignore controls directories
-        if not os.path.isfile(control_file):
-            continue
-        policy_id = pathlib.Path(control_file).stem
-        with open(control_file, "r") as f:
-            policy_yaml = yaml.full_load(f)
-        policy_name = policy_yaml["policy"]
-        policy_names[policy_id] = policy_name
+    for product in products:
+        p = pathlib.Path(ssg_root, "build", product.id)
+        for control_file in p.glob("controls/*.yml"):
+            policy_id = pathlib.Path(control_file).stem
+            if policy_id not in policy_names:
+                with open(control_file, "r") as f:
+                    policy_yaml = yaml.full_load(f)
+                policy_name = policy_yaml["policy"]
+                policy_names[policy_id] = policy_name
     return policy_names
 
 
@@ -62,7 +61,7 @@ def get_products(ssg_root):
 
 def get_data(ssg_root):
     products = get_products(ssg_root)
-    policy_names = get_policy_names(ssg_root)
+    policy_names = get_policy_names(ssg_root, products)
     data = {"products": products, "policy_names": policy_names}
     return data
 

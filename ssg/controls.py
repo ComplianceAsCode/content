@@ -222,6 +222,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
     def represent_as_dict(self):
         data = dict()
         data["id"] = self.id
+        data["policy"] = self.policy
         data["title"] = self.title
         data["source"] = self.source
         data["definition_location"] = self.filepath
@@ -337,6 +338,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if controls_dir:
             self.controls_dir = os.path.join(os.path.dirname(self.filepath), controls_dir)
         self.id = ssg.utils.required_key(yaml_contents, "id")
+        self.policy = ssg.utils.required_key(yaml_contents, "policy")
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
         self.reference_type = yaml_contents.get("reference_type", None)
