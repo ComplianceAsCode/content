@@ -2,14 +2,15 @@ controls:
     -   id: SRG-OS-000191-GPOS-00080
         levels:
             - medium
-        title: '{{{ full_name }}} must employ automated mechanisms to determine the state
-                of system components with regard to flaw remediation using the following frequency:
-                continuously, where ESS is used; 30 days, for any additional internal network
-                scans not cover'
-        status: does not meet
+        title: |-
+            {{{ full_name }}} must employ automated mechanisms to determine the state of system
+            components with regard to flaw remediation using the following frequency:
+            continuously, 30 days, and annually, for external scans by Computer Network
+            Defense Service Provider (CNDSP).
+
         rationale: |-
             Without the use of automated mechanisms to scan for security flaws on a continuous and/or periodic basis, the operating system or other system components may remain vulnerable to the exploits presented by undetected software flaws.
-        
+
             To support this requirement, the operating system may have an integrated solution incorporating continuous scanning using ESS and periodic scanning using other tools, as specified in the requirement.
         status_justification:
             {{{ full_name }}} does not have configuration options to meet this requirement.
@@ -21,5 +22,6 @@ controls:
             An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
         mitigation:
             A third-party software will be needed to meet this requirement e.g. McAfee policy auditor.
-        
+
             Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+
