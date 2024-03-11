@@ -46,7 +46,7 @@ def add_cpes(elem, namespace, mapping):
 
 def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, id_name, cpe_items_dir):
     cpe_list = tree_root.find(".//{%s}cpe-list" % (PREFIX_TO_NS["cpe-dict"]))
-    if cpe_list:
+    if cpe_list is not None:
         product_yaml = load_product_yaml(product_yaml_path)
         product_cpes = ProductCPEs()
         product_cpes.load_cpes_from_directory_tree(cpe_items_dir, product_yaml)
