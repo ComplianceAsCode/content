@@ -23,4 +23,9 @@ fixtext: |-
 
     Set the promiscuous mode of an interface to off with the following command:
 
-    $ sudo ip link set dev &lt;devicename&gt; multicast off promisc off
+    $ sudo ip link set dev &ltdevicename&gt multicast off promisc off
+
+vuln_discussion: |-
+    Network interfaces in promiscuous mode allow for the capture of all network traffic visible to the system. If unauthorized individuals can access these applications, it may allow them to collect information such as logon IDs, passwords, and key exchanges between systems.
+
+    If the system is being used to perform a network troubleshooting function, the use of these tools must be documented with the information systems security officer (ISSO) and restricted to only authorized personnel.

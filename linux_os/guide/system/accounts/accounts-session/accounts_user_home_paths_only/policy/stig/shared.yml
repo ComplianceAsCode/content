@@ -25,3 +25,8 @@ fixtext: |-
     Edit the local interactive user initialization files to change any PATH variable statements that reference directories other than their home directory.
 
     If a local interactive user requires path variables to reference a directory owned by the application, it must be documented with the ISSO.
+
+vuln_discussion: |-
+    The executable search path (typically the PATH environment variable) contains a list of directories for the shell to search to find executables. If this path includes the current working directory (other than the users home directory), executables in these directories may be executed instead of system commands.
+
+    This variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon or two consecutive colons, this is interpreted as the current working directory. If deviations from the default system search path for the local interactive user are required, they must be documented with the information system security officer (ISSO).

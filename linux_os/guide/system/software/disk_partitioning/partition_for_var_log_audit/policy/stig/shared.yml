@@ -18,3 +18,6 @@ checktext: |-
 
 fixtext: |-
     Migrate the system audit data path onto a separate file system.
+
+vuln_discussion: |-
+    Placing "/var/log/audit" in its own partition enables better separation between audit files and other system files, and helps ensure that auditing cannot be halted due to the partition running out of space.

@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+    {{{ full_name }}} must log IPv4 packets with impossible addresses.
 
 vuldiscussion: |-
     The presence of "martian" packets (which have impossible addresses)
@@ -20,7 +20,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | grep -Ev '^(#|$)' | grep -F net.ipv4.conf.all.log_martians | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.conf.all.log_martians | tail -1
 
     net.ipv4.conf.all.log_martians = 1
 
@@ -36,3 +36,6 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    The presence of "martian" packets (which have impossible addresses) as well as spoofed packets, source-routed packets, and redirects could be a sign of nefarious network activity. Logging these packets enables this activity to be detected.

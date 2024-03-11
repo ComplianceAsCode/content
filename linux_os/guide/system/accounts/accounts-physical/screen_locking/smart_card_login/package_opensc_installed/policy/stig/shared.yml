@@ -11,11 +11,18 @@ checktext: |-
 
     $ sudo dnf list --installed opensc
 
+    Example output:
+
     opensc.x86_64          0.22.0-2.el9
 
     If the "opensc" package is not installed, this is a finding.
 
 fixtext: |-
-    The  opensc  package can be installed with the following command:
+    The opensc package can be installed with the following command:
 
     $ sudo dnf install opensc
+
+vuln_discussion: |-
+    The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.
+
+    The DOD has mandated the use of the Common Access Card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.

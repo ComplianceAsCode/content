@@ -13,15 +13,15 @@ checktext: |-
 
     Check that IPv6 forwarding is disabled using the following commands:
 
-    $ sysctl net.ipv6.conf.all.forwarding
+    $ sudo sysctl net.ipv6.conf.all.forwarding
 
     net.ipv6.conf.all.forwarding = 0
 
-    If the IPv6 forwarding value is not "0" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+    If the IPv6 forwarding value is not "0" and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F net.ipv6.conf.all.forwarding | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv6.conf.all.forwarding | tail -1
 
     net.ipv6.conf.all.forwarding = 0
 
@@ -37,3 +37,6 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    IP forwarding permits the kernel to forward packets from one network interface to another. The ability to forward packets between two networks is only appropriate for systems acting as routers.

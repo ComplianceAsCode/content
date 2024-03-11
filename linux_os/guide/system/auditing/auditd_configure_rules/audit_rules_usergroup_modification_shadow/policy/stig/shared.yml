@@ -1,5 +1,5 @@
 srg_requirement: |-
-     {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow.
+    {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow.
 
 vuldiscussion: |-
     In addition to auditing new user and group accounts, these watches
@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd with the following command:
 
-    $  sudo auditctl -l | grep -E '(/etc/shadow)'
+    $ sudo auditctl -l | egrep '(/etc/shadow)'
 
     -w /etc/shadow -p wa -k identity
 
@@ -17,6 +17,12 @@ checktext: |-
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/shadow".
+
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
+
     -w /etc/shadow -p wa -k identity
+
     The audit daemon must be restarted for the changes to take effect.
+
+vuln_discussion: |-
+    In addition to auditing new user and group accounts, these watches will alert the system administrator(s) to any modifications. Any unexpected users, groups, or modifications should be investigated for legitimacy.

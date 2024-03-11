@@ -31,3 +31,10 @@ fixtext: |-
     Remove the telnet-server package with the following command:
 
     $ sudo dnf remove telnet-server
+
+vuln_discussion: |-
+    It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities are often overlooked and therefore, may remain unsecure. They increase the risk to the platform by providing additional attack vectors.
+
+    The telnet service provides an unencrypted remote access service, which does not provide for the confidentiality and integrity of user passwords or the remote session. If a privileged user were to login using this service, the privileged user password could be compromised.
+
+    Removing the "telnet-server" package decreases the risk of accidental (or intentional) activation of the telnet service.

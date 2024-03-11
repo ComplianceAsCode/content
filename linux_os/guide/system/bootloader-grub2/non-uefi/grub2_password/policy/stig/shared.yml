@@ -8,15 +8,13 @@ vuldiscussion: |-
     important bootloader settings. These include which kernel to use, and whether to enter single-user mode.
 
 checktext: |-
-    Verify the boot loader superuser password has been set, run the following
-    command:
+    Verify the boot loader superuser password has been set and run the following command:
 
-    $sudo grep "superusers" /etc/grub2.cfg
+    $ sudo grep "superusers" /etc/grub2.cfg
 
     password_pbkdf2  superusers-account   ${GRUB2_PASSWORD}
 
-    To verify the boot loader superuser account password has been set,
-    and the password encrypted, run the following command:
+    To verify the boot loader superuser account password has been set, and the password encrypted, run the following command:
 
     $ sudo cat /boot/grub2/user.cfg
 
@@ -35,3 +33,8 @@ fixtext: |-
     $ sudo grub2-setpassword
     Enter password:
     Confirm password:
+
+vuln_discussion: |-
+    To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.
+
+    Password protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.

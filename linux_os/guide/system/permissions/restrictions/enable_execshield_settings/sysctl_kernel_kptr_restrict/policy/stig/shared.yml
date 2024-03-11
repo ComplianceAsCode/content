@@ -6,13 +6,14 @@ vuldiscussion: |-
 
 checktext: |-
     Verify the runtime status of the kernel.kptr_restrict kernel parameter with the following command:
-    $ sysctl kernel.kptr_restrict
+
+    $ sudo sysctl kernel.kptr_restrict
 
     kernel.kptr_restrict = 1
 
     Verify the configuration of the kernel.kptr_restrict kernel parameter with the following command:
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' |  grep -F kernel.kptr_restrict | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F kernel.kptr_restrict | tail -1
 
     kernel.kptr_restrict =1
 
@@ -26,3 +27,6 @@ fixtext: |-
     Reload settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    Exposing kernel pointers (through procfs or "seq_printf()") exposes kernel writeable structures, which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallows any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with "0".

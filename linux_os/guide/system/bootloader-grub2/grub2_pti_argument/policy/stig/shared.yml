@@ -32,3 +32,6 @@ fixtext: |-
     Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
 
     GRUB_CMDLINE_LINUX="pti=on"
+
+vuln_discussion: |-
+    Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).

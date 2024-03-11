@@ -1,5 +1,5 @@
 srg_requirement: |-
-     {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
+    {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
 
 vuldiscussion: |-
     Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information in to the system's logs, or could fill the system's storage leading to a Denial of Service.
@@ -17,9 +17,9 @@ checktext: |-
     $InputTCPServerRun 514
     $InputRELPServerRun 514
 
-    Note: You may see an error about no files or directories. This is not a finding.
+    Note: An error about no files or directories may be returned. This is not a finding.
 
-    If any lines are returned by the command, then rsyslog is configured to receive remote messages and this is a finding.
+    If any lines are returned by the command, then rsyslog is configured to receive remote messages, and this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to not receive remote logs using rsyslog.
@@ -34,4 +34,10 @@ fixtext: |-
     $InputRELPServerRun [0-9]*
 
     The rsyslog daemon must be restarted for the changes to take effect:
+
     $ sudo systemctl restart rsyslog.service
+
+vuln_discussion: |-
+    Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information into the system's logs, or could fill the system's storage leading to a denial of service.
+
+    If the system is intended to be a log aggregation server, its use must be documented with the information system security officer (ISSO).

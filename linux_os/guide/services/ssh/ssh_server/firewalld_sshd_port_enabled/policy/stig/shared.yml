@@ -23,13 +23,16 @@ checktext: |-
     icmp-blocks:
     rich rules:
 
-    Ask the System Administrator for the site or program Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA). Verify the services allowed by the firewall match the PPSM CLSA.
+    Ask the system administrator for the site or program Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA). Verify the services allowed by the firewall match the PPSM CLSA.
 
     If there are additional ports, protocols, or services that are not in the PPSM CLSA, or there are ports, protocols, or services that are prohibited by the PPSM Category Assurance List (CAL), this is a finding.
 
 fixtext: |-
-    Update the host's firewall settings and/or running services to comply with the PPSM Component Local Service Assessment (CLSA) for the site or program and the PPSM CAL.
+    Update the host's firewall settings and/or running services to comply with the PPSM CLSA for the site or program and the PPSM CAL.
 
     Then run the following command to load the newly created rule(s):
 
     $ sudo firewall-cmd --reload
+
+vuln_discussion: |-
+    To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary ports, protocols, and services on information systems.

@@ -21,3 +21,8 @@ fixtext: |-
     The tftp package can be removed with the following command:
 
     $ sudo dnf remove tftp
+
+vuln_discussion: |-
+    Removing the "tftp-server" package decreases the risk of the accidental (or intentional) activation of tftp services.
+
+    If TFTP is required for operational support (such as transmission of router configurations), its use must be documented with the information systems security manager (ISSM), restricted to only authorized personnel, and have access control rules established.

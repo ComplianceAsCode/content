@@ -15,7 +15,8 @@ checktext: |-
 
     /etc/rsyslog.conf:*.info;mail.none;authpriv.none;cron.none                          /var/log/messages
     /etc/rsyslog.conf:cron.*                                                           /var/log/cron
-    If the command does not return a response, check for cron logging all facilities with the following command.
+
+    If the command does not return a response, check for cron logging all facilities with the following command:
 
     $ sudo grep -s /var/log/messages /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
@@ -29,4 +30,8 @@ fixtext: |-
     cron.* /var/log/cron
 
     The rsyslog daemon must be restarted for the changes to take effect:
+
     $ sudo systemctl restart rsyslog.service
+
+vuln_discussion: |-
+    Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.

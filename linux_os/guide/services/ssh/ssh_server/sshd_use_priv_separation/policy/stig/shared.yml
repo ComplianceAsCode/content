@@ -1,0 +1,25 @@
+srg_requirement: |-
+    {{{ full_name }}} SSH daemon must be configured to use privilege separation.
+
+fixtext: |-
+    Configure the SSH daemon to perform privilege separation.
+
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes" or "sandbox":
+
+    UsePrivilegeSeparation sandbox
+
+    The SSH service must be restarted for changes to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+checktext: |-
+    Verify the SSH daemon performs privilege separation with the following command:
+
+    $ sudo grep -ir usepriv  /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+
+    UsePrivilegeSeparation sandbox
+
+    If the "UsePrivilegeSeparation" keyword is set to "no", the returned line is commented out, or no output is returned, this is a finding.
+
+vuln_discussion: |-
+    SSH daemon privilege separation causes the SSH process to drop root privileges when not needed, which would decrease the impact of software vulnerabilities in the nonprivileged section.

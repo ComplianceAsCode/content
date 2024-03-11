@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} libreswan package must be installed.
+    {{{ full_name }}} libreswan package must be installed.
 
 vuldiscussion: |-
     Providing the ability for remote users or systems
@@ -13,7 +13,9 @@ checktext: |-
 
     $ sudo dnf list --installed libreswan
 
-    libreswan.x86_64     4.6-3.el9
+    Example output:
+
+    libreswan.x86_64          4.6-3.el9
 
     If the "libreswan" package is not installed, this is a finding.
 
@@ -21,3 +23,6 @@ fixtext: |-
     Install the libreswan service (if it is not already installed) with the following command:
 
     $ sudo dnf install libreswan
+
+vuln_discussion: |-
+    Providing the ability for remote users or systems to initiate a secure VPN connection protects information when it is transmitted over a wide area network.

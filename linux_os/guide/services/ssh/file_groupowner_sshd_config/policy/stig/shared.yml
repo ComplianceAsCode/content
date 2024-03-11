@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} SSH server configuration file must be group-owned by root.
+    {{{ full_name }}} SSH server configuration file must be group-owned by root.
 
 vuldiscussion: |-
     Service configuration files enable or disable features of their respective
@@ -20,3 +20,6 @@ fixtext: |-
     Configure the "/etc/ssh/sshd_config" file to be group-owned by root with the following command:
 
     $ sudo chgrp root /etc/ssh/sshd_config
+
+vuln_discussion: |-
+    Service configuration files enable or disable features of their respective services, which if configured incorrectly, can lead to insecure and vulnerable configurations. Therefore, service configuration files must be owned by the correct group to prevent unauthorized changes.

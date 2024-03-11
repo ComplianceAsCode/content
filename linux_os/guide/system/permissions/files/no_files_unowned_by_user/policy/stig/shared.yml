@@ -14,4 +14,7 @@ checktext: |-
 fixtext: |-
     Either remove all files and directories from the system that do not have a valid user, or assign a valid user to all unowned files and directories on {{{ full_name }}} with the "chown" command:
 
-    $ sudo chown &lt;user&gt; &lt;file&gt;
+    $ sudo chown &ltuser&gt &ltfile&gt
+
+vuln_discussion: |-
+    Unowned files and directories may be unintentionally inherited if a user is assigned the same user identifier "UID" as the UID of the unowned files.

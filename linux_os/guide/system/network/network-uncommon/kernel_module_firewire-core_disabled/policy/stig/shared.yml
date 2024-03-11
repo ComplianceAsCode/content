@@ -1,0 +1,20 @@
+srg_requirement: |-
+    {{{ full_name }}} must be configured to disable the FireWire kernel module.
+
+fixtext: |-
+    To configure the system to prevent the firewire-core kernel module from being loaded, add the following line to the file /etc/modprobe.d/firewire-core.conf (or create firewire-core.conf if it does not exist):
+
+    install firewire-core /bin/false
+    blacklist firewire-core
+
+checktext: |-
+    Verify that {{{ full_name }}} disables the ability to load the firewire-core kernel module with the following command:
+
+    $ sudo grep -r firewire-core /etc/modprobe.conf /etc/modprobe.d/*
+
+    blacklist firewire-core
+
+    If the command does not return any output, or the line is commented out, and use of firewire-core is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
+
+vuln_discussion: |-
+    Disabling firewire protects the system against exploitation of any flaws in its implementation.

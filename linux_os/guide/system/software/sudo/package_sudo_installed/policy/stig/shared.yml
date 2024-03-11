@@ -12,7 +12,9 @@ checktext: |-
 
     $ sudo dnf list --installed sudo
 
-    sudo.x86_64    1.9.5p2-7.el9
+    Example output:
+
+    sudo.x86_64          1.9.5p2-7.el9
 
     If the "sudo" package is not installed, this is a finding.
 
@@ -20,3 +22,6 @@ fixtext: |-
     The  sudo  package can be installed with the following command:
 
     $ sudo dnf install sudo
+
+vuln_discussion: |-
+    "sudo" is a program designed to allow a system administrator to give limited root privileges to users and log root activity. The basic philosophy is to give as few privileges as possible but still allow system users to get their work done.

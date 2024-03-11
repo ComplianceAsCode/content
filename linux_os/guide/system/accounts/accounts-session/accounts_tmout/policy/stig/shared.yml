@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 15 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements.
+    {{{ full_name }}} must automatically exit interactive command shell user sessions after 15 minutes of inactivity.
 
 vuldiscussion: |-
     Terminating an idle session within a short time period reduces
@@ -8,17 +8,22 @@ vuldiscussion: |-
     left unattended.
 
 checktext: |-
-    Verify {{{ full_name }}} terminates all network connections associated with a communications session at the end of the session or based on inactivity with the following command:
+    Verify {{{ full_name }}} is configured to exit interactive command shell user sessions after 15 minutes of inactivity or less with the following command:
 
     $ sudo grep -i tmout /etc/profile /etc/profile.d/*.sh
 
-    etc/profile.d/tmout.sh:typeset -xr TMOUT=900
+    /etc/profile.d/tmout.sh:declare -xr TMOUT=900
 
-    If "TMOUT" is not set to "900" or less in a script located in the /etc/profile.d/ directory to enforce session termination after inactivity, this is a finding.
+    If "TMOUT" is not set to "900" or less in a script located in the "/etc/'profile.d/ directory, is missing or is commented out, this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} to terminate user sessions after 900 seconds of inactivity.
+    Configure {{{ full_name }}} to exit interactive command shell user sessions after 15 minutes of inactivity.
 
     Add or edit the following line in "/etc/profile.d/tmout.sh":
 
-     TMOUT=900
+    #!/bin/bash
+
+    declare -xr TMOUT=900
+
+vuln_discussion: |-
+    Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.

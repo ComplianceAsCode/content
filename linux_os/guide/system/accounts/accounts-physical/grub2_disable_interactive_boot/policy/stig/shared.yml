@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} disable the ability of systemd to spawn an interactive boot process.
+    {{{ full_name }}} must disable the ability of systemd to spawn an interactive boot process.
 
 vuldiscussion: |-
     Using interactive or recovery boot, the console user could disable auditing, firewalls, or other services, weakening system security.
@@ -17,3 +17,6 @@ fixtext: |-
     Configure {{{ full_name }}} to allocate sufficient audit_backlog_limit to disable the ability of systemd to spawn an interactive boot process with the following command:
 
     $ sudo grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
+
+vuln_discussion: |-
+    Using interactive or recovery boot, the console user could disable auditing, firewalls, or other services, weakening system security.

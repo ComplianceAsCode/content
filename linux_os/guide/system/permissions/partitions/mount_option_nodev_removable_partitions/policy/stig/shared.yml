@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} Must Be Configured In Accordance With The Security Configuration Settings Based On Dod Security Configuration Or Implementation Guidance, Including Stigs, Nsa Configuration Guides, Ctos, And Dtms.
+    {{{ full_name }}} must prevent special devices on file systems that are used with removable media.
 
 vuldiscussion: |-
     The only legitimate location for device files is the "/dev" directory
@@ -8,6 +8,16 @@ vuldiscussion: |-
     filesystems.
 
 checktext: |-
+    Verify file systems that are used for removable media are mounted with the "nodev" option with the following command:
 
+    $ more /etc/fstab
 
-    If , then this is a finding.
+    UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222 /mnt/usbflash vfat noauto,owner,ro,nosuid,nodev,noexec 0 0
+
+    If a file system found in "/etc/fstab" refers to removable media and it does not have the "nodev" option set, this is a finding.
+
+fixtext: |-
+    Configure the "/etc/fstab" to use the "nodev" option on file systems that are associated with removable media.
+
+vuln_discussion: |-
+    The "nodev" mount option causes the system not to interpret character or block special devices. Executing character or blocking special devices from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.
