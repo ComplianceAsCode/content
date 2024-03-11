@@ -883,7 +883,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 :type mount: str
 
 #}}
-{{%- macro systemd_mount_enabled(mount) %}}
+{{%- macro ocil_systemd_mount_enabled(mount) %}}
     Run the following command to determine the current status of the
     <code>{{{ mount }}}</code> mount:
     <pre>$ sudo systemctl is-active {{{ mount }}}.mount</pre>
