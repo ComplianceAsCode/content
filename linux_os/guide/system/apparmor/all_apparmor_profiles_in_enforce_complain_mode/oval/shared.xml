@@ -8,23 +8,17 @@
   </definition>
   <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_profiles" version="1">
     <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
-    <ind:pattern operation="pattern match">^.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_enforced_profiles" version="1">
     <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">^.*\(enforce\)$</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">^.*(\(enforce\))$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_complaining_profiles" version="1">
     <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
-    <ind:pattern operation="pattern match" datatype="string">^.*\(complain\)$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_apparmor_unconfined_profiles" version="1">
-    <ind:filepath datatype="string">/sys/kernel/security/apparmor/profiles</ind:filepath>
-    <ind:pattern operation="pattern match"
-      datatype="string">^\.*processes are unconfined.*$</ind:pattern>
+    <ind:pattern operation="pattern match" datatype="string">^.*(\(complain\))$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <local_variable datatype="int" id="{{{ rule_id }}}_var_num_apparmor_profiles" version="1"
@@ -46,11 +40,6 @@
         object_ref="{{{ rule_id }}}_obj_apparmor_complaining_profiles" />
       </count>
     </arithmetic>
-  </local_variable>
-  <local_variable datatype="int" id="{{{ rule_id }}}_var_num_apparmor_unconfined_profiles"
-    version="1" comment="apparmor profiles with unconfined processes">
-    <object_component item_field="subexpression"
-     object_ref="{{{ rule_id }}}_obj_apparmor_unconfined_profiles" />
   </local_variable>
 
   <ind:variable_object id="{{{ rule_id }}}_obj_all_apparmor_profiles" version="1">
