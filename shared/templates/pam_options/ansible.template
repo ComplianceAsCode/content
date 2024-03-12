@@ -33,7 +33,7 @@
     path: {{{ PATH }}}
     line: '{{{ TYPE }}} {{{ CONTROL_FLAG }}} {{{ MODULE }}}'
     state: present
-  when: '"{{{ MODULE }}}" not in check_pam_module_result.stdout'
+  when: check_pam_module_result is not skipped and '"{{{ MODULE }}}" not in check_pam_module_result.stdout'
 
 - name: Ensure '{{{ MODULE }}}' module has conforming control flag
   lineinfile:
@@ -76,7 +76,7 @@
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}})((\s+\S+)*\s*(\\)*$)'
     line: '\g<1> {{{ arg['variable'] }}}={{ var_password_pam_{{{ arg['variable'] }}} }}\g<2>'
     backrefs: yes
-  when: '"{{{ arg['variable'] }}}" not in check_pam_module_argument_result.stdout'
+  when: check_pam_module_argument_result is not skipped and '"{{{ arg['variable'] }}}" not in check_pam_module_argument_result.stdout'
 {{% else %}}
 - name: Set argument_value fact
   set_fact:
@@ -102,6 +102,6 @@
     regexp: '^(\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}})((\s+\S+)*\s*(\\)*$)'
     line: '\g<1> {{{ arg['new_argument'] }}}\g<2>'
     backrefs: yes
-  when: '"{{{ arg['argument'] }}}" not in check_pam_module_argument_result.stdout'
+  when: check_pam_module_argument_result is not skipped and '"{{{ arg['argument'] }}}" not in check_pam_module_argument_result.stdout'
 {{% endif %}}
 {{% endfor %}}
