@@ -5,7 +5,7 @@ title: "Name Service Switch does not use Hesiod"
 description: |-
     Each call to a function which retrieves data from a system database like the
     password or group database is handled by the Name Service Switch
-    implementation in the GNU C library.  The various services provided are
+    implementation in the GNU C library. The various services provided are
     implemented by independent modules, each of which naturally varies widely
     from the other. One of such modules is the <tt>hesiod</tt> module, which allows
     to get information from special DNS records.
@@ -25,7 +25,7 @@ ocil_clause: "a hesiod service is configured in nsswitch.conf"
 ocil: |-
     Run the following command:
     <pre>grep '^\w+\s+(\w+\s+)*hesiod($|\s+.*$)' /etc/nsswitch.conf</pre>
-    If a line is returned and it    contains the word <tt>hesiod</tt> in the list
+    If a line is returned and it contains the word <tt>hesiod</tt> in the list
     of services, it is a finding.
 
 warnings:
