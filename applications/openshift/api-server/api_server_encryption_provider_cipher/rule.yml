@@ -75,7 +75,7 @@ ocil: |-
     API server to verify that its resources were successfully encrypted:
     <pre>
     # encrypt the etcd datastore
-    $ oc get openshiftapiserver -o=jsonpath='{range.items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+    $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'
     <pre>
     The output shows <tt>EncryptionCompleted</tt> upon successful encryption.
     If the output shows <tt>EncryptionInProgress</tt> this means that encryption is still in
