@@ -568,9 +568,9 @@ class RuleRunner(GenericRunner):
                 msg = (
                     'Rule {0} has not been evaluated! '
                     'Wrong profile selected in test scenario or '
-                    'there has been problem starting the evaluation. Attaching output:\n'
-                    '{1}'
-                    .format(self.rule_id, self._oscap_output))
+                    'there has been problem starting the evaluation. '
+                    'Please inspect the log file {1} for details.'
+                    .format(self.rule_id, self.verbose_path))
             else:
                 msg = (
                     'Rule evaluation resulted in {0}, '
