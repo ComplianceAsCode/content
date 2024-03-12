@@ -7,6 +7,9 @@ description: |-
     {{% if product == "rhcos4" %}}
     To configure the system login banner create a file under
     <tt>/etc/issue.d</tt>
+
+    The Machine Configuration provided with this rule is generic. You may need
+    to adjust it accordingly to fit your usecase.
     {{% else %}}
     To configure the system login banner edit <tt>/etc/issue</tt>. Replace the
     default text with a message compliant with the local site policy or a legal
@@ -41,10 +44,15 @@ description: |-
     <tt>I've read &amp; consent to terms in IS user agreem't.</tt>
     {{% if product == "rhcos4" %}}
     <p>
-    To address this, please create a <tt>Machineconfig</tt> object with the
-    appropriate text in a drop-in file in <tt>/etc/issue.d/</tt>. Do not try to
-    edit <tt>/etc/issue</tt> directly as this is a symlink provided by the
-    Operating System.
+    To address this, please create a <tt>MachineConfig</tt> object with the
+    appropriate text in a drop-in file in <tt>/etc/issue.d/</tt>. You can also
+    use the supplied remediation, which will be available based on scan results
+    using `oc get remediations`. The default remediation is opinionated and you
+    may need to adjust the <tt>MachineConfig</tt> accordingly for your use
+    case.
+
+    Do not try to edit <tt>/etc/issue</tt> directly as this is a symlink
+    provided by the Operating System.
     </p>
     <p>
     For example, if you're using the DoD required text, the manifest would
@@ -124,7 +132,11 @@ ocil_clause: 'it does not display the required banner'
 ocil: |-
     To check if the system login banner is compliant,
     run the following command:
+    {{% if product == "rhcos4" %}}
+    <pre>$ cat /etc/issue.d/legal-notice</pre>
+    {{% else %}}
     <pre>$ cat /etc/issue</pre>
+    {{% endif %}}
 
 fixtext: |-
   Configure {{{ full_name }}} to display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system via command line logon.
