@@ -108,9 +108,16 @@ def has_duplicated_subkeys(rule_path, rule, rule_lines):
     return ssg.rule_yaml.has_duplicated_subkeys(rule_path, rule_lines, TO_SORT)
 
 
+def _human_sort(line):
+    # Based on: https://blog.codinghorror.com/sorting-for-humans-natural-sort-order/
+    def convert(text): return int(text) if text.isdigit() else text
+    return [convert(text) for text in re.split(r'(\d+)', line)]
+
+
 def has_unordered_sections(rule_path, rule, rule_lines):
     if 'references' in rule or 'identifiers' in rule:
-        new_lines = ssg.rule_yaml.sort_section_keys(rule_path, rule_lines, TO_SORT)
+        new_lines = ssg.rule_yaml.sort_section_keys(rule_path, rule_lines, TO_SORT,
+                                                    sort_func=_human_sort)
 
         # Compare string representations to avoid issues with references being
         # different.
@@ -678,7 +685,7 @@ def find_int_references(args, product_yaml):
         product_yaml = result[2]
 
         if args.dry_run:
-            print(rule_path + " has one or more unsorted references")
+            print(rule_path + " has one or more unsorted integer references")
             continue
 
         fix_file_prompt(rule_path, product_yaml, fix_int_reference, args)

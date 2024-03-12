@@ -55,7 +55,7 @@ product_directories = [
     'openeuler2203',
     'opensuse',
     'openembedded',
-    'rhel7', 'rhel8', 'rhel9',
+    'rhel7', 'rhel8', 'rhel9', 'rhel10',
     'rhv4',
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
@@ -218,6 +218,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat Enterprise Linux 9": "rhel9",
+    "Red Hat Enterprise Linux 10": "rhel10",
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
@@ -293,7 +294,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
-    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9"],
+    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
@@ -305,6 +306,7 @@ RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
     "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:centos:centos:9",
+    "cpe:/o:redhat:enterprise_linux:10": "cpe:/o:centos:centos:10",
 }
 
 RHEL_SL_CPE_MAPPING = {
@@ -511,6 +513,7 @@ DERIVATIVES_PRODUCT_MAPPING = {
     "centos7": "rhel7",
     "centos8": "rhel8",
     "cs9": "rhel9",
+    "cs10": "rhel10",
     "sl7": "rhel7"
 }
 
