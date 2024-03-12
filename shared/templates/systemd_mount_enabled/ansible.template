@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 - name: Enable mount {{{ MOUNTNAME }}}
-  systemd:
+  ansible.builtin.systemd_service:
     name: "{{{ MOUNTNAME }}}.mount"
     enabled: "yes"
     state: "started"

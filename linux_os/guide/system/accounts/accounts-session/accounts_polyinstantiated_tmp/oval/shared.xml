@@ -2,7 +2,7 @@
   <definition class="compliance" id="accounts_polyinstantiated_tmp" version="1">
     {{{ oval_metadata("") }}}
     <criteria operator="AND" comment="Check Polyinstantiation of /tmp Directories">
-      <criterion comment="Check that if /tmp/tmp-inst exists it has mode 000" test_ref="test_tmp_inst" />
+      <criterion comment="Check that if /tmp/tmp-inst exists and has mode 000" test_ref="test_tmp_inst" />
       <criterion comment="Check configuration of /tmp in /etc/security/namespace.conf file" test_ref="test_tmp_in_namespace_conf" />
     </criteria>
   </definition>
