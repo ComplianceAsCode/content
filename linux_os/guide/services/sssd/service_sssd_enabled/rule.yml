@@ -36,3 +36,11 @@ template:
     name: service_enabled
     vars:
         servicename: sssd
+
+warnings:
+    - general:
+        The service requires a valid sssd configuration. If the configuration is
+        not present, the service will fail to start and consequently this rule
+        will will be reported as failing. The configuration shipped in your
+        distribution package might not be sufficient. Manual modification of
+        configuration files might be required.
