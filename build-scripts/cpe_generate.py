@@ -62,26 +62,6 @@ def parse_args():
     return p.parse_args()
 
 
-def process_cpe_oval(oval_file_path):
-    oval_document = ssg.oval_object_model.load_oval_document(ssg.xml.parse_file(oval_file_path))
-    oval_document.product_name = os.path.basename(__file__)
-
-    references_to_keep = ssg.oval_object_model.OVALDefinitionReference()
-    for oval_def in oval_document.definitions.values():
-        if oval_def.class_ != "inventory":
-            continue
-        references_to_keep += oval_document.get_all_references_of_definition(
-            oval_def.id_
-        )
-
-    oval_document.keep_referenced_components(references_to_keep)
-
-    translator = ssg.id_translate.IDTranslator("ssg")
-    oval_document = translator.translate_oval_document(oval_document)
-
-    return oval_document
-
-
 def get_benchmark_cpe_names(xccdf_el_root_xml):
     benchmark_cpe_names = set()
 
@@ -177,7 +157,7 @@ def main():
     used_cpe_oval_def_ids = get_all_cpe_oval_def_ids(
         xccdf_el_root_xml, cpe_dict, benchmark_cpe_names
     )
-    oval_document = process_cpe_oval(args.ovalfile)
+    oval_document = ssg.build_cpe.get_linked_cpe_oval_document(args.ovalfile)
     _save_minimal_cpe_oval(oval_document, oval_file_path, used_cpe_oval_def_ids)
 
     if args.thin_ds_components_dir is not None and args.thin_ds_components_dir != "off":

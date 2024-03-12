@@ -15,6 +15,9 @@ from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
 from .entities.common import XCCDFEntity, Templatable
 from .yaml import convert_string_to_bool
+from .oval_object_model import load_oval_document, OVALDefinitionReference
+from .id_translate import IDTranslator
+from .xml import parse_file
 
 
 class CPEDoesNotExist(Exception):
@@ -453,3 +456,23 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
+
+def get_linked_cpe_oval_document(unlinked_oval_file_path):
+    oval_document = load_oval_document(parse_file(unlinked_oval_file_path))
+    oval_document.product_name = os.path.basename(__file__)
+
+    references_to_keep = OVALDefinitionReference()
+    for oval_def in oval_document.definitions.values():
+        if oval_def.class_ != "inventory":
+            continue
+        references_to_keep += oval_document.get_all_references_of_definition(
+            oval_def.id_
+        )
+
+    oval_document.keep_referenced_components(references_to_keep)
+
+    translator = IDTranslator("ssg")
+    oval_document = translator.translate_oval_document(oval_document)
+
+    return oval_document
