@@ -16,8 +16,8 @@ Author: Martin Preisler <mpreisle@redhat.com>
 import sys
 from optparse import OptionParser
 
-import ssg.constants
 import ssg.build_derivatives
+import ssg.constants
 import ssg.xccdf
 import ssg.xml
 
@@ -48,6 +48,12 @@ def parse_args():
     parser.add_option(
         "--cpe-items-dir",
         dest="cpe_items_dir", help="path to the directory where compiled cpe items are stored")
+    parser.add_option(
+        "--unlinked-cpe-oval-path",
+        dest="unlinked_oval_file_path",
+        help="path to the unlinked cpe oval"
+    )
+
     (options, args) = parser.parse_args()
 
     if options.centos and options.sl:
@@ -112,9 +118,13 @@ def main():
             )
 
     ssg.build_derivatives.replace_platform(root, oval_ns, derivative)
-    ssg.build_derivatives.add_cpe_item_to_dictionary(
-        root, args[0], args[1], options.id_name, options.cpe_items_dir)
-
+    oval_def_id = ssg.build_derivatives.add_cpe_item_to_dictionary(
+        root, args[0], args[1], options.id_name, options.cpe_items_dir
+    )
+    if oval_def_id is not None:
+        ssg.build_derivatives.add_oval_definition_to_cpe_oval(
+            root, options.unlinked_oval_file_path, oval_def_id
+        )
     tree.write(options.output)
 
 
