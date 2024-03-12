@@ -74,8 +74,11 @@ controls:
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
     notes: >-
-      Enabling Secure Boot requires one to navigate the BIOS, and we don't have
-      the means to automate it.
+      Secure Boot needs to be enabled in the UEFI Setup program.
+      Enabling Secure Boot can't be accomplished from the operating system.
+      Also, OVAL doesn't provide any reliable ways to detect the Secure Boot status.
+      Therefore, we will not provide any rules to automate this requirement.
+      We recommend checking the Secure Boot status using the `mokutil --sb-state` or `bootctl status` commands.
     status: manual
 
   - id: R4
