@@ -2,41 +2,45 @@ aide_also_checks_audispd: 'no'
 aide_also_checks_rsyslog: 'yes'
 aide_bin_path: /usr/sbin/aide
 aide_conf_path: /etc/aide.conf
-audisp_conf_path: /etc/audisp
+audisp_conf_path: /etc/audit
 auid: 1000
+aux_pkg_release: ''
+aux_pkg_version: ''
+auxiliary_key_fingerprint: ''
 basic_properties_derived: true
-benchmark_id: OL-7
+benchmark_id: RHEL-10
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
+components_root: ../../components
 cpes:
-- ol7:
-    check_id: installed_OS_is_ol7
-    name: cpe:/o:oracle:linux:7
-    title: Oracle Linux 7
+- rhel10:
+    check_id: installed_OS_is_rhel10
+    name: cpe:/o:redhat:enterprise_linux:10
+    title: Red Hat Enterprise Linux 10
 cpes_root: ../../shared/applicability
-dconf_gdm_dir: local.d
-faillock_path: /var/run/faillock
+dconf_gdm_dir: distro.d
+faillock_path: /var/log/faillock
 families:
+- rhel
 - rhel-like
-- ol
-full_name: Oracle Linux 7
+full_name: Red Hat Enterprise Linux 10
 gid_min: 1000
 groups:
   dedicated_ssh_keyowner:
     name: ssh_keys
 grub2_boot_path: /boot/grub2
-grub2_uefi_boot_path: /boot/efi/EFI/redhat
+grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grubby
 init_system: systemd
-major_version_ordinal: 7
+journald_conf_dir_path: /etc/systemd/journald.conf.d
+major_version_ordinal: 10
 nobody_gid: 65534
 nobody_uid: 65534
-oval_feed_url: https://linux.oracle.com/security/oval/com.oracle.elsa-ol7.xml.bz2
-pkg_manager: yum
-pkg_manager_config_file: /etc/yum.conf
-pkg_release: '53619141'
+pkg_manager: dnf
+pkg_manager_config_file: /etc/dnf/dnf.conf
+pkg_release: ''
 pkg_system: rpm
-pkg_version: ec551f03
+pkg_version: ''
 platform_package_overrides:
   aarch64_arch: null
   grub2: grub2-common
@@ -45,20 +49,19 @@ platform_package_overrides:
   non-uefi: null
   not_aarch64_arch: null
   not_s390x_arch: null
-  openssl-pkcs11: pam_pkcs11
   ovirt: null
   s390x_arch: null
   sssd: sssd-common
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: ol7
+product: rhel10
 profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
   bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
-  cis: https://www.cisecurity.org/benchmark/oracle_linux/
+  cis: https://www.cisecurity.org/benchmark/red_hat_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
   cnss: https://www.cnss.gov/CNSS/issuances/Instructions.cfm
@@ -80,8 +83,8 @@ reference_uris:
   pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
-release_key_fingerprint: 42144123FECFC55B9086313D72F97B74EC551F03
-sshd_distributed_config: 'false'
+release_key_fingerprint: ''
+sshd_distributed_config: 'true'
 sysctl_remediate_drop_in_file: 'false'
 type: platform
 uid_min: 1000
