@@ -9,7 +9,7 @@ description: |-
     following line to the existing AIDE line:
     <pre> | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
     Otherwise, add the following line to <tt>/etc/crontab</tt>:
-    <pre>05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
+    <pre>05 4 * * * root {{{ aide_bin_path }}} --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
     AIDE can be executed periodically through other means; this is merely one example.
 
 rationale: |-
@@ -64,7 +64,7 @@ ocil: |-
 {{% else %}}
     <pre>$ grep aide /etc/crontab</pre>
     The output should return something similar to the following:
-    <pre>05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
+    <pre>05 4 * * * root {{{ aide_bin_path }}} --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
     The email address that the notifications are sent to can be changed by overriding
     <pre><sub idref="var_aide_scan_notification_email" /></pre>.
 {{% endif %}}
@@ -88,7 +88,7 @@ fixtext: |-
 
     #!/bin/bash
 
-    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+    {{{ aide_bin_path }}} --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
 {{% endif %}}
 
 srg_requirement: |-
