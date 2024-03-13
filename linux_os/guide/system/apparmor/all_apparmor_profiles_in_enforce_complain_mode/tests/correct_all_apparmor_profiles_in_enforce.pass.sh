@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = apparmor
+# packages = apparmor-utils
 
 #Replace apparmor definitions
 apparmor_parser -q -r /etc/apparmor.d/
