@@ -1,4 +1,5 @@
 <def-group>
+
   <definition class="compliance" id="ensure_gpgcheck_globally_activated" version="1">
     {{{ oval_metadata("The gpgcheck option should be used to ensure that checking
       of an RPM package's signature always occurs prior to its
@@ -9,7 +10,9 @@
         <criterion comment="no value 0_off_no_false set in {{{ pkg_manager_config_file }}}" test_ref="test_ensure_gpgcheck_globally_no_deactivated" />
       </criteria> 
     {{% else %}}   
-        <criterion comment="no value 0_off_no_false set in {{{ pkg_manager_config_file }}}" test_ref="test_ensure_gpgcheck_globally_no_deactivated" />
+      <criteria >
+        <criterion comment="check value of gpgcheck in {{{ pkg_manager_config_file }}}" test_ref="test_ensure_gpgcheck_globally_activated" />
+      </criteria >  
     {{% endif %}}
   </definition>
 
@@ -24,6 +27,7 @@
   </ind:textfilecontent54_object>  
 
 {{% if 'sle' in product %}}
+
   <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no value 0 set in {{{ pkg_manager_config_file }}}" id="test_ensure_gpgcheck_globally_no_deactivated" version="1">
     <ind:object object_ref="object_test_ensure_gpgcheck_globally_no_deactivated" />
   </ind:textfilecontent54_test>
