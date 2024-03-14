@@ -57,7 +57,7 @@ jobs:
         with:
           ref: refs/pull/${{ needs.get-pr-number.outputs.pr-number }}/head
       - name: Login to ghcr.io
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v3.1.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
