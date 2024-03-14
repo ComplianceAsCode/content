@@ -69,6 +69,12 @@ def parse_args():
     return options, args
 
 
+def store_xml(tree, path):
+    if hasattr(ssg.xml.ElementTree, "indent"):
+        ssg.xml.ElementTree.indent(tree, space="  ", level=0)
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+
+
 def main():
     options, args = parse_args()
 
@@ -125,7 +131,8 @@ def main():
         ssg.build_derivatives.add_oval_definition_to_cpe_oval(
             root, options.unlinked_oval_file_path, oval_def_id
         )
-    tree.write(options.output)
+
+    store_xml(tree, options.output)
 
 
 if __name__ == "__main__":
