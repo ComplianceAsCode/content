@@ -107,6 +107,9 @@ def add_reference_elements(element, references, ref_uri_dict):
             if ref_type == 'srg':
                 if ref_val.startswith('SRG-OS-'):
                     ref_href = ref_uri_dict['os-srg']
+                elif re.match(r'SRG-APP-\d{5,}-CTR-\d{5,}', ref_val):
+                    # The more specific case needs to come first, otherwise the generic SRG-APP will catch everything
+                    ref_href = ref_uri_dict['app-srg-ctr']
                 elif ref_val.startswith('SRG-APP-'):
                     ref_href = ref_uri_dict['app-srg']
                 else:
@@ -1118,6 +1121,11 @@ class Rule(XCCDFEntity, Templatable):
 
     def add_extra_reference(self, ref_type, ref_value):
         if ref_type in self.references:
+            if ref_value in self.references[ref_type]:
+                msg = (
+                    "Rule %s already contains a '%s' reference with value '%s'." % (
+                        self.id_, ref_type, ref_value))
+                raise ValueError(msg)
             self.references[ref_type].append(ref_value)
         else:
             self.references[ref_type] = [ref_value]
