@@ -903,6 +903,15 @@ The selected value can be changed in the profile (consult the actual variable fo
 
 -   Languages: Ansible, Bash, OVAL
 
+#### systemd_mount_enabled
+-   Checks if a `systemd` mount unit is enabled
+
+-   Parameters:
+    - **mountname** - name of the systemd mount unit, without the `.mount` suffix, eg. `tmp`
+
+-   Languages: Anaconda, Ansible, Bash, OVAL
+
+
 #### timer_enabled
 -   Checks if a SystemD timer unit is enabled.
 
