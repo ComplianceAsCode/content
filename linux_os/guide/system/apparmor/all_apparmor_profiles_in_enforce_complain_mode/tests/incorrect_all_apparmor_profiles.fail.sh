@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = apparmor
+# packages = apparmor-utils
 
 #Configure the OS to unload all AppArmor profiles
 aa-teardown
