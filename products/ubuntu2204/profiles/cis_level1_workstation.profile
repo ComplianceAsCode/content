@@ -33,7 +33,7 @@ selections:
     ### 2.2.3 Ensure CUPS is not installed (Automated)
     # Skip due to being Level 1 Server and Level 2 Workstation.
     - '!service_cups_disabled'
-    # - '!package_cups_removed'
+    - '!package_cups_removed'
 
     ### 3.1.2 Ensure wireless interfaces are disabled (Automated)
     # Skip due to being Level 1 Server and Level 2 Workstation.
