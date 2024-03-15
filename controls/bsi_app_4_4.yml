@@ -36,22 +36,41 @@ controls:
       programs of the application. Only applications with similar protection needs and similar
       possible attack vectors SHOULD share a Kubernetes cluster.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      These requirements must be implemented organizationally. OpenShift fully supports them.
+      OpenShift simplifies the implementation of the stated requirements for separating applications
+      as well as development and production environments by setting up projects (tenants).
+      Namespaces, networks/network separation, meta tags as well as CPU and memory separation are already
+      configured by OpenShift as required (security-by-design). Special requirements for protection and
+      network zone concepts can also be flexibly and easily mapped using additional measures.
+      This particularly includes the ability to define application classes, operate in multiple,
+      separate clusters, and automatically distribute workloads to protection zones and fire compartments.
+      Particularly in the case of separate clusters, ACM can support rule-based distribution of applications using labels.
+    status: manual
+    rules:
+      - general_namespace_separation
 
   - id: APP.4.4.A2
     title: Planning Automation with CI/CD
     levels:
     - basic
     description: >-
-      Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
-      after appropriate planning. The planning MUST cover the entire lifecycle from commissioning
-      to decommissioning, including development, testing, operation, monitoring, and updates. A
+      (1) Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
+      after appropriate planning. (2) The planning MUST cover the entire lifecycle from commissioning
+      to decommissioning, including development, testing, operation, monitoring, and updates. (3) A
       roles and rights concept and the securing of Kubernetes Secrets MUST be part of the planning
     notes: >-
-      TBD
-    status: pending
+      Since this requirement is a plan only, we cannot test this with compliance checks.
+      Section 1: This requirement must be implemented organizationally.
+      The documentation at https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html
+      provides information on the planning
+      Section 2: The protective measure is primarily of an organizational nature. OpenShift fully supports them.
+      With the integrated CI/CD technologies Jenkins, Tekton and OpenShift GitOps, OpenShift already offers preconfigured solutions
+      for automated CI/CD pipelines. Of course, other technologies such as Gitlab CI and GitHub Actions can also be integrated.
+      Section 3: Kubernetes secrets are secured by a Role Based Access Control (RBAC) system.
+      Depending on the protection requirement, Kubernetes secrets can be secured via an (encrypted) etcd metadata store or
+      additionally via an integration of Vault components or "sealed secrets" for CD and GitOps mechanisms.
+      Secrets and roles can also be managed centrally using ACM and rolled out consistently to the managed clusters using policies.
+    status: documentation
     rules: []
 
   - id: APP.4.4.A3
@@ -59,22 +78,31 @@ controls:
     levels:
     - basic
     description: >-
-      Kubernetes and all other control plane applications MUST authenticate and authorise each
+      (1) Kubernetes and all other control plane applications MUST authenticate and authorise each
       action taken by a user or, in automated mode, corresponding software. This applies whether
       the actions are taken via a client, a web interface, or a corresponding API. Administrative
       actions MUST NOT be performed anonymously.
-      Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
+      (2) Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
       rights MUST be granted in a very restrictive manner.
-      Only a small group of people SHOULD be authorised to define automation processes. Only
+      (3) Only a small group of people SHOULD be authorised to define automation processes. Only
       selected administrators SHOULD be given the right to create or change shares for persistent
       volumes in Kubernetes.
     notes: >-
-      TBD
-    status: pending
+      Section 1: In the default configuration, OpenShift restricts the use of the web console and APIs only to authenticated and authorized users.|
+      Connection to external directory services (LDAP, OIDC and others) is possible.
+      Section 2: OpenShift already offers roles for a least privilege concept. The RBAC roles can be adapted or supplemented with new roles.
+      The preconfigured roles enable easy authorization assignment according to the least-privilege and need-to-know principles.
+      User actions can be tracked via the audit log.
+      Section 3: In the default configuration, persistent storage can only be integrated by cluster administrators.
+      For dynamically provisioned storage, the corresponding provisioners have the necessary authorizations.
+      These provisioners must be set up and configured by an admin. Storage requirements are controlled and restricted using quota mechanisms.
+    status: partial
     rules:
+      # Section 1
       - api_server_anonymous_auth
       - kubelet_anonymous_auth
       - kubeadmin_removed
+      # Section 2 + 3
       - rbac_least_privilege
 
   - id: APP.4.4.A4
