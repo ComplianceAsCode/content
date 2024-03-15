@@ -71,6 +71,7 @@ datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
 dc_namespace = "http://purl.org/dc/elements/1.1/"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
 cpe_language_namespace = "http://cpe.mitre.org/language/2.0"
+cpe_dictionary_namespace = "http://cpe.mitre.org/dictionary/2.0"
 oval_footer = "</oval_definitions>"
 oval_namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 xlink_namespace = "http://www.w3.org/1999/xlink"
@@ -138,9 +139,9 @@ PREFIX_TO_NS = {
     "xccdf-1.2": XCCDF12_NS,
     "html": xhtml_namespace,
     "xlink": xlink_namespace,
-    "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
+    "cpe-dict": cpe_dictionary_namespace,
     "cat": cat_namespace,
-    "cpe-lang": "http://cpe.mitre.org/language/2.0",
+    "cpe-lang": cpe_language_namespace,
     "sce": sce_namespace,
 }
 
