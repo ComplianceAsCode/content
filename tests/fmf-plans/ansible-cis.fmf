@@ -1,12 +1,8 @@
 summary:
   Destructive CIS Server Level 2 profile test (Ansible)
-discover:
-  how: fmf
-  url: https://src.fedoraproject.org/tests/scap-security-guide.git
+discover+:
   test:
-  - /Sanity/ansible-machine-hardening/cis
-execute:
-  how: tmt
-adjust:
+  - /hardening/host-os/ansible/cis$
+adjust+:
 - enabled: false
   when: distro == fedora

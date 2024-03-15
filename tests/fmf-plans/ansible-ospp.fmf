@@ -1,12 +1,8 @@
 summary:
   Destructive OSPP profile test (Ansible)
-discover:
-  how: fmf
-  url: https://src.fedoraproject.org/tests/scap-security-guide.git
+discover+:
   test:
-  - /Sanity/ansible-machine-hardening/ospp
-execute:
-  how: tmt
-adjust:
+  - /hardening/host-os/ansible/ospp$
+adjust+:
 - enabled: false
   when: distro == fedora
