@@ -10,7 +10,7 @@
 config_file="$(find_config_file)"
 
 if grep -q "^gpgcheck" "$config_file"; then
-	sed -i "s/^gpgcheck.*/gpgcheck=1/" "$config_file"
+	sed -i "s/^gpgcheck.*/gpgcheck=off/" "$config_file"
 else
-	echo "gpgcheck=1" >> "$config_file"
+	echo "gpgcheck=off" >> "$config_file"
 fi
