@@ -10,7 +10,7 @@
 
 source common.sh
 
-echo > /etc/default/grub
+echo "GRUB_CMDLINE_LINUX=\"\"" > /etc/default/grub
 rm -f /etc/default/grub.d/*
 
 echo "GRUB_CMDLINE_LINUX=\"\$GRUB_CMDLINE_LINUX {{{ ARG_NAME_VALUE }}}\"" > /etc/default/grub.d/custom.cfg
