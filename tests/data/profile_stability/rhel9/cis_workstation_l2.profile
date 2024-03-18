@@ -22,6 +22,7 @@ selections:
 - file_owner_backup_etc_shadow
 - audit_rules_dac_modification_lsetxattr
 - audit_rules_networkconfig_modification
+- audit_rules_networkconfig_modification_network_scripts
 - sysctl_net_ipv4_conf_default_log_martians
 - audit_rules_unsuccessful_file_modification_truncate
 - auditd_data_retention_space_left_action
