@@ -40,3 +40,5 @@ ocil_clause: 'LDAP is not in use, the line is commented out, or not configured c
 ocil: |-
     To ensure TLS is configured with trust certificates, run the following command:
     <pre>$ grep cert /etc/nslcd.conf</pre>
+
+platform: package[nss-pam-ldapd]
