@@ -41,3 +41,8 @@ selections:
 
     # RHEL-08-040001
     - '!package_libreport-plugin-rhtsupport_removed'
+
+    # RHEL-08-040284
+    # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
+    # https://issues.redhat.com/browse/RHEL-10416
+    - '!sysctl_user_max_user_namespaces'
