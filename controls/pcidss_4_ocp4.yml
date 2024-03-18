@@ -222,12 +222,19 @@ controls:
         networks.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
         Trusted and untrusted networks are expected to be different for each environment.
         But loopback traffic is assumed to be trusted and even necessary for some services.
         This requirement is complements 1.2.1 and 1.3.1 requirements.
-      rules: []
+      # NOTE(rhmdnd): Include additional rules here for ingress and egress
+      # firewall configuration when we have them.
+      # https://issues.redhat.com/browse/CMP-2467
+      # https://issues.redhat.com/browse/CMP-2407
+      rules:
+        - configure_network_policies
+        - configure_network_policies_namespaces
+        - configure_network_policies_hypershift_hosted
 
     - id: 1.4.2
       title: Inbound traffic from untrusted networks to trusted networks is restricted.
@@ -240,19 +247,19 @@ controls:
       levels:
         - base
       status: pending
-      notes: |-
-        Probably missing some relevant IPv6 related rules. Needs to be investigated.
-      rules: []
+      # NOTE(rhmdnd): Include additional rules here for ingress firewall
+      # configuration when we have them.
+      # https://issues.redhat.com/browse/CMP-2407
 
     - id: 1.4.3
       title: Anti-spoofing measures are implemented to detect and block forged source IP
         addresses from entering the trusted network.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Probably missing some relevant IPv6 related rules. Needs to be investigated.
-      rules: []
+        Anti-spoofing and blocking forged IP addresses is outside the scope
+        of the OpenShift Container Platform.
 
     - id: 1.4.4
       title: System components that store cardholder data are not directly accessible from
@@ -260,6 +267,10 @@ controls:
       levels:
         - base
       status: pending
+      # NOTE(rhmdnd): Include additional rules here for ingress and egress
+      # firewall configuration when we have them.
+      # https://issues.redhat.com/browse/CMP-2467
+      # https://issues.redhat.com/browse/CMP-2407
       notes: |-
         This requirement is not intended to apply to storage of account data in volatile memory
         but does apply where memory is being treated as persistent storage (for example, RAM
@@ -274,8 +285,10 @@ controls:
         Internal network information is protected from unauthorized disclosure.
       levels:
         - base
-      status: pending
-      rules: []
+      status: not applicable
+      notes: |-
+        Protection from IP address disclosure can be handled by solutions
+        outside of OpenShift.
 
   - id: '1.5'
     title: Risks to the CDE from computing devices that are able to connect to both untrusted
