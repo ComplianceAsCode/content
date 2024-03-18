@@ -5,6 +5,8 @@
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root"
       comment="Verify deny root configuation of pam_tally2 in common-auth" />
+      <criterion test_ref="test_accounts_passwords_pam_tally2_deny_number"
+      comment="Verify deny number configuation of pam_tally2 in common-auth" />
       <criterion test_ref="test_accounts_passwords_pam_tally2_even_deny_root_account"
       comment="Verify deny configuation of pam_tally2 in common-account" />
     </criteria>
@@ -18,8 +20,20 @@
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_even_deny_root" comment="Check even deny root configuration of pam_tally2" version="1">
     <ind:filepath>/etc/pam.d/login</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(?:(?:(?:(?!\n)\s)?[^\n]+)?onerr=fail(?:(?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+deny=(\d+)(?:(?:\s+\S+)*\s*$))|(?:(?:(?:(?!\n)\s)?[^\n]+)?deny=(\d+)(?:(?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+even_deny_root(?:(?:\s+\S+)*\s*$))</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>    
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(?:(?:(?:(?!\n)\s)?[^\n]+)?even_deny_root(?:(?:\s+\S+)*\s*$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_number"
+  check="all" check_existence="all_exist"
+  comment="Verify deny number configuation of pam_tally2" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_number" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_deny_number" comment="Check deny number configuration of pam_tally2" version="1">
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(?:(?:(?:(?!\n)\s)?[^\n]+)?deny=(\d+)(?:(?:\s+\S+)*\s*$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_even_deny_root_account"
