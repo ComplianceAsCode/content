@@ -528,7 +528,7 @@ selections:
 - var_auditd_action_mail_acct=root
 - var_auditd_name_format=stig
 - var_auditd_max_log_file_action=rotate
-- var_auditd_admin_space_left_action=halt
+- var_auditd_admin_space_left_action=single
 - var_auditd_admin_space_left_percentage=5pc
 - var_auditd_space_left_action=email
 - var_auditd_space_left_percentage=25pc
