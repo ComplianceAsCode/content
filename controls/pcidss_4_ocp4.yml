@@ -295,7 +295,7 @@ controls:
       networks and the CDE are mitigated.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 1.5.1
       title: Security controls are implemented on any computing devices, including company- and
@@ -313,11 +313,14 @@ controls:
         period.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        To ensure this requirement, a manual analysis of site policy and topology is inevitable.
-        From the technical perspective, previous requirements should already cover this
-        requirement at some level.
+          This control depends on the context in which OpenShift is used. If
+          OpenShift is used to host the CDE, then devices used to connext to
+          the CDE and the security controls they implement fall outside the
+          scope of OpenShift. If OpenShift is being used to interact with a
+          CDE, then implementing network segmentation and access control for
+          OpenShift network functionality may be required.
 
   - id: '2.1'
     title: Processes and mechanisms for applying secure configurations to all system components
