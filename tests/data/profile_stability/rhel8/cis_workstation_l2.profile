@@ -381,6 +381,7 @@ selections:
 - file_groupowner_backup_etc_passwd
 - sysctl_net_ipv6_conf_default_accept_source_route
 - audit_rules_networkconfig_modification
+- audit_rules_networkconfig_modification_network_scripts
 - package_audit_installed
 - accounts_password_pam_difok
 - account_disable_post_pw_expiration
