@@ -1309,10 +1309,12 @@ controls:
         it will be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
         This requirement is a best practice until 31 March 2025, after which it will be required
         and must be fully considered during a PCI DSS assessment.
+      rules:
+        - acs_sensor_exists
 
     - id: 6.3.3
       title: All system components are protected from known vulnerabilities by installing
@@ -2714,7 +2716,9 @@ controls:
           the entity's vulnerability risk rankings defined at Requirement 6.3.1) are managed
         levels:
           - base
-        status: pending
+        status: automated
+        rules:
+          - acs_sensor_exists
 
       - id: 11.3.1.2
         title: Internal vulnerability scans are performed via authenticated scanning.
@@ -2825,10 +2829,12 @@ controls:
           must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: pending
+        status: automated
         notes: |-
           The policy is not explicit about any specific solution. The solution might vary
           depending on site policies.
+        rules:
+          - acs_sensor_exists
 
   - id: 11.5.2
     title: A change-detection mechanism (for example, file integrity monitoring tools) is deployed.
