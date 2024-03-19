@@ -41,6 +41,7 @@ metadata:
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
+- aide_build_database
 - auditd_data_retention_admin_space_left_action
 - postfix_client_configure_mail_alias
 - accounts_password_pam_ocredit

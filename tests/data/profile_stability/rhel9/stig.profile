@@ -29,6 +29,7 @@ metadata:
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
+- aide_build_database
 - configure_bashrc_tmux
 - package_crypto-policies_installed
 - sysctl_net_ipv4_conf_all_accept_redirects
