@@ -11,7 +11,7 @@ test -f ${CONF_FILE} || touch ${CONF_FILE}
 # Ensure CRYPTO_POLICY is not commented out
 sed -i 's/#CRYPTO_POLICY=/CRYPTO_POLICY=/' ${CONF_FILE}
 
-if ! grep -q -- "$correct_value" "$CONF_FILE"; then
+if ! grep -q "$correct_value" "$CONF_FILE"; then
     # We need to get the existing value, using PCRE to maintain same regex
     existing_value=$(grep -Po '(-oMACs=\S+)' ${CONF_FILE})
 
