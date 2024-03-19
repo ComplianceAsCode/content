@@ -61,6 +61,16 @@ The result will be a list of rules with the number of uses in the profiles.
 The list can be generated as plain text, JSON or CVS.
 Via the `--format FORMAT` parameter.
 
+The tool can also generate a list of the most used component based on rules contained in profiles from the entire project:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components
+```
+
+The result will be a list of rules with the number of uses in the profiles.
+The list can be generated as plain text, JSON or CVS.
+Via the `--format FORMAT` parameter.
+
 ## Generating Controls from DISA's XCCDF Files
 
 If you want a control file for product from DISA's XCCDF files you can run the following command:
