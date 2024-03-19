@@ -48,12 +48,9 @@ def _process_all_products_from_controls(rules):
             _count_rules_per_rules_list(profile.rules, rules)
 
 
-def _sorted_rules(rules):
-    sorted_rules = {
-        k: v
-        for k, v in sorted(rules.items(), key=lambda x: x[1], reverse=True)
-    }
-    return sorted_rules
+def _sorted_dict_by_num_value(dict_):
+    sorted_ = {k: v for k, v in sorted(dict_.items(), key=lambda x: x[1], reverse=True)}
+    return sorted_
 
 
 def command_most_used_rules(args):
@@ -65,7 +62,7 @@ def command_most_used_rules(args):
         for benchmark in args.BENCHMARKS:
             _count_rules_per_benchmark(benchmark, rules)
 
-    sorted_rules = _sorted_rules(rules)
+    sorted_rules = _sorted_dict_by_num_value(rules)
 
     f_string = "{}: {}"
 
