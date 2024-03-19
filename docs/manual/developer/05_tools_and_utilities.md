@@ -57,6 +57,12 @@ Or you can also run this command to get a list of the most used rules in the ent
     $ ./build-scripts/profile_tool.py most-used-rules
 ```
 
+Optionally, you can use this command to limit the statistics for a specific product:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-rules --products rhel9
+```
+
 The result will be a list of rules with the number of uses in the profiles.
 The list can be generated as plain text, JSON or CVS.
 Via the `--format FORMAT` parameter.
@@ -65,6 +71,12 @@ The tool can also generate a list of the most used component based on rules cont
 
 ```bash
     $ ./build-scripts/profile_tool.py most-used-components
+```
+
+Optionally, you can use this command to limit the statistics for a specific product:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9
 ```
 
 The result will be a list of rules with the number of uses in the profiles.
