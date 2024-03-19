@@ -5,6 +5,7 @@ from __future__ import print_function
 import argparse
 
 try:
+    from utils.controleval import get_available_products
     from utils.profile_tool import (
         command_stats,
         command_sub,
@@ -278,6 +279,13 @@ def parse_most_used_rules_subcommand(subparsers):
         default="plain",
         choices=["plain", "json", "csv"],
         help="Which format to use for output.",
+    )
+    parser_most_used_rules.add_argument(
+        "--products",
+        help="List of products to be considered. If not specified will by used all products.",
+        nargs="+",
+        choices=get_available_products(),
+        default=get_available_products(),
     )
 
 
