@@ -12,7 +12,6 @@ if not PYTHON_2:
     from .profile import get_profile
     from ..controleval import (
         load_controls_manager,
-        get_available_products,
         get_product_profiles_files,
     )
 
@@ -37,11 +36,11 @@ def _get_profiles_for_product(ctrls_mgr, product):
     return profiles
 
 
-def _process_all_products_from_controls(rules):
+def _process_all_products_from_controls(rules, products):
     if PYTHON_2:
         raise Exception("This feature is not supported for python2.")
 
-    for product in get_available_products():
+    for product in products:
         controls_manager = load_controls_manager("./controls/", product)
         for profile in _get_profiles_for_product(controls_manager, product):
             _count_rules_per_rules_list(profile.rules, rules)
@@ -56,7 +55,7 @@ def command_most_used_rules(args):
     rules = defaultdict(int)
 
     if not args.BENCHMARKS:
-        _process_all_products_from_controls(rules)
+        _process_all_products_from_controls(rules, args.products)
     else:
         for benchmark in args.BENCHMARKS:
             _count_rules_per_benchmark(benchmark, rules)

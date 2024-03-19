@@ -13,7 +13,6 @@ if not PYTHON_2:
     from .most_used_rules import _get_profiles_for_product
     from ..controleval import (
         load_controls_manager,
-        get_available_products,
         load_product_yaml,
     )
 
@@ -41,11 +40,11 @@ def load_components(product):
     return ssg.components.load(components_dir)
 
 
-def _process_all_products_from_controls(components_out):
+def _process_all_products_from_controls(components_out, products):
     if PYTHON_2:
         raise Exception("This feature is not supported for python2.")
 
-    for product in get_available_products():
+    for product in products:
         components = load_components(product)
         if components is None:
             continue
@@ -57,7 +56,7 @@ def _process_all_products_from_controls(components_out):
 def command_most_used_components(args):
     components = defaultdict(int)
 
-    _process_all_products_from_controls(components)
+    _process_all_products_from_controls(components, args.products)
 
     sorted_components = _sorted_dict_by_num_value(components)
     csv_header = "component_name,count_of_rules"
