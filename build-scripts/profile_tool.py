@@ -5,7 +5,12 @@ from __future__ import print_function
 import argparse
 
 try:
-    from utils.profile_tool import command_stats, command_sub, command_most_used_rules
+    from utils.profile_tool import (
+        command_stats,
+        command_sub,
+        command_most_used_rules,
+        command_most_used_components,
+    )
 except ImportError:
     print("The ssg module could not be found.")
     print(
@@ -276,6 +281,23 @@ def parse_most_used_rules_subcommand(subparsers):
     )
 
 
+def parse_most_used_components(subparsers):
+    parser_most_used_components = subparsers.add_parser(
+        "most-used-components",
+        description=(
+            "Generates list of all components used by the rules in existing profiles."
+            " In various formats."
+        ),
+        help="Generates list of all components used by the rules in existing profiles.",
+    )
+    parser_most_used_components.add_argument(
+        "--format",
+        default="plain",
+        choices=["plain", "json", "csv"],
+        help="Which format to use for output.",
+    )
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand", required=True)
@@ -283,6 +305,7 @@ def parse_args():
     parse_stats_subcommand(subparsers)
     parse_sub_subcommand(subparsers)
     parse_most_used_rules_subcommand(subparsers)
+    parse_most_used_components(subparsers)
 
     args = parser.parse_args()
 
@@ -319,6 +342,7 @@ SUBCMDS = {
     "stats": command_stats,
     "sub": command_sub,
     "most-used-rules": command_most_used_rules,
+    "most-used-components": command_most_used_components,
 }
 
 
