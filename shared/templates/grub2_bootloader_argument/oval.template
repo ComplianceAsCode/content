@@ -9,6 +9,7 @@
 {{% set system_with_referenced_kernel_options_in_loader_entries = false -%}}
 {{% set system_with_kernel_options_in_grubenv = false -%}}
 {{% set system_with_kernel_options_in_etc_default_grub = true -%}}
+{{% set system_with_kernel_options_in_etc_default_grub_d = false -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
 {{% set system_with_bios_and_uefi_support = false -%}}
 
@@ -23,6 +24,10 @@
 
 {{% if product in ["ol7", "rhel7"] or 'ubuntu' in product -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = true %}}
+{{%- endif -%}}
+
+{{% if 'ubuntu' in product -%}}
+{{% set system_with_kernel_options_in_etc_default_grub_d = true -%}}
 {{%- endif -%}}
 
 {{% if grub2_uefi_boot_path and grub2_uefi_boot_path != grub2_boot_path -%}}
@@ -66,11 +71,23 @@
       {{%- endif %}}
       {{% if system_with_kernel_options_in_etc_default_grub -%}}
         <criteria operator="OR">
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-          comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
+          <criteria operator="OR">
+            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
+            comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
+            {{% if system_with_kernel_options_in_etc_default_grub_d -%}}
+            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir"
+            comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX" />
+            {{%- endif %}}
+          </criteria>
           <criteria operator="AND">
-            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
-            comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
+            <criteria operator="OR">
+              <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
+              comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
+              {{% if system_with_kernel_options_in_etc_default_grub_d -%}}
+              <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
+              comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX_DEFAULT" />
+              {{%- endif %}}
+            </criteria>
             <extend_definition definition_ref="bootloader_disable_recovery_set_to_true"
             comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
           </criteria>
@@ -88,11 +105,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" version="1">
-    {{%- if 'ubuntu' in product %}}
-    <ind:filepath operation="pattern match">^/etc/default/grub(\.d/[^/]+\.cfg)?$</ind:filepath>
-    {{%- else %}}
     <ind:filepath>/etc/default/grub</ind:filepath>
-    {{%- endif %}}
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -106,11 +119,36 @@
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
   version="1">
-    {{%- if 'ubuntu' in product %}}
-    <ind:filepath operation="pattern match">^/etc/default/grub(\.d/[^/]+\.cfg)?$</ind:filepath>
-    {{%- else %}}
     <ind:filepath>/etc/default/grub</ind:filepath>
-    {{%- endif %}}
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{%- endif %}}
+
+{{% if system_with_kernel_options_in_etc_default_grub_d -%}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir"
+  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX"
+  check="all" check_existence="any_exist" version="1">
+    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
+  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" version="1">
+    <ind:filepath>/etc/default/grub.d/*.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default_configdir"
+  version="1">
+    <ind:filepath>/etc/default/grub.d/*.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
