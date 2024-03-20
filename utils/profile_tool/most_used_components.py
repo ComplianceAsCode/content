@@ -1,6 +1,9 @@
 import sys
 import os
+from collections import defaultdict
+
 import ssg.components
+
 from .most_used_rules import _sorted_dict_by_num_value
 from .common import generate_output
 
@@ -18,10 +21,7 @@ if not PYTHON_2:
 def _count_components(components, rules_list, components_out):
     for rule in rules_list:
         component = get_component_name_by_rule_id(rule, components)
-        if component in components_out:
-            components_out[component] += 1
-        else:
-            components_out[component] = 1
+        components_out[component] += 1
 
 
 def get_component_name_by_rule_id(rule_id, components):
@@ -55,7 +55,7 @@ def _process_all_products_from_controls(components_out):
 
 
 def command_most_used_components(args):
-    components = {}
+    components = defaultdict(int)
 
     _process_all_products_from_controls(components)
 

@@ -1,4 +1,5 @@
 import sys
+from collections import defaultdict
 
 from ssg.build_profile import XCCDFBenchmark
 
@@ -18,10 +19,7 @@ if not PYTHON_2:
 
 def _count_rules_per_rules_list(rules_list, rules):
     for rule in rules_list:
-        if rule in rules:
-            rules[rule] += 1
-        else:
-            rules[rule] = 1
+        rules[rule] += 1
 
 
 def _count_rules_per_benchmark(benchmark, rules):
@@ -55,7 +53,7 @@ def _sorted_dict_by_num_value(dict_):
 
 
 def command_most_used_rules(args):
-    rules = {}
+    rules = defaultdict(int)
 
     if not args.BENCHMARKS:
         _process_all_products_from_controls(rules)
