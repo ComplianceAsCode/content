@@ -281,7 +281,7 @@ selections:
 - file_owner_var_log_messages
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
-- file_permission_user_init_files
+- file_permission_user_init_files_root
 - file_permissions_backup_etc_group
 - file_permissions_backup_etc_gshadow
 - file_permissions_backup_etc_passwd

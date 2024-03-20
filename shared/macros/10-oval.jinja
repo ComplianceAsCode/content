@@ -1151,12 +1151,29 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 :param object_id: Object id to be created.
 :type object_id: str
+:param include_root: If set to true, the "root" user account will be included to the list. Default: False.
+:type include_root: bool
 
 #}}
-{{%- macro create_interactive_users_list_object(object_id) -%}}
+{{%- macro create_interactive_users_list_object(object_id, include_root=False) -%}}
   {{%- set ignored_users_list="(nobody|nfsnobody)" %}}
 
   <unix:password_object id="{{{ object_id }}}" version="1">
+    <set>
+      {{% if include_root %}}
+        <object_reference>{{{ object_id }}}_root</object_reference>
+      {{% endif %}}
+      <object_reference>{{{ object_id }}}_others</object_reference>
+    </set>
+  </unix:password_object>
+
+  {{% if include_root %}}
+    <unix:password_object id="{{{ object_id }}}_root" version="1">
+      <unix:username datatype="string" operation="equals">root</unix:username>
+    </unix:password_object>
+  {{% endif %}}
+
+  <unix:password_object id="{{{ object_id }}}_others" version="1">
     <unix:username datatype="string" operation="pattern match">.*</unix:username>
     <filter action="include">state_{{{ rule_id }}}_users_uids</filter>
     <filter action="exclude">state_{{{ rule_id }}}_users_ignored</filter>
