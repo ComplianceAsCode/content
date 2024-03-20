@@ -5,7 +5,13 @@ from __future__ import print_function
 import argparse
 
 try:
-    from utils.profile_tool import command_stats, command_sub, command_most_used_rules
+    from utils.controleval import get_available_products, load_product_yaml
+    from utils.profile_tool import (
+        command_stats,
+        command_sub,
+        command_most_used_rules,
+        command_most_used_components,
+    )
 except ImportError:
     print("The ssg module could not be found.")
     print(
@@ -274,6 +280,50 @@ def parse_most_used_rules_subcommand(subparsers):
         choices=["plain", "json", "csv"],
         help="Which format to use for output.",
     )
+    parser_most_used_rules.add_argument(
+        "--products",
+        help="List of products to be considered. If not specified will by used all products.",
+        nargs="+",
+        choices=get_available_products(),
+        default=get_available_products(),
+    )
+
+
+def parse_most_used_components(subparsers):
+    parser_most_used_components = subparsers.add_parser(
+        "most-used-components",
+        description=(
+            "Generates list of all components used by the rules in existing profiles."
+            " In various formats."
+        ),
+        help="Generates list of all components used by the rules in existing profiles.",
+    )
+    parser_most_used_components.add_argument(
+        "--format",
+        default="plain",
+        choices=["plain", "json", "csv"],
+        help="Which format to use for output.",
+    )
+    parser_most_used_components.add_argument(
+        "--products",
+        help=(
+            "List of products to be considered. "
+            "If not specified will by used all products with components_root."
+        ),
+        nargs="+",
+        choices=get_available_products_with_components_root(),
+        default=get_available_products_with_components_root(),
+    )
+
+
+def get_available_products_with_components_root():
+    out = set()
+    for product in get_available_products():
+        product_yaml = load_product_yaml(product)
+        components_root = product_yaml.get("components_root")
+        if components_root is not None:
+            out.add(product)
+    return out
 
 
 def parse_args():
@@ -283,6 +333,7 @@ def parse_args():
     parse_stats_subcommand(subparsers)
     parse_sub_subcommand(subparsers)
     parse_most_used_rules_subcommand(subparsers)
+    parse_most_used_components(subparsers)
 
     args = parser.parse_args()
 
@@ -319,6 +370,7 @@ SUBCMDS = {
     "stats": command_stats,
     "sub": command_sub,
     "most-used-rules": command_most_used_rules,
+    "most-used-components": command_most_used_components,
 }
 
 

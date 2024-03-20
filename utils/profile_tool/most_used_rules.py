@@ -1,7 +1,9 @@
 import sys
-import json
+from collections import defaultdict
 
 from ssg.build_profile import XCCDFBenchmark
+
+from .common import generate_output
 
 
 PYTHON_2 = sys.version_info[0] < 3
@@ -10,17 +12,13 @@ if not PYTHON_2:
     from .profile import get_profile
     from ..controleval import (
         load_controls_manager,
-        get_available_products,
         get_product_profiles_files,
     )
 
 
 def _count_rules_per_rules_list(rules_list, rules):
     for rule in rules_list:
-        if rule in rules:
-            rules[rule] += 1
-        else:
-            rules[rule] = 1
+        rules[rule] += 1
 
 
 def _count_rules_per_benchmark(benchmark, rules):
@@ -38,43 +36,30 @@ def _get_profiles_for_product(ctrls_mgr, product):
     return profiles
 
 
-def _process_all_products_from_controls(rules):
+def _process_all_products_from_controls(rules, products):
     if PYTHON_2:
         raise Exception("This feature is not supported for python2.")
 
-    for product in get_available_products():
+    for product in products:
         controls_manager = load_controls_manager("./controls/", product)
         for profile in _get_profiles_for_product(controls_manager, product):
             _count_rules_per_rules_list(profile.rules, rules)
 
 
-def _sorted_rules(rules):
-    sorted_rules = {
-        k: v
-        for k, v in sorted(rules.items(), key=lambda x: x[1], reverse=True)
-    }
-    return sorted_rules
+def _sorted_dict_by_num_value(dict_):
+    sorted_ = {k: v for k, v in sorted(dict_.items(), key=lambda x: x[1], reverse=True)}
+    return sorted_
 
 
 def command_most_used_rules(args):
-    rules = {}
+    rules = defaultdict(int)
 
     if not args.BENCHMARKS:
-        _process_all_products_from_controls(rules)
+        _process_all_products_from_controls(rules, args.products)
     else:
         for benchmark in args.BENCHMARKS:
             _count_rules_per_benchmark(benchmark, rules)
 
-    sorted_rules = _sorted_rules(rules)
-
-    f_string = "{}: {}"
-
-    if args.format == "json":
-        print(json.dumps(sorted_rules, indent=4))
-        return
-    elif args.format == "csv":
-        print("rule_id,count_of_profiles")
-        f_string = "{},{}"
-
-    for rule_id, rule_count in sorted_rules.items():
-        print(f_string.format(rule_id, rule_count))
+    sorted_rules = _sorted_dict_by_num_value(rules)
+    csv_header = "rule_id,count_of_profiles"
+    generate_output(sorted_rules, args.format, csv_header)
