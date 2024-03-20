@@ -5,7 +5,7 @@ from __future__ import print_function
 import argparse
 
 try:
-    from utils.controleval import get_available_products
+    from utils.controleval import get_available_products, load_product_yaml
     from utils.profile_tool import (
         command_stats,
         command_sub,
@@ -304,6 +304,26 @@ def parse_most_used_components(subparsers):
         choices=["plain", "json", "csv"],
         help="Which format to use for output.",
     )
+    parser_most_used_components.add_argument(
+        "--products",
+        help=(
+            "List of products to be considered. "
+            "If not specified will by used all products with components_root."
+        ),
+        nargs="+",
+        choices=get_available_products_with_components_root(),
+        default=get_available_products_with_components_root(),
+    )
+
+
+def get_available_products_with_components_root():
+    out = set()
+    for product in get_available_products():
+        product_yaml = load_product_yaml(product)
+        components_root = product_yaml.get("components_root")
+        if components_root is not None:
+            out.add(product)
+    return out
 
 
 def parse_args():
