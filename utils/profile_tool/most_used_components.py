@@ -1,7 +1,7 @@
 import json
 import sys
 import os
-from ssg.components import Component
+import ssg.components
 from .most_used_rules import _sorted_dict_by_num_value
 
 PYTHON_2 = sys.version_info[0] < 3
@@ -11,6 +11,7 @@ if not PYTHON_2:
     from ..controleval import (
         load_controls_manager,
         get_available_products,
+        load_product_yaml,
     )
 
 
@@ -30,21 +31,24 @@ def get_component_name_by_rule_id(rule_id, components):
     return "without_component"
 
 
-def load_components(components_dir):
-    components = {}
-    for component_file in os.listdir(os.path.abspath(components_dir)):
-        component_path = os.path.join(components_dir, component_file)
-        component = Component(component_path)
-        components[component.name] = component
-    return components
+def load_components(product):
+    product_yaml = load_product_yaml(product)
+    product_dir = product_yaml.get("product_dir")
+    components_root = product_yaml.get("components_root")
+    if components_root is None:
+        return None
+    components_dir = os.path.abspath(os.path.join(product_dir, components_root))
+    return ssg.components.load(components_dir)
 
 
 def _process_all_products_from_controls(components_out):
-    components = load_components("./components/")
     if PYTHON_2:
         raise Exception("This feature is not supported for python2.")
 
     for product in get_available_products():
+        components = load_components(product)
+        if components is None:
+            continue
         controls_manager = load_controls_manager("./controls/", product)
         for profile in _get_profiles_for_product(controls_manager, product):
             _count_components(components, profile.rules, components_out)
