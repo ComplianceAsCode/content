@@ -1,7 +1,8 @@
 import sys
-import json
 
 from ssg.build_profile import XCCDFBenchmark
+
+from .common import generate_output
 
 
 PYTHON_2 = sys.version_info[0] < 3
@@ -63,15 +64,5 @@ def command_most_used_rules(args):
             _count_rules_per_benchmark(benchmark, rules)
 
     sorted_rules = _sorted_dict_by_num_value(rules)
-
-    f_string = "{}: {}"
-
-    if args.format == "json":
-        print(json.dumps(sorted_rules, indent=4))
-        return
-    elif args.format == "csv":
-        print("rule_id,count_of_profiles")
-        f_string = "{},{}"
-
-    for rule_id, rule_count in sorted_rules.items():
-        print(f_string.format(rule_id, rule_count))
+    csv_header = "rule_id,count_of_profiles"
+    generate_output(sorted_rules, args.format, csv_header)

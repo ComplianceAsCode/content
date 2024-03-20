@@ -1,8 +1,8 @@
-import json
 import sys
 import os
 import ssg.components
 from .most_used_rules import _sorted_dict_by_num_value
+from .common import generate_output
 
 PYTHON_2 = sys.version_info[0] < 3
 
@@ -60,15 +60,5 @@ def command_most_used_components(args):
     _process_all_products_from_controls(components)
 
     sorted_components = _sorted_dict_by_num_value(components)
-
-    f_string = "{}: {}"
-
-    if args.format == "json":
-        print(json.dumps(sorted_components, indent=4))
-        return
-    elif args.format == "csv":
-        print("component_name,count_of_rules")
-        f_string = "{},{}"
-
-    for rule_id, rule_count in sorted_components.items():
-        print(f_string.format(rule_id, rule_count))
+    csv_header = "component_name,count_of_rules"
+    generate_output(sorted_components, args.format, csv_header)
