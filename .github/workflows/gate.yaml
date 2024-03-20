@@ -90,7 +90,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Upgrade pip python
-        run: pip3 install --upgrade pip 
+        run: pip3 install --upgrade pip
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt --ignore-installed PyYAML
       - name: Build
@@ -180,14 +180,14 @@ jobs:
     name: Build on Windows
     runs-on: windows-latest
     env:
-      OPENSCAP_VERSION: "1.3.10"
-      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.3.10"
+      OPENSCAP_VERSION: "1.4.0"
+      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.0"
     steps:
         - name: Install Deps
           run: choco install xsltproc
         - name: Get Latest OpenSCAP
           shell: powershell
-          run: "Invoke-WebRequest -Uri https://nightly.link/OpenSCAP/openscap/workflows/build/maint-1.3/openscap-win64.zip -OutFile ${{ github.workspace }}\\openscap-win.zip"
+          run: "Invoke-WebRequest -Uri https://nightly.link/OpenSCAP/openscap/workflows/build/main/openscap-win64.zip -OutFile ${{ github.workspace }}\\openscap-win.zip"
         - name: Extract Latest OpenSCAP
           shell: powershell
           run: "Expand-Archive -LiteralPath ${{ github.workspace }}\\openscap-win.zip -DestinationPath ${{ github.workspace }}\\openscap-win -Verbose:$true"
