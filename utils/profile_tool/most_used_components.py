@@ -18,16 +18,9 @@ if not PYTHON_2:
 
 
 def _count_components(components, rules_list, components_out):
-    for rule in rules_list:
-        component = get_component_name_by_rule_id(rule, components)
-        components_out[component] += 1
-
-
-def get_component_name_by_rule_id(rule_id, components):
-    for component in components.values():
-        if rule_id in component.rules:
-            return component.name
-    return "without_component"
+    for component_name, component in components.items():
+        if len(set(component.rules).intersection(set(rules_list))) > 0:
+            components_out[component_name] += 1
 
 
 def load_components(product):
@@ -59,5 +52,5 @@ def command_most_used_components(args):
     _process_all_products_from_controls(components, args.products)
 
     sorted_components = _sorted_dict_by_num_value(components)
-    csv_header = "component_name,count_of_rules"
+    csv_header = "component_name,count_of_profiles"
     generate_output(sorted_components, args.format, csv_header)
