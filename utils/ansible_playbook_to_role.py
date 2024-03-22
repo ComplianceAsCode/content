@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 
@@ -607,7 +606,7 @@ def main():
             elif repo.name not in potential_roles:
                 print("Repo '%s' is not managed by this script. "
                       "It may need to be deleted, please verify and do that "
-                      "manually!" % repo.name)
+                      "manually!" % repo.name, file=sys.stderr)
 
 
 if __name__ == "__main__":
