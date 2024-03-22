@@ -18,14 +18,18 @@ import collections
 try:
     from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
-    sys.stderr.write("Please install PyGithub, on Fedora it's in the "
-                     "python-PyGithub package.\n")
-    sys.exit(1)
+    print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+          file=sys.stderr)
+    raise SystemExit(1)
 
 
-import ssg.ansible
-import ssg.yaml
-from ssg.utils import mkdir_p
+try:
+    import ssg.ansible
+    import ssg.yaml
+    from ssg.utils import mkdir_p
+except ImportError:
+    print("Unable to find the ssg module. Please run 'source .pyenv'", file=sys.stderr)
+    raise SystemExit(1)
 
 
 def memoize(f):
