@@ -15,6 +15,10 @@ import getpass
 import yaml
 import collections
 
+
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PLAYBOOK_ROOT = os.path.join(SSG_ROOT, "build", "ansible")
+
 try:
     from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
@@ -490,17 +494,18 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Generates Ansible Roles and pushes them to Github')
     parser.add_argument(
-        "--build-playbooks-dir", required=True,
+        "--build-playbooks-dir",
         help="Path to directory containing the generated Ansible Playbooks. "
-        "Most likely this is going to be ./build/ansible",
-        dest="build_playbooks_dir")
+        "Most likely this is going to be ./build/ansible. Defaults to {}".format(PLAYBOOK_ROOT),
+        dest="build_playbooks_dir", default=PLAYBOOK_ROOT)
     parser.add_argument(
         "--dry-run", "-d", dest="dry_run",
-        help="Do not push Ansible Roles to the Github, store them only to local directory"
+        help="Do not push Ansible Roles to Github, store them only to the given local directory."
     )
     parser.add_argument(
         "--organization", "-o", default=ORGANIZATION_NAME,
-        help="Name of the Github organization")
+        help="Name of the Github organization to publish roles to. "
+             "Defaults to {}.".format(ORGANIZATION_NAME))
     parser.add_argument(
         "--profile", "-p", default=[], action="append",
         metavar="PROFILE", choices=PROFILE_ALLOWLIST,
@@ -511,7 +516,7 @@ def parse_args():
         help="What products to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--tag-release", "-n", default=False, action="store_true",
-        help="Tag a new release in GitHub")
+        help="Tag a new release in GitHub. Defaults to False.")
     parser.add_argument(
         "--token", "-t", dest="token",
         help="GitHub token used for organization authorization")
