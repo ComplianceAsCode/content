@@ -121,7 +121,6 @@ selections:
     - kubelet_enable_iptables_util_chains
     - kubelet_enable_protect_kernel_defaults
     - kubelet_enable_protect_kernel_sysctl
-    - kubelet_enable_protect_kernel_sysctl_file_exist
     - kubelet_enable_protect_kernel_sysctl_kernel_keys_root_maxbytes
     - kubelet_enable_protect_kernel_sysctl_kernel_keys_root_maxkeys
     - kubelet_enable_protect_kernel_sysctl_kernel_panic
