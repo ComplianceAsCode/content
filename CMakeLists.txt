@@ -158,6 +158,7 @@ find_python_module(openpyxl)
 find_python_module(pandas)
 find_python_module(pcre2)
 find_python_module(cmakelint)
+find_python_module(github)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -268,6 +269,7 @@ message(STATUS "python pcre2 module (optional): ${PY_PCRE2}")
 message(STATUS "python lxml module (optional): ${PY_LXML}")
 message(STATUS "python prometheus-client module (optional): ${PY_PROMETHEUS_CLIENT}")
 message(STATUS "python compliance-trestle module (optional): ${PY_TRESTLE}")
+message(STATUS "python github (PyGitHub) module (optional): ${PY_GITHUB}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
