@@ -1,70 +1,41 @@
 
-title: Ensure that the cluster's audit profile is properly set
+title: Ensure that API server audit logging is enabled
 
 description: |-
-  <p>
-  OpenShift can audit the details of requests made to the API server through
-  the standard Kubernetes audit capabilities. 
-  </p>
-
-  <p>
-  In OpenShift, auditing of the API Server is on by default. Audit provides a
+  OpenShift has the ability to audit API server requests. Audit provides a
   security-relevant chronological set of records documenting the sequence of
   activities that have affected system by individual users, administrators, or
   other components of the system. Audit works at the API server level, logging
-  all requests coming to the server. Each audit log contains two entries:
-  </p>
+  all requests coming to the server.
 
-  <p>
-  The request line containing:
-  </p>
+  Verify that audit logging is enabled by checking that the API server audit
+  log configuration is not set to `None`, which explicitly disables the
+  functionality.
 
-  <ul>
-    <li>A Unique ID allowing to match the response line (see #2)</li>
-    <li>The source IP of the request</li>
-    <li>The HTTP method being invoked</li>
-    <li>The original user invoking the operation</li>
-    <li>The impersonated user for the operation (self meaning himself)</li>
-    <li>The impersonated group for the operation (lookup meaning user's group)</li>
-    <li>The namespace of the request or none</li>
-    <li>The URI as requested</li>
-  </ul>
-
-  <p>
-  The response line containing:
-  </p>
-
-  <ul>
-    <li>The aforementioned unique ID</li>
-    <li>The response code</li>
-  </ul>
-
-  <p>
   For more information on how to configure the audit profile, please visit
   {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/audit-log-policy-config.html",
               text="the documentation") }}}
-  </p>
-  
+
 rationale: |-
   Logging is an important detective control for all systems, to detect potential
   unauthorised access.
 
 identifiers:
-  cce@ocp4: CCE-83577-7
+  cce@ocp4: CCE-90619-8
 
 references:
-  cis@ocp4: 3.2.2
+  cis@ocp4: 3.2.1
   nerc-cip: CIP-003-8 R4,CIP-003-8 R4.1,CIP-003-8 R4.2,CIP-003-8 R5.2,CIP-003-8 R6,CIP-004-6 R2.2.2,CIP-004-6 R2.2.3,CIP-004-6 R3.3,CIP-007-3 R.1.3,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3,CIP-007-3 R6.5
   nist: AU-2,AU-3,AU-3(1),AU-6,AU-6(1),AU-7,AU-7(1),AU-8,AU-8(1),AU-9,AU-12,AU-12(1),AU-12(3),CM-5(1),SI-11,SI-12,SI-4(20),SI-4(23)
   pcidss: Req-2.2,Req-12.5.5
   srg: SRG-APP-000089-CTR-000150,SRG-APP-000090-CTR-000155,SRG-APP-000101-CTR-000205
 
-ocil_clause: 'The proper audit profile is not set'
+ocil_clause: 'Audit logging is not enabled'
 
 ocil: |-
     Run the following command to retrieve the current audit profile:
     <pre>$ oc get apiservers cluster -ojsonpath='{.spec.audit.profile}'</pre>
-    Make sure the profile returned matches the one that should be used.
+    Make sure the value is not set to `None`.
 
 
 severity: medium
@@ -79,4 +50,7 @@ template:
     ocp_data: "true"
     filepath: /apis/config.openshift.io/v1/apiservers/cluster
     yamlpath: "spec.audit.profile"
-    xccdf_variable: var_openshift_audit_profile
+    values:
+    - value: "None"
+      type: "string"
+      operation: "not equal"
