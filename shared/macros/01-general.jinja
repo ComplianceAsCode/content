@@ -450,8 +450,12 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
           version: 3.1.0
         systemd:
           units:
-          - enabled: false
-            name: {{{ service }}}.service
+          - name: {{{ service }}}.service
+            enabled: false
+            mask: true
+          - name: {{{ service }}}.socket
+            enabled: false
+            mask: true
     </pre>
     <p>
     This will disable the <tt>{{{ service }}}</tt> service in all the
