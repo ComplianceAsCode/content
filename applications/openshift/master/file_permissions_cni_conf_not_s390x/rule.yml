@@ -1,12 +1,13 @@
 documentation_complete: true
 
 
-platform: ocp4-node
+platform: ocp4-node and not_s390x_arch
 
 title: 'Verify Permissions on the OpenShift Container Network Interface Files'
 
 description: |-
     {{{ describe_file_permissions(file="/etc/cni/net.d/*", perms="0600") }}}
+    This rule is for architectures other than s390x.
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -17,7 +18,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-83379-8
+    cce@ocp4: CCE-86593-1
 
 references:
     cis@ocp4: 1.1.9
