@@ -1,7 +1,6 @@
 #!/bin/bash
 # remediation = none
-
-yum install -y jq
+# packages = jq
 
 kube_apipath="/kubernetes-api-resources"
 mkdir -p "$kube_apipath/apis/rbac.authorization.k8s.io/v1"
