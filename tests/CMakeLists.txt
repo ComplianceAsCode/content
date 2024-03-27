@@ -350,3 +350,19 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
         set_tests_properties("utils-import_disa_stig_sanity" PROPERTIES LABELS quick)
     )
 endif()
+
+
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_GITHUB)
+    add_test(
+        NAME "utils-ansible-playbook-to-role-help"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" "--help"
+    )
+    set_tests_properties("utils-ansible-playbook-to-role-help" PROPERTIES LABELS quick)
+    if(SSG_PRODUCT_RHEL9)
+        file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/roles")
+        add_test(
+            NAME "utils-ansible-playbook-to-role-rhel9"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" "--dry-run" "${CMAKE_BINARY_DIR}/roles" "--product" "rhel9" "--build-playbooks-dir" "${CMAKE_BINARY_DIR}/ansible"
+        )
+    endif()
+endif()
