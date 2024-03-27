@@ -35,12 +35,9 @@ references:
 identifiers:
   cce@ocp4: CCE-83674-2
 
-platforms:
-  - ocp4.8 or ocp4.9
-
 severity: medium
 
-platform: not ocp4-on-hypershift-hosted
+platform: not ocp4-on-hypershift-hosted and (ocp4.8 or ocp4.9)
 
 ocil_clause: '<tt>kube-scheduler-pod</tt> sets --bind-address'
 
