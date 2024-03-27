@@ -11,7 +11,9 @@ checktext: |-
 
     $ sudo dnf list --installed crypto-policies
 
-    crypto-policies.noarch     20220223-1.git5203b41.el9_0.1
+    Example output:
+
+    crypto-policies.noarch          20220223-1.git5203b41.el9_0.1
 
     If the "crypto-policies" package is not installed, this is a finding.
 
@@ -19,3 +21,6 @@ fixtext: |-
     Install the crypto-policies package (if the package is not already installed) with the following command:
 
     $ sudo dnf install crypto-policies
+
+vuln_discussion: |-
+    Centralized cryptographic policies simplify applying secure ciphers across an operating system and the applications that run on that operating system. Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data.

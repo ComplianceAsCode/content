@@ -42,3 +42,8 @@ selections:
 
     # RHEL-09-215025
     - '!package_nfs-utils_removed'
+
+    # RHEL-09-213105
+    # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
+    # https://issues.redhat.com/browse/RHEL-10416
+    - '!sysctl_user_max_user_namespaces'

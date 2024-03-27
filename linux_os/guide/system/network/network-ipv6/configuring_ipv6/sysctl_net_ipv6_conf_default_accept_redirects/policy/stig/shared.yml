@@ -11,7 +11,7 @@ checktext: |-
 
     Check the value of the default "accept_redirects" variables with the following command:
 
-    $ sysctl net.ipv6.conf.default.accept_redirects
+    $ sudo sysctl net.ipv6.conf.default.accept_redirects
 
     net.ipv6.conf.default.accept_redirects = 0
 
@@ -19,7 +19,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' |  grep -F net.ipv6.conf.default.accept_redirects | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F net.ipv6.conf.default.accept_redirects | tail -1
 
     net.ipv6.conf.default.accept_redirects = 0
 
@@ -35,3 +35,6 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    ICMP redirect messages are used by routers to inform hosts that a more direct route exists for a particular destination. These messages modify the host's route table and are unauthenticated. An illicit ICMP redirect message could result in a man-in-the-middle attack.

@@ -370,7 +370,6 @@ selections:
     - audit_rules_unsuccessful_file_modification_fchownat
     - sebool_openvpn_enable_homedirs
     - zipl_enable_selinux
-    - file_permissions_systemmap
     - audit_rules_unsuccessful_file_modification_open_o_creat
     - kernel_config_ipv6
     - audit_rules_successful_file_modification_chown

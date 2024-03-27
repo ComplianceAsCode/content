@@ -724,7 +724,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- endmacro %}}
 
 
-{{% macro ansible_ini_file_set(filename, section, key, value, description="") -%}}
+{{% macro ansible_ini_file_set(filename, section, key, value, description="", ignore_spaces=false) -%}}
 - name: "{{{ description if description else ("Set '" + key + "' to '" + value + "' in the [" + section + "] section of '" + filename + "'") }}}"
   ini_file:
     path: "{{{ filename }}}"
@@ -733,6 +733,11 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     value: "{{{ value }}}"
     create: yes
     mode: 0644
+    {{% if ignore_spaces %}}
+    ignore_spaces: false
+    no_extra_spaces: true
+    {{% endif %}}
+
 {{%- endmacro %}}
 
 {{#

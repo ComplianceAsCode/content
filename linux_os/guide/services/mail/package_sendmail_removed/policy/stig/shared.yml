@@ -19,3 +19,6 @@ fixtext: |-
     Remove the sendmail package with the following command:
 
     $ sudo dnf remove sendmail
+
+vuln_discussion: |-
+    The sendmail software was not developed with security in mind, and its design prevents it from being effectively contained by SELinux. Postfix must be used instead.

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-USER="cac_user"
-useradd -m -s /sbin/nologin $USER
-chmod 755 /home/$USER
+. "$SHARED/accounts_common.sh"
+
+run_foreach_noninteractive_shell_account "chmod 755 /home/\$user"

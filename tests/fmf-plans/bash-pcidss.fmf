@@ -1,12 +1,8 @@
 summary:
   Destructive PCI-DSS profile test (Bash)
-discover:
-  how: fmf
-  url: https://src.fedoraproject.org/tests/scap-security-guide.git
+discover+:
   test:
-  - /Sanity/machine-hardening/pci-dss
-execute:
-  how: tmt
-adjust:
+  - /hardening/host-os/oscap/pci-dss$
+adjust+:
 - enabled: false
   when: distro == fedora

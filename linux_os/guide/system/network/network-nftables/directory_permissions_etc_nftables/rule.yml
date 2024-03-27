@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/nftables Directory
+
+description: '{{{ describe_file_permissions(file="/etc/nftables", perms="0700") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/nftables directory is important
+    because this directory hosts nftables configuration. Protection of this
+    directory is critical for system security. Restricting the permissions
+    ensures exclusive control of the nftables configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86317-5
+    cce@rhel8: CCE-86318-3
+    cce@rhel9: CCE-86320-9
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/nftables", perms="0700") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/nftables", perms="0700") }}}
+
+platform: package[nftables]
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/nftables", mode="0700") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/nftables", mode="0700") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/nftables/
+        filemode: '0700'

@@ -72,6 +72,8 @@ selections:
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
     - var_authselect_profile=sssd
+    - var_multiple_time_servers=stig
+    - var_time_service_set_maxpoll=18_hours
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -965,6 +967,7 @@ selections:
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
     - chronyd_server_directive
+    - chronyd_specify_remote_server
 
     # RHEL-08-030741
     - chronyd_client_only

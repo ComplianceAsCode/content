@@ -48,8 +48,6 @@ def setup_argument_parser() -> argparse.ArgumentParser:
     list_parser = subparsers.add_parser('list', help='List controls within a benchmark')
     list_parser.set_defaults(func=list_controls)
     generate_parser = subparsers.add_parser('generate', help='Generate a control from benchmark')
-    generate_parser.add_argument('-p', '--product-type', required=True,
-                                 help='Product name to generate in output')
     generate_parser.add_argument('-c', '--control', help='Control ID to generate')
     generate_parser.add_argument('-s', '--section',
                                  help='Section ID to generate, including containing controls')
@@ -203,9 +201,8 @@ class Generator:
 
 class RuleGenerator(Generator):
 
-    def __init__(self, benchmark: pycompliance.Benchmark, product_type: str):
+    def __init__(self, benchmark: pycompliance.Benchmark):
         super().__init__(benchmark)
-        self.product_type = product_type
 
     def generate(self, control: pycompliance.Control):
         if not isinstance(control, pycompliance.Control):
@@ -216,7 +213,6 @@ class RuleGenerator(Generator):
         )
         output = {
             'documentation_complete': False,
-            'prodtype': self.product_type,
             'title': LiteralUnicode(control.title),
             'description': description,
             'rationale': LiteralUnicode(control.rationale),
@@ -275,7 +271,7 @@ def generate_control(args):
     control = b.find(args.control)
     section = b.find(args.section)
     if control:
-        r = RuleGenerator(b, args.product_type)
+        r = RuleGenerator(b)
         r.generate(control)
     elif section:
         r = SectionGenerator(b)

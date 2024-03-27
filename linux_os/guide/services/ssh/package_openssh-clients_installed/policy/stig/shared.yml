@@ -7,13 +7,18 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} has the openssh-clients package installed with the following command:
 
-    $sudo dnf list --installed openssh-clients
+    $ sudo dnf list --installed openssh-clients
 
-    openssh-clients.x86_64             8.7p1-8.el9
+    Example output:
+
+    openssh-clients.x86_64          8.7p1-8.el9
 
     If the "openssh-clients" package is not installed, this is a finding.
 
 fixtext: |-
-    The  openssh-clients  package can be installed with the following command:
+    The openssh-clients package can be installed with the following command:
 
     $ sudo dnf install openssh-clients
+
+vuln_discussion: |-
+    This package includes utilities to make encrypted connections and transfer files securely to SSH servers.

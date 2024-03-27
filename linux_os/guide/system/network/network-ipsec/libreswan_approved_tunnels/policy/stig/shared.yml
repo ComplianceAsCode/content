@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} does not have unauthorized IP tunnels configured.
 
-    Check to see if the "IPSec" service is active with the following command"
+    Determine if the "IPsec" service is active with the following command:
 
     $ systemctl status ipsec
 
@@ -21,7 +21,10 @@ checktext: |-
 
     Verify any returned results are documented with the ISSO.
 
-    If the IPSec tunnels are active and not approved, this is a finding.
+    If the IPsec tunnels are active and not approved, this is a finding.
 
 fixtext: |-
     Remove all unapproved tunnels from the system, or document them with the ISSO.
+
+vuln_discussion: |-
+    IP tunneling mechanisms can be used to bypass network filtering. If tunneling is required, it must be documented with the information system security officer (ISSO).

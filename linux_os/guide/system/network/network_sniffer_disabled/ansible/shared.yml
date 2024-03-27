@@ -6,11 +6,11 @@
 
 - name: "{{{ rule_title }}} - Gather network interfaces"
   ansible.builtin.command:
-    cmd: ip link show
+    cmd: ip -o link show
   register: network_interfaces
 
 - name: "{{{ rule_title }}} - Disable promiscuous mode"
   ansible.builtin.command:
     cmd: ip link set dev {{ item.split(':')[1] }} multicast off promisc off
   loop: "{{ network_interfaces.stdout_lines }}"
-  when: "item.split(':') | length == 3"
+  when: "item.split(':')"

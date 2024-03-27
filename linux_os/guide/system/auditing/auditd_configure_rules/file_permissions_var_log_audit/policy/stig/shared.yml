@@ -29,6 +29,7 @@ fixtext: |-
     Replace "[audit_log_file]" to the correct audit log path, by default this location is "/var/log/audit/audit.log".
 
     $ sudo chmod 0600 /var/log/audit/[audit_log_file]
+
     Check the group that owns the system audit logs:
 
     $ sudo grep -m 1 -q ^log_group /etc/audit/auditd.conf
@@ -38,7 +39,12 @@ fixtext: |-
     $ sudo chmod 0640 $log_file
     $ sudo chmod 0440 $log_file.*
 
-    Otherwise, configure the permisssions the following way:
+    Otherwise, configure the permissions the following way:
 
     $ sudo chmod 0600 $log_file
     $ sudo chmod 0400 $log_file.*
+
+vuln_discussion: |-
+    Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the {{{ full_name }}} system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.
+
+    The structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.

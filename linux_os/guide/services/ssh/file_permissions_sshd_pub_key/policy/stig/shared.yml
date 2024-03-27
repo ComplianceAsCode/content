@@ -27,3 +27,6 @@ fixtext: |-
     Restart the SSH daemon for the changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    If a public host key file is modified by an unauthorized user, the SSH service may be compromised.

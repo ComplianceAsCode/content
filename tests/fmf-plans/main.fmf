@@ -1,0 +1,10 @@
+summary: Base configuration for other test plans
+discover:
+  how: fmf
+  url: https://github.com/RHSecurityCompliance/contest.git
+execute:
+  how: tmt
+adjust:
+  - environment:
+        CONTEST_WAIVERS: upstream
+        CONTEST_VERBOSE: 0

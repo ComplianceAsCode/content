@@ -6,5 +6,5 @@
 - name: "Restrict Virtual Console Root Logins"
   lineinfile:
     dest: /etc/securetty
-    regexp: '^vc'
+    regexp: '^vc/[0-9]'
     state: absent

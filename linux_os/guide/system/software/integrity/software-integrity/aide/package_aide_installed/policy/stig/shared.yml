@@ -1,19 +1,75 @@
 srg_requirement: |-
-    {{{ full_name }}} must have the aide package installed.
+    {{{ full_name }}} must have the AIDE package installed.
 
 vuldiscussion: |-
     Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
 
 checktext: |-
-    Verify that {{{ full_name }}} has the aide package installed with the following command:
+    Verify that {{{ full_name }}} has the Advanced Intrusion Detection Environment (AIDE) package installed with the following command:
 
     $ sudo dnf list --installed aide
 
-    aide.x86_64        0.16.100.el9
+    Example output:
 
-    If the "aide" package is not installed, this is a finding.
+    aide.x86_64          0.16.100.el9
+
+    If AIDE is not installed, ask the system administrator (SA) how file integrity checks are performed on the system.
+
+    If there is no application installed to perform integrity checks, this is a finding.
+
+    If AIDE is installed, check if it has been initialized with the following command:
+
+    $ sudo /usr/sbin/aide --check
+
+    If the output is "Couldn't open file /var/lib/aide/aide.db.gz for reading", this is a finding.
 
 fixtext: |-
-    The aide package can be installed with the following command:
+    Install AIDE, initialize it, and perform a manual check.
+
+    Install AIDE:
 
     $ sudo dnf install aide
+
+    Initialize AIDE:
+
+    $ sudo /usr/sbin/aide --init
+
+    Example output:
+
+    Start timestamp: 2023-06-05 10:09:04 -0600 (AIDE 0.16)
+    AIDE initialized database at /var/lib/aide/aide.db.new.gz
+
+    Number of entries:      86833
+
+    ---------------------------------------------------
+    The attributes of the (uncompressed) database(s):
+    ---------------------------------------------------
+
+    /var/lib/aide/aide.db.new.gz
+      MD5      : coZUtPHhoFoeD7+k54fUvQ==
+      SHA1     : DVpOEMWJwo0uPgrKZAygIUgSxeM=
+      SHA256   : EQiZH0XNEk001tcDmJa+5STFEjDb4MPE
+                 TGdBJ/uvZKc=
+      SHA512   : 86KUqw++PZhoPK0SZvT3zuFq9yu9nnPP
+                 toei0nENVELJ1LPurjoMlRig6q69VR8l
+                 +44EwO9eYyy9nnbzQsfG1g==
+
+    End timestamp: 2023-06-05 10:09:57 -0600 (run time: 0m 53s)
+
+    The new database will need to be renamed to be read by AIDE:
+
+    $ sudo mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+    Perform a manual check:
+
+    $ sudo /usr/sbin/aide --check
+
+    Example output:
+
+    2023-06-05 10:16:08 -0600 (AIDE 0.16)
+    AIDE found NO differences between database and filesystem. Looks okay!!
+
+    ...
+
+vuln_discussion: |-
+    Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.

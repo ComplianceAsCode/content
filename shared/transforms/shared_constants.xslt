@@ -7,7 +7,7 @@
 <xsl:variable name="cceuri">https://ncp.nist.gov/cce</xsl:variable>
 
 <!-- abbreviated as references in the XCCDF-->
-<xsl:variable name="anssiuri">http://www.ssi.gouv.fr/administration/bonnes-pratiques/</xsl:variable>
+<xsl:variable name="anssiuri">https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf</xsl:variable>
 <xsl:variable name="bsiuri">https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf</xsl:variable>
 <xsl:variable name="cjisd-its-uri">https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf</xsl:variable>
 <xsl:variable name="cnss1253uri">http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf</xsl:variable>

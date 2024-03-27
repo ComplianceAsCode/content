@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/ipsec.secrets File
+
+description: '{{{ describe_file_owner(file="/etc/ipsec.secrets", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/ipsec.secrets file by the root user is important
+    because this file hosts Libreswan configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the Libreswan configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86399-3
+    cce@rhel8: CCE-86400-9
+    cce@rhel9: CCE-86401-7
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ipsec.secrets", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/ipsec.secrets", owner="root") }}}
+
+platform: package[libreswan]
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/ipsec.secrets", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/ipsec.secrets", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/ipsec.secrets
+        fileuid: '0'

@@ -9,6 +9,12 @@ While any task can be performed manually, it is highly recommended to use the `r
 The script interacts with the GitHub API, so an [API token](https://github.com/settings/tokens) is required for most tasks.
 Instructions for generating a GitHub API token can be found directly in the [GitHub documentation](https://docs.github.com/), but some hints are also provided by the script.
 
+In short, these are the minimal scopes to enable in the API Token (classic):
+- repo
+  - repo:status
+  - repo_deployment
+  - public_repo
+
 The `release_helper.py` script can also be used to check the current status of the project regarding releases:
 
 ```bash
@@ -36,8 +42,6 @@ This script was created targeting automation of boring tasks and reduction of hu
 
 There is still space for improvement and any contribution is welcome. Here are some ideas to start contributing:
 * Include an option to automate the process of updating the **stable** branch
-* Improve the messages to include the name of maintainer
-  * Thanks [Matthew](https://github.com/ComplianceAsCode/content/pull/10076#discussion_r1165956665) for this idea.
 * Introduce a checklist of steps during the release
   * Something similar to **stats** but related to the steps in process.
   * Some steps depend on other steps and may be concluded after some days. It would be great to know precisely in which step of the process we are.

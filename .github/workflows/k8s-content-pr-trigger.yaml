@@ -8,6 +8,10 @@ on:
     - reopened
     - synchronize
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   get-pr-number:
     name: Get PR number

@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/passwd- file must have mode 0644 or less permissive to prevent unauthorized access.
+    {{{ full_name }}} /etc/passwd- file must have mode 0644 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
     The "/etc/passwd-" file is a backup file of "/etc/passwd", and as such,
@@ -19,3 +19,6 @@ fixtext: |-
     Change the mode of the file "/etc/passwd-" to "0644" by running the following command:
 
     $ sudo chmod 0644 /etc/passwd-
+
+vuln_discussion: |-
+    The "/etc/passwd-" file is a backup file of "/etc/passwd", and as such, contains information about the users that are configured on the system. Protection of this file is critical for system security.

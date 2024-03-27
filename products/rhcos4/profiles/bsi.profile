@@ -2,6 +2,16 @@ documentation_complete: true
 
 title: 'DRAFT - BSI APP.4.4. and SYS.1.6'
 
+reference: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+
+metadata:
+    SMEs:
+        - ermeratos
+        - benruland
+        - oliverbutanowitz
+        - sluetze
+    version: 2022
+
 description: |-
     This profile defines a baseline that aligns to the BSI (Federal Office for Security Information) IT-Grundschutz
     Basic-Protection.
@@ -14,10 +24,4 @@ description: |-
 
     THIS DOES NOT INCLUDE REQUIREMENTS FOR A HARDENED LINUX FROM SYS.1.3 LINUX
 
-selections:
-    # BSI APP.4.4.A4
-    - coreos_enable_selinux_kernel_argument
-    - var_selinux_policy_name=targeted
-    - selinux_policytype
-    - var_selinux_state=enforcing
-    - selinux_state
+extends: bsi-2022

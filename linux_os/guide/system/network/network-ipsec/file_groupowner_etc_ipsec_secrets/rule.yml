@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify Group Who Owns /etc/ipsec.secrets File
+
+description: '{{{ describe_file_group_owner(file="/etc/ipsec.secrets", group="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/ipsec.secrets file by the root group is important
+    because this file hosts Libreswan configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the Libreswan configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86396-9
+    cce@rhel8: CCE-86397-7
+    cce@rhel9: CCE-86398-5
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/ipsec.secrets", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/ipsec.secrets", group="root") }}}
+
+platform: package[libreswan]
+
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/ipsec.secrets", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/ipsec.secrets", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/ipsec.secrets
+        gid_or_name: root

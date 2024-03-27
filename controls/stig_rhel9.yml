@@ -3,6 +3,8 @@ title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://public.cyber.mil/stigs/downloads/
 version: V1R2
+reference_type: stigid
+product: rhel9
 levels:
     -   id: high
     -   id: medium
@@ -987,7 +989,7 @@ controls:
             - medium
         title: All RHEL 9 local initialization files must have mode 0740 or less permissive.
         rules:
-            - file_permission_user_init_files
+            - file_permission_user_init_files_root
         status: automated
 
     -   id: RHEL-09-232050
@@ -1481,6 +1483,8 @@ controls:
         rules:
             - chronyd_or_ntpd_set_maxpoll
             - chronyd_server_directive
+            - chronyd_specify_remote_server
+            - var_multiple_time_servers=stig
             - var_time_service_set_maxpoll=18_hours
         status: automated
 
@@ -1862,7 +1866,7 @@ controls:
             of SSH client connections.
         rules:
             - harden_sshd_ciphers_openssh_conf_crypto_policy
-            - sshd_approved_ciphers=stig_extended
+            - sshd_approved_ciphers=stig_rhel9
         status: automated
 
     -   id: RHEL-09-255065
@@ -2567,7 +2571,7 @@ controls:
             - medium
         title: RHEL 9 must ensure session control is automatically started at shell initialization.
         rules:
-            - configure_bashrc_exec_tmux
+            - configure_bashrc_tmux
         status: automated
 
     -   id: RHEL-09-412020
@@ -3226,6 +3230,7 @@ controls:
         title: RHEL 9 must have the AIDE package installed.
         rules:
             - package_aide_installed
+            - aide_build_database
         status: automated
 
     -   id: RHEL-09-651015
@@ -3472,7 +3477,7 @@ controls:
             95 percent of the repository maximum audit record storage capacity.
         rules:
             - auditd_data_retention_admin_space_left_action
-            - var_auditd_admin_space_left_action=halt
+            - var_auditd_admin_space_left_action=single
         status: automated
 
     -   id: RHEL-09-653055

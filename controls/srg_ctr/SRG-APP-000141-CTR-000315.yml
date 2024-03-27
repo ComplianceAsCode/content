@@ -3,11 +3,12 @@ controls:
   levels:
   - medium
   title: {{{ full_name }}} must be configured with only essential configurations.
-  related_rules:
+  rules:
   - service_sshd_disabled
   - kernel_module_usb-storage_disabled
   - package_usbguard_installed
   - service_usbguard_enabled
   - configure_usbguard_auditbackend
+  - usbguard_allow_hid_and_hub
   status: automated
 

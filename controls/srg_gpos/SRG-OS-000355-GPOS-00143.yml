@@ -10,6 +10,8 @@ controls:
         rules:
             - chronyd_or_ntpd_set_maxpoll
             - chronyd_server_directive
+            - chronyd_specify_remote_server
             - package_chrony_installed
             - service_chronyd_enabled
+            - var_multiple_time_servers=stig
         status: automated

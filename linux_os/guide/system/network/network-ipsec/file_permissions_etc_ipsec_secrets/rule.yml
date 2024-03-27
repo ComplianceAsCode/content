@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify Permissions On /etc/ipsec.secrets File
+
+description: '{{{ describe_file_permissions(file="/etc/ipsec.secrets", perms="0644") }}}'
+
+rationale: |-
+    Setting correct permissions on the /etc/ipsec.secrets file is important
+    because this file hosts Libreswan configuration. Protection of this
+    file is critical for system security. Restricting the permissions
+    ensures exclusive control of the Libreswan configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86403-3
+    cce@rhel8: CCE-86410-8
+    cce@rhel9: CCE-86411-6
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ipsec.secrets", perms="0644") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/ipsec.secrets", perms="0644") }}}
+
+platform: package[libreswan]
+
+fixtext: '{{{ fixtext_file_permissions(file="/etc/ipsec.secrets", mode="0644") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ipsec.secrets", mode="0644") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/ipsec.secrets
+        filemode: '0644'

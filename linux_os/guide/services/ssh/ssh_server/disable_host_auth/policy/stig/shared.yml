@@ -1,14 +1,14 @@
 srg_requirement: |-
-    {{{ full_name }}} must not allow a non-certificate trusted host SSH logon to the system.
+    {{{ full_name }}} must not allow a noncertificate trusted host SSH logon to the system.
 
 vuldiscussion: |-
     SSH trust relationships mean a compromise on one host
     can allow an attacker to move trivially to other hosts.
 
 checktext: |-
-    Verify the operating system does not allow a non-certificate trusted host SSH logon to the system with the following command:
+    Verify the operating system does not allow a noncertificate trusted host SSH logon to the system with the following command:
 
-    $ sudo grep -i hostbasedauthentication /etc/ssh/sshd_config
+    $ sudo grep -ir hostbasedauthentication /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
 
     HostbasedAuthentication no
 
@@ -17,10 +17,13 @@ checktext: |-
     If the required value is not set, this is a finding.
 
 fixtext: |-
-    To configure {{{ full_name }}} to not allow a non-certificate trusted host SSH logon to the system add or modify the following line in "/etc/ssh/sshd_config".
+    To configure {{{ full_name }}} to not allow a noncertificate trusted host SSH logon to the system add or modify the following line in "/etc/ssh/sshd_config".
 
     HostbasedAuthentication no
 
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts.

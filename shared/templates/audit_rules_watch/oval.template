@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check if actions on '" ~ PATH ~ "' are configured to be audited") }}}
+
+    <criteria operator="OR">
+      <!-- Test the augenrules case -->
+      <criterion comment="audit {{{ PATH }}} augenrules" test_ref="test_{{{ rule_id }}}_augenrules" />
+      <!-- Test the auditctl case -->
+      <criterion comment="audit {{{ PATH }}} auditctl" test_ref="test_{{{ rule_id }}}_auditctl" />
+    </criteria>
+
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit {{{ PATH }}} augenrules" id="test_{{{ rule_id }}}_augenrules" version="1">
+    <ind:object object_ref="object_{{{ rule_id  }}}_augenrules" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id  }}}_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+{{{ PATH }}}[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit {{{ PATH }}} auditctl" id="test_{{{ rule_id }}}_auditctl" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_auditctl" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+{{{ PATH }}}[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -6,6 +6,9 @@ on:
     branches: ['*', '!stabilization*', '!stable*', 'master' ]
   pull_request:
     branches: [ 'master', 'stabilization*' ]
+concurrency:
+  group: ${{ github.workflow }}-fedora-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
 jobs:
     validate-fedora:
         name: Build, Test on Fedora Latest (Container)
@@ -33,6 +36,7 @@ jobs:
                         rhel7 \
                         rhel8 \
                         rhel9 \
+                        rhel10 \
                         uos20 \
                         ocp4 \
                         eks

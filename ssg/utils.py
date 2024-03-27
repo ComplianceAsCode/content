@@ -128,9 +128,9 @@ def map_name(version):
                        % (version))
 
 
-def prodtype_to_name(prod):
+def product_to_name(prod):
     """
-    Converts a vaguely-prodtype-like thing into one or more full product names.
+    Converts a vaguely-product-id-like thing into one or more full product names.
     """
     for name, prod_type in FULL_NAME_TO_PRODUCT_MAPPING.items():
         if prod == prod_type:
@@ -150,14 +150,14 @@ def name_to_platform(names):
     return "\n".join(map(name_to_platform, names))
 
 
-def prodtype_to_platform(prods):
+def product_to_platform(prods):
     """
-    Converts one or more prodtypes into a string with one or more <platform>
+    Converts one or more product ids into a string with one or more <platform>
     elements.
     """
     if isinstance(prods, str):
-        return name_to_platform(prodtype_to_name(prods))
-    return "\n".join(map(prodtype_to_platform, prods))
+        return name_to_platform(product_to_name(prods))
+    return "\n".join(map(product_to_platform, prods))
 
 
 def parse_name(product):
@@ -179,9 +179,17 @@ def parse_name(product):
     return prod_tuple(_product, _product_version)
 
 
+def parse_platform(platform):
+    """
+    From a platform line, returns the set of platforms listed.
+    """
+
+    return set(map(lambda x: x.strip(), platform.split(',')))
+
+
 def get_fixed_product_version(product, product_version):
     # Some product versions have a dot in between the numbers
-    # While the prodtype doesn't have the dot, the full product name does
+    # While the product id doesn't have the dot, the full product name does
     if product == "ubuntu" or product == "macos":
         product_version = product_version[:2] + "." + product_version[2:]
     return product_version
@@ -230,8 +238,7 @@ def is_applicable_for_product(platform, product):
 def is_applicable(platform, product):
     """
     Function to check if a platform is applicable for the product.
-    Handles when a platform is really a list of products, i.e., a
-    prodtype field from a rule.yml.
+    Handles when a platform is really a list of products.
 
     Returns true iff product is applicable for the platform or list
     of products

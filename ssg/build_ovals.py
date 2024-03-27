@@ -6,7 +6,6 @@ from .rules import get_rule_dir_ovals, find_rule_dirs_in_paths
 from .oval_object_model import OVALDocument
 from .build_yaml import Rule, DocumentationNotComplete
 from .jinja import process_file_with_macros
-from .rule_yaml import parse_prodtype
 from .id_translate import IDTranslator
 from .xml import ElementTree
 
@@ -117,8 +116,7 @@ class OVALBuilder:
             local_env_yaml = dict(**self.env_yaml)
             local_env_yaml["rule_id"] = rule.id_
             local_env_yaml["rule_title"] = rule.title
-            prodtypes = parse_prodtype(rule.prodtype)
-            local_env_yaml["products"] = prodtypes  # default is all
+            local_env_yaml["products"] = {self.product}
 
             return local_env_yaml
         return self.env_yaml

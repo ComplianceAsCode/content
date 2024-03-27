@@ -10,6 +10,8 @@ checktext: |-
 
     $ sudo dnf list --installed rsyslog-gnutls
 
+    Example output:
+
     rsyslog-gnutls.x86_64          8.2102.0-101.el9_0.1
 
     If the "rsyslog-gnutls" package is not installed, this is a finding.
@@ -18,3 +20,6 @@ fixtext: |-
     The  rsyslog-gnutls package can be installed with the following command:
 
     $ sudo dnf install rsyslog-gnutls
+
+vuln_discussion: |-
+    The rsyslog-gnutls package provides Transport Layer Security (TLS) support for the rsyslog daemon, which enables secure remote logging.

@@ -12,6 +12,8 @@ levels:
   - id: l2_workstation
     inherits_from:
     - l1_workstation
+reference_type: cis
+product: rhel7
 
 controls:
   - id: reload_dconf_db
@@ -604,7 +606,7 @@ controls:
     rules:
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
-    - login_banner_text=cis_default
+    - login_banner_text=cis_banners
 
   - id: 1.7.3
     title: Ensure GDM disable-user-list option is enabled (Automated)
@@ -2552,8 +2554,8 @@ controls:
     - l2_workstation
     status: partial
     rules:
-    # TODO: we need to create a rule that adds audit rule for /etc/sysconfig/network-scripts/ directory as well
     - audit_rules_networkconfig_modification
+    - audit_rules_networkconfig_modification_network_scripts
 
   - id: 5.2.3.6
     title: Ensure use of privileged commands are collected (Automated)

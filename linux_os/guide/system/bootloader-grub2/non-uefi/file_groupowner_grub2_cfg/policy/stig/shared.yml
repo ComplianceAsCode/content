@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /boot/grub2/grub.cfg file must be group-owned by root.
+    {{{ full_name }}} /boot/grub2/grub.cfg file must be group-owned by root.
 
 vuldiscussion: |-
     The "root" group is a highly-privileged group. Furthermore, the group-owner of this
@@ -18,3 +18,6 @@ fixtext: |-
     Change the group of the file /boot/grub2/grub.cfg to root by running the following command:
 
     $ sudo chgrp root /boot/grub2/grub.cfg
+
+vuln_discussion: |-
+    The "root" group is a highly privileged group. Furthermore, the group-owner of this file should not have any access privileges anyway.

@@ -451,7 +451,6 @@ selections:
     - sebool_openvpn_enable_homedirs
     - zipl_enable_selinux
     - bios_disable_usb_boot
-    - file_permissions_systemmap
     - audit_rules_unsuccessful_file_modification_open_o_creat
     - kernel_config_ipv6
     - service_rpcgssd_disabled

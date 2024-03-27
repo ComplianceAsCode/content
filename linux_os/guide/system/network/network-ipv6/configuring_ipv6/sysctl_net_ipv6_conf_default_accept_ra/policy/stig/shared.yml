@@ -7,19 +7,19 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} does not accept router advertisements on all IPv6 interfaces by default, unless the system is a router.
 
-    Note: If IPv6 is disabled on the system, this requirement is not applicable.
+    Note: If IPv6 is disabled on the system, this requirement is Not Applicable.
 
-    Check to see if router advertisements are not accepted by default by using the following command:
+    Determine if router advertisements are not accepted by default by using the following command:
 
-    $ sysctl net.ipv6.conf.default.accept_ra
+    $ sudo sysctl net.ipv6.conf.default.accept_ra
 
     net.ipv6.conf.default.accept_ra = 0
 
-    If the "accept_ra" value is not "0" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+    If the "accept_ra" value is not "0" and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' |  grep -F net.ipv6.conf.default.accept_ra | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' |  grep -F net.ipv6.conf.default.accept_ra | tail -1
 
     net.ipv6.conf.default.accept_ra = 0
 
@@ -35,3 +35,6 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    An illicit router advertisement message could result in a man-in-the-middle attack.

@@ -8,7 +8,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that system accounts must not have an interactive login shell with the following command:
 
-    $ awk -F: '($3&lt;{{{ uid_min }}}){print $1 ":" $3 ":" $7}' /etc/passwd
+    $ awk -F: '($3&lt1000){print $1 ":" $3 ":" $7}' /etc/passwd
 
     root:0:/bin/bash
     bin:1:/sbin/nologin
@@ -18,17 +18,20 @@ checktext: |-
 
     Identify the system accounts from this listing that do not have a nologin shell.
 
-    If any system account (other than the root account) has a login shell and it is not documented with the Information System Security Officer (ISSO), this is a finding.
+    If any system account (other than the root account) has a login shell and it is not documented with the information system security officer (ISSO), this is a finding.
 
 fixtext: |-
-    Configure {{{ full_name }}} so that all non-interactive accounts on the system do not have an interactive shell assigned to them.
+    Configure {{{ full_name }}} so that all noninteractive accounts on the system do not have an interactive shell assigned to them.
 
-    If the system account needs a shell assigned for mission operations, doucment the need with the Information System Security Officer (ISSO).
+    If the system account needs a shell assigned for mission operations, document the need with the information system security officer (ISSO).
 
-    Run the following command to disable the interactive shell for a specific non-interactive user account:
+    Run the following command to disable the interactive shell for a specific noninteractive user account:
 
-    Replace &lt;user&gt; with the user that has a login shell.
+    Replace &ltuser&gt with the user that has a login shell.
 
-    $ sudo usermod --shell /sbin/nologin &lt;user&gt;
+    $ sudo usermod --shell /sbin/nologin &ltuser&gt
 
     Do not perform the steps in this section on the root account. Doing so will cause the system to become inaccessible.
+
+vuln_discussion: |-
+    Ensuring shells are not given to system accounts upon login makes it more difficult for attackers to make use of system accounts.

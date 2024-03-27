@@ -129,6 +129,7 @@ class TestEnv(object):
         remote_dest = "root@{ip}".format(ip=self.domain_ip)
         result = common.retry_with_stdout_logging(
             "ssh", tuple(self.ssh_additional_options) + (remote_dest, command), log_file)
+        log_file.flush()
         if result.returncode:
             error_msg = error_msg_template.format(
                 command=command, remote_dest=remote_dest,

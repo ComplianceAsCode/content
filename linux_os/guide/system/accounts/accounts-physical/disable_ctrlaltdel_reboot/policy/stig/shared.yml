@@ -20,3 +20,6 @@ fixtext: |-
 
     $ sudo systemctl disable --now ctrl-alt-del.target
     $ sudo systemctl mask --now ctrl-alt-del.target
+
+vuln_discussion: |-
+    A locally logged-on user who presses Ctrl-Alt-Delete when at the console can reboot the system. If accidentally pressed, as could happen in the case of a mixed OS environment, this can create the risk of short-term loss of availability of systems due to unintentional reboot. In a graphical user environment, risk of unintentional reboot from the Ctrl-Alt-Delete sequence is reduced because the user will be prompted before any action is taken.

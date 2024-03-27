@@ -532,3 +532,33 @@ def test_validating_policy_levels(env_yaml):
             policy.load()
 
 
+@pytest.fixture
+def rules_for_test_references_from_controls():
+    rule_filenames = [
+        "compiled_references_test_rule.yml",
+        "compiled_references_test_rule_2.yml"
+    ]
+    rules = {}
+    for filename in rule_filenames:
+        rule_file = os.path.join(data_dir, filename)
+        rule = ssg.build_yaml.Rule.from_yaml(rule_file)
+        rules[rule.id_] = rule
+    return rules
+
+
+def test_references_from_controls(controls_manager, rules_for_test_references_from_controls):
+    rules = rules_for_test_references_from_controls
+    # in rule.yml the first rule has no references
+    assert rules["compiled_references_test_rule"].references == {}
+    # in rule.yml the second rule has only stig references
+    assert len(rules["compiled_references_test_rule_2"].references["stig"]) == 1
+    assert "cis" not in rules["compiled_references_test_rule_2"].references
+    assert rules["compiled_references_test_rule_2"].references["stig"] == ["17"]
+    # add references to rules from all controls
+    controls_manager.add_references(rules)
+    # The "uvwx" control file should add cis references to rules
+    assert len(rules["compiled_references_test_rule"].references) == 1
+    assert rules["compiled_references_test_rule"].references["cis"] == ["R1", "R2"]
+    assert len(rules["compiled_references_test_rule_2"].references) == 2
+    assert rules["compiled_references_test_rule_2"].references["cis"] == ["R2"]
+    assert rules["compiled_references_test_rule_2"].references["stig"] == ["17"]

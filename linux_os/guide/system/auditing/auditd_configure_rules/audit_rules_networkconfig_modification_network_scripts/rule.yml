@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Network Environment'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-w /etc/sysconfig/network-scripts -p wa -k audit_rules_networkconfig_modification_network_scripts</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-w /etc/sysconfig/network-scripts -p wa -k audit_rules_networkconfig_modification_network_scripts</pre>
+
+rationale: |-
+    The network environment should not be modified by anything other
+    than administrator action. Any change to network parameters should be
+    audited.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86938-8
+    cce@rhel8: CCE-86939-6
+    cce@rhel9: CCE-86940-4
+
+ocil_clause: 'the system is not configured to audit changes of the network configuration'
+
+ocil: |-
+    To determine if the system is configured to audit changes to its network configuration,
+    run the following command:
+    <pre>auditctl -l | grep -E '/etc/sysconfig/network-scripts'</pre>
+    If the system is configured to watch for network configuration changes, a line should
+    be returned and <tt>perm=wa</tt> should be indicated.
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /etc/sysconfig/network-scripts

@@ -6,6 +6,8 @@ import yaml
 from collections import defaultdict
 from copy import deepcopy
 
+from ssg.yaml import yaml_Dumper
+
 from ..xml import ElementTree as ET, add_xhtml_namespace
 from ..yaml import DocumentationNotComplete, open_and_macro_expand
 from ..shims import unicode_func
@@ -128,12 +130,13 @@ def derive_id_from_file_name(filename):
 
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
     try:
-        return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
+        return yaml.dump(dictionary, file_object, indent=4, sort_keys=False,
+                         Dumper=yaml_Dumper)
     except TypeError as exc:
         # Older versions of libyaml don't understand the sort_keys kwarg
         if "sort_keys" not in str(exc):
             raise exc
-        return yaml.dump(dictionary, file_object, indent=4)
+        return yaml.dump(dictionary, file_object, indent=4, Dumper=yaml_Dumper)
 
 
 class XCCDFEntity(object):

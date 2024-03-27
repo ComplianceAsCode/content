@@ -5,6 +5,7 @@ version: '4.0'
 source: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
 levels:
 - id: base
+reference_type: pcidss4
 
 controls:
   - id: '1.1'
@@ -56,6 +57,7 @@ controls:
         policies.
       rules:
         - package_nftables_installed
+        - package_firewalld_installed
         - service_firewalld_enabled
         - service_nftables_disabled
 
@@ -845,7 +847,7 @@ controls:
       title: When using remote-access technologies, technical controls prevent copy and/or
         relocation of PAN for all personnel, except for those with documented, explicit
         authorization and a legitimate, defined business need.
-      description: |-  
+      description: |-
         PAN cannot be copied or relocated by unauthorized personnel using remote-access
         technologies. Storing or relocating PAN onto local hard drives, removable electronic
         media, and other storage devices brings these devices into scope for PCI DSS.
@@ -2053,7 +2055,7 @@ controls:
         - accounts_passwords_pam_tally2_unlock_time
         - var_accounts_passwords_pam_tally2_unlock_time=1800
         - cracklib_accounts_password_pam_retry
-        
+
     - id: 8.3.5
       title: If passwords/passphrases are used as authentication factors to meet Requirement
         8.3.1, they are set and reset for each user.
@@ -3004,8 +3006,8 @@ controls:
         - base
       status: automated
       notes: |-
-        The selected rules might need updates in order to restrict their applicabilities or their
-        prodtypes to avoid conflicts.
+        The selected rules might need updates in order to restrict their platform applicability
+        to avoid conflicts.
       rules:
         # specific products should update the variable value when defining the profile based on
         # this control file.

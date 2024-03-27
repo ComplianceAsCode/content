@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} prevents unauthorized disclosure or modification of all information requiring at-rest protection by using disk encryption.
 
-    If there is a documented and approved reason for not having data-at-rest encryption, this requirement is Not Applicable.
+    Note: If there is a documented and approved reason for not having data-at-rest encryption, this requirement is Not Applicable.
 
     Verify all system partitions are encrypted with the following command:
 
@@ -23,4 +23,10 @@ fixtext: |-
     Configure {{{ full_name }}} to prevent unauthorized modification of all information at rest by using disk encryption.
 
     Encrypting a partition in an already installed system is more difficult, because existing partitions will need to be resized and changed.
+
     To encrypt an entire partition, dedicate a partition for encryption in the partition layout.
+
+vuln_discussion: |-
+    {{{ full_name }}} systems handling data requiring "data at rest" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.
+
+    Selection of a cryptographic mechanism is based on the need to protect the integrity of organizational information. The strength of the mechanism is commensurate with the security category and/or classification of the information. Organizations have the flexibility to either encrypt all information on storage devices (i.e., full disk encryption) or encrypt specific data structures (e.g., files, records, or fields).

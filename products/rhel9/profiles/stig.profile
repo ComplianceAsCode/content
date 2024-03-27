@@ -28,4 +28,3 @@ selections:
   - stig_rhel9:all
   # Following rules once had a prodtype incompatible with the rhel9 product
   - '!audit_rules_immutable_login_uids'
-  - '!configure_tmux_lock_keybinding'

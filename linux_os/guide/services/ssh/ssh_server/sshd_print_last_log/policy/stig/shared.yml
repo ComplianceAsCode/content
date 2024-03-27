@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} SSH daemon must display the date and time of the last successful account logon upon an SSH logon.
+    {{{ full_name }}} SSH daemon must display the date and time of the last successful account logon upon an SSH logon.
 
 vuldiscussion: |-
     Providing users feedback on when account accesses last occurred facilitates user recognition and reporting of unauthorized account use.
@@ -23,3 +23,6 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    Providing users feedback on when account accesses last occurred facilitates user recognition and reporting of unauthorized account use.

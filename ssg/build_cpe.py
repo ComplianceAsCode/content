@@ -15,6 +15,9 @@ from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
 from .entities.common import XCCDFEntity, Templatable
 from .yaml import convert_string_to_bool
+from .oval_object_model import load_oval_document, OVALDefinitionReference
+from .id_translate import IDTranslator
+from .xml import parse_file
 
 
 class CPEDoesNotExist(Exception):
@@ -147,23 +150,41 @@ class CPEList(object):
     def add(self, cpe_item):
         self.cpe_items.append(cpe_item)
 
-    def to_xml_element(self, cpe_oval_file):
+    @staticmethod
+    def _create_cpe_list_xml_skeleton():
         cpe_list = ET.Element("{%s}cpe-list" % CPEList.ns)
         cpe_list.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
         cpe_list.set("xsi:schemaLocation",
                      "http://cpe.mitre.org/dictionary/2.0 "
                      "http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd")
-
-        self.cpe_items.sort(key=lambda cpe: cpe.name)
-        for cpe_item in self.cpe_items:
-            cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
-
         return cpe_list
 
-    def to_file(self, file_name, cpe_oval_file):
-        root = self.to_xml_element(cpe_oval_file)
+    def _add_cpe_items_xml(self, cpe_list, cpe_oval_file, selection_of_cpe_names):
+        self.cpe_items.sort(key=lambda cpe: cpe.name)
+        for cpe_item in self.cpe_items:
+            if cpe_item.name in selection_of_cpe_names:
+                cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
+
+    def to_xml_element(self, cpe_oval_file, selection_of_cpe_names=None):
+        cpe_list = self._create_cpe_list_xml_skeleton()
+
+        if selection_of_cpe_names is None:
+            selection_of_cpe_names = [cpe_item.name for cpe_item in self.cpe_items]
+
+        self._add_cpe_items_xml(cpe_list, cpe_oval_file, selection_of_cpe_names)
+
+        if hasattr(ET, "indent"):
+            ET.indent(cpe_list, space="  ", level=0)
+        return cpe_list
+
+    def to_file(self, file_name, cpe_oval_file, selection_of_cpe_names=None):
+        root = self.to_xml_element(cpe_oval_file, selection_of_cpe_names)
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
+
+    def translate_cpe_oval_def_ids(self):
+        for cpe_item in self.cpe_items:
+            cpe_item.set_cpe_oval_def_id()
 
 
 class CPEItem(XCCDFEntity, Templatable):
@@ -179,6 +200,7 @@ class CPEItem(XCCDFEntity, Templatable):
         is_product_cpe=lambda: False,
         versioned=lambda: False,
         args=lambda: {},
+        content_id=lambda: "ssg",
         ** XCCDFEntity.KEYS
     )
     KEYS.update(**Templatable.KEYS)
@@ -196,10 +218,13 @@ class CPEItem(XCCDFEntity, Templatable):
 
     @property
     def cpe_oval_def_id(self):
-        translator = ssg.id_translate.IDTranslator("ssg")
+        translator = ssg.id_translate.IDTranslator(self.content_id)
         full_id = translator.generate_id(
             "{" + oval_namespace + "}definition", self.cpe_oval_short_def_id)
         return full_id
+
+    def set_cpe_oval_def_id(self):
+        self.check_id = self.cpe_oval_def_id
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
@@ -431,3 +456,23 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
+
+def get_linked_cpe_oval_document(unlinked_oval_file_path):
+    oval_document = load_oval_document(parse_file(unlinked_oval_file_path))
+    oval_document.product_name = os.path.basename(__file__)
+
+    references_to_keep = OVALDefinitionReference()
+    for oval_def in oval_document.definitions.values():
+        if oval_def.class_ != "inventory":
+            continue
+        references_to_keep += oval_document.get_all_references_of_definition(
+            oval_def.id_
+        )
+
+    oval_document.keep_referenced_components(references_to_keep)
+
+    translator = IDTranslator("ssg")
+    oval_document = translator.translate_oval_document(oval_document)
+
+    return oval_document

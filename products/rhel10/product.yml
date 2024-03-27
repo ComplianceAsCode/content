@@ -1,0 +1,57 @@
+product: rhel10
+full_name: Red Hat Enterprise Linux 10
+type: platform
+
+families:
+  - rhel
+  - rhel-like
+
+major_version_ordinal: 10
+
+benchmark_id: RHEL-10
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+# EFI and non-EFI configs are stored in same path, see https://fedoraproject.org/wiki/Changes/UnifyGrubConfig
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+sshd_distributed_config: "true"
+
+dconf_gdm_dir: "distro.d"
+
+faillock_path: "/var/log/faillock"
+
+# The fingerprints below are retrieved from https://access.redhat.com/security/team/key
+pkg_release: ""
+pkg_version: ""
+aux_pkg_release: ""
+aux_pkg_version: ""
+
+release_key_fingerprint: ""
+auxiliary_key_fingerprint: ""
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - rhel10:
+      name: "cpe:/o:redhat:enterprise_linux:10"
+      title: "Red Hat Enterprise Linux 10"
+      check_id: installed_OS_is_rhel10
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/red_hat_linux/'
+
+
+journald_conf_dir_path: /etc/systemd/journald.conf.d

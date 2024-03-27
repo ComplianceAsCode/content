@@ -8,9 +8,9 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} disables the use of user namespaces with the following commands:
 
-    Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is not applicable.
+    Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is Not Applicable.
 
-    $ sysctl user.max_user_namespaces
+    $ sudo sysctl user.max_user_namespaces
 
     user.max_user_namespaces = 0
 
@@ -18,18 +18,21 @@ checktext: |-
 
     Check that the configuration files are present to enable this kernel parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F user.max_user_namespaces | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F user.max_user_namespaces | tail -1
     user.max_user_namespaces = 0
 
-    If the network parameter "user.max_user_namespaces" is not equal to "0" or nothing is returned, this is a finding.
+    If the network parameter "user.max_user_namespaces" is not equal to "0", or nothing is returned, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to disable the use of user namespaces by adding the following line to a file, in the "/etc/sysctl.d" directory:
 
-    Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is not applicable.
+    Note: User namespaces are used primarily for Linux containers. If containers are in use, this requirement is Not Applicable.
 
     user.max_user_namespaces = 0
 
     The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    User namespaces are used primarily for Linux containers. The value "0" disallows the use of user namespaces.

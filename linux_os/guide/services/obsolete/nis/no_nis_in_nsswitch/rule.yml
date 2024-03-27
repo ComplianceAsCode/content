@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: "Name Service Switch does not use NIS"
+
+description: |-
+    Each call to a function which retrieves data from a system database like the
+    password or group database is handled by the Name Service Switch
+    implementation in the GNU C library.  The various services provided are
+    implemented by independent modules, each of which naturally varies widely
+    from the other. One of such modules is the <tt>nis</tt> module, which allows
+    to get information from NIS servers.
+
+rationale: |-
+    NIS service is insecure and should not be used.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86074-2
+    cce@rhel8: CCE-86076-7
+
+ocil_clause: "a nis database is configured in nsswitch.conf"
+
+ocil: |-
+    Run the following command:
+    <pre>grep '^\w+\s+(\w+\s+)*nis($|\s+.*$)' /etc/nsswitch.conf</pre>
+    If a line is returned and it contains the word <tt>nis</tt> in the list
+    of services, it is a finding.
+
+warnings:
+    - general:
+        This rule does not have remediation. Editing the
+        <tt>/etc/nsswitch.conf</tt> incorrectly can disrupt access to the
+        system.

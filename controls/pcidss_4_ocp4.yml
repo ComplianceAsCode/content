@@ -1,0 +1,3591 @@
+policy: PCI-DSS
+title: Payment Card Industry - Data Security Standard (PCI-DSS)
+id: pcidss_4_ocp4
+version: '4.0'
+source: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+levels:
+- id: base
+
+controls:
+  - id: '1.1'
+    title: 'Processes and mechanisms for installing and maintaining network security
+      controls are defined and understood.'
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.1.1
+      title: 'All security policies and operational procedures that are identified in
+        Requirement 1 are Documented, Kept up to date, In use and Known to all affected parties.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 1 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 1.1.2
+      title: 'Roles and responsibilities for performing activities in Requirement 1 are
+        documented, assigned, and understood.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 1 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '1.2'
+    title: 'Network Security Controls (NSCs) are configured and maintained.'
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.2.1
+      title: 'Configuration standards for NSC rulesets are Defined, Implemented and Maintained.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examples of NSCs covered by these configuration standards include, but are not limited to,
+        firewalls, routers configured with access control lists, and cloud virtual networks. The
+        objective of this requirement is to ensure the way that NSCs are configured and operate
+        are defined and consistently applied. While the tooling and standards can be automated,
+        the review of allowed accesses should be manual as different sites may have different
+        policies.
+      rules: []
+
+    - id: 1.2.2
+      title: 'All changes to network connections and to configurations of NSCs are approved and
+        managed in accordance with the change control process defined at Requirement 6.5.1.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Changes to network connections and NSCs cannot result in misconfiguration, implementation
+        of insecure services, or unauthorized network connections. Changes to network connections
+        include the addition, removal, or modification of a connection. Changes to NSC
+        configurations include those related to the component itself as well as those affecting
+        how it performs its security function. A formal change control process should be in place.
+
+    - id: 1.2.3
+      title: 'An accurate network diagram(s) is maintained that shows all connections between the
+        CDE and other networks, including any wireless networks.'
+      levels:
+        - base
+      status: pending
+      notes: |-
+        A representation of the boundaries between the CDE, all trusted networks, and all
+        untrusted networks, is maintained and available. A current network diagram(s) or other
+        technical or topological solution that identifies network connections and devices can be
+        used to meet this requirement.
+
+    - id: 1.2.4
+      title: 'An accurate data-flow diagram(s) is maintained'
+      description: |-
+        An accurate data-flow diagram(s) is maintained that meets the following:
+          - Shows all account data flows across systems and networks
+          - Updated as needed upon changes to the environment
+      levels:
+        - base
+      status: pending
+
+    - id: 1.2.5
+      title: 'All services, protocols, and ports allowed are identified, approved, and have a
+        defined business need.'
+      levels:
+        - base
+      status: pending
+
+    - id: 1.2.6
+      title: Security features are defined and implemented for all services, protocols, and ports
+        that are in use and considered to be insecure, such that the risk is mitigated.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The specific risks associated with the use of insecure services, protocols, and ports are
+        understood, assessed, and appropriately mitigated. The selected rules here basically
+        remove services without encryption and restricted some common services.
+      rules: []
+
+    - id: 1.2.7
+      title: Configurations of NSCs are reviewed at least once every six months to confirm they
+        are relevant and effective.
+      description: |-
+        NSC configurations that allow or restrict access to trusted networks are verified
+        periodically to ensure that only authorized connections with a current business
+        justification are permitted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Some configuration automation solution, such as Ansible could be helpful here.
+
+    - id: 1.2.8
+      title: Configuration files for NSCs are secured from unauthorized access and kept consistent
+        with active network configurations.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '1.3'
+    title: Network access to and from the cardholder data environment is restricted.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.3.1
+      title: Inbound traffic to the CDE is restricted to only traffic that is necessary
+      description: |-
+        Inbound traffic to the CDE is restricted as follows:
+        - To only traffic that is necessary.
+        - All other traffic is specifically denied.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 1.3.2
+      title: Outbound traffic from the CDE is restricted to only traffic that is necessary
+      description: |-
+        Outbound traffic from the CDE is restricted as follows:
+        - To only traffic that is necessary.
+        - All other traffic is specifically denied.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        It appears there is no rule in the project to restrict outbound traffic on the firewall.
+        Perhaps a rule to automates this would do more harm than good. Probably a manual
+        assessment is more reasonable here.
+
+    - id: 1.3.3
+      title: NSCs are installed between all wireless networks and the CDE, regardless of whether
+        the wireless network is a CDE.
+      description: |-
+        NSCs are installed between all wireless networks and the CDE, regardless of whether the
+        wireless network is a CDE, such that:
+        - All wireless traffic from wireless networks into the CDE is denied by default.
+        - Only wireless traffic with an authorized business purpose is allowed into the CDE.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Wireless interfaces are not expected in servers so they are disabled by default in this
+        policy.
+      rules: []
+
+  - id: '1.4'
+    title: Network connections between trusted and untrusted networks are controlled.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.4.1
+      title: NSCs are implemented between trusted and untrusted networks.
+      description: |-
+        Unauthorized traffic cannot traverse network boundaries between trusted and untrusted
+        networks.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Trusted and untrusted networks are expected to be different for each environment.
+        But loopback traffic is assumed to be trusted and even necessary for some services.
+        This requirement is complements 1.2.1 and 1.3.1 requirements.
+      rules: []
+
+    - id: 1.4.2
+      title: Inbound traffic from untrusted networks to trusted networks is restricted.
+      description: |-
+        Inbound traffic from untrusted networks to trusted networks is restricted to:
+        - Communications with system components that are authorized to provide publicly accessible
+        services, protocols, and ports.
+        - Stateful responses to communications initiated by system components in a trusted network.
+        - All other traffic is denied.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Probably missing some relevant IPv6 related rules. Needs to be investigated.
+      rules: []
+
+    - id: 1.4.3
+      title: Anti-spoofing measures are implemented to detect and block forged source IP
+        addresses from entering the trusted network.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Probably missing some relevant IPv6 related rules. Needs to be investigated.
+      rules: []
+
+    - id: 1.4.4
+      title: System components that store cardholder data are not directly accessible from
+        untrusted networks.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not intended to apply to storage of account data in volatile memory
+        but does apply where memory is being treated as persistent storage (for example, RAM
+        disk). Account data can only be stored in volatile memory during the time necessary to
+        support the associated business process (for example, until completion of the related
+        payment card transaction).
+
+    - id: 1.4.5
+      title: The disclosure of internal IP addresses and routing information is limited to only
+        authorized parties.
+      description: |-
+        Internal network information is protected from unauthorized disclosure.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '1.5'
+    title: Risks to the CDE from computing devices that are able to connect to both untrusted
+      networks and the CDE are mitigated.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 1.5.1
+      title: Security controls are implemented on any computing devices, including company- and
+        employee-owned devices, that connect to both untrusted networks (including the Internet)
+        and the CDE
+      description: |-
+        Security controls are implemented on any computing devices, including company- and
+        employee-owned devices, that connect to both untrusted networks (including the Internet)
+        and the CDE as follows:
+        - Specific configuration settings are defined to prevent threats being introduced into the
+        entity's network.
+        - Security controls are actively running.
+        - Security controls are not alterable by users of the computing devices unless
+        specifically documented and authorized by management on a case-by-case basis for a limited
+        period.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        To ensure this requirement, a manual analysis of site policy and topology is inevitable.
+        From the technical perspective, previous requirements should already cover this
+        requirement at some level.
+
+  - id: '2.1'
+    title: Processes and mechanisms for applying secure configurations to all system components
+      are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 2.1.1
+      title: All security policies and operational procedures that are identified in Requirement 2
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 2 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 2.1.2
+      title: Roles and responsibilities for performing activities in Requirement 2 are
+        documented, assigned, and understood.
+      description: |-
+        Day-to-day responsibilities for performing all the activities in Requirement 2 are
+        allocated. Personnel are accountable for successful, continuous operation of these
+        requirements.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 2 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '2.2'
+    title: 'System components are configured and managed securely.'
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 2.2.1
+      title: Configuration standards are developed, implemented, and maintained
+      description: |-
+        Configuration standards are developed, implemented, and maintained to:
+        - Cover all system components.
+        - Address all known security vulnerabilities.
+        - Be consistent with industry-accepted system hardening standards or vendor hardening
+        recommendations.
+        - Be updated as new vulnerability issues are identified, as defined in Requirement 6.3.1.
+        - Be applied when new systems are configured and verified as in place before or
+        immediately after a system component is connected to a production environment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Interestingly this requirement recommends other standards, such as Center for Internet
+        Security (CIS), International Organization for Standardization (ISO), National Institute
+        of Standards and Technology (NIST), Cloud Security Alliance, and product vendors. So, the
+        rules included here are very generic in terms of hardening.
+      rules: []
+
+    - id: 2.2.2
+      title: Vendor default accounts are managed.
+      description: |-
+        Vendor default accounts are managed as follows:
+        - If the vendor default account(s) will be used, the default password is changed per
+        Requirement 8.3.6.
+        - If the vendor default account(s) will not be used, the account is removed or disabled.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Also related to requirement 8.2.6 and 8.3.5.
+      rules: []
+
+    - id: 2.2.3
+      title: 'Primary functions requiring different security levels are managed'
+      levels:
+        - base
+      status: pending
+
+    - id: 2.2.4
+      title: Only necessary services, protocols, daemons, and functions are enabled, and all
+        unnecessary functionality is removed or disabled
+      description: |-
+        System components cannot be compromised by exploiting unnecessary functionality present in
+        the system component.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 2.2.5
+      title: If any insecure services, protocols, or daemons are present, business justification
+        is documented and the risk is reduced.
+      description: |-
+        If any insecure services, protocols, or daemons are present:
+        - Business justification is documented.
+        - Additional security features are documented and implemented that reduce the risk of
+        using insecure services, protocols, or daemons.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Known insecure services are removed or disabled by 2.2.4
+        General security measures are covered by 1.2.6
+        This requirement is more about checking exceptions and their respective documentation.
+
+    - id: 2.2.6
+      title: System security parameters are configured to prevent misuse.
+      description: |-
+        System components cannot be compromised because of incorrect security parameter
+        configuration.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not specific but also points to 2.2.1, where other policies are
+        referenced. Therefore, the most common rules related to system configuration in order to
+        prevent misuse and selected in main profiles are also selected here.
+      rules: []
+
+    - id: 2.2.7
+      title: All non-console administrative access is encrypted using strong cryptography.
+      description: |-
+        Cleartext administrative authorization factors cannot be read or intercepted from any
+        network transmissions. This includes administrative access via browser-based interfaces
+        and application programming interfaces (APIs).
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirement 12.3.3.
+      rules: []
+
+  - id: '2.3'
+    title: Wireless environments are configured and managed securely.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 2.3.1
+      title: For wireless environments connected to the CDE or transmitting account data, all
+        wireless vendor defaults are changed at installation or are confirmed to be secure.
+      description: |-
+        For wireless environments connected to the CDE or transmitting account data, all wireless
+        vendor defaults are changed at installation or are confirmed to be secure, including but
+        not limited to:
+        - Default wireless encryption keys.
+        - Passwords on wireless access points.
+        - SNMP defaults.
+        - Any other security-related wireless vendor defaults.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Wireless interfaces are disabled by 1.3.3.
+
+    - id: 2.3.2
+      title: For wireless environments connected to the CDE or transmitting account data, wireless
+        encryption keys are changed
+      description: |-
+        For wireless environments connected to the CDE or transmitting account
+        data, wireless encryption keys are changed
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Wireless interfaces are disabled by 1.3.3.
+
+  - id: '3.1'
+    title: Processes and mechanisms for protecting stored account data are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.1.1
+      title: All security policies and operational procedures that are identified in Requirement 3
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 3 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 3.1.2
+      title: Roles and responsibilities for performing activities in Requirement 3 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 3 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '3.2'
+    title: Storage of account data is kept to a minimum.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.2.1
+      title: Account data storage is kept to a minimum through implementation of data retention
+        and disposal policies, procedures, and processes.
+      description: |-
+        Account data storage is kept to a minimum through implementation of data retention and
+        disposal policies, procedures, and processes that include at least the following:
+        - Coverage for all locations of stored account data.
+        - Coverage for any sensitive authentication data (SAD) stored prior to completion of
+        authorization.
+        - Limiting data storage amount and retention time to that which is required for legal or
+        regulatory, and/or business requirements.
+        - Specific retention requirements for stored account data that defines length of retention
+        period and includes a documented business justification.
+        - Processes for secure deletion or rendering account data unrecoverable when no longer
+        needed per the retention policy.
+        - A process for verifying, at least once every three months, that stored account data
+        exceeding the defined retention period has been securely deleted or rendered unrecoverable.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is very dependent on each site policies and business model.
+        Local policies should be consulted and audited. Manual checking is reasonable.
+
+  - id: '3.3'
+    title: Sensitive authentication data (SAD) is not stored after authorization.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.3.1
+      title: SAD is not retained after authorization, even if encrypted. All sensitive
+        authentication data received is rendered unrecoverable upon completion of the
+        authorization process.
+      description: |-
+        This requirement is not eligible for the customized approach. This requirement does not
+        apply to issuers and companies that support issuing services (where SAD is needed for a
+        legitimate issuing business need) and have a business justification to store the sensitive
+        authentication data. Refer to Requirement 3.3.3 for additional requirements specifically
+        for issuers. Sensitive authentication data includes the data cited in Requirements 3.3.1.1
+        through 3.3.1.3.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 3.3.1.1
+        title: The full contents of any track are not retained upon completion of the
+          authorization process.
+        description: |-
+          This requirement is not eligible for the customized approach. In the normal course of
+          business, the following data elements from the track may need to be retained:
+          - Cardholder name.
+          - Primary account number (PAN).
+          - Expiration date.
+          - Service code.
+          To minimize risk, store securely only these data elements as needed for business.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          This requirement consists in auditing files, databases and memory to make sure the full
+          content of any track is not unnecessarily retained. It involves manual auditing but some
+          automated rules fit this requirement in order to reduce the chances if this data be
+          unintentionally stored in memory.
+        rules: []
+
+      - id: 3.3.1.2
+        title: The card verification code is not retained upon completion of the authorization
+          process.
+        description: |-
+          This requirement is not eligible for the customized approach. The card verification code
+          is the three- or four-digit number printed on the front or back of a payment card used
+          to verify card-not-present transactions.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+
+      - id: 3.3.1.3
+        title: The personal identification number (PIN) and the PIN block are not retained upon
+          completion of the authorization process.
+        description: |-
+          This requirement is not eligible for the customized approach. PIN blocks are encrypted
+          during the natural course of transaction processes, but even if an entity encrypts the
+          PIN block again, it is still not allowed to be stored after the completion of the
+          authorization process.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+
+    - id: 3.3.2
+      title: SAD that is stored electronically prior to completion of authorization is encrypted
+        using strong cryptography.
+      description: |-
+        This requirement is not eligible for the customized approach. Whether SAD is permitted to
+        be stored prior to authorization is determined by the organizations that manage compliance
+        programs (for example, payment brands and acquirers). Contact the organizations of
+        interest for any additional criteria. This requirement applies to all storage of SAD, even
+        if no PAN is present in the environment. Refer to Requirement 3.2.1 for an additional
+        requirement that applies if SAD is stored prior to completion of authorization. This
+        requirement does not apply to issuers and companies that support issuing services where
+        there is a legitimate issuing business justification to store SAD. Refer to Requirement
+        3.3.3 for requirements specifically for issuers. This requirement does not replace how PIN
+        blocks are required to be managed, nor does it mean that a properly encrypted PIN block
+        needs to be encrypted again.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+        This requirement consists of auditing information stored during a relatively short period
+        of time. Where and how the information is possibly stored depends in each Business and
+        local policies so the check is not actually automatable.
+
+    - id: 3.3.3
+      title: Additional requirement for issuers and companies that support issuing services and
+        store sensitive authentication data.
+      description: |-
+        Additional requirement for issuers and companies that support issuing services and store
+        sensitive authentication data: Any storage of sensitive authentication data is:
+        - Limited to that which is needed for a legitimate issuing business need and is secured.
+        - Encrypted using strong cryptography. This bullet is a best practice until until
+        31 March 2025, after which it will be required as part of Requirement 3.3.3 and must be
+        fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: '3.4'
+    title: Access to displays of full PAN and ability to copy PAN is restricted.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.4.1
+      title: PAN is masked when displayed (the BIN and last four digits are the maximum number of
+        digits to be displayed), such that only personnel with a legitimate business need can see
+        more than the BIN and last four digits of the PAN.
+      description: |-
+        PAN displays are restricted to the minimum number of digits necessary to meet a defined
+        business need. This requirement does not supersede stricter requirements in place for
+        displays of cardholder data — for example, legal or payment brand requirements for
+        point-of-sale (POS) receipts. This requirement relates to protection of PAN where it is
+        displayed on screens, paper receipts, printouts, etc., and is not to be confused with
+        Requirement 3.5.1 for protection of PAN when stored, processed, or transmitted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Consists on examining documented policies and procedures, checking system configurations
+        and observing relevant applications.
+
+    - id: 3.4.2
+      title: When using remote-access technologies, technical controls prevent copy and/or
+        relocation of PAN for all personnel, except for those with documented, explicit
+        authorization and a legitimate, defined business need.
+      description: |-
+        PAN cannot be copied or relocated by unauthorized personnel using remote-access
+        technologies. Storing or relocating PAN onto local hard drives, removable electronic
+        media, and other storage devices brings these devices into scope for PCI DSS.
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        There are technical rules to disable removable storage devices. However, this requirement
+        still demand some manual auditing in documentation and eventual exceptions.
+      rules: []
+
+  - id: '3.5'
+    title: Primary account number (PAN) is secured wherever it is stored.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.5.1
+      title: PAN is rendered unreadable anywhere it is stored
+      description: |-
+        PAN is rendered unreadable anywhere it is stored by using any of the following approaches:
+        - One-way hashes based on strong cryptography of the entire PAN.
+        - Truncation (hashing cannot be used to replace the truncated segment of PAN).
+          - If hashed and truncated versions of the same PAN, or different truncation formats of
+          the same PAN, are present in an environment, additional controls are in place such that
+          the different versions cannot be correlated to reconstruct the original PAN.
+        - Indexes tokens.
+        - Strong cryptography with associated key-management processes and procedures.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 3.5.1.1
+        title: Hashes used to render PAN unreadable (per the first bullet of Requirement 3.5.1)
+          are keyed cryptographic hashes of the entire PAN, with associated key-management
+          processes and procedures in accordance with Requirements 3.6 and 3.7.
+        description: |-
+          This requirement applies to PANs stored in primary storage (databases, or flat files
+          such as text files spreadsheets) as well as non-primary storage (backup, audit logs,
+          exception, or troubleshooting logs) must all be protected. This requirement does not
+          preclude the use of temporary files containing cleartext PAN while encrypting and
+          decrypting PAN. This requirement is considered a best practice until 31 March 2025,
+          after which it will be required and must be fully considered during a PCI DSS
+          assessment.
+        levels:
+          - base
+        status: planned
+        notes: |-
+          This requirement likely demand assessment in application level for some environments and
+          this would be too specific to be automated. However, on system level we can ensure some
+          strong cryptographic algorithms. This is also generally covered by 2.2.7 but here would
+          be possible to include more specific rules, for openssl and libreswan for example.
+          However it would be first necessary to include a platform conditional in these rules
+          before selecting them so they are applicable only if the respective packages are
+          installed.
+
+      - id: 3.5.1.2
+        title: If disk-level or partition-level encryption (rather than file-, column-, or
+          field-level database encryption) is used to render PAN unreadable, it is implemented
+          only on removable electronic media or complemented by another mechanism that meets
+          Requirement 3.5.1
+        levels:
+          - base
+        status: pending
+        rules: []
+
+      - id: 3.5.1.3
+        title: If disk-level or partition-level encryption is used (rather than file-, column-, or
+          field--level database encryption) to render PAN unreadable, it is managed.
+        description: |-
+          If disk-level or partition-level encryption is used (rather than file-, column-, or
+          field--level database encryption) to render PAN unreadable, it is managed as follows:
+          - Logical access is managed separately and independently of native operating system
+          authentication and access control mechanisms.
+          - Decryption keys are not associated with user accounts.
+          - Authentication factors (passwords, passphrases, or cryptographic keys) that allow
+          access to unencrypted data are stored securely.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          To properly check this requirement, site policies and documentation should be consulted.
+
+  - id: '3.6'
+    title: Cryptographic keys used to protect stored account data are secured.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.6.1
+      title: Procedures are defined and implemented to protect cryptographic keys used to protect
+        stored account data against disclosure and misuse.
+      description: |-
+        Procedures are defined and implemented to protect cryptographic keys used to protect
+        stored account data against disclosure and misuse that include:
+        - Access to keys is restricted to the fewest number of custodians necessary.
+        - Key-encrypting keys are at least as strong as the data-encrypting keys they protect.
+        - Key-encrypting keys are stored separately from data-encrypting keys.
+        - Keys are stored securely in the fewest possible locations and forms.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 3.6.1.1
+        title: 'Additional requirement for service providers only: A documented description of the
+          cryptographic architecture is maintained'
+        description: |-
+          Additional requirement for service providers only: A documented description of the
+          cryptographic architecture is maintained that includes:
+          - Details of all algorithms, protocols, and keys used for the protection of stored
+          account data, including key strength and expiry date.
+          - Preventing the use of the same cryptographic keys in production and test environments.
+          This bullet is a best practice until 31 March 2025, after which it will be required as
+          part of Requirement 3.6.1.1 and must be fully considered during a PCI DSS assessment.
+          - Description of the key usage for each key.
+          - Inventory of any hardware security modules (HSMs), key management systems (KMS), and
+          other secure cryptographic devices (SCDs) used for key management, including type and
+          location of devices, as outlined in Requirement 12.3.4.
+        levels:
+          - base
+        status: pending
+
+      - id: 3.6.1.2
+        title: Secret and private keys used to encrypt/decrypt stored account data are stored in
+          secure forms.
+        description: |-
+          Secret and private keys used to encrypt/decrypt stored account data are stored in one
+          (or more) of the following forms at all times:
+          - Encrypted with a key-encrypting key that is at least as strong as the data-encrypting
+          key, and that is stored separately from the data-encrypting key.
+          - Within a secure cryptographic device (SCD), such as a hardware security module (HSM)
+          or PTS-approved point-of-interaction device.
+          - As at least two full-length key components or key shares, in accordance with an
+          industry-accepted method.
+          Secret and private keys are stored in a secure form that prevents unauthorized retrieval
+          or access. It is not required that public keys be stored in one of these forms.
+          Cryptographic keys stored as part of a key management system (KMS) that employs SCDs are
+          acceptable. A cryptographic key that is split into two parts does not meet this
+          requirement. Secret or private keys stored as key components or key shares must be
+          generated via one of the following
+        levels:
+          - base
+        status: pending
+
+      - id: 3.6.1.3
+        title: Access to cleartext cryptographic key components is restricted to the fewest number
+          of custodians necessary.
+        description: |-
+          Access to cleartext cryptographic key components is restricted to necessary personnel.
+        levels:
+          - base
+        status: pending
+
+      - id: 3.6.1.4
+        title: Cryptographic keys are stored in the fewest possible locations.
+        description: |-
+          Cryptographic keys are retained only where necessary.
+        levels:
+          - base
+        status: pending
+
+  - id: '3.7'
+    title: Where cryptography is used to protect stored account data, key management processes and
+      procedures covering all aspects of the key lifecycle are defined and implemented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 3.7.1
+      title: Key-management policies and procedures are implemented to include generation of
+        strong cryptographic keys used to protect stored account data.
+      description: |-
+        Strong cryptographic keys are generated.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.2
+      title: Key-management policies and procedures are implemented to include secure distribution
+        of cryptographic keys used to protect stored account data.
+      description: |-
+        Cryptographic keys are secured during distribution.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.3
+      title: Key-management policies and procedures are implemented to include secure storage of
+        cryptographic keys used to protect stored account data.
+      description: |-
+        Cryptographic keys are secured when stored.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The scope of this requirement seems much wider going even to application level, which
+        might be different for each site. Regarding local system there are some technical measures
+        ensured by 2.2.6.
+
+    - id: 3.7.4
+      title: Key management policies and procedures are implemented for cryptographic key changes
+        for keys that have reached the end of their cryptoperiod, as defined by the associated
+        application vendor or key owner, and based on industry best practices and guidelines.
+      description: |-
+        Key management policies and procedures are implemented for cryptographic key changes for
+        keys that have reached the end of their cryptoperiod, as defined by the associated
+        application vendor or key owner, and based on industry best practices and guidelines,
+        including the following:
+        - A defined cryptoperiod for each key type in use.
+        - A process for key changes at the end of the defined cryptoperiod.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.5
+      title: Key management policies procedures are implemented to include the retirement,
+        replacement, or destruction of keys used to protect stored account data, as deemed
+        necessary.
+      description: |-
+        Key management policies procedures are implemented to include the retirement, replacement,
+        or destruction of keys used to protect stored account data, as deemed necessary when:
+        - The key has reached the end of its defined cryptoperiod.
+        - The integrity of the key has been weakened, including when personnel with knowledge of a
+        cleartext key component leaves the company, or the role for which the key component was
+        known.
+        - The key is suspected of or known to be compromised.
+        - Retired or replaced keys are not used for encryption operations.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.6
+      title: Where manual cleartext cryptographic key-management operations are performed by
+        personnel, key-management policies and procedures are implemented include managing these
+        operations using split knowledge and dual control.
+      description: |-
+        Cleartext secret or private keys cannot be known by anyone. Operations involving cleartext
+        keys cannot be carried out by a single person. This control is applicable for manual
+        key-management operations or where key management is not controlled by the encryption
+        product. A cryptographic key that is simply split into two parts does not meet this
+        requirement. Secret or private keys stored as key components or key shares must be
+        generated via one of the following
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.7
+      title: Key management policies and procedures are implemented to include the prevention of
+        unauthorized substitution of cryptographic keys.
+      description: |-
+        Cryptographic keys cannot be substituted by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.8
+      title: Key management policies and procedures are implemented to include that cryptographic
+        key custodians formally acknowledge (in writing or electronically) that they understand
+        and accept their key-custodian responsibilities.
+      description: |-
+        Key custodians are knowledgeable about their responsibilities in relation to cryptographic
+        operations and can access assistance and guidance when required.
+      levels:
+        - base
+      status: pending
+
+    - id: 3.7.9
+      title: 'Additional requirement for service providers only: Where a service provider shares
+        cryptographic keys with its customers for transmission or storage of account data,
+        guidance on secure transmission, storage and updating of such keys is documented and
+        distributed to the service provider’s customers.'
+      description: |-
+        Customers are provided with appropriate key management guidance whenever they receive
+        shared cryptographic keys. This requirement applies only when the entity being assessed is
+        a service provider.
+      levels:
+        - base
+      status: pending
+
+  - id: '4.1'
+    title: Processes and mechanisms for protecting cardholder data with strong cryptography during
+      transmission over open, public networks are defined and documented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 4.1.1
+      title: All security policies and operational procedures that are identified in Requirement 4
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+
+    - id: 4.1.2
+      title: Roles and responsibilities for performing activities in Requirement 4 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 4 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '4.2'
+    title: PAN is protected with strong cryptography during transmission.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 4.2.1
+      title: Strong cryptography and security protocols are implemented as follows to safeguard
+        PAN during transmission over open, public networks.
+      description: |-
+        Strong cryptography and security protocols are implemented as follows to safeguard PAN
+        during transmission over open, public networks:
+        - Only trusted keys and certificates are accepted.
+        - Certificates used to safeguard PAN during transmission over open, public networks are
+        confirmed as valid and are not expired or revoked. This bullet is a best practice until
+        31 March 2025, after which it will be required as part of Requirement 4.2.1 and must be
+        fully considered during a PCI DSS assessment.
+        - The protocol in use supports only secure versions or configurations and does not support
+        fallback to, or use of insecure versions, algorithms, key sizes, or implementations.
+        - The encryption strength is appropriate for the encryption methodology in use.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 4.2.1.1
+        title: An inventory of the entity's trusted keys and certificates used to protect PAN
+          during transmission is maintained.
+        description: |-
+          All keys and certificates used to protect PAN during transmission are identified and
+          confirmed as trusted. This requirement is a best practice until 31 March 2025, after
+          which it will be required and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+      - id: 4.2.1.2
+        title: Wireless networks transmitting PAN or connected to the CDE use industry best
+          practices to implement strong cryptography for authentication and transmission.
+        description: |-
+          Cleartext PAN cannot be read or intercepted from wireless network transmissions.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Wireless interfaces are disabled by 1.3.3.
+
+    - id: 4.2.2
+      title: PAN is secured with strong cryptography whenever it is sent via end-user messaging
+        technologies.
+      description: |-
+        Cleartext PAN cannot be read or intercepted from transmissions using end-user messaging
+        technologies. This requirement also applies if a customer, or other third-party, requests
+        that PAN is sent to them via end-user messaging technologies. There could be occurrences
+        where an entity receives unsolicited cardholder data via an insecure communication channel
+        that was not intended for transmissions of sensitive data. In this situation, the entity
+        can choose to either include the channel in the scope of their CDE and secure it according
+        to PCI DSS or delete the cardholder data and implement measures to prevent the channel
+        from being used for cardholder data.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Some known insecure services and protocols are disabled by 2.2.4.
+        If any specific end-user messaging technology is used, it should be manually checked in
+        alignment to site policies.
+
+  - id: '5.1'
+    title: Processes and mechanisms for protecting all systems and networks from malicious
+      software are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 5.1.1
+      title: All security policies and operational procedures that are identified in Requirement 5
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 5 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 5.1.2
+      title: Roles and responsibilities for performing activities in Requirement 5 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 5 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '5.2'
+    title: Malicious software (malware) is prevented, or detected and addressed.
+    levels:
+      - base
+    status: pending
+    notes: |-
+      Related measures are covered by 1.2.6, 1.4.5 and 3.4.2.
+    controls:
+    - id: 5.2.1
+      title: An anti-malware solution(s) is deployed on all system components, except for those
+        system components identified in periodic evaluations per Requirement 5.2.3 that concludes
+        the system components are not at risk from malware.
+      description: |-
+        Automated mechanisms are implemented to prevent systems from becoming an attack vector for
+        malware.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        There are many options of anti-malware and the criteria for any adopted solution or
+        approach relies on each site policy. Technologies are supported but manual assessment is
+        required.
+
+    - id: 5.2.2
+      title: The deployed anti-malware solution(s) detects all known types of malware and removes,
+        blocks, or contains all known types of malware.
+      levels:
+        - base
+      status: pending
+
+    - id: 5.2.3
+      title: Any system components that are not at risk for malware are evaluated periodically.
+      description: |-
+        Any system components that are not at risk for malware are evaluated periodically to
+        include the following:
+        - A documented list of all system components not at risk for malware.
+        - Identification and evaluation of evolving malware threats for those system components.
+        - Confirmation whether such system components continue to not require anti-malware
+        protection.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 5.2.3.1
+        title: The frequency of periodic evaluations of system components identified as not at
+          risk for malware is defined in the entity's targeted risk analysis, which is performed
+          according to all elements specified in Requirement 12.3.1.
+        description: |-
+          Systems not known to be at risk from malware are re-evaluated at a frequency that
+          addresses the entity's risk. This requirement is a best practice until 31 March 2025,
+          after which it will be required and must be fully considered during a PCI DSS
+          assessment.
+        levels:
+          - base
+        status: pending
+
+  - id: '5.3'
+    title: Anti-malware mechanisms and processes are active, maintained, and monitored.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 5.3.1
+      title: The anti-malware solution(s) is kept current via automatic updates.
+      description: |-
+        Anti-malware mechanisms can detect and address the latest malware threats.
+      levels:
+        - base
+      status: pending
+
+    - id: 5.3.2
+      title: The anti-malware solution(s) performs periodic scans and active or real-time scans or
+        performs continuous behavioral analysis of systems or processes.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 5.3.2.1
+        title: If periodic malware scans are performed to meet Requirement 5.3.2, the frequency of
+          scans is defined in the entity's targeted risk analysis, which is performed according to
+          all elements specified in Requirement 12.3.1.
+        description: |-
+          Scans by the malware solution are performed at a frequency that addresses the entity's
+          risk. This requirement applies to entities conducting periodic malware scans to meet
+          Requirement 5.3.2. This requirement is a best practice until 31 March 2025, after which
+          it will be required and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 5.3.3
+      title: For removable electronic media, the anti-malware solution(s) performs automatic scans
+        of when the media is inserted, connected, or logically mounted, or Performs continuous
+        behavioral analysis of systems or processes when the media is inserted, connected, or
+        logically mounted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related measures are covered by 3.4.2.
+
+    - id: 5.3.4
+      title: Audit logs for the anti-malware solution(s) are enabled and retained in accordance
+        with Requirement 10.5.1.
+      description: |-
+        Historical records of anti-malware actions are immediately available and retained for at
+        least 12 months.
+      levels:
+        - base
+      status: pending
+
+    - id: 5.3.5
+      title: Anti-malware mechanisms cannot be disabled or altered by users, unless specifically
+        documented, and authorized by management on a case-by-case basis for a limited time
+        period.
+      description: |-
+        Anti-malware mechanisms cannot be modified by unauthorized personnel.Anti-malware
+        solutions may be temporarily disabled only if there is a legitimate technical need, as
+        authorized by management on a case-by-case basis. If anti-malware protection needs to be
+        disabled for a specific purpose, it must be formally authorized. Additional security
+        measures may also need to be implemented for the period during which anti-malware
+        protection is not active.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related measures are covered by 2.2.6 requirement and 8.2 section.
+
+  - id: '5.4'
+    title: Anti-phishing mechanisms protect users against phishing attacks.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 5.4.1
+      title: Processes and automated mechanisms are in place to detect and protect personnel
+        against phishing attacks.
+      description: |-
+        Mechanisms are in place to protect against and mitigate risk posed by phishing attacks.
+        This requirement applies to the automated mechanism. It is not intended that the systems
+        and services providing such automated mechanisms (such as email servers) are brought into
+        scope for PCI DSS. The focus of this requirement is on protecting personnel with access to
+        system components in-scope for PCI DSS. Meeting this requirement for technical and
+        automated controls to detect and protect personnel against phishing is not the same as
+        Requirement 12.6.3.1 for security awareness training. Meeting this requirement does not
+        also meet the requirement for providing personnel with security awareness training, and
+        vice versa. This requirement is a best practice until 31 March 2025, after which it will
+        be required and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: '6.1'
+    title: Processes and mechanisms for developing and maintaining secure systems and software are
+      defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.1.1
+      title: All security policies and operational procedures that are identified in Requirement 6
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 6 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 6.1.2
+      title: Roles and responsibilities for performing activities in Requirement 6 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 6 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '6.2'
+    title: Bespoke and custom software are developed securely.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.2.1
+      title: Bespoke and custom software are developed securely.
+      description: |-
+        Bespoke and custom software are developed securely, as follows:
+        - Based on industry standards and/or best practices for secure development.
+        - In accordance with PCI DSS (for example, secure authentication and logging).
+        - Incorporating consideration of information security issues during each stage of the
+        software development lifecycle.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.2.2
+      title: Software development personnel working on bespoke and custom software are trained at
+        least once every 12 months
+      description: |-
+        Software development personnel working on bespoke and custom software are trained at least
+        once every 12 months as follows:
+        - On software security relevant to their job function and development languages.
+        - Including secure software design and secure coding techniques.
+        - Including, if security testing tools are used, how to use the tools for detecting
+        vulnerabilities in software.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.2.3
+      title: Bespoke and custom software is reviewed prior to being released into production or to
+        customers, to identify and correct potential coding vulnerabilities.
+      description: |-
+        Bespoke and custom software is reviewed prior to being released into production or to
+        customers, to identify and correct potential coding vulnerabilities, as follows:
+        - Code reviews ensure code is developed according to secure coding guidelines.
+        - Code reviews look for both existing and emerging software vulnerabilities.
+        - Appropriate corrections are implemented prior to release.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 6.2.3.1
+        title: If manual code reviews are performed for bespoke and custom software prior to
+          release to production code changes co-reviewed and approved.
+        description: |-
+          If manual code reviews are performed for bespoke and custom software prior to release
+          to production code changes are:
+          - Reviewed by individuals other than the originating code author, and who are
+          knowledgeable about code-review techniques and secure coding practices.
+          - Reviewed and approved by management prior to release.
+        levels:
+          - base
+        status: pending
+
+    - id: 6.2.4
+      title: Software engineering techniques or other methods are defined and in use by software
+        development personnel to prevent or mitigate common software attacks and related
+        vulnerabilities in bespoke and custom software.
+      levels:
+        - base
+      status: pending
+
+  - id: '6.3'
+    title: Security vulnerabilities are identified and addressed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.3.1
+      title: Security vulnerabilities are identified and managed
+      levels:
+        - base
+      status: pending
+
+    - id: 6.3.2
+      title: An inventory of bespoke and custom software, and third-party software components
+        incorporated into bespoke and custom software is maintained to facilitate vulnerability
+        and patch management.
+      description: |-
+        Known vulnerabilities in third-party software components cannot be exploited in bespoke
+        and custom software.This requirement is a best practice until 31 March 2025, after which
+        it will be required and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is a best practice until 31 March 2025, after which it will be required
+        and must be fully considered during a PCI DSS assessment.
+
+    - id: 6.3.3
+      title: All system components are protected from known vulnerabilities by installing
+        applicable security patches/updates.
+      description: |-
+        All system components are protected from known vulnerabilities by installing
+        applicable security patches/updates as follows:
+        - Critical or high-security patches/updates (identified according to the risk ranking
+        process at Requirement 6.3.1) are installed within one month of release.
+        - All other applicable security patches/updates are installed within an appropriate time
+        frame as determined by the entity (for example, within three months of release).
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '6.4'
+    title: Public-facing web applications are protected against attacks.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.4.1
+      title: For public-facing web applications, new threats and vulnerabilities are addressed on
+        an ongoing basis and these applications are protected against known attacks.
+      description: |-
+        For public-facing web applications, new threats and vulnerabilities are addressed on an
+        ongoing basis and these applications are protected against known attacks as follows:
+        - Reviewing public-facing web applications via manual or automated application
+        vulnerability security assessment tools or methods as follows:
+          - At least once every 12 months and after significant changes.
+          – By an entity that specializes in application security.
+          – Including, at a minimum, all common software attacks in Requirement 6.2.4.
+          – All vulnerabilities are ranked in accordance with requirement 6.3.1.
+          – All vulnerabilities are corrected.
+          – The application is re-evaluated after the corrections
+        OR
+        - Installing an automated technical solution(s) that continually detects and prevents
+        web-based attacks as follows:
+          - Installed in front of public-facing web applications to detect and prevent web-based
+          attacks.
+          - Actively running and up to date as applicable.
+          - Generating audit logs.
+          - Configured to either block web-based attacks or generate an alert that is immediately
+          investigated.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.4.2
+      title: For public-facing web applications, an automated technical solution is deployed that
+        continually detects and prevents web-based attacks.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.4.3
+      title: All payment page scripts that are loaded and executed in the consumer's browser are
+        managed
+      description: |-
+        All payment page scripts that are loaded and executed in the consumer's browser are
+        managed as follows:
+        - A method is implemented to confirm that each script is authorized.
+        - A method is implemented to assure the integrity of each script.
+        - An inventory of all scripts is maintained with written justification as to why each is
+        necessary.
+      levels:
+        - base
+      status: pending
+
+  - id: '6.5'
+    title: Changes to all system components are managed securely.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 6.5.1
+      title: Changes to all system components in the production environment are made according to
+        established procedures.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.2
+      title: Upon completion of a significant change, all applicable PCI DSS requirements are
+        confirmed to be in place on all new or changed systems and networks, and documentation is
+        updated as applicable.
+      description: |-
+        All system components are verified after a significant change to be compliant with the
+        applicable PCI DSS requirements.These significant changes should also be captured and
+        reflected in the entity's annual PCI DSS scope confirmation activity per Requirement
+        12.5.2.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.3
+      title: Pre-production environments are separated from production environments and the
+        separation is enforced with access controls.
+      description: |-
+        Pre-production environments cannot introduce risks and vulnerabilities into production
+        environments.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.4
+      title: Roles and functions are separated between production and pre-production environments
+        to provide accountability such that only reviewed and approved changes are deployed.
+      description: |-
+        Job roles and accountability that differentiate between pre-production and production
+        activities are defined and managed to minimize the risk of unauthorized, unintentional,
+        or inappropriate actions. In environments with limited personnel where individuals perform
+        multiple roles or functions, this same goal can be achieved with additional procedural
+        controls that provide accountability. For example, a developer may also be an administrator
+        that uses an administrator-level account with elevated privileges in the development
+        environment and, for their developer role, they use a separate account with user-level
+        access to the production environment.
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.5
+      title: Live PANs are not used in pre-production environments, except where those
+        environments are included in the CDE and protected in accordance with all applicable
+        PCI DSS requirements.
+      description: |-
+        Live PANs cannot be present in pre-production environments outside the CDE.s
+      levels:
+        - base
+      status: pending
+
+    - id: 6.5.6
+      title: Test data and test accounts are removed from system components before the system goes
+        into production.
+      description: |-
+        Test data and test accounts cannot exist in production environments.
+      levels:
+        - base
+      status: pending
+
+  - id: '7.1'
+    title: Processes and mechanisms for restricting access to system components and cardholder
+      data by business need to know are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 7.1.1
+      title: All security policies and operational procedures that are identified in Requirement 7
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 7 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 7.1.2
+      title: Roles and responsibilities for performing activities in Requirement 7 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 7 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '7.2'
+    title: Access to system components and data is appropriately defined and assigned.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 7.2.1
+      title: An access control model is defined and includes granting access
+      description: |-
+        An access control model is defined and includes granting access as follows:
+        - Appropriate access depending on the entity's business and access needs.
+        - Access to system components and data resources that is based on users' job
+        classification and functions.
+        - The least privileges required (for example, user, administrator) to perform a job
+        function.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        General access are restricted by 2.2.6 and 8.2 section. This requirement is more about
+        checking granting access process.
+
+    - id: 7.2.2
+      title: Access is assigned to users, including privileged users, based on job classification
+        and function, and least privileges necessary to perform job responsibilities.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.2.3
+      title: Required privileges are approved by authorized personnel.
+      description: |-
+        Access privileges cannot be granted to users without appropriate, documented
+        authorization.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.2.4
+      title: All user accounts and related access privileges, including third-party/vendor
+        accounts, are reviewed
+      description: |-
+        All user accounts and related access privileges, including third-party/vendor accounts,
+        are reviewed as follows:
+        - At least once every six months.
+        - To ensure user accounts and access remain appropriate based on job function.
+        - Any inappropriate access is addressed.
+        - Management acknowledges that access remains appropriate.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.2.5
+      title: All application and system accounts and related access privileges are assigned and
+        managed.
+      description: |-
+        All application and system accounts and related access privileges are assigned and managed
+        as follows:
+        - Based on the least privileges necessary for the operability of the system or application.
+        - Access is limited to the systems, applications, or processes that specifically require
+        their use.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        General access are restricted by 2.2.6 and 8.2 section.
+      controls:
+      - id: 7.2.5.1
+        title: All access by application and system accounts and related access privileges are
+          reviewed.
+        levels:
+          - base
+        status: pending
+
+    - id: 7.2.6
+      title: All user access to query repositories of stored cardholder data is restricted
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is specific about cardholder data, which can be available in different
+        formats, such as clear and binary files, and databases depending on site policies.
+        General system restrictions are covered in 2.2.6.
+
+  - id: '7.3'
+    title: 'Access to system components and data is managed via an access control
+      system(s).'
+    levels:
+      - base
+    status: planned
+    controls:
+    - id: 7.3.1
+      title: An access control system(s) is in place that restricts access based on a user's need
+        to know and covers all system components.
+      description: |-
+        Access rights and privileges are managed via mechanisms intended for that purpose.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.3.2
+      title: The access control system(s) is configured to enforce permissions assigned to
+        individuals, applications, and systems based on job classification and function.
+      description: |-
+        Individual account access rights and privileges to systems, applications, and data are
+        only inherited from group membership.
+      levels:
+        - base
+      status: pending
+
+    - id: 7.3.3
+      title: The access control system(s) is set to "deny all" by default.
+      description: |-
+        Access rights and privileges are prohibited unless expressly permitted.
+      levels:
+        - base
+      status: planned
+      notes: |-
+        It is possible we can select some rules for this requirement but more investigation is
+        needed to confirm.
+
+  - id: '8.1'
+    title: Processes and mechanisms for identifying users and authenticating access to system
+      components are defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.1.1
+      title: All security policies and operational procedures that are identified in Requirement 8
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 8 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 8.1.2
+      title: Roles and responsibilities for performing activities in Requirement 8 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 8 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '8.2'
+    title: User identification and related accounts for users and administrators are strictly
+      managed throughout an account's lifecycle.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.2.1
+      title: All users are assigned a unique ID before access to system components or cardholder
+        data is allowed.
+      description: |-
+        All actions by all users are attributable to an individual. This requirement is not
+        intended to apply to user accounts within point-of-sale terminals that have access to only
+        one card number at a time to facilitate a single transaction (such as IDs used by cashiers
+        on point-of-sale terminals).
+      levels:
+        - base
+      status: planned
+      notes: |-
+        The rules selected in this requirement are incomplete. Missing remediation and test
+        scenarios. They should include test scenarios and likely remediation or a warning
+        informing why a remediation is not present.
+      rules: []
+
+    - id: 8.2.2
+      title: Group, shared, or generic accounts, or other shared authentication credentials are
+        only used when necessary on an exception basis, and are managed.
+      description: |-
+        - Account use is prevented unless needed for an exceptional circumstance.
+        - Use is limited to the time needed for the exceptional circumstance.
+        - Business justification for use is documented.
+        - Use is explicitly approved by management.
+        - Individual user identity is confirmed before access to an account is granted.
+        - Every action taken is attributable to an individual user.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is complemented by 8.2.1 and related to 8.3.5.
+      rules: []
+
+    - id: 8.2.3
+      title: 'Additional requirement for service providers only: Service providers with remote
+        access to customer premises use unique authentication factors for each customer premises.'
+      levels:
+        - base
+      status: pending
+
+    - id: 8.2.4
+      title: Addition, deletion, and modification of user IDs, authentication factors, and other
+        identifier objects are managed
+      levels:
+        - base
+      status: pending
+
+    - id: 8.2.5
+      title: Access for terminated users is immediately revoked.
+      description: |-
+        The accounts of terminated users cannot be used.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement depends on site policies for user termination.
+
+    - id: 8.2.6
+      title: Inactive user accounts are removed or disabled within 90 days of inactivity.
+      description: |-
+        Inactive user accounts cannot be used.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Also related to requirements 2.2.2 and 8.3.5.
+      rules: []
+
+    - id: 8.2.7
+      title: Accounts used by third parties to access, support, or maintain system components via
+        remote access are managed.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.2.8
+      title: If a user session has been idle for more than 15 minutes, the user is required to
+        re-authenticate to re-activate the terminal or session.
+      description: |-
+        A user session cannot be used except by the authorized user. This requirement is not
+        intended to apply to user accounts on point-of-sale terminals that have access to only one
+        card number at a time to facilitate a single transaction (such as IDs used by cashiers on
+        point-of-sale terminals). This requirement is not meant to prevent legitimate activities
+        from being performed while the console/PC is unattended.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '8.3'
+    title: Strong authentication for users and administrators is established and managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.3.1
+      title: All user access to system components for users and administrators is authenticated.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 8.3.2
+      title: Strong cryptography is used to render all authentication factors unreadable during
+        transmission and storage on all system components.
+      description: |-
+        Cleartext authentication factors cannot be obtained, derived, or reused from the
+        interception of communications or from stored data.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        There are similar rules that might be redundant for some distros.
+      rules: []
+
+    - id: 8.3.3
+      title: User identity is verified before modifying any authentication factor.
+      description: |-
+        Unauthorized individuals cannot gain system access by impersonating the identity of an
+        authorized user.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is about processes, such as password resets, provisioning new hardware or
+        software tokens, and generating new keys. It is common that these activities involve help
+        desk teams and administrators and the involved people should ensure identities are properly
+        verified.
+
+    - id: 8.3.4
+      title: Invalid authentication attempts are limited.
+      description: |-
+        - Locking out the user ID after not more than 10 attempts.
+        - Setting the lockout duration to a minimum of 30 minutes or until the user's identity is
+        confirmed.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 8.3.5
+      title: If passwords/passphrases are used as authentication factors to meet Requirement
+        8.3.1, they are set and reset for each user.
+      description: |-
+        - Set to a unique value for first-time use and upon reset.
+        - Forced to be changed immediately after the first use.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Also related to requirement 2.2.2, 8.2.2 and 8.2.6.
+      rules: []
+
+    - id: 8.3.6
+      title: If passwords/passphrases are used as authentication factors to meet Requirement
+        8.3.1, they meet the minimum level of complexity.
+      description: |-
+        - A minimum length of 12 characters (or IF the system does not support 12 characters, a
+        minimum length of eight characters).
+        - Contain both numeric and alphabetic characters.
+        A guessed password/passphrase cannot be verified by either an online or offline brute
+        force attack.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not intended to apply to:
+        - User accounts on point-of-sale terminals that have access to only one card number at a
+        time to facilitate a single transaction (such as IDs used by cashiers on point-of-sale
+        terminals).
+        - Application or system accounts, which are governed by requirements in section 8.6.
+      rules: []
+
+    - id: 8.3.7
+      title: Individuals are not allowed to submit a new password/passphrase that is the same as
+        any of the last four passwords/passphrases used.
+      description: |-
+        A previously used password cannot be used to gain access to an account for at least 12
+        months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is not intended to apply to user accounts on point-of-sale terminals that
+        have access to only one card number at a time to facilitate a single transaction (such as
+        IDs used by cashiers on point-of-sale terminals).
+      rules: []
+
+    - id: 8.3.8
+      title: Authentication policies and procedures are documented and communicated to all users.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.3.9
+      title: If passwords/passphrases are used as the only authentication factor for user access
+        (i.e., in any single-factor authentication implementation) they should have a limited
+        lifetime.
+      description: |-
+        If passwords/passphrases are used as the only authentication factor for user access (i.e.,
+        in any single-factor authentication implementation) then either:
+        - Passwords/passphrases are changed at least once every 90 days,
+        OR
+        - The security posture of accounts is dynamically analyzed, and real-time access to
+        resources is automatically determined accordingly.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The requirement does not explicitily define the number of days before the password
+        expiration to warn the users, but the relevant rules were selected here as they do not
+        cause any problems in combination with password lifetime rules.
+      rules: []
+
+    - id: 8.3.10
+      title: 'Additional requirement for service providers only: If passwords/passphrases are used
+        as the only authentication factor for customer user access to cardholder data (i.e., in
+        any single-factor authentication implementation) then guidance is provided to customer
+        users.'
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 8.3.10.1
+        title: 'Additional requirement for service providers only: If passwords/passphrases are
+          used as the only authentication factor for customer user access (i.e., in any
+          single-factor authentication implementation) they should have a limited lifetime.'
+        levels:
+          - base
+        status: pending
+        notes: |-
+          This requirement is already covered by 8.3.9.
+
+    - id: 8.3.11
+      title: Where authentication factors such as physical or logical security tokens, smart
+        cards, or certificates are used, factors are not shared among multiple users and the usage
+        is controlled.'
+      levels:
+        - base
+      status: pending
+
+  - id: '8.4'
+    title: Multi-factor authentication (MFA) is implemented to secure access into the CDE.
+    levels:
+      - base
+    status: pending
+    notes: |-
+      This parent requirement does not set one specific combination of Multi-factor authentication
+      (MFA), so we can't enforce the use of smartcards or any specific solution. The systems
+      usually support MFA but the chosen solution depends on site policies.
+    controls:
+    - id: 8.4.1
+      title: MFA is implemented for all non-console access into the CDE for personnel with
+        administrative access.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.4.2
+      title: MFA is implemented for all access into the CDE.
+      description: |-
+        Access into the CDE cannot be obtained by the use of a single authentication factor.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.4.3
+      title: MFA is implemented for all remote network access originating from outside the
+        entity's network that could access or impact the CDE.
+      levels:
+        - base
+      status: pending
+
+  - id: '8.5'
+    title: Multi-factor authentication (MFA) systems are configured to prevent misuse.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.5.1
+      title: MFA systems are properly implemented.
+      description: |-
+        - The MFA system is not susceptible to replay attacks.
+        - MFA systems cannot be bypassed by any users, including administrative users unless
+        specifically documented, and authorized by management on an exception basis, for a limited
+        time period.
+        - At least two different types of authentication factors are used.
+        - Success of all authentication factors is required before access is granted.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Each site might have a different MFA solution and each solution has its own capabilities.
+        This requirement demands manual assessment based on site policies.
+
+  - id: '8.6'
+    title: Use of application and system accounts and associated authentication factors is
+      strictly managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 8.6.1
+      title: If accounts used by systems or applications can be used for interactive login, they
+        are managed.
+      description: |-
+        - Interactive use is prevented unless needed for an exceptional circumstance.
+        - Interactive use is limited to the time needed for the exceptional circumstance.
+        - Business justification for interactive use is documented.
+        - Interactive use is explicitly approved by management.
+        - Individual user identity is confirmed before access to account is granted.
+        - Every action taken is attributable to an individual user.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        This requirement is related to 2.2.2, 2.2.6, 8.2.1 and 8.2.2. Specifically on 8.2.2 system
+        accounts usage is restricted. Exceptions to system accounts should be manually checked to
+        ensure the requirements in description. This requirement although implements some extra
+        controls regarding root account.
+      rules: []
+
+    - id: 8.6.2
+      title: Passwords/passphrases for any application and system accounts that can be used for
+        interactive login are not hard coded in scripts, configuration/property files, or bespoke
+        and custom source code.
+      description: |-
+        Passwords/passphrases used by application and system accounts cannot be used by
+        unauthorized personnel.
+      levels:
+        - base
+      status: pending
+
+    - id: 8.6.3
+      title: Passwords/passphrases for any application and system accounts are protected against
+        misuse.
+      description: |-
+        - Passwords/passphrases are changed periodically (at the frequency defined in the entity's
+        targeted risk analysis, which is performed according to all elements specified in
+        Requirement 12.3.1) and upon suspicion or confirmation of compromise.
+        - Passwords/passphrases are constructed with sufficient complexity appropriate for how
+        frequently the entity changes the passwords/passphrases.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirements 8.3.6 and 8.3.9.
+
+  - id: '9.1'
+    title: Processes and mechanisms for restricting physical access to cardholder data are defined
+      and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 9.1.1
+      title: All security policies and operational procedures that are identified in Requirement 9
+        are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 9 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 9.1.2
+      title: Roles and responsibilities for performing activities in Requirement 9 are documented,
+        assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 9 are documented, assigned and understood
+        by the assigned personnel.
+
+  - id: '9.2'
+    title: Physical access controls manage entry into facilities and systems containing cardholder
+      data.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 9.2.1
+      title: Appropriate facility entry controls are in place to restrict physical access to
+        systems in the CDE.
+      description: |-
+        System components in the CDE cannot be physically accessed by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 9.2.1.1
+        title: Individual physical access to sensitive areas within the CDE is monitored with
+          either video cameras or physical access control mechanisms (or both).
+        levels:
+          - base
+        status: pending
+
+    - id: 9.2.2
+      title: Physical and/or logical controls are implemented to restrict use of publicly
+        accessible network jacks within the facility.
+      description: |-
+        Unauthorized devices cannot connect to the entity's network from public areas within the
+        facility.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.2.3
+      title: Physical access to wireless access points, gateways, networking/communications
+        hardware, and telecommunication lines within the facility is restricted
+      description: |-
+        Physical networking equipment cannot be accessed by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.2.4
+      title: Access to consoles in sensitive areas is restricted via locking when not in use.
+      description: |-
+        Physical consoles within sensitive areas cannot be used by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirement 8.2.8.
+        This requirement asks to observe a system administrator's attempt to log into consoles in
+        sensitive areas and verify that they are "locked" to prevent unauthorized use. Therefore
+        it is a manual requirement applicable only very specific circumstances.
+
+  - id: '9.3'
+    title: Physical access for personnel and visitors is authorized and managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 9.3.1
+      title: Procedures are implemented for authorizing and managing physical access of personnel
+        to the CDE.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 9.3.1.1
+        title: Physical access to sensitive areas within the CDE for personnel is controlled
+        levels:
+          - base
+        status: pending
+
+    - id: 9.3.2
+      title: Procedures are implemented for authorizing and managing visitor access to the CDE.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.3.3
+      title: Visitor badges or identification are surrendered or deactivated before visitors leave
+        the facility or at the date of expiration.
+      description: |-
+        Visitor identification or badges cannot be reused after expiration.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.3.4
+      title: A visitor log is used to maintain a physical record of visitor activity within the
+        facility and within sensitive areas.
+      levels:
+        - base
+      status: pending
+
+  - id: '9.4'
+    title: Media with cardholder data is securely stored, accessed, distributed, and destroyed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 9.4.1
+      title: All media with cardholder data is physically secured.
+      description: |-
+        Media with cardholder data cannot be accessed by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 9.4.1.1
+        title: Offline media backups with cardholder data are stored in a secure location.
+        description: |-
+          Offline backups cannot be accessed by unauthorized personnel.
+        levels:
+          - base
+        status: pending
+
+      - id: 9.4.1.2
+        title: The security of the offline media backup location(s) with cardholder data is
+          reviewed at least once every 12 months.
+        description: |-
+          The security controls protecting offline backups are verified periodically by
+          inspection.
+        levels:
+          - base
+        status: pending
+
+    - id: 9.4.2
+      title: All media with cardholder data is classified in accordance with the sensitivity of
+        the data.
+      description: |-
+        Media are classified and protected appropriately.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.4.3
+      title: Media with cardholder data sent outside the facility is secured.
+      description: |-
+        Media is secured and tracked when transported outside the facility.
+        - Media sent outside the facility is logged.
+        - Media is sent by secured courier or other delivery method that can be accurately
+        tracked.
+        - Offsite tracking logs include details about media location.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.4.4
+      title: Management approves all media with cardholder data that is moved outside the facility
+        (including when media is distributed to individuals).
+      description: |-
+        Media cannot leave a facility without the approval of accountable personnel. Individuals
+        approving media movements should have the appropriate level of management authority to
+        grant this approval. However, it is not specifically required that such individuals have
+        "manager" as part of their title.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.4.5
+      title: Inventory logs of all electronic media with cardholder data are maintained.
+      description: |-
+        Accurate inventories of stored electronic media are maintained.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 9.4.5.1
+        title: Inventories of electronic media with cardholder data are conducted at least once
+          every 12 months.
+        description: |-
+          Media inventories are verified periodically.
+        levels:
+          - base
+        status: pending
+
+    - id: 9.4.6
+      title: Hard-copy materials with cardholder data are destroyed when no longer needed for
+        business or legal reasons.
+      levels:
+        - base
+      status: pending
+
+    - id: 9.4.7
+      title: Electronic media with cardholder data is destroyed when no longer needed for business
+        or legal reasons.
+      description: |-
+        - The electronic media is destroyed.
+        - The cardholder data is rendered unrecoverable so that it cannot be reconstructed.
+      levels:
+        - base
+      status: pending
+
+  - id: '9.5'
+    title: Point-of-interaction (POI) devices are protected from tampering and unauthorized
+      substitution.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 9.5.1
+      title: POI devices that capture payment card data via direct physical interaction with the
+        payment card form factor are protected from tampering and unauthorized substitution.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 9.5.1.1
+        title: An up-to-date list of POI devices is maintained.
+        levels:
+          - base
+        status: pending
+
+      - id: 9.5.1.2
+        title: POI device surfaces are periodically inspected to detect tampering and unauthorized
+          substitution.
+        description: |-
+          Point of Interaction Devices cannot be tampered with, substituted without authorization,
+          or have skimming attachments installed without timely detection.
+        levels:
+          - base
+        status: pending
+        controls:
+        - id: 9.5.1.2.1
+          title: The frequency of periodic POI device inspections and the type of inspections
+            performed is defined in the entity's targeted risk analysis, which is performed
+            according to all elements specified in Requirement 12.3.1.
+          description: |-
+            POI devices are inspected at a frequency that addresses the entity's risk.
+            This requirement is a best practice until 31 March 2025, after which it will be
+            required and must be fully considered during a PCI DSS assessment.
+          levels:
+            - base
+          status: pending
+
+      - id: 9.5.1.3
+        title: Training is provided for personnel in POI environments to be aware of attempted
+          tampering or replacement of POI devices.
+        levels:
+          - base
+        status: pending
+
+  - id: '10.1'
+    title: Processes and mechanisms for logging and monitoring all access to system components and
+      cardholder data are defined and documented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.1.1
+      title: All security policies and operational procedures that are identified in Requirement
+        10 are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 10 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 10.1.2
+      title: Roles and responsibilities for performing activities in Requirement 10 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 10 are documented, assigned and
+        understood by the assigned personnel.
+
+  - id: '10.2'
+    title: Audit logs are implemented to support the detection of anomalies and suspicious
+      activity, and the forensic analysis of events.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.2.1
+      title: Audit logs are enabled and active for all system components and cardholder data.
+      description: |-
+        Records of all activities affecting system components and cardholder data are captured.
+      levels:
+        - base
+      status: pending
+      rules: []
+      controls:
+      - id: 10.2.1.1
+        title: Audit logs capture all individual user access to cardholder data.
+        description: |-
+          Records of all individual user access to cardholder data are captured.
+        levels:
+          - base
+        status: planned
+        notes: |-
+          Differently than 10.2.1.4, this requirement is about logginh successful access to
+          cardholder data. This kind of events can easily hit performance issues and are usually
+          not necessary if a good access policy is in place. More clarification is needed about
+          this requirement.
+
+      - id: 10.2.1.2
+        title: Audit logs capture all actions taken by any individual with administrative access,
+          including any interactive use of application or system accounts.
+        description: |-
+          Records of all actions performed by individuals with elevated privileges are captured.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Not all privileged commands have suid or sgid enabled. We probably want to include more
+          rules for this requirement.
+        rules: []
+
+      - id: 10.2.1.3
+        title: Audit logs capture all access to audit logs.
+        description: |-
+          Records of all access to audit logs are captured.
+        levels:
+          - base
+        status: pending
+        rules: []
+
+      - id: 10.2.1.4
+        title: Audit logs capture all invalid logical access attempts.
+        description: |-
+          Records of all invalid access attempts are captured.
+        levels:
+          - base
+        status: pending
+        rules: []
+
+      - id: 10.2.1.5
+        title: Audit logs capture all changes to identification and authentication credentials.
+        levels:
+          - base
+        status: pending
+        rules: []
+
+      - id: 10.2.1.6
+        title: Audit logs capture the initialization of new audit logs, and starting, stopping, or
+          pausing of the existing audit logs.
+        levels:
+          - base
+        status: planned
+        notes: |-
+          Ideally should exist rules specifically logging when audit configuration files are
+          modified and audit service state is changed.
+
+      - id: 10.2.1.7
+        title: Audit logs capture all creation and deletion of system-level objects.
+        description: |-
+          Records of alterations that indicate a system has been modified from its intended
+          functionality are captured.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          There are enough rules to capture deletion events but not for creation events.
+          This requirement needs to be better investigated to confirm which additional rules would
+          satistfy the requirement.
+        rules: []
+
+    - id: 10.2.2
+      title: Audit logs record sufficient details for each auditable event.
+      description: |-
+        - User identification.
+        - Type of event.
+        - Date and time.
+        - Success and failure indication.
+        - Origination of event.
+        - Identity or name of affected data, system component, resource, or service (for example,
+          name and protocol).
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Standard settings for audit should be enough.
+      rules: []
+
+  - id: '10.3'
+    title: Audit logs are protected from destruction and unauthorized modifications.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.3.1
+      title: Read access to audit logs files is limited to those with a job-related need.
+      description: |-
+        Stored activity records cannot be accessed by unauthorized personnel.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 10.3.2
+      title: Audit log files are protected to prevent modifications by individuals.
+      description: |-
+        Stored activity records cannot be modified by personnel.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 10.3.3
+      title: Audit log files, including those for external-facing technologies, are promptly
+        backed up to a secure, central, internal log server(s) or other media that is difficult to
+        modify.
+      description: |-
+        Stored activity records are secured and preserved in a central location to prevent
+        unauthorized modification.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Although the technologies in general allow to send logs to a centralized server, some
+        parameters for this configuration are specific to each site policy and therefore the
+        requirement demands manual assessment.
+      rules: []
+
+    - id: 10.3.4
+      title: File integrity monitoring or change-detection mechanisms is used on audit logs to
+        ensure that existing log data cannot be changed without generating alerts.
+      description: |-
+        Stored activity records cannot be modified without an alert being generated.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '10.4'
+    title: Audit logs are reviewed to identify anomalies or suspicious activity.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.4.1
+      title: The audit logs are reviewed at least once daily.
+      description: |-
+        - All security events.
+        - Logs of all system components that store, process, or transmit CHD and/or SAD.
+        - Logs of all critical system components.
+        - Logs of all servers and system components that perform security functions (for example,
+          network security controls, intrusion-detection systems/intrusion-prevention systems
+          (IDS/IPS), authentication servers).
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 10.4.1.1
+        title: Automated mechanisms are used to perform audit log reviews.
+        description: |-
+          Potentially suspicious or anomalous activities are identified via a repeatable and
+          consistent mechanism. This requirement is a best practice until 31 March 2025, after
+          which it will be required and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          Automation mechanisms, solutions and approaches vary for each organizarion.
+
+    - id: 10.4.2
+      title: Logs of all other system components (those not specified in Requirement 10.4.1) are
+        reviewed periodically.
+      description: |-
+        Potentially suspicious or anomalous activities for other system components (not included
+        in 10.4.1) are reviewed in accordance with the entity's identified risk. This requirement
+        is applicable to all other in-scope system components not included in Requirement 10.4.1.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 10.4.2.1
+        title: The frequency of periodic log reviews for all other system components (not defined
+          in Requirement 10.4.1) is defined in the entity's targeted risk analysis, which is
+          performed according to all elements specified in Requirement 12.3.1
+        description: |-
+          Log reviews for lower-risk system components are performed at a frequency that addresses
+          the entity's risk. This requirement is a best practice until 31 March 2025, after which
+          it will be required and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 10.4.3
+      title: Exceptions and anomalies identified during the review process are addressed.
+      description: |-
+        Suspicious or anomalous activities are addressed.
+      levels:
+        - base
+      status: pending
+
+  - id: '10.5'
+    title: Audit log history is retained and available for analysis.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.5.1
+      title: Retain audit log history for at least 12 months, with at least the most recent three
+        months immediately available for analysis.
+      description: |-
+        Historical records of activity are available immediately to support incident response and
+        are retained for at least 12 months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        It is not simple to ensure 12 months history is present in each system but the rules in
+        this requirement ensures the logs are not lost without administrators awareness.
+      rules: []
+
+  - id: '10.6'
+    title: Time-synchronization mechanisms support consistent time settings across all systems.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.6.1
+      title: System clocks and time are synchronized using time-synchronization technology.
+      description: |-
+        Common time is established across all systems. Keeping time-synchronization technology
+        current includes managing vulnerabilities and patching the technology according to PCI DSS
+        Requirements 6.3.1 and 6.3.3.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Maybe it is possible to optmize some similar rules related to ntp.
+      rules: []
+
+    - id: 10.6.2
+      title: Systems are configured to the correct and consistent time.
+      description: |-
+        - One or more designated time servers are in use.
+        - Only the designated central time server(s) receives time from external sources.
+        - Time received from external sources is based on International Atomic Time or Coordinated
+          Universal Time (UTC).
+        - The designated time server(s) accept time updates only from specific industry-accepted
+          external sources.
+        - Where there is more than one designated time server, the time servers peer with one
+          another to keep accurate time.
+        - Internal systems receive time information only from designated central time server(s).
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The selected rules might need updates in order to restrict their platform applicability
+        to avoid conflicts.
+      rules: []
+
+    - id: 10.6.3
+      title: Time synchronization settings and data are protected.
+      description: |-
+        - Access to time data is restricted to only personnel with a business need.
+        - Any changes to time settings on critical systems are logged, monitored, and reviewed.
+      levels:
+        - base
+      status: pending
+      rules: []
+
+  - id: '10.7'
+    title: Failures of critical security control systems are detected, reported, and responded to
+      promptly.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 10.7.1
+      title: 'Additional requirement for service providers only: Failures of critical security
+        control systems are detected, alerted, and addressed promptly.'
+      description: |-
+        It includes but is not limited to failure of the following critical security control
+        systems:
+        - Network security controls.
+        - IDS/IPS.
+        - FIM.
+        - Anti-malware solutions.
+        - Physical access controls.
+        - Logical access controls.
+        - Audit logging mechanisms.
+        - Segmentation controls (if used).
+      levels:
+        - base
+      status: pending
+
+    - id: 10.7.2
+      title: Failures of critical security control systems are detected, alerted, and addressed
+        promptly.
+      description: |-
+        It includes but is not limited to failure of the following critical security control
+        systems:
+        - Network security controls.
+        - IDS/IPS.
+        - Change-detection mechanisms.
+        - Anti-malware solutions.
+        - Physical access controls.
+        - Logical access controls.
+        - Audit logging mechanisms.
+        - Segmentation controls (if used).
+        - Audit log review mechanisms.
+        - Automated security testing tools (if used).
+      levels:
+        - base
+      status: pending
+      rules: []
+
+    - id: 10.7.3
+      title: Failures of any critical security controls systems are responded to restore security
+        functions, ensure documentation, address security issues and prevent other failures.
+      description: |-
+        It includes but is not limited to:
+        - Restoring security functions.
+        - Identifying and documenting the duration (date and time from start to end) of the
+          security failure.
+        - Identifying and documenting the cause(s) of failure and documenting required
+          remediation.
+        - Identifying and addressing any security issues that arose during the failure.
+        - Determining whether further actions are required as a result of the security failure.
+        - Implementing controls to prevent the cause of failure from reoccurring.
+        - Resuming monitoring of security controls.
+      levels:
+        - base
+      status: pending
+
+  - id: '11.1'
+    title: Processes and mechanisms for regularly testing security of systems and networks are
+      defined and understood.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.1.1
+      title: All security policies and operational procedures that are identified in Requirement
+        11 are Documented, Kept up to date, In use and Known to all affected parties.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that security policies and
+        operational procedures identified in Requirement 11 are managed in accordance with all
+        elements specified in this requirement.
+
+    - id: 11.1.2
+      title: Roles and responsibilities for performing activities in Requirement 11 are
+        documented, assigned, and understood.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Examine documentation and interview personnel to verify that day-to-day responsibilities
+        for performing all the activities in Requirement 11 are documented, assigned and
+        understood by the assigned personnel.
+
+  - id: '11.2'
+    title: Wireless access points are identified and monitored, and unauthorized wireless access
+      points are addressed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.2.1
+      title: Authorized and unauthorized wireless access points are managed.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.2.2
+      title: An inventory of authorized wireless access points is maintained, including a
+        documented business justification.
+      description: |-
+        Unauthorized wireless access points are not mistaken for authorized wireless access
+        points.
+      levels:
+        - base
+      status: pending
+
+  - id: '11.3'
+    title: External and internal vulnerabilities are regularly identified, prioritized, and
+      addressed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.3.1
+      title: Internal vulnerability scans are performed.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 11.3.1.1
+        title: All other applicable vulnerabilities (those not ranked as high-risk or critical per
+          the entity's vulnerability risk rankings defined at Requirement 6.3.1) are managed
+        levels:
+          - base
+        status: pending
+
+      - id: 11.3.1.2
+        title: Internal vulnerability scans are performed via authenticated scanning.
+        levels:
+          - base
+        status: pending
+
+      - id: 11.3.1.3
+        title: Internal vulnerability scans are performed after any significant change.
+        levels:
+          - base
+        status: pending
+
+    - id: 11.3.2
+      title: External vulnerability scans are performed.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 11.3.2.1
+        title: External vulnerability scans are performed after any significant change.
+        levels:
+          - base
+        status: pending
+
+  - id: '11.4'
+    title: External and internal penetration testing is regularly performed, and exploitable
+      vulnerabilities and security weaknesses are corrected.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.4.1
+      title: A penetration testing methodology is defined, documented, and implemented by the
+        entity.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.2
+      title: Internal penetration testing is performed.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.3
+      title: External penetration testing is performed.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.4
+      title: Exploitable vulnerabilities and security weaknesses found during penetration testing
+        are corrected
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.5
+      title: If segmentation is used to isolate the CDE from other networks, penetration tests are
+        performed on segmentation controls.
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.6
+      title: 'Additional requirement for service providers only: If segmentation is used to
+        isolate the CDE from other networks, penetration tests are performed on segmentation
+        controls.'
+      levels:
+        - base
+      status: pending
+
+    - id: 11.4.7
+      title: 'Additional requirement for multi-tenant service providers only: Multi-tenant service
+        providers support their customers for external penetration testing per Requirement 11.4.3
+        and 11.4.4.'
+      description: |-
+        Multi-tenant service providers support their customers' need for technical testing either
+        by providing access or evidence that comparable technical testing has been undertaken.
+      levels:
+        - base
+      status: pending
+
+  - id: '11.5'
+    title: Network intrusions and unexpected file changes are detected and responded to.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.5.1
+      title: Intrusion-detection and/or intrusion-prevention techniques are used to detect and/or
+        prevent intrusions into the network.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 11.5.1.1
+        title: 'Additional requirement for service providers only: Intrusion-detection and/or
+          intrusion-prevention techniques detect, alert on/prevent, and address covert malware
+          communication channels.'
+        description: |-
+          Mechanisms are in place to detect and alert/prevent covert communications with
+          command-and-control systems. Alerts generated by these mechanisms are responded to by
+          personnel, or by automated means that ensure that such communications are blocked. This
+          requirement applies only when the entity being assessed is a service provider. This
+          requirement is a best practice until 31 March 2025, after which it will be required and
+          must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          The policy is not explicit about any specific solution. The solution might vary
+          depending on site policies.
+
+  - id: 11.5.2
+    title: A change-detection mechanism (for example, file integrity monitoring tools) is deployed.
+    levels:
+      - base
+    status: pending
+    rules: []
+
+  - id: '11.6'
+    title: Unauthorized changes on payment pages are detected and responded to.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 11.6.1
+      title: A change- and tamper-detection mechanism is deployed.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        It depends on controls in application level, which varies based on site policies.
+
+  - id: '12.1'
+    title: A comprehensive information security policy that governs and provides direction for
+      protection of the entity's information assets is known and current.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.1.1
+      title: An overall information security policy is established, published, maintained and
+        disseminated to all relevant personnel, as well as to relevant vendors and business
+        partners.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.1.2
+      title: The information security policy is updated and reviewed at least once every 12
+        months.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.1.3
+      title: The security policy clearly defines information security roles and responsibilities
+        for all personnel, and all personnel are aware of and acknowledge their information
+        security responsibilities.
+      description: |-
+        Personnel understand their role in protecting the entity's cardholder data.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.1.4
+      title: Responsibility for information security is formally assigned to a Chief Information
+        Security Officer or other information security knowledgeable member of executive
+        management.
+      description: |-
+        A designated member of executive management is responsible for information security.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.2'
+    title: Acceptable use policies for end-user technologies are defined and implemented.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.2.1
+      title: Acceptable use policies for end-user technologies are documented and implemented.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.3'
+    title: Risks to the cardholder data environment are formally identified, evaluated, and
+      managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.3.1
+      title: Each PCI DSS requirement that provides flexibility for how frequently it is performed
+        (for example, requirements to be performed periodically) is supported by a targeted risk
+        analysis that is documented.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.3.2
+      title: A targeted risk analysis is performed for each PCI DSS requirement that the entity
+        meets with the customized approach
+      levels:
+        - base
+      status: pending
+
+    - id: 12.3.3
+      title: Cryptographic cipher suites and protocols in use are documented and reviewed at least
+        once every 12 months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirement 2.2.7.
+
+    - id: 12.3.4
+      title: Hardware and software technologies in use are reviewed at least once every 12 months.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        The technical requirement related to this is 6.3.3.
+
+  - id: '12.4'
+    title: PCI DSS compliance is managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.4.1
+      title: 'Additional requirement for service providers only: Responsibility is established by
+        executive management for the protection of cardholder data and a PCI DSS compliance
+        program.'
+      levels:
+        - base
+      status: pending
+
+    - id: 12.4.2
+      title: 'Additional requirement for service providers only: Reviews are performed at least
+        once every three months to confirm that personnel are performing their tasks in accordance
+        with all security policies and operational procedures.'
+      description: |-
+        Reviews are performed by personnel other than those responsible for performing the given
+        task.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.4.2.1
+        title: 'Additional requirement for service providers only: Reviews conducted in accordance
+          with Requirement 12.4.2 are documented.'
+        levels:
+          - base
+        status: pending
+
+  - id: '12.5'
+    title: PCI DSS scope is documented and validated.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.5.1
+      title: An inventory of system components that are in scope for PCI DSS, including a
+        description of function/use, is maintained and kept current.
+      description: |-
+        All system components in scope for PCI DSS are identified and known.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.5.2
+      title: PCI DSS scope is documented and confirmed by the entity at least once every 12 months
+        and upon significant change to the in-scope environment.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.5.2.1
+        title: 'Additional requirement for service providers only: PCI DSS scope is documented and
+          confirmed by the entity at least once every six months and upon significant change to
+          the in-scope environment. At a minimum, the scoping validation includes all the elements
+          specified in Requirement 12.5.2.'
+        description: |-
+          The accuracy of PCI DSS scope is verified to be continuously accurate by comprehensive
+          analysis and appropriate technical measures. This requirement applies only when the
+          entity being assessed is a service provider. This requirement is a best practice until
+          31 March 2025, after which it will be required and must be fully considered during a
+          PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 12.5.3
+      title: 'Additional requirement for service providers only: Significant changes to
+        organizational structure result in a documented (internal) review of the impact to PCI DSS
+        scope and applicability of controls, with results communicated to executive management.'
+      description: |-
+        PCI DSS scope is confirmed after significant organizational change. This requirement
+        applies only when the entity being assessed is a service provider. This requirement is a
+        best practice until 31 March 2025, after which it will be required and must be fully
+        considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.6'
+    title: Security awareness education is an ongoing activity.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.6.1
+      title: A formal security awareness program is implemented to make all personnel aware of the
+        entity's information security policy and procedures, and their role in protecting the
+        cardholder data.
+      description: |-
+        Personnel are knowledgeable about the threat landscape, their responsibility for the
+        operation of relevant security controls, and are able to access assistance and guidance
+        when required.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.6.2
+      title: The security awareness program is updated and reviewed at least once every 12 months.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.6.3
+      title: Personnel receive security awareness training upon hire and at least once every 12
+        months via multiple methods of communication.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.6.3.1
+        title: Security awareness training includes awareness of threats and vulnerabilities that
+          could impact the security of the CDE.
+        levels:
+          - base
+        status: pending
+
+      - id: 12.6.3.2
+        title: Security awareness training includes awareness about the acceptable use of end-user
+          technologies in accordance with Requirement 12.2.1.
+        description: |-
+          Personnel are knowledgeable about their responsibility for the security and operation of
+          end-user technologies and are able to access assistance and guidance when required. This
+          requirement is a best practice until 31 March 2025, after which it will be required and
+          must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+  - id: '12.7'
+    title: Personnel are screened to reduce risks from insider threats.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.7.1
+      title: Potential personnel who will have access to the CDE are screened, within the
+        constraints of local laws, prior to hire to minimize the risk of attacks from internal
+        sources.
+      description: |-
+        The risk related to allowing new members of staff access to the CDE is understood and
+        managed. For those potential personnel to be hired for positions such as store cashiers,
+        who only have access to one card number at a time when facilitating a transaction, this
+        requirement is a recommendation only.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.8'
+    title: Risk to information assets associated with third-party service provider (TPSP)
+      relationships is managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.8.1
+      title: A list of all third-party service providers (TPSPs) with which account data is shared
+        or that could affect the security of account data is maintained, including a description
+        for each of the services provided.
+      description: |-
+        Records are maintained of TPSPs and the services provided. The use of a PCI DSS compliant
+        TPSP does not make an entity PCI DSS compliant, nor does it remove the entit's
+        responsibility for its own PCI DSS compliance.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.2
+      title: Written agreements with TPSPs are maintained
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.3
+      title: An established process is implemented for engaging TPSPs, including proper due
+        diligence prior to engagement.
+      description: |-
+        The capability, intent, and resources of a prospective TPSP to adequately protect account
+        data are assessed before the TPSP is engaged.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.4
+      title: A program is implemented to monitor TPSPs' PCI DSS compliance status at least once
+        every 12 months.
+      description: |-
+        The PCI DSS compliance status of TPSPs is verified periodically. Where an entity has an
+        agreement with a TPSP for meeting PCI DSS requirements on behalf of the entity (for
+        example, via a firewall service), the entity must work with the TPSP to make sure the
+        applicable PCI DSS requirements are met. If the TPSP does not meet those applicable
+        PCI DSS requirements, then those requirements are also "not in place" for the entity.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.8.5
+      title: Information is maintained about which PCI DSS requirements are managed by each TPSP,
+        which are managed by the entity, and any that are shared between the TPSP and the entity.
+      description: |-
+        Records detailing the PCI DSS requirements and related system components for which each
+        TPSP is solely or jointly responsible, are maintained and reviewed periodically.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.9'
+    title: Third-party service providers (TPSPs) support their customers' PCI DSS compliance.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.9.1
+      title: |-
+        Additional requirement for service providers only: TPSPs acknowledge in writing to
+        customers that they are responsible for the security of account data the TPSP possesses or
+        otherwise stores, processes, or transmits on behalf of the customer, or to the extent that
+        they could impact the security of the customer's CDE.
+      description: |-
+        TPSPs formally acknowledge their security responsibilities to their customers. This
+        requirement applies only when the entity being assessed is a service provider. The exact
+        wording of an acknowledgment will depend on the agreement between the two parties, the
+        details of the service being provided, and the responsibilities assigned to each party.
+        The acknowledgment does not have to include the exact wording provided in this
+        requirement.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.9.2
+      title: |-
+        Additional requirement for service providers only: TPSPs support their customers' requests
+        for information to meet Requirements 12.8.4 and 12.8.5.
+      levels:
+        - base
+      status: pending
+
+  - id: '12.10'
+    title: Suspected and confirmed security incidents that could impact the CDE are responded to
+      immediately.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: 12.10.1
+      title: An incident response plan exists and is ready to be activated in the event of a
+        suspected or confirmed security incident.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.2
+      title: At least once every 12 months, the security incident response plan is reviewed,
+        updated, and tested.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.3
+      title: Specific personnel are designated to be available on a 24/7 basis to respond to
+        suspected or confirmed security incidents.
+      description: |-
+        Incidents are responded to immediately where appropriate.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.4
+      title: Personnel responsible for responding to suspected and confirmed security incidents
+        are appropriately and periodically trained on their incident response responsibilities.
+      description: |-
+        Personnel are knowledgeable about their role and responsibilities in incident response and
+        are able to access assistance and guidance when required.
+      levels:
+        - base
+      status: pending
+      controls:
+      - id: 12.10.4.1
+        title: The frequency of periodic training for incident response personnel is defined in
+          the entity's targeted risk analysis, which is performed according to all elements
+          specified in Requirement 12.3.1.
+        description: |-
+          Incident response personnel are trained at a frequency that addresses the entity's risk.
+          This requirement is a best practice until 31 March 2025, after which it will be required
+          and must be fully considered during a PCI DSS assessment.
+        levels:
+          - base
+        status: pending
+
+    - id: 12.10.5
+      title: The security incident response plan includes monitoring and responding to alerts from
+        security monitoring systems.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.6
+      title: The security incident response plan is modified and evolved according to lessons
+        learned and to incorporate industry developments.
+      description: |-
+        The effectiveness and accuracy of the incident response plan is reviewed and updated after
+        each invocation.
+      levels:
+        - base
+      status: pending
+
+    - id: 12.10.7
+      title: Incident response procedures are in place, to be initiated upon the detection of
+        stored PAN anywhere it is not expected.
+      levels:
+        - base
+      status: pending
+
+  - id: A1.1
+    title: Multi-tenant service providers protect and separate all customer environments and data.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A1.1.1
+      title: Logical separation is implemented.
+      description: |-
+        - The provider cannot access its customers' environments without authorization.
+        - Customers cannot access the provider's environment without authorization.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.1.2
+      title: Controls are implemented such that each customer only has permission to access its
+        own cardholder data and CDE.
+      description: |-
+        Customers cannot access other customers' environments.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.1.3
+      title: Controls are implemented such that each customer can only access resources allocated
+        to them.
+      description: |-
+        Customers cannot impact resources allocated to other customers.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.1.4
+      title: The effectiveness of logical separation controls used to separate customer
+        environments is confirmed at least once every six months via penetration testing.
+      description: |-
+        Segmentation of customer environments from other environments is periodically validated to
+        be effective. The testing of adequate separation between customers in a multi-tenant
+        service provider environment is in addition to the penetration tests specified in
+        Requirement 11.4.6. This requirement is a best practice until 31 March 2025, after which
+        it will be required and must be fully considered during a PCI DSS assessment.
+      levels:
+        - base
+      status: pending
+
+  - id: A1.2
+    title: Multi-tenant service providers facilitate logging and incident response for all
+      customers.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A1.2.1
+      title: Audit log capability is enabled for each customer's environment that is consistent
+        with PCI DSS Requirement 10.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.2.2
+      title: Processes or mechanisms are implemented to support and/or facilitate prompt forensic
+        investigations in the event of a suspected or confirmed security incident for any
+        customer.
+      description: |-
+        Forensic investigation is readily available to all customers in the event of a suspected
+        or confirmed security incident.
+      levels:
+        - base
+      status: pending
+
+    - id: A1.2.3
+      title: Processes or mechanisms are implemented for reporting and addressing suspected or
+        confirmed security incidents and vulnerabilities.
+      levels:
+        - base
+      status: pending
+
+  - id: A2.1
+    title: POI terminals using SSL and/or early TLS are confirmed as not susceptible to known
+      SSL/TLS exploits.
+    description: |-
+      Appendix A2: Additional PCI DSS Requirements for Entities Using SSL/Early TLS for
+      Card-Present POS POI Terminal Connections.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A2.1.1
+      title: Where POS POI terminals at the merchant or payment acceptance location use SSL and/or
+        early TLS, the entity confirms the devices are not susceptible to any known exploits for
+        those protocols.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        Related to requirements 2.2.7 and 3.5.1.1.
+        Service level settings for web servers such as Apache and NGINX should also be checked.
+
+    - id: A2.1.2
+      title: 'Additional requirement for service providers only: All service providers with
+        existing connection points to POS POI terminals that use SSL and/or early TLS as defined
+        in A2.1 have a formal Risk Mitigation and Migration Plan in place.'
+      levels:
+        - base
+      status: pending
+
+    - id: A2.1.3
+      title: 'Additional requirement for service providers only: All service providers provide a
+        secure service offering.'
+      description: |-
+        This requirement is not eligible for the customized approach. This requirement applies
+        only when the entity being assessed is a service provider.
+      levels:
+        - base
+      status: pending
+
+  - id: A3.1
+    title: A PCI DSS compliance program is implemented.
+    description: |-
+      Appendix A3: Designated Entities Supplemental Validation (DESV)
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.1.1
+      title: Responsibility is established by executive management for the protection of account
+        data and a PCI DSS compliance program.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+    - id: A3.1.2
+      title: A formal PCI DSS compliance program is in place.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirements 1-12
+
+    - id: A3.1.3
+      title: PCI DSS compliance roles and responsibilities are specifically defined and formally
+        assigned to one or more personnel.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+    - id: A3.1.4
+      title: Up-to-date PCI DSS and/or information security training is provided at least once
+        every 12 months to personnel with PCI DSS compliance responsibilities (as identified in
+        A3.1.3).
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+  - id: A3.2
+    title: PCI DSS scope is documented and validated.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.2.1
+      title: PCI DSS scope is documented and confirmed for accuracy at least once every three
+        months and upon significant changes to the in-scope environment.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements, Requirement 12.
+
+    - id: A3.2.2
+      title: PCI DSS scope impact for all changes to systems or networks is determined, including
+        additions of new systems and new network connections.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements; Requirements 1-12
+      controls:
+      - id: A3.2.2.1
+        title: Upon completion of a change, all relevant PCI DSS requirements are confirmed to be
+          implemented on all new or changed systems and networks, and documentation is updated as
+          applicable.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Scope of PCI DSS Requirements; Requirements 1-12
+
+    - id: A3.2.3
+      title: Changes to organizational structure result in a formal (internal) review of the
+        impact to PCI DSS scope and applicability of controls.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 12
+
+    - id: A3.2.4
+      title: If segmentation is used, PCI DSS scope is confirmed.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 11
+
+    - id: A3.2.5
+      title: A data-discovery methodology is implemented.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements.
+      controls:
+      - id: A3.2.5.1
+        title: Data discovery methods are confirmed.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Scope of PCI DSS Requirements.
+
+      - id: A3.2.5.2
+        title: Response procedures are implemented to be initiated upon the detection of cleartext
+          PAN outside the CDE.
+        levels:
+          - base
+        status: pending
+
+    - id: A3.2.6
+      title: Mechanisms are implemented for detecting and preventing cleartext PAN from leaving
+        the CDE via an unauthorized channel, method, or process.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Scope of PCI DSS Requirements, Requirement 12
+      controls:
+      - id: A3.2.6.1
+        title: Response procedures are implemented to be initiated upon the detection of attempts
+          to remove cleartext PAN from the CDE via an unauthorized channel, method, or process.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Requirement 12
+
+  - id: A3.3
+    title: PCI DSS is incorporated into business-as-usual (BAU) activities.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.3.1
+      title: Failures of critical security control systems are detected, alerted, and addressed
+        promptly.
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirement 12
+      controls:
+      - id: A3.3.1.2
+        title: Failures of any critical security control systems are responded to promptly.
+        levels:
+          - base
+        status: pending
+        notes: |-
+          PCI DSS Reference: Requirements 1-12
+          If you noticed, this requirement should be A3.3.1.1 instead of A3.3.1.2 but it was kept
+          this way to be aligned to the policy.
+
+    - id: A3.3.2
+      title: Hardware and software technologies are reviewed at least once every 12 months to
+        confirm whether they continue to meet the organization's PCI DSS requirements.
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirements 2, 6, 12.
+
+    - id: A3.3.3
+      title: Reviews are performed at least once every three months to verify BAU activities are
+        being followed.
+      description: |-
+        Reviews are performed by personnel assigned to the PCI DSS compliance program (as
+        identified in A3.1.3).
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirements 1-12.
+
+  - id: A3.4
+    title: Logical access to the cardholder data environment is controlled and managed.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.4.1
+      title: User accounts and access privileges to in-scope system components are reviewed at
+        least once every six months to ensure user accounts and access privileges remain
+        appropriate based on job function, and that all access is authorized.
+      levels:
+        - base
+      status: pending
+      notes: |-
+          PCI DSS Reference: Requirement 7.
+
+  - id: A3.5
+    title: Suspicious events are identified and responded to.
+    levels:
+      - base
+    status: pending
+    controls:
+    - id: A3.5.1
+      title: A methodology is implemented for the prompt identification of attack patterns and
+        undesirable behavior across systems.
+      levels:
+        - base
+      status: pending
+      notes: |-
+        PCI DSS Reference: Requirement 10, 12.

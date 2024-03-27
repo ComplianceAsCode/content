@@ -4,6 +4,7 @@ import argparse
 import os
 import sys
 import time
+import glob
 import xml.etree.ElementTree as ET
 
 from ssg.build_sce import collect_sce_checks
@@ -179,6 +180,13 @@ def parse_args():
     parser.add_argument(
         "--output-13", required=True,
         help="Output SCAP 1.3 source data stream file name")
+    parser.add_argument(
+        "--multiple-ds",
+        help="Directory where XCCDF, OVAL, OCIL files with lower case prefixes "
+        "xccdf, oval, ocil are stored to build multiple data streams. "
+        "Multiple streams are generated in the thin_ds subdirectory. (off: to disable) "
+        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/",
+    )
     return parser.parse_args()
 
 
@@ -195,6 +203,8 @@ def get_timestamp(file_name):
 def add_component(
         ds_collection, component_ref_parent, component_file_name,
         dependencies=None):
+    if not os.path.exists(component_file_name):
+        return
     component_id = "scap_%s_comp_%s" % (
         ID_NS, os.path.basename(component_file_name))
     component = ET.SubElement(
@@ -214,6 +224,9 @@ def add_component(
 
 
 def create_catalog(component_ref, dependencies):
+    dependencies = [dep for dep in dependencies if os.path.exists(dep)]
+    if len(dependencies) == 0:
+        return
     catalog = ET.SubElement(component_ref, "{%s}catalog" % cat_namespace)
     for dep in dependencies:
         uri = ET.SubElement(catalog, "{%s}uri" % cat_namespace)
@@ -250,6 +263,9 @@ def compose_ds(
         sce_check_files = collect_sce_checks(ds_collection)
         refdir = os.path.dirname(oval_file_name)
         embed_sce_checks_in_datastream(ds_collection, checklists, sce_check_files, refdir)
+
+    if hasattr(ET, "indent"):
+        ET.indent(ds_collection, space=" ", level=0)
     return ET.ElementTree(ds_collection)
 
 
@@ -264,12 +280,60 @@ def upgrade_ds_to_scap_13(ds):
     return ds
 
 
+def _store_ds(ds, output_13, output_12):
+    if output_12:
+        ds.write(output_12, xml_declaration=True, encoding="utf-8")
+
+    ds_13 = upgrade_ds_to_scap_13(ds)
+    ds_13.write(output_13, xml_declaration=True, encoding="utf-8")
+
+
+def append_id_to_file_name(path, id_):
+    return "{0}_{2}{1}".format(*os.path.splitext(path) + (id_,))
+
+
+def add_dir(path, dir):
+    return os.path.join(os.path.dirname(path), dir, os.path.basename(path))
+
+
+def _get_thin_ds_output_path(output, file_name):
+    return add_dir(
+        append_id_to_file_name(
+            output,
+            os.path.splitext(os.path.basename(file_name))[0]
+        ),
+        "thin_ds"
+    )
+
+
+def _compose_multiple_ds(args):
+
+    for xccdf in glob.glob("{}/xccdf*.xml".format(args.multiple_ds)):
+        oval = xccdf.replace("xccdf", "oval")
+        ocil = xccdf.replace("xccdf", "ocil")
+        cpe_dict = xccdf.replace("xccdf", "cpe_dict")
+        cpe_oval = xccdf.replace("xccdf", "cpe_oval")
+
+        ds = compose_ds(
+            xccdf, oval, ocil, cpe_dict, cpe_oval, args.enable_sce
+        )
+        output_13 = _get_thin_ds_output_path(args.output_13, xccdf.replace("xccdf_", ""))
+        output_12 = None
+
+        if not os.path.exists(os.path.dirname(output_13)):
+            os.makedirs(os.path.dirname(output_13))
+
+        _store_ds(ds, output_13, output_12)
+
+
 if __name__ == "__main__":
     args = parse_args()
     ssg.xml.register_namespaces()
+
+    if args.multiple_ds != "off":
+        _compose_multiple_ds(args)
+
     ds = compose_ds(
-        args.xccdf, args.oval, args.ocil, args.cpe_dict, args.cpe_oval, args.enable_sce)
-    if args.output_12:
-        ds.write(args.output_12)
-    ds_13 = upgrade_ds_to_scap_13(ds)
-    ds_13.write(args.output_13)
+        args.xccdf, args.oval, args.ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
+    )
+    _store_ds(ds, args.output_13, args.output_12)

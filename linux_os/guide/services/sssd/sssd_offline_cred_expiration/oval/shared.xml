@@ -14,12 +14,17 @@
   comment="tests the value of offline_credentials_expiration setting in the /etc/sssd/sssd.conf file"
   id="test_sssd_offline_cred_expiration" version="1">
     <ind:object object_ref="obj_sssd_offline_cred_expiration" />
+    <ind:state state_ref="state_sssd_offline_cred_expiration" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_offline_cred_expiration" version="1">
     <ind:filepath operation="pattern match">^\/etc\/sssd\/(sssd.conf|conf\.d\/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*1\s*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*offline_credentials_expiration[\s]*=[\s]*(\d+)\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_offline_cred_expiration" version="1">
+    <ind:subexpression>1</ind:subexpression>
+  </ind:textfilecontent54_state>
   {{% if product in ["ol8", "rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
   comment="tests the value of cache_credentials setting in the /etc/sssd/sssd.conf file"

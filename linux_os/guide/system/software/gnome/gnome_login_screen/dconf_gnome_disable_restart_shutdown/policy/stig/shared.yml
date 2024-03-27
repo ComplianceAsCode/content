@@ -8,7 +8,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} prevents a user from overriding the disable-restart-buttons setting for graphical user interfaces.
 
-    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
     Determine which profile the system database is using with the following command:
 
@@ -16,7 +16,7 @@ checktext: |-
 
     system-db:local
 
-    Check that graphical settings are locked from non-privileged user modification with the following command:
+    Check that graphical settings are locked from nonprivileged user modification with the following command:
 
     Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
 
@@ -33,10 +33,12 @@ fixtext: |-
 
     $ sudo touch /etc/dconf/db/local.d/locks/session
 
-    Add the following line to prevent non-privileged users from modifying it:
+    Add the following line to prevent nonprivileged users from modifying it:
 
     /org/gnome/login-screen/disable-restart-buttons
 
     Run the following command to update the database:
 
     $ sudo dconf update
+vuln_discussion: |-
+    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.

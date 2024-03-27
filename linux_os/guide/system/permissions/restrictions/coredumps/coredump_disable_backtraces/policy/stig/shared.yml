@@ -1,5 +1,5 @@
 srg_requirement: |-
-    {{{ full_name }}} must disable core dump backtraces
+    {{{ full_name }}} must disable core dump backtraces.
 
 vuldiscussion: |-
     A core dump includes a memory image taken at the time the operating system
@@ -19,7 +19,7 @@ checktext: |-
 
     ProcessSizeMax=0
 
-    If the "ProcessSizeMax" item is missing, commented out, or the value is anything other than "0" and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core" item assigned, this is a finding.
+    If the "ProcessSizeMax" item is missing, commented out, or the value is anything other than "0" and the need for core dumps is not documented with the information system security officer (ISSO) as an operational requirement for all domains that have the "core" item assigned, this is a finding.
 
 fixtext: |-
     Configure the operating system to disable core dump backtraces.
@@ -27,3 +27,8 @@ fixtext: |-
     Add or modify the following line in /etc/systemd/coredump.conf:
 
     ProcessSizeMax=0
+
+vuln_discussion: |-
+    A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers or system operators trying to debug problems.
+
+    Enabling core dumps on production systems is not recommended; however, there may be overriding operational requirements to enable advanced debugging. Permitting temporary enablement of core dumps during such situations must be reviewed through local needs and policy.

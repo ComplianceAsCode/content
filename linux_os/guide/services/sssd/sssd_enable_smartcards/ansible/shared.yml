@@ -34,6 +34,19 @@
     create: yes
     mode: 0600
 
+- name: Find all the conf files inside /etc/sssd/conf.d/
+  find:
+    paths: "/etc/sssd/conf.d/"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: Fix pam_cert_auth configuration in /etc/sssd/conf.d/
+  ansible.builtin.replace:
+    path: "{{ item.path }}"
+    regexp: '[^#]*pam_cert_auth.*'
+    replace: 'pam_cert_auth = True'
+  with_items: "{{ sssd_conf_d_files.files }}"
+
 {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
 - name: '{{{ rule_title }}} - Check if system relies on authselect'
   ansible.builtin.stat:

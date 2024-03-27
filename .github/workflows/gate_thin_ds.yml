@@ -1,0 +1,29 @@
+name: Gate Thin DS
+on:
+  merge_group:
+    branches: [ 'master' ]
+  push:
+    branches: ['*', '!stabilization*', '!stable*', 'master' ]
+  pull_request:
+    branches: [ 'master', 'stabilization*' ]
+concurrency:
+  group: ${{ github.workflow }}-fedora-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
+jobs:
+    build-and-test-thin-ds:
+        name: Build, Test on Fedora Latest (Container)
+        runs-on: ubuntu-latest
+        container:
+            image: fedora:latest
+        steps:
+            -   name: Install Deps
+                run: dnf install -y cmake make openscap-utils python3-pyyaml bats ansible python3-pip ShellCheck git gcc gcc-c++ python3-devel python3-lxml python3-pytest
+            -   name: Checkout
+                uses: actions/checkout@v4
+            -   name: Install deps python
+                # pytest-xdist is used for parallel execution of thin ds test
+                run: pip install pcre2 pytest-xdist -r requirements.txt -r test-requirements.txt
+            -   name: Build
+                run: ./build_product rhel9 --thin
+            -   name: Test
+                run: python3 -m pytest -n auto tests/test_thin_ds.py

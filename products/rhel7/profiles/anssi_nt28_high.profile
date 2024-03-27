@@ -21,6 +21,7 @@ description: |-
 selections:
     - anssi:all:high
     - '!timer_logrotate_enabled'
+    - '!logind_session_timeout'
     # Following rules once had a prodtype incompatible with the rhel7 product
     - '!kernel_config_gcc_plugin_structleak_byref_all'
     - '!accounts_passwords_pam_tally2_deny_root'

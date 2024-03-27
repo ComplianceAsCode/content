@@ -4,7 +4,7 @@ controls:
   - medium
   title: {{{ full_name }}} must prohibit the use of cached authenticators after
     an organization-defined time period.
-  status: inherently met
+  status: automated
   artifact_description: |-
     Supporting evidence is in the following documentation
 
@@ -18,4 +18,5 @@ controls:
     `oc edit oauth.config.openshift.io/cluster`
     See:
     https://docs.openshift.com/container-platform/latest/authentication/configuring-internal-oauth.html#oauth-configuring-internal-oauth_configuring-internal-oauth
-
+  rules:
+  - oauth_or_oauthclient_token_maxage

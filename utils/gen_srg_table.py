@@ -40,7 +40,7 @@ def get_rules_by_srgid(build_dir, product):
         rule_filename = os.path.join(rules_root, rule_id + ".yml")
         rule = ssg.build_yaml.Rule.from_yaml(rule_filename)
         if "srg" in rule.references:
-            for srgid in rule.references["srg"].split(","):
+            for srgid in rule.references["srg"]:
                 rules[srgid].append(rule)
     return rules
 
@@ -50,6 +50,6 @@ if __name__ == "__main__":
     data = dict()
     data["srgs"] = ssg.build_stig.parse_srgs(args.srgs)
     data["rules_by_srgid"] = get_rules_by_srgid(args.build_dir, args.product)
-    data["full_name"] = ssg.utils.prodtype_to_name(args.product)
+    data["full_name"] = ssg.utils.product_to_name(args.product)
     render_template(data, SRGMAP_TEMPLATE, args.srgmap)
     render_template(data, SRGMAP_FLAT_TEMPLATE, args.srgmap_flat)

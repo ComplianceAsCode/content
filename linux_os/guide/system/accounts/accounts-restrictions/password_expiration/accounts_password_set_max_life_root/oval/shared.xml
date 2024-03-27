@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("A maximum password age should be set for the root account") }}}
+    <criteria>
+      <criterion comment="root max age"
+                 test_ref="test_accounts_password_set_max_life_root"/>
+    </criteria>
+  </definition>
+  <unix:shadow_test check="all" check_existence="at_least_one_exists" version="1"
+                    id="test_accounts_password_set_max_life_root"
+                    comment="root max age">
+    <unix:object object_ref="object_accounts_password_set_max_life_root"/>
+    <unix:state state_ref="state_accounts_password_set_max_life_root"/>
+  </unix:shadow_test>
+  <unix:shadow_object id="object_accounts_password_set_max_life_root" version="1">
+    <unix:username operation="equals">root</unix:username>
+  </unix:shadow_object>
+  <unix:shadow_state id="state_accounts_password_set_max_life_root" version="1">
+    <unix:chg_req operation="equals" var_ref="var_accounts_maximum_age_root" datatype="int"/>
+  </unix:shadow_state>
+  <external_variable id="var_accounts_maximum_age_root" datatype="int" comment="maximum password age in days" version="1"/>
+</def-group>

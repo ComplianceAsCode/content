@@ -9,8 +9,7 @@ checktext: |-
 
     First determine if a group other than "root" has been assigned to the audit logs with the following command:
 
-    $sudo grep log_group /etc/audit/auditd.conf
-
+    $ sudo grep log_group /etc/audit/auditd.conf
 
     Then determine where the audit logs are stored with the following command:
 
@@ -34,4 +33,8 @@ fixtext: |-
     $ sudo grep -P '^[ ]*log_group[ ]+=.*$' /etc/audit/auditd.conf
 
     Change the ownership to that group:
+
     $ sudo chgrp ${GROUP} /var/log/audit
+
+vuln_discussion: |-
+    Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.

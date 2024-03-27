@@ -9,8 +9,11 @@ rules:
 - coredump_disable_backtraces
 - coredump_disable_storage
 - disable_ctrlaltdel_burstaction
+- file_groupowner_etc_crypttab
 - file_groupowner_system_journal
+- file_owner_etc_crypttab
 - file_owner_system_journal
+- file_permissions_etc_crypttab
 - file_permissions_system_journal
 - journald_compress
 - journald_forward_to_syslog
@@ -24,3 +27,4 @@ rules:
 - service_timesyncd_root_distance_configured
 - service_timesyncd_enabled
 - socket_systemd-journal-remote_disabled
+- systemd_tmp_mount_enabled

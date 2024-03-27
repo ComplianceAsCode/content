@@ -65,8 +65,6 @@ We use an OpenControl-inspired YAML rule format for input. Write once and
 generate security content in XCCDF, Ansible, and others.
 
 ```YAML
-prodtype: rhel7
-
 title: 'Configure The Number of Allowed Simultaneous Requests'
 
 description: |-

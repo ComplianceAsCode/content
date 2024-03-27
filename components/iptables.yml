@@ -6,6 +6,9 @@ packages:
 - iptables-persistent
 - iptables-services
 rules:
+- directory_groupowner_etc_iptables
+- directory_owner_etc_iptables
+- directory_permissions_etc_iptables
 - package_iptables-nft_installed
 - package_iptables-nft_installed
 - package_iptables-persistent_installed

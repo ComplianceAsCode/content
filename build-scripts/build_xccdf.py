@@ -5,6 +5,8 @@ from __future__ import print_function
 import argparse
 import os
 import os.path
+from collections import namedtuple
+
 
 import ssg.build_yaml
 import ssg.utils
@@ -12,6 +14,9 @@ import ssg.environment
 import ssg.id_translate
 import ssg.build_renumber
 import ssg.products
+
+
+Paths_ = namedtuple("Paths_", ["xccdf", "oval", "ocil", "build_ovals_dir"])
 
 
 def parse_args():
@@ -49,9 +54,54 @@ def parse_args():
         dest="build_ovals_dir",
         help="Directory to store OVAL document for each rule.",
     )
-    parser.add_argument("--resolved-base",
-                        help="To which directory to put processed rule/group/value YAMLs.")
+    parser.add_argument(
+        "--resolved-base",
+        help="To which directory to put processed rule/group/value YAMLs."
+    )
+    parser.add_argument(
+        "--thin-ds-components-dir",
+        help="Directory to store XCCDF, OVAL, OCIL, for thin data stream. (off: to disable)"
+        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/"
+        "Fake profiles are used to create thin DS. Components are generated for each profile.",
+    )
     return parser.parse_args()
+
+
+def link_oval(xccdftree, checks, output_file_name, build_ovals_dir):
+    translator = ssg.id_translate.IDTranslator("ssg")
+    oval_linker = ssg.build_renumber.OVALFileLinker(
+        translator, xccdftree, checks, output_file_name
+    )
+    oval_linker.build_ovals_dir = build_ovals_dir
+    oval_linker.link()
+    oval_linker.save_linked_tree()
+    oval_linker.link_xccdf()
+    return oval_linker
+
+
+def link_ocil(xccdftree, checks, output_file_name, ocil):
+    translator = ssg.id_translate.IDTranslator("ssg")
+    ocil_linker = ssg.build_renumber.OCILFileLinker(
+        translator, xccdftree, checks, output_file_name
+    )
+    ocil_linker.link(ocil)
+    ocil_linker.save_linked_tree()
+    ocil_linker.link_xccdf()
+
+
+def store_xccdf_per_profile(loader, oval_linker, thin_ds_components_dir):
+    for id_, xccdftree in loader.get_benchmark_xml_by_profile():
+        xccdf_file_name = os.path.join(thin_ds_components_dir, "xccdf_{}.xml".format(id_))
+        oval_file_name = os.path.join(thin_ds_components_dir, "oval_{}.xml".format(id_))
+
+        checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
+        oval_linker.linked_fname = oval_file_name
+        oval_linker.linked_fname_basename = os.path.basename(oval_file_name)
+        oval_linker.checks_related_to_us = oval_linker.get_related_checks(checks)
+
+        oval_linker.link_xccdf()
+
+        ssg.xml.ElementTree.ElementTree(xccdftree).write(xccdf_file_name, encoding="utf-8")
 
 
 def main():
@@ -75,26 +125,23 @@ def main():
 
     loader.add_fixes_to_rules()
     xccdftree = loader.export_benchmark_to_xml()
-    ocil = loader.export_ocil_to_xml()
 
     checks = xccdftree.findall(".//{%s}check" % ssg.constants.XCCDF12_NS)
 
-    translator = ssg.id_translate.IDTranslator("ssg")
+    oval_linker = link_oval(xccdftree, checks, args.oval, args.build_ovals_dir)
 
-    oval_linker = ssg.build_renumber.OVALFileLinker(
-        translator, xccdftree, checks, args.oval)
-    oval_linker.build_ovals_dir = args.build_ovals_dir
-    oval_linker.link()
-    oval_linker.save_linked_tree()
-    oval_linker.link_xccdf()
+    ocil = loader.export_ocil_to_xml()
+    link_ocil(xccdftree, checks, args.ocil, ocil)
 
-    ocil_linker = ssg.build_renumber.OCILFileLinker(
-        translator, xccdftree, checks, args.ocil)
-    ocil_linker.link(ocil)
-    ocil_linker.save_linked_tree()
-    ocil_linker.link_xccdf()
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(
+        args.xccdf, xml_declaration=True, encoding="utf-8")
 
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.xccdf)
+    if args.thin_ds_components_dir is not None and args.thin_ds_components_dir != "off":
+        if not os.path.exists(args.thin_ds_components_dir):
+            os.makedirs(args.thin_ds_components_dir)
+        store_xccdf_per_profile(loader, oval_linker, args.thin_ds_components_dir)
+        oval_linker.build_ovals_dir = args.thin_ds_components_dir
+        oval_linker.save_oval_document_for_each_xccdf_rule("oval_")
 
 
 if __name__ == "__main__":

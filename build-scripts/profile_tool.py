@@ -5,7 +5,13 @@ from __future__ import print_function
 import argparse
 
 try:
-    from utils.profile_tool import command_stats, command_sub
+    from utils.controleval import get_available_products, load_product_yaml
+    from utils.profile_tool import (
+        command_stats,
+        command_sub,
+        command_most_used_rules,
+        command_most_used_components,
+    )
 except ImportError:
     print("The ssg module could not be found.")
     print(
@@ -57,11 +63,25 @@ def parse_stats_subcommand(subparsers):
         help="Show IDs of implemented SCE checks.",
     )
     parser_stats.add_argument(
-        "--missing-stig-ids",
+        "--missing-stigid-refs",
         default=False,
         action="store_true",
-        dest="missing_stig_ids",
-        help="Show rules in STIG profiles that don't have STIG IDs.",
+        dest="missing_stigid_refs",
+        help="Show rules in STIG profiles that don't have stigid references.",
+    )
+    parser_stats.add_argument(
+        "--missing-stigref-refs",
+        default=False,
+        action="store_true",
+        dest="missing_stigref_refs",
+        help="Show rules in STIG profiles that don't have stigref references.",
+    )
+    parser_stats.add_argument(
+        "--missing-ccn-refs",
+        default=False,
+        action="store_true",
+        dest="missing_ccn_refs",
+        help="Show rules in CCN profiles that don't have CCN references.",
     )
     parser_stats.add_argument(
         "--missing-cis-refs",
@@ -90,6 +110,13 @@ def parse_stats_subcommand(subparsers):
         action="store_true",
         dest="missing_ospp_refs",
         help="Show rules in OSPP profiles that don't have OSPP references.",
+    )
+    parser_stats.add_argument(
+        "--missing-pcidss4-refs",
+        default=False,
+        action="store_true",
+        dest="missing_pcidss4_refs",
+        help="Show rules in PCI-DSS profiles that don't have pcidss4 references.",
     )
     parser_stats.add_argument(
         "--missing-cui-refs",
@@ -229,11 +256,84 @@ def parse_sub_subcommand(subparsers):
     )
 
 
+def parse_most_used_rules_subcommand(subparsers):
+    parser_most_used_rules = subparsers.add_parser(
+        "most-used-rules",
+        description=(
+            "Generates list of all rules used by the existing profiles. In various formats."
+        ),
+        help="Generates list of all rules used by the existing profiles.",
+    )
+    parser_most_used_rules.add_argument(
+        "BENCHMARKS",
+        type=str,
+        nargs="*",
+        default=[],
+        help=(
+            "Specify XCCDF files or a SCAP source data stream files to act on. "
+            "If not provided are used control files. e.g.: ~/scap-security-guide/controls"
+        ),
+    )
+    parser_most_used_rules.add_argument(
+        "--format",
+        default="plain",
+        choices=["plain", "json", "csv"],
+        help="Which format to use for output.",
+    )
+    parser_most_used_rules.add_argument(
+        "--products",
+        help="List of products to be considered. If not specified will by used all products.",
+        nargs="+",
+        choices=get_available_products(),
+        default=get_available_products(),
+    )
+
+
+def parse_most_used_components(subparsers):
+    parser_most_used_components = subparsers.add_parser(
+        "most-used-components",
+        description=(
+            "Generates list of all components used by the rules in existing profiles."
+            " In various formats."
+        ),
+        help="Generates list of all components used by the rules in existing profiles.",
+    )
+    parser_most_used_components.add_argument(
+        "--format",
+        default="plain",
+        choices=["plain", "json", "csv"],
+        help="Which format to use for output.",
+    )
+    parser_most_used_components.add_argument(
+        "--products",
+        help=(
+            "List of products to be considered. "
+            "If not specified will by used all products with components_root."
+        ),
+        nargs="+",
+        choices=get_available_products_with_components_root(),
+        default=get_available_products_with_components_root(),
+    )
+
+
+def get_available_products_with_components_root():
+    out = set()
+    for product in get_available_products():
+        product_yaml = load_product_yaml(product)
+        components_root = product_yaml.get("components_root")
+        if components_root is not None:
+            out.add(product)
+    return out
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Profile statistics and utilities tool")
     subparsers = parser.add_subparsers(title="subcommands", dest="subcommand", required=True)
+
     parse_stats_subcommand(subparsers)
     parse_sub_subcommand(subparsers)
+    parse_most_used_rules_subcommand(subparsers)
+    parse_most_used_components(subparsers)
 
     args = parser.parse_args()
 
@@ -253,17 +353,25 @@ def parse_args():
             args.missing_sces = True
             args.missing_fixes = True
             args.missing_cces = True
-            args.missing_stig_ids = True
+            args.missing_stigid_refs = True
+            args.missing_stigref_refs = True
+            args.missing_ccn_refs = True
             args.missing_cis_refs = True
             args.missing_hipaa_refs = True
             args.missing_anssi_refs = True
             args.missing_ospp_refs = True
+            args.missing_pcidss4_refs = True
             args.missing_cui_refs = True
 
     return args
 
 
-SUBCMDS = dict(stats=command_stats, sub=command_sub)
+SUBCMDS = {
+    "stats": command_stats,
+    "sub": command_sub,
+    "most-used-rules": command_most_used_rules,
+    "most-used-components": command_most_used_components,
+}
 
 
 def main():

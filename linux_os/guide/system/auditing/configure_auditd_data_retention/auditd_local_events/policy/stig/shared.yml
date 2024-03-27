@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} audit system must audit local events.
+    {{{ full_name }}} audit system must audit local events.
 
 vuldiscussion: |-
     Without establishing what type of events occurred, the source of events, where events occurred, and the outcome of events, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
@@ -21,3 +21,8 @@ fixtext: |-
     local_events = yes
 
     The audit daemon must be restarted for the changes to take effect.
+
+vuln_discussion: |-
+    Without establishing what type of events occurred, the source of events, where events occurred, and the outcome of events, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
+
+    If option "local_events" isn't set to "yes" only events from network will be aggregated.

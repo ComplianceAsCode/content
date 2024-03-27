@@ -89,14 +89,6 @@ utils.mod\_fixes module
    :undoc-members:
    :show-inheritance:
 
-utils.mod\_prodtype module
---------------------------
-
-.. automodule:: utils.mod_prodtype
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.regexify\_banner module
 -----------------------------
 

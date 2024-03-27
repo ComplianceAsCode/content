@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Ensure AppArmor is installed'
 
 description: |-
@@ -23,3 +22,4 @@ template:
     name: package_installed
     vars:
         pkgname: apparmor
+        pkgname@sle15: apparmor-profiles

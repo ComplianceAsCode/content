@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/ipsec.d Directory
+
+description: '{{{ describe_file_owner(file="/etc/ipsec.d", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/ipsec.d directory by the root user is important
+    because this directory hosts Libreswan configuration. Protection of this
+    file is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the Libreswan configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86294-6
+    cce@rhel8: CCE-86302-7
+    cce@rhel9: CCE-86303-5
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ipsec.d", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/ipsec.d", owner="root") }}}
+
+platform: package[libreswan]
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/ipsec.d", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/ipsec.d", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/ipsec.d/
+        fileuid: '0'

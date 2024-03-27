@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} audispd-plugins package must be installed.
+    {{{ full_name }}} audispd-plugins package must be installed.
 
 vuldiscussion: |-
     "audispd-plugins" provides plugins for the real-time interface to the
@@ -14,8 +14,13 @@ fixtext: |-
 checktext: |-
     Verify that {{{ full_name }}} has the audispd-plugins package for installed with the following command:
 
-    $sudo dnf list --installed audispd-plugins
+    $ sudo dnf list --installed audispd-plugins
 
-    audispd-plugins.x86_64     3.0.7-101.el9_0.2
+    Example output:
+
+    audispd-plugins.x86_64          3.0.7-101.el9_0.2
 
     If the "audispd-plugins" package is not installed, this is a finding.
+
+vuln_discussion: |-
+    "audispd-plugins" provides plugins for the real-time interface to the audit subsystem, "audispd". These plugins can do things like relay events to remote machines or analyze events for suspicious behavior.

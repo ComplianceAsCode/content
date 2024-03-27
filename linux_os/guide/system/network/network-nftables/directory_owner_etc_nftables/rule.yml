@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: Verify User Who Owns /etc/nftables Directory
+
+description: '{{{ describe_file_owner(file="/etc/nftables", owner="root") }}}'
+
+rationale: |-
+    The ownership of the /etc/nftables directory by the root user is important
+    because this directory hosts nftables configuration. Protection of this
+    directory is critical for system security. Assigning the ownership to root
+    ensures exclusive control of the nftables configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86310-0
+    cce@rhel8: CCE-86311-8
+    cce@rhel9: CCE-86313-4
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/nftables", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/nftables", owner="root") }}}
+
+platform: package[nftables]
+
+fixtext: '{{{ fixtext_file_owner(file="/etc/nftables", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/nftables", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/nftables/
+        fileuid: '0'
