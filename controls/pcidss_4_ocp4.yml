@@ -19,7 +19,7 @@ controls:
         Requirement 1 are Documented, Kept up to date, In use and Known to all affected parties.'
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that security policies and
         operational procedures identified in Requirement 1 are managed in accordance with all
@@ -30,7 +30,7 @@ controls:
         documented, assigned, and understood.'
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that day-to-day responsibilities
         for performing all the activities in Requirement 1 are documented, assigned and understood
@@ -46,7 +46,7 @@ controls:
       title: 'Configuration standards for NSC rulesets are Defined, Implemented and Maintained.'
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examples of NSCs covered by these configuration standards include, but are not limited to,
         firewalls, routers configured with access control lists, and cloud virtual networks. The
@@ -61,7 +61,7 @@ controls:
         managed in accordance with the change control process defined at Requirement 6.5.1.'
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Changes to network connections and NSCs cannot result in misconfiguration, implementation
         of insecure services, or unauthorized network connections. Changes to network connections
@@ -74,6 +74,10 @@ controls:
         CDE and other networks, including any wireless networks.'
       levels:
         - base
+      # NOTE(rhmdnd): ACS can supplement this requirement through it's
+      # networking graph functionality, which visually depicts the network
+      # flows between resources, namespaces, and the internet. Add a rule here
+      # to check if ACS is available.
       status: pending
       notes: |-
         A representation of the boundaries between the CDE, all trusted networks, and all
@@ -89,26 +93,39 @@ controls:
           - Updated as needed upon changes to the environment
       levels:
         - base
-      status: pending
+      # NOTE(rhmdnd): ACS can supplement this requirement through it's
+      # networking graph functionality, which visually depicts the network
+      # flows between resources, namespaces, and the internet. Add a rule here
+      # to check if ACS is available.
+      status: not applicable
 
     - id: 1.2.5
       title: 'All services, protocols, and ports allowed are identified, approved, and have a
         defined business need.'
       levels:
         - base
-      status: pending
+      # NOTE(rhmdnd): This is best left to the system owner to maintain, and
+      # falls outside of the responsibility of OpenShift.
+      status: not applicable
 
     - id: 1.2.6
       title: Security features are defined and implemented for all services, protocols, and ports
         that are in use and considered to be insecure, such that the risk is mitigated.
       levels:
         - base
-      status: pending
+      status: partial
       notes: |-
-        The specific risks associated with the use of insecure services, protocols, and ports are
-        understood, assessed, and appropriately mitigated. The selected rules here basically
-        remove services without encryption and restricted some common services.
-      rules: []
+        The specific risks associated with the use of insecure services,
+        protocols, and ports are understood, assessed, and appropriately
+        mitigated.
+      # NOTE(rhmdnd): Implement a rule to check for a default network policy
+      # for new projects. Good practice would be to have a deny by default
+      # network policy. See the following documentation for how to configure
+      # this in the OpenShift configuration:
+      # https://docs.openshift.com/container-platform/latest/networking/network_policy/default-network-policy.html
+      rules:
+        - configure_network_policies_namespaces
+        - configure_network_policies_hypershift_hosted
 
     - id: 1.2.7
       title: Configurations of NSCs are reviewed at least once every six months to confirm they
@@ -119,23 +136,32 @@ controls:
         justification are permitted.
       levels:
         - base
-      status: pending
-      notes: |-
-        Some configuration automation solution, such as Ansible could be helpful here.
+      # NOTE(rhmdnd): Support for expiring network policies, with the default
+      # behavior to deny-all would be a nice feature here to help fulfill this
+      # because the expiration would be set to 6 months or less. Then we'd have
+      # an attribute to check on each network policy to ensure they're getting
+      # reviewed to fulfill this requirement. Marking this as not applicable
+      # since network policies don't have an expiration function.
+      status: not applicable
 
     - id: 1.2.8
       title: Configuration files for NSCs are secured from unauthorized access and kept consistent
         with active network configurations.
       levels:
         - base
-      status: pending
+      # NOTE(rhmdnd): Access to OpenShift configuration falls outside the scope
+      # of the Compliance Operator. While network policies and ingress/egress
+      # configuration is within the realm of OpenShift, it's up to the system
+      # owner to make sure those configurations are secured before, during, and
+      # after being applied to an OpenShift environment.
+      status: not applicable
       rules: []
 
   - id: '1.3'
     title: Network access to and from the cardholder data environment is restricted.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 1.3.1
       title: Inbound traffic to the CDE is restricted to only traffic that is necessary
@@ -145,8 +171,12 @@ controls:
         - All other traffic is specifically denied.
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      # NOTE(rhmdnd): Include another rule here for ingress configuration once
+      # https://issues.redhat.com/browse/CMP-2407 is implemented.
+      rules:
+        - configure_network_policies_namespaces
+        - configure_network_policies_hypershift_hosted
 
     - id: 1.3.2
       title: Outbound traffic from the CDE is restricted to only traffic that is necessary
@@ -157,6 +187,8 @@ controls:
       levels:
         - base
       status: pending
+      # NOTE(rhmdnd): Include another rule here for egress configuration once
+      # https://issues.redhat.com/browse/CMP-2467 is implemented.
       notes: |-
         It appears there is no rule in the project to restrict outbound traffic on the firewall.
         Perhaps a rule to automates this would do more harm than good. Probably a manual
@@ -172,11 +204,10 @@ controls:
         - Only wireless traffic with an authorized business purpose is allowed into the CDE.
       levels:
         - base
-      status: pending
-      notes: |-
-        Wireless interfaces are not expected in servers so they are disabled by default in this
-        policy.
-      rules: []
+      # NOTE(rhmdnd): Not applicable to OpenShift configuration, but more so
+      # the configuration of the underlying RHCOS servers. We should pull in
+      # any rules here through the RHCOS/RHEL profile.
+      status: not applicable
 
   - id: '1.4'
     title: Network connections between trusted and untrusted networks are controlled.
@@ -191,12 +222,19 @@ controls:
         networks.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
         Trusted and untrusted networks are expected to be different for each environment.
         But loopback traffic is assumed to be trusted and even necessary for some services.
         This requirement is complements 1.2.1 and 1.3.1 requirements.
-      rules: []
+      # NOTE(rhmdnd): Include additional rules here for ingress and egress
+      # firewall configuration when we have them.
+      # https://issues.redhat.com/browse/CMP-2467
+      # https://issues.redhat.com/browse/CMP-2407
+      rules:
+        - configure_network_policies
+        - configure_network_policies_namespaces
+        - configure_network_policies_hypershift_hosted
 
     - id: 1.4.2
       title: Inbound traffic from untrusted networks to trusted networks is restricted.
@@ -209,19 +247,19 @@ controls:
       levels:
         - base
       status: pending
-      notes: |-
-        Probably missing some relevant IPv6 related rules. Needs to be investigated.
-      rules: []
+      # NOTE(rhmdnd): Include additional rules here for ingress firewall
+      # configuration when we have them.
+      # https://issues.redhat.com/browse/CMP-2407
 
     - id: 1.4.3
       title: Anti-spoofing measures are implemented to detect and block forged source IP
         addresses from entering the trusted network.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Probably missing some relevant IPv6 related rules. Needs to be investigated.
-      rules: []
+        Anti-spoofing and blocking forged IP addresses is outside the scope
+        of the OpenShift Container Platform.
 
     - id: 1.4.4
       title: System components that store cardholder data are not directly accessible from
@@ -229,6 +267,10 @@ controls:
       levels:
         - base
       status: pending
+      # NOTE(rhmdnd): Include additional rules here for ingress and egress
+      # firewall configuration when we have them.
+      # https://issues.redhat.com/browse/CMP-2467
+      # https://issues.redhat.com/browse/CMP-2407
       notes: |-
         This requirement is not intended to apply to storage of account data in volatile memory
         but does apply where memory is being treated as persistent storage (for example, RAM
@@ -243,15 +285,17 @@ controls:
         Internal network information is protected from unauthorized disclosure.
       levels:
         - base
-      status: pending
-      rules: []
+      status: not applicable
+      notes: |-
+        Protection from IP address disclosure can be handled by solutions
+        outside of OpenShift.
 
   - id: '1.5'
     title: Risks to the CDE from computing devices that are able to connect to both untrusted
       networks and the CDE are mitigated.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 1.5.1
       title: Security controls are implemented on any computing devices, including company- and
@@ -269,11 +313,14 @@ controls:
         period.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        To ensure this requirement, a manual analysis of site policy and topology is inevitable.
-        From the technical perspective, previous requirements should already cover this
-        requirement at some level.
+          This control depends on the context in which OpenShift is used. If
+          OpenShift is used to host the CDE, then devices used to connext to
+          the CDE and the security controls they implement fall outside the
+          scope of OpenShift. If OpenShift is being used to interact with a
+          CDE, then implementing network segmentation and access control for
+          OpenShift network functionality may be required.
 
   - id: '2.1'
     title: Processes and mechanisms for applying secure configurations to all system components
