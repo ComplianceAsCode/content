@@ -1,0 +1,52 @@
+documentation_complete: true
+
+title: 'Ensure no ClusterRoleBindings set for default Service Account'
+
+description: |-
+    Using the <tt>default</tt> service account prevents accurate application
+    rights review and audit tracing. Instead of <tt>default</tt>, create
+    a new and unique service account and associate the required ClusterRoleBindings. 
+
+rationale: |-
+    Kubernetes provides a default service account which is used by
+    cluster workloads where no specific service account is assigned to the pod.
+    Where access to the Kubernetes API from a pod is required, a specific service account
+    should be created for that pod, and rights granted to that service account.
+    This increases auditability of service account rights and access making it
+    easier and more accurate to trace potential malicious behaviors to a specific
+    service account and project.
+
+severity: medium
+
+identifiers: {}
+
+references:
+    bsi: APP.4.4.A9
+
+{{% set jqfilter = '[.items[] | select ( .subjects[]?.name == "default" ) | select(.subjects[].namespace | startswith("kube-") or startswith("openshift-") | not) | .metadata.name ] | unique' %}}
+
+ocil_clause: 'default service account is given permissions using ClusterRoleBindings'
+
+ocil: |-
+    Run the following command to retrieve a list of ClusterRoleBindings that are
+    associated to the default service account:
+    <pre>$ oc get clusterrolebindings -o json | jq '{{{ jqfilter }}}'</pre>
+    There should be no ClusterRoleBindings associated with the the default service account 
+    in any namespace.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/rbac.authorization.k8s.io/v1/clusterrolebindings?limit=10000': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/rbac.authorization.k8s.io/v1/clusterrolebindings?limit=10000', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "none_exist"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"
