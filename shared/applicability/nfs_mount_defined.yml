@@ -1,0 +1,5 @@
+name: "cpe:/a:nfs_mount_defined"
+title: "Remote NFS file system mount is defined"
+check_id: nfs_mount_defined
+bash_conditional: 'grep -E "[[:space:]](nfs|nfs4)[[:space:]]" /etc/fstab'
+ansible_conditional: 'ansible_mounts|selectattr("fstype", "in", ["nfs", "nfs4"])|list|length > 0'
