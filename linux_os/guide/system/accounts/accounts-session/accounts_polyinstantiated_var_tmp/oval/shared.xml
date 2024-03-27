@@ -2,12 +2,12 @@
   <definition class="compliance" id="accounts_polyinstantiated_var_tmp" version="1">
     {{{ oval_metadata("") }}}
     <criteria operator="AND" comment="Check Polyinstantiation of /tmp Directories">
-      <criterion comment="Check that /var/tmp/tmp-inst exists and has mode 000" test_ref="test_var_tmp_tmp_inst" />
+      <criterion comment="Check that /var/tmp/tmp-inst doesn't exist or it exists and has mode 000" test_ref="test_var_tmp_tmp_inst" />
       <criterion comment="Check configuration of /var/tmp in /etc/security/namespace.conf file" test_ref="test_var_tmp_in_namespace_conf" />
     </criteria>
   </definition>
 
-  <unix:file_test comment="Check that /tmp-inst exists and has mode 000" check="all" check_existence="only_one_exists" id="test_var_tmp_tmp_inst" version="1">
+  <unix:file_test comment="Check that /var/tmp/tmp-inst doesn't exist or it exists and has mode 000" check="all" check_existence="any_exist" id="test_var_tmp_tmp_inst" version="1">
     <unix:object object_ref="obj_var_tmp_tmp_inst" />
     <unix:state state_ref="state_var_tmp_tmp_inst" />
   </unix:file_test>
