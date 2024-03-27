@@ -14,7 +14,8 @@ description: |-
 selections:
     -  pcidss_3:all:base
     -  var_multiple_time_servers=suse
-    -  var_multiple_time_pools=suse      
+    -  var_multiple_time_pools=suse
+    -  var_accounts_tmout=15_min
     -  account_unique_id
     -  coredump_disable_backtraces
     -  coredump_disable_storage

@@ -13,3 +13,4 @@
   file:
     path: /etc/profile.d/autologout.sh
     mode: '0755'
+  when: lookup('ansible.builtin.file', '/etc/profile.d/autologout.sh', errors='warn')

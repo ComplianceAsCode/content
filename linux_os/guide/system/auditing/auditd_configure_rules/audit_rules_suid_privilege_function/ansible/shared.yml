@@ -50,7 +50,7 @@
   register: augenrules_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
 
-- name: Update Update /etc/audit/audit.rules to audit privileged functions
+- name: Update /etc/audit/audit.rules to audit privileged functions
   ansible.builtin.lineinfile:
     path: /etc/audit/audit.rules
     line: "{{  item.rule  }}"

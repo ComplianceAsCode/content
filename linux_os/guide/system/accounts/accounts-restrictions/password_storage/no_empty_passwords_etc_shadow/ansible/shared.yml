@@ -13,5 +13,4 @@
   command: >
     passwd -l {{ item }}
   with_items: "{{ users_nopasswd.stdout_lines }}"
-  when: users_nopasswd.stdout_lines | length > 0
-
+  when: users_nopasswd is not skipped and users_nopasswd.stdout_lines | length > 0

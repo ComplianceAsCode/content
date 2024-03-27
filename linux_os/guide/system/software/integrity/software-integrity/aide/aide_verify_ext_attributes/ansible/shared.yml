@@ -20,6 +20,5 @@
     path: /etc/aide.conf
     regexp: (^\s*{{ item }}\s*=\s*)(?!.*xattrs)([^\s]*)
     replace: \g<1>\g<2>+xattrs
-  when: "'aide' in ansible_facts.packages"
+  when: find_rules_groups_results is not skipped and "'aide' in ansible_facts.packages"
   with_items: "{{ find_rules_groups_results.stdout_lines | map('trim') | list }}"
-
