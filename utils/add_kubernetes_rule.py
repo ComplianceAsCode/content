@@ -188,7 +188,7 @@ def create_base_rule(args, url=None, node_rule=False):
 
 def save_rule(rule_yaml_path, rule_yaml):
     with open(rule_yaml_path, 'w') as f:
-        yaml_contents = yaml.dump(rule_yaml, None, indent=2, sort_keys=False, canonical=False, default_flow_style=False, width=120)
+        yaml_contents = yaml.dump(rule_yaml, None, indent=4, sort_keys=False, canonical=False, default_flow_style=False, width=120)
         # Adds a blank line between keys
         formatted_yaml_contents = re.sub(r"\n(\w+:.*)", r"\n\n\1", yaml_contents)
 
