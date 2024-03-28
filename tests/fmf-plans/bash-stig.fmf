@@ -2,7 +2,11 @@ summary:
   Destructive STIG profile test (Bash)
 discover+:
   test:
-  - /hardening/host-os/oscap/stig$
+  - /hardening/oscap/(ospp|stig)$
 adjust+:
 - enabled: false
   when: distro == fedora
+provision:
+  hardware:
+    virtualization:
+      is-supported: true
