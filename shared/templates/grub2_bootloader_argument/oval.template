@@ -128,7 +128,7 @@
 {{% if system_with_kernel_options_in_etc_default_grub_d -%}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub.d/*cfg via GRUB_CMDLINE_LINUX"
-  check="all" check_existence="any_exist" version="1">
+  check="at least one" check_existence="all_exist" version="1">
     <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" />
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
@@ -141,7 +141,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_configdir" version="1">
-    <ind:filepath>/etc/default/grub.d/*.cfg</ind:filepath>
+    <ind:filepath operation="pattern match">/etc/default/grub.d/[^/]+\.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
