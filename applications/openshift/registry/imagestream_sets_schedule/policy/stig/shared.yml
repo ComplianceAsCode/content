@@ -11,9 +11,9 @@ vuldiscussion: |-
     The OpenShift platform can be configured to limit and control which image source repositories may be used by the platform and the users of the platform. By configuring this to only allow users to deploy images from trusted sources, lowers the risk for a user to deploy unsafe, or untested images that would be detrimental to the security and stability of the platform.
 
 checktext: |-
-    To list all the imagestreams and identify which imagestream tags are configured to periodically check for updates (imagePolicy = { scheduled: true }) run the following command
+    To list all the imagestreams and identify which imagestream tags are configured to periodically check for updates (imagePolicy = { scheduled: true }) and (kind = DockerImage) run the following command:
 
-    > oc get imagestream  --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{range .spec.tags[*]}{"\t"}{.name}{": "}{.importPolicy}{"\n"}'
+    > oc get imagestream --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{range .spec.tags[*]}{"\t"}{.name}{": "}{.importPolicy}{"\t"}{.from}{"\n"}
 
     You will see an ouput similar to:
 
