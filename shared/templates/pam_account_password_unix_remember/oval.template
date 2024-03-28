@@ -1,57 +1,59 @@
-{{% if product in [ "sle12", "sle15" ] %}}
+{{% if product in [ "sle12", "sle15" ] or "debian" in product or "ubuntu" in product %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
 {{% endif %}}
 
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+  <definition class="compliance" id="accounts_password_pam_unix_remember" version="2">
     {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
     <criteria operator="OR" comment="Check if pam_pwhistory.so or pam_unix.so are configured">
       <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
         <!--
-          pam_pwhistory.so parameters can be defined directly in pam files or, in newer versions,
-          in /etc/security/pwhistory.conf. The last is the recommended option when available. Also,
-          is the option used by auselect tool. However, regardless the approach, a minimal
-          declaration is common in pam files. -->
+            pam_pwhistory.so parameters can be defined directly in pam files or, in newer versions,
+            in /etc/security/pwhistory.conf. The last is the recommended option when available. Also,
+            is the option used by auselect tool. However, regardless the approach, a minimal
+            declaration is common in pam files. -->
         <criterion test_ref="test_accounts_password_pam_unix_remember"
-          comment="pam_pwhistory.so is properly defined in password section of PAM file"/>
+		   comment="pam_pwhistory.so is properly defined in password section of PAM file"/>
 
         <!--
-          pam_pwhistory.so parameters should be defined in /etc/security/pwhistory.conf whenever
-          possible. But due to backwards compatibility, they are also allowed in pam files directly.
-          In case they are defined in both places, pam files have precedence and this may confuse
-          the assessment. The following tests ensure only one option is used. Note that if
-          pwhistory.conf is available, authselect tool will preserve PAM files from parameters
-          definitions in favor of /etc/security/pwhistory.conf. -->
+            pam_pwhistory.so parameters should be defined in /etc/security/pwhistory.conf whenever
+            possible. But due to backwards compatibility, they are also allowed in pam files directly.
+            In case they are defined in both places, pam files have precedence and this may confuse
+            the assessment. The following tests ensure only one option is used. Note that if
+            pwhistory.conf is available, authselect tool will preserve PAM files from parameters
+            definitions in favor of /etc/security/pwhistory.conf. -->
         <criteria operator="OR"
-          comment="Check the expected value for pam_pwhistory.so remember parameter">
+		  comment="Check the expected value for pam_pwhistory.so remember parameter">
           <criteria operator="AND"
-            comment="Check the pam_pwhistory.so remember parameter is only in PAM file">
+		    comment="Check the pam_pwhistory.so remember parameter is only in PAM file">
             <criterion
-              test_ref="test_accounts_password_pam_unix_remember_pamd"
-              comment="Check the remember parameter in password section of PAM file"/>
+		test_ref="test_accounts_password_pam_unix_remember_pamd"
+		comment="Check the remember parameter in password section of PAM file"/>
             <criterion
-              test_ref="test_accounts_password_pam_unix_remember_no_pwhistory_conf"
-              comment="Check the pam_pwhistory.so remember parameter is absent in pwhistory.conf"/>
+		test_ref="test_accounts_password_pam_unix_remember_no_pwhistory_conf"
+		comment="Check the pam_pwhistory.so remember parameter is absent in pwhistory.conf"/>
           </criteria>
           <criteria operator="AND"
-            comment="Check the pam_pwhistory.so remember parameter is only in pwhistory.conf file">
+		    comment="Check the pam_pwhistory.so remember parameter is only in pwhistory.conf file">
             <criterion
-              test_ref="test_accounts_password_pam_unix_remember_no_pamd"
-              comment="Check the pam_pwhistory.so remember parameter is absent in PAM file"/>
+		test_ref="test_accounts_password_pam_unix_remember_no_pamd"
+		comment="Check the pam_pwhistory.so remember parameter is absent in PAM file"/>
             <criterion
-              test_ref="test_accounts_password_pam_unix_remember_pwhistory_conf"
-              comment="Check the remember parameter in /etc/security/pwhistory.conf"/>
+		test_ref="test_accounts_password_pam_unix_remember_pwhistory_conf"
+		comment="Check the remember parameter in /etc/security/pwhistory.conf"/>
           </criteria>
         </criteria>
       </criteria>
       <criterion test_ref="test_accounts_password_pam_unix_remember_legacy"
-        comment="Remember parameter of pam_unix.so is properly configured"/>
+		 comment="Remember parameter of pam_unix.so is properly configured"/>
     </criteria>
   </definition>
 
-  <!-- is pam_pwhistory.so enabled? -->
+  <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_unix_remember" version="1" />
+
+    <!-- is pam_pwhistory.so enabled? -->
   <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember"
     check="all" version="1" comment="Check pam_pwhistory.so presence in PAM file">
     <ind:object object_ref="object_accounts_password_pam_unix_remember"/>
@@ -89,6 +91,7 @@
 
   <external_variable id="var_password_pam_unix_remember" version="1"
     datatype="int" comment="number of passwords that should be remembered"/>
+  <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_unix_remember" version="1" />
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
     id="test_accounts_password_pam_unix_remember_no_pwhistory_conf"
@@ -145,14 +148,15 @@
   <!-- Check the pam_unix.so remember case -->
   <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember_legacy" version="1"
     check="all" check_existence="all_exist"
-    comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth">
+    comment="Test if remember attribute of pam_unix.so is set correctly in {{{ accounts_password_pam_unix_remember_file }}}">
     <ind:object object_ref="object_accounts_password_pam_unix_remember_legacy" />
     <ind:state state_ref="state_accounts_password_pam_unix_remember" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember_legacy" version="1">
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*remember=([0-9]*).*$</ind:pattern>
+    <ind:filepath>{{{ accounts_password_pam_unix_remember_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required)|(?:\[.*\]))\s+pam_unix\.so.*remember=([0-9]*).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  
 </def-group>

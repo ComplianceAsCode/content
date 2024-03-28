@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Set number of Password Hashing Rounds - password-auth'
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15", "debian12"] %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
@@ -15,8 +15,13 @@ description: |-
     <br /><br />
     In file <tt>{{{ pam_passwd_file_path }}}</tt> append <tt>rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</tt>
     to the <tt>pam_unix.so</tt> entry, as shown below:
+    {{% if product in ["debian12"] %}}  
+    <pre>password [success=1 default=ignore] pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
+    {{% else %}}
     <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
+    
     The system's default number of rounds is 5000.
+    {{% endif %}}
 
 rationale: |-
     Using a higher number of rounds makes password cracking attacks more difficult.
@@ -45,7 +50,11 @@ ocil: |-
     To verify the number of rounds for the password hashing algorithm is configured, run the following command:
     <pre>$ sudo grep rounds {{{ pam_passwd_file_path }}}</pre>
     The output should show the following match:
+    {{% if product in ["debian12"] %}} 
+    <pre>password [sucess=1 default=ignore] pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
+    {{% else %}}
     <pre>password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
+    {{% endif %}}
 
 platform: package[pam]
 
@@ -54,7 +63,10 @@ fixtext: |-
 
     Add or modify the following line in "{{{ pam_passwd_file_path }}}" and set "rounds" to {{{ xccdf_value("var_password_pam_unix_rounds") }}}.
     For example:
-
+    {{% if product in ["debian12"] %}} 
+    password [sucess=1 default=ignore] pam_unix.so sha512 rounds=5000
+    {{% else %}}
     password sufficient pam_unix.so sha512 rounds=5000
-
+    {{% endif %}}
+    
 srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds in {{{ pam_passwd_file_path }}}.'
