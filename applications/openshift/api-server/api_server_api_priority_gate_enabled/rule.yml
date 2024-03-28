@@ -28,8 +28,7 @@ rationale: |-
 identifiers:
   cce@ocp4: CCE-83656-9
 
-platforms:
-    - ocp4.6
+
 
 severity: medium
 
@@ -40,7 +39,7 @@ references:
   pcidss: Req-2.2
   srg: SRG-APP-000516-CTR-001325
 
-platform: not ocp4-on-hypershift-hosted
+platform: not ocp4-on-hypershift-hosted and ocp4.6
 
 ocil_clause: '<tt>.apiServerArguments["feature-gates"]</tt> does not include <tt>APIPriorityAndFairness</tt>'
 
