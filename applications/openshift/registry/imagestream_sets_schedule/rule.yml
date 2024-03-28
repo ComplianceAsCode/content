@@ -39,7 +39,7 @@ ocil_clause: 'imagestream is not configured to perform periodical updates'
 ocil: |-
   To list all the imagestreams and identify which imagestream tags are
   configured to periodically check for updates (<pre>imagePolicy = { scheduled: true }</pre>), run the following command:
-  <pre>oc get imagestream  --all-namespaces -o jsonpath='{{{ jqfilter }}}'</pre>
+  <pre>oc get imagestreams -A -ojson | jq '.items[] | select(.spec.tags[]?.importPolicy.scheduled == true) | .metadata.name' | sort | uniq</pre>
   Alternatively, to view a list of ImageStreams that do not schedule updates,
   run:
   <pre>oc get imagestreams -A -ojson | jq -r '.items[] | select(.spec.tags[]? | select(.from.kind != "ImageStreamTag" and (.importPolicy.scheduled == null or .importPolicy.scheduled == false))) | "\(.metadata.namespace),\(.metadata.name)"' | sort | uniq</pre>
