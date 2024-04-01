@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure No Pod Is Running with Privileged Security Context'
+
+description: |-
+    Pods should not be running with privileged security context to ensure a secure and isolated environment for containers.
+    This check ensures that no pod in the cluster is running with `privileged: true` in its security context.
+
+rationale: |-
+    Running containers in privileged mode grants them essentially full access to the host system, which can compromise the security and integrity of both the host and other containers running on it.
+    By ensuring that no pods are running with `privileged: true`, we reduce the risk of such security breaches.
+
+severity: medium
+
+
+ocil_clause: 'No pod should have privileged: true in its security context'
+
+ocil: |-
+    List all pods and check the security context of each pod. Any pod having `privileged: true` in its security context is a finding.
+    Use the following command to list all pods with their security context:
+    ```
+    oc get pods --all-namespaces -o json | jq '.items[] | select(.spec.containers[].securityContext.privileged == true) | .metadata.name'
+    ```
+
+warnings:
+    - general: |-
+        {{ openshift_filtered_cluster_setting({custom_api_path: '/api/v1/pods', custom_jqfilter: '[.items[] | select(.spec.containers[].securityContext.privileged == true)]'}) | indent(4) }}
+
+template:
+ name: yamlfile_value
+ vars:
+   ocp_data: "true"
+   check_existence: "none_exist"
+   filepath: '/api/v1/pods'
+   yamlpath: '.items[].spec.containers[].securityContext.privileged'
+   values:
+   - value: '^true$'
+     operation: "pattern match"
