@@ -9,7 +9,7 @@ description: |-
     highest priority. As such the DConf User profile should always exist and be
     configured correctly.
     <br /><br />
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
     To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/gdm</tt>
     should be set as follows:
     <pre>user-db:user
@@ -44,13 +44,14 @@ references:
     cis@ubuntu2204: '1.10'
     stigid@sle12: SLES-12-010611
     stigid@sle15: SLES-15-040061
+    stigid@ubuntu2204: UBTU-22-271010
 
 ocil_clause: 'DConf User profile does not exist or is not configured correctly'
 
 ocil: |-
     To verify that the DConf User profile is configured correctly, run the following
     command:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
     <pre>$ cat /etc/dconf/profile/gdm</pre>
     The output should show the following:
     <pre>user-db:user
