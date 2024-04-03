@@ -6,7 +6,7 @@
 - name: "Test for domain group"
   command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
-  ignore_errors: yes
+  failed_when: false
   changed_when: False
   check_mode: no
 

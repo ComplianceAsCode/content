@@ -8,7 +8,7 @@
 - name: "{{{ rule_title }}} - Check to See the Current Status of FIPS Mode"
   ansible.builtin.command: /usr/bin/fips-mode-setup --check
   register: is_fips_enabled
-  ignore_errors: yes
+  failed_when: false
   changed_when: false
 
 - name: "{{{ rule_title }}} - Enable FIPS Mode"
