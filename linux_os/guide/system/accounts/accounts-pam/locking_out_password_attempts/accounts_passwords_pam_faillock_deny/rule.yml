@@ -129,3 +129,14 @@ warnings:
 
 srg_requirement: |-
     {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur.
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: deny
+    prm_regex_conf: ^[\s]*deny[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*deny=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_deny
+    description: Lockout account after failed login attempts.
+    variable_upper_bound: use_ext_variable
+    variable_lower_bound: 0
