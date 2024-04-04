@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     SMEs:
         - marcusburghardt
-        - yuumasato
+        - vojtapolasek
 
 title: 'ANSSI-BP-028 (intermediary)'
 

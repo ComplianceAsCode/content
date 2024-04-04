@@ -3,6 +3,7 @@ documentation_complete: true
 metadata:
     SMEs:
         - marcusburghardt
+        - vojtapolasek
 
 title: 'ANSSI-BP-028 (enhanced)'
 
