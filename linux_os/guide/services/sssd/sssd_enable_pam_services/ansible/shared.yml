@@ -1,0 +1,41 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: Find all the conf files inside the /etc/sssd/conf.d/ directory
+  ansible.builtin.find:
+    paths:
+    - "/etc/sssd/conf.d/"
+    patterns: "*.conf"
+  register: sssd_conf_d_files
+
+- name: Modify lines in files in the /etc/sssd/conf.d/ directory
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: '^(services\s*=.*)'
+    replace: '\1,pam'
+  with_items: "{{ sssd_conf_d_files.files | map(attribute='path') }}"
+  register: modify_lines_sssd_conf_d_files
+
+- name: Find /etc/sssd/sssd.conf
+  ansible.builtin.stat:
+    path: /etc/sssd/sssd.conf
+  register: sssd_conf_file
+
+- name: Modify lines in /etc/sssd/sssd.conf
+  ansible.builtin.replace:
+    path: "/etc/sssd/sssd.conf"
+    regexp: '^(services\s*=.*)'
+    replace: '\1,pam'
+  register: modify_lines_sssd_conf_file
+  when: sssd_conf_file.stat.exists
+
+- name: Insert entry to /etc/sssd/sssd.conf
+  community.general.ini_file:
+    path: /etc/sssd/sssd.conf
+    section: sssd
+    option: services
+    value: pam
+  when: not modify_lines_sssd_conf_d_files.changed and not modify_lines_sssd_conf_file.changed
