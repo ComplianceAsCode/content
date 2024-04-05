@@ -573,6 +573,7 @@ INSTALL_COMMANDS = dict(
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
+    rhel10=("dnf", "install", "-y"),
     sles=("zypper", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
