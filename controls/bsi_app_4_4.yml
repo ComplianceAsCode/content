@@ -162,13 +162,12 @@ controls:
     levels:
     - standard
     description: >-
-      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take
-      place in a separate Init container. It SHOULD be ensured that the initialisation terminates all
-      processes that are already running. Kubernetes SHOULD ONLY start the other containers if
-      the initialisation is successful.
+      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take place in a separate Init container. It SHOULD be ensured that the initialisation terminates all processes that are already running. Kubernetes SHOULD ONLY start the other containers if the initialisation is successful.
     notes: >-
-      TBD
-    status: pending
+      OpenShift provides the necessary resource configurations via Kubernetes. Kubernetes ensures the (process) dependencies between init containers and “normal” containers of a pod.
+
+      The requirement must be implemented by application development.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A7
@@ -237,7 +236,7 @@ controls:
       start pods via automation software, this SHOULD be done for each group through separate
       processes that only have the rights necessary for the respective user group.
     notes: >-
-      This control needs to be adressed on an organizational level. All service accounts used by 
+      This control needs to be adressed on an organizational level. All service accounts used by
       automation software need to adhere to the principle of least privilege.
     status: not applicable
     rules: []
