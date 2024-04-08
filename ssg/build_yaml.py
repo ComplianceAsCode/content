@@ -1657,10 +1657,10 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profile_id, benchmark = self.benchmark.get_benchmark_xml_for_profile(
-                self.env_yaml, profile
+            profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
+                self.env_yaml, [profile]
             )
-            yield profile_id, benchmark
+            yield profiles_ids.pop(), benchmark
 
     def load_compiled_content(self):
         self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
@@ -1684,7 +1684,10 @@ class LinearLoader(object):
             g.load_entities(self.rules, self.values, self.groups)
 
     def export_benchmark_to_xml(self):
-        return self.benchmark.to_xml_element(self.env_yaml)
+        _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
+            self.env_yaml, self.benchmark.profiles
+        )
+        return benchmark
 
     def export_benchmark_to_file(self, filename):
         register_namespaces()
