@@ -537,11 +537,12 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_xml_for_profile(self, env_yaml, profile):
-        rules, groups = self.get_components_not_included_in_a_profiles([profile])
-        cpe_platforms = self.get_not_used_cpe_platforms([profile])
+    def get_benchmark_xml_for_profiles(self, env_yaml, profiles):
+        rules, groups = self.get_components_not_included_in_a_profiles(profiles)
+        cpe_platforms = self.get_not_used_cpe_platforms(profiles)
+        profiles_ids = [profile.id_ for profile in profiles]
         profiles = set(filter(
-            lambda id_, profile_id=profile.id_: id_ != profile_id,
+            lambda id_, profiles_ids=profiles_ids: id_ not in profiles_ids,
             [profile.id_ for profile in self.profiles]
         ))
         components_to_not_include = {
@@ -550,7 +551,7 @@ class Benchmark(XCCDFEntity):
                 "profiles": profiles,
                 "cpe_platforms": cpe_platforms
             }
-        return profile.id_, self.to_xml_element(
+        return profiles_ids, self.to_xml_element(
             env_yaml,
             components_to_not_include=components_to_not_include
         )
