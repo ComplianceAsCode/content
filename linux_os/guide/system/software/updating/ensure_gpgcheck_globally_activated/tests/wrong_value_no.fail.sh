@@ -1,7 +1,7 @@
 #!/bin/bash
 {{% if 'sle' in product %}}
 # packages = libselinux1
-{{% else %}} 
+{{% else %}}
 # packages = python3-libselinux
 {{% endif %}}
 
