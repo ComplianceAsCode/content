@@ -704,3 +704,15 @@ $ ./build_product ocp4
 $ ./utils/rule_dir_json.py
 $ ./utils/oscal/build_cd_from_policy.py -o build/ocp4.json -p fedramp_rev4_high -pr ocp4 -c nist_ocp4:high
 ```
+
+### `utils/ansible_playbook_to_role.py` &ndash; Generates Ansible Roles and pushes them to Github
+
+This script converts the Ansible playbooks created by the build system and converts them to Ansible roles and can upload them to GitHub.
+
+
+An example of how to execute the script to generate roles locally:
+
+```bash
+$ ./build_product rhel9
+$ ./utils/ansible_playbook_to_role.py --dry-run output
+```

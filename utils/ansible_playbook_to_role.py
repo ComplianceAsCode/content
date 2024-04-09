@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 
@@ -15,17 +14,25 @@ import getpass
 import yaml
 import collections
 
+
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PLAYBOOK_ROOT = os.path.join(SSG_ROOT, "build", "ansible")
+
 try:
     from github import Github, InputGitAuthor, UnknownObjectException
 except ImportError:
-    sys.stderr.write("Please install PyGithub, on Fedora it's in the "
-                     "python-PyGithub package.\n")
-    sys.exit(1)
+    print("Please install PyGithub, on Fedora it's in the python-PyGithub package.",
+          file=sys.stderr)
+    raise SystemExit(1)
 
 
-import ssg.ansible
-import ssg.yaml
-from ssg.utils import mkdir_p
+try:
+    import ssg.ansible
+    import ssg.yaml
+    from ssg.utils import mkdir_p
+except ImportError:
+    print("Unable to find the ssg module. Please run 'source .pyenv'", file=sys.stderr)
+    raise SystemExit(1)
 
 
 def memoize(f):
@@ -486,17 +493,18 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Generates Ansible Roles and pushes them to Github')
     parser.add_argument(
-        "--build-playbooks-dir", required=True,
+        "--build-playbooks-dir",
         help="Path to directory containing the generated Ansible Playbooks. "
-        "Most likely this is going to be ./build/ansible",
-        dest="build_playbooks_dir")
+        "Most likely this is going to be ./build/ansible. Defaults to {}".format(PLAYBOOK_ROOT),
+        dest="build_playbooks_dir", default=PLAYBOOK_ROOT)
     parser.add_argument(
         "--dry-run", "-d", dest="dry_run",
-        help="Do not push Ansible Roles to the Github, store them only to local directory"
+        help="Do not push Ansible Roles to Github, store them only to the given local directory."
     )
     parser.add_argument(
         "--organization", "-o", default=ORGANIZATION_NAME,
-        help="Name of the Github organization")
+        help="Name of the Github organization to publish roles to. "
+             "Defaults to {}.".format(ORGANIZATION_NAME))
     parser.add_argument(
         "--profile", "-p", default=[], action="append",
         metavar="PROFILE", choices=PROFILE_ALLOWLIST,
@@ -507,7 +515,7 @@ def parse_args():
         help="What products to upload, if not specified, upload all that are applicable.")
     parser.add_argument(
         "--tag-release", "-n", default=False, action="store_true",
-        help="Tag a new release in GitHub")
+        help="Tag a new release in GitHub. Defaults to False.")
     parser.add_argument(
         "--token", "-t", dest="token",
         help="GitHub token used for organization authorization")
@@ -598,7 +606,7 @@ def main():
             elif repo.name not in potential_roles:
                 print("Repo '%s' is not managed by this script. "
                       "It may need to be deleted, please verify and do that "
-                      "manually!" % repo.name)
+                      "manually!" % repo.name, file=sys.stderr)
 
 
 if __name__ == "__main__":
