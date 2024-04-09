@@ -8,21 +8,7 @@ controls:
             continuously, 30 days, and annually, for external scans by Computer Network
             Defense Service Provider (CNDSP).
 
-        rationale: |-
-            Without the use of automated mechanisms to scan for security flaws on a continuous and/or periodic basis, the operating system or other system components may remain vulnerable to the exploits presented by undetected software flaws.
-
-            To support this requirement, the operating system may have an integrated solution incorporating continuous scanning using ESS and periodic scanning using other tools, as specified in the requirement.
-        status_justification:
-            {{{ full_name }}} does not have configuration options to meet this requirement.
-        check: |-
-            {{{ full_name }}} does not support this requirement.
-            This is an applicable-does not meet finding.
-        fixtext:
-            This requirement is a permanent finding and cannot be fixed.
-            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
-        mitigation:
-            A third-party software will be needed to meet this requirement e.g. McAfee policy auditor.
-
-            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
-        status: does not meet
+        rules:
+            - package_mcafeetp_installed
+        status: automated
 
