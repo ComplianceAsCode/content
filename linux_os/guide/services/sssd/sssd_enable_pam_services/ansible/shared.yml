@@ -14,7 +14,7 @@
 - name: {{{ rule_title }}} - Modify lines in files in the /etc/sssd/conf.d/ directory
   ansible.builtin.replace:
     path: "{{ item }}"
-    regexp: '^(services\s*=(?!.*\bpam\b).*)$'
+    regexp: '^(\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services\s*=(?!.*\bpam\b).*)$'
     replace: '\1,pam'
   with_items: "{{ sssd_conf_d_files.files | map(attribute='path') }}"
   register: modify_lines_sssd_conf_d_files
@@ -27,7 +27,7 @@
 - name: {{{ rule_title }}} - Modify lines in /etc/sssd/sssd.conf
   ansible.builtin.replace:
     path: "/etc/sssd/sssd.conf"
-    regexp: '^(services\s*=(?!.*\bpam\b).*)$'
+    regexp: '^(\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services\s*=(?!.*\bpam\b).*)$'
     replace: '\1,pam'
   register: modify_lines_sssd_conf_file
   when: sssd_conf_file.stat.exists
