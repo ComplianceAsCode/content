@@ -33,7 +33,7 @@
   when: sssd_conf_file.stat.exists
 
 - name: {{{ rule_title }}} - Insert entry to /etc/sssd/sssd.conf
-  community.general.ini_file:
+  ini_file:
     path: /etc/sssd/sssd.conf
     section: sssd
     option: services
