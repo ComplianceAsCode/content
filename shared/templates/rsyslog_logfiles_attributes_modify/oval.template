@@ -84,7 +84,7 @@
             * the chunk was retrieved from a row not starting with space, '#', or '$' characters
       -->
     <ind:pattern
-      operation="pattern match">^\s*[^(\s|#|\$)]+\s+.*\s+-?[\w\(="\s]*(\/[^:;\s"]+)+.*$</ind:pattern>
+      operation="pattern match">^\s*[^(\s|#|\$)]+\s+.*(?:\bFile="|\s|\/|-)(\/[^:;\s"]+).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_{{{ _RULE_ID }}}_ignore_include_paths</filter>
   </ind:textfilecontent54_object>
