@@ -19,62 +19,105 @@ jobs:
   - centos-stream-8-x86_64
   - centos-stream-9-x86_64
 
-- &test
+- <<: *build
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+
+- &test-static-checks
   job: tests
   trigger: pull_request
   fmf_path: tests/tmt-plans
+  identifier: /static-checks
+  tmt_plan: /static-checks
   targets:
     epel-7:
       distros: [ centos-7 ]
     centos-stream-8: {}
     centos-stream-9: {}
-  identifier: /static-checks
-  tmt_plan: /static-checks
 
 # when modifying this, modify also tests/tmt-plans/
-- <<: *test
+
+- &test-hardening-ansible-anssi_bp28_high
+  <<: *test-static-checks
   identifier: /hardening/host-os/ansible/anssi_bp28_high
   tmt_plan: /hardening/host-os/ansible/anssi_bp28_high
   targets:
     centos-stream-8: {}
     centos-stream-9: {}
-- <<: *test
+- &test-hardening-ansible-cis
+  <<: *test-static-checks
   identifier: /hardening/host-os/ansible/cis
   tmt_plan: /hardening/host-os/ansible/cis
-- <<: *test
+- &test-hardening-ansible-ospp
+  <<: *test-static-checks
   identifier: /hardening/host-os/ansible/ospp
   tmt_plan: /hardening/host-os/ansible/ospp
-- <<: *test
+- &test-hardening-ansible-pci-dss
+  <<: *test-static-checks
   identifier: /hardening/host-os/ansible/pci-dss
   tmt_plan: /hardening/host-os/ansible/pci-dss
-- <<: *test
+- &test-hardening-ansible-stig
+  <<: *test-static-checks
   identifier: /hardening/host-os/ansible/stig
   tmt_plan: /hardening/host-os/ansible/stig
   targets:
     centos-stream-9: {}
-- <<: *test
+
+- &test-hardening-oscap-anssi_bp28_high
+  <<: *test-static-checks
   identifier: /hardening/host-os/oscap/anssi_bp28_high
   tmt_plan: /hardening/host-os/oscap/anssi_bp28_high
   targets:
     centos-stream-8: {}
     centos-stream-9: {}
-- <<: *test
+- &test-hardening-oscap-cis
+  <<: *test-static-checks
   identifier: /hardening/host-os/oscap/cis
   tmt_plan: /hardening/host-os/oscap/cis
-- <<: *test
+- &test-hardening-oscap-ospp
+  <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ospp
   tmt_plan: /hardening/host-os/oscap/ospp
-- <<: *test
+- &test-hardening-oscap-pci-dss
+  <<: *test-static-checks
   identifier: /hardening/host-os/oscap/pci-dss
   tmt_plan: /hardening/host-os/oscap/pci-dss
-- <<: *test
+- &test-hardening-oscap-stig
+  <<: *test-static-checks
   identifier: /hardening/host-os/oscap/stig
   tmt_plan: /hardening/host-os/oscap/stig
 
-- <<: *test
+# duplicate the above for Github Merge Queues
+- <<: *test-static-checks
   trigger: commit
   branch: "gh-readonly-queue/.*"
-
-- <<: *build
+- <<: *test-hardening-ansible-anssi_bp28_high
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-ansible-cis
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-ansible-pci-dss
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-ansible-stig
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-oscap-anssi_bp28_high
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-oscap-cis
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-oscap-ospp
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-oscap-pci-dss
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-oscap-stig
+  trigger: commit
+  branch: "gh-readonly-queue/.*"
+- <<: *test-hardening-ansible-ospp
   trigger: commit
   branch: "gh-readonly-queue/.*"
