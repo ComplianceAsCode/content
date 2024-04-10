@@ -628,13 +628,11 @@ selections:
     # Analogous to audit_rules_login_events_lastlog
     # UBTU-22-654190 The Ubuntu operating system must generate audit records for all events that affect the systemd journal files
 
-    ### TODO (rule needed)
-    # Analogous to package_telnetd_removed
-    # UBTU-22-215025 The Ubuntu operating system must not have the "ntp" package installed
-
-    ### TODO (rule needed)
-    # Analogous to package_telnetd_removed
     # UBTU-22-215020 The Ubuntu operating system must not have the "systemd-timesyncd" package installed
+    - package_timesyncd_removed
+
+    # UBTU-22-215025 The Ubuntu operating system must not have the "ntp" package installed
+    - package_ntp_removed
 
     ### TODO (rule needed; reevaluate permissions)
     # Similar to file_permissions_library_dirs and dir_permissions_library_dirs
@@ -667,4 +665,3 @@ selections:
     ### TODO (rule needed)
     # Similar to file_permissions_var_log_audit
     # UBTU-22-232140 The Ubuntu operating system must be configured so that the "journalctl" command is not accessible by unauthorized users
-

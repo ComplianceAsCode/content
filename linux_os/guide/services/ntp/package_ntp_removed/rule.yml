@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Remove the ntp service'
+
+description: 'The ntpd service should not be installed.'
+
+rationale: |
+   Inaccurate time stamps make it more difficult to correlate events
+   and can lead to an inaccurate analysis. Determining the correct
+   time a particular event occurred on a system is critical when
+   conducting forensic analysis and investigating system events.
+   Sources outside the configured acceptable allowance (drift)
+   may be inaccurate.
+
+severity: low
+
+references:
+    disa: CCI-001891
+    stigid@ubuntu2204: UBTU-22-215025
+
+template:
+    name: package_removed
+    vars:
+        pkgname: ntp
