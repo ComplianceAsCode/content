@@ -624,9 +624,8 @@ selections:
     # Analogous to set_password_hashing_algorithm_passwordauth
     # UBTU-22-611055 The Ubuntu operating system must store only encrypted representations of passwords
 
-    ### TODO (rule needed)
-    # Analogous to audit_rules_login_events_lastlog
     # UBTU-22-654190 The Ubuntu operating system must generate audit records for all events that affect the systemd journal files
+    - audit_rules_var_log_journal
 
     ### TODO (rule needed)
     # Analogous to package_telnetd_removed
