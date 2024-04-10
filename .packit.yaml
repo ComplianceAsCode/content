@@ -26,8 +26,8 @@ jobs:
   targets:
     epel-7:
       distros: [ centos-7 ]
-    centos-stream-8: { }
-    centos-stream-9: { }
+    centos-stream-8: {}
+    centos-stream-9: {}
   identifier: /static-checks
   tmt_plan: /static-checks
 
@@ -35,6 +35,9 @@ jobs:
 - <<: *test
   identifier: /hardening/host-os/ansible/anssi_bp28_high
   tmt_plan: /hardening/host-os/ansible/anssi_bp28_high
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
 - <<: *test
   identifier: /hardening/host-os/ansible/cis
   tmt_plan: /hardening/host-os/ansible/cis
@@ -47,9 +50,14 @@ jobs:
 - <<: *test
   identifier: /hardening/host-os/ansible/stig
   tmt_plan: /hardening/host-os/ansible/stig
+  targets:
+    centos-stream-9: {}
 - <<: *test
   identifier: /hardening/host-os/oscap/anssi_bp28_high
   tmt_plan: /hardening/host-os/oscap/anssi_bp28_high
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
 - <<: *test
   identifier: /hardening/host-os/oscap/cis
   tmt_plan: /hardening/host-os/oscap/cis

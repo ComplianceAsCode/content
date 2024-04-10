@@ -18,9 +18,6 @@ report:
 /hardening/host-os/ansible/anssi_bp28_high:
     summary: Destructive ANSSI BP-028 (high) profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/anssi_bp28_high$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
 
 /hardening/host-os/ansible/cis:
     summary: Destructive CIS Server Level 2 profile test (Ansible)
@@ -37,9 +34,6 @@ report:
 /hardening/host-os/ansible/stig:
     summary: Destructive STIG profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/stig$}
-    adjust+:
-      - when: distro <= centos-8
-        enabled: false
 
 #
 # Hardening via oscap xccdf eval --remediate
@@ -48,9 +42,6 @@ report:
 /hardening/host-os/oscap/anssi_bp28_high:
     summary: Destructive ANSSI-BP-028 (high) profile test (Bash)
     discover+: {test: /hardening/host-os/oscap/anssi_bp28_high$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
 
 /hardening/host-os/oscap/cis:
     summary: Destructive CIS Server Level 2 profile test (Bash)
