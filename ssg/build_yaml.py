@@ -443,10 +443,12 @@ class Benchmark(XCCDFEntity):
             plat = ET.SubElement(root, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-    def _add_profiles_xml(self, root, profiles_to_not_include):
+    def _add_profiles_xml(self, root, components_to_not_include):
+        profiles_to_not_include = components_to_not_include.get("profiles", set())
         for profile in self.profiles:
             if profile.id_ in profiles_to_not_include:
                 continue
+            profile.remove_components_not_included(components_to_not_include)
             root.append(profile.to_xml_element())
 
     def _add_values_xml(self, root):
@@ -497,7 +499,7 @@ class Benchmark(XCCDFEntity):
         contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
         add_benchmark_metadata(root, contributors_file)
 
-        self._add_profiles_xml(root, components_to_not_include.get("profiles", set()))
+        self._add_profiles_xml(root, components_to_not_include)
         self._add_values_xml(root)
         self._add_groups_xml(root, components_to_not_include, env_yaml)
         self._add_rules_xml(root, components_to_not_include.get("rules", set()),  env_yaml,)
