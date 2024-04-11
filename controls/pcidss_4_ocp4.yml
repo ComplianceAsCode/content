@@ -545,7 +545,7 @@ controls:
     title: Wireless environments are configured and managed securely.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 2.3.1
       title: For wireless environments connected to the CDE or transmitting account data, all
@@ -560,9 +560,13 @@ controls:
         - Any other security-related wireless vendor defaults.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Wireless interfaces are disabled by 1.3.3.
+        The OpenShift Container Platform doesn't manage wireless encryptions keys nor wireless
+        access points passwords.
+      related_rules:
+        # NOTE: (yuumasato): the node OS can explicitly disable wireless interfaces
+        - wireless_disable_interfaces
 
     - id: 2.3.2
       title: For wireless environments connected to the CDE or transmitting account data, wireless
@@ -572,9 +576,10 @@ controls:
         data, wireless encryption keys are changed
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Wireless interfaces are disabled by 1.3.3.
+        The OpenShift Container Platform doesn't manage wireless encryptions keys nor wireless
+        access points passwords.
 
   - id: '3.1'
     title: Processes and mechanisms for protecting stored account data are defined and understood.
