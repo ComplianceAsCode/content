@@ -356,10 +356,10 @@ controls:
         by the assigned personnel.
 
   - id: '2.2'
-    title: 'System components are configured and managed securely.'
+    title: System components are configured and managed securely
     levels:
       - base
-    status: pending
+    status:  partial
     controls:
     - id: 2.2.1
       title: Configuration standards are developed, implemented, and maintained
@@ -374,16 +374,21 @@ controls:
         immediately after a system component is connected to a production environment.
       levels:
         - base
-      status: pending
+      status: partial
       notes: |-
-        Interestingly this requirement recommends other standards, such as Center for Internet
-        Security (CIS), International Organization for Standardization (ISO), National Institute
-        of Standards and Technology (NIST), Cloud Security Alliance, and product vendors. So, the
-        rules included here are very generic in terms of hardening.
-      rules: []
+        The Compliance Operator provides an automated way of checking for a secure configuration
+        of OpenShift according to known security standards, as well as automatically remediating
+        deviations from the target configuration.
+        Its usage is recommended to ensure appropriate configuration and is set and prevent drift.
+
+        System components outside of OpenShift cannot be checked by the Compliance Operator.
+
+        This control is also addressed by applying the OpenShift CIS recommendations.
+      rules:
+        - scansettingbinding_exists
 
     - id: 2.2.2
-      title: Vendor default accounts are managed.
+      title: Vendor default accounts are managed
       description: |-
         Vendor default accounts are managed as follows:
         - If the vendor default account(s) will be used, the default password is changed per
@@ -391,16 +396,38 @@ controls:
         - If the vendor default account(s) will not be used, the account is removed or disabled.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
-        Also related to requirement 8.2.6 and 8.3.5.
-      rules: []
+        The Openshift Platform doesn't come with any hardcoded credentials or passwords.
+        Authenticators are uniquely created at deployment-time, including credentials
+        for an admin user (called `kubeadmin`) which is meant for bootstrapping purposes.
+        It is recommended for deployers to delete this account in favor of using an IdP
+        and setting up appropriate permissions via RBAC roles.
+      rules:
+        - kubeadmin_removed
 
     - id: 2.2.3
-      title: 'Primary functions requiring different security levels are managed'
+      title: Primary functions requiring different security levels are managed
+      description: |-
+        Primary functions requiring different security levels are managed as follows:
+        - Only one primary function exists on a system component
+        OR
+        - Primary functions with differing security levels that exist on the same system component
+        are isolated from each other
+        OR
+        - Primary functions with differing security levels on the same system component are all
+        secured to the level required by the function with the highest security need.
       levels:
         - base
-      status: pending
+      status: inherently met
+      notes: |-
+        OpenShift nodes run RHEL CoreOS by default, which contains only the
+        necessary services, protocols and daemons needed to run OpenShift and
+        containers. OpenShift provides the means to separate application
+        workloads within the cluster onto separate hosts and containers. It
+        is the responsibility of the organization to appropriately separate
+        their applications into relevant containers to meet this control.
+      rules: []
 
     - id: 2.2.4
       title: Only necessary services, protocols, daemons, and functions are enabled, and all
@@ -410,7 +437,12 @@ controls:
         the system component.
       levels:
         - base
-      status: pending
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform uses RHEL CoreOS by default. In itself, it's
+        a minimal operating system with the sole purpose of running OpenShift. Therefore
+        it doesn't contain extra packages or functionality; only the minimal that's meant
+        to run OpenShift. RHCOS is the recommended operating system for OpenShift.
       rules: []
 
     - id: 2.2.5
@@ -423,11 +455,33 @@ controls:
         using insecure services, protocols, or daemons.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
-        Known insecure services are removed or disabled by 2.2.4
-        General security measures are covered by 1.2.6
-        This requirement is more about checking exceptions and their respective documentation.
+        OpenShift does not require any insecure services, protocols or daemons for
+        proper functioning. The deployment comes with TLS enabled by default with
+        strong ciphers and an appropriate version enabled.
+      rules:
+        - api_server_bind_address
+        - api_server_client_ca
+        - api_server_etcd_ca
+        - api_server_etcd_cert
+        - api_server_etcd_key
+        - api_server_kubelet_certificate_authority
+        - api_server_oauth_https_serving_cert
+        - api_server_openshift_https_serving_cert
+        - api_server_service_account_public_key
+        - api_server_tls_cert
+        - api_server_tls_cipher_suites
+        - api_server_tls_private_key
+        - controller_service_account_private_key
+        - etcd_cert_file
+        - etcd_client_cert_auth
+        - etcd_key_file
+        - etcd_peer_cert_file
+        - etcd_peer_client_cert_auth
+        - etcd_peer_key_file
+        - kubelet_configure_tls_cert
+        - kubelet_configure_tls_key
 
     - id: 2.2.6
       title: System security parameters are configured to prevent misuse.
@@ -436,12 +490,19 @@ controls:
         configuration.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
-        This requirement is not specific but also points to 2.2.1, where other policies are
-        referenced. Therefore, the most common rules related to system configuration in order to
-        prevent misuse and selected in main profiles are also selected here.
-      rules: []
+        While it's possible to manually configure the security settings
+        in the Openshift Container Platform, the Compliance Operator provides
+        an automated way of checking for a secure configuration and automatically
+        remediating issues according to known security standards. Its usage
+        is recommended to ensure appropriate configuration is set and prevent
+        drift.
+
+        Additionaly, as part of 2.2.1, the CIS recommendations for OpenShift are applied in order
+        to prevent system misconfiguration and misuse.
+      rules:
+      - scansettingbinding_exists
 
     - id: 2.2.7
       title: All non-console administrative access is encrypted using strong cryptography.
@@ -451,10 +512,34 @@ controls:
         and application programming interfaces (APIs).
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
         Related to requirement 12.3.3.
-      rules: []
+      rules:
+        - api_server_bind_address
+        - api_server_client_ca
+        - api_server_etcd_ca
+        - api_server_etcd_cert
+        - api_server_etcd_key
+        - api_server_https_for_kubelet_conn
+        - api_server_insecure_port
+        - api_server_kubelet_certificate_authority
+        - api_server_oauth_https_serving_cert
+        - api_server_openshift_https_serving_cert
+        - api_server_service_account_public_key
+        - api_server_tls_cert
+        - api_server_tls_cipher_suites
+        - api_server_tls_private_key
+        - controller_service_account_private_key
+        - etcd_cert_file
+        - etcd_client_cert_auth
+        - etcd_key_file
+        - etcd_peer_cert_file
+        - etcd_peer_client_cert_auth
+        - etcd_peer_key_file
+        - kubelet_configure_tls_cert
+        - kubelet_configure_tls_key
+        - ocp_no_ldap_insecure
 
   - id: '2.3'
     title: Wireless environments are configured and managed securely.
