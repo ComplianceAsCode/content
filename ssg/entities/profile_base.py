@@ -259,6 +259,13 @@ class Profile(XCCDFEntity, SelectionHandler):
             raise ValueError(msg)
         self.unselected_groups.extend(sorted(empty_groups))
 
+    def remove_components_not_included(self, components_to_not_include):
+        rules_to_not_include = components_to_not_include.get("rules", set())
+        groups_to_not_include = components_to_not_include.get("groups", set())
+        self.selected = sorted(set(self.selected) - rules_to_not_include)
+        self.unselected = sorted(set(self.unselected) - rules_to_not_include)
+        self.unselected_groups = sorted(set(self.unselected_groups) - groups_to_not_include)
+
     def __sub__(self, other):
         profile = Profile(self.id_)
         profile.title = self.title
