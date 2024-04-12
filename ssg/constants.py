@@ -47,6 +47,7 @@ product_directories = [
     'example',
     'eks',
     'fedora',
+    'al2023',
     'firefox',
     'macos1015',
     'ocp4',
@@ -207,6 +208,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Example": "example",
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
+    "Amazon Linux 2023": "al2023",
     "Firefox": "firefox",
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 4": "ocp4",
@@ -278,7 +280,7 @@ REFERENCES = dict(
 )
 
 
-MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
+MULTI_PLATFORM_LIST = ["rhel", "fedora", "al", "rhv", "debian", "ubuntu",
                        "openeuler",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "uos", "anolis", "openembedded"]
@@ -290,6 +292,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
+    "multi_platform_al": ["al2023"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
@@ -455,6 +458,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'anolis': 'Anolis OS',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
+    'al': 'Amazon Linux',
     'firefox': 'Mozilla Firefox',
     'macos': 'Apple macOS',
     'rhel': 'Red Hat Enterprise Linux',

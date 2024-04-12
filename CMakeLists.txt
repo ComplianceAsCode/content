@@ -64,7 +64,7 @@ option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
 option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
-option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
+option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." TRUE)
 option(SSG_SRG_XLSX_EXPORT "If enabled, an XLSX of SRG Export will be ceated." FALSE)
 option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
 # Validation Options
@@ -79,7 +79,7 @@ option(FORCE_VALIDATE_EVERYTHING "If enabled, perform all validation tests regar
 # by default should use the value ${SSG_PRODUCT_DEFAULT} instead of the boolean True. This allows
 # us to disable all default products by passing `-DSSG_PRODUCT_DEFAULT=OFF` and then manually
 # specifying a list of products to build.
-option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be built; otherwise only explicitly enabled products will be" TRUE)
+option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be built; otherwise only explicitly enabled products will be" FALSE)
 
 # Products to build content for. These generally correspond to directories in the root of this
 # project. Note that the example product is always disabled unless explicitly asked for.
@@ -94,6 +94,7 @@ option(SSG_PRODUCT_DEBIAN12 "If enabled, the Debian 12 SCAP content will be buil
 option(SSG_PRODUCT_EKS "If enabled, the EKS SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_EXAMPLE "If enabled, the Example SCAP content will be built" FALSE)
 option(SSG_PRODUCT_FEDORA "If enabled, the Fedora SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_AMAZONLINUX "If enabled, the Amazon Linux SCAP content will be built" TRUE)
 option(SSG_PRODUCT_FIREFOX "If enabled, the Firefox SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_MACOS1015 "If enabled, the Apple macOS 10.15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -117,8 +118,8 @@ option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 # Products derivatives
-option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
-option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
+option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" FALSE)
+option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" FALSE)
 
 if("$ENV{PYTHONPATH}" STREQUAL "")
     set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}")
@@ -323,6 +324,7 @@ message(STATUS "Debian 12: ${SSG_PRODUCT_DEBIAN12}")
 message(STATUS "Example: ${SSG_PRODUCT_EXAMPLE}")
 message(STATUS "EKS: ${SSG_PRODUCT_EKS}")
 message(STATUS "Fedora: ${SSG_PRODUCT_FEDORA}")
+message(STATUS "Amazon Linux: ${SSG_PRODUCT_AMAZONLINUX}")
 message(STATUS "Firefox: ${SSG_PRODUCT_FIREFOX}")
 message(STATUS "MacOS 1015: ${SSG_PRODUCT_MACOS1015}")
 message(STATUS "OCP4: ${SSG_PRODUCT_OCP4}")
@@ -402,6 +404,9 @@ if(SSG_PRODUCT_EKS)
 endif()
 if(SSG_PRODUCT_FEDORA)
     add_subdirectory("products/fedora" "fedora")
+endif()
+if (SSG_PRODUCT_AMAZONLINUX)
+    add_subdirectory("products/al2023" "al2023")
 endif()
 if(SSG_PRODUCT_FIREFOX)
     add_subdirectory("products/firefox" "firefox")
