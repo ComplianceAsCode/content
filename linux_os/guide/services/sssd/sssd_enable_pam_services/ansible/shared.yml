@@ -32,10 +32,23 @@
   register: modify_lines_sssd_conf_file
   when: sssd_conf_file.stat.exists
 
+- name: {{{ rule_title }}} - Find services key in /etc/sssd/sssd.conf
+  ansible.builtin.lineinfile:
+    path: "/etc/sssd/sssd.conf"
+    regexp: '^\s*services\s*=.*$'
+    state: absent
+  changed_when: false
+  check_mode: true
+  register: sssd_conf_file_services
+  when: sssd_conf_file.stat.exists
+
 - name: {{{ rule_title }}} - Insert entry to /etc/sssd/sssd.conf
   ini_file:
     path: /etc/sssd/sssd.conf
     section: sssd
     option: services
     value: pam
-  when: not modify_lines_sssd_conf_d_files.changed and not modify_lines_sssd_conf_file.changed
+  when:
+  - not modify_lines_sssd_conf_d_files.changed
+  - not modify_lines_sssd_conf_file.changed
+  - (sssd_conf_file_services.found is defined and sssd_conf_file_services.found == 0) or not sssd_conf_file.stat.exists
