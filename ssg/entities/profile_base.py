@@ -262,9 +262,9 @@ class Profile(XCCDFEntity, SelectionHandler):
     def remove_components_not_included(self, components_to_not_include):
         rules_to_not_include = components_to_not_include.get("rules", set())
         groups_to_not_include = components_to_not_include.get("groups", set())
-        self.selected = list(set(self.selected) - rules_to_not_include)
-        self.unselected = list(set(self.unselected) - rules_to_not_include)
-        self.unselected_groups = list(set(self.unselected_groups) - groups_to_not_include)
+        self.selected = sorted(set(self.selected) - rules_to_not_include)
+        self.unselected = sorted(set(self.unselected) - rules_to_not_include)
+        self.unselected_groups = sorted(set(self.unselected_groups) - groups_to_not_include)
 
     def __sub__(self, other):
         profile = Profile(self.id_)
