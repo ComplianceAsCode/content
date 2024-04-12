@@ -652,9 +652,9 @@ selections:
     # Analogous to file_ownership_var_log_audit
     # UBTU-22-232090 The Ubuntu operating system must configure the files used by the system journal to be owned by "root"
 
-    ### TODO (rule needed)
-    # Analogous to file_group_ownership_var_log_audit
+    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232095 The Ubuntu operating system must configure the files used by the system journal to be group-owned by "systemd-journal"
+    - file_groupowner_system_journal
 
     ### TODO (rule needed)
     # Similar to file_ownership_var_log_audit

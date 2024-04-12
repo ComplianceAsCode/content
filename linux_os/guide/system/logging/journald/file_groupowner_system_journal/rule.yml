@@ -3,18 +3,50 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns the system journal'
 
-description: '{{{ describe_file_group_owner(file="/var/log/journal/.*/system.journal", group="systemd-journal") }}}'
+description: |-
+    {{%- if 'ubuntu' in product %}}
+    Verify the /run/log/journal and /var/log/journal files are group-owned by
+    "systemd-journal" by using the following command:
+    <pre>
+    $ sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n %G" {} \;
+    </pre>
+    If any output returned is not group-owned by "systemd-journal", this is a finding.
+    {{%- else %}}
+    '{{{ describe_file_group_owner(file="/var/log/journal/.*/system.journal", group="systemd-journal") }}}'
+    {{%- endif %}}
 
 rationale: |-
-  RHCOS must protect system journal file from any type of unauthorized access by setting file group ownership. 
+    {{%- if 'ubuntu' in product %}}
+    Only authorized personnel should be aware of errors and the details of the errors.
+    Error messages are an indicator of an organization's operational state or can
+    identify the operating system or platform. Additionally, personally identifiable
+    information (PII) and operational information must not be revealed through error
+    messages to unauthorized personnel or their designated representatives.
+    {{%- else %}}
+    RHCOS must protect system journal file from any type of unauthorized access by setting file group ownership.
+
+    {{%- endif %}}
 
 identifiers:
-  cce@rhcos4: CCE-86221-9
+    cce@rhcos4: CCE-86221-9
 
 severity: medium
 
+fixtext: |
+    {{%- if 'ubuntu' in product %}}
+    Configure the system to set the appropriate group-ownership to the files
+    used by the systemd journal:
+    Add or modify the following lines in the "/etc/tmpfiles.d/systemd.conf" file:
+    <pre>
+    z /var/log/journal/%m/system.journal 0640 root systemd-journal - -
+    </pre>
+    Restart the system for the changes to take effect.
+    {{%- endif %}}
+
 references:
-  srg: SRG-APP-000118-CTR-000240
+    disa: CCI-001314
+    srg: SRG-APP-000118-CTR-000240
+    stigid@ubuntu2204: UBTU-22-232095
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/journal/.*/system.journal", group="systemd-journal") }}}'
 
@@ -24,6 +56,17 @@ ocil: |-
 template:
     name: file_groupowner
     vars:
+        {{%- if 'ubuntu' in product %}}
+        filepath:
+          - /run/log/journal/
+          - /var/log/journal/
+        recursive: 'true'
+        file_regex: ^.*$
+        gid_or_name: systemd-journal
+
+        {{%- else %}}
         filepath: ^/var/log/journal/.*/system.journal$
         gid_or_name: systemd-journal
         filepath_is_regex: "true"
+
+        {{%- endif %}}
