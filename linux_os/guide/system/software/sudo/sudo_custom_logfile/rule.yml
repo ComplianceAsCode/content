@@ -37,43 +37,18 @@ template:
     name: sudo_defaults_option
     vars:
         option: logfile
-        # Description of option_regex_suffix
-        # Outer capture group for the value (which we need to compare against an
-        # XCCDF variable).
-        #
-        # Inside it is an OR of two paths:
-        #
-        #  - Either we have a quoted value, or
-        #  - We don't have a quoted value.
-        #
-        # In the quoted path, we match the start and end quote (and therefore, the
-        # user running against this rule MUST specify quotes in the variable value
-        # if necessary!). Then we match (in between these quotes) any (potentially
-        # empty) group of character that:
-        #
-        #  - Is an escaped double quote,
-        #  - Is an escaped backslash,
-        #  - Or isn't one of those characters.
-        #
-        # Finally, we match on \B: since we know " is not a word character,
-        # it'll only match if the following character is also not a word
-        # character. This ensures we don't have a string such as "quoted"d, which
-        # would (presumably) be invalid in a sudoers entry.
-        #
-        # In the non-quoted path, we strictly match the value. However, we have a
-        # few more escaped characters to deal with. Thus we match any (potentially
-        # empty) group of characters that:
-        #
-        #  - Is an escaped comma,
-        #  - Is an escaped double quote,
-        #  - Is an escaped space (per `man sudoers`, this needs escaping without
-        #    double quotes),
-        #  - Is an escaped backslash,
-        #  - Or isn't one of those characters.
-        #
-        # Finally, we check for regular word boundary (with \b), ensuring the
-        # next character isn't yet another word character.
-        option_regex_suffix: '\s*=\s*("(?:\\"|\\\\|[^"\\\n])*"\B|[^"](?:(?:\\,|\\"|\\ |\\\\|[^", \\\n])*)\b)'
+        # In this rule it is necessary to collect the current value and compare with an XCCDF
+        # variable, which includes the expected file path. Therefore, it is first necessary to
+        # extract the file path from the configuration line. This is done with the regex informed
+        # in option_regex_suffix.
+
+        # For illustration, these are few examples of a valid configuration lines:
+        # Defaults logfile=/var/log/sudo.log
+        # Defaults logfile = /var/log/sudo.log,noexec
+        # Defaults logfile="/var/log/sudo.log"
+        # In these examples it is necessary to extract '/var/log/sudo.log' from the line.
+        # The regex below ensure the file path is collected in these possible scenarios.
+        option_regex_suffix: '\s*=\s*(?:"?([^",\s]+)"?)'
         variable_name: var_sudo_logfile
 
 platform: package[sudo]
