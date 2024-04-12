@@ -656,9 +656,8 @@ selections:
     # Analogous to file_group_ownership_var_log_audit
     # UBTU-22-232095 The Ubuntu operating system must configure the files used by the system journal to be group-owned by "systemd-journal"
 
-    ### TODO (rule needed)
-    # Similar to file_ownership_var_log_audit
     # UBTU-22-232100 The Ubuntu operating system must be configured so that the "journalctl" command is owned by "root"
+    - file_owner_journalctl
 
     ### TODO (rule needed)
     # Similar to file_group_ownership_var_log_audit
