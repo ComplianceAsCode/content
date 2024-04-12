@@ -72,4 +72,8 @@ report:
 
 /static-checks:
     summary: Sanity non-destructive tests
-    discover+: {test: /static-checks}
+    discover+:
+        test: /static-checks
+        # exclude here due to the test failing frequently for short periods
+        # of time, as many websites have temporary availability issues
+        exclude: /static-checks/html-links
