@@ -64,11 +64,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010037
 
 requires:
-  {{% if product in ['ubuntu2004', 'ubuntu2204'] %}}
     - sshd_set_keepalive
-  {{% else %}}
-    - sshd_set_keepalive_0
-  {{% endif %}}
 
 ocil_clause: 'it is commented out or not configured properly'
 
