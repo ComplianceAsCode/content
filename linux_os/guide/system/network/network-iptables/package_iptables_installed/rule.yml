@@ -1,7 +1,7 @@
 documentation_complete: true
 
 
-platform: machine and not rhcos4-rhel9 and not package[nftables] and not package[ufw]
+platform: machine and not rhcos4-rhel9 and service_disabled[nftables] and service_disabled[ufw]
 
 title: 'Install iptables Package'
 

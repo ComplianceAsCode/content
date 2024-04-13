@@ -32,7 +32,7 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="nftables") }}}'
 
-platform: machine and not package[iptables] and not package[ufw]
+platform: machine and service_disabled[iptables] and service_disabled[ufw]
 
 template:
     name: package_installed
