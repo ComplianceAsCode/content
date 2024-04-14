@@ -36,8 +36,19 @@ fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
 
 platform: machine and package[nftables] and package[firewalld]
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: nftables
+        servicename: nftables
+        variable: var_network_filtering_service
+        value: firewalld|iptables
+        operation: pattern match
+{{%- else %}}
 template:
     name: service_disabled
     vars:
         servicename: nftables
         packagename: nftables
+{{%- endif %}}
