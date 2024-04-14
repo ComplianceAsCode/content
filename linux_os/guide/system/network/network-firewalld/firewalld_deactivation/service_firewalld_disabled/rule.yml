@@ -12,7 +12,7 @@ description: |-
     {{{ describe_service_disable(service="firewalld") }}}
 
 rationale: |-
-    Running Firewalld along other service with the same functionality may lead to conflict 
+    Running Firewalld along other service with the same functionality may lead to conflict
     and unexpected results.
 
 severity: medium
@@ -38,8 +38,19 @@ srg_requirement: '{{{ srg_requirement_service_disabled("firewalld") }}}'
 
 platform: machine
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: firewalld
+        servicename: firewalld
+        variable: var_network_filtering_service
+        value: nftables|iptables
+        operation: pattern match
+{{%- else %}}
 template:
     name: service_disabled
     vars:
         servicename: firewalld
         packagename: firewalld
+{{%- endif %}}
