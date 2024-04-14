@@ -1760,3 +1760,31 @@ The macros generates the OVAL test including the dependent OVAL object and OVAL 
 
 </def-group>
 {{%- endmacro -%}}
+
+{{#
+Macro to check if external variable is set to value
+  :param variable: Name of the external variable to check
+  :type variable: str
+  :param value: Value of the external variable
+  :type value: str
+  :param test_id: Suffix of the Ids in test, obj, and state elements
+  :type test_id: str
+  :param operation: Value operation
+  :type operation: str
+#}}
+{{%- macro oval_test_external_variable_value(variable,value,test_id='',operation='equals') -%}}
+  <ind:variable_test id="{{{ test_id }}}"
+  comment="Check external {{{ variable }}} is set to {{{ value }}}" check="all" version="1">
+    <ind:object object_ref="obj_{{{ test_id }}}"/>
+    <ind:state state_ref="ste_{{{ test_id }}}" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_{{{ test_id }}}" version="1">
+    <ind:var_ref>{{{ variable }}}</ind:var_ref>
+  </ind:variable_object>
+  <ind:variable_state id="ste_{{{ test_id }}}" version="1">
+    <ind:value operation="{{{ operation }}}" datatype="string">{{{ value }}}</ind:value>
+  </ind:variable_state>
+
+  <external_variable comment="External variable {{{ variable }}}" datatype="string" id="{{{ variable }}}" version="1" />
+{{%- endmacro -%}}
