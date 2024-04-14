@@ -36,7 +36,16 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="iptables") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: iptables
+        variable: var_network_filtering_service
+        value: iptables
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: iptables
+{{%- endif %}}
