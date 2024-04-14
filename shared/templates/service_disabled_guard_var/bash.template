@@ -8,7 +8,7 @@
 {{{ bash_instantiate_variables(VARIABLE) }}}
 
 {{% if OPERATION == "pattern match" %}}
-if ! [[ "{{{ VALUE }}}" =~ "${{{ VARIABLE }}}" ]];
+if ! [[ "{{{ VALUE }}}" =~ ${{{ VARIABLE }}} ]]; then
 {{% else %}}
 if [ ${{{ VARIABLE }}} != {{{ VALUE }}} ]; then
 {{%- endif %}}
