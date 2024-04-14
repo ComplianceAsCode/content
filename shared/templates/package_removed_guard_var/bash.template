@@ -13,7 +13,7 @@
 {{{ bash_instantiate_variables(VARIABLE) }}}
 
 {{% if OPERATION == "pattern match" %}}
-  if ! [[ "{{{ VALUE }}}" =~ "${{{ VARIABLE }}}" ]]; then
+  if ! [[ "{{{ VALUE }}}" =~ ${{{ VARIABLE }}} ]]; then
     {{{ bash_package_remove(package=PKGNAME) }}}
   fi
 {{% else %}}
