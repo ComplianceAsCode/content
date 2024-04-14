@@ -21,6 +21,7 @@ description: |-
 
 selections:
     - cis_sle15:all:l2_server
+    - var_network_filtering_service=firewalld
 # Exclude from CIS profile all rules related to ntp and timesyncd and keep only
 # rules related to chrony
     - '!ntpd_configure_restrictions'
