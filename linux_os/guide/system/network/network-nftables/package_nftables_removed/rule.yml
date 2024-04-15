@@ -33,7 +33,7 @@ template:
     vars:
         pkgname: nftables
         variable: var_network_filtering_service
-        value: firewalld|iptables
+        value: firewalld|nftables
         operation: pattern match
 {{%- else %}}
 template:
