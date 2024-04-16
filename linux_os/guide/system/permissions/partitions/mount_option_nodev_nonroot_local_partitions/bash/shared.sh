@@ -2,7 +2,7 @@
 
 MOUNT_OPTION="nodev"
 # Create array of local non-root partitions
-readarray -t partitions_records < <(findmnt --mtab --raw --evaluate | grep "^/\w" | grep "\s/dev/\w")
+readarray -t partitions_records < <(findmnt --mtab --raw --evaluate | grep "^/\w" | grep -v "^/proc" | grep "\s/dev/\w")
 
 # Create array of polyinstantiated directories, in case one of them is found in mtab
 readarray -t polyinstantiated_dirs < \
