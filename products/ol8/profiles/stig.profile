@@ -741,7 +741,7 @@ selections:
     - audit_rules_immutable
 
     # OL08-00-030122
-    - audit_immutable_login_uids
+    - audit_rules_immutable_login_uids
 
     # OL08-00-030130
     - audit_rules_usergroup_modification_shadow
