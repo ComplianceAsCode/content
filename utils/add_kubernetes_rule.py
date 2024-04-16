@@ -122,6 +122,7 @@ TEST_SCAN_TEMPLATE = ('''apiVersion: compliance.openshift.io/v1alpha1
 kind: ComplianceScan
 metadata:
   name: test
+  namespace: {NAMESPACE}
 spec:
   scanType: {TYPE}
   profile: {PROFILE}
@@ -352,7 +353,7 @@ def clusterTestFunc(args):
             return 1
 
     ret_code, _ = subprocess.getstatusoutput(
-        'oc delete compliancescans/test')
+        'oc delete -n {NAMESPACE} compliancescans/test'.format(NAMESPACE=args.namespace))
     if ret_code == 0:
         # if previous compliancescans were actually deleted, wait a bit to allow resources to clean up.
         print('* Waiting for cleanup from a previous test run')
@@ -364,7 +365,7 @@ def clusterTestFunc(args):
     apply_cmd = ['oc', 'apply', '-f', '-']
     with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
         _, err = proc.communicate(
-            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile, TYPE=args.scantype).encode())
+            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile, TYPE=args.scantype, NAMESPACE=args.namespace).encode())
         if proc.returncode != 0:
             print('Error applying scan object: %s' % err)
             try:
@@ -378,7 +379,7 @@ def clusterTestFunc(args):
     scan_result = None
     while True:
         ret_code, output = subprocess.getstatusoutput(
-            'oc get compliancescans/test -o template="{{.status.phase}} {{.status.result}}"')
+            'oc get -n {NAMESPACE} compliancescans/test -o template="{{{{.status.phase}}}} {{{{.status.result}}}}"'.format(NAMESPACE=args.namespace))
         if output is not None:
             print('> Output from last phase check: %s' % output)
         if output.startswith('DONE'):
@@ -499,6 +500,9 @@ def main():
         '--scan-type', help='Type of scan to execute.', dest="scantype",
         default="Platform",
         choices=["Node", "Platform"])
+    cluster_test_parser.add_argument(
+        '--namespace', help='Namespace where compliance operator is installed', dest="namespace", default="openshift-compliance"
+    )
     cluster_test_parser.set_defaults(func=clusterTestFunc)
 
     test_parser = subparser.add_parser(
