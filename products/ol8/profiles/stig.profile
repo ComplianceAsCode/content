@@ -37,7 +37,6 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
-    - var_sshd_set_keepalive=0
     - sshd_approved_macs=stig_extended
     - sshd_approved_ciphers=stig_extended
     - sshd_idle_timeout_value=10_minutes
@@ -167,7 +166,8 @@ selections:
     - dir_perms_world_writable_sticky_bits
 
     # OL08-00-010200
-    - sshd_set_keepalive_0
+    - sshd_set_keepalive
+    - var_sshd_set_keepalive=1
 
     # OL08-00-010201
     - sshd_set_idle_timeout
