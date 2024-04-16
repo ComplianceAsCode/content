@@ -112,7 +112,7 @@ selections:
     - sssd_has_trust_anchor
 
     # OL08-00-010100
-    - ssh_private_keys_have_passcode
+    - ssh_keys_passphrase_protected
 
     # OL08-00-010110
     - set_password_hashing_algorithm_logindefs
