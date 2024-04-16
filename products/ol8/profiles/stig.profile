@@ -719,6 +719,7 @@ selections:
 
     # OL08-00-030062
     - auditd_name_format
+    - var_auditd_name_format=stig
 
     # OL08-00-030063
     - auditd_log_format
