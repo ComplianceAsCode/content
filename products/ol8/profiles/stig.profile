@@ -486,7 +486,7 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_do_not_permit_user_env.severity=high
 
-    # OL08-00-020000
+    # OL08-00-020000, OL08-00-020270
     - account_temp_expire_date
 
     # OL08-00-020010, OL08-00-020011
@@ -652,9 +652,6 @@ selections:
 
     # OL08-00-020264
     - file_groupownership_lastlog
-
-    # OL08-00-020270
-    - account_emergency_expire_date
 
     # OL08-00-020280
     - accounts_password_pam_ocredit
