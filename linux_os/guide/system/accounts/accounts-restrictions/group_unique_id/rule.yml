@@ -28,13 +28,13 @@ ocil_clause: 'the system has duplicate group ids'
 
 ocil: |-
     Run the following command to check for duplicate group names:
-    Check that the operating system contains no duplicate group names for interactive users by running the following command:
+    Check that the operating system contains no duplicate Group ID (GID) for interactive users by running the following command:
     <pre>
         cut -d : -f 3 /etc/group | uniq -d
     </pre>
     If output is produced, this is a finding.
-    Configure the operating system to contain no duplicate names for groups.
-    Edit the file "/etc/group" and provide each group that has a duplicate group id with a unique group id.
+    Configure the operating system to contain no duplicate GIDs.
+    Edit the file "/etc/group" and provide each group that has a duplicate GID with a unique GID.
 
 fixtext: |-
     Edit the file "/etc/group" and provide each group that has a duplicate Group ID (GID) with a unique GID.

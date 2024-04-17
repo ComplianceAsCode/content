@@ -11,7 +11,7 @@ title: 'DRAFT - DISA STIG for Red Hat Enterprise Linux 10'
 
 description: |-
     This is a draft profile for experimental purposes.
-    It is not based on the DISA STIG for RHEL 10, because this one was not available at time of
+    It is not based on the DISA STIG for RHEL 10, because it was not available at time of
     the release.
 
     In addition to being applicable to Red Hat Enterprise Linux 10, DISA recognizes this
@@ -19,4 +19,4 @@ description: |-
     Red Hat technologies that are based on Red Hat Enterprise Linux 10.
 
 selections:
-    - package_sudo_installed
+    - srg_gpos:all

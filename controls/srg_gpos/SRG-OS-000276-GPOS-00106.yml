@@ -2,14 +2,13 @@ controls:
     -   id: SRG-OS-000276-GPOS-00106
         levels:
             - medium
-        title: '{{{ full_name }}} must notify system administrators and ISSOs when accounts
-    are disabled. '
+        title: {{{ full_name }}} must notify system administrators and ISSOs when accounts are disabled.
         rules:
             - audit_rules_usergroup_modification_passwd
         status: does not meet
         mitigation: |-
             Mitigate with third-party software.
-            
+
             Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
         status_justification:
             Notification when accounts are created/modified/deleted must be provided by a third-party application that will communicate that an audit record of these actions has been created.
