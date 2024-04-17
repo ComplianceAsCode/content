@@ -8,6 +8,9 @@
         <criterion comment="Enable GUI banner" test_ref="test_banner_gui_enabled" />
         <criterion comment="Prevent user from disabling banner" test_ref="test_prevent_user_banner_gui_enabled_change" />
       </criteria>
+      {{%- if 'ubuntu' in product %}}
+      <criterion comment="Enable GUI banner in /etc/gdm3/greeter.dconf-defaults" test_ref="test_banner_gui_enabled_dconf_defaults" />
+      {{%- endif %}}
     </criteria>
   </definition>
 
@@ -36,4 +39,17 @@
     <ind:pattern operation="pattern match">^/org/gnome/login-screen/banner-message-enable$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="GUI banner is enabled in /etc/gdm3/greeter.dconf-defaults"
+  id="test_banner_gui_enabled_dconf_defaults" version="1">
+    <ind:object object_ref="obj_banner_gui_enabled_dconf_defaults" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_banner_gui_enabled_dconf_defaults"
+  version="1">
+    <ind:filepath>/etc/gdm3/greeter.dconf-defaults</ind:filepath>
+    <ind:pattern operation="pattern match">^\[org/gnome/login-screen\]([^\n]*\n+)+?banner-message-enable=true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 </def-group>
