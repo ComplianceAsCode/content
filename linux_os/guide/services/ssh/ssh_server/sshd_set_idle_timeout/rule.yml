@@ -24,11 +24,6 @@ rationale: |-
 
 severity: medium
 
-{{% if "rhel" in product %}}
-platforms:
-    - os_linux[rhel]<=8.5
-{{% endif %}}
-
 identifiers:
     cce@rhcos4: CCE-82549-7
     cce@rhel7: CCE-27433-2
@@ -65,11 +60,7 @@ references:
     stigid@ubuntu2204: UBTU-22-255035
 
 requires:
-  {{% if product in ['ubuntu2004', 'ubuntu2204'] %}}
     - sshd_set_keepalive
-  {{% else %}}
-    - sshd_set_keepalive_0
-  {{% endif %}}
 
 ocil_clause: 'it is commented out or not configured properly'
 
