@@ -1,6 +1,7 @@
 discover:
     how: fmf
     url: https://github.com/RHSecurityCompliance/contest.git
+    ref: centos_stream_fixes
 execute:
     how: tmt
 adjust:
@@ -8,72 +9,25 @@ adjust:
         CONTEST_VERBOSE: 0
 report:
     how: html
+provision:
+    hardware:
+        virtualization:
+            is-supported: true
 
-#
-# Hardening via ansible-playbook remediation
-#
+/hardening/oscap/ospp:
+    discover+: {test: /hardening/oscap/ospp$}
 
-/hardening/host-os/ansible/anssi_bp28_high:
-    summary: Destructive ANSSI BP-028 (high) profile test (Ansible)
-    discover+: {test: /hardening/host-os/ansible/anssi_bp28_high$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
+/hardening/oscap/stig:
+    discover+: {test: /hardening/oscap/stig$}
 
-/hardening/host-os/ansible/cis:
-    summary: Destructive CIS Server Level 2 profile test (Ansible)
-    discover+: {test: /hardening/host-os/ansible/cis$}
+/hardening/anaconda/ospp:
+    discover+: {test: /hardening/anaconda/ospp$}
 
-/hardening/host-os/ansible/ospp:
-    summary: Destructive OSPP profile test (Ansible)
-    discover+: {test: /hardening/host-os/ansible/ospp$}
+/hardening/anaconda/stig:
+    discover+: {test: /hardening/anaconda/stig$}
 
-/hardening/host-os/ansible/pci-dss:
-    summary: Destructive PCI-DSS profile test (Ansible)
-    discover+: {test: /hardening/host-os/ansible/pci-dss$}
+/hardening/ansible/ospp:
+    discover+: {test: /hardening/ansible/ospp$}
 
-/hardening/host-os/ansible/stig:
-    summary: Destructive STIG profile test (Ansible)
-    discover+: {test: /hardening/host-os/ansible/stig$}
-    adjust+:
-      - when: distro <= centos-8
-        enabled: false
-
-#
-# Hardening via oscap xccdf eval --remediate
-#
-
-/hardening/host-os/oscap/anssi_bp28_high:
-    summary: Destructive ANSSI-BP-028 (high) profile test (Bash)
-    discover+: {test: /hardening/host-os/oscap/anssi_bp28_high$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
-
-/hardening/host-os/oscap/cis:
-    summary: Destructive CIS Server Level 2 profile test (Bash)
-    discover+: {test: /hardening/host-os/oscap/cis$}
-
-/hardening/host-os/oscap/ospp:
-    summary: Destructive OSPP profile test (Bash)
-    discover+: {test: /hardening/host-os/oscap/ospp$}
-
-/hardening/host-os/oscap/pci-dss:
-    summary: Destructive PCI-DSS profile test (Bash)
-    discover+: {test: /hardening/host-os/oscap/pci-dss$}
-
-/hardening/host-os/oscap/stig:
-    summary: Destructive STIG profile test (Bash)
-    discover+: {test: /hardening/host-os/oscap/stig$}
-
-#
-# Misc smoke/sanity tests
-#
-
-/static-checks:
-    summary: Sanity non-destructive tests
-    discover+:
-        test: /static-checks
-        # exclude here due to the test failing frequently for short periods
-        # of time, as many websites have temporary availability issues
-        exclude: /static-checks/html-links
+/hardening/ansible/stig:
+    discover+: {test: /hardening/ansible/stig$}
