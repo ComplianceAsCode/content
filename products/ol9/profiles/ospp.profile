@@ -24,28 +24,6 @@ selections:
     #######################################################
 
     ### Partitioning
-    - mount_option_home_nodev
-    - mount_option_home_nosuid
-    - mount_option_tmp_nodev
-    - mount_option_tmp_noexec
-    - mount_option_tmp_nosuid
-    - partition_for_var_tmp
-    - mount_option_var_tmp_nodev
-    - mount_option_var_tmp_noexec
-    - mount_option_var_tmp_nosuid
-    - mount_option_dev_shm_nodev
-    - mount_option_dev_shm_noexec
-    - mount_option_dev_shm_nosuid
-    - mount_option_nodev_nonroot_local_partitions
-    - mount_option_boot_nodev
-    - mount_option_boot_nosuid
-    - partition_for_home
-    - partition_for_var
-    - mount_option_var_nodev
-    - partition_for_var_log
-    - mount_option_var_log_nodev
-    - mount_option_var_log_nosuid
-    - mount_option_var_log_noexec
     - partition_for_var_log_audit
     - mount_option_var_log_audit_nodev
     - mount_option_var_log_audit_nosuid
@@ -55,7 +33,6 @@ selections:
     # sshd
     - sshd_use_directory_configuration
     - sshd_disable_root_login
-    - sshd_enable_strictmodes
     - disable_host_auth
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
@@ -68,54 +45,17 @@ selections:
     # Time Server
     - chronyd_client_only
 
-    ### Network Settings
-    - sysctl_net_ipv6_conf_all_accept_ra
-    - sysctl_net_ipv6_conf_default_accept_ra
-    - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects
-    - sysctl_net_ipv4_conf_all_accept_source_route
-    - sysctl_net_ipv4_conf_default_accept_source_route
-    - sysctl_net_ipv6_conf_all_accept_source_route
-    - sysctl_net_ipv6_conf_default_accept_source_route
-    - sysctl_net_ipv4_conf_all_secure_redirects
-    - sysctl_net_ipv4_conf_default_secure_redirects
-    - sysctl_net_ipv4_conf_all_send_redirects
-    - sysctl_net_ipv4_conf_default_send_redirects
-    - sysctl_net_ipv4_conf_all_log_martians
-    - sysctl_net_ipv4_conf_default_log_martians
-    - sysctl_net_ipv4_conf_all_rp_filter
-    - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_ip_forward
-    - sysctl_net_ipv4_tcp_syncookies
-
     ### systemd
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - service_debug-shell_disabled
-
-    ### umask
-    - var_accounts_user_umask=027
-    - accounts_umask_etc_profile
-    - accounts_umask_etc_bashrc
-    - accounts_umask_etc_csh_cshrc
+    - grub2_systemd_debug-shell_argument_absent
 
     ### Software update
     - ensure_oracle_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
     - ensure_gpgcheck_never_disabled
-
-    ### Passwords
-    - var_password_pam_difok=4
-    - accounts_password_pam_difok
-    - var_password_pam_maxrepeat=3
-    - accounts_password_pam_maxrepeat
-    - var_password_pam_maxclassrepeat=4
-    - accounts_password_pam_maxclassrepeat
 
     ### Kernel Config
     ## Boot prompt
@@ -132,15 +72,8 @@ selections:
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_perf_event_paranoid
     - sysctl_user_max_user_namespaces
-    - sysctl_user_max_user_namespaces.role=unscored
-    - sysctl_user_max_user_namespaces.severity=info
-    - sysctl_kernel_unprivileged_bpf_disabled
-    - sysctl_net_core_bpf_jit_harden
+    - sysctl_kernel_unprivileged_bpf_disabled_accept_default
     - service_kdump_disabled
-
-    ## File System Settings
-    - sysctl_fs_protected_hardlinks
-    - sysctl_fs_protected_symlinks
 
     ### Audit
     - service_auditd_enabled
@@ -159,11 +92,9 @@ selections:
     ### rpcbind
 
     ### Install Required Packages
-    - package_aide_installed
     - package_dnf-automatic_installed
     - package_firewalld_installed
     - package_openscap-scanner_installed
-    - package_policycoreutils_installed
     - package_sudo_installed
     - package_usbguard_installed
     - package_scap-security-guide_installed
@@ -171,32 +102,16 @@ selections:
     - package_crypto-policies_installed
     - package_openssh-server_installed
     - package_openssh-clients_installed
-    - package_policycoreutils-python-utils_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
-    - package_audispd-plugins_installed
     - package_chrony_installed
     - package_gnutls-utils_installed
 
-    ### Remove Prohibited Packages
-    - package_sendmail_removed
-    - package_iprutils_removed
-    - package_gssproxy_removed
-    - package_nfs-utils_removed
-    - package_krb5-workstation_removed
-
     ### Login
-    - disable_users_coredumps
     - sysctl_kernel_core_pattern
-    - coredump_disable_storage
-    - coredump_disable_backtraces
+    - sysctl_kernel_core_uses_pid
     - service_systemd-coredump_disabled
-    - var_accounts_max_concurrent_login_sessions=10
-    - accounts_max_concurrent_login_sessions
-    - securetty_root_login_console_only
-    - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
     - use_pam_wheel_for_su
+    - enable_authselect
+    - var_authselect_profile=minimal
 
     ### SELinux Configuration
     - var_selinux_state=enforcing
@@ -219,10 +134,7 @@ selections:
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
     - configure_ssh_crypto_policy
-    - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
-    - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
 
     #######################################################
@@ -236,8 +148,6 @@ selections:
 
     ## Configure Minimum Password Length to 12 Characters
     ## IA-5 (1)(a) / FMT_MOF_EXT.1
-    - var_accounts_password_minlen_login_defs=12
-    - accounts_password_minlen_login_defs
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
 
@@ -276,7 +186,7 @@ selections:
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-    - grub2_disable_interactive_boot
+    - grub2_disable_recovery
     - grub2_uefi_password
     - no_empty_passwords
 
@@ -376,23 +286,11 @@ selections:
     - audit_ospp_general
     - audit_module_load
 
-    ## Enable Automatic Software Updates
-    ## SI-2 / FMT_MOF_EXT.1
-    # Configure dnf-automatic to Install Only Security Updates
-    - dnf-automatic_security_updates_only
-
     # Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
 
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
-
-    # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
-
-    # Prevent Kerberos use by system daemons
-    - kerberos_disable_no_keytab
 
     # set ssh client rekey limit
     - ssh_client_rekey_limit
