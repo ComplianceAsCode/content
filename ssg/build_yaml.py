@@ -1586,6 +1586,7 @@ class BuildLoader(DirectoryLoader):
         loader.sce_metadata = self.sce_metadata
         # Do it this way so we only have to parse the component metadata once.
         loader.rule_to_components = self.rule_to_components
+        loader.components_dir = self.components_dir
         return loader
 
     def export_group_to_file(self, filename):
