@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: Enable AutoApplyRemediation for at least One ScanSetting
+
+description: |-
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/compliance-operator-understanding.html#compliance-operator-understanding",
+              text="The Compliance Operator") }}}
+  scans the hosts and the platform (OCP)
+  configurations for software flaws and improper configurations according
+  to different compliance benchmarks. Compliance Operator allows its
+  scans to automatically apply remediations for failed rules, if such remediations exist.
+
+  Applying remediations automatically should only be done with careful consideration.
+
+  The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
+
+rationale: |-
+  With enabled AutoApplyRemediation compliance failures get automatically corrected.
+
+ocil_clause: 'compliance operator is not automatically remediating the cluster'
+
+ocil: |-
+    Run the following command to retrieve the scansettingbindings in the system:
+    <pre>oc get scansettings -ojson | jq '.items[].autoApplyRemediations'</pre>
+    If a scansetting is defined to set the autoApplyRemediation attribute, the above
+    filter will return at least one 'true'. Run the following jq query to identify the non-compliant scansettings objects:
+    <pre>oc get scansettings -ojson | jq -r '[.items[] | select(.autoApplyRemediation != "" or .autoApplyRemediation != null) | .metadata.name]'</pre>
+
+references:
+  bsi: APP.4.4.A13
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting('/apis/compliance.openshift.io/v1alpha1/scansettings') | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/compliance.openshift.io/v1alpha1/scansettings
+        yamlpath: ".items[:].autoApplyRemediations"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"
+        values:
+          - value: "true"
+            entity_check: "at least one"
+            operation: "pattern match"
+            check_existence: "at_least_one_exists"
