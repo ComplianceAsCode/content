@@ -457,7 +457,7 @@ class Benchmark(XCCDFEntity):
 
     def _add_groups_xml(self, root, components_to_not_include, env_yaml=None):
         groups_in_bench = list(self.groups.keys())
-        priority_order = ["system", "services"]
+        priority_order = ["system", "services", "auditing"]
         groups_in_bench = reorder_according_to_ordering(groups_in_bench, priority_order)
 
         groups_to_not_include = components_to_not_include.get("groups", set())
