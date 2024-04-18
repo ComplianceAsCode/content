@@ -11,6 +11,6 @@ do
                 result=$XCCDF_RESULT_FAIL
                 break
         fi
-done < <(ss -6tuln | awk '($5!~/%lo:/ && $5!~/127.0.0.1:/ && $5!~/::1/) {split($5, a, ":"); print a[2]}i' | sort | uniq)
+    done < <(ss -6tulnH | awk '($5!~/::1/) {n=split($5, a, ":"); print a[n]}' | sort -u)
 
 exit "$result"
