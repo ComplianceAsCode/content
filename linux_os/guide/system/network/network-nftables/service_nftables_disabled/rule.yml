@@ -45,8 +45,7 @@ template:
         packagename: nftables
         servicename: nftables
         variable: var_network_filtering_service
-        value: firewalld|iptables
-        operation: pattern match
+        value: nftables
 {{%- else %}}
 template:
     name: service_disabled

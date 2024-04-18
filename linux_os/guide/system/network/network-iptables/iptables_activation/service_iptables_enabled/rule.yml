@@ -40,8 +40,8 @@ ocil: |-
 template:
     name: service_enabled_guard_var
     vars:
-        packagename: iptables
-        servicename: iptables
+        packagename: ip6tables
+        servicename: iptables-ipv6
         variable: var_network_filtering_service
         value: iptables
 {{%- else %}}
