@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = audit
+# variables = var_auditd_name_format=hostname|fqd|numeric
 # Ensure test system has proper directories/files for test scenario
 bash -x setup.sh
 

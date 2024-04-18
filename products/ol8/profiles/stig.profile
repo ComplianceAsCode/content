@@ -37,7 +37,6 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
-    - var_sshd_set_keepalive=0
     - sshd_approved_macs=stig_extended
     - sshd_approved_ciphers=stig_extended
     - sshd_idle_timeout_value=10_minutes
@@ -61,6 +60,7 @@ selections:
     - var_auditd_disk_full_action=ol8
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
+    - var_authselect_profile=sssd
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -70,6 +70,9 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+
+    # Other needed rules
+    - enable_authselect
 
     ### Rules:
     # OL08-00-010000
@@ -113,7 +116,7 @@ selections:
     - sssd_has_trust_anchor
 
     # OL08-00-010100
-    - ssh_private_keys_have_passcode
+    - ssh_keys_passphrase_protected
 
     # OL08-00-010110
     - set_password_hashing_algorithm_logindefs
@@ -167,7 +170,8 @@ selections:
     - dir_perms_world_writable_sticky_bits
 
     # OL08-00-010200
-    - sshd_set_keepalive_0
+    - sshd_set_keepalive
+    - var_sshd_set_keepalive=1
 
     # OL08-00-010201
     - sshd_set_idle_timeout
@@ -486,7 +490,7 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_do_not_permit_user_env.severity=high
 
-    # OL08-00-020000
+    # OL08-00-020000, OL08-00-020270
     - account_temp_expire_date
 
     # OL08-00-020010, OL08-00-020011
@@ -653,9 +657,6 @@ selections:
     # OL08-00-020264
     - file_groupownership_lastlog
 
-    # OL08-00-020270
-    - account_emergency_expire_date
-
     # OL08-00-020280
     - accounts_password_pam_ocredit
     - accounts_password_pam_ocredit.severity=low
@@ -718,6 +719,7 @@ selections:
 
     # OL08-00-030062
     - auditd_name_format
+    - var_auditd_name_format=stig
 
     # OL08-00-030063
     - auditd_log_format
@@ -744,7 +746,7 @@ selections:
     - audit_rules_immutable
 
     # OL08-00-030122
-    - audit_immutable_login_uids
+    - audit_rules_immutable_login_uids
 
     # OL08-00-030130
     - audit_rules_usergroup_modification_shadow
