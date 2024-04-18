@@ -1,15 +1,20 @@
 documentation_complete: true
 
-
 title: 'Use Only FIPS 140-2 Validated MACs'
 
 description: |-
     Limit the MACs to those hash algorithms which are FIPS-approved.
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved MACs:
+    {{%- if 'ubuntu' in product %}}
+    <pre>MACs {{{ xccdf_value("sshd_approved_macs") }}}</pre>
+    If this line does not contain these MACs in exact order,
+    is commented out, or is missing, this is a finding.
+    {{%- else %}}
     <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
     This rule ensures that there are configured MACs mentioned
     above (or their subset), keeping the given order of algorithms.
+    {{%- endif %}}
 
 rationale: |-
     DoD Information Systems are required to use FIPS-approved cryptographic hash
