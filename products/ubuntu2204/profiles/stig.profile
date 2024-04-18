@@ -47,9 +47,8 @@ selections:
     # UBTU-22-432015 The Ubuntu operating system must ensure only users who need access to security functions are part of sudo group.
     - ensure_sudo_group_restricted
 
-    ### TODO
     # UBTU-22-412030 The Ubuntu operating system must automatically terminate a user session after inactivity timeouts have expired.
-    - var_accounts_tmout=10_min
+    - var_accounts_tmout=15_min
     - accounts_tmout
 
     # UBTU-22-432010 The Ubuntu operating system must require users to reauthenticate for privilege escalation or when changing roles.
