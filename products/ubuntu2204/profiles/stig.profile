@@ -86,8 +86,8 @@ selections:
     - banner_etc_issue_net
     - sshd_enable_warning_banner_net
 
-    ### TODO
     # UBTU-22-255055 The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-3 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
+    - sshd_approved_macs=stig_ubuntu2204
     - sshd_use_approved_macs_ordered_stig
 
     ### TODO
