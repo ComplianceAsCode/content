@@ -1,0 +1,721 @@
+rule_results:
+  e2e-high-node-master-directory-access-var-log-kube-audit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-node-master-directory-access-var-log-oauth-audit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-node-master-directory-access-var-log-ocp-audit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-node-master-directory-permissions-var-log-kube-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-directory-permissions-var-log-oauth-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-directory-permissions-var-log-ocp-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-etcd-unique-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-cni-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-controller-manager-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-etcd-data-dir:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-etcd-data-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-etcd-member:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-etcd-pki-cert-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-ip-allocations:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-groupowner-kube-apiserver:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-kube-controller-manager:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-kube-scheduler:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-kubelet-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-master-admin-kubeconfigs:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-multus-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-openshift-pki-cert-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-openshift-pki-key-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-groupowner-ovn-cni-server-sock:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-groupowner-ovn-db-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-groupowner-ovs-conf-db:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-ovs-conf-db-lock:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-ovs-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-ovs-sys-id-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-ovs-vswitchd-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-ovsdb-server-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-scheduler-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-worker-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-worker-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-groupowner-worker-service:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-cni-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-controller-manager-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-etcd-data-dir:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-etcd-data-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-etcd-member:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-etcd-pki-cert-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-ip-allocations:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-owner-kube-apiserver:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-kube-controller-manager:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-kube-scheduler:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-kubelet:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-kubelet-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-master-admin-kubeconfigs:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-multus-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-openshift-pki-cert-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-openshift-pki-key-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-owner-ovn-cni-server-sock:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-owner-ovn-db-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-owner-ovs-conf-db:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-ovs-conf-db-lock:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-ovs-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-ovs-sys-id-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-ovs-vswitchd-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-ovsdb-server-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-scheduler-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-worker-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-worker-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-owner-worker-service:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-ownership-var-log-kube-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-ownership-var-log-oauth-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-ownership-var-log-ocp-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-cni-conf:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-high-node-master-file-permissions-controller-manager-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-etcd-data-dir:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-etcd-data-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-etcd-member:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-etcd-pki-cert-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ip-allocations:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-permissions-kube-apiserver:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-kube-controller-manager:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-kubelet:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-kubelet-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-master-admin-kubeconfigs:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-multus-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-openshift-pki-cert-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-openshift-pki-key-files:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ovn-cni-server-sock:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-permissions-ovn-db-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-file-permissions-ovs-conf-db:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ovs-conf-db-lock:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ovs-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ovs-sys-id-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ovs-vswitchd-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-ovsdb-server-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-scheduler:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-scheduler-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-var-log-kube-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-var-log-oauth-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-var-log-ocp-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-worker-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-worker-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-permissions-worker-service:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-file-perms-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-master-kubelet-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-authorization-mode:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-configure-client-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-configure-event-creation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-configure-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-configure-tls-min-version:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-cert-rotation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-client-cert-rotation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-iptables-util-chains:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-protect-kernel-defaults:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-protect-kernel-sysctl:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-server-cert-rotation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-enable-streaming-connections:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-eviction-thresholds-set-hard-imagefs-available:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-eviction-thresholds-set-hard-memory-available:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-eviction-thresholds-set-hard-nodefs-available:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-kubelet-eviction-thresholds-set-hard-nodefs-inodesfree:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-master-partition-for-var-log-kube-apiserver:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-high-node-master-partition-for-var-log-oauth-apiserver:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-high-node-master-partition-for-var-log-openshift-apiserver:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-high-node-master-reject-unsigned-images-by-default:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-node-worker-directory-access-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-directory-access-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-directory-access-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-directory-permissions-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-directory-permissions-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-directory-permissions-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-etcd-unique-ca:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-cni-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-controller-manager-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-etcd-data-dir:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-etcd-data-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-etcd-member:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-etcd-pki-cert-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-ip-allocations:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-kube-apiserver:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-kube-controller-manager:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-kube-scheduler:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-kubelet-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-master-admin-kubeconfigs:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-multus-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-openshift-pki-cert-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-openshift-pki-key-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-ovn-cni-server-sock:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-ovn-db-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-ovs-conf-db:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-ovs-conf-db-lock:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-ovs-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-ovs-sys-id-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-ovs-vswitchd-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-ovsdb-server-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-scheduler-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-groupowner-worker-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-worker-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-groupowner-worker-service:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-cni-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-controller-manager-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-etcd-data-dir:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-etcd-data-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-etcd-member:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-etcd-pki-cert-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-ip-allocations:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-kube-apiserver:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-kube-controller-manager:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-kube-scheduler:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-kubelet:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-kubelet-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-master-admin-kubeconfigs:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-multus-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-openshift-pki-cert-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-openshift-pki-key-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-ovn-cni-server-sock:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-ovn-db-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-ovs-conf-db:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-ovs-conf-db-lock:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-ovs-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-ovs-sys-id-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-ovs-vswitchd-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-ovsdb-server-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-scheduler-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-owner-worker-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-worker-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-owner-worker-service:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-ownership-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-ownership-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-ownership-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-cni-conf:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-high-node-worker-file-permissions-controller-manager-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-etcd-data-dir:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-etcd-data-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-etcd-member:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-etcd-pki-cert-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-ip-allocations:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-kube-apiserver:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-kube-controller-manager:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-kubelet:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-kubelet-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-master-admin-kubeconfigs:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-multus-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-openshift-pki-cert-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-openshift-pki-key-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-ovn-cni-server-sock:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-ovn-db-files:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-ovs-conf-db:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-ovs-conf-db-lock:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-ovs-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-ovs-sys-id-conf:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-ovs-vswitchd-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-ovsdb-server-pid:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-scheduler:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-scheduler-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-var-log-kube-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-var-log-oauth-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-var-log-ocp-audit:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-file-permissions-worker-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-worker-kubeconfig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-permissions-worker-service:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-file-perms-openshift-sdn-cniserver-config:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-node-worker-kubelet-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-authorization-mode:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-configure-client-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-configure-event-creation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-configure-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-configure-tls-min-version:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-cert-rotation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-client-cert-rotation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-iptables-util-chains:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-protect-kernel-defaults:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-protect-kernel-sysctl:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-server-cert-rotation:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-enable-streaming-connections:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-eviction-thresholds-set-hard-imagefs-available:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-eviction-thresholds-set-hard-memory-available:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-eviction-thresholds-set-hard-nodefs-available:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-kubelet-eviction-thresholds-set-hard-nodefs-inodesfree:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-node-worker-partition-for-var-log-kube-apiserver:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-high-node-worker-partition-for-var-log-oauth-apiserver:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-high-node-worker-partition-for-var-log-openshift-apiserver:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-high-node-worker-reject-unsigned-images-by-default:
+    default_result: FAIL
+    result_after_remediation: PASS
