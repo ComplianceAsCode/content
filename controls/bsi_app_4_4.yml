@@ -318,12 +318,11 @@ controls:
     levels:
     - elevated
     description: >-
-      Applications with very high protection needs SHOULD each use their own Kubernetes clusters
-      or dedicated nodes that are not available for other applications
-    notes: >-
-      TBD
-    status: pending
-    rules: []
+      Applications with very high protection needs SHOULD each use their own Kubernetes clusters or dedicated nodes that are not available for other applications
+    notes: ''
+    status: manual
+    rules:
+      - general_node_separation
 
   - id: APP.4.4.A16
     title: Use of Operators
