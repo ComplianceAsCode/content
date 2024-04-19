@@ -19,8 +19,40 @@ report:
       - when: distro <= centos-7
         enabled: false
 
+/hardening/host-os/ansible/ccn_advanced:
+    discover+: {test: /hardening/host-os/ansible/ccn_advanced$}
+    adjust+:
+      - when: distro <= centos-7
+        enabled: false
+      - when: distro < centos-stream-9
+        enabled: false
+
 /hardening/host-os/ansible/cis:
     discover+: {test: /hardening/host-os/ansible/cis$}
+
+/hardening/host-os/ansible/cis_server_l1:
+    discover+: {test: /hardening/host-os/ansible/cis_server_l1$}
+
+/hardening/host-os/ansible/cis_workstation_l1:
+    discover+: {test: /hardening/host-os/ansible/cis_workstation_l1$}
+
+/hardening/host-os/ansible/cis_workstation_l2:
+    discover+: {test: /hardening/host-os/ansible/cis_workstation_l2$}
+
+/hardening/host-os/ansible/cui:
+    discover+: {test: /hardening/host-os/ansible/cui$}
+
+/hardening/host-os/ansible/e8:
+    discover+: {test: /hardening/host-os/ansible/e8$}
+
+/hardening/host-os/ansible/hipaa:
+    discover+: {test: /hardening/host-os/ansible/hipaa$}
+
+/hardening/host-os/ansible/ism_o:
+    discover+: {test: /hardening/host-os/ansible/ism_o$}
+    adjust+:
+      - when: distro <= centos-7
+        enabled: false
 
 /hardening/host-os/ansible/ospp:
     discover+: {test: /hardening/host-os/ansible/ospp$}
@@ -41,8 +73,40 @@ report:
       - when: distro <= centos-7
         enabled: false
 
+/hardening/host-os/oscap/ccn_advanced:
+    discover+: {test: /hardening/host-os/oscap/ccn_advanced$}
+    adjust+:
+      - when: distro <= centos-7
+        enabled: false
+      - when: distro < centos-stream-9
+        enabled: false
+
 /hardening/host-os/oscap/cis:
     discover+: {test: /hardening/host-os/oscap/cis$}
+
+/hardening/host-os/oscap/cis_server_l1:
+    discover+: {test: /hardening/host-os/oscap/cis_server_l1$}
+
+/hardening/host-os/oscap/cis_workstation_l1:
+    discover+: {test: /hardening/host-os/oscap/cis_workstation_l1$}
+
+/hardening/host-os/oscap/cis_workstation_l2:
+    discover+: {test: /hardening/host-os/oscap/cis_workstation_l2$}
+
+/hardening/host-os/oscap/cui:
+    discover+: {test: /hardening/host-os/oscap/cui$}
+
+/hardening/host-os/oscap/e8:
+    discover+: {test: /hardening/host-os/oscap/e8$}
+
+/hardening/host-os/oscap/hipaa:
+    discover+: {test: /hardening/host-os/oscap/hipaa$}
+
+/hardening/host-os/oscap/ism_o:
+    discover+: {test: /hardening/host-os/oscap/ism_o$}
+    adjust+:
+      - when: distro <= centos-7
+        enabled: false
 
 /hardening/host-os/oscap/ospp:
     discover+: {test: /hardening/host-os/oscap/ospp$}
