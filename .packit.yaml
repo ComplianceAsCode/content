@@ -19,20 +19,58 @@ jobs:
   - centos-stream-8-x86_64
   - centos-stream-9-x86_64
 
-- &test
-  job: tests
-  trigger: pull_request
-  fmf_path: tests/tmt-plans
-  targets:
-    epel-7:
-      distros: [ centos-7 ]
-    centos-stream-8: { }
-    centos-stream-9: { }
-
-- <<: *test
-  trigger: commit
-  branch: "gh-readonly-queue/.*"
-
 - <<: *build
   trigger: commit
   branch: "gh-readonly-queue/.*"
+
+- &test-static-checks
+  job: tests
+  trigger: pull_request
+  fmf_path: tests/tmt-plans
+  identifier: /static-checks
+  tmt_plan: /static-checks
+  targets:
+    epel-7:
+      distros: [ centos-7 ]
+    centos-stream-8: {}
+    centos-stream-9: {}
+
+# when modifying this, modify also tests/tmt-plans/
+
+- <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/anssi_bp28_high
+  tmt_plan: /hardening/host-os/ansible/anssi_bp28_high
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
+- <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/cis
+  tmt_plan: /hardening/host-os/ansible/cis
+- <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/ospp
+  tmt_plan: /hardening/host-os/ansible/ospp
+- <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/pci-dss
+  tmt_plan: /hardening/host-os/ansible/pci-dss
+- <<: *test-static-checks
+  identifier: /hardening/host-os/ansible/stig
+  tmt_plan: /hardening/host-os/ansible/stig
+
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/anssi_bp28_high
+  tmt_plan: /hardening/host-os/oscap/anssi_bp28_high
+  targets:
+    centos-stream-8: {}
+    centos-stream-9: {}
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/cis
+  tmt_plan: /hardening/host-os/oscap/cis
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/ospp
+  tmt_plan: /hardening/host-os/oscap/ospp
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/pci-dss
+  tmt_plan: /hardening/host-os/oscap/pci-dss
+- <<: *test-static-checks
+  identifier: /hardening/host-os/oscap/stig
+  tmt_plan: /hardening/host-os/oscap/stig

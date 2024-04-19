@@ -35,9 +35,6 @@ report:
 /hardening/host-os/ansible/stig:
     summary: Destructive STIG profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/stig$}
-    adjust+:
-      - when: distro <= centos-8
-        enabled: false
 
 #
 # Hardening via oscap xccdf eval --remediate
