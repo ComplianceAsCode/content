@@ -405,6 +405,7 @@ class PlaybookToRoleConverter():
             # Ansible Galaxy won't accept [ or ] characters
             sh.sed('-i','s/\[DRAFT\]/DRAFT/g', abs_path)
 
+
 class RoleGithubUpdater(object):
     def __init__(self, repo, local_playbook_filename):
         self.remote_repo = repo
