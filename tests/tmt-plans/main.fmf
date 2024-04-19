@@ -14,26 +14,21 @@ report:
 #
 
 /hardening/host-os/ansible/anssi_bp28_high:
-    summary: Destructive ANSSI BP-028 (high) profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/anssi_bp28_high$}
     adjust+:
       - when: distro <= centos-7
         enabled: false
 
 /hardening/host-os/ansible/cis:
-    summary: Destructive CIS Server Level 2 profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/cis$}
 
 /hardening/host-os/ansible/ospp:
-    summary: Destructive OSPP profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/ospp$}
 
 /hardening/host-os/ansible/pci-dss:
-    summary: Destructive PCI-DSS profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/pci-dss$}
 
 /hardening/host-os/ansible/stig:
-    summary: Destructive STIG profile test (Ansible)
     discover+: {test: /hardening/host-os/ansible/stig$}
 
 #
@@ -41,26 +36,21 @@ report:
 #
 
 /hardening/host-os/oscap/anssi_bp28_high:
-    summary: Destructive ANSSI-BP-028 (high) profile test (Bash)
     discover+: {test: /hardening/host-os/oscap/anssi_bp28_high$}
     adjust+:
       - when: distro <= centos-7
         enabled: false
 
 /hardening/host-os/oscap/cis:
-    summary: Destructive CIS Server Level 2 profile test (Bash)
     discover+: {test: /hardening/host-os/oscap/cis$}
 
 /hardening/host-os/oscap/ospp:
-    summary: Destructive OSPP profile test (Bash)
     discover+: {test: /hardening/host-os/oscap/ospp$}
 
 /hardening/host-os/oscap/pci-dss:
-    summary: Destructive PCI-DSS profile test (Bash)
     discover+: {test: /hardening/host-os/oscap/pci-dss$}
 
 /hardening/host-os/oscap/stig:
-    summary: Destructive STIG profile test (Bash)
     discover+: {test: /hardening/host-os/oscap/stig$}
 
 #
@@ -68,7 +58,6 @@ report:
 #
 
 /static-checks:
-    summary: Sanity non-destructive tests
     discover+:
         test: /static-checks
         # exclude here due to the test failing frequently for short periods
