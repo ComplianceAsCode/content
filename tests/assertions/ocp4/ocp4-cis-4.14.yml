@@ -20,16 +20,10 @@ rule_results:
   e2e-cis-api-server-admission-control-plugin-scc:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-cis-api-server-admission-control-plugin-securitycontextdeny:
-    default_result: PASS
-    result_after_remediation: PASS
   e2e-cis-api-server-admission-control-plugin-service-account:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-anonymous-auth:
-    default_result: PASS
-    result_after_remediation: PASS
-  e2e-cis-api-server-api-priority-flowschema-catch-all:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-api-priority-gate-enabled:
@@ -39,15 +33,12 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-audit-log-maxsize:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-api-server-audit-log-path:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-auth-mode-no-aa:
-    default_result: PASS
-    result_after_remediation: PASS
-  e2e-cis-api-server-auth-mode-node:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-auth-mode-rbac:
@@ -63,9 +54,6 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-encryption-provider-cipher:
-    default_result: FAIL
-    result_after_remediation: PASS
-  e2e-cis-api-server-encryption-provider-config:
     default_result: FAIL
     result_after_remediation: PASS
   e2e-cis-api-server-etcd-ca:
@@ -90,26 +78,23 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-api-server-kubelet-client-cert:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-api-server-kubelet-client-cert-pre-4-9:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
   e2e-cis-api-server-kubelet-client-key:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-api-server-kubelet-client-key-pre-4-9:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
-  e2e-cis-api-server-no-adm-ctrl-plugins-disabled:
+  e2e-cis-api-server-oauth-https-serving-cert:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-cis-api-server-oauth-https-serving-cert:
-    default_result: MANUAL
-    result_after_remediation: MANUAL
   e2e-cis-api-server-openshift-https-serving-cert:
-    default_result: MANUAL
-    result_after_remediation: MANUAL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-api-server-profiling-protected-by-rbac:
     default_result: PASS
     result_after_remediation: PASS
@@ -137,21 +122,27 @@ rule_results:
   e2e-cis-audit-log-forwarding-enabled:
     default_result: FAIL
     result_after_remediation: PASS
-  e2e-cis-audit-profile-set:
+  e2e-cis-audit-log-forwarding-webhook:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-audit-logging-enabled:
     default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-audit-profile-set:
+    default_result: FAIL
     result_after_remediation: PASS
   e2e-cis-configure-network-policies:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-cis-configure-network-policies-hypershift-hosted:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
   e2e-cis-configure-network-policies-namespaces:
     default_result: FAIL
     result_after_remediation: PASS
   e2e-cis-controller-insecure-port-disabled:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-cis-controller-rotate-kubelet-server-certs:
-    default_result: FAIL
-    result_after_remediation: FAIL
   e2e-cis-controller-secure-port:
     default_result: PASS
     result_after_remediation: PASS
@@ -200,9 +191,6 @@ rule_results:
   e2e-cis-general-apply-scc:
     default_result: MANUAL
     result_after_remediation: MANUAL
-  e2e-cis-general-configure-imagepolicywebhook:
-    default_result: MANUAL
-    result_after_remediation: MANUAL
   e2e-cis-general-default-namespace-use:
     default_result: MANUAL
     result_after_remediation: MANUAL
@@ -218,93 +206,42 @@ rule_results:
   e2e-cis-kubeadmin-removed:
     default_result: FAIL
     result_after_remediation: FAIL
-  e2e-cis-kubelet-anonymous-auth:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-authorization-mode:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-configure-client-ca:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-configure-event-creation:
-    default_result: FAIL
-    result_after_remediation: FAIL
   e2e-cis-kubelet-configure-tls-cert:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
-  e2e-cis-kubelet-configure-tls-cert-pre-4-9:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
-  e2e-cis-kubelet-configure-tls-cipher-suites:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-kubelet-configure-tls-key:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
-  e2e-cis-kubelet-configure-tls-key-pre-4-9:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-kubelet-disable-readonly-port:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-cis-kubelet-enable-cert-rotation:
+  e2e-cis-ocp-allowed-registries:
     default_result: FAIL
     result_after_remediation: FAIL
-  e2e-cis-kubelet-enable-client-cert-rotation:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-enable-iptables-util-chains:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-enable-server-cert-rotation:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-enable-streaming-connections:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-hard-imagefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-hard-imagefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-hard-memory-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-hard-nodefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-hard-nodefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-soft-imagefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-soft-imagefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-soft-memory-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-soft-nodefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-cis-kubelet-eviction-thresholds-set-soft-nodefs-inodesfree:
+  e2e-cis-ocp-allowed-registries-for-import:
     default_result: FAIL
     result_after_remediation: FAIL
   e2e-cis-ocp-api-server-audit-log-maxbackup:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-ocp-api-server-audit-log-maxsize:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-ocp-insecure-allowed-registries-for-import:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-ocp-insecure-registries:
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-cis-openshift-api-server-audit-log-path:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-rbac-debug-role-protects-pprof:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-cis-rbac-least-privilege:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
   e2e-cis-rbac-limit-cluster-admin:
     default_result: MANUAL
     result_after_remediation: MANUAL
@@ -344,7 +281,10 @@ rule_results:
   e2e-cis-scc-limit-root-containers:
     default_result: MANUAL
     result_after_remediation: MANUAL
-  e2e-cis-scheduler-no-bind-address:
+  e2e-cis-scheduler-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-scheduler-service-protected-by-rbac:
     default_result: PASS
     result_after_remediation: PASS
   e2e-cis-secrets-consider-external-storage:

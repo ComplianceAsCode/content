@@ -39,8 +39,8 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-api-server-audit-log-maxsize:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-api-server-audit-log-path:
     default_result: PASS
     result_after_remediation: PASS
@@ -65,9 +65,6 @@ rule_results:
   e2e-moderate-api-server-encryption-provider-cipher:
     default_result: FAIL
     result_after_remediation: PASS
-  e2e-moderate-api-server-encryption-provider-config:
-    default_result: FAIL
-    result_after_remediation: PASS
   e2e-moderate-api-server-etcd-ca:
     default_result: PASS
     result_after_remediation: PASS
@@ -90,14 +87,14 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-api-server-kubelet-client-cert:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-api-server-kubelet-client-cert-pre-4-9:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
   e2e-moderate-api-server-kubelet-client-key:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-api-server-kubelet-client-key-pre-4-9:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
@@ -105,11 +102,11 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-api-server-oauth-https-serving-cert:
-    default_result: MANUAL
-    result_after_remediation: MANUAL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-api-server-openshift-https-serving-cert:
-    default_result: MANUAL
-    result_after_remediation: MANUAL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-api-server-profiling-protected-by-rbac:
     default_result: PASS
     result_after_remediation: PASS
@@ -146,6 +143,12 @@ rule_results:
   e2e-moderate-audit-log-forwarding-uses-tls:
     default_result: FAIL
     result_after_remediation: PASS
+  e2e-moderate-audit-log-forwarding-webhook:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-audit-logging-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-audit-profile-set:
     default_result: FAIL
     result_after_remediation: PASS
@@ -164,12 +167,12 @@ rule_results:
   e2e-moderate-compliance-notification-enabled:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-moderate-compliancesuite-exists:
-    default_result: PASS
-    result_after_remediation: PASS
   e2e-moderate-configure-network-policies:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-moderate-configure-network-policies-hypershift-hosted:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
   e2e-moderate-configure-network-policies-namespaces:
     default_result: FAIL
     result_after_remediation: PASS
@@ -177,8 +180,8 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-controller-rotate-kubelet-server-certs:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-controller-secure-port:
     default_result: PASS
     result_after_remediation: PASS
@@ -263,84 +266,18 @@ rule_results:
   e2e-moderate-kubeadmin-removed:
     default_result: FAIL
     result_after_remediation: FAIL
-  e2e-moderate-kubelet-anonymous-auth:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-authorization-mode:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-configure-client-ca:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-configure-event-creation:
-    default_result: FAIL
-    result_after_remediation: FAIL
   e2e-moderate-kubelet-configure-tls-cert:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-kubelet-configure-tls-cert-pre-4-9:
     default_result: NOT-APPLICABLE
     result_after_remediation: NOT-APPLICABLE
-  e2e-moderate-kubelet-configure-tls-cipher-suites:
-    default_result: FAIL
-    result_after_remediation: FAIL
   e2e-moderate-kubelet-configure-tls-key:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
-  e2e-moderate-kubelet-configure-tls-key-pre-4-9:
-    default_result: NOT-APPLICABLE
-    result_after_remediation: NOT-APPLICABLE
-  e2e-moderate-kubelet-configure-tls-min-version:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-kubelet-disable-readonly-port:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-moderate-kubelet-enable-cert-rotation:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-enable-client-cert-rotation:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-enable-iptables-util-chains:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-enable-server-cert-rotation:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-enable-streaming-connections:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-hard-imagefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-hard-imagefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-hard-memory-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-hard-nodefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-hard-nodefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-soft-imagefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-soft-imagefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-soft-memory-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-soft-nodefs-available:
-    default_result: FAIL
-    result_after_remediation: FAIL
-  e2e-moderate-kubelet-eviction-thresholds-set-soft-nodefs-inodesfree:
-    default_result: FAIL
-    result_after_remediation: FAIL
   e2e-moderate-oauth-or-oauthclient-inactivity-timeout:
     default_result: FAIL
     result_after_remediation: PASS
@@ -357,8 +294,8 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-ocp-api-server-audit-log-maxsize:
-    default_result: FAIL
-    result_after_remediation: FAIL
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-ocp-idp-no-htpasswd:
     default_result: PASS
     result_after_remediation: PASS
@@ -380,6 +317,9 @@ rule_results:
   e2e-moderate-rbac-debug-role-protects-pprof:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-moderate-rbac-least-privilege:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
   e2e-moderate-rbac-limit-cluster-admin:
     default_result: MANUAL
     result_after_remediation: MANUAL
@@ -413,6 +353,9 @@ rule_results:
   e2e-moderate-routes-rate-limit:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-moderate-scansettingbinding-exists:
+    default_result: PASS
+    result_after_remediation: PASS
   e2e-moderate-scc-drop-container-capabilities:
     default_result: MANUAL
     result_after_remediation: MANUAL
@@ -440,7 +383,10 @@ rule_results:
   e2e-moderate-scc-limit-root-containers:
     default_result: MANUAL
     result_after_remediation: MANUAL
-  e2e-moderate-scheduler-no-bind-address:
+  e2e-moderate-scheduler-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-scheduler-service-protected-by-rbac:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-secrets-consider-external-storage:
