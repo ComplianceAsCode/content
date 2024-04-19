@@ -297,7 +297,7 @@ selections:
 - inactivity_timeout_value=15_minutes
 - var_screensaver_lock_delay=10_seconds
 - sshd_idle_timeout_value=15_minutes
-- var_sshd_set_keepalive=0
+- var_sshd_set_keepalive=1
 - var_account_disable_post_pw_expiration=90
 - var_system_crypto_policy=default_policy
 - var_sshd_set_login_grace_time=60

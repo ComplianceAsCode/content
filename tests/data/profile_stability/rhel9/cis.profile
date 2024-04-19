@@ -387,7 +387,7 @@ selections:
 - var_password_pam_minlen=14
 - var_pam_wheel_group_for_su=cis
 - sshd_idle_timeout_value=15_minutes
-- var_sshd_set_keepalive=0
+- var_sshd_set_keepalive=1
 - var_sshd_set_login_grace_time=60
 - var_sshd_max_sessions=10
 - var_sshd_set_maxstartups=10:30:60

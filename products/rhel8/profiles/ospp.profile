@@ -63,7 +63,7 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - var_sshd_set_keepalive=0
+    - var_sshd_set_keepalive=1
     - sshd_set_keepalive_0
     - sshd_enable_warning_banner
     - sshd_rekey_limit
