@@ -5,7 +5,7 @@
 AUDITCONFIG={{{ audisp_conf_path }}}/audisp-remote.conf
 
 {{% if 'ubuntu' in product %}}
-AUREMOTECONFIG=/etc/audisp/plugins.d/au-remote.conf
+AUREMOTECONFIG={{{ audisp_conf_path }}}/plugins.d/au-remote.conf
 
 {{{ bash_replace_or_append("$AUREMOTECONFIG", '^active', 'yes') }}}
 {{% endif %}}
