@@ -20,7 +20,7 @@
     <ind:filepath>{{{ audisp_config_file_path }}}</ind:filepath>
     <!-- Allow only space (exactly) as delimiter -->
     <!-- Require at least one space before and after the equal sign -->
-    <ind:pattern operation="pattern match">^[ ]*remote_server[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ ]*(?i)remote_server(?-i)[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -37,7 +37,7 @@
 
   <ind:textfilecontent54_object id="object_au_remote_config" version="1">
     <ind:filepath>{{{ auremoteconfig }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[ ]*active[ ]+=[ ]+(yes)[ ]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ ]*(?i)active(?-i)[ ]+=[ ]+(yes)[ ]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endif %}}
