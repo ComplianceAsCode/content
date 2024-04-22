@@ -17,6 +17,9 @@
     {{% if product in ['sle12', 'sle15'] %}}
       <ind:filepath>/etc/pam.d/common-password</ind:filepath>
       <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
+    {{% elif 'ubuntu' in product %}}
+      <ind:filepath>/etc/pam.d/common-password</ind:filepath>
+      <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:\[success=\d+\s+default=ignore\])[\s]+pam_unix\.so[\s]+[^#]*[\s]sha512(\s.*)?$</ind:pattern>
     {{% else %}}
       <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
       <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
