@@ -15,18 +15,10 @@ report:
 
 /hardening/host-os/ansible/anssi_bp28_high:
     discover+: {test: /hardening/host-os/ansible/anssi_bp28_high$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
 
 # see .packit.yaml
 #/hardening/host-os/ansible/ccn_advanced:
 #    discover+: {test: /hardening/host-os/ansible/ccn_advanced$}
-#    adjust+:
-#      - when: distro <= centos-7
-#        enabled: false
-#      - when: distro < centos-stream-9
-#        enabled: false
 
 /hardening/host-os/ansible/cis:
     discover+: {test: /hardening/host-os/ansible/cis$}
@@ -51,9 +43,6 @@ report:
 
 /hardening/host-os/ansible/ism_o:
     discover+: {test: /hardening/host-os/ansible/ism_o$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
 
 /hardening/host-os/ansible/ospp:
     discover+: {test: /hardening/host-os/ansible/ospp$}
@@ -70,17 +59,9 @@ report:
 
 /hardening/host-os/oscap/anssi_bp28_high:
     discover+: {test: /hardening/host-os/oscap/anssi_bp28_high$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
 
 /hardening/host-os/oscap/ccn_advanced:
     discover+: {test: /hardening/host-os/oscap/ccn_advanced$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
-      - when: distro < centos-stream-9
-        enabled: false
 
 /hardening/host-os/oscap/cis:
     discover+: {test: /hardening/host-os/oscap/cis$}
@@ -105,9 +86,6 @@ report:
 
 /hardening/host-os/oscap/ism_o:
     discover+: {test: /hardening/host-os/oscap/ism_o$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
 
 /hardening/host-os/oscap/ospp:
     discover+: {test: /hardening/host-os/oscap/ospp$}
