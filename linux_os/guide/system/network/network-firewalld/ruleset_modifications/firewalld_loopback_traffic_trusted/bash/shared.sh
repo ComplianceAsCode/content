@@ -6,12 +6,9 @@
 
 {{{ bash_package_install("firewalld") }}}
 
-if systemctl is-active firewalld; then
+if {{{ in_chrooted_environment }}}; then
+    firewall-offline-cmd --zone=trusted --add-interface=lo
+else
     firewall-cmd --permanent --zone=trusted --add-interface=lo
     firewall-cmd --reload
-else
-    echo "
-    firewalld service is not active. Remediation aborted!
-    This remediation could not be applied because it depends on firewalld service running.
-    The service is not started by this remediation in order to prevent connection issues."
 fi
