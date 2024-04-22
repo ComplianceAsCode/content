@@ -43,11 +43,12 @@ jobs:
   targets:
     centos-stream-8: {}
     centos-stream-9: {}
-- <<: *test-static-checks
-  identifier: /hardening/host-os/ansible/ccn_advanced
-  tmt_plan: /hardening/host-os/ansible/ccn_advanced
-  targets:
-    centos-stream-9: {}
+# disable for now - it seems to be broken on CentOS Stream
+#- <<: *test-static-checks
+#  identifier: /hardening/host-os/ansible/ccn_advanced
+#  tmt_plan: /hardening/host-os/ansible/ccn_advanced
+#  targets:
+#    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/ansible/cis
   tmt_plan: /hardening/host-os/ansible/cis

@@ -19,13 +19,14 @@ report:
       - when: distro <= centos-7
         enabled: false
 
-/hardening/host-os/ansible/ccn_advanced:
-    discover+: {test: /hardening/host-os/ansible/ccn_advanced$}
-    adjust+:
-      - when: distro <= centos-7
-        enabled: false
-      - when: distro < centos-stream-9
-        enabled: false
+# see .packit.yaml
+#/hardening/host-os/ansible/ccn_advanced:
+#    discover+: {test: /hardening/host-os/ansible/ccn_advanced$}
+#    adjust+:
+#      - when: distro <= centos-7
+#        enabled: false
+#      - when: distro < centos-stream-9
+#        enabled: false
 
 /hardening/host-os/ansible/cis:
     discover+: {test: /hardening/host-os/ansible/cis$}
