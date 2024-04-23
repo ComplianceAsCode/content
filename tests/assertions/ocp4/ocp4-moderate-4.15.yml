@@ -1,0 +1,397 @@
+rule_results:
+  e2e-moderate-accounts-restrict-service-account-tokens:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-accounts-unique-service-account:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-api-server-admission-control-plugin-alwaysadmit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-admission-control-plugin-alwayspullimages:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-admission-control-plugin-namespacelifecycle:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-admission-control-plugin-noderestriction:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-admission-control-plugin-scc:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-admission-control-plugin-securitycontextdeny:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-admission-control-plugin-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-api-priority-flowschema-catch-all:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-api-priority-gate-enabled:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-auth-mode-no-aa:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-auth-mode-node:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-auth-mode-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-basic-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-client-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-encryption-provider-cipher:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-api-server-etcd-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-etcd-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-etcd-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-https-for-kubelet-conn:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-insecure-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-insecure-port:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-api-server-kubelet-certificate-authority:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-kubelet-client-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-kubelet-client-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-api-server-kubelet-client-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-kubelet-client-key-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-api-server-no-adm-ctrl-plugins-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-oauth-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-openshift-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-request-timeout:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-service-account-lookup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-service-account-public-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-tls-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-api-server-token-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-audit-error-alert-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-audit-log-forwarding-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-audit-log-forwarding-uses-tls:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-audit-log-forwarding-webhook:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-audit-logging-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-audit-profile-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-banner-or-login-template-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-cluster-version-operator-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-cluster-version-operator-verify-integrity:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-cluster-wide-proxy-set:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-moderate-compliance-notification-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-configure-network-policies:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-configure-network-policies-hypershift-hosted:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-configure-network-policies-namespaces:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-controller-insecure-port-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-controller-rotate-kubelet-server-certs:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-controller-secure-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-controller-service-account-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-controller-service-account-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-controller-use-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-default-ingress-ca-replaced:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-etcd-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-peer-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-peer-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-peer-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-etcd-peer-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-file-groupowner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-file-integrity-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-file-integrity-notification-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-file-owner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-file-permissions-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-fips-mode-enabled-on-all-nodes:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-general-apply-scc:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-general-configure-imagepolicywebhook:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-general-default-namespace-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-general-default-seccomp-profile:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-general-namespaces-in-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-idp-is-configured:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-ingress-controller-certificate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-ingress-controller-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-kubeadmin-removed:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-moderate-kubelet-configure-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-kubelet-configure-tls-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-moderate-kubelet-configure-tls-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-kubelet-disable-readonly-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-oauth-or-oauthclient-inactivity-timeout:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-oauth-or-oauthclient-token-maxage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-ocp-allowed-registries:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-moderate-ocp-allowed-registries-for-import:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-moderate-ocp-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-ocp-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-ocp-idp-no-htpasswd:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-ocp-insecure-allowed-registries-for-import:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-ocp-insecure-registries:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-ocp-no-ldap-insecure:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-openshift-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-openshift-motd-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-rbac-debug-role-protects-pprof:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-rbac-least-privilege:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-rbac-limit-cluster-admin:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-rbac-limit-secrets-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-rbac-pod-creation-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-rbac-wildcard-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-resource-requests-limits-in-daemonset:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-resource-requests-limits-in-deployment:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-resource-requests-limits-in-statefulset:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-resource-requests-quota:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-moderate-route-ip-whitelist:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-routes-protected-by-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-routes-rate-limit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-scansettingbinding-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-scc-drop-container-capabilities:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-container-allowed-capabilities:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-scc-limit-ipc-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-net-raw-capability:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-network-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-privilege-escalation:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-privileged-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-process-id-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scc-limit-root-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-scheduler-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-scheduler-service-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-moderate-secrets-consider-external-storage:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-moderate-secrets-no-environment-variables:
+    default_result: MANUAL
+    result_after_remediation: MANUAL

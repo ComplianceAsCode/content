@@ -1,0 +1,370 @@
+rule_results:
+  e2e-stig-accounts-restrict-service-account-tokens:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-accounts-unique-service-account:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-api-server-admission-control-plugin-alwaysadmit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-admission-control-plugin-alwayspullimages:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-admission-control-plugin-namespacelifecycle:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-admission-control-plugin-noderestriction:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-admission-control-plugin-scc:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-admission-control-plugin-securitycontextdeny:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-admission-control-plugin-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-api-priority-flowschema-catch-all:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-api-priority-gate-enabled:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-auth-mode-no-aa:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-auth-mode-node:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-auth-mode-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-basic-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-encryption-provider-cipher:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-api-server-etcd-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-etcd-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-https-for-kubelet-conn:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-insecure-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-insecure-port:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-api-server-kubelet-certificate-authority:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-kubelet-client-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-kubelet-client-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-api-server-kubelet-client-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-kubelet-client-key-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-api-server-no-adm-ctrl-plugins-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-oauth-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-openshift-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-request-timeout:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-service-account-lookup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-service-account-public-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-api-server-token-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-audit-error-alert-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-audit-log-forwarding-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-audit-log-forwarding-uses-tls:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-audit-profile-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-classification-banner:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-cluster-logging-operator-exist:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-cluster-version-operator-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-cluster-version-operator-verify-integrity:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-configure-network-policies:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-configure-network-policies-namespaces:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-container-security-operator-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-controller-insecure-port-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-controller-rotate-kubelet-server-certs:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-controller-secure-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-controller-service-account-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-controller-service-account-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-controller-use-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-etcd-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-etcd-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-etcd-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-etcd-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-etcd-peer-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-etcd-peer-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-file-groupowner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-file-integrity-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-file-owner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-file-permissions-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-stig-fips-mode-enabled-on-all-nodes:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-general-apply-scc:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-general-configure-imagepolicywebhook:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-general-default-namespace-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-general-default-seccomp-profile:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-general-namespaces-in-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-idp-is-configured:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-image-pruner-active:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-imagestream-sets-schedule:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-stig-ingress-controller-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-kubeadmin-removed:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-stig-kubelet-disable-readonly-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-oauth-login-template-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-oauth-logout-url-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-oauth-or-oauthclient-token-maxage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-oauth-provider-selection-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-oauthclient-inactivity-timeout:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-stig-ocp-allowed-registries:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-stig-ocp-allowed-registries-for-import:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-stig-ocp-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-ocp-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-ocp-idp-no-htpasswd:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-ocp-insecure-allowed-registries-for-import:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-ocp-insecure-registries:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-ocp-no-ldap-insecure:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-openshift-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-openshift-motd-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-project-config-and-template-network-policy:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-project-config-and-template-resource-quota:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-rbac-debug-role-protects-pprof:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-rbac-least-privilege:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-limit-cluster-admin:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-limit-secrets-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-logging-del:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-logging-mod:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-logging-view:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-pod-creation-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-rbac-wildcard-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-resource-requests-quota-per-project:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-stig-routes-rate-limit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-scansettingbinding-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-scansettings-have-schedule:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-scc-drop-container-capabilities:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-container-allowed-capabilities:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-scc-limit-host-dir-volume-plugin:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-host-ports:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-ipc-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-net-raw-capability:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-network-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-privilege-escalation:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-privileged-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-process-id-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-scc-limit-root-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-secrets-consider-external-storage:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-secrets-no-environment-variables:
+    default_result: MANUAL
+    result_after_remediation: MANUAL

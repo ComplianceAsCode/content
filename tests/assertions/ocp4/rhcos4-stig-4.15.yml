@@ -1,0 +1,715 @@
+rule_results:
+  e2e-stig-master-audit-access-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-create-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-delete-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-immutable-login-uids:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-modify-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-chmod:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-chown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-fchmod:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-fchmodat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-fchown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-fchownat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-fremovexattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-fsetxattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-lchown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-lremovexattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-lsetxattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-removexattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-setxattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-umount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-dac-modification-umount2:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-execution-chcon:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-execution-semanage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-execution-setfiles:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-execution-setsebool:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-file-deletion-events-rename:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-file-deletion-events-renameat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-file-deletion-events-rmdir:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-file-deletion-events-unlink:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-file-deletion-events-unlinkat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-immutable:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-kernel-module-loading-delete:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-kernel-module-loading-finit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-kernel-module-loading-init:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-login-events-faillock:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-login-events-lastlog:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-login-events-tallylog:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-media-export:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-chage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-chsh:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-crontab:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-dbus-daemon-launch-helper:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-fusermount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-fusermount3:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-gpasswd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-grub2-set-bootflag:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-mount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-mount-nfs:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-newgrp:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-pam-timestamp-check:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-passwd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-pkexec:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-polkit-helper:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-postdrop:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-postqueue:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-pt-chown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-ssh-keysign:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-sssd-krb5-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-sssd-ldap-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-sssd-proxy-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-sssd-selinux-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-su:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-sudo:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-sudoedit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-umount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-unix-chkpwd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-userhelper:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-utempter:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-privileged-commands-write:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-session-events:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-sysadmin-actions:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-creat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-ftruncate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-open:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-open-by-handle-at:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-openat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-rename:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-renameat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-truncate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-unlink:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-unsuccessful-file-modification-unlinkat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-usergroup-modification:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-usergroup-modification-group:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-usergroup-modification-gshadow:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-usergroup-modification-opasswd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-usergroup-modification-passwd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-audit-rules-usergroup-modification-shadow:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-auditd-data-disk-error-action:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-auditd-data-retention-max-log-file-action-stig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-auditd-log-format:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-bios-enable-execution-restrictions:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-chronyd-or-ntpd-specify-remote-server:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-configure-usbguard-auditbackend:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: PASS
+  e2e-stig-master-coreos-audit-backlog-limit-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-coreos-audit-option:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-coreos-enable-selinux-kernel-argument:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-coreos-page-poison-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-coreos-slub-debug-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-coreos-vsyscall-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-file-groupowner-system-journal:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-groupowner-var-log:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-owner-system-journal:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-owner-var-log:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-ownership-var-log-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-permissions-system-journal:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-permissions-var-log:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-file-permissions-var-log-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-kernel-module-usb-storage-disabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-package-usbguard-installed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-partition-for-var-log-audit:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-master-selinux-policytype:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-selinux-state:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-service-chronyd-or-ntpd-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-master-service-sshd-disabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-service-usbguard-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-sshd-disable-root-login:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-sysctl-kernel-dmesg-restrict:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-sysctl-kernel-perf-event-paranoid:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-sysctl-kernel-randomize-va-space:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-master-usbguard-allow-hid-and-hub:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-access-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-create-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-delete-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-immutable-login-uids:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-modify-failed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-chmod:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-chown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-fchmod:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-fchmodat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-fchown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-fchownat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-fremovexattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-fsetxattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-lchown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-lremovexattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-lsetxattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-removexattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-setxattr:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-umount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-dac-modification-umount2:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-execution-chcon:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-execution-semanage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-execution-setfiles:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-execution-setsebool:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-file-deletion-events-rename:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-file-deletion-events-renameat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-file-deletion-events-rmdir:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-file-deletion-events-unlink:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-file-deletion-events-unlinkat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-immutable:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-kernel-module-loading-delete:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-kernel-module-loading-finit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-kernel-module-loading-init:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-login-events-faillock:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-login-events-lastlog:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-login-events-tallylog:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-media-export:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-chage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-chsh:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-crontab:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-dbus-daemon-launch-helper:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-fusermount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-fusermount3:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-gpasswd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-grub2-set-bootflag:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-mount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-mount-nfs:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-newgrp:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-pam-timestamp-check:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-passwd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-pkexec:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-polkit-helper:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-postdrop:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-postqueue:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-pt-chown:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-ssh-keysign:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-sssd-krb5-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-sssd-ldap-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-sssd-proxy-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-sssd-selinux-child:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-su:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-sudo:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-sudoedit:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-umount:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-unix-chkpwd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-userhelper:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-utempter:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-privileged-commands-write:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-session-events:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-sysadmin-actions:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-creat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-ftruncate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-open:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-open-by-handle-at:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-openat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-rename:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-renameat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-truncate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-unlink:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-unsuccessful-file-modification-unlinkat:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-usergroup-modification:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-usergroup-modification-group:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-usergroup-modification-gshadow:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-usergroup-modification-opasswd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-usergroup-modification-passwd:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-audit-rules-usergroup-modification-shadow:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-auditd-data-disk-error-action:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-auditd-data-retention-max-log-file-action-stig:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-auditd-log-format:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-bios-enable-execution-restrictions:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-chronyd-or-ntpd-specify-remote-server:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-configure-usbguard-auditbackend:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: PASS
+  e2e-stig-worker-coreos-audit-backlog-limit-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-coreos-audit-option:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-coreos-enable-selinux-kernel-argument:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-coreos-page-poison-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-coreos-slub-debug-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-coreos-vsyscall-kernel-argument:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-file-groupowner-system-journal:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-groupowner-var-log:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-owner-system-journal:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-owner-var-log:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-ownership-var-log-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-permissions-system-journal:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-permissions-var-log:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-file-permissions-var-log-audit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-kernel-module-usb-storage-disabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-package-usbguard-installed:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-partition-for-var-log-audit:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-stig-worker-selinux-policytype:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-selinux-state:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-service-chronyd-or-ntpd-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-stig-worker-service-sshd-disabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-service-usbguard-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-sshd-disable-root-login:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-sysctl-kernel-dmesg-restrict:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-sysctl-kernel-perf-event-paranoid:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-sysctl-kernel-randomize-va-space:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-stig-worker-usbguard-allow-hid-and-hub:
+    default_result: FAIL
+    result_after_remediation: PASS
