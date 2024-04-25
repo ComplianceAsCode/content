@@ -480,7 +480,8 @@ selections:
     - accounts_have_homedir_login_defs
 
     # RHEL-08-010770
-    - file_permission_user_init_files
+    - file_permission_user_init_files_root
+    - var_user_initialization_files_regex=all_dotfiles
 
     # RHEL-08-010780
     - no_files_unowned_by_user

@@ -66,7 +66,7 @@ selections:
 - audit_rules_usergroup_modification_group
 - kernel_module_atm_disabled
 - audit_rules_unsuccessful_file_modification_open
-- file_permission_user_init_files
+- file_permission_user_init_files_root
 - configure_ssh_crypto_policy
 - dir_ownership_library_dirs
 - package_rsyslog_installed
@@ -499,6 +499,7 @@ selections:
 - var_screensaver_lock_delay=5_seconds
 - var_logind_session_timeout=15_minutes
 - var_auditd_name_format=stig
+- var_user_initialization_files_regex=all_dotfiles
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
