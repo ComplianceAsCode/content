@@ -13,7 +13,7 @@ description: |-
     option is selected the system will prompt for a passphrase to use in
     decrypting the partition. The passphrase will subsequently need to be entered manually
     every time the system boots.
-    {{% if product not in ["sle12", "sle15"] %}}
+    {{% if product not in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
     <br /><br />
     For automated/unattended installations, it is possible to use Kickstart by adding
     the <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be
@@ -38,6 +38,8 @@ description: |-
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/9/install/install-InstallingOracleLinuxManually.html#system-options") }}}
     {{% elif product in ["sle12", "sle15"] %}}
         {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
+    {{% elif 'ubuntu' in product %}}
+        {{{ weblink(link="https://help.ubuntu.com/community/Full_Disk_Encryption_Howto_2019") }}}
     {{% elif product == "rhel7" %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-encryption") }}}
     {{% elif product == "fedora" %}}
@@ -112,6 +114,16 @@ checktext: |-
 
     If there is a documented and approved reason for not having data-at-rest encryption, this requirement is Not Applicable.
 
+    {{% if 'ubuntu' in product -%}}
+    Determine the partition layout for the system with the following command:
+    <pre>$ sudo fdisk -l</pre>
+
+    Verify that the system partitions are all encrypted with the following command:
+    <pre>$ more /etc/crypttab</pre>
+
+    Every persistent disk partition present must have an entry in the file.
+    If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) are not listed, this is a finding.
+    {{% else -%}}
     Verify all system partitions are encrypted with the following command:
 
     $ blkid
@@ -119,3 +131,4 @@ checktext: |-
     /dev/map per/rhel-root:  UUID="67b7d7fe-de60-6fd0-befb-e6748cf97743" TYPE="crypto_LUKS"
 
     Every persistent disk partition present must be of type "crypto_LUKS". If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) or temporary file systems (that are tmpfs) are not type "crypto_LUKS", ask the administrator to indicate how the partitions are encrypted.  If there is no evidence that these partitions are encrypted, this is a finding.
+    {{% endif -%}}
