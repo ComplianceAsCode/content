@@ -990,6 +990,7 @@ controls:
         title: All RHEL 9 local initialization files must have mode 0740 or less permissive.
         rules:
             - file_permission_user_init_files_root
+            - var_user_initialization_files_regex=all_dotfiles
         status: automated
 
     -   id: RHEL-09-232050
