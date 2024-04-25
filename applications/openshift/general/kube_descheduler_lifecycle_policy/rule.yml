@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: Ensure that the LifecycleAndUtilization profile for the Kube Descheduler operator is enabled
+
+description: |-
+    If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly.
+    No pod should run for more than 24 hours. The availability of the applications in the pod should be ensured.
+
+rationale: |-
+    If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly.
+
+identifiers: {}
+
+references:
+  bsi: APP.4.4.A21
+
+severity: medium
+
+ocil_clause: "The LifecycleAndUtilization profile for the Kube Descheduler operator is not enabled"
+
+ocil: |-
+    Run the following command to edit the KubeDescheduler object:
+    <pre>$ oc edit kubedeschedulers.operator.openshift.io cluster -n openshift-kube-descheduler-operator </pre>
+    Make sure the LifecycleAndUtilization profile is listed under .spec.profiles
+
+{{% set jqfilter = '[.spec.profiles[] | if match("LifecycleAndUtilization") !=null then true else false end]' %}}
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/operator.openshift.io/v1/namespaces/openshift-kube-descheduler-operator/kubedeschedulers/cluster': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: {{{ openshift_filtered_path('/apis/operator.openshift.io/v1/namespaces/openshift-kube-descheduler-operator/kubedeschedulers/cluster', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "at_least_one_exists"
+    entity_check: "at least one"
+    values:
+      - value: "true"
+        operation: "equals"
+
+#this needs to be fixed

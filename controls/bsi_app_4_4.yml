@@ -475,10 +475,15 @@ controls:
     levels:
     - elevated
     description: >-
-      Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
-      interference and a very high need for protection. No pod SHOULD run for more than 24
+      (1) Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
+      interference and a very high need for protection.
+      (2) No pod SHOULD run for more than 24
       hours. The availability of the applications in a pod SHOULD be ensured.
     notes: >-
       TBD
     status: pending
-    rules: []
+    rules:
+      # Section 1
+      - kube_descheduler_operator_exists
+      # Section 2
+      - kube_descheduler_lifecycle_policy
