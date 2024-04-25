@@ -103,6 +103,9 @@ report:
 /static-checks:
     discover+:
         test: /static-checks
-        # exclude here due to the test failing frequently for short periods
-        # of time, as many websites have temporary availability issues
-        exclude: /static-checks/html-links
+        exclude:
+          # exclude here due to the test failing frequently for short periods
+          # of time, as many websites have temporary availability issues
+          - /static-checks/html-links
+          # these always fail, meant for manual review
+          - /static-checks/diff
