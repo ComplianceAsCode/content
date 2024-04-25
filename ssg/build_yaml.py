@@ -365,7 +365,9 @@ class Benchmark(XCCDFEntity):
 
     def get_components_not_included_in_a_profiles(self, profiles,  rules_and_variables_dict):
         selected_rules = self.get_rules_selected_in_all_profiles(profiles)
-        selected_variables = self.get_variables_of_rules(selected_rules, rules_and_variables_dict)
+        selected_variables = self.get_variables_of_rules(
+            profiles, selected_rules, rules_and_variables_dict
+        )
         rules = set()
         groups = set()
         variables = set()
@@ -393,10 +395,12 @@ class Benchmark(XCCDFEntity):
         return out
 
     @staticmethod
-    def get_variables_of_rules(rule_ids, rules_and_variables_dict):
+    def get_variables_of_rules(profiles, rule_ids, rules_and_variables_dict):
         selected_variables = set()
         for rule in rule_ids:
             selected_variables.update(rules_and_variables_dict.get(rule))
+        for profile in profiles:
+            selected_variables.update(profile.variables.keys())
         return selected_variables
 
     def get_rules_selected_in_all_profiles(self, profiles=None):
