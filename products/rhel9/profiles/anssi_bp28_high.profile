@@ -39,7 +39,6 @@ selections:
     - '!enable_pam_namespace'
     - '!audit_rules_privileged_commands_insmod'
     - '!service_chronyd_or_ntpd_enabled'
-    - '!sudo_dedicated_group'
     - '!chronyd_configure_pool_and_server'
     - '!accounts_passwords_pam_tally2'
     - '!cracklib_accounts_password_pam_ucredit'

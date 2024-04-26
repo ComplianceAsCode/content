@@ -901,17 +901,10 @@ controls:
     description: >-
       A group dedicated to the use of sudo must be created, and only members of this
       group are allowed to execute sudo.
-    notes: >-
-      The rules below create and configure a group named sudogrp, to change the group customize the
-      value of var_sudo_dedicated_group.
-
-      The file_permissions_sudo rule is in related_rules rules as the required permissions of 4750 is not
-      fully satisfied. See https://github.com/ComplianceAsCode/content/issues/11779.
-    status: partial
+    status: automated
     rules:
     - sudo_dedicated_group
     - var_sudo_dedicated_group=sudogrp
-    related_rules:
     - file_permissions_sudo
 
   - id: R39
