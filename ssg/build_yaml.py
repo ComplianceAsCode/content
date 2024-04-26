@@ -363,17 +363,23 @@ class Benchmark(XCCDFEntity):
         for g in self.groups.values():
             g.remove_rules_with_ids_not_listed(selected_rules)
 
-    def get_components_not_included_in_a_profiles(self, profiles):
+    def get_components_not_included_in_a_profiles(self, profiles,  rules_and_variables_dict):
         selected_rules = self.get_rules_selected_in_all_profiles(profiles)
+        selected_variables = self.get_variables_of_rules(
+            profiles, selected_rules, rules_and_variables_dict
+        )
         rules = set()
         groups = set()
+        variables = set()
+
+        out_sets = dict(rules_set=rules, groups_set=groups, variables_set=variables)
+
         for sub_group in self.groups.values():
-            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
-                selected_rules
+            self._update_not_included_components(
+                sub_group, selected_rules, selected_variables, out_sets
             )
-            rules.update(rules_of_sub_group)
-            groups.update(groups_of_sub_group)
-        return rules, groups
+
+        return rules, groups, variables
 
     def get_used_cpe_platforms(self, profiles):
         selected_rules = self.get_rules_selected_in_all_profiles(profiles)
@@ -387,6 +393,15 @@ class Benchmark(XCCDFEntity):
             if cpe_platform not in used_cpe_platforms:
                 out.add(cpe_platform)
         return out
+
+    @staticmethod
+    def get_variables_of_rules(profiles, rule_ids, rules_and_variables_dict):
+        selected_variables = set()
+        for rule in rule_ids:
+            selected_variables.update(rules_and_variables_dict.get(rule))
+        for profile in profiles:
+            selected_variables.update(profile.variables.keys())
+        return selected_variables
 
     def get_rules_selected_in_all_profiles(self, profiles=None):
         selected_rules = set()
@@ -451,8 +466,11 @@ class Benchmark(XCCDFEntity):
             profile.remove_components_not_included(components_to_not_include)
             root.append(profile.to_xml_element())
 
-    def _add_values_xml(self, root):
-        for value in self.values.values():
+    def _add_values_xml(self, root, components_to_not_include):
+        variables_to_not_include = components_to_not_include.get("variables", set())
+        for value_id, value in self.values.items():
+            if value_id in variables_to_not_include:
+                continue
             root.append(value.to_xml_element())
 
     def _add_groups_xml(self, root, components_to_not_include, env_yaml=None):
@@ -500,7 +518,7 @@ class Benchmark(XCCDFEntity):
         add_benchmark_metadata(root, contributors_file)
 
         self._add_profiles_xml(root, components_to_not_include)
-        self._add_values_xml(root)
+        self._add_values_xml(root, components_to_not_include)
         self._add_groups_xml(root, components_to_not_include, env_yaml)
         self._add_rules_xml(root, components_to_not_include.get("rules", set()),  env_yaml,)
 
@@ -539,8 +557,10 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_xml_for_profiles(self, env_yaml, profiles):
-        rules, groups = self.get_components_not_included_in_a_profiles(profiles)
+    def get_benchmark_xml_for_profiles(self, env_yaml, profiles, rule_and_variables_dict):
+        rules, groups, variables = self.get_components_not_included_in_a_profiles(
+            profiles, rule_and_variables_dict
+        )
         cpe_platforms = self.get_not_used_cpe_platforms(profiles)
         profiles_ids = [profile.id_ for profile in profiles]
         profiles = set(filter(
@@ -550,6 +570,7 @@ class Benchmark(XCCDFEntity):
         components_to_not_include = {
                 "rules": rules,
                 "groups": groups,
+                "variables": variables,
                 "profiles": profiles,
                 "cpe_platforms": cpe_platforms
             }
@@ -751,7 +772,11 @@ class Group(XCCDFEntity):
         add_nondata_subelements(
             group, "conflicts", "idref",
             list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
-        for _value in self.values.values():
+
+        variables_to_not_include = components_to_not_include.get("variables", set())
+        for value_id, _value in self.values.items():
+            if value_id in variables_to_not_include:
+                continue
             if _value is not None:
                 group.append(_value.to_xml_element())
 
@@ -788,23 +813,42 @@ class Group(XCCDFEntity):
             group.remove_rules_with_ids_not_listed(rule_ids_list)
 
     def contains_rules(self, rule_ids):
-        intersection_of_rules = list(set(rule_ids) & set(self.rules.keys()))
-        if len(intersection_of_rules) > 0:
-            return True
-        return any([g.contains_rules(rule_ids) for g in self.groups.values()])
+        return self._contains_required_element("rule", rule_ids, self.rules.keys())
 
-    def get_not_included_components(self, rule_ids_list):
+    def contains_variables(self, variable_ids):
+        return self._contains_required_element("variable", variable_ids, self.values.keys())
+
+    def _contains_required_element(self, element_type, ids, existing_ids):
+        intersection_of_ids = list(set(ids) & set(existing_ids))
+        if len(intersection_of_ids) > 0:
+            return True
+        results = []
+        for g in self.groups.values():
+            if element_type == "variable":
+                results.append(g.contains_variables(ids))
+            if element_type == "rule":
+                results.append(g.contains_rules(ids))
+        return any(results)
+
+    def get_not_included_components(self, rule_ids_list, variables_ids_list):
         rules = set(filter(lambda id_, ids=rule_ids_list: id_ not in ids, self.rules.keys()))
+        variables = set(
+            filter(lambda id_, ids=variables_ids_list: id_ not in ids, self.values.keys())
+        )
         groups = set()
-        if not self.contains_rules(rule_ids_list):
+
+        contains_variables = self.contains_variables(variables_ids_list)
+        contains_rules = self.contains_rules(rule_ids_list)
+        if not contains_rules and not contains_variables:
             groups.add(self.id_)
+
+        out_sets = dict(rules_set=rules, groups_set=groups, variables_set=variables)
+
         for sub_group in self.groups.values():
-            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
-                rule_ids_list
+            self._update_not_included_components(
+                sub_group, rule_ids_list, variables_ids_list, out_sets
             )
-            rules.update(rules_of_sub_group)
-            groups.update(groups_of_sub_group)
-        return rules, groups
+        return rules, groups, variables
 
     def get_used_cpe_platforms(self, rule_ids_list):
         cpe_platforms = set()
@@ -1652,7 +1696,7 @@ class LinearLoader(object):
         self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
-    def get_benchmark_xml_by_profile(self):
+    def get_benchmark_xml_by_profile(self, rule_and_variables_dict):
         if self.benchmark is None:
             raise Exception(
                 "Before generating benchmarks for each profile, you need to load "
@@ -1661,7 +1705,7 @@ class LinearLoader(object):
 
         for profile in self.benchmark.profiles:
             profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-                self.env_yaml, [profile]
+                self.env_yaml, [profile], rule_and_variables_dict
             )
             yield profiles_ids.pop(), benchmark
 
@@ -1686,11 +1730,14 @@ class LinearLoader(object):
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
-    def export_benchmark_to_xml(self):
+    def export_benchmark_to_xml(self, rule_and_variables_dict):
         _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-            self.env_yaml, self.benchmark.profiles
+            self.env_yaml, self.benchmark.profiles, rule_and_variables_dict
         )
         return benchmark
+
+    def get_benchmark_xml(self):
+        return self.benchmark.to_xml_element(self.env_yaml)
 
     def export_benchmark_to_file(self, filename):
         register_namespaces()

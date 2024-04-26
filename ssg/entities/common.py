@@ -313,6 +313,15 @@ class XCCDFEntity(object):
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
+    @staticmethod
+    def _update_not_included_components(group, rule_ids_list, variables_ids_list, out_sets):
+        rules_, groups_, variables_ = group.get_not_included_components(
+                rule_ids_list, variables_ids_list
+            )
+        out_sets["rules_set"].update(rules_)
+        out_sets["groups_set"].update(groups_)
+        out_sets["variables_set"].update(variables_)
+
 
 class SelectionHandler(object):
     def __init__(self):

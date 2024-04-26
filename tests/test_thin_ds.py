@@ -3,6 +3,7 @@
 # Usage (Execute in root project directory): python3 -m pytest -n auto tests/test_thin_ds.py
 
 import pytest
+import subprocess
 
 from lxml import etree
 
@@ -31,3 +32,9 @@ def test_thin_ds(path):
         profiles[0].get("id", "NoID").removeprefix("xccdf_org.ssgproject.content_profile_")
     )
     assert profile_id in str(path)
+
+
+@pytest.mark.parametrize("path", THIN_DS_PATHS)
+def test_validate_thin_ds(path):
+    command = subprocess.run(["oscap", "ds", "sds-validate", path], capture_output=True)
+    assert command.returncode == 0
