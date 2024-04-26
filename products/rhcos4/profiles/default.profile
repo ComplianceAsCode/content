@@ -33,6 +33,7 @@ selections:
     - sysctl_net_ipv6_conf_default_disable_ipv6
     - auditd_audispd_encrypt_sent_records
     - sshd_set_loglevel_verbose
+    - sshd_set_keepalive
     - file_owner_backup_etc_group
     - package_bind_removed
     - kernel_module_vfat_disabled
@@ -55,6 +56,8 @@ selections:
     - package_samba-common_installed
     - sysctl_net_ipv6_conf_all_disable_ipv6
     - mount_option_tmp_nodev
+    - sudo_remove_nopasswd
+    - sudo_remove_no_authenticate
     - sudo_vdsm_nopasswd
     - package_rsyslog_installed
     - package_libselinux_installed
@@ -128,6 +131,7 @@ selections:
     - file_groupowner_backup_etc_shadow
     - dir_ownership_library_dirs
     - partition_for_dev_shm
+    - partition_for_tmp
     - ftp_configure_firewall
     - mount_option_dev_shm_nodev
     - grub2_enable_selinux
@@ -137,6 +141,7 @@ selections:
     - auditd_overflow_action
     - zipl_audit_backlog_limit_argument
     - service_systemd-journald_enabled
+    - file_permissions_sudo
     - file_permissions_systemmap
     - sshd_allow_only_protocol2
     - sssd_enable_smartcards
@@ -192,6 +197,7 @@ selections:
     - service_syslogng_enabled
     - configure_bashrc_exec_tmux
     - accounts_minimum_age_login_defs
+    - accounts_maximum_age_login_defs
     - account_passwords_pam_faillock_audit
     - disallow_bypass_password_sudo
     - mount_option_nosuid_removable_partitions
