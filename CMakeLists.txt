@@ -49,7 +49,7 @@ set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}"
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
-set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
+set(SSG_TARGET_OVAL_MINOR_VERSION "11.2" CACHE STRING "Which minor version of OVAL are we targetting. Only 11, up to 11.2, is supported at the moment.")
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 
@@ -178,8 +178,8 @@ cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage
 
 find_package(OpenSCAP REQUIRED)
 
-if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
+if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11.2")
+    message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test up to 5.11.2!")
 endif()
 
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
