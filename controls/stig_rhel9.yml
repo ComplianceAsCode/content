@@ -2,7 +2,7 @@ policy: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 title: 'Red Hat Enterprise Linux 9 Security Technical Implementation Guide'
 id: stig_rhel9
 source: https://public.cyber.mil/stigs/downloads/
-version: V1R2
+version: V1R3
 reference_type: stigid
 product: rhel9
 levels:
@@ -1879,14 +1879,6 @@ controls:
         rules:
             - harden_sshd_ciphers_opensshserver_conf_crypto_policy
         status: automated
-
-    -   id: RHEL-09-255070
-        levels:
-            - medium
-        title:
-            RHEL 9 SSH client must be configured to use only Message Authentication Codes
-            (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
-        status: pending
 
     -   id: RHEL-09-255075
         levels:
