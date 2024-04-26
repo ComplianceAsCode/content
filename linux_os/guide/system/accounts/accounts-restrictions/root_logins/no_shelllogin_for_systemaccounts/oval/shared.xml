@@ -71,7 +71,7 @@
   <!-- Get all /etc/passwd entries having shell defined as OVAL object -->
   <ind:textfilecontent54_object id="object_etc_passwd_entries" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt|\/bin\/false|\/usr\/bin\/false).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!root).*:x:([\d]+):[\d]+:[^:]*:[^:]*:(?!\/usr\/sbin\/nologin|\/sbin\/nologin|\/bin\/sync|\/sbin\/shutdown|\/sbin\/halt).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
