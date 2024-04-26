@@ -301,6 +301,24 @@ make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
 make -j4 rhel7  # everything above for RHEL7
 ```
 
+### Building thin The Datastreams
+
+A thin Datastream is a Datastream that contains only one rule with minimal SCAP parts, without any additional OVAL checks, XCCDF groups, profiles, and CPE checks.
+
+This command will generate thin Datastreams for each rule for the product.
+The thin Datastreams are located in the build `build/thin_ds` directory.
+
+```bash
+    ./build_product fedora --thin
+```
+
+This command generates a thin Datastream for the specific rule specified as a parameter.
+The thin Datastream is stored under the normal Datastream name (for example, `ssg-fedora-ds.xml`).
+
+```bash
+    ./build_product fedora --rule-id enable_fips_mode
+```
+
 ### Configuring CMake options using GUI
 
 Configure options before building using a GUI tool:
