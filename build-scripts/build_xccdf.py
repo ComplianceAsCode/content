@@ -6,7 +6,7 @@ import argparse
 import os
 import os.path
 from collections import namedtuple
-
+import re
 
 import ssg.build_yaml
 import ssg.utils
@@ -114,6 +114,15 @@ def get_linked_xccdf(loader, xccdftree, args):
     return oval_linker, xccdftree
 
 
+def get_variables_from_go_templating(rule, var_ids):
+    go_templating_pattern = re.compile(r"{{(.*?)}}")
+    go_templating_var_pattern = re.compile(r"\.([a-zA-Z0-9_]+)")
+    for ele in rule.itertext():
+        for match in go_templating_pattern.finditer(ele):
+            for var in go_templating_var_pattern.finditer(match.group(1)):
+                var_ids.add(var.group(1))
+
+
 def get_rules_with_variables(xccdftree):
     rules = xccdftree.findall(".//{%s}Rule" % ssg.constants.XCCDF12_NS)
     out_var_ids = {}
@@ -129,6 +138,7 @@ def get_rules_with_variables(xccdftree):
             var_ids.add(
                 sub_el.get("idref").replace("xccdf_org.ssgproject.content_value_", "")
             )
+        get_variables_from_go_templating(rule, var_ids)
         out_var_ids[
             rule.get("id").replace("xccdf_org.ssgproject.content_rule_", "")
         ] = var_ids
