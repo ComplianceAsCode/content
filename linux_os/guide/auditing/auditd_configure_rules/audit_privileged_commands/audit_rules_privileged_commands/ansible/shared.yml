@@ -6,7 +6,7 @@
 
 - name: {{{ rule_title }}} - Set List of Mount Points Which Permits Execution of Privileged Commands
   ansible.builtin.set_fact:
-    privileged_mount_points: "{{(ansible_facts.mounts | rejectattr('options', 'search', 'noexec|nosuid') | rejectattr('mount', 'match', '/proc($|/.*$)') | map(attribute='mount') | list ) }}"
+    privileged_mount_points: "{{ (ansible_facts.mounts | rejectattr('options', 'search', 'noexec|nosuid') | rejectattr('mount', 'match', '/proc($|/.*$)') | map(attribute='mount') | list ) }}"
 
 - name: {{{ rule_title }}} - Search for Privileged Commands in Eligible Mount Points
   ansible.builtin.shell:
