@@ -620,9 +620,8 @@ selections:
     # UBTU-22-654225 The Ubuntu operating system must generate audit records when successful/unsuccessful attempts to modify the /etc/sudoers.d directory occur
     - audit_rules_sudoers_d
 
-    ### TODO (rule needed; reevaluate requirement)
-    # Analogous to set_password_hashing_algorithm_passwordauth
     # UBTU-22-611055 The Ubuntu operating system must store only encrypted representations of passwords
+    - set_password_hashing_algorithm_systemauth
 
     ### TODO (rule needed)
     # Analogous to audit_rules_login_events_lastlog
