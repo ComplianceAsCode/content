@@ -155,9 +155,9 @@ selections:
     - audit_rules_session_events
 
     #### 4.1.3.12 Ensure login and logout events are collected (Automated)
-    - audit_rules_login_events_faillog
+    - var_accounts_passwords_pam_faillock_dir=run
+    - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
-    - audit_rules_login_events_tallylog
 
     #### 4.1.3.13 Ensure file deletion events by users are collected (Automated)
     - audit_rules_file_deletion_events_rename
