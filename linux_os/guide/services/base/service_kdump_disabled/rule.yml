@@ -1,13 +1,18 @@
 documentation_complete: true
 
+{{% if 'ubuntu' in product -%}}
+{{% set kdump_service = 'kdump-tools' -%}}
+{{% else -%}}
+{{% set kdump_service = 'kdump' -%}}
+{{% endif -%}}
 
 title: 'Disable KDump Kernel Crash Analyzer (kdump)'
 
 description: |-
-    The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
+    The <tt>{{{ kdump_service }}}</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
     system call to boot a secondary kernel ("capture" kernel) following a system
     crash, which can load information from the crashed kernel for analysis.
-    {{{ describe_service_disable(service="kdump") }}}
+    {{{ describe_service_disable(service=kdump_service) }}}
 
 rationale: |-
     Kernel core dumps may contain the full contents of system memory at the
@@ -47,19 +52,19 @@ references:
     stigid@ubuntu2204: UBTU-22-213015
 
 ocil_clause: |-
-    {{{ ocil_clause_service_disabled(service="kdump") }}}
+    {{{ ocil_clause_service_disabled(service=kdump_service) }}}
 
 ocil: |-
-    {{{ ocil_service_disabled(service="kdump") }}}
+    {{{ ocil_service_disabled(service=kdump_service) }}}
 
-fixtext: '{{{ fixtext_service_disabled("kdump") }}}'
+fixtext: '{{{ fixtext_service_disabled(kdump_service) }}}'
 
-srg_requirement: '{{{ srg_requirement_service_disabled("kdump") }}}'
+srg_requirement: '{{{ srg_requirement_service_disabled(kdump_service) }}}'
 
 platform: machine
 
 template:
     name: service_disabled
     vars:
-        servicename: kdump
+        servicename: "{{{ kdump_service }}}"
         packagename: kexec-tools
