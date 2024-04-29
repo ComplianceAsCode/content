@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Verify Permissions on the system journal directories'
+
+description: |-
+    Verify the /run/log/journal and /var/log/journal directories have
+    permissions set to "2750" or less permissive by using the following command:
+    <pre>
+    $ sudo find /run/log/journal /var/log/journal  -type d -exec stat -c "%n %a" {} \;
+    </pre>
+    If any output returned has a permission set greater than "2750", this is a finding.
+
+rationale: |-
+    Any operating system providing too much information in error messages risks
+    compromising the data and security of the structure, and content of error messages
+    needs to be carefully considered by the organization.
+
+references:
+    disa: CCI-001312
+    stigid@ubuntu2204: UBTU-22-232027
+
+severity: medium
+
+fixtext: |
+    Configure the system to set the appropriate permissions to the files and directories
+    used by the systemd journal:
+    Add or modify the following lines in the "/etc/tmpfiles.d/systemd.conf" file:
+    <pre>
+    z /run/log/journal 2750 root systemd-journal - -
+    Z /run/log/journal/%m ~2750 root systemd-journal - -
+    z /var/log/journal 2750 root systemd-journal - -
+    z /var/log/journal/%m 2750 root systemd-journal - -
+    </pre>
+    Restart the system for the changes to take effect.
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /run/log/journal/
+            - /var/log/journal/
+        recursive: 'true'
+        filemode: '2750'

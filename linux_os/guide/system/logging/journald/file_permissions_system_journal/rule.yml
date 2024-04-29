@@ -4,27 +4,67 @@ documentation_complete: true
 title: 'Verify Permissions on the system journal'
 
 description: |-
-  {{{ describe_file_permissions(file="/var/log/journal/.*/system.journal", perms="0640") }}}
+    {{%- if 'ubuntu' in product %}}
+    Verify all files in the /run/log/journal and /var/log/journal directories have
+    permissions set to "640" or less permissive by using the following command:
+    <pre>
+    $ sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n %a" {} \;
+    </pre>
+    If any output returned has a permission set greater than "640", this is a finding.
+    {{%- else %}}
+    {{{ describe_file_permissions(file="/var/log/journal/.*/system.journal", perms="0640") }}}
+    {{%- endif %}}
 
 rationale: |-
-  RHCOS must protect system  journal file from any type of unauthorized access by setting file permissions. 
+    {{%- if 'ubuntu' in product %}}
+    Any operating system providing too much information in error messages risks
+    compromising the data and security of the structure, and content of error messages
+    needs to be carefully considered by the organization.
+    {{%- else %}}
+    RHCOS must protect system  journal file from any type of unauthorized access by setting file permissions.
+    {{%- endif %}}
 
 identifiers:
-  cce@rhcos4: CCE-86509-7
+    cce@rhcos4: CCE-86509-7
 
 severity: medium
 
+fixtext: |
+    {{%- if 'ubuntu' in product %}}
+    Configure the system to set the appropriate permissions to the files and directories
+    used by the systemd journal:
+    Add or modify the following lines in the "/etc/tmpfiles.d/systemd.conf" file:
+    <pre>
+    z /var/log/journal/%m/system.journal 0640 root systemd-journal - -
+    </pre>
+    Restart the system for the changes to take effect.
+    {{%- endif %}}
+
 references:
-  srg: SRG-APP-000118-CTR-000240
+    disa: CCI-001312
+    srg: SRG-APP-000118-CTR-000240
+    stigid@ubuntu2204: UBTU-22-232027
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/journal/.*/system.journal", perms="-rw-r-----") }}}'
 
 ocil: |-
-  {{{ ocil_file_permissions(file="/var/log/journal/.*/system.journal", perms="-rw-r-----") }}}
+    {{{ ocil_file_permissions(file="/var/log/journal/.*/system.journal", perms="-rw-r-----") }}}
 
 template:
-  name: file_permissions
-  vars:
-    filepath: ^/var/log/journal/.*/system.journal$
-    filemode: '0640'
-    filepath_is_regex: "true"
+    name: file_permissions
+    vars:
+        {{%- if 'ubuntu' in product %}}
+        filepath:
+            - /run/log/journal/
+            - /var/log/journal/
+        recursive: 'true'
+        file_regex: ^.*$
+        filemode: '0640'
+
+        {{%- else %}}
+        filepath: ^/var/log/journal/.*/system.journal$
+        filemode: '0640'
+        filepath_is_regex: "true"
+
+        {{%- endif %}}
+
