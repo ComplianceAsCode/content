@@ -107,6 +107,7 @@ mypy_test("utils/import_srg_spreadsheet.py" "skip")
 mypy_test("utils/check_eof.py" "normal")
 mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
+mypy_test("utils/build_control_from_reference.py" "normal")
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -365,4 +366,13 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_GITHUB)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" "--dry-run" "${CMAKE_BINARY_DIR}/roles" "--product" "rhel9" "--build-playbooks-dir" "${CMAKE_BINARY_DIR}/ansible"
         )
     endif()
+endif()
+
+if(PYTHON_VERSION_MAJOR GREATER 2)
+    add_test(
+        NAME "utils-build_control_from_reference_sanity"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/build_control_from_reference.py" "--product" "rhel10" "--reference" "ospp" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rhel10_ospp_control.yml" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+    )
+    set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
