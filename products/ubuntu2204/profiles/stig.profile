@@ -211,9 +211,8 @@ selections:
     # UBTU-22-653050 The Ubuntu operating system must be configured to permit only authorized users ownership of the audit log files.
     - file_ownership_var_log_audit_stig
 
-    ### TODO (double check, focal uses _stig)
     # UBTU-22-653055 The Ubuntu operating system must permit only authorized groups ownership of the audit log files.
-    - file_group_ownership_var_log_audit
+    - file_group_ownership_var_log_audit_stig
 
     # UBTU-22-653060 The Ubuntu operating system must be configured so that the audit log directory is not write-accessible by unauthorized users.
     - directory_permissions_var_log_audit
