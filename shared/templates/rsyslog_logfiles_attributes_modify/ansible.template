@@ -25,7 +25,7 @@
   ansible.builtin.shell: |
     {{%- if not 'debian' in product %}}
     set -o pipefail{{% endif %}}
-    awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' {{ rsyslog_etc_config }} || true
+    awk '/)/{f=0} /include\(/{f=1} f{ nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){ print nf }}' {{ rsyslog_etc_config }} || true
   register: rsyslog_new_inc
   changed_when: False
 
