@@ -15,7 +15,7 @@
 {{% if product in ['sle12', 'sle15'] %}}
     <ind:filepath operation="pattern match">^/etc/pam.d/.*$</ind:filepath>
 {{% elif 'ubuntu' in product %}}
-    <ind:filepath operation="pattern match">^/etc/pam.d/common-(auth|password)</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/pam.d/common-password</ind:filepath>
 {{% else %}}
     <ind:filepath operation="pattern match">^/etc/pam.d/(system|password)-auth$</ind:filepath>
 {{% endif %}}

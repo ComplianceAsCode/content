@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 {{% if 'ubuntu' in product %}}
-{{%- set pam_config_paths = "['/etc/pam.d/common-password', '/etc/pam.d/common-auth']" %}}
+{{%- set pam_config_paths = "['/etc/pam.d/common-password']" %}}
 {{% else %}}
 {{%- set pam_config_paths = "['/etc/pam.d/system-auth', '/etc/pam.d/password-auth']" -%}}
 {{% endif %}}
