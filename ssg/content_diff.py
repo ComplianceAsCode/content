@@ -59,7 +59,6 @@ class StandardContentDiffer(object):
         return rules
 
     def compare_rules(self, old_benchmark, new_benchmark):
-        missing_rules = []
         try:
             rules_in_old_benchmark = self._get_rules_to_compare(old_benchmark)
         except ValueError as e:
@@ -70,7 +69,6 @@ class StandardContentDiffer(object):
             rule_id = old_rule.get_attr("id")
             new_rule = new_benchmark.find_rule(rule_id)
             if new_rule is None:
-                missing_rules.append(rule_id)
                 print("%s is missing in new data stream." % (rule_id))
                 continue
             if self.only_rules:
@@ -315,7 +313,6 @@ class StigContentDiffer(StandardContentDiffer):
         return stig_rule_id.group(1)
 
     def compare_rules(self, old_benchmark, new_benchmark):
-        missing_rules = []
         try:
             rules_in_old_benchmark = self._get_rules_to_compare(old_benchmark)
             rules_in_new_benchmark = self._get_rules_to_compare(new_benchmark)
@@ -347,7 +344,6 @@ class StigContentDiffer(StandardContentDiffer):
             try:
                 new_sv_rule_id = new_rule_mapping[old_sv_rule_id]
             except KeyError:
-                missing_rules.append(old_sv_rule_id)
                 print("%s is missing in new data stream." % old_stig_id)
                 continue
             if self.only_rules:
