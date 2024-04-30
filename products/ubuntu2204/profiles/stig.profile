@@ -640,9 +640,9 @@ selections:
     - file_permissions_system_journal
     - dir_permissions_system_journal
 
-    ### TODO (rule needed)
-    # Analogous to directory_ownership_var_log_audit
+    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232080 The Ubuntu operating system must configure the directories used by the system journal to be owned by "root"
+    - dir_owner_system_journal
 
     ### TODO (rule needed)
     # Analogous to directory_group_ownership_var_log_audit
