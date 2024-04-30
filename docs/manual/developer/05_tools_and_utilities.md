@@ -115,15 +115,14 @@ Example
 
 ## Generating Controls From a Reference
 When converting profile to use a control file this script can be helpful in creating the skeleton control.
-The output of this script will also need to  be adjusted to add things title's to the controls.
-Default output path is `build/reference_control.yml`.
+The output of this script will need to be adjusted to add other keys such as title or description to the controls.
 This script does require that `./utils/rule_dir_json.py` be run before this script is used.
 See `./utils/build_control_from_reference.py --help` for the full set options the script provides.
 
 
 Example
 ```bash
-    $ ./utils/build_control_from_reference.py --product rhel10 --reference ospp
+    $ ./utils/build_control_from_reference.py --product rhel10 --reference ospp --output controls/ospp.yml
 ```
 
 ## Generating login banner regular expressions
