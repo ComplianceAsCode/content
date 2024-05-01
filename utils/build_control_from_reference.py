@@ -47,11 +47,11 @@ def _get_rule_dirs(json_path: str) -> Dict[str, str]:
 def _check_rule_dirs_path(json: str):
     if not os.path.exists(json):
         print(f"Path {json} does not exist.", file=sys.stderr)
-        print("Hint: run ./utils/rule_dirs.py first.", file=sys.stderr)
+        print("Hint: run ./utils/rule_dir_json.py first.", file=sys.stderr)
         raise SystemExit(1)
 
 
-def _get_env_yaml(root: str, product: str, build_config_yaml: str) -> str:
+def _get_env_yaml(root: str, product: str, build_config_yaml: str) -> Dict:
     product_dir = os.path.join(root, "products", product)
     product_yaml_path = os.path.join(product_dir, "product.yml")
     env_yaml = ssg.environment.open_environment(
@@ -61,7 +61,7 @@ def _get_env_yaml(root: str, product: str, build_config_yaml: str) -> str:
 
 def _get_id_mapping(env_yaml, reference, json_path: str) -> Dict:
     rule_dir_json: Dict = _get_rule_dirs(json_path)
-    id_mapping: Dict[str, list[str]] = defaultdict(list)
+    id_mapping: Dict[str, list[str]] = defaultdict(list) # type: ignore [misc] # For old mypy
     for rule_id, rule_obj in rule_dir_json.items():
         rule_yaml = os.path.join(rule_obj["dir"], "rule.yml")
         rule = ssg.yaml.open_and_macro_expand(rule_yaml, env_yaml)
