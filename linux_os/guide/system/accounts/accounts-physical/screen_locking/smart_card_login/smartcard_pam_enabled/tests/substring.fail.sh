@@ -3,7 +3,7 @@
 # packages = libpam-pkcs11
 
 {{% if 'ubuntu' in product %}}
-echo 'aauth [success=2 default=ignore] pam_pkcs11.so' > /etc/pam.d/common-auth
+sed -i '/^auth.*pam_unix.so/i aauth [success=2 default=ignore] pam_pkcs11.so' /etc/pam.d/common-auth
 {{% else %}}
 echo 'aauth sufficient pam_pkcs11.so' > /etc/pam.d/common-auth
 {{% endif %}}
