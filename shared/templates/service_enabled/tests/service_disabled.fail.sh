@@ -1,5 +1,5 @@
 #!/bin/bash
-{{% if SERVICENAME == "sshd" %}}
+{{% if SERVICENAME in ["ssh", "sshd"] %}}
 # platform = Not Applicable
 {{% endif %}}
 # packages = {{{ PACKAGENAME }}}
