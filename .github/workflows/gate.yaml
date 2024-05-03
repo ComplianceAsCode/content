@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Build
         run: |-
-          ./build_product rhel7 rhel8 rhel9 rhel10 --derivatives
+          ./build_product rhel7 rhel8 rhel9 rhel10 al2023 --derivatives
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
@@ -54,7 +54,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build
+<<<<<<< HEAD
         run: ./build_product sle12 sle15
+=======
+        run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 al2023 sle12 sle15 ubuntu2004 ubuntu2204 uos20
+>>>>>>> 2626c779d7 (Build al2023 on centos, sle and fedora)
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -168,7 +172,11 @@ jobs:
                 rhel7 \
                 rhel8 \
                 rhel9 \
+<<<<<<< HEAD
                 rhel10 \
+=======
+                al2023 \
+>>>>>>> 2626c779d7 (Build al2023 on centos, sle and fedora)
                 uos20 \
                 ocp4
           env:
