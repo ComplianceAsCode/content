@@ -552,3 +552,4 @@ selections:
     - audit_rules_unsuccessful_file_modification_fchmodat
     - sebool_polipo_session_users
     - sebool_cluster_manage_all_files
+    - configure_firewalld_ports
