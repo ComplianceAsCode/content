@@ -7,6 +7,7 @@ levels:
     -   id: base
 controls:
     -   id: AGD_OPE.1
+        title: 'Operational User Guidance'
         levels:
             - base
         rules:
@@ -14,6 +15,7 @@ controls:
             - package_scap-security-guide_installed
         status: automated
     -   id: AGD_PRE.1
+        title: 'Preparative Procedures'
         levels:
             - base
         rules:
@@ -21,6 +23,7 @@ controls:
             - package_scap-security-guide_installed
         status: automated
     -   id: FAU_GEN.1
+        title: 'Audit Data Generation'
         levels:
             - base
         rules:
@@ -35,6 +38,7 @@ controls:
             - zipl_audit_argument
         status: automated
     -   id: FAU_GEN.1.1.c
+        title: 'Audit Data Generation - Event Types to be Audited'
         levels:
             - base
         rules:
@@ -173,6 +177,7 @@ controls:
             - rsyslog_remote_loghost
         status: automated
     -   id: FAU_GEN.1.2
+        title: 'Audit Data Generation - Audit Event Format'
         levels:
             - base
         rules:
@@ -183,6 +188,7 @@ controls:
             - disable_ctrlaltdel_reboot
         status: automated
     -   id: FAU_STG.1
+        title: 'Protected audit trail storage'
         levels:
             - base
         rules:
@@ -198,6 +204,7 @@ controls:
             - zipl_audit_backlog_limit_argument
         status: automated
     -   id: FCS_CKM.1
+        title: 'Cryptographic Key Generation'
         levels:
             - base
         rules:
@@ -206,6 +213,7 @@ controls:
             - enable_fips_mode
         status: automated
     -   id: FCS_CKM.1.1
+        title: 'Cryptographic Key Generation - asymmetric cryptographic'
         levels:
             - base
         rules:
@@ -213,6 +221,7 @@ controls:
             - ssh_client_use_strong_rng_sh
         status: automated
     -   id: FCS_CKM.2
+        title: 'Cryptographic Key Establishment'
         levels:
             - base
         rules:
@@ -220,7 +229,8 @@ controls:
             - package_crypto-policies_installed
             - enable_fips_mode
         status: automated
-    -   id: FCS_COP.1(1)
+    -   id: FCS_COP.1/ENCRYPT
+        title: 'Cryptographic Operation - Encryption/Decryption'
         levels:
             - base
         rules:
@@ -228,7 +238,8 @@ controls:
             - package_crypto-policies_installed
             - enable_fips_mode
         status: automated
-    -   id: FCS_COP.1(2)
+    -   id: FCS_COP.1/HASH
+        title: 'Cryptographic Operation - Hashing'
         levels:
             - base
         rules:
@@ -236,7 +247,9 @@ controls:
             - package_crypto-policies_installed
             - enable_fips_mode
         status: automated
-    -   id: FCS_COP.1(3)
+
+    -   id: FCS_COP.1/SIGN
+        title: 'Cryptographic Operation - Signing'
         levels:
             - base
         rules:
@@ -244,7 +257,8 @@ controls:
             - package_crypto-policies_installed
             - enable_fips_mode
         status: automated
-    -   id: FCS_COP.1(4)
+    -   id: FCS_COP.1/KEYHMAC
+        title: 'Keyed-Hash Message Authentication'
         levels:
             - base
         rules:
@@ -252,6 +266,7 @@ controls:
             - package_crypto-policies_installed
             - enable_fips_mode
         status: automated
+
     -   id: FCS_IPSEC_EXT.1.4
         levels:
             - base
@@ -265,6 +280,7 @@ controls:
             - configure_libreswan_crypto_policy
         status: automated
     -   id: FCS_RBG_EXT.1
+        title: 'Random Bit Generation'
         levels:
             - base
         rules:
@@ -273,19 +289,24 @@ controls:
             - enable_fips_mode
         status: automated
     -   id: FCS_RBG_EXT.1.1
+        title: 'Random Bit Generation - deterministic random bit generation'
         levels:
             - base
         rules:
             - grub2_kernel_trust_cpu_rng
         status: automated
+
     -   id: FCS_RBG_EXT.1.2
+        title: 'Random Bit Generation - entropy source'
         levels:
             - base
         rules:
             - sshd_use_strong_rng
             - openssl_use_strong_entropy
         status: automated
+
     -   id: FCS_SSHC_EXT.1
+        title: 'SSH Client Protocol'
         levels:
             - base
         rules:
@@ -294,6 +315,7 @@ controls:
             - harden_ssh_client_crypto_policy
         status: automated
     -   id: FCS_SSHS_EXT.1
+        title: 'SSH Server Protocol'
         levels:
             - base
         rules:
@@ -301,7 +323,9 @@ controls:
             - configure_ssh_crypto_policy
             - harden_sshd_crypto_policy
         status: automated
+
     -   id: FCS_SSH_EXT.1
+        title: 'SSH Protocol'
         levels:
             - base
         rules:
@@ -309,21 +333,27 @@ controls:
             - package_openssh-server_installed
             - configure_ssh_crypto_policy
         status: automated
+
     -   id: FCS_SSH_EXT.1.2
+        title: 'SSH Protocol - Authentication Methods'
         levels:
             - base
         rules:
             - sshd_disable_gssapi_auth
             - sshd_disable_kerb_auth
         status: automated
+
     -   id: FCS_SSH_EXT.1.8
+        title: 'SSH Protocol - Session'
         levels:
             - base
         rules:
             - ssh_client_rekey_limit
             - sshd_rekey_limit
         status: automated
+
     -   id: FCS_TLSC_EXT.1
+        title: 'TLS Client Protocol'
         levels:
             - base
         rules:
@@ -333,13 +363,16 @@ controls:
             - package_crypto-policies_installed
             - enable_fips_mode
         status: automated
+
     -   id: FCS_TLSC_EXT.1.1
+        title: 'Allowed Cipher Suites'
         levels:
             - base
         rules:
             - harden_openssl_crypto_policy
         status: automated
     -   id: FIA_AFL.1
+        title: 'Authentication failure handling'
         levels:
             - base
         rules:
@@ -348,7 +381,9 @@ controls:
             - accounts_passwords_pam_faillock_unlock_time
             - enable_authselect
         status: automated
+
     -   id: FIA_UAU.1
+        title: 'Timing of authentication'
         levels:
             - base
         rules:
@@ -374,38 +409,42 @@ controls:
             - gnome_gdm_disable_automatic_login
             - gnome_gdm_disable_guest_login
         status: automated
+
     -   id: FIA_UAU.5
+        title: 'Multiple Authentication Mechanisms'
         levels:
             - base
         rules:
             - package_openssh-clients_installed
             - package_openssh-server_installed
         status: automated
+
     -   id: FIA_X509_EXT.1
+        title: 'X.509 Certificate Validation'
         levels:
             - base
         rules:
             - package_gnutls-utils_installed
         status: automated
+
     -   id: FIA_X509_EXT.1.1
+        title: 'X.509 Certificate Validation - Valid Certificates'
         levels:
             - base
         rules:
             - rsyslog_remote_tls
         status: automated
+
     -   id: FIA_X509_EXT.2
+        title: 'X.509 Certificate Validation - basicConstraints'
         levels:
             - base
         rules:
             - package_gnutls-utils_installed
         status: automated
-    -   id: FMT_MOD_EXT.1
-        levels:
-            - base
-        rules:
-            - dconf_gnome_disable_user_admin
-        status: automated
+
     -   id: FMT_MOF_EXT.1
+        title: 'Management of security functions behavior'
         levels:
             - base
         rules:
@@ -437,8 +476,11 @@ controls:
             - dconf_gnome_session_idle_user_locks
             - package_sudo_installed
             - security_patches_up_to_date
+            - dconf_gnome_disable_user_admin
         status: automated
+
     -   id: FMT_SMF_EXT.1
+        title: 'Management of security functions behavior'
         levels:
             - base
         rules:
@@ -487,7 +529,9 @@ controls:
             - dnf-automatic_security_updates_only
             - timer_dnf-automatic_enabled
         status: automated
+
     -   id: FMT_SMF_EXT.1.1
+        title: 'Management of security functions behavior - Restrict Administrator Functions'
         levels:
             - base
         rules:
@@ -496,14 +540,18 @@ controls:
             - use_pam_wheel_for_su
             - rsyslog_remote_tls
         status: automated
+
     -   id: FPT_ASLR_EXT.1
+        title: 'Address Space Layout Randomization'
         levels:
             - base
         rules:
             - grub2_vsyscall_argument
             - zipl_vsyscall_argument
         status: automated
+
     -   id: FPT_TUD_EXT.1
+        title: 'Trusted Update'
         levels:
             - base
         rules:
@@ -515,7 +563,9 @@ controls:
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
         status: automated
+
     -   id: FPT_TUD_EXT.2
+        title: 'Trusted Update for Application Software'
         levels:
             - base
         rules:
@@ -527,7 +577,9 @@ controls:
             - ensure_redhat_gpgkey_installed
             - ensure_suse_gpgkey_installed
         status: automated
+
     -   id: FTA_SSL.1
+        title: 'TSF-initiated session locking'
         levels:
             - base
         rules:
@@ -537,14 +589,18 @@ controls:
             - no_tmux_in_shells
             - package_tmux_installed
         status: automated
+
     -   id: FTA_TAB.1
+        title: 'Default TOE access banners'
         levels:
             - base
         rules:
             - sshd_enable_warning_banner
             - sshd_enable_warning_banner_net
         status: automated
+
     -   id: FTP_ITC_EXT.1
+        title: 'Trusted channel communication'
         levels:
             - base
         rules:
@@ -554,7 +610,9 @@ controls:
             - sshd_disable_gssapi_auth
             - sshd_disable_kerb_auth
         status: automated
+
     -   id: FTP_ITC_EXT.1.1
+        title: 'Trusted channel communication - TLS'
         levels:
             - base
         rules:
