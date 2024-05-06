@@ -755,7 +755,7 @@ controls:
     title: Access to displays of full PAN and ability to copy PAN is restricted.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.4.1
       title: PAN is masked when displayed (the BIN and last four digits are the maximum number of
@@ -770,10 +770,10 @@ controls:
         Requirement 3.5.1 for protection of PAN when stored, processed, or transmitted.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Consists on examining documented policies and procedures, checking system configurations
-        and observing relevant applications.
+        OpenShift doesn't directly handle PANs.
+        Handling and masking the PAN is resposibility of the application installed.
 
     - id: 3.4.2
       title: When using remote-access technologies, technical controls prevent copy and/or
@@ -787,11 +787,11 @@ controls:
         and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        There are technical rules to disable removable storage devices. However, this requirement
-        still demand some manual auditing in documentation and eventual exceptions.
-      rules: []
+        OpenShift doesn't directly handle PANs.
+        Handling and masking the PAN is resposibility of the application installed.
+        Access control, storage at rest and transport medium are to be managed by the application.
 
   - id: '3.5'
     title: Primary account number (PAN) is secured wherever it is stored.
