@@ -643,7 +643,7 @@ controls:
     title: Sensitive authentication data (SAD) is not stored after authorization.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.3.1
       title: SAD is not retained after authorization, even if encrypted. All sensitive
@@ -658,7 +658,12 @@ controls:
         through 3.3.1.3.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Proper design of the application by the payment entity can accommodate this requirement as
+        a processing mandate, restricting in-memory process for this data and taking care not to
+        write to file storage from within the container or pod.
+
       controls:
       - id: 3.3.1.1
         title: The full contents of any track are not retained upon completion of the
@@ -673,13 +678,10 @@ controls:
           To minimize risk, store securely only these data elements as needed for business.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          This requirement consists in auditing files, databases and memory to make sure the full
-          content of any track is not unnecessarily retained. It involves manual auditing but some
-          automated rules fit this requirement in order to reduce the chances if this data be
-          unintentionally stored in memory.
-        rules: []
+          OpenShift does not directly manage any track data. It is up to the application to
+          appropriately and dispose of this data.
 
       - id: 3.3.1.2
         title: The card verification code is not retained upon completion of the authorization
@@ -690,9 +692,10 @@ controls:
           to verify card-not-present transactions.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+          OpenShift does not directly manage any card verification code. It is up to the
+          application to appropriately and dispose of this data.
 
       - id: 3.3.1.3
         title: The personal identification number (PIN) and the PIN block are not retained upon
@@ -704,9 +707,10 @@ controls:
           authorization process.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+          OpenShift does not directly manage any cardc PIN or PIN block. It is up to the
+          application to appropriately dispose of this data.
 
     - id: 3.3.2
       title: SAD that is stored electronically prior to completion of authorization is encrypted
@@ -725,13 +729,10 @@ controls:
         needs to be encrypted again.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is a best practice until 31 March 2025, after which it will be required
-        and must be fully considered during a PCI DSS assessment.
-        This requirement consists of auditing information stored during a relatively short period
-        of time. Where and how the information is possibly stored depends in each Business and
-        local policies so the check is not actually automatable.
+        OpenShift does not directly manage any SAD . It is up to the application to
+        appropriately and dispose of this data.
 
     - id: 3.3.3
       title: Additional requirement for issuers and companies that support issuing services and
@@ -745,7 +746,10 @@ controls:
         fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        OpenShift does not directly manage any SAD . It is up to the application to
+        appropriately and dispose of this data.
 
   - id: '3.4'
     title: Access to displays of full PAN and ability to copy PAN is restricted.
