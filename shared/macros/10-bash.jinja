@@ -988,7 +988,7 @@ fi
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
 {{% if 'ubuntu' in product %}}
-AUTH_FILES=("/etc/pam.d/common-auth" "/etc/pam.d/password-auth")
+AUTH_FILES=("/etc/pam.d/common-auth")
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 {{% endif %}}
