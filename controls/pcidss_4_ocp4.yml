@@ -1047,7 +1047,7 @@ controls:
       procedures covering all aspects of the key lifecycle are defined and implemented.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.7.1
       title: Key-management policies and procedures are implemented to include generation of
@@ -1056,7 +1056,13 @@ controls:
         Strong cryptographic keys are generated.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Although some key management processes rely on OpenShift Container Platform and its
+        underlying components for Full Disk Encryption, the responsibility for documentation and
+        implementation of key-management processes and procedures for cryptographic keys used for
+        encryption of cardholder data is still on the payment service and its
+        operations team in order to cover all aspects of cardholder data protection.
 
     - id: 3.7.2
       title: Key-management policies and procedures are implemented to include secure distribution
@@ -1065,7 +1071,7 @@ controls:
         Cryptographic keys are secured during distribution.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 3.7.3
       title: Key-management policies and procedures are implemented to include secure storage of
@@ -1074,11 +1080,9 @@ controls:
         Cryptographic keys are secured when stored.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        The scope of this requirement seems much wider going even to application level, which
-        might be different for each site. Regarding local system there are some technical measures
-        ensured by 2.2.6.
+        TPM
 
     - id: 3.7.4
       title: Key management policies and procedures are implemented for cryptographic key changes
@@ -1093,7 +1097,17 @@ controls:
         - A process for key changes at the end of the defined cryptoperiod.
       levels:
         - base
-      status: pending
+      notes: |-
+        It is the responsibility of the payment entity's operations team to rotate the
+        encryption keys when they expire, according to the solution chosen for full disk
+        encryption:
+        * AWS EBS Encryption: Operations team creates a snapshot of the volume and then uses
+          the snapshot to create a new, encrypted copy of the volume. While creating the new volume,
+          a new encryption key is specified.
+        * LUKS encryption with TPM2: The TPM secret cannot be modified after disk creation.
+        * LUKS encryption with Tang: The operations performs the Tang Keys rotation as described in
+          https://access.redhat.com/solutions/4074891
+      status: not applicable
 
     - id: 3.7.5
       title: Key management policies procedures are implemented to include the retirement,
@@ -1110,7 +1124,10 @@ controls:
         - Retired or replaced keys are not used for encryption operations.
       levels:
         - base
-      status: pending
+      notes: |-
+        It is the responsibility of the payment entity's operations team to retire or
+        replace weakened keys
+      status: not applicable
 
     - id: 3.7.6
       title: Where manual cleartext cryptographic key-management operations are performed by
@@ -1125,7 +1142,10 @@ controls:
         generated via one of the following
       levels:
         - base
-      status: pending
+      notes: |-
+        Manual clear-text cryptographic key-management operations are not used in the context of
+        Openshift Container Platform
+      status: not applicable
 
     - id: 3.7.7
       title: Key management policies and procedures are implemented to include the prevention of
@@ -1134,7 +1154,17 @@ controls:
         Cryptographic keys cannot be substituted by unauthorized personnel.
       levels:
         - base
-      status: pending
+      notes: |-
+        This requirement depends on the solution chosen by the payment entity to protect card holder
+        data at rest:
+        * When Full Disk Encryption is done using AWS EBS encryption, the authorizations on the
+          cryptographic keys are managed in AWS IAM by the payment entity operating the service.
+        * When Full Disk Encryption is done using LUKS with TPM2, no substitution of cryptographic
+          keys is possible after disk creation.
+        * When Full Disk Encryption is done using LUKS with Tang, the access to the Tang server,
+          where the Tang Keys Rotation process can be handled, are the responsibility of the payment
+          entity operating the service.
+      status: not applicable
 
     - id: 3.7.8
       title: Key management policies and procedures are implemented to include that cryptographic
@@ -1145,7 +1175,12 @@ controls:
         operations and can access assistance and guidance when required.
       levels:
         - base
-      status: pending
+      notes: |-
+        This requirement is not applicable to the OpenShift Container Platform
+        as it instead pertains to the practices and documentation from the
+        payment entity. The platform may not generate the entity's policies
+        and security practices.
+      status: not applicable
 
     - id: 3.7.9
       title: 'Additional requirement for service providers only: Where a service provider shares
@@ -1158,7 +1193,7 @@ controls:
         a service provider.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '4.1'
     title: Processes and mechanisms for protecting cardholder data with strong cryptography during
