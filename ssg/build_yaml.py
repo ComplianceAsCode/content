@@ -692,10 +692,12 @@ class Group(XCCDFEntity):
                  r'(service_.*_(enabled|disabled))|' +
                  r'install_smartcard_packages|' +
                  r'sshd_set_keepalive(_0)?|' +
-                 r'sshd_set_idle_timeout$')
+                 r'sshd_set_idle_timeout|' +
+                 r'chronyd_specify_remote_server$')
         priority_order = ["enable_authselect", "installed", "install_smartcard_packages", "removed",
                           "enabled", "disabled", "sshd_set_keepalive_0",
-                          "sshd_set_keepalive", "sshd_set_idle_timeout"]
+                          "sshd_set_keepalive", "sshd_set_idle_timeout",
+                          "chronyd_specify_remote_server"]
         rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
 
         # Add rules in priority order, first all packages installed, then removed,
