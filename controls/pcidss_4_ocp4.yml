@@ -634,10 +634,10 @@ controls:
         exceeding the defined retention period has been securely deleted or rendered unrecoverable.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is very dependent on each site policies and business model.
-        Local policies should be consulted and audited. Manual checking is reasonable.
+        OpenShift does not directly manage any account data. It is up to the application handling
+        account data to appropriately store and dispose of this data.
 
   - id: '3.3'
     title: Sensitive authentication data (SAD) is not stored after authorization.
