@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Configure GNOME3 DConf User Profile'
 
 description: |-
@@ -9,11 +8,22 @@ description: |-
     highest priority. As such the DConf User profile should always exist and be
     configured correctly.
     <br /><br />
-    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15"] %}}
     To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/gdm</tt>
     should be set as follows:
     <pre>user-db:user
     system-db:gdm
+    </pre>
+    {{% elif 'ubuntu' in product %}}
+    To make sure that the gdm profile is configured correctly, the <tt>/etc/dconf/profile/gdm</tt>
+    should be set as follows:
+    <pre>user-db:user
+    system-db:gdm
+    </pre>
+    To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/user</tt>
+    should be set as follows:
+    <pre>user-db:user
+    system-db:local
     </pre>
     {{% else %}}
     To make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/user</tt>
@@ -51,11 +61,20 @@ ocil_clause: 'DConf User profile does not exist or is not configured correctly'
 ocil: |-
     To verify that the DConf User profile is configured correctly, run the following
     command:
-    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+    {{% if product in ["sle12", "sle15"] %}}
     <pre>$ cat /etc/dconf/profile/gdm</pre>
     The output should show the following:
     <pre>user-db:user
     system-db:gdm</pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>$ cat /etc/dconf/profile/gdm</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:gdm</pre>
+    <pre>$ cat /etc/dconf/profile/user</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:local
     {{% else %}}
     <pre>$ cat /etc/dconf/profile/user</pre>
     The output should show the following:

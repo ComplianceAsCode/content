@@ -194,6 +194,7 @@ selections:
     # Skip due to being Level 2
 
     ### 1.8.2 Ensure GDM login banner is configured (Automated)
+    - enable_dconf_user_profile
     - login_banner_text=cis_default
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
