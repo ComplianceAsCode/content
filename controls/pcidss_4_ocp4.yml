@@ -904,7 +904,11 @@ controls:
     title: Cryptographic keys used to protect stored account data are secured.
     levels:
       - base
-    status: pending
+    status: inherently met
+    notes: |-
+      The cryptographic keys created and managed by OpenShift are secured by default.
+      However, the keys created and managed by the application should be secured by the application
+      and the organization's processeses.
     controls:
     - id: 3.6.1
       title: Procedures are defined and implemented to protect cryptographic keys used to protect
@@ -937,7 +941,32 @@ controls:
           location of devices, as outlined in Requirement 12.3.4.
         levels:
           - base
-        status: pending
+        notes: |-
+          This requirement largely depends on the solution chosen by the customer to protect card
+          holder data at rest.
+          * When Full Disk Encryption is done using AWS EBS encryption, the algorithm used is
+            AES-256.
+            Your data key is stored on disk with your encrypted data, but not before EBS encrypts it
+            with your KMS key.
+            Your data key never appears on disk in plaintext.
+            The same data key is shared by snapshots of the volume and any subsequent volumes
+            created from those snapshots.
+            See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+          * When Full Disk Encryption is done using LUKS with TPM2, full disk encryption utilities
+            such as dm-crypt and
+            BitLocker encrypt disks with a TPM bind key, and then store the TPM bind key in the TPM
+            (Trusted Platform Module),
+            which is a secure element attached to the motherboard of the node.
+            The main benefit of this method is that there is no external dependency, and the node is
+            able to decrypt its own
+            disks at boot time without any external interaction.
+          * When Full Disk Encryption is done using LUKS with Tang, the booting node attempts to
+            contact a predefined set
+            of Tang servers by performing a cryptographic handshake. If it can reach the required
+            number of Tang servers,
+            the node can construct its disk decryption key and unlock the disks to continue booting.
+          See https://docs.openshift.com/container-platform/4.9/security/network_bound_disk_encryption/nbde-about-disk-encryption-technology.html
+        status: inherently met
 
       - id: 3.6.1.2
         title: Secret and private keys used to encrypt/decrypt stored account data are stored in
@@ -959,7 +988,7 @@ controls:
           generated via one of the following
         levels:
           - base
-        status: pending
+        status: inherently met
 
       - id: 3.6.1.3
         title: Access to cleartext cryptographic key components is restricted to the fewest number
@@ -968,7 +997,29 @@ controls:
           Access to cleartext cryptographic key components is restricted to necessary personnel.
         levels:
           - base
-        status: pending
+        status: inherently met
+        notes: |-
+          This requirement largely depends on the solution chosen by the customer to protect card
+          holder data at rest.
+          * When Full Disk Encryption is done using AWS EBS encryption, the data key, used for
+            volume encryption, is generated
+            by AWS KMS, encrypted with the Key Encryption Key that lies in the KMS and stored with
+            the volume metadata, by EBS.
+            It is the payment entity's responsibility to limit the access to this key by ensuring
+            that Grant requests to decrypt
+            the data key using the KEK (Key Encryption Key) is given only to the need to know users
+            or AWS resources.
+            See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+          * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used
+          to decrypt the data key is
+            stored in the TPM (Trusted Platform Module), on the motherboard of the node.
+            It is therefore not shared with anyone.
+          * When Full Disk Encryption is done using LUKS with Tang, Tang server does not store the
+          encryption key directly,
+            and never interacts with it. The metadata needed to decrypt the volume is stored on the
+            disk but can only be
+            unlocked and used when the node can correctly establish the handshake with the Tang
+            server. The data key is therefore not shared with anyone.
 
       - id: 3.6.1.4
         title: Cryptographic keys are stored in the fewest possible locations.
@@ -976,7 +1027,20 @@ controls:
           Cryptographic keys are retained only where necessary.
         levels:
           - base
-        status: pending
+        status: inherently met
+        notes: |-
+          This requirement depends on the solution chosen by the customer to protect card holder
+          data at rest:
+          * When Full Disk Encryption is done using AWS EBS encryption, the data key is stored in
+            the volume's metadata only.
+            The KEK is stored in the AWS KMS only.
+          * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in
+            the TPM (Trusted Platform Module) only.
+            The encrypted data key is stored on the MBR of the disk only.
+          * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored
+            to disk. Only the provisioning metadata is. A POST to the Tang server would allow the
+            node to recompute the encryption key from this metadata.
+            See https://github.com/latchset/tang
 
   - id: '3.7'
     title: Where cryptography is used to protect stored account data, key management processes and
