@@ -13,7 +13,7 @@
 {{%- if 'sle' in product %}}
   {{%- set pam_pkcs11_control_flag = "sufficient" %}}
 {{%- else %}}
-  {{%- set pam_pkcs11_control_flag = "\u005Bsuccess=2 default=ignore\u005D" %}}
+  {{%- set pam_pkcs11_control_flag = "\u005Bsuccess=3 default=ignore\u005D" %}}
 {{% endif %}}
 
 - name: "{{{ rule_title }}} - Gather List of Packages"

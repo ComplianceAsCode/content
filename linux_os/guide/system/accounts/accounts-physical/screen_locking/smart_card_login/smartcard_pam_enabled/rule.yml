@@ -15,7 +15,7 @@ description: |-
     <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
 
     {{% if 'ubuntu' in product %}}
-    auth [success=2 default=ignore] pam_pkcs11.so</pre>
+    auth [success=3 default=ignore] pam_pkcs11.so</pre>
     {{% else %}}
     auth sufficient pam_pkcs11.so</pre>
     {{% endif %}}
@@ -82,7 +82,7 @@ ocil: |-
     <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
 
     {{% if 'ubuntu' in product %}}
-    auth [success=2 default=ignore] pam_pkcs11.so</pre>
+    auth [success=3 default=ignore] pam_pkcs11.so</pre>
     {{% else %}}
     auth sufficient pam_pkcs11.so</pre>
     {{% endif %}}
