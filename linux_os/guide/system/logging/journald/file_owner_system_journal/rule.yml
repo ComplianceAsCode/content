@@ -3,18 +3,49 @@ documentation_complete: true
 
 title: 'Verify Owner on the system journal'
 
-description: '{{{ describe_file_owner(file="/var/log/journal/.*/system.journal", owner="root") }}}'
+description: |-
+    {{%- if 'ubuntu' in product %}}
+    Verify the /run/log/journal and /var/log/journal files are owned by
+    "root" by using the following command:
+    <pre>
+    $ sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n %U" {} \;
+    </pre>
+    If any output returned is not owned by "root", this is a finding.
+    {{%- else %}}
+    '{{{ describe_file_owner(file="/var/log/journal/.*/system.journal", owner="root") }}}'
+    {{%- endif %}}
 
 rationale: |-
-  RHCOS must protect system  journal file from any type of unauthorized access by setting file ownership
+    {{%- if 'ubuntu' in product %}}
+    Only authorized personnel should be aware of errors and the details of the errors.
+    Error messages are an indicator of an organization's operational state or can
+    identify the operating system or platform. Additionally, personally identifiable
+    information (PII) and operational information must not be revealed through error
+    messages to unauthorized personnel or their designated representatives.
+    {{%- else %}}
+    RHCOS must protect system  journal file from any type of unauthorized access by setting file ownership
+    {{%- endif %}}
 
 identifiers:
-  cce@rhcos4: CCE-87682-1
+    cce@rhcos4: CCE-87682-1
 
 severity: medium
 
+fixtext: |
+    {{%- if 'ubuntu' in product %}}
+    Configure the system to set the appropriate ownership to the files
+    used by the systemd journal:
+    Add or modify the following lines in the "/etc/tmpfiles.d/systemd.conf" file:
+    <pre>
+    z /var/log/journal/%m/system.journal 0640 root systemd-journal - -
+    </pre>
+    Restart the system for the changes to take effect.
+    {{%- endif %}}
+
 references:
-  srg: SRG-APP-000118-CTR-000240
+    disa: CCI-001314
+    srg: SRG-APP-000118-CTR-000240
+    stigid@ubuntu2204: UBTU-22-232090
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/journal/.*/system.journal", owner="root") }}}'
 
@@ -24,6 +55,17 @@ ocil: |-
 template:
     name: file_owner
     vars:
+        {{%- if 'ubuntu' in product %}}
+        filepath:
+          - /run/log/journal/
+          - /var/log/journal/
+        recursive: 'true'
+        file_regex: ^.*$
+        fileuid: '0'
+
+        {{%- else %}}
         filepath: ^/var/log/journal/.*/system.journal$
         fileuid: '0'
         filepath_is_regex: "true"
+
+        {{%- endif %}}
