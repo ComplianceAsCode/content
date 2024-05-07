@@ -218,6 +218,7 @@ selections:
     - directory_permissions_var_log_audit
 
     # UBTU-22-653065 The Ubuntu operating system must be configured so that audit configuration files are not write-accessible by unauthorized users.
+    - file_permissions_etc_audit_rules
     - file_permissions_etc_audit_rulesd
     - file_permissions_etc_audit_auditd
 
