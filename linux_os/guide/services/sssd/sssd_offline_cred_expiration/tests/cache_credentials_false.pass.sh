@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = sssd
 
 # platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 source common.sh
