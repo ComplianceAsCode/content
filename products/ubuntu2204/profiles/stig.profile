@@ -625,13 +625,11 @@ selections:
     # UBTU-22-654190 The Ubuntu operating system must generate audit records for all events that affect the systemd journal files
     - audit_rules_var_log_journal
 
-    ### TODO (rule needed)
-    # Analogous to package_telnetd_removed
-    # UBTU-22-215025 The Ubuntu operating system must not have the "ntp" package installed
-
-    ### TODO (rule needed)
-    # Analogous to package_telnetd_removed
     # UBTU-22-215020 The Ubuntu operating system must not have the "systemd-timesyncd" package installed
+    - package_timesyncd_removed
+
+    # UBTU-22-215025 The Ubuntu operating system must not have the "ntp" package installed
+    - package_ntp_removed
 
     ### TODO (reevaluate directory permissions)
     # UBTU-22-232027 The Ubuntu operating system must generate system journal entries without revealing information that could be exploited by adversaries
@@ -666,4 +664,3 @@ selections:
     ### TODO (rule needed)
     # Similar to file_permissions_var_log_audit
     # UBTU-22-232140 The Ubuntu operating system must be configured so that the "journalctl" command is not accessible by unauthorized users
-

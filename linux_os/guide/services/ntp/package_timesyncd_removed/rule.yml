@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Remove the systemd_timesyncd Service'
+
+description: 'The systemd_timesyncd service should not be installed.'
+
+rationale: |
+   Inaccurate time stamps make it more difficult to correlate events
+   and can lead to an inaccurate analysis. Determining the correct
+   time a particular event occurred on a system is critical when
+   conducting forensic analysis and investigating system events.
+   Sources outside the configured acceptable allowance (drift)
+   may be inaccurate.
+
+severity: low
+
+references:
+    disa: CCI-000366
+    stigid@ubuntu2204: UBTU-22-215020
+
+template:
+    name: package_removed
+    vars:
+        pkgname: systemd-timesyncd
