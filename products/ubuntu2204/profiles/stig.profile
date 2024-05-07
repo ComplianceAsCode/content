@@ -656,9 +656,8 @@ selections:
     # UBTU-22-232100 The Ubuntu operating system must be configured so that the "journalctl" command is owned by "root"
     - file_owner_journalctl
 
-    ### TODO (rule needed)
-    # Similar to file_group_ownership_var_log_audit
     # UBTU-22-232105 The Ubuntu operating system must be configured so that the "journalctl" command is group-owned by "root"
+    - file_groupowner_journalctl
 
     # UBTU-22-232140 The Ubuntu operating system must be configured so that the "journalctl" command is not accessible by unauthorized users
     - file_permissions_journalctl
