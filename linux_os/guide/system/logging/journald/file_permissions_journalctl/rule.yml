@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Verify Permissions on the journal command'
+
+description: |-
+    Verify that the "journalctl" command has a permission set of "740" by
+    using the following command:
+    <pre>
+     $ sudo find /usr/bin/journalctl -exec stat -c "%n %a" {} \;
+    </pre>
+    If "journalctl" is not set to "740", this is a finding.
+
+rationale: |-
+    Any operating system providing too much information in error messages risks
+    compromising the data and security of the structure, and content of error messages
+    needs to be carefully considered by the organization.
+
+references:
+    disa: CCI-001312
+    stigid@ubuntu2204: UBTU-22-232140
+
+severity: medium
+
+fixtext: |
+    Configure "journalctl" to have a permission set of "740":
+    <pre>
+    $ sudo chmod 740 /usr/bin/journalctl
+    </pre>
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /usr/bin/journalctl
+        filemode: '0740'
