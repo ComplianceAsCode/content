@@ -631,25 +631,20 @@ selections:
     # UBTU-22-215025 The Ubuntu operating system must not have the "ntp" package installed
     - package_ntp_removed
 
-    ### TODO (reevaluate directory permissions)
     # UBTU-22-232027 The Ubuntu operating system must generate system journal entries without revealing information that could be exploited by adversaries
     - file_permissions_system_journal
     - dir_permissions_system_journal
 
-    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232080 The Ubuntu operating system must configure the directories used by the system journal to be owned by "root"
     - dir_owner_system_journal
 
-    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232085 The Ubuntu operating system must configure the directories used by the system journal to be group-owned by "systemd-journal"
     - dir_groupowner_system_journal
 
 
-    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232090 The Ubuntu operating system must configure the files used by the system journal to be owned by "root"
     - file_owner_system_journal
 
-    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232095 The Ubuntu operating system must configure the files used by the system journal to be group-owned by "systemd-journal"
     - file_groupowner_system_journal
 
