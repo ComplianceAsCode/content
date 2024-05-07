@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'System Audit Logs Must Have Mode 0600 or Less Permissive'
+
+description: |-
+    Determine where the audit logs are stored with the following command:
+    <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf
+    log_file = /var/log/audit/audit.log</pre>
+
+    Using the path of the directory containing the audit logs, determine
+    if the audit log files have a mode of "600" or less by using the following command:
+    <pre>$ sudo stat -c "%n %a" /var/log/audit/*</pre>
+
+rationale: 'If users can write to audit logs, audit trails can be modified or destroyed.'
+
+severity: medium
+
+references:
+    srg: SRG-OS-000057-GPOS-00027,SRG-OS-000058-GPOS-00028
+    stigid@ubuntu2204: UBTU-22-653045
+
+fixtext: |-
+    Configure correct permissions of system audit logs.
+
+    Determine the location of the system audit logs:
+    <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    Using the path of the directory containing the audit logs,
+    configure the audit log files to have a mode of "0600" or
+    less permissive by using the following command:
+    <pre>$ sudo chmod 0600 /var/log/audit/*</pre>
+
