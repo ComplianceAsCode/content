@@ -649,9 +649,9 @@ selections:
     # UBTU-22-232090 The Ubuntu operating system must configure the files used by the system journal to be owned by "root"
     - file_owner_system_journal
 
-    ### TODO (rule needed)
-    # Analogous to file_group_ownership_var_log_audit
+    ### TODO (incomplete remediation - tmpfiles.d)
     # UBTU-22-232095 The Ubuntu operating system must configure the files used by the system journal to be group-owned by "systemd-journal"
+    - file_groupowner_system_journal
 
     # UBTU-22-232100 The Ubuntu operating system must be configured so that the "journalctl" command is owned by "root"
     - file_owner_journalctl
