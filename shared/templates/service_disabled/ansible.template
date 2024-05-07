@@ -28,7 +28,7 @@
   failed_when: socket_file_exists.rc not in [0, 1]
   check_mode: false
 
-- name: "Disable Socket {{{ SERVICENAME }}}"
+- name: "{{{ rule_title }}} - Disable Socket {{{ SERVICENAME }}}"
   ansible.builtin.systemd:
     name: "{{{ DAEMONNAME }}}.socket"
     enabled: false
