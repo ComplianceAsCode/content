@@ -681,7 +681,7 @@ controls:
         status: not applicable
         notes: |-
           OpenShift does not directly manage any track data. It is up to the application to
-          appropriately and dispose of this data.
+          appropriately store and dispose of this data.
 
       - id: 3.3.1.2
         title: The card verification code is not retained upon completion of the authorization
@@ -695,7 +695,7 @@ controls:
         status: not applicable
         notes: |-
           OpenShift does not directly manage any card verification code. It is up to the
-          application to appropriately and dispose of this data.
+          application to appropriately store and dispose of this data.
 
       - id: 3.3.1.3
         title: The personal identification number (PIN) and the PIN block are not retained upon
@@ -731,8 +731,8 @@ controls:
         - base
       status: not applicable
       notes: |-
-        OpenShift does not directly manage any SAD . It is up to the application to
-        appropriately and dispose of this data.
+        OpenShift does not directly manage any SAD. It is up to the application to
+        appropriately store and dispose of this data.
 
     - id: 3.3.3
       title: Additional requirement for issuers and companies that support issuing services and
@@ -748,8 +748,8 @@ controls:
         - base
       status: not applicable
       notes: |-
-        OpenShift does not directly manage any SAD . It is up to the application to
-        appropriately and dispose of this data.
+        OpenShift does not directly manage any SAD. It is up to the application to
+        appropriately store and dispose of this data.
 
   - id: '3.4'
     title: Access to displays of full PAN and ability to copy PAN is restricted.
@@ -877,15 +877,17 @@ controls:
           enabled.
           OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules
           within RHEL and RHCOS for the operating system components that it uses.
-          See RHEL7 core crypto components and https://docs.openshift.com/container-platform/4.15/installing/installing-fips.html
-          for further information.
+          See RHEL core crypto components and
+          https://docs.openshift.com/container-platform/latest/installing/installing-fips.html for
+          further information.
           When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux
           CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH
           access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user
           on each node, which enables password-less authentication.
 
           The management of the private key is up to the customer.
-          LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills Req-3.4.1.
+          LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills
+          requirement 3.4.1.
           Access to the stored data is only possible via a decryption password that must be entered
           when the disk is mounted .
           The disk can be encrypted using a TPM v2, a secure cryptoprocessor contained 
@@ -898,7 +900,7 @@ controls:
         - storageclass_encryption_enabled
         - api_server_encryption_provider_cipher
         # NOTE yuumasato: When RHCOS is supported we can add rules to check whether the encrypted
-        # volume is boud to a Tang server.
+        # volume is bound to a Tang server.
 
   - id: '3.6'
     title: Cryptographic keys used to protect stored account data are secured.
@@ -908,7 +910,7 @@ controls:
     notes: |-
       The cryptographic keys created and managed by OpenShift are secured by default.
       However, the keys created and managed by the application should be secured by the application
-      and the organization's processeses.
+      and the organization's processes.
     controls:
     - id: 3.6.1
       title: Procedures are defined and implemented to protect cryptographic keys used to protect
