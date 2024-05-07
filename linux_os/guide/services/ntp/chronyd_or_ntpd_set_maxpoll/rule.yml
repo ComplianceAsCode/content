@@ -8,9 +8,9 @@ description: |-
     {{{ xccdf_value("var_time_service_set_maxpoll") }}} in <tt>/etc/ntp.conf</tt> or
     <tt>{{{ chrony_conf_path }}}</tt> to continuously poll time servers. To configure
     <tt>maxpoll</tt> in <tt>/etc/ntp.conf</tt> or <tt>{{{ chrony_conf_path }}}</tt>
-    add the following after each `server`, `pool` or `peer` entry:
+    add the following after each <tt>server</tt>, <tt>pool</tt> or <tt>peer</tt> entry:
     <pre>maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>
-    to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
+    to <tt>server</tt> directives. If using chrony, any <tt>pool</tt> directives
     should be configured too.
     If no <tt>server</tt> or <tt>pool</tt> directives are configured, the rule evaluates
     to pass.
