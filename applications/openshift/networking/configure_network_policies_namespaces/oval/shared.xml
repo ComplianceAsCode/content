@@ -1,8 +1,8 @@
 <def-group>
 {{% set networkpolicies_api_path = '/apis/networking.k8s.io/v1/networkpolicies' %}}
 {{% set namespaces_api_path = '/api/v1/namespaces' %}}
-{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
-{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
+{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and ({{if ne .var_network_policies_namespaces_whitelist_regex "None"}}.metadata.namespace | test("{{.var_network_policies_namespaces_whitelist_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_whitelist_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_whitelist_regex}}") | not{{else}}true{{end}}))]' %}}
   <definition class="compliance" id="configure_network_policies_namespaces" version="1">
     {{{ oval_metadata("Ensure that application Namespaces have Network Policies defined") }}}
     <criteria>
