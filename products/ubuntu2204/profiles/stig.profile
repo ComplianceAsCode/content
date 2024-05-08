@@ -366,7 +366,7 @@ selections:
     - var_auditd_space_left_percentage=25pc
     - var_auditd_space_left_action=email
     - auditd_data_retention_space_left_action
-    - auditd_data_retention_space_left
+    - auditd_data_retention_space_left_percentage
 
     # UBTU-22-252020 The Ubuntu operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
     - ensure_rtc_utc_configuration
