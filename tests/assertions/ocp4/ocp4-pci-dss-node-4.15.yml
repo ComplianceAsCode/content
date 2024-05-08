@@ -42,7 +42,7 @@ rule_results:
   e2e-pci-dss-node-master-file-groupowner-ovn-cni-server-sock:
     default_result: PASS
   e2e-pci-dss-node-master-file-groupowner-ovn-db-files:
-    default_result: NOT-APPLICABLE
+    default_result: PASS
   e2e-pci-dss-node-master-file-groupowner-ovs-conf-db:
     default_result: PASS
   e2e-pci-dss-node-master-file-groupowner-ovs-conf-db-lock:
@@ -176,7 +176,8 @@ rule_results:
   e2e-pci-dss-node-master-file-permissions-scheduler-kubeconfig:
     default_result: PASS
   e2e-pci-dss-node-master-file-permissions-var-log-kube-audit:
-    default_result: PASS
+    # nodes get INCONSISTENT because of https://bugzilla.redhat.com/show_bug.cgi?id=2001442
+    default_result: PASS or INCONSISTENT
   e2e-pci-dss-node-master-file-permissions-var-log-oauth-audit:
     default_result: PASS
   e2e-pci-dss-node-master-file-permissions-var-log-ocp-audit:
@@ -268,7 +269,7 @@ rule_results:
   e2e-pci-dss-node-worker-file-groupowner-ovn-cni-server-sock:
     default_result: PASS
   e2e-pci-dss-node-worker-file-groupowner-ovn-db-files:
-    default_result: NOT-APPLICABLE
+    default_result: PASS
   e2e-pci-dss-node-worker-file-groupowner-ovs-conf-db:
     default_result: PASS
   e2e-pci-dss-node-worker-file-groupowner-ovs-conf-db-lock:
