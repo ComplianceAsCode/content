@@ -269,7 +269,8 @@ rule_results:
     default_result: PASS
     result_after_remediation: PASS
   e2e-moderate-node-master-file-permissions-var-log-kube-audit:
-    default_result: PASS
+    # nodes get INCONSISTENT because of https://bugzilla.redhat.com/show_bug.cgi?id=2001442
+    default_result: PASS or INCONSISTENT
     result_after_remediation: PASS
   e2e-moderate-node-master-file-permissions-var-log-oauth-audit:
     default_result: PASS
