@@ -9,24 +9,24 @@ description: |-
     startup (the default), add the following line to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
-{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol8", "ol9", "rhel8", "rhel9"] or 'ubuntu' in product %}}
     <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -F key=perm_mod</pre>
 {{%- endif %}}
 
@@ -73,6 +73,7 @@ references:
     stigid@sle12: SLES-12-020370
     stigid@sle15: SLES-15-030190
     stigid@ubuntu2004: UBTU-20-010144
+    stigid@ubuntu2204: UBTU-22-654180
 
 {{{ complete_ocil_entry_audit_syscall(syscall="fsetxattr") }}}
 
@@ -96,6 +97,7 @@ template:
         check_root_user@rhel8: "true"
         check_root_user@rhel9: "true"
         check_root_user@ubuntu2004: "true"
+        check_root_user@ubuntu2204: "true"
         syscall_grouping:
           - fremovexattr
           - lremovexattr
