@@ -451,9 +451,8 @@ selections:
     # UBTU-22-231010 Ubuntu operating systems handling data requiring "data at rest" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.
     - encrypt_partitions
 
-    ### TODO
-    # UBTU-22-211010 The Ubuntu operating system must deploy Endpoint Security for Linux Threat Prevention (ENSLTP).
-    #- package_mfetp_installed
+    # UBTU-22-211010 The Ubuntu operating system must deploy an Endpoint Security Solution.
+    - install_endpoint_security_software
 
     # UBTU-22-232026 The Ubuntu operating system must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
     - permissions_local_var_log
