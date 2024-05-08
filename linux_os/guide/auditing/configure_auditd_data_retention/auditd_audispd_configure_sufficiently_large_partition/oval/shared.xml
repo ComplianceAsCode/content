@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2204'] %}}
 {{% if target_oval_version >= [5, 11.2] %}}
 <def-group oval_version="5.11.2">
   <definition class="compliance" id="auditd_audispd_configure_sufficiently_large_partition" version="1">
@@ -30,4 +31,5 @@
       <ind:value operation="greater than or equal" datatype="int">10000000000</ind:value>
   </ind:variable_state>
 </def-group>
+{{% endif %}}
 {{% endif %}}
