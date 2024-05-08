@@ -22,7 +22,7 @@
   
   <ind:textfilecontent54_object id="object_ensure_gpgcheck_globally_activated" comment="gpgcheck set in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*1|True|yes\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*(1|True|yes)\s*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>  
 
@@ -34,7 +34,7 @@
 
   <ind:textfilecontent54_object id="object_test_ensure_gpgcheck_globally_no_deactivated" comment="0_off_no_false set in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*0|off|no|false\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*(0|off|no|false)\s*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">0</ind:instance>
   </ind:textfilecontent54_object>
 
