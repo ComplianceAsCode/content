@@ -13,13 +13,13 @@
   failed_when: service_exists.rc not in [0, 1]
   check_mode: false
 
-- name: '{{{ rule_title }}} - Ensure "{{{ DAEMONNAME }}}.service" is Masked'
+- name: "{{{ rule_title }}} - Ensure {{{ DAEMONNAME }}}.service is Masked"
   ansible.builtin.systemd:
     name: "{{{ DAEMONNAME }}}.service"
     state: "stopped"
     enabled: false
     masked: true
-  when: 'service_exists.stdout_lines is search("{{{ SERVICENAME }}}.service",multiline=True)'
+  when: 'service_exists.stdout_lines is search("{{{ SERVICENAME }}}.service", multiline=True)'
 
 - name: "Unit Socket Exists - {{{ DAEMONNAME }}}.socket"
   ansible.builtin.command: systemctl -q list-unit-files {{{ DAEMONNAME }}}.socket
@@ -28,13 +28,13 @@
   failed_when: socket_file_exists.rc not in [0, 1]
   check_mode: false
 
-- name: Disable socket {{{ SERVICENAME }}}
+- name: "{{{ rule_title }}} - Disable Socket {{{ SERVICENAME }}}"
   ansible.builtin.systemd:
     name: "{{{ DAEMONNAME }}}.socket"
-    enabled: "no"
+    enabled: false
     state: "stopped"
-    masked: "yes"
-  when: 'socket_file_exists.stdout_lines is search("{{{ DAEMONNAME }}}.socket",multiline=True)' 
+    masked: true
+  when: 'socket_file_exists.stdout_lines is search("{{{ DAEMONNAME }}}.socket", multiline=True)'
 {{%- else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}
