@@ -154,7 +154,16 @@ def ordered_load(stream, Loader=yaml_Loader, object_pairs_hook=OrderedDict):
     OrderedLoader.add_constructor(
         yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
         construct_mapping)
-    return yaml.load(stream, OrderedLoader)
+
+    try:
+        yaml_loaded = yaml.load(stream, OrderedLoader)
+    except yaml.scanner.ScannerError as e:
+        print("Error when trying to load the stream: {}".format(e))
+        print("HINT: Ansible tasks names may cause expansion errors if not properly quoted.")
+        print("HINT: Check for unquoted colons or other special symbols in the stream:")
+        print("{}".format(stream))
+        sys.exit(1)
+    return yaml_loaded
 
 
 def ordered_dump(data, stream=None, Dumper=yaml_Dumper, **kwds):
