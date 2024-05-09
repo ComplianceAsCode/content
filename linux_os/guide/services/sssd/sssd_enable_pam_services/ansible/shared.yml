@@ -18,6 +18,7 @@
     replace: '\1,pam'
   with_items: "{{ sssd_conf_d_files.files | map(attribute='path') }}"
   register: modify_lines_sssd_conf_d_files
+  when: sssd_conf_d_files.matched is defined and sssd_conf_d_files.matched >= 1
 
 - name: {{{ rule_title }}} - Find /etc/sssd/sssd.conf
   ansible.builtin.stat:
