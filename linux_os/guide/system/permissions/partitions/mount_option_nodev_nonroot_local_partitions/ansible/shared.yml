@@ -4,6 +4,10 @@
 # complexity = low
 # disruption = high
 
+- name: "{{{ rule_title }}}: Refresh facts"
+  setup:
+    gather_subset: mounts
+
 - name: Ensure non-root local partitions are mounted with nodev option
   mount:
     path: "{{ item.mount }}"
