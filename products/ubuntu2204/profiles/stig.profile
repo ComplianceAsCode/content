@@ -90,8 +90,8 @@ selections:
     # UBTU-22-255055 The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-3 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
     - sshd_use_approved_macs_ordered_stig
 
-    ### TODO
     # UBTU-22-255050 The Ubuntu operating system must configure the SSH daemon to use FIPS 140-3 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
+    - sshd_approved_ciphers=stig_ubuntu2204
     - sshd_use_approved_ciphers_ordered_stig
 
     # UBTU-22-255060 The Ubuntu operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
