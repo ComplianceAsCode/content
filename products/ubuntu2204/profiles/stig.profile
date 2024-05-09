@@ -569,11 +569,11 @@ selections:
     # UBTU-22-412015 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
     - display_login_attempts
 
-    # UBTU-22-251015 The Ubuntu operating system must have an application firewall enabled.
-    - service_ufw_enabled
+    # UBTU-22-251015 The Ubuntu operating system must enable and run the Uncomplicated Firewall (ufw).
+    - check_ufw_active
 
     # UBTU-22-251020 The Ubuntu operating system must have an application firewall enabled.
-    # same as UBTU-22-251015
+    - service_ufw_enabled
 
     ### TODO
     # UBTU-22-291015 The Ubuntu operating system must disable all wireless network adapters.
