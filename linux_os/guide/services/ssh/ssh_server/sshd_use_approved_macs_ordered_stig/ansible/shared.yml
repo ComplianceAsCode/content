@@ -4,6 +4,10 @@
 # complexity = low
 # disruption = low
 
+{{%- if 'ubuntu' in product %}}
+{{{ ansible_instantiate_variables('sshd_approved_macs') }}}
+{{{ ansible_sshd_set(parameter="Macs", value="{{ sshd_approved_macs }}", config_is_distributed=sshd_distributed_config) }}}
+{{%- else %}}
 - name: "Configure sshd to use approved MACs"
   lineinfile:
     path: /etc/ssh/sshd_config
@@ -11,3 +15,4 @@
     state: present
     regexp: '^[\s]*MACs[\s]+(hmac-sha2-512(?=[\w,-@]+|$),?)?(hmac-sha2-256(?=[\w,-@]+|$),?)?[\s]*(?:#.*)?$'
     create: True
+{{%- endif %}}
