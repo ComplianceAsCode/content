@@ -16,7 +16,7 @@ description: |-
     confidentiality, integrity, and security of electronic protected health
     information.
 
-    This profile configures Red Hat Enterprise Linux 9 to the HIPAA Security
+    This profile configures Red Hat Enterprise Linux 10 to the HIPAA Security
     Rule identified for securing of electronic protected health information.
     Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).
 
