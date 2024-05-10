@@ -592,7 +592,7 @@ controls:
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that security policies and
         operational procedures identified in Requirement 3 are managed in accordance with all
@@ -603,7 +603,7 @@ controls:
         documented, assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
         Examine documentation and interview personnel to verify that day-to-day responsibilities
         for performing all the activities in Requirement 3 are documented, assigned and understood
@@ -634,16 +634,16 @@ controls:
         exceeding the defined retention period has been securely deleted or rendered unrecoverable.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is very dependent on each site policies and business model.
-        Local policies should be consulted and audited. Manual checking is reasonable.
+        OpenShift does not directly manage any account data. It is up to the application handling
+        account data to appropriately store and dispose of this data.
 
   - id: '3.3'
     title: Sensitive authentication data (SAD) is not stored after authorization.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.3.1
       title: SAD is not retained after authorization, even if encrypted. All sensitive
@@ -658,7 +658,12 @@ controls:
         through 3.3.1.3.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Proper design of the application by the payment entity can accommodate this requirement as
+        a processing mandate, restricting in-memory process for this data and taking care not to
+        write to file storage from within the container or pod.
+
       controls:
       - id: 3.3.1.1
         title: The full contents of any track are not retained upon completion of the
@@ -673,13 +678,10 @@ controls:
           To minimize risk, store securely only these data elements as needed for business.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          This requirement consists in auditing files, databases and memory to make sure the full
-          content of any track is not unnecessarily retained. It involves manual auditing but some
-          automated rules fit this requirement in order to reduce the chances if this data be
-          unintentionally stored in memory.
-        rules: []
+          OpenShift does not directly manage any track data. It is up to the application to
+          appropriately store and dispose of this data.
 
       - id: 3.3.1.2
         title: The card verification code is not retained upon completion of the authorization
@@ -690,9 +692,10 @@ controls:
           to verify card-not-present transactions.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+          OpenShift does not directly manage any card verification code. It is up to the
+          application to appropriately store and dispose of this data.
 
       - id: 3.3.1.3
         title: The personal identification number (PIN) and the PIN block are not retained upon
@@ -704,9 +707,10 @@ controls:
           authorization process.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Same rules already selected in 3.3.1.1 are valid here, but they are not repeated.
+          OpenShift does not directly manage any cardc PIN or PIN block. It is up to the
+          application to appropriately dispose of this data.
 
     - id: 3.3.2
       title: SAD that is stored electronically prior to completion of authorization is encrypted
@@ -725,13 +729,10 @@ controls:
         needs to be encrypted again.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is a best practice until 31 March 2025, after which it will be required
-        and must be fully considered during a PCI DSS assessment.
-        This requirement consists of auditing information stored during a relatively short period
-        of time. Where and how the information is possibly stored depends in each Business and
-        local policies so the check is not actually automatable.
+        OpenShift does not directly manage any SAD. It is up to the application to
+        appropriately store and dispose of this data.
 
     - id: 3.3.3
       title: Additional requirement for issuers and companies that support issuing services and
@@ -745,13 +746,16 @@ controls:
         fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        OpenShift does not directly manage any SAD. It is up to the application to
+        appropriately store and dispose of this data.
 
   - id: '3.4'
     title: Access to displays of full PAN and ability to copy PAN is restricted.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.4.1
       title: PAN is masked when displayed (the BIN and last four digits are the maximum number of
@@ -766,10 +770,10 @@ controls:
         Requirement 3.5.1 for protection of PAN when stored, processed, or transmitted.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Consists on examining documented policies and procedures, checking system configurations
-        and observing relevant applications.
+        OpenShift doesn't directly handle PANs.
+        Handling and masking the PAN is resposibility of the application installed.
 
     - id: 3.4.2
       title: When using remote-access technologies, technical controls prevent copy and/or
@@ -783,11 +787,11 @@ controls:
         and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        There are technical rules to disable removable storage devices. However, this requirement
-        still demand some manual auditing in documentation and eventual exceptions.
-      rules: []
+        OpenShift doesn't directly handle PANs.
+        Handling and masking the PAN is resposibility of the application installed.
+        Access control, storage at rest and transport medium are to be managed by the application.
 
   - id: '3.5'
     title: Primary account number (PAN) is secured wherever it is stored.
@@ -808,7 +812,7 @@ controls:
         - Strong cryptography with associated key-management processes and procedures.
       levels:
         - base
-      status: pending
+      status: partial
       controls:
       - id: 3.5.1.1
         title: Hashes used to render PAN unreadable (per the first bullet of Requirement 3.5.1)
@@ -824,15 +828,10 @@ controls:
           assessment.
         levels:
           - base
-        status: planned
+        status: not applicable
         notes: |-
-          This requirement likely demand assessment in application level for some environments and
-          this would be too specific to be automated. However, on system level we can ensure some
-          strong cryptographic algorithms. This is also generally covered by 2.2.7 but here would
-          be possible to include more specific rules, for openssl and libreswan for example.
-          However it would be first necessary to include a platform conditional in these rules
-          before selecting them so they are applicable only if the respective packages are
-          installed.
+          OpenShift doesn't directly handle PANs.
+          Handling and masking the PAN is resposibility of the workload / application installed.
 
       - id: 3.5.1.2
         title: If disk-level or partition-level encryption (rather than file-, column-, or
@@ -841,8 +840,11 @@ controls:
           Requirement 3.5.1
         levels:
           - base
-        status: pending
-        rules: []
+        status: not applicable
+        notes: |-
+          This requirement is about ensuring PANs are also masked when disk-level and partition-level
+          encryption is used.
+          Handling and masking the PAN is resposibility of the workload / application installed.
 
       - id: 3.5.1.3
         title: If disk-level or partition-level encryption is used (rather than file-, column-, or
@@ -857,15 +859,58 @@ controls:
           access to unencrypted data are stored securely.
         levels:
           - base
-        status: pending
+        status: partial
         notes: |-
-          To properly check this requirement, site policies and documentation should be consulted.
+          Disk-level encryption is a node configuration, but it can be managed by the NBDE
+          Tang Server Operator to automatically unlock LUKS-encrypted volumes and rotate keys.
+
+          In case where card holder data may be stored on worker nodes disks, OpenShift Container
+          Platform can help to partially
+          comply with this requirement by providing several means of fully encrypting disks.
+          * Using RHEL core crypto components which are FIPS certified
+          * Or using cloud provider techniques, such as EBS encryption for AWS case.
+          For this requirement, we also check etcd is encrypted, so that secrets, but also routes
+          and oauth configurations are secured.
+
+          Concerning Full Disk Encryption:
+          Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode
+          enabled.
+          OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules
+          within RHEL and RHCOS for the operating system components that it uses.
+          See RHEL core crypto components and
+          https://docs.openshift.com/container-platform/latest/installing/installing-fips.html for
+          further information.
+          When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux
+          CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH
+          access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user
+          on each node, which enables password-less authentication.
+
+          The management of the private key is up to the customer.
+          LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills
+          requirement 3.4.1.
+          Access to the stored data is only possible via a decryption password that must be entered
+          when the disk is mounted .
+          The disk can be encrypted using a TPM v2, a secure cryptoprocessor contained 
+          within a server; or a Tang server, a network-bound disk encryption (NBDE).
+
+          The NBDE Tang Server Operator can provide automatic unlocking of LUKS-encrypted volumes
+          and key rotation.
+        rules:
+        - machine_volume_encrypted
+        - storageclass_encryption_enabled
+        - api_server_encryption_provider_cipher
+        # NOTE yuumasato: When RHCOS is supported we can add rules to check whether the encrypted
+        # volume is bound to a Tang server.
 
   - id: '3.6'
     title: Cryptographic keys used to protect stored account data are secured.
     levels:
       - base
-    status: pending
+    status: inherently met
+    notes: |-
+      The cryptographic keys created and managed by OpenShift are secured by default.
+      However, the keys created and managed by the application should be secured by the application
+      and the organization's processes.
     controls:
     - id: 3.6.1
       title: Procedures are defined and implemented to protect cryptographic keys used to protect
@@ -898,7 +943,32 @@ controls:
           location of devices, as outlined in Requirement 12.3.4.
         levels:
           - base
-        status: pending
+        notes: |-
+          This requirement largely depends on the solution chosen by the customer to protect card
+          holder data at rest.
+          * When Full Disk Encryption is done using AWS EBS encryption, the algorithm used is
+            AES-256.
+            Your data key is stored on disk with your encrypted data, but not before EBS encrypts it
+            with your KMS key.
+            Your data key never appears on disk in plaintext.
+            The same data key is shared by snapshots of the volume and any subsequent volumes
+            created from those snapshots.
+            See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+          * When Full Disk Encryption is done using LUKS with TPM2, full disk encryption utilities
+            such as dm-crypt and
+            BitLocker encrypt disks with a TPM bind key, and then store the TPM bind key in the TPM
+            (Trusted Platform Module),
+            which is a secure element attached to the motherboard of the node.
+            The main benefit of this method is that there is no external dependency, and the node is
+            able to decrypt its own
+            disks at boot time without any external interaction.
+          * When Full Disk Encryption is done using LUKS with Tang, the booting node attempts to
+            contact a predefined set
+            of Tang servers by performing a cryptographic handshake. If it can reach the required
+            number of Tang servers,
+            the node can construct its disk decryption key and unlock the disks to continue booting.
+          See https://docs.openshift.com/container-platform/4.9/security/network_bound_disk_encryption/nbde-about-disk-encryption-technology.html
+        status: inherently met
 
       - id: 3.6.1.2
         title: Secret and private keys used to encrypt/decrypt stored account data are stored in
@@ -920,7 +990,7 @@ controls:
           generated via one of the following
         levels:
           - base
-        status: pending
+        status: inherently met
 
       - id: 3.6.1.3
         title: Access to cleartext cryptographic key components is restricted to the fewest number
@@ -929,7 +999,29 @@ controls:
           Access to cleartext cryptographic key components is restricted to necessary personnel.
         levels:
           - base
-        status: pending
+        status: inherently met
+        notes: |-
+          This requirement largely depends on the solution chosen by the customer to protect card
+          holder data at rest.
+          * When Full Disk Encryption is done using AWS EBS encryption, the data key, used for
+            volume encryption, is generated
+            by AWS KMS, encrypted with the Key Encryption Key that lies in the KMS and stored with
+            the volume metadata, by EBS.
+            It is the payment entity's responsibility to limit the access to this key by ensuring
+            that Grant requests to decrypt
+            the data key using the KEK (Key Encryption Key) is given only to the need to know users
+            or AWS resources.
+            See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+          * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used
+          to decrypt the data key is
+            stored in the TPM (Trusted Platform Module), on the motherboard of the node.
+            It is therefore not shared with anyone.
+          * When Full Disk Encryption is done using LUKS with Tang, Tang server does not store the
+          encryption key directly,
+            and never interacts with it. The metadata needed to decrypt the volume is stored on the
+            disk but can only be
+            unlocked and used when the node can correctly establish the handshake with the Tang
+            server. The data key is therefore not shared with anyone.
 
       - id: 3.6.1.4
         title: Cryptographic keys are stored in the fewest possible locations.
@@ -937,14 +1029,27 @@ controls:
           Cryptographic keys are retained only where necessary.
         levels:
           - base
-        status: pending
+        status: inherently met
+        notes: |-
+          This requirement depends on the solution chosen by the customer to protect card holder
+          data at rest:
+          * When Full Disk Encryption is done using AWS EBS encryption, the data key is stored in
+            the volume's metadata only.
+            The KEK is stored in the AWS KMS only.
+          * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in
+            the TPM (Trusted Platform Module) only.
+            The encrypted data key is stored on the MBR of the disk only.
+          * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored
+            to disk. Only the provisioning metadata is. A POST to the Tang server would allow the
+            node to recompute the encryption key from this metadata.
+            See https://github.com/latchset/tang
 
   - id: '3.7'
     title: Where cryptography is used to protect stored account data, key management processes and
       procedures covering all aspects of the key lifecycle are defined and implemented.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 3.7.1
       title: Key-management policies and procedures are implemented to include generation of
@@ -953,7 +1058,13 @@ controls:
         Strong cryptographic keys are generated.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Although some key management processes rely on OpenShift Container Platform and its
+        underlying components for Full Disk Encryption, the responsibility for documentation and
+        implementation of key-management processes and procedures for cryptographic keys used for
+        encryption of cardholder data is still on the payment service and its
+        operations team in order to cover all aspects of cardholder data protection.
 
     - id: 3.7.2
       title: Key-management policies and procedures are implemented to include secure distribution
@@ -962,7 +1073,7 @@ controls:
         Cryptographic keys are secured during distribution.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 3.7.3
       title: Key-management policies and procedures are implemented to include secure storage of
@@ -971,11 +1082,9 @@ controls:
         Cryptographic keys are secured when stored.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        The scope of this requirement seems much wider going even to application level, which
-        might be different for each site. Regarding local system there are some technical measures
-        ensured by 2.2.6.
+        TPM
 
     - id: 3.7.4
       title: Key management policies and procedures are implemented for cryptographic key changes
@@ -990,7 +1099,17 @@ controls:
         - A process for key changes at the end of the defined cryptoperiod.
       levels:
         - base
-      status: pending
+      notes: |-
+        It is the responsibility of the payment entity's operations team to rotate the
+        encryption keys when they expire, according to the solution chosen for full disk
+        encryption:
+        * AWS EBS Encryption: Operations team creates a snapshot of the volume and then uses
+          the snapshot to create a new, encrypted copy of the volume. While creating the new volume,
+          a new encryption key is specified.
+        * LUKS encryption with TPM2: The TPM secret cannot be modified after disk creation.
+        * LUKS encryption with Tang: The operations performs the Tang Keys rotation as described in
+          https://access.redhat.com/solutions/4074891
+      status: not applicable
 
     - id: 3.7.5
       title: Key management policies procedures are implemented to include the retirement,
@@ -1007,7 +1126,10 @@ controls:
         - Retired or replaced keys are not used for encryption operations.
       levels:
         - base
-      status: pending
+      notes: |-
+        It is the responsibility of the payment entity's operations team to retire or
+        replace weakened keys
+      status: not applicable
 
     - id: 3.7.6
       title: Where manual cleartext cryptographic key-management operations are performed by
@@ -1022,7 +1144,10 @@ controls:
         generated via one of the following
       levels:
         - base
-      status: pending
+      notes: |-
+        Manual clear-text cryptographic key-management operations are not used in the context of
+        Openshift Container Platform
+      status: not applicable
 
     - id: 3.7.7
       title: Key management policies and procedures are implemented to include the prevention of
@@ -1031,7 +1156,17 @@ controls:
         Cryptographic keys cannot be substituted by unauthorized personnel.
       levels:
         - base
-      status: pending
+      notes: |-
+        This requirement depends on the solution chosen by the payment entity to protect card holder
+        data at rest:
+        * When Full Disk Encryption is done using AWS EBS encryption, the authorizations on the
+          cryptographic keys are managed in AWS IAM by the payment entity operating the service.
+        * When Full Disk Encryption is done using LUKS with TPM2, no substitution of cryptographic
+          keys is possible after disk creation.
+        * When Full Disk Encryption is done using LUKS with Tang, the access to the Tang server,
+          where the Tang Keys Rotation process can be handled, are the responsibility of the payment
+          entity operating the service.
+      status: not applicable
 
     - id: 3.7.8
       title: Key management policies and procedures are implemented to include that cryptographic
@@ -1042,7 +1177,12 @@ controls:
         operations and can access assistance and guidance when required.
       levels:
         - base
-      status: pending
+      notes: |-
+        This requirement is not applicable to the OpenShift Container Platform
+        as it instead pertains to the practices and documentation from the
+        payment entity. The platform may not generate the entity's policies
+        and security practices.
+      status: not applicable
 
     - id: 3.7.9
       title: 'Additional requirement for service providers only: Where a service provider shares
@@ -1055,7 +1195,7 @@ controls:
         a service provider.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '4.1'
     title: Processes and mechanisms for protecting cardholder data with strong cryptography during
