@@ -264,7 +264,9 @@ def compose_ds(
 
     if hasattr(ET, "indent"):
         ET.indent(ds_collection, space=" ", level=0)
-    return ET.ElementTree(ds_collection)
+    ds = ET.ElementTree(ds_collection)
+    ds_13 = upgrade_ds_to_scap_13(ds)
+    return ds_13
 
 
 def upgrade_ds_to_scap_13(ds):
@@ -279,8 +281,7 @@ def upgrade_ds_to_scap_13(ds):
 
 
 def _store_ds(ds, output):
-    ds_13 = upgrade_ds_to_scap_13(ds)
-    ds_13.write(output, xml_declaration=True, encoding="utf-8")
+    ds.write(output, xml_declaration=True, encoding="utf-8")
 
 
 def append_id_to_file_name(path, id_):
