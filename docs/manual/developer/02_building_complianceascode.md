@@ -422,8 +422,7 @@ it will be the `content/build` folder.
 ### SCAP XML files
 
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
-`ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source data stream**,
-and `ssg-rhel7-ds-1.2.xml` is the SCAP 1.2 **source data stream**.
+`ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source data stream**.
 
 We recommend using **source data stream** if you have a choice.
 The build system also generates separate XCCDF, OVAL, OCIL and CPE files:
@@ -433,7 +432,6 @@ $ ls -1 ssg-rhel7-*.xml
 ssg-rhel7-cpe-dictionary.xml
 ssg-rhel7-cpe-oval.xml
 ssg-rhel7-ds.xml
-ssg-rhel7-ds-1.2.xml
 ssg-rhel7-ocil.xml
 ssg-rhel7-oval.xml
 ssg-rhel7-xccdf.xml
