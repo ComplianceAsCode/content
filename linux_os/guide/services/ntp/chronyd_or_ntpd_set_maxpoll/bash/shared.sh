@@ -11,9 +11,9 @@ pof="/usr/sbin/pidof"
 
 CONFIG_FILES="/etc/ntp.conf"
 $pof ntpd || {
-    CHRONY_NAME={{{ chrony_conf_path }}}
-    CHRONY_PATH=${CHRONY_NAME%%.*}
-    CONFIG_FILES=$(find ${CHRONY_PATH}.* -type f -name '*.conf')
+    CHRONY_D_PATH={{{ chrony_d_path }}}
+    CONFIG_FILES=($(find ${CHRONY_D_PATH}.* -type f -name '*.conf'))
+    CONFIG_FILES+=({{{ chrony_conf_path }}})
 }
 
 # get list of ntp files
@@ -22,9 +22,6 @@ for config_file in $CONFIG_FILES; do
     # Set maxpoll values to var_time_service_set_maxpoll
     sed -i "s/^\(\(server\|pool\|peer\).*maxpoll\) [0-9][0-9]*\(.*\)$/\1 $var_time_service_set_maxpoll \3/" "$config_file"
 done
-
-
-
 
 for config_file in $CONFIG_FILES; do
     # Add maxpoll to server, pool or peer entries without maxpoll

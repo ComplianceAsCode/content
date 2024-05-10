@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = chrony
-#
+# remediation = none
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
 {{{ bash_package_remove("ntp") }}}
