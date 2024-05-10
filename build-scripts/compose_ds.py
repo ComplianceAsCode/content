@@ -240,10 +240,10 @@ def compose_ds(
         "{%s}data-stream-collection" % datastream_namespace)
     name = "from_xccdf_" + os.path.basename(xccdf_file_name)
     ds_collection.set("id", "scap_%s_collection_%s" % (ID_NS, name))
-    ds_collection.set("schematron-version", "1.2")
+    ds_collection.set("schematron-version", "1.3")
     ds = ET.SubElement(ds_collection, "{%s}data-stream" % datastream_namespace)
     ds.set("id", "scap_%s_datastream_%s" % (ID_NS, name))
-    ds.set("scap-version", "1.2")
+    ds.set("scap-version", "1.3")
     ds.set("use-case", "OTHER")
     dictionaries = ET.SubElement(ds, "{%s}dictionaries" % datastream_namespace)
     checklists = ET.SubElement(ds, "{%s}checklists" % datastream_namespace)
@@ -265,16 +265,6 @@ def compose_ds(
     if hasattr(ET, "indent"):
         ET.indent(ds_collection, space=" ", level=0)
     ds = ET.ElementTree(ds_collection)
-    ds_13 = upgrade_ds_to_scap_13(ds)
-    return ds_13
-
-
-def upgrade_ds_to_scap_13(ds):
-    dsc_el = ds.getroot()
-    dsc_el.set("schematron-version", "1.3")
-    ds_el = ds.find("{%s}data-stream" % datastream_namespace)
-    ds_el.set("scap-version", '1.3')
-
     # Move reference to remote OVAL content to a source data stream component
     move_patches_up_to_date_to_source_data_stream_component(ds)
     return ds
