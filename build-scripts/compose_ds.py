@@ -176,9 +176,7 @@ def parse_args():
     parser.add_argument("--cpe-oval", help="CPE OVAL file name")
     parser.add_argument("--enable-sce", action='store_true', help="Enable building sce data")
     parser.add_argument(
-        "--output-12", help="Output SCAP 1.2 source data stream file name")
-    parser.add_argument(
-        "--output-13", required=True,
+        "--output", required=True,
         help="Output SCAP 1.3 source data stream file name")
     parser.add_argument(
         "--multiple-ds",
@@ -280,12 +278,9 @@ def upgrade_ds_to_scap_13(ds):
     return ds
 
 
-def _store_ds(ds, output_13, output_12):
-    if output_12:
-        ds.write(output_12, xml_declaration=True, encoding="utf-8")
-
+def _store_ds(ds, output):
     ds_13 = upgrade_ds_to_scap_13(ds)
-    ds_13.write(output_13, xml_declaration=True, encoding="utf-8")
+    ds_13.write(output, xml_declaration=True, encoding="utf-8")
 
 
 def append_id_to_file_name(path, id_):
@@ -317,13 +312,12 @@ def _compose_multiple_ds(args):
         ds = compose_ds(
             xccdf, oval, ocil, cpe_dict, cpe_oval, args.enable_sce
         )
-        output_13 = _get_thin_ds_output_path(args.output_13, xccdf.replace("xccdf_", ""))
-        output_12 = None
+        output = _get_thin_ds_output_path(args.output, xccdf.replace("xccdf_", ""))
 
-        if not os.path.exists(os.path.dirname(output_13)):
-            os.makedirs(os.path.dirname(output_13))
+        if not os.path.exists(os.path.dirname(output)):
+            os.makedirs(os.path.dirname(output))
 
-        _store_ds(ds, output_13, output_12)
+        _store_ds(ds, output)
 
 
 if __name__ == "__main__":
@@ -336,4 +330,4 @@ if __name__ == "__main__":
     ds = compose_ds(
         args.xccdf, args.oval, args.ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
     )
-    _store_ds(ds, args.output_13, args.output_12)
+    _store_ds(ds, args.output)
