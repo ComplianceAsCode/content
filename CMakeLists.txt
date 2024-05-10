@@ -101,7 +101,7 @@ option(SSG_PRODUCT_OPENSUSE "If enabled, the openSUSE SCAP content will be built
 option(SSG_PRODUCT_RHEL7 "If enabled, the RHEL7 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL8 "If enabled, the RHEL8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL9 "If enabled, the RHEL9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_RHEL10 "If enabled, the RHEL10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_RHEL10 "If enabled, the RHEL10 SCAP content will be built" FALSE)
 option(SSG_PRODUCT_RHV4 "If enabled, the RHV4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLE12 "If enabled, the SLE12 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLE15 "If enabled, the SLE15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
