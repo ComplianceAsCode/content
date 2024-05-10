@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R9'
+title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R11'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to

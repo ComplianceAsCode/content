@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'DRAFT Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) DRAFT'
+title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V1R1'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -10,12 +10,10 @@ description: |-
 
 selections:
 
-    ### TODO
     # UBTU-22-271010 The Ubuntu operating system must enable the graphical user logon banner to display the Standard Mandatory DoD Notice and Consent Banner before granting local access to the system via a graphical user logon.
     - enable_dconf_user_profile
     - dconf_gnome_banner_enabled
 
-    ### TODO
     # UBTU-22-271015 The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local access to the system via a graphical user logon.
     - login_banner_text=dod_banners
     - dconf_gnome_login_banner_text
@@ -150,11 +148,9 @@ selections:
     # UBTU-22-612015 The Ubuntu operating system must accept Personal Identity Verification (PIV) credentials.
     - package_opensc_installed
 
-    ### TODO
     # UBTU-22-612025 The Ubuntu operating system must electronically verify Personal Identity Verification (PIV) credentials.
     - smartcard_configure_cert_checking
 
-    ### TODO
     # UBTU-22-612035 The Ubuntu operating system for PKI-based authentication, must implement a local cache of revocation data in case of the inability to access revocation information via the network.
     - smartcard_configure_crl
 
@@ -172,7 +168,6 @@ selections:
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_unlock_time
 
-    ### TODO
     # UBTU-22-651025 The Ubuntu operating system must be configured so that the script which runs each 30 days or less to check file integrity is the default one.
     - aide_periodic_cron_checking
 
@@ -195,12 +190,10 @@ selections:
     # UBTU-22-654140 The Ubuntu operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/opasswd.
     - audit_rules_usergroup_modification_opasswd
 
-    ### TODO
     # UBTU-22-653025 The Ubuntu operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.
     - var_auditd_action_mail_acct=root
     - auditd_data_retention_action_mail_acct
 
-    ### TODO
     # UBTU-22-653030 The Ubuntu operating system must shut down by default upon audit failure (unless availability is an overriding concern).
     - var_auditd_disk_full_action=halt
     - auditd_data_disk_full_action
@@ -352,11 +345,9 @@ selections:
     # UBTU-22-654230 The Ubuntu operating system must prevent all software from executing at higher privilege levels than users executing the software and the audit system must be configured to audit the execution of privileged functions.
     - audit_rules_suid_privilege_function
 
-    ### TODO
     # UBTU-22-653035 The Ubuntu operating system must allocate audit record storage capacity to store at least one weeks' worth of audit records, when audit records are not immediately sent to a central audit record storage facility.
     - auditd_audispd_configure_sufficiently_large_partition
 
-    ### TODO
     # UBTU-22-653020 The Ubuntu operating system audit event multiplexor must be configured to off-load audit logs onto a different system or storage media from the system being audited.
     #- var_audispd_remote_server=192.168.122.126
     - package_audit-audispd-plugins_installed
@@ -393,18 +384,15 @@ selections:
     # UBTU-22-654060 The Ubuntu operating system must generate audit records when successful/unsuccessful attempts to use modprobe command
     - audit_rules_privileged_commands_modprobe
 
-    ### TODO (double check, focal uses kmod_0)
     # UBTU-22-654055 The Ubuntu operating system must generate audit records when successful/unsuccessful attempts to use the kmod command.
     - audit_rules_privileged_commands_kmod
 
     # UBTU-22-654045 The Ubuntu operating system must generate audit records when successful/unsuccessful attempts to use the fdisk command.
     - audit_rules_privileged_commands_fdisk
 
-    ### TODO
     # UBTU-22-651035 The Ubuntu operating system must have a crontab script running weekly to offload audit events of standalone systems.
     - auditd_offload_logs
 
-    ### TODO
     # UBTU-22-412020 The Ubuntu operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
@@ -412,7 +400,6 @@ selections:
     # UBTU-22-213010 The Ubuntu operating system must restrict access to the kernel message buffer.
     - sysctl_kernel_dmesg_restrict
 
-    ### TODO
     # UBTU-22-652015 The Ubuntu operating system must monitor remote access methods.
     - rsyslog_remote_access_monitoring
 
@@ -434,14 +421,12 @@ selections:
     # UBTU-22-411035 The Ubuntu operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.
     - account_disable_post_pw_expiration
 
-    ### TODO
     # UBTU-22-411040 The Ubuntu operating system must provision temporary user accounts with an expiration time of 72 hours or less.
     - account_temp_expire_date
 
     # UBTU-22-232145 The Ubuntu operating system must set a sticky bit  on all public directories to prevent unauthorized and unintended information transferred via shared system resources.
     - dir_perms_world_writable_sticky_bits
 
-    ### TODO
     # UBTU-22-253010 The Ubuntu operating system must be configured to use TCP syncookies.
     - sysctl_net_ipv4_tcp_syncookies
 
@@ -508,19 +493,16 @@ selections:
     # UBTU-22-215015 The Ubuntu operating system must have the "chrony" package installed
     - package_chrony_installed
 
-    ### TODO
     # UBTU-22-252010 The Ubuntu operating system must, for networked systems, compare internal information system clocks at least every 24 hours with a server which is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
     - var_time_service_set_maxpoll=18_hours
     - chronyd_or_ntpd_set_maxpoll
 
-    ### TODO
     # UBTU-22-252015 The Ubuntu operating system must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.
     - chronyd_sync_clock
 
     # UBTU-22-651020 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
     - aide_disable_silentreports
 
-    ### TODO
     # UBTU-22-214010 The Ubuntu operating system's Advance Package Tool (APT) must be configured to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.
     - apt_conf_disallow_unauthenticated
 
@@ -533,22 +515,18 @@ selections:
     # UBTU-22-411020 The Ubuntu operating system must allow the use of a temporary password for system logons with an immediate change to a permanent password.
     - policy_temp_passwords_immediate_change
 
-    ### TODO
     # UBTU-22-631015 The Ubuntu operating system must be configured such that Pluggable Authentication Module (PAM) prohibits the use of cached authentications after one day.
     - sssd_offline_cred_expiration
 
     # UBTU-22-671010 The Ubuntu operating system must implement NIST FIPS-validated cryptography  to protect classified information and for the following: to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
     - is_fips_mode_enabled
 
-    ### TODO
     # UBTU-22-631010 The Ubuntu operating system must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions.
     - only_allow_dod_certs
 
-    ### TODO
     # UBTU-22-251025 The Ubuntu operating system must configure the uncomplicated firewall to rate-limit impacted network interfaces.
     - ufw_rate_limit
 
-    ### TODO
     # UBTU-22-213025 The Ubuntu operating system must implement non-executable data to protect its memory from unauthorized code execution.
     - bios_enable_execution_restrictions
 
@@ -561,11 +539,9 @@ selections:
     # UBTU-22-651010 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - package_aide_installed
 
-    ### TODO
     # UBTU-22-651015 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - aide_build_database
 
-    ### TODO
     # UBTU-22-412015 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
     - display_login_attempts
 
@@ -575,7 +551,6 @@ selections:
     # UBTU-22-251020 The Ubuntu operating system must have an application firewall enabled.
     - service_ufw_enabled
 
-    ### TODO
     # UBTU-22-291015 The Ubuntu operating system must disable all wireless network adapters.
     - wireless_disable_interfaces
 
@@ -589,7 +564,6 @@ selections:
     # UBTU-22-232055 The Ubuntu operating system must have system commands group-owned by root.
     - file_groupownership_system_commands_dirs
 
-    ### TODO
     # UBTU-22-271030 The Ubuntu operating system must disable the x86 Ctrl-Alt-Delete key sequence if a graphical user interface is installed.
     - dconf_gnome_disable_ctrlaltdel_reboot
 
@@ -606,7 +580,6 @@ selections:
     # UBTU-22-611060 The Ubuntu operating system must not allow accounts configured with blank or null passwords.
     - no_empty_passwords
 
-    ### TODO (fix dconf issues)
     # UBTU-22-271025 must initiate a graphical session lock after 15 minutes of inactivity
     - inactivity_timeout_value=15_minutes
     - var_screensaver_lock_delay=immediate
