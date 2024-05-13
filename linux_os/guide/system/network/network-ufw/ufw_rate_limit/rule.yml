@@ -7,6 +7,25 @@ description: |-
     The operating system must configure the uncomplicated firewall to
     rate-limit impacted network interfaces.
 
+    Check all the services listening to the ports with the following
+    command:
+    <pre>$ sudo ss -l46ut
+    Netid State Recv-Q Send-Q Local Address:Port Peer Address:Port Process
+    tcp LISTEN 0 128 [::]:ssh [::]:*</pre>
+
+    For each entry, verify that the ufw is configured to rate limit the
+    service ports with the following command:
+    <pre>$ sudo ufw status</pre>
+
+    If any port with a state of "LISTEN" is not marked with the "LIMIT"
+    action, run the following command, replacing "service" with the
+    service that needs to be rate limited:
+    <pre>$ sudo ufw limit "service"</pre>
+
+    Rate-limiting can also be done on an interface. An example of adding
+    a rate-limit on the eth0 interface follows:
+    <pre>$ sudo ufw limit in on eth0</pre>
+
 rationale: |-
     This requirement addresses the configuration of the operating system to
     mitigate the impact of DoS attacks that have occurred or are ongoing on
