@@ -1,7 +1,6 @@
 #!/bin/bash
 # packages = chrony
-#
-# profiles = xccdf_org.ssgproject.content_profile_stig
+# variables = var_time_service_set_maxpoll=16
 
 {{{ bash_package_remove("ntp") }}}
 

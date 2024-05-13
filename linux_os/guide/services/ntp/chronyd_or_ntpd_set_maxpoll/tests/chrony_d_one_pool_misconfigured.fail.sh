@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = chrony
+# variables = var_time_service_set_maxpoll=16
 
 {{{ bash_package_remove("ntp") }}}
 
