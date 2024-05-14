@@ -451,14 +451,6 @@ controls:
             - package_nfs-utils_removed
         status: automated
 
-    -   id: 215030
-        levels:
-            - medium
-        title: OL 9 must not have the ypserv package installed.
-        rules:
-            - package_ypserv_removed
-        status: automated
-
     -   id: 215035
         levels:
             - medium
@@ -1465,7 +1457,6 @@ controls:
         rules:
             - chronyd_or_ntpd_set_maxpoll
             - chronyd_server_directive
-            - chronyd_specify_remote_server
             - var_multiple_time_servers=stig
             - var_time_service_set_maxpoll=18_hours
         status: automated
@@ -1967,17 +1958,6 @@ controls:
             - file_permissions_sshd_pub_key
         status: automated
 
-    -   id: 255130
-        levels:
-            - medium
-        title:
-            OL 9 SSH daemon must not allow compression or must only allow compression
-            after successful authentication.
-        rules:
-            - sshd_disable_compression
-            - var_sshd_disable_compression=no
-        status: automated
-
     -   id: 255135
         levels:
             - medium
@@ -2036,14 +2016,6 @@ controls:
             logon upon an SSH logon.
         rules:
             - sshd_print_last_log
-        status: automated
-
-    -   id: 255170
-        levels:
-            - medium
-        title: OL 9 SSH daemon must be configured to use privilege separation.
-        rules:
-            - sshd_use_priv_separation
         status: automated
 
     -   id: 255175
@@ -3167,14 +3139,6 @@ controls:
         title: OL 9 must require authentication to access single-user mode.
         rules:
             - require_singleuser_auth
-        status: automated
-
-    -   id: 611205
-        levels:
-            - medium
-        title: OL 9 must prevent system daemons from using Kerberos for authentication.
-        rules:
-            - kerberos_disable_no_keytab
         status: automated
 
     -   id: 631010
