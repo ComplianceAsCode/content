@@ -47,6 +47,9 @@ warnings:
         There is no specific file to check as it depends on each site's policy. Therefore, check
         and remediation use the nft command directly. The fix is not persistent across system
         reboots.
+    - functionality: |-
+        SCE check does not support variables, therefore the SCE check in this rule only checks the
+        address family, regardless of the table name.
 
 ocil: |-
     To verify that a nftables table exists, run the following command:
