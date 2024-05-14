@@ -1,0 +1,724 @@
+id: 'ism_o'
+title: 'Australian Signals Directorate Information Security Manual'
+policy: 'Australian Signals Directorate Information Security Manual'
+version: '2024.03'
+source: 'https://www.cyber.gov.au/resources-business-and-government/essential-cyber-security/ism'
+levels:
+    -   id: base
+    -   id: secret
+        inherits_from:
+            - base
+    -   id: top_secret
+        inherits_from:
+            - secret
+
+controls:
+    -   id: '0418'
+        title: 'Credentials are kept separate from systems they are used to authenticate to, except for when performing authentication activities.'
+        levels:
+            - base
+        rules:
+            - accounts_maximum_age_login_defs
+            - accounts_minimum_age_login_defs
+            - accounts_password_warn_age_login_defs
+            - configure_kerberos_crypto_policy
+            - enable_ldap_client
+            - kerberos_disable_no_keytab
+            - network_nmcli_permissions
+            - sebool_kerberos_enabled
+            - set_password_hashing_algorithm_libuserconf
+            - set_password_hashing_algorithm_logindefs
+            - set_password_hashing_algorithm_passwordauth
+            - set_password_hashing_algorithm_systemauth
+            - sshd_disable_gssapi_auth
+        status: automated
+
+    -   id: '0421'
+        title: 'Passphrases used for single-factor authentication are at least 4 random words with a total minimum length of 14 characters, unless more stringent requirements apply.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '0422'
+        title: 'Passphrases used for single-factor authentication on TOP SECRET systems are at least 6 random words with a total minimum length of 20 characters.'
+        levels:
+            - top_secret
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '0487'
+        title: 'Passwordless SSH Connections Configuration'
+        levels:
+            - base
+        status: pending
+
+    -   id: '0582'
+        title: 'Central Logging for OS Events'
+        levels:
+            - base
+        rules:
+            - audit_access_failed
+            - audit_access_failed_aarch64
+            - audit_access_failed_ppc64le
+            - audit_access_success
+            - audit_access_success_aarch64
+            - audit_access_success_ppc64le
+            - audit_rules_privileged_commands
+            - audit_rules_session_events
+            - audit_rules_unsuccessful_file_modification
+            - display_login_attempts
+            - sebool_auditadm_exec_content
+        status: automated
+
+    -   id: '0586'
+        title: ''
+        levels:
+            - base
+        rules:
+            - audit_access_failed
+            - audit_access_failed_aarch64
+            - audit_access_failed_ppc64le
+            - audit_access_success
+            - audit_access_success_aarch64
+            - audit_access_success_ppc64le
+            - audit_rules_privileged_commands
+            - audit_rules_session_events
+            - audit_rules_unsuccessful_file_modification
+            - display_login_attempts
+            - sebool_auditadm_exec_content
+        status: automated
+
+    -   id: '0846'
+        title: 'All users (with the exception of local administrator accounts and break glass accounts) cannot disable, bypass or be exempted from application control.'
+        levels:
+            - base
+        rules:
+            - audit_access_failed
+            - audit_access_failed_aarch64
+            - audit_access_failed_ppc64le
+            - audit_access_success
+            - audit_access_success_aarch64
+            - audit_access_success_ppc64le
+            - audit_rules_privileged_commands
+            - audit_rules_session_events
+            - audit_rules_unsuccessful_file_modification
+            - display_login_attempts
+            - sebool_auditadm_exec_content
+        status: automated
+
+    -   id: '0974'
+        title: 'Multi-factor authentication is used to authenticate unprivileged users of systems.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: partial
+        notes: |-
+            This needs reevaluation.
+
+    -   id: '0988'
+        title: 'An accurate time source is established and used consistently across systems to assist with identifying connections between events.'
+        levels:
+            - base
+        rules:
+            - chronyd_configure_pool_and_server
+            - chronyd_or_ntpd_specify_multiple_servers
+            - chronyd_specify_remote_server
+            - package_chrony_installed
+            - rsyslog_cron_logging
+            - rsyslog_files_groupownership
+            - rsyslog_files_ownership
+            - rsyslog_files_permissions
+            - rsyslog_nolisten
+            - rsyslog_remote_loghost
+            - rsyslog_remote_tls
+            - rsyslog_remote_tls_cacert
+            - service_chronyd_enabled
+            - service_chronyd_or_ntpd_enabled
+        status: automated
+
+    -   id: '1034'
+        title: 'A HIPS is implemented on critical servers and high-value servers.'
+        levels:
+            - base
+        rules:
+            - package_aide_installed
+        status: automated
+
+    -   id: '1055'
+        title: 'LAN Manager and NT LAN Manager authentication methods are disabled.'
+        levels:
+            - base
+        rules:
+            - accounts_maximum_age_login_defs
+            - accounts_minimum_age_login_defs
+            - accounts_password_warn_age_login_defs
+            - configure_kerberos_crypto_policy
+            - enable_ldap_client
+            - kerberos_disable_no_keytab
+            - network_nmcli_permissions
+            - sebool_kerberos_enabled
+            - set_password_hashing_algorithm_libuserconf
+            - set_password_hashing_algorithm_logindefs
+            - set_password_hashing_algorithm_passwordauth
+            - set_password_hashing_algorithm_systemauth
+            - sshd_disable_gssapi_auth
+        status: partial
+        notes: |-
+            Needs reevaluation
+
+    -   id: '1173'
+        title: 'Multi-factor authentication is used to authenticate privileged users of systems.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '1277'
+        title: 'Data communicated between database servers and web servers is encrypted.'
+        levels:
+            - base
+        rules:
+            - openssl_use_strong_entropy
+        status: partial
+
+    -   id: '1288'
+        title: 'Files imported or exported via gateways or CDSs undergo antivirus scanning using multiple different scanning engines.'
+        levels:
+            - base
+        rules:
+            - package_aide_installed
+        status: partial
+
+    -   id: '1311'
+        title: 'SNMP version 1 and SNMP version 2 are not used on networks.'
+        levels:
+            - base
+        rules:
+            - service_snmpd_disabled
+            - snmpd_use_newer_protocol
+        status: partial
+
+    -   id: '1315'
+        title: 'The administrative interface on wireless access points is disabled for wireless network connections.'
+        levels:
+            - base
+        rules:
+            - network_ipv6_static_address
+            - wireless_disable_interfaces
+        status: automated
+
+    -   id: '1319'
+        title: 'Static addressing is not used for assigning IP addresses on wireless networks.'
+        levels:
+            - base
+        rules:
+            - network_ipv6_static_address
+            - wireless_disable_interfaces
+        status: partial
+
+    -   id: '1341'
+        title: 'A HIPS is implemented on workstations.'
+        levels:
+            - base
+        rules:
+            - package_aide_installed
+        status: automated
+
+    -   id: '1386'
+        title: 'Network management traffic can only originate from administrative infrastructure.'
+        levels:
+            - base
+        rules:
+            - configure_opensc_card_drivers
+            - force_opensc_card_drivers
+            - package_opensc_installed
+            - package_pcsc-lite_installed
+            - package_sudo_installed
+            - service_pcscd_enabled
+        status: partial
+        notes: |-
+            This needs reevaluation.
+
+    -   id: '1401'
+        title: 'Multi-factor authentication uses either: something users have and something users know, or something users have that is
+                unlocked by something users know or are.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: partial
+
+    -   id: '1402'
+        title: 'Credentials stored on systems are protected by a password manager; a hardware security module; or by salting, hashing
+and stretching them before storage within a database'
+        levels:
+            - base
+        rules:
+            - accounts_maximum_age_login_defs
+            - accounts_minimum_age_login_defs
+            - accounts_password_warn_age_login_defs
+            - configure_kerberos_crypto_policy
+            - enable_ldap_client
+            - kerberos_disable_no_keytab
+            - network_nmcli_permissions
+            - sebool_kerberos_enabled
+            - set_password_hashing_algorithm_libuserconf
+            - set_password_hashing_algorithm_logindefs
+            - set_password_hashing_algorithm_passwordauth
+            - set_password_hashing_algorithm_systemauth
+            - sshd_disable_gssapi_auth
+        status: automated
+
+    -   id: '1405'
+        title: 'A centralised event logging facility is implemented and event logs are sent to the facility as soon as possible after they occur.'
+        levels:
+            - base
+        rules:
+            - chronyd_configure_pool_and_server
+            - chronyd_or_ntpd_specify_multiple_servers
+            - chronyd_specify_remote_server
+            - package_chrony_installed
+            - rsyslog_cron_logging
+            - rsyslog_files_groupownership
+            - rsyslog_files_ownership
+            - rsyslog_files_permissions
+            - rsyslog_nolisten
+            - rsyslog_remote_loghost
+            - rsyslog_remote_tls
+            - rsyslog_remote_tls_cacert
+            - service_chronyd_enabled
+            - service_chronyd_or_ntpd_enabled
+        status: automated
+
+    -   id: '1416'
+        title: 'A software firewall is implemented on workstations and servers to restrict inbound and outbound network connections to an organisation-approved set of applications and services.'
+        levels:
+            - base
+        rules:
+            - configure_firewalld_ports
+            - firewalld_sshd_port_enabled
+            - set_firewalld_default_zone
+        status: automated
+
+    -   id: '1417'
+        title: 'Antivirus software is implemented on workstations and server.'
+        levels:
+            - base
+        rules:
+            - package_aide_installed
+        status: partial
+
+    -   id: '1418'
+        title: 'If there is no business requirement for reading from removable media and devices, such functionality is disabled via the
+use of device access control software or by disabling external communication interfaces'
+        levels:
+            - base
+        rules:
+            - package_usbguard_installed
+            - service_usbguard_enabled
+        status: automated
+
+    -   id: '1446'
+        title: 'When using elliptic curve cryptography, a suitable curve from NIST SP 800-186 is used.'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - enable_dracut_fips_module
+            - enable_fips_mode
+        status: automated
+
+    -   id: '1449'
+        title: 'SSH private keys are protected with a passphrase or a key encryption key'
+        levels:
+            - base
+        rules:
+            - sshd_allow_only_protocol2
+        status: partial
+        notes: |-
+            This needs more
+
+    -   id: '1467'
+        title: 'The latest release of office productivity suites, web browsers and their extensions, email clients, PDF software, and security products are used.'
+        levels:
+            - base
+        rules:
+            - dnf-automatic_apply_updates
+            - package_dnf-plugin-subscription-manager_installed
+            - package_subscription-manager_installed
+        status: automated
+
+    -   id: '1483'
+        title: 'The latest release of internet-facing server applications are used.'
+        levels:
+            - base
+        rules:
+            - dnf-automatic_apply_updates
+            - package_dnf-plugin-subscription-manager_installed
+            - package_subscription-manager_installed
+        status: automated
+
+    -   id: '1491'
+        title: 'Unprivileged users are prevented from running script execution engines.'
+        levels:
+            - base
+        rules:
+            - no_shelllogin_for_systemaccounts
+        status: automated
+
+    -   id: '1493'
+        title: 'Software registers for workstations, servers, network devices and other ICT equipment are developed, implemented, maintained and verified on a regular basis.'
+        levels:
+            - base
+        rules:
+            - dnf-automatic_apply_updates
+            - package_dnf-plugin-subscription-manager_installed
+            - package_subscription-manager_installed
+        status: automated
+
+    -   id: '1504'
+        title: 'Multi-factor authentication is used to authenticate users to their organisation’s online services that process, store or communicate their organisation’s sensitive data.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: partial
+
+    -   id: '1505'
+        title: 'Multi-factor authentication is used to authenticate users of data repositories.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: partial
+
+    -   id: '1506'
+        title: 'The use of SSH version 1 is disabled for SSH connections.'
+        levels:
+            - base
+        rules:
+            - sshd_allow_only_protocol2
+        status: partial
+        notes: |-
+            This should be reviewed.
+
+    -   id: '1546'
+        title: 'Users are authenticated before they are granted access to a system and its resources'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '1552'
+        title: 'All web application content is offered exclusively using HTTPS.'
+        levels:
+            - base
+        rules:
+            - openssl_use_strong_entropy
+        status: partial
+
+    -   id: '1557'
+        title: 'Passphrases used for single-factor authentication on SECRET systems are at least 5 random words with a total minimum length of 17 characters.'
+        levels:
+            - secret
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: partial
+
+    -   id: '1558'
+        title: 'Passphrases used for single-factor authentication are not a list of categorised words; do not form a real sentence in a natural language; and are not constructed from song lyrics, movies, literature or any other publicly available material.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '1559'
+        title: 'Memorised secrets used for multi-factor authentication are a minimum of 6 characters, unless more stringent requirements apply.'
+        levels:
+            - base
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '1560'
+        title: 'Memorised secrets used for multi-factor authentication on SECRET systems are a minimum of 8 characters'
+        levels:
+            - secret
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: '1561'
+        title: 'Memorised secrets used for multi-factor authentication on TOP SECRET systems are a minimum of 10 characters.'
+        levels:
+            - top_secret
+        rules:
+            - accounts_password_minlen_login_defs
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minclass
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - disable_host_auth
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - sebool_authlogin_nsswitch_use_ldap
+            - sebool_authlogin_radius
+            - sshd_disable_kerb_auth
+            - sshd_set_max_auth_tries
+            - sssd_enable_smartcards
+        status: automated
