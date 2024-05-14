@@ -4,7 +4,7 @@
     <criteria operator="OR">
       <criterion comment="Check offline_credentials_expiration in /etc/sssd/sssd.conf"
       test_ref="test_sssd_offline_cred_expiration" />
-      {{% if product in ["ol8", "rhel8"] %}}
+      {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
       <criterion comment="Check cache_credentials in /etc/sssd/sssd.conf"
       test_ref="test_sssd_cache_credentials" />
       {{% endif %}}
@@ -25,7 +25,7 @@
   <ind:textfilecontent54_state id="state_sssd_offline_cred_expiration" version="1">
     <ind:subexpression>1</ind:subexpression>
   </ind:textfilecontent54_state>
-  {{% if product in ["ol8", "rhel8"] %}}
+  {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test check="all" check_existence="any_exist"
   comment="tests the value of cache_credentials setting in the /etc/sssd/sssd.conf file"
   id="test_sssd_cache_credentials" version="1">
