@@ -1,8 +1,8 @@
 <def-group>
 {{% set networkpolicies_api_path = '/apis/networking.k8s.io/v1/networkpolicies' %}}
 {{% set namespaces_api_path = '/api/v1/namespaces' %}}
-{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and ({{if ne .var_network_policies_namespaces_whitelist_regex "None"}}.metadata.namespace | test("{{.var_network_policies_namespaces_whitelist_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
-{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_whitelist_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_whitelist_regex}}") | not{{else}}true{{end}}))]' %}}
+{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.namespace | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}}))]' %}}
   <definition class="compliance" id="configure_network_policies_namespaces" version="1">
     {{{ oval_metadata("Ensure that application Namespaces have Network Policies defined") }}}
     <criteria>
@@ -10,8 +10,17 @@
                  test_ref="test_file_for_configure_network_policies_namespaces"/>
       <criterion comment="Make sure that the file '{{{ openshift_filtered_path(namespaces_api_path, non_ctlplane_namespaces_filter) }}}' exists."
                  test_ref="test_file_for_configure_network_policies_filtered_namespaces"/>
-      <criterion comment="Make sure that all target elements exists for elements at path &#39;.items[:].spec.host&#39;"
-                 test_ref="test_elements_count_for_configure_network_policies_namespaces"/>
+      <criteria operator="OR">
+        <criterion comment="Make sure that all target elements exists for elements at path &#39;.items[:].spec.host&#39;"
+        test_ref="test_elements_count_for_configure_network_policies_namespaces"/>
+        <criteria operator="AND">
+          <criterion comment="Make sure that there are no network policies in non-ctlplane namespaces"
+          test_ref="test_configure_network_policies_namespaces"/>
+          <criterion comment="Make sure that there are no namespaces in non-ctlplane namespaces"
+          test_ref="test_configure_network_policies_filtered_namespaces"/>
+        </criteria>
+      </criteria>
+
     </criteria>
   </definition>
 
@@ -62,6 +71,10 @@
     </count>
   </local_variable>
 
+  <ind:yamlfilecontent_test id="test_configure_network_policies_namespaces" version="1" check="all" comment="Make sure there are no count for network policies in non-ctlplane namespaces" check_existence="none_exist" state_operator="AND">
+    <ind:object object_ref="object_configure_network_policies_namespaces"/>
+  </ind:yamlfilecontent_test>
+
   <ind:yamlfilecontent_object id="object_configure_network_policies_filtered_namespaces" version="1">
     <ind:filepath var_ref="configure_network_policies_filtered_namespaces_file_location"/>
     <ind:yamlpath>[:].metadata.name</ind:yamlpath>
@@ -71,6 +84,10 @@
       <object_component object_ref="object_configure_network_policies_filtered_namespaces" item_field="value" record_field="#"/>
     </count>
   </local_variable>
+
+  <ind:yamlfilecontent_test id="test_configure_network_policies_filtered_namespaces" version="1" check="all" comment="Make sure there are no count for namespaces in non-ctlplane namespaces" check_existence="none_exist" state_operator="AND">
+    <ind:object object_ref="object_configure_network_policies_filtered_namespaces"/>
+  </ind:yamlfilecontent_test>
   
   <!-- Object counts -->
   <ind:variable_test version="1" id="test_elements_count_for_configure_network_policies_namespaces" check="all"
