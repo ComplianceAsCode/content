@@ -21,7 +21,7 @@ project(scap-security-guide NONE)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-# This is set to silence GNUInstallDirs warning about no language being used with cmake
+# This is set to silence GNUInstallDirs warning about no language being used with cmake.
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
 include(FindPythonModule)
@@ -67,16 +67,14 @@ option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled
 option(SSG_SRG_XLSX_EXPORT "If enabled, an XLSX of SRG Export will be ceated." FALSE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
-# SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products
-# which should be built by default should use the value ${SSG_PRODUCT_DEFAULT}
-# instead of the boolean True. This allows us disable all default products by
-# passing `-DSSG_PRODUCT_DEFAULT=OFF` and then manually specifying a list of
-# products to build.
+# SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products which should be built
+# by default should use the value ${SSG_PRODUCT_DEFAULT} instead of the boolean True. This allows
+# us to disable all default products by passing `-DSSG_PRODUCT_DEFAULT=OFF` and then manually
+# specifying a list of products to build.
 option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be built; otherwise only explicitly enabled products will be" TRUE)
 
-# Products to build content for. These generally correspond to directories in
-# the root of this project. Note that the example product is always disabled
-# unless explicitly asked for.
+# Products to build content for. These generally correspond to directories in the root of this
+# project. Note that the example product is always disabled unless explicitly asked for.
 option(SSG_PRODUCT_ALINUX2 "If enabled, the Alibaba Cloud Linux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_ALINUX3 "If enabled, the Alibaba Cloud Linux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_ANOLIS8 "If enabled, the Anolis OS 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -130,8 +128,7 @@ message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
 message(STATUS "")
 
-# Strictly speaking in-source will work but will be very messy, let's
-# discourage our users from using them
+# Strictly speaking in-source will work but will be very messy so it is not supported.
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
         "$ cd content\n"
@@ -181,20 +178,19 @@ if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
 endif()
 
-# OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
-# it. See also: https://github.com/ComplianceAsCode/content/issues/6798
+# OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
+# See also: https://github.com/ComplianceAsCode/content/issues/6798
 if("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_OCP4)
     set(SSG_PRODUCT_OCP4 OFF)
     message(WARNING "Won't build OCP4 content as it requires an OpenSCAP version with OCP4 support. See also: https://github.com/ComplianceAsCode/content/issues/6798. n.b.: if 1.3.4 fails to build OCP4 content, please update to 1.3.5")
 endif()
 
-# EKS requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
-# it. See also: https://github.com/ComplianceAsCode/content/issues/6798
+# EKS requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support it.
+# See also: https://github.com/ComplianceAsCode/content/issues/6798
 if("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_EKS)
     set(SSG_PRODUCT_EKS OFF)
     message(WARNING "Won't build EKS content as it requires an OpenSCAP version with EKS support. See also: https://github.com/ComplianceAsCode/content/issues/6798. n.b.: if 1.3.4 fails to build EKS content, please update to 1.3.5")
 endif()
-
 
 if(SSG_JINJA2_CACHE_ENABLED)
     file(MAKE_DIRECTORY "${SSG_JINJA2_CACHE_DIR}")
@@ -343,9 +339,9 @@ message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OPENEMBEDDED}")
 
 message(STATUS " ")
 
-# Remove this option when we would like to run ansible-lint and yamllint against our playbooks by default.
-# Right now these checks are not performed and need to be enabled by adding -DANSIBLE_CHECKS=ON to cmake
-# before running ctest.
+# Remove this option when we would like to run ansible-lint and yamllint against our playbooks by
+# default. Right now these checks are not performed and need to be enabled by adding
+# -DANSIBLE_CHECKS=ON to cmake before running ctest.
 option(ANSIBLE_CHECKS "Set to ON to enable ansible-lint and yamllint checks" OFF)
 enable_testing()
 
@@ -353,8 +349,8 @@ include(SSGCommon)
 
 add_subdirectory("tests")
 
-# Targets 'stats', 'profile-stats' and 'zipfile' need to be added
-# before any product because they will receive dependencies from products added
+# Targets 'stats', 'profile-stats' and 'zipfile' need to be added before any product because they
+# will receive dependencies from products added.
 ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
 
 add_custom_target(stats)
@@ -473,10 +469,9 @@ if(SSG_PRODUCT_OPENEMBEDDED)
     add_subdirectory("products/openembedded" "openembedded")
 endif()
 
-# ZIP only contains source data streams and kickstarts, people who
-# want sources to build from should get the tarball instead.
+# ZIP only contains source datastreams and kickstarts.
+# People who want sources to build from should get the tarball instead.
 ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-
 
 ssg_define_guide_and_table_tests()
 
@@ -490,10 +485,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
 install(FILES "${CMAKE_BINARY_DIR}/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
 
-# We use CPack to generate the tarball with all sources and
-# packages for testing
-
-# only CPack should follow
+# We use CPack to generate the tarball with all sources and packages for testing.
+# Only CPack should follow.
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}" CACHE INTERNAL "tarball basename")
@@ -536,11 +529,11 @@ The %{name} package also contains HTML formatted documents containing
 hardening guidances that have been generated from XCCDF benchmarks.
 ")
 
-# Change the default file name of the RPMs
-# %{release} includes release number and dist type
-# This only has effect with cmake v3.6 or higher
+# Change the default file name of the RPMs.
+# %{release} includes release number and dist type.
+# This only has effect with cmake v3.6 or higher.
 set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
-# For older versions of cmake (e.g. v2.8) file name is defined like below
+# For older versions of cmake (e.g. v2.8) file name is defined like below.
 set(CPACK_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}")
 set(CPACK_PACKAGE_CHECKSUM SHA512)
 
