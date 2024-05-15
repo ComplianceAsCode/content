@@ -38,8 +38,6 @@ set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 74)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
-message(STATUS "SCAP Security Guide ${SSG_VERSION}")
-
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
 set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
@@ -63,6 +61,17 @@ set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 
+if(SSG_JINJA2_CACHE_ENABLED)
+    file(MAKE_DIRECTORY "${SSG_JINJA2_CACHE_DIR}")
+    if(NOT EXISTS "${SSG_JINJA2_CACHE_DIR}")
+        message(FATAL_ERROR "jinja2 cache dir was set to '${SSG_JINJA2_CACHE_DIR}'. This directory doesn't seem to exist and attempt to create it has failed.")
+    endif()
+    set(SSG_JINJA2_CACHE_ENABLED_BOOL "true")
+else()
+    set(SSG_JINJA2_CACHE_ENABLED_BOOL "false")
+endif()
+
+message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
 message(STATUS "")
 
@@ -124,18 +133,9 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-
+# Products derivatives
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
-
-set(LOG_LEVEL "WARNING")
-if(SSG_LOG)
-    set(LOG_LEVEL "DEBUG")
-endif()
-
-if(NOT SSG_THIN_DS)
-    set(SSG_THIN_DS_RULE_ID "off")
-endif()
 
 if("$ENV{PYTHONPATH}" STREQUAL "")
     set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}")
@@ -145,6 +145,7 @@ endif()
 
 set(Python_ADDITIONAL_VERSIONS 3 2)
 find_package(PythonInterp REQUIRED)
+find_package(OpenSCAP REQUIRED)
 
 find_python_module(jinja2 REQUIRED)
 find_python_module(yaml REQUIRED)
@@ -165,6 +166,11 @@ find_python_module(sphinx)
 find_python_module(sphinxcontrib.autojinja)
 find_python_module(sphinx_rtd_theme)
 
+if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_MYST_PARSER)
+    message(STATUS "Enabling docs directory as system supports Sphinx builds.")
+    add_subdirectory("docs")
+endif()
+
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
 
@@ -172,7 +178,29 @@ find_python_module(prometheus_client)
 find_python_module(requests)
 find_python_module(trestle)
 
-find_package(OpenSCAP REQUIRED)
+find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
+find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
+find_program(BATS_EXECUTABLE NAMES bats)
+find_program(GREP_EXECUTABLE NAMES grep)
+find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
+find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
+find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
+find_program(PYTHON3_EXECUTABLE NAMES python3)
+find_program(GIT_EXECUTABLE NAMES git)
+find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
+if(NOT XSLTPROC_EXECUTABLE)
+    message(SEND_ERROR "xsltproc is required!")
+endif()
+
+find_program(XMLLINT_EXECUTABLE NAMES xmllint)
+if(NOT XMLLINT_EXECUTABLE)
+    message(SEND_ERROR "xmllint is required!")
+endif()
+
+find_program(SED_EXECUTABLE NAMES sed)
+if(NOT SED_EXECUTABLE)
+    message(SEND_ERROR "sed is required!")
+endif()
 
 if(NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     message(WARNING "You are targeting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.11 only!")
@@ -192,40 +220,14 @@ if("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_EKS)
     message(WARNING "Won't build EKS content as it requires an OpenSCAP version with EKS support. See also: https://github.com/ComplianceAsCode/content/issues/6798. n.b.: if 1.3.4 fails to build EKS content, please update to 1.3.5")
 endif()
 
-if(SSG_JINJA2_CACHE_ENABLED)
-    file(MAKE_DIRECTORY "${SSG_JINJA2_CACHE_DIR}")
-    if(NOT EXISTS "${SSG_JINJA2_CACHE_DIR}")
-        message(FATAL_ERROR "jinja2 cache dir was set to '${SSG_JINJA2_CACHE_DIR}'. This directory doesn't seem to exist and attempt to create it has failed.")
-    endif()
-    set(SSG_JINJA2_CACHE_ENABLED_BOOL "true")
-else()
-    set(SSG_JINJA2_CACHE_ENABLED_BOOL "false")
+set(LOG_LEVEL "WARNING")
+if(SSG_LOG)
+    set(LOG_LEVEL "DEBUG")
 endif()
 
-find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
-if(NOT XSLTPROC_EXECUTABLE)
-    message(SEND_ERROR "xsltproc is required!")
+if(NOT SSG_THIN_DS)
+    set(SSG_THIN_DS_RULE_ID "off")
 endif()
-
-find_program(XMLLINT_EXECUTABLE NAMES xmllint)
-if(NOT XMLLINT_EXECUTABLE)
-    message(SEND_ERROR "xmllint is required!")
-endif()
-
-find_program(SED_EXECUTABLE NAMES sed)
-if(NOT SED_EXECUTABLE)
-    message(SEND_ERROR "sed is required!")
-endif()
-
-find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
-find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
-find_program(BATS_EXECUTABLE NAMES bats)
-find_program(GREP_EXECUTABLE NAMES grep)
-find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
-find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
-find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
-find_program(PYTHON3_EXECUTABLE NAMES python3)
-find_program(GIT_EXECUTABLE NAMES git)
 
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
@@ -344,8 +346,6 @@ message(STATUS " ")
 option(ANSIBLE_CHECKS "Set to ON to enable ansible-lint and yamllint checks" OFF)
 enable_testing()
 
-
-
 add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added before any product because they
@@ -359,11 +359,6 @@ add_custom_target(html-stats)
 add_custom_target(html-profile-stats)
 
 add_custom_target(render-policies)
-
-if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_MYST_PARSER)
-    message(STATUS "Enabling docs directory as system supports Sphinx builds.")
-    add_subdirectory("docs")
-endif()
 
 ssg_build_man_page()
 
