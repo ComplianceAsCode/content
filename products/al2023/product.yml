@@ -2,12 +2,6 @@ product: al2023
 full_name: Amazon Linux 2023
 type: platform
 
-families:
-  - rhel
-  - rhel-like
-
-major_version_ordinal: 2023
-
 benchmark_id: AL-2023
 benchmark_root: "../../linux_os/guide"
 components_root: "../../components"
@@ -24,14 +18,12 @@ groups:
 
 sshd_distributed_config: "true"
 
-dconf_gdm_dir: "distro.d"
-
 faillock_path: "/var/log/faillock"
 
 cpes_root: "../../shared/applicability"
 cpes:
   - al2023:
-      name: "cpe:/o:amazon:linux:2023"
+      name: "cpe:/o:amazon:amazon_linux:2023"
       title: "Amazon Linux 2023"
       check_id: installed_OS_is_al2023
 
