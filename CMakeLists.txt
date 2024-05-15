@@ -25,7 +25,12 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # This is set to silence GNUInstallDirs warning about no language being used with cmake.
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
+include(CPack)
+include(CMakeDependentOption)
 include(FindPythonModule)
+include(SSGCommon)
+
+cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
 
 # Define Version values
 set(SSG_MAJOR_VERSION 0)
@@ -141,34 +146,31 @@ endif()
 set(Python_ADDITIONAL_VERSIONS 3 2)
 find_package(PythonInterp REQUIRED)
 
-find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
-find_python_module(lxml)
-find_python_module(pytest)
-find_python_module(pytest_cov)
+find_python_module(yaml REQUIRED)
+find_python_module(cmakelint)
+find_python_module(github)
 find_python_module(json2html)
+find_python_module(lxml)
 find_python_module(mypy)
 find_python_module(openpyxl)
 find_python_module(pandas)
 find_python_module(pcre2)
-find_python_module(cmakelint)
-find_python_module(github)
+find_python_module(pytest)
+find_python_module(pytest_cov)
 
 # sphinx documentation requirements
+find_python_module(myst_parser)
 find_python_module(sphinx)
 find_python_module(sphinxcontrib.autojinja)
 find_python_module(sphinx_rtd_theme)
-find_python_module(myst_parser)
 
 # prometheus_metrics requirements
 find_python_module(prometheus_client)
 
 # compliance-trestle requirements
-find_python_module(trestle)
 find_python_module(requests)
-
-include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
+find_python_module(trestle)
 
 find_package(OpenSCAP REQUIRED)
 
@@ -342,7 +344,7 @@ message(STATUS " ")
 option(ANSIBLE_CHECKS "Set to ON to enable ansible-lint and yamllint checks" OFF)
 enable_testing()
 
-include(SSGCommon)
+
 
 add_subdirectory("tests")
 
@@ -533,6 +535,4 @@ set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
 # For older versions of cmake (e.g. v2.8) file name is defined like below.
 set(CPACK_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}")
 set(CPACK_PACKAGE_CHECKSUM SHA512)
-
 set(CPACK_GENERATOR "RPM;DEB")
-include(CPack)
