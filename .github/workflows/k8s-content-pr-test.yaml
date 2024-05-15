@@ -39,9 +39,13 @@ jobs:
             echo "Failed to fetch go version from compliance-operator go.mod"
             exit 1
           fi
+      - name: Save go version to be used in setup-go action
+        id: save-go-version
+        run: |
+          echo "go-version=$(cat compliance-operator/go-version)" > compliance-operator/go-version
       - uses: actions/setup-go@v5
         with:
-          go-version: $(cat compliance-operator/go-version)
+          go-version: ${{ steps.save-go-version.outputs.go-version }}
       - name: Run ginkgo tests and check if each XCCDF file is parsed correctly
         run: |
           export DEFAULT_CONTENT_DS_FILE_PATH=$PWD/content
