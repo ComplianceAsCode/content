@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
+project(scap-security-guide NONE)
 
 # Inspired and referenced from https://blog.kitware.com/cmake-and-the-default-build-type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -17,8 +18,6 @@ if(NOT SSG_THIN_DS)
     set(SSG_THIN_DS_RULE_ID "off")
 endif()
 
-project(scap-security-guide NONE)
-
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 # This is set to silence GNUInstallDirs warning about no language being used with cmake.
@@ -32,40 +31,49 @@ else()
     set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}")
 endif()
 
-set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
-set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
-set(SSG_TABLE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/tables")
-set(SSG_ANSIBLE_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/ansible")
-set(SSG_ANSIBLE_PER_RULE_PLAYBOOKS_INSTALL_DIR "${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks")
-set(SSG_BASH_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/bash")
-set(SSG_KICKSTART_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/kickstart")
-set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tailoring")
-
+# Define Version values
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 74)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
-set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
-
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
 set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
-
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
+set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
-option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
-option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests." TRUE)
-option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
-option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
+# Define Install Directories, where built content will be stored.
+set(SSG_ANSIBLE_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/ansible")
+set(SSG_ANSIBLE_PER_RULE_PLAYBOOKS_INSTALL_DIR "${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks")
+set(SSG_BASH_ROLE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/bash")
+set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
+set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
+set(SSG_KICKSTART_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/kickstart")
+set(SSG_TABLE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/tables")
+set(SSG_TAILORING_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/tailoring")
+
+# Define Source Directories, which will be used during the build.
+set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
+set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
+set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
+set(SSG_SHARED_REFS "${SSG_SHARED}/references")
+set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
+set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
+
+# Content Generation Opetions
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for each rule will be built and installed." FALSE)
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
-option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
-option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
+option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
 option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
 option(SSG_SRG_XLSX_EXPORT "If enabled, an XLSX of SRG Export will be ceated." FALSE)
-set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
+option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
+# Validation Options
+option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
+option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
+option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
+option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests." TRUE)
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products which should be built
 # by default should use the value ${SSG_PRODUCT_DEFAULT} instead of the boolean True. This allows
@@ -89,12 +97,13 @@ option(SSG_PRODUCT_FEDORA "If enabled, the Fedora SCAP content will be built" ${
 option(SSG_PRODUCT_FIREFOX "If enabled, the Firefox SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_MACOS1015 "If enabled, the Apple macOS 10.15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_RHCOS4 "If enabled, the RHCOS4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL7 "If enabled, the Oracle Linux 7 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL8 "If enabled, the Oracle Linux 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OL9 "If enabled, the Oracle Linux 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_OPENEMBEDDED "If enabled, the OpenEmbedded SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OPENEULER2203 "If enabled, the openEuler 22.03 LTS content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_OPENSUSE "If enabled, the openSUSE SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_RHCOS4 "If enabled, the RHCOS4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL7 "If enabled, the RHEL7 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL8 "If enabled, the RHEL8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_RHEL9 "If enabled, the RHEL9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -107,8 +116,6 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_OPENEMBEDDED "If enabled, the OpenEmbedded SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -117,12 +124,6 @@ option(FORCE_VALIDATE_EVERYTHING "If enabled, perform all validation tests regar
 
 # SCAPVal Options
 option(ENABLE_SCAPVAL13 "Set to ON to enable SCAPVal tests" OFF)
-
-set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
-set(SSG_SHARED_REFS "${SSG_SHARED}/references")
-set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
-set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
-set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 
 message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
