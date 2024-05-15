@@ -1,0 +1,49 @@
+---
+name: Gate / Kubernetes Test Content Parsing
+
+on:
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  datastream-parsing:
+    name: XCCDF Datastream parsing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy XCCDF files from existing content image
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          retry_wait_seconds: 120
+          retry_on: error
+          command: |
+            mkdir -p content
+            docker pull ghcr.io/complianceascode/k8scontent:${{ github.event.number }}
+            docker run --rm -v $PWD/content:/content:z ghcr.io/complianceascode/k8scontent:${{ github.event.number }} bash -c "cp *.xml /content"
+      - name: Clone compliance operator repository
+        run: |
+          git clone https://github.com/ComplianceAsCode/compliance-operator.git
+      - name: Fetch go version used in compliance-operator go.mod
+        run: |
+          cd compliance-operator
+          go mod edit -json | jq -r '.Go' > go-version
+          if [ ! -s go-version ]; then
+            echo "Failed to fetch go version from compliance-operator go.mod"
+            exit 1
+          fi
+      - uses: actions/setup-go@v5
+        with:
+          go-version: $(cat compliance-operator/go-version)
+      - name: Run ginkgo tests and check if each XCCDF file is parsed correctly
+        run: |
+          export DEFAULT_CONTENT_DS_FILE_PATH=$PWD/content
+          cd compliance-operator
+          make test-datastreams
