@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(scap-security-guide NONE)
+
+# Strictly speaking in-source will work but will be very messy so it is not supported.
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+    message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
+        "$ cd content\n"
+        "$ rm CMakeCache.txt\n"
+        "$ cd build\n"
+        "$ cmake ../\n"
+        "$ make -j4"
+    )
+endif()
 
 # Inspired and referenced from https://blog.kitware.com/cmake-and-the-default-build-type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -9,15 +19,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
         "MinSizeRel" "RelWithDebInfo")
 endif()
 
-set(LOG_LEVEL "WARNING")
-if(SSG_LOG)
-    set(LOG_LEVEL "DEBUG")
-endif()
-
-if(NOT SSG_THIN_DS)
-    set(SSG_THIN_DS_RULE_ID "off")
-endif()
-
+project(scap-security-guide NONE)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 # This is set to silence GNUInstallDirs warning about no language being used with cmake.
@@ -25,17 +27,13 @@ set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
 include(FindPythonModule)
 
-if("$ENV{PYTHONPATH}" STREQUAL "")
-    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}")
-else()
-    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}")
-endif()
-
 # Define Version values
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 74)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
+
+message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
 set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Only 11 is supported at the moment.")
@@ -60,6 +58,9 @@ set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_UTILS_SCRIPTS "${CMAKE_SOURCE_DIR}/utils")
 
+message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
+message(STATUS "")
+
 # Content Generation Opetions
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for each rule will be built and installed." FALSE)
@@ -74,6 +75,8 @@ option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests o
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests." TRUE)
+option(ENABLE_SCAPVAL13 "Set to ON to enable SCAPVal tests" OFF)
+option(FORCE_VALIDATE_EVERYTHING "If enabled, perform all validation tests regardless of oscap version requirements. By default, the build system may not perform validation of some content types if the openscap used to build it is not up-to-date" FALSE)
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products which should be built
 # by default should use the value ${SSG_PRODUCT_DEFAULT} instead of the boolean True. This allows
@@ -120,26 +123,20 @@ option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${S
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
 
-option(FORCE_VALIDATE_EVERYTHING "If enabled, perform all validation tests regardless of oscap version requirements. By default, the build system may not perform validation of some content types if the openscap used to build it is not up-to-date" FALSE)
-
-# SCAPVal Options
-option(ENABLE_SCAPVAL13 "Set to ON to enable SCAPVal tests" OFF)
-
-message(STATUS "SCAP Security Guide ${SSG_VERSION}")
-message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
-message(STATUS "")
-
-# Strictly speaking in-source will work but will be very messy so it is not supported.
-if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-    message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
-        "$ cd content\n"
-        "$ rm CMakeCache.txt\n"
-        "$ cd build\n"
-        "$ cmake ../\n"
-        "$ make -j4"
-    )
+set(LOG_LEVEL "WARNING")
+if(SSG_LOG)
+    set(LOG_LEVEL "DEBUG")
 endif()
 
+if(NOT SSG_THIN_DS)
+    set(SSG_THIN_DS_RULE_ID "off")
+endif()
+
+if("$ENV{PYTHONPATH}" STREQUAL "")
+    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}")
+else()
+    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}")
+endif()
 
 set(Python_ADDITIONAL_VERSIONS 3 2)
 find_package(PythonInterp REQUIRED)
@@ -336,7 +333,6 @@ message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
 message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OPENEMBEDDED}")
-
 
 message(STATUS " ")
 
