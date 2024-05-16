@@ -43,3 +43,13 @@ add_dconf_lock(){
 	mkdir -p /etc/dconf/db/${_db}/locks
 	echo "/${_path}/${_setting}" >> /etc/dconf/db/${_db}/locks/${_settingFile}
 }
+
+# Adds the user profile
+add_dconf_profiles() {
+    {{% if 'ubuntu' in product %}}
+    mkdir -p /etc/dconf/profile
+    echo -e "user-db:user\nsystem-db:gdm" > /etc/dconf/profile/gdm
+    echo -e "user-db:user\nsystem-db:local" > /etc/dconf/profile/user
+    {{% endif %}}
+    return 0
+}
