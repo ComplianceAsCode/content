@@ -2461,3 +2461,31 @@ while read -r user; do
 done < <(awk -F: '($3 >= {{{ uid_min }}}) { print $1 }' /etc/passwd)
 sed -i "${del}" /etc/passwd
 {{%- endmacro -%}}
+
+{{#
+Macro for enabling dconf user profile in /etc/dconf/profile/<PROFILE>
+
+The macro adds the following lines to the profile:
+---
+user-db:user
+system-db:<DATABASE>
+---
+If the profile exists but does not contain the above lines, the
+lines will be inserted at the beginning of the profile.
+
+:param profile: name of dconf profile (e.g. user, gdm)
+:type profile: str
+:param database: name of dconf database (e.g. local, gdm)
+:type database: str
+#}}
+{{% macro bash_enable_dconf_user_profile(profile, database) -%}}
+
+mkdir -p /etc/dconf/profile
+dconf_profile_path=/etc/dconf/profile/{{{ profile }}}
+
+[[ -e "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
+
+if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_profile_path}"; then
+    sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
+fi
+{{%- endmacro -%}}
