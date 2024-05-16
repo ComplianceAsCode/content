@@ -1226,7 +1226,7 @@ controls:
     title: PAN is protected with strong cryptography during transmission.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 4.2.1
       title: Strong cryptography and security protocols are implemented as follows to safeguard
@@ -1244,7 +1244,22 @@ controls:
         - The encryption strength is appropriate for the encryption methodology in use.
       levels:
         - base
-      status: pending
+      status: partial
+      notes: |-
+        OpenShift provides mechanisms to securely transmit PAN over open public networks, but
+        the application is still responsible for leveraging and implementing strong
+        cryptography when transmitting PAN.
+      rules:
+        - file_permissions_openshift_pki_cert_files
+        - tls_version_check_apiserver
+        - tls_version_check_masters_workers
+        - tls_version_check_router
+        - etcd_check_cipher_suite
+        - api_server_tls_security_profile
+        - ingress_controller_certificate
+        - ingress_controller_tls_security_profile
+        - kubelet_configure_tls_min_version
+
       controls:
       - id: 4.2.1.1
         title: An inventory of the entity's trusted keys and certificates used to protect PAN
@@ -1255,7 +1270,10 @@ controls:
           which it will be required and must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: pending
+        status: not applicable
+        notes: |-
+          OpenShift doesn't directly handle PANs, the management of keys and certificates
+          protecting a PAN is resposibility of the application.
 
       - id: 4.2.1.2
         title: Wireless networks transmitting PAN or connected to the CDE use industry best
@@ -1264,9 +1282,9 @@ controls:
           Cleartext PAN cannot be read or intercepted from wireless network transmissions.
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          Wireless interfaces are disabled by 1.3.3.
+          OpenShift doesn't manage wireless environments nor they security configurations.
 
     - id: 4.2.2
       title: PAN is secured with strong cryptography whenever it is sent via end-user messaging
@@ -1282,11 +1300,10 @@ controls:
         from being used for cardholder data.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Some known insecure services and protocols are disabled by 2.2.4.
-        If any specific end-user messaging technology is used, it should be manually checked in
-        alignment to site policies.
+        OpenShift doesn't directly handle PANs, the application is responsible for appropriately
+        securing PAN.
 
   - id: '5.1'
     title: Processes and mechanisms for protecting all systems and networks from malicious
