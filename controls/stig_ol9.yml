@@ -1823,14 +1823,6 @@ controls:
             - sshd_enable_pam
         status: automated
 
-    -   id: 255055
-        levels:
-            - medium
-        title: OL 9 SSH daemon must be configured to use system-wide crypto policies.
-        rules:
-            - configure_ssh_crypto_policy
-        status: automated
-
     -   id: 255060
         levels:
             - medium
@@ -1839,18 +1831,20 @@ controls:
             of SSH client connections.
         rules:
             - harden_sshd_ciphers_openssh_conf_crypto_policy
-            - sshd_approved_ciphers=stig_extended
+            - sshd_approved_ciphers=stig_ol9
         status: automated
 
-    -   id: 255065
-        levels:
-            - medium
-        title:
-            OL 9 must implement DOD-approved encryption ciphers to protect the confidentiality
-            of SSH server connections.
-        rules:
-            - harden_sshd_ciphers_opensshserver_conf_crypto_policy
-        status: automated
+#    -   id: 255065 #This rule is commented because there is a difference
+# in the OVAL file in the Ciphers variable that searches for the rule against what is in OL9.
+#        levels:
+#            - medium
+#        title:
+#            OL 9 must implement DOD-approved encryption ciphers to protect the confidentiality
+#            of SSH server connections.
+#        rules:
+#            - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+#            - sshd_approved_ciphers=stig_ol9
+#        status: automated
 
     -   id: 255070
         levels:
@@ -2566,6 +2560,7 @@ controls:
             15 minutes of inactivity.
         rules:
             - accounts_tmout
+            - var_accounts_tmout=15_min
         status: automated
 
     -   id: 412040
@@ -2711,6 +2706,7 @@ controls:
         title: OL 9 must require reauthentication when using the "sudo" command.
         rules:
             - sudo_require_reauthentication
+            - var_sudo_timestamp_timeout=always_prompt
         status: automated
 
     -   id: 432020
