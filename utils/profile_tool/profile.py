@@ -74,10 +74,14 @@ class Profile:
         return policy, control, level
 
     @staticmethod
-    def _get_levels(policy, level):
-        levels = [level]
+    def _get_levels(policy, level, levels=None):
+        if levels is None:
+            levels = set()
+        levels.add(level)
+
         if policy.levels_by_id.get(level).inherits_from is not None:
-            levels.extend(policy.levels_by_id.get(level).inherits_from)
+            for parent_level in policy.levels_by_id.get(level).inherits_from:
+                levels.update(Profile._get_levels(policy, parent_level, levels))
         return levels
 
     def add_from_policy(self, policies, selected):
