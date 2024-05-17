@@ -318,7 +318,10 @@ def parse_most_used_components(subparsers):
         "--used-rules",
         default=False,
         action="store_true",
-        help="Show used rules of component.",
+        help=(
+            "For every component, show the usage of each component's rule "
+            "in the profiles in given product."
+        ),
     )
 
 
