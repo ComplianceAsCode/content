@@ -1,0 +1,49 @@
+documentation_complete: true
+
+
+title: 'Ensure Amazon GPG Key Installed'
+
+description: |-
+    To ensure the system can cryptographically verify base software packages
+    come from Amazon (and to connect to the Amazon Network to receive them),
+    the Amazon GPG key must properly be installed. To install the Amazon GPG
+    key, run:
+    <pre>$ sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023</pre>
+
+rationale: |-
+    Changes to software components can have significant effects on the overall
+    security of the operating system. This requirement ensures the software has
+    not been tampered with and that it has been provided by a trusted vendor.
+    The Amazon GPG key is necessary to cryptographically verify packages are
+    from Amazon.
+
+severity: high
+
+references:
+    cis-csc: 11,2,3,9
+    cjis: 5.10.4.1
+    cobit5: APO01.06,BAI03.05,BAI06.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS06.02
+    cui: 3.4.8
+    disa: CCI-001749
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    isa-62443-2009: 4.3.4.3.2,4.3.4.3.3,4.3.4.4.4
+    isa-62443-2013: 'SR 3.1,SR 3.3,SR 3.4,SR 3.8,SR 7.6'
+    iso27001-2013: A.11.2.4,A.12.1.2,A.12.2.1,A.12.5.1,A.12.6.2,A.14.1.2,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4
+    nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-007-3 R4,CIP-007-3 R4.1,CIP-007-3 R4.2,CIP-007-3 R5.1
+    nist: CM-5(3),SI-7,SC-12,SC-12(3),CM-6(a)
+    nist-csf: PR.DS-6,PR.DS-8,PR.IP-1
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+    pcidss: Req-6.2
+    srg: SRG-OS-000366-GPOS-00153
+
+ocil_clause: 'the Amazon GPG Key is not installed'
+
+ocil: |-
+    To ensure that the GPG key is installed, run:
+    <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
+    The command should return the string below:
+    <pre>Amazon Linux <amazon-linux@amazon.com> public key</pre>
+
+fixtext: |-
+    Install {{{ full_name }}} GPG key. Run the following command:
+    $ sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023
