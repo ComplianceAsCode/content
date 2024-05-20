@@ -37,19 +37,21 @@ rationale: |-
     ensures that there are no downtimes due to expired certificates and thus
     addressing the availability in the C/I/A security triad.
 
+    In OpenShift 4, the kubelete certification rotation is enabled by default, hence this check is not-applicable.
+
 severity: medium
 
 platform: not ocp4-on-hypershift-hosted
 
 ocil_clause: |-
-    <tt>RotateKubeletServerCertificate</tt> argument is set to <tt>false</tt> in the
-    <tt>controllerArguments</tt> options
+    <tt>serverTLSBootstrap</tt> argument is set to <tt>false</tt> in the
+    <tt>kubeletconfig</tt> options
 
 ocil: |-
-    To verify that <tt>RotateKubeletServerCertificate</tt> is configured correctly,
-    run the following command:
-    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["feature-gates"]'</pre>
-    The output should return <tt>RotateKubeletServerCertificate=true</tt>.
+    RotateKubeletServerCertificate is no longer a valid check, instead an user should run below commands and confirm the rotation settings are enabled as default.
+    <pre>$ for node in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$node/proxy/configz | jq '.kubeletconfig.serverTLSBootstrap'; done</pre>
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep rotateCertificates; done</pre>
+    The output should return <tt>true</tt>
 
 identifiers:
     cce@ocp4: CCE-83730-2
