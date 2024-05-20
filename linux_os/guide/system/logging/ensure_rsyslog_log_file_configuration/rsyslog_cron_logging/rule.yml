@@ -8,7 +8,10 @@ description: |-
     cron job status. If <tt>cron</tt> is not logging to <tt>rsyslog</tt>, it
     can be implemented by adding the following to the <i>RULES</i> section of
     <tt>/etc/rsyslog.conf</tt>:
+    If the legacy syntax is used:
     <pre>cron.*                                                  /var/log/cron</pre>
+    If the modern syntax (Rainer script) is used:
+    <pre>cron.* action(type="omfile" file="/var/log/cron")</pre>
 
 rationale: |-
     Cron logging can be used to trace the successful or unsuccessful execution
@@ -46,6 +49,8 @@ ocil: |-
     run the following command:
     <pre>grep -rni "cron\.\*" /etc/rsyslog.*</pre>
     <pre>cron.*                                                  /var/log/cron</pre>
+    or
+    <pre>cron.* action(type="omfile" file="/var/log/cron")</pre>
 
 fixtext: |-
     Configure "rsyslog" to log all cron messages by adding or updating the following line to "/etc/rsyslog.conf" or a configuration file in the /etc/rsyslog.d/ directory:

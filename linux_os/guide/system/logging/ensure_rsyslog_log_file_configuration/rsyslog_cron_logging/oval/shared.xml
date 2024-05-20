@@ -5,8 +5,12 @@
     <criteria operator="OR">
       <criterion comment="cron is configured in /etc/rsyslog.conf"
       test_ref="test_cron_logging_rsyslog" />
+      <criterion comment="cron is configured in /etc/rsyslog.conf using Rainer script"
+      test_ref="test_cron_logging_rsyslog_rainer" />
       <criterion comment="cron is configured in /etc/rsyslog.d"
       test_ref="test_cron_logging_rsyslog_dir" />
+      <criterion comment="cron is configured in /etc/rsyslog.d using Rainer script"
+      test_ref="test_cron_logging_rsyslog_dir_rainer" />
       {{% if product == "ol8" %}}
       <criterion comment="rsyslog is configured in /etc/rsyslog.conf to log to all facilities"
       test_ref="test_cron_logging_rsyslog_logging_all_facilities" />
@@ -28,6 +32,18 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="cron is configured in /etc/rsyslog.conf using Rainer script"
+  id="test_cron_logging_rsyslog_rainer" version="1">
+    <ind:object object_ref="obj_cron_logging_rsyslog_rainer" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_rainer" version="1">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <!-- Rainer script keys are case-insensitive -->
+    <ind:pattern operation="pattern match">^\s*cron\.\*\s+action\(.*(?i)\btype\b(?-i)="omfile".*(?i)\bfile\b(?-i)="/var/log/cron".*\)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="cron is configured in /etc/rsyslog.d"
   id="test_cron_logging_rsyslog_dir" version="1">
     <ind:object object_ref="obj_cron_logging_rsyslog_dir" />
@@ -36,6 +52,19 @@
     <ind:path>/etc/rsyslog.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*cron\.\*[\s]+/var/log/cron\s*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="cron is configured in /etc/rsyslog.d using Rainer script"
+  id="test_cron_logging_rsyslog_dir_rainer" version="1">
+    <ind:object object_ref="obj_cron_logging_rsyslog_dir_rainer" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_dir_rainer" version="1">
+    <ind:path>/etc/rsyslog.d</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <!-- Rainer script keys are case-insensitive -->
+    <ind:pattern operation="pattern match">^\s*cron\.\*\s+action\(.*(?i)\btype\b(?-i)="omfile".*(?i)\bfile\b(?-i)="/var/log/cron".*\)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
