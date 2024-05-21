@@ -20,7 +20,7 @@ description: |-
     If the system is configured for online updates, invoking the following command will list available
     security updates:
     <pre>$ sudo zypper refresh &amp;&amp; sudo zypper list-patches -g security</pre>
-{{% elif 'ubuntu' in product %}}
+{{% elif 'ubuntu' in product or 'debian' in product %}}
     If the system has an apt repository available, run the following command to install updates:
     <pre>$ apt update &#38;&#38; apt full-upgrade</pre>
 {{% endif %}}

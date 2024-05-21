@@ -1,0 +1,335 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="6">
+    {{{ oval_metadata(DESCRIPTION) }}}
+
+    {{% if 'debian' in product or 'ubuntu' in product %}}
+
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
+        <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+             as reference for the correct position of pam_faillock.so in auth section. If the
+             system is properly configured, it must appear only once in auth section. -->
+        <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_common_pam_unix_auth"
+		   comment="pam_unix.so appears only once in auth section of common-auth"/>
+        <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_common_pam_faillock_auth"
+		   comment="pam_faillock.so is properly defined in auth section of common-auth"/>
+        <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_common_pam_faillock_account"
+		   comment="pam_faillock.so is properly defined in common-account"/>
+      </criteria>
+
+      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+           possible. But due to backwards compatibility, they are also allowed in pam files
+           directly. In case they are defined in both places, pam files have precedence and this
+           may confuse the assessment. The following tests ensure only one option is used. -->
+      <criteria operator="OR" comment="Check expected value for pam_faillock.so {{{ PRM_NAME }}} parameter">
+        <criteria operator="AND"
+		  comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in pam files">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_common"
+		     comment="Check the {{{ PRM_NAME }}} parameter is present common-auth file"/>
+          <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_faillock_conf"
+		     comment="Ensure the {{{ PRM_NAME }}} parameter is not present in /etc/security/faillock.conf"/>
+        </criteria>
+        <criteria operator="AND"
+		  comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in faillock.conf">
+          <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_pamd_common"
+		     comment="Check the {{{ PRM_NAME }}} parameter is not present common-auth file"/>
+          <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"
+		     comment="Ensure the {{{ PRM_NAME }}} parameter is present in /etc/security/faillock.conf"/>
+        </criteria>
+      </criteria>
+    </criteria>
+    
+    {{% else %}}
+
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
+        <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+             as reference for the correct position of pam_faillock.so in auth section. If the
+             system is properly configured, it must appear only once in auth section. -->
+        <criteria operator="AND"
+		  comment="Count occurrences of pam_unix.so in system-auth and password-auth">
+	  <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_system_pam_unix_auth"
+		     comment="pam_unix.so appears only once in auth section of system-auth"/>
+	  <criterion test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_unix_auth"
+                     comment="pam_unix.so appears only once in auth section of password-auth"/>
+	</criteria>
+	
+        <!-- pam_faillock.so parameters can be defined directly in pam files or, in newer
+             versions, in /etc/security/faillock.conf. The last is the recommended option when
+             available. Also, is the option used by auselect tool. However, regardless the
+             approach, a minimal declaration is common in pam files. -->
+        <criteria operator="AND" comment="Check common definition of pam_faillock.so">
+          <criterion
+	      test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_system_pam_faillock_auth"
+	      comment="pam_faillock.so is properly defined in auth section of system-auth"/>
+          <criterion
+	      test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_system_pam_faillock_account"
+	      comment="pam_faillock.so is properly defined in account section of system-auth"/>
+          <criterion
+	      test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_faillock_auth"
+	      comment="pam_faillock.so is properly defined in auth section of password-auth"/>
+          <criterion
+	      test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_password_pam_faillock_account"
+	      comment="pam_faillock.so is properly defined in account section of password-auth"/>
+        </criteria>
+      </criteria>
+
+      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+           possible. But due to backwards compatibility, they are also allowed in pam files
+           directly. In case they are defined in both places, pam files have precedence and this
+           may confuse the assessment. The following tests ensure only one option is used. Note
+           that if faillock.conf is available, authselect tool only manage parameters on it -->
+      <criteria operator="OR" comment="Check expected value for pam_faillock.so {{{ PRM_NAME }}} parameter">
+        <criteria operator="AND"
+                  comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in pam files">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_system"
+              comment="Check the {{{ PRM_NAME }}} parameter in auth section of system-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_password"
+              comment="Check the {{{ PRM_NAME }}} parameter in auth section of password-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_faillock_conf"
+              comment="Ensure the {{{ PRM_NAME }}} parameter is not present in /etc/security/faillock.conf"/>
+        </criteria>
+        <criteria operator="AND"
+                  comment="Check expected pam_faillock.so {{{ PRM_NAME }}} parameter in faillock.conf">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_pamd_system"
+              comment="Check the {{{ PRM_NAME }}} parameter is not present system-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_pamd_password"
+              comment="Check the {{{ PRM_NAME }}} parameter is not present password-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"
+              comment="Ensure the {{{ PRM_NAME }}} parameter is present in /etc/security/faillock.conf"/>
+        </criteria>
+      </criteria>
+    </criteria>
+
+    {{% endif %}}    
+  </definition>
+
+  <!-- The following tests demand complex regex which are necessary more than once.
+       These variables make simpler the usage of regex patterns. -->
+  <constant_variable id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_unix_regex"
+                     datatype="string" version="2"
+                     comment="regex to identify pam_unix.so in auth section of pam files">
+    <value>^\s*auth\N+pam_unix\.so</value>
+  </constant_variable>
+
+  <constant_variable
+      id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_auth_regex"
+      datatype="string" version="2"
+      comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    {{% if 'debian' in product or 'ubuntu' in product %}}
+    <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
+    {{% elif 'openeuler' in product %}}
+    <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)?(?=.*?\bnew_authtok_reqd=done\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=die\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+    {{% else %}}
+    <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+    {{% endif %}}
+  </constant_variable>
+
+  <constant_variable
+      id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_account_regex"
+      datatype="string" version="2"
+      comment="regex to identify pam_faillock.so entry in account section of pam files">
+    {{% if 'debian' in product or 'ubuntu' in product %}}
+    <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
+    {{% elif 'openeuler' in product %}}
+    <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>
+    {{% else %}}
+    <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
+    {{% endif %}}
+  </constant_variable>
+
+  <constant_variable
+      id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_{{{ PRM_NAME }}}_parameter_regex"
+      datatype="string" version="1"
+      comment="regex to identify pam_faillock.so {{{ PRM_NAME }}} entry in auth section of pam files">
+    <value>{{{ PRM_REGEX_PAMD }}}</value>
+  </constant_variable>
+
+  <constant_variable
+      id="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_faillock_conf_{{{ PRM_NAME }}}_parameter_regex"
+      datatype="string" version="1"
+      comment="regex to identify {{{ PRM_NAME }}} entry in /etc/security/faillock.conf">
+    <value>{{{ PRM_REGEX_CONF }}}</value>
+  </constant_variable>
+  
+  {{% macro generate_test_faillock_enabled(file_stem) %}}
+  <!-- Check occurences of pam_unix.so in auth section of {{{ file_stem }}}-auth file -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="none_exist" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_unix_auth"
+      comment="no more that one pam_unix.so is expected in auth section of {{{ file_stem }}}-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_unix_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_unix_auth"
+      comment="Get the second and subsequent occurrences of pam_unix.so in auth section of {{{ file_stem}}}-auth">
+    <ind:filepath>/etc/pam.d/{{{file_stem}}}-auth</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_unix_regex"/>
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check common definition of pam_faillock.so in {{{ file_stem }}}-auth file -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="only_one_exists" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_faillock_auth"
+      comment="One and only one occurrence is expected in auth section of {{{ file_stem }}}-auth">
+    <ind:object
+	object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME}}}_{{{ file_stem }}}_pam_faillock_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ PRM_NAME}}}_{{{ file_stem }}}_pam_faillock_auth"
+      comment="Check common definition of pam_faillock.so in auth section of common-auth">
+    <ind:filepath>/etc/pam.d/{{{ file_stem }}}-auth</ind:filepath>
+    <ind:pattern operation="pattern match"
+		 var_ref="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_auth_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+
+  {{{ generate_test_faillock_enabled (file_stem="system")   }}}
+  {{{ generate_test_faillock_enabled (file_stem="password") }}}
+  {{{ generate_test_faillock_enabled (file_stem="common")   }}}
+
+  {{% macro generate_test_faillock_account(file_stem, file) %}}
+  <!-- Check common definition of pam_faillock.so in {{{ file_stem }}}-account -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="only_one_exists" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_faillock_account"
+      comment="One and only one occurrence is expected in {{{ file }}}">
+    <ind:object
+	object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_faillock_account"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_{{{ file_stem }}}_pam_faillock_account"
+      comment="Check common definition of pam_faillock.so in account section of {{{ file }}}">
+    <ind:filepath>/etc/pam.d/{{{ file }}}</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_account_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+
+  {{{ generate_test_faillock_account (file_stem="system",   file="system-auth")    }}}
+  {{{ generate_test_faillock_account (file_stem="password", file="password-auth")  }}}
+  {{{ generate_test_faillock_account (file_stem="common",   file="common-account") }}}
+
+  {{% macro generate_check_parameter_in_pam_file(file_stem) %}}
+  <!-- Check absence of {{{ PRM_NAME }}} parameter in {{{ file_stem }}}-auth -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="none_exist" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_pamd_{{{ file_stem }}}"
+      comment="Check the absence of {{{ PRM_NAME }}} parameter in {{{ file_stem }}}-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_{{{ file_stem }}}"/>
+  </ind:textfilecontent54_test>
+  
+  <!-- Check expected value of {{{ PRM_NAME }}} parameter in {{{ file_stem }}}-auth -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="all_exist" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_{{{ file_stem }}}"
+      comment="Check the expected {{{ PRM_NAME }}} value in {{{ file_stem }}}-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_{{{ file_stem }}}"/>
+    {{% if VARIABLE_UPPER_BOUND is defined and VARIABLE_UPPER_BOUND != "none" %}}
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_upper_bound"/>
+    {{% endif %}}
+    {{% if VARIABLE_LOWER_BOUND is defined and VARIABLE_LOWER_BOUND != "none" %}}
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_lower_bound"/>
+    {{% endif %}}
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_pamd_{{{ file_stem }}}"
+      comment="Get the pam_faillock.so {{{ PRM_NAME }}} parameter from {{{ file_stem }}}-auth file">
+    <ind:filepath>/etc/pam.d/{{{ file_stem }}}-auth</ind:filepath>
+    <ind:pattern operation="pattern match"
+		 var_ref="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_pam_faillock_{{{ PRM_NAME }}}_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+
+  <!-- boundaries to test the parameter value -->
+  <!-- Specify the required external variable & create corresponding state from it -->
+  <external_variable id="{{{ EXT_VARIABLE }}}" datatype="int"
+                     comment="external variable to use" version="1"/>
+
+  {{% if VARIABLE_UPPER_BOUND is defined and VARIABLE_UPPER_BOUND != "none" %}}
+  <ind:textfilecontent54_state
+      version="1"
+      id="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_upper_bound">
+    {{% if VARIABLE_UPPER_BOUND == "use_ext_variable" %}}
+    <ind:subexpression datatype="int" operation="less than or equal"
+		       var_ref="{{{ EXT_VARIABLE }}}"/>
+    {{% elif VARIABLE_UPPER_BOUND is number %}}
+    <ind:subexpression datatype="int" operation="less than">{{{ VARIABLE_UPPER_BOUND }}}</ind:subexpression>
+    {{% else %}}
+    <ind:subexpression datatype="int" operation="less than or equal"
+		       var_ref="{{{ VARIABLE_UPPER_BOUND }}}"/>
+    {{% endif %}}
+  </ind:textfilecontent54_state>
+  {{% endif %}}
+
+  {{% if VARIABLE_LOWER_BOUND is defined and VARIABLE_LOWER_BOUND != "none" %}}
+  <ind:textfilecontent54_state
+      version="1"
+      id="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_lower_bound">
+    {{% if VARIABLE_LOWER_BOUND == "use_ext_variable" %}}
+    <ind:subexpression datatype="int" operation="greater than or equal"
+		       var_ref="{{{ EXT_VARIABLE }}}"/>
+    {{% elif VARIABLE_LOWER_BOUND is number %}}
+    <ind:subexpression datatype="int" operation="greater than">{{{ VARIABLE_LOWER_BOUND }}}</ind:subexpression>
+    {{% else %}}
+    <ind:subexpression datatype="int" operation="greater than or equal"
+		       var_ref="{{{ VARIABLE_LOWER_BOUND }}}"/>
+    {{% endif %}}
+  </ind:textfilecontent54_state>
+  {{% endif %}}
+  
+  {{{ generate_check_parameter_in_pam_file (file_stem="system")   }}}
+  {{{ generate_check_parameter_in_pam_file (file_stem="password") }}}
+  {{{ generate_check_parameter_in_pam_file (file_stem="common")   }}}
+
+  <!-- Check expected value of {{{ PRM_NAME }}} parameter in /etc/security/faillock.conf -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+			      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"
+			      comment="Check the expected {{{ PRM_NAME }}} value in /etc/security/faillock.conf">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"/>
+    {{% if VARIABLE_UPPER_BOUND is defined and VARIABLE_UPPER_BOUND != "none" %}}
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_upper_bound"/>
+    {{% endif %}}
+    {{% if VARIABLE_LOWER_BOUND is defined and VARIABLE_LOWER_BOUND != "none" %}}
+    <ind:state state_ref="state_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_lower_bound"/>
+    {{% endif %}}
+  </ind:textfilecontent54_test>
+
+  <!-- Check absence of {{{ PRM_NAME }}} parameter in /etc/security/faillock.conf -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="none_exist" version="1"
+      id="test_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_no_faillock_conf"
+      comment="Check the absence of {{{ PRM_NAME }}} parameter in /etc/security/faillock.conf">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="1"
+      id="object_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_parameter_faillock_conf"
+      comment="Check the expected pam_faillock.so {{{ PRM_NAME }}} parameter in /etc/security/faillock.conf">
+    <ind:filepath>/etc/security/faillock.conf</ind:filepath>
+    <ind:pattern
+	operation="pattern match"
+	var_ref="var_accounts_passwords_pam_faillock_{{{ PRM_NAME }}}_faillock_conf_{{{ PRM_NAME }}}_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

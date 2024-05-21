@@ -127,3 +127,13 @@ warnings:
         be shown in the remediation report.
         If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
         parameters should be defined in <tt>faillock.conf</tt> file.
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: unlock_time
+    prm_regex_conf: ^[\s]*unlock_time[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*unlock_time=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_unlock_time
+    description: The unlock time after number of failed logins should be set correctly.
+    variable_lower_bound: use_ext_variable
