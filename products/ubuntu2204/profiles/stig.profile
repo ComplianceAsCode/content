@@ -11,7 +11,6 @@ description: |-
 selections:
 
     # UBTU-22-271010 The Ubuntu operating system must enable the graphical user logon banner to display the Standard Mandatory DoD Notice and Consent Banner before granting local access to the system via a graphical user logon.
-    - enable_dconf_user_profile
     - dconf_gnome_banner_enabled
 
     # UBTU-22-271015 The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local access to the system via a graphical user logon.
