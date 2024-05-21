@@ -8,7 +8,7 @@
 
 - name: {{{ rule_title }}} - Select authselect profile
   ansible.builtin.command:
-    cmd: authselect select "{{ var_authselect_profile }}"
+    cmd: authselect select "{{ var_authselect_profile }}"; echo 1
   register: result_authselect_select
   # The authselect can return these exit codes:
   # • 0: Success.
