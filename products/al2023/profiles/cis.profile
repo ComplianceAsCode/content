@@ -15,7 +15,7 @@ description: |-
     2023 Benchmark™, v1.0.0, released 2023-06-26.
 
     This profile includes Center for Internet Security®
-    Amazon Linux 9 CIS Benchmarks™ content.
+    Amazon Linux 2023 CIS Benchmarks™ content.
 
 selections:
     - cis_al2023:all:l2_server
