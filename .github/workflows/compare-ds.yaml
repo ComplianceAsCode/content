@@ -138,3 +138,35 @@ jobs:
           type: delete
           comment_id: ${{ steps.fc.outputs.comment-id }}
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compare Ansible playbook shell commands
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: utils/ansible_shell_diff.py ssg-${{steps.product.outputs.prop}}-ds.xml build/ssg-${{steps.product.outputs.prop}}-ds.xml | tee diff.log
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - name: Test if there are Ansible shell module changes
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: echo "SHELL_DIFF_OUTPUT_SIZE=$(stat --printf="%s" diff.log)" >> $GITHUB_OUTPUT
+        id: ansible_shell_diff
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: shell_diff
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Change in Ansible 'shell' module found.
+      - name: Create comment
+        if: ${{ steps.ansible_shell_diff.outputs.SHELL_DIFF_OUTPUT_SIZE != '0' && steps.shell_diff.outputs.comment-id == 0 }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Change in Ansible `shell` module found.
+
+            Please consider using more suitable Ansible module than `shell` if possible.
+      - name: Delete existing comment in case new commits trigger no changes in Ansible shell module
+        if: ${{ (steps.ansible_shell_diff.outputs.SHELL_DIFF_OUTPUT_SIZE == '0' || steps.ctf.outputs.CTF_OUTPUT_SIZE == '0') && steps.shell_diff.outputs.comment-id != 0 }}
+        uses: jungwinter/comment@v1
+        with:
+          type: delete
+          comment_id: ${{ steps.shell_diff.outputs.comment-id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
