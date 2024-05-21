@@ -25,12 +25,9 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # This is set to silence GNUInstallDirs warning about no language being used with cmake.
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
-include(CPack)
 include(CMakeDependentOption)
 include(FindPythonModule)
 include(SSGCommon)
-
-cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
 
 # Define Version values
 set(SSG_MAJOR_VERSION 0)
@@ -162,6 +159,7 @@ find_python_module(pandas)
 find_python_module(pcre2)
 find_python_module(pytest)
 find_python_module(pytest_cov)
+cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
 
 # sphinx documentation requirements
 find_python_module(myst_parser)
@@ -538,3 +536,4 @@ set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
 set(CPACK_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}")
 set(CPACK_PACKAGE_CHECKSUM SHA512)
 set(CPACK_GENERATOR "RPM;DEB")
+include(CPack)
