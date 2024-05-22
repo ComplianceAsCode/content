@@ -329,11 +329,12 @@ controls:
     levels:
     - elevated
     description: >-
-      The automation of operational tasks in operators SHOULD be used for particularly critical
-      applications and control plane programs.
+      The automation of operational tasks in operators SHOULD be used for particularly critical applications and control plane programs.
     notes: >-
-      TBD
-    status: pending
+      OpenShift relies consistently on the application of the concept of operators. The platform itself is operated and managed 100% by operators, meaning that all internal components of the platform are rolled out and managed by operators.
+
+      Application-specific operators must be considered as part of application development and deployment.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A17
