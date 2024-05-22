@@ -20,9 +20,9 @@ jobs:
       - name: Copy XCCDF files from existing content image
         uses: nick-fields/retry@v3
         with:
-          timeout_minutes: 15
+          timeout_minutes: 20
           max_attempts: 3
-          retry_wait_seconds: 120
+          retry_wait_seconds: 300
           retry_on: error
           command: |
             mkdir -p content
