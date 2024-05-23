@@ -57,7 +57,7 @@ class Profile:
             self.rules.append(rule_id)
         else:
             variable_name, variable_value = rule_id.split('=', 1)
-            self.variables.append({'name': variable_name, 'value': variable_value})
+            self.variables.append({variable_name: variable_value})
 
     def add_rules(self, rules):
         for rule in rules:
