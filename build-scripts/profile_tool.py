@@ -323,6 +323,12 @@ def parse_most_used_components(subparsers):
             "in the profiles in given product."
         ),
     )
+    parser_most_used_components.add_argument(
+        "--not-used",
+        default=False,
+        action="store_true",
+        help="Adds to list not used components or rules with zero value.",
+    )
 
 
 def get_available_products_with_components_root():
