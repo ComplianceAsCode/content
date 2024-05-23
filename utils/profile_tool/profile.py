@@ -44,7 +44,7 @@ class Profile:
         self.path = path
         self.title = title
         self.rules = []
-        self.variables = []
+        self.variables = {}
         self.unselected_rules = []
         profile_file = os.path.basename(path)
         self.id = profile_file.split('.profile')[0]
@@ -57,7 +57,7 @@ class Profile:
             self.rules.append(rule_id)
         else:
             variable_name, variable_value = rule_id.split('=', 1)
-            self.variables.append({variable_name: variable_value})
+            self.variables[variable_name] = variable_value
 
     def add_rules(self, rules):
         for rule in rules:
