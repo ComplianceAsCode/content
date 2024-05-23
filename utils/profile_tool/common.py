@@ -29,3 +29,7 @@ def merge_dicts(dict_a, dict_b, delim):
         value_b = dict_b.get(key, {})
         out[key] = str(value) + _format_value_b(value_b, delim)
     return out
+
+
+def remove_zero_counts(dict_):
+    return {key: value for key, value in dict_.items() if value != 0}

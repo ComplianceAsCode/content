@@ -5,7 +5,7 @@ from collections import defaultdict
 import ssg.components
 
 from .most_used_rules import _sorted_dict_by_num_value
-from .common import generate_output, merge_dicts
+from .common import generate_output, merge_dicts, remove_zero_counts
 
 PYTHON_2 = sys.version_info[0] < 3
 
@@ -69,11 +69,22 @@ def _sort_rules_of_components(used_rules_of_components):
     return out
 
 
+def _remove_zero_counts_of(used_rules_of_components):
+    return {
+        component_name: remove_zero_counts(rules_dict)
+        for component_name, rules_dict in used_rules_of_components.items()
+    }
+
+
 def command_most_used_components(args):
     components = defaultdict(int)
     used_rules_of_components = {}
 
     _process_all_products_from_controls(components, used_rules_of_components, args.products)
+
+    if not args.not_used:
+        components = remove_zero_counts(components)
+        used_rules_of_components = _remove_zero_counts_of(used_rules_of_components)
 
     sorted_components = _sorted_dict_by_num_value(components)
     csv_header = "component_name,count_of_profiles"
