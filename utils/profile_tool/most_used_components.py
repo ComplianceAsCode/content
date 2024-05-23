@@ -18,19 +18,22 @@ if not PYTHON_2:
 
 
 def _count_rules_components(component_name, rules, used_rules_of_components_out):
-    used_rules = defaultdict(int)
-    if component_name in used_rules_of_components_out:
-        used_rules = used_rules_of_components_out[component_name]
+    used_rules = used_rules_of_components_out[component_name]
     for rule in rules:
         used_rules[rule] += 1
-    used_rules_of_components_out[component_name] = used_rules
 
 
 def _count_components(components, rules_list, components_out, used_rules_of_components_out):
     for component_name, component in components.items():
         intersection = set(component.rules).intersection(set(rules_list))
+        components_out[component_name] += 0
         if len(intersection) > 0:
             components_out[component_name] += 1
+        if component_name not in used_rules_of_components_out:
+            used_rules_of_components_out[component_name] = {
+                rule_id: 0 for rule_id in component.rules
+            }
+
         _count_rules_components(component_name, intersection, used_rules_of_components_out)
 
 
