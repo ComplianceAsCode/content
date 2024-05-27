@@ -4,7 +4,7 @@
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
 RSYSLOG_D_FOLDER='/etc/rsyslog.d'
-RSYSLOG_D_FILE=$RSYSLOG_D_FOLDER'/test'
+RSYSLOG_D_FILE=$RSYSLOG_D_FOLDER'/test.conf'
 
 mkdir -p $RSYSLOG_D_FOLDER
 rm "$RSYSLOG_D_FOLDER/*"
