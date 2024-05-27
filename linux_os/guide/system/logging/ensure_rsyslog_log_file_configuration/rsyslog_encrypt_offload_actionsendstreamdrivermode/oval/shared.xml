@@ -16,6 +16,9 @@
         </criteria>
     </definition>
 
+{{% set legacy_regex = "^\\$ActionSendStreamDriverMode 1$" %}}
+{{% set rainer_script_regex = "^\\s*action\\(.*(?i)\\btype\\b(?-i)=\"omfwd\".*(?i)\\bStreamDriverMode\\b(?-i)=\"1\".*\\)\\s*$" %}}
+
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
                                 comment="Check if $ActionSendStreamDriverMode 1 is set in /etc/rsyslog.conf"
                                 id="test_{{{rule_id}}}_action_send_stream_driver_mode_rsyslog" version="1">
@@ -27,7 +30,7 @@
                                     comment="Check if  $ActionSendStreamDriverMode 1 is set in /etc/rsyslog.conf"
                                     version="1">
         <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-        <ind:pattern operation="pattern match">^\$ActionSendStreamDriverMode 1$</ind:pattern>
+        <ind:pattern operation="pattern match">{{{ legacy_regex }}}</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -42,7 +45,7 @@
                                     comment="Check if StreamDriverMode is set to 1 in /etc/rsyslog.conf using Rainer script"
                                     version="1">
         <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*action\(.*(?i)\btype\b(?-i)="omfwd".*(?i)\bStreamDriverMode\b(?-i)="1".*\)\s*$</ind:pattern>
+        <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -57,7 +60,7 @@
                                     version="1">
         <ind:path>/etc/rsyslog.d</ind:path>
         <ind:filename operation="pattern match">^.*conf$</ind:filename>
-        <ind:pattern operation="pattern match">^\$ActionSendStreamDriverMode 1$</ind:pattern>
+        <ind:pattern operation="pattern match">{{{ legacy_regex }}}</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -72,7 +75,7 @@
                                     version="1">
         <ind:path>/etc/rsyslog.d</ind:path>
         <ind:filename operation="pattern match">^.*conf$</ind:filename>
-        <ind:pattern operation="pattern match">^\s*action\(.*(?i)\btype\b(?-i)="omfwd".*(?i)\bStreamDriverMode\b(?-i)="1".*\)\s*$</ind:pattern>
+        <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 </def-group>
