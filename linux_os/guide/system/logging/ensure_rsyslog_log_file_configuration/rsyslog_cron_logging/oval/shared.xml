@@ -20,6 +20,8 @@
     </criteria>
   </definition>
 
+{{% set rainer_script_regex = "^\\s*cron\\.\\*\\s+action\\(.*(?i)\\btype\\b(?-i)=\"omfile\".*(?i)\\bfile\\b(?-i)=\"/var/log/cron\".*\\)\\s*$" %}}
+
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="cron is configured in /etc/rsyslog.conf"
   id="test_cron_logging_rsyslog" version="1">
@@ -39,7 +41,7 @@
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_rainer" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
     <!-- Rainer script keys are case-insensitive -->
-    <ind:pattern operation="pattern match">^\s*cron\.\*\s+action\(.*(?i)\btype\b(?-i)="omfile".*(?i)\bfile\b(?-i)="/var/log/cron".*\)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -64,7 +66,7 @@
     <ind:path>/etc/rsyslog.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <!-- Rainer script keys are case-insensitive -->
-    <ind:pattern operation="pattern match">^\s*cron\.\*\s+action\(.*(?i)\btype\b(?-i)="omfile".*(?i)\bfile\b(?-i)="/var/log/cron".*\)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
