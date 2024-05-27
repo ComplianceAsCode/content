@@ -32,7 +32,8 @@ def _get_profiles_for_product(ctrls_mgr, product):
 
     profiles = []
     for file in profiles_files:
-        profiles.append(get_profile(profiles_files, file, ctrls_mgr.policies))
+        if "default.profile" not in file:
+            profiles.append(get_profile(profiles_files, file, ctrls_mgr.policies))
     return profiles
 
 
