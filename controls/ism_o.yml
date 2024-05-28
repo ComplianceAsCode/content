@@ -58,7 +58,13 @@ controls:
             - sebool_authlogin_radius
             - sshd_disable_kerb_auth
             - sshd_set_max_auth_tries
+            - sshd_max_auth_tries_value=5
             - sssd_enable_smartcards
+            - var_password_pam_minlen=14
+            - var_accounts_password_warn_age_login_defs=7
+            - var_accounts_minimum_age_login_defs=1
+            - var_accounts_maximum_age_login_defs=60
+            - var_authselect_profile=sssd
         status: automated
 
     -   id: '0422'
@@ -413,6 +419,7 @@ use of device access control software or by disabling external communication int
             - configure_crypto_policy
             - enable_dracut_fips_module
             - enable_fips_mode
+            - var_system_crypto_policy=fips
         status: automated
 
     -   id: '1449'
