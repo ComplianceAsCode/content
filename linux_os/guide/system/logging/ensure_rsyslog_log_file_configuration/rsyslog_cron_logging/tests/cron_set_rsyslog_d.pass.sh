@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = rsyslog
 . set_cron_logging.sh
 
 RSYSLOG_CONF='/etc/rsyslog.conf'

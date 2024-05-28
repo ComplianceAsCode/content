@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = rsyslog
 
 rm -rf /etc/rsyslog.d
 touch /etc/rsyslog.conf

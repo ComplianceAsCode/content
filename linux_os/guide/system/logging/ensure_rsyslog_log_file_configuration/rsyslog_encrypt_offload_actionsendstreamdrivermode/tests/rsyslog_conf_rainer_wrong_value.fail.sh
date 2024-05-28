@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = rsyslog
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
 
