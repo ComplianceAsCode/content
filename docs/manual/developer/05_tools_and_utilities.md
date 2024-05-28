@@ -86,6 +86,13 @@ As shown in this command:
     $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --rules
 ```
 
+You can also use the `--all` flag to get a list of all components and rules in the output, including unused components and unused rules.
+As shown in this command:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --all
+```
+
 The result will be a list of rules with the number of uses in the profiles.
 The list can be generated as plain text, JSON or CVS.
 Via the `--format FORMAT` parameter.
