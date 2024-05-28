@@ -324,10 +324,13 @@ def parse_most_used_components(subparsers):
         ),
     )
     parser_most_used_components.add_argument(
-        "--not-used",
+        "--all",
         default=False,
         action="store_true",
-        help="Adds to list not used components or rules with zero value.",
+        help=(
+            "List all components and rules in the output, including unused "
+            "components and unused rules."
+        ),
     )
 
 

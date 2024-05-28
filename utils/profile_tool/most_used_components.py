@@ -82,7 +82,7 @@ def command_most_used_components(args):
 
     _process_all_products_from_controls(components, used_rules_of_components, args.products)
 
-    if not args.not_used:
+    if not args.all:
         components = remove_zero_counts(components)
         used_rules_of_components = _remove_zero_counts_of(used_rules_of_components)
 
