@@ -88,7 +88,7 @@ def command_most_used_components(args):
 
     sorted_components = _sorted_dict_by_num_value(components)
     csv_header = "component_name,count_of_profiles"
-    if args.used_rules:
+    if args.rules:
         csv_header = "component_name,count_of_profiles,used_rules:count_of_profiles"
         delim = " "
         if args.format == "csv":

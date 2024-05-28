@@ -315,7 +315,7 @@ def parse_most_used_components(subparsers):
         default=get_available_products_with_components_root(),
     )
     parser_most_used_components.add_argument(
-        "--used-rules",
+        "--rules",
         default=False,
         action="store_true",
         help=(

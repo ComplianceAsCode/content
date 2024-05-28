@@ -79,11 +79,11 @@ Optionally, you can use this command to limit the statistics for a specific prod
     $ ./build-scripts/profile_tool.py most-used-components --products rhel9
 ```
 
-You can also get a list of the most used components with used rules for the RHEL9 product, you can use the `--used-rules` flag.
+You can also get a list of the most used components with used rules for the RHEL9 product, you can use the `--rules` flag.
 As shown in this command:
 
 ```bash
-    $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --used-rules
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --rules
 ```
 
 The result will be a list of rules with the number of uses in the profiles.
