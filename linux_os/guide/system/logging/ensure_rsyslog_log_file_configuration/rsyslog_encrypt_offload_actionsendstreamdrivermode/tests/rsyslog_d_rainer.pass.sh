@@ -1,4 +1,5 @@
 #!/bin/bash
+bash -x setup.sh
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
 RSYSLOG_D_FILES='/etc/rsyslog.d/*'

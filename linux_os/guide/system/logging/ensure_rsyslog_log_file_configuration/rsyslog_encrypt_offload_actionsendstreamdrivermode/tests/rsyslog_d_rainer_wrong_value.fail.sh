@@ -1,4 +1,5 @@
 #!/bin/bash
+bash -x setup.sh
 
 RSYSLOG_D_TEST_CONF='/etc/rsyslog.d/test.conf'
 
