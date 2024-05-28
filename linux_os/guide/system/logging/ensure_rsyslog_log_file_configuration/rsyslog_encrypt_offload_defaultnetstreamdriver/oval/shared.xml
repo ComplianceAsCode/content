@@ -6,11 +6,11 @@
             <criteria operator="OR">
                 <criterion comment="Check if $DefaultNetstreamDriver gtls is set in /etc/rsyslog.conf"
                             test_ref="test_{{{rule_id}}}_default_netstream_rsyslog" />
-                <criterion comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using Rainer script"
+                <criterion comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using RainerScript"
                             test_ref="test_{{{rule_id}}}_default_netstream_rsyslog_rainer" />
                 <criterion comment="Check if $DefaultNetstreamDriver gtls is set in files in /etc/rsyslog.d"
                             test_ref="test_{{{rule_id}}}_default_netstream_rsyslog_dir" />
-                <criterion comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using Rainer script"
+                <criterion comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using RainerScript"
                             test_ref="test_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer" />
             </criteria>
         </criteria>
@@ -35,14 +35,14 @@
     </ind:textfilecontent54_object>
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
-                                comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using Rainer script"
+                                comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using RainerScript"
                                 id="test_{{{rule_id}}}_default_netstream_rsyslog_rainer" version="1">
 
         <ind:object object_ref="obj_{{{rule_id}}}_default_netstream_rsyslog_rainer" />
     </ind:textfilecontent54_test>
 
     <ind:textfilecontent54_object id="obj_{{{rule_id}}}_default_netstream_rsyslog_rainer"
-                                    comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using Rainer script"
+                                    comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using RainerScript"
                                     version="1">
         <ind:filepath>/etc/rsyslog.conf</ind:filepath>
         <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
@@ -65,13 +65,13 @@
     </ind:textfilecontent54_object>
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
-                                comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using Rainer script"
+                                comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using RainerScript"
                                 id="test_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer" version="1">
         <ind:object object_ref="obj_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer" />
     </ind:textfilecontent54_test>
 
     <ind:textfilecontent54_object id="obj_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer"
-                                    comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using Rainer script"
+                                    comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using RainerScript"
                                     version="1">
         <ind:path>/etc/rsyslog.d</ind:path>
         <ind:filename operation="pattern match">^.*conf$</ind:filename>

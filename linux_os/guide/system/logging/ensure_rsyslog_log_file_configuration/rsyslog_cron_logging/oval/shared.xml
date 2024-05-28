@@ -5,11 +5,11 @@
     <criteria operator="OR">
       <criterion comment="cron is configured in /etc/rsyslog.conf"
       test_ref="test_cron_logging_rsyslog" />
-      <criterion comment="cron is configured in /etc/rsyslog.conf using Rainer script"
+      <criterion comment="cron is configured in /etc/rsyslog.conf using RainerScript"
       test_ref="test_cron_logging_rsyslog_rainer" />
       <criterion comment="cron is configured in /etc/rsyslog.d"
       test_ref="test_cron_logging_rsyslog_dir" />
-      <criterion comment="cron is configured in /etc/rsyslog.d using Rainer script"
+      <criterion comment="cron is configured in /etc/rsyslog.d using RainerScript"
       test_ref="test_cron_logging_rsyslog_dir_rainer" />
       {{% if product == "ol8" %}}
       <criterion comment="rsyslog is configured in /etc/rsyslog.conf to log to all facilities"
@@ -21,7 +21,7 @@
   </definition>
 
 {{% set legacy_regex = "^[\\s]*cron\\.\\*[\\s]+/var/log/cron\\s*(?:#.*)?$" %}}
-{{# Rainer script keys are case-insensitive #}}
+{{# RainerScript keys are case-insensitive #}}
 {{% set rainer_script_regex = "^\\s*cron\\.\\*\\s+action\\(.*(?i)\\btype\\b(?-i)=\"omfile\".*(?i)\\bfile\\b(?-i)=\"/var/log/cron\".*\\)\\s*$" %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -36,7 +36,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="cron is configured in /etc/rsyslog.conf using Rainer script"
+  comment="cron is configured in /etc/rsyslog.conf using RainerScript"
   id="test_cron_logging_rsyslog_rainer" version="1">
     <ind:object object_ref="obj_cron_logging_rsyslog_rainer" />
   </ind:textfilecontent54_test>
@@ -59,7 +59,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="cron is configured in /etc/rsyslog.d using Rainer script"
+  comment="cron is configured in /etc/rsyslog.d using RainerScript"
   id="test_cron_logging_rsyslog_dir_rainer" version="1">
     <ind:object object_ref="obj_cron_logging_rsyslog_dir_rainer" />
   </ind:textfilecontent54_test>
