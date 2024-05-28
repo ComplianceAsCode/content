@@ -4,13 +4,20 @@
         {{{ oval_metadata("Rsyslogd must encrypt the off-loading of logs off of the system.") }}}
         <criteria operator="AND">
             <criteria operator="OR">
-                 <criterion comment="Check if $DefaultNetstreamDriver gtls is set in /etc/rsyslog.conf"
+                <criterion comment="Check if $DefaultNetstreamDriver gtls is set in /etc/rsyslog.conf"
                             test_ref="test_{{{rule_id}}}_default_netstream_rsyslog" />
+                <criterion comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using RainerScript"
+                            test_ref="test_{{{rule_id}}}_default_netstream_rsyslog_rainer" />
                 <criterion comment="Check if $DefaultNetstreamDriver gtls is set in files in /etc/rsyslog.d"
                             test_ref="test_{{{rule_id}}}_default_netstream_rsyslog_dir" />
+                <criterion comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using RainerScript"
+                            test_ref="test_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer" />
             </criteria>
         </criteria>
     </definition>
+
+{{% set legacy_regex = "^\\$DefaultNetstreamDriver gtls$" %}}
+{{% set rainer_script_regex = "^\\s*global\\(.*(?i)\\bDefaultNetStreamDriver\\b(?-i)=\"gtls\".*\\)\\s*$" %}}
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
                                 comment="Check if $DefaultNetstreamDriver gtls is set in /etc/rsyslog.conf"
@@ -23,7 +30,22 @@
                                     comment="Check if  $DefaultNetstreamDriver gtls is set in /etc/rsyslog.conf"
                                     version="1">
         <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-        <ind:pattern operation="pattern match">^\$DefaultNetstreamDriver gtls$</ind:pattern>
+        <ind:pattern operation="pattern match">{{{ legacy_regex }}}</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+                                comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using RainerScript"
+                                id="test_{{{rule_id}}}_default_netstream_rsyslog_rainer" version="1">
+
+        <ind:object object_ref="obj_{{{rule_id}}}_default_netstream_rsyslog_rainer" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{rule_id}}}_default_netstream_rsyslog_rainer"
+                                    comment="Check if DefaultNetstreamDriver is set to gtls in /etc/rsyslog.conf using RainerScript"
+                                    version="1">
+        <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+        <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
@@ -38,7 +60,22 @@
                                     version="1">
         <ind:path>/etc/rsyslog.d</ind:path>
         <ind:filename operation="pattern match">^.*conf$</ind:filename>
-        <ind:pattern operation="pattern match">^\$DefaultNetstreamDriver gtls$</ind:pattern>
+        <ind:pattern operation="pattern match">{{{ legacy_regex }}}</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+                                comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using RainerScript"
+                                id="test_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer" version="1">
+        <ind:object object_ref="obj_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{rule_id}}}_default_netstream_rsyslog_dir_rainer"
+                                    comment="Check if DefaultNetstreamDriver is set to gtls in files in /etc/rsyslog.d using RainerScript"
+                                    version="1">
+        <ind:path>/etc/rsyslog.d</ind:path>
+        <ind:filename operation="pattern match">^.*conf$</ind:filename>
+        <ind:pattern operation="pattern match">{{{ rainer_script_regex }}}</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 </def-group>

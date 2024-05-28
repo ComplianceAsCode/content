@@ -1,6 +1,5 @@
 #!/bin/bash
 # packages = rsyslog
-. set_cron_logging.sh
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
 RSYSLOG_D_FILES='/etc/rsyslog.d/*'
@@ -15,4 +14,4 @@ done
 # If there's cron.* line, then remove it
 sed -i '/^[[:space:]]*cron\.\*/d' $RSYSLOG_CONF
 # Add cron.* that logs into wrong file
-echo "cron.*        /tmp/log/cron" >> $RSYSLOG_CONF
+echo 'cron.* action(name="local-cron" type="omfile" fileCreateMode="0600" fileOwner="root" fileGroup="root" file="/tmp/log/cron")' >> "$RSYSLOG_CONF"
