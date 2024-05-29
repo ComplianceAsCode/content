@@ -5,7 +5,7 @@ title: 'Configure SSSD to Expire Offline Credentials'
 
 description: |-
     SSSD should be configured to expire offline credentials after 1 day.
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     Check if SSSD allows cached authentications with the following command:
     <pre>
     $ sudo grep cache_credentials /etc/sssd/sssd.conf
@@ -55,7 +55,7 @@ references:
 ocil_clause: 'it does not exist or is not configured properly'
 
 ocil: |-
-    {{% if product in ["ol8", "rhel8"] %}}
+    {{% if product in ["ol8", "ol9", "rhel8", "rhel9"] %}}
     Check if SSSD allows cached authentications with the following command:
     <pre>
     $ sudo grep cache_credentials /etc/sssd/sssd.conf
