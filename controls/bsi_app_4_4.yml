@@ -237,7 +237,7 @@ controls:
       start pods via automation software, this SHOULD be done for each group through separate
       processes that only have the rights necessary for the respective user group.
     notes: >-
-      This control needs to be adressed on an organizational level. All service accounts used by 
+      This control needs to be adressed on an organizational level. All service accounts used by
       automation software need to adhere to the principle of least privilege.
     status: not applicable
     rules: []
@@ -284,15 +284,16 @@ controls:
     levels:
     - elevated
     description: >-
-      There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of
-      the pods of applications against a defined list of allowed settings and standardised
-      benchmarks.
-      Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate
-      tools.
+      (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of the pods of applications against a defined list of allowed settings and standardised benchmarks.
+      (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate tools.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
+      Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads by using Advanced Cluster Security or similar tools.
+    status: automated
+    rules:
+      - scansettingbinding_exists
+      - scansettings_have_schedule
+      - scansetting_has_autoapplyremediations
 
   - id: APP.4.4.A14
     title: Use of Dedicated Nodes
@@ -317,23 +318,23 @@ controls:
     levels:
     - elevated
     description: >-
-      Applications with very high protection needs SHOULD each use their own Kubernetes clusters
-      or dedicated nodes that are not available for other applications
-    notes: >-
-      TBD
-    status: pending
-    rules: []
+      Applications with very high protection needs SHOULD each use their own Kubernetes clusters or dedicated nodes that are not available for other applications
+    notes: ''
+    status: manual
+    rules:
+      - general_node_separation
 
   - id: APP.4.4.A16
     title: Use of Operators
     levels:
     - elevated
     description: >-
-      The automation of operational tasks in operators SHOULD be used for particularly critical
-      applications and control plane programs.
+      The automation of operational tasks in operators SHOULD be used for particularly critical applications and control plane programs.
     notes: >-
-      TBD
-    status: pending
+      OpenShift relies consistently on the application of the concept of operators. The platform itself is operated and managed 100% by operators, meaning that all internal components of the platform are rolled out and managed by operators.
+
+      Application-specific operators must be considered as part of application development and deployment.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A17
