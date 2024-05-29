@@ -82,6 +82,7 @@ selections:
 
     # UBTU-22-255020 The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting any local or remote connection to the system.
     - banner_etc_issue_net
+    - remote_login_banner_text=dod_banners
     - sshd_enable_warning_banner_net
 
     # UBTU-22-255055 The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-3 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
