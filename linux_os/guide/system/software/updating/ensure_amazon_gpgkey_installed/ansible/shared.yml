@@ -28,7 +28,7 @@
     - "{{{ release_key_fingerprint }}}"
 
 - name: Import Amazon GPG key
-  rpm_key:
+  ansible.builtin.rpm_key:
     state: present
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023
   when:
