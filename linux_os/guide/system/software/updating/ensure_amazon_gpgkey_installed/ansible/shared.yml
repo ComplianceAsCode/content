@@ -19,7 +19,7 @@
   check_mode: no
 
 - name: Set Fact - Installed GPG Fingerprints
-  set_fact:
+  ansible.builtin.set_fact:
     gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
 
 - name: Set Fact - Valid fingerprints
