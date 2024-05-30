@@ -97,7 +97,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product debian10 debian11
+          ./build_product debian10 debian11 debian12
       - name: Test
         working-directory: ./build
         run: ctest -j2 --output-on-failure -E unique-stigids
