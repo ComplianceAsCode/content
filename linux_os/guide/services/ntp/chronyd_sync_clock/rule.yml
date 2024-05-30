@@ -1,9 +1,9 @@
 documentation_complete: true
 
 {{% if product == 'ubuntu2204' -%}}
-{{% set makestep_line = 'makestep 1 1' -%}}
+{{% set step_value = '1 1' -%}}
 {{% else -%}}
-{{% set makestep_line = 'makestep 1 -1' -%}}
+{{% set step_value = '1 -1' -%}}
 {{% endif -%}}
 
 title: 'Synchronize internal information system clocks'
@@ -34,16 +34,19 @@ ocil: |-
     authoritative time source when the time difference is greater than one
     second. Check the value of "makestep" by running the following command:
     <pre>$ sudo grep makestep {{{ chrony_conf_path }}}
-    {{{ makestep_line }}}</pre>
+    makestep {{{ step_value }}}</pre>
 
     If it is not set to the above value, edit the {{{ chrony_conf_path }}} file
     and add:
-    <pre>{{{ makestep_line }}}</pre>
+    <pre>makestep {{{ step_value }}}</pre>
     Restart the chrony service:
     <pre>$ sudo systemctl restart chrony.service</pre>
 
 template:
-    name: "lineinfile"
+    name: key_value_pair_in_file
     vars:
-        text: {{{ makestep_line }}}
+        key: "makestep"
+        value: {{{ step_value }}}
+        sep: ' '
+        sep_regex: ' '
         path: {{{ chrony_conf_path }}}
