@@ -13,7 +13,7 @@
   changed_when: false
   failed_when: false
 
-- name: {{{ rule_title }}} - Select authselect profile
+- name: {{{ rule_title }}} - Try to Select an authselect Profile
   ansible.builtin.command:
     cmd: authselect select "{{ var_authselect_profile }}"
   register: result_authselect_select
@@ -29,7 +29,7 @@
   when:
     - result_authselect_current.rc != 0
 
-- name: {{{ rule_title }}} - Verify if PAM has been altered
+- name: {{{ rule_title }}} - Verify If pam Has Been Altered
   ansible.builtin.command:
     cmd: rpm -qV pam
   register: result_altered_authselect
@@ -42,14 +42,14 @@
     - result_authselect_select is not skipped
     - result_authselect_select.rc != 0
 
-- name: {{{ rule_title }}} - Informative message based on the authselect integrity check
+- name: {{{ rule_title }}} - Informative Message Based on authselect Integrity Check
   ansible.builtin.assert:
     that:
       - result_authselect_current.rc == 0 or result_altered_authselect is skipped or result_altered_authselect.rc == 0
     fail_msg:
       - authselect is not used but files from the 'pam' package have been altered, so the authselect configuration won't be forced.
 
-- name: {{{ rule_title }}} - Force authselect profile select
+- name: {{{ rule_title }}} - Force authselect Profile Selection
   ansible.builtin.command:
     cmd: authselect select --force "{{ var_authselect_profile }}"
   when:
