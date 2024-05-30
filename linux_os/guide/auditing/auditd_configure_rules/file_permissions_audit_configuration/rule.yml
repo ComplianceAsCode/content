@@ -34,7 +34,7 @@ template:
             - /etc/audit/
             - /etc/audit/rules.d/
         file_regex:
-            - .*audit\(\.rules\|d\.conf\)$
-            - .*\.rules$
+            - ^.*audit(\.rules|d\.conf)$
+            - ^.*\.rules$
         allow_stricter_permissions: "true"
         filemode: '0640'
