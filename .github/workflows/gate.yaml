@@ -135,7 +135,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu2004 ubuntu2204
+          ./build_product ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -168,6 +168,7 @@ jobs:
                 rhel7 \
                 rhel8 \
                 rhel9 \
+                rhel10 \
                 uos20 \
                 ocp4
           env:
