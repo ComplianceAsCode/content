@@ -25,7 +25,7 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
 {{%- else %}}
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
 {{%- endif %}}

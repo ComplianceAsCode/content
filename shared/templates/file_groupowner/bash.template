@@ -14,7 +14,7 @@
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -group {{{ GID_OR_NAME }}} -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp {{{ GID_OR_NAME }}} {} \;
+find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -group {{{ GID_OR_NAME }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp {{{ GID_OR_NAME }}} {} \;
 {{%- else %}}
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chgrp {{{ GID_OR_NAME }}} {} \;
 {{%- endif %}}
