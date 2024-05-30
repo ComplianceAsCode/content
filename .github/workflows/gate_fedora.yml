@@ -24,22 +24,31 @@ jobs:
                 run: pip install pcre2 -r requirements.txt -r test-requirements.txt
             -   name: Build
                 run: |-
-                    ./build_product \
+                    ./build_product -j2 \
                         alinux2 \
                         alinux3 \
                         anolis23 \
                         anolis8 \
                         chromium \
+                        eks \
+                        example \
                         fedora \
                         firefox \
+                        macos1015 \
+                        ol7  \
+                        ol8 \
+                        ol9 \
+                        openembedded \
+                        openeuler2203 \
                         rhcos4 \
                         rhel7 \
                         rhel8 \
                         rhel9 \
                         rhel10 \
+                        rhv4 \
                         uos20 \
                         ocp4 \
-                        eks
+                        uos20
                 env:
                     ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
             -   name: Test
