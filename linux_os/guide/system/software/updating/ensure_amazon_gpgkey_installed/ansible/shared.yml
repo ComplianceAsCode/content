@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 - name: "Read permission of GPG key directory"
-  stat:
+  ansible.builtin.stat:
     path: /etc/pki/rpm-gpg/
   register: gpg_key_directory_permission
   check_mode: no
