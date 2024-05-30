@@ -13,7 +13,7 @@
 
 - name: Read signatures in GPG key
   # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
-  command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023"
+  ansible.builtin.command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023"
   changed_when: False
   register: gpg_fingerprints
   check_mode: no
