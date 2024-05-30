@@ -23,7 +23,7 @@
     gpg_installed_fingerprints: "{{ gpg_fingerprints.stdout | regex_findall('^pub.*\n(?:^fpr[:]*)([0-9A-Fa-f]*)', '\\1') | list }}"
 
 - name: Set Fact - Valid fingerprints
-  set_fact:
+  ansible.builtin.set_fact:
     gpg_valid_fingerprints:
     - "{{{ release_key_fingerprint }}}"
 
