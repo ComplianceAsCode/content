@@ -5,7 +5,7 @@ from collections import defaultdict
 import ssg.components
 
 from .most_used_rules import _sorted_dict_by_num_value
-from .common import generate_output, merge_dicts
+from .common import generate_output, merge_dicts, remove_zero_counts
 
 PYTHON_2 = sys.version_info[0] < 3
 
@@ -18,19 +18,22 @@ if not PYTHON_2:
 
 
 def _count_rules_components(component_name, rules, used_rules_of_components_out):
-    used_rules = defaultdict(int)
-    if component_name in used_rules_of_components_out:
-        used_rules = used_rules_of_components_out[component_name]
+    used_rules = used_rules_of_components_out[component_name]
     for rule in rules:
         used_rules[rule] += 1
-    used_rules_of_components_out[component_name] = used_rules
 
 
 def _count_components(components, rules_list, components_out, used_rules_of_components_out):
     for component_name, component in components.items():
         intersection = set(component.rules).intersection(set(rules_list))
+        components_out[component_name] += 0
         if len(intersection) > 0:
             components_out[component_name] += 1
+        if component_name not in used_rules_of_components_out:
+            used_rules_of_components_out[component_name] = {
+                rule_id: 0 for rule_id in component.rules
+            }
+
         _count_rules_components(component_name, intersection, used_rules_of_components_out)
 
 
@@ -66,15 +69,26 @@ def _sort_rules_of_components(used_rules_of_components):
     return out
 
 
+def _remove_zero_counts_of(used_rules_of_components):
+    return {
+        component_name: remove_zero_counts(rules_dict)
+        for component_name, rules_dict in used_rules_of_components.items()
+    }
+
+
 def command_most_used_components(args):
     components = defaultdict(int)
     used_rules_of_components = {}
 
     _process_all_products_from_controls(components, used_rules_of_components, args.products)
 
+    if not args.all:
+        components = remove_zero_counts(components)
+        used_rules_of_components = _remove_zero_counts_of(used_rules_of_components)
+
     sorted_components = _sorted_dict_by_num_value(components)
     csv_header = "component_name,count_of_profiles"
-    if args.used_rules:
+    if args.rules:
         csv_header = "component_name,count_of_profiles,used_rules:count_of_profiles"
         delim = " "
         if args.format == "csv":
