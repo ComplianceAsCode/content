@@ -173,13 +173,12 @@ controls:
     levels:
     - standard
     description: >-
-      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take
-      place in a separate Init container. It SHOULD be ensured that the initialisation terminates all
-      processes that are already running. Kubernetes SHOULD ONLY start the other containers if
-      the initialisation is successful.
+      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take place in a separate Init container. It SHOULD be ensured that the initialisation terminates all processes that are already running. Kubernetes SHOULD ONLY start the other containers if the initialisation is successful.
     notes: >-
-      TBD
-    status: pending
+      OpenShift provides the necessary resource configurations via Kubernetes. Kubernetes ensures the (process) dependencies between init containers and “normal” containers of a pod.
+
+      The requirement must be implemented by application development.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A7
@@ -187,21 +186,32 @@ controls:
     levels:
     - standard
     description: >-
-      Networks for the administration of nodes, the control plane, and the individual networks of
-      application services SHOULD be separated.
-      Only the network ports of the pods necessary for operation SHOULD be released into the
-      designated networks. If a Kubernetes cluster contains multiple applications, all the network
-      connections between the Kubernetes namespaces SHOULD first be prohibited and only
-      required network connections permitted (whitelisting). The network ports necessary for the
-      administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD
-      ONLY be accessible from the corresponding administration network and from pods that need
-      them.
-      Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and
-      create or change rules for the network.
+      (1) Networks for the administration of nodes, the control plane, and the individual networks of application services SHOULD be separated.
+      (2) Only the network ports of the pods necessary for operation SHOULD be released into the designated networks. (3) If a Kubernetes cluster contains multiple applications, all the network connections between the Kubernetes namespaces SHOULD first be prohibited and only required network connections permitted (whitelisting). (4) The network ports necessary for the administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD ONLY be accessible from the corresponding administration network and from pods that need them.
+      (5) Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and create or change rules for the network.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1-3:
+      The requirements for restricting network ports and network connections between Kubernetes namespaces are already supported by OpenShift as standard using network policies and the option for default network policies (security by design).
+
+      The separation of the management network can also be implemented at the namespace level via network policies (incoming, the responsibility of the namespace administrator) and egress firewalls (outgoing, the responsibility of the cluster admins).
+
+      Externally exposed services can receive their own IP and thus data traffic can also be separated outside the platform. Inter-node communication is carried out via suitable tunnel protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+
+      The determination of the necessary network policies for applications is supported by the network policy generator in ACS.
+      Section 4 is true by default
+      Section 5 maps to principle of least privilege
+    status: partial
+    rules:
+      # Section 1
+      # Section 2
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      # Section 3
+      - project_config_and_template_network_policy
+      # Section 4, default
+      # Section 5
+      - rbac_least_privilege
+
 
   - id: APP.4.4.A8
     title: Securing Configuration Files on Kubernetes
