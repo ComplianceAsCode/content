@@ -143,19 +143,30 @@ controls:
     levels:
     - basic
     description: >-
-      A cluster MUST have a backup. The backup MUST include:
-        • Persistent volumes
-        • Configuration files for Kubernetes and the other programs of the control plane
-        • The current state of the Kubernetes cluster, including extensions
-        • Databases of the configuration (namely etcd in this case)
-        • All infrastructure applications required to operate the cluster and the services within it
-        • The data storage of the code and image registries
-        Snapshots for the operation of the applications SHOULD also be considered. Snapshots MUST
-        NOT be considered a substitute for backups.
+      (1) A cluster MUST have a backup. The backup MUST include:
+        (2) • Persistent volumes
+        (3) • Configuration files for Kubernetes and the other programs of the control plane
+        (4) • The current state of the Kubernetes cluster, including extensions
+        (5) • Databases of the configuration (namely etcd in this case)
+        (6) • All infrastructure applications required to operate the cluster and the services within it
+        (7) • The data storage of the code and image registries
+      (8) Snapshots for the operation of the applications SHOULD also be considered. Snapshots MUST NOT be considered a substitute for backups.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      The data backup of a cluster must be individually defined as part of the system architecture as part of the operating model. The areas of responsibility for the container platform (cluster administration), the infrastructure services (system administration) and the application management (technical administration) should be considered separately.
+
+      For data backup as part of cluster administration (Kubernetes configuration, current state of the Kubernetes cluster, configuration database) the integrated functions or methods of OpenShift must be used. System administration and specialist administration must be carried out in accordance with the respective specifications.
+
+      Snapshots for persistent volumes are supported when using OpenShift's Container Storage Interface (CSI) drivers. OpenShift offers an easily configurable backup system with the OpenShift API for Data Protection (OADP).
+
+      Additional third-party solutions for backup are also available in the OperatorHub.
+
+      The checks are not checking the requirement in detail. They only setup a foundation to implement the configurations as described. For Section 3,4 and 6 a GitOps approach might achieve the best results. for 2 and 7 a sufficient backup solution is needed. 5 can be achieved with onboard utilities. 8 is dependend on the CSI provider and the available features
+    status: partial
+    rules:
+      # Section 2,7
+      - general_backup_solution_installed
+      # Section 5
+      - etcd_backup
 
   - id: APP.4.4.A6
     title: Initialisation of Pods

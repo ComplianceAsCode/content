@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: A Backup Solution Has To Be Installed
+
+description: |-
+    Backup and Restore are fundamental practices when it comes to disaster recovery. By utilizing a Backup Software you are able to backup (and restore) data, which is lost, if your cluster crashes beyong recoverability.
+    There are multiple Backup Solutions on the Market which diverge in Features. Thus some of them might only backup your cluster, others might also be able to backup VMs or PVCs running in your Cluster.
+
+rationale: |-
+    Backup and Recovery abilities are a necessity to recover from a disaster.
+
+identifiers:
+    cce@ocp4: CCE-90185-0
+
+references:
+    bsi: APP.4.4.A5
+
+severity: medium
+
+ocil_clause: 'No CRDs from a known backup solution installed'
+
+ocil: |-
+    Run the following command to retrieve the customresourcedefinitions objects in the system:
+    <pre>$ oc crds </pre>
+    Make sure there is a crd of a backup solution. Also make sure, that the backup solution is properly configured and that you are able to recover from the backups.
+    You can add your known CRD to the var_backup_solution_crds_regex, to allowlist your own backup solution.
+
+{{% set jqfilter = '[.items[] | if select(.metadata.name | test("{{.var_backup_solution_crds_regex}}"))!=null then true else false end]' %}}
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/apiextensions.k8s.io/v1/customresourcedefinitions?limit=500': jqfilter}) | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: "{{{ openshift_filtered_path('/apis/apiextensions.k8s.io/v1/customresourcedefinitions?limit=500', jqfilter) }}}"
+        yamlpath: "[:]"
+        entity_check: "at least one"
+        values:
+        -   value: 'true'
+            type: "string"
+            entity_check: "at least one"
