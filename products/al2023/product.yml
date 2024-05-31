@@ -1,0 +1,44 @@
+product: al2023
+full_name: Amazon Linux 2023
+type: platform
+
+families:
+  - rhel
+  - rhel-like
+
+major_version_ordinal: 2023
+
+benchmark_id: AL-2023
+benchmark_root: "../../linux_os/guide"
+components_root: "../../components"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+sshd_distributed_config: "true"
+
+dconf_gdm_dir: "distro.d"
+
+faillock_path: "/var/log/faillock"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - al2023:
+      name: "cpe:2.3:o:amazon:linux_2023:-:*:*:*:*:*:*:*"
+      title: "Amazon Linux 2023"
+      check_id: installed_OS_is_al2023
+
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/amazon_linux/'
+
+journald_conf_dir_path: /etc/systemd/journald.conf.d
