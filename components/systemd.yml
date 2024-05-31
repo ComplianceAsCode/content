@@ -8,18 +8,25 @@ packages:
 rules:
 - coredump_disable_backtraces
 - coredump_disable_storage
+- dir_permissions_system_journal
+- dir_owner_system_journal
+- dir_groupowner_system_journal
 - disable_ctrlaltdel_burstaction
 - file_groupowner_etc_crypttab
+- file_groupowner_journalctl
 - file_groupowner_system_journal
 - file_owner_etc_crypttab
+- file_owner_journalctl
 - file_owner_system_journal
 - file_permissions_etc_crypttab
+- file_permissions_journalctl
 - file_permissions_system_journal
 - journald_compress
 - journald_forward_to_syslog
 - journald_storage
 - package_systemd-journal-remote_installed
 - package_timesyncd_installed
+- package_timesyncd_removed
 - service_debug-shell_disabled
 - service_systemd-coredump_disabled
 - service_systemd-journald_enabled
@@ -27,3 +34,4 @@ rules:
 - service_timesyncd_root_distance_configured
 - service_timesyncd_enabled
 - socket_systemd-journal-remote_disabled
+- systemd_tmp_mount_enabled

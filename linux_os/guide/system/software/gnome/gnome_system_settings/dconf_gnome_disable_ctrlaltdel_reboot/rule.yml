@@ -9,10 +9,10 @@ description: |-
     <br /><br />
     To configure the system to ignore the <tt>Ctrl-Alt-Del</tt> key sequence
     from the Graphical User Interface (GUI) instead of rebooting the system,
-    add or set <tt>logout</tt> to <tt>''</tt> in
+    add or set <tt>logout</tt> to <tt>['']</tt> in
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
     <pre>[org/gnome/settings-daemon/plugins/media-keys]
-    logout=''</pre>
+    logout=['']</pre>
     Once the settings have been added, add a lock to
     <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent
     user modification. For example:
@@ -48,6 +48,7 @@ references:
     stigid@rhel7: RHEL-07-020231
     stigid@rhel8: RHEL-08-040171
     stigid@ubuntu2004: UBTU-20-010459
+    stigid@ubuntu2204: UBTU-22-271030
 
 ocil_clause: 'GNOME3 is configured to reboot when Ctrl-Alt-Del is pressed'
 
@@ -59,7 +60,7 @@ ocil: |-
     If properly configured, the output should be
     <tt>/org/gnome/settings-daemon/plugins/media-keys/logout</tt>
 
-fixtext: '{{{ fixtext_dconf_ini_file("/org/gnome/settings-daemon/plugins/media-keys", "logout", "") }}}'
+fixtext: '{{{ fixtext_dconf_ini_file("/org/gnome/settings-daemon/plugins/media-keys", "logout", "[\'\']") }}}'
 
 srg_requirement: 'The x86 Ctrl-Alt-Delete key sequence in {{{ full_name }}} must be disabled if a graphical user interface is installed.'
 

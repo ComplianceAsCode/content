@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = rsyslog
 bash -x setup.sh
 
 if [[ -f encrypt.conf ]]; then

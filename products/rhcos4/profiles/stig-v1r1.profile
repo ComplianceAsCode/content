@@ -17,7 +17,7 @@ description: |-
     Red Hat Enterprise Linux CoreOS 4.
 
 selections:
-  - srg_ctr:all
+  - stig_ocp4:all
   - var_sshd_set_keepalive=0
   - var_selinux_policy_name=targeted
   - var_selinux_state=enforcing

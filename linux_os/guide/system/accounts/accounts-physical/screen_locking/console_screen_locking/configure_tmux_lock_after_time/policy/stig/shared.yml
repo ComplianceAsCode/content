@@ -23,3 +23,6 @@ fixtext: |-
     Configure {{{ full_name }}} to enforce session lock after a period of 15 minutes of inactivity by adding the following line to the "/etc/tmux.conf" global configuration file:
 
     set -g lock-after-time 900
+
+vuln_discussion: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not logout because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, tmux can be configured to identify when a user's session has idled and take action to initiate a session lock.

@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Limit Password Reuse'
 
-{{% if 'ubuntu' not in product %}}
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
 {{% set configFile = "/etc/pam.d/system-auth" %}}
 {{% else %}}
 {{% set configFile = "/etc/pam.d/common-password" %}}
@@ -43,6 +43,7 @@ references:
     srg: SRG-OS-000077-GPOS-00045
     stigid@sle15: SLES-15-020250
     stigid@ubuntu2004: UBTU-20-010070
+    stigid@ubuntu2204: UBTU-22-611050
 
 ocil_clause: 'the value of remember is not equal to or greater than the expected value'
 

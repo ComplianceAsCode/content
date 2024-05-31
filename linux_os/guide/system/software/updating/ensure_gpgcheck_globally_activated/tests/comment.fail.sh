@@ -1,5 +1,9 @@
 #!/bin/bash
+{{% if 'sle' in product %}}
+# packages = libselinux1
+{{% else %}} 
 # packages = python3-libselinux
+{{% endif %}}
 
 . $SHARED/group_updating_utils.sh
 

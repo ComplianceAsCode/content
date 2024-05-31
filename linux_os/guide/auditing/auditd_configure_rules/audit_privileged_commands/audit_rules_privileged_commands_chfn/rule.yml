@@ -1,0 +1,54 @@
+documentation_complete: true
+
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - chfn'
+
+description: |-
+    At a minimum, the audit system should collect the execution of
+    privileged commands for all users and root. If the <tt>auditd</tt> daemon is
+    configured to use the <tt>augenrules</tt> program to read audit rules during
+    daemon startup (the default), add a line of the following form to a file with
+    suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F path=/usr/bin/chfn -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the following
+    form to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F path=/usr/bin/chfn -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+
+rationale: |-
+    Without generating audit records that are specific to the security and
+    mission needs of the organization, it would be difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+
+    Audit records can be generated from various components within the
+    information system (e.g., module or policy filter).
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83187-5
+    cce@sle15: CCE-85589-0
+
+references:
+    cis@ubuntu2004: 4.1.11
+    cis@ubuntu2204: 4.1.3.6
+    disa: CCI-000130,CCI-000169,CCI-000172,CCI-002884
+    nist: AU-3,AU-12(a),AU-12(c),MA-4(1)(a)
+    stigid@sle12: SLES-12-020280
+    stigid@sle15: SLES-15-030340
+    stigid@ubuntu2004: UBTU-20-010137
+    stigid@ubuntu2204: UBTU-22-654030
+
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
+ocil: |-
+    To verify that auditing of privileged command use is configured, run the
+    following command:
+    <pre>$ sudo grep chfn /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+    It should return a relevant line in the audit rules.
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/chfn

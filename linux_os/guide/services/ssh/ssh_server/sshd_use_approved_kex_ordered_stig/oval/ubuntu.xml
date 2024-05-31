@@ -1,0 +1,78 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Limit the KexAlgorithms to those which are FIPS-approved.") }}}
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
+      <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+        <criteria comment="sshd is not installed" operator="AND">
+          <extend_definition comment="sshd is not required or requirement is unset"
+            definition_ref="sshd_not_required_or_unset" />
+          <extend_definition comment="package openssh-server removed"
+            definition_ref="package_openssh-server_removed" />
+        </criteria>
+
+        <criteria comment="sshd is installed and configured" operator="AND">
+          <extend_definition comment="sshd is required or requirement is unset"
+            definition_ref="sshd_required_or_unset" />
+          <extend_definition comment="package openssh-server installed"
+            definition_ref="package_openssh-server_installed" />
+          <criteria comment="sshd is configured correctly" operator="AND">
+            <criteria comment="the configuration is correct if it exists" operator="AND">
+              <criterion comment="Check the KexAlgorithms in /etc/ssh/sshd_config if any"
+                test_ref="test_{{{ rule_id }}}" />
+              <criterion comment="Check the KexAlgorithms in /etc/ssh/sshd_config.d if any"
+                test_ref="test_{{{ rule_id }}}_config_dir" />
+            </criteria>
+            <criterion comment="the configuraton exists" test_ref="test_KexAlgorithms_present_{{{ rule_id }}}" />
+          </criteria>
+        </criteria>
+
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of KexAlgorithms setting in the /etc/ssh/sshd_config file"
+    id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)KexAlgorithms(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of KexAlgorithms setting in the /etc/ssh/sshd_config.d file"
+    id="test_{{{ rule_id }}}_config_dir" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_config_dir" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_config_dir" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)KexAlgorithms(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+      <ind:subexpression datatype="string" operation="pattern match">ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_{{{ rule_id }}}" version="1">
+    <set>
+      <object_reference>obj_{{{ rule_id }}}</object_reference>
+      <object_reference>obj_{{{ rule_id }}}_config_dir</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_KexAlgorithms_present_{{{ rule_id }}}" version="1"
+                              check="all" check_existence="at_least_one_exists"
+                              comment="Verify that the value of KexAlgorithms is present">
+    <ind:object object_ref="obj_collection_obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+</def-group>

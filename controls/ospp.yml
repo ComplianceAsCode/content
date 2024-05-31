@@ -1,0 +1,622 @@
+id: ospp
+title: 'Protection Profile for General Purpose Operating Systems'
+policy: 'Common Criteria'
+source: 'https://www.niap-ccevs.org/Profile/Info.cfm?PPID=469&id=469'
+version: '4.3'
+levels:
+    -   id: base
+controls:
+    -   id: AGD_OPE.1
+        title: 'Operational User Guidance'
+        levels:
+            - base
+        rules:
+            - package_openscap-scanner_installed
+            - package_scap-security-guide_installed
+        status: automated
+    -   id: AGD_PRE.1
+        title: 'Preparative Procedures'
+        levels:
+            - base
+        rules:
+            - package_openscap-scanner_installed
+            - package_scap-security-guide_installed
+        status: automated
+    -   id: FAU_GEN.1
+        title: 'Audit Data Generation'
+        levels:
+            - base
+        rules:
+            - auditd_freq
+            - auditd_local_events
+            - grub2_audit_argument
+            - package_audit-libs_installed
+            - package_audit_installed
+            - audit_basic_configuration
+            - service_auditd_enabled
+            - sshd_disable_root_login
+            - zipl_audit_argument
+        status: automated
+    -   id: FAU_GEN.1.1.c
+        title: 'Audit Data Generation - Event Types to be Audited'
+        levels:
+            - base
+        rules:
+            - audit_rules_dac_modification_chmod
+            - audit_rules_dac_modification_chown
+            - audit_rules_dac_modification_fchmod
+            - audit_rules_dac_modification_fchmodat
+            - audit_rules_dac_modification_fchown
+            - audit_rules_dac_modification_fchownat
+            - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lchown
+            - audit_rules_dac_modification_lremovexattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
+            - audit_rules_dac_modification_setxattr
+            - audit_rules_execution_chcon
+            - audit_rules_execution_restorecon
+            - audit_rules_execution_semanage
+            - audit_rules_execution_setsebool
+            - audit_rules_execution_seunshare
+            - audit_rules_file_deletion_events
+            - audit_rules_file_deletion_events_rename
+            - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_rmdir
+            - audit_rules_file_deletion_events_unlink
+            - audit_rules_file_deletion_events_unlinkat
+            - audit_rules_unsuccessful_file_modification_creat
+            - audit_rules_unsuccessful_file_modification_ftruncate
+            - audit_rules_unsuccessful_file_modification_open
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at_rule_order
+            - audit_rules_unsuccessful_file_modification_open_o_creat
+            - audit_rules_unsuccessful_file_modification_open_o_trunc_write
+            - audit_rules_unsuccessful_file_modification_open_rule_order
+            - audit_rules_unsuccessful_file_modification_openat
+            - audit_rules_unsuccessful_file_modification_openat_o_creat
+            - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
+            - audit_rules_unsuccessful_file_modification_openat_rule_order
+            - audit_rules_unsuccessful_file_modification_rename
+            - audit_rules_unsuccessful_file_modification_renameat
+            - audit_rules_unsuccessful_file_modification_truncate
+            - audit_rules_unsuccessful_file_modification_unlink
+            - audit_rules_unsuccessful_file_modification_unlinkat
+            - audit_rules_kernel_module_loading_delete
+            - audit_rules_kernel_module_loading_finit
+            - audit_rules_kernel_module_loading_init
+            - audit_rules_login_events_faillock
+            - audit_rules_login_events_lastlog
+            - audit_rules_login_events_tallylog
+            - audit_rules_privileged_commands_at
+            - audit_rules_privileged_commands_gpasswd
+            - audit_rules_privileged_commands_mount
+            - audit_rules_privileged_commands_newgidmap
+            - audit_rules_privileged_commands_newgrp
+            - audit_rules_privileged_commands_newuidmap
+            - audit_rules_privileged_commands_passwd
+            - audit_rules_privileged_commands_ssh_keysign
+            - audit_rules_privileged_commands_su
+            - audit_rules_privileged_commands_sudo
+            - audit_rules_privileged_commands_sudoedit
+            - audit_rules_privileged_commands_unix2_chkpwd
+            - audit_rules_privileged_commands_unix_chkpwd
+            - audit_rules_privileged_commands_userhelper
+            - audit_rules_privileged_commands_usernetctl
+            - audit_rules_etc_group_open
+            - audit_rules_etc_group_open_by_handle_at
+            - audit_rules_etc_group_openat
+            - audit_rules_etc_gshadow_open
+            - audit_rules_etc_gshadow_open_by_handle_at
+            - audit_rules_etc_gshadow_openat
+            - audit_rules_etc_passwd_open
+            - audit_rules_etc_passwd_open_by_handle_at
+            - audit_rules_etc_passwd_openat
+            - audit_rules_etc_shadow_open
+            - audit_rules_etc_shadow_open_by_handle_at
+            - audit_rules_etc_shadow_openat
+            - audit_rules_mac_modification
+            - audit_rules_mac_modification_usr_share
+            - audit_rules_session_events
+            - audit_rules_sysadmin_actions
+            - audit_rules_usergroup_modification_group
+            - audit_rules_usergroup_modification_gshadow
+            - audit_rules_usergroup_modification_opasswd
+            - audit_rules_usergroup_modification_passwd
+            - audit_rules_usergroup_modification_shadow
+            - directory_access_var_log_audit
+            - auditd_audispd_configure_remote_server
+            - auditd_audispd_encrypt_sent_records
+            - auditd_audispd_syslog_plugin_activated
+            - audit_access_failed
+            - audit_access_failed_aarch64
+            - audit_access_failed_ppc64le
+            - audit_access_success
+            - audit_access_success_aarch64
+            - audit_access_success_ppc64le
+            - audit_create_failed
+            - audit_create_failed_aarch64
+            - audit_create_failed_ppc64le
+            - audit_create_success
+            - audit_create_success_aarch64
+            - audit_create_success_ppc64le
+            - audit_delete_failed
+            - audit_delete_failed_aarch64
+            - audit_delete_failed_ppc64le
+            - audit_delete_success
+            - audit_delete_success_aarch64
+            - audit_delete_success_ppc64le
+            - audit_modify_failed
+            - audit_modify_failed_aarch64
+            - audit_modify_failed_ppc64le
+            - audit_modify_success
+            - audit_modify_success_aarch64
+            - audit_modify_success_ppc64le
+            - audit_module_load
+            - audit_module_load_ppc64le
+            - audit_ospp_general
+            - audit_ospp_general_aarch64
+            - audit_ospp_general_ppc64le
+            - audit_owner_change_failed
+            - audit_owner_change_failed_aarch64
+            - audit_owner_change_failed_ppc64le
+            - audit_owner_change_success
+            - audit_owner_change_success_aarch64
+            - audit_owner_change_success_ppc64le
+            - audit_perm_change_failed
+            - audit_perm_change_failed_aarch64
+            - audit_perm_change_failed_ppc64le
+            - audit_perm_change_success
+            - audit_perm_change_success_aarch64
+            - audit_perm_change_success_ppc64le
+            - audit_rules_for_ospp
+            - rsyslog_cron_logging
+            - rsyslog_remote_loghost
+        status: automated
+    -   id: FAU_GEN.1.2
+        title: 'Audit Data Generation - Audit Event Format'
+        levels:
+            - base
+        rules:
+            - auditd_log_format
+            - auditd_name_format
+            - audit_immutable_login_uids
+            - disable_ctrlaltdel_burstaction
+            - disable_ctrlaltdel_reboot
+        status: automated
+    -   id: FAU_STG.1
+        title: 'Protected audit trail storage'
+        levels:
+            - base
+        rules:
+            - auditd_write_logs
+            - grub2_audit_backlog_limit_argument
+            - zipl_audit_backlog_limit_argument
+        status: automated
+    -   id: FAU_STG.3
+        levels:
+            - base
+        rules:
+            - grub2_audit_backlog_limit_argument
+            - zipl_audit_backlog_limit_argument
+        status: automated
+    -   id: FCS_CKM.1
+        title: 'Cryptographic Key Generation'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+    -   id: FCS_CKM.1.1
+        title: 'Cryptographic Key Generation - asymmetric cryptographic'
+        levels:
+            - base
+        rules:
+            - ssh_client_use_strong_rng_csh
+            - ssh_client_use_strong_rng_sh
+        status: automated
+    -   id: FCS_CKM.2
+        title: 'Cryptographic Key Establishment'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+    -   id: FCS_COP.1/ENCRYPT
+        title: 'Cryptographic Operation - Encryption/Decryption'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+    -   id: FCS_COP.1/HASH
+        title: 'Cryptographic Operation - Hashing'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+
+    -   id: FCS_COP.1/SIGN
+        title: 'Cryptographic Operation - Signing'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+    -   id: FCS_COP.1/KEYHMAC
+        title: 'Keyed-Hash Message Authentication'
+        levels:
+            - base
+        rules:
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+
+    -   id: FCS_IPSEC_EXT.1.4
+        levels:
+            - base
+        rules:
+            - configure_libreswan_crypto_policy
+        status: automated
+    -   id: FCS_IPSEC_EXT.1.6
+        levels:
+            - base
+        rules:
+            - configure_libreswan_crypto_policy
+        status: automated
+    -   id: FCS_RBG_EXT.1
+        title: 'Random Bit Generation'
+        levels:
+            - base
+        rules:
+            - service_rngd_enabled
+            - enable_dracut_fips_module
+            - enable_fips_mode
+        status: automated
+    -   id: FCS_RBG_EXT.1.1
+        title: 'Random Bit Generation - deterministic random bit generation'
+        levels:
+            - base
+        rules:
+            - grub2_kernel_trust_cpu_rng
+        status: automated
+
+    -   id: FCS_RBG_EXT.1.2
+        title: 'Random Bit Generation - entropy source'
+        levels:
+            - base
+        rules:
+            - sshd_use_strong_rng
+            - openssl_use_strong_entropy
+        status: automated
+
+    -   id: FCS_SSHC_EXT.1
+        title: 'SSH Client Protocol'
+        levels:
+            - base
+        rules:
+            - package_openssh-clients_installed
+            - configure_ssh_crypto_policy
+            - harden_ssh_client_crypto_policy
+        status: automated
+    -   id: FCS_SSHS_EXT.1
+        title: 'SSH Server Protocol'
+        levels:
+            - base
+        rules:
+            - package_openssh-server_installed
+            - configure_ssh_crypto_policy
+            - harden_sshd_crypto_policy
+        status: automated
+
+    -   id: FCS_SSH_EXT.1
+        title: 'SSH Protocol'
+        levels:
+            - base
+        rules:
+            - package_openssh-clients_installed
+            - package_openssh-server_installed
+            - configure_ssh_crypto_policy
+        status: automated
+
+    -   id: FCS_SSH_EXT.1.2
+        title: 'SSH Protocol - Authentication Methods'
+        levels:
+            - base
+        rules:
+            - sshd_disable_gssapi_auth
+            - sshd_disable_kerb_auth
+        status: automated
+
+    -   id: FCS_SSH_EXT.1.8
+        title: 'SSH Protocol - Session'
+        levels:
+            - base
+        rules:
+            - ssh_client_rekey_limit
+            - sshd_rekey_limit
+        status: automated
+
+    -   id: FCS_TLSC_EXT.1
+        title: 'TLS Client Protocol'
+        levels:
+            - base
+        rules:
+            - rsyslog_remote_tls
+            - rsyslog_remote_tls_cacert
+            - configure_crypto_policy
+            - package_crypto-policies_installed
+            - enable_fips_mode
+        status: automated
+
+    -   id: FCS_TLSC_EXT.1.1
+        title: 'Allowed Cipher Suites'
+        levels:
+            - base
+        rules:
+            - harden_openssl_crypto_policy
+        status: automated
+    -   id: FIA_AFL.1
+        title: 'Authentication failure handling'
+        levels:
+            - base
+        rules:
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+            - enable_authselect
+        status: automated
+
+    -   id: FIA_UAU.1
+        title: 'Timing of authentication'
+        levels:
+            - base
+        rules:
+            - disable_host_auth
+            - sshd_disable_empty_passwords
+            - sshd_disable_rhosts
+            - sshd_disable_rhosts_rsa
+            - sshd_disable_user_known_hosts
+            - coreos_disable_interactive_boot
+            - grub2_disable_interactive_boot
+            - require_emergency_target_auth
+            - require_singleuser_auth
+            - service_debug-shell_disabled
+            - no_empty_passwords
+            - enable_authselect
+            - grub2_disable_recovery
+            - grub2_systemd_debug-shell_argument_absent
+            - grub2_admin_username
+            - grub2_password
+            - grub2_uefi_admin_username
+            - grub2_uefi_password
+            - zipl_systemd_debug-shell_argument_absent
+            - gnome_gdm_disable_automatic_login
+            - gnome_gdm_disable_guest_login
+        status: automated
+
+    -   id: FIA_UAU.5
+        title: 'Multiple Authentication Mechanisms'
+        levels:
+            - base
+        rules:
+            - package_openssh-clients_installed
+            - package_openssh-server_installed
+        status: automated
+
+    -   id: FIA_X509_EXT.1
+        title: 'X.509 Certificate Validation'
+        levels:
+            - base
+        rules:
+            - package_gnutls-utils_installed
+        status: automated
+
+    -   id: FIA_X509_EXT.1.1
+        title: 'X.509 Certificate Validation - Valid Certificates'
+        levels:
+            - base
+        rules:
+            - rsyslog_remote_tls
+        status: automated
+
+    -   id: FIA_X509_EXT.2
+        title: 'X.509 Certificate Validation - basicConstraints'
+        levels:
+            - base
+        rules:
+            - package_gnutls-utils_installed
+        status: automated
+
+    -   id: FMT_MOF_EXT.1
+        title: 'Management of security functions behavior'
+        levels:
+            - base
+        rules:
+            - banner_etc_issue
+            - dconf_gnome_banner_enabled
+            - dconf_gnome_login_banner_text
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_tally2_deny_root
+            - accounts_passwords_pam_tally2_unlock_time
+            - accounts_password_pam_retry
+            - configure_bashrc_exec_tmux
+            - configure_tmux_lock_after_time
+            - configure_tmux_lock_command
+            - no_tmux_in_shells
+            - package_screen_installed
+            - package_tmux_installed
+            - accounts_tmout
+            - set_firewalld_default_zone
+            - dconf_gnome_login_retries
+            - dconf_gnome_screensaver_idle_activation_enabled
+            - dconf_gnome_screensaver_idle_activation_locked
+            - dconf_gnome_screensaver_idle_delay
+            - dconf_gnome_screensaver_lock_delay
+            - dconf_gnome_screensaver_lock_enabled
+            - dconf_gnome_screensaver_lock_locked
+            - dconf_gnome_screensaver_mode_blank
+            - dconf_gnome_screensaver_user_info
+            - dconf_gnome_screensaver_user_locks
+            - dconf_gnome_session_idle_user_locks
+            - package_sudo_installed
+            - security_patches_up_to_date
+            - dconf_gnome_disable_user_admin
+        status: automated
+
+    -   id: FMT_SMF_EXT.1
+        title: 'Management of security functions behavior'
+        levels:
+            - base
+        rules:
+            - package_audispd-plugins_installed
+            - service_fapolicyd_enabled
+            - chronyd_client_only
+            - chronyd_no_chronyc_network
+            - package_chrony_installed
+            - sssd_run_as_sssd_user
+            - configure_usbguard_auditbackend
+            - service_usbguard_enabled
+            - usbguard_allow_hid
+            - usbguard_allow_hid_and_hub
+            - usbguard_allow_hub
+            - usbguard_generate_policy
+            - accounts_password_pam_dcredit
+            - accounts_password_pam_lcredit
+            - accounts_password_pam_minlen
+            - accounts_password_pam_ocredit
+            - accounts_password_pam_ucredit
+            - configure_bashrc_exec_tmux
+            - configure_tmux_lock_after_time
+            - configure_tmux_lock_command
+            - no_tmux_in_shells
+            - package_tmux_installed
+            - package_firewalld_installed
+            - service_firewalld_enabled
+            - kernel_module_atm_disabled
+            - kernel_module_can_disabled
+            - kernel_module_firewire-core_disabled
+            - kernel_module_tipc_disabled
+            - coredump_disable_backtraces
+            - coredump_disable_storage
+            - service_systemd-coredump_disabled
+            - sysctl_kernel_core_pattern
+            - sysctl_kernel_core_pattern_empty_string
+            - sysctl_kernel_core_uses_pid
+            - sysctl_kernel_perf_event_paranoid
+            - sysctl_kernel_unprivileged_bpf_disabled
+            - sysctl_kernel_unprivileged_bpf_disabled_accept_default
+            - sysctl_net_core_bpf_jit_harden
+            - sysctl_user_max_user_namespaces
+            - partition_for_var_log_audit
+            - package_nss-tools_installed
+            - dnf-automatic_apply_updates
+            - dnf-automatic_security_updates_only
+            - timer_dnf-automatic_enabled
+        status: automated
+
+    -   id: FMT_SMF_EXT.1.1
+        title: 'Management of security functions behavior - Restrict Administrator Functions'
+        levels:
+            - base
+        rules:
+            - service_kdump_disabled
+            - logind_session_timeout
+            - use_pam_wheel_for_su
+            - rsyslog_remote_tls
+        status: automated
+
+    -   id: FPT_ASLR_EXT.1
+        title: 'Address Space Layout Randomization'
+        levels:
+            - base
+        rules:
+            - grub2_vsyscall_argument
+            - zipl_vsyscall_argument
+        status: automated
+
+    -   id: FPT_TUD_EXT.1
+        title: 'Trusted Update'
+        levels:
+            - base
+        rules:
+            - package_dnf-plugin-subscription-manager_installed
+            - package_subscription-manager_installed
+            - ensure_gpgcheck_globally_activated
+            - ensure_gpgcheck_local_packages
+            - ensure_gpgcheck_never_disabled
+            - ensure_redhat_gpgkey_installed
+            - ensure_suse_gpgkey_installed
+        status: automated
+
+    -   id: FPT_TUD_EXT.2
+        title: 'Trusted Update for Application Software'
+        levels:
+            - base
+        rules:
+            - package_dnf-plugin-subscription-manager_installed
+            - package_subscription-manager_installed
+            - ensure_gpgcheck_globally_activated
+            - ensure_gpgcheck_local_packages
+            - ensure_gpgcheck_never_disabled
+            - ensure_redhat_gpgkey_installed
+            - ensure_suse_gpgkey_installed
+        status: automated
+
+    -   id: FTA_SSL.1
+        title: 'TSF-initiated session locking'
+        levels:
+            - base
+        rules:
+            - configure_bashrc_exec_tmux
+            - configure_tmux_lock_after_time
+            - configure_tmux_lock_command
+            - no_tmux_in_shells
+            - package_tmux_installed
+        status: automated
+
+    -   id: FTA_TAB.1
+        title: 'Default TOE access banners'
+        levels:
+            - base
+        rules:
+            - sshd_enable_warning_banner
+            - sshd_enable_warning_banner_net
+        status: automated
+
+    -   id: FTP_ITC_EXT.1
+        title: 'Trusted channel communication'
+        levels:
+            - base
+        rules:
+            - kerberos_disable_no_keytab
+            - package_openssh-clients_installed
+            - package_openssh-server_installed
+            - sshd_disable_gssapi_auth
+            - sshd_disable_kerb_auth
+        status: automated
+
+    -   id: FTP_ITC_EXT.1.1
+        title: 'Trusted channel communication - TLS'
+        levels:
+            - base
+        rules:
+            - package_rsyslog-gnutls_installed
+            - package_rsyslog_installed
+            - rsyslog_remote_tls
+        status: automated

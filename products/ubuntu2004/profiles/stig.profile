@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R9'
+title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R11'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -13,6 +13,7 @@ selections:
     - account_temp_expire_date
 
     # UBTU-20-010002 The Ubuntu operating system must enable the graphical user logon banner to display the Standard Mandatory DoD Notice and Consent Banner before granting local access to the system via a graphical user logon.
+    - enable_dconf_user_profile
     - dconf_gnome_banner_enabled
 
     # UBTU-20-010003 The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local access to the system via a graphical user logon.
@@ -74,6 +75,7 @@ selections:
 
     # UBTU-20-010038 The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting any local or remote connection to the system.
     - banner_etc_issue_net
+    - remote_login_banner_text=dod_banners
     - sshd_enable_warning_banner_net
 
     # UBTU-20-010042 The Ubuntu operating system must use SSH to protect the confidentiality and integrity of transmitted information.
@@ -81,9 +83,11 @@ selections:
     - service_sshd_enabled
 
     # UBTU-20-010043 The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
+    - sshd_approved_macs=stig
     - sshd_use_approved_macs_ordered_stig
 
     # UBTU-20-010044 The Ubuntu operating system must configure the SSH daemon to use FIPS 140-2 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
+    - sshd_approved_ciphers=stig
     - sshd_use_approved_ciphers_ordered_stig
 
     # UBTU-20-010045 The Ubuntu operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
@@ -522,6 +526,7 @@ selections:
 
     # UBTU-20-010434 The Ubuntu operating system must enable and run the uncomplicated firewall(ufw).
     - service_ufw_enabled
+    - check_ufw_active
 
     # UBTU-20-010435 The Ubuntu operating system must, for networked systems, compare internal information system clocks at least every 24 hours with a server which is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
     - var_time_service_set_maxpoll=36_hours

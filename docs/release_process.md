@@ -406,7 +406,7 @@ fkinit -u <your_fas_id>
 ```
 > **_NOTE:_**  You need OTP configured in your Fedora account.
 
-### Package Upadate
+### Package Update
 This section covers the usual updates in the `scap-security-guide.spec` file.
 
 #### Fork the repository

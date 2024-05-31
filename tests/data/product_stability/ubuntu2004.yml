@@ -3,12 +3,13 @@ aide_also_checks_rsyslog: 'no'
 aide_bin_path: /usr/bin/aide.wrapper
 aide_conf_path: /etc/aide/aide.conf
 aide_default_path: /etc/default/aide
-audisp_conf_path: /etc/audit
+audisp_conf_path: /etc/audisp
 auid: 1000
 basic_properties_derived: true
 benchmark_id: UBUNTU_20-04
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony/chrony.conf
+chrony_d_path: /etc/chrony/conf.d/
 cpes:
 - ubuntu2004:
     check_id: installed_OS_is_ubuntu2004
@@ -60,11 +61,11 @@ profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
   app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  app-srg-ctr: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform
   bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
   cis: https://www.cisecurity.org/benchmark/ubuntu_linux/
   cis-csc: https://www.cisecurity.org/controls/
   cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
-  cnss: http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf
   cobit5: https://www.isaca.org/resources/cobit
   cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
   dcid: not_officially_available

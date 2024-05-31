@@ -4,6 +4,10 @@
 # complexity = low
 # disruption = low
 
+{{%- if 'ubuntu' in product %}}
+{{{ ansible_instantiate_variables('sshd_approved_ciphers') }}}
+{{{ ansible_sshd_set(parameter="Ciphers", value="{{ sshd_approved_ciphers }}", config_is_distributed=sshd_distributed_config) }}}
+{{%- else %}}
 - name: "Configure sshd to use approved ciphers"
   lineinfile:
     path: /etc/ssh/sshd_config
@@ -11,3 +15,4 @@
     state: present
     regexp: '^[\s]*[Cc]iphers[\s]+(aes256-ctr(?=[\w,-@]+|$),?)?(aes192-ctr(?=[\w,-@]+|$),?)?(aes128-ctr(?=[\w,-@]+|$),?)?[\s]*(?:#.*)?$'
     create: True
+{{%- endif %}}

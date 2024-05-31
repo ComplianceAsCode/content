@@ -1,0 +1,67 @@
+documentation_complete: true
+
+
+title: 'Configure audispd Plugin To Send Logs To Remote Server'
+
+description: |-
+    Configure the audispd plugin to off-load audit records onto a different
+    system or media from the system being audited.
+{{% if 'ubuntu' in product %}}
+    First, set the <tt>active</tt> option in
+    <pre>/etc/audisp/plugins.d/au-remote.conf</pre>
+{{% endif %}}
+    Set the <tt>remote_server</tt> option in <pre>{{{ audisp_conf_path }}}/audisp-remote.conf</pre>
+    with an IP address or hostname of the system that the audispd plugin should
+    send audit records to. For example
+    <pre>remote_server = <i>{{{ xccdf_value("var_audispd_remote_server") }}}</i></pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental
+    deletion or alteration.Off-loading is a common process in information systems
+    with limited audit storage capacity.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-80541-6
+    cce@rhel8: CCE-80925-1
+    cce@rhel9: CCE-89900-5
+    cce@sle12: CCE-83155-2
+    cce@sle15: CCE-85615-3
+
+references:
+    disa: CCI-001851
+    nist@sle12: AU-4(1)
+    ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
+    stigid@ol7: OL07-00-030300
+    stigid@rhel7: RHEL-07-030300
+    stigid@sle12: SLES-12-020090
+    stigid@sle15: SLES-15-030690
+    stigid@ubuntu2004: UBTU-20-010216
+    stigid@ubuntu2204: UBTU-22-653020
+
+ocil_clause: 'audispd is not sending logs to a remote system'
+
+ocil: |-
+{{%- if 'ubuntu' in product %}}
+    Check that the records are being offloaded to a remote server with the
+    following command:
+    <pre>$ sudo grep -i active /etc/audisp/plugins.d/au-remote.conf</pre>
+    The output should return:
+    <pre>active = yes</pre>
+{{% endif %}}
+    To verify the audispd plugin off-loads audit records onto a different system or
+    media from the system being audited, run the following command:
+    <pre>$ sudo grep -i remote_server {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
+    The output should return something similar to
+    <pre>remote_server = <i>{{{ xccdf_value("var_audispd_remote_server") }}}</i></pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to off-load audit records to a different system.
+
+    Add or edit the following line in {{{ audisp_conf_path }}}/audisp-remote.conf:
+
+    remote_server = {{{ xccdf_value("var_audispd_remote_server") }}}
+
+srg_requirement: '{{{ full_name }}} must off-load audit records onto a different system or media from the system being audited.'

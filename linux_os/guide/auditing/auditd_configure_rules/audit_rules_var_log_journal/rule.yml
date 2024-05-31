@@ -1,0 +1,55 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects records for events that affect "/var/log/journal"'
+
+description: |-
+    Auditing the systemd journal files provides logging that can be used for
+    forensic purposes. Verify the system generates audit records for all events
+    that affect "/var/log/journal" by using the following command:
+
+    <pre>
+    $ sudo auditctl -l | grep journal
+    -w /var/log/journal/ -p wa -k systemd_journal
+    </pre>
+
+    If the command does not return a line that matches the example or the line
+    is commented out, this is a finding.
+
+    Note: The "-k" value is arbitrary and can be different from the example
+    output above.
+
+rationale: |-
+    Once an attacker establishes access to a system, the attacker often attempts
+    to create a persistent method of reestablishing access. One way to accomplish
+    this is for the attacker to modify system level binaries and their operation.
+    Auditing the systemd journal files provides logging that can be used for
+    forensic purposes.
+
+severity: medium
+
+references:
+    disa: CCI-000366
+    stigid@ubuntu2204: UBTU-22-654190
+
+ocil_clause: 'the command does not return a line, or the line is commented out'
+
+ocil: |-
+    Verify the system generates audit records for all events
+    that affect "/var/log/journal" by using the following command:
+
+    <pre>
+    $ sudo auditctl -l | grep journal
+    -w /var/log/journal/ -p wa -k systemd_journal
+    </pre>
+
+    If the command does not return a line that matches the example or the line
+    is commented out, this is a finding.
+
+fixtext: '{{{ fixtext_audit_file_watch_rule("/var/log/journal/", "systemd_journal", "/etc/audit/rules.d/audit.rules") }}}'
+
+srg_requirement: '{{{ srg_requirement_audit_file_watch_rule("/var/log/journal/") }}}'
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /var/log/journal/

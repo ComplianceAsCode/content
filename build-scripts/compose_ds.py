@@ -176,9 +176,7 @@ def parse_args():
     parser.add_argument("--cpe-oval", help="CPE OVAL file name")
     parser.add_argument("--enable-sce", action='store_true', help="Enable building sce data")
     parser.add_argument(
-        "--output-12", help="Output SCAP 1.2 source data stream file name")
-    parser.add_argument(
-        "--output-13", required=True,
+        "--output", required=True,
         help="Output SCAP 1.3 source data stream file name")
     parser.add_argument(
         "--multiple-ds",
@@ -242,10 +240,10 @@ def compose_ds(
         "{%s}data-stream-collection" % datastream_namespace)
     name = "from_xccdf_" + os.path.basename(xccdf_file_name)
     ds_collection.set("id", "scap_%s_collection_%s" % (ID_NS, name))
-    ds_collection.set("schematron-version", "1.2")
+    ds_collection.set("schematron-version", "1.3")
     ds = ET.SubElement(ds_collection, "{%s}data-stream" % datastream_namespace)
     ds.set("id", "scap_%s_datastream_%s" % (ID_NS, name))
-    ds.set("scap-version", "1.2")
+    ds.set("scap-version", "1.3")
     ds.set("use-case", "OTHER")
     dictionaries = ET.SubElement(ds, "{%s}dictionaries" % datastream_namespace)
     checklists = ET.SubElement(ds, "{%s}checklists" % datastream_namespace)
@@ -266,26 +264,14 @@ def compose_ds(
 
     if hasattr(ET, "indent"):
         ET.indent(ds_collection, space=" ", level=0)
-    return ET.ElementTree(ds_collection)
-
-
-def upgrade_ds_to_scap_13(ds):
-    dsc_el = ds.getroot()
-    dsc_el.set("schematron-version", "1.3")
-    ds_el = ds.find("{%s}data-stream" % datastream_namespace)
-    ds_el.set("scap-version", '1.3')
-
+    ds = ET.ElementTree(ds_collection)
     # Move reference to remote OVAL content to a source data stream component
     move_patches_up_to_date_to_source_data_stream_component(ds)
     return ds
 
 
-def _store_ds(ds, output_13, output_12):
-    if output_12:
-        ds.write(output_12, xml_declaration=True, encoding="utf-8")
-
-    ds_13 = upgrade_ds_to_scap_13(ds)
-    ds_13.write(output_13, xml_declaration=True, encoding="utf-8")
+def _store_ds(ds, output):
+    ds.write(output, xml_declaration=True, encoding="utf-8")
 
 
 def append_id_to_file_name(path, id_):
@@ -311,16 +297,18 @@ def _compose_multiple_ds(args):
     for xccdf in glob.glob("{}/xccdf*.xml".format(args.multiple_ds)):
         oval = xccdf.replace("xccdf", "oval")
         ocil = xccdf.replace("xccdf", "ocil")
+        cpe_dict = xccdf.replace("xccdf", "cpe_dict")
+        cpe_oval = xccdf.replace("xccdf", "cpe_oval")
+
         ds = compose_ds(
-            xccdf, oval, ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
+            xccdf, oval, ocil, cpe_dict, cpe_oval, args.enable_sce
         )
-        output_13 = _get_thin_ds_output_path(args.output_13, xccdf.replace("xccdf_", ""))
-        output_12 = None
+        output = _get_thin_ds_output_path(args.output, xccdf.replace("xccdf_", ""))
 
-        if not os.path.exists(os.path.dirname(output_13)):
-            os.makedirs(os.path.dirname(output_13))
+        if not os.path.exists(os.path.dirname(output)):
+            os.makedirs(os.path.dirname(output))
 
-        _store_ds(ds, output_13, output_12)
+        _store_ds(ds, output)
 
 
 if __name__ == "__main__":
@@ -333,4 +321,4 @@ if __name__ == "__main__":
     ds = compose_ds(
         args.xccdf, args.oval, args.ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
     )
-    _store_ds(ds, args.output_13, args.output_12)
+    _store_ds(ds, args.output)

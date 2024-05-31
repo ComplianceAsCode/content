@@ -11,9 +11,12 @@ checktext: |-
 
     $ mount | grep /var/tmp
 
-    UUID=c274f65f-c5b5-4379-b017-bee96feb7a34 /var/log xfs noatime,nobarrier 1 2
+    UUID=c274f65f-c5b5-4379-b017-bee96feb7a34 /var/log xfs noatime 1 2
 
     If a separate entry for "/var/tmp" is not in use, this is a finding.
 
 fixtext: |-
     Migrate the "/var/tmp" path onto a separate file system.
+
+vuln_discussion: |-
+    The "/var/tmp" partition is used as temporary storage by many programs. Placing "/var/tmp" in its own partition enables the setting of more restrictive mount options, which can help protect programs that use it.

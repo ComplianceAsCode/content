@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Verify Groupowner on the journalctl command'
+
+description: |-
+    Verify that the "journalctl" command is group-owned by "root" by
+    using the following command:
+    <pre>
+    $ sudo find /usr/bin/journalctl -exec stat -c "%n %G" {} \;
+    </pre>
+    If any output returned is not owned by "root", this is a finding.
+
+rationale: |-
+    Only authorized personnel should be aware of errors and the details of the errors.
+    Error messages are an indicator of an organization's operational state or can
+    identify the operating system or platform. Additionally, personally identifiable
+    information (PII) and operational information must not be revealed through error
+    messages to unauthorized personnel or their designated representatives.
+
+references:
+    disa: CCI-001314
+    stigid@ubuntu2204: UBTU-22-232105
+
+severity: medium
+
+fixtext: |
+    Configure "journalctl" to be owned by "root":
+    <pre>
+    $ sudo chown :root /usr/bin/journalctl
+    </pre>
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /usr/bin/journalctl
+        gid_or_name: '0'

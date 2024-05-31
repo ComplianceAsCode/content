@@ -6,5 +6,5 @@
 
 {{{ ansible_instantiate_variables("var_accounts_passwords_pam_tally2_unlock_time") }}}
 
-{{{ ansible_ensure_pam_module_option('/etc/pam.d/login', 'auth', 'required', 'pam_tally2.so', 'unlock_time', "{{var_accounts_passwords_pam_tally2_unlock_time}}", '') }}}
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/login', 'auth', 'required', 'pam_tally2.so', 'unlock_time', "{{ var_accounts_passwords_pam_tally2_unlock_time }}", '') }}}
 {{{ ansible_ensure_pam_module_option('/etc/pam.d/common-account', 'account', 'required', 'pam_tally2.so', '', '', '') }}}

@@ -13,7 +13,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} SSH daemon accepts public key encryption with the following command:
 
-    $ sudo grep -i PubkeyAuthentication /etc/ssh/sshd_config
+    $ sudo grep -ir PubkeyAuthentication /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
 
     PubkeyAuthentication yes
 
@@ -27,3 +27,6 @@ fixtext: |-
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    Without the use of multifactor authentication, the ease of access to privileged functions is greatly increased. Multifactor authentication requires using two or more factors to achieve authentication. A privileged account is defined as an information system account with authorizations of a privileged user. A DOD CAC with DOD-approved PKI is an example of multifactor authentication.

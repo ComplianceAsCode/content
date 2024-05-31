@@ -183,7 +183,14 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
             rule = rules.get(selection)
             if not rule:
                 continue
-            rule.add_extra_reference(reference_type, self.id)
+            try:
+                rule.add_extra_reference(reference_type, self.id)
+            except ValueError as exc:
+                msg = (
+                    "Please remove any duplicate listing of rule '%s' in "
+                    "control '%s'." % (
+                        rule.id_, self.id))
+                raise ValueError(msg)
 
 
 class Level(ssg.entities.common.XCCDFEntity):
@@ -222,6 +229,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
     def represent_as_dict(self):
         data = dict()
         data["id"] = self.id
+        data["policy"] = self.policy
         data["title"] = self.title
         data["source"] = self.source
         data["definition_location"] = self.filepath
@@ -337,6 +345,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if controls_dir:
             self.controls_dir = os.path.join(os.path.dirname(self.filepath), controls_dir)
         self.id = ssg.utils.required_key(yaml_contents, "id")
+        self.policy = ssg.utils.required_key(yaml_contents, "policy")
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
         self.reference_type = yaml_contents.get("reference_type", None)
@@ -402,7 +411,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         if not self.reference_type:
             return
         product = self.env_yaml["product"]
-        if self.product and self.product != product:
+        if self.product and product not in self.product:
             return
         allowed_reference_types = self.env_yaml["reference_uris"].keys()
         if self.reference_type not in allowed_reference_types:

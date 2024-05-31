@@ -74,8 +74,11 @@ controls:
     description: >-
       It is recommended to apply UEFI Secure Boot configuration of the distribution.
     notes: >-
-      Enabling Secure Boot requires one to navigate the BIOS, and we don't have
-      the means to automate it.
+      Secure Boot needs to be enabled in the UEFI Setup program.
+      Enabling Secure Boot can't be accomplished from the operating system.
+      Also, OVAL doesn't provide any reliable ways to detect the Secure Boot status.
+      Therefore, we will not provide any rules to automate this requirement.
+      We recommend checking the Secure Boot status using the `mokutil --sb-state` or `bootctl status` commands.
     status: manual
 
   - id: R4
@@ -648,8 +651,8 @@ controls:
     - partition_for_opt
     - mount_option_opt_nosuid
 
-    # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
-    - partition_for_tmp
+    # /tmp nosuid, noexec temporary files. Must contain only non-executable elements. Cleaned after reboot. Prefferred tmpfs.
+    - systemd_tmp_mount_enabled
     - mount_option_tmp_nosuid
     - mount_option_tmp_noexec
 
@@ -696,7 +699,7 @@ controls:
       The /boot partition mounted is essential to perform certain administrative actions, for
       example updating the kernel. Therefore, for better stability, in this requirement only rules
       to restrict the access to /boot are selected. It is not changed how the /boot is mounted.
-    status: partial
+    status: automated
     rules:
       - file_groupowner_efi_grub2_cfg
       - file_groupowner_grub2_cfg
@@ -710,8 +713,10 @@ controls:
       - file_owner_user_cfg
       - file_permissions_efi_user_cfg
       - file_permissions_user_cfg
+      - file_groupowner_systemmap
+      - file_owner_systemmap
+      - file_permissions_systemmap
     related_rules:
-      - file_permissions_systemmap # missing remediation
       - mount_option_boot_noauto
 
   - id: R30
@@ -866,7 +871,7 @@ controls:
       would be configured to 0027 for all services. One such example is the
       Cups service which needs to create sockets which need to be available for
       all users. Therefore, this part of the requirement can't be automated.
-    status: partial
+    status: automated
     rules:
       - accounts_umask_etc_bashrc
       - accounts_umask_etc_login_defs
@@ -896,9 +901,6 @@ controls:
     description: >-
       A group dedicated to the use of sudo must be created, and only members of this
       group are allowed to execute sudo.
-    notes: >-
-      The rules below create and configure a group named sudogrp, to change the group customize the
-      value of var_sudo_dedicated_group.
     status: automated
     rules:
     - sudo_dedicated_group
@@ -1347,11 +1349,40 @@ controls:
     status: manual
 
   - id: R67
-    title: Securing remote authentication by PAM
+    title: Secure remote authentication with PAM
     levels:
     - intermediary
+    description: |-
+      When authentication takes place through a remote application (network),
+      the authentication protocol used by PAM must be secure (flow encryption,
+      remote server authentication, anti-replay mechanisms, ...).
+    {{% if "rhel" in product %}}
+    notes: |-
+      In RHEL systems, remote authentication is handled through sssd service.
+      PAM delegates requests for remote authentication to this service through a
+      local Unix socket. The sssd service can use IPA, AD or LDAP as a remote
+      database containing information required for authentication. In case IPA or  AD is configured through a documented way, the connection is secured by default. In case LDAP is configured manually, there are several configuration options which should be chedked.
+      {{% if product in ["rhel7", "rhel8"] %}}
+      An allternative solution is to use nss-pam-ldapd package.
+      In case this package is used, we make sure that SSL is turned on and certificate is configured.
+      {{% endif %}}
+    status: automated
+    rules:
+      - package_sssd_installed
+      - service_sssd_enabled
+      - sssd_enable_pam_services
+      - sssd_ldap_configure_tls_reqcert
+      - sssd_ldap_start_tls
+      {{% if product in ["rhel7", "rhel8"] %}}
+      - ldap_client_start_tls
+      - ldap_client_tls_cacertpath
+      {{% endif %}}
+    related_rules:
+      - package_sssd-ipa_installed
+    {{% else %}}
     notes: We cannot automate securing of remote PAM authentication in a general way.
     status: manual
+    {{% endif %}}
 
   - id: R68
     title: Protecting stored passwords
@@ -1376,8 +1407,28 @@ controls:
     title: Securing access to remote user databases
     levels:
     - intermediary
-    notes: We cannot automate securing access to remote databases in a general way.
-    status: manual
+    description: |-
+      When the user databases are stored on a remote network service, NSS must
+      be configured to establish a secure link that allows, at minimum, to
+      authenticate the server and protect the communication channel.
+    {{% if "rhel" in product %}}
+    notes: |-
+      A nsswitch service connecting to remote database is provided by sssd. This is checked in requirement R67.
+      Another such service is winbind which is by default configured to connect
+      securely to Samba domains.
+      Other relevant services are NIS and Hesiod. These should not be used.
+    status: automated
+    {{% if product in ["rhel7", "rhel8"] %}}
+    rules:
+      - no_nis_in_nsswitch
+      {{% if product == "rhel7" %}}
+      - no_hesiod_in_nsswitch
+      {{% endif %}}
+    {{% endif %}}
+    {{% else %}}
+    status: pending
+    {{% endif %}}
+
 
   - id: R70
     title: Separation of System Accounts and Directory Administrator

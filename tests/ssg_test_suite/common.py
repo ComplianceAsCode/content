@@ -500,6 +500,7 @@ def load_templated_tests(
 def load_test(absolute_path, rule_template, local_env_yaml):
     template_name = rule_template['name']
     template_vars = rule_template['vars']
+    template_vars["_rule_id"] = local_env_yaml["rule_id"]
     # Load template parameters and apply it to the test case.
     maybe_template = ssg.templates.Template.load_template(_SHARED_TEMPLATES, template_name)
     if maybe_template is not None:
@@ -573,6 +574,7 @@ INSTALL_COMMANDS = dict(
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
+    rhel10=("dnf", "install", "-y"),
     sles=("zypper", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )

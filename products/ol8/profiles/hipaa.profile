@@ -66,7 +66,6 @@ selections:
     - sshd_enable_warning_banner
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
-    - sshd_use_priv_separation
     - encrypt_partitions
     - var_system_crypto_policy=fips
     - configure_crypto_policy

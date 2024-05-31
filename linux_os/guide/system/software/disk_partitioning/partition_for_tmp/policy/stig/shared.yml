@@ -17,3 +17,6 @@ checktext: |-
 
 fixtext: |-
     Migrate the "/tmp" path onto a separate file system.
+
+vuln_discussion: |-
+    The "/tmp" partition is used as temporary storage by many programs. Placing "/tmp" in its own partition enables the setting of more restrictive mount options, which can help protect programs that use it.

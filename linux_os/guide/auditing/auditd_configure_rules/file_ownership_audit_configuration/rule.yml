@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Audit Configuration Files Must Be Owned By Root'
+
+description: |-
+    All audit configuration files must be owned by root user.
+    {{{ describe_file_owner(file="/etc/audit/", owner="root") }}}
+    {{{ describe_file_owner(file="/etc/audit/rules.d/", owner="root") }}}
+
+rationale: |-
+    Without the capability to restrict which roles and individuals can
+    select which events are audited, unauthorized personnel may be able
+    to prevent the auditing of critical events.
+    Misconfigured audits may degrade the system's performance by
+    overwhelming the audit log. Misconfigured audits may also make it more
+    difficult to establish, correlate, and investigate the events relating
+    to an incident or identify those responsible for one.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-88786-9
+    cce@rhel8: CCE-86406-6
+    cce@rhel9: CCE-86445-4
+
+references:
+    cis@ubuntu2204: 4.1.4.6
+    disa: CCI-000171
+    srg: SRG-OS-000063-GPOS-00032
+    stigid@ubuntu2004: UBTU-20-010134
+    stigid@ubuntu2204: UBTU-22-653070
+
+ocil: |-
+    {{{ describe_file_owner(file="/etc/audit/", owner="root") }}}
+    {{{ describe_file_owner(file="/etc/audit/rules.d/", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath:
+            - /etc/audit/
+            - /etc/audit/rules.d/
+        file_regex:
+            - ^audit(\.rules|d\.conf)$
+            - ^.*\.rules$
+        fileuid: '0'

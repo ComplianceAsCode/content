@@ -1,0 +1,336 @@
+rule_results:
+  e2e-pci-dss-accounts-restrict-service-account-tokens:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-accounts-unique-service-account:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-api-server-admission-control-plugin-alwaysadmit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-admission-control-plugin-alwayspullimages:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-admission-control-plugin-namespacelifecycle:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-admission-control-plugin-noderestriction:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-admission-control-plugin-scc:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-admission-control-plugin-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-api-priority-gate-enabled:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-auth-mode-no-aa:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-auth-mode-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-basic-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-client-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-encryption-provider-cipher:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-etcd-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-etcd-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-etcd-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-https-for-kubelet-conn:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-insecure-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-insecure-port:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-api-server-kubelet-certificate-authority:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-kubelet-client-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-kubelet-client-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-api-server-kubelet-client-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-kubelet-client-key-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-api-server-oauth-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-openshift-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-request-timeout:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-service-account-lookup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-service-account-public-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-tls-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-api-server-token-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-audit-log-forwarding-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-audit-log-forwarding-webhook:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-audit-logging-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-audit-profile-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-configure-network-policies:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-configure-network-policies-hypershift-hosted:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-configure-network-policies-namespaces:
+    default_result: PASS
+  e2e-pci-dss-controller-insecure-port-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-controller-secure-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-controller-service-account-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-controller-service-account-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-controller-use-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-check-cipher-suite:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-peer-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-peer-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-peer-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-etcd-peer-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-file-groupowner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-file-integrity-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-file-integrity-notification-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-file-owner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-file-permissions-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-general-apply-scc:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-general-default-namespace-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-general-default-seccomp-profile:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-general-namespaces-in-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-idp-is-configured:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-pci-dss-kubeadmin-removed:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-pci-dss-kubelet-configure-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-kubelet-configure-tls-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-kubelet-configure-tls-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-kubelet-configure-tls-key-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-pci-dss-kubelet-disable-readonly-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-machine-volume-encrypted:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-ocp-allowed-registries:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-pci-dss-ocp-allowed-registries-for-import:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-pci-dss-ocp-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-ocp-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-ocp-insecure-allowed-registries-for-import:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-ocp-insecure-registries:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-ocp-no-ldap-insecure:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-openshift-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-rbac-cluster-roles-defined:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-rbac-debug-role-protects-pprof:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-rbac-least-privilege:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-rbac-limit-cluster-admin:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-rbac-limit-secrets-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-rbac-pod-creation-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-rbac-roles-defined:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-rbac-wildcard-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-routes-protected-by-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-scansettingbinding-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-scc-drop-container-capabilities:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-container-allowed-capabilities:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-scc-limit-ipc-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-net-raw-capability:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-network-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-privilege-escalation:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-privileged-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-process-id-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scc-limit-root-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-scheduler-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-scheduler-service-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-secrets-consider-external-storage:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-secrets-no-environment-variables:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-pci-dss-storageclass-encryption-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-tls-version-check-apiserver:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-pci-dss-tls-version-check-router:
+    default_result: PASS
+    result_after_remediation: PASS

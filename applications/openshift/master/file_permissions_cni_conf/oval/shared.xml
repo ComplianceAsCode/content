@@ -1,0 +1,8 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="file_permissions_cni_conf" version="1"> {{{ oval_metadata("One of the permission checks must pass") }}} 
+    <criteria operator="OR">
+      <extend_definition comment="cni conf outside s390x" definition_ref="file_permissions_cni_conf_not_s390x" />
+      <extend_definition comment="cni conf on s390x" definition_ref="file_permissions_cni_conf_s390x" />
+    </criteria>
+  </definition>
+</def-group>

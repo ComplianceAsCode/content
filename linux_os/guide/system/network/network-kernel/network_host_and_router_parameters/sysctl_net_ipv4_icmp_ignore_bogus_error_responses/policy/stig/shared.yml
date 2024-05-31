@@ -5,10 +5,9 @@ vuldiscussion: |-
     Some routers will send responses to broadcast frames that violate RFC-1122 which fills up a log file system with many useless error messages.  An attacker may take advantage of this and attempt to flood the logs with bogus error logs. Ignoring bogus ICMP error responses reduces log size, although some activity would not be logged.
 
 checktext: |-
-    The runtime status of the  net.ipv4.icmp_ignore_bogus_error_responses  kernel parameter can be queried
-    by running the following command:
+    The runtime status of the net.ipv4.icmp_ignore_bogus_error_responses kernel parameter can be queried by running the following command:
 
-     $ sudo sysctl net.ipv4.icmp_ignore_bogus_error_responses
+    $ sudo sysctl net.ipv4.icmp_ignore_bogus_error_responses
 
     net.ipv4.icmp_ignore_bogus_error_responses = 1
 
@@ -16,7 +15,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ { /usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf; } | grep -Ev '^(#|$)' | grep -F net.ipv4.icmp_ignore_bogus_error_response | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.icmp_ignore_bogus_error_response | tail -1
 
     net.ipv4.icmp_ignore_bogus_error_response = 1
 
@@ -32,3 +31,6 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    Some routers will send responses to broadcast frames that violate RFC-1122, which fills up a log file system with many useless error messages. An attacker may take advantage of this and attempt to flood the logs with bogus error logs. Ignoring bogus ICMP error responses reduces log size, although some activity would not be logged.

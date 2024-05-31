@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8
+# platform = multi_platform_all
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -16,9 +16,16 @@
         path: /etc/zipl.conf
       register: zipl_conf
 
-    # TODO: handle /boot/loader/entries/*.conf
+    - name: "Obtain stats of /boot/loader/entries"
+      stat:
+        path: /boot/loader/entries
+      register: boot_loader_entries
 
     - name: "Update zIPL bootmap"
       command: /usr/sbin/zipl
       changed_when: True
-      when: boot_bootmap.stat.mtime is defined and zipl_conf.stat.mtime is defined and  boot_bootmap.stat.mtime < zipl_conf.stat.mtime
+      when:
+      - boot_bootmap.stat.mtime is defined
+      - zipl_conf.stat.mtime is defined
+      - boot_loader_entries.stat.mtime is defined
+      - boot_bootmap.stat.mtime < zipl_conf.stat.mtime or boot_bootmap.stat.mtime < boot_loader_entries.stat.mtime

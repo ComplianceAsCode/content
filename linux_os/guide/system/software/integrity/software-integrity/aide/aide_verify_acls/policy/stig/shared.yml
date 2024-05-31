@@ -20,3 +20,8 @@ fixtext: |-
     Configure the file integrity tool to check file and directory ACLs.
 
     If AIDE is installed, ensure the "acl" rule is present on all uncommented file and directory selection lists.
+
+vuln_discussion: |-
+    {{{ full_name }}} installation media ships with an optional file integrity tool called Advanced Intrusion Detection Environment (AIDE). AIDE is highly configurable at install time. This requirement assumes the "aide.conf" file is under the "/etc" directory.
+
+    ACLs can provide permissions beyond those permitted through the file mode and must be verified by the file integrity tools.

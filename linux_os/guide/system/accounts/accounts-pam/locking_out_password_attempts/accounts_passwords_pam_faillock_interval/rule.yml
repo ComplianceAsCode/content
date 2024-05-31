@@ -17,7 +17,7 @@ description: |-
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>fail_interval = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
     {{% endif %}}
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     In order to avoid errors when manually editing these files, it is
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
@@ -54,6 +54,7 @@ references:
     stigid@rhel7: RHEL-07-010320
     stigid@rhel8: RHEL-08-020012,RHEL-08-020013
     stigid@ubuntu2004: UBTU-20-010072
+    stigid@ubuntu2204: UBTU-22-411045
 
 platform: package[pam]
 
@@ -119,3 +120,13 @@ warnings:
         be shown in the remediation report.
         If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
         parameters should be defined in <tt>faillock.conf</tt> file.
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: fail_interval
+    prm_regex_conf: ^[\s]*fail_interval[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*fail_interval=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_fail_interval
+    description: The number of allowed failed logins should be set correctly.
+    variable_lower_bound: use_ext_variable

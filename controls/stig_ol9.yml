@@ -1,0 +1,4185 @@
+policy: 'Oracle Linux 9 Security Technical Implementation Guide'
+title: 'Oracle Linux 9 Security Technical Implementation Guide'
+id: stig_ol9
+source: https://public.cyber.mil/stigs/downloads/
+version: Draft
+#reference_type: stigid
+product: ol9
+levels:
+    -   id: high
+    -   id: medium
+    -   id: low
+controls:
+    -   id: needed_rules
+        levels:
+            - medium
+        rules:
+            - enable_authselect
+            - var_authselect_profile=sssd
+
+    -   id: 211010
+        levels:
+            - high
+        title: OL 9 must be a vendor-supported release.
+        rules:
+            - installed_OS_is_vendor_supported
+        status: automated
+
+    -   id: 211015
+        levels:
+            - medium
+        title:
+            OL 9 vendor packaged system security patches and updates must be installed
+            and up to date.
+        rules:
+            - security_patches_up_to_date
+        status: automated
+
+    -   id: 211020
+        levels:
+            - medium
+        title:
+            OL 9 must display the Standard Mandatory DOD Notice and Consent Banner
+            before granting local or remote access to the system via a command line user logon.
+        rules:
+            - banner_etc_issue
+            - login_banner_text=dod_banners
+        status: automated
+
+    -   id: 211025
+        levels:
+            - medium
+        title: OL 9 must implement the Endpoint Security for Linux Threat Prevention tool.
+        rules:
+            - package_mcafeetp_installed
+            - agent_mfetpd_running
+        status: automated
+
+    -   id: 211030
+        levels:
+            - medium
+        title:
+            The graphical display manager must not be the default target on OL 9 unless
+            approved.
+        rules:
+            - xwindows_runlevel_target
+        status: automated
+
+    -   id: 211035
+        levels:
+            - low
+        title:
+            OL 9 must enable the hardware random number generator entropy gatherer
+            service.
+        related_rules:
+            - service_rngd_enabled # This rule is causing test failures, See https://github.com/ComplianceAsCode/content/pull/10153
+        status: pending
+
+    -   id: 211040
+        levels:
+            - medium
+        title: OL 9 systemd-journald service must be enabled.
+        rules:
+            - service_systemd-journald_enabled
+        status: automated
+
+    -   id: 211045
+        levels:
+            - high
+        title: The systemd Ctrl-Alt-Delete burst key sequence in OL 9 must be disabled.
+        rules:
+            - disable_ctrlaltdel_burstaction
+        status: automated
+
+    -   id: 211050
+        levels:
+            - high
+        title: The x86 Ctrl-Alt-Delete key sequence must be disabled on OL 9.
+        rules:
+            - disable_ctrlaltdel_reboot
+        status: automated
+
+    -   id: 211055
+        levels:
+            - medium
+        title: OL 9 debug-shell systemd service must be disabled.
+        status: automated
+        rules:
+            - service_debug-shell_disabled
+
+    -   id: 212010
+        levels:
+            - medium
+        title: OL 9 must require a boot loader superuser password.
+        rules:
+            - grub2_password
+        status: automated
+
+    -   id: 212015
+        levels:
+            - medium
+        title: OL 9 must disable the ability of systemd to spawn an interactive boot process.
+        rules:
+            - grub2_disable_interactive_boot
+        status: automated
+
+    -   id: 212020
+        levels:
+            - high
+        title:
+            OL 9 must require a unique superusers name upon booting into single-user
+            and maintenance modes.
+        rules:
+            - grub2_admin_username
+        status: automated
+
+    -   id: 212025
+        levels:
+            - medium
+        title: OL 9 /boot/grub2/grub.cfg file must be group-owned by root.
+        rules:
+            - file_groupowner_grub2_cfg
+        status: automated
+
+    -   id: 212030
+        levels:
+            - medium
+        title: OL 9 /boot/grub2/grub.cfg file must be owned by root.
+        rules:
+            - file_owner_grub2_cfg
+        status: automated
+
+    -   id: 212035
+        levels:
+            - medium
+        title: OL 9 must disable virtual system calls.
+        rules:
+            - grub2_vsyscall_argument
+        status: automated
+
+    -   id: 212040
+        levels:
+            - medium
+        title: OL 9 must clear the page allocator to prevent use-after-free attacks.
+        rules:
+            - grub2_page_poison_argument
+        status: automated
+
+    -   id: 212045
+        levels:
+            - medium
+        title: OL 9 must clear SLUB/SLAB objects to prevent use-after-free attacks.
+        rules:
+            - grub2_slub_debug_argument
+        status: automated
+
+    -   id: 212050
+        levels:
+            - low
+        title: OL 9 must enable mitigations against processor-based vulnerabilities.
+        rules:
+            - grub2_pti_argument
+        status: automated
+
+    -   id: 212055
+        levels:
+            - low
+        title: OL 9 must enable auditing of processes that start prior to the audit daemon.
+        rules:
+            - grub2_audit_argument
+        status: automated
+
+    -   id: 213010
+        levels:
+            - medium
+        title: OL 9 must restrict access to the kernel message buffer.
+        rules:
+            - sysctl_kernel_dmesg_restrict
+        status: automated
+
+    -   id: 213015
+        levels:
+            - medium
+        title: OL 9 must prevent kernel profiling by nonprivileged users.
+        rules:
+            - sysctl_kernel_perf_event_paranoid
+        status: automated
+
+    -   id: 213020
+        levels:
+            - medium
+        title: OL 9 must prevent the loading of a new kernel for later execution.
+        rules:
+            - sysctl_kernel_kexec_load_disabled
+        status: automated
+
+    -   id: 213025
+        levels:
+            - medium
+        title: OL 9 must restrict exposed kernel pointer addresses access.
+        rules:
+            - sysctl_kernel_kptr_restrict
+        status: automated
+
+    -   id: 213030
+        levels:
+            - medium
+        title:
+            OL 9 must enable kernel parameters to enforce discretionary access control
+            on hardlinks.
+        rules:
+            - sysctl_fs_protected_hardlinks
+        status: automated
+
+    -   id: 213035
+        levels:
+            - medium
+        title:
+            OL 9 must enable kernel parameters to enforce discretionary access control
+            on symlinks.
+        rules:
+            - sysctl_fs_protected_symlinks
+        status: automated
+
+    -   id: 213040
+        levels:
+            - medium
+        title: OL 9 must disable the kernel.core_pattern.
+        rules:
+            - sysctl_kernel_core_pattern
+        status: automated
+
+    -   id: 213045
+        levels:
+            - medium
+        title:
+            OL 9 must be configured to disable the Asynchronous Transfer Mode kernel
+            module.
+        rules:
+            - kernel_module_atm_disabled
+        status: automated
+
+    -   id: 213050
+        levels:
+            - medium
+        title: OL 9 must be configured to disable the Controller Area Network kernel module.
+        rules:
+            - kernel_module_can_disabled
+        status: automated
+
+    -   id: 213055
+        levels:
+            - medium
+        title: OL 9 must be configured to disable the FireWire kernel module.
+        rules:
+            - kernel_module_firewire-core_disabled
+        status: automated
+
+    -   id: 213060
+        levels:
+            - medium
+        title:
+            OL 9 must disable the Stream Control Transmission Protocol (SCTP) kernel
+            module.
+        rules:
+            - kernel_module_sctp_disabled
+        status: automated
+
+    -   id: 213065
+        levels:
+            - medium
+        title:
+            OL 9 must disable the Transparent Inter Process Communication (TIPC) kernel
+            module.
+        rules:
+            - kernel_module_tipc_disabled
+        status: automated
+
+    -   id: 213070
+        levels:
+            - medium
+        title:
+            OL 9 must implement address space layout randomization (ASLR) to protect
+            its memory from unauthorized code execution.
+        rules:
+            - sysctl_kernel_randomize_va_space
+        status: automated
+
+    -   id: 213075
+        levels:
+            - medium
+        title:
+            OL 9 must disable access to network bpf system call from nonprivileged
+            processes.
+        rules:
+            - sysctl_kernel_unprivileged_bpf_disabled
+        status: automated
+
+    -   id: 213080
+        levels:
+            - medium
+        title: OL 9 must restrict usage of ptrace to descendant processes.
+        rules:
+            - sysctl_kernel_yama_ptrace_scope
+        status: automated
+
+    -   id: 213085
+        levels:
+            - medium
+        title: OL 9 must disable core dump backtraces.
+        rules:
+            - coredump_disable_backtraces
+        status: automated
+
+    -   id: 213090
+        levels:
+            - medium
+        title: OL 9 must disable storing core dumps.
+        rules:
+            - coredump_disable_storage
+        status: automated
+
+    -   id: 213095
+        levels:
+            - medium
+        title: OL 9 must disable core dumps for all users.
+        rules:
+            - disable_users_coredumps
+        status: automated
+
+    -   id: 213100
+        levels:
+            - medium
+        title: OL 9 must disable acquiring, saving, and processing core dumps.
+        rules:
+            - service_systemd-coredump_disabled
+        status: automated
+
+    -   id: 213105
+        levels:
+            - medium
+        title: OL 9 must disable the use of user namespaces.
+        rules:
+            - sysctl_user_max_user_namespaces
+        status: automated
+
+    -   id: 213115
+        levels:
+            - medium
+        title: The kdump service on OL 9 must be disabled.
+        rules:
+            - service_kdump_disabled
+        status: automated
+
+    -   id: 214010
+        levels:
+            - medium
+        title: OL 9 must ensure cryptographic verification of vendor software packages.
+        rules:
+            - ensure_oracle_gpgkey_installed
+        status: automated
+
+    -   id: 214015
+        levels:
+            - high
+        title:
+            OL 9 must check the GPG signature of software packages originating from
+            external software repositories before installation.
+        rules:
+            - ensure_gpgcheck_globally_activated
+        status: automated
+
+    -   id: 214020
+        levels:
+            - high
+        title:
+            OL 9 must check the GPG signature of locally installed software packages
+            before installation.
+        rules:
+            - ensure_gpgcheck_local_packages
+        status: automated
+
+    -   id: 214025
+        levels:
+            - high
+        title: OL 9 must have GPG signature verification enabled for all software repositories.
+        rules:
+            - ensure_gpgcheck_never_disabled
+        status: automated
+
+    -   id: 214030
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that the cryptographic hashes of system files
+            match vendor values.
+        related_rules:
+            - rpm_verify_hashes # Due to crypto policies this cannot be selected at this time
+        status: pending
+
+    -   id: 214035
+        levels:
+            - low
+        title:
+            OL 9 must remove all software components after updated versions have been
+            installed.
+        rules:
+            - clean_components_post_updating
+        status: automated
+
+    -   id: 215015
+        levels:
+            - high
+        title: OL 9 must not have a File Transfer Protocol (FTP) server package installed.
+        rules:
+            - package_vsftpd_removed
+        status: automated
+
+    -   id: 215020
+        levels:
+            - medium
+        title: OL 9 must not have the sendmail package installed.
+        rules:
+            - package_sendmail_removed
+        status: automated
+
+    -   id: 215025
+        levels:
+            - medium
+        title: OL 9 must not have the nfs-utils package installed.
+        rules:
+            - package_nfs-utils_removed
+        status: automated
+
+    -   id: 215035
+        levels:
+            - medium
+        title: OL 9 must not have the rsh-server package installed.
+        rules:
+            - package_rsh-server_removed
+        status: automated
+
+    -   id: 215040
+        levels:
+            - medium
+        title: OL 9 must not have the telnet-server package installed.
+        rules:
+            - package_telnet-server_removed
+        status: automated
+
+    -   id: 215045
+        levels:
+            - medium
+        title: OL 9 must not have the gssproxy package installed.
+        rules:
+            - package_gssproxy_removed
+        status: automated
+
+    -   id: 215050
+        levels:
+            - medium
+        title: OL 9 must not have the iprutils package installed.
+        rules:
+            - package_iprutils_removed
+        status: automated
+
+    -   id: 215055
+        levels:
+            - medium
+        title: OL 9 must not have the tuned package installed.
+        rules:
+            - package_tuned_removed
+        status: automated
+
+    -   id: 215060
+        levels:
+            - high
+        title:
+            OL 9 must not have a Trivial File Transfer Protocol (TFTP) server package
+            installed.
+        rules:
+            - package_tftp-server_removed
+        status: automated
+
+    -   id: 215065
+        levels:
+            - medium
+        title: OL 9 must not have the quagga package installed.
+        rules:
+            - package_quagga_removed
+        status: automated
+
+    -   id: 215070
+        levels:
+            - medium
+        title: A graphical display manager must not be installed on OL 9 unless approved.
+        rules:
+            - xwindows_remove_packages
+        status: automated
+
+    -   id: 215075
+        levels:
+            - medium
+        title: OL 9 must have the openssl-pkcs11 package installed.
+        rules:
+            - install_smartcard_packages
+        status: automated
+
+    -   id: 215080
+        levels:
+            - medium
+        title: OL 9 must have the gnutls-utils package installed.
+        rules:
+            - package_gnutls-utils_installed
+        status: automated
+
+    -   id: 215085
+        levels:
+            - medium
+        title: OL 9 must have the nss-tools package installed.
+        rules:
+            - package_nss-tools_installed
+        status: automated
+
+    -   id: 215090
+        levels:
+            - medium
+        title: OL 9 must have the rng-tools package installed.
+        rules:
+            - package_rng-tools_installed
+        status: automated
+
+    -   id: 215095
+        levels:
+            - medium
+        title: OL 9 must have the s-nail package installed.
+        rules:
+            - package_s-nail_installed
+        status: automated
+
+    -   id: 231010
+        levels:
+            - medium
+        title:
+            A separate OL 9 file system must be used for user home directories (such
+            as /home or an equivalent).
+        rules:
+            - partition_for_home
+        status: automated
+
+    -   id: 231015
+        levels:
+            - medium
+        title: OL 9 must use a separate file system for /tmp.
+        rules:
+            - partition_for_tmp
+        status: automated
+
+    -   id: 231020
+        levels:
+            - low
+        title: OL 9 must use a separate file system for /var.
+        rules:
+            - partition_for_var
+        status: automated
+
+    -   id: 231025
+        levels:
+            - low
+        title: OL 9 must use a separate file system for /var/log.
+        rules:
+            - partition_for_var_log
+        status: automated
+
+    -   id: 231030
+        levels:
+            - low
+        title: OL 9 must use a separate file system for the system audit data path.
+        rules:
+            - partition_for_var_log_audit
+        status: automated
+
+    -   id: 231035
+        levels:
+            - medium
+        title: OL 9 must use a separate file system for /var/tmp.
+        rules:
+            - partition_for_var_tmp
+        status: automated
+
+    -   id: 231040
+        levels:
+            - medium
+        title: OL 9 file system automount function must be disabled unless required.
+        rules:
+            - service_autofs_disabled
+        status: automated
+
+    -   id: 231045
+        levels:
+            - medium
+        title:
+            OL 9 must prevent device files from being interpreted on file systems that
+            contain user home directories.
+        rules:
+            - mount_option_home_nodev
+        status: automated
+
+    -   id: 231050
+        levels:
+            - medium
+        title:
+            OL 9 must prevent files with the setuid and setgid bit set from being executed
+            on file systems that contain user home directories.
+        rules:
+            - mount_option_home_nosuid
+        status: automated
+
+    -   id: 231055
+        levels:
+            - medium
+        title:
+            OL 9 must prevent code from being executed on file systems that contain
+            user home directories.
+        rules:
+            - mount_option_home_noexec
+        status: automated
+
+    -   id: 231060
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that the Network File System (NFS) is configured
+            to use RPCSEC_GSS.
+        rules:
+            - mount_option_krb_sec_remote_filesystems
+        status: automated
+
+    -   id: 231065
+        levels:
+            - medium
+        title:
+            OL 9 must prevent special devices on file systems that are imported via
+            Network File System (NFS).
+        rules:
+            - mount_option_nodev_remote_filesystems
+        status: automated
+
+    -   id: 231070
+        levels:
+            - medium
+        title:
+            OL 9  must prevent code from being executed on file systems that are imported
+            via Network File System (NFS).
+        rules:
+            - mount_option_noexec_remote_filesystems
+        status: automated
+
+    -   id: 231075
+        levels:
+            - medium
+        title:
+            OL 9 must prevent files with the setuid and setgid bit set from being executed
+            on file systems that are imported via Network File System (NFS).
+        rules:
+            - mount_option_nosuid_remote_filesystems
+        status: automated
+
+    -   id: 231080
+        levels:
+            - medium
+        title:
+            OL 9 must prevent code from being executed on file systems that are used
+            with removable media.
+        rules:
+            - mount_option_noexec_removable_partitions
+        status: automated
+
+    -   id: 231085
+        levels:
+            - medium
+        title:
+            OL 9 must prevent special devices on file systems that are used with removable
+            media.
+        rules:
+            - mount_option_nodev_removable_partitions
+        status: automated
+
+    -   id: 231090
+        levels:
+            - medium
+        title:
+            OL 9 must prevent files with the setuid and setgid bit set from being executed
+            on file systems that are used with removable media.
+        rules:
+            - mount_option_nosuid_removable_partitions
+        status: automated
+
+    -   id: 231095
+        levels:
+            - medium
+        title: OL 9 must mount /boot with the nodev option.
+        rules:
+            - mount_option_boot_nodev
+        status: automated
+
+    -   id: 231100
+        levels:
+            - medium
+        title:
+            OL 9 must prevent files with the setuid and setgid bit set from being executed
+            on the /boot directory.
+        rules:
+            - mount_option_boot_nosuid
+        status: automated
+
+    -   id: 231105
+        levels:
+            - medium
+        title:
+            OL 9 must prevent files with the setuid and setgid bit set from being executed
+            on the /boot/efi directory.
+        rules:
+            - mount_option_boot_efi_nosuid
+        status: automated
+
+    -   id: 231110
+        levels:
+            - medium
+        title: OL 9 must mount /dev/shm with the nodev option.
+        rules:
+            - mount_option_dev_shm_nodev
+        status: automated
+
+    -   id: 231115
+        levels:
+            - medium
+        title: OL 9 must mount /dev/shm with the noexec option.
+        rules:
+            - mount_option_dev_shm_noexec
+        status: automated
+
+    -   id: 231120
+        levels:
+            - medium
+        title: OL 9 must mount /dev/shm with the nosuid option.
+        rules:
+            - mount_option_dev_shm_nosuid
+        status: automated
+
+    -   id: 231125
+        levels:
+            - medium
+        title: OL 9 must mount /tmp with the nodev option.
+        rules:
+            - mount_option_tmp_nodev
+        status: automated
+
+    -   id: 231130
+        levels:
+            - medium
+        title: OL 9 must mount /tmp with the noexec option.
+        rules:
+            - mount_option_tmp_noexec
+        status: automated
+
+    -   id: 231135
+        levels:
+            - medium
+        title: OL 9 must mount /tmp with the nosuid option.
+        rules:
+            - mount_option_tmp_nosuid
+        status: automated
+
+    -   id: 231140
+        levels:
+            - medium
+        title: OL 9 must mount /var with the nodev option.
+        rules:
+            - mount_option_var_nodev
+        status: automated
+
+    -   id: 231145
+        levels:
+            - medium
+        title: OL 9 must mount /var/log with the nodev option.
+        rules:
+            - mount_option_var_log_nodev
+        status: automated
+
+    -   id: 231150
+        levels:
+            - medium
+        title: OL 9 must mount /var/log with the noexec option.
+        rules:
+            - mount_option_var_log_noexec
+        status: automated
+
+    -   id: 231155
+        levels:
+            - medium
+        title: OL 9 must mount /var/log with the nosuid option.
+        rules:
+            - mount_option_var_log_nosuid
+        status: automated
+
+    -   id: 231160
+        levels:
+            - medium
+        title: OL 9 must mount /var/log/audit with the nodev option.
+        rules:
+            - mount_option_var_log_audit_nodev
+        status: automated
+
+    -   id: 231165
+        levels:
+            - medium
+        title: OL 9 must mount /var/log/audit with the noexec option.
+        rules:
+            - mount_option_var_log_audit_noexec
+        status: automated
+
+    -   id: 231170
+        levels:
+            - medium
+        title: OL 9 must mount /var/log/audit with the nosuid option.
+        rules:
+            - mount_option_var_log_audit_nosuid
+        status: automated
+
+    -   id: 231175
+        levels:
+            - medium
+        title: OL 9 must mount /var/tmp with the nodev option.
+        rules:
+            - mount_option_var_tmp_nodev
+        status: automated
+
+    -   id: 231180
+        levels:
+            - medium
+        title: OL 9 must mount /var/tmp with the noexec option.
+        rules:
+            - mount_option_var_tmp_noexec
+        status: automated
+
+    -   id: 231185
+        levels:
+            - medium
+        title: OL 9 must mount /var/tmp with the nosuid option.
+        rules:
+            - mount_option_var_tmp_nosuid
+        status: automated
+
+    -   id: 231190
+        levels:
+            - high
+        title:
+            OL 9 local disk partitions must implement cryptographic mechanisms to prevent
+            unauthorized disclosure or modification of all information that requires at rest
+            protection.
+        rules:
+            - encrypt_partitions
+        status: automated
+
+    -   id: 231195
+        levels:
+            - low
+        title: OL 9 must disable mounting of cramfs.
+        rules:
+            - kernel_module_cramfs_disabled
+        status: automated
+
+    -   id: 231200
+        levels:
+            - medium
+        title: OL 9 must prevent special devices on non-root local partitions.
+        rules:
+            - mount_option_nodev_nonroot_local_partitions
+        status: automated
+
+    -   id: 232010
+        levels:
+            - medium
+        title: OL 9 system commands must have mode 755 or less permissive.
+        rules:
+            - file_permissions_binary_dirs
+        status: automated
+
+    -   id: 232015
+        levels:
+            - medium
+        title: OL 9 library directories must have mode 755 or less permissive.
+        rules:
+            - dir_permissions_library_dirs
+        status: automated
+
+    -   id: 232020
+        levels:
+            - medium
+        title: OL 9 library files must have mode 755 or less permissive.
+        rules:
+            - file_permissions_library_dirs
+        status: automated
+
+    -   id: 232025
+        levels:
+            - medium
+        title: OL 9 /var/log directory must have mode 0755 or less permissive.
+        rules:
+            - file_permissions_var_log
+        status: automated
+
+    -   id: 232030
+        levels:
+            - medium
+        title: OL 9 /var/log/messages file must have mode 0640 or less permissive.
+        rules:
+            - file_permissions_var_log_messages
+        status: automated
+
+    -   id: 232035
+        levels:
+            - medium
+        title: OL 9 audit tools must have a mode of 0755 or less permissive.
+        rules:
+            - file_audit_tools_permissions
+        status: automated
+
+    -   id: 232040
+        levels:
+            - medium
+        title: OL 9 cron configuration directories must have a mode of 0700 or less permissive.
+        rules:
+            - file_permissions_cron_d
+            - file_permissions_cron_daily
+            - file_permissions_cron_hourly
+            - file_permissions_cron_monthly
+            - file_permissions_cron_weekly
+        status: automated
+
+    -   id: 232045
+        levels:
+            - medium
+        title: All OL 9 local initialization files must have mode 0740 or less permissive.
+        rules:
+            - file_permission_user_init_files
+        status: automated
+
+    -   id: 232050
+        levels:
+            - medium
+        title:
+            All OL 9 local interactive user home directories must have mode 0750 or
+            less permissive.
+        rules:
+            - file_permissions_home_directories
+        status: automated
+
+    -   id: 232055
+        levels:
+            - medium
+        title:
+            OL 9 /etc/group file must have mode 0644 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_etc_group
+        status: automated
+
+    -   id: 232060
+        levels:
+            - medium
+        title:
+            OL 9 /etc/group- file must have mode 0644 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_backup_etc_group
+        status: automated
+
+    -   id: 232065
+        levels:
+            - medium
+        title:
+            OL 9 /etc/gshadow file must have mode 0000 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_etc_gshadow
+        status: automated
+
+    -   id: 232070
+        levels:
+            - medium
+        title:
+            OL 9 /etc/gshadow- file must have mode 0000 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_backup_etc_gshadow
+        status: automated
+
+    -   id: 232075
+        levels:
+            - medium
+        title:
+            OL 9 /etc/passwd file must have mode 0644 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_etc_passwd
+        status: automated
+
+    -   id: 232080
+        levels:
+            - medium
+        title:
+            OL 9 /etc/passwd- file must have mode 0644 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_backup_etc_passwd
+        status: automated
+
+    -   id: 232085
+        levels:
+            - medium
+        title:
+            OL 9 /etc/shadow- file must have mode 0000 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_backup_etc_shadow
+        status: automated
+
+    -   id: 232090
+        levels:
+            - medium
+        title: OL 9 /etc/group file must be owned by root.
+        rules:
+            - file_owner_etc_group
+        status: automated
+
+    -   id: 232095
+        levels:
+            - medium
+        title: OL 9 /etc/group file must be group-owned by root.
+        rules:
+            - file_groupowner_etc_group
+        status: automated
+
+    -   id: 232100
+        levels:
+            - medium
+        title: OL 9 /etc/group- file must be owned by root.
+        rules:
+            - file_owner_backup_etc_group
+        status: automated
+
+    -   id: 232105
+        levels:
+            - medium
+        title: OL 9 /etc/group- file must be group-owned by root.
+        rules:
+            - file_groupowner_backup_etc_group
+        status: automated
+
+    -   id: 232110
+        levels:
+            - medium
+        title: OL 9 /etc/gshadow file must be owned by root.
+        rules:
+            - file_owner_etc_gshadow
+        status: automated
+
+    -   id: 232115
+        levels:
+            - medium
+        title: OL 9 /etc/gshadow file must be group-owned by root.
+        rules:
+            - file_groupowner_etc_gshadow
+        status: automated
+
+    -   id: 232120
+        levels:
+            - medium
+        title: OL 9 /etc/gshadow- file must be owned by root.
+        rules:
+            - file_owner_backup_etc_gshadow
+        status: automated
+
+    -   id: 232125
+        levels:
+            - medium
+        title: OL 9 /etc/gshadow- file must be group-owned by root.
+        rules:
+            - file_groupowner_backup_etc_gshadow
+        status: automated
+
+    -   id: 232130
+        levels:
+            - medium
+        title: OL 9 /etc/passwd file must be owned by root.
+        rules:
+            - file_owner_etc_passwd
+        status: automated
+
+    -   id: 232135
+        levels:
+            - medium
+        title: OL 9 /etc/passwd file must be group-owned by root.
+        rules:
+            - file_groupowner_etc_passwd
+        status: automated
+
+    -   id: 232140
+        levels:
+            - medium
+        title: OL 9 /etc/passwd- file must be owned by root.
+        rules:
+            - file_owner_backup_etc_passwd
+        status: automated
+
+    -   id: 232145
+        levels:
+            - medium
+        title: OL 9 /etc/passwd- file must be group-owned by root.
+        rules:
+            - file_groupowner_backup_etc_passwd
+        status: automated
+
+    -   id: 232150
+        levels:
+            - medium
+        title: OL 9 /etc/shadow file must be owned by root.
+        rules:
+            - file_owner_etc_shadow
+        status: automated
+
+    -   id: 232155
+        levels:
+            - medium
+        title: OL 9 /etc/shadow file must be group-owned by root.
+        rules:
+            - file_groupowner_etc_shadow
+        status: automated
+
+    -   id: 232160
+        levels:
+            - medium
+        title: OL 9 /etc/shadow- file must be owned by root.
+        rules:
+            - file_owner_backup_etc_shadow
+        status: automated
+
+    -   id: 232165
+        levels:
+            - medium
+        title: OL 9 /etc/shadow- file must be group-owned by root.
+        rules:
+            - file_groupowner_backup_etc_shadow
+        status: automated
+
+    -   id: 232170
+        levels:
+            - medium
+        title: OL 9 /var/log directory must be owned by root.
+        rules:
+            - file_owner_var_log
+        status: automated
+
+    -   id: 232175
+        levels:
+            - medium
+        title: OL 9 /var/log directory must be group-owned by root.
+        rules:
+            - file_groupowner_var_log
+        status: automated
+
+    -   id: 232180
+        levels:
+            - medium
+        title: OL 9 /var/log/messages file must be owned by root.
+        rules:
+            - file_owner_var_log_messages
+        status: automated
+
+    -   id: 232185
+        levels:
+            - medium
+        title: OL 9 /var/log/messages file must be group-owned by root.
+        rules:
+            - file_groupowner_var_log_messages
+        status: automated
+
+    -   id: 232190
+        levels:
+            - medium
+        title: OL 9 system commands must be owned by root.
+        rules:
+            - file_ownership_binary_dirs
+        status: automated
+
+    -   id: 232195
+        levels:
+            - medium
+        title: OL 9 system commands must be group-owned by root or a system account.
+        rules:
+            - file_groupownership_system_commands_dirs
+        status: automated
+
+    -   id: 232200
+        levels:
+            - medium
+        title: OL 9 library files must be owned by root.
+        rules:
+            - file_ownership_library_dirs
+        status: automated
+
+    -   id: 232205
+        levels:
+            - medium
+        title: OL 9 library files must be group-owned by root or a system account.
+        rules:
+            - root_permissions_syslibrary_files
+        status: automated
+
+    -   id: 232210
+        levels:
+            - medium
+        title: OL 9 library directories must be owned by root.
+        rules:
+            - dir_ownership_library_dirs
+        status: automated
+
+    -   id: 232215
+        levels:
+            - medium
+        title: OL 9 library directories must be group-owned by root or a system account.
+        rules:
+            - dir_group_ownership_library_dirs
+        status: automated
+
+    -   id: 232220
+        levels:
+            - medium
+        title: OL 9 audit tools must be owned by root.
+        rules:
+            - file_audit_tools_ownership
+        status: automated
+
+    -   id: 232225
+        levels:
+            - medium
+        title: OL 9 audit tools must be group-owned by root.
+        rules:
+            - file_audit_tools_group_ownership
+        status: automated
+
+    -   id: 232230
+        levels:
+            - medium
+        title: OL 9 cron configuration files directory must be owned by root.
+        rules:
+            - file_owner_cron_d
+            - file_owner_cron_daily
+            - file_owner_cron_hourly
+            - file_owner_cron_monthly
+            - file_owner_cron_weekly
+            - file_owner_crontab
+            - file_owner_cron_deny
+        status: automated
+
+    -   id: 232235
+        levels:
+            - medium
+        title: OL 9 cron configuration files directory must be group-owned by root.
+        rules:
+            - file_groupowner_cron_d
+            - file_groupowner_cron_daily
+            - file_groupowner_cron_hourly
+            - file_groupowner_cron_monthly
+            - file_groupowner_cron_weekly
+            - file_groupowner_crontab
+            - file_groupowner_cron_deny
+        status: automated
+
+    -   id: 232240
+        levels:
+            - medium
+        title:
+            All OL 9 world-writable directories must be owned by root, sys, bin, or
+            an application user.
+        rules:
+            - dir_perms_world_writable_root_owned
+        status: automated
+
+    -   id: 232245
+        levels:
+            - medium
+        title: A sticky bit must be set on all OL 9 public directories.
+        rules:
+            - dir_perms_world_writable_sticky_bits
+        status: automated
+
+    -   id: 232250
+        levels:
+            - medium
+        title: All OL 9 local files and directories must have a valid group owner.
+        rules:
+            - file_permissions_ungroupowned
+        status: automated
+
+    -   id: 232255
+        levels:
+            - medium
+        title: All OL 9 local files and directories must have a valid owner.
+        rules:
+            - no_files_unowned_by_user
+        status: automated
+
+    -   id: 232260
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that all system device files are correctly labeled
+            to prevent unauthorized modification.
+        rules:
+            - selinux_all_devicefiles_labeled
+        status: automated
+
+    -   id: 232265
+        levels:
+            - medium
+        title: OL 9 /etc/crontab file must have mode 0600.
+        rules:
+            - file_permissions_crontab
+        status: automated
+
+    -   id: 232270
+        levels:
+            - medium
+        title: OL 9 /etc/shadow file must have mode 0000 to prevent unauthorized access.
+        rules:
+            - file_permissions_etc_shadow
+        status: automated
+
+    -   id: 251010
+        levels:
+            - medium
+        title: OL 9 must have the firewalld package installed.
+        rules:
+            - package_firewalld_installed
+        status: automated
+
+    -   id: 251015
+        levels:
+            - medium
+        title: The firewalld service on OL 9 must be active.
+        rules:
+            - service_firewalld_enabled
+        status: automated
+
+    -   id: 251020
+        levels:
+            - medium
+        title:
+            A OL 9 firewall must employ a deny-all, allow-by-exception policy for allowing
+            connections to other systems.
+        rules:
+            - configured_firewalld_default_deny
+        status: automated
+
+    -   id: 251025
+        levels:
+            - medium
+        title: OL 9 must control remote access methods.
+        rules:
+            - configure_firewalld_ports
+        status: automated
+
+    -   id: 251030
+        levels:
+            - medium
+        title:
+            OL 9 must protect against or limit the effects of denial-of-service (DoS)
+            attacks by ensuring rate-limiting measures on impacted network interfaces are
+            implemented.
+        rules:
+            - firewalld-backend
+        status: automated
+
+    -   id: 251035
+        levels:
+            - medium
+        title:
+            OL 9 must be configured to prohibit or restrict the use of functions, ports,
+            protocols, and/or services, as defined in the Ports, Protocols, and Services Management
+            (PPSM) Category Assignments List (CAL) and vulnerability assessments.
+        rules:
+            - firewalld_sshd_port_enabled
+        status: automated
+
+    -   id: 251040
+        levels:
+            - medium
+        title: OL 9 network interfaces must not be in promiscuous mode.
+        rules:
+            - network_sniffer_disabled
+        status: automated
+
+    -   id: 251045
+        levels:
+            - medium
+        title:
+            OL 9 must enable hardening for the Berkeley Packet Filter just-in-time
+            compiler.
+        rules:
+            - sysctl_net_core_bpf_jit_harden
+        status: automated
+
+    -   id: 252010
+        levels:
+            - medium
+        title: OL 9 must have the chrony package installed.
+        rules:
+            - package_chrony_installed
+        status: automated
+
+    -   id: 252015
+        levels:
+            - medium
+        title: OL 9 chronyd service must be enabled.
+        rules:
+            - service_chronyd_enabled
+        status: automated
+
+    -   id: 252020
+        levels:
+            - medium
+        title:
+            OL 9 must securely compare internal information system clocks at least
+            every 24 hours.
+        rules:
+            - chronyd_or_ntpd_set_maxpoll
+            - chronyd_server_directive
+            - var_multiple_time_servers=stig
+            - var_time_service_set_maxpoll=18_hours
+        status: automated
+
+    -   id: 252025
+        levels:
+            - low
+        title: OL 9 must disable the chrony daemon from acting as a server.
+        rules:
+            - chronyd_client_only
+        status: automated
+
+    -   id: 252030
+        levels:
+            - low
+        title: OL 9 must disable network management of the chrony daemon.
+        rules:
+            - chronyd_no_chronyc_network
+        status: automated
+
+    -   id: 252035
+        levels:
+            - medium
+        title:
+            OL 9 systems using Domain Name Servers (DNS) resolution must have at least
+            two name servers configured.
+        rules:
+            - network_configure_name_resolution
+        status: automated
+
+    -   id: 252040
+        levels:
+            - medium
+        title: OL 9 must configure a DNS processing mode set be Network Manager.
+        rules:
+            - networkmanager_dns_mode
+            - var_networkmanager_dns_mode=none
+        status: automated
+
+    -   id: 252045
+        levels:
+            - medium
+        title: OL 9 must not have unauthorized IP tunnels configured.
+        rules:
+            - libreswan_approved_tunnels
+        status: automated
+
+    -   id: 252050
+        levels:
+            - medium
+        title: OL 9 must be configured to prevent unrestricted mail relaying.
+        rules:
+            - postfix_prevent_unrestricted_relay
+        status: automated
+
+    -   id: 252055
+        levels:
+            - medium
+        title:
+            If the Trivial File Transfer Protocol (TFTP) server is required, OL 9 TFTP
+            daemon must be configured to operate in secure mode.
+        rules:
+            - tftpd_uses_secure_mode
+        status: automated
+
+    -   id: 252060
+        levels:
+            - medium
+        title:
+            OL 9 must forward mail from postmaster to the root account using a postfix
+            alias.
+        rules:
+            - postfix_client_configure_mail_alias_postmaster
+        status: automated
+
+    -   id: 252065
+        levels:
+            - medium
+        title: OL 9 libreswan package must be installed.
+        rules:
+            - package_libreswan_installed
+        status: automated
+
+    -   id: 252070
+        levels:
+            - high
+        title: There must be no shosts.equiv files on OL 9.
+        rules:
+            - no_host_based_files
+        status: automated
+
+    -   id: 252075
+        levels:
+            - high
+        title: There must be no .shosts files on OL 9.
+        rules:
+            - no_user_host_based_files
+        status: automated
+
+    -   id: 253010
+        levels:
+            - medium
+        title: OL 9 must be configured to use TCP syncookies.
+        rules:
+            - sysctl_net_ipv4_tcp_syncookies
+        status: automated
+
+    -   id: 253015
+        levels:
+            - medium
+        title:
+            OL 9 must ignore Internet Protocol version 4 (IPv4) Internet Control Message
+            Protocol (ICMP) redirect messages.
+        rules:
+            - sysctl_net_ipv4_conf_all_accept_redirects
+        status: automated
+
+    -   id: 253020
+        levels:
+            - medium
+        title:
+            OL 9 must not forward Internet Protocol version 4 (IPv4) source-routed
+            packets.
+        rules:
+            - sysctl_net_ipv4_conf_all_accept_source_route
+        status: automated
+
+    -   id: 253025
+        levels:
+            - medium
+        title: OL 9 must log IPv4 packets with impossible addresses.
+        rules:
+            - sysctl_net_ipv4_conf_all_log_martians
+        status: automated
+
+    -   id: 253030
+        levels:
+            - medium
+        title: OL 9 must log IPv4 packets with impossible addresses by default.
+        rules:
+            - sysctl_net_ipv4_conf_default_log_martians
+        status: automated
+
+    -   id: 253035
+        levels:
+            - medium
+        title: OL 9 must use reverse path filtering on all IPv4 interfaces.
+        rules:
+            - sysctl_net_ipv4_conf_all_rp_filter
+        status: automated
+
+    -   id: 253040
+        levels:
+            - medium
+        title:
+            OL 9 must prevent IPv4 Internet Control Message Protocol (ICMP) redirect
+            messages from being accepted.
+        rules:
+            - sysctl_net_ipv4_conf_default_accept_redirects
+        status: automated
+
+    -   id: 253045
+        levels:
+            - medium
+        title: OL 9 must not forward IPv4 source-routed packets by default.
+        rules:
+            - sysctl_net_ipv4_conf_default_accept_source_route
+        status: automated
+
+    -   id: 253050
+        levels:
+            - medium
+        title:
+            OL 9 must use a reverse-path filter for IPv4 network traffic when possible
+            by default.
+        rules:
+            - sysctl_net_ipv4_conf_default_rp_filter
+        status: automated
+
+    -   id: 253055
+        levels:
+            - medium
+        title:
+            OL 9 must not respond to Internet Control Message Protocol (ICMP) echoes
+            sent to a broadcast address.
+        rules:
+            - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+        status: automated
+
+    -   id: 253060
+        levels:
+            - medium
+        title:
+            OL 9 must limit the number of bogus Internet Control Message Protocol (ICMP)
+            response errors logs.
+        rules:
+            - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+        status: automated
+
+    -   id: 253065
+        levels:
+            - medium
+        title: OL 9 must not send Internet Control Message Protocol (ICMP) redirects.
+        rules:
+            - sysctl_net_ipv4_conf_all_send_redirects
+        status: automated
+
+    -   id: 253070
+        levels:
+            - medium
+        title:
+            OL 9 must not allow interfaces to perform Internet Control Message Protocol
+            (ICMP) redirects by default.
+        rules:
+            - sysctl_net_ipv4_conf_default_send_redirects
+        status: automated
+
+    -   id: 253075
+        levels:
+            - medium
+        title: OL 9 must not enable IPv4 packet forwarding unless the system is a router.
+        rules:
+            - sysctl_net_ipv4_conf_all_forwarding
+        status: automated
+
+    -   id: 254010
+        levels:
+            - medium
+        title: OL 9 must not accept router advertisements on all IPv6 interfaces.
+        rules:
+            - sysctl_net_ipv6_conf_all_accept_ra
+        status: automated
+
+    -   id: 254015
+        levels:
+            - medium
+        title:
+            OL 9 must ignore IPv6 Internet Control Message Protocol (ICMP) redirect
+            messages.
+        rules:
+            - sysctl_net_ipv6_conf_all_accept_redirects
+        status: automated
+
+    -   id: 254020
+        levels:
+            - medium
+        title: OL 9 must not forward IPv6 source-routed packets.
+        rules:
+            - sysctl_net_ipv6_conf_all_accept_source_route
+        status: automated
+
+    -   id: 254025
+        levels:
+            - medium
+        title: OL 9 must not enable IPv6 packet forwarding unless the system is a router.
+        rules:
+            - sysctl_net_ipv6_conf_all_forwarding
+        status: automated
+
+    -   id: 254030
+        levels:
+            - medium
+        title: OL 9 must not accept router advertisements on all IPv6 interfaces by default.
+        rules:
+            - sysctl_net_ipv6_conf_default_accept_ra
+        status: automated
+
+    -   id: 254035
+        levels:
+            - medium
+        title:
+            OL 9 must prevent IPv6 Internet Control Message Protocol (ICMP) redirect
+            messages from being accepted.
+        rules:
+            - sysctl_net_ipv6_conf_default_accept_redirects
+        status: automated
+
+    -   id: 254040
+        levels:
+            - medium
+        title: OL 9 must not forward IPv6 source-routed packets by default.
+        rules:
+            - sysctl_net_ipv6_conf_default_accept_source_route
+        status: automated
+
+    -   id: 255010
+        levels:
+            - medium
+        title: All OL 9 networked systems must have SSH installed.
+        rules:
+            - package_openssh-server_installed
+        status: automated
+
+    -   id: 255015
+        levels:
+            - medium
+        title:
+            All OL 9 networked systems must have and implement SSH to protect the confidentiality
+            and integrity of transmitted and received information, as well as information
+            during preparation for transmission.
+        rules:
+            - service_sshd_enabled
+        status: automated
+
+    -   id: 255020
+        levels:
+            - medium
+        title: OL 9 must have the openssh-clients package installed.
+        rules:
+            - package_openssh-clients_installed
+        status: automated
+
+    -   id: 255025
+        levels:
+            - medium
+        title:
+            OL 9 must display the Standard Mandatory DOD Notice and Consent Banner
+            before granting local or remote access to the system via a SSH logon.
+        rules:
+            - sshd_enable_warning_banner
+        status: automated
+
+    -   id: 255030
+        levels:
+            - medium
+        title: OL 9 must log SSH connection attempts and failures to the server.
+        rules:
+            - sshd_set_loglevel_verbose
+        status: automated
+
+    -   id: 255035
+        levels:
+            - medium
+        title: OL 9 SSHD must accept public key authentication.
+        rules:
+            - sshd_enable_pubkey_auth
+        status: automated
+
+    -   id: 255040
+        levels:
+            - high
+        title: OL 9 SSHD must not allow blank passwords.
+        rules:
+            - sshd_disable_empty_passwords
+        status: automated
+
+    -   id: 255045
+        levels:
+            - medium
+        title:
+            OL 9 must not permit direct logons to the root account using remote access
+            via SSH.
+        rules:
+            - sshd_disable_root_login
+        status: automated
+
+    -   id: 255050
+        levels:
+            - high
+        title:
+            OL 9 must enable the Pluggable Authentication Module (PAM) interface for
+            SSHD.
+        rules:
+            - sshd_enable_pam
+        status: automated
+
+    -   id: 255060
+        levels:
+            - medium
+        title:
+            OL 9 must implement DOD-approved encryption ciphers to protect the confidentiality
+            of SSH client connections.
+        rules:
+            - harden_sshd_ciphers_openssh_conf_crypto_policy
+            - sshd_approved_ciphers=stig_ol9
+        status: automated
+
+#    -   id: 255065 #This rule is commented because there is a difference
+# in the OVAL file in the Ciphers variable that searches for the rule against what is in OL9.
+#        levels:
+#            - medium
+#        title:
+#            OL 9 must implement DOD-approved encryption ciphers to protect the confidentiality
+#            of SSH server connections.
+#        rules:
+#            - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+#            - sshd_approved_ciphers=stig_ol9
+#        status: automated
+
+    -   id: 255070
+        levels:
+            - medium
+        title:
+            OL 9 SSH client must be configured to use only Message Authentication Codes
+            (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
+        status: pending
+
+    -   id: 255075
+        levels:
+            - medium
+        title:
+            OL 9 SSH server must be configured to use only Message Authentication Codes
+            (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
+        status: pending
+
+    -   id: 255080
+        levels:
+            - medium
+        title: OL 9 must not allow a noncertificate trusted host SSH logon to the system.
+        rules:
+            - disable_host_auth
+        status: automated
+
+    -   id: 255085
+        levels:
+            - medium
+        title: OL 9 must not allow users to override SSH environment variables.
+        rules:
+            - sshd_do_not_permit_user_env
+        status: automated
+
+    -   id: 255090
+        levels:
+            - medium
+        title:
+            OL 9 must force a frequent session key renegotiation for SSH connections
+            to the server.
+        rules:
+            - sshd_rekey_limit
+            - var_rekey_limit_size=1G
+            - var_rekey_limit_time=1hour
+        status: automated
+
+    -   id: 255095
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that all network connections associated with
+            SSH traffic terminate after becoming unresponsive.
+        rules:
+            - sshd_set_keepalive
+            - var_sshd_set_keepalive=1
+        status: automated
+
+    -   id: 255100
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that all network connections associated with
+            SSH traffic are terminated after 10 minutes of becoming unresponsive.
+        rules:
+            - sshd_set_idle_timeout
+            - sshd_idle_timeout_value=10_minutes
+        status: automated
+
+    -   id: 255105
+        levels:
+            - medium
+        title: OL 9 SSH server configuration file must be group-owned by root.
+        rules:
+            - file_groupowner_sshd_config
+        status: automated
+
+    -   id: 255110
+        levels:
+            - medium
+        title: OL 9 SSH server configuration file must be owned by root.
+        rules:
+            - file_owner_sshd_config
+        status: automated
+
+    -   id: 255115
+        levels:
+            - medium
+        title: OL 9 SSH server configuration file must have mode 0600 or less permissive.
+        rules:
+            - file_permissions_sshd_config
+        status: automated
+
+    -   id: 255120
+        levels:
+            - medium
+        title: OL 9 SSH private host key files must have mode 0640 or less permissive.
+        rules:
+            - file_permissions_sshd_private_key
+        status: automated
+
+    -   id: 255125
+        levels:
+            - medium
+        title: OL 9 SSH public host key files must have mode 0644 or less permissive.
+        rules:
+            - file_permissions_sshd_pub_key
+        status: automated
+
+    -   id: 255135
+        levels:
+            - medium
+        title: OL 9 SSH daemon must not allow GSSAPI authentication.
+        rules:
+            - sshd_disable_gssapi_auth
+        status: automated
+
+    -   id: 255140
+        levels:
+            - medium
+        title: OL 9 SSH daemon must not allow Kerberos authentication.
+        rules:
+            - sshd_disable_kerb_auth
+        status: automated
+
+    -   id: 255145
+        levels:
+            - medium
+        title: OL 9 SSH daemon must not allow rhosts authentication.
+        rules:
+            - sshd_disable_rhosts
+        status: automated
+
+    -   id: 255150
+        levels:
+            - medium
+        title: OL 9 SSH daemon must not allow known hosts authentication.
+        rules:
+            - sshd_disable_user_known_hosts
+        status: automated
+
+    -   id: 255155
+        levels:
+            - medium
+        title: OL 9 SSH daemon must disable remote X connections for interactive users.
+        rules:
+            - sshd_disable_x11_forwarding
+        status: automated
+
+    -   id: 255160
+        levels:
+            - medium
+        title:
+            OL 9 SSH daemon must perform strict mode checking of home directory configuration
+            files.
+        rules:
+            - sshd_enable_strictmodes
+        status: automated
+
+    -   id: 255165
+        levels:
+            - medium
+        title:
+            OL 9 SSH daemon must display the date and time of the last successful account
+            logon upon an SSH logon.
+        rules:
+            - sshd_print_last_log
+        status: automated
+
+    -   id: 255175
+        levels:
+            - medium
+        title:
+            OL 9 SSH daemon must prevent remote hosts from connecting to the proxy
+            display.
+        rules:
+            - sshd_x11_use_localhost
+        status: automated
+
+    -   id: 271010
+        levels:
+            - medium
+        title:
+            OL 9 must display the Standard Mandatory DOD Notice and Consent Banner
+            before granting local or remote access to the system via a graphical user logon.
+        rules:
+            - dconf_gnome_banner_enabled
+        status: automated
+
+    -   id: 271015
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the banner-message-enable setting
+            for the graphical user interface.
+        rules:
+            - dconf_gnome_banner_enabled
+        status: automated
+
+    -   id: 271020
+        levels:
+            - medium
+        title:
+            OL 9 must disable the graphical user interface automount function unless
+            required.
+        rules:
+            - dconf_gnome_disable_automount_open
+        status: automated
+
+    -   id: 271025
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the disabling of the graphical
+            user interface automount function.
+        rules:
+            - dconf_gnome_disable_automount_open
+        status: automated
+
+    -   id: 271030
+        levels:
+            - medium
+        title:
+            OL 9 must disable the graphical user interface autorun function unless
+            required.
+        rules:
+            - dconf_gnome_disable_autorun
+        status: automated
+
+    -   id: 271035
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the disabling of the graphical
+            user interface autorun function.
+        rules:
+            - dconf_gnome_disable_autorun
+        status: automated
+
+    -   id: 271040
+        levels:
+            - high
+        title:
+            OL 9 must not allow unattended or automatic logon via the graphical user
+            interface.
+        rules:
+            - gnome_gdm_disable_automatic_login
+        status: automated
+
+    -   id: 271045
+        levels:
+            - medium
+        title:
+            OL 9 must be able to initiate directly a session lock for all connection
+            types using smart card when the smart card is removed.
+        rules:
+            - dconf_gnome_lock_screen_on_smartcard_removal
+        status: automated
+
+    -   id: 271050
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the disabling of the graphical
+            user smart card removal action.
+        rules:
+            - dconf_gnome_lock_screen_on_smartcard_removal
+        status: automated
+
+    -   id: 271055
+        levels:
+            - medium
+        title:
+            OL 9 must enable a user session lock until that user re-establishes access
+            using established identification and authentication procedures for graphical user
+            sessions.
+        rules:
+            - dconf_gnome_screensaver_lock_enabled
+        status: automated
+
+    -   id: 271060
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the screensaver lock-enabled setting
+            for the graphical user interface.
+        rules:
+            - dconf_gnome_screensaver_lock_enabled
+        status: automated
+
+    -   id: 271065
+        levels:
+            - medium
+        title:
+            OL 9 must automatically lock graphical user sessions after 15 minutes of
+            inactivity.
+        rules:
+            - dconf_gnome_screensaver_idle_delay
+        status: automated
+
+    -   id: 271070
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the session idle-delay setting
+            for the graphical user interface.
+        rules:
+            - dconf_gnome_session_idle_user_locks
+        status: automated
+
+    -   id: 271075
+        levels:
+            - medium
+        title:
+            OL 9 must initiate a session lock for graphical user interfaces when the
+            screensaver is activated.
+        rules:
+            - dconf_gnome_screensaver_lock_delay
+        status: automated
+
+    -   id: 271080
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the session lock-delay setting
+            for the graphical user interface.
+        rules:
+            - dconf_gnome_screensaver_user_locks
+        status: automated
+
+    -   id: 271085
+        levels:
+            - medium
+        title:
+            OL 9 must conceal, via the session lock, information previously visible
+            on the display with a publicly viewable image.
+        rules:
+            - dconf_gnome_screensaver_mode_blank
+        status: automated
+
+    -   id: 271090
+        levels:
+            - medium
+        title: OL 9 effective dconf policy must match the policy keyfiles.
+        rules:
+            - dconf_db_up_to_date
+        status: automated
+
+    -   id: 271095
+        levels:
+            - medium
+        title:
+            OL 9 must disable the ability of a user to restart the system from the
+            login screen.
+        rules:
+            - dconf_gnome_disable_restart_shutdown
+        status: automated
+
+    -   id: 271100
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the disable-restart-buttons setting
+            for the graphical user interface.
+        rules:
+            - dconf_gnome_disable_restart_shutdown
+        status: automated
+
+    -   id: 271105
+        levels:
+            - medium
+        title:
+            OL 9 must disable the ability of a user to accidentally press Ctrl-Alt-Del
+            and cause a system to shut down or reboot.
+        rules:
+            - dconf_gnome_disable_ctrlaltdel_reboot
+        status: automated
+
+    -   id: 271110
+        levels:
+            - medium
+        title:
+            OL 9 must prevent a user from overriding the Ctrl-Alt-Del sequence settings
+            for the graphical user interface.
+        rules:
+            - dconf_gnome_disable_ctrlaltdel_reboot
+        status: automated
+
+    -   id: 271115
+        levels:
+            - medium
+        title: OL 9 must disable the user list at logon for graphical user interfaces.
+        rules:
+            - dconf_gnome_disable_user_list
+        status: automated
+
+    -   id: 291010
+        levels:
+            - medium
+        title: OL 9 must be configured to disable USB mass storage.
+        rules:
+            - kernel_module_usb-storage_disabled
+        status: automated
+
+    -   id: 291015
+        levels:
+            - medium
+        title: OL 9 must have the USBGuard package installed.
+        rules:
+            - package_usbguard_installed
+        status: automated
+
+    -   id: 291020
+        levels:
+            - medium
+        title: OL 9 must have the USBGuard package enabled.
+        rules:
+            - service_usbguard_enabled
+        status: automated
+
+    -   id: 291025
+        levels:
+            - low
+        title: OL 9 must enable Linux audit logging for the USBGuard daemon.
+        rules:
+            - configure_usbguard_auditbackend
+        status: automated
+
+    -   id: 291030
+        levels:
+            - medium
+        title: OL 9 must block unauthorized peripherals before establishing a connection.
+        rules:
+            - usbguard_generate_policy
+        status: automated
+
+    -   id: 291035
+        levels:
+            - medium
+        title: OL 9 Bluetooth must be disabled.
+        rules:
+            - kernel_module_bluetooth_disabled
+        status: automated
+
+    -   id: 291040
+        levels:
+            - medium
+        title: OL 9 wireless network adapters must be disabled.
+        rules:
+            - wireless_disable_interfaces
+        status: automated
+
+    -   id: 411010
+        levels:
+            - medium
+        title:
+            OL 9 user account passwords for new users or password changes must have
+            a 60-day maximum password lifetime restriction in /etc/login.defs.
+        rules:
+            - accounts_maximum_age_login_defs
+        status: automated
+
+    -   id: 411015
+        levels:
+            - medium
+        title:
+            OL 9 user account passwords must have a 60-day maximum password lifetime
+            restriction.
+        rules:
+            - accounts_password_set_max_life_existing
+            - var_accounts_maximum_age_login_defs=60
+        status: automated
+
+    -   id: 411020
+        levels:
+            - medium
+        title:
+            All OL 9 local interactive user accounts must be assigned a home directory
+            upon creation.
+        rules:
+            - accounts_have_homedir_login_defs
+        status: automated
+
+    -   id: 411025
+        levels:
+            - medium
+        title: OL 9 must set the umask value to 077 for all local interactive user accounts.
+        rules:
+            - accounts_umask_interactive_users
+            - var_accounts_user_umask=077
+        status: automated
+
+    -   id: 411030
+        levels:
+            - medium
+        title: OL 9 duplicate User IDs (UIDs) must not exist for interactive users.
+        rules:
+            - account_unique_id
+        status: automated
+
+    -   id: 411035
+        levels:
+            - medium
+        title: OL 9 system accounts must not have an interactive login shell.
+        rules:
+            - no_shelllogin_for_systemaccounts
+        status: automated
+
+    -   id: 411040
+        levels:
+            - medium
+        title: OL 9 must automatically expire temporary accounts within 72 hours.
+        rules:
+            - account_temp_expire_date
+        status: automated
+
+    -   id: 411045
+        levels:
+            - medium
+        title: All OL 9 interactive users must have a primary group that exists.
+        rules:
+            - gid_passwd_group_same
+        status: automated
+
+    -   id: 411050
+        levels:
+            - medium
+        title:
+            OL 9 must disable account identifiers (individuals, groups, roles, and
+            devices) after 35 days of inactivity.
+        rules:
+            - account_disable_post_pw_expiration
+            - var_account_disable_post_pw_expiration=35
+        status: automated
+
+    -   id: 411055
+        levels:
+            - medium
+        title:
+            Executable search paths within the initialization files of all local interactive
+            OL 9 users must only contain paths that resolve to the system default or the
+            users home directory.
+        rules:
+            - accounts_user_home_paths_only
+        status: automated
+
+    -   id: 411060
+        levels:
+            - medium
+        title:
+            All OL 9 local interactive users must have a home directory assigned in
+            the /etc/passwd file.
+        rules:
+            - accounts_user_interactive_home_directory_defined
+        status: automated
+
+    -   id: 411065
+        levels:
+            - medium
+        title:
+            All OL 9 local interactive user home directories defined in the /etc/passwd
+            file must exist.
+        rules:
+            - accounts_user_interactive_home_directory_exists
+        status: automated
+
+    -   id: 411070
+        levels:
+            - medium
+        title:
+            All OL 9 local interactive user home directories must be group-owned by
+            the home directory owner's primary group.
+        rules:
+            - file_groupownership_home_directories
+        status: automated
+
+    -   id: 411075
+        levels:
+            - medium
+        title:
+            OL 9 must automatically lock an account when three unsuccessful logon attempts
+            occur.
+        rules:
+            - accounts_passwords_pam_faillock_deny
+            - var_accounts_passwords_pam_faillock_deny=3
+        status: automated
+
+    -   id: 411080
+        levels:
+            - medium
+        title:
+            OL 9 must automatically lock the root account until the root account is
+            released by an administrator when three unsuccessful logon attempts occur during
+            a 15-minute time period.
+        rules:
+            - accounts_passwords_pam_faillock_deny_root
+        status: automated
+
+    -   id: 411085
+        levels:
+            - medium
+        title:
+            OL 9 must automatically lock an account when three unsuccessful logon attempts
+            occur during a 15-minute time period.
+        rules:
+            - accounts_passwords_pam_faillock_interval
+            - var_accounts_passwords_pam_faillock_fail_interval=900
+        status: automated
+
+    -   id: 411090
+        levels:
+            - medium
+        title:
+            OL 9 must maintain an account lock until the locked account is released
+            by an administrator.
+        rules:
+            - accounts_passwords_pam_faillock_unlock_time
+            - var_accounts_passwords_pam_faillock_unlock_time=never
+        status: automated
+
+    -   id: 411095
+        levels:
+            - medium
+        title: OL 9 must not have unauthorized accounts.
+        rules:
+            - accounts_authorized_local_users
+            - var_accounts_authorized_local_users_regex=ol9
+        status: automated
+
+    -   id: 411100
+        levels:
+            - high
+        title:
+            The root account must be the only account having unrestricted access to OL
+            9 system.
+        rules:
+            - accounts_no_uid_except_zero
+        status: automated
+
+    -   id: 411105
+        levels:
+            - medium
+        title: OL 9 must ensure account lockouts persist.
+        rules:
+            - accounts_passwords_pam_faillock_dir
+        status: automated
+
+    -   id: 411110
+        levels:
+            - medium
+        title: OL 9 groups must have unique Group ID (GID).
+        rules:
+            - group_unique_id
+        status: automated
+
+    -   id: 411115
+        levels:
+            - medium
+        title: Local OL 9 initialization files must not execute world-writable programs.
+        rules:
+            - accounts_user_dot_no_world_writable_programs
+        status: automated
+
+    -   id: 412010
+        levels:
+            - medium
+        title: OL 9 must have the tmux package installed.
+        rules:
+            - package_tmux_installed
+        status: automated
+
+    -   id: 412015
+        levels:
+            - medium
+        title: OL 9 must ensure session control is automatically started at shell initialization.
+        rules:
+            - configure_bashrc_tmux
+        status: automated
+
+    -   id: 412020
+        levels:
+            - medium
+        title:
+            OL 9 must enable a user session lock until that user re-establishes access
+            using established identification and authentication procedures for command line
+            sessions.
+        rules:
+            - configure_tmux_lock_command
+            - configure_tmux_lock_keybinding
+        status: automated
+
+    -   id: 412025
+        levels:
+            - medium
+        title:
+            OL 9 must automatically lock command line user sessions after 15 minutes
+            of inactivity.
+        rules:
+            - configure_tmux_lock_after_time
+        status: automated
+
+    -   id: 412030
+        levels:
+            - low
+        title: OL 9 must prevent users from disabling session control mechanisms.
+        rules:
+            - no_tmux_in_shells
+        status: automated
+
+    -   id: 412035
+        levels:
+            - medium
+        title:
+            OL 9 must automatically exit interactive command shell user sessions after
+            15 minutes of inactivity.
+        rules:
+            - accounts_tmout
+            - var_accounts_tmout=15_min
+        status: automated
+
+    -   id: 412040
+        levels:
+            - low
+        title:
+            OL 9 must limit the number of concurrent sessions to ten for all accounts
+            and/or account types.
+        rules:
+            - accounts_max_concurrent_login_sessions
+            - var_accounts_max_concurrent_login_sessions=10
+        status: automated
+
+    -   id: 412045
+        levels:
+            - medium
+        title: OL 9 must log username information when unsuccessful logon attempts occur.
+        rules:
+            - accounts_passwords_pam_faillock_audit
+        status: automated
+
+    -   id: 412050
+        levels:
+            - medium
+        title:
+            OL 9 must enforce a delay of at least four seconds between logon prompts
+            following a failed logon attempt.
+        rules:
+            - accounts_logon_fail_delay
+            - var_accounts_fail_delay=4
+        status: automated
+
+    -   id: 412055
+        levels:
+            - medium
+        title: OL 9 must define default permissions for the bash shell.
+        rules:
+            - accounts_umask_etc_bashrc
+        status: automated
+
+    -   id: 412060
+        levels:
+            - medium
+        title: OL 9 must define default permissions for the c shell.
+        rules:
+            - accounts_umask_etc_csh_cshrc
+        status: automated
+
+    -   id: 412065
+        levels:
+            - medium
+        title:
+            OL 9 must define default permissions for all authenticated users in such
+            a way that the user can only read and modify their own files.
+        rules:
+            - accounts_umask_etc_login_defs
+        status: automated
+
+    -   id: 412070
+        levels:
+            - medium
+        title: OL 9 must define default permissions for the system default profile.
+        rules:
+            - accounts_umask_etc_profile
+        status: automated
+
+    -   id: 412075
+        levels:
+            - low
+        title:
+            OL 9 must display the date and time of the last successful account logon
+            upon logon.
+        rules:
+            - display_login_attempts
+        status: automated
+
+    -   id: 412080
+        levels:
+            - medium
+        title: OL 9 must terminate idle user sessions.
+        rules:
+            - logind_session_timeout
+            - var_logind_session_timeout=15_minutes
+        status: automated
+
+    -   id: 431010
+        levels:
+            - high
+        title:
+            OL 9 must use a Linux Security Module configured to enforce limits on system
+            services.
+        rules:
+            - selinux_state
+            - var_selinux_state=enforcing
+        status: automated
+
+    -   id: 431015
+        levels:
+            - medium
+        title: OL 9 must enable the SELinux targeted policy.
+        rules:
+            - selinux_policytype
+            - var_selinux_policy_name=targeted
+        status: automated
+
+    -   id: 431020
+        levels:
+            - medium
+        title:
+            OL 9 must configure SELinux context type to allow the use of a nondefault
+            faillock tally directory.
+        rules:
+            - account_password_selinux_faillock_dir
+        status: automated
+
+    -   id: 431025
+        levels:
+            - medium
+        title: OL 9 must have policycoreutils package installed.
+        rules:
+            - package_policycoreutils_installed
+        status: automated
+
+    -   id: 431030
+        levels:
+            - medium
+        title: OL 9 policycoreutils-python-utils package must be installed.
+        rules:
+            - package_policycoreutils-python-utils_installed
+        status: automated
+
+    -   id: 432010
+        levels:
+            - medium
+        title: OL 9 must have the sudo package installed.
+        rules:
+            - package_sudo_installed
+        status: automated
+
+    -   id: 432015
+        levels:
+            - medium
+        title: OL 9 must require reauthentication when using the "sudo" command.
+        rules:
+            - sudo_require_reauthentication
+            - var_sudo_timestamp_timeout=always_prompt
+        status: automated
+
+    -   id: 432020
+        levels:
+            - medium
+        title:
+            OL 9 must use the invoking user's password for privilege escalation when
+            using "sudo".
+        rules:
+            - sudoers_validate_passwd
+        status: automated
+
+    -   id: 432025
+        levels:
+            - medium
+        title: OL 9 must require users to reauthenticate for privilege escalation.
+        rules:
+            - sudo_remove_no_authenticate
+        status: automated
+
+    -   id: 432030
+        levels:
+            - medium
+        title: OL 9 must restrict privilege elevation to authorized personnel.
+        rules:
+            - sudo_restrict_privilege_elevation_to_authorized
+        status: automated
+
+    -   id: 432035
+        levels:
+            - medium
+        title: OL 9 must restrict the use of the "su" command.
+        rules:
+            - use_pam_wheel_for_su
+        status: automated
+
+    -   id: 433010
+        levels:
+            - medium
+        title: OL 9 fapolicy module must be installed.
+        rules:
+            - package_fapolicyd_installed
+        status: automated
+
+    -   id: 433015
+        levels:
+            - medium
+        title: OL 9 fapolicy module must be enabled.
+        rules:
+            - service_fapolicyd_enabled
+        status: automated
+
+    -   id: 611010
+        levels:
+            - medium
+        title:
+            OL 9 must ensure the password complexity module in the system-auth file
+            is configured for three retries or less.
+        rules:
+            - accounts_password_pam_retry
+            - var_password_pam_retry=3
+        status: automated
+
+    -   id: 611015
+        levels:
+            - medium
+        title:
+            OL 9 must be configured in the password-auth file to prohibit password
+            reuse for a minimum of five generations.
+        rules:
+            - accounts_password_pam_pwhistory_remember_password_auth
+            - var_password_pam_remember=5
+            - var_password_pam_remember_control_flag=requisite_or_required
+        status: automated
+
+    -   id: 611020
+        levels:
+            - medium
+        title:
+            OL 9 must be configured in the system-auth file to prohibit password reuse
+            for a minimum of five generations.
+        rules:
+            - accounts_password_pam_pwhistory_remember_system_auth
+        status: automated
+
+    -   id: 611025
+        levels:
+            - high
+        title: OL 9 must not allow blank or null passwords.
+        rules:
+            - no_empty_passwords
+        status: automated
+
+    -   id: 611030
+        levels:
+            - medium
+        title:
+            OL 9 must configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth
+            file.
+        rules:
+            - account_password_pam_faillock_system_auth
+        status: automated
+
+    -   id: 611035
+        levels:
+            - medium
+        title:
+            OL 9 must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth
+            file.
+        rules:
+            - account_password_pam_faillock_password_auth
+        status: automated
+
+    -   id: 611040
+        levels:
+            - medium
+        title:
+            OL 9 must ensure the password complexity module is enabled in the password-auth
+            file.
+        rules:
+            - accounts_password_pam_pwquality_password_auth
+        status: automated
+
+    -   id: 611045
+        levels:
+            - medium
+        title:
+            OL 9 must ensure the password complexity module is enabled in the system-auth
+            file.
+        rules:
+            - accounts_password_pam_pwquality_system_auth
+        status: automated
+
+    -   id: 611050
+        levels:
+            - medium
+        title:
+            OL 9 password-auth must be configured to use a sufficient number of hashing
+            rounds.
+        rules:
+            - accounts_password_pam_unix_rounds_password_auth
+            - var_password_pam_unix_rounds=5000
+        status: automated
+
+    -   id: 611055
+        levels:
+            - medium
+        title:
+            OL 9 system-auth must be configured to use a sufficient number of hashing
+            rounds.
+        rules:
+            - accounts_password_pam_unix_rounds_system_auth
+        status: automated
+
+    -   id: 611060
+        levels:
+            - medium
+        title: OL 9 must enforce password complexity rules for the root account.
+        rules:
+            - accounts_password_pam_enforce_root
+        status: automated
+
+    -   id: 611065
+        levels:
+            - medium
+        title:
+            OL 9 must enforce password complexity by requiring that at least one lowercase
+            character be used.
+        rules:
+            - accounts_password_pam_lcredit
+            - var_password_pam_lcredit=1
+        status: automated
+
+    -   id: 611070
+        levels:
+            - medium
+        title:
+            OL 9 must enforce password complexity by requiring that at least one numeric
+            character be used.
+        rules:
+            - accounts_password_pam_dcredit
+            - var_password_pam_dcredit=1
+        status: automated
+
+    -   id: 611075
+        levels:
+            - medium
+        title:
+            OL 9 passwords for new users or password changes must have a 24 hours minimum
+            password lifetime restriction in /etc/login.defs.
+        rules:
+            - accounts_minimum_age_login_defs
+        status: automated
+
+    -   id: 611080
+        levels:
+            - medium
+        title:
+            OL 9 passwords must have a 24 hours minimum password lifetime restriction
+            in /etc/shadow.
+        rules:
+            - accounts_password_set_min_life_existing
+            - var_accounts_minimum_age_login_defs=1
+        status: automated
+
+    -   id: 611085
+        levels:
+            - medium
+        title: OL 9 must require users to provide a password for privilege escalation.
+        rules:
+            - sudo_remove_nopasswd
+        status: automated
+
+    -   id: 611090
+        levels:
+            - medium
+        title: OL 9 passwords must be created with a minimum of 15 characters.
+        rules:
+            - accounts_password_pam_minlen
+            - var_password_pam_minlen=15
+        status: automated
+
+    -   id: 611095
+        levels:
+            - medium
+        title: OL 9 passwords for new users must have a minimum of 15 characters.
+        rules:
+            - accounts_password_minlen_login_defs
+        status: automated
+
+    -   id: 611100
+        levels:
+            - medium
+        title:
+            OL 9 must enforce password complexity by requiring that at least one special
+            character be used.
+        rules:
+            - accounts_password_pam_ocredit
+            - var_password_pam_ocredit=1
+        status: automated
+
+    -   id: 611105
+        levels:
+            - medium
+        title: OL 9 must prevent the use of dictionary words for passwords.
+        rules:
+            - accounts_password_pam_dictcheck
+            - var_password_pam_dictcheck=1
+        status: automated
+
+    -   id: 611110
+        levels:
+            - medium
+        title:
+            OL 9 must enforce password complexity by requiring that at least one uppercase
+            character be used.
+        rules:
+            - accounts_password_pam_ucredit
+            - var_password_pam_ucredit=1
+        status: automated
+
+    -   id: 611115
+        levels:
+            - medium
+        title:
+            OL 9 must require the change of at least eight characters when passwords
+            are changed.
+        rules:
+            - accounts_password_pam_difok
+            - var_password_pam_difok=8
+        status: automated
+
+    -   id: 611120
+        levels:
+            - medium
+        title:
+            OL 9 must require the maximum number of repeating characters of the same
+            character class be limited to four when passwords are changed.
+        rules:
+            - accounts_password_pam_maxclassrepeat
+            - var_password_pam_maxclassrepeat=4
+        status: automated
+
+    -   id: 611125
+        levels:
+            - medium
+        title:
+            OL 9 must require the maximum number of repeating characters be limited
+            to three when passwords are changed.
+        rules:
+            - accounts_password_pam_maxrepeat
+            - var_password_pam_maxrepeat=3
+        status: automated
+
+    -   id: 611130
+        levels:
+            - medium
+        title:
+            OL 9 must require the change of at least four character classes when passwords
+            are changed.
+        rules:
+            - accounts_password_pam_minclass
+            - var_password_pam_minclass=4
+        status: automated
+
+    -   id: 611135
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that user and group account administration utilities
+            are configured to store only encrypted representations of passwords.
+        rules:
+            - set_password_hashing_algorithm_libuserconf
+        status: automated
+
+    -   id: 611140
+        levels:
+            - medium
+        title:
+            OL 9 must be configured to use the shadow file to store only encrypted
+            representations of passwords.
+        rules:
+            - set_password_hashing_algorithm_logindefs
+            - var_password_hashing_algorithm=SHA512
+        status: automated
+
+    -   id: 611145
+        levels:
+            - medium
+        title:
+            OL 9 must not be configured to bypass password requirements for privilege
+            escalation.
+        rules:
+            - disallow_bypass_password_sudo
+        status: automated
+
+    -   id: 611150
+        levels:
+            - medium
+        title:
+            OL 9 shadow password suite must be configured to use a sufficient number
+            of hashing rounds.
+        rules:
+            - set_password_hashing_min_rounds_logindefs
+        status: automated
+
+    -   id: 611155
+        levels:
+            - medium
+        title: OL 9 must not have accounts configured with blank or null passwords.
+        rules:
+            - no_empty_passwords_etc_shadow
+        status: automated
+
+    -   id: 611160
+        levels:
+            - medium
+        title: OL 9 must use the CAC smart card driver.
+        rules:
+            - configure_opensc_card_drivers
+            - var_smartcard_drivers=cac
+        status: automated
+
+    -   id: 611165
+        levels:
+            - medium
+        title: OL 9 must enable certificate based smart card authentication.
+        rules:
+            - sssd_enable_smartcards
+        status: automated
+
+    -   id: 611170
+        levels:
+            - medium
+        title: OL 9 must implement certificate status checking for multifactor authentication.
+        rules:
+            - sssd_certificate_verification
+            - var_sssd_certificate_verification_digest_function=sha512
+        status: automated
+
+    -   id: 611175
+        levels:
+            - medium
+        title: OL 9 must have the pcsc-lite package installed.
+        rules:
+            - package_pcsc-lite_installed
+        status: automated
+
+    -   id: 611180
+        levels:
+            - medium
+        title: The pcscd service on OL 9 must be active.
+        rules:
+            - service_pcscd_enabled
+        status: automated
+
+    -   id: 611185
+        levels:
+            - medium
+        title: OL 9 must have the opensc package installed.
+        rules:
+            - package_opensc_installed
+        status: automated
+
+    -   id: 611190
+        levels:
+            - medium
+        title:
+            OL 9, for PKI-based authentication, must enforce authorized access to the
+            corresponding private key.
+        rules:
+            - ssh_keys_passphrase_protected
+        status: automated
+
+    -   id: 611195
+        levels:
+            - medium
+        title: OL 9 must require authentication to access emergency mode.
+        rules:
+            - require_emergency_target_auth
+        status: automated
+
+    -   id: 611200
+        levels:
+            - medium
+        title: OL 9 must require authentication to access single-user mode.
+        rules:
+            - require_singleuser_auth
+        status: automated
+
+    -   id: 631010
+        levels:
+            - medium
+        title:
+            OL 9, for PKI-based authentication, must validate certificates by constructing
+            a certification path (which includes status information) to an accepted trust
+            anchor.
+        rules:
+            - sssd_has_trust_anchor
+        status: automated
+
+    -   id: 631015
+        levels:
+            - medium
+        title:
+            OL 9 must map the authenticated identity to the user or group account for
+            PKI-based authentication.
+        rules:
+            - sssd_enable_certmap
+        status: automated
+
+    -   id: 631020
+        levels:
+            - medium
+        title: OL 9 must prohibit the use of cached authenticators after one day.
+        rules:
+            - sssd_offline_cred_expiration
+        status: automated
+
+    -   id: 651010
+        levels:
+            - medium
+        title: OL 9 must have the AIDE package installed.
+        rules:
+            - package_aide_installed
+        status: automated
+
+    -   id: 651015
+        levels:
+            - medium
+        title:
+            OL 9 must routinely check the baseline configuration for unauthorized changes
+            and notify the system administrator when anomalies in the operation of any security
+            functions are discovered.
+        rules:
+            - aide_periodic_cron_checking
+            - aide_scan_notification
+        status: automated
+
+    -   id: 651020
+        levels:
+            - medium
+        title:
+            OL 9 must use a file integrity tool that is configured to use FIPS 140-3-approved
+            cryptographic hashes for validating file contents and directories.
+        rules:
+            - aide_use_fips_hashes
+        status: automated
+
+    -   id: 651025
+        levels:
+            - medium
+        title:
+            OL 9 must use cryptographic mechanisms to protect the integrity of audit
+            tools.
+        rules:
+            - aide_check_audit_tools
+        status: automated
+
+    -   id: 651030
+        levels:
+            - low
+        title:
+            OL 9 must be configured so that the file integrity tool verifies Access
+            Control Lists (ACLs).
+        rules:
+            - aide_verify_acls
+        status: automated
+
+    -   id: 651035
+        levels:
+            - low
+        title:
+            OL 9 must be configured so that the file integrity tool verifies extended
+            attributes.
+        rules:
+            - aide_verify_ext_attributes
+        status: automated
+
+    -   id: 652010
+        levels:
+            - medium
+        title: OL 9 must have the rsyslog package installed.
+        rules:
+            - package_rsyslog_installed
+        status: automated
+
+    -   id: 652015
+        levels:
+            - medium
+        title:
+            OL 9 must have the packages required for encrypting offloaded audit logs
+            installed.
+        rules:
+            - package_rsyslog-gnutls_installed
+        status: automated
+
+    -   id: 652020
+        levels:
+            - medium
+        title: The rsyslog service on OL 9 must be active.
+        rules:
+            - service_rsyslog_enabled
+        status: automated
+
+    -   id: 652025
+        levels:
+            - medium
+        title:
+            OL 9 must be configured so that the rsyslog daemon does not accept log
+            messages from other servers unless the server is being used for log aggregation.
+        rules:
+            - rsyslog_nolisten
+        status: automated
+
+    -   id: 652030
+        levels:
+            - medium
+        title: All OL 9 remote access methods must be monitored.
+        rules:
+            - rsyslog_remote_access_monitoring
+        status: automated
+
+    -   id: 652035
+        levels:
+            - medium
+        title:
+            OL 9 must be configured to offload audit records onto a different system
+            from the system being audited via syslog.
+        rules:
+            - auditd_audispd_syslog_plugin_activated
+        status: automated
+
+    -   id: 652040
+        levels:
+            - medium
+        title:
+            OL 9 must authenticate the remote logging server for offloading audit logs
+            via rsyslog.
+        rules:
+            - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
+        status: automated
+
+    -   id: 652045
+        levels:
+            - medium
+        title:
+            OL 9 must encrypt the transfer of audit records offloaded onto a different
+            system or media from the system being audited via rsyslog.
+        rules:
+            - rsyslog_encrypt_offload_actionsendstreamdrivermode
+        status: automated
+
+    -   id: 652050
+        levels:
+            - medium
+        title:
+            OL 9 must encrypt via the gtls driver the transfer of audit records offloaded
+            onto a different system or media from the system being audited via rsyslog.
+        rules:
+            - rsyslog_encrypt_offload_defaultnetstreamdriver
+        status: automated
+
+    -   id: 652055
+        levels:
+            - medium
+        title:
+            OL 9 must be configured to forward audit records via TCP to a different
+            system or media from the system being audited via rsyslog.
+        rules:
+            - rsyslog_remote_loghost
+        status: automated
+
+    -   id: 652060
+        levels:
+            - medium
+        title: OL 9 must use cron logging.
+        rules:
+            - rsyslog_cron_logging
+        status: automated
+
+    -   id: 653010
+        levels:
+            - medium
+        title: OL 9 audit package must be installed.
+        rules:
+            - package_audit_installed
+        status: automated
+
+    -   id: 653015
+        levels:
+            - medium
+        title: OL 9 audit service must be enabled.
+        rules:
+            - service_auditd_enabled
+        status: automated
+
+    -   id: 653020
+        levels:
+            - medium
+        title:
+            OL 9 audit system must take appropriate action when an error writing to
+            the audit storage volume occurs.
+        rules:
+            - auditd_data_disk_error_action_stig
+            - var_auditd_disk_error_action=halt
+        status: automated
+
+    -   id: 653025
+        levels:
+            - medium
+        title:
+            OL 9 audit system must take appropriate action when the audit storage volume
+            is full.
+        rules:
+            - auditd_data_disk_full_action_stig
+            - var_auditd_disk_full_action=halt
+        status: automated
+
+    -   id: 653030
+        levels:
+            - medium
+        title:
+            OL 9 must allocate audit record storage capacity to store at least one
+            week's worth of audit records.
+        rules:
+            - auditd_audispd_configure_sufficiently_large_partition
+        status: automated
+
+    -   id: 653035
+        levels:
+            - medium
+        title:
+            OL 9 must take action when allocated audit record storage volume reaches
+            75 percent of the repository maximum audit record storage capacity.
+        rules:
+            - auditd_data_retention_space_left_percentage
+            - var_auditd_space_left_percentage=25pc
+        status: automated
+
+    -   id: 653040
+        levels:
+            - medium
+        title:
+            OL 9 must notify the system administrator (SA) and information system security
+            officer (ISSO) (at a minimum) when allocated audit record storage volume 75 percent
+            utilization.
+        rules:
+            - auditd_data_retention_space_left_action
+            - var_auditd_space_left_action=email
+        status: automated
+
+    -   id: 653045
+        levels:
+            - medium
+        title:
+            OL 9 must take action when allocated audit record storage volume reaches
+            95 percent of the audit record storage capacity.
+        rules:
+            - auditd_data_retention_admin_space_left_percentage
+            - var_auditd_admin_space_left_percentage=5pc
+        status: automated
+
+    -   id: 653050
+        levels:
+            - medium
+        title:
+            OL 9 must take action when allocated audit record storage volume reaches
+            95 percent of the repository maximum audit record storage capacity.
+        rules:
+            - auditd_data_retention_admin_space_left_action
+            - var_auditd_admin_space_left_action=halt
+        status: automated
+
+    -   id: 653055
+        levels:
+            - medium
+        title:
+            OL 9 audit system must take appropriate action when the audit files have
+            reached maximum size.
+        rules:
+            - auditd_data_retention_max_log_file_action_stig
+            - var_auditd_max_log_file_action=rotate
+        status: automated
+
+    -   id: 653060
+        levels:
+            - medium
+        title:
+            OL 9 must label all offloaded audit logs before sending them to the central
+            log server.
+        rules:
+            - auditd_name_format
+            - var_auditd_name_format=stig
+        status: automated
+
+    -   id: 653065
+        levels:
+            - medium
+        title: OL 9 must take appropriate action when the internal event queue is full.
+        rules:
+            - auditd_overflow_action
+        status: automated
+
+    -   id: 653070
+        levels:
+            - medium
+        title:
+            OL 9 System Administrator (SA) and/or information system security officer
+            (ISSO) (at a minimum) must be alerted of an audit processing failure event.
+        rules:
+            - auditd_data_retention_action_mail_acct
+            - var_auditd_action_mail_acct=root
+        status: automated
+
+    -   id: 653075
+        levels:
+            - medium
+        title: OL 9 audit system must audit local events.
+        rules:
+            - auditd_local_events
+        status: automated
+
+    -   id: 653080
+        levels:
+            - medium
+        title:
+            OL 9 audit logs must be group-owned by root or by a restricted logging
+            group to prevent unauthorized read access.
+        rules:
+            - directory_group_ownership_var_log_audit
+        status: automated
+
+    -   id: 653085
+        levels:
+            - medium
+        title:
+            OL 9 audit log directory must be owned by root to prevent unauthorized
+            read access.
+        rules:
+            - directory_ownership_var_log_audit
+        status: automated
+
+    -   id: 653090
+        levels:
+            - medium
+        title:
+            OL 9 audit logs file must have mode 0600 or less permissive to prevent
+            unauthorized access to the audit log.
+        rules:
+            - file_permissions_var_log_audit
+        status: automated
+
+    -   id: 653095
+        levels:
+            - medium
+        title:
+            OL 9 must periodically flush audit records to disk to prevent the loss
+            of audit records.
+        rules:
+            - auditd_freq
+            - var_auditd_freq=100
+        status: automated
+
+    -   id: 653100
+        levels:
+            - medium
+        title:
+            OL 9 must produce audit records containing information to establish the
+            identity of any individual or process associated with the event.
+        rules:
+            - auditd_log_format
+        status: automated
+
+    -   id: 653105
+        levels:
+            - medium
+        title: OL 9 must write audit records to disk.
+        rules:
+            - auditd_write_logs
+        status: automated
+
+    -   id: 653110
+        levels:
+            - medium
+        title:
+            OL 9 must allow only the information system security manager (ISSM) (or
+            individuals or roles appointed by the ISSM) to select which auditable events are
+            to be audited.
+        rules:
+            - file_permissions_etc_audit_rulesd
+        status: automated
+
+    -   id: 653115
+        levels:
+            - medium
+        title:
+            OL 9 /etc/audit/auditd.conf file must have 0640 or less permissive to prevent
+            unauthorized access.
+        rules:
+            - file_permissions_etc_audit_auditd
+        status: automated
+
+    -   id: 653120
+        levels:
+            - low
+        title:
+            OL 9 must allocate an audit_backlog_limit of sufficient size to capture
+            processes that start prior to the audit daemon.
+        rules:
+            - grub2_audit_backlog_limit_argument
+        status: automated
+
+    -   id: 653125
+        levels:
+            - medium
+        title:
+            OL 9 must have mail aliases to notify the information system security officer
+            (ISSO) and system administrator (SA) (at a minimum) in the event of an audit processing
+            failure.
+        rules:
+            - postfix_client_configure_mail_alias
+        status: automated
+
+    -   id: 653130
+        levels:
+            - medium
+        title: OL 9 audispd-plugins package must be installed.
+        rules:
+            - package_audispd-plugins_installed
+        status: automated
+
+    -   id: 654010
+        levels:
+            - medium
+        title: OL 9 must audit uses of the "execve" system call.
+        rules:
+            - audit_rules_suid_privilege_function
+        status: automated
+
+    -   id: 654015
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the chmod, fchmod, and fchmodat system calls.
+        rules:
+            - audit_rules_dac_modification_chmod
+            - audit_rules_dac_modification_fchmod
+            - audit_rules_dac_modification_fchmodat
+        status: automated
+
+    -   id: 654020
+        levels:
+            - medium
+        title:
+            OL 9 must audit all uses of the chown, fchown, fchownat, and lchown system
+            calls.
+        rules:
+            - audit_rules_dac_modification_chown
+            - audit_rules_dac_modification_fchown
+            - audit_rules_dac_modification_fchownat
+            - audit_rules_dac_modification_lchown
+        status: automated
+
+    -   id: 654025
+        levels:
+            - medium
+        title:
+            OL 9 must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr,
+            fremovexattr, and lremovexattr system calls.
+        rules:
+            - audit_rules_dac_modification_setxattr
+            - audit_rules_dac_modification_fsetxattr
+            - audit_rules_dac_modification_lsetxattr
+            - audit_rules_dac_modification_removexattr
+            - audit_rules_dac_modification_fremovexattr
+            - audit_rules_dac_modification_lremovexattr
+        status: automated
+
+    -   id: 654030
+        levels:
+            - medium
+        title: OL 9 must audit all uses of umount system calls.
+        rules:
+            - audit_rules_privileged_commands_umount
+        status: automated
+
+    -   id: 654035
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the chacl command.
+        rules:
+            - audit_rules_execution_chacl
+        status: automated
+
+    -   id: 654040
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the setfacl command.
+        rules:
+            - audit_rules_execution_setfacl
+        status: automated
+
+    -   id: 654045
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the chcon command.
+        rules:
+            - audit_rules_execution_chcon
+        status: automated
+
+    -   id: 654050
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the semanage command.
+        rules:
+            - audit_rules_execution_semanage
+        status: automated
+
+    -   id: 654055
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the setfiles command.
+        rules:
+            - audit_rules_execution_setfiles
+        status: automated
+
+    -   id: 654060
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the setsebool command.
+        rules:
+            - audit_rules_execution_setsebool
+        status: automated
+
+    -   id: 654065
+        levels:
+            - medium
+        title:
+            OL 9 must audit all uses of the rename, unlink, rmdir, renameat, and unlinkat
+            system calls.
+        rules:
+            - audit_rules_file_deletion_events_rename
+            - audit_rules_file_deletion_events_unlink
+            - audit_rules_file_deletion_events_rmdir
+            - audit_rules_file_deletion_events_renameat
+            - audit_rules_file_deletion_events_unlinkat
+        status: automated
+
+    -   id: 654070
+        levels:
+            - medium
+        title:
+            OL 9 must audit all uses of the truncate, ftruncate, creat, open, openat,
+            and open_by_handle_at system calls.
+        rules:
+            - audit_rules_unsuccessful_file_modification_creat
+            - audit_rules_unsuccessful_file_modification_truncate
+            - audit_rules_unsuccessful_file_modification_ftruncate
+            - audit_rules_unsuccessful_file_modification_open
+            - audit_rules_unsuccessful_file_modification_openat
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at
+        status: automated
+
+    -   id: 654075
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the delete_module system call.
+        rules:
+            - audit_rules_kernel_module_loading_delete
+        status: automated
+
+    -   id: 654080
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the init_module and finit_module system calls.
+        rules:
+            - audit_rules_kernel_module_loading_finit
+            - audit_rules_kernel_module_loading_init
+        status: automated
+
+    -   id: 654085
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the chage command.
+        rules:
+            - audit_rules_privileged_commands_chage
+        status: automated
+
+    -   id: 654090
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the chsh command.
+        rules:
+            - audit_rules_privileged_commands_chsh
+        status: automated
+
+    -   id: 654095
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the crontab command.
+        rules:
+            - audit_rules_privileged_commands_crontab
+        status: automated
+
+    -   id: 654100
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the gpasswd command.
+        rules:
+            - audit_rules_privileged_commands_gpasswd
+        status: automated
+
+    -   id: 654105
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the kmod command.
+        rules:
+            - audit_rules_privileged_commands_kmod
+        status: automated
+
+    -   id: 654110
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the newgrp command.
+        rules:
+            - audit_rules_privileged_commands_newgrp
+        status: automated
+
+    -   id: 654115
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the pam_timestamp_check command.
+        rules:
+            - audit_rules_privileged_commands_pam_timestamp_check
+        status: automated
+
+    -   id: 654120
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the passwd command.
+        rules:
+            - audit_rules_privileged_commands_passwd
+        status: automated
+
+    -   id: 654125
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the postdrop command.
+        rules:
+            - audit_rules_privileged_commands_postdrop
+        status: automated
+
+    -   id: 654130
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the postqueue command.
+        rules:
+            - audit_rules_privileged_commands_postqueue
+        status: automated
+
+    -   id: 654135
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the ssh-agent command.
+        rules:
+            - audit_rules_privileged_commands_ssh_agent
+        status: automated
+
+    -   id: 654140
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the ssh-keysign command.
+        rules:
+            - audit_rules_privileged_commands_ssh_keysign
+        status: automated
+
+    -   id: 654145
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the su command.
+        rules:
+            - audit_rules_privileged_commands_su
+        status: automated
+
+    -   id: 654150
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the sudo command.
+        rules:
+            - audit_rules_privileged_commands_sudo
+        status: automated
+
+    -   id: 654155
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the sudoedit command.
+        rules:
+            - audit_rules_privileged_commands_sudoedit
+        status: automated
+
+    -   id: 654160
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the unix_chkpwd command.
+        rules:
+            - audit_rules_privileged_commands_unix_chkpwd
+        status: automated
+
+    -   id: 654165
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the unix_update command.
+        rules:
+            - audit_rules_privileged_commands_unix_update
+        status: automated
+
+    -   id: 654170
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the userhelper command.
+        rules:
+            - audit_rules_privileged_commands_userhelper
+        status: automated
+
+    -   id: 654175
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the usermod command.
+        rules:
+            - audit_rules_privileged_commands_usermod
+        status: automated
+
+    -   id: 654180
+        levels:
+            - medium
+        title: OL 9 must audit all uses of the mount command.
+        rules:
+            - audit_rules_privileged_commands_mount
+        status: automated
+
+    -   id: 654185
+        levels:
+            - medium
+        title:
+            Successful/unsuccessful uses of the init command in OL 9 must generate
+            an audit record.
+        rules:
+            - audit_privileged_commands_init
+        status: automated
+
+    -   id: 654190
+        levels:
+            - medium
+        title:
+            Successful/unsuccessful uses of the poweroff command in OL 9 must generate
+            an audit record.
+        rules:
+            - audit_privileged_commands_poweroff
+        status: automated
+
+    -   id: 654195
+        levels:
+            - medium
+        title:
+            Successful/unsuccessful uses of the reboot command in OL 9 must generate
+            an audit record.
+        rules:
+            - audit_privileged_commands_reboot
+        status: automated
+
+    -   id: 654200
+        levels:
+            - medium
+        title:
+            Successful/unsuccessful uses of the shutdown command in OL 9 must generate
+            an audit record.
+        rules:
+            - audit_privileged_commands_shutdown
+        status: automated
+
+    -   id: 654205
+        levels:
+            - medium
+        title:
+            Successful/unsuccessful uses of the umount system call in OL 9 must generate
+            an audit record.
+        rules:
+            - audit_rules_dac_modification_umount
+        status: automated
+
+    -   id: 654210
+        levels:
+            - medium
+        title:
+            Successful/unsuccessful uses of the umount2 system call in OL 9 must generate
+            an audit record.
+        rules:
+            - audit_rules_dac_modification_umount2
+        status: automated
+
+    -   id: 654215
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/sudoers.
+        rules:
+            - audit_rules_sudoers
+        status: automated
+
+    -   id: 654220
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/sudoers.d/ directory.
+        rules:
+            - audit_rules_sudoers_d
+        status: automated
+
+    -   id: 654225
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/group.
+        rules:
+            - audit_rules_usergroup_modification_group
+        status: automated
+
+    -   id: 654230
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/gshadow.
+        rules:
+            - audit_rules_usergroup_modification_gshadow
+        status: automated
+
+    -   id: 654235
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/opasswd.
+        rules:
+            - audit_rules_usergroup_modification_opasswd
+        status: automated
+
+    -   id: 654240
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/passwd.
+        rules:
+            - audit_rules_usergroup_modification_passwd
+        status: automated
+
+    -   id: 654245
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /etc/shadow.
+        rules:
+            - audit_rules_usergroup_modification_shadow
+        status: automated
+
+    -   id: 654250
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /var/log/faillock.
+        rules:
+            - audit_rules_login_events_faillock
+        status: automated
+
+    -   id: 654255
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /var/log/lastlog.
+        rules:
+            - audit_rules_login_events_lastlog
+        status: automated
+
+    -   id: 654260
+        levels:
+            - medium
+        title:
+            OL 9 must generate audit records for all account creations, modifications,
+            disabling, and termination events that affect /var/log/tallylog.
+        rules:
+            - audit_rules_login_events_tallylog
+        status: automated
+
+    -   id: 654265
+        levels:
+            - medium
+        title:
+            OL 9 must take appropriate action when a critical audit processing failure
+            occurs.
+        rules:
+            - audit_rules_system_shutdown
+        status: automated
+
+    -   id: 654270
+        levels:
+            - medium
+        title: OL 9 audit system must protect logon UIDs from unauthorized change.
+        rules:
+            - audit_rules_immutable_login_uids
+        status: automated
+
+    -   id: 654275
+        levels:
+            - medium
+        title: OL 9 audit system must protect auditing rules from unauthorized change.
+        rules:
+            - audit_rules_immutable
+        status: automated
+
+    -   id: 671010
+        levels:
+            - high
+        title: OL 9 must enable FIPS mode.
+        rules:
+            - enable_fips_mode
+            - sysctl_crypto_fips_enabled
+            - var_system_crypto_policy=fips
+            - configure_crypto_policy
+            - enable_dracut_fips_module
+        status: automated
+
+    -   id: 671015
+        levels:
+            - medium
+        title:
+            OL 9 must employ FIPS 140-3 approved cryptographic hashing algorithms for
+            all stored passwords.
+        rules:
+            - accounts_password_all_shadowed_sha512
+        status: automated
+
+    -   id: 671020
+        levels:
+            - medium
+        title: OL 9 IP tunnels must use FIPS 140-2/140-3 approved cryptographic algorithms.
+        rules:
+            - configure_libreswan_crypto_policy
+        status: automated
+
+    -   id: 671025
+        levels:
+            - medium
+        title:
+            OL 9 pam_unix.so module must be configured in the password-auth file to
+            use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
+        rules:
+            - set_password_hashing_algorithm_passwordauth
+        status: automated
+
+    -   id: 672010
+        levels:
+            - medium
+        title: OL 9 must have the crypto-policies package installed.
+        rules:
+            - package_crypto-policies_installed
+        status: automated
+
+    -   id: 672015
+        levels:
+            - high
+        title: OL 9 crypto policy files must match files shipped with the operating system.
+        status: pending
+
+    -   id: 672020
+        levels:
+            - medium
+        title: OL 9 crypto policy must not be overridden.
+        status: pending
+
+    -   id: 672025
+        levels:
+            - medium
+        title:
+            OL 9 must use mechanisms meeting the requirements of applicable federal
+            laws, executive orders, directives, policies, regulations, standards, and guidance
+            for authentication to a cryptographic module.
+        rules:
+            - configure_kerberos_crypto_policy
+        status: automated
+
+    -   id: 672030
+        levels:
+            - high
+        title: OL 9 must implement DOD-approved TLS encryption in the GnuTLS package.
+        rules:
+            - configure_crypto_policy
+        status: automated
+
+    -   id: 672035
+        levels:
+            - medium
+        title: OL 9 must implement DOD-approved encryption in the OpenSSL package.
+        rules:
+            - configure_openssl_crypto_policy
+        status: automated
+
+    -   id: 672040
+        levels:
+            - medium
+        title: OL 9 must implement DOD-approved TLS encryption in the OpenSSL package.
+        rules:
+            - configure_openssl_tls_crypto_policy
+        status: automated
+
+    -   id: 672045
+        levels:
+            - medium
+        title: OL 9 must implement a system-wide encryption policy.
+        rules:
+            - configure_crypto_policy
+        status: automated
+
+    -   id: 672050
+        levels:
+            - medium
+        title: OL 9 must implement DOD-approved encryption in the bind package.
+        rules:
+            - configure_bind_crypto_policy
+        status: automated

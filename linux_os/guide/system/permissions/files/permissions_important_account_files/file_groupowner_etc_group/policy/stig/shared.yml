@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} /etc/group file must be group-owned by root.
+    {{{ full_name }}} /etc/group file must be group-owned by root.
 
 vuldiscussion: |-
     The "/etc/group" file contains information regarding groups that are configured
@@ -18,3 +18,6 @@ fixtext: |-
     Change the group of the file /etc/group to root by running the following command:
 
     $ sudo chgrp root /etc/group
+
+vuln_discussion: |-
+    The "/etc/group" file contains information regarding groups that are configured on the system. Protection of this file is important for system security.

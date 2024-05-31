@@ -3,7 +3,22 @@ default:
   aide_also_checks_audispd: "no"
 
 overrides:
-{{% if "rhel-like" not in families %}}
+{{% if "debian-like" in families %}}
+  aide_also_checks_rsyslog: "no"
+  {{% if "debian" in families %}}
+    {{% if major_version_ordinal <= 10 %}}
+  aide_also_checks_audispd: "yes"
+    {{% else %}}
+  aide_also_checks_audispd: "no"
+    {{% endif %}}
+  {{% elif "ubuntu" in families %}}
+    {{% if major_version_ordinal <= 2004 %}}
+  aide_also_checks_audispd: "yes"
+    {{% else %}}
+  aide_also_checks_audispd: "no"
+    {{% endif %}}
+  {{% endif %}}
+{{% elif "rhel-like" not in families %}}
   aide_also_checks_rsyslog: "no"
   aide_also_checks_audispd: "yes"
 {{% endif %}}

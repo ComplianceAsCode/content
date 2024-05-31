@@ -36,22 +36,41 @@ controls:
       programs of the application. Only applications with similar protection needs and similar
       possible attack vectors SHOULD share a Kubernetes cluster.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      These requirements must be implemented organizationally. OpenShift fully supports them.
+      OpenShift simplifies the implementation of the stated requirements for separating applications
+      as well as development and production environments by setting up projects (tenants).
+      Namespaces, networks/network separation, meta tags as well as CPU and memory separation are already
+      configured by OpenShift as required (security-by-design). Special requirements for protection and
+      network zone concepts can also be flexibly and easily mapped using additional measures.
+      This particularly includes the ability to define application classes, operate in multiple,
+      separate clusters, and automatically distribute workloads to protection zones and fire compartments.
+      Particularly in the case of separate clusters, ACM can support rule-based distribution of applications using labels.
+    status: manual
+    rules:
+      - general_namespace_separation
 
   - id: APP.4.4.A2
     title: Planning Automation with CI/CD
     levels:
     - basic
     description: >-
-      Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
-      after appropriate planning. The planning MUST cover the entire lifecycle from commissioning
-      to decommissioning, including development, testing, operation, monitoring, and updates. A
+      (1) Automating the operation of applications in Kubernetes using CI/CD MUST ONLY take place
+      after appropriate planning. (2) The planning MUST cover the entire lifecycle from commissioning
+      to decommissioning, including development, testing, operation, monitoring, and updates. (3) A
       roles and rights concept and the securing of Kubernetes Secrets MUST be part of the planning
     notes: >-
-      TBD
-    status: pending
+      Since this requirement is a plan only, we cannot test this with compliance checks.
+      Section 1: This requirement must be implemented organizationally.
+      The documentation at https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html
+      provides information on the planning
+      Section 2: The protective measure is primarily of an organizational nature. OpenShift fully supports them.
+      With the integrated CI/CD technologies Jenkins, Tekton and OpenShift GitOps, OpenShift already offers preconfigured solutions
+      for automated CI/CD pipelines. Of course, other technologies such as Gitlab CI and GitHub Actions can also be integrated.
+      Section 3: Kubernetes secrets are secured by a Role Based Access Control (RBAC) system.
+      Depending on the protection requirement, Kubernetes secrets can be secured via an (encrypted) etcd metadata store or
+      additionally via an integration of Vault components or "sealed secrets" for CD and GitOps mechanisms.
+      Secrets and roles can also be managed centrally using ACM and rolled out consistently to the managed clusters using policies.
+    status: documentation
     rules: []
 
   - id: APP.4.4.A3
@@ -59,22 +78,31 @@ controls:
     levels:
     - basic
     description: >-
-      Kubernetes and all other control plane applications MUST authenticate and authorise each
+      (1) Kubernetes and all other control plane applications MUST authenticate and authorise each
       action taken by a user or, in automated mode, corresponding software. This applies whether
       the actions are taken via a client, a web interface, or a corresponding API. Administrative
       actions MUST NOT be performed anonymously.
-      Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
+      (2) Each user MUST ONLY be granted the permissions they absolutely require. Unlimited access
       rights MUST be granted in a very restrictive manner.
-      Only a small group of people SHOULD be authorised to define automation processes. Only
+      (3) Only a small group of people SHOULD be authorised to define automation processes. Only
       selected administrators SHOULD be given the right to create or change shares for persistent
       volumes in Kubernetes.
     notes: >-
-      TBD
-    status: pending
+      Section 1: In the default configuration, OpenShift restricts the use of the web console and APIs only to authenticated and authorized users.|
+      Connection to external directory services (LDAP, OIDC and others) is possible.
+      Section 2: OpenShift already offers roles for a least privilege concept. The RBAC roles can be adapted or supplemented with new roles.
+      The preconfigured roles enable easy authorization assignment according to the least-privilege and need-to-know principles.
+      User actions can be tracked via the audit log.
+      Section 3: In the default configuration, persistent storage can only be integrated by cluster administrators.
+      For dynamically provisioned storage, the corresponding provisioners have the necessary authorizations.
+      These provisioners must be set up and configured by an admin. Storage requirements are controlled and restricted using quota mechanisms.
+    status: partial
     rules:
+      # Section 1
       - api_server_anonymous_auth
       - kubelet_anonymous_auth
       - kubeadmin_removed
+      # Section 2 + 3
       - rbac_least_privilege
 
   - id: APP.4.4.A4
@@ -115,32 +143,42 @@ controls:
     levels:
     - basic
     description: >-
-      A cluster MUST have a backup. The backup MUST include:
-        • Persistent volumes
-        • Configuration files for Kubernetes and the other programs of the control plane
-        • The current state of the Kubernetes cluster, including extensions
-        • Databases of the configuration (namely etcd in this case)
-        • All infrastructure applications required to operate the cluster and the services within it
-        • The data storage of the code and image registries
-        Snapshots for the operation of the applications SHOULD also be considered. Snapshots MUST
-        NOT be considered a substitute for backups.
+      (1) A cluster MUST have a backup. The backup MUST include:
+        (2) • Persistent volumes
+        (3) • Configuration files for Kubernetes and the other programs of the control plane
+        (4) • The current state of the Kubernetes cluster, including extensions
+        (5) • Databases of the configuration (namely etcd in this case)
+        (6) • All infrastructure applications required to operate the cluster and the services within it
+        (7) • The data storage of the code and image registries
+      (8) Snapshots for the operation of the applications SHOULD also be considered. Snapshots MUST NOT be considered a substitute for backups.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      The data backup of a cluster must be individually defined as part of the system architecture as part of the operating model. The areas of responsibility for the container platform (cluster administration), the infrastructure services (system administration) and the application management (technical administration) should be considered separately.
+
+      For data backup as part of cluster administration (Kubernetes configuration, current state of the Kubernetes cluster, configuration database) the integrated functions or methods of OpenShift must be used. System administration and specialist administration must be carried out in accordance with the respective specifications.
+
+      Snapshots for persistent volumes are supported when using OpenShift's Container Storage Interface (CSI) drivers. OpenShift offers an easily configurable backup system with the OpenShift API for Data Protection (OADP).
+
+      Additional third-party solutions for backup are also available in the OperatorHub.
+
+      The checks are not checking the requirement in detail. They only setup a foundation to implement the configurations as described. For Section 3,4 and 6 a GitOps approach might achieve the best results. for 2 and 7 a sufficient backup solution is needed. 5 can be achieved with onboard utilities. 8 is dependend on the CSI provider and the available features
+    status: partial
+    rules:
+      # Section 2,7
+      - general_backup_solution_installed
+      # Section 5
+      - etcd_backup
 
   - id: APP.4.4.A6
     title: Initialisation of Pods
     levels:
     - standard
     description: >-
-      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take
-      place in a separate Init container. It SHOULD be ensured that the initialisation terminates all
-      processes that are already running. Kubernetes SHOULD ONLY start the other containers if
-      the initialisation is successful.
+      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take place in a separate Init container. It SHOULD be ensured that the initialisation terminates all processes that are already running. Kubernetes SHOULD ONLY start the other containers if the initialisation is successful.
     notes: >-
-      TBD
-    status: pending
+      OpenShift provides the necessary resource configurations via Kubernetes. Kubernetes ensures the (process) dependencies between init containers and “normal” containers of a pod.
+
+      The requirement must be implemented by application development.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A7
@@ -148,21 +186,32 @@ controls:
     levels:
     - standard
     description: >-
-      Networks for the administration of nodes, the control plane, and the individual networks of
-      application services SHOULD be separated.
-      Only the network ports of the pods necessary for operation SHOULD be released into the
-      designated networks. If a Kubernetes cluster contains multiple applications, all the network
-      connections between the Kubernetes namespaces SHOULD first be prohibited and only
-      required network connections permitted (whitelisting). The network ports necessary for the
-      administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD
-      ONLY be accessible from the corresponding administration network and from pods that need
-      them.
-      Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and
-      create or change rules for the network.
+      (1) Networks for the administration of nodes, the control plane, and the individual networks of application services SHOULD be separated.
+      (2) Only the network ports of the pods necessary for operation SHOULD be released into the designated networks. (3) If a Kubernetes cluster contains multiple applications, all the network connections between the Kubernetes namespaces SHOULD first be prohibited and only required network connections permitted (whitelisting). (4) The network ports necessary for the administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD ONLY be accessible from the corresponding administration network and from pods that need them.
+      (5) Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and create or change rules for the network.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1-3:
+      The requirements for restricting network ports and network connections between Kubernetes namespaces are already supported by OpenShift as standard using network policies and the option for default network policies (security by design).
+
+      The separation of the management network can also be implemented at the namespace level via network policies (incoming, the responsibility of the namespace administrator) and egress firewalls (outgoing, the responsibility of the cluster admins).
+
+      Externally exposed services can receive their own IP and thus data traffic can also be separated outside the platform. Inter-node communication is carried out via suitable tunnel protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+
+      The determination of the necessary network policies for applications is supported by the network policy generator in ACS.
+      Section 4 is true by default
+      Section 5 maps to principle of least privilege
+    status: partial
+    rules:
+      # Section 1
+      # Section 2
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      # Section 3
+      - project_config_and_template_network_policy
+      # Section 4, default
+      # Section 5
+      - rbac_least_privilege
+
 
   - id: APP.4.4.A8
     title: Securing Configuration Files on Kubernetes
@@ -251,7 +300,7 @@ controls:
       configurations or start pods via automation software, this SHOULD be done for each group 
       through separate processes that only have the rights necessary for the respective user group.
     notes: >-
-      This control needs to be adressed on an organizational level. All service accounts used by 
+      This control needs to be adressed on an organizational level. All service accounts used by
       automation software need to adhere to the principle of least privilege.
     status: not applicable
     rules: []
@@ -304,15 +353,16 @@ controls:
     levels:
     - elevated
     description: >-
-      There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of
-      the pods of applications against a defined list of allowed settings and standardised
-      benchmarks.
-      Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate
-      tools.
+      (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of the pods of applications against a defined list of allowed settings and standardised benchmarks.
+      (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate tools.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
+      Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads by using Advanced Cluster Security or similar tools.
+    status: automated
+    rules:
+      - scansettingbinding_exists
+      - scansettings_have_schedule
+      - scansetting_has_autoapplyremediations
 
   - id: APP.4.4.A14
     title: Use of Dedicated Nodes
@@ -337,23 +387,23 @@ controls:
     levels:
     - elevated
     description: >-
-      Applications with very high protection needs SHOULD each use their own Kubernetes clusters
-      or dedicated nodes that are not available for other applications
-    notes: >-
-      TBD
-    status: pending
-    rules: []
+      Applications with very high protection needs SHOULD each use their own Kubernetes clusters or dedicated nodes that are not available for other applications
+    notes: ''
+    status: manual
+    rules:
+      - general_node_separation
 
   - id: APP.4.4.A16
     title: Use of Operators
     levels:
     - elevated
     description: >-
-      The automation of operational tasks in operators SHOULD be used for particularly critical
-      applications and control plane programs.
+      The automation of operational tasks in operators SHOULD be used for particularly critical applications and control plane programs.
     notes: >-
-      TBD
-    status: pending
+      OpenShift relies consistently on the application of the concept of operators. The platform itself is operated and managed 100% by operators, meaning that all internal components of the platform are rolled out and managed by operators.
+
+      Application-specific operators must be considered as part of application development and deployment.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A17

@@ -69,6 +69,8 @@ selections:
   - file_ownership_library_dirs
 
   ### Passwords
+  - var_authselect_profile=sssd
+  - enable_authselect
   - no_empty_passwords
 
   ### Partitioning

@@ -1,0 +1,35 @@
+{{% if product not in ['ubuntu2204'] %}}
+{{% if target_oval_version >= [5, 11.2] %}}
+<def-group oval_version="5.11.2">
+  <definition class="compliance" id="auditd_audispd_configure_sufficiently_large_partition" version="1">
+    {{{ oval_metadata("Configure a sufficiently large partition for audit logs.") }}}
+    <criteria>
+        <criterion comment="Check that the partition with audit logs is at least 10G large" test_ref="test_aacsflp" />
+    </criteria>
+  </definition>
+
+  <!-- partition for the mount point for audit logs -->
+  <linux:partition_object id="obj_aacsflp_audit_partition" version="1">
+    <linux:mount_point operation="equals">/var/log/audit</linux:mount_point>
+  </linux:partition_object>
+  <!-- total partition size in bytes -->
+  <local_variable id="var_aacsflp_audit_partition_size" comment="total capacity (in bytes) of the audit partition" datatype="string" version="1">
+    <arithmetic arithmetic_operation="multiply">
+      <object_component item_field="block_size" object_ref="obj_aacsflp_audit_partition" />
+      <object_component item_field="total_space" object_ref="obj_aacsflp_audit_partition" />
+    </arithmetic>
+  </local_variable>
+  <ind:variable_object id="obj_aacsflp_audit_partition_size" version="1">
+    <ind:var_ref>var_aacsflp_audit_partition_size</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_test id="test_aacsflp" version="1" check="all" check_existence="all_exist" comment="Check that the partition with audit logs is at least 10G large">
+    <ind:object object_ref="obj_aacsflp_audit_partition_size" />
+    <ind:state state_ref="state_aacsflp_partition_sufficiently_large" />
+  </ind:variable_test>
+  <ind:variable_state id="state_aacsflp_partition_sufficiently_large" version="1">
+      <ind:value operation="greater than or equal" datatype="int">10000000000</ind:value>
+  </ind:variable_state>
+</def-group>
+{{% endif %}}
+{{% endif %}}

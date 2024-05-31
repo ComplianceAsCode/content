@@ -26,7 +26,7 @@
   ansible.builtin.command:
     cmd: semanage fcontext -a -t faillog_t "{{ var_accounts_passwords_pam_faillock_dir }}(/.*)?"
   register: result_accounts_passwords_pam_faillock_dir_semanage
-  ignore_errors: yes
+  failed_when: false
   changed_when:
     - result_accounts_passwords_pam_faillock_dir_semanage.rc == 0
 

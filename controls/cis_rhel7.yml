@@ -2552,10 +2552,10 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    status: partial
+    status: automated
     rules:
-    # TODO: we need to create a rule that adds audit rule for /etc/sysconfig/network-scripts/ directory as well
     - audit_rules_networkconfig_modification
+    - audit_rules_networkconfig_modification_network_scripts
 
   - id: 5.2.3.6
     title: Ensure use of privileged commands are collected (Automated)

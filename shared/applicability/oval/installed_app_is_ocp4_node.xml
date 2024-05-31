@@ -24,7 +24,7 @@
 
   <!-- helpers for ovn/sdn network cpe check-->
   <local_variable id="ocp4_node_network_file_location" datatype="string" comment="The actual filepath of the network file to scan." version="1">
-      <literal_component>/etc/kubernetes/cni/net.d/00-multus.conf</literal_component>
+      <literal_component>/var/run/multus/cni/net.d/10-ovn-kubernetes.conf</literal_component>
   </local_variable>
 
   <unix:file_test id="test_file_for_ocp4_node_network" check="only one" comment="Find the actual file for the network to be scanned." version="1">
@@ -37,7 +37,7 @@
 
   <ind:yamlfilecontent_object id="object_ocp4_platform_node_network" version="1">
       <ind:filepath var_ref="ocp4_node_network_file_location"/>
-      <ind:yamlpath>.delegates[0].type</ind:yamlpath>
+      <ind:yamlpath>.type</ind:yamlpath>
   </ind:yamlfilecontent_object>
 
   <!-- Check for OpenShift Container Platform 4 using specific network type -->

@@ -8,16 +8,20 @@ vuldiscussion: |-
 checktext: |-
     Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation with the following command:
 
-    $ sudo grep -Ei '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'
+    $ sudo egrep -ir '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'
 
     /etc/sudoers:Defaults !targetpw
     /etc/sudoers:Defaults !rootpw
     /etc/sudoers:Defaults !runaspw
 
     If no results are returned, this is a finding.
+
     If results are returned from more than one file location, this is a finding.
+
     If "Defaults !targetpw" is not defined, this is a finding.
+
     If "Defaults !rootpw" is not defined, this is a finding.
+
     If "Defaults !runaspw" is not defined, this is a finding.
 
 fixtext: |-
@@ -26,3 +30,6 @@ fixtext: |-
     Defaults !targetpw
     Defaults !rootpw
     Defaults !runaspw
+
+vuln_discussion: |-
+    If the rootpw, targetpw, or runaspw flags are defined and not disabled, by default the operating system will prompt the invoking user for the "root" user password.

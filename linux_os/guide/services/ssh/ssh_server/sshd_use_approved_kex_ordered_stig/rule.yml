@@ -8,7 +8,7 @@
 {{% set path='/etc/ssh/sshd_config' %}}
 {{% set conf="KexAlgorithms ecdh-sha1-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" ~
              ",diffie-hellman-group-exchange-sha256"  %}}
-{{% elif product in ['sle12','sle15','ubuntu2004'] %}}
+{{% elif product in ['sle12','sle15','ubuntu2004', 'ubuntu2204'] %}}
 {{% set path='/etc/ssh/sshd_config' %}}
 {{% set conf="KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" ~
              ",diffie-hellman-group-exchange-sha256"  %}}
@@ -52,6 +52,7 @@ references:
     stigid@sle12: SLES-12-030270
     stigid@sle15: SLES-15-040450
     stigid@ubuntu2004: UBTU-20-010045
+    stigid@ubuntu2204: UBTU-22-255060
 
 ocil_clause: 'KexAlgorithms option is commented out, contains non-approved algorithms, or the FIPS-approved algorithms are not in the exact order'
 

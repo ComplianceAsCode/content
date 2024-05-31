@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} uses reverse path filtering on all IPv4 interfaces with the following commands:
 
-    $ sysctl net.ipv4.conf.all.rp_filter
+    $ sudo sysctl net.ipv4.conf.all.rp_filter
 
     net.ipv4.conf.all.rp_filter = 1
 
@@ -19,7 +19,7 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | grep -Ev '^(#|;)' | grep -F net.ipv4.conf.all.rp_filter | tail -1
+    $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F net.ipv4.conf.all.rp_filter | tail -1
 
     net.ipv4.conf.all.rp_filter = 1
 
@@ -35,3 +35,6 @@ fixtext: |-
     The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
 
     $ sudo sysctl --system
+
+vuln_discussion: |-
+    Enabling reverse path filtering drops packets with source addresses that should not have been able to be received on the interface on which they were received. It must not be used on systems that are routers for complicated networks, but is helpful for end hosts and routers serving small networks.

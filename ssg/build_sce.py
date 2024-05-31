@@ -241,7 +241,7 @@ def collect_sce_checks(datastreamtree):
     checks_xpath = str.format(
         ".//{{{ds_ns}}}component[@id='{cid}']/"
         "{{{xccdf_ns}}}Benchmark//"
-        "{{{xccdf_ns}}}Rule/"
+        "{{{xccdf_ns}}}Rule//"
         "{{{xccdf_ns}}}check[@system='{sce_sys}']/"
         "{{{xccdf_ns}}}check-content-ref",
         ds_ns=datastream_namespace,

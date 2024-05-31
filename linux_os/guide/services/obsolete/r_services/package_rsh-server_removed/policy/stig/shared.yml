@@ -1,0 +1,19 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the rsh-server package installed.
+
+fixtext: |-
+    Remove the rsh-server package with the following command:
+
+    $ sudo dnf remove rsh-server
+
+checktext: |-
+    Verify that the rsh-server package is not installed with the following command:
+
+    $ sudo dnf list --installed rsh-server
+
+    Error: No matching Packages to list
+
+    If the "rsh-server" package is installed, this is a finding.
+
+vuln_discussion: |-
+    The "rsh-server" service provides unencrypted remote access service, which does not provide for the confidentiality and integrity of user passwords or the remote session and has very weak authentication. If a privileged user were to login using this service, the privileged user password could be compromised. The "rsh-server" package provides several obsolete and insecure network services. Removing it decreases the risk of accidental (or intentional) activation of those services.

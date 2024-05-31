@@ -19,9 +19,12 @@ checktext: |-
 fixtext: |-
     Configure {{{ full_name }}} to include the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.
 
-    Add/Modify the appropriate sections of the "/etc/pam.d/system-auth" file to match the following lines:
+    Add/modify the appropriate sections of the "/etc/pam.d/system-auth" file to match the following lines:
     Note: The "preauth" line must be listed before pam_unix.so.
 
     auth required pam_faillock.so preauth
     auth required pam_faillock.so authfail
     account required pam_faillock.so
+
+vuln_discussion: |-
+    If the pam_faillock.so module is not loaded, the system will not correctly lockout accounts to prevent password guessing attacks.

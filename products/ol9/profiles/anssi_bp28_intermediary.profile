@@ -32,3 +32,4 @@ selections:
     - '!sudo_add_umask'
     - '!sudo_add_ignore_dot'
     - '!sudo_add_env_reset'
+    - '!package_xinetd_removed'

@@ -107,6 +107,7 @@ mypy_test("utils/import_srg_spreadsheet.py" "skip")
 mypy_test("utils/check_eof.py" "normal")
 mypy_test("utils/import_disa_stig.py" "skip")
 mypy_test("tests/cces-removed.py" "normal")
+mypy_test("utils/build_control_from_reference.py" "skip")
 
 if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 7 AND PY_TRESTLE AND PY_LXML)
     mypy_test("utils/oscal/" "skip")
@@ -324,6 +325,7 @@ add_test(
     NAME "components"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_components.py" --build-dir "${CMAKE_BINARY_DIR}" --source-dir "${CMAKE_SOURCE_DIR}" --product "rhel9"
 )
+set_tests_properties("components" PROPERTIES LABELS quick)
 endif()
 
 macro(cce_avail_check TEST_NAME_SUFFIX PRODUCTS CCE_LIST_PATH)
@@ -338,7 +340,7 @@ macro(cce_avail_check TEST_NAME_SUFFIX PRODUCTS CCE_LIST_PATH)
     endif()
 endmacro()
 
-cce_avail_check("rhel-all" "rhel7,rhel8,rhel9" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
+cce_avail_check("rhel-all" "rhel7,rhel8,rhel9,rhel10" "${CMAKE_SOURCE_DIR}/shared/references/cce-redhat-avail.txt")
 cce_avail_check("sle12" "sle12" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle12-avail.txt")
 cce_avail_check("sle15" "sle15" "${CMAKE_SOURCE_DIR}/shared/references/cce-sle15-avail.txt")
 
@@ -348,4 +350,29 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/import_disa_stig.py" "--help"
         set_tests_properties("utils-import_disa_stig_sanity" PROPERTIES LABELS quick)
     )
+endif()
+
+
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_GITHUB)
+    add_test(
+        NAME "utils-ansible-playbook-to-role-help"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" "--help"
+    )
+    set_tests_properties("utils-ansible-playbook-to-role-help" PROPERTIES LABELS quick)
+    if(SSG_PRODUCT_RHEL9)
+        file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/roles")
+        add_test(
+            NAME "utils-ansible-playbook-to-role-rhel9"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/ansible_playbook_to_role.py" "--dry-run" "${CMAKE_BINARY_DIR}/roles" "--product" "rhel9" "--build-playbooks-dir" "${CMAKE_BINARY_DIR}/ansible"
+        )
+    endif()
+endif()
+
+if(PYTHON_VERSION_MAJOR GREATER 2)
+    add_test(
+        NAME "utils-build_control_from_reference_sanity"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/build_control_from_reference.py" "--product" "rhel10" "--reference" "ospp" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rhel10_ospp_control.yml" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
+    )
+    set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES FIXTURES_REQUIRED "rule-dir-json")
+    set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()

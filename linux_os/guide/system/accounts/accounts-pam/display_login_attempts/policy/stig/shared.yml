@@ -23,3 +23,6 @@ fixtext: |-
     Add the following line to the top of "/etc/pam.d/postlogin":
 
     session required pam_lastlog.so showfailed
+
+vuln_discussion: |-
+    Users need to be aware of activity that occurs regarding their account. Providing users with information regarding the number of unsuccessful attempts that were made to login to their account allows the user to determine if any unauthorized activity has occurred and gives them an opportunity to notify administrators.

@@ -1,21 +1,69 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_all
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
 
-{{% if product in [ "sle12", "sle15" ] %}}
-{{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
-{{% else %}}
-{{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
-{{% endif %}}
-
 {{{ ansible_instantiate_variables("var_password_pam_unix_remember") }}}
 
-{{{ ansible_pam_pwhistory_enable(accounts_password_pam_unix_remember_file,
+{{% if "ubuntu" in product or "debian" in product %}}
+{{% set pam_file='/etc/pam.d/common-password' %}}
+{{% set group='password' %}}
+{{% set control='\[success=[A-Za-z0-9].*\]' %}}
+{{% set module='pam_unix.so' %}}
+{{% set option='remember' %}}
+{{% set value='{{ var_password_pam_unix_remember }}' %}}
+{{% elif product in [ "sle12", "sle15" ] %}}
+{{% set pam_file='/etc/pam.d/common-password' %}}
+{{% else %}}
+{{% set pam_file='/etc/pam.d/system-auth' %}}
+{{% endif %}}
+
+{{% if "ubuntu" in product or "debian" in product %}}
+
+# Modified version of macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='').
+# The original macro is designed to search/replace also the control field thus treating the field as a constant and escaping the regex.
+# Here we adapt the code to allow using regex on the control field.
+
+- name: '{{{ rule_title }}} - Check if the required PAM module option is present in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_module_{{{ option }}}_option_present
+
+- name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" PAM option for "{{{ module }}}" is included in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    backrefs: true
+    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*)
+    line: \1 {{{ option }}}={{{ value }}}
+    state: present
+  register: result_pam_{{{ option }}}_add
+  when:
+    - result_pam_module_{{{ option }}}_option_present.found == 0
+
+- name: '{{{ rule_title }}} - Ensure the required value for "{{{ option }}}" PAM option from "{{{ module }}}" in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    backrefs: true
+    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
+    line: \1\2={{{ value }}} \3
+  register: result_pam_{{{ option }}}_edit
+  when:
+    - result_pam_module_{{{ option }}}_option_present.found > 0
+
+
+{{% else %}}
+
+{{{ ansible_pam_pwhistory_enable(pam_file,
                                  'requisite',
                                  '^password.*requisite.*pam_pwquality\.so') }}}
 
-{{{ ansible_pam_pwhistory_parameter_value(accounts_password_pam_unix_remember_file,
+{{{ ansible_pam_pwhistory_parameter_value(pam_file,
                                           'remember',
                                           '{{ var_password_pam_unix_remember }}') }}}
+
+{{% endif %}}

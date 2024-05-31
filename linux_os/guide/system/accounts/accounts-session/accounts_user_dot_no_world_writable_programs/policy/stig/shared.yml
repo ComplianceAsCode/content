@@ -13,11 +13,14 @@ checktext: |-
 
     Note: The example will be for a system that is configured to create user home directories in the "/home" directory.
 
-     $ sudo find /home -perm -002 -type f -name ".[^.]*" -exec ls -ld {} \;
+    $ sudo find /home -perm -002 -type f -name ".[^.]*" -exec ls -ld {} \;
 
     If any local initialization files are found to reference world-writable files, this is a finding.
 
 fixtext: |-
     Set the mode on files being executed by the local initialization files with the following command:
 
-    $ sudo chmod 0755 &lt;file&gt;
+    $ sudo chmod 0755 &ltfile&gt
+
+vuln_discussion: |-
+    If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.

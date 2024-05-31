@@ -57,6 +57,35 @@ Or you can also run this command to get a list of the most used rules in the ent
     $ ./build-scripts/profile_tool.py most-used-rules
 ```
 
+Optionally, you can use this command to limit the statistics for a specific product:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-rules --products rhel9
+```
+
+The result will be a list of rules with the number of uses in the profiles.
+The list can be generated as plain text, JSON or CVS.
+Via the `--format FORMAT` parameter.
+
+The tool can also generate a list of the most used component based on rules contained in profiles from the entire project:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components
+```
+
+Optionally, you can use this command to limit the statistics for a specific product:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9
+```
+
+You can also get a list of the most used components with used rules for the RHEL9 product, you can use the `--used-rules` flag.
+As shown in this command:
+
+```bash
+    $ ./build-scripts/profile_tool.py most-used-components --products rhel9 --used-rules
+```
+
 The result will be a list of rules with the number of uses in the profiles.
 The list can be generated as plain text, JSON or CVS.
 Via the `--format FORMAT` parameter.
@@ -88,6 +117,19 @@ Example
 
 ```bash
     $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r5-xccdf-manual.xml
+```
+
+
+## Generating Controls From a Reference
+When converting profile to use a control file this script can be helpful in creating the skeleton control.
+The output of this script will need to be adjusted to add other keys such as title or description to the controls.
+This script does require that `./utils/rule_dir_json.py` be run before this script is used.
+See `./utils/build_control_from_reference.py --help` for the full set options the script provides.
+
+
+Example
+```bash
+    $ ./utils/build_control_from_reference.py --product rhel10 --reference ospp --output controls/ospp.yml
 ```
 
 ## Generating login banner regular expressions
@@ -681,4 +723,16 @@ An example of how to execute the script:
 $ ./build_product ocp4
 $ ./utils/rule_dir_json.py
 $ ./utils/oscal/build_cd_from_policy.py -o build/ocp4.json -p fedramp_rev4_high -pr ocp4 -c nist_ocp4:high
+```
+
+### `utils/ansible_playbook_to_role.py` &ndash; Generates Ansible Roles and pushes them to Github
+
+This script converts the Ansible playbooks created by the build system and converts them to Ansible roles and can upload them to GitHub.
+
+
+An example of how to execute the script to generate roles locally:
+
+```bash
+$ ./build_product rhel9
+$ ./utils/ansible_playbook_to_role.py --dry-run output
 ```

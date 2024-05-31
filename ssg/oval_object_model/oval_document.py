@@ -183,7 +183,7 @@ class OVALDocument(OVALContainer):
     def save_as_xml(self, fd, oval_definition_references=None):
         root = self.get_xml_element(oval_definition_references)
         if hasattr(ElementTree, "indent"):
-            ElementTree.indent(root, space=" ", level=0)
+            ElementTree.indent(root, space="  ", level=0)
         ElementTree.ElementTree(root).write(fd, xml_declaration=True, encoding="utf-8")
 
     def _get_component_el(self, tag, component_dict, id_selection):

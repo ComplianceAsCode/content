@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Verify owner of system journal directories'
+
+description: |-
+    Verify the /run/log/journal and /var/log/journal directories are owned by
+    "root" by using the following command:
+    <pre>
+    $ sudo find /run/log/journal /var/log/journal  -type d -exec stat -c "%n %U" {} \;
+    </pre>
+    If any output returned is not owned by "root", this is a finding.
+
+rationale: |-
+    Only authorized personnel should be aware of errors and the details of the errors.
+    Error messages are an indicator of an organization's operational state or can identify
+    the operating system or platform. Additionally, personally identifiable information
+    (PII) and operational information must not be revealed through error messages to
+    unauthorized personnel or their designated representatives.
+
+references:
+    disa: CCI-001314
+    stigid@ubuntu2204: UBTU-22-232080
+
+severity: medium
+
+fixtext: |
+    Configure the system to set the appropriate ownership to the directories
+    used by the systemd journal. Add or modify the following lines in the
+    "/usr/lib/tmpfiles.d/systemd.conf" file:
+    <pre>
+    z /run/log/journal 2640 root systemd-journal - -
+    z /var/log/journal 2640 root systemd-journal - -
+    </pre>
+    Restart the system for the changes to take effect.
+
+template:
+    name: file_owner
+    vars:
+        filepath:
+            - /run/log/journal/
+            - /var/log/journal/
+        recursive: 'true'
+        fileuid: '0'

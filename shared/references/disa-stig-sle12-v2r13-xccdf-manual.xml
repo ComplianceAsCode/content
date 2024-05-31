@@ -864,7 +864,7 @@ The following example output is generic. It will set cron to run AIDE weekly, bu
 
      # sudo crontab -l
 
-     0 0 * * 6 /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+     0 0 * * 6 /usr/bin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
 
 Note: Per requirement SLES-12-010498, the "mailx" package must be installed on the system to enable email functionality.</fixtext><fix id="F-18374r902839_fix" /><check system="C-18376r902838_chk"><check-content-ref href="SUSE_Linux_Enterprise_Server_12_STIG.xml" name="M" /><check-content>Verify the SUSE operating system checks the baseline configuration for unauthorized changes at least once weekly.
 
@@ -891,14 +891,14 @@ This capability must take into account operational requirements for availability
 
 Add following command to a cron job replacing the "[E-MAIL]" parameter with a proper email address for the SA:
 
-     /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+     /usr/bin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
 
 Note: Per requirement SLES-12-010498, the "mailx" package must be installed on the system to enable email functionality.</fixtext><fix id="F-18375r902842_fix" /><check system="C-18377r902841_chk"><check-content-ref href="SUSE_Linux_Enterprise_Server_12_STIG.xml" name="M" /><check-content>Verify the SUSE operating system notifies the SA when AIDE discovers anomalies in the operation of any security functions.
 
 Check to see if the aide cron job sends an email when executed with the following command:
 
      # sudo crontab -l 
-     0 0 * * 6 /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+     0 0 * * 6 /usr/bin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
 
 If a "crontab" entry does not exist, check the cron directories for a script that runs the file integrity application and is configured to execute a binary to send an email:
 

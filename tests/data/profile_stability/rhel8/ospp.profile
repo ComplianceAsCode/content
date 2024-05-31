@@ -231,7 +231,7 @@ selections:
 - zipl_bootmap_is_up_to_date
 - zipl_page_poison_argument
 - zipl_slub_debug_argument
-- var_sshd_set_keepalive=0
+- var_sshd_set_keepalive=1
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027

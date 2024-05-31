@@ -19,13 +19,13 @@ class ResolvableProfile(Profile):
         self.update_with(extended_profile)
 
     def apply_filter(self, rules_by_id):
-        selections = set()
+        selections = []
         for rid in self.selected:
             rule = rules_by_id[rid]
             if not self.rule_filter(rule):
                 continue
-            selections.add(rid)
-        self.selected = list(selections)
+            selections.append(rid)
+        self.selected = selections
 
     def resolve(self, all_profiles, rules_by_id, controls_manager=None):
         if self.resolved:

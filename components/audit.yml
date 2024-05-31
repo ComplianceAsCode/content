@@ -127,6 +127,7 @@ rules:
 - audit_rules_mac_modification_usr_share
 - audit_rules_media_export
 - audit_rules_networkconfig_modification
+- audit_rules_networkconfig_modification_network_scripts
 - audit_rules_privileged_commands
 - audit_rules_privileged_commands_apparmor_parser
 - audit_rules_privileged_commands_at
@@ -259,6 +260,7 @@ rules:
 - audit_rules_usergroup_modification_opasswd
 - audit_rules_usergroup_modification_passwd
 - audit_rules_usergroup_modification_shadow
+- audit_rules_var_log_journal
 - audit_sudo_log_events
 - auditd_audispd_configure_remote_server
 - auditd_audispd_configure_sufficiently_large_partition
@@ -299,6 +301,7 @@ rules:
 - directory_ownership_var_log_audit
 - directory_permissions_var_log_audit
 - file_group_ownership_var_log_audit
+- file_group_ownership_var_log_audit_stig
 - file_groupownership_audit_configuration
 - file_ownership_audit_configuration
 - file_ownership_var_log_audit
@@ -306,7 +309,9 @@ rules:
 - file_permissions_audit_configuration
 - file_permissions_etc_audit_auditd
 - file_permissions_etc_audit_rulesd
+- file_permissions_etc_audit_rules
 - file_permissions_var_log_audit
+- file_permissions_var_log_audit_stig
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
 - package_audispd-plugins_installed

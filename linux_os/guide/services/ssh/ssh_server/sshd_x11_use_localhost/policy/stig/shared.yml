@@ -1,5 +1,5 @@
 srg_requirement: |-
-    The {{{ full_name }}} SSH daemon must prevent remote hosts from connecting to the proxy display.
+    {{{ full_name }}} SSH daemon must prevent remote hosts from connecting to the proxy display.
 
 vuldiscussion: |-
     When X11 forwarding is enabled, there may be additional exposure to the
@@ -12,7 +12,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the SSH daemon prevents remote hosts from connecting to the proxy display with the following command:
 
-    $ sudo grep -i x11uselocal /etc/ssh/sshd_config
+    $ sudo grep -ir x11uselocal /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
 
     X11UseLocalhost yes
 
@@ -21,10 +21,13 @@ checktext: |-
 fixtext: |-
     Configure the SSH daemon to prevent remote hosts from connecting to the proxy display.
 
-    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes"
+    Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to "yes":
 
     X11UseLocalhost yes
 
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
+
+vuln_discussion: |-
+    When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the sshd proxy display is configured to listen on the wildcard address. By default, sshd binds the forwarding server to the loopback address and sets the hostname part of the "DISPLAY" environment variable to localhost. This prevents remote hosts from connecting to the proxy display.

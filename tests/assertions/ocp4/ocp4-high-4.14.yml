@@ -1,0 +1,378 @@
+rule_results:
+  e2e-high-accounts-restrict-service-account-tokens:
+    default_result: MANUAL
+  e2e-high-accounts-unique-service-account:
+    default_result: MANUAL
+  e2e-high-alert-receiver-configured:
+    default_result: MANUAL
+  e2e-high-api-server-admission-control-plugin-alwaysadmit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-admission-control-plugin-alwayspullimages:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-admission-control-plugin-namespacelifecycle:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-admission-control-plugin-noderestriction:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-admission-control-plugin-scc:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-admission-control-plugin-securitycontextdeny:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-admission-control-plugin-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-api-priority-flowschema-catch-all:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-api-priority-gate-enabled:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-auth-mode-no-aa:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-auth-mode-node:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-auth-mode-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-basic-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-client-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-encryption-provider-cipher:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-api-server-etcd-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-etcd-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-etcd-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-https-for-kubelet-conn:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-insecure-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-insecure-port:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-api-server-kubelet-certificate-authority:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-kubelet-client-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-kubelet-client-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-api-server-kubelet-client-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-kubelet-client-key-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-api-server-no-adm-ctrl-plugins-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-oauth-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-openshift-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-request-timeout:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-service-account-lookup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-service-account-public-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-tls-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-api-server-token-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-audit-error-alert-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-audit-log-forwarding-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-audit-log-forwarding-uses-tls:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-audit-log-forwarding-webhook:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-audit-logging-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-audit-profile-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-banner-or-login-template-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-cluster-logging-operator-exist:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-cluster-version-operator-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-cluster-version-operator-verify-integrity:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-cluster-wide-proxy-set:
+    default_result: FAIL
+  e2e-high-compliance-notification-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-configure-network-policies:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-configure-network-policies-hypershift-hosted:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-configure-network-policies-namespaces:
+    default_result: PASS
+  e2e-high-controller-insecure-port-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-controller-rotate-kubelet-server-certs:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-controller-secure-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-controller-service-account-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-controller-service-account-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-controller-use-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-default-ingress-ca-replaced:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-etcd-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-peer-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-peer-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-peer-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-etcd-peer-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-file-groupowner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-file-integrity-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-file-integrity-notification-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-file-owner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-file-permissions-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-fips-mode-enabled-on-all-nodes:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-general-apply-scc:
+    default_result: MANUAL
+  e2e-high-general-configure-imagepolicywebhook:
+    default_result: MANUAL
+  e2e-high-general-default-namespace-use:
+    default_result: MANUAL
+  e2e-high-general-default-seccomp-profile:
+    default_result: MANUAL
+  e2e-high-general-namespaces-in-use:
+    default_result: MANUAL
+  e2e-high-gitops-operator-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-idp-is-configured:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-ingress-controller-certificate:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-ingress-controller-tls-security-profile:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-kubeadmin-removed:
+    default_result: FAIL
+  e2e-high-kubelet-configure-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-kubelet-configure-tls-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-high-kubelet-configure-tls-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-kubelet-disable-readonly-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-oauth-or-oauthclient-inactivity-timeout:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-oauth-or-oauthclient-token-maxage:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-ocp-allowed-registries:
+    default_result: FAIL
+  e2e-high-ocp-allowed-registries-for-import:
+    default_result: FAIL
+  e2e-high-ocp-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-ocp-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-ocp-idp-no-htpasswd:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-ocp-insecure-allowed-registries-for-import:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-ocp-insecure-registries:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-ocp-no-ldap-insecure:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-openshift-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-openshift-motd-exists:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-rbac-debug-role-protects-pprof:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-rbac-least-privilege:
+    default_result: MANUAL
+  e2e-high-rbac-limit-cluster-admin:
+    default_result: MANUAL
+  e2e-high-rbac-limit-secrets-access:
+    default_result: MANUAL
+  e2e-high-rbac-pod-creation-access:
+    default_result: MANUAL
+  e2e-high-rbac-wildcard-use:
+    default_result: MANUAL
+  e2e-high-resource-requests-limits-in-daemonset:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-resource-requests-limits-in-deployment:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-resource-requests-limits-in-statefulset:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-resource-requests-quota:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-route-ip-whitelist:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-routes-protected-by-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-routes-rate-limit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-scansettingbinding-exists:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-scc-drop-container-capabilities:
+    default_result: MANUAL
+  e2e-high-scc-limit-container-allowed-capabilities:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-scc-limit-ipc-namespace:
+    default_result: MANUAL
+  e2e-high-scc-limit-net-raw-capability:
+    default_result: MANUAL
+  e2e-high-scc-limit-network-namespace:
+    default_result: MANUAL
+  e2e-high-scc-limit-privilege-escalation:
+    default_result: MANUAL
+  e2e-high-scc-limit-privileged-containers:
+    default_result: MANUAL
+  e2e-high-scc-limit-process-id-namespace:
+    default_result: MANUAL
+  e2e-high-scc-limit-root-containers:
+    default_result: MANUAL
+  e2e-high-scheduler-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-scheduler-service-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-high-secrets-consider-external-storage:
+    default_result: MANUAL
+  e2e-high-secrets-no-environment-variables:
+    default_result: MANUAL

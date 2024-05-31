@@ -53,7 +53,7 @@ present in %{name} package.
 %prep
 %autosetup -p1
 
-%define cmake_defines_common -DSSG_SEPARATE_SCAP_FILES_ENABLED=OFF -DSSG_BASH_SCRIPTS_ENABLED=OFF -DSSG_BUILD_SCAP_12_DS=OFF -DSSG_BUILD_DISA_DELTA_FILES=OFF
+%define cmake_defines_common -DSSG_SEPARATE_SCAP_FILES_ENABLED=OFF -DSSG_BASH_SCRIPTS_ENABLED=OFF -DSSG_BUILD_DISA_DELTA_FILES=OFF
 %define cmake_defines_specific %{nil}
 %define centos_8_specific %{nil}
 

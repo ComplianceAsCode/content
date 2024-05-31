@@ -1,15 +1,20 @@
 documentation_complete: true
 
-
 title: 'Use Only FIPS 140-2 Validated Ciphers'
 
 description: |-
     Limit the ciphers to those algorithms which are FIPS-approved.
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved ciphers:
+    {{%- if 'ubuntu' in product %}}
+    <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
+    If this line does not contain these ciphers in exact order,
+    is commented out, or is missing, this is a finding.
+    {{%- else %}}
     <pre>Ciphers aes256-ctr,aes192-ctr,aes128-ctr</pre>
     This rule ensures that there are configured ciphers mentioned
     above (or their subset), keeping the given order of algorithms.
+    {{%- endif %}}
 
 rationale: |-
     Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore
@@ -35,6 +40,7 @@ references:
     stigid@rhel7: RHEL-07-040110
     stigid@sle15: SLES-15-010160
     stigid@ubuntu2004: UBTU-20-010044
+    stigid@ubuntu2204: UBTU-22-255050
 
 ocil_clause: 'FIPS ciphers are not configured or the enabled ciphers are not FIPS-approved'
 

@@ -1,0 +1,34 @@
+<def-group>
+
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("The " + MOUNTNAME + " mount should be enabled if possible.") }}}
+    <criteria comment="mount {{{ MOUNTNAME }}} is configured to start and is running" operator="AND">
+      <criterion comment="{{{ MOUNTNAME }}} is running" test_ref="test_mount_running_{{{ MOUNTNAME }}}" />
+      <criterion comment="multi-user.target wants {{{ MOUNTNAME }}}" test_ref="test_multi_user_wants_{{{ MOUNTNAME }}}" />
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_{{{ MOUNTNAME }}}" version="1">
+    <linux:object object_ref="object_multi_user_target_for_{{{ MOUNTNAME }}}_enabled" />
+    <linux:state state_ref="state_systemd_{{{ MOUNTNAME }}}_on"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ MOUNTNAME }}}_enabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_{{{ MOUNTNAME }}}_on" comment="{{{ MOUNTNAME }}} mount is listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">{{{ MOUNTNAME }}}.mount</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitproperty_test id="test_mount_running_{{{ MOUNTNAME }}}" check="at least one" check_existence="at_least_one_exists" comment="Test that the {{{ MOUNTNAME }}} mount is running" version="1">
+    <linux:object object_ref="obj_mount_running_{{{ MOUNTNAME }}}"/>
+    <linux:state state_ref="state_mount_running_{{{ MOUNTNAME }}}"/>
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_object id="obj_mount_running_{{{ MOUNTNAME }}}" comment="Retrieve the ActiveState property of {{{ MOUNTNAME }}}" version="1">
+    <linux:unit operation="equals">{{{ MOUNTNAME }}}.mount</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="state_mount_running_{{{ MOUNTNAME }}}" version="1" comment="{{{ MOUNTNAME }}} mount is active">
+    <linux:value>active</linux:value>
+  </linux:systemdunitproperty_state>
+
+</def-group>

@@ -1,8 +1,10 @@
 controls:
     -   id: SRG-OS-000074-GPOS-00042
         levels:
-            - medium
+            - high
         title: {{{ full_name }}} must transmit only encrypted representations of passwords.
         rules:
             - package_vsftpd_removed
+            - package_telnet-server_removed
+            - package_tftp_removed
         status: automated

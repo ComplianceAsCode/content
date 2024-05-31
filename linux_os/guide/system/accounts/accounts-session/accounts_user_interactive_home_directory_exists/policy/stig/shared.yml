@@ -22,9 +22,12 @@ checktext: |-
 fixtext: |-
     Create home directories to all local interactive users that currently do not have a home directory assigned. Use the following commands to create the user home directory assigned in "/etc/ passwd":
 
-    Note: The example will be for the user smithj, who has a home directory of "/home/smithj", a UID of "smithj", and a Group Identifier (GID) of "users assigned" in "/etc/passwd".
+    Note: The example will be for the user wadea, who has a home directory of "/home/wadea", a user identifier (UID) of "wadea", and a Group Identifier (GID) of "users assigned" in "/etc/passwd".
 
-    $ sudo mkdir /home/smithj
-    $ sudo chown smithj /home/smithj
-    $ sudo chgrp users /home/smithj
-    $ sudo chmod 0750 /home/smithj
+    $ sudo mkdir /home/wadea
+    $ sudo chown wadea /home/wadea
+    $ sudo chgrp users /home/wadea
+    $ sudo chmod 0750 /home/wadea
+
+vuln_discussion: |-
+    If a local interactive user has a home directory defined that does not exist, the user may be given access to the / directory as the current working directory upon logon. This could create a denial of service because the user would not be able to access their logon configuration files, and it may give them visibility to system files they normally would not be able to access.

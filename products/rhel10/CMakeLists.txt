@@ -1,0 +1,26 @@
+# Sometimes our users will try to do: "cd rhel10; cmake ." That needs to error in a nice way.
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+    message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
+endif()
+
+set(PRODUCT "rhel10")
+
+ssg_build_product(${PRODUCT})
+
+ssg_build_html_cce_table(${PRODUCT})
+
+ssg_build_html_srgmap_tables(${PRODUCT})
+
+if(SSG_SRG_XLSX_EXPORT)
+    ssg_build_xlsx_srg_export(${PRODUCT} "srg_gpos")
+endif()
+
+#ssg_build_html_stig_tables(${PRODUCT})
+#ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig")
+#ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig_gui")
+
+#ssg_build_html_stig_tables(${PRODUCT} "ospp")
+
+if(SSG_CENTOS_DERIVATIVES_ENABLED)
+    ssg_build_derivative_product(${PRODUCT} "centos" "cs10")
+endif()

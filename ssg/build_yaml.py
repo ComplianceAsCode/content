@@ -49,6 +49,14 @@ from .entities.common import add_sub_element, make_items_product_specific, \
 from .entities.profile import Profile, ProfileWithInlinePolicies
 
 
+def _get_cpe_platforms_of_sub_groups(group, rule_ids_list):
+    cpe_platforms = set()
+    for sub_group in group.groups.values():
+        cpe_platforms_of_sub_group = sub_group.get_used_cpe_platforms(rule_ids_list)
+        cpe_platforms.update(cpe_platforms_of_sub_group)
+    return cpe_platforms
+
+
 def reorder_according_to_ordering(unordered, ordering, regex=None):
     ordered = []
     if regex is None:
@@ -107,6 +115,10 @@ def add_reference_elements(element, references, ref_uri_dict):
             if ref_type == 'srg':
                 if ref_val.startswith('SRG-OS-'):
                     ref_href = ref_uri_dict['os-srg']
+                elif re.match(r'SRG-APP-\d{5,}-CTR-\d{5,}', ref_val):
+                    # The more specific case needs to come first, otherwise the generic SRG-APP
+                    # will catch everything
+                    ref_href = ref_uri_dict['app-srg-ctr']
                 elif ref_val.startswith('SRG-APP-'):
                     ref_href = ref_uri_dict['app-srg']
                 else:
@@ -351,17 +363,45 @@ class Benchmark(XCCDFEntity):
         for g in self.groups.values():
             g.remove_rules_with_ids_not_listed(selected_rules)
 
-    def get_components_not_included_in_a_profiles(self, profiles):
+    def get_components_not_included_in_a_profiles(self, profiles,  rules_and_variables_dict):
         selected_rules = self.get_rules_selected_in_all_profiles(profiles)
+        selected_variables = self.get_variables_of_rules(
+            profiles, selected_rules, rules_and_variables_dict
+        )
         rules = set()
         groups = set()
+        variables = set()
+
+        out_sets = dict(rules_set=rules, groups_set=groups, variables_set=variables)
+
         for sub_group in self.groups.values():
-            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
-                selected_rules
+            self._update_not_included_components(
+                sub_group, selected_rules, selected_variables, out_sets
             )
-            rules.update(rules_of_sub_group)
-            groups.update(groups_of_sub_group)
-        return rules, groups
+
+        return rules, groups, variables
+
+    def get_used_cpe_platforms(self, profiles):
+        selected_rules = self.get_rules_selected_in_all_profiles(profiles)
+        cpe_platforms = _get_cpe_platforms_of_sub_groups(self, selected_rules)
+        return cpe_platforms
+
+    def get_not_used_cpe_platforms(self, profiles):
+        used_cpe_platforms = self.get_used_cpe_platforms(profiles)
+        out = set()
+        for cpe_platform in self.product_cpes.platforms.keys():
+            if cpe_platform not in used_cpe_platforms:
+                out.add(cpe_platform)
+        return out
+
+    @staticmethod
+    def get_variables_of_rules(profiles, rule_ids, rules_and_variables_dict):
+        selected_variables = set()
+        for rule in rule_ids:
+            selected_variables.update(rules_and_variables_dict.get(rule))
+        for profile in profiles:
+            selected_variables.update(profile.variables.keys())
+        return selected_variables
 
     def get_rules_selected_in_all_profiles(self, profiles=None):
         selected_rules = set()
@@ -399,14 +439,17 @@ class Benchmark(XCCDFEntity):
 
         return root
 
-    def _add_cpe_xml(self, root, product_cpes=None):
+    def _add_cpe_xml(self, root, cpe_platforms_to_not_include, product_cpes=None):
         # if there are no platforms, do not output platform-specification at all
 
-        if len(self.product_cpes.platforms) > 0:
-            cpe_platform_spec = ET.Element(
-                "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
-            for platform in self.product_cpes.platforms.values():
-                cpe_platform_spec.append(platform.to_xml_element())
+        cpe_platform_spec = ET.Element(
+            "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
+        for platform_id, platform in self.product_cpes.platforms.items():
+            if platform_id in cpe_platforms_to_not_include:
+                continue
+            cpe_platform_spec.append(platform.to_xml_element())
+
+        if len(cpe_platform_spec) > 0:
             root.append(cpe_platform_spec)
 
         # The Benchmark applicability is determined by the CPEs
@@ -415,19 +458,24 @@ class Benchmark(XCCDFEntity):
             plat = ET.SubElement(root, "{%s}platform" % XCCDF12_NS)
             plat.set("idref", cpe_name)
 
-    def _add_profiles_xml(self, root, profiles_to_not_include):
+    def _add_profiles_xml(self, root, components_to_not_include):
+        profiles_to_not_include = components_to_not_include.get("profiles", set())
         for profile in self.profiles:
             if profile.id_ in profiles_to_not_include:
                 continue
+            profile.remove_components_not_included(components_to_not_include)
             root.append(profile.to_xml_element())
 
-    def _add_values_xml(self, root):
-        for value in self.values.values():
+    def _add_values_xml(self, root, components_to_not_include):
+        variables_to_not_include = components_to_not_include.get("variables", set())
+        for value_id, value in self.values.items():
+            if value_id in variables_to_not_include:
+                continue
             root.append(value.to_xml_element())
 
     def _add_groups_xml(self, root, components_to_not_include, env_yaml=None):
         groups_in_bench = list(self.groups.keys())
-        priority_order = ["system", "services"]
+        priority_order = ["system", "services", "auditing"]
         groups_in_bench = reorder_according_to_ordering(groups_in_bench, priority_order)
 
         groups_to_not_include = components_to_not_include.get("groups", set())
@@ -453,26 +501,29 @@ class Benchmark(XCCDFEntity):
 
     def to_xml_element(self, env_yaml=None, product_cpes=None, components_to_not_include=None):
         if components_to_not_include is None:
-            components_to_not_include = {}
+            cpe_platforms = self.get_not_used_cpe_platforms(self.profiles)
+            components_to_not_include = {"cpe_platforms": cpe_platforms}
 
         root = self._create_benchmark_xml_skeleton(env_yaml)
 
         add_reference_title_elements(root, env_yaml)
 
-        self._add_cpe_xml(root, product_cpes)
+        self._add_cpe_xml(
+            root, components_to_not_include.get("cpe_platforms", set()), product_cpes
+        )
 
         self._add_version_xml(root)
 
         contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
         add_benchmark_metadata(root, contributors_file)
 
-        self._add_profiles_xml(root, components_to_not_include.get("profiles", set()))
-        self._add_values_xml(root)
+        self._add_profiles_xml(root, components_to_not_include)
+        self._add_values_xml(root, components_to_not_include)
         self._add_groups_xml(root, components_to_not_include, env_yaml)
         self._add_rules_xml(root, components_to_not_include.get("rules", set()),  env_yaml,)
 
         if hasattr(ET, "indent"):
-            ET.indent(root, space=" ", level=0)
+            ET.indent(root, space="  ", level=0)
         return root
 
     def to_file(self, file_name, env_yaml=None):
@@ -506,18 +557,24 @@ class Benchmark(XCCDFEntity):
     def __str__(self):
         return self.id_
 
-    def get_benchmark_xml_for_profile(self, env_yaml, profile):
-        rules, groups = self.get_components_not_included_in_a_profiles([profile])
+    def get_benchmark_xml_for_profiles(self, env_yaml, profiles, rule_and_variables_dict):
+        rules, groups, variables = self.get_components_not_included_in_a_profiles(
+            profiles, rule_and_variables_dict
+        )
+        cpe_platforms = self.get_not_used_cpe_platforms(profiles)
+        profiles_ids = [profile.id_ for profile in profiles]
         profiles = set(filter(
-            lambda id_, profile_id=profile.id_: id_ != profile_id,
+            lambda id_, profiles_ids=profiles_ids: id_ not in profiles_ids,
             [profile.id_ for profile in self.profiles]
         ))
         components_to_not_include = {
                 "rules": rules,
                 "groups": groups,
-                "profiles": profiles
+                "variables": variables,
+                "profiles": profiles,
+                "cpe_platforms": cpe_platforms
             }
-        return profile.id_, self.to_xml_element(
+        return profiles_ids, self.to_xml_element(
             env_yaml,
             components_to_not_include=components_to_not_include
         )
@@ -635,10 +692,14 @@ class Group(XCCDFEntity):
                  r'(service_.*_(enabled|disabled))|' +
                  r'install_smartcard_packages|' +
                  r'sshd_set_keepalive(_0)?|' +
-                 r'sshd_set_idle_timeout$')
+                 r'sshd_set_idle_timeout|' +
+                 r'chronyd_specify_remote_server|' +
+                 r'zipl_.*_argument(_absent)?$')
         priority_order = ["enable_authselect", "installed", "install_smartcard_packages", "removed",
                           "enabled", "disabled", "sshd_set_keepalive_0",
-                          "sshd_set_keepalive", "sshd_set_idle_timeout"]
+                          "sshd_set_keepalive", "sshd_set_idle_timeout",
+                          "chronyd_specify_remote_server",
+                          "argument"]
         rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
 
         # Add rules in priority order, first all packages installed, then removed,
@@ -715,7 +776,11 @@ class Group(XCCDFEntity):
         add_nondata_subelements(
             group, "conflicts", "idref",
             list(map(lambda x: OSCAP_GROUP + x, self.conflicts)))
-        for _value in self.values.values():
+
+        variables_to_not_include = components_to_not_include.get("variables", set())
+        for value_id, _value in self.values.items():
+            if value_id in variables_to_not_include:
+                continue
             if _value is not None:
                 group.append(_value.to_xml_element())
 
@@ -752,23 +817,54 @@ class Group(XCCDFEntity):
             group.remove_rules_with_ids_not_listed(rule_ids_list)
 
     def contains_rules(self, rule_ids):
-        intersection_of_rules = list(set(rule_ids) & set(self.rules.keys()))
-        if len(intersection_of_rules) > 0:
-            return True
-        return any([g.contains_rules(rule_ids) for g in self.groups.values()])
+        return self._contains_required_element("rule", rule_ids, self.rules.keys())
 
-    def get_not_included_components(self, rule_ids_list):
+    def contains_variables(self, variable_ids):
+        return self._contains_required_element("variable", variable_ids, self.values.keys())
+
+    def _contains_required_element(self, element_type, ids, existing_ids):
+        intersection_of_ids = list(set(ids) & set(existing_ids))
+        if len(intersection_of_ids) > 0:
+            return True
+        results = []
+        for g in self.groups.values():
+            if element_type == "variable":
+                results.append(g.contains_variables(ids))
+            if element_type == "rule":
+                results.append(g.contains_rules(ids))
+        return any(results)
+
+    def get_not_included_components(self, rule_ids_list, variables_ids_list):
         rules = set(filter(lambda id_, ids=rule_ids_list: id_ not in ids, self.rules.keys()))
+        variables = set(
+            filter(lambda id_, ids=variables_ids_list: id_ not in ids, self.values.keys())
+        )
         groups = set()
-        if not self.contains_rules(rule_ids_list):
+
+        contains_variables = self.contains_variables(variables_ids_list)
+        contains_rules = self.contains_rules(rule_ids_list)
+        if not contains_rules and not contains_variables:
             groups.add(self.id_)
+
+        out_sets = dict(rules_set=rules, groups_set=groups, variables_set=variables)
+
         for sub_group in self.groups.values():
-            rules_of_sub_group, groups_of_sub_group = sub_group.get_not_included_components(
-                rule_ids_list
+            self._update_not_included_components(
+                sub_group, rule_ids_list, variables_ids_list, out_sets
             )
-            rules.update(rules_of_sub_group)
-            groups.update(groups_of_sub_group)
-        return rules, groups
+        return rules, groups, variables
+
+    def get_used_cpe_platforms(self, rule_ids_list):
+        cpe_platforms = set()
+        for rule_id in rule_ids_list:
+            if rule_id not in self.rules:
+                continue
+            rule = self.rules[rule_id]
+            cpe_platforms.update(rule.cpe_platform_names)
+            cpe_platforms.update(rule.inherited_cpe_platform_names)
+
+        cpe_platforms.update(_get_cpe_platforms_of_sub_groups(self, rule_ids_list))
+        return cpe_platforms
 
     def __str__(self):
         return self.id_
@@ -1118,6 +1214,11 @@ class Rule(XCCDFEntity, Templatable):
 
     def add_extra_reference(self, ref_type, ref_value):
         if ref_type in self.references:
+            if ref_value in self.references[ref_type]:
+                msg = (
+                    "Rule %s already contains a '%s' reference with value '%s'." % (
+                        self.id_, ref_type, ref_value))
+                raise ValueError(msg)
             self.references[ref_type].append(ref_value)
         else:
             self.references[ref_type] = [ref_value]
@@ -1533,6 +1634,7 @@ class BuildLoader(DirectoryLoader):
         loader.sce_metadata = self.sce_metadata
         # Do it this way so we only have to parse the component metadata once.
         loader.rule_to_components = self.rule_to_components
+        loader.components_dir = self.components_dir
         return loader
 
     def export_group_to_file(self, filename):
@@ -1598,7 +1700,7 @@ class LinearLoader(object):
         self.benchmark.drop_rules_not_included_in_a_profile()
         self.benchmark.unselect_empty_groups()
 
-    def get_benchmark_xml_by_profile(self):
+    def get_benchmark_xml_by_profile(self, rule_and_variables_dict):
         if self.benchmark is None:
             raise Exception(
                 "Before generating benchmarks for each profile, you need to load "
@@ -1606,10 +1708,10 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profile_id, benchmark = self.benchmark.get_benchmark_xml_for_profile(
-                self.env_yaml, profile
+            profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
+                self.env_yaml, [profile], rule_and_variables_dict
             )
-            yield profile_id, benchmark
+            yield profiles_ids.pop(), benchmark
 
     def load_compiled_content(self):
         self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
@@ -1632,7 +1734,13 @@ class LinearLoader(object):
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
-    def export_benchmark_to_xml(self):
+    def export_benchmark_to_xml(self, rule_and_variables_dict):
+        _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
+            self.env_yaml, self.benchmark.profiles, rule_and_variables_dict
+        )
+        return benchmark
+
+    def get_benchmark_xml(self):
         return self.benchmark.to_xml_element(self.env_yaml)
 
     def export_benchmark_to_file(self, filename):

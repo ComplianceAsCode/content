@@ -1,0 +1,11 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Enable mount {{{ MOUNTNAME }}}
+  ansible.builtin.systemd:
+    name: "{{{ MOUNTNAME }}}.mount"
+    enabled: "yes"
+    state: "started"
+    masked: "false"

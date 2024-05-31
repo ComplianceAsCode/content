@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} prevents a user from overriding settings for graphical user interfaces.
 
-    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, Gnome Shell. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+    Note: This requirement assumes the use of the {{{ full_name }}} default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
     Determine which profile the system database is using with the following command:
 
@@ -19,7 +19,7 @@ checktext: |-
 
     system-db:local
 
-    Check that graphical settings are locked from non-privileged user modification with the following command:
+    Check that graphical settings are locked from nonprivileged user modification with the following command:
 
     Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
 
@@ -38,6 +38,9 @@ fixtext: |-
 
     $ sudo touch /etc/dconf/db/local.d/locks/session
 
-    Add the following setting to prevent non-privileged users from modifying it:
+    Add the following setting to prevent nonprivileged users from modifying it:
 
     /org/gnome/desktop/screensaver/lock-delay
+
+vuln_discussion: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not logout because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, the GNOME desktop can be configured to identify when a user's session has idled and take action to initiate the session lock. As such, users should not be allowed to change session settings.

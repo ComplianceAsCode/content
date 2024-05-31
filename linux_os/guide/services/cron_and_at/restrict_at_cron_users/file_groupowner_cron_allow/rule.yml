@@ -3,12 +3,18 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /etc/cron.allow file'
 
+{{% if "ubuntu" in product %}}
+    {{% set target_group="crontab" %}}
+{{% else %}}
+    {{% set target_group="root" %}}
+{{% endif %}}
+
 description: |-
-    If <tt>/etc/cron.allow</tt> exists, it must be group-owned by <tt>root</tt>.
-    {{{ describe_file_group_owner(file="/etc/cron.allow", group="root") }}}
+    If <tt>/etc/cron.allow</tt> exists, it must be group-owned by <tt>{{{ target_group }}}</tt>.
+    {{{ describe_file_group_owner(file="/etc/cron.allow", group=target_group) }}}
 
 rationale: |-
-    If the owner of the cron.allow file is not set to root, the possibility exists for an
+    If the owner of the cron.allow file is not set to {{{ target_group }}}, the possibility exists for an
     unauthorized user to view or edit sensitive information.
 
 severity: medium
@@ -37,14 +43,18 @@ references:
     stigid@ol7: OL07-00-021120
     stigid@rhel7: RHEL-07-021120
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/cron.allow", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/cron.allow", group=target_group) }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/cron.allow", group="root") }}}
+    {{{ ocil_file_group_owner(file="/etc/cron.allow", group=target_group) }}}
 
 template:
     name: file_groupowner
     vars:
         filepath: /etc/cron.allow
         missing_file_pass: 'true'
+{{% if "ubuntu" in product %}}
+        gid_or_name: 'crontab'
+{{% else %}}
         gid_or_name: '0'
+{{% endif %}}

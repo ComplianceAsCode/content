@@ -19,7 +19,7 @@ checktext: |-
     To determine that periodic AIDE execution has been scheduled, run the following command:
      $ grep aide /etc/crontab
     The output should return something similar to the following:
-     05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost
+     05 4 * * * root {{{ aide_bin_path }}} --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost
     The email address that the notifications are sent to can be changed by overriding
      root@localhost .
 
@@ -33,4 +33,4 @@ fixtext: |-
     $ sudo more /etc/cron.daily/aide
 
     #!/bin/bash
-    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+    {{{ aide_bin_path }}} --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 9,multi_platform_ubuntu
+# platform = multi_platform_fedora,Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10,multi_platform_ubuntu
 
 SSHD_PARAM={{{ PARAMETER }}}
 SSHD_VAL="bad_val"

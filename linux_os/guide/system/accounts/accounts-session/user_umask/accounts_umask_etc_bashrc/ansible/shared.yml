@@ -14,7 +14,7 @@
 - name: Check if umask in {{{ etc_bash_rc }}} is already set
   ansible.builtin.lineinfile:
     path: {{{ etc_bash_rc }}}
-    regexp: ^(\s*)umask\s+.*
+    regexp: ^[^#]*\bumask\s+\d+$
     state: absent
   check_mode: true
   changed_when: false
@@ -23,8 +23,8 @@
 - name: Replace user umask in {{{ etc_bash_rc }}}
   ansible.builtin.replace:
     path: {{{ etc_bash_rc }}}
-    regexp: ^(\s*)umask(\s+).*
-    replace: \g<1>umask\g<2>{{ var_accounts_user_umask }}
+    regexp: ^([^#]*\b)umask\s+\d+$
+    replace: \g<1>umask {{ var_accounts_user_umask }}
   when:
   - umask_replace.found > 0
 

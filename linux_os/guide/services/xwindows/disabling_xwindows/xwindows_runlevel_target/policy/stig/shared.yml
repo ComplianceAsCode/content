@@ -12,9 +12,12 @@ checktext: |-
 
     multi-user.target
 
-    If the system default target is not set to "multi-user.target" and the Information System Security Officer (ISSO) lacks a documented requirement for a graphical user interface, this is a finding.
+    If the system default target is not set to "multi-user.target" and the information system security officer (ISSO) lacks a documented requirement for a graphical user interface, this is a finding.
 
 fixtext: |-
     Document the requirement for a graphical user interface with the ISSO or set the default target to multi-user with the following command:
 
     $ sudo systemctl set-default multi-user.target
+
+vuln_discussion: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.

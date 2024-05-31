@@ -235,6 +235,7 @@ selections:
 - ensure_gpgcheck_globally_activated
 - accounts_password_set_warn_age_existing
 - audit_rules_networkconfig_modification
+- audit_rules_networkconfig_modification_network_scripts
 - gid_passwd_group_same
 - file_groupownership_sshd_pub_key
 - audit_rules_unsuccessful_file_modification_open

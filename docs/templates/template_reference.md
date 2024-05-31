@@ -172,6 +172,17 @@
 
 -   Languages: Ansible, Bash, OVAL
 
+#### audit_rules_watch
+-   Check if there are file system watches configured in audit rules for the given path.
+
+-   Parameters:
+
+    -   **path** - path that should be part of the audit watch rule as a value
+        of `-w` argument, eg. `/etc/group`.
+
+-   Languages: Ansible, Bash, OVAL
+
+
 #### argument_value_in_line
 -   Checks that `argument=value` pair is present in (optionally) the
     line started with line_prefix (and, optionally, ending with
@@ -902,6 +913,15 @@ The selected value can be changed in the profile (consult the actual variable fo
     `/etc/sysctl.d/var_name.conf` file.
 
 -   Languages: Ansible, Bash, OVAL
+
+#### systemd_mount_enabled
+-   Checks if a `systemd` mount unit is enabled
+
+-   Parameters:
+    - **mountname** - name of the systemd mount unit, without the `.mount` suffix, eg. `tmp`
+
+-   Languages: Anaconda, Ansible, Bash, OVAL
+
 
 #### timer_enabled
 -   Checks if a SystemD timer unit is enabled.

@@ -1,0 +1,27 @@
+srg_requirement: |-
+    {{{ full_name }}} must prevent system daemons from using Kerberos for authentication.
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent system daemons from using Kerberos for authentication.
+
+    Remove any files with the .keytab extension from the operating system.
+
+    rm -f /etc/*.keytab
+
+checktext: |-
+    Verify that {{{ full_name }}} prevents system daemons from using Kerberos for authentication with the following command:
+
+    $ sudo ls -al /etc/*.keytab
+
+    ls: cannot access '/etc/*.keytab': No such file or directory
+
+    If this command produces any "keytab" file(s), this is a finding.
+
+vuln_discussion: |-
+    Unapproved mechanisms used for authentication to the cryptographic module are not verified; therefore, cannot be relied upon to provide confidentiality or integrity and DOD data may be compromised.
+
+    {{{ full_name }}} systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.
+
+    The key derivation function (KDF) in Kerberos is not FIPS compatible. Ensuring the system does not have any keytab files present prevents system daemons from using Kerberos for authentication. A keytab is a file containing pairs of Kerberos principals and encrypted keys.
+
+    FIPS 140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.

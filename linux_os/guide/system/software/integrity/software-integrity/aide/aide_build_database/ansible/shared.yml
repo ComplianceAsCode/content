@@ -16,7 +16,7 @@
 {{% if 'sle' in product %}}
 - name: "{{{ rule_title }}} - Ensure Repositories Are Updated"
   ansible.builtin.command: zypper -q --no-remote ref
-  ignore_errors: True
+  failed_when: false
 {{% endif %}}
 
 - name: "{{{ rule_title }}} - Ensure AIDE Is Installed"

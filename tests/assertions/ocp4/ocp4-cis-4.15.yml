@@ -1,0 +1,294 @@
+rule_results:
+  e2e-cis-accounts-restrict-service-account-tokens:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-accounts-unique-service-account:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-api-server-admission-control-plugin-alwaysadmit:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-admission-control-plugin-alwayspullimages:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-admission-control-plugin-namespacelifecycle:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-admission-control-plugin-noderestriction:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-admission-control-plugin-scc:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-admission-control-plugin-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-anonymous-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-api-priority-gate-enabled:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-auth-mode-no-aa:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-auth-mode-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-basic-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-client-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-encryption-provider-cipher:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-cis-api-server-etcd-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-etcd-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-etcd-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-https-for-kubelet-conn:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-insecure-bind-address:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-insecure-port:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-api-server-kubelet-certificate-authority:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-kubelet-client-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-kubelet-client-cert-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-api-server-kubelet-client-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-kubelet-client-key-pre-4-9:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-api-server-oauth-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-openshift-https-serving-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-request-timeout:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-service-account-lookup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-service-account-public-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-tls-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-api-server-token-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-audit-log-forwarding-enabled:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-cis-audit-log-forwarding-webhook:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-audit-logging-enabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-audit-profile-set:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-cis-configure-network-policies:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-configure-network-policies-hypershift-hosted:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-configure-network-policies-namespaces:
+    default_result: PASS
+  e2e-cis-controller-insecure-port-disabled:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-controller-secure-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-controller-service-account-ca:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-controller-service-account-private-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-controller-use-service-account:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-peer-auto-tls:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-peer-cert-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-peer-client-cert-auth:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-etcd-peer-key-file:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-file-groupowner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-file-owner-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-file-permissions-proxy-kubeconfig:
+    default_result: NOT-APPLICABLE
+    result_after_remediation: NOT-APPLICABLE
+  e2e-cis-general-apply-scc:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-general-default-namespace-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-general-default-seccomp-profile:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-general-namespaces-in-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-idp-is-configured:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-cis-kubeadmin-removed:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-cis-kubelet-configure-tls-cert:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-kubelet-configure-tls-key:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-kubelet-disable-readonly-port:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-ocp-allowed-registries:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-cis-ocp-allowed-registries-for-import:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-cis-ocp-api-server-audit-log-maxbackup:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-ocp-api-server-audit-log-maxsize:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-ocp-insecure-allowed-registries-for-import:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-ocp-insecure-registries:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-openshift-api-server-audit-log-path:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-rbac-debug-role-protects-pprof:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-rbac-least-privilege:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-rbac-limit-cluster-admin:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-rbac-limit-secrets-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-rbac-pod-creation-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-rbac-wildcard-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-drop-container-capabilities:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-container-allowed-capabilities:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-scc-limit-ipc-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-net-raw-capability:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-network-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-privilege-escalation:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-privileged-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-process-id-namespace:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scc-limit-root-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-scheduler-profiling-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-scheduler-service-protected-by-rbac:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-cis-secrets-consider-external-storage:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-cis-secrets-no-environment-variables:
+    default_result: MANUAL
+    result_after_remediation: MANUAL

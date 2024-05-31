@@ -23,6 +23,7 @@ selections:
 - package_setroubleshoot_removed
 - audit_rules_dac_modification_lsetxattr
 - audit_rules_networkconfig_modification
+- audit_rules_networkconfig_modification_network_scripts
 - sysctl_net_ipv4_conf_default_log_martians
 - audit_rules_unsuccessful_file_modification_truncate
 - auditd_data_retention_space_left_action
@@ -386,7 +387,7 @@ selections:
 - var_password_pam_minlen=14
 - var_pam_wheel_group_for_su=cis
 - sshd_idle_timeout_value=15_minutes
-- var_sshd_set_keepalive=0
+- var_sshd_set_keepalive=1
 - var_sshd_set_login_grace_time=60
 - var_sshd_max_sessions=10
 - var_sshd_set_maxstartups=10:30:60

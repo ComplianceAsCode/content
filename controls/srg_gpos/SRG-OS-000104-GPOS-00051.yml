@@ -5,8 +5,6 @@ controls:
         title: {{{ full_name }}} must uniquely identify and must authenticate organizational
             users (or processes acting on behalf of organizational users).
         rules:
-            - var_smartcard_drivers=cac
-            - configure_opensc_card_drivers
             - account_unique_id
             - group_unique_id
             - gid_passwd_group_same

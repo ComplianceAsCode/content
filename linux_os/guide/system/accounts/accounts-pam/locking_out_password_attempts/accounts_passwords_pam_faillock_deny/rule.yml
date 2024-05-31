@@ -19,7 +19,7 @@ description: |-
     Where count should be less than or equal to
     {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} and greater than 0.
     {{% endif %}}
-    {{% if 'ubuntu' not in product %}}
+    {{% if 'ubuntu' not in product and 'debian' not in product %}}
     In order to avoid errors when manually editing these files, it is
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
     depending on the OS version.
@@ -59,6 +59,7 @@ references:
     stigid@rhel7: RHEL-07-010320
     stigid@rhel8: RHEL-08-020011
     stigid@ubuntu2004: UBTU-20-010072
+    stigid@ubuntu2204: UBTU-22-411045
 
 platform: package[pam]
 
@@ -94,7 +95,7 @@ fixtext: |-
     edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
     statement in the <tt>auth</tt> section, like this:
     <pre>auth required pam_faillock.so authfail <tt>deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</tt> unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
-    {{% elif 'ubuntu' in product %}}
+    {{% elif 'ubuntu' in product or 'debian' in product %}}
     Edit <tt>/etc/pam.d/common-auth</tt> and ensure that faillock is configured.
     The pam_faillock.so lines surround the pam_unix.so line. The comment
     "Added to enable faillock" is shown to highlight the additional lines
@@ -128,3 +129,14 @@ warnings:
 
 srg_requirement: |-
     {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur.
+
+template:
+  name: pam_account_password_faillock
+  vars:
+    prm_name: deny
+    prm_regex_conf: ^[\s]*deny[\s]*=[\s]*([0-9]+)
+    prm_regex_pamd: ^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*deny=([0-9]+)
+    ext_variable: var_accounts_passwords_pam_faillock_deny
+    description: Lockout account after failed login attempts.
+    variable_upper_bound: use_ext_variable
+    variable_lower_bound: 0

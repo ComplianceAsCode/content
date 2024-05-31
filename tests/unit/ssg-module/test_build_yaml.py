@@ -134,6 +134,23 @@ def test_rule_platforms_inheritance():
     assert rule.platforms == {'plX'}
 
 
+def test_get_not_selected_components():
+    group1 = ssg.build_yaml.Group('gr1_id')
+    group2 = ssg.build_yaml.Group('gr2_id')
+    group3 = ssg.build_yaml.Group('gr3_id')
+    rule1 = ssg.build_yaml.Rule('rul1_id')
+    rule2 = ssg.build_yaml.Rule('rul2_id')
+
+    group1.add_group(group2)
+    group1.add_group(group3)
+    group2.add_rule(rule1)
+    group1.add_rule(rule2)
+    rules, groups, variables = group1.get_not_included_components(["rul1_id"], [])
+    assert rules == {'rul2_id'}
+    assert groups == {'gr3_id'}
+    assert variables == set()
+
+
 def test_make_items_product_specific():
     rule = ssg.build_yaml.Rule("something")
 
@@ -231,7 +248,7 @@ def product_cpes():
     product_yaml_path = os.path.join(DATADIR, "product.yml")
     product_yaml = open_raw(product_yaml_path)
     product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
-    product_cpes =  ProductCPEs()
+    product_cpes = ProductCPEs()
     product_cpes.load_product_cpes(product_yaml)
     product_cpes.load_content_cpes(product_yaml)
     return product_cpes
@@ -387,9 +404,10 @@ def test_parametrized_platform(product_cpes):
     assert cpe_item.title == "Package ntp is installed"
     assert cpe_item.check_id == "installed_env_has_ntp_package"
 
+
 def test_parametrized_platform_with_invalid_argument(product_cpes):
     with pytest.raises(KeyError):
-        platform = ssg.build_yaml.Platform.from_text("package[nonexisting_argument]", product_cpes)
+        ssg.build_yaml.Platform.from_text("package[nonexisting_argument]", product_cpes)
 
 
 def test_derive_id_from_file_name():

@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: "Set PAM''s Password Hashing Algorithm"
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/system-auth" %}}
@@ -19,6 +19,8 @@ description: |-
     <br />
     {{% if product in ["sle12", "sle15"] %}}
     <pre>password    required    pam_unix.so sha512 <i>other arguments...</i></pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>password    [success=1 default=ignore]   pam_unix.so sha512 <i>other arguments...</i></pre>
     {{% else %}}
     <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
     {{% endif %}}
@@ -69,6 +71,7 @@ references:
     stigid@rhel8: RHEL-08-010159
     stigid@sle12: SLES-12-010230
     stigid@sle15: SLES-15-020170
+    stigid@ubuntu2204: UBTU-22-611055
 
 ocil_clause: '"sha512" is missing, or is commented out'
 
@@ -80,6 +83,8 @@ ocil: |-
     <pre>$ sudo grep "^password.*pam_unix\.so.*sha512" {{{ pam_passwd_file_path }}}
     {{% if product in ["sle12", "sle15"] -%}}
     password required pam_unix.so sha512
+    {{% elif 'ubuntu' in product %}}
+    password [success=1 default=ignore] pam_unix.so sha512
     {{% else %}}
     password sufficient pam_unix.so sha512
     {{%- endif -%}}
@@ -88,7 +93,7 @@ ocil: |-
 platform: package[pam]
 
 fixtext: |-
-    {{% if product in ['ol9', 'rhel9'] -%}}
+    {{% if product in ['ol9', 'rhel9', 'ubuntu2204'] -%}}
     Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
     {{% else %}}
     Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
@@ -97,6 +102,8 @@ fixtext: |-
     Edit/modify the following line in the "{{{ pam_passwd_file_path }}}" file to include the sha512 option for pam_unix.so:
     {{% if product in ['sle12', 'sle15'] -%}}
     password required pam_unix.so sha512
+    {{% elif 'ubuntu' in product %}}
+    password [success=1 default=ignore] pam_unix.so sha512
     {{% else %}}
     password sufficient pam_unix.so sha512
     {{%- endif %}}

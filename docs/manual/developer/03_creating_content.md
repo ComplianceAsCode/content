@@ -922,7 +922,9 @@ The `status` key may hold the following values:
                 automation).
 
 * `automated`: The control is addressed by the product and can be automatically
-               checked for.
+               checked for. In case a part of a requirement cannot be
+               reasonably automated but the rest is fully automated, this
+               status is appropriate as well.
 
 * `manual`: The control cannot or should not be automated, and should be addressed manually.
 

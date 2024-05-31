@@ -1,0 +1,73 @@
+documentation_complete: true
+
+
+title: 'Configure immutable Audit login UIDs'
+
+{{% set file_contents_audit_immutable_login =
+"## Make the loginuid immutable. This prevents tampering with the auid.
+--loginuid-immutable" %}}
+
+description: |-
+    Configure kernel to prevent modification of login UIDs once they are set.
+    Changing login UIDs while this configuration is enforced requires special capabilities which
+    are not available to unprivileged users.
+
+    The following rules configure audit as described above:
+    <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
+
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+
+rationale: |-
+    If modification of login UIDs is not prevented, they can be changed by unprivileged users and
+    make auditing complicated or impossible.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-82828-5
+    cce@rhel9: CCE-83673-4
+
+references:
+    disa: CCI-000162,CCI-000163,CCI-000164
+    nist: AU-2(a)
+    ospp: FAU_GEN.1.2
+    srg: SRG-OS-000462-GPOS-00206,SRG-OS-000475-GPOS-00220,SRG-OS-000057-GPOS-00027,SRG-OS-000058-GPOS-00028,SRG-OS-000059-GPOS-00029,SRG-APP-000121-CTR-000255,SRG-APP-000495-CTR-001235
+
+ocil_clause: 'the file does not exist or the content differs'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>$ sudo cat /etc/audit/rules.d/11-loginuid.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/11-loginuid.rules
+        contents: |+
+            {{{ file_contents_audit_immutable_login|indent(12) }}}
+#do not remove this comment, it stops Jinja from including more blank lines to the variable
+
+fixtext: |-
+    Configure {{{ full_name }}} kernel to prevent modification of login UIDs once they are set.
+
+    Make sure the file "/etc/audit/rules.d/11-loginuid.rules" contains the following content:
+
+    <pre>--loginuid-immutable</pre>
+
+    If the file doesn't exist, it can be copied from <tt>/usr/share/audit/sample-rules</tt>
+    using the next command
+
+    <pre>
+    cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
+    </pre>
+
+    Then, run the following commands:
+
+    $ sudo chmod o-rwx "/etc/audit/rules.d/11-loginuid.rules"
+    $ sudo augenrules --load
+
+srg_requirement: |-
+    {{{ full_name }}} audit system must protect logon UIDs from unauthorized change.

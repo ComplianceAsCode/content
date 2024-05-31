@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Create Boundaries between Resources using Nodes or Clusters'
+
+description: |-
+   Use Nodes or Clusters to isolate Workloads with high protection requirements.
+
+   Run the following command and review the pods and how they are deployed on Nodes. <pre>$ oc get pod -o=custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,APP:.metadata.labels.app\.kubernetes\.io/name,NODE:.spec.nodeName --all-namespaces | grep -v "openshift-" </pre>
+   You can use labels or other data as custom field which helps you to identify parts of an application.
+   Ensure that Applications with high protection requirements are not colocated on Nodes or in Clusters with workloads of lower protection requirements.
+
+rationale: |-
+   Assigning workloads with high protection requirements to specific nodes creates and additional boundary (the node) between workloads of high protection requirements and workloads which might follow less strict requirements. An adversary which attacked a lighter protected workload now has additional obstacles for their movement towards the higher protected workloads.
+
+references:
+    bsi: APP.4.4.A15
+
+severity: medium
+
+ocil_clause: 'Application placement on Nodes and Clusters needs review'
+
+ocil: |-
+    Run the following command and review the pods and how they are deployed on nodes. <pre>$ oc get pod -o=custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,APP:.metadata.labels.app\.kubernetes\.io/name,NODE:.spec.nodeName --all-namespaces | grep -v "openshift-" </pre>
+    You can use labels or other data as custom field which helps you to identify parts of an application.
+    Ensure that applications with high protection requirements are not colocated on nodes or in clusters with workloads of lower protection requirements.
