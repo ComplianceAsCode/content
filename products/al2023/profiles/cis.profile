@@ -19,6 +19,3 @@ description: |-
 
 selections:
     - cis_al2023:all:l2_server
-    - '!file_ownership_home_directories'
-    - '!group_unique_name'
-    - '!file_owner_at_allow'
