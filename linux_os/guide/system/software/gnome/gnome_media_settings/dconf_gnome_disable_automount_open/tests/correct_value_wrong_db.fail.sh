@@ -6,6 +6,7 @@
 install_dconf_and_gdm_if_needed
 clean_dconf_settings
 
+add_dconf_profiles
 add_dconf_setting "org/gnome/desktop/media-handling" "automount-open" "false" "dummy.d" "00-security-settings"
 add_dconf_lock "org/gnome/desktop/media-handling" "automount-open" "dummy.d" "00-security-settings"
 
