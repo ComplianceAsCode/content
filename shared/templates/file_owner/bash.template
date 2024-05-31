@@ -14,7 +14,7 @@
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown {{{ FILEUID }}} {} \;
+find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown {{{ FILEUID }}} {} \;
 {{%- else %}}
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown {{{ FILEUID }}} {} \;
 {{%- endif %}}

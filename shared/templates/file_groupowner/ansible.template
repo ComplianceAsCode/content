@@ -15,7 +15,7 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -group {{{ GID_OR_NAME }}} -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -group {{{ GID_OR_NAME }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False

@@ -10,7 +10,7 @@
 {{%- if FILE_REGEX %}}
 {{% set STATE="file" %}}
 {{% set FIND_TYPE="-type f" %}}
-{{% set FIND_FILE_REGEX="-regex \"" ~ FILE_REGEX[loop.index0] ~ "\"" %}}
+{{% set FIND_FILE_REGEX="-regextype posix-extended -regex \"" ~ FILE_REGEX[loop.index0] ~ "\"" %}}
 {{%- else %}}
 {{% set STATE="directory" %}}
 {{% set FIND_TYPE="-type d" %}}
