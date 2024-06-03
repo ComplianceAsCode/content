@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Build
         run: |-
-          ./build_product rhel7 rhel8 rhel9 --derivatives
+          ./build_product rhel7 rhel8 rhel9 rhel10 --derivatives
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
@@ -54,7 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build
-        run: ./build_product alinux2 alinux3 chromium fedora firefox rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
+        run: ./build_product sle12 sle15
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -70,7 +70,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build
-        run: ./build_product sle12 sle15
+        run: ./build_product opensuse
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       - name: Test
@@ -97,7 +97,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product debian10 debian11
+          ./build_product debian10 debian11 debian12
       - name: Test
         working-directory: ./build
         run: ctest -j2 --output-on-failure -E unique-stigids
@@ -116,7 +116,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu2004 ubuntu2204
+          ./build_product ubuntu1604 ubuntu1804 ubuntu2004
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -135,7 +135,7 @@ jobs:
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_SCE_ENABLED:BOOL=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product ubuntu2004 ubuntu2204
+          ./build_product ubuntu2204
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -168,6 +168,7 @@ jobs:
                 rhel7 \
                 rhel8 \
                 rhel9 \
+                rhel10 \
                 uos20 \
                 ocp4
           env:
