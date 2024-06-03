@@ -1489,7 +1489,13 @@ controls:
         be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
+      rules: []
+      related_rules:
+      # NOTE: (yuumasato) below are some node OS configurations that can help prevent
+      # and detect spoofing
+      - firewalld_loopback_traffic_restricted
+      - sysctl_net_ipv4_conf_all_log_martians
 
   - id: '6.1'
     title: Processes and mechanisms for developing and maintaining secure systems and software are
