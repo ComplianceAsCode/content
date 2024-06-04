@@ -173,13 +173,12 @@ controls:
     levels:
     - standard
     description: >-
-      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take
-      place in a separate Init container. It SHOULD be ensured that the initialisation terminates all
-      processes that are already running. Kubernetes SHOULD ONLY start the other containers if
-      the initialisation is successful.
+      If an initialisation (e.g. of an application) takes place in a pod at start-up, this SHOULD take place in a separate Init container. It SHOULD be ensured that the initialisation terminates all processes that are already running. Kubernetes SHOULD ONLY start the other containers if the initialisation is successful.
     notes: >-
-      TBD
-    status: pending
+      OpenShift provides the necessary resource configurations via Kubernetes. Kubernetes ensures the (process) dependencies between init containers and “normal” containers of a pod.
+
+      The requirement must be implemented by application development.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A7
@@ -187,35 +186,59 @@ controls:
     levels:
     - standard
     description: >-
-      Networks for the administration of nodes, the control plane, and the individual networks of
-      application services SHOULD be separated.
-      Only the network ports of the pods necessary for operation SHOULD be released into the
-      designated networks. If a Kubernetes cluster contains multiple applications, all the network
-      connections between the Kubernetes namespaces SHOULD first be prohibited and only
-      required network connections permitted (whitelisting). The network ports necessary for the
-      administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD
-      ONLY be accessible from the corresponding administration network and from pods that need
-      them.
-      Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and
-      create or change rules for the network.
+      (1) Networks for the administration of nodes, the control plane, and the individual networks of application services SHOULD be separated.
+      (2) Only the network ports of the pods necessary for operation SHOULD be released into the designated networks. (3) If a Kubernetes cluster contains multiple applications, all the network connections between the Kubernetes namespaces SHOULD first be prohibited and only required network connections permitted (whitelisting). (4) The network ports necessary for the administration of the nodes, the runtime, and Kubernetes (including its extensions) SHOULD ONLY be accessible from the corresponding administration network and from pods that need them.
+      (5) Only selected administrators SHOULD be authorised in Kubernetes to manage the CNI and create or change rules for the network.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1-3:
+      The requirements for restricting network ports and network connections between Kubernetes namespaces are already supported by OpenShift as standard using network policies and the option for default network policies (security by design).
+
+      The separation of the management network can also be implemented at the namespace level via network policies (incoming, the responsibility of the namespace administrator) and egress firewalls (outgoing, the responsibility of the cluster admins).
+
+      Externally exposed services can receive their own IP and thus data traffic can also be separated outside the platform. Inter-node communication is carried out via suitable tunnel protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+
+      The determination of the necessary network policies for applications is supported by the network policy generator in ACS.
+      Section 4 is true by default
+      Section 5 maps to principle of least privilege
+    status: partial
+    rules:
+      # Section 1
+      # Section 2
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      # Section 3
+      - project_config_and_template_network_policy
+      # Section 4, default
+      # Section 5
+      - rbac_least_privilege
+
 
   - id: APP.4.4.A8
     title: Securing Configuration Files on Kubernetes
     levels:
     - standard
     description: >-
-      The configuration files of a Kubernetes cluster, including all its extensions and applications,
+      (1) The configuration files of a Kubernetes cluster, including all its extensions and applications,
       SHOULD be versioned and annotated.
-      Access rights to configuration file management software SHOULD be granted in a restrictive
-      manner. Read and write access rights to the configuration files of the control plane SHOULD
+      (2) Access rights to configuration file management software SHOULD be granted in a restrictive
+      manner. (3) Read and write access rights to the configuration files of the control plane SHOULD
       be assigned and restricted with particular care.
     notes: >-
-      TBD
-    status: pending
+      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All 
+      resources that are created after the initial cluster installation can be considered configuration
+      files as described in this control. 
+
+      Section 1: This control needs to be adressed on an organizational level. To achieve versioning,
+      the configuration files should be stored in a Git repository. The Git repository is considered 
+      the only source of truth and provides a visible and auditable trail of changes. To automatically
+      apply the configuration, GitOps processes and tools like OpenShift GitOps can be used.
+
+      Section 2: This control needs to be adressed in the respective external systems. Access rights
+      to the Git repository and GitOps controller should be granted in a restrictive manner.
+      
+      Section 3: The relevant Kubernetes resources for configuring the control plane are inherently
+      protected by Kubernetes RBAC and can only be modified by cluster administrators.
+    status: manual
     rules: []
 
   - id: APP.4.4.A9
@@ -223,32 +246,61 @@ controls:
     levels:
     - standard
     description: >-
-      Pods SHOULD NOT use the "default" service account. Rights SHOULD NOT be granted to the
-      "default" service account. Pods for different applications SHOULD run under their own service
-      accounts. Access rights for the service accounts of the applications' pods SHOULD be limited
+      (1) Pods SHOULD NOT use the "default" service account. (2) Rights SHOULD NOT be granted to the
+      "default" service account. (3) Pods for different applications SHOULD run under their own service
+      accounts. (4) Access rights for the service accounts of the applications' pods SHOULD be limited
       to those that are strictly necessary.
-      Pods that do not require a service account SHOULD not be able to view it or have access to
+      (5) Pods that do not require a service account SHOULD not be able to view it or have access to
       corresponding tokens.
-      Only control plane pods and pods that absolutely need them SHOULD use privileged service
+      (6) Only control plane pods and pods that absolutely need them SHOULD use privileged service
       accounts.
-      Automation programs SHOULD each receive their own tokens, even if they share a common
+      (7) Automation programs SHOULD each receive their own tokens, even if they share a common
       service account due to similar tasks.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1-5: This needs to be adressed in the individual application deployments. The
+      associated rules provide additional guidance.
+
+      Section 6: The usage of privileged service accounts is controlled by Security Context 
+      Constraints (SCC), which should be configured and granted according to the principle of least 
+      privilege.
+
+      Section 7: This control needs to be adressed on an organizational level.      
+    status: partial
+    rules:
+      # Section 1-3:
+      - accounts_unique_service_account
+      # Section 2:
+      - accounts_no_rolebindings_default_service_account
+      - accounts_no_clusterrolebindings_default_service_account
+      # Section 4:
+      - rbac_least_privilege
+      - rbac_wildcard_use
+      # Section 5:
+      - accounts_restrict_service_account_tokens
+      # Section 6:
+      - scc_drop_container_capabilities
+      - scc_limit_container_allowed_capabilities
+      - scc_limit_host_dir_volume_plugin
+      - scc_limit_host_ports
+      - scc_limit_ipc_namespace
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      - scc_limit_privilege_escalation
+      - scc_limit_privileged_containers
+      - scc_limit_process_id_namespace
+      - scc_limit_root_containers
 
   - id: APP.4.4.A10
     title: Securing Automation Processes
     levels:
     - standard
     description: >-
-      All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
-      with the rights that are strictly necessary. If different user groups can change configurations or
-      start pods via automation software, this SHOULD be done for each group through separate
-      processes that only have the rights necessary for the respective user group.
+      (1) All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
+      with the rights that are strictly necessary. (2) If different user groups can change 
+      configurations or start pods via automation software, this SHOULD be done for each group 
+      through separate processes that only have the rights necessary for the respective user group.
     notes: >-
-      This control needs to be adressed on an organizational level. All service accounts used by 
+      This control needs to be adressed on an organizational level. All service accounts used by
       automation software need to adhere to the principle of least privilege.
     status: not applicable
     rules: []
@@ -258,16 +310,22 @@ controls:
     levels:
     - standard
     description: >-
-      In pods, each container SHOULD define a health check for start-up and operation ("readiness"
-      and "liveness"). These checks SHOULD provide information about the availability of the
-      software running in a pod. The checks SHOULD fail if the monitored software cannot perform
-      its tasks properly. For each of these checks, a time period SHOULD be defined that is
-      appropriate for the service running in the pod. Based on these checks, Kubernetes SHOULD
+      (1) In pods, each container SHOULD define a health check for start-up and operation ("readiness"
+      and "liveness"). (2) These checks SHOULD provide information about the availability of the
+      software running in a pod. (3) The checks SHOULD fail if the monitored software cannot perform
+      its tasks properly. (4) For each of these checks, a time period SHOULD be defined that is
+      appropriate for the service running in the pod. (5) Based on these checks, Kubernetes SHOULD
       delete or restart the pods.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1-3: The existance of readiness und liveness probes can be validated technically. This
+      check needs to be performed for each container in every pod individually.
+      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by 
+      the application owner.
+      Section 5: This functionality is inherently met by OpenShift.
+    status: manual
+    rules:
+      # Section 1-4:
+      - liveness_readiness_probe_in_workload
 
   - id: APP.4.4.A12
     title: Securing Infrastructure Applications
@@ -295,15 +353,16 @@ controls:
     levels:
     - elevated
     description: >-
-      There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of
-      the pods of applications against a defined list of allowed settings and standardised
-      benchmarks.
-      Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate
-      tools.
+      (1) There SHOULD be an automated audit that checks the settings of nodes, of Kubernetes, and of the pods of applications against a defined list of allowed settings and standardised benchmarks.
+      (2) Kubernetes SHOULD enforce these established rules in each cluster by connecting appropriate tools.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1 is addressed by the compliance operator itself. The standardized Benchmarks can be just the BSI Profile, or additionally a hardening standard like the CIS Benchmark.
+      Section 2 can be addressed by using auto-remediation of compliance-operator or for workloads by using Advanced Cluster Security or similar tools.
+    status: automated
+    rules:
+      - scansettingbinding_exists
+      - scansettings_have_schedule
+      - scansetting_has_autoapplyremediations
 
   - id: APP.4.4.A14
     title: Use of Dedicated Nodes
@@ -328,23 +387,23 @@ controls:
     levels:
     - elevated
     description: >-
-      Applications with very high protection needs SHOULD each use their own Kubernetes clusters
-      or dedicated nodes that are not available for other applications
-    notes: >-
-      TBD
-    status: pending
-    rules: []
+      Applications with very high protection needs SHOULD each use their own Kubernetes clusters or dedicated nodes that are not available for other applications
+    notes: ''
+    status: manual
+    rules:
+      - general_node_separation
 
   - id: APP.4.4.A16
     title: Use of Operators
     levels:
     - elevated
     description: >-
-      The automation of operational tasks in operators SHOULD be used for particularly critical
-      applications and control plane programs.
+      The automation of operational tasks in operators SHOULD be used for particularly critical applications and control plane programs.
     notes: >-
-      TBD
-    status: pending
+      OpenShift relies consistently on the application of the concept of operators. The platform itself is operated and managed 100% by operators, meaning that all internal components of the platform are rolled out and managed by operators.
+
+      Application-specific operators must be considered as part of application development and deployment.
+    status: inherently met
     rules: []
 
   - id: APP.4.4.A17

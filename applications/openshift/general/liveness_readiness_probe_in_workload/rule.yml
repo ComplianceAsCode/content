@@ -1,0 +1,34 @@
+title: Ensure that all workloads have liveness and readiness probes
+
+description: |-
+  Configuring Kubernetes liveness and readiness probes is essential for ensuring the security and 
+  reliability of a system. These probes actively monitor container health and readiness, facilitating
+  automatic actions like restarting or rescheduling unresponsive instances for improved reliability. 
+  They play a proactive role in issue detection, allowing timely problem resolution and contribute 
+  to efficient scaling and traffic distribution.
+
+rationale: |-
+  Many applications running for long periods of time eventually transition to broken states, and 
+  cannot recover except by being restarted. Kubernetes provides liveness probes to detect and remedy
+  such situations.
+  Sometimes, applications are temporarily unable to serve traffic. For example, an application might 
+  need to load large data or configuration files during startup, or depend on external services after
+  startup. In such cases, you don't want to kill the application, but you don't want to send it 
+  requests either. Kubernetes provides readiness probes to detect and mitigate these situations. 
+  A pod with containers reporting that they are not ready does not receive traffic through Kubernetes 
+  Services.
+
+references:
+  bsi: APP.4.4.A11
+
+severity: medium
+
+ocil_clause: 'Liveness or readiness probe is not set'
+
+ocil: |-
+    Run the following command to retrieve a list of deployments, daemonsets and statefulsets that 
+    do not have liveness or readiness probes set for their containers:
+    <pre>$ oc get deployments,statefulsets,daemonsets --all-namespaces -o json | jq '[ .items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select( .spec.template.spec.containers[].readinessProbe != null and .spec.template.spec.containers[].livenessProbe != null ) | "\(.kind): \(.metadata.namespace)/\(.metadata.name)" ] | unique'</pre>
+
+    Make sure that there is output nothing in the result or there are valid reason not to set a
+    readiness or liveness probe for those workloads.
