@@ -588,6 +588,8 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type path: str
 :param dropin_dir: Path to the dropin directory
 :type dropin_dir: str
+:param section: optional section if the file has an ini-like format
+:type section: str
 :param parameter: The shell variable name.
 :type parameter: str
 :param value: The variable value WITHOUT QUOTES.
@@ -604,7 +606,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_config_file_fail: bool
 #}}
 
-{{%- macro oval_check_dropin_file(path, dropin_dir, parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
+{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
 <def-group>
   {{%- set prefix_regex = "^[ \\t]*" -%}}
   {{%- set separator_regex = '=' -%}}
