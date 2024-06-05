@@ -50,6 +50,7 @@ template:
         component: journald
         master_cfg_file: /etc/systemd/journald.conf
         dropin_dir: {{{ journald_conf_dir_path }}}
+        section: Journal
         param: Compress
         value: yes
         no_quotes: 'true'
