@@ -1255,6 +1255,7 @@ controls:
         - tls_version_check_masters_workers
         - tls_version_check_router
         - etcd_check_cipher_suite
+        - api_server_tls_cert
         - api_server_tls_security_profile
         - ingress_controller_certificate
         - ingress_controller_tls_security_profile
@@ -1273,7 +1274,7 @@ controls:
         status: not applicable
         notes: |-
           OpenShift doesn't directly handle PANs, the management of keys and certificates
-          protecting a PAN is resposibility of the application.
+          protecting them is responsibility of the payment application.
 
       - id: 4.2.1.2
         title: Wireless networks transmitting PAN or connected to the CDE use industry best
