@@ -41,13 +41,15 @@ def get_profile(profiles_files, file, policies, profile=None):
 
 class Profile:
     def __init__(self, path, title):
-        self.path = path
+        normalized_path = os.path.normpath(path)
+        profile_file = os.path.basename(normalized_path)
+        self.path = normalized_path
         self.title = title
+        self.id = profile_file.split('.profile')[0]
+        self.product = normalized_path.split('/')[-3]
         self.rules = []
         self.variables = {}
         self.unselected_rules = []
-        profile_file = os.path.basename(path)
-        self.id = profile_file.split('.profile')[0]
 
     def add_rule(self, rule_id):
         if rule_id.startswith("!"):
