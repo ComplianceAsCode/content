@@ -47,8 +47,7 @@ jobs:
                         rhel10 \
                         rhv4 \
                         uos20 \
-                        ocp4 \
-                        uos20
+                        ocp4
                 env:
                     ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
             -   name: Test
