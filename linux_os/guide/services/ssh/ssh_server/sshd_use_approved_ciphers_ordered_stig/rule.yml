@@ -71,3 +71,8 @@ warnings:
         party review by an accredited lab. While open source software is
         capable of meeting this, it does not meet FIPS-140 unless the vendor
         submits to this process.
+    {{% if 'ubuntu' in product %}}
+    - audit: |-
+        The audit returns <tt>unknown</tt> instead of <tt>pass</tt> if sshd is correctly configured
+        but the system crypto modules are not FIPS certified.
+    {{% endif %}}
