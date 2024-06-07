@@ -182,6 +182,10 @@ The header consists of comments (starting by `#`). Possible keys are:
   variables (XCCDF Values), use the `variables` key instead. This key is
   intended to be used in regression testing of bugs in profiles, it isn't
   intended for casual use.
+- `check` is a string specifying one of the available check engine types
+  (`oval`, `sce`, `any`). It specifies for which check engine the scenario should
+  be executed. The special value `any` means that this scenario works with any
+  check engine and it's the default behavior that is used if this key isn't provided.
 - `remediation` is a string specifying one of the allowed remediation types (eg.
   `bash`, `ansible`, `none`). The `none` value means that the tested rule has no
   implemented remediation. The `none` value can also be used in case that
