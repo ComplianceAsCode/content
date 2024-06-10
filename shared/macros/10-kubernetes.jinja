@@ -177,7 +177,7 @@ spec:
 {{%- endmacro -%}}
 
 {{%- macro kubernetes_variable_instruction(field_name='', variable_name='') -%}}
-Remediations for the {{{ field_name }}} field will be set to {{ .{{{ variable_name }}} }} based on variable {{{ variable_name }}}.
+Remediation will set field {{{ field_name }}} to {{ .{{{ variable_name }}} }} based on the variable {{{ variable_name }}}.
 {{%- endmacro -%}}
 
 
