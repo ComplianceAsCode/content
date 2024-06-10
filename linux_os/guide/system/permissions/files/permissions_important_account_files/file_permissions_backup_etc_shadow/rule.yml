@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if "ubuntu" in product or "debian" or "sle" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
 {{% else %}}
