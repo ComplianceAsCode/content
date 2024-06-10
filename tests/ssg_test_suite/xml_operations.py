@@ -12,6 +12,12 @@ from ssg.constants import ansible_system as ansible_rem_system
 from ssg.constants import puppet_system as puppet_rem_system
 from ssg.constants import anaconda_system as anaconda_rem_system
 from ssg.constants import ignition_system as ignition_rem_system
+from ssg.constants import oval_namespace, SCE_SYSTEM
+
+CHECK_SYSTEM_URI_TO_TYPE = {
+    oval_namespace: "oval",
+    SCE_SYSTEM: "sce",
+}
 
 SYSTEM_ATTRIBUTE = {
     'bash': bash_rem_system,
@@ -307,3 +313,20 @@ def find_fix_in_benchmark(datastream, benchmark_id, rule_id, fix_type='bash', lo
 
     fix = rule.find("xccdf-1.2:fix[@system='{0}']".format(system_attribute), PREFIX_TO_NS)
     return fix
+
+
+def find_checks_in_rule(datastream, benchmark_id, rule_id):
+    """
+    Return check types for given rule from benchmark.
+    """
+    checks = set()
+    rule = find_rule_in_benchmark(datastream, benchmark_id, rule_id)
+    if rule is None:
+        return checks
+    check_els = rule.findall("xccdf-1.2:check", PREFIX_TO_NS)
+    for check_el in check_els:
+        system = check_el.get("system")
+        check = CHECK_SYSTEM_URI_TO_TYPE.get(system, None)
+        if check is not None:
+            checks.add(check)
+    return checks

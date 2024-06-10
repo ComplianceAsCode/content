@@ -406,6 +406,7 @@ class RuleChecker(oscap.Checker):
         return all_tests
 
     def _get_rule_test_content(self, rule):
+        checks = xml_operations.find_checks_in_rule(self.datastream, self.benchmark_id, rule.id)
         all_tests = self._load_all_tests(rule)
         scenarios = []
         other_content = dict()
@@ -414,8 +415,8 @@ class RuleChecker(oscap.Checker):
             if re.search(scenario_matches_regex, file_name):
                 scenario = Scenario(file_name, file_content)
                 scenario.override_profile(self.scenarios_profile)
-                if scenario.matches_regex_and_platform(
-                        self.scenarios_regex, self.benchmark_cpes):
+                if scenario.matches_regex_and_check_and_platform(
+                        self.scenarios_regex, checks, self.benchmark_cpes):
                     scenarios.append(scenario)
             else:
                 other_content[file_name] = file_content
@@ -532,6 +533,13 @@ class RuleChecker(oscap.Checker):
 
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
+        if "sce" in scenario.script_params["check"] and not self.test_env.sce_support:
+            logging.warning(
+                "Scenario {0} is used for SCE testing but OpenSCAP installed "
+                "on the back end doesn't support SCE. To test SCE, please "
+                "install the openscap-engine-sce package on the back end.".format(scenario.script)
+            )
+            return
         if not _apply_script(
                 remote_rule_dir, self.test_env, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
@@ -586,6 +594,7 @@ class Scenario():
             'templates': [],
             'packages': [],
             'platform': ['multi_platform_all'],
+            'check': ['any'],
             'remediation': ['all'],
             'variables': [],
         }
@@ -645,9 +654,22 @@ class Scenario():
                 self.script)
             return False
 
-    def matches_regex_and_platform(self, scenarios_regex, benchmark_cpes):
+    def matches_check(self, rule_checks):
+        if "any" in self.script_params["check"]:
+            return True
+        for check in self.script_params["check"]:
+            if check in rule_checks:
+                return True
+        logging.warning(
+            "Script %s is not applicable for %s check type" %
+            (self.script, ", ".join(self.script_params['check'])))
+        return False
+
+
+    def matches_regex_and_check_and_platform(self, scenarios_regex, checks, benchmark_cpes):
         return (
             self.matches_regex(scenarios_regex)
+            and self.matches_check(checks)
             and self.matches_platform(benchmark_cpes))
 
 

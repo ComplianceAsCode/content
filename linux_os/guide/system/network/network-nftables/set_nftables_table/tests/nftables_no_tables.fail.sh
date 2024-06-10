@@ -1,4 +1,5 @@
 #!/bin/bash
+# check = sce
 # variables = var_nftables_family=inet,var_nftables_table=filter
 
 nft list tables |
