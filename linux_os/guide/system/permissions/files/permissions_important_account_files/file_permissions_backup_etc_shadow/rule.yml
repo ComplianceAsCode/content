@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if "ubuntu" in product or "debian" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
 {{% else %}}
@@ -59,4 +59,6 @@ template:
         filemode@ubuntu1804: '0640'
         filemode@ubuntu2004: '0640'
         filemode@ubuntu2204: '0640'
+        filemode@sle12: '0640'
+        filemode@sle15: '0640'
         missing_file_pass: 'true'
