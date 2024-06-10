@@ -533,6 +533,13 @@ class RuleChecker(oscap.Checker):
 
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
+        if "sce" in scenario.script_params["check"] and not self.test_env.sce_support:
+            logging.warning(
+                "Scenario {0} is used for SCE testing but OpenSCAP installed "
+                "on the back end doesn't support SCE. To test SCE, please "
+                "install the openscap-engine-sce package on the back end.".format(scenario.script)
+            )
+            return
         if not _apply_script(
                 remote_rule_dir, self.test_env, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
