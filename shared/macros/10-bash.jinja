@@ -2483,7 +2483,8 @@ lines will be inserted at the beginning of the profile.
 mkdir -p /etc/dconf/profile
 dconf_profile_path=/etc/dconf/profile/{{{ profile }}}
 
-[[ -e "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
+[[ -s "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
+chmod 0644 "${dconf_profile_path}"
 
 if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_profile_path}"; then
     sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
