@@ -501,7 +501,7 @@ def main():
         default="Platform",
         choices=["Node", "Platform"])
     cluster_test_parser.add_argument(
-        '--namespace', help='Namespace where compliance operator is installed', dest="namespace", default="openshift-compliance"
+        '--namespace', help='Namespace where compliance operator is installed. Default is "openshift-compliance".', dest="namespace", default="openshift-compliance"
     )
     cluster_test_parser.set_defaults(func=clusterTestFunc)
 
