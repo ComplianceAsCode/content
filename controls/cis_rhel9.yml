@@ -385,6 +385,15 @@ controls:
       - l1_workstation
     status: manual
 
+  - id: 1.2.2.1
+    title: Ensure updates, patches, and additional security software are installed (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - security_patches_up_to_date
+
   - id: 1.3.1
     title: Ensure AIDE is installed (Automated)
     levels:
@@ -710,15 +719,6 @@ controls:
     status: automated
     rules:
       - gnome_gdm_disable_xdmcp
-
-  - id: 1.9
-    title: Ensure updates, patches, and additional security software are installed (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    related_rules:
-      - security_patches_up_to_date
 
   - id: "1.10"
     title: Ensure system-wide crypto policy is not legacy (Automated)
