@@ -245,6 +245,42 @@ controls:
     rules:
       - mount_option_var_nosuid
 
+  - id: 1.1.2.5.1
+    title: Ensure separate partition exists for /var/tmp (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - partition_for_var_tmp
+
+  - id: 1.1.2.5.2
+    title: Ensure nodev option set on /var/tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_tmp_nodev
+
+  - id: 1.1.2.5.3
+    title: Ensure nosuid option set on /var/tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_tmp_nosuid
+
+  - id: 1.1.2.5.4
+    title: Ensure noexec option set on /var/tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_var_tmp_noexec
+
   - id: 1.1.3.1
     title: Ensure separate partition exists for /var (Automated)
     levels:
