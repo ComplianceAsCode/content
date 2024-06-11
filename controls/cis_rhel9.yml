@@ -467,36 +467,6 @@ controls:
     rules:
       - package_setroubleshoot_removed
 
-  - id: 1.3.1
-    title: Ensure AIDE is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_aide_installed
-      - aide_build_database
-
-  - id: 1.3.2
-    title: Ensure filesystem integrity is regularly checked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - aide_periodic_cron_checking
-
-  - id: 1.3.3
-    title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - aide_check_audit_tools
-    related_rules:
-      - aide_use_fips_hashes
-
   - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
     levels:
@@ -511,13 +481,14 @@ controls:
       - grub2_uefi_password
 
   - id: 1.4.2
-    title: Ensure permissions on bootloader config are configured (Automated)
+    title: Ensure access to bootloader config is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: pending
     notes: <-
       RHEL9 unified the paths for grub2 files.
+      This requirement demands a deeper review of the rules.
     rules:
       - file_groupowner_grub2_cfg
       - file_owner_grub2_cfg
@@ -2324,6 +2295,36 @@ controls:
     rules:
       - ensure_root_password_configured
       - no_empty_passwords_etc_shadow
+
+  - id: 1.3.1
+    title: Ensure AIDE is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_aide_installed
+      - aide_build_database
+
+  - id: 1.3.2
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_periodic_cron_checking
+
+  - id: 1.3.3
+    title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_check_audit_tools
+    related_rules:
+      - aide_use_fips_hashes
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
