@@ -505,15 +505,26 @@ controls:
       - file_permissions_efi_user_cfg
 
   - id: 1.5.1
-    title: Ensure core dump storage is disabled (Automated)
+    title: Ensure address space layout randomization is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Address Space Layout Randomization (ASLR)
+    rules:
+      - sysctl_kernel_randomize_va_space
+
+  - id: 1.5.2
+    title: Ensure ptrace_scope is restricted (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - coredump_disable_storage
+      - sysctl_kernel_yama_ptrace_scope
 
-  - id: 1.5.2
+  - id: 1.5.3
     title: Ensure core dump backtraces are disabled (Automated)
     levels:
       - l1_server
@@ -522,14 +533,14 @@ controls:
     rules:
       - coredump_disable_backtraces
 
-  - id: 1.5.3
-    title: Ensure address space layout randomization (ASLR) is enabled (Automated)
+  - id: 1.5.4
+    title: Ensure core dump storage is disabled (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
-      - sysctl_kernel_randomize_va_space
+      - coredump_disable_storage
 
   - id: 1.7.1
     title: Ensure message of the day is configured properly (Automated)
