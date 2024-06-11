@@ -155,6 +155,42 @@ controls:
     rules:
       - mount_option_tmp_noexec
 
+  - id: 1.1.2.2.1
+    title: Ensure /dev/shm is a separate partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - partition_for_dev_shm
+
+  - id: 1.1.2.2.2
+    title: Ensure nodev option set on /dev/shm partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_dev_shm_nodev
+
+  - id: 1.1.2.2.3
+    title: Ensure nosuid option set on /dev/shm partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_dev_shm_nosuid
+
+  - id: 1.1.2.2.4
+    title: Ensure noexec option set on /dev/shm partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_dev_shm_noexec
+
   - id: 1.1.3.1
     title: Ensure separate partition exists for /var (Automated)
     levels:
