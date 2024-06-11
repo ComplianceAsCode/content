@@ -1,5 +1,5 @@
 #!/bin/bash
-# platforms = multi_platform_ubuntu
+# platform = multi_platform_ubuntu
 # packages = dconf,gdm
 
 clean_dconf_settings

@@ -1,5 +1,5 @@
 #!/bin/bash
-# platforms = multi_platform_ubuntu
+# platform = multi_platform_ubuntu
 
 sed '/AllowUnauthenticated/Id' -i /etc/apt/apt.conf /etc/apt/apt.conf.d/*
 

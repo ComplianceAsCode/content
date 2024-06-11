@@ -1,5 +1,5 @@
 #!/bin/bash
-# platforms = multi_platform_ubuntu
+# platform = multi_platform_ubuntu
 
 sshd_approved_macs="hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com"
 
