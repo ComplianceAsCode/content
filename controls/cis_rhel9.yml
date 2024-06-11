@@ -119,7 +119,7 @@ controls:
       - l2_workstation
     status: manual
 
-  - id: 1.1.2.1
+  - id: 1.1.2.1.1
     title: Ensure /tmp is a separate partition (Automated)
     levels:
       - l1_server
@@ -128,7 +128,7 @@ controls:
     rules:
       - partition_for_tmp
 
-  - id: 1.1.2.2
+  - id: 1.1.2.1.2
     title: Ensure nodev option set on /tmp partition (Automated)
     levels:
       - l1_server
@@ -137,16 +137,7 @@ controls:
     rules:
       - mount_option_tmp_nodev
 
-  - id: 1.1.2.3
-    title: Ensure noexec option set on /tmp partition (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - mount_option_tmp_noexec
-
-  - id: 1.1.2.4
+  - id: 1.1.2.1.3
     title: Ensure nosuid option set on /tmp partition (Automated)
     levels:
       - l1_server
@@ -154,6 +145,15 @@ controls:
     status: automated
     rules:
       - mount_option_tmp_nosuid
+
+  - id: 1.1.2.1.4
+    title: Ensure noexec option set on /tmp partition (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - mount_option_tmp_noexec
 
   - id: 1.1.3.1
     title: Ensure separate partition exists for /var (Automated)
