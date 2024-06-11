@@ -176,6 +176,10 @@ spec:
         overwrite: true
 {{%- endmacro -%}}
 
+{{%- macro kubernetes_variable_instruction(field_name='', variable_name='') -%}}
+Remediation will set field {{{ field_name }}} to {{ .{{{ variable_name }}} }} based on the variable {{{ variable_name }}}.
+{{%- endmacro -%}}
+
 
 {{#
   Macro which generates Kubernetes remediation in MachineConfig format with
