@@ -38,6 +38,7 @@ SSG_REF_URIS = {
 }
 
 product_directories = [
+    'al2023',
     'alinux2',
     'alinux3',
     'anolis8',
@@ -47,7 +48,6 @@ product_directories = [
     'example',
     'eks',
     'fedora',
-    'al2023',
     'firefox',
     'macos1015',
     'ocp4',
@@ -199,6 +199,7 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 2": "alinux2",
     "Alibaba Cloud Linux 3": "alinux3",
+    "Amazon Linux 2023": "al2023",
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Chromium": "chromium",
@@ -208,7 +209,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Example": "example",
     "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
-    "Amazon Linux 2023": "al2023",
     "Firefox": "firefox",
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 4": "ocp4",
@@ -286,13 +286,13 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "al", "rhv", "debian", "ubuntu",
                        "example", "eks", "alinux", "uos", "anolis", "openembedded"]
 
 MULTI_PLATFORM_MAPPING = {
+    "multi_platform_al": ["al2023"],
     "multi_platform_alinux": ["alinux2", "alinux3"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
     "multi_platform_debian": ["debian10", "debian11", "debian12"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
-    "multi_platform_al": ["al2023"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
@@ -454,11 +454,11 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
+    'al': 'Amazon Linux',
     'alinux': 'Alibaba Cloud Linux',
     'anolis': 'Anolis OS',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
-    'al': 'Amazon Linux',
     'firefox': 'Mozilla Firefox',
     'macos': 'Apple macOS',
     'rhel': 'Red Hat Enterprise Linux',
