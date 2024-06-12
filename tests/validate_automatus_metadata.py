@@ -39,7 +39,8 @@ def main() -> int:
     for test_file in test_files:
         if not _test_filename_valid(test_file) != 0:
             return_value = 1
-        with open(test_file, "r") as f:
+        full_path = os.path.join(args.root, test_file)
+        with open(full_path, "r") as f:
             for line in f:
                 if not line.startswith("#"):
                     break
