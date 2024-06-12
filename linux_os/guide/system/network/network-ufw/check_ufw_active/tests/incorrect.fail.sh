@@ -1,4 +1,4 @@
-# package = ufw
+# packages = ufw
 # remediation = none
 
 systemctl enable --now ufw
