@@ -7,7 +7,7 @@
 <xsl:variable name="product_stig_id_name">AL2023_STIG</xsl:variable>
 <xsl:variable name="prod_type">al2023</xsl:variable>
 
-<!-- Define URI of official Center for Internet Security Benchmark for Amazon Linux 2023 2023 -->
+<!-- Define URI of official Center for Internet Security Benchmark for Amazon Linux 2023 -->
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Amazon_Linux_Benchmark_v1.0.pdf</xsl:variable>
 
 <!-- Define URI for custom policy reference which can be used for linking to corporate policy -->

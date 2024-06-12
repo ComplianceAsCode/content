@@ -4,7 +4,7 @@ title: 'Standard System Security Profile for Amazon Linux 2023'
 
 description: |-
     This profile contains rules to ensure standard security baseline
-    of a Amazon Linux 2023 2023 system. Regardless of your system's workload
+    of a Amazon Linux 2023 system. Regardless of your system's workload
     all of these checks should pass.
 
 selections:
