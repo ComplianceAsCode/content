@@ -157,6 +157,7 @@ jobs:
       -   name: Build
           run: |-
             ./build_product \
+                al2023 \
                 alinux2 \
                 alinux3 \
                 anolis23 \
@@ -164,14 +165,13 @@ jobs:
                 chromium \
                 fedora \
                 firefox \
+                ocp4 \
                 rhcos4 \
                 rhel7 \
                 rhel8 \
                 rhel9 \
                 rhel10 \
                 uos20 \
-                ocp4 \
-                al2023
           env:
             ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
       -   name: Test
