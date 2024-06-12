@@ -377,7 +377,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2)
     set_tests_properties("utils-build_control_from_reference_sanity" PROPERTIES DEPENDS "test-rule-dir-json")
 endif()
 
-if(PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 9)
     add_test(
         NAME "validate_automatus_metadata"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/validate_automatus_metadata.py" "--root" "${CMAKE_SOURCE_DIR}"
