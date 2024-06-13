@@ -1475,6 +1475,246 @@ controls:
     related_rules:
       - set_nftables_loopback_traffic
 
+  - id: 5.1.1
+    title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_sshd_config
+      - file_owner_sshd_config
+      - file_permissions_sshd_config
+
+  - id: 5.1.2
+    title: Ensure permissions on SSH private host key files are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_permissions_sshd_private_key
+      - file_ownership_sshd_private_key
+      - file_groupownership_sshd_private_key
+
+  - id: 5.1.3
+    title: Ensure permissions on SSH public host key files are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_permissions_sshd_pub_key
+      - file_ownership_sshd_pub_key
+      - file_groupownership_sshd_pub_key
+
+  - id: 5.1.4
+    title: Ensure sshd Ciphers are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Introduced in CIS RHEL9 v2.0.0
+      The status was automated but we need to double check the approach used in this rule.
+      Therefore I moved it to pending until deeper investigation.
+    rules:
+      - sshd_use_approved_ciphers
+      - sshd_approved_ciphers=cis_rhel9
+
+  - id: 5.1.5
+    title: Ensure sshd KexAlgorithms is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      The status was automated but we need to double check the approach used in this rule.
+      Therefore I moved it to pending until deeper investigation.
+    rules:
+      - sshd_use_strong_kex
+      - sshd_strong_kex=cis_rhel9
+
+  - id: 5.1.6
+    title: Ensure sshd MACs are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      The status was automated but we need to double check the approach used in this rule.
+      Therefore I moved it to pending until deeper investigation.
+    rules:
+      - sshd_use_strong_macs
+      - sshd_strong_macs=cis_rhel9
+
+  - id: 5.1.7
+    title: Ensure sshd access is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_limit_user_access
+
+  - id: 5.1.8
+    title: Ensure sshd Banner is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_enable_warning_banner_net
+    related_rules:
+      - sshd_enable_warning_banner
+
+  - id: 5.1.9
+    title: Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The requirement gives an example of 45 seconds, but is flexible about the values. It is only
+      necessary to ensure there is a timeout configured in alignment to the site policy.
+    rules:
+      - sshd_idle_timeout_value=5_minutes
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive
+      - var_sshd_set_keepalive=1
+
+  - id: 5.1.10
+    title: Ensure sshd DisableForwarding is enabled (Automated)
+    levels:
+      - l2_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      New templated rule is necessary for "disableforwarding" option.
+    related_rules:
+      - sshd_disable_tcp_forwarding
+      - sshd_disable_x11_forwarding
+
+  - id: 5.1.11
+    title: Ensure sshd GSSAPIAuthentication is disabled (Automated)
+    levels:
+      - l2_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Introduced in CIS RHEL9 v2.0.0
+    rules:
+      - sshd_disable_gssapi_auth
+
+  - id: 5.1.12
+    title: Ensure sshd HostbasedAuthentication is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - disable_host_auth
+
+  - id: 5.1.13
+    title: Ensure sshd IgnoreRhosts is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_disable_rhosts
+
+  - id: 5.1.14
+    title: Ensure sshd LoginGraceTime is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
+
+  - id: 5.1.15
+    title: Ensure sshd LogLevel is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The CIS benchmark is not opinionated about which loglevel is selected here. Here, this
+      profile uses VERBOSE by default, as it allows for the capture of login and logout activity
+      as well as key fingerprints.
+    rules:
+      - sshd_set_loglevel_verbose
+    related_rules:
+      - sshd_set_loglevel_info
+
+  - id: 5.1.16
+    title: Ensure sshd MaxAuthTries is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_max_auth_tries_value=4
+      - sshd_set_max_auth_tries
+
+  - id: 5.1.17
+    title: Ensure sshd MaxStartups is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_set_maxstartups
+      - var_sshd_set_maxstartups=10:30:60
+
+  - id: 5.1.18
+    title: Ensure sshd MaxSessions is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_set_max_sessions
+      - var_sshd_max_sessions=10
+
+  - id: 5.1.19
+    title: Ensure sshd PermitEmptyPasswords is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_disable_empty_passwords
+
+  - id: 5.1.20
+    title: Ensure sshd PermitRootLogin is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_disable_root_login
+
+  - id: 5.1.21
+    title: Ensure sshd PermitUserEnvironment is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_do_not_permit_user_env
+
+  - id: 5.1.22
+    title: Ensure sshd UsePAM is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sshd_enable_pam
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2019,205 +2259,7 @@ controls:
       - package_logrotate_installed
       - timer_logrotate_enabled
 
-  - id: 5.2.1
-    title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_sshd_config
-      - file_owner_sshd_config
-      - file_permissions_sshd_config
 
-  - id: 5.2.2
-    title: Ensure permissions on SSH private host key files are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_sshd_private_key
-      - file_ownership_sshd_private_key
-      - file_groupownership_sshd_private_key
-
-  - id: 5.2.3
-    title: Ensure permissions on SSH public host key files are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_permissions_sshd_pub_key
-      - file_ownership_sshd_pub_key
-      - file_groupownership_sshd_pub_key
-
-  - id: 5.2.4
-    title: Ensure SSH access is limited (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_limit_user_access
-
-  - id: 5.2.5
-    title: Ensure SSH LogLevel is appropriate (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    # The CIS benchmark is not opinionated about which loglevel is selected
-    # here. Here, this profile uses VERBOSE by default, as it allows for
-    # the capture of login and logout activity as well as key fingerprints.
-    rules:
-      - sshd_set_loglevel_verbose
-    related_rules:
-      - sshd_set_loglevel_info
-
-  - id: 5.2.6
-    title: Ensure SSH PAM is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_enable_pam
-
-  - id: 5.2.7
-    title: Ensure SSH root login is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_root_login
-
-  - id: 5.2.8
-    title: Ensure SSH HostbasedAuthentication is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - disable_host_auth
-
-  - id: 5.2.9
-    title: Ensure SSH PermitEmptyPasswords is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_empty_passwords
-
-  - id: 5.2.10
-    title: Ensure SSH PermitUserEnvironment is disabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_do_not_permit_user_env
-
-  - id: 5.2.11
-    title: Ensure SSH IgnoreRhosts is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_rhosts
-
-  - id: 5.2.12
-    title: Ensure SSH X11 forwarding is disabled (Automated)
-    levels:
-      - l2_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_disable_x11_forwarding
-
-  - id: 5.2.13
-    title: Ensure SSH AllowTcpForwarding is disabled (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - sshd_disable_tcp_forwarding
-
-  - id: 5.2.14
-    title: Ensure system-wide crypto policy is not over-ridden (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - configure_ssh_crypto_policy
-
-  - id: 5.2.15
-    title: Ensure SSH warning banner is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_enable_warning_banner_net
-    related_rules:
-      - sshd_enable_warning_banner
-
-  - id: 5.2.16
-    title: Ensure SSH MaxAuthTries is set to 4 or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_max_auth_tries_value=4
-      - sshd_set_max_auth_tries
-
-  - id: 5.2.17
-    title: Ensure SSH MaxStartups is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_set_maxstartups
-      - var_sshd_set_maxstartups=10:30:60
-
-  - id: 5.2.18
-    title: Ensure SSH MaxSessions is set to 10 or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_set_max_sessions
-      - var_sshd_max_sessions=10
-
-  - id: 5.2.19
-    title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_set_login_grace_time
-      - var_sshd_set_login_grace_time=60
-
-  - id: 5.2.20
-    title: Ensure SSH Idle Timeout Interval is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sshd_idle_timeout_value=15_minutes
-      - sshd_set_idle_timeout
-      - sshd_set_keepalive
-      - var_sshd_set_keepalive=1
 
   - id: 5.3.1
     title: Ensure sudo is installed (Automated)
