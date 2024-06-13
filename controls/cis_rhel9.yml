@@ -1089,6 +1089,94 @@ controls:
     rules:
       - chronyd_run_as_chrony_user
 
+  - id: 2.4.1.1
+    title: Ensure cron daemon is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - service_crond_enabled
+
+  - id: 2.4.1.2
+    title: Ensure permissions on /etc/crontab are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_crontab
+      - file_owner_crontab
+      - file_permissions_crontab
+
+  - id: 2.4.1.3
+    title: Ensure permissions on /etc/cron.hourly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_hourly
+      - file_owner_cron_hourly
+      - file_permissions_cron_hourly
+
+  - id: 2.4.1.4
+    title: Ensure permissions on /etc/cron.daily are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_daily
+      - file_owner_cron_daily
+      - file_permissions_cron_daily
+
+  - id: 2.4.1.5
+    title: Ensure permissions on /etc/cron.weekly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_weekly
+      - file_owner_cron_weekly
+      - file_permissions_cron_weekly
+
+  - id: 2.4.1.6
+    title: Ensure permissions on /etc/cron.monthly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_monthly
+      - file_owner_cron_monthly
+      - file_permissions_cron_monthly
+
+  - id: 2.4.1.7
+    title: Ensure permissions on /etc/cron.d are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_groupowner_cron_d
+      - file_owner_cron_d
+      - file_permissions_cron_d
+
+  - id: 2.4.1.8
+    title: Ensure crontab is restricted to authorized users (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - file_cron_deny_not_exist
+      - file_cron_allow_exists
+      - file_groupowner_cron_allow
+      - file_owner_cron_allow
+      - file_permissions_cron_allow
+
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)
     levels:
@@ -1899,93 +1987,7 @@ controls:
       - package_logrotate_installed
       - timer_logrotate_enabled
 
-  - id: 5.1.1
-    title: Ensure cron daemon is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_crond_enabled
 
-  - id: 5.1.2
-    title: Ensure permissions on /etc/crontab are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_crontab
-      - file_owner_crontab
-      - file_permissions_crontab
-
-  - id: 5.1.3
-    title: Ensure permissions on /etc/cron.hourly are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_hourly
-      - file_owner_cron_hourly
-      - file_permissions_cron_hourly
-
-  - id: 5.1.4
-    title: Ensure permissions on /etc/cron.daily are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_daily
-      - file_owner_cron_daily
-      - file_permissions_cron_daily
-
-  - id: 5.1.5
-    title: Ensure permissions on /etc/cron.weekly are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_weekly
-      - file_owner_cron_weekly
-      - file_permissions_cron_weekly
-
-  - id: 5.1.6
-    title: Ensure permissions on /etc/cron.monthly are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_monthly
-      - file_owner_cron_monthly
-      - file_permissions_cron_monthly
-
-  - id: 5.1.7
-    title: Ensure permissions on /etc/cron.d are configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_groupowner_cron_d
-      - file_owner_cron_d
-      - file_permissions_cron_d
-
-  - id: 5.1.8
-    title: Ensure cron is restricted to authorized users (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_cron_deny_not_exist
-      - file_cron_allow_exists
-      - file_groupowner_cron_allow
-      - file_owner_cron_allow
-      - file_permissions_cron_allow
 
   - id: 5.1.9
     title: Ensure at is restricted to authorized users (Automated)
