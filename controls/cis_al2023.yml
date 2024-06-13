@@ -326,8 +326,6 @@ controls:
     levels:
       - l1_server
     status: automated
-    notes: <-
-      RHEL9 unified the paths for grub2 files.
     rules:
       - grub2_password
     related_rules:
@@ -338,8 +336,6 @@ controls:
     levels:
       - l1_server
     status: automated
-    notes: <-
-      RHEL9 unified the paths for grub2 files.
     rules:
       - file_groupowner_grub2_cfg
       - file_owner_grub2_cfg
@@ -624,7 +620,7 @@ controls:
     rules:
       - chronyd_specify_remote_server
       - chronyd_run_as_chrony_user
-      - var_multiple_time_servers=rhel
+      - var_multiple_time_servers=amazon
 
   - id: 2.2.1
     title: Ensure xorg-x11-server-common is not installed (Automated)
@@ -763,7 +759,6 @@ controls:
       - service_nfs_disabled
     related_rules:
       - package_nfs-utils_removed
-      # The nfs-utils package is required for systems with GUI or by some libvirt packages
 
   - id: 2.2.17
     title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
@@ -996,11 +991,6 @@ controls:
     levels:
       - l1_server
     status: supported
-    notes:
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use. firewalld uses the inet firewalld that is created when firewalld is installed.
-      The OVAL check cannot be automated but an SCE is availble.
     rules:
       - set_nftables_table
       - var_nftables_family=inet
@@ -1011,10 +1001,6 @@ controls:
     levels:
       - l1_server
     status: supported
-    notes: |-
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use. When using firewalld the base chains are installed by default.
     related_rules:
       - set_nftables_base_chain
       - var_nftables_table=firewalld
@@ -1053,10 +1039,6 @@ controls:
     levels:
       - l1_server
     status: supported
-    notes: |-
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use.
     related_rules:
       - nftables_ensure_default_deny_policy
 
@@ -1681,9 +1663,6 @@ controls:
     levels:
       - l1_server
     status: automated
-    # The CIS benchmark is not opinionated about which loglevel is selected
-    # here. Here, this profile uses VERBOSE by default, as it allows for
-    # the capture of login and logout activity as well as key fingerprints.
     rules:
       - sshd_set_loglevel_verbose
     related_rules:
@@ -2315,4 +2294,3 @@ controls:
     status: automated
     rules:
       - accounts_user_dot_no_world_writable_programs
-
