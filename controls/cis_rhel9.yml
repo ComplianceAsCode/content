@@ -1475,33 +1475,6 @@ controls:
     related_rules:
       - set_nftables_loopback_traffic
 
-  - id: 3.4.2.1
-    title: Ensure firewalld default zone is set (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - set_firewalld_default_zone
-
-  - id: 3.4.2.2
-    title: Ensure at least one nftables table exists (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: supported
-    notes:
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use. firewalld uses the inet firewalld that is created when firewalld is installed.
-      The OVAL check cannot be automated but an SCE is availble.
-    rules:
-      - set_nftables_table
-      - var_nftables_family=inet
-      - var_nftables_table=firewalld
-
-
-
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
