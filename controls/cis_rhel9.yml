@@ -1990,6 +1990,48 @@ controls:
     rules:
       - accounts_password_pam_enforce_root
 
+  - id: 5.3.3.3.1
+    title: Ensure password history remember is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Although mentioned in the section 5.3.3.3, there is no explicit requirement to configure
+      retry option of pam_pwhistory. If come in the future, the rule accounts_password_pam_retry
+      can be used.
+    rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+      - var_password_pam_remember_control_flag=requisite_or_required
+      - var_password_pam_remember=24
+    related_rules:
+      - accounts_password_pam_retry
+
+  - id: 5.3.3.3.2
+    title: Ensure password history is enforced for the root user (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: planned
+    notes: |-
+      A new rule needs to be created to check and remediate the enforce_for_root option in
+      /etc/security/pwhistory.conf. accounts_password_pam_enforce_root can be used as reference.
+
+  - id: 5.3.3.3.3
+    title: Ensure pam_pwhistory includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      In RHEL 9 pam_pwhistory is enabled via authselect feature, as required in 5.3.2.4. The
+      feature automatically set "use_authok" option. In any case, we don't have a rule to check
+      this option specifically.
+    related_rules:
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2533,22 +2575,6 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
-
-  - id: 5.5.3
-    title: Ensure password reuse is limited (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
-      See here for more details about pam_unix.so:
-      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
-    rules:
-      - accounts_password_pam_pwhistory_remember_password_auth
-      - accounts_password_pam_pwhistory_remember_system_auth
-      - var_password_pam_remember_control_flag=requisite_or_required
-      - var_password_pam_remember=5
 
   - id: 5.5.4
     title: Ensure password hashing algorithm is SHA-512 or yescrypt (Automated)
