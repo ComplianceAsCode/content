@@ -1177,6 +1177,21 @@ controls:
       - file_owner_cron_allow
       - file_permissions_cron_allow
 
+  - id: 2.4.2.1
+    title: Ensure at is restricted to authorized users (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      It is necessary to create a rule to ensure the existence of at.allow.
+      file_cron_allow_exists can be used as reference for a new templated rule.
+    rules:
+      - file_at_deny_not_exist
+      - file_groupowner_at_allow
+      - file_owner_at_allow
+      - file_permissions_at_allow
+
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)
     levels:
@@ -1986,20 +2001,6 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
-
-
-
-  - id: 5.1.9
-    title: Ensure at is restricted to authorized users (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - file_at_deny_not_exist
-      - file_groupowner_at_allow
-      - file_owner_at_allow
-      - file_permissions_at_allow
 
   - id: 5.2.1
     title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
