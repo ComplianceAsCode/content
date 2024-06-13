@@ -1208,13 +1208,13 @@ controls:
       - wireless_disable_interfaces
 
   - id: 3.1.3
-    title: Ensure TIPC is disabled (Automated)
+    title: Ensure bluetooth services are not in use (Automated)
     levels:
-      - l2_server
+      - l1_server
       - l2_workstation
     status: automated
     rules:
-      - kernel_module_tipc_disabled
+      - service_bluetooth_disabled
 
   - id: 3.2.1
     title: Ensure IP forwarding is disabled (Automated)
