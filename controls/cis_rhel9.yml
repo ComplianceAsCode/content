@@ -771,6 +771,252 @@ controls:
       - gnome_gdm_disable_xdmcp
 
   - id: 2.1.1
+    title: Ensure autofs services are not in use (Automated)
+    levels:
+      - l1_server
+      - l2_workstation
+    status: automated
+    rules:
+      - service_autofs_disabled
+
+  - id: 2.1.2
+    title: Ensure avahi daemon services are not in use (Automated)
+    levels:
+      - l1_server
+      - l2_workstation
+    status: automated
+    rules:
+      - package_avahi_removed
+    related_rules:
+      - service_avahi-daemon_disabled
+
+  - id: 2.1.3
+    title: Ensure dhcp server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_dhcp_removed
+    related_rules:
+      - service_dhcpd_disabled
+
+  - id: 2.1.4
+    title: Ensure dns server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_bind_removed
+    related_rules:
+      - service_named_disabled
+
+  - id: 2.1.5
+    title: Ensure dnsmasq services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_dnsmasq_removed
+
+  - id: 2.1.6
+    title: Ensure samba file server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_samba_removed
+    related_rules:
+      - service_smb_disabled
+
+  - id: 2.1.7
+    title: Ensure ftp server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_vsftpd_removed
+    related_rules:
+      - service_vsftpd_disabled
+
+  - id: 2.1.8
+    title: Ensure message access server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_dovecot_removed
+      - package_cyrus-imapd_removed
+    related_rules:
+      - service_dovecot_disabled
+    # new rule would be nice to disable cyrus-imapd service
+
+  - id: 2.1.9
+    title: Ensure network file system services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Many of the libvirt packages used by Enterprise Linux virtualization are dependent on the
+      nfs-utils package.
+    rules:
+      - service_nfs_disabled
+    related_rules:
+      - package_nfs-utils_removed
+
+  - id: 2.1.10
+    title: Ensure nis server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_ypserv_removed
+    related_rules:
+      - service_ypserv_disabled
+
+  - id: 2.1.11
+    title: Ensure print server services are not in use (Automated)
+    levels:
+      - l1_server
+    status: automated
+    rules:
+      - package_cups_removed
+    related_rules:
+      - service_cups_disabled
+
+  - id: 2.1.12
+    title: Ensure rpcbind services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Many of the libvirt packages used by Enterprise Linux virtualization, and the nfs-utils
+      package used for The Network File System (NFS), are dependent on the rpcbind package.
+    rules:
+      - service_rpcbind_disabled
+    related_rules:
+      - package_rpcbind_removed
+
+  - id: 2.1.13
+    title: Ensure rsync services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_rsync_removed
+    related_rules:
+      - service_rsyncd_disabled
+
+  - id: 2.1.14
+    title: Ensure snmp services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_net-snmp_removed
+    related_rules:
+      - service_snmpd_disabled
+
+  - id: 2.1.15
+    title: Ensure telnet server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_telnet-server_removed
+    related_rules:
+      - service_telnet_disabled
+
+  - id: 2.1.16
+    title: Ensure tftp server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_tftp-server_removed
+    related_rules:
+      - service_tftp_disabled
+
+  - id: 2.1.17
+    title: Ensure web proxy server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_squid_removed
+    related_rules:
+      - service_squid_disabled
+
+  - id: 2.1.18
+    title: Ensure web server services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_httpd_removed
+      - package_nginx_removed
+    related_rules:
+      - service_httpd_disabled
+    # rule would be nice to disable nginx service
+
+  - id: 2.1.19
+    title: Ensure xinetd services are not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_xinetd_removed
+    related_rules:
+      - service_xinetd_disabled
+
+  - id: 2.1.20
+    title: Ensure X window server services are not in use (Automated)
+    levels:
+      - l2_server
+    status: automated
+    notes: |-
+      The rule also configures correct run level to prevent unbootable system.
+    rules:
+      - package_xorg-x11-server-common_removed
+      - xwindows_runlevel_target
+
+  - id: 2.1.21
+    title: Ensure mail transfer agents are configured for local-only mode (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes:  |-
+      The rule has_nonlocal_mta currently checks for services listening only on port 25,
+      but the policy checks also for ports 465 and 587
+    rules:
+      - postfix_network_listening_disabled
+      - var_postfix_inet_interfaces=loopback-only
+      - has_nonlocal_mta
+
+  - id: 2.1.22
+    title: Ensure only approved services are listening on a network interface (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 2.1.1
     title: Ensure time synchronization is in use (Automated)
     levels:
       - l1_server
@@ -789,181 +1035,6 @@ controls:
       - chronyd_specify_remote_server
       - chronyd_run_as_chrony_user
       - var_multiple_time_servers=rhel
-
-  - id: 2.2.1
-    title: Ensure xorg-x11-server-common is not installed (Automated)
-    levels:
-      - l2_server
-    status: automated
-    rules:
-      - package_xorg-x11-server-common_removed
-
-  - id: 2.2.2
-    title: Ensure Avahi Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l2_workstation
-    status: automated
-    rules:
-      - package_avahi_removed
-    related_rules:
-      - service_avahi-daemon_disabled
-
-  - id: 2.2.3
-    title: Ensure CUPS is not installed (Automated)
-    levels:
-      - l1_server
-    status: automated
-    rules:
-      - package_cups_removed
-    related_rules:
-      - service_cups_disabled
-
-  - id: 2.2.4
-    title: Ensure DHCP Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_dhcp_removed
-
-  - id: 2.2.5
-    title: Ensure DNS Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_bind_removed
-
-  - id: 2.2.6
-    title: Ensure VSFTP Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_vsftpd_removed
-
-  - id: 2.2.7
-    title: Ensure TFTP Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_tftp-server_removed
-
-  - id: 2.2.8
-    title: Ensure a web server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_httpd_removed
-      - package_nginx_removed
-
-  - id: 2.2.9
-    title: Ensure IMAP and POP3 server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_dovecot_removed
-      - package_cyrus-imapd_removed
-
-  - id: 2.2.10
-    title: Ensure Samba is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_samba_removed
-
-  - id: 2.2.11
-    title: Ensure HTTP Proxy Server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_squid_removed
-
-  - id: 2.2.12
-    title: Ensure net-snmp is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_net-snmp_removed
-
-  - id: 2.2.13
-    title: Ensure telnet-server is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_telnet-server_removed
-
-  - id: 2.2.14
-    title: Ensure dnsmasq is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_dnsmasq_removed
-
-  - id: 2.2.15
-    title: Ensure mail transfer agent is configured for local-only mode (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - postfix_network_listening_disabled
-      - var_postfix_inet_interfaces=loopback-only
-      - has_nonlocal_mta
-
-  - id: 2.2.16
-    title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_nfs_disabled
-    related_rules:
-      - package_nfs-utils_removed
-      # The nfs-utils package is required for systems with GUI or by some libvirt packages
-
-  - id: 2.2.17
-    title: Ensure rpcbind is not installed or the rpcbind services are masked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_rpcbind_disabled
-    related_rules:
-      - package_rpcbind_removed
-
-  - id: 2.2.18
-    title: Ensure rsync-daemon is not installed or the rsyncd service is masked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_rsync_removed
-    related_rules:
-      - service_rsyncd_disabled
 
   - id: 2.3.1
     title: Ensure telnet client is not installed (Automated)
