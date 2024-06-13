@@ -770,17 +770,6 @@ controls:
     rules:
       - gnome_gdm_disable_xdmcp
 
-  - id: "1.10"
-    title: Ensure system-wide crypto policy is not legacy (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: The selected crypto-policy cannot be legacy
-    rules:
-      - configure_crypto_policy
-      - var_system_crypto_policy=default_policy
-
   - id: 2.1.1
     title: Ensure time synchronization is in use (Automated)
     levels:
