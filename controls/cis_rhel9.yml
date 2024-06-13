@@ -1016,6 +1016,51 @@ controls:
       - l1_workstation
     status: manual
 
+  - id: 2.2.1
+    title: Ensure ftp client is not installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_ftp_removed
+
+  - id: 2.2.2
+    title: Ensure ldap client is not installed (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - package_openldap-clients_removed
+
+  - id: 2.2.3
+    title: Ensure nis client is not installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_ypbind_removed
+
+  - id: 2.2.4
+    title: Ensure telnet client is not installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_telnet_removed
+
+  - id: 2.2.5
+    title: Ensure tftp client is not installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_tftp_removed
+
   - id: 2.1.1
     title: Ensure time synchronization is in use (Automated)
     levels:
@@ -1035,42 +1080,6 @@ controls:
       - chronyd_specify_remote_server
       - chronyd_run_as_chrony_user
       - var_multiple_time_servers=rhel
-
-  - id: 2.3.1
-    title: Ensure telnet client is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_telnet_removed
-
-  - id: 2.3.2
-    title: Ensure LDAP client is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_openldap-clients_removed
-
-  - id: 2.3.3
-    title: Ensure TFTP client is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_tftp_removed
-
-  - id: 2.3.4
-    title: Ensure FTP client is not installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_ftp_removed
 
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)
