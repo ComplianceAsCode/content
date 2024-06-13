@@ -1715,6 +1715,76 @@ controls:
     rules:
       - sshd_enable_pam
 
+  - id: 5.2.1
+    title: Ensure sudo is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_sudo_installed
+
+  - id: 5.2.2
+    title: Ensure sudo commands use pty (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_add_use_pty
+
+  - id: 5.2.3
+    title: Ensure sudo log file exists (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_custom_logfile
+
+  - id: 5.2.4
+    title: Ensure users must provide password for escalation (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - sudo_require_authentication
+
+  - id: 5.2.5
+    title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_require_reauthentication
+
+  - id: 5.2.6
+    title: Ensure sudo authentication timeout is configured correctly (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - sudo_require_reauthentication
+
+  - id: 5.2.7
+    title: Ensure access to the su command is restricted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
+      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
+      use of "sudo" for privileged access. Therefore, members of these groups should be manually
+      checked or a different group should be informed.
+    rules:
+      - var_pam_wheel_group_for_su=cis
+      - use_pam_wheel_group_for_su
+      - ensure_pam_wheel_group_empty
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2258,78 +2328,6 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
-
-
-
-  - id: 5.3.1
-    title: Ensure sudo is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_sudo_installed
-
-  - id: 5.3.2
-    title: Ensure sudo commands use pty (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_add_use_pty
-
-  - id: 5.3.3
-    title: Ensure sudo log file exists (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_custom_logfile
-
-  - id: 5.3.4
-    title: Ensure users must provide password for escalation (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - sudo_require_authentication
-
-  - id: 5.3.5
-    title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_require_reauthentication
-
-  - id: 5.3.6
-    title: Ensure sudo authentication timeout is configured correctly (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - sudo_require_reauthentication
-
-  - id: 5.3.7
-    title: Ensure access to the su command is restricted (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: |-
-      Members of "wheel" or GID 0 groups are checked by default if the group option is not set for
-      pam_wheel.so module. The recommendation states the group should be empty to reinforce the
-      use of "sudo" for privileged access. Therefore, members of these groups should be manually
-      checked or a different group should be informed.
-    rules:
-      - var_pam_wheel_group_for_su=cis
-      - use_pam_wheel_group_for_su
-      - ensure_pam_wheel_group_empty
 
   - id: 5.4.1
     title: Ensure custom authselect profile is used (Manual)
