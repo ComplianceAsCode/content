@@ -1422,6 +1422,59 @@ controls:
       - firewalld_loopback_traffic_trusted
       - firewalld_loopback_traffic_restricted
 
+  - id: 4.3.1
+    title: Ensure nftables base chains exist (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use. When using firewalld the base chains are installed by default.
+    related_rules:
+      - set_nftables_base_chain
+      - var_nftables_table=firewalld
+      - var_nftables_family=inet
+      - var_nftables_base_chain_names=chain_names
+      - var_nftables_base_chain_types=chain_types
+      - var_nftables_base_chain_hooks=chain_hooks
+      - var_nftables_base_chain_priorities=chain_priorities
+      - var_nftables_base_chain_policies=chain_policies
+
+  - id: 4.3.2
+    title: Ensure nftables established connections are configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 4.3.3
+    title: Ensure nftables default deny firewall policy (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use.
+    related_rules:
+      - nftables_ensure_default_deny_policy
+
+  - id: 4.3.4
+    title: Ensure nftables loopback traffic is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: supported
+    notes: |-
+      RHEL systems use firewalld for firewall management. Although nftables is the default
+      back-end for firewalld, it is not recommended to use nftables directly when firewalld
+      is in use.
+    related_rules:
+      - set_nftables_loopback_traffic
+
   - id: 3.4.2.1
     title: Ensure firewalld default zone is set (Automated)
     levels:
@@ -1447,45 +1500,7 @@ controls:
       - var_nftables_family=inet
       - var_nftables_table=firewalld
 
-  - id: 3.4.2.3
-    title: Ensure nftables base chains exist (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: supported
-    notes: |-
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use. When using firewalld the base chains are installed by default.
-    related_rules:
-      - set_nftables_base_chain
-      - var_nftables_table=firewalld
-      - var_nftables_family=inet
-      - var_nftables_base_chain_names=chain_names
-      - var_nftables_base_chain_types=chain_types
-      - var_nftables_base_chain_hooks=chain_hooks
-      - var_nftables_base_chain_priorities=chain_priorities
-      - var_nftables_base_chain_policies=chain_policies
 
-  - id: 3.4.2.6
-    title: Ensure nftables established connections are configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 3.4.2.7
-    title: Ensure nftables default deny firewall policy (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: supported
-    notes: |-
-      RHEL systems use firewalld for firewall management. Although nftables is the default
-      back-end for firewalld, it is not recommended to use nftables directly when firewalld
-      is in use.
-    related_rules:
-      - nftables_ensure_default_deny_policy
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
