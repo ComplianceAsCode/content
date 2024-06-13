@@ -621,7 +621,14 @@ then
         sed -i "\\|\\[{{{ path }}}\\]|a\\{{{ key }}}=${escaped_value}" "${DCONFFILE}"
 fi
 
+{{%- if 'ubuntu' in product %}}
+# Make sure permissions allow regular users to read dconf settings.
+# Also define the umask to avoid `dconf update` changing permissions.
+chmod -R u=rwX,go=rX /etc/dconf/db
+(umask 0022 && dconf update)
+{{%- else %}}
 dconf update
+{{%- endif %}}
 {{%- endmacro -%}}
 
 
@@ -648,7 +655,14 @@ then
     echo "/{{{ key }}}/{{{ setting }}}" >> "/etc/dconf/db/{{{ db }}}/locks/{{{ lock_file }}}"
 fi
 
+{{%- if 'ubuntu' in product %}}
+# Make sure permissions allow regular users to read dconf settings.
+# Also define the umask to avoid `dconf update` changing permissions.
+chmod -R u=rwX,go=rX /etc/dconf/db
+(umask 0022 && dconf update)
+{{%- else %}}
 dconf update
+{{%- endif %}}
 {{%- endmacro -%}}
 
 
@@ -2484,9 +2498,13 @@ mkdir -p /etc/dconf/profile
 dconf_profile_path=/etc/dconf/profile/{{{ profile }}}
 
 [[ -s "${dconf_profile_path}" ]] || echo > "${dconf_profile_path}"
-chmod 0644 "${dconf_profile_path}"
 
 if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_profile_path}"; then
     sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
 fi
+
+# Make sure permissions allow regular users to read dconf settings.
+# Also define the umask to avoid `dconf update` changing permissions.
+chmod -R u=rwX,go=rX /etc/dconf/profile
+(umask 0022 && dconf update)
 {{%- endmacro -%}}
