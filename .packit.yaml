@@ -15,7 +15,6 @@ jobs:
   trigger: pull_request
   targets:
   - fedora-all-x86_64
-  - epel-7-x86_64
   - centos-stream-8-x86_64
   - centos-stream-9-x86_64
 
@@ -30,8 +29,6 @@ jobs:
   identifier: /static-checks
   tmt_plan: /static-checks
   targets:
-    epel-7:
-      distros: [ centos-7 ]
     centos-stream-8: {}
     centos-stream-9: {}
 
@@ -40,9 +37,6 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/ansible/anssi_bp28_high
   tmt_plan: /hardening/host-os/ansible/anssi_bp28_high
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
 # disable for now - it seems to be broken on CentOS Stream
 #- <<: *test-static-checks
 #  identifier: /hardening/host-os/ansible/ccn_advanced
@@ -73,9 +67,6 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/ansible/ism_o
   tmt_plan: /hardening/host-os/ansible/ism_o
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/ansible/ospp
   tmt_plan: /hardening/host-os/ansible/ospp
@@ -89,9 +80,6 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/anssi_bp28_high
   tmt_plan: /hardening/host-os/oscap/anssi_bp28_high
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ccn_advanced
   tmt_plan: /hardening/host-os/oscap/ccn_advanced
@@ -121,9 +109,6 @@ jobs:
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ism_o
   tmt_plan: /hardening/host-os/oscap/ism_o
-  targets:
-    centos-stream-8: {}
-    centos-stream-9: {}
 - <<: *test-static-checks
   identifier: /hardening/host-os/oscap/ospp
   tmt_plan: /hardening/host-os/oscap/ospp
