@@ -1061,7 +1061,7 @@ controls:
     rules:
       - package_tftp_removed
 
-  - id: 2.1.1
+  - id: 2.3.1
     title: Ensure time synchronization is in use (Automated)
     levels:
       - l1_server
@@ -1070,7 +1070,7 @@ controls:
     related_rules:
       - package_chrony_installed
 
-  - id: 2.1.2
+  - id: 2.3.2
     title: Ensure chrony is configured (Automated)
     levels:
       - l1_server
@@ -1078,8 +1078,16 @@ controls:
     status: automated
     rules:
       - chronyd_specify_remote_server
-      - chronyd_run_as_chrony_user
       - var_multiple_time_servers=rhel
+
+  - id: 2.3.3
+    title: Ensure chrony is not run as the root user (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - chronyd_run_as_chrony_user
 
   - id: 2.4
     title: Ensure nonessential services are removed or masked (Manual)
