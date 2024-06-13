@@ -2032,6 +2032,53 @@ controls:
       - accounts_password_pam_pwhistory_remember_password_auth
       - accounts_password_pam_pwhistory_remember_system_auth
 
+  - id: 5.3.3.4.1
+    title: Ensure pam_unix does not include nullok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The rule more specifically used in this requirement also satify the requirement 5.3.2.5.
+    rules:
+      - no_empty_passwords
+
+  - id: 5.3.3.4.2
+    title: Ensure pam_unix does not include remember (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Usage of pam_unix.so module together with "remember" option is deprecated and is not
+      recommened by this policy. Instead, it should be used remember option of pam_pwhistory
+      module, as required in 5.3.3.3.1. See here for more details about pam_unix.so:
+      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
+      A new rule needs to be created to remove the remember option from pam_unix module.
+
+  - id: 5.3.3.4.3
+    title: Ensure pam_unix includes a strong password hashing algorithm (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      Changes in logindefs mentioned in this requirement are more specifically covered by 5.4.1.4
+    rules:
+      - set_password_hashing_algorithm_systemauth
+      - set_password_hashing_algorithm_passwordauth
+
+  - id: 5.3.3.4.4
+    title: Ensure pam_unix includes use_authtok (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      In RHEL 9 pam_unix is enabled by default in all authselect profiles already with the
+      use_authtok option set. In any case, we don't have a rule to check this option specifically,
+      like in 5.3.3.3.3.
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2575,18 +2622,6 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
-
-  - id: 5.5.4
-    title: Ensure password hashing algorithm is SHA-512 or yescrypt (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - set_password_hashing_algorithm_systemauth
-      - set_password_hashing_algorithm_passwordauth
-      - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=SHA512
 
   - id: 5.6.1.1
     title: Ensure password expiration is 365 days or less (Automated)
