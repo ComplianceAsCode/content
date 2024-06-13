@@ -57,7 +57,7 @@ jobs:
                 run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
             -   name: Upload coverage to Code Climate  # Requires: git package
                 if: ${{ github.repository == 'ComplianceAsCode/content' }}
-                uses: paambaati/codeclimate-action@v6.0.0
+                uses: paambaati/codeclimate-action@v8.0.0
                 env:
                     CC_TEST_REPORTER_ID: e67e068471d32b63f8e9561dba8f6a3f84dcc76b05ebfd98e44ced1a91cff854
                 with:
