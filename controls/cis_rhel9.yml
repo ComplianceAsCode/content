@@ -1878,6 +1878,39 @@ controls:
     related_rules:
       - no_empty_passwords
 
+  - id: 5.3.3.1.1
+    title: Ensure password failed attempts lockout is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - var_accounts_passwords_pam_faillock_deny=5
+
+  - id: 5.3.3.1.2
+    title: Ensure password unlock time is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    notes: |-
+      The policy also accepts value 0, which means the locked accounts should be manually unlocked
+      by an administrator. However, it also mentions that using value 0 can facilitate a DoS
+      attack to legitimate users.
+    rules:
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_unlock_time=900
+
+  - id: 5.3.3.1.3
+    title: Ensure password failed attempts lockout includes root account (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - accounts_passwords_pam_faillock_deny_root
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2439,18 +2472,6 @@ controls:
       - accounts_password_pam_retry
       - var_password_pam_minclass=4
       - var_password_pam_minlen=14
-
-  - id: 5.5.2
-    title: Ensure lockout for failed password attempts is configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_passwords_pam_faillock_deny
-      - var_accounts_passwords_pam_faillock_deny=3
-      - accounts_passwords_pam_faillock_unlock_time
-      - var_accounts_passwords_pam_faillock_unlock_time=900
 
   - id: 5.5.3
     title: Ensure password reuse is limited (Automated)
