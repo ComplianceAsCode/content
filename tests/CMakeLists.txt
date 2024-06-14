@@ -382,4 +382,5 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 9)
         NAME "validate_automatus_metadata"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/validate_automatus_metadata.py" "--root" "${CMAKE_SOURCE_DIR}"
     )
+mypy_test("tests/validate_automatus_metadata.py" "normal")
 endif()
