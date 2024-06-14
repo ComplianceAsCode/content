@@ -2286,6 +2286,38 @@ controls:
     related_rules:
       - aide_use_fips_hashes
 
+  - id: 6.2.1.1
+    title: Ensure journald service is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - service_systemd-journald_enabled
+
+  - id: 6.2.1.2
+    title: Ensure journald log file access is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 6.2.1.3
+    title: Ensure journald log file rotation is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 6.2.1.4
+    title: Ensure only one logging system is in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      It is necessary to create a new rule to check the status of journald and rsyslog.
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2705,13 +2737,6 @@ controls:
     rules:
       - rsyslog_filecreatemode
 
-  - id: 4.2.1.5
-    title: Ensure logging is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
   - id: 4.2.1.6
     title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
     levels:
@@ -2760,15 +2785,6 @@ controls:
     rules:
       - socket_systemd-journal-remote_disabled
 
-  - id: 4.2.2.2
-    title: Ensure journald service is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_systemd-journald_enabled
-
   - id: 4.2.2.3
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
@@ -2789,20 +2805,6 @@ controls:
 
   - id: 4.2.2.5
     title: Ensure journald is not configured to send logs to rsyslog (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.6
-    title: Ensure journald log rotation is configured per site policy (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.7
-    title: Ensure journald default file permissions configured (Manual)
     levels:
       - l1_server
       - l1_workstation
