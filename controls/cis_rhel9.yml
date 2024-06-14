@@ -2866,7 +2866,7 @@ controls:
     rules:
       - file_groupownership_audit_binaries
 
-  - id: 6.1.1
+  - id: 7.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
     levels:
       - l1_server
@@ -2877,7 +2877,7 @@ controls:
       - file_owner_etc_passwd
       - file_permissions_etc_passwd
 
-  - id: 6.1.2
+  - id: 7.1.2
     title: Ensure permissions on /etc/passwd- are configured (Automated)
     levels:
       - l1_server
@@ -2888,7 +2888,7 @@ controls:
       - file_owner_backup_etc_passwd
       - file_permissions_backup_etc_passwd
 
-  - id: 6.1.3
+  - id: 7.1.3
     title: Ensure permissions on /etc/group are configured (Automated)
     levels:
       - l1_server
@@ -2899,7 +2899,7 @@ controls:
       - file_owner_etc_group
       - file_permissions_etc_group
 
-  - id: 6.1.4
+  - id: 7.1.4
     title: Ensure permissions on /etc/group- are configured (Automated)
     levels:
       - l1_server
@@ -2910,7 +2910,7 @@ controls:
       - file_owner_backup_etc_group
       - file_permissions_backup_etc_group
 
-  - id: 6.1.5
+  - id: 7.1.5
     title: Ensure permissions on /etc/shadow are configured (Automated)
     levels:
       - l1_server
@@ -2921,7 +2921,7 @@ controls:
       - file_groupowner_etc_shadow
       - file_permissions_etc_shadow
 
-  - id: 6.1.6
+  - id: 7.1.6
     title: Ensure permissions on /etc/shadow- are configured (Automated)
     levels:
       - l1_server
@@ -2932,7 +2932,7 @@ controls:
       - file_owner_backup_etc_shadow
       - file_permissions_backup_etc_shadow
 
-  - id: 6.1.7
+  - id: 7.1.7
     title: Ensure permissions on /etc/gshadow are configured (Automated)
     levels:
       - l1_server
@@ -2943,7 +2943,7 @@ controls:
       - file_owner_etc_gshadow
       - file_permissions_etc_gshadow
 
-  - id: 6.1.8
+  - id: 7.1.8
     title: Ensure permissions on /etc/gshadow- are configured (Automated)
     levels:
       - l1_server
@@ -2954,61 +2954,59 @@ controls:
       - file_owner_backup_etc_gshadow
       - file_permissions_backup_etc_gshadow
 
-  - id: 6.1.9
-    title: Ensure no world writable files exist (Automated)
+  - id: 7.1.9
+    title: Ensure permissions on /etc/shells are configured (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+    - l1_server
+    - l1_workstation
     status: automated
     rules:
-      - file_permissions_unauthorized_world_writable
+      - file_groupowner_etc_shells
+      - file_owner_etc_shells
+      - file_permissions_etc_shells
 
-  - id: 6.1.10
-    title: Ensure no unowned files or directories exist (Automated)
+  - id: 7.1.10
+    title: Ensure permissions on /etc/security/opasswd are configured (Automated)
     levels:
-      - l1_server
-      - l1_workstation
+    - l1_server
+    - l1_workstation
+    status: partial
+    rules:
+    # TODO: We need another rule that checks /etc/security/opasswd.old
+    - file_etc_security_opasswd
+
+  - id: 7.1.11
+    title: Ensure world writable files and directories are secured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
     status: automated
     rules:
-      - no_files_unowned_by_user
+    - file_permissions_unauthorized_world_writable
+    - dir_perms_world_writable_sticky_bits
 
-  - id: 6.1.11
-    title: Ensure no ungrouped files or directories exist (Automated)
+  - id: 7.1.12
+    title: Ensure no files or directories without an owner and a group exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    status: partial
     rules:
-      - file_permissions_ungroupowned
+    # TODO: add rules for unowned/ungrouped directories
+    - no_files_unowned_by_user
+    - file_permissions_ungroupowned
 
-  - id: 6.1.12
-    title: Ensure sticky bit is set on all world-writable directories (Automated)
+  - id: 7.1.13
+    title: Ensure SUID and SGID files are reviewed (Manual)
     levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - dir_perms_world_writable_sticky_bits
-
-  - id: 6.1.13
-    title: Audit SUID executables (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
+    - l1_server
+    - l1_workstation
     status: manual
     related_rules:
       - file_permissions_unauthorized_suid
-
-  - id: 6.1.14
-    title: Audit SGID executables (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    related_rules:
       - file_permissions_unauthorized_sgid
 
-  - id: 6.1.15
+  - id: 7.1.14
     title: Audit system file permissions (Manual)
     levels:
       - l2_server
