@@ -91,7 +91,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
-          platforms: 'linux/amd64,linux/ppc64le,linux/s390x'
+          platforms: 'linux/amd64'
       - name: Get container info
         id: container_info
         run: |
