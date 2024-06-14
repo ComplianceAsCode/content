@@ -2353,6 +2353,35 @@ controls:
     rules:
       - socket_systemd-journal-remote_disabled
 
+  - id: 6.2.2.2
+    title: Ensure journald ForwardToSyslog is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      This rule conflicts with 6.2.3.3. More investigation is needed to properly solve this.
+    related_rules:
+      - journald_forward_to_syslog
+
+  - id: 6.2.2.3
+    title: Ensure journald Compress is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_compress
+
+  - id: 6.2.2.4
+    title: Ensure journald Storage is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_storage
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2789,24 +2818,6 @@ controls:
     status: automated
     rules:
       - rsyslog_nolisten
-
-  - id: 4.2.2.3
-    title: Ensure journald is configured to compress large log files (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_compress
-
-  - id: 4.2.2.4
-    title: Ensure journald is configured to write logfiles to persistent disk (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_storage
 
   - id: 4.2.2.5
     title: Ensure journald is not configured to send logs to rsyslog (Manual)
