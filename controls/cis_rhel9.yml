@@ -2159,7 +2159,6 @@ controls:
       - l1_workstation
     status: partial
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       The rule confirms the primary group for root, but doesn't check if any other user are also
       using GID 0. New rule is necessary.
       There is assessment but no automated remediation for this rule and this sounds reasonable.
@@ -2224,6 +2223,38 @@ controls:
     notes: |-
       Introduced in CIS RHEL9 v2.0.0.
       New rule is necessary.
+
+  - id: 5.4.3.1
+    title: Ensure nologin is not listed in /etc/shells (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: pending
+    notes: |-
+      It is necessary to create a new rule to check and remove nologin from /etc/shells.
+      The no_tmux_in_shells rule can be used as referece.
+
+  - id: 5.4.3.2
+    title: Ensure default user shell timeout is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=15_min
+
+  - id: 5.4.3.3
+    title: Ensure default user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=027
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
@@ -2768,37 +2799,6 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
-
-  - id: 5.6.3
-    title: Ensure default user shell timeout is 900 seconds or less (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_tmout
-      - var_accounts_tmout=15_min
-
-  - id: 5.6.4
-    title: Ensure default group for the root account is GID 0 (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_root_gid_zero
-
-  - id: 5.6.5
-    title: Ensure default user umask is 027 or more restrictive (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_umask_etc_bashrc
-      - accounts_umask_etc_login_defs
-      - accounts_umask_etc_profile
-      - var_accounts_user_umask=027
 
   - id: 1.3.1
     title: Ensure AIDE is installed (Automated)
