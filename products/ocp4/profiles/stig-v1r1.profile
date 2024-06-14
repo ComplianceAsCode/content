@@ -71,7 +71,6 @@ selections:
     - api_server_tls_cipher_suites
     - api_server_token_auth
     - controller_insecure_port_disabled
-    - controller_rotate_kubelet_server_certs
     - controller_secure_port
     - controller_service_account_ca
     - controller_service_account_private_key
