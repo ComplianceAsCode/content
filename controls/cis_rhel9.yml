@@ -2776,35 +2776,8 @@ controls:
       - l2_workstation
     status: manual
 
-  - id: 4.1.4.1
-    title: Ensure audit log files are mode 0640 or less permissive (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - file_permissions_var_log_audit
-
-  - id: 4.1.4.2
-    title: Ensure only authorized users own audit log files (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - file_ownership_var_log_audit_stig
-
-  - id: 4.1.4.3
-    title: Ensure only authorized groups are assigned ownership of audit log files (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    status: automated
-    rules:
-      - file_group_ownership_var_log_audit
-
-  - id: 4.1.4.4
-    title: Ensure the audit log directory is 0750 or more restrictive (Automated)
+  - id: 6.3.4.1
+    title: Ensure the audit log file directory mode is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -2812,8 +2785,35 @@ controls:
     rules:
       - directory_permissions_var_log_audit
 
-  - id: 4.1.4.5
-    title: Ensure audit configuration files are 640 or more restrictive (Automated)
+  - id: 6.3.4.2
+    title: Ensure audit log files mode is configured (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_permissions_var_log_audit
+
+  - id: 6.3.4.3
+    title: Ensure audit log files owner is configured (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_ownership_var_log_audit_stig
+
+  - id: 6.3.4.4
+    title: Ensure audit log files group owner is configured (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    status: automated
+    rules:
+      - file_group_ownership_var_log_audit
+
+  - id: 6.3.4.5
+    title: Ensure audit configuration files mode is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -2821,8 +2821,8 @@ controls:
     rules:
       - file_permissions_audit_configuration
 
-  - id: 4.1.4.6
-    title: Ensure audit configuration files are owned by root (Automated)
+  - id: 6.3.4.6
+    title: Ensure audit configuration files owner is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -2830,8 +2830,8 @@ controls:
     rules:
       - file_ownership_audit_configuration
 
-  - id: 4.1.4.7
-    title: Ensure audit configuration files belong to group root (Automated)
+  - id: 6.3.4.7
+    title: Ensure audit configuration files group owner is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -2839,8 +2839,8 @@ controls:
     rules:
       - file_groupownership_audit_configuration
 
-  - id: 4.1.4.8
-    title: Ensure audit tools are 755 or more restrictive (Automated)
+  - id: 6.3.4.8
+    title: Ensure audit tools mode is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -2848,8 +2848,8 @@ controls:
     rules:
       - file_permissions_audit_binaries
 
-  - id: 4.1.4.9
-    title: Ensure audit tools are owned by root (Automated)
+  - id: 6.3.4.9
+    title: Ensure audit tools owner is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
@@ -2857,8 +2857,8 @@ controls:
     rules:
       - file_ownership_audit_binaries
 
-  - id: 4.1.4.10
-    title: Ensure audit tools belong to group root (Automated)
+  - id: 6.3.4.10
+    title: Ensure audit tools group owner is configured (Automated)
     levels:
       - l2_server
       - l2_workstation
