@@ -3016,7 +3016,7 @@ controls:
       - rpm_verify_permissions
       - rpm_verify_ownership
 
-  - id: 6.2.1
+  - id: 7.2.1
     title: Ensure accounts in /etc/passwd use shadowed passwords (Automated)
     levels:
       - l1_server
@@ -3025,7 +3025,7 @@ controls:
     rules:
       - accounts_password_all_shadowed
 
-  - id: 6.2.2
+  - id: 7.2.2
     title: Ensure /etc/shadow password fields are not empty (Automated)
     levels:
       - l1_server
@@ -3034,7 +3034,7 @@ controls:
     rules:
       - no_empty_passwords_etc_shadow
 
-  - id: 6.2.3
+  - id: 7.2.3
     title: Ensure all groups in /etc/passwd exist in /etc/group (Automated)
     levels:
       - l1_server
@@ -3043,7 +3043,7 @@ controls:
     rules:
       - gid_passwd_group_same
 
-  - id: 6.2.4
+  - id: 7.2.4
     title: Ensure no duplicate UIDs exist (Automated)
     levels:
       - l1_server
@@ -3052,7 +3052,7 @@ controls:
     rules:
       - account_unique_id
 
-  - id: 6.2.5
+  - id: 7.2.5
     title: Ensure no duplicate GIDs exist (Automated)
     levels:
       - l1_server
@@ -3061,7 +3061,7 @@ controls:
     rules:
       - group_unique_id
 
-  - id: 6.2.6
+  - id: 7.2.6
     title: Ensure no duplicate user names exist (Automated)
     levels:
       - l1_server
@@ -3070,7 +3070,7 @@ controls:
     rules:
       - account_unique_name
 
-  - id: 6.2.7
+  - id: 7.2.7
     title: Ensure no duplicate group names exist (Automated)
     levels:
       - l1_server
@@ -3079,67 +3079,35 @@ controls:
     rules:
       - group_unique_name
 
-  - id: 6.2.10
-    title: Ensure local interactive user home directories exist (Automated)
+  - id: 7.2.8
+    title: Ensure local interactive user home directories are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: automated
     rules:
       - accounts_user_interactive_home_directory_exists
-
-  - id: 6.2.11
-    title: Ensure local interactive users own their home directories (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
       - file_ownership_home_directories
+      - file_permissions_home_directories
+    related_rules:
       - file_groupownership_home_directories
 
-  - id: 6.2.12
-    title: Ensure local interactive user home directories are mode 750 or more restrictive (Automated)
+  - id: 7.2.9
+    title: Ensure local interactive user dot files access is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
+    notes: |-
+      Missing a rule to check that .bash_history is mode 0600 or more restrictive.
+    status: partial
     rules:
-      - file_permissions_home_directories
-
-  - id: 6.2.13
-    title: Ensure no local interactive user has .netrc files (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - no_netrc_files
-
-  - id: 6.2.14
-    title: Ensure no local interactive user has .forward files (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - no_forward_files
-
-  - id: 6.2.15
-    title: Ensure no local interactive user has .rhosts files (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: The rule also removes /etc/hosts.equiv
-    rules:
-      - no_rsh_trust_files
-
-  - id: 6.2.16
-    title: Ensure local interactive user dot files are not group or world writable (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
+      - accounts_user_dot_group_ownership
+      - accounts_user_dot_user_ownership
       - accounts_user_dot_no_world_writable_programs
+      - file_permission_user_init_files
+      - var_user_initialization_files_regex=all_dotfiles
+      - no_forward_files
+      - no_netrc_files
+      - no_rsh_trust_files
+    related_rules:
+      - accounts_users_netrc_file_permissions
