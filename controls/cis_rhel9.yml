@@ -2318,6 +2318,41 @@ controls:
     notes: |-
       It is necessary to create a new rule to check the status of journald and rsyslog.
 
+  - id: 6.2.2.1.1
+    title: Ensure systemd-journal-remote is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_systemd-journal-remote_installed
+
+  - id: 6.2.2.1.2
+    title: Ensure systemd-journal-upload authentication is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 6.2.2.1.3
+    title: Ensure systemd-journal-upload is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Introduced in CIS RHEL9 v2.0.0.
+      New templated rule is necessary.
+
+  - id: 6.2.2.1.4
+    title: Ensure systemd-journal-remote service is not in use (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - socket_systemd-journal-remote_disabled
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2754,36 +2789,6 @@ controls:
     status: automated
     rules:
       - rsyslog_nolisten
-
-  - id: 4.2.2.1.1
-    title:  Ensure systemd-journal-remote is installed (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.1.2
-    title:  Ensure systemd-journal-remote is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.1.3
-    title:  Ensure systemd-journal-remote is enabled (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.2.1.4
-    title: Ensure journald is not configured to recieve logs from a remote client (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - socket_systemd-journal-remote_disabled
 
   - id: 4.2.2.3
     title: Ensure journald is configured to compress large log files (Automated)
