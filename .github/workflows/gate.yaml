@@ -144,7 +144,7 @@ jobs:
     name: Build, Test on Fedora Rawhide (Container)
     runs-on: ubuntu-latest
     container:
-      image: fedora:rawhide
+      image: registry.fedoraproject.org/fedora:rawhide
     steps:
       -   name: Run Updates
           run: dnf update -y
