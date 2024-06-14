@@ -267,7 +267,6 @@ def createPlatformRuleFunc(args):
         for line in lines:
             if 'GET' in line:
                 fetch_line = line
-                break
 
         if len(fetch_line) > 0:
             # extract the object url from the debug line
