@@ -2256,6 +2256,36 @@ controls:
       - accounts_umask_etc_profile
       - var_accounts_user_umask=027
 
+  - id: 6.1.1
+    title: Ensure AIDE is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_aide_installed
+      - aide_build_database
+
+  - id: 6.1.2
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_periodic_cron_checking
+
+  - id: 6.1.3
+    title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - aide_check_audit_tools
+    related_rules:
+      - aide_use_fips_hashes
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2799,36 +2829,6 @@ controls:
       - ensure_logrotate_activated
       - package_logrotate_installed
       - timer_logrotate_enabled
-
-  - id: 1.3.1
-    title: Ensure AIDE is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_aide_installed
-      - aide_build_database
-
-  - id: 1.3.2
-    title: Ensure filesystem integrity is regularly checked (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - aide_periodic_cron_checking
-
-  - id: 1.3.3
-    title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - aide_check_audit_tools
-    related_rules:
-      - aide_use_fips_hashes
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
