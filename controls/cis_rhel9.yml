@@ -2382,6 +2382,89 @@ controls:
     rules:
       - journald_storage
 
+  - id: 6.2.3.1
+    title: Ensure rsyslog is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - package_rsyslog_installed
+
+  - id: 6.2.3.2
+    title: Ensure rsyslog service is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - service_rsyslog_enabled
+
+  - id: 6.2.3.3
+    title: Ensure journald is configured to send logs to rsyslog (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - journald_forward_to_syslog
+
+  - id: 6.2.3.4
+    title: Ensure rsyslog log file creation mode is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_filecreatemode
+
+  - id: 6.2.3.5
+    title: Ensure rsyslog logging is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+
+  - id: 6.2.3.6
+    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - rsyslog_remote_loghost
+
+  - id: 6.2.3.7
+    title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_nolisten
+
+  - id: 6.2.3.8
+    title: Ensure rsyslog logrotate is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: manual
+    related_rules:
+      - ensure_logrotate_activated
+      - package_logrotate_installed
+      - timer_logrotate_enabled
+
+  - id: 4.2.3
+    title: Ensure all logfiles have appropriate permissions and ownership (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - rsyslog_files_groupownership
+      - rsyslog_files_ownership
+      - rsyslog_files_permissions
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2764,89 +2847,6 @@ controls:
     status: automated
     rules:
       - file_groupownership_audit_binaries
-
-  - id: 4.2.1.1
-    title: Ensure rsyslog is installed (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - package_rsyslog_installed
-
-  - id: 4.2.1.2
-    title: Ensure rsyslog Service is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - service_rsyslog_enabled
-
-  - id: 4.2.1.3
-    title: Ensure journald is configured to send logs to rsyslog (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - journald_forward_to_syslog
-
-  - id: 4.2.1.4
-    title: Ensure rsyslog default file permissions configured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_filecreatemode
-
-  - id: 4.2.1.6
-    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    related_rules:
-      - rsyslog_remote_loghost
-
-  - id: 4.2.1.7
-    title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_nolisten
-
-  - id: 4.2.2.5
-    title: Ensure journald is not configured to send logs to rsyslog (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-
-  - id: 4.2.3
-    title: Ensure all logfiles have appropriate permissions and ownership (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - rsyslog_files_groupownership
-      - rsyslog_files_ownership
-      - rsyslog_files_permissions
-
-  - id: 4.3
-    title: Ensure logrotate is configured (Manual)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: manual
-    related_rules:
-      - ensure_logrotate_activated
-      - package_logrotate_installed
-      - timer_logrotate_enabled
 
   - id: 6.1.1
     title: Ensure permissions on /etc/passwd are configured (Automated)
