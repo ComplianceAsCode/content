@@ -2143,6 +2143,88 @@ controls:
     rules:
       - accounts_password_last_change_is_in_past
 
+  - id: 5.4.2.1
+    title: Ensure root is the only UID 0 account (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_no_uid_except_zero
+
+  - id: 5.4.2.2
+    title: Ensure root is the only GID 0 account (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: partial
+    notes: |-
+      Introduced in CIS RHEL9 v2.0.0.
+      The rule confirms the primary group for root, but doesn't check if any other user are also
+      using GID 0. New rule is necessary.
+      There is assessment but no automated remediation for this rule and this sounds reasonable.
+    rules:
+      - accounts_root_gid_zero
+
+  - id: 5.4.2.3
+    title: Ensure group root is the only GID 0 group (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Introduced in CIS RHEL9 v2.0.0.
+      New rule is necessary.
+
+  - id: 5.4.2.4
+    title: Ensure root account access is controlled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - ensure_root_password_configured
+
+  - id: 5.4.2.5
+    title: Ensure root path integrity (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - accounts_root_path_dirs_no_write
+      - root_path_no_dot
+
+  - id: 5.4.2.6
+    title: Ensure root user umask is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      There is no rule to ensure umask in /root/.bash_profile and /root/.bashrc. A new rule have
+      to be created. It can be based on accounts_umask_interactive_users.
+
+  - id: 5.4.2.7
+    title: Ensure system accounts do not have a valid login shell (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: automated
+    rules:
+      - no_password_auth_for_systemaccounts
+      - no_shelllogin_for_systemaccounts
+
+  - id: 5.4.2.8
+    title: Ensure accounts without a valid login shell are locked (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    status: pending
+    notes: |-
+      Introduced in CIS RHEL9 v2.0.0.
+      New rule is necessary.
+
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
     levels:
@@ -2687,16 +2769,6 @@ controls:
       - package_logrotate_installed
       - timer_logrotate_enabled
 
-  - id: 5.6.2
-    title: Ensure system accounts are secured (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - no_password_auth_for_systemaccounts
-      - no_shelllogin_for_systemaccounts
-
   - id: 5.6.3
     title: Ensure default user shell timeout is 900 seconds or less (Automated)
     levels:
@@ -2727,16 +2799,6 @@ controls:
       - accounts_umask_etc_login_defs
       - accounts_umask_etc_profile
       - var_accounts_user_umask=027
-
-  - id: 5.6.6
-    title: Ensure root password is set (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - ensure_root_password_configured
-      - no_empty_passwords_etc_shadow
 
   - id: 1.3.1
     title: Ensure AIDE is installed (Automated)
@@ -2982,25 +3044,6 @@ controls:
     status: automated
     rules:
       - group_unique_name
-
-  - id: 6.2.8
-    title: Ensure root PATH Integrity (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_root_path_dirs_no_write
-      - root_path_no_dot
-
-  - id: 6.2.9
-    title: Ensure root is the only UID 0 account (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    rules:
-      - accounts_no_uid_except_zero
 
   - id: 6.2.10
     title: Ensure local interactive user home directories exist (Automated)
