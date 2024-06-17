@@ -1573,13 +1573,27 @@ controls:
     title: Security vulnerabilities are identified and addressed.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 6.3.1
       title: Security vulnerabilities are identified and managed
+      description: |-
+        Security vulnerabilities are identified and managed as follows:
+        - New security vulnerabilities are identified using industry-recognized sources for
+        security vulnerability information, including alerts from international and national
+        computer emergency response teams (CERTs).
+        - Vulnerabilities are assigned a risk ranking based on industry best practices and
+        consideration of potential impact.
+        - Risk rankings identify, at a minimum, all vulnerabilities considered to be a high-risk
+        or critical to the environment.
+        - Vulnerabilities for bespoke and custom, and third-party software (for example operating
+        systems and databases) are covered.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The payment entity needs to stablish its own process of monitoring for vulnerabilities for
+        the systems in use, including bespoke and custom software.
 
     - id: 6.3.2
       title: An inventory of bespoke and custom software, and third-party software components
@@ -1591,13 +1605,10 @@ controls:
         it will be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: automated
+      status: not applicable
       notes: |-
         This requirement is a best practice until 31 March 2025, after which it will be required
         and must be fully considered during a PCI DSS assessment.
-      rules:
-        - acs_sensor_exists
-        - container_security_operator_exists
 
     - id: 6.3.3
       title: All system components are protected from known vulnerabilities by installing
@@ -1611,8 +1622,7 @@ controls:
         frame as determined by the entity (for example, within three months of release).
       levels:
         - base
-      status: pending
-      rules: []
+      status: not applicable
 
   - id: '6.4'
     title: Public-facing web applications are protected against attacks.
