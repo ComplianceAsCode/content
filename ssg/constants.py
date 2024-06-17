@@ -42,6 +42,7 @@ product_directories = [
     'alinux3',
     'anolis8',
     'anolis23',
+    'al2023',
     'chromium',
     'debian10', 'debian11', 'debian12',
     'example',
@@ -60,7 +61,6 @@ product_directories = [
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
     'uos20',
-    'al2023',
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -201,6 +201,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 3": "alinux3",
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
+    "Amazon Linux 2023": "al2023",
     "Chromium": "chromium",
     "Debian 10": "debian10",
     "Debian 11": "debian11",
@@ -231,7 +232,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "UnionTech OS Server 20": "uos20",
     "OpenEmbedded": "openembedded",
     "Not Applicable" : "example",
-    "Amazon Linux 2023": "al2023"
 }
 
 
