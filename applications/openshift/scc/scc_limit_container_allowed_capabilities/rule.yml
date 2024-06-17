@@ -25,17 +25,17 @@ description: |-
     spec:
       description: Allows an additional scc
       setValues:
-      - name: upstream-ocp4-var-sccs-with-allowed-capabilities-regex
+      - name: ocp4-var-sccs-with-allowed-capabilities-regex
         rationale: Allow our own custom SCC
         value: ^privileged$|^hostnetwork-v2$|^restricted-v2$|^nonroot-v2$|^additional$
-      extends: upstream-ocp4-cis
+      extends: ocp4-cis
       title: Modified CIS allowing one more SCC
     </pre>
     <p>
     Finally, reference this <tt>TailoredProfile</tt> in a <tt>ScanSettingBinding</tt>
     For more information on Tailoring the Compliance Operator, please consult the
     OpenShift documentation:
-      {{{ weblink(link="https://docs.openshift.com/container-platform/4.12/security/compliance_operator/compliance-operator-tailor.html") }}}
+      {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/co-scans/compliance-operator-tailor.html") }}}
     </p>
 
 rationale: |-
@@ -65,7 +65,7 @@ ocil: |-
     check the variable value, e.g:
     <pre>$ oc get variable ocp4-var-sccs-with-allowed-capabilities-regex  -ojsonpath='{.value}' </pre>
     Then use following command to list the SCCs that would fail the test:
-    <pre>$ oc get scc -o json | jq '{{{ jqfilter }}}'</pre>
+    <tt>{{{ ocil_oc_pipe_jq_filter('scc', jqfilter) }}}</tt>
     Please replace the regular expression in the test command with the value read from the variable
     <pre>ocp4-var-sccs-with-allowed-capabilities-regex</pre>. You can read the variable
     value with:
