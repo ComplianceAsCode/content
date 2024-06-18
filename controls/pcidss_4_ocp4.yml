@@ -1573,7 +1573,7 @@ controls:
     title: Security vulnerabilities are identified and addressed.
     levels:
       - base
-    status: not applicable
+    status: inherently met
     controls:
     - id: 6.3.1
       title: Security vulnerabilities are identified and managed
@@ -1606,9 +1606,6 @@ controls:
       levels:
         - base
       status: not applicable
-      notes: |-
-        This requirement is a best practice until 31 March 2025, after which it will be required
-        and must be fully considered during a PCI DSS assessment.
 
     - id: 6.3.3
       title: All system components are protected from known vulnerabilities by installing
@@ -1622,7 +1619,16 @@ controls:
         frame as determined by the entity (for example, within three months of release).
       levels:
         - base
-      status: not applicable
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform provides the capability of updating
+        both the Kubernetes/OCP layer, as well as the Operating System (Red Hat
+        CoreOS) layer in an ubiquitous manner with over-the-air updates using
+        the OpenShift Update Service (OSUS) [1]. This service can also be installed
+        in clusters without internet connectivity [2].
+
+        [1] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/updating_clusters/understanding-openshift-updates-1#update-service-about_understanding-openshift-updates
+        [2] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/updating_clusters/performing-a-cluster-update#updating-restricted-network-cluster-OSUS
 
   - id: '6.4'
     title: Public-facing web applications are protected against attacks.
