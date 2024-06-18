@@ -84,7 +84,7 @@ jobs:
             org.opencontainers.image.vendor='Compliance Operator Authors'
       - name: Build container images and push
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfiles/ocp4_content
