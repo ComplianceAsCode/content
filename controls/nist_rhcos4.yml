@@ -484,7 +484,7 @@ controls:
   rules:
   - var_selinux_policy_name=targeted
   - selinux_policytype
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6969
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
   #- selinux_confinement_of_daemons
   - var_selinux_state=enforcing
   - selinux_state
@@ -829,7 +829,7 @@ controls:
 
     https://issues.redhat.com/browse/CMP-115
   rules:
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6969
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
   #- selinux_confinement_of_daemons
   - no_shelllogin_for_systemaccounts
   - sysctl_kernel_perf_event_paranoid
@@ -5243,7 +5243,7 @@ controls:
   - service_bluetooth_disabled
   - kernel_module_tipc_disabled
   - sysctl_net_ipv6_conf_all_accept_redirects
-  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6969
+  # (jhrozek): Disabled because of https://issues.redhat.com/browse/OCPBUGS-6968
   #- selinux_confinement_of_daemons
   - sysctl_net_ipv4_tcp_syncookies
   - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
