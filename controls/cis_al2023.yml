@@ -596,7 +596,7 @@ controls:
       - package_bind_removed
 
   - id: 2.2.6
-    title: Ensure a ftp server is not installed (Automated)
+    title: Ensure an ftp server is not installed (Automated)
     levels:
       - l1_server
     status: automated
@@ -1503,7 +1503,7 @@ controls:
     status: manual
 
   - id: 5.1.1.6
-    title: Ensure rsyslog is configured to send logs to a remote log host (Manual)
+    title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
     levels:
       - l1_server
     status: automated
@@ -1705,7 +1705,7 @@ controls:
       - audit_rules_networkconfig_modification_network_scripts
 
   - id: 5.2.3.6
-    title: Ensure use of privileged commands is collected (Automated)
+    title: Ensure use of privileged commands are collected (Automated)
     levels:
       - l2_server
     status: automated
@@ -2052,9 +2052,9 @@ controls:
 
   - id: 6.1.11
     title: Ensure world writable files and directories are secured (Automated)
-    status: automated
     levels:
       - l1_server
+    status: automated
     rules:
       - file_permissions_unauthorized_world_writable
       - dir_perms_world_writable_sticky_bits
