@@ -1634,7 +1634,7 @@ controls:
     title: Public-facing web applications are protected against attacks.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 6.4.1
       title: For public-facing web applications, new threats and vulnerabilities are addressed on
@@ -1661,14 +1661,31 @@ controls:
           investigated.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is up to the payment entity how they protect their public facing appilcations.
+        Depending on the approach taken OpenShift can provide support, see req. 6.4.2, for more details.
 
     - id: 6.4.2
       title: For public-facing web applications, an automated technical solution is deployed that
         continually detects and prevents web-based attacks.
       levels:
         - base
-      status: pending
+      status: partial
+      notes: |-
+        Support for Web Application Firewall in OCP is still in development:
+        https://www.redhat.com/en/blog/creating-web-application-firewall-red-hat-openshift
+
+        While Container Security Operator (CSO) is not focused on protecting web-applications it
+        can scan installed workflows and applications for known vulnerabilities.
+        https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/red_hat_quay_operator_features/container-security-operator-setup
+
+        Security Profiles Operators can also be used to contain an attack when an application
+        is compromised.
+        https://docs.openshift.com/container-platform/latest/security/security_profiles_operator/spo-overview.html
+      rules:
+        - container_security_operator_exists
+        - security_profiles_operator_exists
 
     - id: 6.4.3
       title: All payment page scripts that are loaded and executed in the consumer's browser are
@@ -1682,7 +1699,7 @@ controls:
         necessary.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '6.5'
     title: Changes to all system components are managed securely.
