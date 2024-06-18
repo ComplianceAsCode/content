@@ -1,4 +1,4 @@
-name: Automatus UBUNTU22
+name: Automatus Ubuntu 22.04
 on:
   pull_request:
     branches: [ master, 'stabilization*' ]
@@ -55,7 +55,7 @@ jobs:
           prop_path: 'product'
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: ./build_product ubuntu2204 --derivatives
+        run: ./build_product ubuntu2204
       - uses: actions/upload-artifact@v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
@@ -136,7 +136,7 @@ jobs:
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: tests/test_rule_in_container.sh --no-remove-machine-only --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream $DATASTREAM ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
-          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --remove-fips-certified --product rhel8"
+          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --remove-fips-certified"
       - name: Check for ERROR in logs
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_bash/test_suite.log
