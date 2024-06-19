@@ -2503,6 +2503,9 @@ if ! grep -Pzq "(?s)^\s*user-db:user.*\n\s*system-db:{{{ database }}}" "${dconf_
     sed -i --follow-symlinks "1s/^/user-db:user\nsystem-db:{{{ database }}}\n/" "${dconf_profile_path}"
 fi
 
+# Make sure the corresponding directories exist
+mkdir -p /etc/dconf/db/{{{ database }}}.d
+
 # Make sure permissions allow regular users to read dconf settings.
 # Also define the umask to avoid `dconf update` changing permissions.
 chmod -R u=rwX,go=rX /etc/dconf/profile
