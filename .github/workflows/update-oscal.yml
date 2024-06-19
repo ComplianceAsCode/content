@@ -45,7 +45,7 @@ jobs:
                   trestle href --name "${{ matrix.variables.profile-name }}" -hr "trestle://catalogs/${{ matrix.variables.catalog-name }}/catalog.json"
               working-directory: ./shared/references/oscal
             - name: Update content
-              uses: peter-evans/create-pull-request@v6.0.5
+              uses: peter-evans/create-pull-request@v6.1.0
               with:
                   base: master
                   branch: "oscal-update-${{ github.run_id }}"
