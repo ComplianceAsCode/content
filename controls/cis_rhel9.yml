@@ -2317,6 +2317,7 @@ controls:
     status: pending
     notes: |-
       It is necessary to create a new rule to check the status of journald and rsyslog.
+      It would also be necessary a new rule to disable or remove rsyslog.
 
   - id: 6.2.2.1.1
     title: Ensure systemd-journal-remote is installed (Automated)
@@ -2387,8 +2388,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: supported
+    related_rules:
       - package_rsyslog_installed
 
   - id: 6.2.3.2
@@ -2396,8 +2397,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: supported
+    related_rules:
       - service_rsyslog_enabled
 
   - id: 6.2.3.3
@@ -2405,8 +2406,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: supported
+    related_rules:
       - journald_forward_to_syslog
 
   - id: 6.2.3.4
@@ -2414,8 +2415,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: supported
+    related_rules:
       - rsyslog_filecreatemode
 
   - id: 6.2.3.5
@@ -2439,8 +2440,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: supported
+    related_rules:
       - rsyslog_nolisten
 
   - id: 6.2.3.8
@@ -2460,6 +2461,8 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      It is not harmful to run these rules even if rsyslog is not installed or active.
     rules:
       - rsyslog_files_groupownership
       - rsyslog_files_ownership
