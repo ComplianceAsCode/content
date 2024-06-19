@@ -1,15 +1,15 @@
 description: "This profile defines a baseline that aligns to the \"Level 2 - Workstation\"\nconfiguration
     from the Center for Internet Security\xAE Red Hat Enterprise\nLinux 9 Benchmark\u2122,
-    v1.0.0, released 2022-11-28.\n\nThis profile includes Center for Internet Security\xAE\nRed
+    v2.0.0, released 2024-06-20.\n\nThis profile includes Center for Internet Security\xAE\nRed
     Hat Enterprise Linux 9 CIS Benchmarks\u2122 content."
 extends: null
 hidden: ''
 metadata:
-    version: 1.0.0
+    version: 2.0.0
     SMEs:
     - marcusburghardt
+    - mab879
     - vojtapolasek
-    - yuumasato
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 selections:
 - account_disable_post_pw_expiration
@@ -241,7 +241,6 @@ selections:
 - grub2_password
 - has_nonlocal_mta
 - journald_compress
-- journald_forward_to_syslog
 - journald_storage
 - kernel_module_cramfs_disabled
 - kernel_module_dccp_disabled
@@ -301,7 +300,6 @@ selections:
 - package_openldap-clients_removed
 - package_pam_pwquality_installed
 - package_rsync_removed
-- package_rsyslog_installed
 - package_samba_removed
 - package_squid_removed
 - package_sudo_installed
@@ -323,11 +321,9 @@ selections:
 - partition_for_var_tmp
 - postfix_network_listening_disabled
 - root_path_no_dot
-- rsyslog_filecreatemode
 - rsyslog_files_groupownership
 - rsyslog_files_ownership
 - rsyslog_files_permissions
-- rsyslog_nolisten
 - selinux_not_disabled
 - selinux_policytype
 - selinux_state
@@ -339,7 +335,6 @@ selections:
 - service_nfs_disabled
 - service_nftables_disabled
 - service_rpcbind_disabled
-- service_rsyslog_enabled
 - service_systemd-journald_enabled
 - set_password_hashing_algorithm_libuserconf
 - set_password_hashing_algorithm_logindefs
