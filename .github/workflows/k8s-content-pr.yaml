@@ -14,7 +14,7 @@ jobs:
       pr-number: ${{ steps.pr_number.outputs.pr_number }}
     steps:
       - name: 'Download artifacts'
-        uses: actions/github-script@v7
+        uses: actions/github-script@5c56fde4671bc2d3592fb0f2c5b5bab9ddae03b1 # v7
         with:
           script: |
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -53,22 +53,22 @@ jobs:
       image-tags: ${{ steps.container_info.outputs.image-tags }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           ref: refs/pull/${{ needs.get-pr-number.outputs.pr-number }}/head
       - name: Login to ghcr.io
-        uses: docker/login-action@v3.2.0
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3
       - name: Docker metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
         with:
           images: ghcr.io/complianceascode/k8scontent
           flavor: |
@@ -84,7 +84,7 @@ jobs:
             org.opencontainers.image.vendor='Compliance Operator Authors'
       - name: Build container images and push
         id: docker_build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@94f8f8c2eec4bc3f1d78c1755580779804cb87b2 # v6
         with:
           context: .
           file: ./Dockerfiles/ocp4_content
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Upsert comment on the PR
     steps:
-      - uses: thollander/actions-comment-pull-request@v2
+      - uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6 # v2
         with:
           message: |
             :robot: A k8s content image for this PR is available at:

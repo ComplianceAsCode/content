@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy XCCDF files from existing content image
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3
         with:
           timeout_minutes: 20
           max_attempts: 3
@@ -43,7 +43,7 @@ jobs:
         id: save-go-version
         run: |
           echo "go-version=$(cat compliance-operator/go-version)" > compliance-operator/go-version
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5
         with:
           go-version: ${{ steps.save-go-version.outputs.go-version }}
       - name: Run ginkgo tests and check if each XCCDF file is parsed correctly
