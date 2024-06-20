@@ -377,18 +377,37 @@ controls:
     levels:
     - elevated
     description: >-
-      In a Kubernetes cluster, nodes SHOULD be assigned dedicated tasks and only run pods that are
+      (1) In a Kubernetes cluster, nodes SHOULD be assigned dedicated tasks and only run pods that are
       assigned to each task.
-      Bastion nodes SHOULD handle all incoming and outgoing data connections of between
+      (2) Bastion nodes SHOULD handle all incoming and outgoing data connections of between
       applications and other networks.
-      Management nodes SHOULD operate control plane pods and only handle control plane data
+      (3) Management nodes SHOULD operate control plane pods and only handle control plane data
       connections.
-      If deployed, storage nodes SHOULD only operate the fixed persistent volume services pods in
+      (4) If deployed, storage nodes SHOULD only operate the fixed persistent volume services pods in
       a cluster.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1:
+      This requirement must be solved organizationally. OpenShift can bind applications to specific
+      nodes or node groups (via labels and node selectors). ACM can take over the labeling of nodes
+      and ensure that the nodes are labeled accordingly.
+      Section 2:
+      OpenShift uses the concept of infra-nodes. The incoming connections can be bound to these and,
+      by using Egress-IP, the incoming connections can also be bound.
+      Section 3:
+      OpenShift uses control plane nodes for management, on which no applications are running.
+      Data connections between applications to the outside world and to one another are not routed
+      via the control plane as standard. The necessary requirements must be taken into account as
+      part of the planning.
+      Section 4:
+      OpenShift Data Foundation (ODF) can be linked to its own infra nodes using the OpenShift
+      mechanisms, which only run storage services. This can be implemented equivalently with other
+      storage solutions.
+    status: partial
+    rules:
+      # Section 1,2,3,4
+      - general_node_separation
+      # Section 3
+      - master_taint_noschedule
 
   - id: APP.4.4.A15
     title: Separation of Applications at Node and Cluster Level
