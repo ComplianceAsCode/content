@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platfrom_ubuntu
+# platform = multi_platform_ubuntu
 # packages = libpam-pkcs11
 
 if [ ! -f /etc/pam_pkcs11/pam_pkcs11.conf ]; then
