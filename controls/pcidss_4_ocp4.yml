@@ -1293,35 +1293,33 @@ controls:
       software are defined and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 5.1.1
       title: All security policies and operational procedures that are identified in Requirement 5
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 5 are managed in accordance with all
-        elements specified in this requirement.
+        The responsibility for documentation, maintenance, use and dissemination of the security
+        policies and procedures is on the payment service and its operations team.
 
     - id: 5.1.2
       title: Roles and responsibilities for performing activities in Requirement 5 are documented,
         assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 5 are documented, assigned and understood
-        by the assigned personnel.
+        The responsibility for documentation, maintenance, use and dissemination of the security
+        policies and procedures is on the payment service and its operations team.
 
   - id: '5.2'
     title: Malicious software (malware) is prevented, or detected and addressed.
     levels:
       - base
-    status: pending
+    status: supported
     notes: |-
       Related measures are covered by 1.2.6, 1.4.5 and 3.4.2.
     controls:
@@ -1334,18 +1332,41 @@ controls:
         malware.
       levels:
         - base
-      status: pending
+      status: supported
       notes: |-
         There are many options of anti-malware and the criteria for any adopted solution or
         approach relies on each site policy. Technologies are supported but manual assessment is
         required.
+
+        OpenShift container platforms may install the OpenShift File
+        Integrity Operator [1] which monitors file system integrity on the host.
+        This may allow for the detection of threats on the hosts which attempt
+        to modify the file system in malicious ways. Additionally, there exist
+        several solutions to scan for container vulnerabilities which are indispensible
+        from any deployment. One such example is Red Hat Quay [2] which supports
+        image verification and continuous security scanning of container images.
+        Another option is Red Hat Advanced Cluster Security [3] which provides a complete solution
+        to build, deploy, and run containerized workloads with more security.
+
+        [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-understanding.html
+        [2] https://docs.openshift.com/container-platform/latest/security/container_security/security-registries.html
+        [3] https://www.redhat.com/en/resources/advanced-cluster-security-for-kubernetes-datasheet
+
+      rules: []
+      related_rules:
+      - acs_sensor_exists
+      - container_security_operator_exists
+      - file_integrity_exists
 
     - id: 5.2.2
       title: The deployed anti-malware solution(s) detects all known types of malware and removes,
         blocks, or contains all known types of malware.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is the payment entity's responsibility to ensure that the chosen anti-malware solutions
+        cover the required malware types.
 
     - id: 5.2.3
       title: Any system components that are not at risk for malware are evaluated periodically.
@@ -1358,7 +1379,10 @@ controls:
         protection.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is the payment entity's responsibility to identify and evaluate whether any system
+        component is at risk of a malware attack.
       controls:
       - id: 5.2.3.1
         title: The frequency of periodic evaluations of system components identified as not at
@@ -1371,13 +1395,15 @@ controls:
           assessment.
         levels:
           - base
-        status: pending
+        status: not applicable
 
   - id: '5.3'
     title: Anti-malware mechanisms and processes are active, maintained, and monitored.
     levels:
       - base
-    status: pending
+    status: not applicable
+    notes: |-
+      The requirements in this section depend on the malware solution deployed as part of 5.2.1.
     controls:
     - id: 5.3.1
       title: The anti-malware solution(s) is kept current via automatic updates.
@@ -1385,14 +1411,14 @@ controls:
         Anti-malware mechanisms can detect and address the latest malware threats.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 5.3.2
       title: The anti-malware solution(s) performs periodic scans and active or real-time scans or
         performs continuous behavioral analysis of systems or processes.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 5.3.2.1
         title: If periodic malware scans are performed to meet Requirement 5.3.2, the frequency of
@@ -1405,7 +1431,7 @@ controls:
           it will be required and must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 5.3.3
       title: For removable electronic media, the anti-malware solution(s) performs automatic scans
@@ -1414,9 +1440,7 @@ controls:
         logically mounted.
       levels:
         - base
-      status: pending
-      notes: |-
-        Related measures are covered by 3.4.2.
+      status: not applicable
 
     - id: 5.3.4
       title: Audit logs for the anti-malware solution(s) are enabled and retained in accordance
@@ -1426,7 +1450,7 @@ controls:
         least 12 months.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 5.3.5
       title: Anti-malware mechanisms cannot be disabled or altered by users, unless specifically
@@ -1441,9 +1465,7 @@ controls:
         protection is not active.
       levels:
         - base
-      status: pending
-      notes: |-
-        Related measures are covered by 2.2.6 requirement and 8.2 section.
+      status: not applicable
 
   - id: '5.4'
     title: Anti-phishing mechanisms protect users against phishing attacks.
@@ -1467,7 +1489,13 @@ controls:
         be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: pending
+      status: not applicable
+      rules: []
+      related_rules:
+      # NOTE: (yuumasato) below are some node OS configurations that can help prevent
+      # and detect spoofing
+      - firewalld_loopback_traffic_restricted
+      - sysctl_net_ipv4_conf_all_log_martians
 
   - id: '6.1'
     title: Processes and mechanisms for developing and maintaining secure systems and software are
