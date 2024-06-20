@@ -1477,7 +1477,7 @@ controls:
     levels:
       - l1_server
     status: manual
-    rules:
+    related_rules:
       - service_rsyslog_enabled
 
   - id: 5.1.1.3
@@ -1511,7 +1511,7 @@ controls:
       - rsyslog_remote_loghost
 
   - id: 5.1.1.7
-    title: Ensure rsyslog is not configured to recieve logs from a remote client (Automated)
+    title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
     levels:
       - l1_server
     status: automated
@@ -1537,7 +1537,7 @@ controls:
     status: manual
 
   - id: 5.1.2.1.4
-    title: Ensure journald is not configured to recieve logs from a remote client (Automated)
+    title: Ensure journald is not configured to receive logs from a remote client (Automated)
     levels:
       - l1_server
     status: automated
