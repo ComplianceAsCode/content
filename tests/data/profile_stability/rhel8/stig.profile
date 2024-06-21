@@ -165,7 +165,7 @@ selections:
 - installed_OS_is_vendor_supported
 - package_postfix_installed
 - account_password_pam_faillock_system_auth
-- file_permission_user_init_files
+- file_permission_user_init_files_root
 - audit_rules_privileged_commands_ssh_keysign
 - sysctl_fs_protected_hardlinks
 - sshd_enable_strictmodes
@@ -492,6 +492,7 @@ selections:
 - var_screensaver_lock_delay=5_seconds
 - var_logind_session_timeout=15_minutes
 - var_auditd_name_format=stig
+- var_user_initialization_files_regex=all_dotfiles
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
