@@ -225,7 +225,6 @@ selections:
 - accounts_password_all_shadowed_sha512
 - rsyslog_cron_logging
 - package_sendmail_removed
-- logind_session_timeout
 - configure_tmux_lock_after_time
 - accounts_password_set_min_life_existing
 - audit_rules_file_deletion_events_renameat
