@@ -1,4 +1,4 @@
-# package = ufw
+# packages = ufw
 
 systemctl enable --now ufw
 ufw allow ssh
