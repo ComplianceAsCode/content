@@ -351,7 +351,7 @@ Describe allowing access to a service in firewalld.
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>install {{{ module }}} /bin/true</pre>
-    {{% if "ol" in product or product in ["rhel7", "rhel8"] %}}
+    {{% if "ol" in product or product in ["rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>blacklist {{{ module }}}</pre>
@@ -1053,7 +1053,7 @@ Operator see
 
 #}}
 {{%- macro describe_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9"] or 'ubuntu' in product -%}}
+{{%- if product in ["ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
 To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
 argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
 default Grub2 command line for Linux operating systems. Modify the line within
