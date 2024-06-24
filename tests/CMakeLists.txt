@@ -262,10 +262,6 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL8)
     stig_srg_mapping_test("rhel8")
 endif()
 
-if(PYTHON_VERSION_MAJOR GREATER 2 AND SSG_PRODUCT_RHEL7)
-    stig_srg_mapping_test("rhel7")
-endif()
-
 macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     if(PYTHON_VERSION_MAJOR GREATER 2)
         add_test(
@@ -278,9 +274,6 @@ macro(ssg_controlrefcheck_test PRODUCT CONTROL KEY)
     endif()
 endmacro()
 
-if(SSG_PRODUCT_RHEL7)
-    ssg_controlrefcheck_test("rhel7" "cis_rhel7" "cis")
-endif()
 if(SSG_PRODUCT_RHEL8)
     ssg_controlrefcheck_test("rhel8" "cis_rhel8" "cis")
 endif()
