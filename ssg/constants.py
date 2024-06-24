@@ -55,7 +55,7 @@ product_directories = [
     'openeuler2203',
     'opensuse',
     'openembedded',
-    'rhel7', 'rhel8', 'rhel9', 'rhel10',
+    'rhel8', 'rhel9', 'rhel10',
     'rhv4',
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
@@ -216,7 +216,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Oracle Linux 9": "ol9",
     "openEuler 2203": "openeuler2203",
     "openSUSE": "opensuse",
-    "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
     "Red Hat Enterprise Linux 9": "rhel9",
     "Red Hat Enterprise Linux 10": "rhel10",
@@ -295,7 +294,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7", "ol8", "ol9"],
     "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
-    "multi_platform_rhel": ["rhel7", "rhel8", "rhel9", "rhel10"],
+    "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
@@ -512,11 +511,9 @@ class OvalNamespaces:
 OVAL_NAMESPACES = OvalNamespaces()
 
 DERIVATIVES_PRODUCT_MAPPING = {
-    "centos7": "rhel7",
     "centos8": "rhel8",
     "cs9": "rhel9",
     "cs10": "rhel10",
-    "sl7": "rhel7"
 }
 
 BENCHMARKS = {
