@@ -14,6 +14,7 @@ Below is list of products that have been removed from the project.
 | McAfee VirusScan Enterprise for Linux (VESL) | December 31, 2021  | [content 0.1.65](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.65) |
 | Red Hat Enterprise Linux 5                   | March 31, 2017     | [content 0.1.34](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.34) |
 | Red Hat Enterprise Linux 6                   | June 1, 2022       | [content 0.1.52](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52) |
+| Red Hat Enterprise Linux 7                   | June 31, 2024      | [content 0.1.73](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.73) |
 | Red Hat Enterprise Virtualization Manager 3  | September 30, 2018 | [content 0.1.38](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.38) |
 | Red Hat OpenShift Container Platform 3       | June 1, 2022       | [content 0.1.52](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52) |
 | Red Hat OpenStack Platform 7                 | August 5, 2018     | [content 0.1.41](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.41) |
