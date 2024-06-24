@@ -160,15 +160,15 @@ multiple benchmarks in our project:
 
 The **Linux OS** benchmark describes Linux Operating System in general.
 This benchmark is used by multiple ComplianceAsCode products, eg.
-`rhel7`, `fedora`, `ubuntu1604`, `sle15` etc. The benchmark is located
+`rhel9`, `fedora`, `ubuntu1604`, `sle15` etc. The benchmark is located
 in `/linux_os/guide`.
 
 The products specify which benchmark they use as a source of content in
 their `product.yml` file using `benchmark_root` key. For example,
-`rhel7` product specifies that it uses the Linux OS benchmark.
+`rhel9` product specifies that it uses the Linux OS benchmark.
 
-    $ cat products/rhel7/product.yml
-    product: rhel7
+    $ cat products/rhel9/product.yml
+    product: rhel9
     full_name: Red Hat Enterprise Linux 7
     type: platform
 
@@ -241,7 +241,7 @@ layout:
 -   **Do not** use capital letters
 
 -   If product versions are required, use major or LTS versions only. For
-    example, `rhel7`, `ubuntu2004`, etc.
+    example, `rhel9`, `ubuntu2004`, etc.
 
 -   If the content does not depend on specific versions,
     **do not** add version numbers. For example: `fedora`, `firefox`, etc.
@@ -251,8 +251,8 @@ using and navigating the content.
 
 For example:
 
-    $ tree -d products/rhel7
-    products/rhel7
+    $ tree -d products/rhel9
+    products/rhel9
     ├── kickstart
     ├── overlays
     ├── profiles
@@ -363,7 +363,7 @@ all_cmake_products=(
 <pre>
 ...
 product_directories = ['debian11', 'fedora', 'ol7', 'ol8', 'opensuse',
-                       'rhel7', 'rhel8', 'sle12',
+                       'rhel8', 'rhel9', 'sle12',
                        'ubuntu1604', 'ubuntu1804', 'rhosp13',
                        'chromium', 'eap6', 'firefox',
                        'example'<b>, 'custom6'</b>]
@@ -964,7 +964,7 @@ controls:
     - https://my-ticket-tracker.com/issue/2
 ```
 
-
+(controls_file_format)=
 ### Controls file format
 
 This is a complete schema of the YAML file format.
@@ -1068,6 +1068,7 @@ controls:
       - other-policy:other-control
 ```
 
+(auto_ref_controls_to_rules)=
 ### Using Controls for Automated Reference Assignment to Rules
 
 Control files inherently establish the correspondence between the requirements of a specified policy and individual rules.
@@ -1242,7 +1243,7 @@ the different status options that were documented earlier in this
 documentation.
 
 ```
-$ utils/controleval.py stats -i cis_rhel7 -l l2_server
+$ utils/controleval.py stats -i cis_rhel9 -l l2_server -p rhel9
 ```
 
 For more details about the `controleval.py` too, run `utils/controleval.py --help`.

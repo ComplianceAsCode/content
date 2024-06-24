@@ -28,7 +28,7 @@
 # this wrapper you wouldn't have been able to do parallel builds of multiple
 # targets at once. E.g.:
 #
-# $ make -j 4 rhel7-guides rhel7-stats
+# $ make -j 4 rhel9-guides rhel9-stats
 #
 # Without the wrapper targets the command above would start generating the
 # XCCDF, OVAL and OCIL files 2 times in parallel which would result in
@@ -500,9 +500,7 @@ macro(ssg_build_sds PRODUCT)
     )
     set_tests_properties("verify-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
     if("${PRODUCT}" MATCHES "rhel")
-        if("${PRODUCT}" MATCHES "rhel7")
-            set(REFERENCES_CHECK_PROFILE_LIST anssi_nt28_high cis hipaa pci-dss)
-        elseif("${PRODUCT}" MATCHES "rhel8")
+        if("${PRODUCT}" MATCHES "rhel8")
             set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high cis hipaa pci-dss)
         elseif("${PRODUCT}" MATCHES "rhel9")
             set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high ccn_advanced cis pci-dss stig)

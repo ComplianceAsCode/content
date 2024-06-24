@@ -37,7 +37,7 @@ For example, to subtract selected rules from a given profile based on
 rules selected by another profile, run this command:
 
 ```bash
-    $ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile
+    $ ./build-scripts/profile_tool.py sub --profile1 rhel9/profiles/ospp.profile --profile2 rhel9/profiles/pci-dss.profile
 ```
 
 This will result in a new YAML profile containing exclusive rules to the

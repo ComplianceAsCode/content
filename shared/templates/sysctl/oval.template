@@ -188,7 +188,7 @@
   <ind:textfilecontent54_object id="object_static_etc_lib_sysctls_{{{ rule_id }}}" version="1">
     <set>
       <object_reference>object_static_etc_sysctls_{{{ rule_id }}}</object_reference>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", rhel8", "rhel9", "ubuntu2004", "ubuntu2204"] %}}
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel8", "rhel9", "rhel10", "ubuntu2004", "ubuntu2204"] %}}
       <object_reference>object_static_lib_sysctld_{{{ rule_id }}}</object_reference>
 {{% endif %}}
     </set>

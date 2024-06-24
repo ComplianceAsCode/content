@@ -146,20 +146,20 @@ The `oscap` tool is a low-level command line interface that comes from
 the OpenSCAP project. It can be used to scan the local machine.
 
 ```bash
-oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_ospp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
 ```
 
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 After evaluation, the `arf.xml` file will contain all results in a reusable
-*result data stream* (ARF) format, `report.html` will contain a human readable
+*result data stream* (ARF) format, `report.html` will contain a human-readable
 report that can be opened in a browser.
 
 Replace the profile with other profile of your choice, you can display
 all possible choices using:
 
 ```bash
-oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+oscap info /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
 ```
 
 Please see the [OpenSCAP](https://www.open-scap.org/) website for more information.
@@ -200,7 +200,7 @@ To apply the playbook on your local machine run:
 (*THIS WILL CHANGE CONFIGURATION OF THE MACHINE!*)
 
 ```bash
-ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/rhel7-playbook-rht-ccp.yml
+ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/rhel9-playbook-ospp.yml
 ```
 
 Each of the Ansible Playbooks contains instructions on how to deploy them. Here
@@ -226,9 +226,9 @@ To see a list of available Bash scripts, run:
 ```bash
 # ls /usr/share/scap-security-guide/bash/
 ...
-rhel7-script-hipaa.sh
-rhel7-script-ospp.sh
-rhel7-script-pci-dss.sh
+rhel8-script-hipaa.sh
+rhel8-script-ospp.sh
+rhel8-script-pci-dss.sh
 ...
 ```
 
