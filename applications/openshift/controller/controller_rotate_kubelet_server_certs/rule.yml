@@ -39,11 +39,11 @@ rationale: |-
 
 severity: medium
 
-platform: not ocp4-on-hypershift-hosted
+platform: not ocp4-on-hypershift-hosted and (ocp4.12 or ocp4.13)
 
 ocil_clause: |-
     <tt>RotateKubeletServerCertificate</tt> argument is set to <tt>false</tt> in the
-    <tt>kubeletconfig</tt> options
+    <tt>controllerArguments</tt> options
 
 ocil: |-
     To verify that <tt>RotateKubeletServerCertificate</tt> is configured correctly,
@@ -56,11 +56,13 @@ identifiers:
 
 warnings:
 - general: |-
-    In OpenShift 4, the kubelete certification rotation is enabled by default. 
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
+- functionality: |-
+    In OpenShift 4, the kubelet certification rotation is enabled by default. 
     Openshift v4 automatically generates a new kube-apiserver-to-kubelet-signer CA certificates at 292
     days, removes old CA certificate after 365 days, and the kubelet-client, kubelet-server 
     certs are auto-rotated once every month. Hence, this rule is deprecated and not-applicable. 
-    ref: https://access.redhat.com/articles/5651701
+    ref: https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/security_and_compliance/certificate-types-and-descriptions#purpose-5
  
 references:
     nerc-cip: CIP-003-8 R4.2,CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R5.1,CIP-007-3 R6.1
