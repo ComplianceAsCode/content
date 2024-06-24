@@ -37,7 +37,7 @@ jobs:
         run: ninja render-policies -j2
         working-directory: ./build
       - name: Generate Prometheus Metrics
-        run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel9 rhel8 rhel7 sle12 sle15 -f ./build/policies_metrics
+        run: utils/controleval_metrics.py prometheus -p fedora ocp4 rhcos4 rhel10 rhel9 rhel8 sle12 sle15 -f ./build/policies_metrics
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML pages

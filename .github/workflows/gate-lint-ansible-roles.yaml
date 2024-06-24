@@ -17,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Configure
-        run: cmake -DSSG_PRODUCT_DEFAULT=OFF -DSSG_PRODUCT_RHEL7=ON -DSSG_PRODUCT_RHEL8=ON -DSSG_PRODUCT_RHEL9=ON -G Ninja ..
+        run: cmake -DSSG_PRODUCT_RHEL8=ON -DSSG_PRODUCT_RHEL9=ON -DSSG_PRODUCT_RHEL10=ON -G Ninja ..
         working-directory: ./build
       - name: Build
-        run: ninja -j2 rhel9-profile-playbooks rhel8-profile-playbooks rhel7-profile-playbooks
+        run: ninja -j2 rhel10-profile-playbooks  rhel9-profile-playbooks rhel8-profile-playbooks
         working-directory: ./build
       - name: Build Ansible Roles
         run: PYTHONPATH=. python3 utils/ansible_playbook_to_role.py --build-playbooks-dir ./build/ansible/ --dry-run ./build/ansible_roles
