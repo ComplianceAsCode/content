@@ -42,7 +42,8 @@ references:
     stigid@ubuntu2204: UBTU-22-213025
 
 # In aarch64 cpus the bit is XN and it is not disableable
-platform: machine and not aarch64_arch
+# In ppc64le cpus the bit is not applicable
+platform: machine and not aarch64_arch and not ppc64le_arch
 
 ocil: |-
     Verify the NX (no-execution) bit flag is set on the system.
