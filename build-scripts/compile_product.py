@@ -8,7 +8,7 @@ def create_parser():
     parser.add_argument(
         "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/products/rhel7/product.yml "
+        "e.g.: ~/scap-security-guide/products/rhel9/product.yml "
         "needed for autodetection of profile root"
     )
     parser.add_argument(

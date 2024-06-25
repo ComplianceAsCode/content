@@ -18,12 +18,12 @@ def parse_args():
     p.add_argument(
         "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+        "e.g.: ~/scap-security-guide/rhel9/product.yml"
     )
     p.add_argument(
         "--resolved-rules-dir", required=True,
         help="Directory with <rule-id>.yml resolved rule YAMLs. "
-        "e.g.: ~/scap-security-guide/build/rhel7/rules"
+        "e.g.: ~/scap-security-guide/build/rhel9/rules"
     )
     p.add_argument(
         "--templates-dir", required=True,
@@ -33,22 +33,22 @@ def parse_args():
     p.add_argument(
         "--checks-dir", required=True,
         help="Path to which OVAL checks will be generated. "
-        "e.g.: ~/scap-security-guide/build/rhel7/checks"
+        "e.g.: ~/scap-security-guide/build/rhel9/checks"
     )
     p.add_argument(
         "--platforms-dir", required=True,
         help="Path to directory which contains prebuilt platforms. "
-             "e.g.: ~/scap-security-guide/build/rhel7/platforms"
+             "e.g.: ~/scap-security-guide/build/rhel9/platforms"
     )
     p.add_argument(
         "--cpe-items-dir", required=True,
         help="Path to directory which contains compiled CPE items. "
-             "e.g.: ~/scap-security-guide/build/rhel7/cpe_items"
+             "e.g.: ~/scap-security-guide/build/rhel9/cpe_items"
     )
     p.add_argument(
         "--remediations-dir", required=True,
         help="Path to which remediations will be generated. "
-        "e.g.: ~/scap-security-guide/build/rhel7/fixes_from_templates"
+        "e.g.: ~/scap-security-guide/build/rhel9/fixes_from_templates"
     )
     args = p.parse_args()
     return args
