@@ -1767,7 +1767,7 @@ controls:
     title: Access to system components and data is appropriately defined and assigned.
     levels:
       - base
-    status: pending
+    status: inherently met
     controls:
     - id: 7.2.1
       title: An access control model is defined and includes granting access
@@ -1780,17 +1780,28 @@ controls:
         function.
       levels:
         - base
-      status: pending
+      status: inherently met
       notes: |-
-        General access are restricted by 2.2.6 and 8.2 section. This requirement is more about
-        checking granting access process.
+        The OpenShift Container Platform comes with the Kubernetes RBAC
+        feature enabled by default. This feature ensures that only if a
+        user or a system account has the appropriate permission, it's able
+        to operate on specific system objects. By reviewing the existing
+        Role and ClusterRole objects, one is able to see the resources
+        that are accessible for a certain role, as well as the "verbs" or
+        operations that the role can execute on that resource.
+      rules:
+        - rbac_roles_defined
+        - rbac_cluster_roles_defined
 
     - id: 7.2.2
       title: Access is assigned to users, including privileged users, based on job classification
         and function, and least privileges necessary to perform job responsibilities.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate.
 
     - id: 7.2.3
       title: Required privileges are approved by authorized personnel.
@@ -1799,7 +1810,10 @@ controls:
         authorization.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate and documented.
 
     - id: 7.2.4
       title: All user accounts and related access privileges, including third-party/vendor
@@ -1813,7 +1827,10 @@ controls:
         - Management acknowledges that access remains appropriate.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate and documented.
 
     - id: 7.2.5
       title: All application and system accounts and related access privileges are assigned and
@@ -1835,17 +1852,18 @@ controls:
           reviewed.
         levels:
           - base
-        status: pending
+        status: not applicable
+        notes: |-
+          The check for assignment of least privileges and requirement of use requires human
+          and manual analysis.
 
     - id: 7.2.6
       title: All user access to query repositories of stored cardholder data is restricted
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is specific about cardholder data, which can be available in different
-        formats, such as clear and binary files, and databases depending on site policies.
-        General system restrictions are covered in 2.2.6.
+        The payment entity is responsible implementing and managing access to card holder data.
 
   - id: '7.3'
     title: 'Access to system components and data is managed via an access control
