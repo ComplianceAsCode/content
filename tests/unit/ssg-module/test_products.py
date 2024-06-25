@@ -50,8 +50,8 @@ def test_get_all(ssg_root):
     assert "fedora" in products.linux
     assert "fedora" not in products.other
 
-    assert "rhel7" in products.linux
-    assert "rhel7" not in products.other
+    assert "rhel10" in products.linux
+    assert "rhel10" not in products.other
 
     assert "firefox" in products.other
     assert "firefox" not in products.linux
