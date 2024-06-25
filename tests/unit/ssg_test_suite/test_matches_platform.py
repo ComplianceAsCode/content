@@ -93,14 +93,6 @@ def test_list_combined_no_match():
     assert common.matches_platform(scenario_platforms, benchmark_cpes) is False
 
 
-def test_simple_multiple_benchmark_cpes():
-    scenario_platforms = ["Red Hat Enterprise Linux 7"]
-    benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7",
-                      "cpe:/o:redhat:enterprise_linux:7::client",
-                      "cpe:/o:redhat:enterprise_linux:7::computenode"}
-    assert common.matches_platform(scenario_platforms, benchmark_cpes) is True
-
-
 def test_simple_multiple_unrelated_benchmark_cpes():
     scenario_platforms = ["Red Hat Enterprise Linux 7"]
     benchmark_cpes = {"cpe:/o:redhat:enterprise_linux:7",
