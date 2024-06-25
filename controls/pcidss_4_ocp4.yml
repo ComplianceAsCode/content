@@ -1879,7 +1879,13 @@ controls:
         Access rights and privileges are managed via mechanisms intended for that purpose.
       levels:
         - base
-      status: pending
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform has RBAC enabled by default. With this
+        feature, any requests to the API is denied unless an explicit
+        Role or ClusterRule is bound to the entity making the request.
+
+        All objects in Kubernetes/OpenShift are bound to RBAC permissions.
 
     - id: 7.3.2
       title: The access control system(s) is configured to enforce permissions assigned to
@@ -1889,7 +1895,11 @@ controls:
         only inherited from group membership.
       levels:
         - base
-      status: pending
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform has RBAC enabled by default,
+        and it is enforced at all times.
+        There is no permissive mode for Openshift RBAC.
 
     - id: 7.3.3
       title: The access control system(s) is set to "deny all" by default.
@@ -1897,10 +1907,11 @@ controls:
         Access rights and privileges are prohibited unless expressly permitted.
       levels:
         - base
-      status: planned
+      status: inherently met
       notes: |-
-        It is possible we can select some rules for this requirement but more investigation is
-        needed to confirm.
+        The OpenShift Container Platform has RBAC enabled by default. With this
+        feature, any requests to the API is denied unless an explicit
+        Role or ClusterRule is bound to the entity making the request.
 
   - id: '8.1'
     title: Processes and mechanisms for identifying users and authenticating access to system
