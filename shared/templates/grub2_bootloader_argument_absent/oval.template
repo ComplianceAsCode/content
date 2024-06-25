@@ -21,7 +21,7 @@
 {{% set system_with_kernel_options_in_grubenv = true %}}
 {{%- endif -%}}
 
-{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product -%}}
+{{% if product in ["ol7"] or 'ubuntu' in product -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = true %}}
 {{%- endif -%}}
 
