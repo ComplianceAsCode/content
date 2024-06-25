@@ -218,7 +218,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
     if(PY_PROMETHEUS_CLIENT)
         add_test(
             NAME "test-controleval-prometheus-metrics"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval_metrics.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "prometheus" "--products" "fedora" "ol9" "rhel7" "rhel8" "rhel9" "sle15"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/controleval_metrics.py" "--controls-dir" "${CMAKE_SOURCE_DIR}/tests/unit/ssg-module/data/controls_dir" "prometheus" "--products" "fedora" "ol9" "rhel8" "rhel9" "rhel10" "sle15"
         )
         set_tests_properties("test-controleval-prometheus-metrics" PROPERTIES LABELS quick)
     endif()
