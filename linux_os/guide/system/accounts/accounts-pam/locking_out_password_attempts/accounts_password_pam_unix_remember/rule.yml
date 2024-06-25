@@ -52,7 +52,7 @@ ocil: |-
     The output should show the following at the end of the line:
     <pre>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
 
-    {{% if product not in ["ol7", "rhel7"] %}}
+    {{% if product not in ["ol7"] %}}
     In newer systems, the <tt>pam_pwhistory</tt> PAM module options can also be set in
     "/etc/security/pwhistory.conf" file. Use the following command to verify:
     <pre>$ grep remember /etc/security/pwhistory.conf
@@ -74,7 +74,7 @@ fixtext: |-
     <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
     </li>
     </ul>
-    {{% if product not in ["ol7", "rhel7"] %}}
+    {{% if product not in ["ol7"] %}}
     If the <tt>pam_pwhistory.so</tt> module is used and the <tt>/etc/security/pwhistory.conf</tt>
     file is present in the system, use it to set the "remember" option:
     <pre>remember = {{{ xccdf_value("var_password_pam_remember") }}}</pre>

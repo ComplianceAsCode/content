@@ -36,7 +36,7 @@ template:
         pkgname@ubuntu2004: audispd-plugins
         pkgname@ubuntu2204: audispd-plugins
 
-{{% if product in ["rhel7", "rhel8", "rhel9"] %}}
+{{% if 'rhel' in product %}}
 warnings:
     - general:
         This package is not available in {{{ full_name }}} [{{{ product }}}]. The correct package

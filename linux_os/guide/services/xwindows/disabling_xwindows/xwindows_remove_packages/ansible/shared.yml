@@ -10,7 +10,7 @@
       - xorg-x11-server-Xorg
       - xorg-x11-server-common
       - xorg-x11-server-utils
-{{% if product not in ["rhel7", "ol7"] %}}
+{{% if product not in ["ol7"] %}}
       - xorg-x11-server-Xwayland
 {{% endif %}}
     state: absent

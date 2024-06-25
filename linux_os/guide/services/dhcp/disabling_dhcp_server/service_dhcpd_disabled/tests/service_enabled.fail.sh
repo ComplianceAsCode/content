@@ -1,5 +1,5 @@
 #!/bin/bash
-{{% if product in ['rhel7', 'sle15'] %}}
+{{% if product in ['sle15'] %}}
     {{% set pkp_name="dhcp" %}}
 {{% else %}}
     {{% set pkp_name="dhcp-server" %}}

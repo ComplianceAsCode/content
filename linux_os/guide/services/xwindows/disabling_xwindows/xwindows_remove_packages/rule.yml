@@ -5,7 +5,7 @@ title: 'Disable graphical user interface'
 
 description: |-
     By removing the following packages,  the system no longer has X Windows installed.
-    {{% if product in ["rhel7", "ol7"] %}}
+    {{% if product in ["ol7"] %}}
     <tt>xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</tt>
     {{% else %}}
     <tt>xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</tt>
@@ -13,7 +13,7 @@ description: |-
     If X Windows is not installed then the system cannot boot into graphical user mode.
     This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
     mode. To do so, run the following command:
-    {{% if product in ["rhel7", "ol7"] %}}
+    {{% if product in ["ol7"] %}}
     <pre>sudo {{{ pkg_manager }}} remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
     {{% else %}}
     <pre>sudo {{{ pkg_manager }}} remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</pre>
@@ -45,7 +45,7 @@ ocil_clause: 'xorg related packages are not removed and run level is not correct
 
 ocil: |-
     To ensure the X Windows package group is removed, run the following command:
-    {{% if product in ["rhel7", "ol7"] %}}
+    {{% if product in ["ol7"] %}}
     <pre>$ rpm -qi xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
     {{% else %}}
     <pre>$ rpm -qi xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</pre>
@@ -55,7 +55,7 @@ ocil: |-
 
 fixtext: |-
     To ensure the X Windows package group is removed, run the following command:
-    {{% if product in ["rhel7", "ol7"] %}}
+    {{% if product in ["ol7"] %}}
     <pre>$ sudo yum remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
     {{% else %}}
     {{{ package_remove("xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland") }}}
