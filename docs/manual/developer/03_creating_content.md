@@ -169,7 +169,7 @@ their `product.yml` file using `benchmark_root` key. For example,
 
     $ cat products/rhel9/product.yml
     product: rhel9
-    full_name: Red Hat Enterprise Linux 7
+    full_name: Red Hat Enterprise Linux 9
     type: platform
 
     benchmark_root: "../linux_os/guide"

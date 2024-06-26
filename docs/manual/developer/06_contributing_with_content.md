@@ -1021,7 +1021,7 @@ of supported platforms.
 Following, you can see an example of a bash remediation that sets the
 maximum number of days a password may be used:
 
-    # platform = Red Hat Enterprise Linux 7
+    # platform = Red Hat Enterprise Linux 10
     {{{ bash_instantiate_variables("var_accounts_maximum_age_login_defs) }}}
 
     grep -q ^PASS_MAX_DAYS /etc/login.defs && \
