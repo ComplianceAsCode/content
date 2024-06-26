@@ -52,7 +52,6 @@ def parse_args():
 
     (options, args) = parser.parse_args()
 
-
     if not options.output and not options.input_content:
         parser.print_help()
         sys.exit(1)
