@@ -1520,35 +1520,40 @@ controls:
       defined and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 6.1.1
       title: All security policies and operational procedures that are identified in Requirement 6
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 6 are managed in accordance with all
-        elements specified in this requirement.
+        The responsibility for documentation, maintenance, use and dissemination of the processes
+        and mechanisms for developing and maintaining secure systems and software is on the
+        payment entity and its operations team.
 
     - id: 6.1.2
       title: Roles and responsibilities for performing activities in Requirement 6 are
         documented, assigned, and understood.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 6 are documented, assigned and understood
-        by the assigned personnel.
+        The responsibility for documentation, maintenance, use and dissemination of the processes
+        and mechanisms for developing and maintaining secure systems and software is on the
+        payment entity and its operations team.
 
   - id: '6.2'
     title: Bespoke and custom software are developed securely.
     levels:
       - base
-    status: pending
+    status: not applicable
+    notes: |-
+      OpenShift is developed and maintained following secure software development practices:
+      https://www.redhat.com/en/topics/security/red-hat-sdl
+      But this requirement applies only to software developed for or by the entity for the
+      entity's own use. This does not apply to third-party software.
     controls:
     - id: 6.2.1
       title: Bespoke and custom software are developed securely.
@@ -1560,7 +1565,7 @@ controls:
         software development lifecycle.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.2.2
       title: Software development personnel working on bespoke and custom software are trained at
@@ -1574,7 +1579,7 @@ controls:
         vulnerabilities in software.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.2.3
       title: Bespoke and custom software is reviewed prior to being released into production or to
@@ -1587,7 +1592,7 @@ controls:
         - Appropriate corrections are implemented prior to release.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 6.2.3.1
         title: If manual code reviews are performed for bespoke and custom software prior to
@@ -1600,7 +1605,7 @@ controls:
           - Reviewed and approved by management prior to release.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 6.2.4
       title: Software engineering techniques or other methods are defined and in use by software
@@ -1608,19 +1613,33 @@ controls:
         vulnerabilities in bespoke and custom software.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '6.3'
     title: Security vulnerabilities are identified and addressed.
     levels:
       - base
-    status: pending
+    status: inherently met
     controls:
     - id: 6.3.1
       title: Security vulnerabilities are identified and managed
+      description: |-
+        Security vulnerabilities are identified and managed as follows:
+        - New security vulnerabilities are identified using industry-recognized sources for
+        security vulnerability information, including alerts from international and national
+        computer emergency response teams (CERTs).
+        - Vulnerabilities are assigned a risk ranking based on industry best practices and
+        consideration of potential impact.
+        - Risk rankings identify, at a minimum, all vulnerabilities considered to be a high-risk
+        or critical to the environment.
+        - Vulnerabilities for bespoke and custom, and third-party software (for example operating
+        systems and databases) are covered.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The payment entity needs to establish its own process of monitoring for vulnerabilities for
+        the systems in use, including bespoke and custom software.
 
     - id: 6.3.2
       title: An inventory of bespoke and custom software, and third-party software components
@@ -1632,13 +1651,7 @@ controls:
         it will be required and must be fully considered during a PCI DSS assessment.
       levels:
         - base
-      status: automated
-      notes: |-
-        This requirement is a best practice until 31 March 2025, after which it will be required
-        and must be fully considered during a PCI DSS assessment.
-      rules:
-        - acs_sensor_exists
-        - container_security_operator_exists
+      status: not applicable
 
     - id: 6.3.3
       title: All system components are protected from known vulnerabilities by installing
@@ -1652,14 +1665,22 @@ controls:
         frame as determined by the entity (for example, within three months of release).
       levels:
         - base
-      status: pending
-      rules: []
+      status: inherently met
+      notes: |-
+        The OpenShift Container Platform provides the capability of updating
+        both the Kubernetes/OCP layer, as well as the Operating System (Red Hat
+        CoreOS) layer in an ubiquitous manner with over-the-air updates using
+        the OpenShift Update Service (OSUS) [1]. This service can also be installed
+        in clusters without internet connectivity [2].
+
+        [1] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/updating_clusters/understanding-openshift-updates-1#update-service-about_understanding-openshift-updates
+        [2] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/updating_clusters/performing-a-cluster-update#updating-restricted-network-cluster-OSUS
 
   - id: '6.4'
     title: Public-facing web applications are protected against attacks.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 6.4.1
       title: For public-facing web applications, new threats and vulnerabilities are addressed on
@@ -1686,14 +1707,31 @@ controls:
           investigated.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        It is up to the payment entity how they protect their public facing appilcations.
+        Depending on the approach taken OpenShift can provide support, see req. 6.4.2, for more details.
 
     - id: 6.4.2
       title: For public-facing web applications, an automated technical solution is deployed that
         continually detects and prevents web-based attacks.
       levels:
         - base
-      status: pending
+      status: partial
+      notes: |-
+        Support for Web Application Firewall in OCP is still in development:
+        https://www.redhat.com/en/blog/creating-web-application-firewall-red-hat-openshift
+
+        While Container Security Operator (CSO) is not focused on protecting web-applications it
+        can scan installed workflows and applications for known vulnerabilities.
+        https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/red_hat_quay_operator_features/container-security-operator-setup
+
+        Security Profiles Operators can also be used to contain an attack when an application
+        is compromised.
+        https://docs.openshift.com/container-platform/latest/security/security_profiles_operator/spo-overview.html
+      rules:
+        - container_security_operator_exists
+        - security_profiles_operator_exists
 
     - id: 6.4.3
       title: All payment page scripts that are loaded and executed in the consumer's browser are
@@ -1707,20 +1745,20 @@ controls:
         necessary.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '6.5'
     title: Changes to all system components are managed securely.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 6.5.1
       title: Changes to all system components in the production environment are made according to
         established procedures.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.2
       title: Upon completion of a significant change, all applicable PCI DSS requirements are
@@ -1733,7 +1771,7 @@ controls:
         12.5.2.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.3
       title: Pre-production environments are separated from production environments and the
@@ -1743,7 +1781,7 @@ controls:
         environments.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.4
       title: Roles and functions are separated between production and pre-production environments
@@ -1759,7 +1797,7 @@ controls:
         access to the production environment.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.5
       title: Live PANs are not used in pre-production environments, except where those
@@ -1769,7 +1807,7 @@ controls:
         Live PANs cannot be present in pre-production environments outside the CDE.s
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 6.5.6
       title: Test data and test accounts are removed from system components before the system goes
@@ -1778,7 +1816,7 @@ controls:
         Test data and test accounts cannot exist in production environments.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '7.1'
     title: Processes and mechanisms for restricting access to system components and cardholder
