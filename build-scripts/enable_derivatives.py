@@ -26,9 +26,11 @@ oval_ns = ssg.constants.oval_namespace
 
 CENTOS_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.CENTOS_NOTICE)
 SL_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.SL_NOTICE)
+AMZN_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.AMZN_NOTICE)
 
 CENTOS_WARNING = 'centos_warning'
 SL_WARNING = 'sl_warning'
+AMZN_WARNING = 'amzn_warning'
 
 
 def parse_args():
@@ -38,6 +40,8 @@ def parse_args():
                       action="store_true", help="Enable CentOS")
     parser.add_option("--enable-sl", dest="sl", default=False,
                       action="store_true", help="Enable Scientific Linux")
+    parser.add_option("--enable-amzn", dest="amzn", default=False,
+                      action="store_true", help="Enable Amazon Linux")
     parser.add_option("-i", "--input", dest="input_content", default=False,
                       action="store",
                       help="INPUT can be XCCDF or Source data stream")
@@ -90,6 +94,12 @@ def main():
         warning = SL_WARNING
         derivative = "Scientific Linux"
 
+    if options.amzn:
+        mapping = ssg.constants.RHEL_AMZN_CPE_MAPPING
+        notice = AMZN_NOTICE_ELEMENT
+        warning = AMZN_WARNING
+        derivative = "Amazon Linux"
+
     tree = ssg.xml.open_xml(options.input_content)
     root = tree.getroot()
 
@@ -106,9 +116,10 @@ def main():
         raise RuntimeError("No Benchmark found!")
 
     for namespace, benchmark in benchmarks:
-        if args[1] not in ("cs9", "cs10") and not args[1].startswith("centos"):
+        if args[1] not in ("cs9", "cs10", "amzn2") and not args[1].startswith("centos"):
             # In all CentOS and CentOS Streams, profiles are kept because they are systems
             # intended to test content that will get into RHEL
+            # In Amazon Linux 2, profiles are kept because this is a system very similar to RHEL 7.
             ssg.build_derivatives.profile_handling(benchmark, namespace)
         if not ssg.build_derivatives.add_cpes(benchmark, namespace, mapping):
             raise RuntimeError(

@@ -303,6 +303,11 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_openembedded": ["openembedded"],
 }
 
+RHEL_AMZN_CPE_MAPPING = {
+    "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:amazon:linux:2018.03:ga",
+    "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:amazon:amazon_linux:2",
+}
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
@@ -313,6 +318,24 @@ RHEL_CENTOS_CPE_MAPPING = {
 RHEL_SL_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
 }
+
+AMZN_NOTICE = \
+    "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
+    "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
+    "benchmark developed for <i>Red Hat Enterprise Linux</i>.</p>" \
+    "\n" \
+    "<p>Users of <i>Amazon Linux 2</i> are invited to participate in " \
+    "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
+    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "SCAP Security Guide</a> development. Bug reports and patches " \
+    "can be sent to GitHub: " \
+    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "The mailing list is at " \
+    "<a href=\"https://lists.fedorahosted.org/admin/lists/scap-security-guide.lists.fedorahosted.org/\">" \
+    "https://lists.fedorahosted.org/admin/lists/scap-security-guide.lists.fedorahosted.org/</a>" \
+    ".</p>" \
+    "</div>"
 
 CENTOS_NOTICE = \
     "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
@@ -512,6 +535,7 @@ class OvalNamespaces:
 OVAL_NAMESPACES = OvalNamespaces()
 
 DERIVATIVES_PRODUCT_MAPPING = {
+    "amzn2": "rhel7",
     "centos7": "rhel7",
     "centos8": "rhel8",
     "cs9": "rhel9",
