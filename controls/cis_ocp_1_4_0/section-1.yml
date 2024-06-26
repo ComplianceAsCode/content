@@ -384,15 +384,10 @@ controls:
       levels: [ level_1, ]
     - id: 1.2.31
       title: Ensure that encryption providers are appropriately configured
-      status: partial
+      status: automated
       rules:
         - api_server_encryption_provider_cipher
       levels: [ level_1, ]
-      # Remove this comment once https://github.com/ComplianceAsCode/content/issues/10868 is fixed.
-      # tickets:
-      #   - https://issues.redhat.com/browse/CMP-1973
-      notes: |-
-        Ticket 1973 tracks adding the aesgcm encryption method for OCP 4.13+
     - id: 1.2.32
       title: Ensure that the API Server only makes use of Strong Cryptographic Ciphers
       status: automated
