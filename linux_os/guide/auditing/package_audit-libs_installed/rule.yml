@@ -1,6 +1,6 @@
 {{% if product in ["sle12","sle15"] %}}
 {{% set package_name = "libaudit1" %}}
-{{% else %}} 
+{{% else %}}
 {{% set package_name = "audit-libs" %}}
 {{% endif %}}
 
@@ -16,7 +16,6 @@ rationale: 'The auditd service is an access monitoring and accounting daemon, wa
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-86531-1
     cce@rhel9: CCE-86772-1
     cce@sle12: CCE-92320-1
     cce@sle15: CCE-92478-7
