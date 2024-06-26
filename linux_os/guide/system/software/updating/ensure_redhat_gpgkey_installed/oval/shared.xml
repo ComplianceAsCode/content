@@ -6,9 +6,6 @@
     <criteria comment="Vendor GPG keys" operator="OR">
       <criteria comment="Red Hat Vendor Keys" operator="AND">
         <criteria comment="Red Hat Installed" operator="OR">
-        {{%- if product == "rhel7" %}}
-          <extend_definition comment="SL7 installed" definition_ref="installed_OS_is_sl7" />
-        {{%- endif %}}
           <extend_definition comment="{{{ product }}} installed" definition_ref="installed_OS_is_{{{ product }}}" />
         </criteria>
         <criterion comment="package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"

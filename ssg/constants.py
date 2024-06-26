@@ -305,6 +305,7 @@ MULTI_PLATFORM_MAPPING = {
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
     "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:centos:centos:9",
+    "cpe:/o:redhat:enterprise_linux:10": "cpe:/o:centos:centos:10",
 }
 
 CENTOS_NOTICE = \
