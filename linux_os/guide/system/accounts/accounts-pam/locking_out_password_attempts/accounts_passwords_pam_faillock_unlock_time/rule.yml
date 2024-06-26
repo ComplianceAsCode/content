@@ -7,17 +7,9 @@ description: |-
     This rule configures the system to lock out accounts during a specified time period after a
     number of incorrect login attempts using <tt>pam_faillock.so</tt>.
 
-    {{% if product in ["rhel7"] %}}
-    Ensure that pam_faillock.so module entries in
-    <tt>/etc/pam.d/password-auth</tt> and <tt>/etc/pam.d/system-auth</tt> are
-    followed by the assignment
-    <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where
-    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
-    {{% else %}}
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where
     <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
-    {{% endif %}}
 
     pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
     defined to work as expected. In order to avoid any errors when manually editing these files,
@@ -72,38 +64,19 @@ ocil: |-
     after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unsuccessful logon
     attempts with the command:
 
-    {{% if product in ["rhel7"] %}}
-    <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-    For each file, the output should show <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
-    {{% else %}}
     <pre>$ grep 'unlock_time =' /etc/security/faillock.conf</pre>
     <tt>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt>
-    {{% endif %}}
+
 
 fixtext: |-
     Configure {{{ full_name }}} to lock an account until released by an administrator after
     {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unsuccessful logon attempts with the command:
 
-    {{% if product in ["rhel7"] %}}
-    First make sure the feature is enabled:
-    $ sudo authconfig --enablefaillock --update
-
-    Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
-    <tt>/etc/pam.d/password-auth</tt> as follows:
-    edit the unlock_time parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
-    statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
-
-    edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
-    statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
-    {{% else %}}
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     <pre>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</pre>
 
-    {{% endif %}}
 
 srg_requirement: |-
     {{{ full_name }}} must maintain an account lock until the locked account is released by an administrator.

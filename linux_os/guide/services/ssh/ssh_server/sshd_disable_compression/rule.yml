@@ -47,9 +47,7 @@ ocil: |-
     <pre>$ sudo grep Compression /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.
 
-{{% if product == "rhel7" %}}
-platform: os_linux[rhel]<7.4
-{{% elif product == "ol7" %}}
+{{% if product == "ol7" %}}
 platform: os_linux[ol]<7.4
 {{% elif product == "sle12" %}}
 platform: package[openssh]<7.4

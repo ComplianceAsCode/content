@@ -1,4 +1,4 @@
-{{%- if product in ["ol7", "rhel7", "rhel8", "rhel9"] %}}
+{{%- if product in ["ol7"] or 'rhel' in product %}}
     {{%- set kmod_audit="-a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=" ~ uid_min ~ " -F auid!=unset -F key=privileged" %}}
 {{%- else %}}
     {{%- set kmod_audit="-w /usr/bin/kmod -p x -k modules" %}}

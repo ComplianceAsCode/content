@@ -51,37 +51,20 @@ ocil: |-
     Verify {{{ full_name }}} is configured to lock the root account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}
     unsuccessful logon attempts with the command:
 
-    {{% if product in ["rhel7"] %}}
-    <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-    For each file, the output should contain <tt>even_deny_root</tt>.
-    {{% else %}}
     <pre>$ grep even_deny_root /etc/security/faillock.conf</pre>
     even_deny_root
-    {{% endif %}}
+
 
 fixtext: |-
     Configure {{{ full_name }}} to lock out the <tt>root</tt> account after a number of incorrect login
     attempts using <tt>pam_faillock.so</tt>, first enable the feature using the following command:
 
-    {{% if product in ["rhel7"] %}}
-    $ sudo authconfig --enablefaillock --update
-
-    Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
-    <tt>/etc/pam.d/password-auth</tt> as follows:
-    include the even_deny_root parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
-    statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre>
-
-    include the even_deny_root parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
-    statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre>
-    {{% else %}}
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     add or uncomment the following line:
     <pre>even_deny_root</pre>
-    {{% endif %}}
+
 
 platform: package[pam]
 

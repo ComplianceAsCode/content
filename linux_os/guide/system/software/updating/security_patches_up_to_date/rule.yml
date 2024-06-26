@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Ensure Software Patches Installed'
 
 description: |-
-{{% if product in ["rhel7", "rhel8"] %}}
+{{% if 'rhel' in product %}}
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
     or a yum server, run the following command to install updates:
     <pre>$ sudo yum update</pre>

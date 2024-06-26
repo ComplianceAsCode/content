@@ -5,7 +5,7 @@ title: 'Ensure sudo passwd_timeout is appropriate - sudo passwd_timeout'
 
 description: |-
     The sudo <tt>passwd_timeout</tt> tag sets the amount of time sudo password prompt waits.
-{{%- if product in ["rhel7", "rhel8"] %}}
+{{%- if 'rhel' in product %}}
     On {{{ full_name }}}, the default <tt>passwd_timeout</tt> value is 5 minutes.
 {{% endif %}}
     The passwd_timeout should be configured by making sure that the
