@@ -553,3 +553,5 @@ selections:
     - sebool_polipo_session_users
     - sebool_cluster_manage_all_files
     - configure_firewalld_ports
+    - journald_forward_to_syslog
+    - rsyslog_filecreatemode
