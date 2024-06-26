@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = Oracle Linux 7,Oracle Linux 8,multi_platform_rhel
 # profiles = xccdf_org.ssgproject.content_profile_stig
 # packages = dconf,gdm
 

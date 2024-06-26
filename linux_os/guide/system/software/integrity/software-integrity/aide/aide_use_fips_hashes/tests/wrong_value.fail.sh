@@ -1,12 +1,12 @@
 #!/bin/bash
 # packages = aide
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_ol
+# platform = Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_ol
 
 
 cat >/etc/aide.conf <<EOL
 All = p+i+n+u+g+s+m+S+acl+xattrs+selinux
 option = yes
 Group = selinux
-/bin All # apply the custom rule to the files in bin 
-/sbin All # apply the same custom rule to the files in sbin 
+/bin All # apply the custom rule to the files in bin
+/sbin All # apply the same custom rule to the files in sbin
 EOL

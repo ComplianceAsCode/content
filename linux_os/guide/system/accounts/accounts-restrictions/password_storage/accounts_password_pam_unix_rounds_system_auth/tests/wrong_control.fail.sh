@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = pam
-# platform = Oracle Linux 7,Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora
+# platform = Oracle Linux 7,Red Hat Virtualization 4,multi_platform_fedora
 # variables = var_password_pam_unix_rounds=65536
 
 ROUNDS=65536
