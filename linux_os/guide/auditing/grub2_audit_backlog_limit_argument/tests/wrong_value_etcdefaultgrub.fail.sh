@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7
+# platform = Oracle Linux 7,Oracle Linux 8
 
 # Break the audit_backlog_limit argument in kernel command line in /etc/default/grub
 if grep -q '^GRUB_CMDLINE_LINUX=.*audit_backlog_limit=.*"'  '/etc/default/grub' ; then

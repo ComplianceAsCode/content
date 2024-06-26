@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 7
+# platform = multi_platform_fedora
 
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
 
