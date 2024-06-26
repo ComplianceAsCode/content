@@ -17,7 +17,7 @@ jobs:
       image: oraclelinux:7.9
     steps:
       - name: Install Deps
-        run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools
+        run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools openscap openscap-scanner
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
