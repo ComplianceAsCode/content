@@ -43,7 +43,7 @@ To use Libvirt backend, you need to have:
   - Package `qemu-guest-agent` installed
   - Package `openscap` version 1.2.15 or higher installed
   - `root` can login via ssh (it is recommended to setup key-based authentication)
-  - `root` can install packages (for RHEL7, it means subscription enabled).
+  - `root` can install packages (for RHEL, it means subscription enabled).
   - `CPE_NAME` is present in `/etc/os-release`. Currently, Ubuntu doesn't ship
     it in the stock image. See [this Ubuntu
     bug](https://bugs.launchpad.net/ubuntu/+source/base-files/+bug/1472288).
@@ -397,12 +397,12 @@ If you would like to test the rule `sshd_disable_kerb_auth`:
 
 Using Libvirt:
 ```
-./automatus.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --libvirt qemu:///system ssg-test-suite-rhel9 --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
 Using Podman:
 ```
-./automatus.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --container ssg_test_suite --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
 or just call the `test_rule_in_container.sh` script that passes the backend options for you
@@ -411,7 +411,7 @@ that remove some testing limitations of the container backend.
 
 Using Docker:
 ```
-./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel9-ds.xml sshd_disable_kerb_auth
 ```
 
 Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
@@ -444,9 +444,9 @@ In this operation mode, you specify the `profile` command and you supply the
 profile ID as a positional argument.  Automatus then runs scans over the
 target domain and remediates it based on particular profile.
 
-To test RHEL7 STIG Profile on a VM:
+To test RHEL9 STIG Profile on a VM:
 ```
-./automatus.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
+./automatus.py profile --libvirt qemu:///session ssg-test-suite-rhel9 --datastream ../build/ssg-rhel9-ds.xml stig
 ```
 
 To test Fedora Standard Profile on a Podman container:
