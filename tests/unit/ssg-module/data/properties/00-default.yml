@@ -2,8 +2,8 @@
 default:
   property_one: one
 
-{{%- if product == "rhel7" %}}
-  rhel_version: "seven"
+{{%- if product == "rhel9" %}}
+  rhel_version: "nine"
 {{%- else %}}
-  rhel_version: "not_seven"
+  rhel_version: "not_nine"
 {{% endif %}}
