@@ -555,3 +555,4 @@ selections:
     - configure_firewalld_ports
     - journald_forward_to_syslog
     - rsyslog_filecreatemode
+    - set_nftables_table
