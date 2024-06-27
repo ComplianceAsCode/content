@@ -15,7 +15,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 python3-yaml python3-jinja2 git python3-deepdiff python3-requests jq python3-pip libxml2-utils
       - name: Install deps python
-        run: pip3 install gitpython xmldiff
+        run: pip3 install gitpython xmldiff compliance-trestle==2.4.0 lxml lxml-stubs requests
       - name: Checkout
         uses: actions/checkout@v4
         with:
