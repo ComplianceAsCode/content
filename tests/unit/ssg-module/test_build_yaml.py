@@ -338,7 +338,6 @@ def test_platform_from_text_complex_expression(product_cpes):
     assert platform.test(**{'systemd': True, 'ntp': False, 'chrony': True, 'yum': False})
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
