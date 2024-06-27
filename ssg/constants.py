@@ -42,6 +42,7 @@ product_directories = [
     'alinux3',
     'anolis8',
     'anolis23',
+    'al2023',
     'chromium',
     'debian10', 'debian11', 'debian12',
     'example',
@@ -200,6 +201,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 3": "alinux3",
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
+    "Amazon Linux 2023": "al2023",
     "Chromium": "chromium",
     "Debian 10": "debian10",
     "Debian 11": "debian11",
@@ -228,7 +230,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 22.04": "ubuntu2204",
     "UnionTech OS Server 20": "uos20",
     "OpenEmbedded": "openembedded",
-    "Not Applicable" : "example"
+    "Not Applicable" : "example",
 }
 
 
@@ -280,7 +282,7 @@ REFERENCES = dict(
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis", "openembedded"]
+                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
@@ -300,6 +302,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
     "multi_platform_uos": ["uos20"],
     "multi_platform_openembedded": ["openembedded"],
+    "multi_platform_al": ["al2023"],
 }
 
 RHEL_CENTOS_CPE_MAPPING = {
@@ -426,6 +429,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
     'eks': 'Amazon Elastic Kubernetes Service',
+    'al': 'Amazon Linux',
     'openembedded': 'OpenEmbedded',
 }
 

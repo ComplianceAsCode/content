@@ -12,7 +12,7 @@ def test_is_applicable():
 
     assert not utils.is_applicable('fedora,multi_platform_ubuntu', 'rhel7')
     assert not utils.is_applicable('ol7', 'rhel7')
-    assert not utils.is_applicable('alinux2,alinux3,anolis8,anolis23,fedora,debian10,debian11,uos20',
+    assert not utils.is_applicable('al2023,alinux2,alinux3,anolis8,anolis23,fedora,debian10,debian11,uos20',
                                        'rhel7')
 
 

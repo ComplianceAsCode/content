@@ -115,6 +115,7 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_AL2023 "If enabled, the AL2023 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 # Products derivatives
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 
@@ -341,6 +342,7 @@ message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Ubuntu 22.04: ${SSG_PRODUCT_UBUNTU2204}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
+message(STATUS "AL 2023: ${SSG_PRODUCT_AL2023}")
 message(STATUS "OpenEmbedded: ${SSG_PRODUCT_OPENEMBEDDED}")
 message(STATUS " ")
 
@@ -366,6 +368,9 @@ add_custom_target(render-policies)
 
 ssg_build_man_page()
 
+if(SSG_PRODUCT_AL2023)
+    add_subdirectory("products/al2023" "al2023")
+endif()
 if(SSG_PRODUCT_ALINUX2)
     add_subdirectory("products/alinux2" "alinux2")
 endif()

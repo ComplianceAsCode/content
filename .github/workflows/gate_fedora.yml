@@ -25,6 +25,7 @@ jobs:
             -   name: Build
                 run: |-
                     ./build_product -j2 \
+                        al2023 \
                         alinux2 \
                         alinux3 \
                         anolis23 \
@@ -35,6 +36,7 @@ jobs:
                         fedora \
                         firefox \
                         macos1015 \
+                        ocp4 \
                         ol7  \
                         ol8 \
                         ol9 \
@@ -45,8 +47,7 @@ jobs:
                         rhel9 \
                         rhel10 \
                         rhv4 \
-                        uos20 \
-                        ocp4
+                        uos20
                 env:
                     ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
             -   name: Test
