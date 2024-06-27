@@ -38,12 +38,13 @@ def test_scenario():
     assert s.matches_regex(r"^correct.*")
     assert not s.matches_regex(r".*fail\.sh")
     assert not s.matches_regex(r"^wrong")
-    assert s.matches_platform({"cpe:/o:redhat:enterprise_linux:7"})
+    assert s.matches_platform({"cpe:/o:redhat:enterprise_linux:10"})
     assert not s.matches_platform({"cpe:/o:debian:debian:8"})
     assert s.matches_check({"oval"})
     assert not s.matches_check({"sce"})
     assert not s.matches_check({"fancy_unsupported_language"})
     assert not s.matches_check({})
+
 
 def test_scenario_defaults():
     file_name = "correct_defaults.pass.sh"
@@ -63,8 +64,8 @@ def test_scenario_defaults():
     assert len(s.script_params["remediation"]) == 1
     assert "all" in s.script_params["remediation"]
     assert len(s.script_params["variables"]) == 0
-    assert s.matches_platform({"cpe:/o:redhat:enterprise_linux:7"})
-    assert s.matches_platform({"cpe:/o:debian:debian:8"})
+    assert s.matches_platform({"cpe:/o:redhat:enterprise_linux:10"})
+    assert s.matches_platform({"cpe:/o:debian:debian:12"})
     s.override_profile("xccdf_org.ssgproject.content_profile_cis")
     assert "xccdf_org.ssgproject.content_profile_cis" in \
         s.script_params["profiles"]

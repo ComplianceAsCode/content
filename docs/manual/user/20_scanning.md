@@ -168,7 +168,7 @@ fi
 # END OF SCRIPT
 ```
 
-This output could be redirected to a bash script, or built into your RHEL7 provisioning process (e.g. the %post section of a kickstart).
+This output could be redirected to a bash script, or built into your RHEL provisioning process (e.g. the %post section of a kickstart).
 
 #### Ansible Playbooks
 

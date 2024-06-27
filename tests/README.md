@@ -172,7 +172,7 @@ The header consists of comments (starting by `#`). Possible keys are:
   for any platform-specific names in the `platform_package_overrides` field.
 - `platform` is a comma-separated list of platforms where the test scenario can
   be run. This is similar to `platform` used in our remediations. Examples of
-  values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`,
+  values: `multi_platform_rhel`, `Red Hat Enterprise Linux 10`,
   `multi_platform_all`. If `platform` is not specified in the header,
   `multi_platform_all` is assumed.
 - `profiles` is a comma-separated list of profiles to which this scenario is
@@ -205,7 +205,7 @@ Using `platform` and `variables` metadata:
 
 ```bash
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 9,multi_platform_fedora
 # variables = auth_enabled=yes,var_example_1=value_example
 
 echo "KerberosAuthentication $auth_enabled" >> /etc/ssh/sshd_config

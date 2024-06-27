@@ -40,8 +40,6 @@ description: |-
         {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
     {{% elif 'ubuntu' in product %}}
         {{{ weblink(link="https://help.ubuntu.com/community/Full_Disk_Encryption_Howto_2019") }}}
-    {{% elif product == "rhel7" %}}
-        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-encryption") }}}
     {{% elif product == "fedora" %}}
         {{{ weblink(link="https://docs.fedoraproject.org/en-US/quick-docs/encrypting-drives-using-LUKS/") }}}
     {{% else %}}
@@ -56,7 +54,6 @@ rationale: |-
 severity: high
 
 identifiers:
-    cce@rhel7: CCE-27128-8
     cce@rhel8: CCE-80789-1
     cce@rhel9: CCE-90849-1
     cce@sle12: CCE-83046-3

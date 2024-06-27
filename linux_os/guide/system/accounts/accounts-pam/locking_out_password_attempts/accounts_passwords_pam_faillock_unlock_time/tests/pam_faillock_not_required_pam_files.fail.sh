@@ -1,10 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_fedora,multi_platform_rhel,multi_platform_ol,multi_platform_rhv,multi_platform_sle
-{{%- if product in ["rhel7"] %}}
-# packages = authconfig
-{{%- else %}}
 # packages = authselect
-{{%- endif %}}
 # remediation = none
 # variables = var_accounts_passwords_pam_faillock_unlock_time=600
 

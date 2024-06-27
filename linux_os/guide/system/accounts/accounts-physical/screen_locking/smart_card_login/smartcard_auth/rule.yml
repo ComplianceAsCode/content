@@ -6,9 +6,7 @@ title: 'Enable Smart Card Login'
 description: |-
     To enable smart card authentication, consult the documentation at:
     <ul>
-    {{% if product == "rhel7" %}}
-    <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/smartcards#authconfig-smartcards") }}}</b></li>
-    {{% elif product == "ol7" %}}
+    {{% if product == "ol7" %}}
     <li><b>{{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/userauth/userauth-AuthenticationConfiguration.html#ol7-s4-auth") }}}</b></li>
     {{% endif %}}
     </ul>
@@ -30,9 +28,6 @@ severity: medium
 platforms:
     - not_s390x_arch
 
-identifiers:
-    cce@rhel7: CCE-80207-4
-
 references:
     cis-csc: 1,12,15,16,5
     cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
@@ -45,7 +40,6 @@ references:
     pcidss: Req-8.3
     srg: SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058,SRG-OS-000109-GPOS-00056,SRG-OS-000376-GPOS-00161,SRG-OS-000377-GPOS-00162
     stigid@ol7: OL07-00-010500
-    stigid@rhel7: RHEL-07-010500
 
 ocil_clause: 'non-exempt accounts are not using CAC authentication'
 

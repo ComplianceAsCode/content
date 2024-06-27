@@ -30,16 +30,10 @@ less ~/OpenSCAP/STARTGUIDE.md
 ## Installing build dependencies
 
 ### Required Dependencies
-On *Red Hat Enterprise Linux 7* make sure the following packages are installed:
-
-```bash
-yum install cmake make openscap-utils openscap-scanner
-```
-
 On *Red Hat Enterprise Linux 8* and *Fedora* the package list but must also include python3:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner python3
+dnf install cmake make openscap-utils openscap-scanner python3
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
@@ -273,15 +267,15 @@ cd build/
 cmake ../
 # To build all security content
 make -j4
-# To build security content for one specific product, for example for *Red Hat Enterprise Linux 7*
-make -j4 rhel7
+# To build security content for one specific product, for example for *Red Hat Enterprise Linux 9*
+make -j4 rhel9
 ```
 
 Or use the `build_product` script from the base directory that removes
 whatever is in the `build` directory and builds a specific product:
 
 ```bash
-./build_product rhel7
+./build_product rhel9
 ```
 
 For more information about available options, call `./build_product --help`.
@@ -293,12 +287,12 @@ To build specific content for a specific product:
 ```bash
 cd build/
 cmake ../
-make -j4 rhel7-content  # SCAP XML files for RHEL7
-make -j4 rhel7-guides  # HTML guides for RHEL7
-make -j4 rhel7-tables  # HTML tables for RHEL7
-make -j4 rhel7-profile-bash-scripts  # remediation Bash scripts for all RHEL7 profiles
-make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
-make -j4 rhel7  # everything above for RHEL7
+make -j4 rhel9-content  # SCAP XML files for RHEL9
+make -j4 rhel9-guides  # HTML guides for RHEL9
+make -j4 rhel9-tables  # HTML tables for RHEL9
+make -j4 rhel9-profile-bash-scripts  # remediation Bash scripts for all RHEL9 profiles
+make -j4 rhel9-profile-playbooks # Ansible Playbooks for all RHEL9 profiles
+make -j4 rhel9  # everything above for RHEL9
 ```
 
 ### Building thin The Datastreams
@@ -362,7 +356,7 @@ make -j4 stats # display statistics in text format for all products
 make -j4 profile-stats # display statistics in text format for all profiles in all products
 ```
 
-You can also create statistics per product. Prepend the product name (e.g.: `rhel7-stats`) to the make target.
+You can also create statistics per product. Prepend the product name (e.g.: `rhel9-stats`) to the make target.
 
 #### HTML Output
 
@@ -422,19 +416,19 @@ it will be the `content/build` folder.
 ### SCAP XML files
 
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
-`ssg-rhel7-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 7* **source data stream**.
+`ssg-rhel9-ds.xml` is the SCAP 1.3 *Red Hat Enterprise Linux 9* **source data stream**.
 
 We recommend using **source data stream** if you have a choice.
 The build system also generates separate XCCDF, OVAL, OCIL and CPE files:
 
 ```bash
-$ ls -1 ssg-rhel7-*.xml
-ssg-rhel7-cpe-dictionary.xml
-ssg-rhel7-cpe-oval.xml
-ssg-rhel7-ds.xml
-ssg-rhel7-ocil.xml
-ssg-rhel7-oval.xml
-ssg-rhel7-xccdf.xml
+$ ls -1 ssg-rhel9-*.xml
+ssg-rhel9-cpe-dictionary.xml
+ssg-rhel9-cpe-oval.xml
+ssg-rhel9-ds.xml
+ssg-rhel9-ocil.xml
+ssg-rhel9-oval.xml
+ssg-rhel9-xccdf.xml
 ```
 
 These can be ingested by any SCAP-compatible scanning tool, to enable automated
@@ -442,16 +436,19 @@ checking.
 
 ### HTML Guides
 
-The human readable HTML guide index files will be called
-`ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
+The human-readable HTML guide index files will be called
+`ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel9-guide-index.html`.
 This file will let the user browse all profiles available for that product.
 The prose guide HTML contains practical, actionable information for auditors
-and administrators. They are placed in the guides folder.
+and administrators. They are placed in the `guides` folder.
 ```bash
-$ ls -1 guides/ssg-rhel7-*.html
-guides/ssg-rhel7-guide-ospp42.html
-guides/ssg-rhel7-guide-ospp.html
-guides/ssg-rhel7-guide-pci-dss.html
+$ ls -1 guides/ssg-rhel9-*.html
+guides/ssg-rhel9-guide-anssi_bp28_enhanced.html
+guides/ssg-rhel9-guide-anssi_bp28_high.html
+guides/ssg-rhel9-guide-anssi_bp28_intermediary.html
+guides/ssg-rhel9-guide-anssi_bp28_minimal.html
+guides/ssg-rhel9-guide-ccn_advanced.html
+guides/ssg-rhel9-guide-ccn_basic.html
 ...
 ```
 
@@ -460,15 +457,14 @@ Spreadsheet HTML tables - potentially useful as the basis for a
 *Security Requirements Traceability Matrix (SRTM) document*:
 
 ```bash
-$ ls -1 tables/table-rhel7-*.html
-...
-tables/table-rhel7-nistrefs-ospp.html
-tables/table-rhel7-nistrefs-stig.html
-tables/table-rhel7-pcidssrefs.html
-tables/table-rhel7-srgmap-flat.html
-tables/table-rhel7-srgmap.html
-tables/table-rhel7-stig.html
-...
+$ ls -1 tables/table-rhel9-*.html
+tables/table-rhel9-cces.html
+tables/table-rhel9-srgmap-flat.html
+tables/table-rhel9-srgmap.html
+tables/table-rhel9-stig_gui-testinfo.html
+tables/table-rhel9-stig.html
+tables/table-rhel9-stig-manual.html
+tables/table-rhel9-stig-testinfo.html
 ```
 
 ### Ansible Playbooks
@@ -476,43 +472,52 @@ tables/table-rhel7-stig.html
 #### Profile Ansible Playbooks
 These Playbooks contain the remediations for a profile.
 ```bash
-$ ls -1 ansible/rhel7-playbook-*.yml
-ansible/rhel7-playbook-C2S.yml
-ansible/rhel7-playbook-ospp.yml
-ansible/rhel7-playbook-pci-dss.yml
+$ ls -1 ansible/rhel9-playbook-*.yml
+ansible/rhel9-playbook-anssi_bp28_enhanced.yml
+ansible/rhel9-playbook-anssi_bp28_high.yml
+ansible/rhel9-playbook-anssi_bp28_intermediary.yml
+ansible/rhel9-playbook-anssi_bp28_minimal.yml
+ansible/rhel9-playbook-ccn_advanced.yml
+ansible/rhel9-playbook-ccn_basic.yml
+ansible/rhel9-playbook-ccn_intermediate.yml
+
 ...
 ```
 
 #### Rule Ansible Playbooks
 These Playbooks contain just the remediation for a rule, in the context of a profile.
 ```bash
-$ ls -1 ansible/rhel7-playbook-*.yml
-$ ls -1 rhel7/playbooks/pci-dss/*.yml
-rhel7/playbooks/pci-dss/account_disable_post_pw_expiration.yml
-rhel7/playbooks/pci-dss/accounts_maximum_age_login_defs.yml
-rhel7/playbooks/pci-dss/accounts_password_pam_dcredit.yml
-rhel7/playbooks/pci-dss/accounts_password_pam_lcredit.yml
+$ ls -1 rhel9/playbooks/pci-dss/*.yml | head
+rhel9/playbooks/pci-dss/account_disable_post_pw_expiration.yml
+rhel9/playbooks/pci-dss/accounts_maximum_age_login_defs.yml
+rhel9/playbooks/pci-dss/accounts_no_uid_except_zero.yml
+rhel9/playbooks/pci-dss/accounts_password_pam_dcredit.yml
 ...
 ```
-
+~~
 #### Rule SCE Checks
 
 These scripts contain SCE content for the specified rule.
 
 ```bash
-$ ls -1 ubuntu2004/checks/sce/
-accounts_users_own_home_directories.sh
+$ ls -1 rhel9/checks/sce/
+ip6tables_rules_for_open_ports.sh
+iptables_rules_for_open_ports.sh
 metadata.json
+set_iptables_outbound_n_established.sh
+set_nftables_base_chain.sh
+set_nftables_table.sh
+ssh_keys_passphrase_protected.sh
 ```
 
 ### Profile Bash Scripts
 These Bash Scripts contains the remediations for a profile.
 ```bash
-$ ls -1 bash/rhel7-script-*.sh
-bash/rhel7-script-C2S.sh
+$ ls -1 bash/rhel9-script-*.sh
+bash/rhel9-script-anssi_bp28_enhanced.sh
 ...
-bash/rhel7-script-ospp.sh
-bash/rhel7-script-pci-dss.sh
+bash/rhel9-script-e8.sh
+bash/rhel9-script-hipaa.sh
 ...
 ```
 
@@ -660,7 +665,7 @@ To build all the content, run a container without any flags.
 docker run --cap-drop=all --name oscap-content oscap:latest
 ```
 
-Using `docker cp` to copy all the generated content to the your host:
+Using `docker cp` to copy all the generated content to your host:
 
 ```bash
 docker cp oscap-content:/home/oscap/content/build $(pwd)/container_build

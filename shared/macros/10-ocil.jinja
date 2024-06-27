@@ -721,7 +721,7 @@ ocil_clause: '"{{{ part }}} is not a mountpoint" is returned'
     If the system is configured to prevent the loading of the <code>{{{ module }}}</code> kernel module,
     it will contain lines inside any file in <code>/etc/modprobe.d</code> or the deprecated<code> /etc/modprobe.conf</code>.
     These lines instruct the module loading system to run another program (such as <code>/bin/true</code>) upon a module <code>install</code> event.
-    {{% if "ol" in product or product in ["rhel7", "rhel8"] %}}
+    {{% if "ol" in product or product in ["rhel8"] %}}
     These lines can also instruct the module loading system to ignore the <code>{{{ module }}}</code> kernel module via <code>blacklist</code> keyword.
     {{% endif %}}
     Run the following command to search for such lines in all files in <code>/etc/modprobe.d</code> and the deprecated <code>/etc/modprobe.conf</code>:
@@ -1047,7 +1047,7 @@ ocil_clause: "the correct value is not returned"
     The parameter should have form `parameter=value`.
 #}}
 {{%- macro ocil_grub2_argument(arg_name_value) -%}}
-{{%- if product in ["ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9"] or 'ubuntu' in product -%}}
+{{%- if product in ["ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10"] or 'ubuntu' in product -%}}
 Inspect the form of default GRUB 2 command line for the Linux operating system
 in <tt>/etc/default/grub</tt>. If it includes <tt>{{{ arg_name_value }}}</tt>,
 then the parameter will be configured for newly installed kernels.

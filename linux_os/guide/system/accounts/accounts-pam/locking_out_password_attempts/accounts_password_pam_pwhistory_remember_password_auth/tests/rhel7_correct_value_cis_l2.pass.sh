@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = pam
-# platform = Oracle Linux 7,Red Hat Enterprise Linux 7
+# platform = Oracle Linux 7
 # profiles = xccdf_org.ssgproject.content_profile_cis
 
 remember_cnt=24

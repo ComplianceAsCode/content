@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Oracle Linux 7
+# platform = Oracle Linux 7
 
 # Install required packages
 {{{ bash_package_install("esc") }}}

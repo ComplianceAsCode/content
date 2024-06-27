@@ -571,7 +571,6 @@ INSTALL_COMMANDS = dict(
     ol7=("yum", "install", "-y"),
     ol8=("yum", "install", "-y"),
     ol9=("yum", "install", "-y"),
-    rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
     rhel10=("dnf", "install", "-y"),

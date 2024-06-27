@@ -32,7 +32,7 @@
     reload: yes
   when: kexec_arch == "b32"
 
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+{{% if 'ubuntu' in product or product in ['ol7', 'sle12', 'sle15'] %}}
 - name: Check noexec argument exists
   command: grep '^GRUB_CMDLINE_LINUX=.*noexec=.*"' /etc/default/grub
   failed_when: False

@@ -7,16 +7,10 @@ description: |-
     Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive configures the system
     to lock out an account after a number of incorrect login attempts within a specified time
     period.
-    {{% if product in ["rhel7"] %}}
-    Ensure that pam_faillock.so module entries in
-    <tt>/etc/pam.d/password-auth</tt> and <tt>/etc/pam.d/system-auth</tt> are
-    followed by the assignment
-    <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where
-    <tt>interval-in-seconds</tt> is <tt>{{{xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
-    {{% else %}}
+
     Ensure that the file <tt>/etc/security/faillock.conf</tt> contains the following entry:
     <tt>fail_interval = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
-    {{% endif %}}
+
     {{% if 'ubuntu' not in product and 'debian' not in product %}}
     In order to avoid errors when manually editing these files, it is
     recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
@@ -31,7 +25,6 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-27297-1
     cce@rhel8: CCE-80669-5
     cce@rhel9: CCE-83583-5
     cce@sle15: CCE-91169-3
@@ -51,7 +44,6 @@ references:
     srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
     stigid@ol7: OL07-00-010320
     stigid@ol8: OL08-00-020012,OL08-00-020013
-    stigid@rhel7: RHEL-07-010320
     stigid@rhel8: RHEL-08-020012,RHEL-08-020013
     stigid@ubuntu2004: UBTU-20-010072
     stigid@ubuntu2204: UBTU-22-411045
@@ -64,37 +56,21 @@ ocil_clause: |-
 
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
-    {{% if product in ["rhel7"] %}}
-    <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-    For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
-    {{% else %}}
+
     <pre>$ grep fail_interval /etc/security/faillock.conf</pre>
     The output should show <tt>fail_interval = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
-    {{% endif %}}
+
 
 fixtext: |-
     Configure {{{ full_name }}} to lock out an account after a number of incorrect login attempts
     within 15 minutes using <tt>pam_faillock.so</tt>. First enable the feature using the following
     command:
 
-    {{% if product in ["rhel7"] %}}
-    $ sudo authconfig --enablefaillock --update
-
-    Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
-    <tt>/etc/pam.d/password-auth</tt> as follows:
-    edit the fail_interval parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
-    statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} <tt>fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt></pre>
-
-    edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
-    statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} <tt>fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt></pre>
-    {{% else %}}
     $ sudo authselect enable-feature with-faillock
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     <pre>fail_interval = {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
-    {{% endif %}}
+
 
 checktext: |-
     Verify {{{ full_name }}} locks an account after {{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}

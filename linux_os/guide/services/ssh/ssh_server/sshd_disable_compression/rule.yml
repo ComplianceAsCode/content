@@ -19,7 +19,6 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-80224-9
     cce@rhel8: CCE-80895-6
     cce@rhel9: CCE-90801-2
     cce@sle12: CCE-83062-0
@@ -38,7 +37,6 @@ references:
     nist-csf: PR.IP-1
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol7: OL07-00-040470
-    stigid@rhel7: RHEL-07-040470
     stigid@sle12: SLES-12-030250
 
 ocil_clause: 'it is commented out, or is not set to no or delayed'
@@ -49,9 +47,7 @@ ocil: |-
     <pre>$ sudo grep Compression /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.
 
-{{% if product == "rhel7" %}}
-platform: os_linux[rhel]<7.4
-{{% elif product == "ol7" %}}
+{{% if product == "ol7" %}}
 platform: os_linux[ol]<7.4
 {{% elif product == "sle12" %}}
 platform: package[openssh]<7.4

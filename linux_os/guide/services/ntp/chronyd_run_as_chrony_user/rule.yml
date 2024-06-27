@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Ensure that chronyd is running under chrony user account'
 
 {{%- set ok_by_default = false %}}
-{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9", "ol9", "fedora"] %}}
+{{%- if product in ["ol7", "ol8", "ol9", "fedora"] or 'rhel' in product %}}
 {{%- set ok_by_default = true %}}
 {{%- endif %}}
 
@@ -38,7 +38,6 @@ severity: medium
 platform: package[chrony]
 
 identifiers:
-    cce@rhel7: CCE-82878-0
     cce@rhel8: CCE-82879-8
     cce@rhel9: CCE-84108-0
     cce@sle12: CCE-92240-1

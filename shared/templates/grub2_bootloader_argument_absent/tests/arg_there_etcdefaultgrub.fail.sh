@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
+# platform = multi_platform_rhel
 # packages = grub2-tools,grubby
 
 # Adds argument from kernel command line in /etc/default/grub

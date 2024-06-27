@@ -38,7 +38,7 @@ def parse_args():
         required=True,
         dest="product_yaml",
         help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml",
+        "e.g.: ~/scap-security-guide/rhel9/product.yml",
     )
     p.add_argument(
         "--build-ovals-dir",

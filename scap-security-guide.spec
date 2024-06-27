@@ -58,7 +58,7 @@ present in %{name} package.
 %define centos_8_specific %{nil}
 
 %if 0%{?_rhel_like}
-%define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{_rhel_like}:BOOLEAN=TRUE -DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON
+%define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{_rhel_like}:BOOLEAN=TRUE -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON
 %endif
 %if 0%{?fedora}
 %define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_FEDORA:BOOLEAN=TRUE

@@ -7,7 +7,7 @@
 {{{ ansible_instantiate_variables("var_accounts_tmout") }}}
 
 {{% set system_configuration_using_etc_bashrc_expected = false %}}
-{{% if product in ["ol7", "rhel7"] %}}
+{{% if product in ["ol7"] %}}
   {{% set system_configuration_using_etc_bashrc_expected = true %}}
 {{% endif %}}
 
@@ -28,4 +28,4 @@
   register: profile_replaced
 
 {{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", regex='TMOUT=', new_line='typeset -xr TMOUT={{ var_accounts_tmout }}',
-    create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ["ol7", "rhel7"]) }}}
+    create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ["ol7"]) }}}

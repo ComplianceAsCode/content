@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 {{%- set ok_by_default = false %}}
-{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9", "ol9", "fedora"] %}}
+{{%- if product in ["ol7", "ol8", "ol9", "fedora"] or 'rhel' in product %}}
 {{%- set ok_by_default = true %}}
 {{%- endif %}}
 

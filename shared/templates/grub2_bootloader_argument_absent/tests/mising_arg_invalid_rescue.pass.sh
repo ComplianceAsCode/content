@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 9
+# platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10
 # packages = grub2,grubby
 
 # Ensure the kernel command line for each installed kernel in the bootloader

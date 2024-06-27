@@ -183,7 +183,7 @@ def parse_args():
         help="Directory where XCCDF, OVAL, OCIL files with lower case prefixes "
         "xccdf, oval, ocil are stored to build multiple data streams. "
         "Multiple streams are generated in the thin_ds subdirectory. (off: to disable) "
-        "e.g.: ~/scap-security-guide/build/rhel7/thin_ds_component/",
+        "e.g.: ~/scap-security-guide/build/rhel9/thin_ds_component/",
     )
     return parser.parse_args()
 

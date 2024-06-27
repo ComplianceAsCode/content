@@ -167,8 +167,8 @@ Though the `var_accounts_tmout.var` file contains the variable description--whic
 . The rule is parameterized per profile.
 This is because there can be multiple profiles in one data stream file, one rule can exist in multiple profiles, and it can be parameterized differently in different profiles.
 +
-To see how the rule is connected to its variable, you have to review the respective profile definition, 
-press `Ctrl+P` and open `products/rhel8/profiles/ospp.profile`. 
+To see how the rule is connected to its variable, you have to review the respective profile definition,
+press `Ctrl+P` and open `products/rhel8/profiles/ospp.profile`.
 Then search for `accounts_tmout` with:
 
 .. In the editor, press `Ctrl+F` to search for `accounts_tmout`.
@@ -278,7 +278,7 @@ Remediations can be found under `bash`, `ansible`, `anaconda`, and `puppet` dire
 For example, in the `accounts_tmout` rule there is a remediation in the form of a Bash script located in the `bash` subdirectory of the rule's directory.
 See the contents of the `bash` directory--there is a `shared.sh` file in it.
 The `shared` basename has a special meaning--it indicates that the remediation can be used with any product.
-If the remediation is named `rhel8.sh`, it means that it is a RHEL8-only remediation and cannot be used to remediate RHEL7 systems.
+If the remediation is named `rhel8.sh`, it means that it is a RHEL8-only remediation and cannot be used to remediate other RHEL systems such as RHEL9 systems.
 This naming convention is relevant for all types of additional content.
 
 Unlike checks, you can review remediations in the guide--there is a clickable `Remediation Shell Script` link to do so.

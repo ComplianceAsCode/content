@@ -22,7 +22,7 @@
 {{% set system_with_kernel_options_in_grubenv = true %}}
 {{%- endif -%}}
 
-{{% if product in ["ol7", "rhel7"] or 'ubuntu' in product -%}}
+{{% if product in ["ol7"] or 'ubuntu' in product -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = true %}}
 {{%- endif -%}}
 
@@ -210,7 +210,7 @@
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
   version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
-    {{% if product in ["ol7", "rhel7"] or 'ubuntu' in product %}}
+    {{% if product in ["ol7"] or 'ubuntu' in product %}}
       <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>

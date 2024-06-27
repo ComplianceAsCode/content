@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhcos4",  "rhel8", "rhel9", "rhel10", "sle12", "sle15", "ubuntu2004", "ubuntu2204"]%}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -34,7 +34,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhcos4: CCE-86210-2 
+    cce@rhcos4: CCE-86210-2
 
 references:
     srg: SRG-APP-000029-CTR-000085

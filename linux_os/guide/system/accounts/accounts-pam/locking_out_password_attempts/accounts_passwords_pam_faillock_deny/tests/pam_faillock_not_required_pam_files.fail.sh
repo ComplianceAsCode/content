@@ -1,11 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_fedora,multi_platform_rhel,multi_platform_ol,multi_platform_rhv,multi_platform_sle
-{{%- if product in ["rhel7"] %}}
-# packages = authconfig
-{{%- else %}}
 # packages = authselect
 # remediation = none
-{{%- endif %}}
 # variables = var_accounts_passwords_pam_faillock_deny=3
 
 # This test scenario manually modify the pam_faillock.so entries in auth section from
