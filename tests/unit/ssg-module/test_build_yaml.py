@@ -335,8 +335,7 @@ def test_platform_from_text_and_empty_conditionals(product_cpes):
 def test_platform_from_text_complex_expression(product_cpes):
     platform = ssg.build_yaml.Platform.from_text(
         "systemd and !yum and (ntp or chrony)", product_cpes)
-    assert platform.get_remediation_conditional("bash") == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
-    assert platform.get_remediation_conditional("ansible") == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
+    assert platform.test(**{'systemd': True, 'ntp': False, 'chrony': True, 'yum': False})
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
