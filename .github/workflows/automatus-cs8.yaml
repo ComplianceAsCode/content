@@ -1,4 +1,4 @@
-name: Automatus CS8
+name: Automatus UBI8
 on:
   pull_request:
     branches: [ master, 'stabilization*' ]
@@ -92,7 +92,7 @@ jobs:
         run: ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
       - name: Build test suite container
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-cs8
+        run: podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-ubi8
         working-directory: ./Dockerfiles
       - name: Get oscap-ssh
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
