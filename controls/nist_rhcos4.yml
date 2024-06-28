@@ -260,7 +260,7 @@ controls:
   rules:
   - sshd_set_idle_timeout
   - var_sshd_set_keepalive=0
-  - sshd_set_keepalive_0
+  - sshd_set_keepalive
   description: |-
     The organization requires that users log out when [Assignment: organization-defined time-period of expected inactivity or description of when to log out].
 
@@ -1405,7 +1405,7 @@ controls:
   rules:
   - sshd_set_idle_timeout
   - var_sshd_set_keepalive=0
-  - sshd_set_keepalive_0
+  - sshd_set_keepalive
   description: "The information system automatically terminates a user session after\
     \ [Assignment: organization-defined conditions or trigger events requiring session\
     \ disconnect].\n\nSupplemental Guidance:  This control addresses the termination\
@@ -1588,7 +1588,7 @@ controls:
   - configure_openssl_crypto_policy
   - file_permissions_sshd_config
   - var_sshd_set_keepalive=0
-  - sshd_set_keepalive_0
+  - sshd_set_keepalive
   - var_system_crypto_policy=fips
   - configure_crypto_policy
   - sshd_set_idle_timeout
@@ -5110,7 +5110,7 @@ controls:
   - audit_rules_unsuccessful_file_modification_removexattr
   - audit_rules_etc_gshadow_openat
   - var_sshd_set_keepalive=0
-  - sshd_set_keepalive_0
+  - sshd_set_keepalive
   - partition_for_var_log_audit
   - auditd_data_retention_space_left
   - coreos_page_poison_kernel_argument
@@ -13213,7 +13213,7 @@ controls:
   rules:
   - sshd_set_idle_timeout
   - var_sshd_set_keepalive=0
-  - sshd_set_keepalive_0
+  - sshd_set_keepalive
   description: |-
     The information system terminates the network connection associated with a communications session at the end of the session or after [Assignment: organization-defined time period] of inactivity.
     Supplemental Guidance:  This control applies to both internal and external networks. Terminating network connections associated with communications sessions include, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, or de-allocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. Time periods of inactivity may be established by organizations and include, for example, time periods by type of network access or for specific network accesses.

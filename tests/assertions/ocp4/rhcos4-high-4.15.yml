@@ -612,7 +612,10 @@ rule_results:
     result_after_remediation: PASS
   e2e-high-master-sshd-limit-user-access:
     default_result: FAIL
-  e2e-high-master-sshd-set-keepalive-0:
+  e2e-high-master-sshd-set-idle-timeout:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-master-sshd-set-keepalive:
     default_result: FAIL
     result_after_remediation: PASS
   e2e-high-master-sysctl-fs-protected-hardlinks:
@@ -1329,7 +1332,10 @@ rule_results:
     result_after_remediation: PASS
   e2e-high-worker-sshd-limit-user-access:
     default_result: FAIL
-  e2e-high-worker-sshd-set-keepalive-0:
+  e2e-high-worker-sshd-set-idle-timeout:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-high-worker-sshd-set-keepalive:
     default_result: FAIL
     result_after_remediation: PASS
   e2e-high-worker-sysctl-fs-protected-hardlinks:
