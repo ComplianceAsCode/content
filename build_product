@@ -75,6 +75,7 @@ _arg_jobs="auto"
 _arg_debug="off"
 _arg_derivatives="off"
 _arg_ansible_playbooks="on"
+_arg_playbook_per_rule="off"
 _arg_bash_scripts="on"
 _arg_datastream_only="off"
 _arg_profiling="off"
@@ -93,6 +94,7 @@ print_help()
 	printf '\t%s\n' "--debug, --no-debug: Make a debug build with draft profiles (off by default)"
 	printf '\t%s\n' "--derivatives, --no-derivatives: Also build derivatives of products if applicable (off by default)"
 	printf '\t%s\n' "--ansible-playbooks, --no-ansible-playbooks: Build Ansible Playbooks for every profile (on by default)"
+	printf '\t%s\n' "--playbook-per-rule, --no-playbook-per-rule: Build Ansible Playbooks for every rule (off by default)"
 	printf '\t%s\n' "--bash-scripts, --no-bash-scripts: Build Bash remediation scripts for every profile (on by default)"
 	printf '\t%s\n' "-t, --thin, --no-thin: Build thin data streams for each rule. Do not build any of the guides, tables, etc (off by default)"
 	printf '\t%s\n' "-r, --rule-id: Rule ID: Build a thin data stream with the specified rule. Do not build any of the guides, tables, etc (off by default)"
@@ -168,6 +170,10 @@ parse_commandline()
 			--no-ansible-playbooks|--ansible-playbooks)
 				_arg_ansible_playbooks="on"
 				test "${1:0:5}" = "--no-" && _arg_ansible_playbooks="off"
+				;;
+			--no-playbook-per-rule|--playbook-per-rule)
+				_arg_playbook_per_rule="on"
+				test "${1:0:5}" = "--no-" && _arg_playbook_per_rule="off"
 				;;
 			--no-bash-scripts|--bash-scripts)
 				_arg_bash_scripts="on"
@@ -424,6 +430,9 @@ CMAKE_OPTIONS=(${ADDITIONAL_CMAKE_OPTIONS} "${build_type_option}" "${oval_major_
 set_no_derivatives_options
 if [ "$_arg_ansible_playbooks" = off ] ; then
 	CMAKE_OPTIONS+=("-DSSG_ANSIBLE_PLAYBOOKS_ENABLED:BOOL=OFF")
+fi
+if [ "$_arg_playbook_per_rule" = on ] ; then
+	CMAKE_OPTIONS+=("-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON")
 fi
 if [ "$_arg_bash_scripts" = off ] ; then
 	CMAKE_OPTIONS+=("-DSSG_BASH_SCRIPTS_ENABLED:BOOL=OFF")
