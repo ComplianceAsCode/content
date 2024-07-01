@@ -48,4 +48,5 @@ selections:
     - var_auditd_disk_full_action=syslog
     - sshd_idle_timeout_value=10_minutes
     - var_sshd_set_keepalive=0
- 
+
+    - installed_OS_is_vendor_supported
