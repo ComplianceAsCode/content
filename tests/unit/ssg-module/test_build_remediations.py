@@ -13,7 +13,7 @@ rhel_bash = os.path.join(rule_dir, "bash", "rhel.sh")
 
 @pytest.fixture
 def env_yaml():
-    env_yaml = dict(product="rhel7")
+    env_yaml = dict(product="rhel9")
     return env_yaml
 
 
@@ -49,7 +49,7 @@ def do_test_contents(remediation, config):
     assert 'strategy' in config
     assert 'disruption' in config
 
-    assert ssg.utils.is_applicable_for_product(config['platform'], 'rhel7')
+    assert ssg.utils.is_applicable_for_product(config['platform'], 'rhel9')
     assert ssg.utils.is_applicable_for_product(config['platform'], 'fedora')
     assert not ssg.utils.is_applicable_for_product(config['platform'], 'rhel8')
     assert not ssg.utils.is_applicable_for_product(config['platform'], 'ol7')

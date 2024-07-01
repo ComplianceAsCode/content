@@ -11,7 +11,7 @@ shared_oval = os.path.join(rule_dir_oval, "shared.xml")
 def test_applicable_platforms():
     rap = ssg.oval.applicable_platforms(rhel_oval)
     assert len(rap) == 1
-    assert 'Red Hat Enterprise Linux 7' in rap
+    assert 'Red Hat Enterprise Linux 9' in rap
 
     sap = ssg.oval.applicable_platforms(shared_oval)
     assert len(sap) == 4

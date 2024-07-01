@@ -120,21 +120,21 @@ def test_product_cpes():
 
     # get a product CPE by name and verify it's loaded
     # this CPE is defined in `DATADIR/product.yml`
-    rhel7_cpe = product_cpes.get_cpe("rhel7")
-    assert(rhel7_cpe.name == "cpe:/o:redhat:enterprise_linux:7")
-    assert(rhel7_cpe.title == "Red Hat Enterprise Linux 7")
-    assert(rhel7_cpe.check_id == "installed_OS_is_rhel7")
-    assert(rhel7_cpe.bash_conditional == "")
-    assert(rhel7_cpe.ansible_conditional == "")
+    rhel9_cpe = product_cpes.get_cpe("rhel9")
+    assert(rhel9_cpe.name == "cpe:/o:redhat:enterprise_linux:9")
+    assert(rhel9_cpe.title == "Red Hat Enterprise Linux 9")
+    assert(rhel9_cpe.check_id == "installed_OS_is_rhel9")
+    assert(rhel9_cpe.bash_conditional == "")
+    assert(rhel9_cpe.ansible_conditional == "")
 
     # get CPE by ID and verify it's loaded, the get_cpe method should return
     # the same object as when CPE name was used above
-    rhel7_cpe_2 = product_cpes.get_cpe("cpe:/o:redhat:enterprise_linux:7")
-    assert(rhel7_cpe_2.name == rhel7_cpe.name)
-    assert(rhel7_cpe_2.title == rhel7_cpe.title)
-    assert(rhel7_cpe_2.check_id == rhel7_cpe.check_id)
-    assert(rhel7_cpe_2.bash_conditional == rhel7_cpe.bash_conditional)
-    assert(rhel7_cpe_2.ansible_conditional == rhel7_cpe.ansible_conditional)
+    rhel9_cpe_2 = product_cpes.get_cpe("cpe:/o:redhat:enterprise_linux:9")
+    assert(rhel9_cpe_2.name == rhel9_cpe.name)
+    assert(rhel9_cpe_2.title == rhel9_cpe.title)
+    assert(rhel9_cpe_2.check_id == rhel9_cpe.check_id)
+    assert(rhel9_cpe_2.bash_conditional == rhel9_cpe.bash_conditional)
+    assert(rhel9_cpe_2.ansible_conditional == rhel9_cpe.ansible_conditional)
 
     # get a content CPE by name and verify it's loaded
     # this CPE is defined in `DATADIR/applicability/virtualization.yml`
