@@ -10,7 +10,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install git python3-jinja2 python3-yaml python3-setuptools python3-deepdiff python3-git python3-github python3-requests xmldiff
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
@@ -23,12 +23,12 @@ jobs:
         run: echo "FORK_POINT=$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
         id: fork_point
       - name: Checkout fork point
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           ref: ${{ steps.fork_point.outputs.FORK_POINT }}
           fetch-depth: 0
       - name: Checkout (CTF)
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           repository: ComplianceAsCode/content-test-filtering
           path: ctf
@@ -43,12 +43,12 @@ jobs:
       - name: Get product attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: product
-        uses: notiz-dev/github-action-json-property@v0.2.0
+        uses: notiz-dev/github-action-json-property@a5a9c668b16513c737c3e1f8956772c99c73f6e8 # v0.2.0
         with:
           path: 'output.json'
           prop_path: 'product'
       - name: Find Comment
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -56,7 +56,7 @@ jobs:
           body-includes: Start a new ephemeral environment with changes proposed in this pull request
       - name: Create or update comment
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -75,7 +75,7 @@ jobs:
           edit-mode: replace
       - name: Create or update a trimmed comment
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE == '0' }}
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}

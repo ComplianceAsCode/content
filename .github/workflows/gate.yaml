@@ -19,7 +19,7 @@ jobs:
       - name: Install Deps
         run: yum install -y cmake make openscap-utils PyYAML libxslt xml-common python-jinja2 python-setuptools openscap openscap-scanner
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Build
         run: |-
           ./build_product ol7
@@ -52,7 +52,7 @@ jobs:
       - name: Install deps python
         run: pip install pytest pytest-cov
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Build
         run: ./build_product sle12 sle15
       - name: Test
@@ -68,7 +68,7 @@ jobs:
       - name: Install Deps
         run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools ShellCheck
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Build
         run: ./build_product opensuse
         env:
@@ -88,7 +88,7 @@ jobs:
       - name: Install Deps
         run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Upgrade pip python
         run: pip3 install --upgrade pip
       - name: Install deps python
@@ -109,7 +109,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -128,7 +128,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
         run: pip3 install -r requirements.txt -r test-requirements.txt
       - name: Build
@@ -151,7 +151,7 @@ jobs:
       -   name: Install Deps
           run: dnf install -y cmake make openscap-utils bats ansible python3-pip ShellCheck git python3-devel gcc-c++ libxml2-devel libxslt-devel
       -   name: Checkout
-          uses: actions/checkout@v4
+          uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       -   name: Install deps python
           run: pip install -r requirements-base.txt -r test-requirements.txt
       -   name: Build
@@ -196,7 +196,7 @@ jobs:
           shell: powershell
           run: "msiexec.exe /norestart /q /i ${{ github.workspace }}\\openscap-win\\OpenSCAP-${env:OPENSCAP_VERSION}-win64.msi"
         - name: Checkout
-          uses: actions/checkout@v4
+          uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         - name: Install Python Deps
           run: pip install -r requirements.txt -r test-requirements.txt
         - name: Build

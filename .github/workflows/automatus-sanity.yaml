@@ -17,12 +17,12 @@ jobs:
       - name: Install Deps
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 git python3-pip
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           fetch-depth: 0
       - name: Build product
         run: ./build_product fedora --debug
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: ${{ env.DATASTREAM }}
           path: build/${{ env.DATASTREAM }}
@@ -35,7 +35,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc python3-jinja2 python3-yaml ansible-lint podman
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Generate id_rsa key
         run: ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
       - name: Build test suite container
@@ -49,7 +49,7 @@ jobs:
           sudo chown root:root /usr/local/bin/oscap-ssh
           rm -f oscap-ssh
       - name: Get Datastream
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           name: ${{ env.DATASTREAM }}
       - name: Check One Rule
