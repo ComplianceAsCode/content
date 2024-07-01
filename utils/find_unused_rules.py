@@ -21,6 +21,7 @@ The script has the following return codes:
     3 - rule_dirs.json does not exist.
 """
 
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="List rules that are not used in any datastreams."
                                                  "Note that script requires that all products "
@@ -49,9 +50,8 @@ def _get_ds_rules(datastream_files):
 def _get_product_count(products_path):
     products_count = 0
     for product in products_path.iterdir():
-        if product.is_dir():
-            if product.name != "example":
-                products_count += 1
+        if product.is_dir() and product.name != "example":
+            products_count += 1
     return products_count
 
 
