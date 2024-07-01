@@ -58,7 +58,7 @@ product_directories = [
     'openembedded',
     'rhel8', 'rhel9', 'rhel10',
     'rhv4',
-    'sle12', 'sle15', 'slemicro',
+    'sle12', 'sle15', 'susemicro5',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
     'uos20',
 ]
@@ -224,7 +224,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
-    "SUSE Linux Enterprise Micro OS": "slemicro",
+    "SUSE Linux Enterprise Micro OS 5.x": "susemicro5",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
@@ -283,7 +283,7 @@ REFERENCES = dict(
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al"]
+                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al", "susemicro"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
@@ -300,7 +300,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhel": ["rhel8", "rhel9", "rhel10"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
-    "multi_platform_sle_micro": ["slemicro"],
+    "multi_platform_susemicro": ["susemicro5"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
     "multi_platform_uos": ["uos20"],
     "multi_platform_openembedded": ["openembedded"],
@@ -426,7 +426,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'openeuler': 'openEuler',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
-    'slemicro': 'SUSE Linux Enterprise Micro OS',
+    'susemicro': 'SUSE Linux Enterprise Micro OS',
     'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',

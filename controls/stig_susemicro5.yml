@@ -1,0 +1,1403 @@
+policy: SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide
+title: SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide
+id: stig_susemicro5
+version: V1R1
+source: https://public.cyber.mil/stigs/downloads/
+reference_type: stigid
+product: susemicro5
+levels:
+- id: high
+- id: medium
+- id: low
+controls:
+- id: SLEM-05-211010
+  levels:
+  - high
+  title: SLEM 5 must be a vendor-supported release.
+  rules:
+  - installed_OS_is_vendor_supported
+  status: automated 
+- id: SLEM-05-211015
+  levels:
+  - medium
+  title: SLEM 5 must implement an endpoint security tool.
+  rules: []
+  status: pending
+- id: SLEM-05-211020
+  levels:
+  - medium
+  title: SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
+    before granting any local or remote connection to the system.
+  rules: []
+  status: pending
+- id: SLEM-05-211025
+  levels:
+  - high
+  title: SLEM 5 must disable the x86 Ctrl-Alt-Delete key sequence.
+  rules: []
+  status: pending
+- id: SLEM-05-212010
+  levels:
+  - high
+  title: SLEM 5 with a basic input/output system (BIOS) must require authentication
+    upon booting into single-user and maintenance modes.
+  rules: []
+  status: pending
+- id: SLEM-05-212015
+  levels:
+  - high
+  title: SLEM 5 with Unified Extensible Firmware Interface (UEFI) implemented must
+    require authentication upon booting into single-user mode and maintenance.
+  rules: []
+  status: pending
+- id: SLEM-05-213010
+  levels:
+  - medium
+  title: SLEM 5 must restrict access to the kernel message buffer.
+  rules: []
+  status: pending
+- id: SLEM-05-213015
+  levels:
+  - medium
+  title: SLEM 5 kernel core dumps must be disabled unless needed.
+  rules: []
+  status: pending
+- id: SLEM-05-213020
+  levels:
+  - medium
+  title: Address space layout randomization (ASLR) must be implemented by SLEM 5 to
+    protect memory from unauthorized code execution.
+  rules: []
+  status: pending
+- id: SLEM-05-213025
+  levels:
+  - medium
+  title: SLEM 5 must implement kptr-restrict to prevent the leaking of internal kernel
+    addresses.
+  rules: []
+  status: pending
+- id: SLEM-05-214010
+  levels:
+  - medium
+  title: Vendor-packaged SLEM 5 security patches and updates must be installed and
+    up to date.
+  rules: []
+  status: pending
+- id: SLEM-05-214015
+  levels:
+  - high
+  title: The SLEM 5 tool zypper must have gpgcheck enabled.
+  rules: []
+  status: pending
+- id: SLEM-05-214020
+  levels:
+  - medium
+  title: SLEM 5 must remove all outdated software components after updated versions
+    have been installed.
+  rules: []
+  status: pending
+- id: SLEM-05-215010
+  levels:
+  - medium
+  title: SLEM 5 must use vlock to allow for session locking.
+  rules: []
+  status: pending
+- id: SLEM-05-215015
+  levels:
+  - high
+  title: SLEM 5 must not have the telnet-server package installed.
+  rules: []
+  status: pending
+- id: SLEM-05-231010
+  levels:
+  - medium
+  title: A separate file system must be used for SLEM 5 user home directories (such
+    as /home or an equivalent).
+  rules: []
+  status: pending
+- id: SLEM-05-231015
+  levels:
+  - medium
+  title: SLEM 5 must use a separate file system for /var.
+  rules: []
+  status: pending
+- id: SLEM-05-231020
+  levels:
+  - medium
+  title: SLEM 5 must use a separate file system for the system audit data path.
+  rules: []
+  status: pending
+- id: SLEM-05-231025
+  levels:
+  - medium
+  title: SLEM 5 file systems that are being imported via Network File System (NFS)
+    must be mounted to prevent files with the setuid and setgid bit set from being
+    executed.
+  rules: []
+  status: pending
+- id: SLEM-05-231030
+  levels:
+  - medium
+  title: SLEM 5 file systems that are being imported via Network File System (NFS)
+    must be mounted to prevent binary files from being executed.
+  rules: []
+  status: pending
+- id: SLEM-05-231035
+  levels:
+  - medium
+  title: SLEM 5 file systems that are used with removable media must be mounted to
+    prevent files with the setuid and setgid bit set from being executed.
+  rules: []
+  status: pending
+- id: SLEM-05-231040
+  levels:
+  - high
+  title: All SLEM 5 persistent disk partitions must implement cryptographic mechanisms
+    to prevent unauthorized disclosure or modification of all information that requires
+    at-rest protection.
+  rules: []
+  status: pending
+- id: SLEM-05-231045
+  levels:
+  - medium
+  title: SLEM 5 file systems that contain user home directories must be mounted to
+    prevent files with the setuid and setgid bit set from being executed.
+  rules: []
+  status: pending
+- id: SLEM-05-231050
+  levels:
+  - medium
+  title: SLEM 5 must disable the file system automounter unless required.
+  rules: []
+  status: pending
+- id: SLEM-05-232010
+  levels:
+  - medium
+  title: SLEM 5 must have directories that contain system commands set to a mode of
+    755 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232015
+  levels:
+  - medium
+  title: SLEM 5 must have system commands set to a mode of 755 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232020
+  levels:
+  - medium
+  title: SLEM 5 library directories must have mode 755 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232025
+  levels:
+  - medium
+  title: SLEM 5 library files must have mode 755 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232030
+  levels:
+  - medium
+  title: All SLEM 5 local interactive user home directories must have mode 750 or
+    less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232035
+  levels:
+  - medium
+  title: All SLEM 5 local initialization files must have mode 740 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232040
+  levels:
+  - medium
+  title: SLEM 5 SSH daemon public host key files must have mode 644 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232045
+  levels:
+  - medium
+  title: SLEM 5 SSH daemon private host key files must have mode 640 or less permissive.
+  rules: []
+  status: pending
+- id: SLEM-05-232050
+  levels:
+  - medium
+  title: SLEM 5 library files must be owned by root.
+  rules: []
+  status: pending
+- id: SLEM-05-232055
+  levels:
+  - medium
+  title: SLEM 5 library files must be group-owned by root.
+  rules: []
+  status: pending
+- id: SLEM-05-232060
+  levels:
+  - medium
+  title: SLEM 5 library directories must be owned by root.
+  rules: []
+  status: pending
+- id: SLEM-05-232065
+  levels:
+  - medium
+  title: SLEM 5 library directories must be group-owned by root.
+  rules: []
+  status: pending
+- id: SLEM-05-232070
+  levels:
+  - medium
+  title: SLEM 5 must have system commands owned by root.
+  rules: []
+  status: pending
+- id: SLEM-05-232075
+  levels:
+  - medium
+  title: SLEM 5 must have system commands group-owned by root or a system account.
+  rules: []
+  status: pending
+- id: SLEM-05-232080
+  levels:
+  - medium
+  title: SLEM 5 must have directories that contain system commands owned by root.
+  rules: []
+  status: pending
+- id: SLEM-05-232085
+  levels:
+  - medium
+  title: SLEM 5 must have directories that contain system commands group-owned by
+    root.
+  rules: []
+  status: pending
+- id: SLEM-05-232090
+  levels:
+  - medium
+  title: All SLEM 5 files and directories must have a valid owner.
+  rules: []
+  status: pending
+- id: SLEM-05-232095
+  levels:
+  - medium
+  title: All SLEM 5 files and directories must have a valid group owner.
+  rules: []
+  status: pending
+- id: SLEM-05-232100
+  levels:
+  - medium
+  title: All SLEM 5 local interactive user home directories must be group-owned by
+    the home directory owner's primary group.
+  rules: []
+  status: pending
+- id: SLEM-05-232105
+  levels:
+  - medium
+  title: All SLEM 5 world-writable directories must be group-owned by root, sys, bin,
+    or an application group.
+  rules: []
+  status: pending
+- id: SLEM-05-232110
+  levels:
+  - medium
+  title: The sticky bit must be set on all SLEM 5 world-writable directories.
+  rules: []
+  status: pending
+- id: SLEM-05-232115
+  levels:
+  - medium
+  title: SLEM 5 must prevent unauthorized users from accessing system error messages.
+  rules: []
+  status: pending
+- id: SLEM-05-232120
+  levels:
+  - medium
+  title: SLEM 5 must generate error messages that provide information necessary for
+    corrective actions without revealing information that could be exploited by adversaries.
+  rules: []
+  status: pending
+- id: SLEM-05-251010
+  levels:
+  - medium
+  title: SLEM 5 must be configured to prohibit or restrict the use of functions, ports,
+    protocols, and/or services as defined in the Ports, Protocols, and Services Management
+    (PPSM) Category Assignments List (CAL) and vulnerability assessments.
+  rules: []
+  status: pending
+- id: SLEM-05-252010
+  levels:
+  - medium
+  title: SLEM 5 clock must, for networked systems, be synchronized to an authoritative
+    DOD time source at least every 24 hours.
+  rules: []
+  status: pending
+- id: SLEM-05-252015
+  levels:
+  - medium
+  title: SLEM 5 must not have network interfaces in promiscuous mode unless approved
+    and documented.
+  rules: []
+  status: pending
+- id: SLEM-05-253010
+  levels:
+  - medium
+  title: SLEM 5 must not forward Internet Protocol version 4 (IPv4) source-routed
+    packets.
+  rules: []
+  status: pending
+- id: SLEM-05-253015
+  levels:
+  - medium
+  title: SLEM 5 must not forward Internet Protocol version 4 (IPv4) source-routed
+    packets by default.
+  rules: []
+  status: pending
+- id: SLEM-05-253020
+  levels:
+  - medium
+  title: SLEM 5 must prevent Internet Protocol version 4 (IPv4) Internet Control Message
+    Protocol (ICMP) redirect messages from being accepted.
+  rules: []
+  status: pending
+- id: SLEM-05-253025
+  levels:
+  - medium
+  title: SLEM 5 must not allow interfaces to accept Internet Protocol version 4 (IPv4)
+    Internet Control Message Protocol (ICMP) redirect messages by default.
+  rules: []
+  status: pending
+- id: SLEM-05-253030
+  levels:
+  - medium
+  title: SLEM 5 must not send Internet Protocol version 4 (IPv4) Internet Control
+    Message Protocol (ICMP) redirects.
+  rules: []
+  status: pending
+- id: SLEM-05-253035
+  levels:
+  - medium
+  title: SLEM 5 must not allow interfaces to send Internet Protocol version 4 (IPv4)
+    Internet Control Message Protocol (ICMP) redirect messages by default.
+  rules: []
+  status: pending
+- id: SLEM-05-253040
+  levels:
+  - medium
+  title: SLEM 5 must not be performing Internet Protocol version 4 (IPv4) packet forwarding
+    unless the system is a router.
+  rules: []
+  status: pending
+- id: SLEM-05-253045
+  levels:
+  - medium
+  title: SLEM 5 must be configured to use TCP syncookies.
+  rules: []
+  status: pending
+- id: SLEM-05-254010
+  levels:
+  - medium
+  title: SLEM 5 must not forward Internet Protocol version 6 (IPv6) source-routed
+    packets.
+  rules: []
+  status: pending
+- id: SLEM-05-254015
+  levels:
+  - medium
+  title: SLEM 5 must not forward Internet Protocol version 6 (IPv6) source-routed
+    packets by default.
+  rules: []
+  status: pending
+- id: SLEM-05-254020
+  levels:
+  - medium
+  title: SLEM 5 must prevent Internet Protocol version 6 (IPv6) Internet Control Message
+    Protocol (ICMP) redirect messages from being accepted.
+  rules: []
+  status: pending
+- id: SLEM-05-254025
+  levels:
+  - medium
+  title: SLEM 5 must not allow interfaces to accept Internet Protocol version 6 (IPv6)
+    Internet Control Message Protocol (ICMP) redirect messages by default.
+  rules: []
+  status: pending
+- id: SLEM-05-254030
+  levels:
+  - medium
+  title: SLEM 5 must not be performing Internet Protocol version 6 (IPv6) packet forwarding
+    unless the system is a router.
+  rules: []
+  status: pending
+- id: SLEM-05-254035
+  levels:
+  - medium
+  title: SLEM 5 must not be performing Internet Protocol version 6 (IPv6) packet forwarding
+    by default unless the system is a router.
+  rules: []
+  status: pending
+- id: SLEM-05-255010
+  levels:
+  - high
+  title: SLEM 5 must have SSH installed to protect the confidentiality and integrity
+    of transmitted information.
+  rules: []
+  status: pending
+- id: SLEM-05-255015
+  levels:
+  - high
+  title: SLEM 5 must use SSH to protect the confidentiality and integrity of transmitted
+    information.
+  rules: []
+  status: pending
+- id: SLEM-05-255020
+  levels:
+  - medium
+  title: SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
+    before granting access via SSH.
+  rules: []
+  status: pending
+- id: SLEM-05-255025
+  levels:
+  - high
+  title: SLEM 5 must not allow unattended or automatic logon via SSH.
+  rules: []
+  status: pending
+- id: SLEM-05-255030
+  levels:
+  - medium
+  title: SLEM 5 must be configured so that all network connections associated with
+    SSH traffic terminate after becoming unresponsive.
+  rules: []
+  status: pending
+- id: SLEM-05-255035
+  levels:
+  - medium
+  title: SLEM 5 must be configured so that all network connections associated with
+    SSH traffic are terminated after 10 minutes of becoming unresponsive.
+  rules: []
+  status: pending
+- id: SLEM-05-255040
+  levels:
+  - medium
+  title: SLEM 5 SSH daemon must disable forwarded remote X connections for interactive
+    users, unless to fulfill documented and validated mission requirements.
+  rules: []
+  status: pending
+- id: SLEM-05-255045
+  levels:
+  - high
+  title: SLEM 5 must implement DOD-approved encryption to protect the confidentiality
+    of SSH remote connections.
+  rules: []
+  status: pending
+- id: SLEM-05-255050
+  levels:
+  - high
+  title: SLEM 5 SSH daemon must be configured to only use Message Authentication Codes
+    (MACs) employing FIPS 140-2/140-3 approved cryptographic hash algorithms.
+  rules: []
+  status: pending
+- id: SLEM-05-255055
+  levels:
+  - high
+  title: SLEM 5 SSH server must be configured to use only FIPS 140-2/140-3 validated
+    key exchange algorithms.
+  rules: []
+  status: pending
+- id: SLEM-05-255060
+  levels:
+  - medium
+  title: SLEM 5 must deny direct logons to the root account using remote access via
+    SSH.
+  rules: []
+  status: pending
+- id: SLEM-05-255065
+  levels:
+  - medium
+  title: SLEM 5 must log SSH connection attempts and failures to the server.
+  rules: []
+  status: pending
+- id: SLEM-05-255070
+  levels:
+  - medium
+  title: SLEM 5 must display the date and time of the last successful account logon
+    upon an SSH logon.
+  rules: []
+  status: pending
+- id: SLEM-05-255075
+  levels:
+  - medium
+  title: SLEM 5 SSH daemon must be configured to not allow authentication using known
+    hosts authentication.
+  rules: []
+  status: pending
+- id: SLEM-05-255080
+  levels:
+  - medium
+  title: SLEM 5 SSH daemon must perform strict mode checking of home directory configuration
+    files.
+  rules: []
+  status: pending
+- id: SLEM-05-255085
+  levels:
+  - medium
+  title: SLEM 5, for PKI-based authentication, must enforce authorized access to the
+    corresponding private key.
+  rules: []
+  status: pending
+- id: SLEM-05-255090
+  levels:
+  - high
+  title: There must be no .shosts files on SLEM 5.
+  rules: []
+  status: pending
+- id: SLEM-05-255095
+  levels:
+  - high
+  title: There must be no shosts.equiv files on SLEM 5.
+  rules: []
+  status: pending
+- id: SLEM-05-272010
+  levels:
+  - high
+  title: SLEM 5 must not allow unattended or automatic logon via the graphical user
+    interface (GUI).
+  rules: []
+  status: pending
+- id: SLEM-05-291010
+  levels:
+  - medium
+  title: SLEM 5 wireless network adapters must be disabled unless approved and documented.
+  rules: []
+  status: pending
+- id: SLEM-05-291015
+  levels:
+  - medium
+  title: SLEM 5 must disable the USB mass storage kernel module.
+  rules: []
+  status: pending
+- id: SLEM-05-411010
+  levels:
+  - medium
+  title: All SLEM 5 local interactive user accounts, upon creation, must be assigned
+    a home directory.
+  rules: []
+  status: pending
+- id: SLEM-05-411015
+  levels:
+  - medium
+  title: SLEM 5 default permissions must be defined in such a way that all authenticated
+    users can only read and modify their own files.
+  rules: []
+  status: pending
+- id: SLEM-05-411020
+  levels:
+  - medium
+  title: SLEM 5 shadow password suite must be configured to enforce a delay of at
+    least five seconds between logon prompts following a failed logon attempt.
+  rules: []
+  status: pending
+- id: SLEM-05-411025
+  levels:
+  - medium
+  title: All SLEM 5 local interactive users must have a home directory assigned in
+    the /etc/passwd file.
+  rules: []
+  status: pending
+- id: SLEM-05-411030
+  levels:
+  - medium
+  title: All SLEM 5 local interactive user home directories defined in the /etc/passwd
+    file must exist.
+  rules: []
+  status: pending
+- id: SLEM-05-411035
+  levels:
+  - medium
+  title: All SLEM 5 local interactive user initialization files executable search
+    paths must contain only paths that resolve to the users' home directory.
+  rules: []
+  status: pending
+- id: SLEM-05-411040
+  levels:
+  - medium
+  title: All SLEM 5 local initialization files must not execute world-writable programs.
+  rules: []
+  status: pending
+- id: SLEM-05-411045
+  levels:
+  - medium
+  title: SLEM 5 must automatically expire temporary accounts within 72 hours.
+  rules: []
+  status: pending
+- id: SLEM-05-411050
+  levels:
+  - medium
+  title: SLEM 5 must never automatically remove or disable emergency administrator
+    accounts.
+  rules: []
+  status: pending
+- id: SLEM-05-411055
+  levels:
+  - medium
+  title: SLEM 5 must not have unnecessary accounts.
+  rules: []
+  status: pending
+- id: SLEM-05-411060
+  levels:
+  - medium
+  title: SLEM 5 must not have unnecessary account capabilities.
+  rules: []
+  status: pending
+- id: SLEM-05-411065
+  levels:
+  - high
+  title: SLEM 5 root account must be the only account with unrestricted access to
+    the system.
+  rules: []
+  status: pending
+- id: SLEM-05-411070
+  levels:
+  - medium
+  title: SLEM 5 must disable account identifiers (individuals, groups, roles, and
+    devices) after 35 days of inactivity after password expiration.
+  rules: []
+  status: pending
+- id: SLEM-05-411075
+  levels:
+  - medium
+  title: SLEM 5 must not have duplicate User IDs (UIDs) for interactive users.
+  rules: []
+  status: pending
+- id: SLEM-05-412010
+  levels:
+  - medium
+  title: SLEM 5 must display the date and time of the last successful account logon
+    upon logon.
+  rules: []
+  status: pending
+- id: SLEM-05-412015
+  levels:
+  - medium
+  title: SLEM 5 must initiate a session lock after a 15-minute period of inactivity.
+  rules: []
+  status: pending
+- id: SLEM-05-412020
+  levels:
+  - medium
+  title: SLEM 5 must lock an account after three consecutive invalid access attempts.
+  rules: []
+  status: pending
+- id: SLEM-05-412025
+  levels:
+  - medium
+  title: SLEM 5 must enforce a delay of at least five seconds between logon prompts
+    following a failed logon attempt via pluggable authentication modules (PAM).
+  rules: []
+  status: pending
+- id: SLEM-05-412030
+  levels:
+  - medium
+  title: SLEM 5 must use the default pam_tally2 tally directory.
+  rules: []
+  status: pending
+- id: SLEM-05-412035
+  levels:
+  - low
+  title: SLEM 5 must limit the number of concurrent sessions to 10 for all accounts
+    and/or account types.
+  rules: []
+  status: pending
+- id: SLEM-05-431010
+  levels:
+  - low
+  title: SLEM 5 must have policycoreutils package installed.
+  rules: []
+  status: pending
+- id: SLEM-05-431015
+  levels:
+  - high
+  title: SLEM 5 must use a Linux Security Module configured to enforce limits on system
+    services.
+  rules: []
+  status: pending
+- id: SLEM-05-431020
+  levels:
+  - medium
+  title: SLEM 5 must enable the SELinux targeted policy.
+  rules: []
+  status: pending
+- id: SLEM-05-431025
+  levels:
+  - medium
+  title: SLEM 5 must prevent nonprivileged users from executing privileged functions,
+    including disabling, circumventing, or altering implemented security safeguards/countermeasures.
+  rules: []
+  status: pending
+- id: SLEM-05-432010
+  levels:
+  - medium
+  title: SLEM 5 must use the invoking user's password for privilege escalation when
+    using "sudo".
+  rules: []
+  status: pending
+- id: SLEM-05-432015
+  levels:
+  - medium
+  title: SLEM 5 must reauthenticate users when changing authenticators, roles, or
+    escalating privileges.
+  rules: []
+  status: pending
+- id: SLEM-05-432020
+  levels:
+  - medium
+  title: SLEM 5 must require reauthentication when using the "sudo" command.
+  rules: []
+  status: pending
+- id: SLEM-05-432025
+  levels:
+  - medium
+  title: SLEM 5 must restrict privilege elevation to authorized personnel.
+  rules: []
+  status: pending
+- id: SLEM-05-432030
+  levels:
+  - medium
+  title: SLEM 5 must specify the default "include" directory for the /etc/sudoers
+    file.
+  rules: []
+  status: pending
+- id: SLEM-05-611010
+  levels:
+  - medium
+  title: SLEM 5 must enforce passwords that contain at least one uppercase character.
+  rules: []
+  status: pending
+- id: SLEM-05-611015
+  levels:
+  - medium
+  title: SLEM 5 must enforce passwords that contain at least one lowercase character.
+  rules: []
+  status: pending
+- id: SLEM-05-611020
+  levels:
+  - medium
+  title: SLEM 5 must enforce passwords that contain at least one numeric character.
+  rules: []
+  status: pending
+- id: SLEM-05-611025
+  levels:
+  - medium
+  title: SLEM 5 must enforce passwords that contain at least one special character.
+  rules: []
+  status: pending
+- id: SLEM-05-611030
+  levels:
+  - medium
+  title: SLEM 5 must prevent the use of dictionary words for passwords.
+  rules: []
+  status: pending
+- id: SLEM-05-611035
+  levels:
+  - medium
+  title: SLEM 5 must employ passwords with a minimum of 15 characters.
+  rules: []
+  status: pending
+- id: SLEM-05-611040
+  levels:
+  - medium
+  title: SLEM 5 must require the change of at least eight of the total number of characters
+    when passwords are changed.
+  rules: []
+  status: pending
+- id: SLEM-05-611045
+  levels:
+  - medium
+  title: SLEM 5 must not allow passwords to be reused for a minimum of five generations.
+  rules: []
+  status: pending
+- id: SLEM-05-611050
+  levels:
+  - medium
+  title: SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
+    only store encrypted representations of passwords.
+  rules: []
+  status: pending
+- id: SLEM-05-611055
+  levels:
+  - high
+  title: SLEM 5 must not be configured to allow blank or null passwords.
+  rules: []
+  status: pending
+- id: SLEM-05-611060
+  levels:
+  - high
+  title: SLEM 5 must not have accounts configured with blank or null passwords.
+  rules: []
+  status: pending
+- id: SLEM-05-611065
+  levels:
+  - medium
+  title: SLEM 5 must employ user passwords with a minimum lifetime of 24 hours (one
+    day).
+  rules: []
+  status: pending
+- id: SLEM-05-611070
+  levels:
+  - medium
+  title: SLEM 5 must employ user passwords with a maximum lifetime of 60 days.
+  rules: []
+  status: pending
+- id: SLEM-05-611075
+  levels:
+  - medium
+  title: SLEM 5 must employ a password history file.
+  rules: []
+  status: pending
+- id: SLEM-05-611080
+  levels:
+  - high
+  title: SLEM 5 must employ FIPS 140-2/140-3-approved cryptographic hashing algorithms
+    for system authentication.
+  rules: []
+  status: pending
+- id: SLEM-05-611085
+  levels:
+  - high
+  title: SLEM 5 shadow password suite must be configured to use a sufficient number
+    of hashing rounds.
+  rules: []
+  status: pending
+- id: SLEM-05-611090
+  levels:
+  - medium
+  title: SLEM 5 must employ FIPS 140-2/140-3 approved cryptographic hashing algorithm
+    for system authentication (login.defs).
+  rules: []
+  status: pending
+- id: SLEM-05-611095
+  levels:
+  - medium
+  title: SLEM 5 must be configured to create or update passwords with a minimum lifetime
+    of 24 hours (one day).
+  rules: []
+  status: pending
+- id: SLEM-05-611100
+  levels:
+  - medium
+  title: SLEM 5 must be configured to create or update passwords with a maximum lifetime
+    of 60 days.
+  rules: []
+  status: pending
+- id: SLEM-05-612010
+  levels:
+  - medium
+  title: SLEM 5 must have the packages required for multifactor authentication to
+    be installed.
+  rules: []
+  status: pending
+- id: SLEM-05-612015
+  levels:
+  - medium
+  title: SLEM 5 must implement multifactor authentication for access to privileged
+    accounts via pluggable authentication modules (PAM).
+  rules: []
+  status: pending
+- id: SLEM-05-612020
+  levels:
+  - medium
+  title: SLEM 5 must implement certificate status checking for multifactor authentication.
+  rules: []
+  status: pending
+- id: SLEM-05-631010
+  levels:
+  - medium
+  title: If Network Security Services (NSS) is being used by SLEM 5 it must prohibit
+    the use of cached authentications after one day.
+  rules: []
+  status: pending
+- id: SLEM-05-631015
+  levels:
+  - medium
+  title: SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
+    prohibit the use of cached offline authentications after one day.
+  rules: []
+  status: pending
+- id: SLEM-05-631020
+  levels:
+  - medium
+  title: SLEM 5, for PKI-based authentication, must validate certificates by constructing
+    a certification path (which includes status information) to an accepted trust
+    anchor.
+  rules: []
+  status: pending
+- id: SLEM-05-631025
+  levels:
+  - medium
+  title: SLEM 5 must be configured to not overwrite Pluggable Authentication Modules
+    (PAM) configuration on package changes.
+  rules: []
+  status: pending
+- id: SLEM-05-651010
+  levels:
+  - medium
+  title: SLEM 5 must use a file integrity tool to verify correct operation of all
+    security functions.
+  rules: []
+  status: pending
+- id: SLEM-05-651015
+  levels:
+  - medium
+  title: SLEM 5 file integrity tool must be configured to verify Access Control Lists
+    (ACLs).
+  rules: []
+  status: pending
+- id: SLEM-05-651020
+  levels:
+  - medium
+  title: SLEM 5 file integrity tool must be configured to verify extended attributes.
+  rules: []
+  status: pending
+- id: SLEM-05-651025
+  levels:
+  - medium
+  title: SLEM 5 file integrity tool must be configured to protect the integrity of
+    the audit tools.
+  rules: []
+  status: pending
+- id: SLEM-05-651030
+  levels:
+  - medium
+  title: Advanced Intrusion Detection Environment (AIDE) must verify the baseline
+    SLEM 5 configuration at least weekly.
+  rules: []
+  status: pending
+- id: SLEM-05-651035
+  levels:
+  - medium
+  title: SLEM 5 must notify the system administrator (SA) when Advanced Intrusion
+    Detection Environment (AIDE) discovers anomalies in the operation of any security
+    functions.
+  rules: []
+  status: pending
+- id: SLEM-05-652010
+  levels:
+  - medium
+  title: SLEM 5 must offload rsyslog messages for networked systems in real time and
+    offload standalone systems at least weekly.
+  rules: []
+  status: pending
+- id: SLEM-05-653010
+  levels:
+  - medium
+  title: SLEM 5 must have the auditing package installed.
+  rules: []
+  status: pending
+- id: SLEM-05-653015
+  levels:
+  - medium
+  title: SLEM 5 audit records must contain information to establish what type of events
+    occurred, the source of events, where events occurred, and the outcome of events.
+  rules: []
+  status: pending
+- id: SLEM-05-653020
+  levels:
+  - medium
+  title: The audit-audispd-plugins package must be installed on SLEM 5.
+  rules: []
+  status: pending
+- id: SLEM-05-653025
+  levels:
+  - medium
+  title: SLEM 5 must allocate audit record storage capacity to store at least one
+    week of audit records when audit records are not immediately sent to a central
+    audit record storage facility.
+  rules: []
+  status: pending
+- id: SLEM-05-653030
+  levels:
+  - medium
+  title: SLEM 5 auditd service must notify the system administrator (SA) and information
+    system security officer (ISSO) immediately when audit storage capacity is 75 percent
+    full.
+  rules: []
+  status: pending
+- id: SLEM-05-653035
+  levels:
+  - medium
+  title: SLEM 5 audit system must take appropriate action when the audit storage volume
+    is full.
+  rules: []
+  status: pending
+- id: SLEM-05-653040
+  levels:
+  - medium
+  title: SLEM 5 must offload audit records onto a different system or media from the
+    system being audited.
+  rules: []
+  status: pending
+- id: SLEM-05-653045
+  levels:
+  - medium
+  title: Audispd must take appropriate action when SLEM 5 audit storage is full.
+  rules: []
+  status: pending
+- id: SLEM-05-653050
+  levels:
+  - medium
+  title: SLEM 5 must protect audit rules from unauthorized modification.
+  rules: []
+  status: pending
+- id: SLEM-05-653055
+  levels:
+  - medium
+  title: SLEM 5 audit tools must have the proper permissions configured to protect
+    against unauthorized access.
+  rules: []
+  status: pending
+- id: SLEM-05-653060
+  levels:
+  - medium
+  title: SLEM 5 audit tools must have the proper permissions applied to protect against
+    unauthorized access.
+  rules: []
+  status: pending
+- id: SLEM-05-653065
+  levels:
+  - low
+  title: SLEM 5 audit event multiplexor must be configured to use Kerberos.
+  rules: []
+  status: pending
+- id: SLEM-05-653070
+  levels:
+  - medium
+  title: Audispd must offload audit records onto a different system or media from
+    SLEM 5 being audited.
+  rules: []
+  status: pending
+- id: SLEM-05-653075
+  levels:
+  - medium
+  title: The information system security officer (ISSO) and system administrator (SA),
+    at a minimum, must have mail aliases to be notified of a SLEM 5 audit processing
+    failure.
+  rules: []
+  status: pending
+- id: SLEM-05-653080
+  levels:
+  - medium
+  title: The information system security officer (ISSO) and system administrator (SA),
+    at a minimum, must be alerted of a SLEM 5 audit processing failure event.
+  rules: []
+  status: pending
+- id: SLEM-05-654010
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chacl" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654015
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chage" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654020
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chcon" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654025
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chfn" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654030
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chmod" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654035
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for a uses of the "chsh" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654040
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "crontab" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654045
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "gpasswd" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654050
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "insmod" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654055
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "kmod" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654060
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "modprobe" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654065
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "newgrp" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654070
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "pam_timestamp_check"
+    command.
+  rules: []
+  status: pending
+- id: SLEM-05-654075
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "passwd" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654080
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "rm" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654085
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "rmmod" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654090
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "setfacl" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654095
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "ssh-agent" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654100
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "ssh-keysign" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654105
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "su" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654110
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "sudo" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654115
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "sudoedit" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654120
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "unix_chkpwd" or "unix2_chkpwd"
+    commands.
+  rules: []
+  status: pending
+- id: SLEM-05-654125
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "usermod" command.
+  rules: []
+  status: pending
+- id: SLEM-05-654130
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all account creations, modifications,
+    disabling, and termination events that affect /etc/group.
+  rules: []
+  status: pending
+- id: SLEM-05-654135
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all account creations, modifications,
+    disabling, and termination events that affect /etc/security/opasswd.
+  rules: []
+  status: pending
+- id: SLEM-05-654140
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all account creations, modifications,
+    disabling, and termination events that affect /etc/passwd.
+  rules: []
+  status: pending
+- id: SLEM-05-654145
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all account creations, modifications,
+    disabling, and termination events that affect /etc/shadow.
+  rules: []
+  status: pending
+- id: SLEM-05-654150
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chmod", "fchmod"
+    and "fchmodat" system calls.
+  rules: []
+  status: pending
+- id: SLEM-05-654155
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "chown", "fchown",
+    "fchownat", and "lchown" system calls.
+  rules: []
+  status: pending
+- id: SLEM-05-654160
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "creat", "open", "openat",
+    "open_by_handle_at", "truncate", and "ftruncate" system calls.
+  rules: []
+  status: pending
+- id: SLEM-05-654165
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "delete_module" system
+    call.
+  rules: []
+  status: pending
+- id: SLEM-05-654170
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "init_module" and
+    "finit_module" system calls.
+  rules: []
+  status: pending
+- id: SLEM-05-654175
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "mount" system call.
+  rules: []
+  status: pending
+- id: SLEM-05-654180
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "setxattr", "fsetxattr",
+    "lsetxattr", "removexattr", "fremovexattr", and "lremovexattr" system calls.
+  rules: []
+  status: pending
+- id: SLEM-05-654185
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "umount" system call.
+  rules: []
+  status: pending
+- id: SLEM-05-654190
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of the "unlink", "unlinkat",
+    "rename", "renameat", and "rmdir" system calls.
+  rules: []
+  status: pending
+- id: SLEM-05-654195
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all uses of privileged functions.
+  rules: []
+  status: pending
+- id: SLEM-05-654200
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all modifications to the "lastlog"
+    file.
+  rules: []
+  status: pending
+- id: SLEM-05-654205
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for all modifications to the "tallylog"
+    file must generate an audit record.
+  rules: []
+  status: pending
+- id: SLEM-05-654210
+  levels:
+  - medium
+  title: SLEM 5 must audit all uses of the sudoers file and all files in the "/etc/sudoers.d/"
+    directory.
+  rules: []
+  status: pending
+- id: SLEM-05-654215
+  levels:
+  - medium
+  title: Successful/unsuccessful uses of "setfiles" in SLEM 5 must generate an audit
+    record.
+  rules: []
+  status: pending
+- id: SLEM-05-654220
+  levels:
+  - medium
+  title: Successful/unsuccessful uses of "semanage" in SLEM 5 must generate an audit
+    record.
+  rules: []
+  status: pending
+- id: SLEM-05-654225
+  levels:
+  - medium
+  title: Successful/unsuccessful uses of "setsebool" in SLEM 5 must generate an audit
+    record.
+  rules: []
+  status: pending
+- id: SLEM-05-654230
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for the "/run/utmp file".
+  rules: []
+  status: pending
+- id: SLEM-05-654235
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for the "/var/log/btmp" file.
+  rules: []
+  status: pending
+- id: SLEM-05-654240
+  levels:
+  - medium
+  title: SLEM 5 must generate audit records for the "/var/log/wtmp" file.
+  rules: []
+  status: pending
+- id: SLEM-05-654245
+  levels:
+  - medium
+  title: SLEM 5 must not disable syscall auditing.
+  rules: []
+  status: pending
+- id: SLEM-05-671010
+  levels:
+  - high
+  title: FIPS 140-2/140-3 mode must be enabled on SLEM 5.
+  rules: []
+  status: pending
