@@ -34,8 +34,18 @@ ocil: |-
     <br /><br />
     {{{ ocil_service_enabled(service="ip6tables") }}}
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: iptables
+        servicename: iptables
+        variable: var_network_filtering_service
+        value: iptables
+{{%- else %}}
 template:
     name: service_enabled
     vars:
         servicename: ip6tables
         packagename: iptables-ipv6
+{{%- endif %}}
