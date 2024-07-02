@@ -30,6 +30,8 @@ selections:
   - '!accounts_polyinstantiated_tmp'
   - '!accounts_polyinstantiated_var_tmp'
   - '!enable_pam_namespace'
+  # there is no tmp.mount unit on Debian 12.
+  - '!systemd_tmp_mount_enabled'
 
   # Following rules once had a prodtype incompatible with the debian12 product
   - '!accounts_passwords_pam_tally2_deny_root'
