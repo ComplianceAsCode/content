@@ -348,7 +348,6 @@ selections:
 - kernel_module_tipc_disabled
 - kernel_module_usb-storage_disabled
 - libreswan_approved_tunnels
-- logind_session_timeout
 - mount_option_boot_efi_nosuid
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
