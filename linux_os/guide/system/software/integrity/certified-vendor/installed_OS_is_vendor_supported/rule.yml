@@ -8,7 +8,7 @@ description: |-
 {{% if 'ol' in product %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
-{{% elif product in ["sle12", "sle15", "susemicro5"] %}}
+{{% elif product in ["sle12", "sle15", "slmicro5"] %}}
     SUSE Linux Enterprise is supported by SUSE. As the SUSE Linux Enterprise
     vendor, SUSE is responsible for providing security patches.
 {{% else %}}
@@ -34,7 +34,7 @@ identifiers:
     cce@rhel9: CCE-83453-1
     cce@sle12: CCE-83001-8
     cce@sle15: CCE-83260-0
-    cce@susemicro5: CCE-93601-3
+    cce@slmicro5: CCE-93601-3
 
 references:
     cis-csc: 18,20,4
@@ -60,7 +60,7 @@ ocil: |-
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif 'ol' in product %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
-{{% elif product in ["sle12", "sle15", "susemicro5"] %}}
+{{% elif product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
 {{% endif %}}
     <pre>{{{ full_name }}}</pre>

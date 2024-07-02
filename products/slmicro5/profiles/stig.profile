@@ -14,4 +14,4 @@ description: |-
     DISA STIG for SUSE Linux Enterprise Micro (SLEM) 5.
 
 selections:
-  - stig_susemicro5:all
+  - stig_slmicro5:all
