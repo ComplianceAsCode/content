@@ -42,6 +42,8 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
 # including any RHCOS profiles on those architectures right now anyway.
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
         ./build_product ocp4 rhcos4 eks --datastream-only; \
+        elif [ "$(uname -m)" = "ppc64le" ]; then \
+        ./build_product ocp4 rhcos4 --datastream-only; \
         else ./build_product ocp4 --datastream-only; \
         fi
 
