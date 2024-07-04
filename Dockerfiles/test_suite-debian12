@@ -1,0 +1,23 @@
+# This Dockerfile is a minimal example for a Debian 12 test suite target container.
+FROM debian:12
+
+ENV AUTH_KEYS=/root/.ssh/authorized_keys
+ENV DEBIAN_FRONTEND=noninteractive
+
+ARG CLIENT_PUBLIC_KEY
+ARG ADDITIONAL_PACKAGES
+
+# install additional packages
+RUN true \
+        && apt update \
+	&& apt install openssh-server python3 openscap-scanner \
+	   $ADDITIONAL_PACKAGES \
+        && true
+
+RUN true \
+        && for key_type in rsa ecdsa; do ssh-keygen -N '' -t $key_type -f /etc/ssh/ssh_host_${key_type}_key; done \
+        && mkdir -p /root/.ssh \
+        && printf "%s\n" "$CLIENT_PUBLIC_KEY" >> "$AUTH_KEYS" \
+        && chmod og-rw /root/.ssh "$AUTH_KEYS" \
+        && sed -i '/session\s\+required\s\+pam_loginuid.so/d' /etc/pam.d/sshd \
+	&& true
