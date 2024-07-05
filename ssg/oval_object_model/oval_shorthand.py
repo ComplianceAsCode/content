@@ -9,7 +9,11 @@ def _get_xml_element_from_string_shorthand(shorthand):
     valid_oval_xml_string = "{}{}{}".format(oval_header, shorthand, oval_footer).encode(
         "utf-8"
     )
-    xml_element = ElementTree.fromstring(valid_oval_xml_string)
+    try:
+        xml_element = ElementTree.fromstring(valid_oval_xml_string)
+    except Exception as e:
+        print(f'{e}. Check the content below:')
+        print(valid_oval_xml_string)
     return xml_element.findall("./{%s}def-group/*" % OVAL_NAMESPACES.definition)
 
 
