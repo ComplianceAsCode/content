@@ -1503,7 +1503,7 @@ Part of the grub2_bootloader_argument_absent template.
     state: absent
   check_mode: true
   changed_when: false
-  register: result_pam_module_{{{ option }}}_option_present
+  register: result_pam_module_{{{ rule_id }}}_option_present
 
 - name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" PAM option for "{{{ module }}}" is included in {{{ pam_file }}}'
   ansible.builtin.lineinfile:
@@ -1516,9 +1516,9 @@ Part of the grub2_bootloader_argument_absent template.
     line: \1 {{{ option }}}={{{ value }}}
     {{%- endif %}}
     state: present
-  register: result_pam_{{{ option }}}_add
+  register: result_pam_{{{ rule_id }}}_add
   when:
-    - result_pam_module_{{{ option }}}_option_present.found == 0
+    - result_pam_module_{{{ rule_id }}}_option_present.found == 0
 
 {{%- if value != '' %}}
 - name: '{{{ rule_title }}} - Ensure the required value for "{{{ option }}}" PAM option from "{{{ module }}}" in {{{ pam_file }}}'
@@ -1527,9 +1527,9 @@ Part of the grub2_bootloader_argument_absent template.
     backrefs: true
     regexp: ^(\s*{{{ group }}}\s+{{ '{{{ control }}}' | regex_escape() }}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
     line: \1\2={{{ value }}} \3
-  register: result_pam_{{{ option }}}_edit
+  register: result_pam_{{{ rule_id }}}_edit
   when:
-    - result_pam_module_{{{ option }}}_option_present.found > 0
+    - result_pam_module_{{{ rule_id }}}_option_present.found > 0
 {{%- endif %}}
 {{%- endmacro -%}}
 
@@ -1729,8 +1729,8 @@ Part of the grub2_bootloader_argument_absent template.
       when:
         - result_authselect_present.stat.exists
         - >-
-          (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed)
-           or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
+          (result_pam_{{{ rule_id }}}_add is defined and result_pam_{{{ rule_id }}}_add.changed)
+           or (result_pam_{{{ rule_id }}}_edit is defined and result_pam_{{{ rule_id }}}_edit.changed)
   when:
     - result_pam_file_present.stat.exists
 {{%- endmacro -%}}
