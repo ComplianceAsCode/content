@@ -108,3 +108,14 @@ fixtext: |-
 {{% if product in ['ol9', 'rhel9'] -%}}
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the system-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
 {{%- endif %}}
+
+warnings:
+    - general: |-
+        The hashing algorithms to be used with pam_unix.so are defined with independent module
+        options. There are at least 7 possible algorithms and likely more algorithms will be
+        introduced along the time. Due the the number of options and its possible combinations,
+        the use of multiple hashing algorithm options may bring unexpected behaviors to the
+        system. For this reason the check will pass only when one hashing algorithm option is
+        defined and is aligned to the "var_password_hashing_algorithm_pam" variable. The
+        remediation will ensure the correct option and remove any other extra hashing algorithm
+        option.
