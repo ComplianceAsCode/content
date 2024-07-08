@@ -11,19 +11,20 @@ SSG_ROOT = pathlib.Path(__file__).resolve().parent.parent
 BUILD_DIR = SSG_ROOT.joinpath("build")
 RULE_DIR_JSON = BUILD_DIR.joinpath("rule_dirs.json")
 EPILOG = """
-This script lists rules that are not used in any datastreams.
+This script lists rules that are not used in any data streams.
 It requires that all products (and derivatives) are built.
 To do this run ./build_product --derivatives
 The script has the following return codes:
-    0 - All rules are used in the datastreams,
-    1 - Some rules are not used in the datastreams,
+    0 - All rules are used in the data streams,
+    1 - Some rules are not used in the data streams,
     2 - Not all products are built, and
     3 - rule_dirs.json does not exist.
 """
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="List rules that are not used in any datastreams."
+    parser = argparse.ArgumentParser(description="List rules that are not used in any "
+                                                 "data streams."
                                                  "Note that script requires that all products "
                                                  "(and derivatives) are built.", epilog=EPILOG)
     parser.add_argument("--root",
@@ -74,7 +75,7 @@ def main() -> int:
         ds_products.add(ds.name.split("-")[1])
     if products_count > len(datastream_files):
         print("Not all products are built, cowardly refusing to continue.", file=sys.stderr)
-        print(f"Products: {products_count}, Datastreams: {len(datastream_files)}", file=sys.stderr)
+        print(f"Products: {products_count}, data streams: {len(datastream_files)}", file=sys.stderr)
         print("Hint: run ./build_product --derivatives", file=sys.stderr)
         return 2
     ds_rules = _get_ds_rules(datastream_files)
@@ -82,7 +83,7 @@ def main() -> int:
     if not disuse_rules:
         print("All rules are used in the datastream files.")
         return 0
-    print("The following rules are not used in ANY of the provided the datastream files:")
+    print("The following rules are not used in ANY of the provided data stream files:")
     print("\n".join(disuse_rules))
     return 1
 
