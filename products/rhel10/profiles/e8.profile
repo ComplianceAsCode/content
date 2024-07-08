@@ -40,3 +40,4 @@ selections:
     - '!package_xinetd_removed'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
+    - '!security_patches_up_to_date'
