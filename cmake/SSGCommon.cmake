@@ -472,7 +472,7 @@ macro(ssg_build_sds PRODUCT)
     )
     set_tests_properties("reference-titles-in-benchmark-${PRODUCT}" PROPERTIES LABELS quick)
 
-    if("${PRODUCT}" MATCHES "rhel(7|8|9)|sle(12|15)")
+    if("${PRODUCT}" MATCHES "rhel(8|9|10)|sle(12|15)")
         if("${PRODUCT}" MATCHES "sle(12|15)")
             add_test(
                 NAME "missing-cces-${PRODUCT}"
