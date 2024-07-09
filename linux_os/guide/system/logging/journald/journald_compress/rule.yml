@@ -47,7 +47,6 @@ ocil: |-
 template:
     name: systemd_dropin_configuration
     vars:
-        component: journald
         master_cfg_file: /etc/systemd/journald.conf
         dropin_dir: {{{ journald_conf_dir_path }}}
         section: Journal
