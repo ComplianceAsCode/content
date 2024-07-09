@@ -22,7 +22,11 @@
     path: "{{item}}"
     section: {{{ SECTION }}}
     option: {{{ PARAM }}}
+{{% if NO_QUOTES %}}
     value: "{{{ VALUE }}}"
+{{% else %}}
+    value: '"{{{ VALUE }}}"'
+{{% endif %}}
     state: present
     no_extra_spaces: true
   when: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum > 0}}"
@@ -33,7 +37,11 @@
     path: "{{{ DROPIN_DIR }}}/oscap-remedy.conf"
     section: {{{ SECTION }}}
     option: {{{ PARAM }}}
+{{% if NO_QUOTES %}}
     value: "{{{ VALUE }}}"
+{{% else %}}
+    value: '"{{{ VALUE }}}"'
+{{% endif %}}
     state: present
     no_extra_spaces: true
     create: true

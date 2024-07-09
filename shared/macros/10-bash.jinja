@@ -2097,7 +2097,7 @@ Example macro invocation(s)::
 :type value: str
 
 #}}
-{{% macro bash_ensure_ini_config(files, section, key, value) -%}}
+{{% macro bash_ensure_ini_config(files, section, key, value, no_quotes=true) -%}}
 found=false
 
 # set value in all files if they contain section or key
@@ -2108,12 +2108,20 @@ for f in $(echo -n "{{{ files }}}"); do
 
     # find key in section and change value
     if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
+{{% if no_quotes %}}
             sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/" "$f"
+{{% else %}}
+            sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}="{{{ value }}}"/' "$f"
+{{% endif %}}
             found=true
 
     # find section and add key = value to it
     elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
+{{% if no_quotes %}}
             sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}={{{ value }}}" "$f"
+{{% else %}}
+            sed -i '/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}}="{{{ value }}}"' "$f"
+{{% endif %}}
             found=true
     fi
 done
@@ -2122,7 +2130,11 @@ done
 if ! $found ; then
     file=$(echo "{{{ files }}}" | cut -f1 -d ' ')
     mkdir -p "$(dirname "$file")"
+{{% if no_quotes %}}
     echo -e "[{{{ section }}}]\n{{{ key }}}={{{ value }}}" >> "$file"
+{{% else %}}
+    echo -e '[{{{ section }}}]\n{{{ key }}}="{{{ value }}}"' >> "$file"
+{{% endif %}}
 fi
 {{%- endmacro %}}
 
