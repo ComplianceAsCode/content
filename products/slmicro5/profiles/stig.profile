@@ -3,6 +3,8 @@ documentation_complete: true
 metadata:
     version: V1R1
     SMEs:
+        - svet-se
+        - rumch-se
         - teacup-on-rockingchair
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
