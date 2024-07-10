@@ -17,6 +17,10 @@
     - path: "{{{ DROPIN_DIR }}}"
       pattern: "*.conf"
 
+- name: "{{{ rule_title }}} - Count number of files which contain the correct section"
+  ansible.builtin.set_fact:
+    count_of_systemd_dropin_files_with_section: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum}}"
+
 - name: "{{{ rule_title   }}} - Add missing configuration to correct section"
   ini_file:
     path: "{{item}}"
@@ -29,7 +33,7 @@
 {{% endif %}}
     state: present
     no_extra_spaces: true
-  when: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum > 0}}"
+  when: count_of_systemd_dropin_files_with_section | int > 0
   loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
 
 - name: "{{{ rule_title }}} - Add configuration to new remediation file"
@@ -45,4 +49,4 @@
     state: present
     no_extra_spaces: true
     create: true
-  when: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum == 0}}"
+  when: count_of_systemd_dropin_files_with_section | int == 0
