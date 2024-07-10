@@ -743,3 +743,24 @@ An example of how to execute the script to generate roles locally:
 $ ./build_product rhel9
 $ ./utils/ansible_playbook_to_role.py --dry-run output
 ```
+
+### `utils/find_unused_rules.py` &ndash; List Rules That Are Not Used In Any Data stream
+
+This script will output rules are not in any data streams.
+To prevent false positives the script will not run if the number of build datas treams less than the total number of products in the project.
+The script assumes that `./build_project --derivatives` was executed before the script is used.
+This script does require that `./utils/rule_dir_json.py` was executed before this script is used as well.
+
+This script works by comparing rules in the data streams to the rules in the `rule_dirs.json` file.
+The script works by adding off the rule ids from the data streams to a `set`.
+Then the script converts the keys of `rule_dirs.json` to a set.
+The set of rules in the data stream is subtracted to from the set of rules in `rule_dirs.json`.
+The difference is then output to the user.
+
+Example usage:
+
+```bash
+$ ./build_product --derivatives
+$ ./utils/rule_dir_json.py
+$ ./utils/find_unused_rules.py
+```
