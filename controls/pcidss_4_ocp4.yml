@@ -2161,14 +2161,23 @@ controls:
     title: Strong authentication for users and administrators is established and managed.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 8.3.1
       title: All user access to system components for users and administrators is authenticated.
+      description: |-
+        All user access to system components for users and administrators is authenticated via at
+        least one of the following authentication factors:
+        - Something you know, such as a password or passphrase.
+        - Something you have, such as a token device or smart card.
+        - Something you are, such as a biometric element.
       levels:
         - base
-      status: pending
-      rules: []
+      status: not applicable
+      notes: |-
+        The type of authenticators to be used (for example, password or passphrase,
+        token device or smart card, or biometrics) are managed externally
+        to OpenShift by the identity provider
 
     - id: 8.3.2
       title: Strong cryptography is used to render all authentication factors unreadable during
@@ -2178,10 +2187,11 @@ controls:
         interception of communications or from stored data.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        There are similar rules that might be redundant for some distros.
-      rules: []
+        The protection of the authentication credentials such as rendering the passwords and
+        passphrases unreadable during transmission and the storage of credentials on system
+        components is the responsibility of the third-party identity provider.
 
     - id: 8.3.3
       title: User identity is verified before modifying any authentication factor.
@@ -2190,12 +2200,12 @@ controls:
         authorized user.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is about processes, such as password resets, provisioning new hardware or
-        software tokens, and generating new keys. It is common that these activities involve help
-        desk teams and administrators and the involved people should ensure identities are properly
-        verified.
+        Modification of authentication credentials is handled by the third-party identity provider.
+        All access to modify parameters for authentication tokens or for generating keys  within
+        OpenShift is managed with RBAC and requires prior authentication before the user is
+        authorized to act.
 
     - id: 8.3.4
       title: Invalid authentication attempts are limited.
@@ -2205,8 +2215,12 @@ controls:
         confirmed.
       levels:
         - base
-      status: pending
-      rules: []
+      status: not applicable
+      notes: |-
+        Account lockout for failed attempts are managed by the identity provider as all
+        authentication attempts that occur prior to granting access from OpenShift.
+        Establishing a threshold for limiting repeated failed attempts are configured with
+        the chosen identity provider.
 
     - id: 8.3.5
       title: If passwords/passphrases are used as authentication factors to meet Requirement
@@ -2216,10 +2230,11 @@ controls:
         - Forced to be changed immediately after the first use.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Also related to requirement 2.2.2, 8.2.2 and 8.2.6.
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.6
       title: If passwords/passphrases are used as authentication factors to meet Requirement
@@ -2232,14 +2247,11 @@ controls:
         force attack.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is not intended to apply to:
-        - User accounts on point-of-sale terminals that have access to only one card number at a
-        time to facilitate a single transaction (such as IDs used by cashiers on point-of-sale
-        terminals).
-        - Application or system accounts, which are governed by requirements in section 8.6.
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.7
       title: Individuals are not allowed to submit a new password/passphrase that is the same as
@@ -2249,18 +2261,17 @@ controls:
         months.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is not intended to apply to user accounts on point-of-sale terminals that
-        have access to only one card number at a time to facilitate a single transaction (such as
-        IDs used by cashiers on point-of-sale terminals).
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.8
       title: Authentication policies and procedures are documented and communicated to all users.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 8.3.9
       title: If passwords/passphrases are used as the only authentication factor for user access
@@ -2275,12 +2286,11 @@ controls:
         resources is automatically determined accordingly.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        The requirement does not explicitily define the number of days before the password
-        expiration to warn the users, but the relevant rules were selected here as they do not
-        cause any problems in combination with password lifetime rules.
-      rules: []
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.10
       title: 'Additional requirement for service providers only: If passwords/passphrases are used
@@ -2289,7 +2299,7 @@ controls:
         users.'
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 8.3.10.1
         title: 'Additional requirement for service providers only: If passwords/passphrases are
@@ -2297,9 +2307,11 @@ controls:
           single-factor authentication implementation) they should have a limited lifetime.'
         levels:
           - base
-        status: pending
+        status: not applicable
         notes: |-
-          This requirement is already covered by 8.3.9.
+          Parameters for authenticators such as password length, maximum password
+          age, minimum password age, password history, and requirements to change
+          the password on first use are handled by the third-party identity provider.
 
     - id: 8.3.11
       title: Where authentication factors such as physical or logical security tokens, smart
@@ -2307,13 +2319,17 @@ controls:
         is controlled.'
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The type of authenticators to be used (for example, password or passphrase,
+        token device or smart card, or biometrics) are managed externally
+        to OpenShift by the identity provider
 
   - id: '8.4'
     title: Multi-factor authentication (MFA) is implemented to secure access into the CDE.
     levels:
       - base
-    status: pending
+    status: not applicable
     notes: |-
       This parent requirement does not set one specific combination of Multi-factor authentication
       (MFA), so we can't enforce the use of smartcards or any specific solution. The systems
@@ -2324,7 +2340,7 @@ controls:
         administrative access.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 8.4.2
       title: MFA is implemented for all access into the CDE.
@@ -2332,7 +2348,7 @@ controls:
         Access into the CDE cannot be obtained by the use of a single authentication factor.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 8.4.3
       title: MFA is implemented for all remote network access originating from outside the
