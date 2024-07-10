@@ -8,7 +8,7 @@ configuration_files=("system-auth")
 
 
 {{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
-authselect create-profile testingProfile --base-on minimal 
+authselect create-profile testingProfile --base-on sssd
 
 for file in ${configuration_files[@]}; do
 	sed -i --follow-symlinks "/pam_pwquality\.so/d" \
