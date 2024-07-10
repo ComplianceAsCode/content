@@ -568,7 +568,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
         state uses operation "greater than or equal" to compare the
         collected package version with the version in the OVAL state.
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
 
 #### package_removed
 -   Checks if the given package is not installed.
@@ -577,7 +577,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **pkgname** - name of the RPM or DEB package, eg. `tmux`
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart
 
 #### key_value_pair_in_file
 Checks if a given key and value are configured in a file.
@@ -704,7 +704,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint
+-   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint, Kickstart
 
 #### service_enabled
 -   Checks if a system service is enabled. Uses either systemd or SysV
@@ -723,7 +723,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Blueprint
+-   Languages: Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
 
 #### shell_lineinfile
 -   Checks shell variable assignments in files. Remediations will paste
