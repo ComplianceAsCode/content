@@ -2023,7 +2023,7 @@ controls:
       managed throughout an account's lifecycle.
     levels:
       - base
-    status: pending
+    status: automated
     controls:
     - id: 8.2.1
       title: All users are assigned a unique ID before access to system components or cardholder
@@ -2035,12 +2035,26 @@ controls:
         on point-of-sale terminals).
       levels:
         - base
-      status: planned
+      status: automated
       notes: |-
-        The rules selected in this requirement are incomplete. Missing remediation and test
-        scenarios. They should include test scenarios and likely remediation or a warning
-        informing why a remediation is not present.
-      rules: []
+        Openshift should be configured to work with an external third-party identity provider.
+        Through the chosen identity provider, unique identifiers can be setup for each user.
+        See more at https://docs.openshift.com/container-platform/4.16/authentication/understanding-identity-provider.html
+
+        However, the payment entity's processes and responsible personal still need to examined
+        to check whether each user is uniquely associated with an individual.
+      rules:
+        - idp_is_configured
+      related_rules:
+        # This control can be partially implemented with the following RHCOS rules
+        - no_direct_root_logins
+        - account_unique_id
+        - account_unique_name
+        - accounts_no_uid_except_zero
+        - accounts_root_gid_zero
+        - group_unique_id
+        - group_unique_name
+        - audit_rules_immutable_login_uids
 
     - id: 8.2.2
       title: Group, shared, or generic accounts, or other shared authentication credentials are
@@ -2054,24 +2068,37 @@ controls:
         - Every action taken is attributable to an individual user.
       levels:
         - base
-      status: pending
+      status: automated
       notes: |-
-        This requirement is complemented by 8.2.1 and related to 8.3.5.
-      rules: []
+        Access tokens that are issued by OpenShift upon authentication should only be used by the
+        person for whom it was issued.
+      rules:
+        - kubeadmin_removed
+      related_rules:
+        # This control can also be implemented with the following RHCOS rules
+        - no_direct_root_logins
 
     - id: 8.2.3
       title: 'Additional requirement for service providers only: Service providers with remote
         access to customer premises use unique authentication factors for each customer premises.'
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        The payment entity itself is also required to not use group, shared, or generic IDs,
+        passwords, or other authentication methods. Access tokens that are issued by
+        OpenShift upon authentication should only be used by the person
+        for whom it was issued.
 
     - id: 8.2.4
       title: Addition, deletion, and modification of user IDs, authentication factors, and other
         identifier objects are managed
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Only the payment entity can assess whether the access privileges granted to users are
+        appropriate and documented, and propperly reflected in the configured identity provider.
 
     - id: 8.2.5
       title: Access for terminated users is immediately revoked.
@@ -2079,9 +2106,11 @@ controls:
         The accounts of terminated users cannot be used.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement depends on site policies for user termination.
+        Revocation of access for terminated users are performed by the third-party
+        identity provider. Additionaly, OpenShift nor the identity provider cannot by itself
+        determine the users associated with an individual.
 
     - id: 8.2.6
       title: Inactive user accounts are removed or disabled within 90 days of inactivity.
@@ -2089,9 +2118,12 @@ controls:
         Inactive user accounts cannot be used.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Also related to requirements 2.2.2 and 8.3.5.
+        Removal or disabling of inactive user accounts within 90 days are handled with the
+        identity provider.
+        All user IDs, including those handled by third parties to access, support, or maintain
+        system components via remote access, are handled externally to OpenShift.
       rules: []
 
     - id: 8.2.7
@@ -2099,7 +2131,11 @@ controls:
         remote access are managed.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Similar to how accounts for employees are managed, accounts for third parties are also
+        managed by the configured identity provider, and under responsibility of the payment
+        entity.
 
     - id: 8.2.8
       title: If a user session has been idle for more than 15 minutes, the user is required to
@@ -2112,8 +2148,14 @@ controls:
         from being performed while the console/PC is unattended.
       levels:
         - base
-      status: pending
-      rules: []
+      status: automated
+      notes: |-
+        Session timeouts can be enabled with OpenShift to limit the amount of
+        time that a session can be active. However, the payment entity also needs to control the
+        user's and administrator's idle session timeouts on their payment applications as well.
+      rules:
+        - oauth_or_oauthclient_inactivity_timeout
+        - var_oauth_inactivity_timeout=15m0s
 
   - id: '8.3'
     title: Strong authentication for users and administrators is established and managed.
