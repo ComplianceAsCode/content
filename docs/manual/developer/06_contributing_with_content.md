@@ -516,6 +516,8 @@ then contain the following subdirectories:
 
 - `blueprint` - for OSBuild blueprint content, ending in `.toml`
 
+- `kickstart` - For Kickstart remediation content, ending in `.cfg`
+
 In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
 will only get included in the build for `{{{ product }}}` (e.g.,
