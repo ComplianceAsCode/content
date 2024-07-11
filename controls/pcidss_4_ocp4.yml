@@ -2381,7 +2381,7 @@ controls:
       strictly managed.
     levels:
       - base
-    status: pending
+    status: supported
     controls:
     - id: 8.6.1
       title: If accounts used by systems or applications can be used for interactive login, they
@@ -2395,13 +2395,14 @@ controls:
         - Every action taken is attributable to an individual user.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        This requirement is related to 2.2.2, 2.2.6, 8.2.1 and 8.2.2. Specifically on 8.2.2 system
-        accounts usage is restricted. Exceptions to system accounts should be manually checked to
-        ensure the requirements in description. This requirement although implements some extra
-        controls regarding root account.
+        All user IDs, including those handled by third parties to access, support, or maintain
+        system components via remote access, are handled externally to OpenShift.
       rules: []
+      related_rules:
+        # The following RHCOS rule can also contribute to the implementation of this control.
+        - securetty_root_login_console_only
 
     - id: 8.6.2
       title: Passwords/passphrases for any application and system accounts that can be used for
@@ -2412,7 +2413,9 @@ controls:
         unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: supported
+      notes: |-
+        OpenShift can be integrated with a Vault to manage secrets.
 
     - id: 8.6.3
       title: Passwords/passphrases for any application and system accounts are protected against
@@ -2425,9 +2428,11 @@ controls:
         frequently the entity changes the passwords/passphrases.
       levels:
         - base
-      status: pending
+      status: not applicable
       notes: |-
-        Related to requirements 8.3.6 and 8.3.9.
+        Parameters for authenticators such as password length, maximum password
+        age, minimum password age, password history, and requirements to change
+        the password on first use are handled by the third-party identity provider.
 
   - id: '9.1'
     title: Processes and mechanisms for restricting physical access to cardholder data are defined
