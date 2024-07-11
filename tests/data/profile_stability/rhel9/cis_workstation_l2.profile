@@ -356,7 +356,6 @@ selections:
 - sshd_set_max_auth_tries
 - sshd_set_max_sessions
 - sshd_set_maxstartups
-- sshd_use_approved_ciphers
 - sshd_use_strong_kex
 - sshd_use_strong_macs
 - sudo_add_use_pty
@@ -414,7 +413,6 @@ selections:
 - var_sshd_set_keepalive=1
 - sshd_strong_macs=cis_rhel9
 - sshd_strong_kex=cis_rhel9
-- sshd_approved_ciphers=cis_rhel9
 - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
 - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
 - sysctl_net_ipv4_tcp_syncookies_value=enabled
