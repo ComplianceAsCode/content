@@ -2331,9 +2331,7 @@ controls:
       - base
     status: not applicable
     notes: |-
-      This parent requirement does not set one specific combination of Multi-factor authentication
-      (MFA), so we can't enforce the use of smartcards or any specific solution. The systems
-      usually support MFA but the chosen solution depends on site policies.
+      Multi-factor authenticators are managed externally to OpenShift by the identity provider
     controls:
     - id: 8.4.1
       title: MFA is implemented for all non-console access into the CDE for personnel with
@@ -2355,13 +2353,15 @@ controls:
         entity's network that could access or impact the CDE.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '8.5'
     title: Multi-factor authentication (MFA) systems are configured to prevent misuse.
     levels:
       - base
-    status: pending
+    status: not applicable
+    notes: |-
+      Multi-factor authenticators are managed externally to OpenShift by the identity provider
     controls:
     - id: 8.5.1
       title: MFA systems are properly implemented.
@@ -2374,10 +2374,7 @@ controls:
         - Success of all authentication factors is required before access is granted.
       levels:
         - base
-      status: pending
-      notes: |-
-        Each site might have a different MFA solution and each solution has its own capabilities.
-        This requirement demands manual assessment based on site policies.
+      status: not applicable
 
   - id: '8.6'
     title: Use of application and system accounts and associated authentication factors is
