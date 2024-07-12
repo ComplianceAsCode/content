@@ -48,3 +48,4 @@ selections:
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_oracle_gpgkey_installed'
+    - '!security_patches_up_to_date'

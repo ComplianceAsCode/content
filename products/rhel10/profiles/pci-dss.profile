@@ -67,3 +67,4 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_shadow_group_empty'
     - '!service_timesyncd_enabled'
+    - '!security_patches_up_to_date'
