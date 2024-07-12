@@ -488,7 +488,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **min_size** - the minimum recommended partition size, in bytes
 
--   Languages: Anaconda, OVAL, Blueprint
+-   Languages: Anaconda, OVAL, Blueprint, Kickstart
 
 #### mount_option
 -   Checks if a given partition is mounted with a specific option such
