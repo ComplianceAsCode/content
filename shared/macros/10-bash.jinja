@@ -893,7 +893,7 @@ PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
 #}}
 {{%- macro bash_pam_lastlog_enable_showfailed(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
-    if authselect list-features minimal | grep -q with-silent-lastlog; then
+    if authselect list-features sssd | grep -q with-silent-lastlog; then
         {{{ bash_disable_authselect_feature('with-silent-lastlog') | indent(8) }}}
     else
         {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
@@ -926,7 +926,7 @@ fi
 #}}
 {{%- macro bash_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
-    if authselect list-features minimal | grep -q with-pwhistory; then
+    if authselect list-features sssd | grep -q with-pwhistory; then
         {{{ bash_enable_authselect_feature('with-pwhistory') | indent(8) }}}
     else
         {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}

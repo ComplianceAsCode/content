@@ -948,7 +948,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: '{{{ rule_title }}} - Collect the Available authselect Features'
   ansible.builtin.command:
-    cmd: authselect list-features minimal
+    cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
   when:
@@ -990,7 +990,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: '{{{ rule_title }}} - Collect the available authselect features'
   ansible.builtin.command:
-    cmd: authselect list-features minimal
+    cmd: authselect list-features sssd
   register: result_authselect_available_features
   changed_when: false
   when:
