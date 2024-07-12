@@ -8,14 +8,15 @@
   ansible.builtin.find:
     paths: "{{item.path}}"
     patterns: "{{item.pattern}}"
-    contains: "[{{{ SECTION }}}]"
+    contains: '^\s*\[{{{ SECTION }}}\]'
     read_whole_file: true
+    use_regex: true
   register: systemd_dropin_files_with_section
   loop:
     - path: "{{ '{{{ MASTER_CFG_FILE }}}' | dirname }}"
-      pattern: "{{ '{{{ MASTER_CFG_FILE }}}' | basename }}"
+      pattern: "{{ '{{{ MASTER_CFG_FILE }}}' | basename | regex_escape }}"
     - path: "{{{ DROPIN_DIR }}}"
-      pattern: "*.conf"
+      pattern: '.*\.conf'
 
 - name: "{{{ rule_title }}} - Count number of files which contain the correct section"
   ansible.builtin.set_fact:
