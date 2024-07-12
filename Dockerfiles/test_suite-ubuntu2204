@@ -15,10 +15,9 @@ RUN true \
         && true
 
 RUN true \
-        && for key_type in rsa ecdsa; do true | ssh-keygen -N '' -t $key_type -f /etc/ssh/ssh_host_${key_type}_key; done \
+        && ssh-keygen -A \
         && mkdir -p /root/.ssh \
         && printf "%s\n" "$CLIENT_PUBLIC_KEY" >> "$AUTH_KEYS" \
         && chmod og-rw /root/.ssh "$AUTH_KEYS" \
         && sed -i '/session\s\+required\s\+pam_loginuid.so/d' /etc/pam.d/sshd \
 && true
-
