@@ -38,7 +38,7 @@
 
 - name: "{{{ rule_title }}} - Add configuration to new remediation file"
   ini_file:
-    path: "{{{ DROPIN_DIR }}}/oscap-remedy.conf"
+    path: "{{{ DROPIN_DIR }}}/complianceascode_hardening.conf"
     section: {{{ SECTION }}}
     option: {{{ PARAM }}}
 {{% if NO_QUOTES %}}
