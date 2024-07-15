@@ -414,25 +414,26 @@ controls:
     levels:
     - elevated
     description: >-
-      (1) Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
-      message to the control plane. (2) The control plane SHOULD ONLY accept nodes into a cluster
+      Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
+      message to the control plane. The control plane SHOULD ONLY accept nodes into a cluster
       that have successfully proven their integrity.
     notes: >-
-      OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system. 
-      While RHEL is also supported for Compute Nodes, RHCOS is mandatory for Control Plane Nodes and 
-      recommended for all nodes. The correct version and configuration of RHCOS is verified 
-      cryptographically with the desired state, that is managed by the Control Plane using MachineConfigs. 
-      Any manual change on managed files is overwritten to ensure the desired state. Therefore, the 
+      OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system.
+      While RHEL is also supported for Compute Nodes, RHCOS is mandatory for Control Plane Nodes and
+      recommended for all nodes. The correct version and configuration of RHCOS is verified
+      cryptographically with the desired state, that is managed by the Control Plane using MachineConfigs.
+      Any manual change on managed files is overwritten to ensure the desired state. Therefore, the
       control is mostly inheretly met when using CoreOS for all nodes.
-      
+
       Section 1: OpenShift uses an internal Certificate Authority (CA). The nodes (kubelet to API server
-      and MachineConfig daemon to MachineConfi server) are communicating using node-specific certificates,
+      and MachineConfig daemon to MachineConfig server) are communicating using node-specific certificates,
       signed by this CA. Correct permissions of relevant files and secure TLS configuration are verified
-      using the referenced rules.
+      using the referenced rules. A TPM-verified status is not present with currently built-in mechanisms
+      of OpenShift.
 
       Section 2: Using the Red Hat File Integrity Operator, all files on the RHCOS nodes can be
       cryptographically checked for integrity using Advanced Intrusion Detection Environment (AIDE).
-    status: automated
+    status: partial
     rules:
       # Section 1 (worker / kubelet)
       - file_groupowner_kubelet_conf
