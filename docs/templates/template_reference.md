@@ -919,7 +919,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     The remediation tries to modify already existing configuration.
     If the correct section is found and the parameter exists, its value is changed to match the desired one.
     If the section is found but the parameter does not exist, it is added to this section.
-    If none of inspected files contains the desired section a new file called oscap-remedy.conf within the dropin directory is created.
+    If none of inspected files contains the desired section a new file called complianceascode_hardening.conf within the dropin directory is created.
 - parameters:
     - **master_cfg_file** - the main configuration file to check, e.g. /etc/systemd/journald.conf
 
