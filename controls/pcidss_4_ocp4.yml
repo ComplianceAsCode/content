@@ -2024,6 +2024,12 @@ controls:
     levels:
       - base
     status: automated
+    notes: |-
+      For this control to be satisfiable an identity provider must be used and the kubeadmin user
+      needs to be removed.
+    rules:
+      - idp_is_configured
+      - kubeadmin_removed
     controls:
     - id: 8.2.1
       title: All users are assigned a unique ID before access to system components or cardholder
@@ -2162,6 +2168,12 @@ controls:
     levels:
       - base
     status: not applicable
+    notes: |-
+      For this control to be satisfiable an identity provider must be used and the kubeadmin user
+      needs to be removed.
+    rules:
+      - idp_is_configured
+      - kubeadmin_removed
     controls:
     - id: 8.3.1
       title: All user access to system components for users and administrators is authenticated.
