@@ -482,27 +482,28 @@ controls:
       rules SHOULD precisely define the source and destination of the allowed connections using at
       least one of the following criteria: service name, metadata (“labels”), Kubernetes service
       accounts, or certificate-based authentication.
-      (4) All the criteria used as labels for a connection SHOULD be secured in such a way that they 
+      (4) All the criteria used as labels for a connection SHOULD be secured in such a way that they
       can only be changed by authorised persons and management services.
     notes: >-
-      In a cluster using a network plugin that supports Kubernetes network policy, network isolation 
+      In a cluster using a network plugin that supports Kubernetes network policy, network isolation
       is controlled entirely by NetworkPolicy objects. In OpenShift, the default plugins (OpenShift SDN,
       OVN Kubernetes) supports using network policy. Support for NetworkPolicy objects is verified
       using rules.
-
-      Section 1-3: By default, all pods in a project are accessible from other pods and network endpoints. 
-      To isolate one or more pods in a project, you need to create NetworkPolicy objects in that project
-      to indicate the allowed incoming connections. If a pod is matched by selectors in one or more 
-      NetworkPolicy objects, then the pod will accept only connections that are allowed by at least 
-      one of those NetworkPolicy objects. A pod that is not selected by any NetworkPolicy objects 
-      is fully accessible. 
       
+      Section 1-3: By default, all pods in a project are accessible from other pods and network endpoints.
+      To isolate one or more pods in a project, you need to create NetworkPolicy objects in that project
+      to indicate the allowed incoming connections. If a pod is matched by selectors in one or more
+      NetworkPolicy objects, then the pod will accept only connections that are allowed by at least
+      one of those NetworkPolicy objects. A pod that is not selected by any NetworkPolicy objects
+      is fully accessible.
+
       It is useful to create default policies for each application namespace e.g. to deny all ingress
       traffic by default. The existance of at least one network policy and the automatic creation
-      as part of a namespace template is checked using rules. The creation of suitable NetworkPolicy
-      objects that satisfy the requirements from sections 1 to 3, however, needs to be ensured by the
-      application owner.
-      
+      as part of a namespace template is checked using rules.
+
+      The creation of suitable NetworkPolicy objects that satisfy the requirements from sections 1 to 3,
+      however, needs to be ensured by the application owner. A manual rule is provided for that.
+
       Section 4: It needs to be ensured organizationally, that only required subjects are granted
       RBAC to change the relevant Kubernetes objects.
     status: partial
@@ -512,6 +513,8 @@ controls:
       # Section 1-2
       - configure_network_policies_namespaces
       - project_config_and_template_network_policy
+      # Section 3
+      - configure_appropriate_network_policies
 
   - id: APP.4.4.A19
     title: High Availability of Kubernetes
