@@ -2039,9 +2039,9 @@ controls:
       notes: |-
         Openshift should be configured to work with an external third-party identity provider.
         Through the chosen identity provider, unique identifiers can be setup for each user.
-        See more at https://docs.openshift.com/container-platform/4.16/authentication/understanding-identity-provider.html
+        See more at https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html
 
-        However, the payment entity's processes and responsible personal still need to examined
+        However, the payment entity's processes and responsible personal still need to be examined
         to check whether each user is uniquely associated with an individual.
       rules:
         - idp_is_configured
@@ -2098,7 +2098,7 @@ controls:
       status: not applicable
       notes: |-
         Only the payment entity can assess whether the access privileges granted to users are
-        appropriate and documented, and propperly reflected in the configured identity provider.
+        appropriate and documented, and properly reflected in the configured identity provider.
 
     - id: 8.2.5
       title: Access for terminated users is immediately revoked.
@@ -2109,7 +2109,7 @@ controls:
       status: not applicable
       notes: |-
         Revocation of access for terminated users are performed by the third-party
-        identity provider. Additionaly, OpenShift nor the identity provider cannot by itself
+        identity provider. Additionally, OpenShift nor the identity provider cannot by itself
         determine the users associated with an individual.
 
     - id: 8.2.6
