@@ -914,6 +914,31 @@ The selected value can be changed in the profile (consult the actual variable fo
 
 -   Languages: Ansible, Bash, OVAL
 
+#### systemd_dropin_configuration
+- checks if a Systemd-style configuration exists either in the main file or in any file within specified dropin directory.
+    The remediation tries to modify already existing configuration.
+    If the correct section is found and the parameter exists, its value is changed to match the desired one.
+    If the section is found but the parameter does not exist, it is added to this section.
+    If none of inspected files contains the desired section a new file called complianceascode_hardening.conf within the dropin directory is created.
+- parameters:
+    - **master_cfg_file** - the main configuration file to check, e.g. /etc/systemd/journald.conf
+
+    - **dropin_dir** - the respective dropin directory, e.g. the /etc/systemd/journald.conf.d directory when keeping to the example mentioned above
+
+    - **section** - the section of the Systemd file
+
+    - **param** - the parameter to be configured
+
+    - **value** - the value of the parameter
+
+    - **no_quotes** - if set to "true", the value will not be enclosed in quotes
+
+    - **missing_parameter_pass** - effective only in OVAL checks, if
+        set to `"false"` and the parameter is not present in the
+        configuration file, the OVAL check will return false (default value: `"false"`).
+
+-   Languages: Ansible, Bash, OVAL
+
 #### systemd_mount_enabled
 -   Checks if a `systemd` mount unit is enabled
 
