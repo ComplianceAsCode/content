@@ -361,7 +361,7 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_GITHUB)
     endif()
 endif()
 
-if(PYTHON_VERSION_MAJOR GREATER 2)
+if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 6)
     add_test(
         NAME "utils-build_control_from_reference_sanity"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/build_control_from_reference.py" "--product" "rhel10" "--reference" "ospp" "--root" "${CMAKE_SOURCE_DIR}" "--output" "${CMAKE_SOURCE_DIR}/build/rhel10_ospp_control.yml" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json"
