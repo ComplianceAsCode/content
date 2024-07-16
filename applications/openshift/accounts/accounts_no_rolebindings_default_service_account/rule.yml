@@ -5,7 +5,7 @@ title: 'Ensure no RoleBindings set for default Service Account'
 description: |-
     Using the <tt>default</tt> service account prevents accurate application
     rights review and audit tracing. Instead of <tt>default</tt>, create
-    a new and unique service account and associate the required RoleBindings. 
+    a new and unique service account and associate the required RoleBindings.
 
 rationale: |-
     Kubernetes provides a default service account which is used by
@@ -20,9 +20,6 @@ severity: medium
 
 identifiers: {}
 
-references:
-    bsi: APP.4.4.A9
-
 {{% set jqfilter = '[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select ( .subjects[]?.name == "default" ) | .metadata.namespace + "/" + .metadata.name ] | unique' %}}
 
 ocil_clause: 'default service account is given permissions using RoleBindings'
@@ -31,7 +28,7 @@ ocil: |-
     Run the following command to retrieve a list of RoleBindings that are
     associated to the default service account:
     <pre>$ oc get rolebindings --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
-    There should be no RoleBindings associated with the the default service account 
+    There should be no RoleBindings associated with the the default service account
     in any namespace.
 
 warnings:
