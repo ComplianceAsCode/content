@@ -62,7 +62,7 @@
 - name: '{{{ rule_title }}} - Remediate by directly editing PAM files'
   block:
     {{{ ansible_ensure_pam_module_option('/etc/pam.d/smartcard-auth', 'auth', 'sufficient', 'pam_sss.so', 'allow_missing_name', '', '') | indent(4) }}}
-    {{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'auth', '\[success=done authinfo_unavail=ignore ignore=ignore default=die\]', 'pam_sss.so', 'try_cert_auth', '', '') | indent(4) }}}
+    {{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'auth', '[success=done authinfo_unavail=ignore ignore=ignore default=die]', 'pam_sss.so', 'try_cert_auth', '', '') | indent(4) }}}
   when:
     - not result_authselect_present.stat.exists
 {{% endif %}}
