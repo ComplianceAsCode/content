@@ -1,17 +1,17 @@
 documentation_complete: true
 
-
 title: 'Set Password Hashing Algorithm in /etc/login.defs'
 
 description: |-
-    In <tt>/etc/login.defs</tt>, add or correct the following line to ensure
-    the system will use {{{ xccdf_value("var_password_hashing_algorithm") }}} as the hashing algorithm:
+    In <tt>/etc/login.defs</tt>, add or update the following line to ensure the system will use
+    {{{ xccdf_value("var_password_hashing_algorithm") }}} as the hashing algorithm:
     <pre>ENCRYPT_METHOD {{{ xccdf_value("var_password_hashing_algorithm") }}}</pre>
 
 rationale: |-
-    Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
-    If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords
-    that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
+    Passwords need to be protected at all times, and encryption is the standard method for
+    protecting passwords. If passwords are not encrypted, they can be plainly read
+    (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm
+    are no more protected than if they are kept in plain text.
     <br /><br />
     Using a stronger hashing algorithm makes password cracking attacks more difficult.
 
