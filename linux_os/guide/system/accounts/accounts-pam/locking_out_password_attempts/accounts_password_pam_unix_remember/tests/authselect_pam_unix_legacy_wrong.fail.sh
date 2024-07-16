@@ -9,7 +9,7 @@ CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
 
-if ! authselect list-features minimal | grep -q with-pwhistory; then
+if ! authselect list-features sssd | grep -q with-pwhistory; then
     sed -i --follow-symlinks '/.*pam_pwhistory\.so/d' $CUSTOM_SYSTEM_AUTH
 fi
 

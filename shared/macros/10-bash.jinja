@@ -893,7 +893,7 @@ PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
 #}}
 {{%- macro bash_pam_lastlog_enable_showfailed(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
-    if authselect list-features minimal | grep -q with-silent-lastlog; then
+    if authselect list-features sssd | grep -q with-silent-lastlog; then
         {{{ bash_disable_authselect_feature('with-silent-lastlog') | indent(8) }}}
     else
         {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
@@ -926,7 +926,7 @@ fi
 #}}
 {{%- macro bash_pam_pwhistory_enable(pam_file, control, after_match='') -%}}
 if [ -f /usr/bin/authselect ]; then
-    if authselect list-features minimal | grep -q with-pwhistory; then
+    if authselect list-features sssd | grep -q with-pwhistory; then
         {{{ bash_enable_authselect_feature('with-pwhistory') | indent(8) }}}
     else
         {{# the following macro ensures the PAM_FILE_PATH variable is properly set #}}
@@ -2158,22 +2158,22 @@ fi
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{{{ pam_file }}}"; then
+if ! grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*" "{{{ pam_file }}}"; then
     # Line matching group + control + module was not found. Check group + module.
     if [ "$(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}")" -eq 1 ]; then
         # The control is updated only if one single line matches.
-        sed -i -E --follow-symlinks 's/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
+        sed -i -E --follow-symlinks "s/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1{{{ control }}} \2/" "{{{ pam_file }}}"
     else
         {{%- if after_match == '' %}}
-        echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+        echo "{{{ group }}}    {{{ control }}}    {{{ module }}}" >> "{{{ pam_file }}}"
         {{%- elif after_match == 'BOF'  %}}
-        sed -i --follow-symlinks '1i {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        sed -i --follow-symlinks "1i {{{ group }}}     {{{ control }}}    {{{ module }}}" "{{{ pam_file }}}"
         {{%- else %}}
         LAST_MATCH_LINE=$(grep -nP "{{{ after_match }}}" "{{{ pam_file }}}" | tail -n 1 | cut -d: -f 1)
         if [ ! -z $LAST_MATCH_LINE ]; then
-            sed -i --follow-symlinks $LAST_MATCH_LINE' a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+            sed -i --follow-symlinks $LAST_MATCH_LINE" a {{{ group }}}     {{{ control }}}    {{{ module }}}" "{{{ pam_file }}}"
         else
-            echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+            echo "{{{ group }}}    {{{ control }}}    {{{ module }}}" >> "{{{ pam_file }}}"
         fi
         {{%- endif %}}
     fi
@@ -2203,17 +2203,17 @@ fi
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ bash_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
 # Check the option
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}\b' "{{{ pam_file }}}"; then
+if ! grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b" "{{{ pam_file }}}"; then
     {{%- if value == '' %}}
-    sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}/" "{{{ pam_file }}}"
     {{%- else %}}
-    sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}={{{ value }}}/" "{{{ pam_file }}}"
     {{%- endif %}}
 {{%- if value == '' %}}
 fi
 {{%- else %}}
 else
-    sed -i -E --follow-symlinks 's/(\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s+.*)('"{{{ option }}}"'=)[[:alnum:]]+\s*(.*)/\1\2'"{{{ value }}}"' \3/' "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]+\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
 fi
 {{%- endif %}}
 {{%- endmacro -%}}
@@ -2236,11 +2236,11 @@ fi
 #}}
 {{%- macro bash_remove_pam_module_option(pam_file, group, control, module, option) -%}}
 {{%- if control == '' %}}
-if grep -qP '^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b' "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+if grep -qP "^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- else %}}
-if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s.*\b{{{ option }}}\b' "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*'"{{{ control }}}"'.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+if grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- endif %}}
 fi
 {{%- endmacro -%}}

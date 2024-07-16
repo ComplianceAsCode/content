@@ -17,7 +17,7 @@
 	{{% for cfile in configuration_files %}}
 		{{{ bash_remove_pam_module_option_configuration(pam_file='/etc/pam.d/' ~ cfile,
 									  	  				group='password',
-														control=".*",
+														control="",
 									      				module='pam_pwquality.so',
 									      				option='retry') }}}
 	{{% endfor %}}
