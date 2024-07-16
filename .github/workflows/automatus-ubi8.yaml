@@ -6,7 +6,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
 env:
-  DATASTREAM: ssg-centos8-ds.xml
+  DATASTREAM: ssg-rhel8-ds.xml
 jobs:
   build-content:
     name: Build Content
