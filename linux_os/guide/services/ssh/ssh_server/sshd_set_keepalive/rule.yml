@@ -72,3 +72,11 @@ ocil: |-
     functionality completely.
     If the option is set to a number greater than <tt>0</tt>, then the session will be disconnected after
     <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds without receiving a keep alive message.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: ClientAliveCountMax
+        rule_id: sshd_set_keepalive
+        xccdf_variable: var_sshd_set_keepalive
+        datatype: int
