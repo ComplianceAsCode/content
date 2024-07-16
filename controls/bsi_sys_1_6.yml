@@ -26,22 +26,25 @@ controls:
     levels:
     - basic
     description: >-
-      Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
+      (1) Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
       disposable containers for safety or CI/CD) SHOULD be determined so that all the security-
-      related aspects of installation, operation, and decommissioning can be planned. The planning
-      SHOULD also take into account the operational overhead resulting from container
-      deployment or mixed operation. The planning MUST be adequately documented
+      related aspects of installation, operation, and decommissioning can be planned.
+      (2) The planning SHOULD also take into account the operational overhead resulting from container
+      deployment or mixed operation.
+      (3) The planning MUST be adequately documented
     notes: >-
-      This requirement can not be checked
+      This requirement must be implemented organizationally.
+      OpenShift supports all of the goals mentioned. Comprehensive handouts are available to carry
+      out and document the planning of container use, security and compliance, architecture and
+      installation on OpenShift (see https://www.redhat.com/en/resources/openshift-security-guide-ebook)
     status: manual
-    #rules:
 
   - id: SYS.1.6.A2
     title: Container Management Planning
     levels:
     - basic
     description: >-
-      The management of containers MUST ONLY be carried out in line with appropriate planning.
+      (1) The management of containers MUST ONLY be carried out in line with appropriate planning.
       This planning MUST cover the entire lifecycle from commissioning to decommissioning,
       including operation and updates. When planning container management, it MUST be taken
       into account that the creator of a container is to be considered like an administrator due to the
