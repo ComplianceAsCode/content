@@ -136,9 +136,18 @@ controls:
       The process for the provision and distribution of images MUST be planned and appropriately
       documented.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirement through the built-in functionalities and enables the
+      highest possible level of automation. On the one hand, CI/CD tools are delivered with OpenShift
+      pipelines and integrated into the platform. On the other hand, pre-configured build processes
+      based on Red Hat experience are available that are based on Source2Image and thus support
+      planning.
+      The built-in registry allows you to store images and other associated information, such as Helm
+      charts or SBOMs.
+      The abstractions available in Openshift allow the entire image distribution process to be
+      documented and controlled as code. This further allows the image distribution process to
+      be managed via OpenShift GitOps.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A5
     title: Separation of Administration and Access Networks for Containers
