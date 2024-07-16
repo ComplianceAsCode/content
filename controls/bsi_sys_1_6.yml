@@ -45,15 +45,24 @@ controls:
     - basic
     description: >-
       (1) The management of containers MUST ONLY be carried out in line with appropriate planning.
-      This planning MUST cover the entire lifecycle from commissioning to decommissioning,
-      including operation and updates. When planning container management, it MUST be taken
+      (2) This planning MUST cover the entire lifecycle from commissioning to decommissioning,
+      including operation and updates. (3) When planning container management, it MUST be taken
       into account that the creator of a container is to be considered like an administrator due to the
       effects they have on parts of the operation.
-      Containers MUST be started, stopped, and monitored via the management software used.
+      (4) Containers MUST be started, stopped, and monitored via the management software used.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
+      Through OpenShift GitOps, OpenShift technically supports this requirement with a standardized
+      approach to deployment, change handling and deprovisioning via kustomize or Helm charts.
+      OpenShift provides further support through operator-based applications and platform management
+      that automates the processes of commissioning, decommissioning and updates.
+
+      Section 4: Start, stop and monitoring is a basic function of OpenShift. It is not possible to
+      bypass the OpenShift methods to start and stop without manually connecting to a Container Host.
+      For monitoring purposes, OpenShift itself offers Prometheus-based monitoring.
+      Using Advanced Cluster Security for Kubernetes (ACS), policy-based rules can also be used to
+      monitor the containers.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A3
     title: Secure Use of Containerised IT Systems
