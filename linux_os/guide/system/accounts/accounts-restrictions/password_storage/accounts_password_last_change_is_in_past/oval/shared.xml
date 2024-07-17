@@ -13,47 +13,54 @@
     <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked)$</unix:password>
   </unix:shadow_state>
 
-  <unix:shadow_object id="object_accounts_password_all_chage_in_past" version="1">
+  <unix:shadow_object id="object_accounts_password_last_change_is_in_past" version="1">
     <unix:username operation="pattern match">.*</unix:username>
     <filter action="exclude">state_accounts_password_all_chage_past_has_no_password</filter>
   </unix:shadow_object>
 
-  <local_variable id="var_accounts_password_last_change_time_secs" version="1"
+  <local_variable id="var_accounts_password_last_change_is_in_past_time_in_secs" version="1"
     datatype="int" comment="last change field of shadow entry in seconds">
     <arithmetic arithmetic_operation="multiply">
-      <object_component object_ref="object_accounts_password_all_chage_in_past"
+      <object_component object_ref="object_accounts_password_last_change_is_in_past"
         item_field="chg_lst"/>
       <literal_component datatype="int">86400</literal_component>
     </arithmetic>
   </local_variable>
 
-  <local_variable id="var_accounts_password_last_change_time_diff" datatype="int" version="1"
+  <local_variable id="var_accounts_password_last_change_is_in_past_time_diff" version="1"
+    datatype="int"
     comment="time difference between the last change field of shadow entry and the current time">
     <time_difference format_2="seconds_since_epoch">
-      <variable_component var_ref="var_accounts_password_last_change_time_secs"/>
+      <variable_component var_ref="var_accounts_password_last_change_is_in_past_time_in_secs"/>
+    </time_difference>
+  </local_variable>
+
+  <local_variable id="var_accounts_password_last_change_is_in_past_current_epoch" version="1"
+    datatype="int" comment="the current time in seconds since epoch">
+    <time_difference format_2="seconds_since_epoch">
+      <literal_component datatype="int">0</literal_component>
     </time_difference>
   </local_variable>
 
   <ind:variable_test id="test_accounts_password_last_change_is_in_past" version="1"
     check="all" check_existence="all_exist"
     comment="Check if the password last chage time is less than or equal today.">
-    <ind:object object_ref="object_accounts_password_last_change_time_diff"/>
-    <ind:state state_ref="state_accounts_password_last_change_time_diff"/>
+    <ind:object object_ref="object_accounts_password_last_change_is_in_past_time_diff"/>
+    <ind:state state_ref="state_accounts_password_last_change_is_in_past_time_diff"/>
   </ind:variable_test>
 
-  <ind:variable_object id="object_accounts_password_last_change_time_diff" version="1">
-    <ind:var_ref>var_accounts_password_last_change_time_diff</ind:var_ref>
+  <ind:variable_object id="object_accounts_password_last_change_is_in_past_time_diff" version="1">
+    <ind:var_ref>var_accounts_password_last_change_is_in_past_time_diff</ind:var_ref>
   </ind:variable_object>
 
-  <ind:variable_state id="state_accounts_password_last_change_time_diff" version="1">
-    <!-- With negative time I actually get very big number so instead
-         of checking greater than zero I am checking if less than 1000 years -->
-    <ind:value datatype="int" operation="less than or equal">86400000</ind:value>
+  <ind:variable_state id="state_accounts_password_last_change_is_in_past_time_diff" version="2">
+      <ind:value datatype="int" operation="less than or equal" var_check="all"
+        var_ref="var_accounts_password_last_change_is_in_past_current_epoch"/>
   </ind:variable_state>
 
   <unix:shadow_test id="test_accounts_password_last_change_is_in_past_no_pass" version="1"
     check="all" check_existence="none_exist"
     comment="Check the inexistence of users with a password defined">
-    <unix:object object_ref="object_accounts_password_all_chage_in_past"/>
+    <unix:object object_ref="object_accounts_password_last_change_is_in_past"/>
   </unix:shadow_test>
 </def-group>
