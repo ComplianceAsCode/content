@@ -53,3 +53,9 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    # disable R45: Enable AppArmor security profiles
+    - '!apparmor_configured'
+    - '!all_apparmor_profiles_enforced'
+    - '!grub2_enable_apparmor'
+    - '!package_apparmor_installed'
+    - '!package_pam_apparmor_installed'

@@ -25,11 +25,12 @@ selections:
   - '!selinux_state'
   - '!audit_rules_mac_modification'
   - '!selinux_policytype'
-  - 'apparmor_configured'
-  - 'all_apparmor_profiles_enforced' 
-  - 'grub2_enable_apparmor'
-  - 'package_apparmor_installed'
-  - 'package_pam_apparmor_installed'
+  - '!sebool_selinuxuser_execheap'
+  - '!sebool_deny_execmem'
+  - '!sebool_selinuxuser_execstack'
+  - '!sebool_secure_mode_insmod'
+  - '!sebool_ssh_sysadm_login'
+
   # The following are MLS related rules (not part of ANSSI-BP-028)
   - '!accounts_polyinstantiated_tmp'
   - '!accounts_polyinstantiated_var_tmp'
