@@ -16,27 +16,25 @@ references:
 
 severity: medium
 
-ocil_clause: "No CRDs from the Kube Descheduler operator were found"
+ocil_clause: "the Kube Descheduler operator is not installed"
 
 ocil: |-
-    Run the following command to retrieve the customresourcedefinitions objects in the system:
-    <pre>$ oc get crds </pre>
-    Make sure there is a crd for the Kube Descheduler operator.
-
-{{% set jqfilter = '[.items[] | select(.metadata.name =="kubedeschedulers.operator.openshift.io") | .metadata.name]' %}}
+    To check if the Kube Descheduler Operator is installed, run the following command:
+    <pre>oc get sub -n descheduler-operator cluster-kube-descheduler-operator -ojsonpath='{.status.installedCSV}'</pre>
+    the output should return the version of the CSV that represents the installed
+    operator.
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/apiextensions.k8s.io/v1/customresourcedefinitions?limit=500': jqfilter}) | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/descheduler-operator/subscriptions/cluster-kube-descheduler-operator") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: {{{ openshift_filtered_path('/apis/apiextensions.k8s.io/v1/customresourcedefinitions?limit=500', jqfilter) }}}
-    yamlpath: "[:]"
-    check_existence: "at_least_one_exists"
-    entity_check: "at least one"
+    filepath: '/apis/operators.coreos.com/v1alpha1/namespaces/descheduler-operator/subscriptions/cluster-kube-descheduler-operator'
+    yamlpath: ".status.installedCSV"
+    check_existence: "only_one_exists"
     values:
-    - value: ".*"
+    - value: "clusterkubedescheduleroperator.*"
       operation: "pattern match"
