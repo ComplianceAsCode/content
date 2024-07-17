@@ -2,15 +2,13 @@
 
 {{{ bash_instantiate_variables("var_password_hashing_algorithm_pam") }}}
 
-{{% if 'sle' in product or 'ubuntu' in product -%}}
+{{% if 'sle' in product -%}}
+PAM_FILE_PATH="/etc/pam.d/common-password"
+CONTROL="required"
+{{%- elif 'ubuntu' in product -%}}
 PAM_FILE_PATH="/etc/pam.d/common-password"
 {{%- else -%}}
 PAM_FILE_PATH="/etc/pam.d/system-auth"
-{{%- endif %}}
-
-{{% if 'sle' in product -%}}
-CONTROL="required"
-{{%- else -%}}
 CONTROL="sufficient"
 {{%- endif %}}
 
