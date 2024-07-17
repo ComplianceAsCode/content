@@ -556,3 +556,4 @@ selections:
     - journald_forward_to_syslog
     - rsyslog_filecreatemode
     - set_nftables_table
+    - sshd_use_approved_ciphers
