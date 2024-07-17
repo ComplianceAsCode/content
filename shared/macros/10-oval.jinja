@@ -630,6 +630,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     </criteria>
     {{%- endif %}}
   </definition>
+
+  {{%- set quotes = "'\"" -%}}
+  {{%- if no_quotes == "true" %}}
+  {{%- set quotes = "" -%}}
+  {{%- endif %}}
+
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
   {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
