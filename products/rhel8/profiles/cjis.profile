@@ -79,6 +79,7 @@ selections:
     - var_authselect_profile=sssd
     - enable_authselect
     - accounts_max_concurrent_login_sessions
+    - var_password_hashing_algorithm_pam=sha512
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
