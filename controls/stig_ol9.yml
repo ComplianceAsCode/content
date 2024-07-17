@@ -3020,6 +3020,7 @@ controls:
             are configured to store only encrypted representations of passwords.
         rules:
             - set_password_hashing_algorithm_libuserconf
+            - var_password_hashing_algorithm_pam=sha512
         status: automated
 
     -   id: 611140
@@ -4111,6 +4112,7 @@ controls:
             use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
         rules:
             - set_password_hashing_algorithm_passwordauth
+            - var_password_hashing_algorithm_pam=sha512
         status: automated
 
     -   id: 672010
