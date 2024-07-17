@@ -9,16 +9,16 @@
 {{{ ansible_instantiate_variables("var_password_hashing_algorithm_pam") }}}
 {{{ ansible_ensure_pam_module_configuration(pam_file, 'password', 'sufficient', 'pam_unix.so', '{{ var_password_hashing_algorithm_pam }}', '', '') }}}
 
-- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} File is Present'
   ansible.builtin.stat:
     path: {{{ pam_file }}}
   register: result_pam_file_present
 
-- name: '{{{ rule_title }}} - Check the proper remediation for the system'
+- name: '{{{ rule_title }}} - Check The Proper Remediation For The System'
   block:
     {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
 
-    - name: '{{{ rule_title }}} - Ensure the only the correct hashing algorithm option for pam_unix.so is used in {{{ pam_file }}}'
+    - name: '{{{ rule_title }}} - Ensure That Only the Correct Hashing Algorithm Option For pam_unix.so Is Used in {{{ pam_file }}}'
       ansible.builtin.replace:
         dest: "{{ pam_file_path }}"
         regexp: (.*password.*pam_unix\.so.*)\b{{ item }}\b=?[0-9a-zA-Z]*(.*)
