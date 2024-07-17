@@ -8,7 +8,7 @@
   command: >
     awk -F: '!$2 {print $1}' /etc/shadow
   register: users_nopasswd
-  changed_when: users_nopasswd.stdout_lines | length > 0
+  changed_when: false
 
 - name: Lock users with no password
   command: >
