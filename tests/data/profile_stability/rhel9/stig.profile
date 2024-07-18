@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 9 V1R2.
+    DISA STIG for Red Hat Enterprise Linux 9 V1R3.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V1R2
+    version: V1R3
     SMEs:
     - mab879
     - ggbecker
@@ -539,6 +539,7 @@ selections:
 - var_sssd_certificate_verification_digest_function=sha512
 - var_smartcard_drivers=cac
 - var_password_hashing_algorithm=SHA512
+- var_password_hashing_algorithm_pam=sha512
 - var_password_pam_minclass=4
 - var_password_pam_maxrepeat=3
 - var_password_pam_maxclassrepeat=4
