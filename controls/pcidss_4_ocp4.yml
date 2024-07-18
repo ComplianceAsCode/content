@@ -2387,36 +2387,28 @@ controls:
       and understood.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.1.1
       title: All security policies and operational procedures that are identified in Requirement 9
         are Documented, Kept up to date, In use and Known to all affected parties.
       levels:
         - base
-      status: pending
-      notes: |-
-        Examine documentation and interview personnel to verify that security policies and
-        operational procedures identified in Requirement 9 are managed in accordance with all
-        elements specified in this requirement.
+      status: not applicable
 
     - id: 9.1.2
       title: Roles and responsibilities for performing activities in Requirement 9 are documented,
         assigned, and understood.
       levels:
         - base
-      status: pending
-      notes: |-
-        Examine documentation and interview personnel to verify that day-to-day responsibilities
-        for performing all the activities in Requirement 9 are documented, assigned and understood
-        by the assigned personnel.
+      status: not applicable
 
   - id: '9.2'
     title: Physical access controls manage entry into facilities and systems containing cardholder
       data.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.2.1
       title: Appropriate facility entry controls are in place to restrict physical access to
@@ -2425,14 +2417,14 @@ controls:
         System components in the CDE cannot be physically accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.2.1.1
         title: Individual physical access to sensitive areas within the CDE is monitored with
           either video cameras or physical access control mechanisms (or both).
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.2.2
       title: Physical and/or logical controls are implemented to restrict use of publicly
@@ -2442,7 +2434,7 @@ controls:
         facility.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.2.3
       title: Physical access to wireless access points, gateways, networking/communications
@@ -2451,7 +2443,7 @@ controls:
         Physical networking equipment cannot be accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.2.4
       title: Access to consoles in sensitive areas is restricted via locking when not in use.
@@ -2459,37 +2451,32 @@ controls:
         Physical consoles within sensitive areas cannot be used by unauthorized personnel.
       levels:
         - base
-      status: pending
-      notes: |-
-        Related to requirement 8.2.8.
-        This requirement asks to observe a system administrator's attempt to log into consoles in
-        sensitive areas and verify that they are "locked" to prevent unauthorized use. Therefore
-        it is a manual requirement applicable only very specific circumstances.
+      status: not applicable
 
   - id: '9.3'
     title: Physical access for personnel and visitors is authorized and managed.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.3.1
       title: Procedures are implemented for authorizing and managing physical access of personnel
         to the CDE.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.3.1.1
         title: Physical access to sensitive areas within the CDE for personnel is controlled
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.3.2
       title: Procedures are implemented for authorizing and managing visitor access to the CDE.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.3.3
       title: Visitor badges or identification are surrendered or deactivated before visitors leave
@@ -2498,20 +2485,20 @@ controls:
         Visitor identification or badges cannot be reused after expiration.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.3.4
       title: A visitor log is used to maintain a physical record of visitor activity within the
         facility and within sensitive areas.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '9.4'
     title: Media with cardholder data is securely stored, accessed, distributed, and destroyed.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.4.1
       title: All media with cardholder data is physically secured.
@@ -2519,7 +2506,12 @@ controls:
         Media with cardholder data cannot be accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
+      status: not applicable
+      notes: |-
+        Openshift uses the Kubernetes persistent volume (PV) framework, which allows separation
+        between storage provisioners and consumers.
+        The payment entity needs to ensure that they are using persistent storages for which
+        they have control over its location and physical access.
       controls:
       - id: 9.4.1.1
         title: Offline media backups with cardholder data are stored in a secure location.
@@ -2527,7 +2519,7 @@ controls:
           Offline backups cannot be accessed by unauthorized personnel.
         levels:
           - base
-        status: pending
+        status: not applicable
 
       - id: 9.4.1.2
         title: The security of the offline media backup location(s) with cardholder data is
@@ -2537,7 +2529,7 @@ controls:
           inspection.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.4.2
       title: All media with cardholder data is classified in accordance with the sensitivity of
@@ -2546,7 +2538,7 @@ controls:
         Media are classified and protected appropriately.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.3
       title: Media with cardholder data sent outside the facility is secured.
@@ -2558,7 +2550,7 @@ controls:
         - Offsite tracking logs include details about media location.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.4
       title: Management approves all media with cardholder data that is moved outside the facility
@@ -2570,7 +2562,7 @@ controls:
         "manager" as part of their title.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.5
       title: Inventory logs of all electronic media with cardholder data are maintained.
@@ -2578,7 +2570,7 @@ controls:
         Accurate inventories of stored electronic media are maintained.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.4.5.1
         title: Inventories of electronic media with cardholder data are conducted at least once
@@ -2587,14 +2579,14 @@ controls:
           Media inventories are verified periodically.
         levels:
           - base
-        status: pending
+        status: not applicable
 
     - id: 9.4.6
       title: Hard-copy materials with cardholder data are destroyed when no longer needed for
         business or legal reasons.
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 9.4.7
       title: Electronic media with cardholder data is destroyed when no longer needed for business
@@ -2604,27 +2596,27 @@ controls:
         - The cardholder data is rendered unrecoverable so that it cannot be reconstructed.
       levels:
         - base
-      status: pending
+      status: not applicable
 
   - id: '9.5'
     title: Point-of-interaction (POI) devices are protected from tampering and unauthorized
       substitution.
     levels:
       - base
-    status: pending
+    status: not applicable
     controls:
     - id: 9.5.1
       title: POI devices that capture payment card data via direct physical interaction with the
         payment card form factor are protected from tampering and unauthorized substitution.
       levels:
         - base
-      status: pending
+      status: not applicable
       controls:
       - id: 9.5.1.1
         title: An up-to-date list of POI devices is maintained.
         levels:
           - base
-        status: pending
+        status: not applicable
 
       - id: 9.5.1.2
         title: POI device surfaces are periodically inspected to detect tampering and unauthorized
@@ -2634,7 +2626,7 @@ controls:
           or have skimming attachments installed without timely detection.
         levels:
           - base
-        status: pending
+        status: not applicable
         controls:
         - id: 9.5.1.2.1
           title: The frequency of periodic POI device inspections and the type of inspections
@@ -2646,14 +2638,14 @@ controls:
             required and must be fully considered during a PCI DSS assessment.
           levels:
             - base
-          status: pending
+          status: not applicable
 
       - id: 9.5.1.3
         title: Training is provided for personnel in POI environments to be aware of attempted
           tampering or replacement of POI devices.
         levels:
           - base
-        status: pending
+        status: not applicable
 
   - id: '10.1'
     title: Processes and mechanisms for logging and monitoring all access to system components and
