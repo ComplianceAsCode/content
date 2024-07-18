@@ -409,7 +409,7 @@ they must be of the same length.
     -   **arg_variable** - the variable used as the value for the argument, eg. `'var_slub_debug_options'`
         This parameter is mutually exclusive with **arg_value**.
 
--   Languages: Ansible, Bash, OVAL, Blueprint
+-   Languages: Ansible, Bash, OVAL, Blueprint, Kickstart
 
 #### grub2_bootloader_argument_absent
 -   Ensures that a kernel command line argument is absent in GRUB 2 configuration.
