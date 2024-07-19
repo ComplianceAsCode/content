@@ -91,15 +91,42 @@ controls:
     levels:
     - basic
     description: >-
-      Networks for the administration of the host, the administration of the containers, and their
-      access networks MUST be separated according to the protection needs at hand. In principle, at
+      (1) Networks for the administration of the host, the administration of the containers, and their
+      access networks MUST be separated according to the protection needs at hand. (2) In principle, at
       least the administration of the host SHOULD only be possible from the administration
       network.
-      Only the communication relationships necessary for operation SHOULD be allowed.
+      (3) Only the communication relationships necessary for operation SHOULD be allowed.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: Hosts and containers are controlled via the Kubernetes API. This is addressed via
+      api. The load balancer used for this is located in the administration network. The load
+      balancer for *.apps. is set up separately in the active network. This means that the
+      administration is appropriately separated.
+      The Console (the OpenShift web UI) is used by all users. Authorization takes place at the API
+      level and is secured via RBAC.
+      The control plane is to be located in an administration network.
+
+      Section 2: The web UI can be configured on another router that is terminated on the
+      administration load balancer and is therefore only accessible from the administration network.
+      This means that it can no longer be reached from the active network.
+
+      Section 3: This is a standard OpenShift feature. The OpenShift documentation
+      contains the necessary communication paths between control plane, infrastructure and worker
+      nodes, as well as the necessary firewall activations of the underlying network stack at
+      hardware or IaaS level. The communication between containers or pods within a client
+      (“Project”) is not restricted by default, but can be regulated with micro-segmentation if
+      necessary or as a service mesh with mTLS authentication be implemented (see APP.4.4.A18).
+
+      Externally exposed services can receive their own IP and thus data traffic can also be
+      separated outside the platform. Inter-node communication is carried out via suitable tunnel
+      protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+
+    status: automated
+    rules:
+      # Section 1,2
+      - general_network_separation
+      # Section 3
+      - configure_network_policies
+      - configure_network_policies_namespaces
 
   - id: SYS.1.6.A6
     title: Use of Secure Images
