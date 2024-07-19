@@ -458,6 +458,7 @@ class BlueprintRemediation(Remediation):
         super(BlueprintRemediation, self).__init__(
             file_path, "blueprint")
 
+
 class KickstartRemediation(Remediation):
     """
     This provides class for Kickstart remediations
@@ -465,6 +466,7 @@ class KickstartRemediation(Remediation):
     def __init__(self, file_path):
         super(KickstartRemediation, self).__init__(
             file_path, "kickstart")
+
 
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
