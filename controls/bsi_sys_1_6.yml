@@ -212,19 +212,39 @@ controls:
     levels:
     - basic
     description: >-
-      Access data MUST be stored and managed in such a way that only authorised persons and
-      containers can access it. In particular, it MUST be ensured that access data is only stored in
-      specially protected locations and not in images. The access data management mechanisms
+      (1) Access data MUST be stored and managed in such a way that only authorised persons and
+      containers can access it. (2) In particular, it MUST be ensured that access data is only stored in
+      specially protected locations and not in images. (3) The access data management mechanisms
       provided by container service management software SHOULD be used.
-      At minimum, the following credentials MUST be stored securely:
+      (4) At minimum, the following credentials MUST be stored securely:
       • Passwords of any accounts
       • API keys for services used by the application
       • Keys for symmetric encryption
       • Private keys for public key authentication
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift offers secrets that are only available to the containers and the people
+      authorized via RBAC in the tenant or project (client).
+      Section 2: This requirement must be enforced as part of application development.
+      OpenShift offers suitable mechanisms (secrets) with encryption of the etcd store if necessary.
+      Section 3: OpenShift offers corresponding mechanisms (secrets). Unless the secrets are
+      dynamically generated, third-party/community tools such as SealedSecrets or HashiCorp Vault
+      can help securely deploy the secrets.
+      Section 4: This requirement must be implemented organizationally.
+      All of this information can and should be managed in Secrets.
+    status: automated
+    rules:
+      # Section 1
+      - rbac_least_privilege
+      - rbac_limit_secrets_access
+      - rbac_limit_cluster_admin
+      - rbac_wildcard_use
+      - rbac_roles_defined
+      - rbac_cluster_roles_defined
+      # Section 2-4
+      - api_server_encryption_provider_cipher
+      - secrets_no_environment_variables
+      # Section 3
+      - secrets_consider_external_storage
 
   - id: SYS.1.6.A9
     title: Suitability for Container Operation
