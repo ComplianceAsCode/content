@@ -200,9 +200,12 @@ controls:
       Container logging data MUST be stored outside of the respective container (on the container
       host at minimum)
     notes: >-
-      ToDo
+      OpenShift Logging stores the containers' logging data in a separate log management system.
+      The output of the container is saved as long as it is on STDOUT and STDERR. The logging
+      data can also be forwarded to different log storage depending on the source
+      (e.g. infrastructure or application).
+      It is the responsibility of the applications to write log output to STDOUT and errors to STDERR.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A8
     title: Secure Storage of Container Access Data
