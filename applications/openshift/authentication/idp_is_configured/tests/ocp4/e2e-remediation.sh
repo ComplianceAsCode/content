@@ -26,4 +26,4 @@ EOF
 
 
 echo "waiting for a stable cluster"
-oc adm wait-for-stable-cluster
+oc adm wait-for-stable-cluster --minimum-stable-period 2m
