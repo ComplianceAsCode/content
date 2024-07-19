@@ -21,3 +21,4 @@ description: |-
 
 selections:
     - ospp:all
+    - '!package_screen_installed'
