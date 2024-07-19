@@ -2167,7 +2167,7 @@ controls:
     title: Strong authentication for users and administrators is established and managed.
     levels:
       - base
-    status: not applicable
+    status: partial
     notes: |-
       For this control to be satisfiable an identity provider must be used and the kubeadmin user
       needs to be removed.
@@ -2199,11 +2199,16 @@ controls:
         interception of communications or from stored data.
       levels:
         - base
-      status: not applicable
+      status: partial
       notes: |-
         The protection of the authentication credentials such as rendering the passwords and
         passphrases unreadable during transmission and the storage of credentials on system
         components is the responsibility of the third-party identity provider.
+
+        If LDAP is used as the identity provider, we do not allow it to run with the
+        'insecure' flag on.
+      rules:
+        - ocp_no_ldap_insecure
 
     - id: 8.3.3
       title: User identity is verified before modifying any authentication factor.
@@ -2227,12 +2232,17 @@ controls:
         confirmed.
       levels:
         - base
-      status: not applicable
+      status: partial
       notes: |-
         Account lockout for failed attempts are managed by the identity provider as all
         authentication attempts that occur prior to granting access from OpenShift.
         Establishing a threshold for limiting repeated failed attempts are configured with
         the chosen identity provider.
+
+        In this control we do not allow usage of htpasswd as the identity provider, as it
+        doesn't provide user lockout feature.
+      rules:
+        - ocp_idp_no_htpasswd
 
     - id: 8.3.5
       title: If passwords/passphrases are used as authentication factors to meet Requirement
