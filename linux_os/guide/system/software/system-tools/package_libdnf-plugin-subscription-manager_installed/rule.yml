@@ -1,10 +1,10 @@
 documentation_complete: true
 
 
-title: 'Install dnf-plugin-subscription-manager Package'
+title: 'Install libdnf-plugin-subscription-manager Package'
 
 description: |-
-    {{{ describe_package_install(package="dnf-plugin-subscription-manager") }}}
+    {{{ describe_package_install(package="libdnf-plugin-subscription-manager") }}}
 
 rationale: |-
     This package provides plugins to interact with repositories and subscriptions
@@ -15,7 +15,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel8: CCE-82315-3
+    cce@rhel10: CCE-88703-4
 
 references:
     ism: 0940,1144,1467,1472,1483,1493,1494,1495
@@ -24,9 +24,9 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="dnf-plugin-subscription-manager") }}}'
+ocil: '{{{ ocil_package(package="libdnf-plugin-subscription-manager") }}}'
 
 template:
     name: package_installed
     vars:
-        pkgname: dnf-plugin-subscription-manager
+        pkgname: libdnf-plugin-subscription-manager
