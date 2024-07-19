@@ -350,7 +350,7 @@ Describe allowing access to a service in firewalld.
 {{%- macro describe_module_disable(module) %}}
     To configure the system to prevent the <code>{{{ module }}}</code>
     kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
-    <pre>install {{{ module }}} /bin/true</pre>
+    <pre>install {{{ module }}} /bin/false</pre>
     {{% if "ol" in product or product in ["rhel8"] %}}
     To configure the system to prevent the <code>{{{ module }}}</code> from being used,
     add the following line to file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
