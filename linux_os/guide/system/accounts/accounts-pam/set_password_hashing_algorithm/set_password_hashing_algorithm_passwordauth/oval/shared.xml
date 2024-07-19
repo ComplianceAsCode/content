@@ -1,19 +1,34 @@
 <def-group>
-  <definition class="compliance" id="set_password_hashing_algorithm_passwordauth" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("The password hashing algorithm should be set correctly in /etc/pam.d/password-auth.") }}}
     <criteria operator="AND">
-      <criterion test_ref="test_pam_unix_passwordauth_sha512" />
+      <criterion test_ref="test_set_password_hashing_algorithm_passwordauth"/>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check /etc/pam.d/password-auth for correct settings" id="test_pam_unix_passwordauth_sha512" version="1">
-    <ind:object object_ref="object_pam_unix_passwordauth_sha512" />
+  {{% set line_pattern = "^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+" %}}
+  {{% set pam_unix_algorithms = "(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt)" %}}
+  {{% set hashing_pattern = line_pattern + "(?!.*" + pam_unix_algorithms + ".*" + pam_unix_algorithms + ").*" + pam_unix_algorithms + ".*$" %}}
+
+  <ind:textfilecontent54_test id="test_set_password_hashing_algorithm_passwordauth" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="check if pam_unix.so hashing algorithm option is correct and specified only once in /etc/pam.d/password-auth">
+    <ind:object object_ref="object_set_password_hashing_algorithm_passwordauth"/>
+    <ind:state state_ref="state_set_password_hashing_algorithm_passwordauth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object comment="check /etc/pam.d/password-auth for correct settings" id="object_pam_unix_passwordauth_sha512" version="1">
-      <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
-      <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
+  <ind:textfilecontent54_object id="object_set_password_hashing_algorithm_passwordauth" version="1"
+    comment="only one hashing algorithm option for pam_unix.so is found in /etc/pam.d/password-auth">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ hashing_pattern }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_set_password_hashing_algorithm_passwordauth" version="1">
+    <ind:subexpression operation="equals" datatype="string" var_ref="var_password_hashing_algorithm_pam"/>
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_password_hashing_algorithm_pam" datatype="string" version="1"
+    comment="hashing algorithm for pam_unix.so"/>
 
 </def-group>

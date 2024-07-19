@@ -3,11 +3,14 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Set Password Hashing Algorithm in /etc/libuser.conf
-  lineinfile:
+
+{{{ ansible_instantiate_variables("var_password_hashing_algorithm_pam") }}}
+
+- name: "{{{ rule_title }}} - Set Password Hashing Algorithm in /etc/libuser.conf"
+  ansible.builtin.lineinfile:
     dest: /etc/libuser.conf
     insertafter: '^\s*\[defaults]'
     regexp: ^#?crypt_style
-    line: crypt_style = sha512
+    line: crypt_style = {{ var_password_hashing_algorithm_pam }}
     state: present
-    create: yes
+    create: true

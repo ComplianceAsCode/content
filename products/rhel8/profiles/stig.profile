@@ -32,6 +32,7 @@ selections:
     - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
     - var_password_hashing_algorithm=SHA512
+    - var_password_hashing_algorithm_pam=sha512
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
     - var_accounts_minimum_age_login_defs=1

@@ -1,4 +1,5 @@
 #!/bin/bash
+# variables = var_password_hashing_algorithm=SHA512
 
 # Make sure ENCRYPT_METHOD is SHA256
 if grep -q "^ENCRYPT_METHOD" /etc/login.defs; then

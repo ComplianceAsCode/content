@@ -305,6 +305,7 @@ selections:
 - var_password_hashing_algorithm=SHA512
 - var_accounts_password_warn_age_login_defs=7
 - var_accounts_maximum_age_login_defs=365
+- var_password_hashing_algorithm_pam=sha512
 - var_password_pam_remember_control_flag=requisite_or_required
 - var_password_pam_remember=24
 - var_password_pam_dictcheck=1

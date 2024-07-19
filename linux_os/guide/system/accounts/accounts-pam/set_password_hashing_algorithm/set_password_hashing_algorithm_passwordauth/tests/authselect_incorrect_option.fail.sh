@@ -8,7 +8,7 @@ CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 CUSTOM_PASSWORD_AUTH="/etc/authselect/$CUSTOM_PROFILE/password-auth"
 
-var_password_hashing_algorithm_pam="sha512"
+var_password_hashing_algorithm_pam="yescrypt"
 declare -a HASHING_ALGORITHMS_OPTIONS=("sha512" "yescrypt" "gost_yescrypt" "blowfish" "sha256" "md5" "bigcrypt")
 
 for hash_option in "${HASHING_ALGORITHMS_OPTIONS[@]}"; do
@@ -22,6 +22,4 @@ done
 if ! $(grep -q "^\s*password.*sufficient.*pam_unix\.so.*$var_password_hashing_algorithm_pam" "$CUSTOM_PASSWORD_AUTH"); then
     sed -i --follow-symlinks "/^password.*sufficient.*pam_unix\.so/ s/$/ $var_password_hashing_algorithm_pam/" "$CUSTOM_PASSWORD_AUTH"
 fi
-
-sed -i --follow-symlinks -E 's/^(password.*)sufficient(.*pam_unix\.so.*)/\1optional\2/' "$CUSTOM_PASSWORD_AUTH"
 authselect apply-changes -b

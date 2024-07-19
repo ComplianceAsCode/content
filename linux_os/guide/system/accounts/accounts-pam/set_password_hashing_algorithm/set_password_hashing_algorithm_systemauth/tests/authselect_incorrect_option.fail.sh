@@ -8,7 +8,7 @@ CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
 
-var_password_hashing_algorithm_pam="sha512"
+var_password_hashing_algorithm_pam="yescrypt"
 declare -a HASHING_ALGORITHMS_OPTIONS=("sha512" "yescrypt" "gost_yescrypt" "blowfish" "sha256" "md5" "bigcrypt")
 
 for hash_option in "${HASHING_ALGORITHMS_OPTIONS[@]}"; do
