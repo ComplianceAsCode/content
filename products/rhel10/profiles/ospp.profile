@@ -22,3 +22,4 @@ description: |-
 selections:
     - ospp:all
     - '!package_screen_installed'
+    - '!package_dnf-plugin-subscription-manager_installed'
