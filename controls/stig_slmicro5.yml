@@ -1029,8 +1029,9 @@ controls:
   title: SLEM 5 must allocate audit record storage capacity to store at least one
     week of audit records when audit records are not immediately sent to a central
     audit record storage facility.
-  rules: []
-  status: pending
+  rules:
+    - package_audit-audispd-plugins_installed
+  status: automated
 - id: SLEM-05-653030
   levels:
   - medium
