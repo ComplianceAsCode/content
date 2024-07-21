@@ -732,14 +732,17 @@ controls:
   - high
   title: SLEM 5 must use a Linux Security Module configured to enforce limits on system
     services.
-  rules: []
-  status: pending
+  rules:
+    - selinux_state
+    - var_selinux_state=enforcing
 - id: SLEM-05-431020
   levels:
   - medium
   title: SLEM 5 must enable the SELinux targeted policy.
-  rules: []
-  status: pending
+  rules:
+    - selinux_policytype
+    - var_selinux_policy_name=targeted
+  status: automated
 - id: SLEM-05-431025
   levels:
   - medium
