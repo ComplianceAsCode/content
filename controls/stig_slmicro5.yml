@@ -1386,22 +1386,25 @@ controls:
   - medium
   title: Successful/unsuccessful uses of "setfiles" in SLEM 5 must generate an audit
     record.
-  rules: []
-  status: pending
+  rules:
+    - audit_rules_execution_setfiles
+  status: automated
 - id: SLEM-05-654220
   levels:
   - medium
   title: Successful/unsuccessful uses of "semanage" in SLEM 5 must generate an audit
     record.
-  rules: []
-  status: pending
+    - package_policycoreutils-python-utils_installed
+    - audit_rules_execution_semanage
+  status: automated
 - id: SLEM-05-654225
   levels:
   - medium
   title: Successful/unsuccessful uses of "setsebool" in SLEM 5 must generate an audit
     record.
-  rules: []
-  status: pending
+  rules:
+    - audit_rules_execution_setsebool
+  status: automated
 - id: SLEM-05-654230
   levels:
   - medium
