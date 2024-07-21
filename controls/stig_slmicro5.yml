@@ -724,8 +724,9 @@ controls:
   levels:
   - low
   title: SLEM 5 must have policycoreutils package installed.
-  rules: []
-  status: pending
+  rules:
+    - package_policycoreutils_installed
+  status: automated
 - id: SLEM-05-431015
   levels:
   - high
