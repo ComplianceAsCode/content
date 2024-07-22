@@ -390,7 +390,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
 <pre>
 ...
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian10", "debian11"],
+    "multi_platform_debian": ["debian11", "debian12"],
     "multi_platform_example": ["example"],
     <b>"multi_platform_custom": ["custom6"],</b>
     "multi_platform_fedora": ["fedora"],
