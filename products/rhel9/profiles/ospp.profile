@@ -177,14 +177,10 @@ selections:
 
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
-    - package_tmux_installed
-    - configure_bashrc_exec_tmux
-    - no_tmux_in_shells
-    - configure_tmux_lock_command
-
+    - logind_session_timeout
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
-    - configure_tmux_lock_after_time
+    - var_logind_session_timeout=30_minutes
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
