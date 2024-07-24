@@ -1501,7 +1501,8 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "ssh-agent" command.
-      rules: []
+      rules:
+          - audit_rules_privileged_commands_ssh_agent
       status: pending
     
     - id: SLEM-05-654100
