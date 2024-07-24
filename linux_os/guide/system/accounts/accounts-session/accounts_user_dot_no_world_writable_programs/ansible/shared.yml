@@ -1,0 +1,43 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: {{{ rule_title }}} - Initialize variables
+  set_fact:
+    home_user_dirs: []
+    world_writable_files: []
+
+- name: {{{ rule_title }}} - Get user's home dir list
+  ansible.builtin.getent:
+    database: passwd
+  register: passwd_database
+    
+- name: {{{ rule_title }}} - Fill home_user_dirs
+  set_fact:
+    home_user_dirs: "{{ home_user_dirs + [item.data[4]] }}"
+  when: item.data[4] is defined and item.data[2]|int >= {{{ uid_min }}} and item.data[2]|int != {{{ nobody_uid }}}
+  with_items: "{{ passwd_database.ansible_facts.getent_passwd | dict2items(key_name='user', value_name='data')}}"
+
+- name: {{{ rule_title }}} - Get world writable files
+  ansible.builtin.shell: |
+    find / -xdev -type f -perm -0002 2> /dev/null
+  register: world_writable_files
+
+- name: {{{ rule_title }}} - Find referenced_files in init files
+  ansible.builtin.find:
+    paths: "{{ home_user_dirs }}"
+    contains: "{{ item }}"
+    hidden: true
+    read_whole_file: yes
+    recurse: true
+  with_items: "{{ world_writable_files.stdout_lines }}"
+  register: referenced_files
+
+- name: {{{ rule_title }}} - Remove world writable permissions
+  ansible.builtin.file:
+    path: "{{ item.item }}"
+    mode: "o-w"
+  when: item.matched > 0
+  with_items: "{{ referenced_files.results }}"
