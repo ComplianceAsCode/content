@@ -1434,8 +1434,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "insmod" command.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_privileged_commands_insmod
+      status: automated
     
     - id: SLEM-05-654055
       levels:
@@ -1503,7 +1504,7 @@ controls:
       title: SLEM 5 must generate audit records for all uses of the "ssh-agent" command.
       rules:
           - audit_rules_privileged_commands_ssh_agent
-      status: pending
+      status: automated
     
     - id: SLEM-05-654100
       levels:
