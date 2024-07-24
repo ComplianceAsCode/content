@@ -1,0 +1,37 @@
+rule_results:
+  e2e-e8-api-server-encryption-provider-cipher:
+    default_result: FAIL
+    result_after_remediation: PASS
+  e2e-e8-api-server-tls-cipher-suites:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-e8-ocp-allowed-registries:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-e8-ocp-allowed-registries-for-import:
+    default_result: FAIL
+    result_after_remediation: FAIL
+  e2e-e8-ocp-idp-no-htpasswd:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-e8-rbac-limit-cluster-admin:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-e8-rbac-pod-creation-access:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-e8-rbac-wildcard-use:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-e8-scc-limit-container-allowed-capabilities:
+    default_result: PASS
+    result_after_remediation: PASS
+  e2e-e8-scc-limit-privilege-escalation:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-e8-scc-limit-privileged-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
+  e2e-e8-scc-limit-root-containers:
+    default_result: MANUAL
+    result_after_remediation: MANUAL
