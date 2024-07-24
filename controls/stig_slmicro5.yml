@@ -1488,8 +1488,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "rmmod" command.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_privileged_commands_rmmod
+      status: automated
     
     - id: SLEM-05-654090
       levels:
