@@ -28,8 +28,9 @@ controls:
   - medium
   title: SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
     before granting any local or remote connection to the system.
-  rules: []
-  status: pending
+  rules:
+  - sshd_enable_warning_banner
+  status: automated
 - id: SLEM-05-211025
   levels:
   - high
@@ -458,8 +459,10 @@ controls:
   levels:
   - high
   title: SLEM 5 must not allow unattended or automatic logon via SSH.
-  rules: []
-  status: pending
+  rules:
+  - sshd_disable_empty_passwords
+  - sshd_do_not_permit_user_env
+  status: automated
 - id: SLEM-05-255030
   levels:
   - medium
@@ -479,8 +482,9 @@ controls:
   - medium
   title: SLEM 5 SSH daemon must disable forwarded remote X connections for interactive
     users, unless to fulfill documented and validated mission requirements.
-  rules: []
-  status: pending
+  rules:
+  - sshd_disable_x11_forwarding
+  status: automated
 - id: SLEM-05-255045
   levels:
   - high
@@ -507,35 +511,40 @@ controls:
   - medium
   title: SLEM 5 must deny direct logons to the root account using remote access via
     SSH.
-  rules: []
-  status: pending
+  rules:
+  - sshd_disable_root_login
+  status: automated
 - id: SLEM-05-255065
   levels:
   - medium
   title: SLEM 5 must log SSH connection attempts and failures to the server.
-  rules: []
-  status: pending
+  rules:
+  - sshd_set_loglevel_verbose
+  status: automated
 - id: SLEM-05-255070
   levels:
   - medium
   title: SLEM 5 must display the date and time of the last successful account logon
     upon an SSH logon.
-  rules: []
-  status: pending
+  rules:
+  - sshd_print_last_log
+  status: automated
 - id: SLEM-05-255075
   levels:
   - medium
   title: SLEM 5 SSH daemon must be configured to not allow authentication using known
     hosts authentication.
-  rules: []
-  status: pending
+  rules:
+  - sshd_disable_user_known_hosts
+  status: automated
 - id: SLEM-05-255080
   levels:
   - medium
   title: SLEM 5 SSH daemon must perform strict mode checking of home directory configuration
     files.
-  rules: []
-  status: pending
+  rules:
+  - sshd_enable_strictmodes
+  status: automated
 - id: SLEM-05-255085
   levels:
   - medium
@@ -825,8 +834,9 @@ controls:
   levels:
   - high
   title: SLEM 5 must not be configured to allow blank or null passwords.
-  rules: []
-  status: pending
+  rules:
+  - sshd_disable_empty_passwords
+  status: automated
 - id: SLEM-05-611060
   levels:
   - high
@@ -1253,8 +1263,9 @@ controls:
   - medium
   title: SLEM 5 must generate audit records for all account creations, modifications,
     disabling, and termination events that affect /etc/passwd.
-  rules: []
-  status: pending
+  rules:
+  - audit_rules_usergroup_modification_passwd
+  status: automated
 - id: SLEM-05-654145
   levels:
   - medium
