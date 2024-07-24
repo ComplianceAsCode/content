@@ -8,12 +8,6 @@ groupadd group_test
 {{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
 {{%- endif %}}
 
-{{%- if EXCLUDED_FILES %}}
-{{% set EXCLUDED_FILES_ARGS="! -name '" + EXCLUDED_FILES|join("' ! -name '") + "'" %}}
-{{%- else %}}
-{{% set EXCLUDED_FILES_ARGS="" %}}
-{{%- endif %}}
-
 {{% for path in FILEPATH %}}
 {{% if path.endswith("/") %}}
 if [ ! -d {{{ path }}} ]; then
