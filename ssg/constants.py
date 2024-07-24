@@ -225,14 +225,14 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 12": "sle12",
     "SUSE Linux Enterprise 15": "sle15",
-    "SUSE Linux Enterprise Micro 5.x": "slmicro5",
+    "SUSE Linux Enterprise Micro 5": "slmicro5",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
     "UnionTech OS Server 20": "uos20",
     "OpenEmbedded": "openembedded",
-    "Not Applicable" : "example",
+    "Not Applicable": "example",
 }
 
 
