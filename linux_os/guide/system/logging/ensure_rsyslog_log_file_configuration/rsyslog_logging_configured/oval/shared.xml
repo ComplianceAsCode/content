@@ -3,7 +3,7 @@
     {{{ oval_metadata("Syslog logs should be configured") }}}
 
     <criteria operator="AND">
-      {{% if product in ["debian10", "debian11", "ubuntu1604", "ubuntu1804"] %}}
+      {{% if product in ["debian11", "ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
       {{% endif %}}
       <criteria operator="OR">

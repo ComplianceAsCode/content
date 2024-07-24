@@ -59,26 +59,26 @@ jobs:
         working-directory: ./build
 
   validate-debian:
-    name: Build, Test on Debian 10 (Container)
+    name: Build, Test on Debian 12 (Container)
     runs-on: ubuntu-latest
     container:
-      image: debian:buster
+      image: debian:bookworm
     steps:
       - name: Update the package repository
         run: apt-get update
       - name: Install Deps
-        run: apt-get install -y ansible-lint bats check cmake libopenscap8 libxml2-utils ninja-build python3-github python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev
+        run: apt-get install -y ansible-lint bats check cmake openscap-scanner openscap-utils libxml2-utils ninja-build python3-pip xsltproc libxslt1-dev libxml2-dev zlib1g-dev python3.11-venv
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Upgrade pip python
-        run: pip3 install --upgrade pip
+        run: pip install --upgrade pip --break-system-packages
       - name: Install deps python
-        run: pip3 install -r requirements.txt -r test-requirements.txt --ignore-installed PyYAML
+        run: pip3 install -r requirements.txt -r test-requirements.txt --ignore-installed PyYAML PyGithub --break-system-packages
       - name: Build
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
         run: |-
-          ./build_product debian10 debian11 debian12
+          ./build_product debian11 debian12
       - name: Test
         working-directory: ./build
         run: ctest -j2 --output-on-failure -E unique-stigids
