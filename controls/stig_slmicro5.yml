@@ -1535,8 +1535,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "sudo" command.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_privileged_commands_sudo
+      status: automated
     
     - id: SLEM-05-654115
       levels:
