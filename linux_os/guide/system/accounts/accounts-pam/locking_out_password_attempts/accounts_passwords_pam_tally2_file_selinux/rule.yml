@@ -34,13 +34,13 @@ ocil: |-
 
     unconfined_u:object_r:faillog_t:s0 /var/log/faillock
 
-    If the security context type of the tally directory is not "tallylog_t", this is a finding.
+    If the security context type of the tally directory is not "faillog_t", this is a finding.
 
 fixtext: |-
-    Update the /etc/selinux/targeted/contexts/files/file_contexts.local with "tallylog_t" context
+    Update the /etc/selinux/targeted/contexts/files/file_contexts.local with "faillog_t" context
     type for the default pam_tally2 tally directory with the following command:
 
-    $ sudo semanage fcontext -a -t tallylog_t "/var/log/tallylog"
+    $ sudo semanage fcontext -a -t faillog_t "/var/log/tallylog"
 
     Next, update the context type of the default tallylog directory/subdirectories and files with the following command:
 
