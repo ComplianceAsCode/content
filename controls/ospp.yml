@@ -455,12 +455,6 @@ controls:
             - accounts_passwords_pam_tally2_deny_root
             - accounts_passwords_pam_tally2_unlock_time
             - accounts_password_pam_retry
-            - configure_bashrc_exec_tmux
-            - configure_tmux_lock_after_time
-            - configure_tmux_lock_command
-            - no_tmux_in_shells
-            - package_screen_installed
-            - package_tmux_installed
             - accounts_tmout
             - set_firewalld_default_zone
             - dconf_gnome_login_retries
@@ -476,6 +470,8 @@ controls:
             - dconf_gnome_session_idle_user_locks
             - package_sudo_installed
             - dconf_gnome_disable_user_admin
+            - logind_session_timeout
+            - var_logind_session_timeout=30_minutes
         status: automated
 
     -   id: FMT_SMF_EXT.1
@@ -500,11 +496,6 @@ controls:
             - accounts_password_pam_minlen
             - accounts_password_pam_ocredit
             - accounts_password_pam_ucredit
-            - configure_bashrc_exec_tmux
-            - configure_tmux_lock_after_time
-            - configure_tmux_lock_command
-            - no_tmux_in_shells
-            - package_tmux_installed
             - package_firewalld_installed
             - service_firewalld_enabled
             - kernel_module_atm_disabled
@@ -527,6 +518,8 @@ controls:
             - dnf-automatic_apply_updates
             - dnf-automatic_security_updates_only
             - timer_dnf-automatic_enabled
+            - logind_session_timeout
+            - var_logind_session_timeout=30_minutes
         status: automated
 
     -   id: FMT_SMF_EXT.1.1
@@ -582,11 +575,8 @@ controls:
         levels:
             - base
         rules:
-            - configure_bashrc_exec_tmux
-            - configure_tmux_lock_after_time
-            - configure_tmux_lock_command
-            - no_tmux_in_shells
-            - package_tmux_installed
+            - logind_session_timeout
+            - var_logind_session_timeout=30_minutes
         status: automated
 
     -   id: FTA_TAB.1

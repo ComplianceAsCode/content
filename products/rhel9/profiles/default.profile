@@ -557,3 +557,4 @@ selections:
     - rsyslog_filecreatemode
     - set_nftables_table
     - sshd_use_approved_ciphers
+    - configure_bashrc_exec_tmux
