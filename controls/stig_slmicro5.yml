@@ -1389,8 +1389,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "chcon" command.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_execution_chcon
+      status: automated
     
     - id: SLEM-05-654025
       levels:
