@@ -1471,8 +1471,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "pam_timestamp_check"
           command.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_privileged_commands_pam_timestamp_check
+      status: automated
     
     - id: SLEM-05-654075
       levels:
