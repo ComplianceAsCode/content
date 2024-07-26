@@ -35,8 +35,8 @@ jobs:
 # when modifying this, modify also tests/tmt-plans/
 
 - <<: *test-static-checks
-  identifier: /static-checks-fedora
-  tmt_plan: /static-checks-fedora$
+  identifier: /rpmbuild-ctest-fedora
+  tmt_plan: /rpmbuild-ctest-fedora$
   targets:
     fedora-all: {}
 - <<: *test-static-checks
