@@ -207,6 +207,9 @@ rule_results:
   e2e-cis-kubelet-disable-readonly-port:
     default_result: PASS
     result_after_remediation: PASS
+  e2e-cis-kubelet-configure-tls-cipher-suites-ingresscontroller:
+    default_result: FAIL
+    result_after_remediation: PASS
   e2e-cis-ocp-allowed-registries:
     default_result: FAIL
   e2e-cis-ocp-allowed-registries-for-import:
