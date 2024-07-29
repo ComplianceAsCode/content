@@ -11,10 +11,8 @@ reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=469&id=469
 title: 'DRAFT - Protection Profile for General Purpose Operating Systems'
 
 description: |-
-    This is draft profile is not based on the Red Hat Enterprise Linux 10 riteria Guidance
-    documentation for Target of Evaluation based on Protection Profile for
-    General Purpose Operating Systems was it not available not the time of
-    release.
+    This is draft profile is based on the Red Hat Enterprise Linux 9 Common Criteria Guidance as
+    guidance for Red Hat Enterprise Linux 10 was it not available not the time of release.
 
 
     Where appropriate, CNSSI 1253 or DoD-specific values are used for
