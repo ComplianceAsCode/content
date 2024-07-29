@@ -284,9 +284,7 @@ selections:
 - package_aide_installed
 - package_audit-libs_installed
 - package_audit_installed
-- package_avahi_removed
 - package_bind_removed
-- package_cups_removed
 - package_cyrus-imapd_removed
 - package_dhcp_removed
 - package_dnsmasq_removed
@@ -334,8 +332,10 @@ selections:
 - selinux_state
 - service_auditd_enabled
 - service_autofs_disabled
+- service_avahi-daemon_disabled
 - service_bluetooth_disabled
 - service_crond_enabled
+- service_cups_disabled
 - service_firewalld_enabled
 - service_nfs_disabled
 - service_nftables_disabled
