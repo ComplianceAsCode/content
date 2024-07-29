@@ -19,6 +19,7 @@ RUN true \
         && printf "%s\n" "$CLIENT_PUBLIC_KEY" >> "$AUTH_KEYS" \
         && chmod og-rw /root/.ssh "$AUTH_KEYS" \
         && sed -i '/session\s\+required\s\+pam_loginuid.so/d' /etc/pam.d/sshd \
+        && echo CPE_NAME="cpe:/o:canonical:ubuntu_linux:22.04" >> /etc/os-release \
 && true
 
 RUN mkdir /run/sshd
