@@ -1,4 +1,4 @@
-{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
+{{%- if product in ["fedora", "ol7", "ol8", "ol9", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204"] %}}
   {{%- set perm_x="-F perm=x " %}}
 {{%- endif %}}
 
@@ -39,6 +39,7 @@ identifiers:
     cce@rhel9: CCE-83751-8
     cce@rhel10: CCE-87741-5
     cce@sle15: CCE-85818-3
+    cce@slmicro5: CCE-94100-5
 
 references:
     cis-csc: 1,12,13,14,15,16,2,3,5,6,7,8,9

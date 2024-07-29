@@ -602,8 +602,10 @@ controls:
   - medium
   title: SLEM 5 shadow password suite must be configured to enforce a delay of at
     least five seconds between logon prompts following a failed logon attempt.
-  rules: []
-  status: pending
+  rules:
+    - accounts_logon_fail_delay
+    - var_accounts_fail_delay=5
+  status: automated
 - id: SLEM-05-411025
   levels:
   - medium
@@ -700,14 +702,18 @@ controls:
   - medium
   title: SLEM 5 must enforce a delay of at least five seconds between logon prompts
     following a failed logon attempt via pluggable authentication modules (PAM).
-  rules: []
-  status: pending
+  rules:
+    - accounts_passwords_pam_faildelay_delay
+    - var_password_pam_delay=4000000
+  status: automated
 - id: SLEM-05-412030
   levels:
   - medium
   title: SLEM 5 must use the default pam_tally2 tally directory.
-  rules: []
-  status: pending
+  rules:
+    - accounts_passwords_pam_tally2_file
+    - accounts_passwords_pam_tally2_file_selinux
+  status: automated
 - id: SLEM-05-412035
   levels:
   - low
@@ -719,21 +725,25 @@ controls:
   levels:
   - low
   title: SLEM 5 must have policycoreutils package installed.
-  rules: []
-  status: pending
+  rules:
+    - package_policycoreutils_installed
+  status: automated
 - id: SLEM-05-431015
   levels:
   - high
   title: SLEM 5 must use a Linux Security Module configured to enforce limits on system
     services.
-  rules: []
-  status: pending
+  rules:
+    - selinux_state
+    - var_selinux_state=enforcing
 - id: SLEM-05-431020
   levels:
   - medium
   title: SLEM 5 must enable the SELinux targeted policy.
-  rules: []
-  status: pending
+  rules:
+    - selinux_policytype
+    - var_selinux_policy_name=targeted
+  status: automated
 - id: SLEM-05-431025
   levels:
   - medium
@@ -1020,8 +1030,9 @@ controls:
   title: SLEM 5 must allocate audit record storage capacity to store at least one
     week of audit records when audit records are not immediately sent to a central
     audit record storage facility.
-  rules: []
-  status: pending
+  rules:
+    - package_audit-audispd-plugins_installed
+  status: automated
 - id: SLEM-05-653030
   levels:
   - medium
@@ -1376,22 +1387,25 @@ controls:
   - medium
   title: Successful/unsuccessful uses of "setfiles" in SLEM 5 must generate an audit
     record.
-  rules: []
-  status: pending
+  rules:
+    - audit_rules_execution_setfiles
+  status: automated
 - id: SLEM-05-654220
   levels:
   - medium
   title: Successful/unsuccessful uses of "semanage" in SLEM 5 must generate an audit
     record.
-  rules: []
-  status: pending
+    - package_policycoreutils-python-utils_installed
+    - audit_rules_execution_semanage
+  status: automated
 - id: SLEM-05-654225
   levels:
   - medium
   title: Successful/unsuccessful uses of "setsebool" in SLEM 5 must generate an audit
     record.
-  rules: []
-  status: pending
+  rules:
+    - audit_rules_execution_setsebool
+  status: automated
 - id: SLEM-05-654230
   levels:
   - medium

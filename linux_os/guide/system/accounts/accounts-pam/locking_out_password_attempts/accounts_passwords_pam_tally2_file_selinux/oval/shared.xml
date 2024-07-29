@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  {{{ oval_metadata("An SELinux Context faillog_t must be configured for the pam_tally2 file option.") }}}
+    <criteria operator="OR">
+      <criterion test_ref="test_account_password_selinux_pam_tally2_file"
+                 comment="The pam_tally2 file should have faillog_t as context"/>
+    </criteria>
+  </definition>
+
+  <linux:selinuxsecuritycontext_test id="test_account_password_selinux_pam_tally2_file" version="2"
+    check="all" check_existence="all_exist"
+    comment="faillog_t context is set in pam_tally2.so tally file">
+    <linux:object object_ref="object_account_password_selinux_pam_tally2_file"/>
+    <linux:state state_ref="state_account_password_selinux_pam_tally2_file"/>
+  </linux:selinuxsecuritycontext_test>
+
+  <linux:selinuxsecuritycontext_object id="object_account_password_selinux_pam_tally2_file"
+    comment="SELinux context information for pam_tall2.so default file /var/log/tallylog" version="1">
+    <linux:filepath>/var/log/tallylog</linux:filepath>
+  </linux:selinuxsecuritycontext_object>
+
+  <linux:selinuxsecuritycontext_state id="state_account_password_selinux_pam_tally2_file" version="1"
+    comment="faillog_t context is set">
+    <linux:type datatype="string" operation="equals">faillog_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
+
+
+</def-group>

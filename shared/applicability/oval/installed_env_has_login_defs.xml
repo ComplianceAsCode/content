@@ -17,7 +17,7 @@
 {{% if pkg_system == "rpm" %}}
   <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
   id="test_env_has_login_defs_installed" version="1"
-  {{% if product in ["sle12", "sle15"] %}}
+  {{% if product in ["sle12", "sle15", "slmicro5"] %}}
   comment="system has package shadow installed, which provides the /etc/login.defs file.">
   {{% else %}}
   comment="system has package shadow-utils installed, which provides the /etc/login.defs file.">
@@ -25,7 +25,7 @@
     <linux:object object_ref="obj_env_has_login_defs_installed" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_env_has_login_defs_installed" version="1">
-    <linux:name>{{% if product in ["sle12", "sle15"] %}}shadow{{% else %}}shadow-utils{{% endif %}}</linux:name>
+    <linux:name>{{% if product in ["sle12", "sle15", "slmicro5"] %}}shadow{{% else %}}shadow-utils{{% endif %}}</linux:name>
   </linux:rpminfo_object>
 {{% elif pkg_system == "dpkg" %}}
   <linux:dpkginfo_test check="all" check_existence="all_exist"
