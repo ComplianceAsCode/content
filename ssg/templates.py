@@ -30,7 +30,8 @@ LANGUAGES = {
     "kubernetes": TemplatingLang("kubernetes", ".yml",  TemplateType.REMEDIATION, "kubernetes"),
     "oval": TemplatingLang("oval", ".xml",              TemplateType.CHECK,       "oval"),
     "puppet": TemplatingLang("puppet", ".pp",           TemplateType.REMEDIATION, "puppet"),
-    "sce-bash": TemplatingLang("sce-bash", ".sh",       TemplateType.CHECK,       "sce")
+    "sce-bash": TemplatingLang("sce-bash", ".sh",       TemplateType.CHECK,       "sce"),
+    "kickstart": TemplatingLang("kickstart", ".cfg",    TemplateType.REMEDIATION, "kickstart")
 }
 
 PREPROCESSING_FILE_NAME = "template.py"

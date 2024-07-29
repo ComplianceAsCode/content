@@ -25,7 +25,8 @@ REMEDIATION_TO_EXT_MAP = {
     'puppet': '.pp',
     'ignition': '.yml',
     'kubernetes': '.yml',
-    'blueprint': '.toml'
+    'blueprint': '.toml',
+    'kickstart': '.cfg'
 }
 
 
@@ -458,6 +459,15 @@ class BlueprintRemediation(Remediation):
             file_path, "blueprint")
 
 
+class KickstartRemediation(Remediation):
+    """
+    This provides class for Kickstart remediations
+    """
+    def __init__(self, file_path):
+        super(KickstartRemediation, self).__init__(
+            file_path, "kickstart")
+
+
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
     'ansible': AnsibleRemediation,
@@ -466,6 +476,7 @@ REMEDIATION_TO_CLASS = {
     'ignition': IgnitionRemediation,
     'kubernetes': KubernetesRemediation,
     'blueprint': BlueprintRemediation,
+    'kickstart': KickstartRemediation,
 }
 
 
@@ -603,7 +614,8 @@ def expand_xccdf_subs(fix, remediation_type):
 
     elif remediation_type == "bash":
         pattern = r'\(bash-populate\s*(\S+)\)'
-
+    elif remediation_type == "kickstart":
+        pattern = r'\(kickstart-populate\s*(\S+)\)'
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)

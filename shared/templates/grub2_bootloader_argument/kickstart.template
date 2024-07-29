@@ -1,0 +1,11 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = true
+# strategy = restrict
+# complexity = medium
+# disruption = low
+
+{{%- if ARG_VARIABLE %}}
+{{%- set ARG_NAME_VALUE = ARG_NAME ~ "=(kickstart-populate " ~ ARG_VARIABLE ~ ")" -%}}
+{{%- endif %}}
+
+bootloader {{{ ARG_NAME_VALUE }}}

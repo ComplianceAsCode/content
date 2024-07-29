@@ -88,6 +88,7 @@ kubernetes_system = "urn:xccdf:fix:script:kubernetes"
 blueprint_system = "urn:redhat:osbuild:blueprint"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
+kickstart_system = "urn:xccdf:fix:script:kickstart"
 cce_uri = "https://ncp.nist.gov/cce"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 ccn_ns = "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html"
@@ -154,6 +155,7 @@ FIX_TYPE_TO_SYSTEM = {
     "blueprint": blueprint_system,
     "puppet": puppet_system,
     "anaconda": anaconda_system,
+    "kickstart": kickstart_system,
 }
 
 for prefix, url_part in OVAL_SUB_NS.items():
