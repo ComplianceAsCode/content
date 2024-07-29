@@ -329,6 +329,7 @@ selections:
 - selinux_state
 - service_auditd_enabled
 - service_autofs_disabled
+- service_avahi-daemon_disabled
 - service_bluetooth_disabled
 - service_crond_enabled
 - service_firewalld_enabled

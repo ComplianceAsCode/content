@@ -784,9 +784,9 @@ controls:
       - l2_workstation
     status: automated
     rules:
-      - package_avahi_removed
-    related_rules:
       - service_avahi-daemon_disabled
+    related_rules:
+      - package_avahi_removed
 
   - id: 2.1.3
     title: Ensure dhcp server services are not in use (Automated)
@@ -885,9 +885,9 @@ controls:
       - l1_server
     status: automated
     rules:
-      - package_cups_removed
-    related_rules:
       - service_cups_disabled
+    related_rules:
+      - package_cups_removed
 
   - id: 2.1.12
     title: Ensure rpcbind services are not in use (Automated)

@@ -292,7 +292,6 @@ selections:
 - no_shelllogin_for_systemaccounts
 - package_aide_installed
 - package_audit_installed
-- package_avahi_removed
 - package_bind_removed
 - package_chrony_installed
 - package_cyrus-imapd_removed
@@ -341,6 +340,7 @@ selections:
 - selinux_state
 - service_auditd_enabled
 - service_autofs_disabled
+- service_avahi-daemon_disabled
 - service_bluetooth_disabled
 - service_crond_enabled
 - service_firewalld_enabled
