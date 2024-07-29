@@ -299,18 +299,7 @@ fi
 {{% else %}}
 {{%- set target_path="/etc/systemd/coredump.conf" -%}}
 {{% endif %}}
-{{{ set_config_file(
-        path=target_path,
-        parameter=parameter,
-        value=value,
-        create=true,
-        insert_after="",
-        insert_before="",
-        insensitive=true,
-        separator="=",
-        separator_regex="\s*=\s*",
-        prefix_regex="^\s*")
-    }}}
+{{{ bash_ensure_ini_config(target_path, section="Coredump", key=parameter, value=value) }}}
 {{%- endmacro -%}}
 
 
