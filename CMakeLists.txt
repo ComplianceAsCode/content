@@ -109,7 +109,7 @@ option(SSG_PRODUCT_RHEL10 "If enabled, the RHEL10 SCAP content will be built" ${
 option(SSG_PRODUCT_RHV4 "If enabled, the RHV4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLE12 "If enabled, the SLE12 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLE15 "If enabled, the SLE15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_SLMICRO5 "If enabled, the SLE Micro 5.x SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_SLMICRO5 "If enabled, the SLE Micro 5 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1604 "If enabled, the Ubuntu 16.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
