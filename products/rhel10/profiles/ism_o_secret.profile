@@ -10,19 +10,21 @@ metadata:
 
 reference: https://www.cyber.gov.au/ism
 
-title: 'Australian Cyber Security Centre (ACSC) ISM Official - Secret'
+title: 'DRAFT - Australian Cyber Security Centre (ACSC) ISM Official - Secret'
 
 description: |-
-  This profile contains configuration checks for Red Hat Enterprise Linux 10
-  that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM).
+    This is a draft profile for experimental purposes.
 
-  The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning
-  Red Hat Enterprise Linux security controls with the ISM, which can be used to select controls
-  specific to an organisation's security posture and risk profile.
+    This draft profile contains configuration checks for Red Hat Enterprise Linux 10
+    that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM).
 
-  A copy of the ISM can be found at the ACSC website:
+    The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning
+    Red Hat Enterprise Linux security controls with the ISM, which can be used to select controls
+    specific to an organisation's security posture and risk profile.
 
-  https://www.cyber.gov.au/ism
+    A copy of the ISM can be found at the ACSC website:
+
+    https://www.cyber.gov.au/ism
 
 extends: e8
 
