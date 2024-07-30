@@ -14,13 +14,13 @@ During this period, project is tested, contributors are informed about upcoming 
 
 ## Duration
 Current duration is set to **2 weeks**.
-This duration is approximate.
-Complications such as newly discovered major issues during this period might slightly prolong it.
 
-The duration is tied to release cadence.
-The more time between release, the more time for stabilization is needed.
-Thus, the current 2 weeks stabilization is for release every 2 months.
-However, stabilization period does not affect release cadence.
+The longer the time between releases, the longer it will take for stabilization.
+The two weeks period is in line with the release cadence, which is one release per quarter.
+
+This duration for stabilization is approximate.
+Complications such as newly discovered major issues during this period might slightly prolong it.
+In these situations, changes in stabilization period does not affect release cadence.
 Next release date will be the same as there would not be any prolongation.
 
 ## Exit Criteria
