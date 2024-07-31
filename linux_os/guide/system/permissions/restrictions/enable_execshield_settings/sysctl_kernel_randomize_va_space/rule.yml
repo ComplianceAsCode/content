@@ -54,7 +54,7 @@ template:
         sysctlvar: kernel.randomize_va_space
         sysctlval: '2'
         datatype: int
-{{% if "openeuler" in product %}}
+{{% if "openeuler" in product or 'kylin' in product %}}
         missing_parameter_pass: 'true'
 {{% endif %}}
 

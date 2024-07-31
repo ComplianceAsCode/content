@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_kylin" version="1">
+    <metadata>
+      <title>Kylin 22.03 LTS</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed on the system is Kylin 22.03 LTS.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Kylin 22.03 LTS is installed" test_ref="test_kylin_installed" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist" comment="Kylin 22.03 LTS is installed" id="test_kylin_installed" version="1">
+    <linux:object object_ref="obj_kylin_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_kylin_installed" version="1">
+    <linux:name>kylin-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>
