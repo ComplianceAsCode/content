@@ -197,16 +197,14 @@ def try_known_urls(data):
 def handle_ssh_pubkey(data):
     data.ssh_pubkey_used = bool(data.ssh_pubkey)
     if not data.ssh_pubkey:
-        username = os.environ.get("SUDO_USER", "")
-        home_dir = os.path.expanduser("~" + username)
-        data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
-
-    if not os.path.isfile(data.ssh_pubkey):
-        err(1, """Error: SSH public key not found at {0}
-You can use the `--ssh-pubkey` to specify which key should be used.""".format(data.ssh_pubkey))
-
-    with open(data.ssh_pubkey) as f:
-        data.pub_key_content = f.readline().rstrip()
+        home_dir = os.path.expanduser('~')
+        user_default_key = f'{home_dir}/.ssh/id_rsa.pub'
+        if os.path.isfile(user_default_key):
+            data.ssh_pubkey = user_default_key
+            with open(data.ssh_pubkey) as f:
+                data.pub_key_content = f.readline().rstrip()
+        else:
+            err(1, "SSH public key was not found or informed by `--ssh-pubkey` option.")
 
 
 def handle_disk(data):
@@ -400,13 +398,11 @@ def main():
         try_known_urls(data)
 
     handle_ssh_pubkey(data)
-
-    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
-    print("Using hypervisor: {0}".format(data.libvirt))
-
     handle_disk(data)
     handle_kickstart(data)
 
+    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
+    print("Using hypervisor: {0}".format(data.libvirt))
     print("Using kickstart file: {0}".format(data.kickstart))
 
     handle_rest(data)
