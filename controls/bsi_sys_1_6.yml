@@ -251,15 +251,18 @@ controls:
     levels:
     - standard
     description: >-
-      An application or service to be operated in a container SHOULD be suitable for such operation.
-      It SHOULD be considered that containers can often be terminated unexpectedly, with
-      corresponding consequences for the application run therein. The results of the checking
+      (1) An application or service to be operated in a container SHOULD be suitable for such operation.
+      (2) It SHOULD be considered that containers can often be terminated unexpectedly, with
+      corresponding consequences for the application run therein. (3) The results of the checking
       described under SYS.1.6.A3 Secure Use of Containerised IT Systems SHOULD be documented in
       a comprehensible manner.
     notes: >-
-      ToDo
+      Section 1: This requirement must be implemented organizationally.
+      Section 2: This requirement must be implemented organizationally and be part of the application
+      development process.
+      Section 3: This requirement must be implemented organizationally and suppliers must be
+      contractually obliged to comply.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A10
     title: Policy for Images and Container Operation
