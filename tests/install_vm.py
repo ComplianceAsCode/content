@@ -186,15 +186,12 @@ def err(rc, msg):
     sys.exit(rc)
 
 
-def handle_url(data):
+def try_known_urls(data):
+    data.url = DISTRO_URL.get(data.distro, None)
+    data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
+
     if not data.url:
-        data.url = DISTRO_URL.get(data.distro, None)
-        data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
-
-    if data.url:
-        return
-
-    err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
+        err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
 
 
 def handle_ssh_pubkey(data):
@@ -399,7 +396,9 @@ to make sure that your SSH key is used.""")
 def main():
     data = parse_args()
 
-    handle_url(data)
+    if not data.url or not data.extra_repo:
+        try_known_urls(data)
+
     handle_ssh_pubkey(data)
 
     print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
