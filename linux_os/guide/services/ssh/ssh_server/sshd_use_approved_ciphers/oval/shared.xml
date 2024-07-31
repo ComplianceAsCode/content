@@ -1,24 +1,21 @@
 <def-group>
   <definition class="compliance" id="sshd_use_approved_ciphers" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.") }}}
-    <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
-      <criteria comment="SSH is configured correctly or is not installed"
-      operator="OR">
-        <criteria comment="sshd is not installed" operator="AND">
-          <extend_definition comment="sshd is not required or requirement is unset"
-          definition_ref="sshd_not_required_or_unset" />
-          <extend_definition comment="rpm package openssh-server removed"
-          definition_ref="package_openssh-server_removed" />
-        </criteria>
-        <criteria comment="sshd is installed and configured" operator="AND">
-          <extend_definition comment="sshd is required or requirement is unset"
-          definition_ref="sshd_required_or_unset" />
-          <extend_definition comment="rpm package openssh-server installed"
-          definition_ref="package_openssh-server_installed" />
-          <criterion comment="Check the Cipers list in /etc/ssh/sshd_config"
-          test_ref="test_sshd_use_approved_ciphers" />
-        </criteria>
+    <criteria comment="SSH is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+        definition_ref="package_openssh-server_installed" />
+        <criterion comment="Check the Cipers list in /etc/ssh/sshd_config"
+        test_ref="test_sshd_use_approved_ciphers" />
       </criteria>
     </criteria>
   </definition>
