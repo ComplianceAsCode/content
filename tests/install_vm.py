@@ -150,6 +150,12 @@ def parse_args():
         action="store_true",
         help="Set cache unsafe.",
     )
+    parser.add_argument(
+        "--osinfo",
+        dest="osinfo",
+        default=None,
+        help="Specify OSInfo for virt-install command.",
+    )
 
     return parser.parse_args()
 
@@ -325,6 +331,9 @@ def get_virt_install_command(data):
             features_opts.append("smm=on")
         else:
             boot_opts.append("loader.secure=no")
+
+    if data.osinfo:
+        command.append("--osinfo={0}".format(data.osinfo))
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
