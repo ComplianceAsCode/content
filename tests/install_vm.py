@@ -10,11 +10,11 @@ import time
 
 KNOWN_DISTROS = [
     "fedora",
-    "centos7",
     "centos8",
     "centos9",
     "rhel8",
     "rhel9",
+    "rhel10",
 ]
 
 DISTRO_URL = {
