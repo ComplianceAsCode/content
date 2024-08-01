@@ -2,6 +2,9 @@ from ssg.utils import parse_template_boolean_value
 
 
 def preprocess(data, lang):
+    if data.get("value") is not None and data.get("xccdf_variable") is not None:
+        errmsg = "The template definition of {0} specifies both value and xccdf_variable. This is forbidden.".format(data["_rule_id"])
+        raise ValueError(errmsg)
     if data["datatype"] not in ["string", "int"]:
         errmsg = "The template instance of the rule {0} contains invalid datatype. It must be either 'string' or 'int'".format(data["_rule_id"])
         raise ValueError(errmsg)
