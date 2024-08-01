@@ -181,9 +181,9 @@ def wait_vm_not_running(domain):
         return
 
 
-def err(rc, msg):
+def err(msg):
     print(msg, file=sys.stderr)
-    sys.exit(rc)
+    sys.exit(1)
 
 
 def try_known_urls(data):
@@ -191,7 +191,7 @@ def try_known_urls(data):
     data.extra_repo = DISTRO_EXTRA_REPO.get(data.distro, None)
 
     if not data.url:
-        err(1, "For the '{0}' distro the `--url` option needs to be provided.".format(data.distro))
+        err(f'For the "{data.distro}" distro the "--url" option needs to be provided.')
 
 
 def handle_ssh_pubkey(data):
@@ -204,7 +204,7 @@ def handle_ssh_pubkey(data):
             with open(data.ssh_pubkey) as f:
                 data.pub_key_content = f.readline().rstrip()
         else:
-            err(1, "SSH public key was not found or informed by `--ssh-pubkey` option.")
+            err('SSH public key was not found or informed by "--ssh-pubkey" option.')
 
 
 def handle_disk(data):
