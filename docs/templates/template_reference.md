@@ -795,6 +795,14 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     -   **value** - value of the SSH configuration option specified by
         **parameter**, eg. `"no"`.
+        This cannot be specified together with the **xccdf_variable** parameter.
+
+    - **xccdf_variable** - specifies an XCCDF variable to use as a value for the specified **parameter**.
+        This parameter conflicts with the **value** parameter.
+
+    - **datatype** - specifies the datatype of the **value** or **xccdf_variable**.
+        Possible options are **int** or **string**.
+        The datatype is utilized for creation of correct templated test scenarios.
 
     -   **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
