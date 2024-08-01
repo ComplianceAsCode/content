@@ -22,7 +22,7 @@ fi
 if ! grep -Pz \
     "auth\s*required\s*pam_lastlog\.so[^#]*inactive=35[\s\S]*\n\s*auth\s*sufficient\s*pam_unix\.so"\
     "$PAM_FILE_PATH"  ; then
-    readarray -t pam_lastlog_lines <<< $(grep -oP '^\s*auth.*pam_lastlog\.so[^#]*inactive=35.*' $PAM_FILE_PATH)
+    readarray -t pam_lastlog_lines <<< "$(grep -oP '^\s*auth.*pam_lastlog\.so[^#]*inactive=35.*' $PAM_FILE_PATH)"
     sed -i "/^\s*auth.*pam_lastlog\.so[^#]*inactive=35.*/d" "$PAM_FILE_PATH"
     for line in "${pam_lastlog_lines[@]}"; do
         sed -i "/^\s*auth.*pam_unix\.so.*/i$line" "$PAM_FILE_PATH"
