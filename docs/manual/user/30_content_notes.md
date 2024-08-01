@@ -21,6 +21,7 @@ Below is list of products that have been removed from the project.
 | Red Hat OpenStack Platform 7                 | August 5, 2018     | [content 0.1.41](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.41) |
 | SUSE Enterprise Linux 11                     | March 31, 2019     | [content 0.1.52](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52) |
 | Ubuntu 14.04                                 | April 30, 2019     | [content 0.1.52](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.52) |
+| UnionTech OS Server 20                       | -                  | [content 0.1.74](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.74) |
 | Webmin                                       | -                  | [content 0.1.38](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.38) |
 | Wind River Linux 1019                        | -                  | [content 0.1.63](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.63) |
 | Wind River Linux 8                           | -                  | [content 0.1.63](https://github.com/ComplianceAsCode/content/releases/tag/v0.1.63) |
