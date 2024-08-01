@@ -338,9 +338,10 @@ def get_virt_install_command(data):
 
 
 def run_virt_install(data, command):
+    print("\nThis is the resulting for the VM installation:")
+    print(shlex.join(command))
+
     if data.dry:
-        print("\nThe following command would be used for the VM installation:")
-        print(shlex.join(command))
         return
 
     subprocess.call(command)
@@ -348,6 +349,8 @@ def run_virt_install(data, command):
         subprocess.call(["unbuffer", "virsh", "console", data.domain])
         wait_vm_not_running(data.domain)
         subprocess.call(["virsh", "start", data.domain])
+
+    give_info(data)
 
 
 def give_info(data):
@@ -408,7 +411,6 @@ def main():
     handle_rest(data)
     command = get_virt_install_command(data)
     run_virt_install(data, command)
-    give_info(data)
 
 
 if __name__ == "__main__":
