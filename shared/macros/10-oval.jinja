@@ -1053,6 +1053,10 @@ datatype="{{{ datatype }}}" version="1">
 :type missing_parameter_pass: bool
 :param config_is_distributed: Is the param in /etc/sshd_config.d vs just /etc/ssh/sshd_config
 :type config_is_distributed: bool
+:param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
+:type xccdf_variable: str
+:param datatype: a data type of the value
+:type datatype: str
 
 #}}
 {{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable="", datatype="") -%}}
