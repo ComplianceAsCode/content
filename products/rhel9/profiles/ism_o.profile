@@ -101,7 +101,7 @@ selections:
 
   ## Events to be logged
   ## Identifiers 0580 / 0584 / 0582 / 0585 / 0586 / 0846 / 0957
-  - display_login_attempts
+  - sshd_print_last_log
   - sebool_auditadm_exec_content
   - audit_rules_privileged_commands
   - audit_rules_session_events
