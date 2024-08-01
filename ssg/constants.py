@@ -282,7 +282,7 @@ REFERENCES = dict(
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al",
+                       "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro"]
 
 MULTI_PLATFORM_MAPPING = {
@@ -419,7 +419,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
-    'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'openeuler': 'openEuler',
