@@ -158,18 +158,30 @@ class OVALDocument(OVALContainer):
 
         root = self._get_oval_definition_el()
         root.append(self._get_generator_el())
-        root.append(
-            self._get_component_el(
-                "definitions", self.definitions, definitions_selection
+        if definitions_selection:
+            root.append(
+                self._get_component_el(
+                    "definitions", self.definitions, definitions_selection)
             )
-        )
-        root.append(self._get_component_el("tests", self.tests, tests_selection))
-        root.append(self._get_component_el("objects", self.objects, objects_selection))
+        if tests_selection:
+            root.append(
+                self._get_component_el(
+                    "tests", self.tests, tests_selection)
+            )
+        if objects_selection:
+            root.append(
+                self._get_component_el(
+                    "objects", self.objects, objects_selection)
+            )
         if states_selection:
-            root.append(self._get_component_el("states", self.states, states_selection))
+            root.append(
+                self._get_component_el(
+                    "states", self.states, states_selection)
+            )
         if variables_selection:
             root.append(
-                self._get_component_el("variables", self.variables, variables_selection)
+                self._get_component_el(
+                    "variables", self.variables, variables_selection)
             )
         return root
 
