@@ -22,7 +22,7 @@
   block:
     - name: '{{{ rule_title }}} - Collect NetworkManager connections names'
       ansible.builtin.shell:
-        cmd: nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }'
+        cmd: nmcli -g UUID,TYPE con | grep -v loopback | awk -F ':' '{ print $1 }'
       register: result_nmcli_cmd_connections_names
       changed_when: false
 
