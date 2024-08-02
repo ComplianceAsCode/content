@@ -10,7 +10,7 @@ systemctl start firewalld NetworkManager
 firewall-cmd --zone=work --add-service=ssh
 
 # Collect all NetworkManager connections names.
-readarray -t nm_connections < <(nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }')
+readarray -t nm_connections < <(nmcli -g UUID,TYPE con | grep -v loopback | awk -F ':' '{ print $1 }')
 
 # If the connection is already assigned to a firewalld zone, removes the assignment.
 # This will not change connections which are not assigned to any firewalld zone.
