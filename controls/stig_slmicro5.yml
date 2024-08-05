@@ -64,8 +64,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must restrict access to the kernel message buffer.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_kernel_dmesg_restrict
+      status: automated
     
     - id: SLEM-05-213015
       levels:
