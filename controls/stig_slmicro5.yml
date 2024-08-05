@@ -483,8 +483,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must be configured to use TCP syncookies.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_tcp_syncookies
+      status: automated
     
     - id: SLEM-05-254010
       levels:
