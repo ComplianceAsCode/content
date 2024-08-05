@@ -17,21 +17,21 @@ ocil_clause: "the Kube Descheduler operator is not installed"
 
 ocil: |-
     To check if the Kube Descheduler Operator is installed, run the following command:
-    <pre>oc get sub -n openshift-kube-descheduler-operator cluster-kube-descheduler-operator -ojsonpath='{.status.installedCSV}'</pre>
-    the output should return the version of the CSV that represents the installed
-    operator.
+    <pre>oc get sub --all-namespaces | grep cluster-kube-descheduler-operator</pre>
+    the output should return at least one entry that represents the installed operator.
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/openshift-kube-descheduler-operator/subscriptions/cluster-kube-descheduler-operator") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/subscriptions") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: '/apis/operators.coreos.com/v1alpha1/namespaces/openshift-kube-descheduler-operator/subscriptions/cluster-kube-descheduler-operator'
-    yamlpath: ".status.installedCSV"
-    check_existence: "only_one_exists"
+    filepath: '/apis/operators.coreos.com/v1alpha1/subscriptions'
+    yamlpath: ".items[:].status.installedCSV"
+    check_existence: "at_least_one_exists"
     values:
     - value: "clusterkubedescheduleroperator.*"
       operation: "pattern match"
+      entity_check: "at least one"
