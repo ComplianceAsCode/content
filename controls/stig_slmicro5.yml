@@ -90,8 +90,9 @@ controls:
       title:
           SLEM 5 must implement kptr-restrict to prevent the leaking of internal kernel
           addresses.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_kernel_kptr_restrict
+      status: automated
     
     - id: SLEM-05-214010
       levels:
