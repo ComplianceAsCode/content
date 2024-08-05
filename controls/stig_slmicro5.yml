@@ -507,8 +507,9 @@ controls:
       title:
           SLEM 5 must not forward Internet Protocol version 6 (IPv6) source-routed
           packets by default.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
     
     - id: SLEM-05-254020
       levels:
