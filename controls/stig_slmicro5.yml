@@ -81,8 +81,9 @@ controls:
       title:
           Address space layout randomization (ASLR) must be implemented by SLEM 5 to
           protect memory from unauthorized code execution.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_kernel_randomize_va_space
+      status: automated
     
     - id: SLEM-05-213025
       levels:
