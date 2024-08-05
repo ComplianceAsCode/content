@@ -13,6 +13,9 @@ def preprocess(data, lang):
     else:
         data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
 
+    if 'is_substring' not in data:
+        data["is_substring"] = "false"
+
     if lang == "oval":
         # escape dot, this is used in oval regex
         data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
