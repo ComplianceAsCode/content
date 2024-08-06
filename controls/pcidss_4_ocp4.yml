@@ -3090,7 +3090,7 @@ controls:
       promptly.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 10.7.1
       title: 'Additional requirement for service providers only: Failures of critical security
@@ -3108,7 +3108,7 @@ controls:
         - Segmentation controls (if used).
       levels:
         - base
-      status: pending
+      status: not applicable
 
     - id: 10.7.2
       title: Failures of critical security control systems are detected, alerted, and addressed
@@ -3128,8 +3128,10 @@ controls:
         - Automated security testing tools (if used).
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        - alert_receiver_configured
+        - audit_error_alert_exists
 
     - id: 10.7.3
       title: Failures of any critical security controls systems are responded to restore security
@@ -3147,7 +3149,7 @@ controls:
         - Resuming monitoring of security controls.
       levels:
         - base
-      status: pending
+      status: manual
 
   - id: '11.1'
     title: Processes and mechanisms for regularly testing security of systems and networks are
