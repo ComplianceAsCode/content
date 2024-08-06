@@ -3021,7 +3021,7 @@ controls:
     title: Time-synchronization mechanisms support consistent time settings across all systems.
     levels:
       - base
-    status: pending
+    status: planned
     controls:
     - id: 10.6.1
       title: System clocks and time are synchronized using time-synchronization technology.
@@ -3031,10 +3031,11 @@ controls:
         Requirements 6.3.1 and 6.3.3.
       levels:
         - base
-      status: pending
+      status: inherently met
       notes: |-
-        Maybe it is possible to optmize some similar rules related to ntp.
-      rules: []
+        By default OpenShift uses a public Network Time Protocol (NTP) server.
+        However, additional configuration is nedded to use a local enterprise NTP server,
+        or in disconnected environments.
 
     - id: 10.6.2
       title: Systems are configured to the correct and consistent time.
@@ -3050,11 +3051,20 @@ controls:
         - Internal systems receive time information only from designated central time server(s).
       levels:
         - base
-      status: pending
+      status: planned
       notes: |-
-        The selected rules might need updates in order to restrict their platform applicability
-        to avoid conflicts.
+        OpenShift is configured to use a public pool.ntp..org which is good and reliable, but
+        ultimatlely is not enterprise grade.
+        The notion of central time server implies that an exclusive NTP server is deployed to
+        serve the cluster.
+
+        NTP configuration is done at the node level, excpept when using Precison Time Procotol
+        (PTP), for which PTP Operator can be used. PTP can only be used on bare metal deployments.
+        https://docs.openshift.com/container-platform/latest/networking/ptp/about-ptp.html
       rules: []
+      related_rules:
+        - var_multiple_time_servers=generic
+        - chronyd_specify_remote_server
 
     - id: 10.6.3
       title: Time synchronization settings and data are protected.
@@ -3063,8 +3073,17 @@ controls:
         - Any changes to time settings on critical systems are logged, monitored, and reviewed.
       levels:
         - base
-      status: pending
+      status: planned
+      notes: |-
+        As NTP is configured directly on the node the audit should also be configured there.
       rules: []
+      related_rules:
+        - audit_rules_time_watch_localtime
+        - audit_rules_time_settimeofday
+        - audit_rules_time_clock_settime
+        - audit_rules_time_stime
+        - audit_rules_time_adjtimex
+        - chronyd_run_as_chrony_user
 
   - id: '10.7'
     title: Failures of critical security control systems are detected, reported, and responded to
