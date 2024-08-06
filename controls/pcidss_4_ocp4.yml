@@ -2998,7 +2998,7 @@ controls:
     title: Audit log history is retained and available for analysis.
     levels:
       - base
-    status: pending
+    status: supported
     controls:
     - id: 10.5.1
       title: Retain audit log history for at least 12 months, with at least the most recent three
@@ -3008,10 +3008,13 @@ controls:
         are retained for at least 12 months.
       levels:
         - base
-      status: pending
+      status: supported
       notes: |-
-        It is not simple to ensure 12 months history is present in each system but the rules in
-        this requirement ensures the logs are not lost without administrators awareness.
+        Log retention in OpenShift is not time based, the default configuration rotates 10 log
+        files of 100 MB each, allowing up to 1GB of retention.
+
+        To implement time based audit log retention configure log forwarding to a third party
+        storage, for example Elasticsearch or LokiStack.
       rules: []
 
   - id: '10.6'
