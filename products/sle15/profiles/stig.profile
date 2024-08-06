@@ -59,7 +59,6 @@ selections:
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
     - var_password_pam_tally2=3
-    - accounts_password_pam_unix_remember
     - accounts_tmout
     - accounts_umask_etc_login_defs
     - accounts_user_dot_no_world_writable_programs

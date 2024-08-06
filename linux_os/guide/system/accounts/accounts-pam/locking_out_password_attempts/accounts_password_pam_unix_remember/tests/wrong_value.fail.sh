@@ -3,7 +3,7 @@
 # variables = var_password_pam_unix_remember=5
 
 remember_cnt=3
-{{% if product in [ "sle12", "sle15" ] %}}
+{{% if "sle12" in product %}}
 for auth_file in common-password password-auth
 {{% else %}}
 for auth_file in system-auth password-auth
