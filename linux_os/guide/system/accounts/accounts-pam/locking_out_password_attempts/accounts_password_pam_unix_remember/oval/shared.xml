@@ -1,4 +1,4 @@
-{{% if product in [ "sle12", "sle15" ] or "debian" in product or "ubuntu" in product %}}
+{{% if "sle12" in product or "debian" in product or "ubuntu" in product %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}

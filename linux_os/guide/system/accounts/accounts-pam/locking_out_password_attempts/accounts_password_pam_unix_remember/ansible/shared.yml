@@ -13,7 +13,7 @@
 {{% set module='pam_unix.so' %}}
 {{% set option='remember' %}}
 {{% set value='{{ var_password_pam_unix_remember }}' %}}
-{{% elif product in [ "sle12", "sle15" ] %}}
+{{% elif "sle12" in product %}}
 {{% set pam_file='/etc/pam.d/common-password' %}}
 {{% else %}}
 {{% set pam_file='/etc/pam.d/system-auth' %}}

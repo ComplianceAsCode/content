@@ -2,7 +2,7 @@
 
 {{{ bash_instantiate_variables("var_password_pam_unix_remember") }}}
 
-{{% if "debian" in product or "ubuntu" in product or product in ["sle12", "sle15" ] %}}
+{{% if "debian" in product or "ubuntu" in product or "sle12" in product %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
