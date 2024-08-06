@@ -17,20 +17,20 @@ ocil_clause: "The LifecycleAndUtilization profile for the Kube Descheduler opera
 
 ocil: |-
     Run the following command to edit the KubeDescheduler object:
-    <pre>$ oc edit kubedeschedulers.operator.openshift.io cluster -n openshift-kube-descheduler-operator </pre>
+    <pre>$ oc get kubedeschedulers.operator.openshift.io --all-namespaces </pre>
     Make sure the LifecycleAndUtilization profile is listed under .spec.profiles and the correct time between descheduler runs is set under .spec.deschedulingIntervalSeconds
 
-{{% set jqfilter = '[if (any(.spec.profiles[]; . =="LifecycleAndUtilization")) == true and ((.spec.deschedulingIntervalSeconds &lt;= {{.kube_descheduler_interval}}) == true) then true else false end]' %}}
+{{% set jqfilter = '[if (any(.items[].spec.profiles[]; . =="LifecycleAndUtilization")) == true and ((.items[].spec.deschedulingIntervalSeconds &lt;= {{.kube_descheduler_interval}}) == true) then true else false end]' %}}
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/operator.openshift.io/v1/namespaces/openshift-kube-descheduler-operator/kubedeschedulers/cluster': jqfilter}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/operator.openshift.io/v1/kubedeschedulers': jqfilter}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: {{{ openshift_filtered_path('/apis/operator.openshift.io/v1/namespaces/openshift-kube-descheduler-operator/kubedeschedulers/cluster', jqfilter) }}}
+    filepath: {{{ openshift_filtered_path('/apis/operator.openshift.io/v1/kubedeschedulers', jqfilter) }}}
     yamlpath: "[:]"
     check_existence: "all_exist"
     entity_check: "all"
