@@ -2864,7 +2864,7 @@ controls:
     title: Audit logs are protected from destruction and unauthorized modifications.
     levels:
       - base
-    status: pending
+    status: partial
     controls:
     - id: 10.3.1
       title: Read access to audit logs files is limited to those with a job-related need.
@@ -2872,8 +2872,13 @@ controls:
         Stored activity records cannot be accessed by unauthorized personnel.
       levels:
         - base
-      status: pending
-      rules: []
+      status: manual
+      notes: |-
+        Access to audit logs is limited to the cluster-admin role. Ensure that only those
+        user with a job-related need have the cluster-admin role.
+      rules:
+        # This rule doesn't have an automated check
+        - rbac_limit_cluster_admin
 
     - id: 10.3.2
       title: Audit log files are protected to prevent modifications by individuals.
@@ -2881,8 +2886,25 @@ controls:
         Stored activity records cannot be modified by personnel.
       levels:
         - base
-      status: pending
-      rules: []
+      status: planned
+      notes: >-
+        Limited access to the audit trails on OpenShift hosts provides minimal protection from
+        unauthorized modification.
+        Use of an external log collector or SIEM solution may provide improved protections against
+        unauthorized modifications by adding additional features such as file integrity monitoring,
+        digital signing, or Write Once, Read Many (WORM) storage.
+      levels:
+      - base
+      rules:
+        - directory_permissions_var_log_kube_audit
+        - directory_permissions_var_log_oauth_audit
+        - directory_permissions_var_log_ocp_audit
+        - file_ownership_var_log_kube_audit
+        - file_ownership_var_log_oauth_audit
+        - file_ownership_var_log_ocp_audit
+        - file_permissions_var_log_kube_audit
+        - file_permissions_var_log_oauth_audit
+        - file_permissions_var_log_ocp_audit
 
     - id: 10.3.3
       title: Audit log files, including those for external-facing technologies, are promptly
@@ -2893,7 +2915,7 @@ controls:
         unauthorized modification.
       levels:
         - base
-      status: pending
+      status: manual
       notes: |-
         Although the technologies in general allow to send logs to a centralized server, some
         parameters for this configuration are specific to each site policy and therefore the
@@ -2907,8 +2929,10 @@ controls:
         Stored activity records cannot be modified without an alert being generated.
       levels:
         - base
-      status: pending
-      rules: []
+      status: partial
+      rules:
+        # TODO: Add FIO config to allow /var/log/... to extend in size but monitor perms.
+        - file_integrity_exists
 
   - id: '10.4'
     title: Audit logs are reviewed to identify anomalies or suspicious activity.
