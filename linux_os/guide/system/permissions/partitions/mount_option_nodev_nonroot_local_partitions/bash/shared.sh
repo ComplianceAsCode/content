@@ -23,3 +23,6 @@ for partition_record in "${partitions_records[@]}"; do
         {{{ bash_ensure_partition_is_mounted("$mount_point") | indent(8)}}}
     fi
 done
+
+# Remediate unmounted /etc/fstab entries
+sed -i -E '/nodev/! s;^\s*(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(\S+)(.*)$;\1 \2 \3 \4,nodev \5;' /etc/fstab
