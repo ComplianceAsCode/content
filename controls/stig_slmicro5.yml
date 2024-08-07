@@ -1732,8 +1732,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "chown", "fchown",
           "fchownat", and "lchown" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_lchown
+      status: automated
     
     - id: SLEM-05-654160
       levels:
