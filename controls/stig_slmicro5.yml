@@ -1696,8 +1696,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all account creations, modifications,
           disabling, and termination events that affect /etc/security/opasswd.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_usergroup_modification_opasswd
+      status: automated
     
     - id: SLEM-05-654140
       levels:
