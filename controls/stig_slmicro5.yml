@@ -1715,8 +1715,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all account creations, modifications,
           disabling, and termination events that affect /etc/shadow.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_usergroup_modification_shadow
+      status: automated
     
     - id: SLEM-05-654150
       levels:
