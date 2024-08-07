@@ -1778,8 +1778,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "setxattr", "fsetxattr",
           "lsetxattr", "removexattr", "fremovexattr", and "lremovexattr" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_fremovexattr
+      status: automated
     
     - id: SLEM-05-654185
       levels:
