@@ -3034,7 +3034,7 @@ controls:
       status: inherently met
       notes: |-
         By default OpenShift uses a public Network Time Protocol (NTP) server.
-        However, additional configuration is nedded to use a local enterprise NTP server,
+        However, additional configuration is needed to use a local enterprise NTP server,
         or in disconnected environments.
 
     - id: 10.6.2
@@ -3053,12 +3053,12 @@ controls:
         - base
       status: planned
       notes: |-
-        OpenShift is configured to use a public pool.ntp..org which is good and reliable, but
-        ultimatlely is not enterprise grade.
+        OpenShift is configured to use a public ntppool.org which is good and reliable, but
+        ultimately is not enterprise grade.
         The notion of central time server implies that an exclusive NTP server is deployed to
         serve the cluster.
 
-        NTP configuration is done at the node level, excpept when using Precison Time Procotol
+        NTP configuration is done at the node level, except when using Precision Time Protocol
         (PTP), for which PTP Operator can be used. PTP can only be used on bare metal deployments.
         https://docs.openshift.com/container-platform/latest/networking/ptp/about-ptp.html
       rules: []
