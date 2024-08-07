@@ -1723,8 +1723,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "chmod", "fchmod"
           and "fchmodat" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_fchmod
+      status: automated
     
     - id: SLEM-05-654155
       levels:
