@@ -1789,8 +1789,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "umount" system call.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_umount2
+      status: automated
     
     - id: SLEM-05-654190
       levels:
