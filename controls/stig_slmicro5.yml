@@ -1686,8 +1686,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all account creations, modifications,
           disabling, and termination events that affect /etc/group.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_usergroup_modification_group
+      status: automated
     
     - id: SLEM-05-654135
       levels:
