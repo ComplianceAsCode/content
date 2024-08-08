@@ -26,9 +26,6 @@ ocil: |-
     filter will return at least one 'true'. Run the following jq query to identify the non-compliant scansettings objects:
     <pre>oc get scansettings -ojson | jq -r '[.items[] | select(.autoApplyRemediation != "" or .autoApplyRemediation != null) | .metadata.name]'</pre>
 
-references:
-  bsi: APP.4.4.A13
-
 severity: medium
 
 warnings:
