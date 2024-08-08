@@ -418,14 +418,14 @@ macro(ssg_build_xml_final PRODUCT LANGUAGE)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-${LANGUAGE}.xml"
         )
     else()
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
-            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-${PRODUCT}-xccdf-oval-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-${LANGUAGE}.xml"
         )
     endif()

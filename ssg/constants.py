@@ -61,7 +61,6 @@ product_directories = [
     'rhv4',
     'sle12', 'sle15', 'slmicro5',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004', 'ubuntu2204',
-    'uos20',
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(
@@ -232,7 +231,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
     "Ubuntu 22.04": "ubuntu2204",
-    "UnionTech OS Server 20": "uos20",
     "OpenEmbedded": "openembedded",
     "Not Applicable": "example",
 }
@@ -286,7 +284,7 @@ REFERENCES = dict(
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler", "kylin",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux", "uos", "anolis", "openembedded", "al",
+                       "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro"]
 
 MULTI_PLATFORM_MAPPING = {
@@ -307,7 +305,6 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_slmicro": ["slmicro5"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004", "ubuntu2204"],
-    "multi_platform_uos": ["uos20"],
     "multi_platform_openembedded": ["openembedded"],
     "multi_platform_al": ["al2023"],
 }
@@ -426,7 +423,6 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
-    'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'openeuler': 'openEuler',

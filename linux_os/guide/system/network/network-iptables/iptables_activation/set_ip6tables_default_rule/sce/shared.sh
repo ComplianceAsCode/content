@@ -1,5 +1,4 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
 # check-import = stdout
 
 # Pass rule if IPv6 is disabled on kernel

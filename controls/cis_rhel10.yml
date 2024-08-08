@@ -46,6 +46,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_cramfs_disabled
 
@@ -55,6 +56,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_freevxfs_disabled
 
@@ -64,6 +66,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_hfs_disabled
 
@@ -73,6 +76,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_hfsplus_disabled
 
@@ -82,6 +86,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_jffs2_disabled
 
@@ -471,8 +476,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    notes: <-
-      RHEL9 unified the paths for grub2 files.
+    notes: |-
+      There is no automated remediation for this rule and this is intentional.
+      More details in the rule description.
     rules:
       - grub2_password
     related_rules:
@@ -484,8 +490,7 @@ controls:
       - l1_server
       - l1_workstation
     status: pending
-    notes: <-
-      RHEL9 unified the paths for grub2 files.
+    notes: |-
       This requirement demands a deeper review of the rules.
     rules:
       - file_groupowner_grub2_cfg
@@ -874,6 +879,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this package when the product is out.
     rules:
       - package_ypserv_removed
     related_rules:
@@ -977,6 +983,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this package when the product is out.
     rules:
       - package_xinetd_removed
     related_rules:
@@ -988,6 +995,7 @@ controls:
       - l2_server
     status: automated
     notes: |-
+      Review the availability of xorg-x11-server-common package when the product is out.
       The rule also configures correct run level to prevent unbootable system.
     rules:
       - package_xorg-x11-server-common_removed
@@ -1038,6 +1046,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: Review the availability of this package when the product is out.
     rules:
       - package_ypbind_removed
 
@@ -1220,6 +1229,7 @@ controls:
       - l2_server
       - l2_workstation
     status: automated
+    notes: Review the availability of this module when the product is out.
     rules:
       - kernel_module_dccp_disabled
 
@@ -1513,7 +1523,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0
       The status was automated but we need to double check the approach used in this rule.
       Therefore I moved it to pending until deeper investigation.
     related_rules:
@@ -1599,8 +1608,6 @@ controls:
       - l2_server
       - l1_workstation
     status: automated
-    notes: |-
-      Introduced in CIS RHEL9 v2.0.0
     rules:
       - sshd_disable_gssapi_auth
 
@@ -2117,10 +2124,13 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
+    notes: |-
+      There's a "new" set of options in /etc/login.defs file to define the number of iterations
+      performed during the hashing process.
     rules:
       - set_password_hashing_algorithm_libuserconf
       - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=SHA512
+      - var_password_hashing_algorithm=yescrypt
       - var_password_hashing_algorithm_pam=yescrypt
 
   - id: 5.4.1.5
@@ -2172,7 +2182,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       New rule is necessary.
 
   - id: 5.4.2.4
@@ -2221,7 +2230,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       New rule is necessary.
 
   - id: 5.4.3.1
@@ -2342,7 +2350,6 @@ controls:
       - l1_workstation
     status: pending
     notes: |-
-      Introduced in CIS RHEL9 v2.0.0.
       New templated rule is necessary.
 
   - id: 6.2.2.1.4

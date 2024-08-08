@@ -286,8 +286,14 @@ controls:
       levels:
           - medium
       title: SLEM 5 library directories must be owned by root.
-      rules: []
-      status: pending
+      rules:
+        - dir_group_ownership_library_dirs
+        - dir_ownership_library_dirs
+        - dir_permissions_library_dirs
+        - file_ownership_library_dirs
+        - file_permissions_library_dirs
+        - root_permissions_syslibrary_files
+      status: automated
     
     - id: SLEM-05-232065
       levels:
@@ -1021,9 +1027,12 @@ controls:
       levels:
           - medium
       title: SLEM 5 must not allow passwords to be reused for a minimum of five generations.
-      rules: []
-      status: pending
-    
+      rules:
+        - accounts_password_pam_pwhistory_remember
+        - var_password_pam_remember_control_flag=requisite
+        - var_password_pam_remember=5
+      status: automated
+
     - id: SLEM-05-611050
       levels:
           - medium
