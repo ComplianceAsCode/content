@@ -1580,8 +1580,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all account creations, modifications,
           disabling, and termination events that affect /etc/group.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_usergroup_modification_group
+      status: automated
     
     - id: SLEM-05-654135
       levels:
@@ -1589,8 +1590,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all account creations, modifications,
           disabling, and termination events that affect /etc/security/opasswd.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_usergroup_modification_opasswd
+      status: automated
     
     - id: SLEM-05-654140
       levels:
@@ -1608,8 +1610,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all account creations, modifications,
           disabling, and termination events that affect /etc/shadow.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_usergroup_modification_shadow
+      status: automated
     
     - id: SLEM-05-654150
       levels:
@@ -1617,8 +1620,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "chmod", "fchmod"
           and "fchmodat" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_fchmod
+      status: automated
     
     - id: SLEM-05-654155
       levels:
@@ -1626,8 +1630,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "chown", "fchown",
           "fchownat", and "lchown" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_lchown
+      status: automated
     
     - id: SLEM-05-654160
       levels:
@@ -1660,8 +1665,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "mount" system call.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_media_export
+      status: automated
     
     - id: SLEM-05-654180
       levels:
@@ -1669,15 +1675,17 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "setxattr", "fsetxattr",
           "lsetxattr", "removexattr", "fremovexattr", and "lremovexattr" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_fremovexattr
+      status: automated
     
     - id: SLEM-05-654185
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of the "umount" system call.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_dac_modification_umount2
+      status: automated
     
     - id: SLEM-05-654190
       levels:
