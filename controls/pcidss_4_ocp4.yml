@@ -3268,14 +3268,14 @@ controls:
     title: Network intrusions and unexpected file changes are detected and responded to.
     levels:
       - base
-    status: pending
+    status: automated
     controls:
     - id: 11.5.1
       title: Intrusion-detection and/or intrusion-prevention techniques are used to detect and/or
         prevent intrusions into the network.
       levels:
         - base
-      status: pending
+      status: partial
       controls:
       - id: 11.5.1.1
         title: 'Additional requirement for service providers only: Intrusion-detection and/or
@@ -3290,7 +3290,7 @@ controls:
           must be fully considered during a PCI DSS assessment.
         levels:
           - base
-        status: automated
+        status: partial
         notes: |-
           The policy is not explicit about any specific solution. The solution might vary
           depending on site policies.
@@ -3301,8 +3301,12 @@ controls:
     title: A change-detection mechanism (for example, file integrity monitoring tools) is deployed.
     levels:
       - base
-    status: pending
-    rules: []
+    status: partial
+    notes: |-
+      Once configured the File Integrity Operator (FIO) can detect unexpected changes in the node
+      filesystem.
+    rules:
+      - file_integrity_exists
 
   - id: '11.6'
     title: Unauthorized changes on payment pages are detected and responded to.
