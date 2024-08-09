@@ -4,4 +4,9 @@
 # complexity = low
 # disruption = low
 
+{{% if XCCDF_VARIABLE %}}
+{{{ bash_instantiate_variables(XCCDF_VARIABLE) }}}
+{{{ bash_sshd_remediation(parameter=PARAMETER, value="$" ~ XCCDF_VARIABLE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME) -}}}
+{{% else %}}
 {{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=sshd_distributed_config, config_basename=CONFIG_BASENAME) -}}}
+{{% endif %}}

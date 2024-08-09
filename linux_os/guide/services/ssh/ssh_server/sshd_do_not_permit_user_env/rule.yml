@@ -64,6 +64,6 @@ template:
     name: sshd_lineinfile
     vars:
         parameter: PermitUserEnvironment
-        rule_id: sshd_do_not_permit_user_env
         value: 'no'
+        datatype: string
         is_default_value: 'true'

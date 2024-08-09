@@ -58,6 +58,6 @@ template:
     name: sshd_lineinfile
     vars:
         parameter: X11Forwarding
-        rule_id: sshd_disable_x11_forwarding
         value: 'no'
+        datatype: string
         is_default_value: 'true'
