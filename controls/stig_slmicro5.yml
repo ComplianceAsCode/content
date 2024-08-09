@@ -1668,8 +1668,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "delete_module" system
           call.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_kernel_module_loading_delete
+      status: automated
     
     - id: SLEM-05-654170
       levels:
