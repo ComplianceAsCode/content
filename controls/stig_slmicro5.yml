@@ -1746,8 +1746,9 @@ controls:
       title:
           SLEM 5 must audit all uses of the sudoers file and all files in the "/etc/sudoers.d/"
           directory.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_sysadmin_actions
+      status: automated
     
     - id: SLEM-05-654215
       levels:
