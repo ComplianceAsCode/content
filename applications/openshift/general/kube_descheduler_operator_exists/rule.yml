@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: Ensure that the Kube Descheduler operator is deployed
+
+description: |-
+    If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly.
+    No pod should run for more than 24 hours. The availability of the applications in the pod should be ensured.
+
+rationale: |-
+    If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly.
+
+identifiers: {}
+
+severity: medium
+
+ocil_clause: "the Kube Descheduler operator is not installed"
+
+ocil: |-
+    To check if the Kube Descheduler Operator is installed, run the following command:
+    <pre>oc get sub --all-namespaces | grep cluster-kube-descheduler-operator</pre>
+    the output should return at least one entry that represents the installed operator.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/subscriptions") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: '/apis/operators.coreos.com/v1alpha1/subscriptions'
+    yamlpath: ".items[:].status.installedCSV"
+    check_existence: "at_least_one_exists"
+    values:
+    - value: "clusterkubedescheduleroperator.*"
+      operation: "pattern match"
+      entity_check: "at least one"
