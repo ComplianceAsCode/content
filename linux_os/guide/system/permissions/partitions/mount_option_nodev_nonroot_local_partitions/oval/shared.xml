@@ -6,9 +6,11 @@
       should exist in the /dev directory on the root partition or within chroot
       jails built for system services. All other locations should not allow
       character and block devices.") }}}
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="nodev on local filesystems"
       test_ref="test_nodev_nonroot_local_partitions" negate="true" />
+      <criterion comment="nodev on local filesystems in /etc/fstab"
+      test_ref="test_nodev_nonroot_local_partitions_in_fstab" />
     </criteria>
   </definition>
   <linux:partition_test check="all" check_existence="all_exist"
@@ -18,8 +20,14 @@
     <linux:state state_ref="state_local_nodev" />
   </linux:partition_test>
   <linux:partition_object id="object_non_root_partitions" version="1">
-    <!-- look at all partitions except root -->
-    <linux:mount_point operation="pattern match">^/\w.*$</linux:mount_point>
+    <!--
+      Look at all partitions except / (root), /boot and /efi. The / is
+      excluded because nodev is allowed on / by the rule text. The /boot and
+      /efi are excluded because they are special paritions that are
+      usually handled by a systemd mount which causes troubles if the rule is
+      used in operating system installation.
+      -->
+    <linux:mount_point operation="pattern match">^/(?!boot|efi)\w.*$</linux:mount_point>
     <filter action="include">state_local_nodev</filter>
   </linux:partition_object>
   <linux:partition_state id="state_local_nodev" version="1">
@@ -28,4 +36,21 @@
     <linux:mount_options datatype="string" entity_check="all"
     operation="not equal">nodev</linux:mount_options>
   </linux:partition_state>
+
+  <ind:textfilecontent54_test check="all" version="1" check_existence="any_exist"
+    comment="nodev on local filesystems in /etc/fstab"
+    id="test_nodev_nonroot_local_partitions_in_fstab">
+    <ind:object object_ref="object_non_root_partitions_in_fstab" />
+    <ind:state state_ref="state_non_root_partitions_in_fstab" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object version="1" id="object_non_root_partitions_in_fstab">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*(?!#)(?:/dev/\S+|UUID=\S+)\s+/\w\S*\s+\S+\s+(\S+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state version="1"
+    id="state_non_root_partitions_in_fstab">
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <ind:subexpression operation="pattern match">nodev</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
