@@ -387,8 +387,9 @@ controls:
       title:
           SLEM 5 must generate error messages that provide information necessary for
           corrective actions without revealing information that could be exploited by adversaries.
-      rules: []
-      status: pending
+      rules:
+          - permissions_local_var_log
+      status: automated
     
     - id: SLEM-05-251010
       levels:
