@@ -1678,8 +1678,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "init_module" and
           "finit_module" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_kernel_module_loading_finit
+      status: automated
     
     - id: SLEM-05-654175
       levels:
