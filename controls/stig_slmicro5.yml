@@ -261,8 +261,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 SSH daemon public host key files must have mode 644 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_sshd_pub_key
+      status: automated
     
     - id: SLEM-05-232045
       levels:
