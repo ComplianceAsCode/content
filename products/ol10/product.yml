@@ -1,0 +1,48 @@
+product: ol10
+full_name: Oracle Linux 10
+type: platform
+
+families:
+  - ol
+
+major_version_ordinal: 10
+
+benchmark_id: OL-10
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+
+init_system: "systemd"
+
+dconf_gdm_dir: "local.d"
+
+faillock_path: "/var/log/faillock"
+pkg_release: ""
+pkg_version: ""
+
+aux_pkg_release: ""
+aux_pkg_version: ""
+
+# OL fingerprints below retrieved from: https://linux.oracle.com/security/gpg/#gpg
+release_key_fingerprint: ""
+auxiliary_key_fingerprint: ""
+
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ol10:
+      name: "cpe:/o:oracle:linux:10"
+      title: "Oracle Linux 10"
+      check_id: installed_OS_is_ol10
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: ''
