@@ -64,8 +64,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must restrict access to the kernel message buffer.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_kernel_dmesg_restrict
+      status: automated
     
     - id: SLEM-05-213015
       levels:
@@ -80,8 +81,9 @@ controls:
       title:
           Address space layout randomization (ASLR) must be implemented by SLEM 5 to
           protect memory from unauthorized code execution.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_kernel_randomize_va_space
+      status: automated
     
     - id: SLEM-05-213025
       levels:
@@ -89,8 +91,9 @@ controls:
       title:
           SLEM 5 must implement kptr-restrict to prevent the leaking of internal kernel
           addresses.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_kernel_kptr_restrict
+      status: automated
     
     - id: SLEM-05-214010
       levels:
@@ -421,8 +424,9 @@ controls:
       title:
           SLEM 5 must not forward Internet Protocol version 4 (IPv4) source-routed
           packets.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_source_route
+      status: automated
     
     - id: SLEM-05-253015
       levels:
@@ -430,8 +434,9 @@ controls:
       title:
           SLEM 5 must not forward Internet Protocol version 4 (IPv4) source-routed
           packets by default.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_source_route
+      status: automated
     
     - id: SLEM-05-253020
       levels:
@@ -439,8 +444,9 @@ controls:
       title:
           SLEM 5 must prevent Internet Protocol version 4 (IPv4) Internet Control Message
           Protocol (ICMP) redirect messages from being accepted.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_accept_redirects
+      status: automated
     
     - id: SLEM-05-253025
       levels:
@@ -448,8 +454,9 @@ controls:
       title:
           SLEM 5 must not allow interfaces to accept Internet Protocol version 4 (IPv4)
           Internet Control Message Protocol (ICMP) redirect messages by default.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_accept_redirects
+      status: automated
     
     - id: SLEM-05-253030
       levels:
@@ -457,8 +464,9 @@ controls:
       title:
           SLEM 5 must not send Internet Protocol version 4 (IPv4) Internet Control
           Message Protocol (ICMP) redirects.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_all_send_redirects
+      status: automated
     
     - id: SLEM-05-253035
       levels:
@@ -466,8 +474,9 @@ controls:
       title:
           SLEM 5 must not allow interfaces to send Internet Protocol version 4 (IPv4)
           Internet Control Message Protocol (ICMP) redirect messages by default.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_conf_default_send_redirects
+      status: automated
     
     - id: SLEM-05-253040
       levels:
@@ -475,15 +484,17 @@ controls:
       title:
           SLEM 5 must not be performing Internet Protocol version 4 (IPv4) packet forwarding
           unless the system is a router.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_ip_forward
+      status: automated
     
     - id: SLEM-05-253045
       levels:
           - medium
       title: SLEM 5 must be configured to use TCP syncookies.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv4_tcp_syncookies
+      status: automated
     
     - id: SLEM-05-254010
       levels:
@@ -491,8 +502,9 @@ controls:
       title:
           SLEM 5 must not forward Internet Protocol version 6 (IPv6) source-routed
           packets.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_source_route
+      status: automated
     
     - id: SLEM-05-254015
       levels:
@@ -500,8 +512,9 @@ controls:
       title:
           SLEM 5 must not forward Internet Protocol version 6 (IPv6) source-routed
           packets by default.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_source_route
+      status: automated
     
     - id: SLEM-05-254020
       levels:
@@ -509,8 +522,9 @@ controls:
       title:
           SLEM 5 must prevent Internet Protocol version 6 (IPv6) Internet Control Message
           Protocol (ICMP) redirect messages from being accepted.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_accept_redirects
+      status: automated
     
     - id: SLEM-05-254025
       levels:
@@ -518,8 +532,9 @@ controls:
       title:
           SLEM 5 must not allow interfaces to accept Internet Protocol version 6 (IPv6)
           Internet Control Message Protocol (ICMP) redirect messages by default.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_accept_redirects
+      status: automated
     
     - id: SLEM-05-254030
       levels:
@@ -527,8 +542,9 @@ controls:
       title:
           SLEM 5 must not be performing Internet Protocol version 6 (IPv6) packet forwarding
           unless the system is a router.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_all_forwarding
+      status: automated
     
     - id: SLEM-05-254035
       levels:
@@ -536,8 +552,9 @@ controls:
       title:
           SLEM 5 must not be performing Internet Protocol version 6 (IPv6) packet forwarding
           by default unless the system is a router.
-      rules: []
-      status: pending
+      rules:
+          - sysctl_net_ipv6_conf_default_forwarding
+      status: automated
     
     - id: SLEM-05-255010
       levels:
