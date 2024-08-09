@@ -1729,8 +1729,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all modifications to the "tallylog"
           file must generate an audit record.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_login_events_tallylog
+      status: automated
     
     - id: SLEM-05-654210
       levels:
