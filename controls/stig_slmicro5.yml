@@ -628,8 +628,9 @@ controls:
       title:
           SLEM 5 must implement DOD-approved encryption to protect the confidentiality
           of SSH remote connections.
-      rules: []
-      status: pending
+      rules:
+          - sshd_use_approved_ciphers_ordered_stig
+      status: automated
     
     - id: SLEM-05-255050
       levels:
