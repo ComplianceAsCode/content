@@ -910,8 +910,10 @@ controls:
       title:
           SLEM 5 must limit the number of concurrent sessions to 10 for all accounts
           and/or account types.
-      rules: []
-      status: pending
+      rules:
+          - accounts_max_concurrent_login_sessions
+          - var_accounts_max_concurrent_login_sessions=10
+      status: automated
     
     - id: SLEM-05-431010
       levels:
