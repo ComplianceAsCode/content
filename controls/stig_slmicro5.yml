@@ -1654,8 +1654,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "creat", "open", "openat",
           "open_by_handle_at", "truncate", and "ftruncate" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_unsuccessful_file_modification_open
+      status: automated
     
     - id: SLEM-05-654165
       levels:
