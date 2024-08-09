@@ -1705,8 +1705,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "unlink", "unlinkat",
           "rename", "renameat", and "rmdir" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_unsuccessful_file_modification_rename
+      status: automated
     
     - id: SLEM-05-654195
       levels:
