@@ -1720,8 +1720,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all modifications to the "lastlog"
           file.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_login_events_lastlog
+      status: automated
     
     - id: SLEM-05-654205
       levels:
