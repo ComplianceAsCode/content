@@ -1,9 +1,37 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_ubuntu
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- name: "Enable GNOME3 Login Warning Banner"
+
+{{% if 'ubuntu' in product %}}
+- name: "{{{ rule_title }}} - Uncomment banner-message-enable for Login Warning Banner"
+  ansible.builtin.lineinfile:
+      path: /etc/gdm3/greeter.dconf-defaults
+      regexp: ^(#.*)(banner-message-enable=)
+      line: \2
+      backrefs: true
+
+- name: "{{{ rule_title }}} - Set banner-message-enable to True for Login Warning Banner"
+  ansible.builtin.ini_file:
+      dest: /etc/gdm3/greeter.dconf-defaults
+      section: "org/gnome/login-screen"
+      option: banner-message-enable
+      value: "true"
+      create: yes
+      no_extra_spaces: yes
+
+- name: "{{{ rule_title }}} - Dconf Update"
+  ansible.builtin.command: dconf update
+
+- name: "{{{ rule_title }}} - Restart gdm3.service"
+  ansible.builtin.systemd:
+      name: gdm3
+      enabled: true
+      state: restarted
+{{% endif %}}
+
+- name: "{{{ rule_title }}} - Enable GNOME3 Login Warning Banner"
   ini_file:
     dest: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings"
     section: "org/gnome/login-screen"
@@ -12,12 +40,12 @@
     create: yes
     no_extra_spaces: yes
 
-- name: "Prevent user modification of GNOME banner-message-enabled"
+- name: "{{{ rule_title }}} - Prevent user modification of GNOME banner-message-enabled"
   lineinfile:
     path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
     regexp: '^/org/gnome/login-screen/banner-message-enable$'
     line: '/org/gnome/login-screen/banner-message-enable'
     create: yes
 
-- name: Dconf Update
+- name: "{{{ rule_title }}} - Dconf Update"
   command: dconf update
