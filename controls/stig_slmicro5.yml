@@ -1397,8 +1397,9 @@ controls:
           The information system security officer (ISSO) and system administrator (SA),
           at a minimum, must have mail aliases to be notified of a SLEM 5 audit processing
           failure.
-      rules: []
-      status: pending
+      rules:
+          - postfix_client_configure_mail_alias
+      status: automated
     
     - id: SLEM-05-653080
       levels:
