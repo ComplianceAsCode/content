@@ -1199,8 +1199,9 @@ controls:
           SLEM 5, for PKI-based authentication, must validate certificates by constructing
           a certification path (which includes status information) to an accepted trust
           anchor.
-      rules: []
-      status: pending
+      rules:
+          - smartcard_configure_ca
+      status: automated
     
     - id: SLEM-05-631025
       levels:
