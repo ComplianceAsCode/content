@@ -1063,8 +1063,9 @@ controls:
       title:
           SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
           only store encrypted representations of passwords.
-      rules: []
-      status: pending
+      rules:
+          - set_password_hashing_algorithm_systemauth
+      status: automated
     
     - id: SLEM-05-611055
       levels:
