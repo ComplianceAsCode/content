@@ -1097,8 +1097,10 @@ controls:
       levels:
           - medium
       title: SLEM 5 must employ user passwords with a maximum lifetime of 60 days.
-      rules: []
-      status: pending
+      rules:
+          - accounts_password_set_max_life_existing
+          - var_accounts_maximum_age_login_defs=60
+      status: automated
     
     - id: SLEM-05-611075
       levels:
