@@ -1156,8 +1156,9 @@ controls:
       title:
           SLEM 5 must have the packages required for multifactor authentication to
           be installed.
-      rules: []
-      status: pending
+      rules:
+          - install_smartcard_packages
+      status: automated
     
     - id: SLEM-05-612015
       levels:

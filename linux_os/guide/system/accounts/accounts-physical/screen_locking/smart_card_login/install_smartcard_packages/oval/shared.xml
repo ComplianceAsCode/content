@@ -1,4 +1,4 @@
-{{% if product in ["sle12"] %}}
+{{% if product in ["sle12", "slmicro5"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 {{% elif product in ["sle15"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc'] %}}
