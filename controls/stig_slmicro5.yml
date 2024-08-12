@@ -1139,8 +1139,9 @@ controls:
       title:
           SLEM 5 must be configured to create or update passwords with a minimum lifetime
           of 24 hours (one day).
-      rules: []
-      status: pending
+      rules:
+          - accounts_minimum_age_login_defs
+      status: automated
     
     - id: SLEM-05-611100
       levels:
