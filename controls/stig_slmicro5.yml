@@ -1151,8 +1151,9 @@ controls:
       title:
           SLEM 5 must be configured to create or update passwords with a maximum lifetime
           of 60 days.
-      rules: []
-      status: pending
+      rules:
+          - accounts_maximum_age_login_defs
+      status: automated
     
     - id: SLEM-05-612010
       levels:
