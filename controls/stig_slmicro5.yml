@@ -1120,8 +1120,9 @@ controls:
       title:
           SLEM 5 shadow password suite must be configured to use a sufficient number
           of hashing rounds.
-      rules: []
-      status: pending
+      rules:
+          - set_password_hashing_min_rounds_logindefs
+      status: automated
     
     - id: SLEM-05-611090
       levels:
