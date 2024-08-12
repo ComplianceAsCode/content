@@ -1088,8 +1088,10 @@ controls:
       title:
           SLEM 5 must employ user passwords with a minimum lifetime of 24 hours (one
           day).
-      rules: []
-      status: pending
+      rules:
+          - accounts_password_set_min_life_existing
+          - var_accounts_minimum_age_login_defs=1
+      status: automated
     
     - id: SLEM-05-611070
       levels:
