@@ -1406,8 +1406,9 @@ controls:
       title:
           The information system security officer (ISSO) and system administrator (SA),
           at a minimum, must be alerted of a SLEM 5 audit processing failure event.
-      rules: []
-      status: pending
+      rules:
+          - auditd_data_retention_action_mail_acct
+      status: automated
     
     - id: SLEM-05-654010
       levels:
