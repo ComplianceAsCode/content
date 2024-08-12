@@ -1328,8 +1328,9 @@ controls:
       title:
           SLEM 5 audit system must take appropriate action when the audit storage volume
           is full.
-      rules: []
-      status: pending
+      rules:
+          - auditd_data_disk_full_action
+      status: automated
     
     - id: SLEM-05-653040
       levels:
