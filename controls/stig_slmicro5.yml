@@ -380,8 +380,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must prevent unauthorized users from accessing system error messages.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_local_var_log_messages
+      status: automated
     
     - id: SLEM-05-232120
       levels:
