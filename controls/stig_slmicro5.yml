@@ -372,8 +372,9 @@ controls:
       levels:
           - medium
       title: The sticky bit must be set on all SLEM 5 world-writable directories.
-      rules: []
-      status: pending
+      rules:
+          - dir_perms_world_writable_sticky_bits
+      status: automated
     
     - id: SLEM-05-232115
       levels:
