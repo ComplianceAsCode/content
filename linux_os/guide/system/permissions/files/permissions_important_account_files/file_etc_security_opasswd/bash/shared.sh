@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 
 # Create /etc/security/opasswd if needed
 # Owner group mode root.root 0600

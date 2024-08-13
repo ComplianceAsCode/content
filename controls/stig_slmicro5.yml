@@ -1100,8 +1100,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must employ a password history file.
-      rules: []
-      status: pending
+      rules:
+          - file_etc_security_opasswd
+      status: automated
     
     - id: SLEM-05-611080
       levels:
