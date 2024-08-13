@@ -639,8 +639,9 @@ controls:
       title:
           SLEM 5 SSH daemon must be configured to only use Message Authentication Codes
           (MACs) employing FIPS 140-2/140-3 approved cryptographic hash algorithms.
-      rules: []
-      status: pending
+      rules:
+          - sshd_use_approved_macs_ordered_stig
+      status: automated
     
     - id: SLEM-05-255055
       levels:
