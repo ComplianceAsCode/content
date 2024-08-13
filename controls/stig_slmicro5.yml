@@ -601,8 +601,10 @@ controls:
       title:
           SLEM 5 must be configured so that all network connections associated with
           SSH traffic terminate after becoming unresponsive.
-      rules: []
-      status: pending
+      rules:
+          - sshd_set_keepalive
+          - var_sshd_set_keepalive=1
+      status: automated
     
     - id: SLEM-05-255035
       levels:
