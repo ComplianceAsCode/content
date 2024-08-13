@@ -656,8 +656,9 @@ controls:
       title:
           SLEM 5 SSH server must be configured to use only FIPS 140-2/140-3 validated
           key exchange algorithms.
-      rules: []
-      status: pending
+      rules:
+          - sshd_use_approved_kex_ordered_stig
+      status: automated
     
     - id: SLEM-05-255060
       levels:

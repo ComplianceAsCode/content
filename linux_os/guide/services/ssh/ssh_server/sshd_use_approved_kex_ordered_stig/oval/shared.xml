@@ -1,4 +1,4 @@
-{{% if product in ['ol8','rhel8'] %}}
+{{% if product in ['ol8', 'rhel8'] %}}
 {{% set path='/etc/crypto-policies/back-ends/opensshserver.config' %}}
 {{% set prefix_conf="^\s*CRYPTO_POLICY\s*=.*-oKexAlgorithms=" %}}
 {{% set kex_algos=["ecdh-sha2-nistp256","ecdh-sha2-nistp384",
@@ -6,7 +6,7 @@
              "diffie-hellman-group14-sha256","diffie-hellman-group16-sha512",
              "diffie-hellman-group18-sha512"] %}}
 {{% set sufix_conf="(\s.*)?'" %}}
-{{% elif product in ['ol7', 'sle12','sle15','ubuntu2004'] %}}
+{{% elif product in ['ol7', 'sle12', 'sle15', 'slmicro5', 'ubuntu2004'] %}}
 {{% set path='/etc/ssh/sshd_config' %}}
 {{% set prefix_conf="^\s*KexAlgorithms\s*" %}}
 {{% set kex_algos=["ecdh-sha2-nistp256","ecdh-sha2-nistp384","ecdh-sha2-nistp521",
@@ -26,7 +26,7 @@
         <criteria comment="sshd is not installed" operator="AND">
           <extend_definition comment="sshd is not required or requirement is unset"
             definition_ref="sshd_not_required_or_unset" />
-          {{% if product in ['sle12', 'sle15'] %}}
+          {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
           <extend_definition comment="package openssh removed"
             definition_ref="package_openssh_removed" />
           {{% else %}}
@@ -37,7 +37,7 @@
         <criteria comment="sshd is installed and configured" operator="AND">
           <extend_definition comment="sshd is required or requirement is unset"
             definition_ref="sshd_required_or_unset" />
-          {{% if product in ['sle12', 'sle15'] %}}
+          {{% if product in ['sle12', 'sle15', 'slmicro5'] %}}
           <extend_definition comment="package openssh installed"
             definition_ref="package_openssh_installed" />
           {{% else %}}
