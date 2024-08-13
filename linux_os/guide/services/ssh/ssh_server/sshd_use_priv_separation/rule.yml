@@ -46,3 +46,10 @@ ocil: |-
     following command:
     <pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
     If configured properly, output should be <tt>{{{ xccdf_value("var_sshd_priv_separation") }}}</tt>.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: UsePrivilegeSeparation
+        xccdf_variable: var_sshd_priv_separation
+        datatype: string
