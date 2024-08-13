@@ -23,10 +23,10 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", perms="-rw-------") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", perms="-rw-------") }}}
 
 platforms:
     - ocp4-master-node
