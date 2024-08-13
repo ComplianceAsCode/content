@@ -261,8 +261,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 SSH daemon public host key files must have mode 644 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_sshd_pub_key
+      status: automated
     
     - id: SLEM-05-232045
       levels:
@@ -387,8 +388,9 @@ controls:
       title:
           SLEM 5 must generate error messages that provide information necessary for
           corrective actions without revealing information that could be exploited by adversaries.
-      rules: []
-      status: pending
+      rules:
+          - permissions_local_var_log
+      status: automated
     
     - id: SLEM-05-251010
       levels:
@@ -626,8 +628,10 @@ controls:
       title:
           SLEM 5 must implement DOD-approved encryption to protect the confidentiality
           of SSH remote connections.
-      rules: []
-      status: pending
+      rules:
+          - sshd_use_approved_ciphers_ordered_stig
+          - sshd_use_approved_ciphers
+      status: automated
     
     - id: SLEM-05-255050
       levels:
@@ -908,8 +912,10 @@ controls:
       title:
           SLEM 5 must limit the number of concurrent sessions to 10 for all accounts
           and/or account types.
-      rules: []
-      status: pending
+      rules:
+          - accounts_max_concurrent_login_sessions
+          - var_accounts_max_concurrent_login_sessions=10
+      status: automated
     
     - id: SLEM-05-431010
       levels:
@@ -1652,8 +1658,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "creat", "open", "openat",
           "open_by_handle_at", "truncate", and "ftruncate" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_unsuccessful_file_modification_open
+      status: automated
     
     - id: SLEM-05-654165
       levels:
@@ -1661,8 +1668,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "delete_module" system
           call.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_kernel_module_loading_delete
+      status: automated
     
     - id: SLEM-05-654170
       levels:
@@ -1670,8 +1678,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "init_module" and
           "finit_module" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_kernel_module_loading_finit
+      status: automated
     
     - id: SLEM-05-654175
       levels:
@@ -1702,8 +1711,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all uses of the "unlink", "unlinkat",
           "rename", "renameat", and "rmdir" system calls.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_unsuccessful_file_modification_rename
+      status: automated
     
     - id: SLEM-05-654195
       levels:
@@ -1718,8 +1728,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all modifications to the "lastlog"
           file.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_login_events_lastlog
+      status: automated
     
     - id: SLEM-05-654205
       levels:
@@ -1727,8 +1738,9 @@ controls:
       title:
           SLEM 5 must generate audit records for all modifications to the "tallylog"
           file must generate an audit record.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_login_events_tallylog
+      status: automated
     
     - id: SLEM-05-654210
       levels:
@@ -1736,8 +1748,9 @@ controls:
       title:
           SLEM 5 must audit all uses of the sudoers file and all files in the "/etc/sudoers.d/"
           directory.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_sysadmin_actions
+      status: automated
     
     - id: SLEM-05-654215
       levels:
