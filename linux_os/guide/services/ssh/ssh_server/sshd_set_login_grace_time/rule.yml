@@ -37,3 +37,12 @@ ocil: |-
     <pre>LoginGraceTime {{{ xccdf_value("var_sshd_set_login_grace_time") }}}</pre>
     If the option is set to a number greater than <tt>0</tt>, then the unauthenticated session will be disconnected
     after the configured number seconds.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: LoginGraceTime
+        xccdf_variable: var_sshd_set_login_grace_time
+        datatype: int
+        backends:
+            oval: "off"
