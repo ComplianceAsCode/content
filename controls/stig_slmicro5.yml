@@ -853,8 +853,9 @@ controls:
       title:
           SLEM 5 must disable account identifiers (individuals, groups, roles, and
           devices) after 35 days of inactivity after password expiration.
-      rules: []
-      status: pending
+      rules:
+          - account_disable_post_pw_expiration
+      status: automated
     
     - id: SLEM-05-411075
       levels:
