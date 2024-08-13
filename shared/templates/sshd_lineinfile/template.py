@@ -5,8 +5,8 @@ def set_variables_for_test_scenarios(data):
     if data["datatype"] == "int":
         if not data.get("value"):
             # this implies XCCDF variable is used
-            data["wrong_value"] = 123456
-            data["correct_value"] = 0
+            data["wrong_value"] = 321
+            data["correct_value"] = 123
         else:
             data["wrong_value"] = str(int(data["value"]) + 1)
             data["correct_value"] = str(data["value"])
