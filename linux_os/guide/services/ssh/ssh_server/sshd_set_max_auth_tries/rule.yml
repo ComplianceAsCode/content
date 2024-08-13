@@ -36,3 +36,12 @@ ocil: |-
     <pre>$ sudo grep MaxAuthTries /etc/ssh/sshd_config</pre>
     If properly configured, output should be:
     <pre>MaxAuthTries {{{ xccdf_value("sshd_max_auth_tries_value") }}}</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: MaxAuthTries
+        xccdf_variable: sshd_max_auth_tries_value
+        datatype: int
+        backends:
+            oval: "off"
