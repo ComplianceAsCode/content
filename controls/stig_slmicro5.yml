@@ -225,8 +225,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands set to a mode of 755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_binary_dirs
+      status: automated
     
     - id: SLEM-05-232020
       levels:
