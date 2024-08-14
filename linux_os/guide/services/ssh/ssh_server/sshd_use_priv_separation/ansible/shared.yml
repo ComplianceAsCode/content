@@ -1,8 +1,0 @@
-# platform = multi_platform_all
-# reboot = false
-# strategy = restrict
-# complexity = low
-# disruption = low
-- (xccdf-var var_sshd_priv_separation)
-
-{{{ ansible_sshd_set(parameter="UsePrivilegeSeparation", value="{{ var_sshd_priv_separation }}") }}}

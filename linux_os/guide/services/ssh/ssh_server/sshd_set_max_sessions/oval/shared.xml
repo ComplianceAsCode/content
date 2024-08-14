@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_set_max_sessions" version="1">
+  <definition class="compliance" id="{{{rule_id}}}" version="1">
     {{{ oval_metadata("The SSH number of max sessions should be set to an
       appropriate value.") }}}
     <criteria comment="SSH is configured correctly or is not installed"
@@ -27,12 +27,17 @@
         {{% endif %}}
         <criterion comment="Check MaxSessions in /etc/ssh/sshd_config"
         test_ref="test_sshd_max_sessions" />
+        {{% if sshd_distributed_config == "true" %}}
+        <criterion comment="Check MaxSessions in /etc/ssh/sshd_config.d if any"
+        test_ref="test_sshd_set_max_sessions_config_dir" />
+        {{% endif %}}
+        <criterion comment="the configuration exists" test_ref="test_MaxSessions_present_sshd_set_max_sessions" />
       </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="maxsessions is configured" id="test_sshd_max_sessions" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+  comment="MaxSessions is configured" id="test_sshd_max_sessions" version="1">
     <ind:object object_ref="object_sshd_max_sessions" />
     <ind:state state_ref="state_maxsessions_value_upper_bound" />
     <ind:state state_ref="state_maxsessions_value_lower_bound" />
@@ -41,7 +46,39 @@
   <ind:textfilecontent54_object id="object_sshd_max_sessions" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)MaxSessions[\s]+(\d+)[\s]*(?:#.*)?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+{{% if sshd_distributed_config == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
+    comment="tests the value of MaxSessions setting in the /etc/ssh/sshd_config.d file"
+    id="test_sshd_set_max_sessions_config_dir" version="1">
+    <ind:object object_ref="obj_sshd_set_max_sessions_config_dir" />
+    <ind:state state_ref="state_maxsessions_value_upper_bound" />
+    <ind:state state_ref="state_maxsessions_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_set_max_sessions_config_dir" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)MaxSessions(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
+
+  <ind:textfilecontent54_test id="test_MaxSessions_present_sshd_set_max_sessions" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify that the value of MaxSessions is present">
+    <ind:object object_ref="obj_collection_obj_sshd_set_max_sessions" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="All confs collection" id="obj_collection_obj_sshd_set_max_sessions" version="1">
+    <set>
+      <object_reference>object_sshd_max_sessions</object_reference>
+      {{% if sshd_distributed_config == "true" %}}
+      <object_reference>obj_sshd_set_max_sessions_config_dir</object_reference>
+      {{% endif %}}
+    </set>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state comment="upper bound of MaxSessions in number of sessions"

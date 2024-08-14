@@ -53,3 +53,11 @@ warnings:
         the <tt>RhostsRSAAuthentication</tt> option has been deprecated, and the line
         <pre>RhostsRSAAuthentication no</pre> in <tt>/etc/ssh/sshd_config</tt> is not
         necessary.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: RhostsRSAAuthentication
+        value: "no"
+        datatype: string
+
