@@ -327,8 +327,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have directories that contain system commands owned by root.
-      rules: []
-      status: pending
+      rules:
+          - dir_system_commands_root_owned
+      status: automated
     
     - id: SLEM-05-232085
       levels:
