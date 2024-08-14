@@ -320,8 +320,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands group-owned by root or a system account.
-      rules: []
-      status: pending
+      rules:
+          - file_groupownership_system_commands_dirs
+      status: automated
     
     - id: SLEM-05-232080
       levels:
