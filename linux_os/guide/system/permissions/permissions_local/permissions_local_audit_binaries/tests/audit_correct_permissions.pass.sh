@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 
 current_permissions_rules=$(grep "^/usr/sbin/au" /etc/permissions.local)
 if [ ${#current_permissions_rules} -eq 0 ]
