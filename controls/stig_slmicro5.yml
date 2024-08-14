@@ -312,8 +312,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands owned by root.
-      rules: []
-      status: pending
+      rules:
+          - file_ownership_binary_dirs
+      status: automated
     
     - id: SLEM-05-232075
       levels:
