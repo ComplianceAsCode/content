@@ -11,7 +11,7 @@ description: |-
     <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
     {{% endif %}}
     By default, the database will be written to the file
-    {{% if 'ubuntu' in product or 'sle' in product or 'debian' in product %}}
+    {{% if 'ubuntu' in product or 'sle' in product or 'slmicro' in product or 'debian' in product %}}
     <tt>/var/lib/aide/aide.db.new</tt>.
     {{% else %}}
     <tt>/var/lib/aide/aide.db.new.gz</tt>.
@@ -20,7 +20,7 @@ description: |-
     <tt>{{{ aide_bin_path }}}</tt>
     (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
     The newly-generated database can be installed as follows:
-    {{% if 'ubuntu' in product or 'sle' in product or 'debian' in product %}}
+    {{% if 'ubuntu' in product or 'sle' in product or 'slmicro' in product or 'debian' in product %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db</pre>
     {{% else %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
@@ -41,6 +41,7 @@ identifiers:
     cce@rhel10: CCE-86942-0
     cce@sle12: CCE-91483-8
     cce@sle15: CCE-85787-0
+    cce@slmicro5: CCE-93710-2
 
 references:
     cis-csc: 1,11,12,13,14,15,16,2,3,5,7,8,9

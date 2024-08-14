@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 {{%- set aide_init_command = "/usr/bin/aide --init" -%}}
 {{%- set aide_stage_src = "/var/lib/aide/aide.db.new" -%}}
 {{%- set aide_stage_dest = "/var/lib/aide/aide.db" -%}}
@@ -13,7 +13,7 @@
 {{%- set aide_stage_dest = "/var/lib/aide/aide.db.gz" -%}}
 {{% endif %}}
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 - name: "{{{ rule_title }}} - Ensure Repositories Are Updated"
   ansible.builtin.command: zypper -q --no-remote ref
   failed_when: false
