@@ -8,7 +8,7 @@
   setup:
     gather_subset: mounts
 
-- name: Ensure non-root local partitions are mounted with nodev option
+- name: "{{{ rule_title }}}: Ensure non-root local partitions are mounted with nodev option"
   mount:
     path: "{{ item.mount }}"
     src: "{{ item.device }}"
@@ -20,3 +20,9 @@
     - "item.options is not search('nodev')"
   with_items:
     - "{{ ansible_facts.mounts }}"
+
+- name: "{{{ rule_title }}}: Ensure non-root local partitions are present with nodev option in /etc/fstab"
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^\s*(?!#)(/dev/\S+|UUID=\S+)\s+(/\w\S*)\s+(\S+)\s+(?!nodev)(\S+)(.*)$'
+    replace: '\1 \2 \3 \4,nodev \5'
