@@ -1259,6 +1259,7 @@ controls:
         - ingress_controller_certificate
         - ingress_controller_tls_security_profile
         - kubelet_configure_tls_min_version
+        - routes_protected_by_tls
 
       controls:
       - id: 4.2.1.1
@@ -3361,6 +3362,7 @@ controls:
       filesystem.
     rules:
       - file_integrity_exists
+      - file_integrity_notification_enabled
 
   - id: '11.6'
     title: Unauthorized changes on payment pages are detected and responded to.
