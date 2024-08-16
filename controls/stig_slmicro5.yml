@@ -108,8 +108,9 @@ controls:
       levels:
           - high
       title: The SLEM 5 tool zypper must have gpgcheck enabled.
-      rules: []
-      status: pending
+      rules:
+          - ensure_gpgcheck_globally_activated
+      status: automated
     
     - id: SLEM-05-214020
       levels:
