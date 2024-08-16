@@ -1313,7 +1313,9 @@ controls:
           SLEM 5 auditd service must notify the system administrator (SA) and information
           system security officer (ISSO) immediately when audit storage capacity is 75 percent
           full.
-      rules: []
+      rules:
+          - auditd_data_retention_space_left_percentage
+          - var_auditd_space_left_percentage=25pc
       status: pending
     
     - id: SLEM-05-653035
