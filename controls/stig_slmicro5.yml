@@ -1316,7 +1316,9 @@ controls:
       rules:
           - auditd_data_retention_space_left_percentage
           - var_auditd_space_left_percentage=25pc
-      status: pending
+          - auditd_data_retention_space_left_action
+          - var_auditd_space_left_action=email
+      status: automated
     
     - id: SLEM-05-653035
       levels:
