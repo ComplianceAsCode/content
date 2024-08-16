@@ -1719,8 +1719,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of privileged functions.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_suid_privilege_function
+      status: automated
     
     - id: SLEM-05-654200
       levels:
