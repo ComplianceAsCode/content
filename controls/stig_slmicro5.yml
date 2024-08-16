@@ -1370,8 +1370,9 @@ controls:
       levels:
           - low
       title: SLEM 5 audit event multiplexor must be configured to use Kerberos.
-      rules: []
-      status: pending
+      rules:
+          - auditd_audispd_encrypt_sent_records
+      status: automated
     
     - id: SLEM-05-653070
       levels:
