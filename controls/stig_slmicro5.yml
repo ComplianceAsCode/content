@@ -1380,8 +1380,9 @@ controls:
       title:
           Audispd must offload audit records onto a different system or media from
           SLEM 5 being audited.
-      rules: []
-      status: pending
+      rules:
+          - auditd_audispd_configure_remote_server
+      status: automated
     
     - id: SLEM-05-653075
       levels:
