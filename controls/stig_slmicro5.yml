@@ -1185,8 +1185,10 @@ controls:
       title:
           If Network Security Services (NSS) is being used by SLEM 5 it must prohibit
           the use of cached authentications after one day.
-      rules: []
-      status: pending
+      rules:
+          - sssd_memcache_timeout
+          - var_sssd_memcache_timeout=1_day
+      status: automated
     
     - id: SLEM-05-631015
       levels:
