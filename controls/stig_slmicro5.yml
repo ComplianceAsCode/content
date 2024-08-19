@@ -108,8 +108,9 @@ controls:
       levels:
           - high
       title: The SLEM 5 tool zypper must have gpgcheck enabled.
-      rules: []
-      status: pending
+      rules:
+          - ensure_gpgcheck_globally_activated
+      status: automated
     
     - id: SLEM-05-214020
       levels:
@@ -1250,8 +1251,9 @@ controls:
       title:
           Advanced Intrusion Detection Environment (AIDE) must verify the baseline
           SLEM 5 configuration at least weekly.
-      rules: []
-      status: pending
+      rules:
+          - aide_periodic_cron_checking
+      status: automated
     
     - id: SLEM-05-651035
       levels:
@@ -1313,8 +1315,12 @@ controls:
           SLEM 5 auditd service must notify the system administrator (SA) and information
           system security officer (ISSO) immediately when audit storage capacity is 75 percent
           full.
-      rules: []
-      status: pending
+      rules:
+          - auditd_data_retention_space_left_percentage
+          - var_auditd_space_left_percentage=25pc
+          - auditd_data_retention_space_left_action
+          - var_auditd_space_left_action=email
+      status: automated
     
     - id: SLEM-05-653035
       levels:
@@ -1370,8 +1376,9 @@ controls:
       levels:
           - low
       title: SLEM 5 audit event multiplexor must be configured to use Kerberos.
-      rules: []
-      status: pending
+      rules:
+          - auditd_audispd_encrypt_sent_records
+      status: automated
     
     - id: SLEM-05-653070
       levels:
@@ -1379,8 +1386,9 @@ controls:
       title:
           Audispd must offload audit records onto a different system or media from
           SLEM 5 being audited.
-      rules: []
-      status: pending
+      rules:
+          - auditd_audispd_configure_remote_server
+      status: automated
     
     - id: SLEM-05-653075
       levels:
@@ -1719,8 +1727,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for all uses of privileged functions.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_suid_privilege_function
+      status: automated
     
     - id: SLEM-05-654200
       levels:
