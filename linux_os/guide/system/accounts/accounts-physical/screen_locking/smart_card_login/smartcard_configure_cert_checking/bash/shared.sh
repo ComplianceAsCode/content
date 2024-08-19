@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_sle
+# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_sle,multi_platform_slmicro
 
 {{{ bash_package_install("pam_pkcs11") }}}
 
