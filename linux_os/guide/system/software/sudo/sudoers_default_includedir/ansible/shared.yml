@@ -4,9 +4,9 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_only_lineinfile(msg='Ensure sudo only has the default includedir', line_regex='^#includedir.*$', path='/etc/sudoers', new_line='#includedir /etc/sudoers.d') }}}
-{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t include other non-default file', regex='^[#@]include[\s]+.*$', path='/etc/sudoers', state='absent') }}}
-{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t have non-default includedir', regex='^@includedir[\s]+.*$', path='/etc/sudoers', state='absent') }}}
+{{{ ansible_only_lineinfile(msg='Ensure sudo only has the default includedir', line_regex='^#includedir.*$', insensitive=false, path='/etc/sudoers', new_line='#includedir /etc/sudoers.d') }}}
+{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t include other non-default file', regex='^[#@]include[\s]+.*$', insensitive=false, path='/etc/sudoers', state='absent') }}}
+{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t have non-default includedir', regex='^@includedir[\s]+.*$', insensitive=false, path='/etc/sudoers', state='absent') }}}
 - name: "Find out if /etc/sudoers.d/* files contain file or directory includes"
   find:
     path: "/etc/sudoers.d"

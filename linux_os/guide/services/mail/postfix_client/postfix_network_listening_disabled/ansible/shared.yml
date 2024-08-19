@@ -9,4 +9,4 @@
   package_facts:
     manager: auto
 
-{{{ ansible_lineinfile(msg='Make changes to Postfix configuration file', path='/etc/postfix/main.cf', regex='^inet_interfaces\s*=\s.*', new_line='inet_interfaces = {{ var_postfix_inet_interfaces }}', create='no', state='present', insert_after='^inet_interfaces\s*=\s.*', when='"postfix" in ansible_facts.packages') }}}
+{{{ ansible_lineinfile(msg='Make changes to Postfix configuration file', path='/etc/postfix/main.cf', regex='^inet_interfaces\s*=\s.*', insensitive='false', new_line='inet_interfaces = {{ var_postfix_inet_interfaces }}', create='no', state='present', insert_after='^inet_interfaces\s*=\s.*', when='"postfix" in ansible_facts.packages') }}}

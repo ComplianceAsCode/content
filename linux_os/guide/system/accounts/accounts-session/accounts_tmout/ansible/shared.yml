@@ -27,5 +27,5 @@
     replace: typeset -xr TMOUT={{ var_accounts_tmout }}
   register: profile_replaced
 
-{{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", regex='TMOUT=', new_line='typeset -xr TMOUT={{ var_accounts_tmout }}',
+{{{ ansible_lineinfile("", "/etc/profile.d/tmout.sh", regex='TMOUT=', insensitive=false, new_line='typeset -xr TMOUT={{ var_accounts_tmout }}',
     create='yes', state='present', when="profile_replaced is defined and not profile_replaced.changed" + " and bashrc_replaced is defined and not bashrc_replaced.changed" if product in ["ol7"]) }}}

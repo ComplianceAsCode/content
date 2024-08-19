@@ -4,4 +4,4 @@
 # strategy = configure
 # disruption = low
 
-{{{ ansible_lineinfile(msg='Allow HID devices', path='/etc/usbguard/rules.conf', regex='', new_line='allow with-interface match-all { 03:*:* }', create='yes', state='present') }}}
+{{{ ansible_lineinfile(msg='Allow HID devices', path='/etc/usbguard/rules.conf', regex='', insensitive=false, new_line='allow with-interface match-all { 03:*:* }', create='yes', state='present') }}}

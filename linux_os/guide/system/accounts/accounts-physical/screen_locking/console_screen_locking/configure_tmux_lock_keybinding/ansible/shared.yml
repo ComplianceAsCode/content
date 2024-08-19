@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-{{{ ansible_only_lineinfile(None, "/etc/tmux.conf", "\s*bind\s+\w\s+lock-session.*$", "bind X lock-session", create="true", mode="0644") }}}
+{{{ ansible_only_lineinfile(None, "/etc/tmux.conf", "\s*bind\s+\w\s+lock-session.*$", "bind X lock-session", insensitive="false", create="true", mode="0644") }}}
