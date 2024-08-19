@@ -970,8 +970,9 @@ controls:
       title:
           SLEM 5 must reauthenticate users when changing authenticators, roles, or
           escalating privileges.
-      rules: []
-      status: pending
+      rules:
+          - sudo_require_authentication
+      status: automated
     
     - id: SLEM-05-432020
       levels:
