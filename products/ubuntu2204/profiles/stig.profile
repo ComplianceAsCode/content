@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V1R1'
+title: 'Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG) V2R1'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
