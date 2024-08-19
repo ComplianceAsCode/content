@@ -118,8 +118,9 @@ controls:
       title:
           SLEM 5 must remove all outdated software components after updated versions
           have been installed.
-      rules: []
-      status: pending
+      rules:
+          - clean_components_post_updating
+      status: automated
     
     - id: SLEM-05-215010
       levels:
