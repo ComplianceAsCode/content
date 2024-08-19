@@ -980,8 +980,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must require reauthentication when using the "sudo" command.
-      rules: []
-      status: pending
+      rules:
+          - sudo_require_reauthentication
+      status: automated
     
     - id: SLEM-05-432025
       levels:
