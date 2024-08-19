@@ -1196,8 +1196,9 @@ controls:
       title:
           SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
           prohibit the use of cached offline authentications after one day.
-      rules: []
-      status: pending
+      rules:
+          - sssd_offline_cred_expiration
+      status: automated
     
     - id: SLEM-05-631020
       levels:
