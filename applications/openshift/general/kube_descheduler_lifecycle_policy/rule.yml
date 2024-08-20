@@ -20,7 +20,7 @@ ocil: |-
     <pre>$ oc get kubedeschedulers.operator.openshift.io --all-namespaces </pre>
     Make sure the LifecycleAndUtilization profile is listed under .spec.profiles and the correct time between descheduler runs is set under .spec.deschedulingIntervalSeconds
 
-{{% set jqfilter = '[if (any(.items[].spec.profiles[]; . =="LifecycleAndUtilization")) == true and ((.items[].spec.deschedulingIntervalSeconds &lt;= {{.kube_descheduler_interval}}) == true) then true else false end]' %}}
+{{% set jqfilter = '[ .items[].spec | if any(.profiles[]; . =="LifecycleAndUtilization") and .deschedulingIntervalSeconds &lt;= {{.kube_descheduler_interval}} then true else false end]' %}}
 
 warnings:
 - general: |-
@@ -37,3 +37,4 @@ template:
     values:
       - value: "true"
         operation: "equals"
+        entity_check: "at least one"
