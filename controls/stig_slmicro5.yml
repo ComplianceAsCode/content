@@ -379,15 +379,17 @@ controls:
       levels:
           - medium
       title: The sticky bit must be set on all SLEM 5 world-writable directories.
-      rules: []
-      status: pending
+      rules:
+          - dir_perms_world_writable_sticky_bits
+      status: automated
     
     - id: SLEM-05-232115
       levels:
           - medium
       title: SLEM 5 must prevent unauthorized users from accessing system error messages.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_local_var_log_messages
+      status: automated
     
     - id: SLEM-05-232120
       levels:
@@ -607,8 +609,10 @@ controls:
       title:
           SLEM 5 must be configured so that all network connections associated with
           SSH traffic terminate after becoming unresponsive.
-      rules: []
-      status: pending
+      rules:
+          - sshd_set_keepalive
+          - var_sshd_set_keepalive=1
+      status: automated
     
     - id: SLEM-05-255035
       levels:
@@ -616,8 +620,10 @@ controls:
       title:
           SLEM 5 must be configured so that all network connections associated with
           SSH traffic are terminated after 10 minutes of becoming unresponsive.
-      rules: []
-      status: pending
+      rules:
+          - sshd_set_idle_timeout
+          - sshd_idle_timeout_value=10_minutes
+      status: automated
     
     - id: SLEM-05-255040
       levels:
@@ -646,8 +652,10 @@ controls:
       title:
           SLEM 5 SSH daemon must be configured to only use Message Authentication Codes
           (MACs) employing FIPS 140-2/140-3 approved cryptographic hash algorithms.
-      rules: []
-      status: pending
+      rules:
+          - sshd_use_approved_macs_ordered_stig
+          - sshd_use_approved_macs
+      status: automated
     
     - id: SLEM-05-255055
       levels:
@@ -655,8 +663,9 @@ controls:
       title:
           SLEM 5 SSH server must be configured to use only FIPS 140-2/140-3 validated
           key exchange algorithms.
-      rules: []
-      status: pending
+      rules:
+          - sshd_use_approved_kex_ordered_stig
+      status: automated
     
     - id: SLEM-05-255060
       levels:
@@ -861,8 +870,9 @@ controls:
       title:
           SLEM 5 must disable account identifiers (individuals, groups, roles, and
           devices) after 35 days of inactivity after password expiration.
-      rules: []
-      status: pending
+      rules:
+          - account_disable_post_pw_expiration
+      status: automated
     
     - id: SLEM-05-411075
       levels:
@@ -1117,8 +1127,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must employ a password history file.
-      rules: []
-      status: pending
+      rules:
+          - file_etc_security_opasswd
+      status: automated
     
     - id: SLEM-05-611080
       levels:
@@ -1145,8 +1156,10 @@ controls:
       title:
           SLEM 5 must employ FIPS 140-2/140-3 approved cryptographic hashing algorithm
           for system authentication (login.defs).
-      rules: []
-      status: pending
+      rules:
+          - set_password_hashing_algorithm_logindefs
+          - var_password_hashing_algorithm=SHA512
+      status: automated
     
     - id: SLEM-05-611095
       levels:

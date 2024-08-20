@@ -1,4 +1,4 @@
-# platform = Oracle Linux 7,multi_platform_sle,multi_platform_ubuntu
+# platform = Oracle Linux 7,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 
 {{%- if 'ubuntu' in product %}}
 {{{ bash_instantiate_variables('sshd_approved_macs') }}}

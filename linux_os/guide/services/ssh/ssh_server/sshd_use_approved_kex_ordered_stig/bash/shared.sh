@@ -1,4 +1,4 @@
-# platform = Oracle Linux 7,multi_platform_sle,multi_platform_ubuntu
+# platform = Oracle Linux 7,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 
 KEX_ALGOS="ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,\
 diffie-hellman-group-exchange-sha256"

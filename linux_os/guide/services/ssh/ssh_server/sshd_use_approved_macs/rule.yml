@@ -7,7 +7,7 @@ description: |-
     Limit the MACs to those hash algorithms which are FIPS-approved.
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved MACs:
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
 {{% else %}}
     <pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
@@ -43,6 +43,7 @@ identifiers:
     cce@rhel8: CCE-82198-3
     cce@sle12: CCE-83036-4
     cce@sle15: CCE-91338-4
+    cce@slmicro5: CCE-93691-4
 
 references:
     cis-csc: 1,12,13,15,16,5,8
