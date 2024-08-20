@@ -118,8 +118,9 @@ controls:
       title:
           SLEM 5 must remove all outdated software components after updated versions
           have been installed.
-      rules: []
-      status: pending
+      rules:
+          - clean_components_post_updating
+      status: automated
     
     - id: SLEM-05-215010
       levels:
@@ -225,8 +226,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands set to a mode of 755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_binary_dirs
+      status: automated
     
     - id: SLEM-05-232020
       levels:
@@ -311,22 +313,25 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands owned by root.
-      rules: []
-      status: pending
+      rules:
+          - file_ownership_binary_dirs
+      status: automated
     
     - id: SLEM-05-232075
       levels:
           - medium
       title: SLEM 5 must have system commands group-owned by root or a system account.
-      rules: []
-      status: pending
+      rules:
+          - file_groupownership_system_commands_dirs
+      status: automated
     
     - id: SLEM-05-232080
       levels:
           - medium
       title: SLEM 5 must have directories that contain system commands owned by root.
-      rules: []
-      status: pending
+      rules:
+          - dir_system_commands_root_owned
+      status: automated
     
     - id: SLEM-05-232085
       levels:
@@ -334,8 +339,9 @@ controls:
       title:
           SLEM 5 must have directories that contain system commands group-owned by
           root.
-      rules: []
-      status: pending
+      rules:
+          - dir_system_commands_group_root_owned
+      status: automated
     
     - id: SLEM-05-232090
       levels:
@@ -745,8 +751,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 wireless network adapters must be disabled unless approved and documented.
-      rules: []
-      status: pending
+      rules:
+          - wireless_disable_interfaces
+      status: automated
     
     - id: SLEM-05-291015
       levels:
@@ -980,15 +987,19 @@ controls:
       title:
           SLEM 5 must reauthenticate users when changing authenticators, roles, or
           escalating privileges.
-      rules: []
-      status: pending
+      rules:
+          - sudo_require_authentication
+          - sudo_remove_nopasswd
+          - sudo_remove_no_authenticate
+      status: automated
     
     - id: SLEM-05-432020
       levels:
           - medium
       title: SLEM 5 must require reauthentication when using the "sudo" command.
-      rules: []
-      status: pending
+      rules:
+          - sudo_require_reauthentication
+      status: automated
     
     - id: SLEM-05-432025
       levels:
@@ -1193,8 +1204,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must implement certificate status checking for multifactor authentication.
-      rules: []
-      status: pending
+      rules:
+          - smartcard_configure_cert_checking
+      status: automated
     
     - id: SLEM-05-631010
       levels:
@@ -1202,8 +1214,10 @@ controls:
       title:
           If Network Security Services (NSS) is being used by SLEM 5 it must prohibit
           the use of cached authentications after one day.
-      rules: []
-      status: pending
+      rules:
+          - sssd_memcache_timeout
+          - var_sssd_memcache_timeout=1_day
+      status: automated
     
     - id: SLEM-05-631015
       levels:
@@ -1211,8 +1225,9 @@ controls:
       title:
           SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
           prohibit the use of cached offline authentications after one day.
-      rules: []
-      status: pending
+      rules:
+          - sssd_offline_cred_expiration
+      status: automated
     
     - id: SLEM-05-631020
       levels:
@@ -1240,8 +1255,10 @@ controls:
       title:
           SLEM 5 must use a file integrity tool to verify correct operation of all
           security functions.
-      rules: []
-      status: pending
+      rules:
+          - package_aide_installed
+          - aide_build_database
+      status: automated
     
     - id: SLEM-05-651015
       levels:
@@ -1265,8 +1282,9 @@ controls:
       title:
           SLEM 5 file integrity tool must be configured to protect the integrity of
           the audit tools.
-      rules: []
-      status: pending
+      rules:
+          - aide_check_audit_tools
+      status: automated
     
     - id: SLEM-05-651030
       levels:
@@ -1384,8 +1402,9 @@ controls:
       title:
           SLEM 5 audit tools must have the proper permissions configured to protect
           against unauthorized access.
-      rules: []
-      status: pending
+      rules:
+          - permissions_local_audit_binaries
+      status: automated
     
     - id: SLEM-05-653060
       levels:
