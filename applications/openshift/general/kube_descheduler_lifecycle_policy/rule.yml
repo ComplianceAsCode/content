@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: Ensure that the LifecycleAndUtilization profile for the Kube Descheduler operator is enabled
+title: Ensure that the LifecycleAndUtilization Profile for the Kube Descheduler Operator is Enabled
 
 description: |-
     If there is an increased risk of external influences and a very high need for protection, pods should be stopped and restarted regularly.
@@ -13,14 +13,14 @@ identifiers: {}
 
 severity: medium
 
-ocil_clause: "The LifecycleAndUtilization profile for the Kube Descheduler operator is not enabled"
+ocil_clause: "The LifecycleAndUtilization profile for the Kube Descheduler operator is not enabled, the Interval is to high or mode is not set to automatic"
 
 ocil: |-
     Run the following command to edit the KubeDescheduler object:
     <pre>$ oc get kubedeschedulers.operator.openshift.io --all-namespaces </pre>
-    Make sure the LifecycleAndUtilization profile is listed under .spec.profiles and the correct time between descheduler runs is set under .spec.deschedulingIntervalSeconds
+    Make sure the LifecycleAndUtilization profile is listed under .spec.profiles and the correct time between descheduler runs is set under .spec.deschedulingIntervalSeconds. Furthermore ensure that .spec.mode is set to 'Automatic'
 
-{{% set jqfilter = '[ .items[].spec | if any(.profiles[]; . =="LifecycleAndUtilization") and .deschedulingIntervalSeconds &lt;= {{.kube_descheduler_interval}} then true else false end]' %}}
+{{% set jqfilter = '[ .items[].spec | if any(.profiles[]; . =="LifecycleAndUtilization") and .deschedulingIntervalSeconds &lt;= {{.kube_descheduler_interval}} and .mode == "Automatic" then true else false end]' %}}
 
 warnings:
 - general: |-
