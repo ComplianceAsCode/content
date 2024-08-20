@@ -706,9 +706,10 @@ controls:
       title:
           SLEM 5, for PKI-based authentication, must enforce authorized access to the
           corresponding private key.
-      rules: []
-      status: pending
-    
+      rules:
+        - ssh_private_keys_have_passcode
+      status: manual
+
     - id: SLEM-05-255090
       levels:
           - high
@@ -952,9 +953,10 @@ controls:
       title:
           SLEM 5 must prevent nonprivileged users from executing privileged functions,
           including disabling, circumventing, or altering implemented security safeguards/countermeasures.
-      rules: []
-      status: pending
-    
+      rules:
+        - selinux_user_login_roles
+      status: manual
+
     - id: SLEM-05-432010
       levels:
           - medium
@@ -1306,6 +1308,7 @@ controls:
           audit record storage facility.
       rules:
         - package_audit-audispd-plugins_installed
+        - auditd_audispd_configure_sufficiently_large_partition
       status: automated
     
     - id: SLEM-05-653030
