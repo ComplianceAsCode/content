@@ -118,8 +118,9 @@ controls:
       title:
           SLEM 5 must remove all outdated software components after updated versions
           have been installed.
-      rules: []
-      status: pending
+      rules:
+          - clean_components_post_updating
+      status: automated
     
     - id: SLEM-05-215010
       levels:
@@ -976,15 +977,19 @@ controls:
       title:
           SLEM 5 must reauthenticate users when changing authenticators, roles, or
           escalating privileges.
-      rules: []
-      status: pending
+      rules:
+          - sudo_require_authentication
+          - sudo_remove_nopasswd
+          - sudo_remove_no_authenticate
+      status: automated
     
     - id: SLEM-05-432020
       levels:
           - medium
       title: SLEM 5 must require reauthentication when using the "sudo" command.
-      rules: []
-      status: pending
+      rules:
+          - sudo_require_reauthentication
+      status: automated
     
     - id: SLEM-05-432025
       levels:
@@ -1186,8 +1191,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must implement certificate status checking for multifactor authentication.
-      rules: []
-      status: pending
+      rules:
+          - smartcard_configure_cert_checking
+      status: automated
     
     - id: SLEM-05-631010
       levels:
@@ -1195,8 +1201,10 @@ controls:
       title:
           If Network Security Services (NSS) is being used by SLEM 5 it must prohibit
           the use of cached authentications after one day.
-      rules: []
-      status: pending
+      rules:
+          - sssd_memcache_timeout
+          - var_sssd_memcache_timeout=1_day
+      status: automated
     
     - id: SLEM-05-631015
       levels:
@@ -1204,8 +1212,9 @@ controls:
       title:
           SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
           prohibit the use of cached offline authentications after one day.
-      rules: []
-      status: pending
+      rules:
+          - sssd_offline_cred_expiration
+      status: automated
     
     - id: SLEM-05-631020
       levels:
