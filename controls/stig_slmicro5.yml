@@ -225,8 +225,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands set to a mode of 755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_binary_dirs
+      status: automated
     
     - id: SLEM-05-232020
       levels:
@@ -311,22 +312,25 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have system commands owned by root.
-      rules: []
-      status: pending
+      rules:
+          - file_ownership_binary_dirs
+      status: automated
     
     - id: SLEM-05-232075
       levels:
           - medium
       title: SLEM 5 must have system commands group-owned by root or a system account.
-      rules: []
-      status: pending
+      rules:
+          - file_groupownership_system_commands_dirs
+      status: automated
     
     - id: SLEM-05-232080
       levels:
           - medium
       title: SLEM 5 must have directories that contain system commands owned by root.
-      rules: []
-      status: pending
+      rules:
+          - dir_system_commands_root_owned
+      status: automated
     
     - id: SLEM-05-232085
       levels:
@@ -334,8 +338,9 @@ controls:
       title:
           SLEM 5 must have directories that contain system commands group-owned by
           root.
-      rules: []
-      status: pending
+      rules:
+          - dir_system_commands_group_root_owned
+      status: automated
     
     - id: SLEM-05-232090
       levels:
@@ -736,8 +741,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 wireless network adapters must be disabled unless approved and documented.
-      rules: []
-      status: pending
+      rules:
+          - wireless_disable_interfaces
+      status: automated
     
     - id: SLEM-05-291015
       levels:
@@ -1227,8 +1233,10 @@ controls:
       title:
           SLEM 5 must use a file integrity tool to verify correct operation of all
           security functions.
-      rules: []
-      status: pending
+      rules:
+          - package_aide_installed
+          - aide_build_database
+      status: automated
     
     - id: SLEM-05-651015
       levels:
@@ -1252,8 +1260,9 @@ controls:
       title:
           SLEM 5 file integrity tool must be configured to protect the integrity of
           the audit tools.
-      rules: []
-      status: pending
+      rules:
+          - aide_check_audit_tools
+      status: automated
     
     - id: SLEM-05-651030
       levels:
@@ -1371,8 +1380,9 @@ controls:
       title:
           SLEM 5 audit tools must have the proper permissions configured to protect
           against unauthorized access.
-      rules: []
-      status: pending
+      rules:
+          - permissions_local_audit_binaries
+      status: automated
     
     - id: SLEM-05-653060
       levels:

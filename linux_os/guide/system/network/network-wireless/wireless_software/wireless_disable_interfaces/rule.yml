@@ -7,7 +7,7 @@ description: |-
     Deactivating wireless network interfaces should prevent normal usage of the wireless
     capability.
     <br /><br />
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     Configure the system to disable wireless network interfaces by issuing the following
     command for every active <tt>&lt;WIFI-INTERFACE&gt;</tt> in the system:
     <pre>$ sudo wicked ifdown &lt;WIFI-INTERFACE&gt;</pre>
@@ -41,6 +41,7 @@ identifiers:
     cce@rhel10: CCE-88576-4
     cce@sle12: CCE-83148-7
     cce@sle15: CCE-83286-5
+    cce@slmicro5: CCE-93704-5
 
 references:
     cis-csc: 11,12,14,15,3,8,9
@@ -73,7 +74,7 @@ ocil_clause: 'a wireless interface is configured and has not been documented and
 ocil: |-
     Verify that there are no wireless interfaces configured on the system
     with the following command:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     <pre># wicked show all
     lo up
     link: #1, state up

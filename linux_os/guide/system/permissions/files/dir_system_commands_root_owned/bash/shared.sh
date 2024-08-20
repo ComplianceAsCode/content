@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro
 
 for SYSCMDDIRS in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
 do

@@ -15,7 +15,7 @@
   <!-- OVAL object to collect filename for Aide build database -->
   <ind:textfilecontent54_object id="object_aide_operational_database_filename" version="1">
     <ind:filepath>/etc/aide.conf</ind:filepath>
-    {{% if 'sle' in product %}}
+    {{% if 'sle' in product or 'slmicro' in product %}}
       <ind:pattern operation="pattern match">^database=file:/([/a-z.]+)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^database=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
@@ -28,7 +28,7 @@
   <!-- OVAL variable to concatenate directory path and filename of operational Aide build database file into final absolute path -->
   <local_variable id="variable_aide_operational_database_absolute_path" datatype="string" comment="Absolute path of Aide build database file" version="1">
     <concat>
-      {{% if 'sle' not in product %}}
+      {{% if 'sle' not in product and 'slmicro' not in product %}}
         <object_component object_ref="object_aide_build_database_dirpath" item_field="subexpression" />
       {{% endif %}}
       <literal_component>/</literal_component>
@@ -36,7 +36,7 @@
     </concat>
   </local_variable>
 
-{{% if 'sle' not in product %}}
+{{% if 'sle' not in product and 'slmicro' not in product %}}
   <!-- OVAL object to collect directory path for Aide build database directory -->
   <ind:textfilecontent54_object id="object_aide_build_database_dirpath" version="1">
     <ind:filepath>/etc/aide.conf</ind:filepath>
