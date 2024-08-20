@@ -241,7 +241,13 @@
   datatype="string" version="1">
     <concat>
       <literal_component>^(?:.*\s)?{{{ ARG_NAME }}}=</literal_component>
+      {{% if IS_SUBSTRING == "true" %}}
+      <literal_component>\S*</literal_component>
+      {{% endif %}}
       <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
+      {{% if IS_SUBSTRING == "true" %}}
+      <literal_component>\S*</literal_component>
+      {{% endif %}}
       <literal_component>(?:\s.*)?$</literal_component>
     </concat>
   </local_variable>
