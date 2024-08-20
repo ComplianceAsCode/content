@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: "Set PAM''s Password Hashing Algorithm"
 
-{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] or 'ubuntu' in product %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/system-auth" %}}
@@ -17,7 +17,7 @@ description: |-
     <tt>{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}</tt> and no other hashing
     algorithms as shown below:
     <br />
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
     <pre>password    required    pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} <i>other arguments...</i></pre>
     {{% elif 'ubuntu' in product %}}
     <pre>password    [success=1 default=ignore]   pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}} <i>other arguments...</i></pre>
@@ -47,6 +47,7 @@ identifiers:
     cce@rhel10: CCE-88697-8
     cce@sle12: CCE-83184-2
     cce@sle15: CCE-85565-0
+    cce@slmicro5: CCE-93681-5
 
 references:
     cis-csc: 1,12,15,16,5
@@ -77,7 +78,7 @@ ocil: |-
     <tt>{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}</tt>:
 
     <pre>$ sudo grep "^password.*pam_unix\.so.*{{{ xccdf_value("var_password_hashing_algorithm_pam") }}}" {{{ pam_passwd_file_path }}}
-    {{% if product in ["sle12", "sle15"] -%}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] -%}}
     password required pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
     {{% elif 'ubuntu' in product %}}
     password [success=1 default=ignore] pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
@@ -97,7 +98,7 @@ fixtext: |-
 
     Edit/modify the following line in the "{{{ pam_passwd_file_path }}}" file to include the {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
     option for pam_unix.so:
-    {{% if product in ['sle12', 'sle15'] -%}}
+    {{% if product in ['sle12', 'sle15', 'slmicro5'] -%}}
     password required pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}
     {{% elif 'ubuntu' in product %}}
     password [success=1 default=ignore] pam_unix.so {{{ xccdf_value("var_password_hashing_algorithm_pam") }}}

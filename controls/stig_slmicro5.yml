@@ -1063,8 +1063,9 @@ controls:
       title:
           SLEM 5 must configure the Linux Pluggable Authentication Modules (PAM) to
           only store encrypted representations of passwords.
-      rules: []
-      status: pending
+      rules:
+          - set_password_hashing_algorithm_systemauth
+      status: automated
     
     - id: SLEM-05-611055
       levels:
@@ -1087,15 +1088,19 @@ controls:
       title:
           SLEM 5 must employ user passwords with a minimum lifetime of 24 hours (one
           day).
-      rules: []
-      status: pending
+      rules:
+          - accounts_password_set_min_life_existing
+          - var_accounts_minimum_age_login_defs=1
+      status: automated
     
     - id: SLEM-05-611070
       levels:
           - medium
       title: SLEM 5 must employ user passwords with a maximum lifetime of 60 days.
-      rules: []
-      status: pending
+      rules:
+          - accounts_password_set_max_life_existing
+          - var_accounts_maximum_age_login_defs=60
+      status: automated
     
     - id: SLEM-05-611075
       levels:
@@ -1119,8 +1124,9 @@ controls:
       title:
           SLEM 5 shadow password suite must be configured to use a sufficient number
           of hashing rounds.
-      rules: []
-      status: pending
+      rules:
+          - set_password_hashing_min_rounds_logindefs
+      status: automated
     
     - id: SLEM-05-611090
       levels:
@@ -1137,8 +1143,9 @@ controls:
       title:
           SLEM 5 must be configured to create or update passwords with a minimum lifetime
           of 24 hours (one day).
-      rules: []
-      status: pending
+      rules:
+          - accounts_minimum_age_login_defs
+      status: automated
     
     - id: SLEM-05-611100
       levels:
@@ -1146,8 +1153,9 @@ controls:
       title:
           SLEM 5 must be configured to create or update passwords with a maximum lifetime
           of 60 days.
-      rules: []
-      status: pending
+      rules:
+          - accounts_maximum_age_login_defs
+      status: automated
     
     - id: SLEM-05-612010
       levels:
@@ -1155,8 +1163,9 @@ controls:
       title:
           SLEM 5 must have the packages required for multifactor authentication to
           be installed.
-      rules: []
-      status: pending
+      rules:
+          - install_smartcard_packages
+      status: automated
     
     - id: SLEM-05-612015
       levels:
@@ -1199,8 +1208,9 @@ controls:
           SLEM 5, for PKI-based authentication, must validate certificates by constructing
           a certification path (which includes status information) to an accepted trust
           anchor.
-      rules: []
-      status: pending
+      rules:
+          - smartcard_configure_ca
+      status: automated
     
     - id: SLEM-05-631025
       levels:
@@ -1328,8 +1338,9 @@ controls:
       title:
           SLEM 5 audit system must take appropriate action when the audit storage volume
           is full.
-      rules: []
-      status: pending
+      rules:
+          - auditd_data_disk_full_action
+      status: automated
     
     - id: SLEM-05-653040
       levels:
@@ -1397,8 +1408,9 @@ controls:
           The information system security officer (ISSO) and system administrator (SA),
           at a minimum, must have mail aliases to be notified of a SLEM 5 audit processing
           failure.
-      rules: []
-      status: pending
+      rules:
+          - postfix_client_configure_mail_alias
+      status: automated
     
     - id: SLEM-05-653080
       levels:
@@ -1406,8 +1418,9 @@ controls:
       title:
           The information system security officer (ISSO) and system administrator (SA),
           at a minimum, must be alerted of a SLEM 5 audit processing failure event.
-      rules: []
-      status: pending
+      rules:
+          - auditd_data_retention_action_mail_acct
+      status: automated
     
     - id: SLEM-05-654010
       levels:

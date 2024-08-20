@@ -2,7 +2,7 @@
 
 {{{ bash_instantiate_variables("var_password_hashing_algorithm_pam") }}}
 
-{{% if 'sle' in product -%}}
+{{% if 'sle' in product or 'slmicro' in product -%}}
 PAM_FILE_PATH="/etc/pam.d/common-password"
 CONTROL="required"
 {{%- elif 'ubuntu' in product -%}}
