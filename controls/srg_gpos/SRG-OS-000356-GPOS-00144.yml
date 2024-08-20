@@ -8,4 +8,7 @@ controls:
         rules:
             - var_time_service_set_maxpoll=18_hours
             - chronyd_or_ntpd_set_maxpoll
+            {{% if 'ubuntu' in product %}}
+            - chronyd_sync_clock
+            {{% endif %}}
         status: automated
