@@ -1830,7 +1830,7 @@ controls:
       title: SLEM 5 must generate audit records for the "/run/utmp file".
       rules:
           - audit_rules_session_events_utmp
-      status: pending
+      status: automated
     
     - id: SLEM-05-654235
       levels:
@@ -1843,8 +1843,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for the "/var/log/wtmp" file.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_session_events_wtmp
+      status: automated
     
     - id: SLEM-05-654245
       levels:
