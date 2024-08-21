@@ -26,8 +26,9 @@
       <object_component item_field="hash" object_ref="obj_etcd_ca_file_hash" />
     </local_variable>
 
+    <!--- In OCP 4.17 the ca-bundle certs were moved to etcd-all-bundles/server-ca-bundle.crt -->
     <ind:filehash58_object id="obj_etcd_ca_file_hash" version="1">
-      <ind:filepath>/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt</ind:filepath>
+      <ind:filepath operation="pattern match">^/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-(serving-ca|all-bundles)/(server-)?ca-bundle.crt$</ind:filepath>
       <ind:hash_type>SHA-256</ind:hash_type>
     </ind:filehash58_object>
 
