@@ -1836,8 +1836,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must generate audit records for the "/var/log/btmp" file.
-      rules: []
-      status: pending
+      rules:
+          - audit_rules_session_events_btmp
+      status: automated
     
     - id: SLEM-05-654240
       levels:
