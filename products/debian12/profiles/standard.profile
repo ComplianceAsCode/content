@@ -31,8 +31,8 @@ selections:
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
     - sshd_allow_only_protocol2
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive_0
+    - var_sshd_set_keepalive=1
+    - sshd_set_keepalive
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
