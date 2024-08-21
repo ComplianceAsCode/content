@@ -407,16 +407,6 @@ controls:
             - ensure_gpgcheck_never_disabled
         status: automated
 
-    -   id: 214030
-        levels:
-            - medium
-        title:
-            OL 9 must be configured so that the cryptographic hashes of system files
-            match vendor values.
-        related_rules:
-            - rpm_verify_hashes # Due to crypto policies this cannot be selected at this time
-        status: pending
-
     -   id: 214035
         levels:
             - low
