@@ -973,8 +973,9 @@ controls:
       title:
           SLEM 5 must use the invoking user's password for privilege escalation when
           using "sudo".
-      rules: []
-      status: pending
+      rules:
+          - sudoers_validate_passwd
+      status: automated
     
     - id: SLEM-05-432015
       levels:
