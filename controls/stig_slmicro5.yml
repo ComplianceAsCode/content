@@ -1039,8 +1039,10 @@ controls:
       levels:
           - medium
       title: SLEM 5 must prevent the use of dictionary words for passwords.
-      rules: []
-      status: pending
+      rules:
+          - cracklib_accounts_password_pam_retry
+          - var_password_pam_retry=3
+      status: automated
     
     - id: SLEM-05-611035
       levels:
