@@ -39,8 +39,9 @@ controls:
       levels:
           - high
       title: SLEM 5 must disable the x86 Ctrl-Alt-Delete key sequence.
-      rules: []
-      status: pending
+      rules: 
+          - disable_ctrlaltdel_reboot
+      status: automated
     
     - id: SLEM-05-212010
       levels:
@@ -250,15 +251,17 @@ controls:
       title:
           All SLEM 5 local interactive user home directories must have mode 750 or
           less permissive.
-      rules: []
-      status: pending
+      rules: 
+          - file_permissions_home_directories
+      status: automated
     
     - id: SLEM-05-232035
       levels:
           - medium
       title: All SLEM 5 local initialization files must have mode 740 or less permissive.
-      rules: []
-      status: pending
+      rules: 
+          - file_permission_user_init_files
+      status: automated
     
     - id: SLEM-05-232040
       levels:
@@ -363,8 +366,9 @@ controls:
       title:
           All SLEM 5 local interactive user home directories must be group-owned by
           the home directory owner's primary group.
-      rules: []
-      status: pending
+      rules: 
+          - file_groupownership_home_directories
+      status: automated
     
     - id: SLEM-05-232105
       levels:
@@ -729,15 +733,17 @@ controls:
       levels:
           - high
       title: There must be no .shosts files on SLEM 5.
-      rules: []
-      status: pending
+      rules: 
+          - no_user_host_based_files
+      status: automated
     
     - id: SLEM-05-255095
       levels:
           - high
       title: There must be no shosts.equiv files on SLEM 5.
-      rules: []
-      status: pending
+      rules: 
+          - no_host_based_files  
+      status: automated
     
     - id: SLEM-05-272010
       levels:
@@ -798,8 +804,9 @@ controls:
       title:
           All SLEM 5 local interactive users must have a home directory assigned in
           the /etc/passwd file.
-      rules: []
-      status: pending
+      rules: 
+          - accounts_user_interactive_home_directory_defined
+      status: automated
     
     - id: SLEM-05-411030
       levels:
@@ -807,8 +814,9 @@ controls:
       title:
           All SLEM 5 local interactive user home directories defined in the /etc/passwd
           file must exist.
-      rules: []
-      status: pending
+      rules: 
+          - accounts_user_interactive_home_directory_exists
+      status: automated
     
     - id: SLEM-05-411035
       levels:
@@ -1268,15 +1276,17 @@ controls:
       title:
           SLEM 5 file integrity tool must be configured to verify Access Control Lists
           (ACLs).
-      rules: []
-      status: pending
+      rules: 
+          - aide_verify_acls
+      status: automated
     
     - id: SLEM-05-651020
       levels:
           - medium
       title: SLEM 5 file integrity tool must be configured to verify extended attributes.
-      rules: []
-      status: pending
+      rules: 
+          - aide_verify_ext_attributes
+      status: automated
     
     - id: SLEM-05-651025
       levels:
