@@ -1008,8 +1008,9 @@ controls:
       title:
           SLEM 5 must specify the default "include" directory for the /etc/sudoers
           file.
-      rules: []
-      status: pending
+      rules:
+          - sudoers_default_includedir
+      status: automated
     
     - id: SLEM-05-611010
       levels:
