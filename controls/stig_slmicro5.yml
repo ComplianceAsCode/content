@@ -877,8 +877,9 @@ controls:
       title:
           SLEM 5 must display the date and time of the last successful account logon
           upon logon.
-      rules: []
-      status: pending
+      rules:
+          - display_login_attempts
+      status: automated
     
     - id: SLEM-05-412015
       levels:

@@ -1,6 +1,6 @@
-# platform = multi_platform_sle,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_slmicro,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
 
-{{%- if "sle" in product or "ubuntu" in product %}}
+{{%- if "sle" in product or "slmicro" in product or "ubuntu" in product %}}
 {{%- set pam_lastlog_path = "/etc/pam.d/login" %}}
 {{%- set after_match = "^\s*session.*include\s+common-session$" %}}
 {{%- else %}}
@@ -8,7 +8,7 @@
 {{%- set after_match = "^\s*session\s+.*pam_succeed_if\.so.*" %}}
 {{%- endif %}}
 
-{{%- if "ol" in product or "ubuntu" in product %}}
+{{%- if "ol" in product or "slmicro" in product or "ubuntu" in product %}}
 {{%- set control = "required" %}}
 {{%- elif "sle" in product %}}
 {{%- set control = "optional" %}}

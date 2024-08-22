@@ -1,7 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_all
 
-{{%- if "sle" in product or "ubuntu" in product %}}
+{{%- if "sle" in product or "slmicro" in product or "ubuntu" in product %}}
 {{% set pam_lastlog_path = "/etc/pam.d/login" %}}
 {{% else %}}
 {{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
