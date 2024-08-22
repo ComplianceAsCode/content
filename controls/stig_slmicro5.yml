@@ -845,8 +845,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must not have unnecessary account capabilities.
-      rules: []
-      status: pending
+      rules:
+          - no_shelllogin_for_systemaccounts
+      status: automated
     
     - id: SLEM-05-411065
       levels:
