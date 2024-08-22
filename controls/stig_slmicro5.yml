@@ -855,8 +855,9 @@ controls:
       title:
           SLEM 5 root account must be the only account with unrestricted access to
           the system.
-      rules: []
-      status: pending
+      rules:
+          - accounts_no_uid_except_zero
+      status: automated
     
     - id: SLEM-05-411070
       levels:
