@@ -1265,8 +1265,9 @@ controls:
       title:
           SLEM 5 must be configured to not overwrite Pluggable Authentication Modules
           (PAM) configuration on package changes.
-      rules: []
-      status: pending
+      rules:
+          - pam_disable_automatic_configuration
+      status: automated
     
     - id: SLEM-05-651010
       levels:
