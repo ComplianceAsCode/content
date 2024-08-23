@@ -802,8 +802,9 @@ controls:
       title:
           All SLEM 5 local interactive user accounts, upon creation, must be assigned
           a home directory.
-      rules: []
-      status: pending
+      rules: 
+          - accounts_have_homedir_login_defs
+      status: automated
     
     - id: SLEM-05-411015
       levels:
@@ -1154,15 +1155,16 @@ controls:
           - high
       title: SLEM 5 must not be configured to allow blank or null passwords.
       rules:
-          - sshd_disable_empty_passwords
+          - no_empty_passwords
       status: automated
     
     - id: SLEM-05-611060
       levels:
           - high
       title: SLEM 5 must not have accounts configured with blank or null passwords.
-      rules: []
-      status: pending
+      rules: 
+          - no_empty_passwords_etc_shadow
+      status: automated
     
     - id: SLEM-05-611065
       levels:
@@ -1449,15 +1451,17 @@ controls:
       title:
           SLEM 5 must offload audit records onto a different system or media from the
           system being audited.
-      rules: []
-      status: pending
+      rules: 
+          - auditd_audispd_network_failure_action
+      status: automated
     
     - id: SLEM-05-653045
       levels:
           - medium
       title: Audispd must take appropriate action when SLEM 5 audit storage is full.
-      rules: []
-      status: pending
+      rules: 
+          - auditd_audispd_disk_full_action
+      status: automated
     
     - id: SLEM-05-653050
       levels:
@@ -1944,8 +1948,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must not disable syscall auditing.
-      rules: []
-      status: pending
+      rules: 
+          - audit_rules_enable_syscall_auditing
+      status: automated
     
     - id: SLEM-05-671010
       levels:
