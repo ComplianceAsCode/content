@@ -1346,8 +1346,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have the auditing package installed.
-      rules: []
-      status: pending
+      rules:
+          - package_audit_installed
+      status: automated
     
     - id: SLEM-05-653015
       levels:
