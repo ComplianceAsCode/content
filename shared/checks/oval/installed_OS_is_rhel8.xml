@@ -15,7 +15,11 @@
       <criterion comment="Installed operating system is part of the unix family"
       test_ref="test_rhel8_unix_family" />
       <criteria operator="OR">
-        <criterion comment="RHEL 8 is installed" test_ref="test_rhel8" />
+        <criteria operator="AND" comment="RHEL 8 is installed">
+          <criterion comment="RHEL 8 is installed" test_ref="test_rhel8" />
+          <!-- This prevent false positive RHEL8 in OL8 because OL8 has redhat-release package present-->
+          <extend_definition comment="Installed OS is not OL8" definition_ref="installed_OS_is_ol8" negate="true"/>
+        </criteria>
         <criteria operator="AND" comment="Red Hat Enterprise Virtualization Host is installed">
           <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
           <criterion comment="Red Hat Enterprise Virtualization Host is based on RHEL 8" test_ref="test_rhevh_rhel8_version" />
