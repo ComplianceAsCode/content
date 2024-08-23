@@ -786,8 +786,9 @@ controls:
       title:
           SLEM 5 default permissions must be defined in such a way that all authenticated
           users can only read and modify their own files.
-      rules: []
-      status: pending
+      rules:
+          - accounts_umask_etc_login_defs
+      status: automated
     
     - id: SLEM-05-411020
       levels:
