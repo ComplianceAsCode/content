@@ -135,8 +135,9 @@ controls:
       levels:
           - high
       title: SLEM 5 must not have the telnet-server package installed.
-      rules: []
-      status: pending
+      rules:
+          - package_telnet-server_removed
+      status: automated
     
     - id: SLEM-05-231010
       levels:
