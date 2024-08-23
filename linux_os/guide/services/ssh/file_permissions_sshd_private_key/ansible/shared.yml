@@ -7,7 +7,7 @@
 {{% set find_command_base = 'find -H /etc/ssh/ -maxdepth 1 -user root -regex ".*_key$" -type f' %}}
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["sle12", "sle15", "slmicro5"] %}}
 {{% set find_command_permissions = 'u+xs,g+xws,o+xwrt' %}}
 {{% set permissions_mode = 'u-xs,g-xws,o-xwrt' %}}
 {{% else %}}

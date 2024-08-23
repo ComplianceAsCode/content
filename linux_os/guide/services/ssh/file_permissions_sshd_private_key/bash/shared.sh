@@ -8,7 +8,7 @@ test root:{{{ groupname }}} = "$(stat -c "%U:%G" "$keyfile")"
 for keyfile in /etc/ssh/*_key; do
     test -f "$keyfile" || continue
     if {{{ keyfile_owned_by("root") }}}; then
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] %}}
 	chmod u-xs,g-xws,o-xwrt "$keyfile"
     {{% else %}}
 	chmod u-xs,g-xwrs,o-xwrt "$keyfile"
