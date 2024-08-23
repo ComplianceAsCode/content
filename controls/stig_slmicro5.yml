@@ -431,8 +431,9 @@ controls:
       title:
           SLEM 5 must not have network interfaces in promiscuous mode unless approved
           and documented.
-      rules: []
-      status: pending
+      rules:
+          - network_sniffer_disabled
+      status: automated
     
     - id: SLEM-05-253010
       levels:
