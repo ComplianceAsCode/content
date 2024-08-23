@@ -753,8 +753,9 @@ controls:
       title:
           SLEM 5 must not allow unattended or automatic logon via the graphical user
           interface (GUI).
-      rules: []
-      status: pending
+      rules:
+          - gnome_gdm_disable_unattended_automatic_login
+      status: automated
     
     - id: SLEM-05-291010
       levels:
