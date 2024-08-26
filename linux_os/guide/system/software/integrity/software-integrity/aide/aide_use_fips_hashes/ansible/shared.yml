@@ -1,0 +1,36 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+
+-   name: "{{{ rule_title }}} - Ensure aide is installed"
+    ansible.builtin.package:
+        name: aide
+        state: present
+
+-   name: "{{{ rule_title }}} - Set-fact aide config file and forbidden hashes"
+    ansible.builtin.set_fact:
+        aide_conf: "/etc/aide.conf"
+        forbidden_hashes:
+            - sha1
+            - rmd160
+            - sha256
+            - whirlpool
+            - tiger
+            - haval
+            - gost
+            - crc32
+
+-   name: "{{{ rule_title }}} - Remove forbidden hashes"
+    ansible.builtin.replace:
+        path: "{{ aide_conf }}"
+        regexp: '(^\s*[A-Z][A-Za-z_]*\s*=.*?)({{ item }}\+|\+?{{ item }})(.*)'
+        replace: '\1\3'
+    loop: "{{ forbidden_hashes }}"
+
+-   name: "{{{ rule_title }}} - Set sha512"
+    ansible.builtin.replace:
+        path: "{{ aide_conf }}"
+        regexp: '(^\s*[A-Z][A-Za-z_]*\s*=)((?:(?!\+?sha512).)*)\s*$'
+        replace: '\1\2+sha512'
