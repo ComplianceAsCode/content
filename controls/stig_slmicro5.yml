@@ -59,8 +59,9 @@ controls:
       title:
           SLEM 5 with Unified Extensible Firmware Interface (UEFI) implemented must
           require authentication upon booting into single-user mode and maintenance.
-      rules: []
-      status: pending
+      rules:
+          - grub2_uefi_password
+      status: automated
     
     - id: SLEM-05-213010
       levels:
