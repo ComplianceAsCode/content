@@ -778,8 +778,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must disable the USB mass storage kernel module.
-      rules: []
-      status: pending
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
     
     - id: SLEM-05-411010
       levels:
