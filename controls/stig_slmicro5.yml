@@ -49,8 +49,9 @@ controls:
       title:
           SLEM 5 with a basic input/output system (BIOS) must require authentication
           upon booting into single-user and maintenance modes.
-      rules: []
-      status: pending
+      rules:
+          - grub2_password
+      status: automated
     
     - id: SLEM-05-212015
       levels:
