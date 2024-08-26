@@ -177,7 +177,7 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
         return data
 
     def add_references(self, reference_type, rules):
-        for selection in self.rules:
+        for selection in self.selections:
             if "=" in selection:
                 continue
             rule = rules.get(selection)
