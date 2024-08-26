@@ -31,7 +31,6 @@ selections:
     - cis_ocp_1_4_0:all
     ### Variables
     - var_openshift_audit_profile=WriteRequestBodies
-    - var_event_record_qps=50
     ### Helper Rules
     ### This is a helper rule to fetch the required api resource for detecting OCP version
     - version_detect_in_ocp
