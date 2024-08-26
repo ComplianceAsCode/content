@@ -860,8 +860,9 @@ controls:
       title:
           SLEM 5 must never automatically remove or disable emergency administrator
           accounts.
-      rules: []
-      status: pending
+      rules:
+          - account_emergency_admin
+      status: manual
     
     - id: SLEM-05-411055
       levels:
