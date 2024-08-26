@@ -162,8 +162,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must use a separate file system for the system audit data path.
-      rules: []
-      status: pending
+      rules:
+          - partition_for_var_log_audit
+      status: automated
     
     - id: SLEM-05-231025
       levels:
