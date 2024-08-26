@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 
 {{{ bash_instantiate_variables("var_password_pam_tally2") }}}
 # Use a non-number regexp to force update of the value of the deny option

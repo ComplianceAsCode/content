@@ -926,7 +926,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must lock an account after three consecutive invalid access attempts.
-      rules: []
+      rules:
+          - accounts_passwords_pam_tally2
+          - var_password_pam_tally2=3
       status: pending
     
     - id: SLEM-05-412025
