@@ -5,7 +5,7 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_ssh_client_rekey_limit_size", "var_ssh_client_rekey_limit_time") }}}
 
-{{{ ansible_lineinfile(msg='Ensure RekeyLimit is not configured in /etc/ssh/ssh_config', path='/etc/ssh/ssh_config', regex='^\s*RekeyLimit.*$', create='no', state='absent') }}}
+{{{ ansible_lineinfile(msg='Ensure RekeyLimit is not configured in /etc/ssh/ssh_config', path='/etc/ssh/ssh_config', regex='^\s*RekeyLimit.*$', insensitive=false, create='no', state='absent') }}}
 
 - name: Collect all include config files for ssh client which configure RekeyLimit
   find:
@@ -21,4 +21,4 @@
     state: "absent"
   loop: "{{ ssh_config_include_files.files }}"
 
-{{{ ansible_lineinfile(msg='Ensure that rekey limit is set to {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }} in /etc/ssh/ssh_config.d/02-rekey-limit.conf', path='/etc/ssh/ssh_config.d/02-rekey-limit.conf', regex='^\s*RekeyLimit.*$', new_line='RekeyLimit {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }}', create='yes', state='present') }}}
+{{{ ansible_lineinfile(msg='Ensure that rekey limit is set to {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }} in /etc/ssh/ssh_config.d/02-rekey-limit.conf', path='/etc/ssh/ssh_config.d/02-rekey-limit.conf', regex='^\s*RekeyLimit.*$', insensitive=false, new_line='RekeyLimit {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }}', create='yes', state='present') }}}

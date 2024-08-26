@@ -38,6 +38,6 @@
 {{{- delete_line_in_sudoers_file("Defaults rootpw") }}}
 {{{- delete_line_in_sudoers_file("Defaults runaspw") }}}
 
-{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', path='/etc/sudoers', new_line='Defaults !targetpw') }}}
-{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', path='/etc/sudoers', new_line='Defaults !rootpw') }}}
-{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', path='/etc/sudoers', new_line='Defaults !runaspw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !targetpw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !rootpw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', insensitive=false, path='/etc/sudoers', new_line='Defaults !runaspw') }}}
