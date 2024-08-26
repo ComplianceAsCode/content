@@ -35,8 +35,6 @@ _CONTEXT_RETURN_CODES = {'pass': 0,
                          'notapplicable': 0,
                          'fixed': 0}
 
-_ANSIBLE_TEMPLATE = 'urn:xccdf:fix:script:ansible'
-_BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
 _XCCDF_NS = 'http://checklists.nist.gov/xccdf/1.2'
 
 
@@ -119,7 +117,7 @@ def generate_fixes_remotely(test_env, formatting, verbose_path):
     command_options = [
         '--benchmark-id', formatting['benchmark_id'],
         '--profile', formatting['profile'],
-        '--template', formatting['output_template'],
+        '--fix-type', formatting['fix_type'],
         '--output', '/{output_file}'.format(** formatting),
     ]
     command_operands = ['/{source_arf_basename}'.format(** formatting)]
@@ -136,7 +134,7 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
     """
        Returns False on error, or True in case of successful Ansible playbook
        run."""
-    formatting['output_template'] = _ANSIBLE_TEMPLATE
+    formatting['fix_type'] = 'ansible'
     send_arf_to_remote_machine_and_generate_remediations_there(
         run_type, test_env, formatting, verbose_path)
     if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
@@ -185,7 +183,7 @@ def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
     """
        Returns False on error, or True in case of successful bash scripts
        run."""
-    formatting['output_template'] = _BASH_TEMPLATE
+    formatting['fix_type'] = 'bash'
     send_arf_to_remote_machine_and_generate_remediations_there(
         run_type, test_env, formatting, verbose_path)
     if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
