@@ -44,20 +44,20 @@ jobs:
         run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format html --output $PAGES_DIR/srg-mapping-ocp4.html --prefer-controls
         env:
           PYTHONPATH: ${{ github.workspace }}
-      - name: Generate XLSX for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r7.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+      - name: Generate XLSX for RHEL9disa-os-srg-v3r1.xml
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/ --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL9
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r7.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v2r7.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel10.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL10
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v2r7.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel10 -m shared/references/disa-os-srg-v3r1.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel10.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
