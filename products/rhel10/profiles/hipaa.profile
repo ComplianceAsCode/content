@@ -39,6 +39,7 @@ selections:
     - '!sshd_use_approved_ciphers'
     - '!accounts_passwords_pam_tally2'
     - '!package_audit-audispd-plugins_installed'
+    - '!auditd_audispd_syslog_plugin_activated'
     - '!package_ypserv_removed'
     - '!package_ypbind_removed'
     - '!package_xinetd_removed'
