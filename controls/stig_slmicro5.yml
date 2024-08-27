@@ -415,8 +415,9 @@ controls:
           SLEM 5 must be configured to prohibit or restrict the use of functions, ports,
           protocols, and/or services as defined in the Ports, Protocols, and Services Management
           (PPSM) Category Assignments List (CAL) and vulnerability assessments.
-      rules: []
-      status: pending
+      rules: 
+          - service_firewalld_enabled
+      status: automated
     
     - id: SLEM-05-252010
       levels:
@@ -1357,8 +1358,9 @@ controls:
       title:
           SLEM 5 audit records must contain information to establish what type of events
           occurred, the source of events, where events occurred, and the outcome of events.
-      rules: []
-      status: pending
+      rules: 
+          - service_auditd_enabled
+      status: automated
     
     - id: SLEM-05-653020
       levels:
