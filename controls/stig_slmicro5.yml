@@ -197,8 +197,9 @@ controls:
           All SLEM 5 persistent disk partitions must implement cryptographic mechanisms
           to prevent unauthorized disclosure or modification of all information that requires
           at-rest protection.
-      rules: []
-      status: pending
+      rules: 
+          - encrypt_partitions
+      status: automated
     
     - id: SLEM-05-231045
       levels:
