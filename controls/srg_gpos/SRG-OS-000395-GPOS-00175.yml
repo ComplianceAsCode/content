@@ -2,10 +2,9 @@ controls:
     -   id: SRG-OS-000395-GPOS-00175
         levels:
             - medium
-        title: {{{ full_name }}} must verify remote disconnection at the termination of
-            nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance sessions.
-            If the remote connection is not closed and verified as closed, the session may remain open and be exploited by an attacker; this is referred to as a zombie session.
-            Remote connections must be disconnected and verified as disconnected when nonlocal maintenance sessions have been terminated and are no longer available for use.
+        title: '{{{ full_name }}} must verify remote disconnection at the termination of
+    nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance
+    sessions.'
         check:
           {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
           {{{ full_name }}} inherently meets this requirement.

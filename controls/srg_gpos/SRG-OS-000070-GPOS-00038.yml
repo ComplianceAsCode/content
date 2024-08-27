@@ -1,9 +1,9 @@
 controls:
     -   id: SRG-OS-000070-GPOS-00038
+        title: '{{{ full_name }}} must enforce password complexity by requiring that at
+    least one lowercase character be used.'
         levels:
             - medium
-        title: {{{ full_name }}} must enforce password complexity by requiring that at
-            least one lower-case character be used.
         rules:
             - accounts_password_pam_enforce_root
             - var_password_pam_lcredit=1
