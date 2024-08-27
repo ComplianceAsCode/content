@@ -1,8 +1,8 @@
 <def-group>
 {{% set resourcequota_api_path = '/api/v1/resourcequotas' %}}
 {{% set namespaces_api_path = '/api/v1/namespaces' %}}
-{{% set resourcequota_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
-{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
+{{% set resourcequota_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and .metadata.namespace != "rhacs-operator" and ({{if ne .var_resource_requests_quota_per_project_exempt_regex "None"}}.metadata.namespace | test("{{.var_resource_requests_quota_per_project_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and .metadata.name != "rhacs-operator" and ({{if ne .var_resource_requests_quota_per_project_exempt_regex "None"}}.metadata.name | test("{{.var_resource_requests_quota_per_project_exempt_regex}}") | not{{else}}true{{end}}))]' %}}
   <definition class="compliance" id="resource_requests_quota_per_project" version="1">
     {{{ oval_metadata("Ensure that application Namespaces have Network Policies defined") }}}
     <criteria>
@@ -10,8 +10,16 @@
                  test_ref="test_file_for_resource_requests_quota_per_project"/>
       <criterion comment="Make sure that the file '{{{ openshift_filtered_path(namespaces_api_path, non_ctlplane_namespaces_filter) }}}' exists."
                  test_ref="test_file_for_resource_requests_quotas_filtered_namespaces"/>
-      <criterion comment="Make sure that all target elements exists "
-                 test_ref="test_elements_count_for_resource_requests_quota_per_project"/>
+      <criteria operator="OR">
+        <criterion comment="Make sure that all target elements exist"
+                   test_ref="test_elements_count_for_resource_requests_quota_per_project"/>
+        <criteria operator="AND">
+          <criterion comment="Make sure there are no resource quotas in non-ctlplane namespaces"
+                     test_ref="test_resource_requests_quota_per_project"/>
+          <criterion comment="Make sure there are no namespaces in non-ctlplane namespaces"
+                     test_ref="test_resource_requests_quotas_filtered_namespaces"/>
+        </criteria>
+      </criteria>
     </criteria>
   </definition>
 
@@ -50,6 +58,19 @@
   <unix:file_object id="object_file_for_resource_requests_quotas_filtered_namespaces" version="1">
     <unix:filepath var_ref="resource_requests_quotas_filtered_namespaces_file_location"/>
   </unix:file_object>
+
+  <!-- Check if the number of elements at the two paths are both zero -->
+  <ind:yamlfilecontent_test id="test_resource_requests_quota_per_project" version="1" check="all" 
+                            comment="Make sure there are no resource quotas in non-ctlplane namespaces" 
+                            check_existence="none_exist" state_operator="AND">
+    <ind:object object_ref="object_resource_requests_quota_per_project"/>
+  </ind:yamlfilecontent_test>
+
+  <ind:yamlfilecontent_test id="test_resource_requests_quotas_filtered_namespaces" version="1" check="all" 
+                            comment="Make sure there are no namespaces in non-ctlplane namespaces" 
+                            check_existence="none_exist" state_operator="AND">
+    <ind:object object_ref="object_resource_requests_quotas_filtered_namespaces"/>
+  </ind:yamlfilecontent_test>
 
   <!-- Object gathering --> 
   <ind:yamlfilecontent_object id="object_resource_requests_quota_per_project" version="1">
