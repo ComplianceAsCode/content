@@ -48,3 +48,4 @@ selections:
     - '!package_tcp_wrappers_removed'
     - '!package_xinetd_removed'
     - '!service_xinetd_disabled'
+    - '!sshd_allow_only_protocol2'
