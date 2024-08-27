@@ -11,7 +11,7 @@
       test_ref="test_cron_logging_rsyslog_dir" />
       <criterion comment="cron is configured in /etc/rsyslog.d using RainerScript"
       test_ref="test_cron_logging_rsyslog_dir_rainer" />
-      {{% if product == "ol8" %}}
+      {{% if "ol" in product %}}
       <criterion comment="rsyslog is configured in /etc/rsyslog.conf to log to all facilities"
       test_ref="test_cron_logging_rsyslog_logging_all_facilities" />
       <criterion comment="rsyslog is configured in /etc/rsyslog.d to log to all facilities"
@@ -70,7 +70,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product == "ol8" %}}
+  {{% if "ol" in product %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="rsyslog is configured in /etc/rsyslog.conf to log to all facilities"
   id="test_cron_logging_rsyslog_logging_all_facilities" version="1">
