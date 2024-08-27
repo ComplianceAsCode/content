@@ -49,7 +49,7 @@ selections:
     - "!accounts_passwords_pam_tally2_unlock_time"
 
     # ISM 0582,0846
-    # This divition of rules is not implemented in OL9
+    # These rules is not implemented in OL9
     - "!audit_access_failed_aarch64"
     - "!audit_access_failed_ppc64le"
     - "!audit_access_success_aarch64"
