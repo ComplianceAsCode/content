@@ -44,3 +44,6 @@ selections:
     - '!package_xinetd_removed'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
+    - '!package_tcp_wrappers_removed'
+    - '!package_xinetd_removed'
+    - '!service_xinetd_disabled'
