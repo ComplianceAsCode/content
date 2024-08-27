@@ -49,3 +49,5 @@ selections:
     - '!package_xinetd_removed'
     - '!service_xinetd_disabled'
     - '!sshd_allow_only_protocol2'
+    - '!sshd_disable_kerb_auth'
+    - '!sshd_disable_gssapi_auth'
