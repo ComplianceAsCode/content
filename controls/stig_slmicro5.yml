@@ -127,15 +127,17 @@ controls:
       levels:
           - medium
       title: SLEM 5 must use vlock to allow for session locking.
-      rules: []
-      status: pending
+      rules:
+          - vlock_installed
+      status: automated
     
     - id: SLEM-05-215015
       levels:
           - high
       title: SLEM 5 must not have the telnet-server package installed.
-      rules: []
-      status: pending
+      rules:
+          - package_telnet-server_removed
+      status: automated
     
     - id: SLEM-05-231010
       levels:
@@ -275,8 +277,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 SSH daemon private host key files must have mode 640 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_sshd_private_key
+      status: automated
     
     - id: SLEM-05-232050
       levels:
@@ -430,8 +433,9 @@ controls:
       title:
           SLEM 5 must not have network interfaces in promiscuous mode unless approved
           and documented.
-      rules: []
-      status: pending
+      rules:
+          - network_sniffer_disabled
+      status: automated
     
     - id: SLEM-05-253010
       levels:
@@ -751,8 +755,9 @@ controls:
       title:
           SLEM 5 must not allow unattended or automatic logon via the graphical user
           interface (GUI).
-      rules: []
-      status: pending
+      rules:
+          - gnome_gdm_disable_unattended_automatic_login
+      status: automated
     
     - id: SLEM-05-291010
       levels:
@@ -784,8 +789,9 @@ controls:
       title:
           SLEM 5 default permissions must be defined in such a way that all authenticated
           users can only read and modify their own files.
-      rules: []
-      status: pending
+      rules:
+          - accounts_umask_etc_login_defs
+      status: automated
     
     - id: SLEM-05-411020
       levels:
@@ -1265,8 +1271,9 @@ controls:
       title:
           SLEM 5 must be configured to not overwrite Pluggable Authentication Modules
           (PAM) configuration on package changes.
-      rules: []
-      status: pending
+      rules:
+          - pam_disable_automatic_configuration
+      status: automated
     
     - id: SLEM-05-651010
       levels:
@@ -1340,8 +1347,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must have the auditing package installed.
-      rules: []
-      status: pending
+      rules:
+          - package_audit_installed
+      status: automated
     
     - id: SLEM-05-653015
       levels:
