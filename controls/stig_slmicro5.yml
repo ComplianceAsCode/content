@@ -183,8 +183,9 @@ controls:
       title:
           SLEM 5 file systems that are being imported via Network File System (NFS)
           must be mounted to prevent binary files from being executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_noexec_remote_filesystems
+      status: automated
     
     - id: SLEM-05-231035
       levels:
