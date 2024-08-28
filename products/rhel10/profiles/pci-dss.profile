@@ -24,14 +24,16 @@ description: |-
 
 selections:
     - pcidss_4:all
-    # audit-audispd-plugins package does not exist in RHEL 10 (based on RHEL 9)
-    # use only package_audispd-plugins_installed
-    - '!package_audit-audispd-plugins_installed'
+    - var_password_hashing_algorithm=yescrypt
+    - var_password_hashing_algorithm_pam=yescrypt
+
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'
-    # these rules do not apply to RHEL 10
+    # audit-audispd-plugins package does not exist in RHEL 10 (based on RHEL 9)
+    # use only package_audispd-plugins_installed
     - '!package_audit-audispd-plugins_installed'
+    # these rules do not apply to RHEL 10
     - '!service_ntp_enabled'
     - '!ntpd_specify_remote_server'
     - '!ntpd_specify_multiple_servers'
