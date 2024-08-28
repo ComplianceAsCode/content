@@ -30,9 +30,7 @@ selections:
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'
-    # audit-audispd-plugins package does not exist in RHEL 10 (based on RHEL 9)
-    # use only package_audispd-plugins_installed
-    - '!package_audit-audispd-plugins_installed'
+
     # these rules do not apply to RHEL 10
     - '!service_ntp_enabled'
     - '!ntpd_specify_remote_server'
@@ -40,6 +38,7 @@ selections:
     - '!set_ipv6_loopback_traffic'
     - '!set_loopback_traffic'
     - '!service_ntpd_enabled'
+    - '!package_audit-audispd-plugins_installed'
     - '!package_ypserv_removed'
     - '!package_ypbind_removed'
     - '!package_talk_removed'
