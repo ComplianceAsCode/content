@@ -840,8 +840,9 @@ controls:
       title:
           All SLEM 5 local interactive user initialization files executable search
           paths must contain only paths that resolve to the users' home directory.
-      rules: []
-      status: pending
+      rules:
+          - accounts_user_home_paths_only
+      status: automated
     
     - id: SLEM-05-411040
       levels:
