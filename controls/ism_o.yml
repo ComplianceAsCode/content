@@ -95,7 +95,15 @@ controls:
             - sshd_set_max_auth_tries
             - sssd_enable_smartcards
         status: automated
-
+    -   id: '0484'
+        title: 'SSH daemon configuration'
+        levels:
+            - base
+        rules:
+            - disable_host_auth
+            - sshd_enable_warning_banner
+            - sshd_disable_x11_forwarding
+        status: partial
     -   id: '0487'
         title: 'Passwordless SSH Connections Configuration'
         levels:
@@ -429,6 +437,7 @@ use of device access control software or by disabling external communication int
             - base
         rules:
             - sshd_allow_only_protocol2
+            - file_permissions_sshd_private_key
         status: partial
         notes: |-
             This needs more
