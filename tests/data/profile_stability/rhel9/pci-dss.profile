@@ -281,6 +281,7 @@ selections:
 - var_password_pam_dcredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_minlen=12
+- var_authselect_profile=sssd
 - var_accounts_passwords_pam_faillock_deny=10
 - var_accounts_passwords_pam_faillock_unlock_time=1800
 - var_password_pam_tally2=10
