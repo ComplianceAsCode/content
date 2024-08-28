@@ -191,8 +191,9 @@ controls:
       title:
           SLEM 5 file systems that are used with removable media must be mounted to
           prevent files with the setuid and setgid bit set from being executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_nosuid_removable_partitions
+      status: automated
     
     - id: SLEM-05-231040
       levels:
