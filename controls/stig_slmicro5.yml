@@ -173,8 +173,9 @@ controls:
           SLEM 5 file systems that are being imported via Network File System (NFS)
           must be mounted to prevent files with the setuid and setgid bit set from being
           executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_nosuid_remote_filesystems
+      status: automated
     
     - id: SLEM-05-231030
       levels:
