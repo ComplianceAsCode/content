@@ -848,8 +848,9 @@ controls:
       levels:
           - medium
       title: All SLEM 5 local initialization files must not execute world-writable programs.
-      rules: []
-      status: pending
+      rules:
+          - accounts_user_dot_no_world_writable_programs
+      status: automated
     
     - id: SLEM-05-411045
       levels:
