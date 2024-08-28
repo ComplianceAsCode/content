@@ -60,6 +60,7 @@ selections:
     - '!mask_nonessential_services'
     - '!nftables_ensure_default_deny_policy'
     - '!set_ipv6_loopback_traffic'
+    - '!set_ip6tables_default_rule'
     - '!set_loopback_traffic'
     - '!set_password_hashing_algorithm_commonauth'
 
