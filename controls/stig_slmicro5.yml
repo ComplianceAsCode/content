@@ -211,8 +211,9 @@ controls:
       title:
           SLEM 5 file systems that contain user home directories must be mounted to
           prevent files with the setuid and setgid bit set from being executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_home_nosuid
+      status: automated
     
     - id: SLEM-05-231050
       levels:
