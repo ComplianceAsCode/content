@@ -67,8 +67,6 @@ selections:
     # Following are incompatible with the rhel10 product (based on RHEL9)
     - '!service_chronyd_or_ntpd_enabled'
     - '!aide_periodic_checking_systemd_timer'
-    - '!file_owner_at_allow'
-    - '!gnome_gdm_disable_guest_login'
     - '!gnome_gdm_disable_unattended_automatic_login'
     - '!permissions_local_var_log'
     - '!sshd_use_strong_kex'
