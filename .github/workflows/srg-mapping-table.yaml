@@ -45,7 +45,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate XLSX for RHEL9disa-os-srg-v3r1.xml
-        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/ --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML for RHEL9
