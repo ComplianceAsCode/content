@@ -73,8 +73,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 kernel core dumps must be disabled unless needed.
-      rules: []
-      status: pending
+      rules: 
+          - service_kdump_disabled
+      status: automated
     
     - id: SLEM-05-213020
       levels:
@@ -213,8 +214,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must disable the file system automounter unless required.
-      rules: []
-      status: pending
+      rules: 
+          - service_autofs_disabled
+      status: automated
     
     - id: SLEM-05-232010
       levels:
