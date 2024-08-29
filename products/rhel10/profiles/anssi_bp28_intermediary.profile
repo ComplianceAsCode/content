@@ -21,22 +21,31 @@ description: |-
     https://cyber.gouv.fr/publications/configuration-recommendations-gnulinux-system
 
 selections:
-  - anssi:all:intermediary
-  # Following rules are incompatible with the rhel10 product
-  - '!partition_for_opt'
-  - '!cracklib_accounts_password_pam_minlen'
-  - '!accounts_passwords_pam_tally2_deny_root'
-  - '!accounts_passwords_pam_tally2'
-  - '!cracklib_accounts_password_pam_ucredit'
-  - '!cracklib_accounts_password_pam_dcredit'
-  - '!cracklib_accounts_password_pam_lcredit'
-  - '!partition_for_usr'
-  - '!partition_for_boot'
-  - '!cracklib_accounts_password_pam_ocredit'
-  - '!enable_pam_namespace'
-  - '!accounts_passwords_pam_tally2_unlock_time'
-  - '!sudo_add_umask'
-  - '!sudo_add_ignore_dot'
-  - '!sudo_add_env_reset'
-  - '!ensure_oracle_gpgkey_installed'
-  - '!security_patches_up_to_date'
+    - anssi:all:intermediary
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
+    # Following rules are incompatible with rhel10 product
+    # tally2 is deprecated, replaced by faillock
+    - '!accounts_passwords_pam_tally2_deny_root'
+    - '!accounts_passwords_pam_tally2'
+    - '!accounts_passwords_pam_tally2_unlock_time'
+    # pam_cracklib is not used in RHEL 10
+    - '!cracklib_accounts_password_pam_minlen'
+    - '!cracklib_accounts_password_pam_ucredit'
+    - '!cracklib_accounts_password_pam_dcredit'
+    - '!cracklib_accounts_password_pam_lcredit'
+    - '!cracklib_accounts_password_pam_ocredit'
+    # umask is configured at a different place in RHEL 10
+    - '!sudo_add_umask'
+    # Oracle key is not relevant on RHEL 10
+    - '!ensure_oracle_gpgkey_installed'
+    # this rule is not automated anymore
+    - '!security_patches_up_to_date'
+    # these packages do not exist in rhel10 (R62)
+    - '!package_dhcp_removed'
+    - '!package_rsh_removed'
+    - '!package_rsh-server_removed'
+    - '!package_sendmail_removed'
+    - '!package_talk_removed'
+    - '!package_xinetd_removed'
+    - '!package_ypserv_removed'
