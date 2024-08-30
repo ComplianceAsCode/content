@@ -148,8 +148,9 @@ controls:
       title:
           A separate file system must be used for SLEM 5 user home directories (such
           as /home or an equivalent).
-      rules: []
-      status: pending
+      rules:
+          - partition_for_home
+      status: automated
     
     - id: SLEM-05-231015
       levels:
