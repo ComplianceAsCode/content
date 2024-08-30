@@ -22,8 +22,6 @@ description: |-
 
 selections:
     - anssi:all:high
-    - var_password_hashing_algorithm=SHA512
-    - var_password_pam_unix_rounds=65536
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
     # Following rules are incompatible with rhel10 product

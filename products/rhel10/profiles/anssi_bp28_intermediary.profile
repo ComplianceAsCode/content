@@ -22,8 +22,6 @@ description: |-
 
 selections:
     - anssi:all:intermediary
-    - var_password_hashing_algorithm=SHA512
-    - var_password_pam_unix_rounds=65536
     # Following rules are incompatible with rhel10 product
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
