@@ -49,8 +49,9 @@ controls:
       title:
           SLEM 5 with a basic input/output system (BIOS) must require authentication
           upon booting into single-user and maintenance modes.
-      rules: []
-      status: pending
+      rules:
+          - grub2_password
+      status: automated
     
     - id: SLEM-05-212015
       levels:
@@ -58,8 +59,9 @@ controls:
       title:
           SLEM 5 with Unified Extensible Firmware Interface (UEFI) implemented must
           require authentication upon booting into single-user mode and maintenance.
-      rules: []
-      status: pending
+      rules:
+          - grub2_uefi_password
+      status: automated
     
     - id: SLEM-05-213010
       levels:
@@ -160,8 +162,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must use a separate file system for the system audit data path.
-      rules: []
-      status: pending
+      rules:
+          - partition_for_var_log_audit
+      status: automated
     
     - id: SLEM-05-231025
       levels:
@@ -777,8 +780,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must disable the USB mass storage kernel module.
-      rules: []
-      status: pending
+      rules:
+          - kernel_module_usb-storage_disabled
+      status: automated
     
     - id: SLEM-05-411010
       levels:
@@ -850,8 +854,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must automatically expire temporary accounts within 72 hours.
-      rules: []
-      status: pending
+      rules:
+          - account_temp_expire_date
+      status: automated
     
     - id: SLEM-05-411050
       levels:
@@ -859,8 +864,9 @@ controls:
       title:
           SLEM 5 must never automatically remove or disable emergency administrator
           accounts.
-      rules: []
-      status: pending
+      rules:
+          - account_emergency_admin
+      status: automated
     
     - id: SLEM-05-411055
       levels:
@@ -903,8 +909,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must not have duplicate User IDs (UIDs) for interactive users.
-      rules: []
-      status: pending
+      rules:
+          - account_unique_id
+      status: automated
     
     - id: SLEM-05-412010
       levels:
@@ -927,7 +934,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must lock an account after three consecutive invalid access attempts.
-      rules: []
+      rules:
+          - accounts_passwords_pam_tally2
+          - var_password_pam_tally2=3
       status: pending
     
     - id: SLEM-05-412025
@@ -1033,8 +1042,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must restrict privilege elevation to authorized personnel.
-      rules: []
-      status: pending
+      rules:
+          - sudo_restrict_privilege_elevation_to_authorized
+      status: automated
     
     - id: SLEM-05-432030
       levels:
@@ -1168,8 +1178,9 @@ controls:
       title:
           SLEM 5 must employ FIPS 140-2/140-3-approved cryptographic hashing algorithms
           for system authentication.
-      rules: []
-      status: pending
+      rules:
+          - accounts_password_all_shadowed_sha512
+      status: automated
     
     - id: SLEM-05-611085
       levels:
@@ -1917,5 +1928,6 @@ controls:
       levels:
           - high
       title: FIPS 140-2/140-3 mode must be enabled on SLEM 5.
-      rules: []
-      status: pending
+      rules:
+          - is_fips_mode_enabled
+      status: automated
