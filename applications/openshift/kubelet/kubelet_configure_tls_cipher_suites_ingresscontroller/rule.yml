@@ -24,7 +24,9 @@ ocil_clause: "Ingress controller TLS cipher suite configuration is incomplete or
 
 ocil: |-
   Run the following command on the kubelet nodes(s):
-  <pre>oc -n openshift-ingress-operator patch ingresscontroller/default --type merge -p '{"spec":{"tlsSecurityProfile":{"type":"Custom","custom":{"ciphers":["ECDHE-ECDSA-AES128-GCM-SHA256","ECDHE-ECDSA-CHACHA20-POLY1305","ECDHE-ECDSA-AES256-GCM-SHA384","TLS_CHACHA20_POLY1305_SHA256","TLS_AES_128_GCM_SHA256","TLS_AES_256_GCM_SHA384","ECDHE-RSA-AES128-GCM-SHA256","ECDHE-RSA-AES256-GCM-SHA384","ECDHE-RSA-CHACHA20-POLY1305"],"minTLSVersion":"VersionTLS12"} } } }'</pre>
+  <pre>oc get ingresscontrollers/default -n openshift-ingress-operator -o=jsonpath='{.status.tlsProfile.ciphers[:]}'</pre>
+  The output should only include relevant and modern TLS ciphers you deem
+  acceptable for your cluster.
 
 warnings:
 - general: |-
