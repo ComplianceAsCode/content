@@ -389,8 +389,9 @@ controls:
       title:
           All SLEM 5 world-writable directories must be group-owned by root, sys, bin,
           or an application group.
-      rules: []
-      status: pending
+      rules:
+          - dir_perms_world_writable_system_owned_group
+      status: automated
     
     - id: SLEM-05-232110
       levels:
