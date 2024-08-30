@@ -373,8 +373,9 @@ controls:
       levels:
           - medium
       title: All SLEM 5 files and directories must have a valid group owner.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
     
     - id: SLEM-05-232100
       levels:
