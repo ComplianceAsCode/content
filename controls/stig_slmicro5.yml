@@ -365,8 +365,9 @@ controls:
       levels:
           - medium
       title: All SLEM 5 files and directories must have a valid owner.
-      rules: []
-      status: pending
+      rules:
+          - no_files_unowned_by_user
+      status: automated
     
     - id: SLEM-05-232095
       levels:
