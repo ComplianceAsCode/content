@@ -156,8 +156,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must use a separate file system for /var.
-      rules: []
-      status: pending
+      rules:
+          - partition_for_var
+      status: automated
     
     - id: SLEM-05-231020
       levels:
