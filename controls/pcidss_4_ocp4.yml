@@ -5,6 +5,7 @@ version: '4.0'
 source: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
 levels:
 - id: base
+reference_type: pcidss4
 
 controls:
   - id: '1.1'
@@ -386,6 +387,8 @@ controls:
         This control is also addressed by applying the OpenShift CIS recommendations.
       rules:
         - scansettingbinding_exists
+      controls:
+        - cis_ocp_1_4_0:all:level_2
 
     - id: 2.2.2
       title: Vendor default accounts are managed

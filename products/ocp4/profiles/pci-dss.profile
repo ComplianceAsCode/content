@@ -17,4 +17,4 @@ description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 
 # Req-2.2
-extends: pci-dss-3-2
+extends: pci-dss-4-0

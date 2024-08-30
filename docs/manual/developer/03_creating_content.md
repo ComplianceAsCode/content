@@ -700,6 +700,7 @@ Nesting can be accomplished both by
 * nesting whole control definitions, or by
 * nesting references to existing controls in the `policy:control` format, where the `policy:` part can be skipped
 if the reference points to a control in that policy.
+ * To nest all controls of a policy level, use `all` followed by the level. e.g: `cis_ocp4_1_4_0:all:level_2`.
 
 Nesting using references allows reuse of controls across multiple policies.
 
