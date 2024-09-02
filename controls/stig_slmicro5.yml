@@ -1399,8 +1399,9 @@ controls:
       levels:
           - medium
       title: The audit-audispd-plugins package must be installed on SLEM 5.
-      rules: []
-      status: pending
+      rules:
+          - package_audit-audispd-plugins_installed
+      status: automated
     
     - id: SLEM-05-653025
       levels:
@@ -1410,7 +1411,6 @@ controls:
           week of audit records when audit records are not immediately sent to a central
           audit record storage facility.
       rules:
-        - package_audit-audispd-plugins_installed
         - auditd_audispd_configure_sufficiently_large_partition
       status: automated
     
