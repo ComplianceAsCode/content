@@ -17,7 +17,7 @@ description: |-
     /etc/audit/audit.rules root:root 640
     /etc/audit/rules.d/audit.rules root:root 640</pre>
 
-    {{% if slmicro in product %}}
+    {{% if product in slmicro %}}
     Check that all of the audit information files and folders have the correct permissions with the following command:
     <pre>$ sudo chkstat /etc/permissions.local</pre>
 
@@ -48,7 +48,7 @@ references:
     stigid@sle15: SLES-15-030600
 
 ocil: |-
-    {{% if slmicro in product %}}
+    {{% if product in slmicro %}}
 
     Check that "permissions.local" file contains the correct permissions rules with the following command:
 
