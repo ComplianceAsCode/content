@@ -44,7 +44,7 @@ jobs:
         run: python3 utils/create_srg_export.py -c controls/srg_ctr.yml -p ocp4 -m shared/references/disa-ctr-srg-v1r3.xml --out-format html --output $PAGES_DIR/srg-mapping-ocp4.html --prefer-controls
         env:
           PYTHONPATH: ${{ github.workspace }}
-      - name: Generate XLSX for RHEL9disa-os-srg-v3r1.xml
+      - name: Generate XLSX for RHEL9
         run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v3r1.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
