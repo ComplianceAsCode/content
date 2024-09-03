@@ -225,18 +225,18 @@ controls:
       manner. (3) Read and write access rights to the configuration files of the control plane SHOULD
       be assigned and restricted with particular care.
     notes: >-
-      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All 
+      OpenShift is fully configured using Kubernetes resources including CustomResources (CR). All
       resources that are created after the initial cluster installation can be considered configuration
-      files as described in this control. 
+      files as described in this control.
 
       Section 1: This control needs to be adressed on an organizational level. To achieve versioning,
-      the configuration files should be stored in a Git repository. The Git repository is considered 
+      the configuration files should be stored in a Git repository. The Git repository is considered
       the only source of truth and provides a visible and auditable trail of changes. To automatically
       apply the configuration, GitOps processes and tools like OpenShift GitOps can be used.
 
       Section 2: This control needs to be adressed in the respective external systems. Access rights
       to the Git repository and GitOps controller should be granted in a restrictive manner.
-      
+
       Section 3: The relevant Kubernetes resources for configuring the control plane are inherently
       protected by Kubernetes RBAC and can only be modified by cluster administrators.
     status: manual
@@ -261,11 +261,11 @@ controls:
       Section 1-5: This needs to be adressed in the individual application deployments. The
       associated rules provide additional guidance.
 
-      Section 6: The usage of privileged service accounts is controlled by Security Context 
-      Constraints (SCC), which should be configured and granted according to the principle of least 
+      Section 6: The usage of privileged service accounts is controlled by Security Context
+      Constraints (SCC), which should be configured and granted according to the principle of least
       privilege.
 
-      Section 7: This control needs to be adressed on an organizational level.      
+      Section 7: This control needs to be adressed on an organizational level.
     status: partial
     rules:
       # Section 1-3:
@@ -297,8 +297,8 @@ controls:
     - standard
     description: >-
       (1) All automation software processes, such as CI/CD and their pipelines, SHOULD only operate
-      with the rights that are strictly necessary. (2) If different user groups can change 
-      configurations or start pods via automation software, this SHOULD be done for each group 
+      with the rights that are strictly necessary. (2) If different user groups can change
+      configurations or start pods via automation software, this SHOULD be done for each group
       through separate processes that only have the rights necessary for the respective user group.
     notes: >-
       This control needs to be adressed on an organizational level. All service accounts used by
@@ -320,7 +320,7 @@ controls:
     notes: >-
       Section 1-3: The existance of readiness und liveness probes can be validated technically. This
       check needs to be performed for each container in every pod individually.
-      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by 
+      Section 4: The adequacy of the checks and the configured time periods needs to be ensured by
       the application owner.
       Section 5: This functionality is inherently met by OpenShift.
     status: manual
@@ -475,10 +475,16 @@ controls:
     levels:
     - elevated
     description: >-
-      Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
-      interference and a very high need for protection. No pod SHOULD run for more than 24
+      (1) Pods SHOULD be stopped and restarted regularly if there is an increased risk of external
+      interference and a very high need for protection.
+      (2) No pod SHOULD run for more than 24
       hours. The availability of the applications in a pod SHOULD be ensured.
     notes: >-
       TBD
     status: pending
-    rules: []
+    rules:
+      # Section 1
+      - kube_descheduler_operator_exists
+      # Section 2
+      - kube_descheduler_lifecycle_policy
+      - kube_descheduler_podlifetime
