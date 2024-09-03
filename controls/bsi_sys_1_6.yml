@@ -18,61 +18,115 @@ levels:
     inherits_from:
     - standard
 
+reference_type: bsi
+
 controls:
   - id: SYS.1.6.A1
     title: Planning Container Use
     levels:
     - basic
     description: >-
-      Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
+      (1) Before containers are deployed, the goal of such a deployment (e.g. scaling, availability,
       disposable containers for safety or CI/CD) SHOULD be determined so that all the security-
-      related aspects of installation, operation, and decommissioning can be planned. The planning
-      SHOULD also take into account the operational overhead resulting from container
-      deployment or mixed operation. The planning MUST be adequately documented
+      related aspects of installation, operation, and decommissioning can be planned.
+      (2) The planning SHOULD also take into account the operational overhead resulting from container
+      deployment or mixed operation.
+      (3) The planning MUST be adequately documented
     notes: >-
-      This requirement can not be checked
+      This requirement must be implemented organizationally.
+      OpenShift supports all of the goals mentioned. Comprehensive handouts are available to carry
+      out and document the planning of container use, security and compliance, architecture and
+      installation on OpenShift (see https://www.redhat.com/en/resources/openshift-security-guide-ebook)
     status: manual
-    #rules:
 
   - id: SYS.1.6.A2
     title: Container Management Planning
     levels:
     - basic
     description: >-
-      The management of containers MUST ONLY be carried out in line with appropriate planning.
-      This planning MUST cover the entire lifecycle from commissioning to decommissioning,
-      including operation and updates. When planning container management, it MUST be taken
+      (1) The management of containers MUST ONLY be carried out in line with appropriate planning.
+      (2) This planning MUST cover the entire lifecycle from commissioning to decommissioning,
+      including operation and updates. (3) When planning container management, it MUST be taken
       into account that the creator of a container is to be considered like an administrator due to the
       effects they have on parts of the operation.
-      Containers MUST be started, stopped, and monitored via the management software used.
+      (4) Containers MUST be started, stopped, and monitored via the management software used.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
+      Through OpenShift GitOps, OpenShift technically supports this requirement with a standardized
+      approach to deployment, change handling and deprovisioning via kustomize or Helm charts.
+      OpenShift provides further support through operator-based applications and platform management
+      that automates the processes of commissioning, decommissioning and updates.
+
+      Section 4: Start, stop and monitoring is a basic function of OpenShift. It is not possible to
+      bypass the OpenShift methods to start and stop without manually connecting to a Container Host.
+      For monitoring purposes, OpenShift itself offers Prometheus-based monitoring.
+      Using Advanced Cluster Security for Kubernetes (ACS), policy-based rules can also be used to
+      monitor the containers.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A3
     title: Secure Use of Containerised IT Systems
     levels:
     - basic
     description: >-
-      In the case of containerised IT systems, consideration MUST be given to how containerisation
+      (1) In the case of containerised IT systems, consideration MUST be given to how containerisation
       affects the IT systems and applications operated, in particular the management and suitability
       of the applications.
-      Based on the protection needs of the applications, it MUST be checked whether the
+      (2) Based on the protection needs of the applications, it MUST be checked whether the
       requirements for isolation and encapsulation of the containerised IT systems, virtual
-      networks, and operated applications are sufficiently fulfilled. The mechanisms of the
-      operating system in question SHOULD be included in this check. Since the host performs the
+      networks, and operated applications are sufficiently fulfilled. (3) The mechanisms of the
+      operating system in question SHOULD be included in this check. (4) Since the host performs the
       function of a network component for virtual networks, the modules of the sub-layers NET.1
-      Networks and NET.3 Network Components MUST be considered accordingly. Logical and
-      overlay networks MUST also be considered and modelled. Furthermore, the containerised IT
+      Networks and NET.3 Network Components MUST be considered accordingly. (5) Logical and
+      overlay networks MUST also be considered and modelled. (6) Furthermore, the containerised IT
       systems used MUST meet the requirements at hand regarding availability and data
-      throughput.
-      During operation, the performance and the state of the containerised IT systems SHOULD be
-      monitored (health checks).
+      throughput.(7) During operation, the performance and the state of the containerised IT systems
+      SHOULD be monitored (health checks).
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: This requirement must be implemented organizationally.
+      Note: This requirement is actively supported by OpenShift. For example, OpenShift does not
+      allow applications with fixed UID/GID settings as standard; on the contrary, these IDs are
+      assigned dynamically (security-by-design). The behavior can be adjusted by administrators,
+      for example for system tasks.
+
+      Section 2: This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirements through strict client separation based on a “Project”
+      (an extension to the Kubernetes namespace). The containers are separated from each other and
+      from the host system via cgroups using SELinux. As long as all applications run “restricted”
+      in the Security Context Constraint (SCC), OpenShift maintains strict client separation.
+
+      Section 3: This requirement must be implemented organizationally.
+      OpenShift supports this requirement by leveraging SELinux with its cgroups to create the container sandbox.
+
+      Section 4: This requirement must be implemented organizationally.
+
+      Section 5: This requirement must be implemented organizationally.
+      Note: OpenShift supports different network infrastructures via the CNI plugin interface
+      (e.g. OVN-Kubernetes, OpenShift-SDN, hardware networks etc.) OVN-Kubernetes, hardware networks etc.)
+      The underlying network is abstracted by the network model in Openshift and usage is consistent
+      across containers. This allows OpenShift to uniformly implement network security features such
+      as: Firewall rules over network policies.
+
+      Section 6: This requirement must be implemented organizationally.
+      Note: OpenShift provides fine-grained metrics for external capacity management via monitoring.
+
+      Section 7: OpenShift offers automated checks for the availability and health of an application.
+      If the LivenessProbe (Health) repeatedly receives a negative result or is not reachable, the
+      affected pod with the container is restarted. Using ReadinessProbe, a container can control
+      whether it is ready to accept HTTP(S) based requests or not.
+      Note: Monitoring is considered in APP.4.4.A11.
+    status: automated
+    rules:
+      # Section 2
+      - general_namespace_separation
+      - general_node_separation
+      - general_network_separation
+      # Section 3:
+      - coreos_enable_selinux_kernel_argument
+      - selinux_state
+      - selinux_policytype
+      # Section 7
+      - liveness_readiness_probe_in_workload
 
   - id: SYS.1.6.A4
     title: Planning the Provision and Distribution of Images
@@ -82,9 +136,18 @@ controls:
       The process for the provision and distribution of images MUST be planned and appropriately
       documented.
     notes: >-
-      ToDo
+      This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirement through the built-in functionalities and enables the
+      highest possible level of automation. On the one hand, CI/CD tools are delivered with OpenShift
+      pipelines and integrated into the platform. On the other hand, pre-configured build processes
+      based on Red Hat experience are available that are based on Source2Image and thus support
+      planning.
+      The built-in registry allows you to store images and other associated information, such as Helm
+      charts or SBOMs.
+      The abstractions available in Openshift allow the entire image distribution process to be
+      documented and controlled as code. This further allows the image distribution process to
+      be managed via OpenShift GitOps.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A5
     title: Separation of Administration and Access Networks for Containers

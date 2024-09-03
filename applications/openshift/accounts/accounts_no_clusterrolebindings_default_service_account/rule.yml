@@ -5,7 +5,7 @@ title: 'Ensure no ClusterRoleBindings set for default Service Account'
 description: |-
     Using the <tt>default</tt> service account prevents accurate application
     rights review and audit tracing. Instead of <tt>default</tt>, create
-    a new and unique service account and associate the required ClusterRoleBindings. 
+    a new and unique service account and associate the required ClusterRoleBindings.
 
 rationale: |-
     Kubernetes provides a default service account which is used by
@@ -20,8 +20,6 @@ severity: medium
 
 identifiers: {}
 
-references:
-    bsi: APP.4.4.A9
 
 {{% set jqfilter = '[.items[] | select ( .subjects[]?.name == "default" ) | select(.subjects[].namespace | startswith("kube-") or startswith("openshift-") | not) | .metadata.name ] | unique' %}}
 
@@ -31,7 +29,7 @@ ocil: |-
     Run the following command to retrieve a list of ClusterRoleBindings that are
     associated to the default service account:
     <pre>$ oc get clusterrolebindings -o json | jq '{{{ jqfilter }}}'</pre>
-    There should be no ClusterRoleBindings associated with the the default service account 
+    There should be no ClusterRoleBindings associated with the the default service account
     in any namespace.
 
 warnings:
