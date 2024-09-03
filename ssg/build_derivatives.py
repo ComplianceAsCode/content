@@ -76,7 +76,8 @@ def add_element_to(oval_root, tag_name, component_element):
     if xml_el is None:
         xml_el = ElementTree.Element("{%s}%s" % (oval_namespace, tag_name))
         oval_root.append(xml_el)
-    xml_el.append(component_element)
+    if xml_el.find("%s[@id='%s']" % (component_element.tag, component_element.get("id"))) is None:
+        xml_el.append(component_element)
 
 
 def add_oval_components_to_oval_xml(oval_root, tag_name, component_dict):
