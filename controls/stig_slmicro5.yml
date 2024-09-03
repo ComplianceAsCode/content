@@ -1355,8 +1355,9 @@ controls:
       title:
           Advanced Intrusion Detection Environment (AIDE) must verify the baseline
           SLEM 5 configuration at least weekly.
-      rules: []
-      status: pending
+      rules:
+          - aide_periodic_checking_systemd_timer
+      status: automated
     
     - id: SLEM-05-651035
       levels:
