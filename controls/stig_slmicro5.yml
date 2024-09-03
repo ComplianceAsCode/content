@@ -1060,29 +1060,33 @@ controls:
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one uppercase character.
-      rules: []
-      status: pending
+      rules: 
+          - cracklib_accounts_password_pam_ucredit
+      status: automated
     
     - id: SLEM-05-611015
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one lowercase character.
-      rules: []
-      status: pending
+      rules: 
+          - cracklib_accounts_password_pam_lcredit
+      status: automated
     
     - id: SLEM-05-611020
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one numeric character.
-      rules: []
-      status: pending
+      rules: 
+          - cracklib_accounts_password_pam_dcredit
+      status: automated
     
     - id: SLEM-05-611025
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one special character.
-      rules: []
-      status: pending
+      rules: 
+          - cracklib_accounts_password_pam_ocredit
+      status: automated
     
     - id: SLEM-05-611030
       levels:
@@ -1097,8 +1101,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 must employ passwords with a minimum of 15 characters.
-      rules: []
-      status: pending
+      rules: 
+          - cracklib_accounts_password_pam_minlen
+      status: automated
     
     - id: SLEM-05-611040
       levels:
@@ -1106,8 +1111,9 @@ controls:
       title:
           SLEM 5 must require the change of at least eight of the total number of characters
           when passwords are changed.
-      rules: []
-      status: pending
+      rules: 
+          - cracklib_accounts_password_pam_difok
+      status: automated
     
     - id: SLEM-05-611045
       levels:
