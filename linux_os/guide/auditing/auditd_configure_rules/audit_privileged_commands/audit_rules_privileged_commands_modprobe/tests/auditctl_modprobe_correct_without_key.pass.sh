@@ -3,4 +3,4 @@
 
 {{{ setup_auditctl_environment() }}}
 
-rm -f /etc/audit/audit.rules
+echo "-w /sbin/modprobe -p x" >> /etc/audit/audit.rules
