@@ -12,7 +12,7 @@
   with_items:
     - aide
 
-{{% if product in ["sle15"] %}}
+{{% if product in ["sle15", "slmicro5"] %}}
 - name: "{{{ rule_title }}} check service"
   ansible.builtin.blockinfile:
       create: yes

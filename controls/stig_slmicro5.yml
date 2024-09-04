@@ -1366,8 +1366,9 @@ controls:
           SLEM 5 must notify the system administrator (SA) when Advanced Intrusion
           Detection Environment (AIDE) discovers anomalies in the operation of any security
           functions.
-      rules: []
-      status: pending
+      rules:
+          - aide_scan_notification
+      status: automated
     
     - id: SLEM-05-652010
       levels:
