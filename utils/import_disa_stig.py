@@ -109,7 +109,7 @@ def main() -> int:
         if stig_vuln_discussion != rule_vuln_discussion:
             changed_vuln_discussion = fix_changed_text(stig_vuln_discussion, changed_name)
             update_row(changed_vuln_discussion, rule_vuln_discussion, rule_obj,
-                       'vuln_discussion')
+                       'vuldiscussion')
 
     return 0
 
