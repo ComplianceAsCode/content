@@ -2,10 +2,7 @@ srg_requirement: |-
     All {{{ full_name }}} local interactive user home directories must be group-owned by the home directory owner's primary group.
 
 vuldiscussion: |-
-    If the Group Identifier (GID) of a local interactive users home directory is
-    not the same as the primary GID of the user, this would allow unauthorized
-    access to the users files, and users that share the same group may not be
-    able to access files that they legitimately should.
+    If the Group Identifier (GID) of a local interactive users home directory is not the same as the primary GID of the user, this would allow unauthorized access to the users files, and users that share the same group may not be able to access files that they legitimately should.
 
 checktext: |-
     Verify the assigned home directory of all local interactive users is group-owned by that user's primary GID with the following command:
@@ -31,5 +28,3 @@ fixtext: |-
 
     $ sudo chgrp users /home/wadea
 
-vuln_discussion: |-
-    If the Group Identifier (GID) of a local interactive users home directory is not the same as the primary GID of the user, this would allow unauthorized access to the users files, and users that share the same group may not be able to access files that they legitimately should.

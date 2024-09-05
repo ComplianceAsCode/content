@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must use a separate file system for /var/log.
 
 vuldiscussion: |-
-    Placing "/var/log" in its own partition
-    enables better separation between log files
-    and other files in "/var/".
+    Placing "/var/log" in its own partition enables better separation between log files and other files in "/var/".
 
 checktext: |-
     Verify that a separate file system/partition has been created for "/var/log" with the following command:
@@ -18,5 +16,3 @@ checktext: |-
 fixtext: |-
     Migrate the "/var/log" path onto a separate file system.
 
-vuln_discussion: |-
-    Placing "/var/log" in its own partition enables better separation between log files and other files in "/var/".

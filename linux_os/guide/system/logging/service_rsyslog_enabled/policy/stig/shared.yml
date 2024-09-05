@@ -2,8 +2,7 @@ srg_requirement: |-
     The rsyslog service on {{{ full_name }}} must be active.
 
 vuldiscussion: |-
-    The "rsyslog" service must be running in order to provide
-    logging services, which are essential to system administration.
+    The "rsyslog" service must be running to provide logging services, which are essential to system administration.
 
 checktext: |-
     Verify that "rsyslog" is active with the following command:
@@ -19,5 +18,3 @@ fixtext: |-
 
     $ sudo systemctl enable --now rsyslog
 
-vuln_discussion: |-
-    The "rsyslog" service must be running to provide logging services, which are essential to system administration.

@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must limit the number of bogus Internet Control Message Protocol (ICMP) response errors logs.
 
 vuldiscussion: |-
-    Some routers will send responses to broadcast frames that violate RFC-1122 which fills up a log file system with many useless error messages.  An attacker may take advantage of this and attempt to flood the logs with bogus error logs. Ignoring bogus ICMP error responses reduces log size, although some activity would not be logged.
+    Some routers will send responses to broadcast frames that violate RFC-1122, which fills up a log file system with many useless error messages. An attacker may take advantage of this and attempt to flood the logs with bogus error logs. Ignoring bogus ICMP error responses reduces log size, although some activity would not be logged.
 
 checktext: |-
     The runtime status of the net.ipv4.icmp_ignore_bogus_error_responses kernel parameter can be queried by running the following command:
@@ -32,5 +32,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Some routers will send responses to broadcast frames that violate RFC-1122, which fills up a log file system with many useless error messages. An attacker may take advantage of this and attempt to flood the logs with bogus error logs. Ignoring bogus ICMP error responses reduces log size, although some activity would not be logged.

@@ -2,9 +2,7 @@ srg_requirement: |-
     All {{{ full_name }}} interactive users must have a primary group that exists.
 
 vuldiscussion: |-
-    If a user is assigned the Group Identifier (GID) of a group that does not exist on the system, and a group
-    with the Group Identifier (GID) is subsequently created, the user may have unintended rights to
-    any files associated with the group.
+    If a user is assigned the Group Identifier (GID) of a group that does not exist on the system, and a group with the GID is subsequently created, the user may have unintended rights to any files associated with the group.
 
 checktext: |-
     Verify that all {{{ full_name }}} interactive users have a valid GID.
@@ -20,5 +18,3 @@ fixtext: |-
 
     Edit the file "/etc/passwd" and ensure that every user's GID is a valid GID.
 
-vuln_discussion: |-
-    If a user is assigned the Group Identifier (GID) of a group that does not exist on the system, and a group with the GID is subsequently created, the user may have unintended rights to any files associated with the group.

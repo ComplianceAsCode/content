@@ -2,10 +2,7 @@ srg_requirement: |-
     Successful/unsuccessful uses of the umount system call in {{{ full_name }}} must generate an audit record.
 
 vuldiscussion: |-
-    The changing of file permissions could indicate that a user is attempting to
-    gain access to information that would otherwise be disallowed. Auditing DAC modifications
-    can facilitate the identification of patterns of abuse among both authorized and
-    unauthorized users.
+    The changing of file permissions could indicate that a user is attempting to gain access to information that would otherwise be disallowed. Auditing DAC modifications can facilitate the identification of patterns of abuse among both authorized and unauthorized users.
 
 checktext: |-
     Verify that {{{ full_name }}} generates an audit record for all uses of the "umount" and system call with the following command:
@@ -25,5 +22,3 @@ fixtext: |-
 
     The audit daemon must be restarted for the changes to take effect.
 
-vuln_discussion: |-
-    The changing of file permissions could indicate that a user is attempting to gain access to information that would otherwise be disallowed. Auditing DAC modifications can facilitate the identification of patterns of abuse among both authorized and unauthorized users.

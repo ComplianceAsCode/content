@@ -2,17 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} subscription-manager package must be installed.
 
 vuldiscussion: |-
-    Red Hat Subscription Manager is a local service which tracks installed products
-    and subscriptions on a local system to help manage subscription assignments.
-    It communicates with the backend subscription service (the Customer Portal
-    or an on-premise server such as Subscription Asset Manager) and works with
-    content management tools such as .
-
-
-    The package provides, among other things,  plugins
-    to interact with repositories and subscriptions
-    from the Red Hat entitlement platform - the subscription-manager and
-    product-id plugins.
+    The Red Hat Subscription Manager application manages software subscriptions and software repositories for installed software products on the local system. It communicates with backend servers, such as the Red Hat Customer Portal or an on-premise instance of Subscription Asset Manager, to register the local system and grant access to software resources determined by the subscription entitlement.
 
 checktext: |-
     Verify that {{{ full_name }}} subscription-manager package is installed with the following command:
@@ -30,5 +20,3 @@ fixtext: |-
 
     $ sudo dnf install subscription-manager
 
-vuln_discussion: |-
-    The Red Hat Subscription Manager application manages software subscriptions and software repositories for installed software products on the local system. It communicates with backend servers, such as the Red Hat Customer Portal or an on-premise instance of Subscription Asset Manager, to register the local system and grant access to software resources determined by the subscription entitlement.

@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must not allow blank or null passwords.
 
 vuldiscussion: |-
-    If an account has an empty password, anyone could log in and
-    run commands with the privileges of that account. Accounts with
-    empty passwords should never be used in operational environments.
+    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.
 
 checktext: |-
     Verify that null passwords cannot be used with the following command:
@@ -18,5 +16,3 @@ fixtext: |-
 
     Note: Manual changes to the listed file may be overwritten by the "authselect" program.
 
-vuln_discussion: |-
-    If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.

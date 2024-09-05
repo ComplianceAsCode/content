@@ -6,7 +6,7 @@ vuldiscussion: |-
 
     {{{ full_name }}} uses "pwhistory" consecutively as a mechanism to prohibit password reuse. This is set in both:
     /etc/pam.d/password-auth
-    /etc/pam.d/system-auth.
+    /etc/pam.d/system-auth
 
     Note that manual changes to the listed files may be overwritten by the "authselect" program.
 
@@ -26,11 +26,3 @@ fixtext: |-
 
     password required pam_pwhistory.so use_authtok remember=5 retry=3
 
-vuln_discussion: |-
-    Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to reuse their password consecutively when that password has exceeded its defined lifetime, the end result is a password that is not changed per policy requirements.
-
-    {{{ full_name }}} uses "pwhistory" consecutively as a mechanism to prohibit password reuse. This is set in both:
-    /etc/pam.d/password-auth
-    /etc/pam.d/system-auth
-
-    Note that manual changes to the listed files may be overwritten by the "authselect" program.

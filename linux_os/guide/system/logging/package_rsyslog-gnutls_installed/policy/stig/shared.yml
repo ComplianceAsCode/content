@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must have the packages required for encrypting offloaded audit logs installed.
 
 vuldiscussion: |-
-    The rsyslog-gnutls package provides Transport Layer Security (TLS) support
-    for the rsyslog daemon, which enables secure remote logging.
+    The rsyslog-gnutls package provides Transport Layer Security (TLS) support for the rsyslog daemon, which enables secure remote logging.
 
 checktext: |-
     Verify that {{{ full_name }}} has the rsyslog-gnutls package installed with the following command:
@@ -21,5 +20,3 @@ fixtext: |-
 
     $ sudo dnf install rsyslog-gnutls
 
-vuln_discussion: |-
-    The rsyslog-gnutls package provides Transport Layer Security (TLS) support for the rsyslog daemon, which enables secure remote logging.

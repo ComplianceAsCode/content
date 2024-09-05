@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must restrict the use of the "su" command.
 
 vuldiscussion: |-
-    The "su" program allows to run commands with a substitute user and
-    group ID. It is commonly used to run commands as the root user. Limiting
-    access to such command is considered a good security practice.
+    The "su" program allows to run commands with a substitute user and group ID. It is commonly used to run commands as the root user. Limiting access to such commands is considered a good security practice.
 
 checktext: |-
     Verify that {{{ full_name }}} requires uses to be members of the "wheel" group with the following command:
@@ -26,5 +24,3 @@ fixtext: |-
 
     If necessary, create a "wheel" group and add administrative users to the group.
 
-vuln_discussion: |-
-    The "su" program allows to run commands with a substitute user and group ID. It is commonly used to run commands as the root user. Limiting access to such commands is considered a good security practice.

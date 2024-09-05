@@ -20,5 +20,3 @@ fixtext: |-
 
     Ensure the "sec" option is defined as "krb5p:krb5i:krb5".
 
-vuln_discussion: |-
-    When an NFS server is configured to use RPCSEC_SYS, a selected userid and groupid are used to handle requests from the remote user. The userid and groupid could mistakenly or maliciously be set incorrectly. The RPCSEC_GSS method of authentication uses certificates on the server and client systems to more securely authenticate the remote mount request.

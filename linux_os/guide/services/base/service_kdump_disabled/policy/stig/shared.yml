@@ -2,11 +2,7 @@ srg_requirement: |-
     The kdump service on {{{ full_name }}} must be disabled.
 
 vuldiscussion: |-
-    Kernel core dumps may contain the full contents of system memory at the
-    time of the crash. Kernel core dumps consume a considerable amount of disk
-    space and may result in denial of service by exhausting the available space
-    on the target file system partition. Unless the system is used for kernel
-    development or testing, there is little need to run the kdump service.
+    Kernel core dumps may contain the full contents of system memory at the time of the crash. Kernel core dumps consume a considerable amount of disk space and may result in denial of service by exhausting the available space on the target file system partition. Unless the system is used for kernel development or testing, there is little need to run the kdump service.
 
 checktext: |-
     Verify that the kdump service is disabled in system boot configuration with the following command:
@@ -42,5 +38,3 @@ fixtext: |-
 
     $ sudo systemctl mask --now kdump
 
-vuln_discussion: |-
-    Kernel core dumps may contain the full contents of system memory at the time of the crash. Kernel core dumps consume a considerable amount of disk space and may result in denial of service by exhausting the available space on the target file system partition. Unless the system is used for kernel development or testing, there is little need to run the kdump service.

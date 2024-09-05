@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must restrict privilege elevation to authorized personnel.
 
 vuldiscussion: |-
-    If the "sudoers" file is not configured correctly, any user defined
-    on the system can initiate privileged actions on the target system.
+    If the "sudoers" file is not configured correctly, any user defined on the system can initiate privileged actions on the target system.
 
 checktext: |-
     Verify {{{ full_name }}} restricts privilege elevation to authorized personnel with the following command:
@@ -20,5 +19,3 @@ fixtext: |-
     ALL     ALL=(ALL) ALL
     ALL     ALL=(ALL:ALL) ALL
 
-vuln_discussion: |-
-    If the "sudoers" file is not configured correctly, any user defined on the system can initiate privileged actions on the target system.

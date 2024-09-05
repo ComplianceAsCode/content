@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must disable the chrony daemon from acting as a server.
 
 vuldiscussion: |-
-    Minimizing the exposure of the server functionality of the chrony
-    daemon diminishes the attack surface.
+    Minimizing the exposure of the server functionality of the chrony daemon diminishes the attack surface.
 
 checktext: |-
     Verify {{{ full_name }}} disables the chrony daemon from acting as a server with the following command:
@@ -19,5 +18,3 @@ fixtext: |-
 
     port 0
 
-vuln_discussion: |-
-    Minimizing the exposure of the server functionality of the chrony daemon diminishes the attack surface.

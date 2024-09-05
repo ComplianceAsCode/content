@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.
 
 vuldiscussion: |-
-    If the pam_faillock.so module is not loaded the system will not correctly lockout accounts to prevent
-    password guessing attacks.
+    If the pam_faillock.so module is not loaded, the system will not correctly lockout accounts to prevent password guessing attacks.
 
 checktext: |-
     Verify the pam_faillock.so module is present in the "/etc/pam.d/system-auth" file:
@@ -26,5 +25,3 @@ fixtext: |-
     auth required pam_faillock.so authfail
     account required pam_faillock.so
 
-vuln_discussion: |-
-    If the pam_faillock.so module is not loaded, the system will not correctly lockout accounts to prevent password guessing attacks.

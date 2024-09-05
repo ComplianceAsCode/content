@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} IP tunnels must use FIPS 140-2/140-3 approved cryptographic algorithms.
 
 vuldiscussion: |-
-    Overriding the system crypto policy makes the behavior of the Libreswan
-    service violate expectations, and makes system configuration more
-    fragmented.
+    Overriding the system crypto policy makes the behavior of the Libreswan service violate expectations, and makes system configuration more fragmented.
 
 checktext: |-
     Verify that the IPsec service uses the system crypto policy with the following command:
@@ -24,5 +22,3 @@ fixtext: |-
 
     include /etc/crypto-policies/back-ends/libreswan.config
 
-vuln_discussion: |-
-    Overriding the system crypto policy makes the behavior of the Libreswan service violate expectations, and makes system configuration more fragmented.

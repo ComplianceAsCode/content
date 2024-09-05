@@ -2,8 +2,7 @@ srg_requirement: |-
     If the Trivial File Transfer Protocol (TFTP) server is required, {{{ full_name }}} TFTP daemon must be configured to operate in secure mode.
 
 vuldiscussion: |-
-    Restricting TFTP to a specific directory prevents remote users from copying, transferring, or overwriting system files. Using the "-s" option causes the TFTP service to only serve files from the
-    given directory.
+    Restricting TFTP to a specific directory prevents remote users from copying, transferring, or overwriting system files. Using the "-s" option causes the TFTP service to only serve files from the given directory.
 
 checktext: |-
     Verify the TFTP daemon is configured to operate in secure mode.
@@ -37,5 +36,3 @@ fixtext: |-
 
     ExecStart=/usr/sbin/in.tftpd -s /var/lib/tftpboot
 
-vuln_discussion: |-
-    Restricting TFTP to a specific directory prevents remote users from copying, transferring, or overwriting system files. Using the "-s" option causes the TFTP service to only serve files from the given directory.

@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} SSH daemon must not allow rhosts authentication.
 
 vuldiscussion: |-
-    SSH trust relationships mean a compromise on one host
-    can allow an attacker to move trivially to other hosts.
+    SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts.
 
 checktext: |-
     Verify the SSH daemon does not allow rhosts authentication with the following command:
@@ -25,5 +24,3 @@ fixtext: |-
 
     $ sudo systemctl restart sshd.service
 
-vuln_discussion: |-
-    SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts.

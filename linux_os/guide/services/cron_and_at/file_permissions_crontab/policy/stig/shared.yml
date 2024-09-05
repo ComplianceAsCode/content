@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/crontab file must have mode 0600.
 
 vuldiscussion: |-
-    Service configuration files enable or disable features of their respective services that if configured incorrectly
-    can lead to insecure and vulnerable configurations. Therefore, service configuration files should have the
-    correct access rights to prevent unauthorized changes.
+    Service configuration files enable or disable features of their respective services that if configured incorrectly can lead to insecure and vulnerable configurations; therefore, service configuration files must have the correct access rights to prevent unauthorized changes.
 
 checktext: |-
     Verify the permissions of /etc/crontab with the following command:
@@ -20,5 +18,3 @@ fixtext: |-
 
     $ sudo chmod 0600 /etc/crontab
 
-vuln_discussion: |-
-    Service configuration files enable or disable features of their respective services that if configured incorrectly can lead to insecure and vulnerable configurations; therefore, service configuration files must have the correct access rights to prevent unauthorized changes.

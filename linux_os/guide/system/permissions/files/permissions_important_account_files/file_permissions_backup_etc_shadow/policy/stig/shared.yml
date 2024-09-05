@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/shadow- file must have mode 0000 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
-    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such,
-    it contains the list of local system accounts and password hashes.
-    Protection of this file is critical for system security.
+    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such, contains the list of local system accounts and password hashes. Protection of this file is critical for system security.
 
 checktext: |-
     Verify that the "/etc/shadow-" file has mode "0000" with the following command:
@@ -20,5 +18,3 @@ fixtext: |-
 
     $ sudo chmod 0000 /etc/shadow-
 
-vuln_discussion: |-
-    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such, contains the list of local system accounts and password hashes. Protection of this file is critical for system security.

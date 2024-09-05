@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must be configured to prevent unrestricted mail relaying.
 
 vuldiscussion: |-
-    If unrestricted mail relaying is permitted, unauthorized senders could use this
-    host as a mail relay for the purpose of sending spam or other unauthorized
-    activity.
+    If unrestricted mail relaying is permitted, unauthorized senders could use this host as a mail relay for the purpose of sending spam or other unauthorized activity.
 
 checktext: |-
     Verify {{{ full_name }}} is configured to prevent unrestricted mail relaying with the following command:
@@ -20,5 +18,3 @@ fixtext: |-
 
     $ sudo postconf -e 'smtpd_client_restrictions = permit_mynetworks,reject'
 
-vuln_discussion: |-
-    If unrestricted mail relaying is permitted, unauthorized senders could use this host as a mail relay for the purpose of sending spam or other unauthorized activity.

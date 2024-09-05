@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must prevent special devices on file systems that are used with removable media.
 
 vuldiscussion: |-
-    The only legitimate location for device files is the "/dev" directory
-    located on the root partition. An exception to this is chroot jails, and it is
-    not advised to set "nodev" on partitions which contain their root
-    filesystems.
+    The "nodev" mount option causes the system not to interpret character or block special devices. Executing character or blocking special devices from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.
 
 checktext: |-
     Verify file systems that are used for removable media are mounted with the "nodev" option with the following command:
@@ -19,5 +16,3 @@ checktext: |-
 fixtext: |-
     Configure the "/etc/fstab" to use the "nodev" option on file systems that are associated with removable media.
 
-vuln_discussion: |-
-    The "nodev" mount option causes the system not to interpret character or block special devices. Executing character or blocking special devices from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.

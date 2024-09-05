@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must write audit records to disk.
 
 vuldiscussion: |-
-    Audit data should be synchronously written to disk to ensure
-    log integrity. This setting assures that all audit event data is written disk.
+    Audit data should be synchronously written to disk to ensure log integrity. This setting assures that all audit event data is written disk.
 
 checktext: |-
     Verify that the audit system is configured to write logs to the disk with the following command:
@@ -23,5 +22,3 @@ fixtext: |-
 
     The audit daemon must be restarted for changes to take effect.
 
-vuln_discussion: |-
-    Audit data should be synchronously written to disk to ensure log integrity. This setting assures that all audit event data is written disk.

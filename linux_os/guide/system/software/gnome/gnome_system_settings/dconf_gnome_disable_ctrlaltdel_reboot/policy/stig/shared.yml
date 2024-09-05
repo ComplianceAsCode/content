@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must prevent a user from overriding the Ctrl-Alt-Del sequence settings for the graphical user interface.
 
 vuldiscussion: |-
-    A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
-    can reboot the system. If accidentally pressed, as could happen in
-    the case of mixed OS environment, this can create the risk of short-term
-    loss of availability of systems due to unintentional reboot.
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of mixed OS environment, this can create the risk of short-term loss of availability of systems due to unintentional reboot.
 
 checktext: |-
     Verify that users cannot enable the Ctrl-Alt-Del sequence in the GNOME desktop with the following command:
@@ -32,5 +29,3 @@ fixtext: |-
     Run the following command to update the database:
 
     $ sudo dconf update
-vuln_discussion: |-
-    A locally logged-in user who presses Ctrl-Alt-Del, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of mixed OS environment, this can create the risk of short-term loss of availability of systems due to unintentional reboot.

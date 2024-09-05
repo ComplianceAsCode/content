@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must log username information when unsuccessful logon attempts occur.
 
 vuldiscussion: |-
-    Without auditing of these events it may be harder or impossible to identify what an attacker did after an attack.
+    Without auditing of these events, it may be harder or impossible to identify what an attacker did after an attack.
 
 checktext: |-
     Verify the "/etc/security/faillock.conf" file is configured to log username information when unsuccessful logon attempts occur with the following command:
@@ -20,5 +20,3 @@ fixtext: |-
 
     audit
 
-vuln_discussion: |-
-    Without auditing of these events, it may be harder or impossible to identify what an attacker did after an attack.

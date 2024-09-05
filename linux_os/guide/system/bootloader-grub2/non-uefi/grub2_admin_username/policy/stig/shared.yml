@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must require a unique superusers name upon booting into single-user and maintenance modes.
 
 vuldiscussion: |-
-    Having a non-default grub superuser username makes password-guessing attacks less effective.
+    Having a nondefault grub superuser username makes password-guessing attacks less effective.
 
 checktext: |-
     Verify the boot loader superuser account has been set with the following command:
@@ -28,5 +28,3 @@ fixtext: |-
 
     $ sudo grubby --update-kernel=ALL
 
-vuln_discussion: |-
-    Having a nondefault grub superuser username makes password-guessing attacks less effective.

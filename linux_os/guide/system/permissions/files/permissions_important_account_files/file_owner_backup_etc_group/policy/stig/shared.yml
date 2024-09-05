@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/group- file must be owned by root.
 
 vuldiscussion: |-
-    The "/etc/group-" file is a backup file of "/etc/group", and as such,
-    it contains information regarding groups that are configured on the system.
-    Protection of this file is important for system security.
+    The "/etc/group-" file is a backup file of "/etc/group", and as such, contains information regarding groups that are configured on the system. Protection of this file is important for system security.
 
 checktext: |-
     Verify the ownership of the "/etc/group-" file with the following command:
@@ -20,5 +18,3 @@ fixtext: |-
 
     $ sudo chown root /etc/group-
 
-vuln_discussion: |-
-    The "/etc/group-" file is a backup file of "/etc/group", and as such, contains information regarding groups that are configured on the system. Protection of this file is important for system security.

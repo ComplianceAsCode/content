@@ -2,10 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must take appropriate action when the internal event queue is full.
 
 vuldiscussion: |-
-    The audit system should have an action setup in the event the internal event queue becomes full
-    so that no data is lost.Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+    The audit system should have an action setup in the event the internal event queue becomes full so that no data is lost.  Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
 
-    Off-loading is a common process in information systems with limited audit storage capacity.
+    Offloading is a common process in information systems with limited audit storage capacity.
 
 checktext: |-
     Verify that {{{ full_name }}} audit system is configured to take an appropriate action when the internal event queue is full:
@@ -25,7 +24,3 @@ fixtext: |-
 
     The audit daemon must be restarted for changes to take effect.
 
-vuln_discussion: |-
-    The audit system should have an action setup in the event the internal event queue becomes full so that no data is lost.  Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
-
-    Offloading is a common process in information systems with limited audit storage capacity.

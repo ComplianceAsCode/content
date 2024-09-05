@@ -2,10 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must log IPv4 packets with impossible addresses.
 
 vuldiscussion: |-
-    The presence of "martian" packets (which have impossible addresses)
-    as well as spoofed packets, source-routed packets, and redirects could be a
-    sign of nefarious network activity. Logging these packets enables this activity
-    to be detected.
+    The presence of "martian" packets (which have impossible addresses) as well as spoofed packets, source-routed packets, and redirects could be a sign of nefarious network activity. Logging these packets enables this activity to be detected.
 
 checktext: |-
     Verify {{{ full_name }}} logs IPv4 martian packets.
@@ -37,5 +34,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    The presence of "martian" packets (which have impossible addresses) as well as spoofed packets, source-routed packets, and redirects could be a sign of nefarious network activity. Logging these packets enables this activity to be detected.
