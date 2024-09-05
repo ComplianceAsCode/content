@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/group file must have mode 0644 or less permissive to prevent unauthorized access.
 
 vuldiscussion: |-
-    The "/etc/group" file contains information regarding groups that are configured
-    on the system. Protection of this file is important for system security.
+    The "/etc/group" file contains information regarding groups that are configured on the system. Protection of this file is important for system security.
 
 checktext: |-
     Verify that the "/etc/group" file has mode "0644" or less permissive with the following command:
@@ -19,5 +18,3 @@ fixtext: |-
 
     $ sudo chmod 0644 /etc/group
 
-vuln_discussion: |-
-    The "/etc/group" file contains information regarding groups that are configured on the system. Protection of this file is important for system security.

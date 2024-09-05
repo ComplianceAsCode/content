@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/passwd file must be group-owned by root.
 
 vuldiscussion: |-
-    The "/etc/passwd" file contains information about the users that are configured on
-    the system. Protection of this file is critical for system security.
+    The "/etc/passwd" file contains information about the users that are configured on the system. Protection of this file is critical for system security.
 
 checktext: |-
     Verify the group ownership of the "/etc/passwd" file with the following command:
@@ -19,5 +18,3 @@ fixtext: |-
 
     $ sudo chgrp root /etc/passwd
 
-vuln_discussion: |-
-    The "/etc/passwd" file contains information about the users that are configured on the system. Protection of this file is critical for system security.

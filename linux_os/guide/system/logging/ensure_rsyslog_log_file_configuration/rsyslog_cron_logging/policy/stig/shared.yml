@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must use cron logging.
 
 vuldiscussion: |-
-    Cron logging can be used to trace the successful or unsuccessful execution
-    of cron jobs. It can also be used to spot intrusions into the use of the cron
-    facility by unauthorized and malicious users.
+    Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.
 
 checktext: |-
     Verify that "rsyslog" is configured to log cron events with the following command:
@@ -33,5 +31,3 @@ fixtext: |-
 
     $ sudo systemctl restart rsyslog.service
 
-vuln_discussion: |-
-    Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.

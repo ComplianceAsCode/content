@@ -2,9 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
 
 vuldiscussion: |-
-    Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information in to the system's logs, or could fill the system's storage leading to a Denial of Service.
+    Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information into the system's logs, or could fill the system's storage leading to a denial of service.
 
-    If the system is intended to be a log aggregation server its use must be documented with the ISSO.
+    If the system is intended to be a log aggregation server, its use must be documented with the information system security officer (ISSO).
 
 checktext: |-
     Verify that {{{ full_name }}} is not configured to receive remote logs using rsyslog with the following commands:
@@ -37,7 +37,3 @@ fixtext: |-
 
     $ sudo systemctl restart rsyslog.service
 
-vuln_discussion: |-
-    Unintentionally running a rsyslog server accepting remote messages puts the system at increased risk. Malicious rsyslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information into the system's logs, or could fill the system's storage leading to a denial of service.
-
-    If the system is intended to be a log aggregation server, its use must be documented with the information system security officer (ISSO).

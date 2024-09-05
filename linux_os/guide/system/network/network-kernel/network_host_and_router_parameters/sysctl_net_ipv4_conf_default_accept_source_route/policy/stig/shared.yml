@@ -2,15 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must not forward IPv4 source-routed packets by default.
 
 vuldiscussion: |-
-    Source-routed packets allow the source of the packet to suggest routers
-    forward the packet along a different path than configured on the router,
-    which can be used to bypass network security measures.
+    Source-routed packets allow the source of the packet to suggest routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures.
 
-
-    Accepting source-routed packets in the IPv4 protocol has few legitimate
-    uses. It should be disabled unless it is absolutely required, such as when
-    IPv4 forwarding is enabled and the system is legitimately functioning as a
-    router.
+    Accepting source-routed packets in the IPv4 protocol has few legitimate uses. It must be disabled unless it is absolutely required, such as when IPv4 forwarding is enabled and the system is legitimately functioning as a router.
 
 checktext: |-
     Verify {{{ full_name }}} does not accept IPv4 source-routed packets by default.
@@ -42,7 +36,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Source-routed packets allow the source of the packet to suggest routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures.
-
-    Accepting source-routed packets in the IPv4 protocol has few legitimate uses. It must be disabled unless it is absolutely required, such as when IPv4 forwarding is enabled and the system is legitimately functioning as a router.

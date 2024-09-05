@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} effective dconf policy must match the policy keyfiles.
 
 vuldiscussion: |-
-    Unlike text-based keyfiles, the binary database is impossible to check through most automated and all manual means.
-    Therefore, in order to evaluate dconf configuration, both have to be true at the same time - configuration files have to be compliant, and the database needs to be more recent than those keyfiles, which gives confidence that it reflects them.
+    Unlike text-based keyfiles, the binary database is impossible to check through most automated and all manual means; therefore, in order to evaluate dconf configuration, both have to be true at the same time - configuration files have to be compliant, and the database needs to be more recent than those keyfiles, which gives confidence that it reflects them.
 
 checktext: |-
     Check the last modification time of the local databases, comparing it to the last modification time of the related keyfiles. The following command will check every dconf database and compare its modification time to the related system keyfiles:
@@ -19,5 +18,3 @@ fixtext: |-
 
     $ sudo dconf update
 
-vuln_discussion: |-
-    Unlike text-based keyfiles, the binary database is impossible to check through most automated and all manual means; therefore, in order to evaluate dconf configuration, both have to be true at the same time - configuration files have to be compliant, and the database needs to be more recent than those keyfiles, which gives confidence that it reflects them.

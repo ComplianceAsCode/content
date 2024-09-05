@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} SSH private host key files must have mode 0640 or less permissive.
 
 vuldiscussion: |-
-    If an unauthorized user obtains the private SSH host key file, the host could be
-    impersonated.
+    If an unauthorized user obtains the private SSH host key file, the host could be impersonated.
 
 checktext: |-
     Verify the SSH private host key files have a mode of "0640" or less permissive with the following command:
@@ -26,5 +25,3 @@ fixtext: |-
 
     $ sudo systemctl restart sshd.service
 
-vuln_discussion: |-
-    If an unauthorized user obtains the private SSH host key file, the host could be impersonated.

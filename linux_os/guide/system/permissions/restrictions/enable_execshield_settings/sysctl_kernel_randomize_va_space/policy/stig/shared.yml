@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.
 
 vuldiscussion: |-
-    Address space layout randomization (ASLR) makes it more difficult for an attacker to predict the location of attack code they have introduced into a
-    process's address space during an attempt at exploitation. Additionally, ASLR makes it more difficult for an attacker to know the location of
-    existing code in order to re-purpose it using return oriented programming (ROP) techniques.
+    Address space layout randomization (ASLR) makes it more difficult for an attacker to predict the location of attack code they have introduced into a process' address space during an attempt at exploitation. Additionally, ASLR makes it more difficult for an attacker to know the location of existing code in order to repurpose it using return oriented programming (ROP) techniques.
 
 checktext: |-
     Verify {{{ full_name }}} is implementing ASLR with the following command:
@@ -31,5 +29,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Address space layout randomization (ASLR) makes it more difficult for an attacker to predict the location of attack code they have introduced into a process' address space during an attempt at exploitation. Additionally, ASLR makes it more difficult for an attacker to know the location of existing code in order to repurpose it using return oriented programming (ROP) techniques.

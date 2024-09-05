@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} system accounts must not have an interactive login shell.
 
 vuldiscussion: |-
-    Ensuring shells are not given to system accounts upon login makes it more
-    difficult for attackers to make use of system accounts.
+    Ensuring shells are not given to system accounts upon login makes it more difficult for attackers to make use of system accounts.
 
 checktext: |-
     Verify that system accounts must not have an interactive login shell with the following command:
@@ -33,5 +32,3 @@ fixtext: |-
 
     Do not perform the steps in this section on the root account. Doing so will cause the system to become inaccessible.
 
-vuln_discussion: |-
-    Ensuring shells are not given to system accounts upon login makes it more difficult for attackers to make use of system accounts.

@@ -2,11 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must use reverse path filtering on all IPv4 interfaces.
 
 vuldiscussion: |-
-    Enabling reverse path filtering drops packets with source addresses
-    that should not have been able to be received on the interface they were
-    received on. It should not be used on systems which are routers for
-    complicated networks, but is helpful for end hosts and routers serving small
-    networks.
+    Enabling reverse path filtering drops packets with source addresses that should not have been able to be received on the interface on which they were received. It must not be used on systems that are routers for complicated networks, but is helpful for end hosts and routers serving small networks.
 
 checktext: |-
     Verify {{{ full_name }}} uses reverse path filtering on all IPv4 interfaces with the following commands:
@@ -36,5 +32,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Enabling reverse path filtering drops packets with source addresses that should not have been able to be received on the interface on which they were received. It must not be used on systems that are routers for complicated networks, but is helpful for end hosts and routers serving small networks.

@@ -2,15 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} library directories must have mode 755 or less permissive.
 
 vuldiscussion: |-
-    If the operating system were to allow any user to make changes to software libraries,
-    then those changes might be implemented without undergoing the appropriate testing
-    and approvals that are part of a robust change management process.
+    If {{{ full_name }}} allowed any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.
 
-    This requirement applies to operating systems with software libraries that are accessible
-    and configurable, as in the case of interpreted languages. Software libraries also include
-    privileged programs which execute with escalated privileges. Only qualified and authorized
-    individuals must be allowed to obtain access to information system components for purposes
-    of initiating changes, including upgrades and modifications.
+    This requirement applies to {{{ full_name }}} with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges.
 
 checktext: |-
     Verify the system-wide shared library directories have mode "755" or less permissive with the following command:
@@ -26,7 +20,3 @@ fixtext: |-
 
     $ sudo chmod 755 [DIRECTORY]
 
-vuln_discussion: |-
-    If {{{ full_name }}} allowed any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.
-
-    This requirement applies to {{{ full_name }}} with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges.

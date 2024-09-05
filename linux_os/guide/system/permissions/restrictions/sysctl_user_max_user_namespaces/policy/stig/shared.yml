@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must disable the use of user namespaces.
 
 vuldiscussion: |-
-    User namespaces are used primarily for Linux containers. The value 0
-    disallows the use of user namespaces.
+    User namespaces are used primarily for Linux containers. The value "0" disallows the use of user namespaces.
 
 checktext: |-
     Verify {{{ full_name }}} disables the use of user namespaces with the following commands:
@@ -34,5 +33,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    User namespaces are used primarily for Linux containers. The value "0" disallows the use of user namespaces.

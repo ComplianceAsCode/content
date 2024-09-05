@@ -2,13 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds.
 
 vuldiscussion: |-
-    Passwords need to be protected at all times, and encryption is the standard
-    method for protecting passwords. If passwords are not encrypted, they can
-    be plainly read (i.e., clear text) and easily compromised. Passwords
-    that are encrypted with a weak algorithm are no more protected than if
-    they are kept in plain text.
-
-
+    Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
 
     Using more hashing rounds makes password cracking attacks more difficult.
 
@@ -26,7 +20,3 @@ fixtext: |-
 
     SHA_CRYPT_MIN_ROUNDS 5000
 
-vuln_discussion: |-
-    Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
-
-    Using more hashing rounds makes password cracking attacks more difficult.

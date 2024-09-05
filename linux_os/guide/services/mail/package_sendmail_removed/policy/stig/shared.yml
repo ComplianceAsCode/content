@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must not have the sendmail package installed.
 
 vuldiscussion: |-
-    The sendmail software was not developed with security in mind and
-    its design prevents it from being effectively contained by SELinux.  Postfix
-    should be used instead.
+    The sendmail software was not developed with security in mind, and its design prevents it from being effectively contained by SELinux. Postfix must be used instead.
 
 checktext: |-
     Verify that the sendmail package is not installed with the following command:
@@ -20,5 +18,3 @@ fixtext: |-
 
     $ sudo dnf remove sendmail
 
-vuln_discussion: |-
-    The sendmail software was not developed with security in mind, and its design prevents it from being effectively contained by SELinux. Postfix must be used instead.

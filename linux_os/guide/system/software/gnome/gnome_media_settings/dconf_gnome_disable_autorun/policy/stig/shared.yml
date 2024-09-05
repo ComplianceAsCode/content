@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must prevent a user from overriding the disabling of the graphical user interface autorun function.
 
 vuldiscussion: |-
-    Automatically running applications when media is inserted allows for the easy introduction of unknown data, thereby facilitating malicious activity.
+    Techniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.
 
 checktext: |-
     Verify {{{ full_name }}} disables ability of the user to override the graphical user interface autorun setting.
@@ -35,5 +35,3 @@ fixtext: |-
     Then update the dconf system databases:
 
     $ sudo dconf update
-vuln_discussion: |-
-    Techniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.

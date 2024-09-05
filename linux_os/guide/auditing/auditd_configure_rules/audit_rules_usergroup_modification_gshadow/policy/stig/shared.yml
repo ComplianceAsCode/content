@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow.
 
 vuldiscussion: |-
-    In addition to auditing new user and group accounts, these watches
-    will alert the system administrator(s) to any modifications. Any unexpected
-    users, groups, or modifications should be investigated for legitimacy.
+    In addition to auditing new user and group accounts, these watches will alert the system administrator(s) to any modifications. Any unexpected users, groups, or modifications should be investigated for legitimacy.
 
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/gshadow" with the following command:
@@ -24,5 +22,3 @@ fixtext: |-
 
     The audit daemon must be restarted for the changes to take effect.
 
-vuln_discussion: |-
-    In addition to auditing new user and group accounts, these watches will alert the system administrator(s) to any modifications. Any unexpected users, groups, or modifications should be investigated for legitimacy.

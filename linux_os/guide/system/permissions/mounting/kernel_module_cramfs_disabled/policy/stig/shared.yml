@@ -6,7 +6,7 @@ vuldiscussion: |-
 
     Removing support for unneeded filesystem types reduces the local attack surface of the server.
 
-    Compressed ROM/RAM file system (or cramfs) is a read-only file system designed for simplicity and space-efficiency.  It is mainly used in embedded and small-footprint systems.
+    Compressed ROM/RAM file system (or cramfs) is a read-only file system designed for simplicity and space-efficiency. It is mainly used in embedded and small-footprint systems.
 
 checktext: |-
     Verify that {{{ full_name }}} disables the ability to load the cramfs kernel module with the following command:
@@ -23,9 +23,3 @@ fixtext: |-
     install cramfs /bin/false
     blacklist cramfs
 
-vuln_discussion: |-
-    It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
-
-    Removing support for unneeded filesystem types reduces the local attack surface of the server.
-
-    Compressed ROM/RAM file system (or cramfs) is a read-only file system designed for simplicity and space-efficiency. It is mainly used in embedded and small-footprint systems.

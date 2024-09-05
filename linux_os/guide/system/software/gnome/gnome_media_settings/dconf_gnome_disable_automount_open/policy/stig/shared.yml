@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must prevent a user from overriding the disabling of the graphical user interface automount function.
 
 vuldiscussion: |-
-    Automatically mounting file systems permits easy introduction of unknown devices, thereby facilitating malicious activity.
+    A nonprivileged account is any operating system account with authorizations of a nonprivileged user.
 
 checktext: |-
     Verify {{{ full_name }}} disables ability of the user to override the graphical user interface automount setting.
@@ -35,5 +35,3 @@ fixtext: |-
     Then update the dconf system databases:
 
     $ sudo dconf update
-vuln_discussion: |-
-    A nonprivileged account is any operating system account with authorizations of a nonprivileged user.

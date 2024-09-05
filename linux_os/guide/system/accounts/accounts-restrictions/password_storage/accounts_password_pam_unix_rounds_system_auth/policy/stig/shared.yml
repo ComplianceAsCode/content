@@ -2,16 +2,12 @@ srg_requirement: |-
     {{{ full_name }}} system-auth must be configured to use a sufficient number of hashing rounds.
 
 vuldiscussion: |-
-    Passwords need to be protected at all times, and encryption is the standard
-    method for protecting passwords. If passwords are not encrypted, they can
-    be plainly read (i.e., clear text) and easily compromised. Passwords
-    that are encrypted with a weak algorithm are no more protected than if
-    they are kept in plain text.
+    Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
 
     Using more hashing rounds makes password cracking attacks more difficult.
 
 fixtext: |-
-    Configure Red Hat Enterprise Linux 9 to use 5000 hashing rounds for hashing passwords.
+    Configure {{{ full_name }}} to use 5000 hashing rounds for hashing passwords.
 
     Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to 5000.
 
@@ -26,7 +22,3 @@ checktext: |-
 
     If a matching line is not returned or "rounds" is less than 5000, this a finding.
 
-vuln_discussion: |-
-    Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords that are encrypted with a weak algorithm are no more protected than if they are kept in plain text.
-
-    Using more hashing rounds makes password cracking attacks more difficult.

@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must disable access to network bpf system call from nonprivileged processes.
 
 vuldiscussion: |-
-    Loading and accessing the packet filters programs and maps using the bpf()
-    syscall has the potential of revealing sensitive information about the kernel state.
+    Loading and accessing the packet filters programs and maps using the bpf() system call has the potential of revealing sensitive information about the kernel state.
 
 checktext: |-
     Verify {{{ full_name }}} prevents privilege escalation thru the kernel by disabling access to the bpf system call with the following commands:
@@ -30,5 +29,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Loading and accessing the packet filters programs and maps using the bpf() system call has the potential of revealing sensitive information about the kernel state.

@@ -2,11 +2,7 @@ srg_requirement: |-
     The root account must be the only account having unrestricted access to {{{ full_name }}} system.
 
 vuldiscussion: |-
-    An account has root authority if it has a UID of 0. Multiple accounts
-    with a UID of 0 afford more opportunity for potential intruders to
-    guess a password for a privileged account. Proper configuration of
-    sudo is recommended to afford multiple system administrators
-    access to root privileges in an accountable manner.
+    An account has root authority if it has a user identifier (UID) of "0". Multiple accounts with a UID of "0" afford more opportunity for potential intruders to guess a password for a privileged account. Proper configuration of sudo is recommended to afford multiple system administrators access to root privileges in an accountable manner.
 
 checktext: |-
     Verify that only the "root" account has a UID "0" assignment with the following command:
@@ -22,5 +18,3 @@ fixtext: |-
 
     If the account is associated with system commands or applications, the UID should be changed to one greater than "0" but less than "1000". Otherwise, assign a UID of greater than "1000" that has not already been assigned.
 
-vuln_discussion: |-
-    An account has root authority if it has a user identifier (UID) of "0". Multiple accounts with a UID of "0" afford more opportunity for potential intruders to guess a password for a privileged account. Proper configuration of sudo is recommended to afford multiple system administrators access to root privileges in an accountable manner.

@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/shadow file must be group-owned by root.
 
 vuldiscussion: |-
-    The "/etc/shadow" file stores password hashes. Protection of this file is
-    critical for system security.
+    The "/etc/shadow" file stores password hashes. Protection of this file is critical for system security.
 
 checktext: |-
     Verify the group ownership of the "/etc/shadow" file with the following command:
@@ -19,5 +18,3 @@ fixtext: |-
 
     $ sudo chgrp root /etc/shadow
 
-vuln_discussion: |-
-    The "/etc/shadow" file stores password hashes. Protection of this file is critical for system security.

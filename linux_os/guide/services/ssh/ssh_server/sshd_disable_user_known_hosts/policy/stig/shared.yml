@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} SSH daemon must not allow known hosts authentication.
 
 vuldiscussion: |-
-    Configuring the IgnoreUserKnownHosts setting for the SSH daemon provides additional
-    assurance that remote login via SSH will require a password, even
-    in the event of misconfiguration elsewhere.
+    Configuring the IgnoreUserKnownHosts setting for the SSH daemon provides additional assurance that remote login via SSH will require a password, even in the event of misconfiguration elsewhere.
 
 checktext: |-
     Verify the SSH daemon does not allow known hosts authentication with the following command:
@@ -26,5 +24,3 @@ fixtext: |-
 
     $ sudo systemctl restart sshd.service
 
-vuln_discussion: |-
-    Configuring the IgnoreUserKnownHosts setting for the SSH daemon provides additional assurance that remote login via SSH will require a password, even in the event of misconfiguration elsewhere.

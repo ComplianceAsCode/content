@@ -2,8 +2,7 @@ srg_requirement: |-
     All {{{ full_name }}} local interactive users must have a home directory assigned in the /etc/passwd file.
 
 vuldiscussion: |-
-    If local interactive users are not assigned a valid home directory, there is no
-    place for the storage and control of files they should own.
+    If local interactive users are not assigned a valid home directory, there is no place for the storage and control of files they should own.
 
 checktext: |-
     Verify that interactive users on the system have a home directory assigned with the following command:
@@ -21,5 +20,3 @@ checktext: |-
 fixtext: |-
     Create and assign home directories to all local interactive users on {{{ full_name }}} that currently do not have a home directory assigned.
 
-vuln_discussion: |-
-    If local interactive users are not assigned a valid home directory, there is no place for the storage and control of files they should own.

@@ -2,9 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must disable virtual system calls.
 
 vuldiscussion: |-
-    Syscalls are special routines in the Linux kernel, which userspace applications ask to do privileged tasks.  Invoking a system call is an expensive operation because the processor must interrupt the currently executing task and switch context to kernel mode and then back to userspace after the system call completes.  Virtual Syscalls map into user space a page that contains some variables and the implementation of some system calls.  This allows the system calls to be executed in userspace to alleviate the context switching expense.
+    System calls are special routines in the Linux kernel, which userspace applications ask to do privileged tasks. Invoking a system call is an expensive operation because the processor must interrupt the currently executing task and switch context to kernel mode and then back to userspace after the system call completes. Virtual system calls map into user space a page that contains some variables and the implementation of some system calls. This allows the system calls to be executed in userspace to alleviate the context switching expense.
 
-    Virtual Syscalls provide an opportunity of attack for a user who has control of the return instruction pointer.  Disabling vsyscalls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns. If the system intends to run containers based on RHEL 6 components, then virtual syscalls will need enabled so the components function properly.
+    Virtual system calls provide an opportunity of attack for a user who has control of the return instruction pointer. Disabling virtual system calls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns. If the system intends to run containers based on RHEL 6 components, then virtual system calls will need enabled so the components function properly.
 
 checktext: |-
     Verify the current GRUB 2 configuration disables virtual system calls with the following command:
@@ -30,7 +30,3 @@ fixtext: |-
 
     GRUB_CMDLINE_LINUX="vsyscall=none"
 
-vuln_discussion: |-
-    System calls are special routines in the Linux kernel, which userspace applications ask to do privileged tasks. Invoking a system call is an expensive operation because the processor must interrupt the currently executing task and switch context to kernel mode and then back to userspace after the system call completes. Virtual system calls map into user space a page that contains some variables and the implementation of some system calls. This allows the system calls to be executed in userspace to alleviate the context switching expense.
-
-    Virtual system calls provide an opportunity of attack for a user who has control of the return instruction pointer. Disabling virtual system calls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns. If the system intends to run containers based on RHEL 6 components, then virtual system calls will need enabled so the components function properly.

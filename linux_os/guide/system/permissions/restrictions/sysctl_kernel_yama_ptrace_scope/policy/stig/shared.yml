@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must restrict usage of ptrace to descendant processes.
 
 vuldiscussion: |-
-    Unrestricted usage of ptrace allows compromised binaries to run ptrace on another processes of the user. Like this, the attacker can steal
-    sensitive information from the target processes (e.g. SSH sessions, web browser, etc) without any additional assistance from the user (i.e. without resorting to phishing).
-
+    Unrestricted usage of ptrace allows compromised binaries to run ptrace on other processes of the user. Like this, the attacker can steal sensitive information from the target processes (e.g., SSH sessions, web browser, etc.) without any additional assistance from the user (i.e., without resorting to phishing).
 
 checktext: |-
     Verify {{{ full_name }}} restricts usage of ptrace to descendant processes with the following commands:
@@ -31,5 +29,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Unrestricted usage of ptrace allows compromised binaries to run ptrace on other processes of the user. Like this, the attacker can steal sensitive information from the target processes (e.g., SSH sessions, web browser, etc.) without any additional assistance from the user (i.e., without resorting to phishing).

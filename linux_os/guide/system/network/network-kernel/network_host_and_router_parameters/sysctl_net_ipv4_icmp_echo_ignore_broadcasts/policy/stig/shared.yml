@@ -2,12 +2,9 @@ srg_requirement: |-
     {{{ full_name }}} must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.
 
 vuldiscussion: |-
-    Responding to broadcast (ICMP) echoes facilitates network mapping
-    and provides a vector for amplification attacks.
+    Responding to broadcast (ICMP) echoes facilitates network mapping and provides a vector for amplification attacks.
 
-
-    Ignoring ICMP echo requests (pings) sent to broadcast or multicast
-    addresses makes the system slightly more difficult to enumerate on the network.
+    Ignoring ICMP echo requests (pings) sent to broadcast or multicast addresses makes the system slightly more difficult to enumerate on the network.
 
 checktext: |-
     Verify {{{ full_name }}} does not respond to ICMP echoes sent to a broadcast address.
@@ -39,7 +36,3 @@ fixtext: |-
 
     $ sudo sysctl --system
 
-vuln_discussion: |-
-    Responding to broadcast (ICMP) echoes facilitates network mapping and provides a vector for amplification attacks.
-
-    Ignoring ICMP echo requests (pings) sent to broadcast or multicast addresses makes the system slightly more difficult to enumerate on the network.

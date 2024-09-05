@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} SSH daemon must not allow GSSAPI authentication.
 
 vuldiscussion: |-
-    GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's
-    GSSAPI to remote hosts, increasing the attack surface of the system.
+    Generic Security Service Application Program Interface (GSSAPI) authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system.
 
 checktext: |-
     Verify the SSH daemon does not allow GSSAPI authentication with the following command:
@@ -27,5 +26,3 @@ fixtext: |-
 
     $ sudo systemctl restart sshd.service
 
-vuln_discussion: |-
-    Generic Security Service Application Program Interface (GSSAPI) authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system.

@@ -2,9 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} /etc/shadow- file must be owned by root.
 
 vuldiscussion: |-
-    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such,
-    it contains the list of local system accounts and password hashes.
-    Protection of this file is critical for system security.
+    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such, contains the list of local system accounts and password hashes. Protection of this file is critical for system security.
 
 checktext: |-
     Verify the ownership of the "/etc/shadow-" file with the following command:
@@ -20,5 +18,3 @@ fixtext: |-
 
     $ sudo chown root /etc/shadow-
 
-vuln_discussion: |-
-    The "/etc/shadow-" file is a backup file of "/etc/shadow", and as such, contains the list of local system accounts and password hashes. Protection of this file is critical for system security.

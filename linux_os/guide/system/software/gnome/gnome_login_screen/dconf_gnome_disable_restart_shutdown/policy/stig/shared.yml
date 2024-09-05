@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must prevent a user from overriding the disable-restart-buttons setting for the graphical user interface.
 
 vuldiscussion: |-
-    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems
-    due to reboot.
+    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.
 
 checktext: |-
     Verify {{{ full_name }}} prevents a user from overriding the disable-restart-buttons setting for graphical user interfaces.
@@ -40,5 +39,3 @@ fixtext: |-
     Run the following command to update the database:
 
     $ sudo dconf update
-vuln_discussion: |-
-    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.

@@ -2,8 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must be configured to disable the Asynchronous Transfer Mode kernel module.
 
 vuldiscussion: |-
-    Disabling ATM protects the system against exploitation of any
-    flaws in its implementation.
+    Disabling Asynchronous Transfer Mode (ATM) protects the system against exploitation of any flaws in its implementation.
 
 checktext: |-
     Verify that {{{ full_name }}} disables the ability to load the ATM kernel module with the following command:
@@ -20,5 +19,3 @@ fixtext: |-
     install atm /bin/false
     blacklist atm
 
-vuln_discussion: |-
-    Disabling Asynchronous Transfer Mode (ATM) protects the system against exploitation of any flaws in its implementation.
