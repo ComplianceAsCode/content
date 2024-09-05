@@ -4,8 +4,10 @@ srg_requirement: |-
 vuldiscussion: |-
     Loading and accessing the packet filters programs and maps using the bpf() system call has the potential of revealing sensitive information about the kernel state.
 
+
+
 checktext: |-
-    Verify {{{ full_name }}} prevents privilege escalation thru the kernel by disabling access to the bpf system call with the following commands:
+    Verify that {{{ full_name }}} prevents privilege escalation through the kernel by disabling access to the bpf system call with the following commands:
 
     $ sudo sysctl kernel.unprivileged_bpf_disabled
 
@@ -18,7 +20,7 @@ checktext: |-
     $ sudo /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.unprivileged_bpf_disabled | tail -1
     kernel.unprivileged_bpf_disabled = 1
 
-    If the network parameter "ipv4.tcp_syncookies" is not equal to "1", or nothing is returned, this is a finding.
+    If the network parameter "kernel.unprivileged_bpf_disabled" is not equal to "1", or nothing is returned, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to prevent privilege escalation thru the kernel by disabling access to the bpf syscall by adding the following line to a file, in the "/etc/sysctl.d" directory:
@@ -28,4 +30,3 @@ fixtext: |-
     The system configuration files need to be reloaded for the changes to take effect. To reload the contents of the files, run the following command:
 
     $ sudo sysctl --system
-

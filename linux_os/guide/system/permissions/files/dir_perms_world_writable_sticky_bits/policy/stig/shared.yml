@@ -11,7 +11,7 @@ checktext: |-
 
     Determine if all world-writable directories have the sticky bit set by running the following command:
 
-    $ sudo find / -type d \( -perm -0002 -a ! -perm -1000 \) -print 2&gt/dev/null
+    $ sudo find / -type d \( -perm -0002 -a ! -perm -1000 \) -print 2&gt;/dev/null
 
     drwxrwxrwt 7 root root 4096 Jul 26 11:19 /tmp
 
@@ -23,4 +23,3 @@ fixtext: |-
     Set the sticky bit on all world-writable directories using the command, replace "[World-Writable Directory]" with any directory path missing the sticky bit:
 
     $ chmod a+t [World-Writable Directory]
-

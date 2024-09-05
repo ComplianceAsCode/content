@@ -8,6 +8,8 @@ vuldiscussion: |-
 
     SLAB objects are blocks of physically contiguous memory. SLUB is the unqueued SLAB allocator.
 
+
+
 checktext: |-
     Verify that GRUB 2 is configured to enable poisoning of SLUB/SLAB objects to mitigate use-after-free vulnerabilities with the following commands:
 
@@ -23,7 +25,7 @@ checktext: |-
 
     GRUB_CMDLINE_LINUX="slub_debug=P"
 
-    If "slub_debug" is not set to "P", is missing or commented out, this is a finding.
+    If "slub_debug" does not contain "P", is missing, or is commented out, this is a finding.
 
 fixtext: |-
     Configure RHEL  to enable poisoning of SLUB/SLAB objects with the following commands:
@@ -33,4 +35,3 @@ fixtext: |-
     Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
 
     GRUB_CMDLINE_LINUX="slub_debug=P"
-

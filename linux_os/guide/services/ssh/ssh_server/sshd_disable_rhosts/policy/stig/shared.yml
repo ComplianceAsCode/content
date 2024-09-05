@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify the SSH daemon does not allow rhosts authentication with the following command:
 
-    $ sudo grep -ir ignorerhosts /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*ignorerhosts'
 
     IgnoreRhosts yes
 
@@ -23,4 +23,3 @@ fixtext: |-
     The SSH service must be restarted for changes to take effect:
 
     $ sudo systemctl restart sshd.service
-
