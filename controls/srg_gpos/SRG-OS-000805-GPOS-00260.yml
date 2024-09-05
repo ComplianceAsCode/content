@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000805-GPOS-00260
+        title: '{{{ full_name }}} must employ automated patch management tools to facilitate
+                flaw remediation to the organization-defined system components.'
+        levels:
+            - medium
+        status: automated
+        rules:
+            - dnf-automatic_apply_updates
+            - package_dnf-automatic_installed

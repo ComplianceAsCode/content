@@ -1,8 +1,8 @@
 controls:
     -   id: SRG-OS-000076-GPOS-00044
+        title: Operating systems must enforce a 60-day maximum password lifetime restriction.
         levels:
             - medium
-        title: {{{ full_name }}} must enforce a 60-day maximum password lifetime restriction.
         rules:
             - var_accounts_maximum_age_login_defs=60
             - accounts_maximum_age_login_defs
