@@ -148,15 +148,17 @@ controls:
       title:
           A separate file system must be used for SLEM 5 user home directories (such
           as /home or an equivalent).
-      rules: []
-      status: pending
+      rules:
+          - partition_for_home
+      status: automated
     
     - id: SLEM-05-231015
       levels:
           - medium
       title: SLEM 5 must use a separate file system for /var.
-      rules: []
-      status: pending
+      rules:
+          - partition_for_var
+      status: automated
     
     - id: SLEM-05-231020
       levels:
@@ -173,8 +175,9 @@ controls:
           SLEM 5 file systems that are being imported via Network File System (NFS)
           must be mounted to prevent files with the setuid and setgid bit set from being
           executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_nosuid_remote_filesystems
+      status: automated
     
     - id: SLEM-05-231030
       levels:
@@ -182,8 +185,9 @@ controls:
       title:
           SLEM 5 file systems that are being imported via Network File System (NFS)
           must be mounted to prevent binary files from being executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_noexec_remote_filesystems
+      status: automated
     
     - id: SLEM-05-231035
       levels:
@@ -191,8 +195,9 @@ controls:
       title:
           SLEM 5 file systems that are used with removable media must be mounted to
           prevent files with the setuid and setgid bit set from being executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_nosuid_removable_partitions
+      status: automated
     
     - id: SLEM-05-231040
       levels:
@@ -211,8 +216,9 @@ controls:
       title:
           SLEM 5 file systems that contain user home directories must be mounted to
           prevent files with the setuid and setgid bit set from being executed.
-      rules: []
-      status: pending
+      rules:
+          - mount_option_home_nosuid
+      status: automated
     
     - id: SLEM-05-231050
       levels:
@@ -359,15 +365,17 @@ controls:
       levels:
           - medium
       title: All SLEM 5 files and directories must have a valid owner.
-      rules: []
-      status: pending
+      rules:
+          - no_files_unowned_by_user
+      status: automated
     
     - id: SLEM-05-232095
       levels:
           - medium
       title: All SLEM 5 files and directories must have a valid group owner.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_ungroupowned
+      status: automated
     
     - id: SLEM-05-232100
       levels:
@@ -385,8 +393,9 @@ controls:
       title:
           All SLEM 5 world-writable directories must be group-owned by root, sys, bin,
           or an application group.
-      rules: []
-      status: pending
+      rules:
+          - dir_perms_world_writable_system_owned_group
+      status: automated
     
     - id: SLEM-05-232110
       levels:
@@ -840,15 +849,17 @@ controls:
       title:
           All SLEM 5 local interactive user initialization files executable search
           paths must contain only paths that resolve to the users' home directory.
-      rules: []
-      status: pending
+      rules:
+          - accounts_user_home_paths_only
+      status: automated
     
     - id: SLEM-05-411040
       levels:
           - medium
       title: All SLEM 5 local initialization files must not execute world-writable programs.
-      rules: []
-      status: pending
+      rules:
+          - accounts_user_dot_no_world_writable_programs
+      status: automated
     
     - id: SLEM-05-411045
       levels:
