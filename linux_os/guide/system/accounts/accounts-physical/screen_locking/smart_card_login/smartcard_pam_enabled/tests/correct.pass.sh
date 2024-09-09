@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu,multi_platform_sle
+# platform = multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 # packages = libpam-pkcs11
 
 {{% if 'ubuntu' in product %}}

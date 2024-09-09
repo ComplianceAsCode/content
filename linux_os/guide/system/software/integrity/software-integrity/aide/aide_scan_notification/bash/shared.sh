@@ -3,7 +3,7 @@
 {{{ bash_package_install("aide") }}}
 {{{ bash_instantiate_variables("var_aide_scan_notification_email") }}}
 
-{{% if product in ["sle15"] %}}
+{{% if product in ["sle15", "slmicro5"] %}}
 # create unit file for periodic aide database check
 cat > /etc/systemd/system/aidecheck.service <<CHECKEOF
 [Unit]
