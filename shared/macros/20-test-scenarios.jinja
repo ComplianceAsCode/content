@@ -1,0 +1,12 @@
+{{#
+This macro changes the configuration of the audit service so that it looks like auditctl is used to load rules.
+#}}
+
+{{%- macro setup_auditctl_environment () -%}}
+  {{% if product == "rhel10" %}}
+  sed -i "s%^ExecStart=.*%ExecStart=/sbin/auditctl%" /usr/lib/systemd/system/audit-rules.service
+  {{% else %}}
+sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
+  {{% endif %}}
+{{%- endmacro -%}}
+
