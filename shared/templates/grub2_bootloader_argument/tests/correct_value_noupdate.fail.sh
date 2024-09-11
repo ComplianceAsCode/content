@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = multi_platform_ubuntu
+# platform = multi_platform_all
 # packages = grub2
 
 {{%- if ARG_VARIABLE %}}

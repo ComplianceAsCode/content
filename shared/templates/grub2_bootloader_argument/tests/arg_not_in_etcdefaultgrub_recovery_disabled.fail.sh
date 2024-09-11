@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# platform = Oracle Linux 7
+# platform = multi_platform_all
+
+source common.sh
+
 # Removes the argument from kernel command line in /etc/default/grub
 if grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=.*{{{ARG_NAME}}}=.*"'  '/etc/default/grub' ; then
 	sed -i 's/\(^GRUB_CMDLINE_LINUX_DEFAULT=".*\){{{ARG_NAME}}}=[^[:space:]]*\(.*"\)/\1 \2/'  '/etc/default/grub'
