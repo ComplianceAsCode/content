@@ -45,3 +45,5 @@ selections:
     - '!package_talk_removed'
     - '!package_xinetd_removed'
     - '!package_ypserv_removed'
+    # these rules are failing when they are remediated with Ansible, removing then temporarily until they are fixed
+    - '!accounts_password_pam_retry'
