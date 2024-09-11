@@ -3,13 +3,11 @@ documentation_complete: true
 platform: ocp4-node
 
 metadata:
-    version: V1R1
+    version: V2R1
     SMEs:
-        - jhrozek
         - Vincent056
-        - mrogers950
         - rhmdnd
-        - david-rh
+        - yuumasato
 
 reference: https://public.cyber.mil/stigs/downloads/
 
@@ -19,4 +17,4 @@ description: |-
     This profile contains configuration checks that align to the DISA STIG for
     Red Hat OpenShift Container Platform 4.
 
-extends: stig-node-v1r1
+extends: stig-node-v2r1
