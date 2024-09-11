@@ -14,3 +14,11 @@ else
 	# no arg is present, append it
 	sed -i 's/\(^.*\(vmlinuz\|kernelopts\).*\)/\1 {{{ARG_NAME}}}=wrong/'  "$file"
 fi
+
+# Ensure that grubenv is referenced through $kernelopts
+# othervise contents of grubenv are ignored
+for entry in /boot/loader/entries/*.conf; do
+  if ! grep -q '\$kernelopts' "$entry"; then
+    sed -i 's/^(options.*)$/\1 \$kernelopts/' "$entry"
+  fi
+done

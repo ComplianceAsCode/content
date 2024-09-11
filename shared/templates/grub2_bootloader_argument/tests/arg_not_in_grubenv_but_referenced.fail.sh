@@ -11,3 +11,9 @@ if grep -q '^.*{{{ARG_NAME}}}=.*'  "$file" ; then
 	sed -i 's/\(^.*\){{{ARG_NAME}}}=[^[:space:]]*\(.*\)/\1 \2/'  "$file"
 fi
 
+for entry in /boot/loader/entries/*.conf; do
+  if ! grep -q '\$kernelopts' "$entry"; then
+    sed -i 's/^(options.*)$/\1 \$kernelopts/' "$entry"
+  fi
+done
+
