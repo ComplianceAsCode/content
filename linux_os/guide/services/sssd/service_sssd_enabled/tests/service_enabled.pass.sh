@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = sssd
+# packages = sssd-common
 
 source common.sh
 
