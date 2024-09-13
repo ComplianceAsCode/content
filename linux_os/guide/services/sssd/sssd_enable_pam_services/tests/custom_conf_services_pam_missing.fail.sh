@@ -1,11 +1,12 @@
 #!/bin/bash
 # packages = sssd-common
 
-rm -rf /etc/sssd/conf.d/
-mkdir -p /etc/sssd/conf.d/
-SSSD_CONF="/etc/sssd/conf.d/sssd.conf"
+SSSD_CONF_FILE="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR_FILE="/etc/sssd/conf.d/sssd.conf"
+SSSD_CONF_DIR_FILES="/etc/sssd/conf.d/*.conf"
 
-cp wrong_sssd.conf $SSSD_CONF
+rm -rf $SSSD_CONF_FILE $SSSD_CONF_DIR_FILES
 
-SSSD_CONF="/etc/sssd/sssd.conf"
-cp wrong_sssd.conf $SSSD_CONF
+for file in $SSSD_CONF_FILE $SSSD_CONF_DIR_FILE; do
+    cp wrong_sssd.conf $file
+done

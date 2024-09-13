@@ -1,6 +1,8 @@
 #!/bin/bash
 # packages = sssd-common
 
-rm -rf /etc/sssd/conf.d/
-SSSD_CONF="/etc/sssd/sssd.conf"
-cp wrong_sssd.conf $SSSD_CONF
+SSSD_CONF_FILE="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR_FILES="/etc/sssd/conf.d/*.conf"
+
+rm -rf $SSSD_CONF_FILE $SSSD_CONF_DIR_FILES
+cp wrong_sssd.conf $SSSD_CONF_FILE
