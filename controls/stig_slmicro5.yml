@@ -617,8 +617,9 @@ controls:
       title:
           SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
           before granting access via SSH.
-      rules: []
-      status: pending
+      rules:
+          - sshd_enable_warning_banner
+      status: automated
     
     - id: SLEM-05-255025
       levels:
