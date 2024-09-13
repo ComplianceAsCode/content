@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that unattended or automatic logon via SSH is disabled with the following command:
 
-    $ sudo grep -ir permituserenvironment /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*permituserenvironment'
 
     PermitUserEnvironment no
 
@@ -25,4 +25,3 @@ fixtext: |-
     Restart the SSH daemon  for the setting to take effect:
 
     $ sudo systemctl restart sshd.service
-

@@ -13,8 +13,8 @@ checktext: |-
 
     $ sudo rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey | grep -i "red hat"
 
-    Red Hat, Inc. (release key 2) &ltsecurity@redhat.com&gt public key
-    Red Hat, Inc. (auxiliary key 3) &ltsecurity@redhat.com&gt public key
+    Red Hat, Inc. (release key 2) &lt;security@redhat.com&gt; public key
+    Red Hat, Inc. (auxiliary key 3) &lt;security@redhat.com&gt; public key
 
     If Red Hat GPG keys "release key 2" and "auxiliary key 3" are not installed, this is a finding.
 
@@ -28,10 +28,10 @@ checktext: |-
 
     pub   rsa4096/FD431D51 2009-10-22 [SC]
           Key fingerprint = 567E 347A D004 4ADE 55BA  8A5F 199E 2F91 FD43 1D51
-    uid                   Red Hat, Inc. (release key 2) &ltsecurity@redhat.com&gt
+    uid                   Red Hat, Inc. (release key 2) &lt;security@redhat.com&gt;
     pub   rsa4096/5A6340B3 2022-03-09 [SC]
           Key fingerprint = 7E46 2425 8C40 6535 D56D  6F13 5054 E4A4 5A63 40B3
-    uid                   Red Hat, Inc. (auxiliary key 3) &ltsecurity@redhat.com&gt
+    uid                   Red Hat, Inc. (auxiliary key 3) &lt;security@redhat.com&gt;
 
     Compare key fingerprints of installed Red Hat GPG keys with fingerprints listed for {{{ full_name }}} on Red Hat "Product Signing Keys" webpage at https://access.redhat.com/security/team/key.
 
@@ -51,4 +51,3 @@ fixtext: |-
     $ sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 
     Using the steps listed in the Check Text, confirm the newly imported keys show as installed on the system and verify their fingerprints match vendor values.
-

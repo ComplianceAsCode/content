@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 9 V1R3.
+    DISA STIG for Red Hat Enterprise Linux 9 V2R1.
 
 
 
@@ -35,7 +35,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V1R3
+    version: V2R1
     SMEs:
     - mab879
     - ggbecker
@@ -66,8 +66,6 @@ selections:
 - accounts_password_pam_minclass
 - accounts_password_pam_minlen
 - accounts_password_pam_ocredit
-- accounts_password_pam_pwhistory_remember_password_auth
-- accounts_password_pam_pwhistory_remember_system_auth
 - accounts_password_pam_pwquality_password_auth
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
@@ -559,8 +557,6 @@ selections:
 - var_password_pam_dcredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_unix_rounds=5000
-- var_password_pam_remember=5
-- var_password_pam_remember_control_flag=requisite_or_required
 - var_password_pam_retry=3
 - var_selinux_policy_name=targeted
 - var_selinux_state=enforcing
