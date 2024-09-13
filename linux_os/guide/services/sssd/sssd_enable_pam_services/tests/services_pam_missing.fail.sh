@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = sssd
+# packages = sssd-common
 #
 
 SSSD_CONF="/etc/sssd/sssd.conf"
