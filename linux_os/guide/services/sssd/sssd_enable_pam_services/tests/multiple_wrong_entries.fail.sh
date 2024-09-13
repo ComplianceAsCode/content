@@ -1,6 +1,5 @@
 #!/bin/bash
-# packages = sssd
-#
+# packages = sssd-common
 
 rm -rf /etc/sssd/conf.d/
 mkdir -p /etc/sssd/conf.d/
@@ -23,7 +22,7 @@ domains = shadowutils
 services = pam
 
 [domain/shadowutils]
-id_provider = files
+id_provider = ldap
 
 auth_provider = proxy
 proxy_pam_target = sssd-shadowutils
