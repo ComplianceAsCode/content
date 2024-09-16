@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: Verify Permissions On /etc/iptables Directory
 
-description: '{{{ describe_file_permissions(file="/etc/iptables", perms="0600") }}}'
+description: '{{{ describe_file_permissions(file="/etc/iptables", perms="0700") }}}'
 
 rationale: |-
     Setting correct permissions on the /etc/iptables directory is important
@@ -17,19 +17,19 @@ identifiers:
     cce@rhel9: CCE-86436-3
     cce@rhel10: CCE-86577-4
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/iptables", perms="0600") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/iptables", perms="0700") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/iptables", perms="0600") }}}
+    {{{ ocil_file_permissions(file="/etc/iptables", perms="0700") }}}
 
 platform: package[iptables]
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/iptables", mode="0600") }}}'
+fixtext: '{{{ fixtext_file_permissions(file="/etc/iptables", mode="0700") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/iptables", mode="0600") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/iptables", mode="0700") }}}'
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/iptables/
-        filemode: '0600'
+        filemode: '0700'
