@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="inventory" id="sssd_conf_files_present" version="1">
+    <metadata>
+      <title>SSSD configuration files are present</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>/etc/sssd/sssd.conf is present or there are custom files within /etc/sssd/conf.d</description>
+      <reference ref_id="cpe:/a:sssd_conf_files_present" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_sssd_conf_files_present"
+        comment="There are SSSD configuration files present in the system"/>
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_sssd_conf_files_present" version="1"
+    check="all" check_existence="at_least_one_exists"
+    comment="Verify existence of SSSD configuration files.">
+    <unix:object object_ref="object_conf_files_present"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_conf_files_present" version="1"
+    comment="Matches /etc/sssd/sssd.conf or any .conf file within /etc/sssd/conf.d directory">
+    <unix:filepath operation="pattern match">^/etc/sssd/(sssd|conf\.d/.*)\.conf$</unix:filepath>
+  </unix:file_object>
+</def-group>
