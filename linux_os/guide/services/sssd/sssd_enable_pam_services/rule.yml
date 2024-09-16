@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Configure PAM in SSSD Services'
 
 description: |-
@@ -37,6 +36,8 @@ references:
     srg: SRG-OS-000375-GPOS-00160,SRG-OS-000376-GPOS-00161,SRG-OS-000377-GPOS-00162
     stigid@ol7: OL07-00-041002
 
+platform: sssd_conf_files_present
+
 ocil_clause: 'it does not exist or ''pam'' is not added to the ''services'' option under the ''sssd'' section'
 
 ocil: |-
@@ -44,3 +45,9 @@ ocil: |-
     <pre>$ sudo grep services /etc/sssd/sssd.conf</pre>
     If configured properly, output should be similar to
     <pre>services = pam</pre>
+
+warnings:
+    - general:
+        This rule will report as "notapplicable" if there is no SSSD configuration file present
+        in the system. The SSSD configuration might be different for each site and therefore a new
+        configuration file is not automatically created.
