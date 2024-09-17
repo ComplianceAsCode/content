@@ -8,7 +8,7 @@ description: |-
     <tt>public</tt> and <tt>private</tt>.
     This profile configures new read-only community string to <tt>{{{ xccdf_value("var_snmpd_ro_string") }}}</tt> and read-write community string to <tt>{{{ sub_var_value("var_snmpd_rw_string") }}}</tt>.
     Once the default community strings have been changed, restart the SNMP service:
-    <pre>$ sudo service snmpd restart</pre>
+    <pre>$ sudo systemctl restart snmpd</pre>
 
 rationale: |-
     Whether active or not, default simple network management protocol (SNMP) community
