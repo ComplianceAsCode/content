@@ -223,15 +223,24 @@ controls:
     levels:
     - standard
     description: >-
-      When establishing a concept for patch and change management according to OPS.1.1.3 Patch
+      (1)When establishing a concept for patch and change management according to OPS.1.1.3 Patch
       and Change Management, it SHOULD be decided when and how the updates of images or the
-      software or service operated are to be rolled out. For persistent containers, checks SHOULD be
+      software or service operated are to be rolled out. (2)For persistent containers, checks SHOULD be
       made as to whether an update of a container is more appropriate than completely re-
       provisioning the container in exceptional cases.
     notes: >-
-      ToDo
+      Section 1: This requirement must be solved organizationally.
+      Best practices use multiple environments (either separate clusters or multiple namespaces on a cluster)
+      to support this process and enable automated testing (e.g. via OpenShift Pipelines or Jenkins ).
+      Section 2: “Persistent” containers contradict the cloud native principle and do not represent “good practice”.
+      There is also a contradiction with APP.4.4.A21 “Regular restart of pods”.
+      Accordingly, OpenShift does not support updates at the container level.
+      Changes to the container image always result in the pod stopping and a new pod being restarted.
+      With the recommended use of GitOps, this is a reprovisioning of the changed elements
+      and also documents the status of the application at a given point in time.
+      Due to the high level of automation, this usually does not represent any increased effort.
     status: manual
-    #rules:
+    rules: []
 
   - id: SYS.1.6.A15
     title: Limitation of Resources per Container
