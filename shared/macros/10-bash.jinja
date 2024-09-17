@@ -483,7 +483,12 @@ if rpm -q --quiet "{{{ package }}}" ; then
 {{% if SSG_TEST_SUITE_ENV %}}
     rpm -e --nodeps "{{{ package }}}"
 {{% else %}}
-    {{{ pkg_manager }}} remove -y "{{{ package }}}"
+    {{%- if pkg_manager == "dnf" -%}}
+        dnf remove -y --noautoremove "{{{ package }}}"
+    {{%- else -%}}
+        {{{ pkg_manager }}} remove -y "{{{ package }}}"
+    {{%- endif -%}}
+
 {{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
