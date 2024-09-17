@@ -11,7 +11,7 @@ title: 'DRAFT - Health Insurance Portability and Accountability Act (HIPAA)'
 description: |-
     This is a draft profile for experimental purposes.
 
-    The HIPAA Security Rule establishes U.S. national standards to protect individuals’
+    The HIPAA Security Rule establishes U.S. national standards to protect individuals's
     electronic personal health information that is created, received, used, or
     maintained by a covered entity. The Security Rule requires appropriate
     administrative, physical and technical safeguards to ensure the
