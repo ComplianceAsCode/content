@@ -47,5 +47,9 @@ selections:
     - '!package_talk_removed'
     - '!package_xinetd_removed'
     - '!package_ypserv_removed'
-    # these rules are failing when they are remediated with Ansible, removing then temporarily until they are fixed
+    # these rules are failing when they are remediated with Ansible, removing them temporarily until they are fixed
     - '!accounts_password_pam_retry'
+    # These rules are being modified and they are causing trouble in their current state (R67)
+    - '!sssd_enable_pam_services'
+    - '!sssd_ldap_configure_tls_reqcert'
+    - '!sssd_ldap_start_tls'
