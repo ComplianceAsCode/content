@@ -259,8 +259,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 library files must have mode 755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_library_dirs
+      status: automated
     
     - id: SLEM-05-232030
       levels:
