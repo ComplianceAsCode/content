@@ -9,7 +9,7 @@
 {{% endif %}}
 
 grep -q "^[^#]*\bumask" {{{ etc_bash_rc }}} && \
-  sed -i -E -e "s/^([^#]*\bumask).*/\1 $var_accounts_user_umask/g" {{{ etc_bash_rc }}}
+  sed -i -E -e "s/^([^#]*\bumask)[[:space:]]+[[:digit:]]+/\1 $var_accounts_user_umask/g" {{{ etc_bash_rc }}}
 if ! [ $? -eq 0 ]; then
     echo "umask $var_accounts_user_umask" >> {{{ etc_bash_rc }}}
 fi
