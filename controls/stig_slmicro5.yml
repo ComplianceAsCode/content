@@ -32,7 +32,8 @@ controls:
           SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
           before granting any local or remote connection to the system.
       rules:
-          - sshd_enable_warning_banner
+          - banner_etc_issue
+          - login_banner_text=dod_banners
       status: automated
     
     - id: SLEM-05-211025
