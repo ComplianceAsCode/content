@@ -330,8 +330,9 @@ controls:
       levels:
           - medium
       title: SLEM 5 library directories must be group-owned by root.
-      rules: []
-      status: pending
+      rules:
+          - dir_group_ownership_library_dirs
+      status: automated
     
     - id: SLEM-05-232070
       levels:
