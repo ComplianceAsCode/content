@@ -19,6 +19,6 @@ find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -group {{{ GID_OR_NAME }}}
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
 {{%- endif %}}
 {{%- else %}}
-chgrp -L {{{ GID_OR_NAME }}} {{{ path }}}
+chgrp {{{ GID_OR_NAME }}} {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}
