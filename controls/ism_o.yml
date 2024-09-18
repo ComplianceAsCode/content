@@ -436,7 +436,6 @@ use of device access control software or by disabling external communication int
         levels:
             - base
         rules:
-            - sshd_allow_only_protocol2
             - file_permissions_sshd_private_key
         status: partial
         notes: |-
@@ -540,11 +539,11 @@ use of device access control software or by disabling external communication int
         title: 'The use of SSH version 1 is disabled for SSH connections.'
         levels:
             - base
-        rules:
+        related_rules:
             - sshd_allow_only_protocol2
-        status: partial
+        status: inherently met
         notes: |-
-            This should be reviewed.
+            As of OpenSSH 7.6, OpenSSH only supports SSH 2.
 
     -   id: '1546'
         title: 'Users are authenticated before they are granted access to a system and its resources'
