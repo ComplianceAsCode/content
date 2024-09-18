@@ -5,10 +5,10 @@ title: Verify User Who Owns /etc/chrony.keys File
 description: '{{{ describe_file_owner(file="/etc/chrony.keys", owner="root") }}}'
 
 rationale: |-
-    The ownership of the /etc/chrony.keys file by the root user is important
+    The ownership of the /etc/chrony.keys file by the chrony user is important
     because this file hosts chrony cryptographic keys. Protection
     of this file is critical for system security. Assigning the ownership to
-    root ensures exclusive control of the chrony cryptographic keys.
+    chrony ensures exclusive control of the chrony cryptographic keys.
 
 severity: medium
 
