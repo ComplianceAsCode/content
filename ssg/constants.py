@@ -50,6 +50,7 @@ product_directories = [
     'fedora',
     'firefox',
     'macos1015',
+    'kylinserver10',
     'ocp4',
     'rhcos4',
     'ol7', 'ol8', 'ol9', 'ol10',
@@ -211,6 +212,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Fedora": "fedora",
     "Firefox": "firefox",
     "Apple macOS 10.15": "macos1015",
+    "Kylin Server 10": "kylinserver10",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
@@ -281,7 +283,7 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "openeuler",
+                       "openeuler", "kylinserver",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
                        "slmicro"]
@@ -293,6 +295,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
+    "multi_platform_kylinserver": ["kylinserver10"],
     "multi_platform_openeuler": ["openeuler2203"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8", "ol9", "ol10"],
@@ -416,6 +419,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'macos': 'Apple macOS',
+    'kylinserver': 'Kylin Server',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
