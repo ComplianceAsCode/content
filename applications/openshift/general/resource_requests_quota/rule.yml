@@ -49,14 +49,14 @@ references:
 {{% set namespaces_api_path = '/api/v1/namespaces' %}}
 {{% set clusterquotas_api_path = '/apis/quota.openshift.io/v1/clusterresourcequotas' %}}
 {{% set clusterquotas_filter = '[.items[] | .metadata.name]' %}}
-{{% set resourcequotas_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
-{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
+{{% set resourcequotas_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default" and .metadata.namespace != "rhacs-operator" and ({{if ne .var_resource_requests_quota_per_project_exempt_regex "None"}}.metadata.namespace | test("{{.var_resource_requests_quota_per_project_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and .metadata.name != "rhacs-operator" and ({{if ne .var_resource_requests_quota_per_project_exempt_regex "None"}}.metadata.name | test("{{.var_resource_requests_quota_per_project_exempt_regex}}") | not{{else}}true{{end}}))]' %}}
 
 
 ocil_clause: 'Resource requests and limits is not set'
 
 # same as above except filters the names only. Used in OCIL only, not in the 'warnings attribute'
-{{% set non_ctlplane_namespaces_filter_names = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.name ]' %}}
+{{% set non_ctlplane_namespaces_filter_names = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and .metadata.name != "rhacs-operator" and ({{if ne .var_resource_requests_quota_per_project_exempt_regex "None"}}.metadata.name | test("{{.var_resource_requests_quota_per_project_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.name]' %}}
 
 ocil: |-
     Run the following command to retrieve the ClusterResourceQuota objects in the system:
