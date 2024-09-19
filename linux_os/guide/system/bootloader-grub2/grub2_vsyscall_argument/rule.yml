@@ -33,7 +33,7 @@ ocil_clause: 'vsyscalls are enabled'
 ocil: |-
     {{{ ocil_grub2_argument("vsyscall=none") | indent(4) }}}
 
-platform: machine
+platform: machine and x86_64_arch
 
 template:
     name: grub2_bootloader_argument
@@ -46,3 +46,9 @@ fixtext: |-
 
 srg_requirement:
   {{{ full_name }}} must disable virtual syscalls.
+
+warnings:
+    - general: |-
+        The vsyscall emulation is only available on x86_64 architecture
+        (CONFIG_X86_VSYSCALL_EMULATION) making this rule not applicable
+        to other CPU architectures.
