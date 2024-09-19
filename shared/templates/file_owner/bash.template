@@ -21,6 +21,6 @@ find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -t
 find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chown -L {{{ FILEUID }}} {} \;
 {{%- endif %}}
 {{%- else %}}
-chown -L {{{ FILEUID }}} {{{ path }}}
+chown {{{ FILEUID }}} {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}
