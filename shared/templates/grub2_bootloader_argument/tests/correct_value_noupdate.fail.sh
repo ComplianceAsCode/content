@@ -8,6 +8,8 @@
 {{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
 {{%- endif %}}
 
+source common.sh
+
 # Clean up
 rm -f /etc/default/grub.d/*
 echo "GRUB_CMDLINE_LINUX=\"\"" > /etc/default/grub

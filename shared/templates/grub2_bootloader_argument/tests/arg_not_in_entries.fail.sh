@@ -5,10 +5,16 @@
 
 source common.sh
 
+{{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
+
 # Removes argument from kernel command line in /boot/loader/entries/*.conf
 
 for file in /boot/loader/entries/*.conf ; do
   if grep -q '^.*{{{ ESCAPED_ARG_NAME }}}=.*'  "$file" ; then
 	    sed -i 's/\(^.*\){{{ARG_NAME}}}=[^[:space:]]*\(.*\)/\1 \2/'  "$file"
+  fi
+# ensure that grubenv is not referenced
+  if grep -q '\$kernelopts' "$file"; then
+    sed -i 's/^\(options.*\)\$kernelopts\(.*\)$/\1\2/' "$file"
   fi
 done

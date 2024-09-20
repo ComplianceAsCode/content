@@ -20,7 +20,7 @@ if grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=.*{{{ ESCAPED_ARG_NAME }}}=.*"'  '/etc/d
 	# modify the GRUB command-line if an arg=value already exists
 	sed -i 's/\(^GRUB_CMDLINE_LINUX_DEFAULT=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME }}}={{{ ARG_NAME_VALUE_WRONG }}} \2/'  '/etc/default/grub'
 else
-	# no audit=arg is present, append it
+	# no arg is present, append it
 	sed -i 's/\(^GRUB_CMDLINE_LINUX_DEFAULT=".*\)"/\1 {{{ ARG_NAME }}}={{{ ARG_NAME_VALUE_WRONG }}}"/'  '/etc/default/grub'
 fi
 
