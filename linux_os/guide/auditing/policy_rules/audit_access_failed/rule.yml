@@ -26,7 +26,7 @@ rationale: |-
 
 severity: medium
 
-# on RHEL9 there are rules which cover particular hardware architectures
+# on RHEL9+ there are rules which cover particular hardware architectures
 # so do not apply this rule but apply the specific one instead
 {{% if product in ["rhel9", "rhel10"] %}}
 platforms:
