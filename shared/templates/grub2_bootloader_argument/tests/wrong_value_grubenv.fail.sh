@@ -5,6 +5,8 @@
 
 source common.sh
 
+{{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
+
 # Break the argument in kernel command line in /boot/grub2/grubenv
 file="/boot/grub2/grubenv"
 if grep -q '^.*{{{ARG_NAME}}}=.*'  "$file" ; then
@@ -14,3 +16,11 @@ else
 	# no arg is present, append it
 	sed -i 's/\(^.*\(vmlinuz\|kernelopts\).*\)/\1 {{{ARG_NAME}}}=wrong/'  "$file"
 fi
+
+# Ensure that grubenv is referenced through $kernelopts
+# othervise contents of grubenv are ignored
+for entry in /boot/loader/entries/*.conf; do
+  if ! grep -q '\$kernelopts' "$entry"; then
+    sed -i 's/^\(options.*\)$/\1 \$kernelopts/' "$entry"
+  fi
+done

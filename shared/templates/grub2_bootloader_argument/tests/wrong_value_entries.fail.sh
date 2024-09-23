@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 9,Red Hat Enterprise Linux 10,multi_platform_fedora
+# platform = multi_platform_fedora,multi_platform_rhel
 # packages = grub2,grubby
 
 source common.sh
 
-# Removes argument from kernel command line in /boot/loader/entries/*.conf
+{{{ grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) }}}
 
+# Breaks argument from kernel command line in /boot/loader/entries/*.conf
 for file in /boot/loader/entries/*.conf ; do
   if grep -q '^.*{{{ ESCAPED_ARG_NAME }}}=.*'  "$file" ; then
       # modify the GRUB command-line if an ={{{ARG_NAME}}} arg already exists
@@ -14,5 +15,9 @@ for file in /boot/loader/entries/*.conf ; do
     else
 	    # no {{{ARG_NAME}}}=arg is present, append it
 	    sed -i 's/\(^.*\(vmlinuz\|kernelopts\).*\)/\1 {{{ARG_NAME}}}=wrong/'  "$file"
+  fi
+# ensure that grubenv is not referenced
+  if  grep -q '\$kernelopts' "$file"; then
+    sed -i 's/^\(options.*\)\$kernelopts\(.*\)$/\1\2/' "$file"
   fi
 done
