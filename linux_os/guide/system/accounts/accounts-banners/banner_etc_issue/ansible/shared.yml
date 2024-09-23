@@ -1,11 +1,11 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_slmicro
 # reboot = false
 # strategy = unknown
 # complexity = low
 # disruption = medium
 {{{ ansible_instantiate_variables("login_banner_text") }}}
 
-{{%- if product not in ['sle15'] -%}}
+{{%- if product not in ['sle15', 'slmicro5'] -%}}
 - name: "{{{ rule_title }}} - Ensure Correct Banner"
   copy:
     dest: /etc/issue

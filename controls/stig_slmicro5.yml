@@ -32,7 +32,8 @@ controls:
           SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
           before granting any local or remote connection to the system.
       rules:
-          - sshd_enable_warning_banner
+          - banner_etc_issue
+          - login_banner_text=dod_banners
       status: automated
     
     - id: SLEM-05-211025
@@ -234,8 +235,9 @@ controls:
       title:
           SLEM 5 must have directories that contain system commands set to a mode of
           755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - dir_permissions_binary_dirs
+      status: automated
     
     - id: SLEM-05-232015
       levels:
@@ -249,15 +251,17 @@ controls:
       levels:
           - medium
       title: SLEM 5 library directories must have mode 755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - dir_permissions_library_dirs
+      status: automated
     
     - id: SLEM-05-232025
       levels:
           - medium
       title: SLEM 5 library files must have mode 755 or less permissive.
-      rules: []
-      status: pending
+      rules:
+          - file_permissions_library_dirs
+      status: automated
     
     - id: SLEM-05-232030
       levels:
@@ -297,35 +301,33 @@ controls:
       levels:
           - medium
       title: SLEM 5 library files must be owned by root.
-      rules: []
-      status: pending
+      rules:
+          - file_ownership_library_dirs
+      status: automated
     
     - id: SLEM-05-232055
       levels:
           - medium
       title: SLEM 5 library files must be group-owned by root.
-      rules: []
-      status: pending
+      rules:
+          - root_permissions_syslibrary_files
+      status: automated
     
     - id: SLEM-05-232060
       levels:
           - medium
       title: SLEM 5 library directories must be owned by root.
       rules:
-        - dir_group_ownership_library_dirs
         - dir_ownership_library_dirs
-        - dir_permissions_library_dirs
-        - file_ownership_library_dirs
-        - file_permissions_library_dirs
-        - root_permissions_syslibrary_files
       status: automated
     
     - id: SLEM-05-232065
       levels:
           - medium
       title: SLEM 5 library directories must be group-owned by root.
-      rules: []
-      status: pending
+      rules:
+          - dir_group_ownership_library_dirs
+      status: automated
     
     - id: SLEM-05-232070
       levels:
@@ -617,8 +619,9 @@ controls:
       title:
           SLEM 5 must display the Standard Mandatory DOD Notice and Consent Banner
           before granting access via SSH.
-      rules: []
-      status: pending
+      rules:
+          - sshd_enable_warning_banner
+      status: automated
     
     - id: SLEM-05-255025
       levels:
@@ -948,7 +951,7 @@ controls:
       rules:
           - accounts_passwords_pam_tally2
           - var_password_pam_tally2=3
-      status: pending
+      status: automated
     
     - id: SLEM-05-412025
       levels:
