@@ -10,8 +10,10 @@
       </criteria>
       <extend_definition definition_ref="sysctl_crypto_fips_enabled"
         comment="check option crypto.fips_enabled = 1 in sysctl"/>
+      {{%- if product not in ["rhel10"] -%}}
       <extend_definition definition_ref="enable_dracut_fips_module"
         comment="dracut FIPS module is enabled"/>
+      {{%- endif -%}}
       <extend_definition definition_ref="configure_crypto_policy"
         comment="system cryptography policy is configured"/>
       <criterion test_ref="test_system_crypto_policy_value"
