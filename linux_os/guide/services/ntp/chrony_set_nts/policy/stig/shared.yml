@@ -1,0 +1,17 @@
+srg_requirement: '{{{ full_name }}} must use encryption for NTP communications.'
+
+vuldiscussion: |-
+
+checktext: |-
+    Verify that {{{ full_name }}} uses encryption for NTP communications.
+
+    $ sudo grep nts /etc/ntp.conf /etc/chrony.conf
+
+    server [ntp.server.name] iburst maxpoll 10 nts
+
+    If "nts" is commented out or is missing, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use encryption for NTP communications.
+
+    server [ntp.server.name] iburst maxpoll 10 nts
