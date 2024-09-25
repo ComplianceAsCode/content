@@ -1296,6 +1296,23 @@ class Rule(XCCDFEntity, Templatable):
         href = self.sce_metadata['relative_path']
         check_ref.set("href", href)
 
+    def _add_oval_check_element(self, rule_el):
+        check = ET.SubElement(rule_el, '{%s}check' % XCCDF12_NS)
+        check.set("system", oval_namespace)
+        check_content_ref = ET.SubElement(
+            check, "{%s}check-content-ref" % XCCDF12_NS)
+        if self.oval_external_content:
+            check_content_ref.set("href", self.oval_external_content)
+        else:
+            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
+            #       and we don't want the developers to have to keep them in sync.
+            #       Therefore let's just add an OVAL ref of that ID.
+            # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
+            #       At the moment, the check elements of rules without OVAL are removed by
+            #       the OVALFileLinker class.
+            check_content_ref.set("href", "oval-unlinked.xml")
+            check_content_ref.set("name", self.id_)
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
@@ -1328,24 +1345,8 @@ class Rule(XCCDFEntity, Templatable):
         self._add_fixes_elements(rule)
 
         self._add_sce_check_element(rule)
+        self._add_oval_check_element(rule)
         check_parent = rule
-
-        check = ET.SubElement(check_parent, '{%s}check' % XCCDF12_NS)
-        check.set("system", oval_namespace)
-        check_content_ref = ET.SubElement(
-            check, "{%s}check-content-ref" % XCCDF12_NS)
-        if self.oval_external_content:
-            check_content_ref.set("href", self.oval_external_content)
-        else:
-            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
-            #       and we don't want the developers to have to keep them in sync.
-            #       Therefore let's just add an OVAL ref of that ID.
-            # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
-            #       At the moment, the check elements of rules without OVAL are removed by
-            #       the OVALFileLinker class.
-            check_content_ref.set("href", "oval-unlinked.xml")
-            check_content_ref.set("name", self.id_)
-
         patches_up_to_date = (self.id_ == "security_patches_up_to_date")
         if (self.ocil or self.ocil_clause) and not patches_up_to_date:
             ocil_check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
