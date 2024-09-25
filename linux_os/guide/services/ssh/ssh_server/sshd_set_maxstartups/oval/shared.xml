@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("Ensure 'MaxStartups' is properly configured in SSH configuration files.") }}}
     <criteria operator="OR" comment="sshd MaxStartups parameter is properly configured if sshd is installed">
       <criteria operator="AND" comment="sshd is not installed">
@@ -40,14 +40,39 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="ste_sshd_config_start_parameter_valid" version="1">
-    <ind:subexpression datatype="int" operation="less than or equal">10</ind:subexpression>
+  <external_variable id="var_sshd_set_maxstartups" version="1"
+    datatype="string" comment="Expected value for MaxStartups parameter"/>
+
+  <local_variable id="var_sshd_set_maxstartups_first" version="1" datatype="int"
+    comment="First number from MaxStartup parameter value.">
+    <regex_capture pattern="(\d+):\d+:\d+">
+      <variable_component var_ref="var_sshd_set_maxstartups"/>
+    </regex_capture>
+  </local_variable>
+  <local_variable id="var_sshd_set_maxstartups_second" version="1" datatype="int"
+    comment="First number from MaxStartup parameter value.">
+    <regex_capture pattern="\d+:(\d+):\d+">
+      <variable_component var_ref="var_sshd_set_maxstartups"/>
+    </regex_capture>
+  </local_variable>
+  <local_variable id="var_sshd_set_maxstartups_third" version="1" datatype="int"
+    comment="First number from MaxStartup parameter value.">
+    <regex_capture pattern="\d+:\d+:(\d+)">
+      <variable_component var_ref="var_sshd_set_maxstartups" />
+    </regex_capture>
+  </local_variable>
+
+  <ind:textfilecontent54_state id="ste_sshd_config_start_parameter_valid" version="2">
+    <ind:subexpression datatype="int" operation="less than or equal"
+      var_ref="var_sshd_set_maxstartups_first"/>
   </ind:textfilecontent54_state>
-  <ind:textfilecontent54_state id="ste_sshd_config_rate_parameter_valid" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal">30</ind:subexpression>
+  <ind:textfilecontent54_state id="ste_sshd_config_rate_parameter_valid" version="2">
+    <ind:subexpression datatype="int" operation="greater than or equal"
+      var_ref="var_sshd_set_maxstartups_second"/>
   </ind:textfilecontent54_state>
-  <ind:textfilecontent54_state id="ste_sshd_config_full_parameter_valid" version="1">
-    <ind:subexpression datatype="int" operation="less than or equal">100</ind:subexpression>
+  <ind:textfilecontent54_state id="ste_sshd_config_full_parameter_valid" version="2">
+    <ind:subexpression datatype="int" operation="less than or equal"
+      var_ref="var_sshd_set_maxstartups_third"/>
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test id="tst_maxstartups_start_parameter" version="1"
