@@ -1231,6 +1231,71 @@ class Rule(XCCDFEntity, Templatable):
             else:
                 self.references[ref_type] = self.control_references[ref_type]
 
+    def _add_sce_check_element(self, rule_el):
+        if not self.sce_metadata:
+            return
+        # TODO: This is pretty much another hack, just like the previous OVAL
+        # one. However, we avoided the external SCE content as I'm not sure it
+        # is generally useful (unlike say, CVE checking with external OVAL)
+        #
+        # Additionally, we build the content (check subelement) here rather
+        # than in xslt due to the nature of our SCE metadata.
+        #
+        # Finally, before we begin, we might have an element with both SCE
+        # and OVAL. We have no way of knowing (right here) whether that is
+        # the case (due to a variety of issues, most notably, that linking
+        # hasn't yet occurred). So we must rely on the content author's
+        # good will, by annotating SCE content with a complex-check tag
+        # if necessary.
+
+        if 'complex-check' in self.sce_metadata:
+            # Here we have an issue: XCCDF allows EITHER one or more check
+            # elements OR a single complex-check. While we have an explicit
+            # case handling the OVAL-and-SCE interaction, OCIL entries have
+            # (historically) been alongside OVAL content and been in an
+            # "OR" manner -- preferring OVAL to SCE. In order to accomplish
+            # this, we thus need to add _yet another parent_ when OCIL data
+            # is present, and add update ocil_parent accordingly.
+            if self.ocil or self.ocil_clause:
+                ocil_parent = ET.SubElement(
+                    rule_el, "{%s}complex-check" % XCCDF12_NS)
+                ocil_parent.set('operator', 'OR')
+
+            check_parent = ET.SubElement(
+                ocil_parent, "{%s}complex-check" % XCCDF12_NS)
+            check_parent.set('operator', self.sce_metadata['complex-check'])
+        else:
+            check_parent = rule_el
+
+        # Now, add the SCE check element to the tree.
+        sce_check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
+        sce_check.set("system", SCE_SYSTEM)
+
+        if 'check-import' in self.sce_metadata:
+            if isinstance(self.sce_metadata['check-import'], str):
+                self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
+            for entry in self.sce_metadata['check-import']:
+                check_import = ET.SubElement(
+                    sce_check, '{%s}check-import' % XCCDF12_NS)
+                check_import.set('import-name', entry)
+                check_import.text = None
+
+        if 'check-export' in self.sce_metadata:
+            if isinstance(self.sce_metadata['check-export'], str):
+                self.sce_metadata['check-export'] = [self.sce_metadata['check-export']]
+            for entry in self.sce_metadata['check-export']:
+                export, value = entry.split('=')
+                check_export = ET.SubElement(
+                    sce_check, '{%s}check-export' % XCCDF12_NS)
+                check_export.set('value-id', value)
+                check_export.set('export-name', export)
+                check_export.text = None
+
+        check_ref = ET.SubElement(
+            sce_check, "{%s}check-content-ref" % XCCDF12_NS)
+        href = self.sce_metadata['relative_path']
+        check_ref.set("href", href)
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
@@ -1262,69 +1327,8 @@ class Rule(XCCDFEntity, Templatable):
         self._add_ident_elements(rule)
         self._add_fixes_elements(rule)
 
-        ocil_parent = rule
+        self._add_sce_check_element(rule)
         check_parent = rule
-
-        if self.sce_metadata:
-            # TODO: This is pretty much another hack, just like the previous OVAL
-            # one. However, we avoided the external SCE content as I'm not sure it
-            # is generally useful (unlike say, CVE checking with external OVAL)
-            #
-            # Additionally, we build the content (check subelement) here rather
-            # than in xslt due to the nature of our SCE metadata.
-            #
-            # Finally, before we begin, we might have an element with both SCE
-            # and OVAL. We have no way of knowing (right here) whether that is
-            # the case (due to a variety of issues, most notably, that linking
-            # hasn't yet occurred). So we must rely on the content author's
-            # good will, by annotating SCE content with a complex-check tag
-            # if necessary.
-
-            if 'complex-check' in self.sce_metadata:
-                # Here we have an issue: XCCDF allows EITHER one or more check
-                # elements OR a single complex-check. While we have an explicit
-                # case handling the OVAL-and-SCE interaction, OCIL entries have
-                # (historically) been alongside OVAL content and been in an
-                # "OR" manner -- preferring OVAL to SCE. In order to accomplish
-                # this, we thus need to add _yet another parent_ when OCIL data
-                # is present, and add update ocil_parent accordingly.
-                if self.ocil or self.ocil_clause:
-                    ocil_parent = ET.SubElement(
-                        ocil_parent, "{%s}complex-check" % XCCDF12_NS)
-                    ocil_parent.set('operator', 'OR')
-
-                check_parent = ET.SubElement(
-                    ocil_parent, "{%s}complex-check" % XCCDF12_NS)
-                check_parent.set('operator', self.sce_metadata['complex-check'])
-
-            # Now, add the SCE check element to the tree.
-            sce_check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
-            sce_check.set("system", SCE_SYSTEM)
-
-            if 'check-import' in self.sce_metadata:
-                if isinstance(self.sce_metadata['check-import'], str):
-                    self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
-                for entry in self.sce_metadata['check-import']:
-                    check_import = ET.SubElement(
-                        sce_check, '{%s}check-import' % XCCDF12_NS)
-                    check_import.set('import-name', entry)
-                    check_import.text = None
-
-            if 'check-export' in self.sce_metadata:
-                if isinstance(self.sce_metadata['check-export'], str):
-                    self.sce_metadata['check-export'] = [self.sce_metadata['check-export']]
-                for entry in self.sce_metadata['check-export']:
-                    export, value = entry.split('=')
-                    check_export = ET.SubElement(
-                        sce_check, '{%s}check-export' % XCCDF12_NS)
-                    check_export.set('value-id', value)
-                    check_export.set('export-name', export)
-                    check_export.text = None
-
-            check_ref = ET.SubElement(
-                sce_check, "{%s}check-content-ref" % XCCDF12_NS)
-            href = self.sce_metadata['relative_path']
-            check_ref.set("href", href)
 
         check = ET.SubElement(check_parent, '{%s}check' % XCCDF12_NS)
         check.set("system", oval_namespace)
