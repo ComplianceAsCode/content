@@ -2,12 +2,8 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
     <criteria operator="AND">
-      <criteria operator="OR">
-        <extend_definition definition_ref="etc_system_fips_exists"
-          comment="check /etc/system-fips file existence"/>
-          <criterion test_ref="test_proc_sys_crypto_fips_enabled"
+        <criterion test_ref="test_proc_sys_crypto_fips_enabled"
             comment="check contents of /proc/sys/crypto/fips_enabled"/>
-      </criteria>
       <extend_definition definition_ref="sysctl_crypto_fips_enabled"
         comment="check option crypto.fips_enabled = 1 in sysctl"/>
       {{%- if product not in ["rhel10"] -%}}
