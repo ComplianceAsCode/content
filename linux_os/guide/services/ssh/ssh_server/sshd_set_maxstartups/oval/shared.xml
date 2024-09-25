@@ -21,18 +21,21 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_first_parameter" version="1">
-    <ind:filepath operation="equals">/etc/ssh/sshd_config</ind:filepath>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_first_parameter" version="2">
+    <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
+    <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>
     <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+(\d+):\d+:\d+\s*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_second_parameter" version="1">
-    <ind:filepath operation="equals">/etc/ssh/sshd_config</ind:filepath>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_second_parameter" version="2">
+    <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
+    <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>
     <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+\d+:(\d+):\d+\s*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_third_parameter" version="1">
-    <ind:filepath operation="equals">/etc/ssh/sshd_config</ind:filepath>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_third_parameter" version="2">
+    <ind:path operation="pattern match">/etc/(ssh|ssh/sshd_config.d)</ind:path>
+    <ind:filename operation="pattern match">(sshd_config|.*\.conf)$</ind:filename>
     <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+\d+:\d+:(\d+)\s*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
