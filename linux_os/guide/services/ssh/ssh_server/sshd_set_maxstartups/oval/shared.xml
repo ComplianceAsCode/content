@@ -75,21 +75,21 @@
       var_ref="var_sshd_set_maxstartups_third"/>
   </ind:textfilecontent54_state>
 
-  <ind:textfilecontent54_test id="tst_maxstartups_start_parameter" version="1"
-    check="all" check_existence="only_one_exists"
-    comment="SSH MaxStartups start parameter is less than or equal to 10">
+  <ind:textfilecontent54_test id="tst_maxstartups_start_parameter" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="SSH MaxStartups start parameter is less than or equal to the expected value">
     <ind:object object_ref="obj_sshd_config_maxstartups_first_parameter"/>
     <ind:state state_ref="ste_sshd_config_start_parameter_valid"/>
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_test id="tst_maxstartups_rate_parameter" version="1"
-    check="all" check_existence="only_one_exists"
-    comment="SSH MaxStartups rate parameter is greater than or equal to 30">
+  <ind:textfilecontent54_test id="tst_maxstartups_rate_parameter" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="SSH MaxStartups rate parameter is greater than or equal to the expected value">
     <ind:object object_ref="obj_sshd_config_maxstartups_second_parameter"/>
     <ind:state state_ref="ste_sshd_config_rate_parameter_valid"/>
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_test id="tst_maxstartups_full_parameter" version="1"
-    check="all" check_existence="only_one_exists"
-    comment="SSH MaxStartups full parameter is less than or equal to 100">
+  <ind:textfilecontent54_test id="tst_maxstartups_full_parameter" version="2"
+    check="all" check_existence="at_least_one_exists"
+    comment="SSH MaxStartups full parameter is less than or equal to the expected value">
     <ind:object object_ref="obj_sshd_config_maxstartups_third_parameter"/>
     <ind:state state_ref="ste_sshd_config_full_parameter_valid"/>
   </ind:textfilecontent54_test>
