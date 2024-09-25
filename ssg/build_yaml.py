@@ -1313,6 +1313,16 @@ class Rule(XCCDFEntity, Templatable):
             check_content_ref.set("href", "oval-unlinked.xml")
             check_content_ref.set("name", self.id_)
 
+    def _add_ocil_check_element(self, rule_el):
+        patches_up_to_date = (self.id_ == "security_patches_up_to_date")
+        if (self.ocil or self.ocil_clause) and not patches_up_to_date:
+            ocil_check = ET.SubElement(rule_el, "{%s}check" % XCCDF12_NS)
+            ocil_check.set("system", ocil_cs)
+            ocil_check_ref = ET.SubElement(
+                ocil_check, "{%s}check-content-ref" % XCCDF12_NS)
+            ocil_check_ref.set("href", "ocil-unlinked.xml")
+            ocil_check_ref.set("name", self.id_ + "_ocil")
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('{%s}Rule' % XCCDF12_NS)
         rule.set('selected', 'false')
@@ -1346,15 +1356,7 @@ class Rule(XCCDFEntity, Templatable):
 
         self._add_sce_check_element(rule)
         self._add_oval_check_element(rule)
-        check_parent = rule
-        patches_up_to_date = (self.id_ == "security_patches_up_to_date")
-        if (self.ocil or self.ocil_clause) and not patches_up_to_date:
-            ocil_check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
-            ocil_check.set("system", ocil_cs)
-            ocil_check_ref = ET.SubElement(
-                ocil_check, "{%s}check-content-ref" % XCCDF12_NS)
-            ocil_check_ref.set("href", "ocil-unlinked.xml")
-            ocil_check_ref.set("name", self.id_ + "_ocil")
+        self._add_ocil_check_element(rule)
 
         return rule
 
