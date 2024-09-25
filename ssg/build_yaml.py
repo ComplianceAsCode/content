@@ -1298,15 +1298,15 @@ class Rule(XCCDFEntity, Templatable):
                 check_parent.set('operator', self.sce_metadata['complex-check'])
 
             # Now, add the SCE check element to the tree.
-            check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
-            check.set("system", SCE_SYSTEM)
+            sce_check = ET.SubElement(check_parent, "{%s}check" % XCCDF12_NS)
+            sce_check.set("system", SCE_SYSTEM)
 
             if 'check-import' in self.sce_metadata:
                 if isinstance(self.sce_metadata['check-import'], str):
                     self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
                 for entry in self.sce_metadata['check-import']:
                     check_import = ET.SubElement(
-                        check, '{%s}check-import' % XCCDF12_NS)
+                        sce_check, '{%s}check-import' % XCCDF12_NS)
                     check_import.set('import-name', entry)
                     check_import.text = None
 
@@ -1316,13 +1316,13 @@ class Rule(XCCDFEntity, Templatable):
                 for entry in self.sce_metadata['check-export']:
                     export, value = entry.split('=')
                     check_export = ET.SubElement(
-                        check, '{%s}check-export' % XCCDF12_NS)
+                        sce_check, '{%s}check-export' % XCCDF12_NS)
                     check_export.set('value-id', value)
                     check_export.set('export-name', export)
                     check_export.text = None
 
             check_ref = ET.SubElement(
-                check, "{%s}check-content-ref" % XCCDF12_NS)
+                sce_check, "{%s}check-content-ref" % XCCDF12_NS)
             href = self.sce_metadata['relative_path']
             check_ref.set("href", href)
 
