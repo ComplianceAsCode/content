@@ -13,8 +13,12 @@ def set_variables_for_test_scenarios(data):
     elif data["datatype"] == "string":
         if not data.get("value"):
             # this implies XCCDF variable is used
-            data["wrong_value"] = "wrong_value"
-            data["correct_value"] = "correct_value"
+            if data['xccdf_variable'] == 'var_sshd_set_maxstartups':
+                data["wrong_value"] = "30:10:110"
+                data["correct_value"] = "10:30:60"
+            else:
+                data["wrong_value"] = "wrong_value"
+                data["correct_value"] = "correct_value"
         else:
             data["wrong_value"] = "wrong_value"
             data["correct_value"] = str(data["value"])

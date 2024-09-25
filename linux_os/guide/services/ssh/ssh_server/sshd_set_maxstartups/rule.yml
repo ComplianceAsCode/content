@@ -35,3 +35,12 @@ ocil: |-
     To check if MaxStartups is configured, run the following command:
     <pre>$ sudo grep -r ^[\s]*MaxStartups /etc/ssh/sshd_config*</pre>
     If configured, this command should output the configuration.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: MaxStartups
+        xccdf_variable: var_sshd_set_maxstartups
+        datatype: string
+        backends:
+            oval: "off"
