@@ -11,7 +11,7 @@
       test_ref="test_logrotate_conf_no_other_keyword" />
       <criteria comment="Check if either logrotate timer or cron job is enabled" operator="OR">
         <criterion comment="Check if /etc/cron.daily/logrotate file exists (and calls logrotate)" test_ref="test_cron_daily_logrotate_existence" />
-{{% if product in ["rhcos4", "rhel9", "sle12", "sle15"] %}}
+{{% if product in ["rhcos4", "rhel9", "sle12", "sle15","ol9"] %}}
         <extend_definition comment="Check if logrotate timer is being enabled" definition_ref="timer_logrotate_enabled" />
 {{% endif %}}
       </criteria>

@@ -55,7 +55,7 @@ ocil: |-
 
 fixtext: |-
     Configure {{{ full_name }}} to encrypt audit records sent with audispd plugin.
-{{% if product in ["fedora", "ol8", "rhv4"] or "rhel" in product %}}
+{{% if product in ["fedora", "ol8", "ol9", "rhv4"] or "rhel" in product %}}
     Set the "transport" option in "{{{ audisp_conf_path }}}/audisp-remote.conf" to "KRB5".
 {{% else %}}
     Uncomment the "enable_krb5" option in "{{{ audisp_conf_path }}}/audisp-remote.conf",
