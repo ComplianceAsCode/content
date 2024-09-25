@@ -1,5 +1,4 @@
 #!/bin/bash
-#
-# profiles = xccdf_org.ssgproject.content_profile_cis
+# variables = var_sshd_set_maxstartups=10:30:60
 
 true
