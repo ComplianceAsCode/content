@@ -141,7 +141,6 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
     into the output directory.
     """
     product = utils.required_key(env_yaml, "product")
-    included_checks_count = 0
     reversed_dirs = sce_dirs[::-1]
     already_loaded = dict()
     local_env_yaml = dict()
@@ -197,11 +196,9 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
             with open(os.path.join(output, filename), 'w') as output_file:
                 print(sce_content, file=output_file)
 
-            included_checks_count += 1
             already_loaded[rule_id] = metadata
 
-        if build_templated_sce_check(rule, product, already_loaded, template_builder, output):
-            included_checks_count += 1
+        build_templated_sce_check(rule, product, already_loaded, template_builder, output)
 
     # Finally take any shared SCE checks and build them as well. Note that
     # there's no way for shorthand generation to include them if they do NOT
@@ -225,7 +222,6 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
             with open(os.path.join(output, filename), 'w') as output_file:
                 print(sce_content, file=output_file)
 
-            included_checks_count += 1
             already_loaded[rule_id] = metadata
 
     # Finally, write out our metadata to disk so that we can reference it in
