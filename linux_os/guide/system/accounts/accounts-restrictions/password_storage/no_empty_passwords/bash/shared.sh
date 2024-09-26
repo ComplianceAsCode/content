@@ -1,10 +1,10 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro,multi_platform_ubuntu
 # reboot = false
 # strategy = configure
 # complexity = low
 # disruption = medium
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 PAM_PATH="/etc/pam.d/"
 NULLOK_FILES=$(grep -rl ".*pam_unix\\.so.*nullok.*" ${PAM_PATH})
 for FILE in ${NULLOK_FILES}; do
