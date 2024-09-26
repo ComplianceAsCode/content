@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{% if 'sle' or 'slmicro' in product %}}
+{{% if 'sle' in product or 'slmicro' in product %}}
 PAM_PATH="/etc/pam.d/"
 NULLOK_FILES=$(grep -rl ".*pam_unix\\.so.*nullok.*" ${PAM_PATH})
 for FILE in ${NULLOK_FILES}; do
