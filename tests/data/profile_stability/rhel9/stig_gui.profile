@@ -90,7 +90,6 @@ selections:
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
-- agent_mfetpd_running
 - aide_build_database
 - aide_check_audit_tools
 - aide_periodic_cron_checking
@@ -397,7 +396,6 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_libreswan_installed
-- package_mcafeetp_installed
 - package_nss-tools_installed
 - package_opensc_installed
 - package_openssh-clients_installed
