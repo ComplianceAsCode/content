@@ -50,13 +50,13 @@
     </regex_capture>
   </local_variable>
   <local_variable id="var_sshd_set_maxstartups_second" version="1" datatype="int"
-    comment="First number from MaxStartup parameter value.">
+    comment="Second number from MaxStartup parameter value.">
     <regex_capture pattern="\d+:(\d+):\d+">
       <variable_component var_ref="var_sshd_set_maxstartups"/>
     </regex_capture>
   </local_variable>
   <local_variable id="var_sshd_set_maxstartups_third" version="1" datatype="int"
-    comment="First number from MaxStartup parameter value.">
+    comment="Third number from MaxStartup parameter value.">
     <regex_capture pattern="\d+:\d+:(\d+)">
       <variable_component var_ref="var_sshd_set_maxstartups" />
     </regex_capture>
