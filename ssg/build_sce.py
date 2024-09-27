@@ -170,6 +170,29 @@ class SCEBuilder():
         self.output_dir = output_dir
         self.already_loaded = dict()
 
+    def _build_static_sce_check(self, rule_id, path, local_env_yaml):
+        # To be compatible with later checks, use the rule_id (i.e., the
+        # value of _dir) to recreate the expected filename if this OVAL
+        # was in a rule directory. However, note that unlike
+        # build_oval.checks(...), we have to get this script's extension
+        # first.
+        _, ext = os.path.splitext(path)
+        filename = "{0}{1}".format(rule_id, ext)
+
+        sce_content, metadata = load_sce_and_metadata(path, local_env_yaml)
+        metadata['filename'] = filename
+        product = utils.required_key(self.env_yaml, "product")
+
+        if not _check_is_applicable_for_product(metadata, product):
+            return
+        if _check_is_loaded(self.already_loaded, rule_id):
+            return
+
+        with open(os.path.join(self.output_dir, filename), 'w') as output_file:
+            print(sce_content, file=output_file)
+
+        self.already_loaded[rule_id] = metadata
+
     def build(self):
         """
         Walks the build system and builds all SCE checks (and metadata entry)
@@ -209,26 +232,7 @@ class SCEBuilder():
             local_env_yaml['products'] = {product}
 
             for _path in get_rule_dir_sces(_dir_path, product):
-                # To be compatible with later checks, use the rule_id (i.e., the
-                # value of _dir) to recreate the expected filename if this OVAL
-                # was in a rule directory. However, note that unlike
-                # build_oval.checks(...), we have to get this script's extension
-                # first.
-                _, ext = os.path.splitext(_path)
-                filename = "{0}{1}".format(rule_id, ext)
-
-                sce_content, metadata = load_sce_and_metadata(_path, local_env_yaml)
-                metadata['filename'] = filename
-
-                if not _check_is_applicable_for_product(metadata, product):
-                    continue
-                if _check_is_loaded(self.already_loaded, rule_id):
-                    continue
-
-                with open(os.path.join(self.output_dir, filename), 'w') as output_file:
-                    print(sce_content, file=output_file)
-
-                self.already_loaded[rule_id] = metadata
+                self._build_static_sce_check(rule_id, _path, local_env_yaml)
 
             build_templated_sce_check(rule, product, self.already_loaded, self.template_builder, self.output_dir)
 
