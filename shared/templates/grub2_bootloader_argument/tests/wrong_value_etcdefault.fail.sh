@@ -11,9 +11,8 @@
 {{%- if ARG_VARIABLE %}}
 # variables = {{{ ARG_VARIABLE }}}=correct_value
 {{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
-{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=correct_value" %}}
+{{%- set ARG_NAME_VALUE_WRONG= ARG_NAME ~ "=wrong_value" %}}
 {{%- else %}}
-{{%- set ARG_NAME_VALUE= ARG_NAME %}}
 {{%- set ARG_NAME_VALUE_WRONG= "wrong_variable" %}}
 {{%- endif %}}
 
@@ -25,4 +24,4 @@ echo "GRUB_CMDLINE_LINUX=\"{{{ ARG_NAME_VALUE }}}\"" > /etc/default/grub
 {{{ grub_command("update") }}}
 
 # Set to wrong var/value
-echo "GRUB_CMDLINE_LINUX=\"{{{ ARG_NAME }}}=wrong_value\"" > /etc/default/grub
+echo "GRUB_CMDLINE_LINUX=\"{{{ ARG_NAME_VALUE_WRONG }}}=\"" > /etc/default/grub
