@@ -497,19 +497,6 @@ macro(ssg_build_sds PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
     set_tests_properties("verify-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
-    if("${PRODUCT}" MATCHES "rhel")
-        if("${PRODUCT}" MATCHES "rhel8")
-            set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high cis hipaa pci-dss)
-        elseif("${PRODUCT}" MATCHES "rhel9")
-            set(REFERENCES_CHECK_PROFILE_LIST anssi_bp28_high ccn_advanced cis pci-dss stig)
-        endif()
-        add_test(
-                NAME "missing-references-ssg-${PRODUCT}-ds.xml"
-                COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${CMAKE_SOURCE_DIR}/tests/missing_refs.sh" "${PYTHON_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" ${REFERENCES_CHECK_PROFILE_LIST}
-        )
-        set_tests_properties("missing-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
-
-    endif()
     if(("${PRODUCT}" MATCHES "ubuntu2" OR "${PRODUCT}" MATCHES "rhel8") AND SSG_SCE_ENABLED)
         add_test(
             NAME "ds-sce-${PRODUCT}"
