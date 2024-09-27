@@ -220,25 +220,26 @@ class SCEBuilder():
         metadata_path = os.path.join(self.output_dir, 'metadata.json')
         json.dump(self.already_loaded, open(metadata_path, 'w'))
 
-    def build(self):
-        """
-        Walks the build system and builds all SCE checks (and metadata entry)
-        into the output directory.
-        """
+    def _find_content_dirs(self):
         # We maintain the same search structure as build_ovals.py even though we
         # don't currently have any content under shared/checks/sce.
         product_dir = self.product_yaml["product_dir"]
         relative_guide_dir = utils.required_key(self.env_yaml, "benchmark_root")
         guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
-        additional_content_directories = self.env_yaml.get("additional_content_directories", [])
+        additional_content_directories = self.env_yaml.get(
+            "additional_content_directories", [])
         add_content_dirs = [
             os.path.abspath(os.path.join(product_dir, rd))
             for rd in additional_content_directories
         ]
+        return ([guide_dir] + add_content_dirs)
 
-        # First walk all rules under the product. These have higher priority than any
-        # out-of-tree SCE checks.
-        for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
+    def build(self):
+        """
+        Walks the content repository and builds all SCE checks (and metadata entry)
+        into the output directory.
+        """
+        content_dirs = self._find_content_dirs()
+        for _dir_path in find_rule_dirs_in_paths(content_dirs):
             self._build_rule(_dir_path)
-
         self._dump_metadata()
