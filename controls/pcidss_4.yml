@@ -891,13 +891,18 @@ controls:
           are keyed cryptographic hashes of the entire PAN, with associated key-management
           processes and procedures in accordance with Requirements 3.6 and 3.7.
         description: |-
-          This requirement applies to PANs stored in primary storage (databases, or flat files
-          such as text files spreadsheets) as well as non-primary storage (backup, audit logs,
-          exception, or troubleshooting logs) must all be protected. This requirement does not
-          preclude the use of temporary files containing cleartext PAN while encrypting and
-          decrypting PAN. This requirement is considered a best practice until 31 March 2025,
-          after which it will be required and must be fully considered during a PCI DSS
-          assessment.
+          All Applicability Notes for Requirement 3.5.1 also apply to this requirement.
+          Key-management processes and procedures (Requirements 3.6 and 3.7) do not apply to
+          system components used to generate individual keyed hashes of a PAN for comparison to
+          another system if:
+          - The system components only have access to one hash value at a time (hash values are
+          not stored on the system)
+          AND
+          - There is no other account data stored on the same system as the hashes.
+          This requirement is considered a best practice until 31 March 2025, after which it will
+          be required and must be fully considered during a PCI DSS assessment. This requirement
+          will replace the bullet in Requirement 3.5.1 for one-way hashes once its effective date
+          is reached.
         levels:
           - base
         status: planned
