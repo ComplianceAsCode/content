@@ -190,6 +190,28 @@ class SCEBuilder():
             # Finally, include it in our loaded content
             self.already_loaded[rule.id_] = metadata
 
+    def _build_rule(self, rule_dir_path, local_env_yaml):
+        product = utils.required_key(self.env_yaml, "product")
+        rule_id = get_rule_dir_id(rule_dir_path)
+
+        rule_path = os.path.join(rule_dir_path, "rule.yml")
+        try:
+            rule = Rule.from_yaml(rule_path, self.env_yaml)
+        except DocumentationNotComplete:
+            # Happens on non-debug builds when a rule isn't yet completed. We
+            # don't want to build the SCE check for this rule yet so skip it
+            # and move on.
+            return
+
+        local_env_yaml['rule_id'] = rule.id_
+        local_env_yaml['rule_title'] = rule.title
+        local_env_yaml['products'] = {product}
+
+        for _path in get_rule_dir_sces(rule_dir_path, product):
+            self._build_static_sce_check(rule_id, _path, local_env_yaml)
+
+        self._build_templated_sce_check(rule)
+
     def _dump_metadata(self):
         # Finally, write out our metadata to disk so that we can reference it in
         # later build stages (such as during building shorthand content).
@@ -201,7 +223,6 @@ class SCEBuilder():
         Walks the build system and builds all SCE checks (and metadata entry)
         into the output directory.
         """
-        product = utils.required_key(self.env_yaml, "product")
         local_env_yaml = dict()
         local_env_yaml.update(self.env_yaml)
 
@@ -219,23 +240,6 @@ class SCEBuilder():
         # First walk all rules under the product. These have higher priority than any
         # out-of-tree SCE checks.
         for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
-            rule_id = get_rule_dir_id(_dir_path)
+            self._build_rule(_dir_path, local_env_yaml)
 
-            rule_path = os.path.join(_dir_path, "rule.yml")
-            try:
-                rule = Rule.from_yaml(rule_path, self.env_yaml)
-            except DocumentationNotComplete:
-                # Happens on non-debug builds when a rule isn't yet completed. We
-                # don't want to build the SCE check for this rule yet so skip it
-                # and move on.
-                continue
-
-            local_env_yaml['rule_id'] = rule.id_
-            local_env_yaml['rule_title'] = rule.title
-            local_env_yaml['products'] = {product}
-
-            for _path in get_rule_dir_sces(_dir_path, product):
-                self._build_static_sce_check(rule_id, _path, local_env_yaml)
-
-            self._build_templated_sce_check(rule)
         self._dump_metadata()
