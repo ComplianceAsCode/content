@@ -190,7 +190,9 @@ class SCEBuilder():
             # Finally, include it in our loaded content
             self.already_loaded[rule.id_] = metadata
 
-    def _build_rule(self, rule_dir_path, local_env_yaml):
+    def _build_rule(self, rule_dir_path):
+        local_env_yaml = dict()
+        local_env_yaml.update(self.env_yaml)
         product = utils.required_key(self.env_yaml, "product")
         rule_id = get_rule_dir_id(rule_dir_path)
 
@@ -223,9 +225,6 @@ class SCEBuilder():
         Walks the build system and builds all SCE checks (and metadata entry)
         into the output directory.
         """
-        local_env_yaml = dict()
-        local_env_yaml.update(self.env_yaml)
-
         # We maintain the same search structure as build_ovals.py even though we
         # don't currently have any content under shared/checks/sce.
         product_dir = self.product_yaml["product_dir"]
@@ -240,6 +239,6 @@ class SCEBuilder():
         # First walk all rules under the product. These have higher priority than any
         # out-of-tree SCE checks.
         for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
-            self._build_rule(_dir_path, local_env_yaml)
+            self._build_rule(_dir_path)
 
         self._dump_metadata()
