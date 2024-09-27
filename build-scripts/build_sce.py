@@ -33,6 +33,7 @@ import argparse
 import ssg.build_sce
 import ssg.environment
 import ssg.templates
+import ssg.products
 from ssg.utils import mkdir_p
 
 
@@ -68,7 +69,9 @@ if __name__ == "__main__":
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
     empty = "/sce/empty/placeholder"
+    product_yaml = ssg.products.Product(args.product_yaml)
     template_builder = ssg.templates.Builder(
         env_yaml, empty, args.templates_dir, empty, empty, empty, None)
-    ssg.build_sce.checks(env_yaml, args.product_yaml,
-                         template_builder, args.output)
+    sce_builder = ssg.build_sce.SCEBuilder(
+        env_yaml, product_yaml, template_builder, args.output)
+    sce_builder.build()

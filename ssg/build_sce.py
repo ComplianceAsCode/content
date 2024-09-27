@@ -135,76 +135,6 @@ def build_templated_sce_check(rule, product, already_loaded, template_builder, o
     return False
 
 
-def checks(env_yaml, yaml_path, template_builder, output):
-    """
-    Walks the build system and builds all SCE checks (and metadata entry)
-    into the output directory.
-    """
-    product = utils.required_key(env_yaml, "product")
-    already_loaded = dict()
-    local_env_yaml = dict()
-    local_env_yaml.update(env_yaml)
-
-    # We maintain the same search structure as build_ovals.py even though we
-    # don't currently have any content under shared/checks/sce.
-    product_yaml = products.Product(yaml_path)
-    product_dir = product_yaml["product_dir"]
-    relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
-    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
-    additional_content_directories = env_yaml.get("additional_content_directories", [])
-    add_content_dirs = [
-        os.path.abspath(os.path.join(product_dir, rd))
-        for rd in additional_content_directories
-    ]
-
-    # First walk all rules under the product. These have higher priority than any
-    # out-of-tree SCE checks.
-    for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
-        rule_id = get_rule_dir_id(_dir_path)
-
-        rule_path = os.path.join(_dir_path, "rule.yml")
-        try:
-            rule = Rule.from_yaml(rule_path, env_yaml)
-        except DocumentationNotComplete:
-            # Happens on non-debug builds when a rule isn't yet completed. We
-            # don't want to build the SCE check for this rule yet so skip it
-            # and move on.
-            continue
-
-        local_env_yaml['rule_id'] = rule.id_
-        local_env_yaml['rule_title'] = rule.title
-        local_env_yaml['products'] = {product}
-
-        for _path in get_rule_dir_sces(_dir_path, product):
-            # To be compatible with later checks, use the rule_id (i.e., the
-            # value of _dir) to recreate the expected filename if this OVAL
-            # was in a rule directory. However, note that unlike
-            # build_oval.checks(...), we have to get this script's extension
-            # first.
-            _, ext = os.path.splitext(_path)
-            filename = "{0}{1}".format(rule_id, ext)
-
-            sce_content, metadata = load_sce_and_metadata(_path, local_env_yaml)
-            metadata['filename'] = filename
-
-            if not _check_is_applicable_for_product(metadata, product):
-                continue
-            if _check_is_loaded(already_loaded, rule_id):
-                continue
-
-            with open(os.path.join(output, filename), 'w') as output_file:
-                print(sce_content, file=output_file)
-
-            already_loaded[rule_id] = metadata
-
-        build_templated_sce_check(rule, product, already_loaded, template_builder, output)
-
-    # Finally, write out our metadata to disk so that we can reference it in
-    # later build stages (such as during building shorthand content).
-    metadata_path = os.path.join(output, 'metadata.json')
-    json.dump(already_loaded, open(metadata_path, 'w'))
-
-    return already_loaded
 
 
 # Retrieve the SCE checks and return a list of path to each check script.
@@ -231,3 +161,78 @@ def collect_sce_checks(datastreamtree):
     checks = datastreamtree.findall(checks_xpath)
     # Extract the file paths of the SCE checks
     return [check.get('href') for check in checks]
+
+class SCEBuilder():
+    def __init__(self, env_yaml, product_yaml, template_builder, output_dir):
+        self.env_yaml = env_yaml
+        self.product_yaml = product_yaml
+        self.template_builder = template_builder
+        self.output_dir = output_dir
+        self.already_loaded = dict()
+
+    def build(self):
+        """
+        Walks the build system and builds all SCE checks (and metadata entry)
+        into the output directory.
+        """
+        product = utils.required_key(self.env_yaml, "product")
+        local_env_yaml = dict()
+        local_env_yaml.update(self.env_yaml)
+
+        # We maintain the same search structure as build_ovals.py even though we
+        # don't currently have any content under shared/checks/sce.
+        product_dir = self.product_yaml["product_dir"]
+        relative_guide_dir = utils.required_key(self.env_yaml, "benchmark_root")
+        guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
+        additional_content_directories = self.env_yaml.get("additional_content_directories", [])
+        add_content_dirs = [
+            os.path.abspath(os.path.join(product_dir, rd))
+            for rd in additional_content_directories
+        ]
+
+        # First walk all rules under the product. These have higher priority than any
+        # out-of-tree SCE checks.
+        for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
+            rule_id = get_rule_dir_id(_dir_path)
+
+            rule_path = os.path.join(_dir_path, "rule.yml")
+            try:
+                rule = Rule.from_yaml(rule_path, self.env_yaml)
+            except DocumentationNotComplete:
+                # Happens on non-debug builds when a rule isn't yet completed. We
+                # don't want to build the SCE check for this rule yet so skip it
+                # and move on.
+                continue
+
+            local_env_yaml['rule_id'] = rule.id_
+            local_env_yaml['rule_title'] = rule.title
+            local_env_yaml['products'] = {product}
+
+            for _path in get_rule_dir_sces(_dir_path, product):
+                # To be compatible with later checks, use the rule_id (i.e., the
+                # value of _dir) to recreate the expected filename if this OVAL
+                # was in a rule directory. However, note that unlike
+                # build_oval.checks(...), we have to get this script's extension
+                # first.
+                _, ext = os.path.splitext(_path)
+                filename = "{0}{1}".format(rule_id, ext)
+
+                sce_content, metadata = load_sce_and_metadata(_path, local_env_yaml)
+                metadata['filename'] = filename
+
+                if not _check_is_applicable_for_product(metadata, product):
+                    continue
+                if _check_is_loaded(self.already_loaded, rule_id):
+                    continue
+
+                with open(os.path.join(self.output_dir, filename), 'w') as output_file:
+                    print(sce_content, file=output_file)
+
+                self.already_loaded[rule_id] = metadata
+
+            build_templated_sce_check(rule, product, self.already_loaded, self.template_builder, self.output_dir)
+
+        # Finally, write out our metadata to disk so that we can reference it in
+        # later build stages (such as during building shorthand content).
+        metadata_path = os.path.join(self.output_dir, 'metadata.json')
+        json.dump(self.already_loaded, open(metadata_path, 'w'))
