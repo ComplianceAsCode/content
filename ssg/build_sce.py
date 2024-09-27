@@ -190,6 +190,12 @@ class SCEBuilder():
             # Finally, include it in our loaded content
             self.already_loaded[rule.id_] = metadata
 
+    def _dump_metadata(self):
+        # Finally, write out our metadata to disk so that we can reference it in
+        # later build stages (such as during building shorthand content).
+        metadata_path = os.path.join(self.output_dir, 'metadata.json')
+        json.dump(self.already_loaded, open(metadata_path, 'w'))
+
     def build(self):
         """
         Walks the build system and builds all SCE checks (and metadata entry)
@@ -232,8 +238,4 @@ class SCEBuilder():
                 self._build_static_sce_check(rule_id, _path, local_env_yaml)
 
             self._build_templated_sce_check(rule)
-
-        # Finally, write out our metadata to disk so that we can reference it in
-        # later build stages (such as during building shorthand content).
-        metadata_path = os.path.join(self.output_dir, 'metadata.json')
-        json.dump(self.already_loaded, open(metadata_path, 'w'))
+        self._dump_metadata()
