@@ -135,13 +135,12 @@ def build_templated_sce_check(rule, product, already_loaded, template_builder, o
     return False
 
 
-def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
+def checks(env_yaml, yaml_path, template_builder, output):
     """
     Walks the build system and builds all SCE checks (and metadata entry)
     into the output directory.
     """
     product = utils.required_key(env_yaml, "product")
-    reversed_dirs = sce_dirs[::-1]
     already_loaded = dict()
     local_env_yaml = dict()
     local_env_yaml.update(env_yaml)
@@ -199,30 +198,6 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
             already_loaded[rule_id] = metadata
 
         build_templated_sce_check(rule, product, already_loaded, template_builder, output)
-
-    # Finally take any shared SCE checks and build them as well. Note that
-    # there's no way for shorthand generation to include them if they do NOT
-    # align with a particular rule_id, so it is suggested that the former
-    # method be used.
-    for sce_dir in reversed_dirs:
-        if not os.path.isdir(sce_dir):
-            continue
-
-        for filename in sorted(os.listdir(sce_dir)):
-            rule_id, _ = os.path.splitext(filename)
-
-            sce_content, metadata = load_sce_and_metadata(filename, env_yaml)
-            metadata['filename'] = filename
-
-            if not _check_is_applicable_for_product(metadata, product):
-                continue
-            if _check_is_loaded(already_loaded, rule_id):
-                continue
-
-            with open(os.path.join(output, filename), 'w') as output_file:
-                print(sce_content, file=output_file)
-
-            already_loaded[rule_id] = metadata
 
     # Finally, write out our metadata to disk so that we can reference it in
     # later build stages (such as during building shorthand content).

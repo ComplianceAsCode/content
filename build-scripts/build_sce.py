@@ -55,9 +55,6 @@ def parse_args():
     )
     p.add_argument(
         "--output", required=True)
-    p.add_argument(
-        "scedirs", metavar="SCE_DIR", nargs="+",
-        help="SCE definition scripts to build for the specified product.")
     args = p.parse_args()
     return args
 
@@ -73,5 +70,5 @@ if __name__ == "__main__":
     empty = "/sce/empty/placeholder"
     template_builder = ssg.templates.Builder(
         env_yaml, empty, args.templates_dir, empty, empty, empty, None)
-    ssg.build_sce.checks(env_yaml, args.product_yaml, args.scedirs,
+    ssg.build_sce.checks(env_yaml, args.product_yaml,
                          template_builder, args.output)
