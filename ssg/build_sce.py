@@ -151,44 +151,44 @@ class SCEBuilder():
         self.already_loaded[rule_id] = metadata
 
     def _build_templated_sce_check(self, rule):
+        if not rule.template:
+            return
         product = utils.required_key(self.env_yaml, "product")
-        if rule.template:
-            langs = self.template_builder.get_resolved_langs_to_generate(rule)
-            for lang in langs:
-                if lang.name == 'sce-bash':
-                    # Here we know the specified rule has a template and this
-                    # template actually generates (bash) SCE content. We
-                    # prioritize bespoke SCE content over templated content,
-                    # however, while we add this to our metadata, we do not
-                    # bother (yet!) with generating the SCE content. This is done
-                    # at a later time by build-scripts/build_templated_content.py.
-                    if _check_is_loaded(self.already_loaded, rule.id_):
-                        continue
+        langs = self.template_builder.get_resolved_langs_to_generate(rule)
+        for lang in langs:
+            if lang.name != 'sce-bash':
+                continue
+            # Here we know the specified rule has a template and this
+            # template actually generates (bash) SCE content. We
+            # prioritize bespoke SCE content over templated content,
+            # however, while we add this to our metadata, we do not
+            # bother (yet!) with generating the SCE content. This is done
+            # at a later time by build-scripts/build_templated_content.py.
+            if _check_is_loaded(self.already_loaded, rule.id_):
+                continue
 
-                    # While we don't _write_ it, we still need to parse SCE
-                    # metadata from the templated content. Render it internally.
-                    raw_sce_content = self.template_builder.get_lang_contents_for_templatable(
-                        rule, lang
-                    )
+            # While we don't _write_ it, we still need to parse SCE
+            # metadata from the templated content. Render it internally.
+            raw_sce_content = self.template_builder.get_lang_contents_for_templatable(
+                rule, lang
+            )
 
-                    ext = '.sh'
-                    filename = rule.id_ + ext
+            ext = '.sh'
+            filename = rule.id_ + ext
 
-                    # Load metadata and infer correct file name.
-                    sce_content, metadata = load_sce_and_metadata_parsed(raw_sce_content)
-                    metadata['filename'] = filename
+            # Load metadata and infer correct file name.
+            sce_content, metadata = load_sce_and_metadata_parsed(raw_sce_content)
+            metadata['filename'] = filename
 
-                    # Skip the check if it isn't applicable for this product.
-                    if not _check_is_applicable_for_product(metadata, product):
-                        continue
+            # Skip the check if it isn't applicable for this product.
+            if not _check_is_applicable_for_product(metadata, product):
+                continue
 
-                    with open(os.path.join(self.output_dir, filename), 'w') as output_file:
-                        print(sce_content, file=output_file)
+            with open(os.path.join(self.output_dir, filename), 'w') as output_file:
+                print(sce_content, file=output_file)
 
-                    # Finally, include it in our loaded content
-                    self.already_loaded[rule.id_] = metadata
-                    return True
-        return False
+            # Finally, include it in our loaded content
+            self.already_loaded[rule.id_] = metadata
 
     def build(self):
         """
