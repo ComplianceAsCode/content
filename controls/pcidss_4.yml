@@ -695,7 +695,7 @@ controls:
     status: partial
     controls:
     - id: 3.3.1
-      title: SAD is not retained after authorization, even if encrypted. All sensitive
+      title: SAD is not stored after authorization, even if encrypted. All sensitive
         authentication data received is rendered unrecoverable upon completion of the
         authorization process.
       description: |-
@@ -710,7 +710,7 @@ controls:
       status: partial
       controls:
       - id: 3.3.1.1
-        title: The full contents of any track are not retained upon completion of the
+        title: The full contents of any track are not stored upon completion of the
           authorization process.
         description: |-
           This requirement is not eligible for the customized approach. In the normal course of
@@ -725,7 +725,7 @@ controls:
         status: partial
         notes: |-
           This requirement consists in auditing files, databases and memory to make sure the full
-          content of any track is not unnecessarily retained. It involves manual auditing but some
+          content of any track is not unnecessarily stored. It involves manual auditing but some
           automated rules fit this requirement in order to reduce the chances if this data be
           unintentionally stored in memory.
         rules:
@@ -744,7 +744,7 @@ controls:
           - sysctl_kernel_core_uses_pid
 
       - id: 3.3.1.2
-        title: The card verification code is not retained upon completion of the authorization
+        title: The card verification code is not stored upon completion of the authorization
           process.
         description: |-
           This requirement is not eligible for the customized approach. The card verification code
@@ -762,7 +762,7 @@ controls:
           - sysctl_fs_suid_dumpable
 
       - id: 3.3.1.3
-        title: The personal identification number (PIN) and the PIN block are not retained upon
+        title: The personal identification number (PIN) and the PIN block are not stored upon
           completion of the authorization process.
         description: |-
           This requirement is not eligible for the customized approach. PIN blocks are encrypted
