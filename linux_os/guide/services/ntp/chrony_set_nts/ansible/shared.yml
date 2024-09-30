@@ -1,0 +1,48 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "{{{ rule_title }}} - Check That /etc/ntp.conf Exist"
+  ansible.builtin.stat:
+    path: /etc/ntp.conf
+  register: ntp_conf_exist_result
+
+- name: "{{{ rule_title }}} - Set the nts Values in /etc/ntp.conf"
+  ansible.builtin.replace:
+    path: /etc/ntp.conf
+    regexp: '(^server\s+((?!nts).)*)$'
+    replace: '\1 nts\n'
+  when: ntp_conf_exist_result.stat.exists
+
+# Chrony, need to hand chrony.conf and any file in chrony.d
+# since chrony_conf_path is the full path to chrony.conf
+# and includes chrony.conf, that must be handled as well
+
+- name: "{{{ rule_title }}} - Check That {{{ chrony_conf_path }}} Exist"
+  ansible.builtin.stat:
+    path: {{{ chrony_conf_path }}}
+  register: chrony_conf_exist_result
+
+- name: "{{{ rule_title }}} - Set the nts Values in {{{ chrony_conf_path }}}"
+  ansible.builtin.replace:
+    path: "{{{ chrony_conf_path }}}"
+    regexp: '(^(?:server|pool|peer)\s+((?!nts).)*)$'
+    replace: '\1 nts\n'
+  when: chrony_conf_exist_result.stat.exists
+
+- name: "{{{ rule_title }}} - Get Conf Files from {{{ chrony_d_path }}}"
+  ansible.builtin.find:
+    path: "{{{ chrony_d_path }}}"
+    patterns: '*.conf'
+    file_type: file
+  register: chrony_d_conf_files
+
+- name: "{{{ rule_title }}} - Set the maxpoll Values in {{{ chrony_d_path }}}"
+  ansible.builtin.replace:
+    path: "{{ item.path }}"
+    regexp: '(^(?:server|pool|peer)\s+((?!maxpoll).)*)$'
+    replace: '\1 nts\n'
+  loop: '{{ chrony_d_conf_files.files }}'
+  when: chrony_d_conf_files.matched
