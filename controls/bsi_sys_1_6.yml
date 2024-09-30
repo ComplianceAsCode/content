@@ -154,33 +154,107 @@ controls:
     levels:
     - basic
     description: >-
-      Networks for the administration of the host, the administration of the containers, and their
-      access networks MUST be separated according to the protection needs at hand. In principle, at
+      (1) Networks for the administration of the host, the administration of the containers, and their
+      access networks MUST be separated according to the protection needs at hand. (2) In principle, at
       least the administration of the host SHOULD only be possible from the administration
       network.
-      Only the communication relationships necessary for operation SHOULD be allowed.
+      (3) Only the communication relationships necessary for operation SHOULD be allowed.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: Hosts and containers are controlled via the Kubernetes API. This is addressed via
+      api. The load balancer used for this is located in the administration network. The load
+      balancer for *.apps. is set up separately in the active network. This means that the
+      administration is appropriately separated.
+      The Console (the OpenShift web UI) is used by all users. Authorization takes place at the API
+      level and is secured via RBAC.
+      The control plane is to be located in an administration network.
+
+      Section 2: The web UI can be configured on another router that is terminated on the
+      administration load balancer and is therefore only accessible from the administration network.
+      This means that it can no longer be reached from the active network.
+
+      Section 3: This is a standard OpenShift feature. The OpenShift documentation
+      contains the necessary communication paths between control plane, infrastructure and worker
+      nodes, as well as the necessary firewall activations of the underlying network stack at
+      hardware or IaaS level. The communication between containers or pods within a client
+      (“Project”) is not restricted by default, but can be regulated with micro-segmentation if
+      necessary or as a service mesh with mTLS authentication be implemented (see APP.4.4.A18).
+
+      Externally exposed services can receive their own IP and thus data traffic can also be
+      separated outside the platform. Inter-node communication is carried out via suitable tunnel
+      protocols (VXLAN, GENEVE) and can also be encrypted using IPSec.
+
+    status: automated
+    rules:
+      # Section 1,2
+      - general_network_separation
+      # Section 3
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      - service_firewalld_enabled
 
   - id: SYS.1.6.A6
     title: Use of Secure Images
     levels:
     - basic
     description: >-
-      It MUST be ensured that all images used originate from trusted sources. The creator of each
-      image MUST be clearly identifiable.
-      Sources MUST be selected on the basis of whether the creator of a given image regularly
+      (1) It MUST be ensured that all images used originate from trusted sources. (2) The creator of
+      each image MUST be clearly identifiable.
+      (3) Sources MUST be selected on the basis of whether the creator of a given image regularly
       checks the included software for security problems, fixes and documents them, and provides
       corresponding guarantees to customers.
-      The utilised version of base images MUST NOT be deprecated. Unique version numbers MUST
-      be provided. If an image with a newer version number is available, a patch and change
+      (4) The utilised version of base images MUST NOT be deprecated. (5) Unique version numbers MUST
+      be provided. (6) If an image with a newer version number is available, a patch and change
       management process MUST check whether and how it can be rolled out
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: This requirement must be implemented organizationally.
+      Note: OpenShift supports the requirement by allowing only certain sources. This allows the
+      sources from which images come to be restricted and new sources to be added in a controlled
+      process.
+      Quay can also be used to provide your own registry in an open environment as a trustworthy
+      delivery point for external software. Images can also be checked for vulnerabilities here.
+
+      Section 2: This requirement must be implemented organizationally.
+      Note: OpenShift makes it possible to verify the signatures of images before use and thus
+      enforce the identification requirement. Red Hat Advanced Cluster Security for Kubernetes
+      (ACS) can check and optionally enforce signatures as well as certain labels
+      (e.g. MAINTAINER) for images.
+      For images delivered by Red Hat via the official Red Hat Registry, the MAINTAINER label
+      of the container images is always maintained, through which Red Hat can be identified as
+      the creator of the images. Images are also signed with GPG keys.
+
+      Section 3: This requirement must be implemented organizationally.
+      Note: Images from the Red Hat Registry are regularly checked for security vulnerabilities
+      and updated accordingly. The security status of the images is indicated via a health
+      indicator.
+      ACS can perform technical checks through regular scans and report conspicuous containers
+      or containers with identified vulnerabilities, thereby supporting the implementation of
+      the requirement.
+
+      Section 4: This requirement must be implemented organizationally.
+      Note: For discontinued images with appropriate identification (e.g. through labels),
+      policies implemented in ACS can report these violations. ACS also provides policies that
+      report when images have not been scanned for more than 30/60/90 days. However, this means
+      that an image must be built and rolled out at this interval so that the scans during the
+      build process are effective. With a CI/CD pipeline with a high level of automation, this
+      usually does not represent any increased effort.
+
+      Section 5: This requirement must be implemented organizationally.
+      Note: Image-level labels or image tags could be used here.
+
+      Section 6: This requirement must be implemented organizationally for integrated software
+      or self-created software.
+      Note: OpenShift supports Lifecycle Management (OLM) with Operator. Software managed using
+      OLM or Cluster Operator receives updates via the Operator Hub or Cluster Updates. An
+      automated check with automatic or alternatively manual release is possible for this software.
+    status: automated
+    rules:
+      # Section 1
+      - ocp_allowed_registries
+      - ocp_allowed_registries_for_import
+      - ocp_insecure_allowed_registries_for_import
+      - ocp_insecure_registries
+      # Section 2
+      - reject_unsigned_images_by_default
 
   - id: SYS.1.6.A7
     title: Persistence of Container Logging Data
@@ -190,43 +264,69 @@ controls:
       Container logging data MUST be stored outside of the respective container (on the container
       host at minimum)
     notes: >-
-      ToDo
+      OpenShift Logging stores the containers' logging data in a separate log management system.
+      The output of the container is saved as long as it is on STDOUT and STDERR. The logging
+      data can also be forwarded to different log storage depending on the source
+      (e.g. infrastructure or application).
+      It is the responsibility of the applications to write log output to STDOUT and errors to STDERR.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A8
     title: Secure Storage of Container Access Data
     levels:
     - basic
     description: >-
-      Access data MUST be stored and managed in such a way that only authorised persons and
-      containers can access it. In particular, it MUST be ensured that access data is only stored in
-      specially protected locations and not in images. The access data management mechanisms
+      (1) Access data MUST be stored and managed in such a way that only authorised persons and
+      containers can access it. (2) In particular, it MUST be ensured that access data is only stored in
+      specially protected locations and not in images. (3) The access data management mechanisms
       provided by container service management software SHOULD be used.
-      At minimum, the following credentials MUST be stored securely:
+      (4) At minimum, the following credentials MUST be stored securely:
       • Passwords of any accounts
       • API keys for services used by the application
       • Keys for symmetric encryption
       • Private keys for public key authentication
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift offers secrets that are only available to the containers and the people
+      authorized via RBAC in the tenant or project (client).
+      Section 2: This requirement must be enforced as part of application development.
+      OpenShift offers suitable mechanisms (secrets) with encryption of the etcd store if necessary.
+      Section 3: OpenShift offers corresponding mechanisms (secrets). Unless the secrets are
+      dynamically generated, third-party/community tools such as SealedSecrets or HashiCorp Vault
+      can help securely deploy the secrets.
+      Section 4: This requirement must be implemented organizationally.
+      All of this information can and should be managed in Secrets.
+    status: automated
+    rules:
+      # Section 1
+      - rbac_least_privilege
+      - rbac_limit_secrets_access
+      - rbac_limit_cluster_admin
+      - rbac_wildcard_use
+      - rbac_roles_defined
+      - rbac_cluster_roles_defined
+      # Section 2-4
+      - api_server_encryption_provider_cipher
+      - secrets_no_environment_variables
+      # Section 3
+      - secrets_consider_external_storage
 
   - id: SYS.1.6.A9
     title: Suitability for Container Operation
     levels:
     - standard
     description: >-
-      An application or service to be operated in a container SHOULD be suitable for such operation.
-      It SHOULD be considered that containers can often be terminated unexpectedly, with
-      corresponding consequences for the application run therein. The results of the checking
+      (1) An application or service to be operated in a container SHOULD be suitable for such operation.
+      (2) It SHOULD be considered that containers can often be terminated unexpectedly, with
+      corresponding consequences for the application run therein. (3) The results of the checking
       described under SYS.1.6.A3 Secure Use of Containerised IT Systems SHOULD be documented in
       a comprehensible manner.
     notes: >-
-      ToDo
+      Section 1: This requirement must be implemented organizationally.
+      Section 2: This requirement must be implemented organizationally and be part of the application
+      development process.
+      Section 3: This requirement must be implemented organizationally and suppliers must be
+      contractually obliged to comply.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A10
     title: Policy for Images and Container Operation
