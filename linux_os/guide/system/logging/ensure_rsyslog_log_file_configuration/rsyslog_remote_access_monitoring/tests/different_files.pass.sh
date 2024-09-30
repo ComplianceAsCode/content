@@ -13,8 +13,8 @@ if [[ -d ${RSYSLOG_D_FOLDER} ]]; then
 	do
 		for K in ${!REMOTE_METHODS[@]}
 		do
-			if grep -q "${REMOTE_METHODS[$K]}" ${rsyslog_d_file}; then
-				sed -i "/${REMOTE_METHODS[$K]}/d" ${rsyslog_d_file}
+			if grep -q "$K" ${rsyslog_d_file}; then
+				sed -i "/$K/d" ${rsyslog_d_file}
 			fi
 		done
 	done
@@ -25,5 +25,5 @@ if [[ ! -f /etc/rsyslog.conf ]]; then
 	touch /etc/rsyslog.conf
 fi
 
-echo "auth.*,authpriv.* /var/log/secure" >> $RSYSLOG_CONF
+echo "auth.*;authpriv.* /var/log/secure" >> $RSYSLOG_CONF
 echo "daemon.* /var/log/messages" >> $RSYSLOG_CONF
