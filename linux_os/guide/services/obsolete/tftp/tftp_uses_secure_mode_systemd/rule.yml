@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure tftp Daemon Uses Secure Mode Using systemd'
+title: 'Ensure tftp systemd Service Uses Secure Mode'
 
 description: |-
     If running the Trivial File Transfer Protocol (TFTP) service is necessary,
@@ -21,8 +21,13 @@ rationale: |-
 severity: medium
 
 ocil: |-
-    Use <tt>sudo systemctl edit tftp</tt> to adjust the <tt>ExecStart</tt> to
-    be <tt>/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</tt>
+    Use <tt>udo systemctl show tftp</tt> to verify that tftp service is using secure mode.
+    <pre>$ sudo systemctl show tftp | grep ExecStart=
+    ExecStart={ path=/usr/sbin/in.tftpd ; argv[]=/usr/sbin/in.tftpd -s /var/lib/tftpboot ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }e
+    </pre>
+
+    and ensure the <tt>ExecStart</tt> line on that file includes the <tt>-s</tt> option with a subdirectory:
+    <pre>ExecStart=/usr/sbin/in.tftpd -s {{{ xccdf_value("var_tftpd_secure_directory") }}}</pre>
 
 
 ocil_clause: 'the ExecStart property of tftp does not contain correctly set -s flag'
@@ -31,7 +36,8 @@ platform: package[tftp-server]
 
 warnings:
     - general: |-
-        A remedation is not currently available due limits of the checking engine.
+        An OVAL check is not currently available since <tt>ExecStart</tt> cannot be checked with OVAL since it is not exposed via dbus.
+        Currently, a remedation is not available for this rule.
 
 
 identifiers:
