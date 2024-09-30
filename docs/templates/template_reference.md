@@ -723,7 +723,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart
+-   Languages: Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart, SCE
 
 #### shell_lineinfile
 -   Checks shell variable assignments in files. Remediations will paste
