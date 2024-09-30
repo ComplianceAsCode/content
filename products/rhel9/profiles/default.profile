@@ -559,3 +559,5 @@ selections:
     - set_nftables_table
     - sshd_use_approved_ciphers
     - configure_bashrc_exec_tmux
+    - agent_mfetpd_running
+    - package_mcafeetp_installed
