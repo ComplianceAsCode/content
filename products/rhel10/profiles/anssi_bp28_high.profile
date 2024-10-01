@@ -70,6 +70,7 @@ selections:
     - '!package_sendmail_removed'
     - '!package_talk_removed'
     - '!package_xinetd_removed'
+    - '!package_ypbind_removed'
     - '!package_ypserv_removed'
     # these rules are failing when they are remediated with Ansible, removing them temporarily until they are fixed
     - '!accounts_password_pam_retry'
