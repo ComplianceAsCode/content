@@ -879,11 +879,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    notes: Review the availability of this package when the product is out.
-    rules:
-      - package_ypserv_removed
     related_rules:
       - service_ypserv_disabled
+      - package_ypserv_removed
 
   - id: 2.1.11
     title: Ensure print server services are not in use (Automated)
