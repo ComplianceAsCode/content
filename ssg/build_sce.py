@@ -150,45 +150,52 @@ class SCEBuilder():
 
         self.already_loaded[rule_id] = metadata
 
+    def _get_rule_sce_lang(self, rule):
+        langs = self.template_builder.get_resolved_langs_to_generate(rule)
+        for lang in langs:
+            if lang.name == 'sce-bash':
+                return lang
+        return None
+
     def _build_templated_sce_check(self, rule):
         if not rule.template:
             return
+        sce_lang = self._get_rule_sce_lang(rule)
+        if sce_lang is None:
+            return
+
+        # Here we know the specified rule has a template and this
+        # template actually generates (bash) SCE content. We
+        # prioritize bespoke SCE content over templated content,
+        # however, while we add this to our metadata, we do not
+        # bother (yet!) with generating the SCE content. This is done
+        # at a later time by build-scripts/build_templated_content.py.
+        if _check_is_loaded(self.already_loaded, rule.id_):
+            return
+
+        # While we don't _write_ it, we still need to parse SCE
+        # metadata from the templated content. Render it internally.
+        raw_sce_content = self.template_builder.get_lang_contents_for_templatable(
+            rule, sce_lang
+        )
+
+        ext = '.sh'
+        filename = rule.id_ + ext
+
+        # Load metadata and infer correct file name.
+        sce_content, metadata = load_sce_and_metadata_parsed(raw_sce_content)
+        metadata['filename'] = filename
+
+        # Skip the check if it isn't applicable for this product.
         product = utils.required_key(self.env_yaml, "product")
-        langs = self.template_builder.get_resolved_langs_to_generate(rule)
-        for lang in langs:
-            if lang.name != 'sce-bash':
-                continue
-            # Here we know the specified rule has a template and this
-            # template actually generates (bash) SCE content. We
-            # prioritize bespoke SCE content over templated content,
-            # however, while we add this to our metadata, we do not
-            # bother (yet!) with generating the SCE content. This is done
-            # at a later time by build-scripts/build_templated_content.py.
-            if _check_is_loaded(self.already_loaded, rule.id_):
-                continue
+        if not _check_is_applicable_for_product(metadata, product):
+            return
 
-            # While we don't _write_ it, we still need to parse SCE
-            # metadata from the templated content. Render it internally.
-            raw_sce_content = self.template_builder.get_lang_contents_for_templatable(
-                rule, lang
-            )
+        with open(os.path.join(self.output_dir, filename), 'w') as output_file:
+            print(sce_content, file=output_file)
 
-            ext = '.sh'
-            filename = rule.id_ + ext
-
-            # Load metadata and infer correct file name.
-            sce_content, metadata = load_sce_and_metadata_parsed(raw_sce_content)
-            metadata['filename'] = filename
-
-            # Skip the check if it isn't applicable for this product.
-            if not _check_is_applicable_for_product(metadata, product):
-                continue
-
-            with open(os.path.join(self.output_dir, filename), 'w') as output_file:
-                print(sce_content, file=output_file)
-
-            # Finally, include it in our loaded content
-            self.already_loaded[rule.id_] = metadata
+        # Finally, include it in our loaded content
+        self.already_loaded[rule.id_] = metadata
 
     def _build_rule(self, rule_dir_path):
         local_env_yaml = dict()
