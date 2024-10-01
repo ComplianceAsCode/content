@@ -34,7 +34,6 @@ selections:
     - '!enable_dracut_fips_module'
     - '!firewalld_sshd_port_enabled'
     - '!require_singleuser_auth'
-    - '!enable_fips_mode'
     # tally2 is deprecated, replaced by faillock
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!accounts_passwords_pam_tally2_unlock_time'
