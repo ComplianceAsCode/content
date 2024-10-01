@@ -99,6 +99,7 @@ def _check_is_loaded(already_loaded, filename):
     # something.
     return filename in already_loaded
 
+
 # Retrieve the SCE checks and return a list of path to each check script.
 def collect_sce_checks(datastreamtree):
     checklists = datastreamtree.find(
@@ -123,6 +124,7 @@ def collect_sce_checks(datastreamtree):
     checks = datastreamtree.findall(checks_xpath)
     # Extract the file paths of the SCE checks
     return [check.get('href') for check in checks]
+
 
 class SCEBuilder():
     def __init__(self, env_yaml, product_yaml, template_builder, output_dir):
