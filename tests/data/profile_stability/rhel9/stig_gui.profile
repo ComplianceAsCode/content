@@ -574,7 +574,7 @@ selections:
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - sshd_approved_ciphers=stig_rhel9
-- var_networkmanager_dns_mode=none
+- var_networkmanager_dns_mode=explicit_default
 - var_multiple_time_servers=stig
 - var_time_service_set_maxpoll=18_hours
 - var_user_initialization_files_regex=all_dotfiles
