@@ -15,6 +15,11 @@ from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
 from . import utils, products
 
 
+def write_sce_file(sce_content, output_dir, filename):
+    with open(os.path.join(output_dir, filename), 'w') as output_file:
+        print(sce_content, file=output_file)
+
+
 def load_sce_and_metadata(file_path, local_env_yaml):
     """
     For the given SCE audit file (file_path) under the specified environment
@@ -145,8 +150,7 @@ class SCEBuilder():
         if _check_is_loaded(self.already_loaded, rule_id):
             return
 
-        with open(os.path.join(self.output_dir, filename), 'w') as output_file:
-            print(sce_content, file=output_file)
+        write_sce_file(sce_content, self.output_dir, filename)
 
         self.already_loaded[rule_id] = metadata
 
@@ -191,8 +195,7 @@ class SCEBuilder():
         if not _check_is_applicable_for_product(metadata, product):
             return
 
-        with open(os.path.join(self.output_dir, filename), 'w') as output_file:
-            print(sce_content, file=output_file)
+        write_sce_file(sce_content, self.output_dir, filename)
 
         # Finally, include it in our loaded content
         self.already_loaded[rule.id_] = metadata
