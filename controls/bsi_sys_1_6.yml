@@ -523,15 +523,19 @@ controls:
     levels:
     - standard
     description: >-
-      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
-      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
-      runtime for a container includes local storage, the access rights in the file system SHOULD be
-      restricted to the service account of the container. If network storage is used, the permissions
-      SHOULD be set on the network storage itself
+      (1) Descriptions of container configuration data SHOULD be versioned. (2) Changes SHOULD be
+      documented in a comprehensible manner.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift only maintains the current version of the configuration. It is therefore
+      recommended to use GitOps, in which the configuration is transferred from a git repository to
+      the OpenShift cluster. OpenShift includes OpenShift GitOps (based on the community project
+      ArgoCD), which supports easy implementation of a GitOps-based administration concept.
+
+      Section 2: With a GitOps approach, all changes are documented in git.
+    status: automated
+    rules:
+      # Section 1,2
+      - gitops_operator_exists
 
   - id: SYS.1.6.A21
     title: Compile options for the compiler plugins
