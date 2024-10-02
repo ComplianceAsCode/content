@@ -766,11 +766,15 @@ controls:
 
   - id: 1.8.10
     title: Ensure XDMCP is not enabled (Automated)
+    notes: |-
+        This was inherited from the RHEL 9 profile.
+        However, it was reported that XDMCP is no
+        longer in RHEL 10.
     levels:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
+    related_rules:
       - gnome_gdm_disable_xdmcp
 
   - id: 2.1.1
