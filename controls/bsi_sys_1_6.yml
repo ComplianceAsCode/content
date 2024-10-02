@@ -490,15 +490,33 @@ controls:
     levels:
     - standard
     description: >-
-      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
-      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
+      (1) Containers SHOULD ONLY be able to access the mass storage and directories necessary for
+      operation. (2) Permissions SHOULD only be explicitly assigned where needed. (3) If the container
       runtime for a container includes local storage, the access rights in the file system SHOULD be
-      restricted to the service account of the container. If network storage is used, the permissions
+      restricted to the service account of the container. (4) If network storage is used, the permissions
       SHOULD be set on the network storage itself
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: Applications can access persistent volumes (PVs) and temporary (ephemeral) storage
+      in OpenShift. Persisted volumes are connected as network storage, ephemeral storage serves
+      primarily as volatile, short-lived mass storage and is allocated within the container file
+      system. This configures which PV can be reached and the use of the ephemeral storage is
+      separated per pod. This means that each pod has its own volatile mass storage. Volumes can be
+      limited in size.
+
+      Section 2: OpenShift implements the principle of least privileges. The definition is made via
+      an explicit configuration at the deployment level.
+
+      Section 3: By default, no local storage is included. For reasons of reliability, this is
+      explicitly not recommended.
+
+      Section 4: The network storage dictates the permissions. OpenShift supports this with the
+      dynamically assigned UID/GID of the projects (clients).
+    status: automated
+    rules:
+      # Section 1
+      - scc_limit_host_dir_volume_plugin
+      # Section 2
+      - rbac_least_privilege
 
   - id: SYS.1.6.A20
     title: Protection of Configuration Data
