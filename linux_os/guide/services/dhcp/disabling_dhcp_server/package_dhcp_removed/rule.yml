@@ -10,6 +10,8 @@ description: |-
     {{{ describe_package_remove(package="isc-dhcp-server") }}}
     {{% elif product in ['ol8', 'ol9', 'rhel8', 'rhel9', 'sle12', 'sle15'] %}}
     {{{ describe_package_remove(package="dhcp-server") }}}
+    {{% elif product in ['rhel10'] %}}
+    {{{ describe_package_remove(package="dhcpd") }}}
     {{% else %}}
     {{{ describe_package_remove(package="dhcp") }}}
     {{% endif %}}
@@ -55,6 +57,7 @@ template:
         pkgname: dhcp
         pkgname@rhel8: dhcp-server
         pkgname@rhel9: dhcp-server
+        pkgname@rhel10: dhcpd
         pkgname@ubuntu1604: isc-dhcp-server
         pkgname@ubuntu1804: isc-dhcp-server
         pkgname@ubuntu2004: isc-dhcp-server
