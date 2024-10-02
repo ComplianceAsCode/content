@@ -349,7 +349,11 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
         self.reference_type = yaml_contents.get("reference_type", None)
-        self.product = yaml_contents.get("product", None)
+        yaml_product = yaml_contents.get("product", None)
+        if type(yaml_product) is list:
+            self.product = yaml_product
+        else:
+            self.product = [yaml_product]
 
         default_level_dict = {"id": "default"}
         level_list = yaml_contents.get("levels", [default_level_dict])
