@@ -538,23 +538,56 @@ controls:
       - gitops_operator_exists
 
   - id: SYS.1.6.A21
-    title: Compile options for the compiler plugins
+    title: Extended Security Policies
     levels:
     - elevated
     description: >-
-      Extended policies SHOULD restrict the permissions of containers. Mandatory Access Control
-      (MAC) or a comparable technology SHOULD enforce these policies. At minimum, policies
+      (1) Extended policies SHOULD restrict the permissions of containers. (2) Mandatory Access Control
+      (MAC) or a comparable technology SHOULD enforce these policies. (3) At minimum, policies
       SHOULD restrict the following types of access:
       • Incoming and outgoing network connections
       • File system access attempts
       • Kernel requests (syscalls)
-      A runtime SHOULD start containers in such a way that the kernel of the host system prevents
+      (4) A runtime SHOULD start containers in such a way that the kernel of the host system prevents
       all activities of the containers that are not allowed by the relevant policy (e.g. by setting up
       local packet filters or revoking permissions), or at least reports violations appropriately.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: By default, OpenShift blocks the containers' permissions (security-by-default).
+
+      Section 2: OpenShift already uses SELinux Mandatory Access Control to restrict permissions by
+      default Using the Security Profiles Operator, workload-dependent SELinux
+      and Seccomp profiles can be created and managed.
+
+      Section 3: These permissions are managed in OpenShift and controlled via Security Context
+      Constraints (SCCs). For tool-based policy management, ACS or Red Hat Advanced Cluster
+      Management (ACM) (with Kyverno or Open Policy Agent) can be used.
+
+      Section 4: OpenShift already meets this requirement as standard (security-by-design).
+    status: automated
+    rules:
+      # Section 2
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
+      # Section 3
+      - general_apply_scc
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      # network policies
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      - service_firewalld_enabled
+      # Section 3,4
+      - security_profiles_operator_exists
 
   - id: SYS.1.6.A22
     title: Provision for Investigations
