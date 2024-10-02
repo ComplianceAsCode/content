@@ -12,7 +12,10 @@ description: |-
     <tt>/etc/rsyslog.d/*.conf</tt> file should contain a match for the following
     selectors: <tt>auth.*</tt>, <tt>authpriv.*</tt>, and <tt>daemon.*</tt>. If
     not, use the following as an example configuration:
-    <pre>auth.*;authpriv.*;daemon.*                              /var/log/secure</pre>
+    <code>
+        auth.*;authpriv.*                              /var/log/secure
+        daemon.*                                       /var/log/messages
+    </code>
 
 rationale: |-
     Logging remote access methods can be used to trace the decrease the risks

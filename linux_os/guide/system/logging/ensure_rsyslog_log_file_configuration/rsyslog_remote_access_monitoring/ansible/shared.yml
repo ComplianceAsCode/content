@@ -10,10 +10,13 @@
     remote_methods:
       - selector: 'auth.*'
         regexp: ^.*auth\.\*.*$
+        location: "/var/log/secure"
       - selector: 'authpriv.*'
         regexp: ^.*authpriv\.\*.*$
+        location: "/var/log/secure"
       - selector: 'daemon.*'
         regexp: ^.*daemon\.\*.*$
+        location: "/var/log/messages"
 
 - name: "{{{ rule_title }}}: Ensure rsyslog.conf exists"
   file:
@@ -47,7 +50,7 @@
 - name: "{{{ rule_title }}}: Configure"
   lineinfile:
     path: /etc/rsyslog.conf
-    line: "{{ item.item.0.selector }} /var/log/secure"
+    line: "{{ item.item.0.selector }} {{ item.item.0.location }}"
     insertafter: ^.*\/var\/log\/secure.*$
     create: yes
   loop: '{{ remote_method_values.results }}'
