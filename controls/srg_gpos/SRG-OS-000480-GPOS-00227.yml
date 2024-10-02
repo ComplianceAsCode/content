@@ -71,7 +71,6 @@ controls:
             - var_user_initialization_files_regex=all_dotfiles
 
             # service disabled
-            # - service_rngd_enabled - this rule was removed because it does bring questionable value on modern systems
             - service_kdump_disabled
             - service_debug-shell_disabled
             - service_autofs_disabled
@@ -100,7 +99,6 @@ controls:
             - package_rsyslog_installed
             - package_firewalld_installed
             - package_gnutls-utils_installed
-            - package_rng-tools_installed
             - package_nss-tools_installed
             - package_policycoreutils-python-utils_installed
             - package_policycoreutils_installed
