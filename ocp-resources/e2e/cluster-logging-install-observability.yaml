@@ -50,7 +50,26 @@ metadata:
   name: cluster-logging
   namespace: openshift-logging
 spec:
-  channel: stable
+  channel: stable-6.0
   name: cluster-logging
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-logging-operator
+  namespace: openshift-logging
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-logging-operator
+subjects:
+  - kind: ServiceAccount
+    name: cluster-logging-operator
+    namespace: openshift-logging
