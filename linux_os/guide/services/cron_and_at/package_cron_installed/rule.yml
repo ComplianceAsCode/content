@@ -1,4 +1,4 @@
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["rhel10", "sle12", "sle15"] %}}
 {{% set package_name = "cronie" %}}
 {{% else %}}
 {{% set package_name = "cron" %}}
@@ -42,5 +42,6 @@ template:
     name: package_installed
     vars:
         pkgname: cron
+        pkgname@rhel10: cronie
         pkgname@sle12: cronie
         pkgname@sle15: cronie
