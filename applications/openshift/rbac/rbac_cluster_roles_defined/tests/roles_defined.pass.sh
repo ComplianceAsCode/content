@@ -8117,10 +8117,7 @@ cat << EOF >> /kubernetes-api-resources/apis/rbac.authorization.k8s.io/v1/cluste
                 },
                 {
                     "apiGroups": [
-                        "logging.openshift.io"
-                    ],
-                    "resourceNames": [
-                        "instance"
+                        "observability.openshift.io"
                     ],
                     "resources": [
                         "clusterlogforwarders"
@@ -11530,7 +11527,7 @@ cat << EOF >> /kubernetes-api-resources/apis/rbac.authorization.k8s.io/v1/cluste
                 },
                 {
                     "apiGroups": [
-                        "logging.openshift.io"
+                        "observability.openshift.io"
                     ],
                     "resources": [
                         "*"
