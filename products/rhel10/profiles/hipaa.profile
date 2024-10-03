@@ -28,6 +28,8 @@ selections:
     - '!coreos_audit_option'
     - '!coreos_nousb_kernel_argument'
     - '!coreos_enable_selinux_kernel_argument'
+    - '!dconf_gnome_remote_access_credential_prompt'
+    - '!dconf_gnome_remote_access_encryption'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_fedora_gpgkey_installed'
     - '!grub2_uefi_admin_username'
