@@ -43,6 +43,7 @@ selections:
     - '!package_rsh-server_removed'
     - '!package_sendmail_removed'
     - '!package_talk_removed'
+    - '!package_talk-server_removed'
     - '!package_xinetd_removed'
     - '!package_ypserv_removed'
     # these rules are failing when they are remediated with Ansible, removing then temporarily until they are fixed
