@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-for user in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $1 }' /etc/passwd); do
+for user in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}} && $6 != "/") print $1 }' /etc/passwd); do
     home_dir=$(getent passwd $user | cut -d: -f6)
     group=$(getent passwd $user | cut -d: -f4)
     # Only update the group-ownership when necessary. This will avoid changing the inode timestamp
