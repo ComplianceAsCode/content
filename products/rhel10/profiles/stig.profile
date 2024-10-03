@@ -20,3 +20,5 @@ description: |-
 
 selections:
     - srg_gpos:all
+    # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
+    - '!enable_dracut_fips_module'

@@ -22,3 +22,5 @@ selections:
     - ospp:all
     - '!package_screen_installed'
     - '!package_dnf-plugin-subscription-manager_installed'
+    # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
+    - '!enable_dracut_fips_module'
