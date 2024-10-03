@@ -3,7 +3,7 @@
     {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.") }}}
     <criteria operator="OR">
       {{# products that are available also in a 32 bits form #}}
-      {{% if "rhel" not in product and product != "fedora" %}}
+      {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
       <criteria operator="AND">
         <extend_definition comment="32-bit system" definition_ref="system_info_architecture_x86" />
         <criterion comment="kernel runtime parameter kernel.exec-shield set to 1" test_ref="test_runtime_sysctl_kernel_exec_shield" />

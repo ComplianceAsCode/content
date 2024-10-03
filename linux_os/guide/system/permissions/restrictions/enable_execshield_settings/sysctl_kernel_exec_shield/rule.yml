@@ -9,7 +9,7 @@ description: |-
     ExecShield or is disabled in <tt>/etc/default/grub</tt>.
 
     {{# products that are available also in a 32 bits form #}}
-    {{% if "rhel" not in product and product != "fedora" %}}
+    {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
     For {{{ full_name }}}  32-bit systems, <tt>sysctl</tt> can be used to enable
     ExecShield.
     {{% endif %}}
@@ -56,7 +56,7 @@ ocil: |-
     {{{ ocil_grub2_argument("noexec=off") | indent(4) }}}
 
     {{# products that are available also in a 32 bits form #}}
-    {{% if "rhel" not in product and product != "fedora" %}}
+    {{% if "rhel" not in product and product != "fedora" and "ol" not in families %}}
     For 32-bit {{{ full_name }}} systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>
     The output should be:
@@ -65,7 +65,7 @@ ocil: |-
 
 fixtext: |-
     {{# products that are available also in a 32 bits form #}}
-    {{%- if "rhel" not in product and product != "fedora" -%}}
+    {{%- if "rhel" not in product and product != "fedora" and "ol" not in families -%}}
     On a 64-bit {{{ full_name }}} system update the GRUB bootloader configuration.
 
     {{{ fixtext_grub2_bootloader_argument_absent("noexec") | indent(4) }}}
