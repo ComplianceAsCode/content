@@ -201,6 +201,7 @@ selections:
 - no_shelllogin_for_systemaccounts
 - package_aide_installed
 - package_bind_removed
+- package_chrony_installed
 - package_cyrus-imapd_removed
 - package_dhcp_removed
 - package_dnsmasq_removed
