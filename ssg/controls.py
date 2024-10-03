@@ -352,7 +352,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         yaml_product = yaml_contents.get("product", None)
         if type(yaml_product) is list:
             self.product = yaml_product
-        else:
+        elif yaml_product is not None:
             self.product = [yaml_product]
 
         default_level_dict = {"id": "default"}
