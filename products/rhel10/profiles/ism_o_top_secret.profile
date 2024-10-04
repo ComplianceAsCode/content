@@ -42,3 +42,5 @@ selections:
     - '!rpm_verify_hashes'
     # this rule should not be needed anymore on RHEL 10, but investigation is recommended
     - '!openssl_use_strong_entropy'
+    # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
+    - '!enable_dracut_fips_module'

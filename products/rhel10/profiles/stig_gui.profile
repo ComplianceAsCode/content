@@ -32,3 +32,5 @@ selections:
     - '!sysctl_user_max_user_namespaces'
     # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
     - '!logind_session_timeout'
+    # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
+    - '!enable_dracut_fips_module'
