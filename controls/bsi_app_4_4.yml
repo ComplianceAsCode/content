@@ -392,7 +392,7 @@ controls:
       and ensure that the nodes are labeled accordingly.
       Section 2:
       OpenShift uses the concept of infra-nodes. The incoming connections can be bound to these and,
-      by using Egress-IP, the incoming connections can also be bound.
+      by using Egress-IP, the outgoing connections can also be bound.
       Section 3:
       OpenShift uses control plane nodes for management, on which no applications are running.
       Data connections between applications to the outside world and to one another are not routed
@@ -414,7 +414,7 @@ controls:
     levels:
     - elevated
     description: >-
-      Applications with very high protection needs SHOULD each use their own Kubernetes clusters
+      (1) Applications with very high protection needs SHOULD each use their own Kubernetes clusters
       or dedicated nodes that are not available for other applications
     notes: ''
     status: manual
@@ -426,8 +426,7 @@ controls:
     levels:
     - elevated
     description: >-
-      The automation of operational tasks in operators SHOULD be used for particularly critical
-      applications and control plane programs.
+      (1) The automation of operational tasks in operators SHOULD be used for particularly critical
     notes: >-
       OpenShift relies consistently on the application of the concept of operators. The platform
       itself is operated and managed 100% by operators, meaning that all internal components of
