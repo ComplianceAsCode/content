@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure deployments have either anti-affinity rules or topology spread constraints'
+title: 'Ensure Deployments have either Anti-Affinity Rules or Topology Spread Constraints'
 
 description: |-
     Distributing Kubernetes pods across nodes and availability zones using pod topology spread
@@ -10,7 +10,7 @@ description: |-
 
     There might be deployments, that do not require high availability or spreading across nodes.
     To limit the number of false positives, this rule only checks deployments with a replica count
-    of more than one. For deployments with one replica neither anti-affinity rules nor topology
+    of more than one. For deployments with one replica, neither anti-affinity rules nor topology
     spread constraints provide any value.
 
     To exclude other deployments from this rule, you can create a regular expression for deployment
@@ -37,7 +37,7 @@ description: |-
     Finally, reference this <tt>TailoredProfile</tt> in a <tt>ScanSettingBinding</tt>
     For more information on Tailoring the Compliance Operator, please consult the
     OpenShift documentation:
-      {{{ weblink(link="https://docs.openshift.com/container-platform/4.16/security/compliance_operator/co-scans/compliance-operator-tailor.html") }}}
+      {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/co-scans/compliance-operator-tailor.html") }}}
 
 
 rationale: |-

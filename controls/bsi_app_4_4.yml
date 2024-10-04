@@ -563,7 +563,8 @@ controls:
       several fire zones based on the location data of the corresponding nodes so that the failure of a
       fire zone will not lead to the failure of an application.
     notes: >-
-      Section 1: OpenShift support topology labels to differentiate between failure zones. To achieve
+      Section 1: OpenShift supports topology labels to differentiate between failure zones. To achieve
+
       continued operation without interruption, nodes of every role need to be spread across zones.
       For quorum-based applications, such as the Kubernetes control plane, three zones are required.
       A sufficient number of control plane nodes and sufficient spreading across zones is checked using
@@ -581,7 +582,8 @@ controls:
       anti-affinity rules or topology spread constraints.
 
       Single Node OpenShift (SNO) is not highly available and therefore incompliant to this control.
-    status: pending
+    status: automated
+
     rules:
       # Section 1, 3
       - multiple_nodes_in_every_role
