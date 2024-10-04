@@ -33,6 +33,7 @@ selections:
 
     # these rules do not apply to RHEL 10
     - '!package_audit-audispd-plugins_installed'
+    - '!package_dhcp_removed'
     - '!package_ypserv_removed'
     - '!package_ypbind_removed'
     - '!package_talk_removed'
