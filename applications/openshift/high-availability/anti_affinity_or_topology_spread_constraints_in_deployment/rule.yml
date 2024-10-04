@@ -17,29 +17,6 @@ description: |-
     names: <tt>var_deployments_without_high_availability</tt>. This will ignore deployments matching
     those names in all namespaces.
 
-    An example allowing all deployments named <tt>uncritical-service</tt> is as follows:
-
-    <pre>
-    apiVersion: compliance.openshift.io/v1alpha1
-    kind: TailoredProfile
-    metadata:
-      name: bsi-additional-deployments
-    spec:
-      description: Allows additional deployments to not be highly available and evenly spread
-      setValues:
-      - name: upstream-ocp4-var_deployments_without_high_availability
-        rationale: Ignore our uncritical service
-        value: ^uncritical-service$
-      extends: upstream-ocp4-bsi
-      title: Modified BSI allowing non-highly-available deployments
-    </pre>
-
-    Finally, reference this <tt>TailoredProfile</tt> in a <tt>ScanSettingBinding</tt>
-    For more information on Tailoring the Compliance Operator, please consult the
-    OpenShift documentation:
-      {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/compliance_operator/co-scans/compliance-operator-tailor.html") }}}
-
-
 rationale: |-
     Distributing Kubernetes pods across nodes and availability zones using pod topology spread
     constraints and anti-affinity rules is essential for enhancing high availability, fault
@@ -47,7 +24,8 @@ rationale: |-
     This approach ensures that a single node or AZ failure does not lead to total application
     downtime, as workloads are balanced and resources are efficiently utilized.
 
-identifiers: {}
+identifiers:
+    cce@ocp4: CCE-89351-1
 
 severity: medium
 

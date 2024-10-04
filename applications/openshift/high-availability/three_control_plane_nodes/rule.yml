@@ -1,16 +1,17 @@
 documentation_complete: true
 
-title: 'Ensure machine count of MachineConfigPool master is 3'
+title: 'Ensure there are Three Machines in the Master MachineConfigPool'
 
 description: |- 
-    To ensure, that the OpenShift control plane stays accessible on outage of a single master node, a 
-    number of 3 control plane nodes is required.
+    To ensure, that the OpenShift control plane stays accessible on outage of a single master node,
+    three control plane nodes are required.
 
 rationale: |-
-    A highly-available OpenShift control plane requires 3 control plane nodes. This allows etcd to have
-    a functional quorum state, when a single control plane node is unavailable.
+    A high available OpenShift control plane requires three control plane nodes. This allows etcd 
+    to have a functional quorum state, when a single control plane node is unavailable.
 
-identifiers: {}
+identifiers:
+    cce@ocp4: CCE-87551-8
 
 severity: medium
 
@@ -26,11 +27,11 @@ warnings:
     {{{ openshift_cluster_setting("/apis/machineconfiguration.openshift.io/v1/machineconfigpools/master") | indent(4) }}}
 
 template:
-  name: yamlfile_value
-  vars:
-    ocp_data: 'true'
-    filepath: /apis/machineconfiguration.openshift.io/v1/machineconfigpools/master
-    yamlpath: .status.machineCount
-    entity_check: at least one
-    values:
-    - value: '3'
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/machineconfiguration.openshift.io/v1/machineconfigpools/master
+        yamlpath: .status.machineCount
+        entity_check: at least one
+        values:
+        - value: '3'
