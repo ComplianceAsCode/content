@@ -617,8 +617,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_motd
-      - motd_banner_text=cis_banners
+      - banner_etc_motd_cis
+      - cis_banner_text=cis
 
   - id: 1.7.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -627,8 +627,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_issue
-      - login_banner_text=cis_banners
+      - banner_etc_issue_cis
+      - cis_banner_text=cis
 
   - id: 1.7.3
     title: Ensure remote login warning banner is configured properly (Automated)
@@ -637,8 +637,8 @@ controls:
       - l1_workstation
     status: automated
     rules:
-      - banner_etc_issue_net
-      - remote_login_banner_text=cis_banners
+      - banner_etc_issue_net_cis
+      - cis_banner_text=cis
 
   - id: 1.7.4
     title: Ensure access to /etc/motd is configured (Automated)

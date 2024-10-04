@@ -205,6 +205,20 @@
 
 -   Languages: OVAL
 
+#### cis_banner
+-   Verify that the contents of a login banner in the given `filepath` complies
+    with CIS requirements.
+
+-   Parameters:
+
+    -   **filepath** - Path to the login banner file, eg. `/etc/motd`.
+
+    -   **banner_must_be_set** - If set to `"true"`, the rule will fail if no
+        banner is configured in that file. Otherwise, the rule will pass if
+        the banner isn't configured.
+
+- Languages: Ansible, Bash, OVAL
+
 #### coreos_kernel_option
 -   Checks that `argument=value` pair is present in the kernel arguments.
     Note that this applies to Red Hat CoreOS.

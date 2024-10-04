@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check that " + FILEPATH + " does not contain OS and version information") }}}
+    <criteria operator="AND" comment="check">
+      {{% if BANNER_MUST_BE_SET == "true" %}}
+      <criterion comment="Check {{{ FILEPATH }}} contains a banner" test_ref="test_{{{ rule_id }}}_file_nonempty" />
+      {{% endif %}}
+      <criterion comment="Check {{{ FILEPATH }}} does not contain OS and version information" test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+{{% if BANNER_MUST_BE_SET == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Check that the given object does not exist"
+  id="test_{{{ rule_id }}}_file_nonempty" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}_file_nonempty" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_file_nonempty" version="1">
+    <ind:filepath>{{{ FILEPATH }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^.+$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Check that the given object does not exist"
+  id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ FILEPATH }}}</ind:filepath>
+    <ind:pattern operation="pattern match">(\\v|\\r|\\m|\\s|{{{ product }}})</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
