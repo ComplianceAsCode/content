@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Ensure appropriate Network Policies are configured'
+title: 'Ensure Appropriate Network Policies are Configured'
 
 description: |-
-  Configure Network Policies in any application namespace in an approrpriate way, so that
+  Configure Network Policies in any application namespace in an appropriate way, so that
   only the required communications are allowed. The Network Policies should precisely define
   source and target using label selectors and ports.
 
@@ -24,20 +24,20 @@ rationale: |-
 
 severity: medium
 
-identifiers: {}
-
-references:
-  bsi: APP.4.4.A19
+identifiers:
+  cce@ocp4: CCE-89537-5
 
 ocil_clause: 'Network Policies need to be evaluated if they are appropriate'
 
 ocil: |-
     For each non-default namespace in the cluster, review the configured Network Policies
-    and ensure that they only allow the necessary network network connections. They should should
+    and ensure that they only allow the necessary network connections. They should
     precisely define source and target using label selectors and ports.
 
     1. Get a list of existing projects(namespaces), exclude default, kube-*, openshift-*
-    <pre>$ oc get namespaces -ojson | jq -r '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.name]'</pre>
+    <pre>$ oc get namespaces -ojson | jq -r '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.name]'</pre>
+
+    Namespaces matching the variable <tt>ocp4-var-network-policies-namespaces-exempt-regex</tt> regex are excluded from this check.
 
     2. For each of these namespaces, review the network policies:
     <pre>$ oc get networkpolicies -n $namespace -o yaml</pre>
