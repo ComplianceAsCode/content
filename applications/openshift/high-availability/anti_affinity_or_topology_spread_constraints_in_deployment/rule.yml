@@ -49,9 +49,6 @@ rationale: |-
 
 identifiers: {}
 
-references:
-    bsi: APP.4.4.A19
-
 severity: medium
 
 {{% set jqfilter = '[ .items[] | select(.metadata.name | test("{{.var_deployments_without_high_availability}}"; "") | not) | select (.spec.replicas == 0 or .spec.replicas == 1 | not) | select(.spec.template.spec.affinity.podAntiAffinity == null and .spec.template.spec.topologySpreadConstraints == null) | .metadata.namespace + "/" + .metadata.name ]' %}}
