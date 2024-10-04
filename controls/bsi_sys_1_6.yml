@@ -601,24 +601,39 @@ controls:
     levels:
     - elevated
     description: >-
-      In order to have containers available for later investigation in case they are needed, an image
+      (1) In order to have containers available for later investigation in case they are needed, an image
       of each container's state SHOULD be created according to specified rules.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      The OpenShift container runtime environment used does not provide a function for creating a memory
+      image of a running container.
+
+      The running containers can be listed and different parameters can be queried and saved for them. 
+      Further data (such as running processes) can be queried via the host. Using the operating system, 
+      memory dumps (core dump) or file system data (ephemeral and persistent) can also be backed up.
+
+      To fully address the requirement and automatically capture an image of a container based on rules,
+      one needs to utilize an additional 3rd Party solution.
+    status: partial
 
   - id: SYS.1.6.A23
-    title: Compile options for various kernel behaviors
+    title: Container Immutability
     levels:
     - elevated
     description: >-
-      Containers SHOULD not be able to change their file system during runtime. File systems
-      SHOULD not be integrated with write permissions.
+      (1) Containers SHOULD not be able to change their file system during runtime.
+      (2) File systems SHOULD not be integrated with write permissions.
     notes: >-
-      ToDo
+      Section 1: This requirement must be implemented organizationally.
+      Note: By default, Red Hat recommends building containers so that the runtime UID does not have write 
+      permissions in the container. If the file system is changed (e.g. for a file system-based cache),
+      this change will be lost when you restart, as the unchangeable image will be loaded again.
+
+      Section 2: By default, local file systems are not mounted in containers. Containers access PVs that are 
+      integrated via OpenShift. Alternatively, ephemeral volumes can be used as volatile storage.
+      The requirement to mount file systems without write permissions must be implemented organizationally:
+      - The container's root file system can be restricted to ReadOnly via the SecurityContext.
+      - Every container's VolumeMount can be specified as read only.
     status: manual
-    #rules:
 
   - id: SYS.1.6.A24
     title: Host-Based Attack Detection
