@@ -414,8 +414,8 @@ controls:
     levels:
     - elevated
     description: >-
-      Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
-      message to the control plane. The control plane SHOULD ONLY accept nodes into a cluster
+      (1) Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
+      message to the control plane. (2) The control plane SHOULD ONLY accept nodes into a cluster
       that have successfully proven their integrity.
     notes: >-
       OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system.
