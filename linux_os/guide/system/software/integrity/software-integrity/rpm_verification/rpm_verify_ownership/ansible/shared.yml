@@ -19,6 +19,6 @@
   when: (files_with_incorrect_ownership.stdout_lines | length > 0)
 
 - name: "Correct file ownership with RPM"
-  command: "rpm --setugids '{{ item }}'"
+  command: "rpm --restore '{{ item }}'"
   with_items: "{{ list_of_packages.results | map(attribute='stdout_lines') | list | unique }}"
   when: (files_with_incorrect_ownership.stdout_lines | length > 0)
