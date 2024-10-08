@@ -108,3 +108,7 @@ report:
           - /static-checks/html-links
           # these always fail, meant for manual review
           - /static-checks/diff
+
+# Fedora specific plan
+/rpmbuild-ctest-fedora:
+    discover+: {test: /static-checks/rpmbuild-ctest}
