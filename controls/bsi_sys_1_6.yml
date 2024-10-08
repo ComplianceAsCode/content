@@ -401,13 +401,35 @@ controls:
     levels:
     - standard
     description: >-
-      Resources on the host system such as CPU, volatile and persistent memory, and network
-      bandwidth SHOULD be appropriately reserved and limited for each container. How the
+      (1) Resources on the host system such as CPU, volatile and persistent memory, and network
+      bandwidth SHOULD be appropriately reserved and limited for each container. (2) How the
       system should react if these limits are exceeded SHOULD be defined and documented.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift supports the configuration of quotas for a project (client).
+      Applications can have their resources appropriately limited using limits/requests.
+      Network bandwidth is limited at the pod level and can be determined separately according
+      to incoming and outgoing network bandwidth. In addition, outgoing traffic (egress) can be
+      marked at the namespace level with differentiated services code point (DSCP) classifications
+      in order to assign quality of service classes to the outgoing packets in the physical network.
+      
+      Section 2: This requirement must be implemented organizationally.
+      Note: The behavior of OpenShift completely replicates the standard behavior of Kubernetes.
+      If CPU limits are exceeded, the process is slowed down. If volatile memory is exceeded,
+      the process is stopped and restarted by the scheduler. The persistent memory management
+      is responsible for exceeding the persistent memory - OpenShift will not enforce or limit
+      anything here. Compliance with the limited network bandwidth is enforced by dropping
+      packets that exceed the limit.
+    status: automated
+    rules:
+      # Section 1
+      - project_config_and_template_resource_quota
+      - project_template_resource_quota
+      - resource_requests_limits_in_daemonset
+      - resource_requests_limits_in_deployment
+      - resource_requests_limits_in_statefulset
+      - resource_requests_quota
+      - resource_requests_quota_cluster
+      - resource_requests_quota_per_project
 
   - id: SYS.1.6.A16
     title: Administrative Remote Access to Containers
