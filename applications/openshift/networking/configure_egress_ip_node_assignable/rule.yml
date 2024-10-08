@@ -1,0 +1,57 @@
+documentation_complete: true
+
+title: Check Egress IPs Assignable to Nodes
+
+description: -|
+    <p>
+    The OpenShift Container Platform egress IP address functionality allows you to ensure that the
+    traffic from one or more pods in one or more namespaces has a consistent source IP address for
+    services outside the cluster network.
+    </p>
+    <p>
+    The necessary labeling on the designated nodes is configurable without reboot via
+    <pre>$ oc label nodes $NODENAME k8s.ovn.org/egress-assignable="" </pre> for details see the
+    Red Hat Documentation
+    {{{ weblink(link="https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/networking/ovn-kubernetes-network-plugin#nw-egress-ips-about_configuring-egress-ips-ovn") }}}
+    </p>
+
+rationale: -|
+    By using egress IPs you can provide a consistent IP to external services and configure special
+    firewall rules which precisely select this IP. This allows for more control on external systems.
+    Furthermore you can bind the IPs to specific nodes, which handle all the network connections to
+    achieve a better separation of duties between the different nodes.
+
+identifiers:
+    cce@ocp4: CCE-86787-9
+
+severity: medium
+
+ocil_clause: 'Check Egress IPs Assignable to Nodes'
+
+ocil: |-
+    Run the following command to see if nodes are assignable for egress IPs
+    <pre>$ oc get --raw /api/v1/nodes | jq '.items[] | select(.metadata.labels."k8s.ovn.org/egress-assignable" != null) | .metadata.name'</pre>
+    This commands prints the name of each node which is configured to get egress IPs assigned. If
+    the output is empty, there are no nodes available.
+
+{{% set old_jqfilter = 'if any(.items[]?; .metadata.labels."k8s.ovn.org/egress-assignable" != null) then true else false end' %}}
+{{% set jqfilter = '[ .items[] | .metadata.labels["k8s.ovn.org/egress-assignable"] != null ]' %}}
+
+
+warnings:
+    - general: |-
+        {{{ openshift_filtered_cluster_setting({'/api/v1/nodes': jqfilter}) | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: |-
+            {{{ openshift_filtered_path('/api/v1/nodes', jqfilter) }}}
+        yamlpath: '[:]'
+        check_existence: at_least_one_exists
+        entity_check: "at least one"
+        values:
+            - value: 'true'
+              type: "string"
+              entity_check: "at least one"
