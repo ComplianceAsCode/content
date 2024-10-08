@@ -107,6 +107,11 @@ def instance_in_platforms(inst, platforms):
         (hasattr(platforms, "__iter__") and inst.get("idref") in platforms)
 
 
+def make_applicable_in_containers(root):
+    remove_machine_platform(root)
+    remove_machine_remediation_condition(root)
+
+
 def remove_machine_platform(root):
     remove_platforms_from_element(root, "xccdf-1.2:Rule", "cpe:/a:machine")
     remove_platforms_from_element(root, "xccdf-1.2:Group", "cpe:/a:machine")

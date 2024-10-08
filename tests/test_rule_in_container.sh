@@ -7,7 +7,7 @@
 # ARG_OPTIONAL_SINGLE([remediate-using],[r],[What to remediate with],[oscap])
 # ARG_OPTIONAL_SINGLE([logdir],[l],[Directory where logs will be stored])
 # ARG_OPTIONAL_BOOLEAN([dontclean],[],[Don't remove HTML reports from the log directory.])
-# ARG_OPTIONAL_BOOLEAN([remove-machine-only],[],[Don't remove machine platforms.],[on])
+# ARG_OPTIONAL_BOOLEAN([make-applicable-in-containers],[],[Remove some platforms to make the rule applicable in containers.],[on])
 # ARG_OPTIONAL_BOOLEAN([dry-run],[],[Just print the test suite command-line.])
 # ARG_OPTIONAL_BOOLEAN([docker],[],[Use Docker instead of Podman as container backend.])
 # ARG_USE_ENV([ADDITIONAL_SSGTS_OPTIONS],[],[Deprecated, use ADDITIONAL_TEST_OPTIONS])
@@ -65,7 +65,7 @@ _arg_datastream=
 _arg_remediate_using="oscap"
 _arg_logdir=
 _arg_dontclean="off"
-_arg_remove_machine_only="on"
+_arg_make_applicable_in_containers="on"
 _arg_dry_run="off"
 _arg_docker="off"
 
@@ -73,7 +73,7 @@ _arg_docker="off"
 print_help()
 {
 	printf '%s\n' "Test a rule using the container backend."
-	printf 'Usage: %s [-n|--name <arg>] [-s|--scenarios <arg>] [-d|--datastream <arg>] [-r|--remediate-using <REMEDIATION>] [-l|--logdir <arg>] [--(no-)dontclean] [--(no-)remove-machine-only] [--(no-)dry-run] [--(no-)docker] [-h|--help] <rule-1> [<rule-2>] ... [<rule-n>] ...\n' "$0"
+	printf 'Usage: %s [-n|--name <arg>] [-s|--scenarios <arg>] [-d|--datastream <arg>] [-r|--remediate-using <REMEDIATION>] [-l|--logdir <arg>] [--(no-)dontclean] [--(no-)make-applicable-in-containers] [--(no-)dry-run] [--(no-)docker] [-h|--help] <rule-1> [<rule-2>] ... [<rule-n>] ...\n' "$0"
 	printf '\t%s\n' "<rule>: The short rule ID. Wildcards are supported."
 	printf '\t%s\n' "-n, --name: Name of the test image (default: 'ssg_test_suite')"
 	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (no default)"
@@ -81,7 +81,7 @@ print_help()
 	printf '\t%s\n' "-r, --remediate-using: What to remediate with. Can be one of: 'oscap', 'bash' and 'ansible' (default: 'oscap')"
 	printf '\t%s\n' "-l, --logdir: Directory where logs will be stored (no default)"
 	printf '\t%s\n' "--dontclean, --no-dontclean: Don't remove HTML reports from the log directory. (off by default)"
-	printf '\t%s\n' "--remove-machine-only, --no-remove-machine-only: Remove machine platforms. (on by default)"
+	printf '\t%s\n' "--make-applicable-in-containers, --no-make-applicable-in-containers: Remove some platforms to make the rule applicable in containers. (on by default)"
 	printf '\t%s\n' "--dry-run, --no-dry-run: Just print the test suite command-line. (off by default)"
 	printf '\t%s\n' "--docker, --no-docker: Use Docker instead of Podman as container backend. (off by default)"
 	printf '\t%s\n' "-h, --help: Prints help"
@@ -158,9 +158,9 @@ parse_commandline()
 				_arg_dontclean="on"
 				test "${1:0:5}" = "--no-" && _arg_dontclean="off"
 				;;
-			--no-remove-machine-only|--remove-machine-only)
-				_arg_remove_machine_only="on"
-				test "${1:0:5}" = "--no-" && _arg_remove_machine_only="off"
+			--no-make-applicable-in-containers|--make-applicable-in-containers)
+				_arg_make_applicable_in_containers="on"
+				test "${1:0:5}" = "--no-" && _arg_make_applicable_in_containers="off"
 				;;
 			--no-dry-run|--dry-run)
 				_arg_dry_run="on"
@@ -237,7 +237,7 @@ $CONTAINER_BACKEND images | grep -q "$_arg_name" || die "Couldn't find the $CONT
 
 additional_args=()
 test "$_arg_dontclean" = on && additional_args+=(--dontclean)
-test "$_arg_remove_machine_only" = on && additional_args+=(--remove-machine-only)
+test "$_arg_make_applicable_in_containers" = on && additional_args+=(--make-applicable-in-containers)
 
 # Don't act on the default value.
 test -n "$_arg_scenarios" && additional_args+=(--scenario "$_arg_scenarios")
