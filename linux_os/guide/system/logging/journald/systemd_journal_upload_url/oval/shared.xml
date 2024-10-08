@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="systemd_journal_upload_url" version="2">
+    {{{ oval_metadata("systemd-journal-upload URL in /etc/systemd/journal-upload.conf is configured") }}}
+    <criteria>
+        <criterion comment="systemd-journal-upload URL in /etc/systemd/journal-upload.conf"
+        test_ref="test_systemd_journal_upload_url" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="systemd-journal-upload URL" id="test_systemd_journal_upload_url" version="1">
+    <ind:object object_ref="object_test_systemd_journal_upload_url" />
+    <ind:state state_ref="state_test_systemd_journal_upload_url" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_test_systemd_journal_upload_url" version="2">
+    <ind:filepath>/etc/systemd/journal-upload.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*URL\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_test_systemd_journal_upload_url" version="1">
+    <ind:subexpression operation="equals" var_ref="var_journal_upload_url" datatype="string" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="systemd-journal-upload URL" datatype="string" id="var_journal_upload_url" version="1" />
+
+</def-group>

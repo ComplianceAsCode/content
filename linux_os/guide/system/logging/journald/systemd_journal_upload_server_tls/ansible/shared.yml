@@ -1,0 +1,32 @@
+# platform = multi_platform_slmicro
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_journal_upload_server_key_file") }}}
+
+- name: Set ServerKeyFile in /etc/systemd/journal-upload.conf
+  lineinfile:
+      dest: /etc/systemd/journal-upload.conf
+      regexp: "^#?ServerKeyFile="
+      line: ServerKeyFile={{ var_journal_upload_server_key_file }}
+      create: yes
+
+{{{ ansible_instantiate_variables("var_journal_upload_server_certificate_file") }}}
+
+- name: Set ServerCertificateFile in /etc/systemd/journal-upload.conf
+  lineinfile:
+      dest: /etc/systemd/journal-upload.conf
+      regexp: "^#?ServerCertificateFile="
+      line: ServerCertificateFile={{ var_journal_upload_server_certificate_file }}
+      create: yes
+
+{{{ ansible_instantiate_variables("var_journal_upload_server_trusted_certificate_file") }}}
+
+- name: Set TrustedCertificateFile in /etc/systemd/journal-upload.conf
+  lineinfile:
+      dest: /etc/systemd/journal-upload.conf
+      regexp: "^#?TrustedCertificateFile="
+      line: TrustedCertificateFile={{ var_journal_upload_server_trusted_certificate_file }}
+      create: yes
