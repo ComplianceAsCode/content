@@ -124,7 +124,7 @@
       comment="regex to identify pam_faillock.so entries in auth section of pam files">
     {{% if 'debian' in product or 'ubuntu' in product %}}
     <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
-    {{% elif 'openeuler' in product %}}
+    {{% elif 'openeuler' in product or 'kylinserver' in product %}}
     <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)?(?=.*?\bnew_authtok_reqd=done\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=die\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
     {{% else %}}
     <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
@@ -137,7 +137,7 @@
       comment="regex to identify pam_faillock.so entry in account section of pam files">
     {{% if 'debian' in product or 'ubuntu' in product %}}
     <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
-    {{% elif 'openeuler' in product %}}
+    {{% elif 'openeuler' in product or 'kylinserver' in product %}}
     <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>
     {{% else %}}
     <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
