@@ -414,13 +414,62 @@ controls:
     levels:
     - elevated
     description: >-
-      Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
-      message to the control plane. The control plane SHOULD ONLY accept nodes into a cluster
+      (1) Nodes SHOULD send a cryptographically secured (and, if possible, TPM-verified) status
+      message to the control plane. (2) The control plane SHOULD ONLY accept nodes into a cluster
       that have successfully proven their integrity.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      OpenShift Nodes are using Red Hat CoreOS (RHCOS) by default, an immutable operating system.
+      While RHEL is also supported for Compute Nodes, RHCOS is mandatory for Control Plane Nodes and
+      recommended for all nodes. The correct version and configuration of RHCOS is verified
+      cryptographically with the desired state, that is managed by the Control Plane using MachineConfigs.
+      Any manual change on managed files is overwritten to ensure the desired state. Therefore, the
+      control is mostly inheretly met when using CoreOS for all nodes.
+
+      Section 1: OpenShift uses an internal Certificate Authority (CA). The nodes (kubelet to API server
+      and MachineConfig daemon to MachineConfig server) are communicating using node-specific certificates,
+      signed by this CA. Correct permissions of relevant files and secure TLS configuration are verified
+      using the referenced rules. A TPM-verified status is not present with currently built-in mechanisms
+      of OpenShift.
+
+      Section 2: Using the Red Hat File Integrity Operator, all files on the RHCOS nodes can be
+      cryptographically checked for integrity using Advanced Intrusion Detection Environment (AIDE).
+    status: partial
+    rules:
+      # Section 1 (worker / kubelet)
+      - file_groupowner_kubelet_conf
+      - file_groupowner_worker_ca
+      - file_groupowner_worker_kubeconfig
+      - file_groupowner_worker_service
+      - file_owner_kubelet
+      - file_owner_kubelet_conf
+      - file_owner_worker_ca
+      - file_owner_worker_kubeconfig
+      - file_owner_worker_service
+      - file_permissions_kubelet
+      - file_permissions_kubelet_conf
+      - file_permissions_worker_ca
+      - file_permissions_worker_kubeconfig
+      - file_permissions_worker_service
+      - kubelet_configure_client_ca
+      - kubelet_configure_tls_cert
+      - kubelet_configure_tls_cipher_suites
+      - kubelet_configure_tls_key
+      - kubelet_configure_tls_min_version
+      # Section 1 (API Server)
+      - api_server_client_ca
+      - api_server_kubelet_client_cert
+      - api_server_kubelet_client_key
+      - api_server_https_for_kubelet_conn
+      - api_server_tls_cert
+      - api_server_tls_cipher_suites
+      - api_server_tls_private_key
+      - api_server_tls_security_profile_not_old
+      - tls_version_check_apiserver
+      # Section 2
+      - cluster_version_operator_exists
+      - cluster_version_operator_verify_integrity
+      - file_integrity_exists
+      - file_integrity_notification_enabled
 
   - id: APP.4.4.A18
     title: Use of Micro-Segmentation
