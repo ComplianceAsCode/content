@@ -5,7 +5,7 @@ on:
   push:
     branches: ['*', '!stabilization*', '!stable*', '!master' ]
   pull_request:
-    branches: [ 'master', 'stabilization*' ]
+    branches: [ 'master', 'stabilization*', 'oscal-update-*' ]
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
