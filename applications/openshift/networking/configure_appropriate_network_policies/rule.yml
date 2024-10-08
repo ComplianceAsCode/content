@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Ensure Appropriate Network Policies are Configured'
+
+description: |-
+  Configure Network Policies in any application namespace in an appropriate way, so that
+  only the required communications are allowed. The Network Policies should precisely define
+  source and target using label selectors and ports.
+
+rationale: |-
+  By default, all pod to pod traffic within a cluster is allowed. Network
+  Policy creates a pod- level firewall that can be used to restrict traffic
+  between sources. Pod traffic is restricted by having a Network Policy that
+  selects it (through the use of labels). Once there is any Network Policy in a
+  namespace selecting a particular pod, that pod will reject any connections
+  that are not allowed by any Network Policy. Other pods in the namespace that
+  are not selected by any Network Policy will continue to accept all traffic.
+
+  Implementing Kubernetes Network Policies with minimal allowed communication enhances security
+  by reducing entry points and limiting attacker movement within the cluster. It ensures pods and
+  services communicate only with necessary entities, reducing unauthorized access risks. In case
+  of a breach, these policies contain compromised pods, preventing widespread malicious activity.
+  Additionally, they enhance monitoring and detection of anomalous network activities.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-89537-5
+
+ocil_clause: 'Network Policies need to be evaluated if they are appropriate'
+
+ocil: |-
+    For each non-default namespace in the cluster, review the configured Network Policies
+    and ensure that they only allow the necessary network connections. They should
+    precisely define source and target using label selectors and ports.
+
+    1. Get a list of existing projects(namespaces), exclude default, kube-*, openshift-*
+    <pre>$ oc get namespaces -ojson | jq -r '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default" and ({{if ne .var_network_policies_namespaces_exempt_regex "None"}}.metadata.name | test("{{.var_network_policies_namespaces_exempt_regex}}") | not{{else}}true{{end}})) | .metadata.name]'</pre>
+
+    Namespaces matching the variable <tt>ocp4-var-network-policies-namespaces-exempt-regex</tt> regex are excluded from this check.
+
+    2. For each of these namespaces, review the network policies:
+    <pre>$ oc get networkpolicies -n $namespace -o yaml</pre>
