@@ -92,10 +92,10 @@ def parse_args():
             "Although more low level platforms such as packages or container/machine "
             "CPE are still applicable.")
     common_parser.add_argument(
-            "--remove-machine-only",
+            "--make-applicable-in-containers",
             default=False,
             action="store_true",
-            help="Removes machine-only platform constraint from rules "
+            help="Removes platform constraints from rules "
             "to enable testing these rules on container backends.")
     common_parser.add_argument(
             "--remove-ocp4-only",
@@ -501,9 +501,8 @@ def main():
         with xml_operations.datastream_root(stashed_datastream, stashed_datastream) as root:
             if options.remove_platforms:
                 xml_operations.remove_platforms(root)
-            if options.remove_machine_only:
-                xml_operations.remove_machine_platform(root)
-                xml_operations.remove_machine_remediation_condition(root)
+            if options.make_applicable_in_containers:
+                xml_operations.make_applicable_in_containers(root)
             if options.remove_ocp4_only:
                 xml_operations.remove_ocp4_platforms(root)
             if options.add_platform:

@@ -107,11 +107,18 @@ def instance_in_platforms(inst, platforms):
         (hasattr(platforms, "__iter__") and inst.get("idref") in platforms)
 
 
+def make_applicable_in_containers(root):
+    remove_machine_platform(root)
+    remove_machine_remediation_condition(root)
+
+
 def remove_machine_platform(root):
     remove_platforms_from_element(root, "xccdf-1.2:Rule", "cpe:/a:machine")
     remove_platforms_from_element(root, "xccdf-1.2:Group", "cpe:/a:machine")
     remove_platforms_from_element(root, "xccdf-1.2:Rule", "#machine")
     remove_platforms_from_element(root, "xccdf-1.2:Group", "#machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Rule", "#system_with_kernel")
+    remove_platforms_from_element(root, "xccdf-1.2:Group", "#system_with_kernel")
 
 
 def remove_platforms(root):
@@ -141,6 +148,7 @@ def remove_bash_machine_remediation_condition(root):
     system = "urn:xccdf:fix:script:sh"
     considered_machine_platform_checks = [
         r"\[\s+!\s+-f\s+/\.dockerenv\s+\]\s+&&\s+\[\s+!\s+-f\s+/run/\.containerenv\s+\]",
+        r"rpm\s+--quiet\s+-q\s+kernel"
     ]
     repl = "true"
     _replace_in_fix(root, system, considered_machine_platform_checks, repl)
@@ -150,6 +158,7 @@ def remove_ansible_machine_remediation_condition(root):
     system = "urn:xccdf:fix:script:ansible"
     considered_machine_platform_checks = [
         r"\bansible_virtualization_type\s+not\s+in.*docker.*",
+        r"\"kernel\"\s+in\s+ansible_facts.packages"
     ]
     repl = "True"
     _replace_in_fix(root, system, considered_machine_platform_checks, repl)

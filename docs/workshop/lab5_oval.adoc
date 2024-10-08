@@ -275,7 +275,7 @@ With that in mind, execute the test suite:
             --docker {container_name} \
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
@@ -431,7 +431,7 @@ TIP: You can use the `Up` arrow key to browse the command history so you do not 
             --docker {container_name} \
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
@@ -571,7 +571,7 @@ This way, you do not have to worry about possibly introducing those link:https:/
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
             --docker {container_name} \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
@@ -654,7 +654,7 @@ fi
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
             --docker {container_name} \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
@@ -703,7 +703,7 @@ This time, when rebuilt and executed again, the tests pass:
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
             --docker {container_name} \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
@@ -755,7 +755,7 @@ Execute the test suite again and expect the `ERROR - Script correct_value.pass.s
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
             --docker {container_name} \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
@@ -802,7 +802,7 @@ The non-capturing group that consists of `export` followed by at least one white
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
             --docker {container_name} \
             --remediate-using bash \
-            --remove-machine-only \
+            --make-applicable-in-containers \
             --remove-platforms \
             accounts_tmout
 ----
