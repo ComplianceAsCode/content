@@ -18,3 +18,5 @@ ocil_clause: 'Network separation needs review'
 
 ocil: |-
     Create separate Ingress Controllers for the API and your Applications. Also setup your environment in a way, that Control Plane Nodes are in another network than your worker nodes. If you implement multiple Nodes for different purposes evaluate if these should be in different network segments (i.e. Infra-Nodes, Storage-Nodes, ...).
+    Also evaluate how you handle outgoing connections and if they have to be pinned to
+    specific nodes or IPs.
