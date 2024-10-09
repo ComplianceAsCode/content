@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Ensure rsyslog is Installed'
+
+description: 'Rsyslog is installed by default'
+
+rationale: |-
+    The rsyslog package provides the rsyslog daemon, which provides
+    system logging services.
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: rsyslog
