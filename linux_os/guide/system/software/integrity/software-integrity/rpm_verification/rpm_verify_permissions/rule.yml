@@ -16,7 +16,7 @@ description: |-
     <pre>$ rpm -qf <i>FILENAME</i></pre>
     <br />
     Next, run the following command to reset its permissions to the correct values:
-    <pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>
+    <pre>$ sudo rpm --restore <i>PACKAGENAME</i></pre>
 
 rationale: |-
     Permissions on system binaries and configuration files that are too generous could allow an
@@ -66,7 +66,8 @@ fixtext: |-
 
     Reset the permissions of files within a package with the following command:
 
-    $ sudo rpm --setperms [package]
+    $ sudo rpm --restore [package]
+
 
 srg_requirement: '{{{ full_name }}} must be configured so that the file permissions of system files and commands match the vendor values.'
 
