@@ -350,7 +350,7 @@ class Policy(ssg.entities.common.XCCDFEntity):
         self.source = yaml_contents.get("source", "")
         self.reference_type = yaml_contents.get("reference_type", None)
         yaml_product = yaml_contents.get("product", None)
-        if type(yaml_product) is list:
+        if isinstance(yaml_product, list):
             self.product = yaml_product
         elif yaml_product is not None:
             self.product = [yaml_product]
