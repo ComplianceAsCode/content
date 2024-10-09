@@ -19,8 +19,14 @@ fi
 
 if [ "$APPARMOR_MODE" = "complain" ]
 then
+  {{% if 'ubuntu' in product %}}
+  # Load all not-loaded profiles into complain mode
+  apparmor_parser -a --Complain /etc/apparmor.d/
+  echo "***WARNING***: This remediation will not downgrade any existing AppArmor profiles."
+  {{% else %}}
   # Set all profiles to complain mode
   aa-complain /etc/apparmor.d/*
+  {{% endif %}}
 fi
 
 {{% if 'ubuntu' in product %}}
