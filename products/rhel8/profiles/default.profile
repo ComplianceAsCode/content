@@ -710,3 +710,5 @@ selections:
     - sebool_cluster_manage_all_files
     - iptables_rules_for_open_ports
     - dovecot_configure_ssl_key
+    - banner_etc_motd
+    - banner_etc_issue_net

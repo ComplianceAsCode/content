@@ -1282,3 +1282,19 @@ oc describe rolebinding.rbac
 If these results show users with privileged access that do not require that access, this is a finding.
 {{%- endmacro %}}
 
+{{#
+OCIL macro to check CIS requirements on command line warning banners.
+The macro provides both check and clause.
+
+:param filepath: filepath to be checked
+:type filepath: str
+#}}
+
+{{%- macro ocil_cis_banner(filepath) -%}}
+ocil_clause: any results are returned
+
+ocil: |-
+    Run the following command and verify no results are returned:
+
+    $ grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" {{{ filepath }}}
+{{%- endmacro %}}
