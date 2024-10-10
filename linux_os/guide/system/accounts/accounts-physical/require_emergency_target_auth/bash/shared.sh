@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'rhel' in product %}}
 service_dropin_cfg_dir="/etc/systemd/system/emergency.service.d"
 service_dropin_file="${service_dropin_cfg_dir}/10-oscap.conf"
 {{% else %}}
