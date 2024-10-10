@@ -13,7 +13,7 @@ rationale: |-
   OpenShift Logging Operator is able to collect, aggregate, and manage logs.
 
 identifiers:
-  cce@ocp4: CCE-85918-1
+  cce@ocp4: CCE-86639-2
 
 references:
   nist: AU-3(2)
@@ -25,14 +25,23 @@ ocil: |-
     Run the following command to retrieve the clusterlogforwarder objects in the system:
     <pre>$ oc get clusterlogforwarder --all-namespaces</pre>
     Make sure the OpenShift Logging Operator is installed and there exists
-    at least one active clusterlogforwarder object in the cluster.
+    at least one active clusterlogforwarderobject in the cluster.
 
 severity: medium
 
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting([
-      "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterloggings/instance",
-      "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders",
-    ]) | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders
+    yamlpath: ".items[].metadata.name"
+    entity_check: "at least one"
+    values:
+      - value: ".*"
+        operation: "pattern match"
+

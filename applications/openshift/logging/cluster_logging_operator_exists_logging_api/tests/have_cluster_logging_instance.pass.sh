@@ -5,9 +5,9 @@ yum install -y jq
 
 kube_apipath="/kubernetes-api-resources"
 
-mkdir -p "$kube_apipath/apis/observability.openshift.io/v1/namespaces/openshift-logging/"
+mkdir -p "$kube_apipath/apis/logging.openshift.io/v1/namespaces/openshift-logging/"
 
-routes_apipath="/apis/observability.openshift.io/v1/namespaces/openshift-logging/instance"
+routes_apipath="/apis/logging.openshift.io/v1/namespaces/openshift-logging/instance"
 
 cat <<EOF > "$kube_apipath$routes_apipath"
 {

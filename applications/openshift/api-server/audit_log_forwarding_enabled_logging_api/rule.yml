@@ -17,7 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-  cce@ocp4: CCE-84076-9
+  cce@ocp4: CCE-86258-1
 
 references:
   cis@ocp4: 1.2.21
@@ -38,4 +38,15 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting(["/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders", "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance"], true) | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance", true) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
+    yamlpath: ".spec.pipelines[:].inputRefs[:]"
+    entity_check: "at least one"
+    values:
+    - value: "audit"
+      entity_check: "at least one"
