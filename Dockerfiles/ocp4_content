@@ -35,6 +35,11 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
         # by these profiles in the data stream without creating a profile for them.
         grep -lr 'documentation_complete: false' ./products | xargs -I '{}' \
         sed -i -e 's/\(documentation_complete: \).*/\1true/' -e '/documentation_complete/a hidden: true' {}; \
+    fi && \
+    # STIG profiles for Power
+    if [ "$(uname -m)" = "ppc64le" ]; then \
+        find products/rhcos4 -name "*stig*.profile" -exec sed -i 's/\(documentation_complete: \).*/\1true/' '{}' \; && \
+        find products/ocp4 -name "*stig*.profile" -exec sed -i 's/\(documentation_complete: \).*/\1true/' '{}' \; \
     fi
 
 # Build the OpenShift, EKS, and RHCOS content for x86 architectures. Only build
