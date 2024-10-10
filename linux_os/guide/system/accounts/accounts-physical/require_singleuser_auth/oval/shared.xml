@@ -5,16 +5,16 @@
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
       test_ref="test_require_rescue_service" />
-      {{%- if product not in ["ol8", "rhel8"] -%}}
+      {{%- if product not in ["ol8"] and 'rhel' not in product  -%}}
       <criterion test_ref="test_require_rescue_service_runlevel1" />
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
-      <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
+            <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
       {{%- endif -%}}
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "rhcos4", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhcos4", "sle12", "sle15"] or 'rhel' in product -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -25,8 +25,13 @@
     <ind:object object_ref="obj_require_rescue_service" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_rescue_service" version="1">
+    {{%- if 'rhel' in product -%}}
+    <ind:path>/etc/systemd/system/rescue.service.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{%- else -%}}
     <ind:filepath>/usr/lib/systemd/system/rescue.service</ind:filepath>
-    {{%- if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "rhcos4", "sle12", "sle15"] -%}}
+    {{%- endif -%}}
+    {{%- if product in ["fedora", "ol8", "ol9", "rhcos4", "sle12", "sle15"] or 'rhel' in product -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:pattern>
     {{%- else -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>
@@ -34,7 +39,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{%- if product not in ["ol8", "rhel8"] -%}}
+  {{%- if product not in ["ol8"] and 'rhel' not in product -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that the systemd rescue.service is in the runlevel1.target"
     id="test_require_rescue_service_runlevel1" version="1">
