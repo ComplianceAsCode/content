@@ -1,0 +1,13 @@
+# platform = multi_platform_slmicro
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_journal_upload_url") }}}
+
+- name: Set URL in /etc/systemd/journal-upload.conf
+  lineinfile:
+      dest: /etc/systemd/journal-upload.conf
+      regexp: "^#?URL="
+      line: URL={{ var_journal_upload_url }}
+      create: yes

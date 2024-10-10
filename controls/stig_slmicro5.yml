@@ -17,14 +17,14 @@ controls:
       rules:
           - installed_OS_is_vendor_supported
       status: automated
-    
+
     - id: SLEM-05-211015
       levels:
           - medium
       title: SLEM 5 must implement an endpoint security tool.
       rules: []
       status: pending
-    
+
     - id: SLEM-05-211020
       levels:
           - medium
@@ -35,15 +35,15 @@ controls:
           - banner_etc_issue
           - login_banner_text=dod_banners
       status: automated
-    
+
     - id: SLEM-05-211025
       levels:
           - high
       title: SLEM 5 must disable the x86 Ctrl-Alt-Delete key sequence.
-      rules: 
+      rules:
           - disable_ctrlaltdel_reboot
       status: automated
-    
+
     - id: SLEM-05-212010
       levels:
           - high
@@ -53,7 +53,7 @@ controls:
       rules:
           - grub2_password
       status: automated
-    
+
     - id: SLEM-05-212015
       levels:
           - high
@@ -63,7 +63,7 @@ controls:
       rules:
           - grub2_uefi_password
       status: automated
-    
+
     - id: SLEM-05-213010
       levels:
           - medium
@@ -71,15 +71,15 @@ controls:
       rules:
           - sysctl_kernel_dmesg_restrict
       status: automated
-    
+
     - id: SLEM-05-213015
       levels:
           - medium
       title: SLEM 5 kernel core dumps must be disabled unless needed.
-      rules: 
+      rules:
           - service_kdump_disabled
       status: automated
-    
+
     - id: SLEM-05-213020
       levels:
           - medium
@@ -89,7 +89,7 @@ controls:
       rules:
           - sysctl_kernel_randomize_va_space
       status: automated
-    
+
     - id: SLEM-05-213025
       levels:
           - medium
@@ -99,7 +99,7 @@ controls:
       rules:
           - sysctl_kernel_kptr_restrict
       status: automated
-    
+
     - id: SLEM-05-214010
       levels:
           - medium
@@ -108,7 +108,7 @@ controls:
           up to date.
       rules: []
       status: pending
-    
+
     - id: SLEM-05-214015
       levels:
           - high
@@ -116,7 +116,7 @@ controls:
       rules:
           - ensure_gpgcheck_globally_activated
       status: automated
-    
+
     - id: SLEM-05-214020
       levels:
           - medium
@@ -126,7 +126,7 @@ controls:
       rules:
           - clean_components_post_updating
       status: automated
-    
+
     - id: SLEM-05-215010
       levels:
           - medium
@@ -134,7 +134,7 @@ controls:
       rules:
           - vlock_installed
       status: automated
-    
+
     - id: SLEM-05-215015
       levels:
           - high
@@ -142,7 +142,7 @@ controls:
       rules:
           - package_telnet-server_removed
       status: automated
-    
+
     - id: SLEM-05-231010
       levels:
           - medium
@@ -152,7 +152,7 @@ controls:
       rules:
           - partition_for_home
       status: automated
-    
+
     - id: SLEM-05-231015
       levels:
           - medium
@@ -160,7 +160,7 @@ controls:
       rules:
           - partition_for_var
       status: automated
-    
+
     - id: SLEM-05-231020
       levels:
           - medium
@@ -168,7 +168,7 @@ controls:
       rules:
           - partition_for_var_log_audit
       status: automated
-    
+
     - id: SLEM-05-231025
       levels:
           - medium
@@ -179,7 +179,7 @@ controls:
       rules:
           - mount_option_nosuid_remote_filesystems
       status: automated
-    
+
     - id: SLEM-05-231030
       levels:
           - medium
@@ -189,7 +189,7 @@ controls:
       rules:
           - mount_option_noexec_remote_filesystems
       status: automated
-    
+
     - id: SLEM-05-231035
       levels:
           - medium
@@ -199,7 +199,7 @@ controls:
       rules:
           - mount_option_nosuid_removable_partitions
       status: automated
-    
+
     - id: SLEM-05-231040
       levels:
           - high
@@ -207,10 +207,10 @@ controls:
           All SLEM 5 persistent disk partitions must implement cryptographic mechanisms
           to prevent unauthorized disclosure or modification of all information that requires
           at-rest protection.
-      rules: 
+      rules:
           - encrypt_partitions
       status: automated
-    
+
     - id: SLEM-05-231045
       levels:
           - medium
@@ -220,15 +220,15 @@ controls:
       rules:
           - mount_option_home_nosuid
       status: automated
-    
+
     - id: SLEM-05-231050
       levels:
           - medium
       title: SLEM 5 must disable the file system automounter unless required.
-      rules: 
+      rules:
           - service_autofs_disabled
       status: automated
-    
+
     - id: SLEM-05-232010
       levels:
           - medium
@@ -238,7 +238,7 @@ controls:
       rules:
           - dir_permissions_binary_dirs
       status: automated
-    
+
     - id: SLEM-05-232015
       levels:
           - medium
@@ -246,7 +246,7 @@ controls:
       rules:
           - file_permissions_binary_dirs
       status: automated
-    
+
     - id: SLEM-05-232020
       levels:
           - medium
@@ -254,7 +254,7 @@ controls:
       rules:
           - dir_permissions_library_dirs
       status: automated
-    
+
     - id: SLEM-05-232025
       levels:
           - medium
@@ -262,25 +262,25 @@ controls:
       rules:
           - file_permissions_library_dirs
       status: automated
-    
+
     - id: SLEM-05-232030
       levels:
           - medium
       title:
           All SLEM 5 local interactive user home directories must have mode 750 or
           less permissive.
-      rules: 
+      rules:
           - file_permissions_home_directories
       status: automated
-    
+
     - id: SLEM-05-232035
       levels:
           - medium
       title: All SLEM 5 local initialization files must have mode 740 or less permissive.
-      rules: 
+      rules:
           - file_permission_user_init_files
       status: automated
-    
+
     - id: SLEM-05-232040
       levels:
           - medium
@@ -288,7 +288,7 @@ controls:
       rules:
           - file_permissions_sshd_pub_key
       status: automated
-    
+
     - id: SLEM-05-232045
       levels:
           - medium
@@ -296,7 +296,7 @@ controls:
       rules:
           - file_permissions_sshd_private_key
       status: automated
-    
+
     - id: SLEM-05-232050
       levels:
           - medium
@@ -304,7 +304,7 @@ controls:
       rules:
           - file_ownership_library_dirs
       status: automated
-    
+
     - id: SLEM-05-232055
       levels:
           - medium
@@ -312,7 +312,7 @@ controls:
       rules:
           - root_permissions_syslibrary_files
       status: automated
-    
+
     - id: SLEM-05-232060
       levels:
           - medium
@@ -320,7 +320,7 @@ controls:
       rules:
         - dir_ownership_library_dirs
       status: automated
-    
+
     - id: SLEM-05-232065
       levels:
           - medium
@@ -328,7 +328,7 @@ controls:
       rules:
           - dir_group_ownership_library_dirs
       status: automated
-    
+
     - id: SLEM-05-232070
       levels:
           - medium
@@ -336,7 +336,7 @@ controls:
       rules:
           - file_ownership_binary_dirs
       status: automated
-    
+
     - id: SLEM-05-232075
       levels:
           - medium
@@ -344,7 +344,7 @@ controls:
       rules:
           - file_groupownership_system_commands_dirs
       status: automated
-    
+
     - id: SLEM-05-232080
       levels:
           - medium
@@ -352,7 +352,7 @@ controls:
       rules:
           - dir_system_commands_root_owned
       status: automated
-    
+
     - id: SLEM-05-232085
       levels:
           - medium
@@ -362,7 +362,7 @@ controls:
       rules:
           - dir_system_commands_group_root_owned
       status: automated
-    
+
     - id: SLEM-05-232090
       levels:
           - medium
@@ -370,7 +370,7 @@ controls:
       rules:
           - no_files_unowned_by_user
       status: automated
-    
+
     - id: SLEM-05-232095
       levels:
           - medium
@@ -378,17 +378,17 @@ controls:
       rules:
           - file_permissions_ungroupowned
       status: automated
-    
+
     - id: SLEM-05-232100
       levels:
           - medium
       title:
           All SLEM 5 local interactive user home directories must be group-owned by
           the home directory owner's primary group.
-      rules: 
+      rules:
           - file_groupownership_home_directories
       status: automated
-    
+
     - id: SLEM-05-232105
       levels:
           - medium
@@ -398,7 +398,7 @@ controls:
       rules:
           - dir_perms_world_writable_system_owned_group
       status: automated
-    
+
     - id: SLEM-05-232110
       levels:
           - medium
@@ -406,7 +406,7 @@ controls:
       rules:
           - dir_perms_world_writable_sticky_bits
       status: automated
-    
+
     - id: SLEM-05-232115
       levels:
           - medium
@@ -414,7 +414,7 @@ controls:
       rules:
           - file_permissions_local_var_log_messages
       status: automated
-    
+
     - id: SLEM-05-232120
       levels:
           - medium
@@ -424,7 +424,7 @@ controls:
       rules:
           - permissions_local_var_log
       status: automated
-    
+
     - id: SLEM-05-251010
       levels:
           - medium
@@ -432,10 +432,10 @@ controls:
           SLEM 5 must be configured to prohibit or restrict the use of functions, ports,
           protocols, and/or services as defined in the Ports, Protocols, and Services Management
           (PPSM) Category Assignments List (CAL) and vulnerability assessments.
-      rules: 
+      rules:
           - service_firewalld_enabled
       status: automated
-    
+
     - id: SLEM-05-252010
       levels:
           - medium
@@ -444,7 +444,7 @@ controls:
           DOD time source at least every 24 hours.
       rules: []
       status: pending
-    
+
     - id: SLEM-05-252015
       levels:
           - medium
@@ -454,7 +454,7 @@ controls:
       rules:
           - network_sniffer_disabled
       status: automated
-    
+
     - id: SLEM-05-253010
       levels:
           - medium
@@ -464,7 +464,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_accept_source_route
       status: automated
-    
+
     - id: SLEM-05-253015
       levels:
           - medium
@@ -474,7 +474,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_default_accept_source_route
       status: automated
-    
+
     - id: SLEM-05-253020
       levels:
           - medium
@@ -484,7 +484,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_accept_redirects
       status: automated
-    
+
     - id: SLEM-05-253025
       levels:
           - medium
@@ -494,7 +494,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_default_accept_redirects
       status: automated
-    
+
     - id: SLEM-05-253030
       levels:
           - medium
@@ -504,7 +504,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_all_send_redirects
       status: automated
-    
+
     - id: SLEM-05-253035
       levels:
           - medium
@@ -514,7 +514,7 @@ controls:
       rules:
           - sysctl_net_ipv4_conf_default_send_redirects
       status: automated
-    
+
     - id: SLEM-05-253040
       levels:
           - medium
@@ -524,7 +524,7 @@ controls:
       rules:
           - sysctl_net_ipv4_ip_forward
       status: automated
-    
+
     - id: SLEM-05-253045
       levels:
           - medium
@@ -532,7 +532,7 @@ controls:
       rules:
           - sysctl_net_ipv4_tcp_syncookies
       status: automated
-    
+
     - id: SLEM-05-254010
       levels:
           - medium
@@ -542,7 +542,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_accept_source_route
       status: automated
-    
+
     - id: SLEM-05-254015
       levels:
           - medium
@@ -552,7 +552,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_default_accept_source_route
       status: automated
-    
+
     - id: SLEM-05-254020
       levels:
           - medium
@@ -562,7 +562,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_accept_redirects
       status: automated
-    
+
     - id: SLEM-05-254025
       levels:
           - medium
@@ -572,7 +572,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_default_accept_redirects
       status: automated
-    
+
     - id: SLEM-05-254030
       levels:
           - medium
@@ -582,7 +582,7 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_all_forwarding
       status: automated
-    
+
     - id: SLEM-05-254035
       levels:
           - medium
@@ -592,27 +592,27 @@ controls:
       rules:
           - sysctl_net_ipv6_conf_default_forwarding
       status: automated
-    
+
     - id: SLEM-05-255010
       levels:
           - high
       title:
           SLEM 5 must have SSH installed to protect the confidentiality and integrity
           of transmitted information.
-      rules: 
+      rules:
           - package_openssh-server_installed
       status: automated
-    
+
     - id: SLEM-05-255015
       levels:
           - high
       title:
           SLEM 5 must use SSH to protect the confidentiality and integrity of transmitted
           information.
-      rules: 
+      rules:
           - service_sshd_enabled
       status: automated
-    
+
     - id: SLEM-05-255020
       levels:
           - medium
@@ -622,7 +622,7 @@ controls:
       rules:
           - sshd_enable_warning_banner
       status: automated
-    
+
     - id: SLEM-05-255025
       levels:
           - high
@@ -631,7 +631,7 @@ controls:
           - sshd_disable_empty_passwords
           - sshd_do_not_permit_user_env
       status: automated
-    
+
     - id: SLEM-05-255030
       levels:
           - medium
@@ -642,7 +642,7 @@ controls:
           - sshd_set_keepalive
           - var_sshd_set_keepalive=1
       status: automated
-    
+
     - id: SLEM-05-255035
       levels:
           - medium
@@ -653,7 +653,7 @@ controls:
           - sshd_set_idle_timeout
           - sshd_idle_timeout_value=10_minutes
       status: automated
-    
+
     - id: SLEM-05-255040
       levels:
           - medium
@@ -663,7 +663,7 @@ controls:
       rules:
           - sshd_disable_x11_forwarding
       status: automated
-    
+
     - id: SLEM-05-255045
       levels:
           - high
@@ -674,7 +674,7 @@ controls:
           - sshd_use_approved_ciphers_ordered_stig
           - sshd_use_approved_ciphers
       status: automated
-    
+
     - id: SLEM-05-255050
       levels:
           - high
@@ -685,7 +685,7 @@ controls:
           - sshd_use_approved_macs_ordered_stig
           - sshd_use_approved_macs
       status: automated
-    
+
     - id: SLEM-05-255055
       levels:
           - high
@@ -695,7 +695,7 @@ controls:
       rules:
           - sshd_use_approved_kex_ordered_stig
       status: automated
-    
+
     - id: SLEM-05-255060
       levels:
           - medium
@@ -705,7 +705,7 @@ controls:
       rules:
           - sshd_disable_root_login
       status: automated
-    
+
     - id: SLEM-05-255065
       levels:
           - medium
@@ -713,7 +713,7 @@ controls:
       rules:
           - sshd_set_loglevel_verbose
       status: automated
-    
+
     - id: SLEM-05-255070
       levels:
           - medium
@@ -723,7 +723,7 @@ controls:
       rules:
           - sshd_print_last_log
       status: automated
-    
+
     - id: SLEM-05-255075
       levels:
           - medium
@@ -733,7 +733,7 @@ controls:
       rules:
           - sshd_disable_user_known_hosts
       status: automated
-    
+
     - id: SLEM-05-255080
       levels:
           - medium
@@ -743,7 +743,7 @@ controls:
       rules:
           - sshd_enable_strictmodes
       status: automated
-    
+
     - id: SLEM-05-255085
       levels:
           - medium
@@ -758,18 +758,18 @@ controls:
       levels:
           - high
       title: There must be no .shosts files on SLEM 5.
-      rules: 
+      rules:
           - no_user_host_based_files
       status: automated
-    
+
     - id: SLEM-05-255095
       levels:
           - high
       title: There must be no shosts.equiv files on SLEM 5.
-      rules: 
-          - no_host_based_files  
+      rules:
+          - no_host_based_files
       status: automated
-    
+
     - id: SLEM-05-272010
       levels:
           - high
@@ -779,7 +779,7 @@ controls:
       rules:
           - gnome_gdm_disable_unattended_automatic_login
       status: automated
-    
+
     - id: SLEM-05-291010
       levels:
           - medium
@@ -787,7 +787,7 @@ controls:
       rules:
           - wireless_disable_interfaces
       status: automated
-    
+
     - id: SLEM-05-291015
       levels:
           - medium
@@ -795,17 +795,17 @@ controls:
       rules:
           - kernel_module_usb-storage_disabled
       status: automated
-    
+
     - id: SLEM-05-411010
       levels:
           - medium
       title:
           All SLEM 5 local interactive user accounts, upon creation, must be assigned
           a home directory.
-      rules: 
+      rules:
           - accounts_have_homedir_login_defs
       status: automated
-    
+
     - id: SLEM-05-411015
       levels:
           - medium
@@ -815,7 +815,7 @@ controls:
       rules:
           - accounts_umask_etc_login_defs
       status: automated
-    
+
     - id: SLEM-05-411020
       levels:
           - medium
@@ -826,27 +826,27 @@ controls:
         - accounts_logon_fail_delay
         - var_accounts_fail_delay=5
       status: automated
-    
+
     - id: SLEM-05-411025
       levels:
           - medium
       title:
           All SLEM 5 local interactive users must have a home directory assigned in
           the /etc/passwd file.
-      rules: 
+      rules:
           - accounts_user_interactive_home_directory_defined
       status: automated
-    
+
     - id: SLEM-05-411030
       levels:
           - medium
       title:
           All SLEM 5 local interactive user home directories defined in the /etc/passwd
           file must exist.
-      rules: 
+      rules:
           - accounts_user_interactive_home_directory_exists
       status: automated
-    
+
     - id: SLEM-05-411035
       levels:
           - medium
@@ -856,7 +856,7 @@ controls:
       rules:
           - accounts_user_home_paths_only
       status: automated
-    
+
     - id: SLEM-05-411040
       levels:
           - medium
@@ -864,7 +864,7 @@ controls:
       rules:
           - accounts_user_dot_no_world_writable_programs
       status: automated
-    
+
     - id: SLEM-05-411045
       levels:
           - medium
@@ -872,7 +872,7 @@ controls:
       rules:
           - account_temp_expire_date
       status: automated
-    
+
     - id: SLEM-05-411050
       levels:
           - medium
@@ -882,7 +882,7 @@ controls:
       rules:
           - account_emergency_admin
       status: automated
-    
+
     - id: SLEM-05-411055
       levels:
           - medium
@@ -891,7 +891,7 @@ controls:
           - accounts_authorized_local_users
           - var_accounts_authorized_local_users_regex=slmicro5
       status: automated
-    
+
     - id: SLEM-05-411060
       levels:
           - medium
@@ -899,7 +899,7 @@ controls:
       rules:
           - no_shelllogin_for_systemaccounts
       status: automated
-    
+
     - id: SLEM-05-411065
       levels:
           - high
@@ -909,7 +909,7 @@ controls:
       rules:
           - accounts_no_uid_except_zero
       status: automated
-    
+
     - id: SLEM-05-411070
       levels:
           - medium
@@ -919,7 +919,7 @@ controls:
       rules:
           - account_disable_post_pw_expiration
       status: automated
-    
+
     - id: SLEM-05-411075
       levels:
           - medium
@@ -927,7 +927,7 @@ controls:
       rules:
           - account_unique_id
       status: automated
-    
+
     - id: SLEM-05-412010
       levels:
           - medium
@@ -937,14 +937,14 @@ controls:
       rules:
           - display_login_attempts
       status: automated
-    
+
     - id: SLEM-05-412015
       levels:
           - medium
       title: SLEM 5 must initiate a session lock after a 15-minute period of inactivity.
       rules: []
       status: pending
-    
+
     - id: SLEM-05-412020
       levels:
           - medium
@@ -953,7 +953,7 @@ controls:
           - accounts_passwords_pam_tally2
           - var_password_pam_tally2=3
       status: automated
-    
+
     - id: SLEM-05-412025
       levels:
           - medium
@@ -964,16 +964,16 @@ controls:
         - accounts_passwords_pam_faildelay_delay
         - var_password_pam_delay=4000000
       status: automated
-  
+
     - id: SLEM-05-412030
       levels:
           - medium
       title: SLEM 5 must use the default pam_tally2 tally directory.
-      rules: 
+      rules:
         - accounts_passwords_pam_tally2_file
         - accounts_passwords_pam_tally2_file_selinux
       status: automated
-    
+
     - id: SLEM-05-412035
       levels:
           - low
@@ -984,7 +984,7 @@ controls:
           - accounts_max_concurrent_login_sessions
           - var_accounts_max_concurrent_login_sessions=10
       status: automated
-    
+
     - id: SLEM-05-431010
       levels:
           - low
@@ -992,7 +992,7 @@ controls:
       rules:
         - package_policycoreutils_installed
       status: automated
-    
+
     - id: SLEM-05-431015
       levels:
           - high
@@ -1003,7 +1003,7 @@ controls:
         - selinux_state
         - var_selinux_state=enforcing
       status: automated
-    
+
     - id: SLEM-05-431020
       levels:
           - medium
@@ -1012,7 +1012,7 @@ controls:
         - selinux_policytype
         - var_selinux_policy_name=targeted
       status: automated
-    
+
     - id: SLEM-05-431025
       levels:
           - medium
@@ -1032,7 +1032,7 @@ controls:
       rules:
           - sudoers_validate_passwd
       status: automated
-    
+
     - id: SLEM-05-432015
       levels:
           - medium
@@ -1044,7 +1044,7 @@ controls:
           - sudo_remove_nopasswd
           - sudo_remove_no_authenticate
       status: automated
-    
+
     - id: SLEM-05-432020
       levels:
           - medium
@@ -1052,7 +1052,7 @@ controls:
       rules:
           - sudo_require_reauthentication
       status: automated
-    
+
     - id: SLEM-05-432025
       levels:
           - medium
@@ -1060,7 +1060,7 @@ controls:
       rules:
           - sudo_restrict_privilege_elevation_to_authorized
       status: automated
-    
+
     - id: SLEM-05-432030
       levels:
           - medium
@@ -1070,39 +1070,39 @@ controls:
       rules:
           - sudoers_default_includedir
       status: automated
-    
+
     - id: SLEM-05-611010
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one uppercase character.
-      rules: 
+      rules:
           - cracklib_accounts_password_pam_ucredit
       status: automated
-    
+
     - id: SLEM-05-611015
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one lowercase character.
-      rules: 
+      rules:
           - cracklib_accounts_password_pam_lcredit
       status: automated
-    
+
     - id: SLEM-05-611020
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one numeric character.
-      rules: 
+      rules:
           - cracklib_accounts_password_pam_dcredit
       status: automated
-    
+
     - id: SLEM-05-611025
       levels:
           - medium
       title: SLEM 5 must enforce passwords that contain at least one special character.
-      rules: 
+      rules:
           - cracklib_accounts_password_pam_ocredit
       status: automated
-    
+
     - id: SLEM-05-611030
       levels:
           - medium
@@ -1111,25 +1111,25 @@ controls:
           - cracklib_accounts_password_pam_retry
           - var_password_pam_retry=3
       status: automated
-    
+
     - id: SLEM-05-611035
       levels:
           - medium
       title: SLEM 5 must employ passwords with a minimum of 15 characters.
-      rules: 
+      rules:
           - cracklib_accounts_password_pam_minlen
       status: automated
-    
+
     - id: SLEM-05-611040
       levels:
           - medium
       title:
           SLEM 5 must require the change of at least eight of the total number of characters
           when passwords are changed.
-      rules: 
+      rules:
           - cracklib_accounts_password_pam_difok
       status: automated
-    
+
     - id: SLEM-05-611045
       levels:
           - medium
@@ -1149,7 +1149,7 @@ controls:
       rules:
           - set_password_hashing_algorithm_systemauth
       status: automated
-    
+
     - id: SLEM-05-611055
       levels:
           - high
@@ -1157,15 +1157,15 @@ controls:
       rules:
           - no_empty_passwords
       status: automated
-    
+
     - id: SLEM-05-611060
       levels:
           - high
       title: SLEM 5 must not have accounts configured with blank or null passwords.
-      rules: 
+      rules:
           - no_empty_passwords_etc_shadow
       status: automated
-    
+
     - id: SLEM-05-611065
       levels:
           - medium
@@ -1176,7 +1176,7 @@ controls:
           - accounts_password_set_min_life_existing
           - var_accounts_minimum_age_login_defs=1
       status: automated
-    
+
     - id: SLEM-05-611070
       levels:
           - medium
@@ -1185,7 +1185,7 @@ controls:
           - accounts_password_set_max_life_existing
           - var_accounts_maximum_age_login_defs=60
       status: automated
-    
+
     - id: SLEM-05-611075
       levels:
           - medium
@@ -1193,7 +1193,7 @@ controls:
       rules:
           - file_etc_security_opasswd
       status: automated
-    
+
     - id: SLEM-05-611080
       levels:
           - high
@@ -1203,7 +1203,7 @@ controls:
       rules:
           - accounts_password_all_shadowed_sha512
       status: automated
-    
+
     - id: SLEM-05-611085
       levels:
           - high
@@ -1213,7 +1213,7 @@ controls:
       rules:
           - set_password_hashing_min_rounds_logindefs
       status: automated
-    
+
     - id: SLEM-05-611090
       levels:
           - medium
@@ -1224,7 +1224,7 @@ controls:
           - set_password_hashing_algorithm_logindefs
           - var_password_hashing_algorithm=SHA512
       status: automated
-    
+
     - id: SLEM-05-611095
       levels:
           - medium
@@ -1234,7 +1234,7 @@ controls:
       rules:
           - accounts_minimum_age_login_defs
       status: automated
-    
+
     - id: SLEM-05-611100
       levels:
           - medium
@@ -1244,7 +1244,7 @@ controls:
       rules:
           - accounts_maximum_age_login_defs
       status: automated
-    
+
     - id: SLEM-05-612010
       levels:
           - medium
@@ -1254,7 +1254,7 @@ controls:
       rules:
           - install_smartcard_packages
       status: automated
-    
+
     - id: SLEM-05-612015
       levels:
           - medium
@@ -1264,7 +1264,7 @@ controls:
       rules:
           - smartcard_pam_enabled
       status: automated
-    
+
     - id: SLEM-05-612020
       levels:
           - medium
@@ -1272,7 +1272,7 @@ controls:
       rules:
           - smartcard_configure_cert_checking
       status: automated
-    
+
     - id: SLEM-05-631010
       levels:
           - medium
@@ -1283,7 +1283,7 @@ controls:
           - sssd_memcache_timeout
           - var_sssd_memcache_timeout=1_day
       status: automated
-    
+
     - id: SLEM-05-631015
       levels:
           - medium
@@ -1293,7 +1293,7 @@ controls:
       rules:
           - sssd_offline_cred_expiration
       status: automated
-    
+
     - id: SLEM-05-631020
       levels:
           - medium
@@ -1304,7 +1304,7 @@ controls:
       rules:
           - smartcard_configure_ca
       status: automated
-    
+
     - id: SLEM-05-631025
       levels:
           - medium
@@ -1314,7 +1314,7 @@ controls:
       rules:
           - pam_disable_automatic_configuration
       status: automated
-    
+
     - id: SLEM-05-651010
       levels:
           - medium
@@ -1325,25 +1325,25 @@ controls:
           - package_aide_installed
           - aide_build_database
       status: automated
-    
+
     - id: SLEM-05-651015
       levels:
           - medium
       title:
           SLEM 5 file integrity tool must be configured to verify Access Control Lists
           (ACLs).
-      rules: 
+      rules:
           - aide_verify_acls
       status: automated
-    
+
     - id: SLEM-05-651020
       levels:
           - medium
       title: SLEM 5 file integrity tool must be configured to verify extended attributes.
-      rules: 
+      rules:
           - aide_verify_ext_attributes
       status: automated
-    
+
     - id: SLEM-05-651025
       levels:
           - medium
@@ -1353,7 +1353,7 @@ controls:
       rules:
           - aide_check_audit_tools
       status: automated
-    
+
     - id: SLEM-05-651030
       levels:
           - medium
@@ -1363,7 +1363,7 @@ controls:
       rules:
           - aide_periodic_checking_systemd_timer
       status: automated
-    
+
     - id: SLEM-05-651035
       levels:
           - medium
@@ -1374,16 +1374,20 @@ controls:
       rules:
           - aide_scan_notification
       status: automated
-    
+
     - id: SLEM-05-652010
       levels:
           - medium
       title:
           SLEM 5 must offload rsyslog messages for networked systems in real time and
           offload standalone systems at least weekly.
-      rules: []
-      status: pending
-    
+      rules:
+          - package_systemd-journal-remote_installed
+          - service_systemd-journal-upload_enabled
+          - systemd_journal_upload_url
+          - systemd_journal_upload_server_tls
+      status: automated
+
     - id: SLEM-05-653010
       levels:
           - medium
@@ -1391,17 +1395,17 @@ controls:
       rules:
           - package_audit_installed
       status: automated
-    
+
     - id: SLEM-05-653015
       levels:
           - medium
       title:
           SLEM 5 audit records must contain information to establish what type of events
           occurred, the source of events, where events occurred, and the outcome of events.
-      rules: 
+      rules:
           - service_auditd_enabled
       status: automated
-    
+
     - id: SLEM-05-653020
       levels:
           - medium
@@ -1409,7 +1413,7 @@ controls:
       rules:
           - package_audit-audispd-plugins_installed
       status: automated
-    
+
     - id: SLEM-05-653025
       levels:
           - medium
@@ -1420,7 +1424,7 @@ controls:
       rules:
         - auditd_audispd_configure_sufficiently_large_partition
       status: automated
-    
+
     - id: SLEM-05-653030
       levels:
           - medium
@@ -1434,7 +1438,7 @@ controls:
           - auditd_data_retention_space_left_action
           - var_auditd_space_left_action=email
       status: automated
-    
+
     - id: SLEM-05-653035
       levels:
           - medium
@@ -1444,33 +1448,33 @@ controls:
       rules:
           - auditd_data_disk_full_action
       status: automated
-    
+
     - id: SLEM-05-653040
       levels:
           - medium
       title:
           SLEM 5 must offload audit records onto a different system or media from the
           system being audited.
-      rules: 
+      rules:
           - auditd_audispd_network_failure_action
       status: automated
-    
+
     - id: SLEM-05-653045
       levels:
           - medium
       title: Audispd must take appropriate action when SLEM 5 audit storage is full.
-      rules: 
+      rules:
           - auditd_audispd_disk_full_action
       status: automated
-    
+
     - id: SLEM-05-653050
       levels:
           - medium
       title: SLEM 5 must protect audit rules from unauthorized modification.
-      rules: 
+      rules:
           - permissions_local_var_log_audit
       status: automated
-    
+
     - id: SLEM-05-653055
       levels:
           - medium
@@ -1480,7 +1484,7 @@ controls:
       rules:
           - permissions_local_audit_binaries
       status: automated
-    
+
     - id: SLEM-05-653060
       levels:
           - medium
@@ -1489,7 +1493,7 @@ controls:
           unauthorized access.
       rules: []
       status: pending
-    
+
     - id: SLEM-05-653065
       levels:
           - low
@@ -1497,7 +1501,7 @@ controls:
       rules:
           - auditd_audispd_encrypt_sent_records
       status: automated
-    
+
     - id: SLEM-05-653070
       levels:
           - medium
@@ -1507,7 +1511,7 @@ controls:
       rules:
           - auditd_audispd_configure_remote_server
       status: automated
-    
+
     - id: SLEM-05-653075
       levels:
           - medium
@@ -1518,7 +1522,7 @@ controls:
       rules:
           - postfix_client_configure_mail_alias
       status: automated
-    
+
     - id: SLEM-05-653080
       levels:
           - medium
@@ -1528,7 +1532,7 @@ controls:
       rules:
           - auditd_data_retention_action_mail_acct
       status: automated
-    
+
     - id: SLEM-05-654010
       levels:
           - medium
@@ -1536,7 +1540,7 @@ controls:
       rules:
           - audit_rules_execution_chacl
       status: automated
-    
+
     - id: SLEM-05-654015
       levels:
           - medium
@@ -1544,7 +1548,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_chage
       status: automated
-    
+
     - id: SLEM-05-654020
       levels:
           - medium
@@ -1552,7 +1556,7 @@ controls:
       rules:
           - audit_rules_execution_chcon
       status: automated
-    
+
     - id: SLEM-05-654025
       levels:
           - medium
@@ -1560,7 +1564,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_chfn
       status: automated
-    
+
     - id: SLEM-05-654030
       levels:
           - medium
@@ -1568,7 +1572,7 @@ controls:
       rules:
           - audit_rules_execution_chmod
       status: automated
-    
+
     - id: SLEM-05-654035
       levels:
           - medium
@@ -1576,7 +1580,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_chsh
       status: automated
-    
+
     - id: SLEM-05-654040
       levels:
           - medium
@@ -1584,7 +1588,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_crontab
       status: automated
-    
+
     - id: SLEM-05-654045
       levels:
           - medium
@@ -1592,7 +1596,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_gpasswd
       status: automated
-    
+
     - id: SLEM-05-654050
       levels:
           - medium
@@ -1600,7 +1604,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_insmod
       status: automated
-    
+
     - id: SLEM-05-654055
       levels:
           - medium
@@ -1608,7 +1612,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_kmod
       status: automated
-    
+
     - id: SLEM-05-654060
       levels:
           - medium
@@ -1616,7 +1620,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_modprobe
       status: automated
-    
+
     - id: SLEM-05-654065
       levels:
           - medium
@@ -1624,7 +1628,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_newgrp
       status: automated
-    
+
     - id: SLEM-05-654070
       levels:
           - medium
@@ -1634,7 +1638,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_pam_timestamp_check
       status: automated
-    
+
     - id: SLEM-05-654075
       levels:
           - medium
@@ -1642,7 +1646,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_passwd
       status: automated
-    
+
     - id: SLEM-05-654080
       levels:
           - medium
@@ -1650,7 +1654,7 @@ controls:
       rules:
           - audit_rules_execution_rm
       status: automated
-    
+
     - id: SLEM-05-654085
       levels:
           - medium
@@ -1658,7 +1662,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_rmmod
       status: automated
-    
+
     - id: SLEM-05-654090
       levels:
           - medium
@@ -1666,7 +1670,7 @@ controls:
       rules:
           - audit_rules_execution_setfacl
       status: automated
-    
+
     - id: SLEM-05-654095
       levels:
           - medium
@@ -1674,7 +1678,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_ssh_agent
       status: automated
-    
+
     - id: SLEM-05-654100
       levels:
           - medium
@@ -1682,7 +1686,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_ssh_keysign
       status: automated
-    
+
     - id: SLEM-05-654105
       levels:
           - medium
@@ -1690,7 +1694,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_su
       status: automated
-    
+
     - id: SLEM-05-654110
       levels:
           - medium
@@ -1698,7 +1702,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_sudo
       status: automated
-    
+
     - id: SLEM-05-654115
       levels:
           - medium
@@ -1706,7 +1710,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_sudoedit
       status: automated
-    
+
     - id: SLEM-05-654120
       levels:
           - medium
@@ -1716,7 +1720,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_unix_chkpwd
       status: automated
-    
+
     - id: SLEM-05-654125
       levels:
           - medium
@@ -1724,7 +1728,7 @@ controls:
       rules:
           - audit_rules_privileged_commands_usermod
       status: automated
-    
+
     - id: SLEM-05-654130
       levels:
           - medium
@@ -1734,7 +1738,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_group
       status: automated
-    
+
     - id: SLEM-05-654135
       levels:
           - medium
@@ -1744,7 +1748,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_opasswd
       status: automated
-    
+
     - id: SLEM-05-654140
       levels:
           - medium
@@ -1754,7 +1758,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_passwd
       status: automated
-    
+
     - id: SLEM-05-654145
       levels:
           - medium
@@ -1764,7 +1768,7 @@ controls:
       rules:
           - audit_rules_usergroup_modification_shadow
       status: automated
-    
+
     - id: SLEM-05-654150
       levels:
           - medium
@@ -1774,7 +1778,7 @@ controls:
       rules:
           - audit_rules_dac_modification_fchmod
       status: automated
-    
+
     - id: SLEM-05-654155
       levels:
           - medium
@@ -1784,7 +1788,7 @@ controls:
       rules:
           - audit_rules_dac_modification_lchown
       status: automated
-    
+
     - id: SLEM-05-654160
       levels:
           - medium
@@ -1794,7 +1798,7 @@ controls:
       rules:
           - audit_rules_unsuccessful_file_modification_open
       status: automated
-    
+
     - id: SLEM-05-654165
       levels:
           - medium
@@ -1804,7 +1808,7 @@ controls:
       rules:
           - audit_rules_kernel_module_loading_delete
       status: automated
-    
+
     - id: SLEM-05-654170
       levels:
           - medium
@@ -1814,7 +1818,7 @@ controls:
       rules:
           - audit_rules_kernel_module_loading_finit
       status: automated
-    
+
     - id: SLEM-05-654175
       levels:
           - medium
@@ -1822,7 +1826,7 @@ controls:
       rules:
           - audit_rules_media_export
       status: automated
-    
+
     - id: SLEM-05-654180
       levels:
           - medium
@@ -1832,7 +1836,7 @@ controls:
       rules:
           - audit_rules_dac_modification_fremovexattr
       status: automated
-    
+
     - id: SLEM-05-654185
       levels:
           - medium
@@ -1840,7 +1844,7 @@ controls:
       rules:
           - audit_rules_dac_modification_umount2
       status: automated
-    
+
     - id: SLEM-05-654190
       levels:
           - medium
@@ -1850,7 +1854,7 @@ controls:
       rules:
           - audit_rules_unsuccessful_file_modification_rename
       status: automated
-    
+
     - id: SLEM-05-654195
       levels:
           - medium
@@ -1858,7 +1862,7 @@ controls:
       rules:
           - audit_rules_suid_privilege_function
       status: automated
-    
+
     - id: SLEM-05-654200
       levels:
           - medium
@@ -1868,7 +1872,7 @@ controls:
       rules:
           - audit_rules_login_events_lastlog
       status: automated
-    
+
     - id: SLEM-05-654205
       levels:
           - medium
@@ -1878,7 +1882,7 @@ controls:
       rules:
           - audit_rules_login_events_tallylog
       status: automated
-    
+
     - id: SLEM-05-654210
       levels:
           - medium
@@ -1888,7 +1892,7 @@ controls:
       rules:
           - audit_rules_sysadmin_actions
       status: automated
-    
+
     - id: SLEM-05-654215
       levels:
           - medium
@@ -1898,7 +1902,7 @@ controls:
       rules:
         - audit_rules_execution_setfiles
       status: automated
-    
+
     - id: SLEM-05-654220
       levels:
           - medium
@@ -1909,7 +1913,7 @@ controls:
         - package_policycoreutils-python-utils_installed
         - audit_rules_execution_semanage
       status: automated
-    
+
     - id: SLEM-05-654225
       levels:
           - medium
@@ -1919,7 +1923,7 @@ controls:
       rules:
         - audit_rules_execution_setsebool
       status: automated
-    
+
     - id: SLEM-05-654230
       levels:
           - medium
@@ -1927,7 +1931,7 @@ controls:
       rules:
           - audit_rules_session_events_utmp
       status: automated
-    
+
     - id: SLEM-05-654235
       levels:
           - medium
@@ -1935,7 +1939,7 @@ controls:
       rules:
           - audit_rules_session_events_btmp
       status: automated
-    
+
     - id: SLEM-05-654240
       levels:
           - medium
@@ -1943,15 +1947,15 @@ controls:
       rules:
           - audit_rules_session_events_wtmp
       status: automated
-    
+
     - id: SLEM-05-654245
       levels:
           - medium
       title: SLEM 5 must not disable syscall auditing.
-      rules: 
+      rules:
           - audit_rules_enable_syscall_auditing
       status: automated
-    
+
     - id: SLEM-05-671010
       levels:
           - high

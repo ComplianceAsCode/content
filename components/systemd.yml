@@ -30,8 +30,11 @@ rules:
 - service_debug-shell_disabled
 - service_systemd-coredump_disabled
 - service_systemd-journald_enabled
+- service_systemd-journal-upload_enabled
 - service_timesyncd_configured
 - service_timesyncd_root_distance_configured
 - service_timesyncd_enabled
 - socket_systemd-journal-remote_disabled
 - systemd_tmp_mount_enabled
+- systemd_journal_upload_server_tls
+- systemd_journal_upload_url

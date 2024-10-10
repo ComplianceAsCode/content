@@ -1,0 +1,72 @@
+<def-group>
+  <definition class="compliance" id="systemd_journal_upload_server_tls" version="2">
+    {{{ oval_metadata("systemd-journal-upload server TLS configuration in /etc/systemd/journal-upload.conf") }}}
+    <criteria operator="AND">
+        <criterion comment="systemd-journal-upload ServerKeyFile in /etc/systemd/journal-upload.conf"
+        test_ref="test_systemd_journal_upload_server_key_file" />
+
+        <criterion comment="systemd-journal-upload ServerCertificateFile in /etc/systemd/journal-upload.conf"
+        test_ref="test_systemd_journal_upload_server_certificate_file" />
+
+        <criterion comment="systemd-journal-upload TrustedCertificateFile in /etc/systemd/journal-upload.conf"
+        test_ref="test_systemd_journal_upload_server_trusted_certificate_file" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="systemd-journal-upload ServerKeyFile"
+  id="test_systemd_journal_upload_server_key_file" version="1">
+    <ind:object object_ref="object_systemd_journal_upload_server_key_file" />
+    <ind:state state_ref="state_systemd_journal_upload_server_key_file" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_systemd_journal_upload_server_key_file" version="2">
+    <ind:filepath>/etc/systemd/journal-upload.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*ServerKeyFile\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_systemd_journal_upload_server_key_file" version="1">
+    <ind:subexpression operation="equals" var_ref="var_journal_upload_server_key_file" datatype="string" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="systemd-journal-upload ServerKeyFile" datatype="string" id="var_journal_upload_server_key_file" version="1" />
+
+
+  <ind:textfilecontent54_test check="all" comment="systemd-journal-upload ServerCertificateFile"
+  id="test_systemd_journal_upload_server_certificate_file" version="1">
+    <ind:object object_ref="object_systemd_journal_upload_server_certificate_file" />
+    <ind:state state_ref="state_systemd_journal_upload_server_certificate_file" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_systemd_journal_upload_server_certificate_file" version="2">
+    <ind:filepath>/etc/systemd/journal-upload.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*ServerCertificateFile\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_systemd_journal_upload_server_certificate_file" version="1">
+    <ind:subexpression operation="equals" var_ref="var_journal_upload_server_certificate_file" datatype="string" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="systemd-journal-upload ServerCertificateFile" datatype="string" id="var_journal_upload_server_certificate_file" version="1" />
+
+
+  <ind:textfilecontent54_test check="all" comment="systemd-journal-upload TrustedCertificateFile"
+  id="test_systemd_journal_upload_server_trusted_certificate_file" version="1">
+    <ind:object object_ref="object_systemd_journal_upload_server_trusted_certificate_file" />
+    <ind:state state_ref="state_systemd_journal_upload_server_trusted_certificate_file" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_systemd_journal_upload_server_trusted_certificate_file" version="2">
+    <ind:filepath>/etc/systemd/journal-upload.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*TrustedCertificateFile\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_systemd_journal_upload_server_trusted_certificate_file" version="1">
+    <ind:subexpression operation="equals" var_ref="var_journal_upload_server_trusted_certificate_file" datatype="string" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="systemd-journal-upload ServerCertificateFile" datatype="string" id="var_journal_upload_server_trusted_certificate_file" version="1" />
+
+</def-group>
