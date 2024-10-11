@@ -26,7 +26,8 @@ REMEDIATION_TO_EXT_MAP = {
     'ignition': '.yml',
     'kubernetes': '.yml',
     'blueprint': '.toml',
-    'kickstart': '.cfg'
+    'kickstart': '.cfg',
+    'bootc': '.bo'
 }
 
 
@@ -467,6 +468,14 @@ class KickstartRemediation(Remediation):
         super(KickstartRemediation, self).__init__(
             file_path, "kickstart")
 
+class BootcRemediation(Remediation):
+    """
+    This provides class for Bootc remediations
+    """
+    def __init__(self, file_path):
+        super(BootcRemediation, self).__init__(
+            file_path, "bootc")
+
 
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
@@ -477,6 +486,7 @@ REMEDIATION_TO_CLASS = {
     'kubernetes': KubernetesRemediation,
     'blueprint': BlueprintRemediation,
     'kickstart': KickstartRemediation,
+    'bootc': BootcRemediation,
 }
 
 
@@ -616,6 +626,8 @@ def expand_xccdf_subs(fix, remediation_type):
         pattern = r'\(bash-populate\s*(\S+)\)'
     elif remediation_type == "kickstart":
         pattern = r'\(kickstart-populate\s*(\S+)\)'
+    elif remediation_type == "bootc":
+        pattern = r'\(bootc-populate\s*(\S+)\)'
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)

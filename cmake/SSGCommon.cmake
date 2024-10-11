@@ -673,7 +673,7 @@ macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
 
     if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
-        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes;blueprint;kickstart")
+        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes;blueprint;kickstart;bootc")
     endif()
     # Define variables for each language to facilitate assesment of specific remediation languages
     foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
