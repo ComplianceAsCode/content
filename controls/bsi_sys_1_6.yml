@@ -563,13 +563,18 @@ controls:
     levels:
     - elevated
     description: >-
-      If further isolation and encapsulation of containers is required, the following measures
+      (1) If further isolation and encapsulation of containers is required, the following measures
       SHOULD be considered for increased effectiveness:
-      • Fixed assignment of containers to container hosts
-      • Execution of the individual containers and/or the container host by means of
+      (2) • Fixed assignment of containers to container hosts
+      (3) • Execution of the individual containers and/or the container host by means of
       hypervisors
-      • Fixed assignment of a single container to a single container host
+      (4) • Fixed assignment of a single container to a single container host
     notes: >-
-      ToDo
+      Section 1,2,4: OpenShift offers the option of binding containers (in pods) to specific nodes using node labels and node selectors in the deployment descriptors. Section 3: These can also be made available as virtual machines via hypervisors (via IaaS or via OpenShift Sandboxes). This implements all three assignments mentioned in the requirement.
     status: manual
-    #rules:
+    rules:
+      # Section 1,2,4
+      - general_node_separation
+      # Section 3
+      - sandboxed_containers_operator_exists
+      - sandboxed_containers_operator_configured
