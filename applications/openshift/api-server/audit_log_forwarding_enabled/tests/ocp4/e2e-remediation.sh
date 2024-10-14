@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 
-ocp_version=$(oc version -ojson | jq '.openshiftVersion')
+ocp_version=$(oc version -ojson | jq -r '.openshiftVersion')
 clo_v6_available_from="4.14.0"
 
 if [ "$(printf '%s\n' "$ocp_version" "$clo_v6_available_from" | sort -V | head -n1)" = "$clo_v6_available_from" ]; then
