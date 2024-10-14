@@ -39,6 +39,6 @@ warnings:
 - general: |-
     {{{ openshift_cluster_setting() | indent(4) }}}
     {{{ openshift_filtered_cluster_setting_suppressed({
-            "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance": 'try [.items[].spec.outputs[].url] catch []',
+            "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance": 'try [.spec.outputs[].url] catch []',
             "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|.url] catch []',
         }) | indent(4) }}}
