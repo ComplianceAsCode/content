@@ -1,4 +1,6 @@
 #!/bin/bash
+# platform = multi_platform_rhel,multi_platform_ubuntu
+# packages = apparmor-utils
 
 #Replace apparmor definitions
 apparmor_parser -q -r /etc/apparmor.d/
