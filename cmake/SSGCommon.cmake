@@ -332,12 +332,6 @@ endmacro()
 # <complex-check /> elements as necessary.
 macro(ssg_build_sce PRODUCT)
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
-    # Unlike build_oval_unlinked, here we're ignoring the existing checks from
-    # templates and other places and we're merely appending/templating the
-    # content from the rules directories. That's why we ignore BUILD_CHECKS_DIR
-    # in the combine paths below.
-    set(SCE_COMBINE_PATHS "${SSG_SHARED}/checks/sce" "${CMAKE_CURRENT_SOURCE_DIR}/checks/sce")
-
     if(SSG_SCE_ENABLED)
         # Unlike build_oval_unlinked, we don't depend on templated content yet.
         #
@@ -348,7 +342,7 @@ macro(ssg_build_sce PRODUCT)
         #    the XCCDF, so we'd have a dependency circle.
         add_custom_command(
             OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_BINARY_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce"
             COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
             DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/product.yml"
         )
