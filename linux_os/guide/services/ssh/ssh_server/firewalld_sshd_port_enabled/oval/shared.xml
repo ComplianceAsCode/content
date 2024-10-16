@@ -53,7 +53,7 @@
 
     <ind:textfilecontent54_object id="object_firewalld_sshd_port_enabled_zones_assigned_to_nics"
         comment="Check the respective zone parameter in all NICs configuration files" version="3">
-        {{% if product in ["fedora", "ol9", "rhel9"] %}}
+        {{% if product in ["fedora", "ol9", "rhel9", "rhel10"] %}}
         <ind:path>/etc/NetworkManager/system-connections</ind:path>
         <ind:filename operation="pattern match">.*\.nmconnection</ind:filename>
         <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
@@ -83,7 +83,7 @@
     <unix:file_object id="object_firewalld_sshd_port_enabled_network_conf_files" version="1">
         <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1"
             recurse_file_system="all"/>
-        {{% if product in ["fedora", "ol9", "rhel9"] %}}
+        {{% if product in ["fedora", "ol9", "rhel9", "rhel10"] %}}
         <unix:path>/etc/NetworkManager/system-connections</unix:path>
         <unix:filename operation="pattern match">.*\.nmconnection</unix:filename>
         {{% else %}}
