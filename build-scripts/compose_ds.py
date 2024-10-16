@@ -319,6 +319,7 @@ if __name__ == "__main__":
         _compose_multiple_ds(args)
 
     ds = compose_ds(
-        args.build_dir, args.xccdf, args.oval, args.ocil, args.cpe_dict, args.cpe_oval, args.enable_sce
+        args.build_dir, args.xccdf, args.oval, args.ocil, args.cpe_dict,
+        args.cpe_oval, args.enable_sce
     )
     _store_ds(ds, args.output)
