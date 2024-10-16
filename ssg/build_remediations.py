@@ -468,6 +468,7 @@ class KickstartRemediation(Remediation):
         super(KickstartRemediation, self).__init__(
             file_path, "kickstart")
 
+
 class BootcRemediation(Remediation):
     """
     This provides class for Bootc remediations
