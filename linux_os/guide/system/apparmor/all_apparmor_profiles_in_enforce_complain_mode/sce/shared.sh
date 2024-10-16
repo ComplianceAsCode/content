@@ -8,6 +8,12 @@ if [ $? -ne 0 ]; then
         exit ${XCCDF_RESULT_FAIL}
 fi
 
+# Check whether all the profiles already parsed and loaded into the kernel
+comm -13 <(cat /sys/kernel/security/apparmor/profiles| cut -d' ' -f1| sort) <(apparmor_parser -NQ /etc/apparmor.d/| sort)
+if [ $? -ne 0 ]; then
+        exit ${XCCDF_RESULT_FAIL}
+fi
+
 loaded_profiles=$(/usr/sbin/aa-status --profiled)
 enforced_profiles=$(/usr/sbin/aa-status --enforced)
 complain=$(/usr/sbin/aa-status --complaining)
@@ -15,6 +21,7 @@ if [ ${loaded_profiles} -ne $((${enforced_profiles} + ${complain})) ]; then
     exit $XCCDF_RESULT_FAIL
 fi
 
+# This check will fail without reboot after remediation during automatic test
 unconfined=$(/usr/sbin/aa-status | grep "processes are unconfined" | awk '{print $1;}')
 if [ $unconfined -ne 0 ]; then
     exit $XCCDF_RESULT_FAIL
