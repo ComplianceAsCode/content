@@ -30,7 +30,7 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="snmpd") }}}
 
-platform: machine and package[snmpd]
+platform: system_with_kernel and package[snmpd]
 
 template:
     name: service_disabled
