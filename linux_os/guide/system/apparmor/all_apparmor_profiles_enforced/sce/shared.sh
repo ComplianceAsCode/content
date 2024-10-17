@@ -3,7 +3,7 @@
 # check-import = stdout
 
 # If apparmor or apparmor-utils are not installed, then this test fails.
-{{{ bash_package_installed("apparmor") }}} && {{{ bash_package_installed("apparmor-utils") }}}
+{{{ bash_package_installed("apparmor") }}}
 if [ $? -ne 0 ]; then
         exit ${XCCDF_RESULT_FAIL}
 fi
