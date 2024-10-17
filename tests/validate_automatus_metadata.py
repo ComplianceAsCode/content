@@ -5,10 +5,16 @@ import os
 import glob
 import sys
 
+import ssg.constants
+
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 VALID_FIELDS = ['check', 'packages', 'platform', 'profiles', 'remediation', 'templates',
                 'variables']
 VALID_STATES = ['pass', 'fail', 'notapplicable']
+
+VALID_PLATFORMS = (list(ssg.constants.FULL_NAME_TO_PRODUCT_MAPPING.keys())
+                   + list(ssg.constants.MULTI_PLATFORM_MAPPING.keys())
+                   + ['multi_platform_all'])
 
 
 def _parse_args() -> argparse.Namespace:
@@ -32,8 +38,17 @@ def _test_filename_valid(test_file: str) -> bool:
     return True
 
 
+def _validate_platform(param_value, test_file):
+    for platform in param_value.split(","):
+        if platform.strip() not in VALID_PLATFORMS:
+            print(f"Invalid platform '{platform}' in {test_file}", file=sys.stderr)
+            return False
+    return True
+
+
 def _has_invalid_param(root: str, test_file: str) -> bool:
     full_path = os.path.join(root, test_file)
+    has_no_errors = True
     with open(full_path, "r") as f:
         for line in f:
             if not line.startswith("#"):
@@ -44,10 +59,13 @@ def _has_invalid_param(root: str, test_file: str) -> bool:
             if len(parts) != 2:
                 continue
             param_name = parts[0].strip()
+            param_value = parts[1].strip()
+            if param_name == 'platform':
+                has_no_errors = _validate_platform(param_value, test_file)
             if param_name not in VALID_FIELDS:
                 print(f"Invalid field '{param_name}' in {test_file}", file=sys.stderr)
-                return False
-    return True
+                has_no_errors = False
+    return has_no_errors
 
 
 def main() -> int:
