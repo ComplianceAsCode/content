@@ -9,14 +9,16 @@ description: |-
     VPN, proxy capability). This does not apply to authentication for the
     purpose of configuring the device itself (management).
 
+    {{% if 'ubuntu' in product %}}
+    Add or update the following line in <tt>/etc/pam.d/common-auth</tt>,
+    placing it above any lines containing <tt>pam_unix.so</tt>:
+    <pre>auth    [success=2 default=ignore] pam_pkcs11.so </pre>
+    {{% else %}}
     Check that the <tt>pam_pkcs11.so</tt> option is configured in the
     <tt>etc/pam.d/common-auth</tt> file with the following command:
 
     <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
 
-    {{% if 'ubuntu' in product %}}
-    auth [success=2 default=ignore] pam_pkcs11.so</pre>
-    {{% else %}}
     auth sufficient pam_pkcs11.so</pre>
     {{% endif %}}
 

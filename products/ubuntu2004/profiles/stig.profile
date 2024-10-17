@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R11'
+title: 'Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R12'
 
 description: |-
     This Security Technical Implementation Guide is published as a tool to
@@ -536,7 +536,7 @@ selections:
     # UBTU-20-010436 The Ubuntu operating system must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.
     - chronyd_sync_clock
 
-    # UBTU-20-010437 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
+    # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
     - aide_disable_silentreports
 
     # UBTU-20-010438 The Ubuntu operating system's Advance Package Tool (APT) must be configured to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.
@@ -558,10 +558,6 @@ selections:
     # UBTU-20-010443 The Ubuntu operating system must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions.
     - only_allow_dod_certs
 
-    # UBTU-20-010444 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest.
-
-    # UBTU-20-010445 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest.
-
     # UBTU-20-010446 The Ubuntu operating system must configure the uncomplicated firewall to rate-limit impacted network interfaces.
     - ufw_rate_limit
 
@@ -577,9 +573,6 @@ selections:
     # UBTU-20-010450 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - package_aide_installed
     - aide_build_database
-
-    # UBTU-20-010451 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.
-    # Same as UBTU-20-010437
 
     # UBTU-20-010453 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
     - display_login_attempts
