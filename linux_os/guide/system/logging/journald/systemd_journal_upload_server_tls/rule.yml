@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Configure systemd-journal-upload TLS parameters: ServerKeyFile,ServerCertificateFile and TrustedCertificateFile'
+
+description: |-
+    {{{ full_name }}} must offload rsyslog messages for networked systems in real time and
+    offload standalone systems at least weekly
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+    Offloading is a common process in information systems with limited audit storage capacity
+
+severity: medium
+
+identifiers:
+    cce@slmicro5: CCE-94080-9
+
+references:
+    srg: SRG-OS-000479-GPOS-00224
+
+ocil_clause: 'systemd-journal-upload TLS configuration is missing or commented in /etc/systemd/journal-upload.conf'
+
+ocil: |-
+    To ensure logs are sent securely to a remote host, examine the file
+    <tt>/etc/systemd/journal-upload.conf</tt>.
+    ServerKeyFile should be present:
+    <pre>ServerKeyFile={{{ xccdf_value("var_journal_upload_server_key_file") }}}</pre>
+    ServerCertificateFile should be present:
+    <pre>ServerCertificateFile={{{ xccdf_value("var_journal_upload_server_certificate_file") }}}</pre>
+    TrustedCertificateFile should be present:
+    <pre>TrustedCertificateFile={{{ xccdf_value("var_journal_upload_server_trusted_certificate_file") }}}</pre>
+
+fixtext: |-
+    Configure systemd-journal-upload ServerKeyFile to {{{ xccdf_value("var_journal_upload_server_key_file") }}}
+    Configure systemd-journal-upload ServerCertificateFile to {{{ xccdf_value("var_journal_upload_server_certificate_file") }}}
+    Configure systemd-journal-upload TrustedCertificateFile to {{{ xccdf_value("var_journal_upload_server_trusted_certificate_file") }}}

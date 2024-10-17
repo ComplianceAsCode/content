@@ -1,0 +1,31 @@
+documentation_complete: true
+
+
+title: 'Configure systemd-journal-upload URL'
+
+description: |-
+    {{{ full_name }}} must offload rsyslog messages for networked systems in real time and
+    offload standalone systems at least weekly
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+    Offloading is a common process in information systems with limited audit storage capacity
+
+severity: medium
+
+identifiers:
+    cce@slmicro5: CCE-94081-7
+
+references:
+    srg: SRG-OS-000479-GPOS-00224
+
+ocil_clause: 'systemd-journal-upload URL is missing or commented in /etc/systemd/journal-upload.conf'
+
+ocil: |-
+    To ensure logs are sent to a remote host, examine the file
+    <tt>/etc/systemd/journal-upload.conf</tt>.
+    URL should be present:
+    <pre>URL={{{ xccdf_value("var_journal_upload_url") }}}</pre>
+
+fixtext: |-
+    Configure systemd-journal-upload URL to {{{ xccdf_value("var_journal_upload_url") }}}

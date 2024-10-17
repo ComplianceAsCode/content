@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Enable systemd-journal-upload Service'
+
+description: |-
+    {{{ full_name }}} must offload rsyslog messages for networked systems in real time and
+    offload standalone systems at least weekly.
+    {{{ describe_service_enable(service="systemd-journal-upload") }}}
+
+rationale: |-
+    {{{ full_name }}} must offload rsyslog messages for networked systems in real time and
+    offload standalone systems at least weekly.
+
+severity: medium
+
+identifiers:
+    cce@slmicro5: CCE-94084-1
+
+references:
+    srg: SRG-OS-000479-GPOS-00224
+
+ocil_clause: 'the systemd-journal-upload service is not running'
+
+ocil: |-
+    {{{ ocil_service_enabled(service="systemd-journal-upload") }}}
+
+fixtext: |-
+    {{{ fixtext_service_enabled("systemd-journal-upload") }}}
+
+srg_requirement: '{{{ srg_requirement_service_enabled("systemd-journal-upload") }}}'
+
+platform: machine
+
+template:
+    name: service_enabled
+    vars:
+        servicename: systemd-journal-upload
+        packagename: systemd-journal-remote
