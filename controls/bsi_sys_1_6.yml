@@ -429,15 +429,26 @@ controls:
     levels:
     - standard
     description: >-
-      A container runtime and any instantiated containers SHOULD only be executed by a non-
+      (1) A container runtime and any instantiated containers SHOULD only be executed by a non-
       privileged system account that does not have (and cannot gain) elevated rights to the
-      container service or host operating system. The container runtime SHOULD be encapsulated
+      container service or host operating system. (2) The container runtime SHOULD be encapsulated
       by additional measures, such as using the virtualisation extensions of CPUs.
-      If containers are to take over tasks of the host system in exceptional cases, privileges on the
-      host system SHOULD be limited to the minimum necessary. Exceptions SHOULD be
+      (3) If containers are to take over tasks of the host system in exceptional cases, privileges on the
+      host system SHOULD be limited to the minimum necessary. (4)Exceptions SHOULD be
       adequately documented.
     notes: >-
-      ToDo
+      Section 1: With OpenShift, application containers run in the Security Context Constraint (SCC) “restricted” by default.
+      Section 2: OpenShift supports encapsulation by using SELinux. If necessary,
+      entire nodes can also be encapsulated via underlying virtualization.
+      This is always necessary when application containers require extended security context constraints (SCCs).
+      With the sandbox function based on Kata Containers, OpenShift provides a convenient way to isolate containers
+      using virtualization technology.
+      Section 3: OpenShift offers several SCC to restrict access to the network,
+      file system or the host itself. This should only be allowed for administrative applications
+      such as SIEM scanners or other infrastructure services that require access to the host.
+      These SCCs should never be given to application containers.
+      Section 4: These exceptions must be documented in the operational documentation.
+      A list of pods with the corresponding SCC annotation can serve as the basis for the documentation.
     status: manual
     #rules:
 
