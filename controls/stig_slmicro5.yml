@@ -442,8 +442,12 @@ controls:
       title:
           SLEM 5 clock must, for networked systems, be synchronized to an authoritative
           DOD time source at least every 24 hours.
-      rules: []
-      status: pending
+      rules:
+          - chronyd_or_ntpd_set_maxpoll
+          - chronyd_specify_remote_server
+          - var_multiple_time_servers=stig
+          - var_time_service_set_maxpoll=18_hours
+      status: automated
     
     - id: SLEM-05-252015
       levels:

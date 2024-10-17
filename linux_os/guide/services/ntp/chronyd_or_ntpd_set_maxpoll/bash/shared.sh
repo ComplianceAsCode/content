@@ -3,7 +3,7 @@
 {{{ bash_instantiate_variables("var_time_service_set_maxpoll") }}}
 
 
-{{% if 'sle' in product or 'ubuntu' in product %}}
+{{% if 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
 pof="/bin/pidof"
 {{% else %}}
 pof="/usr/sbin/pidof"
