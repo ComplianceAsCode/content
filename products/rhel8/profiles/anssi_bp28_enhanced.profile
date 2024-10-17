@@ -49,3 +49,4 @@ selections:
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!audit_rules_privileged_commands_insmod'
     - '!ensure_oracle_gpgkey_installed'
+    - '!package_kea_removed'

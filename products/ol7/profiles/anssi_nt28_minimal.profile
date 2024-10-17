@@ -28,3 +28,4 @@ selections:
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
     - '!enable_authselect'
+    - '!package_kea_removed'

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+
+title: 'Uninstall kea Package'
+
+description: |-
+    If the system does not need to act as a DHCP server,
+    the kea package can be uninstalled.
+
+rationale: |-
+    Removing the DHCP server ensures that it cannot be easily or
+    accidentally reactivated and disrupt network operation.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-86596-4
+
+{{{ complete_ocil_entry_package(package="kea") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: kea

@@ -41,3 +41,4 @@ selections:
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
     - '!package_xinetd_removed'
+    - '!package_kea_removed'
