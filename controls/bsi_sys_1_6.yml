@@ -411,7 +411,6 @@ controls:
       to incoming and outgoing network bandwidth. In addition, outgoing traffic (egress) can be
       marked at the namespace level with differentiated services code point (DSCP) classifications
       in order to assign quality of service classes to the outgoing packets in the physical network.
-      
       Section 2: This requirement must be implemented organizationally.
       Note: The behavior of OpenShift completely replicates the standard behavior of Kubernetes.
       If CPU limits are exceeded, the process is slowed down. If volatile memory is exceeded,
@@ -430,6 +429,7 @@ controls:
       - resource_requests_quota
       - resource_requests_quota_cluster
       - resource_requests_quota_per_project
+      - configure_network_bandwidth
 
   - id: SYS.1.6.A16
     title: Administrative Remote Access to Containers
