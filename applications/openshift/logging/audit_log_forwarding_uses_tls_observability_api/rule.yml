@@ -9,7 +9,7 @@ description: |-
   </p>
   <p>
   The cluster-logging-operator is able to do this with the <pre>ClusterLogForwarders</pre> resource.
-  The forementioned resource can be configured to logs to different third party systems.
+  The forementioned resource can be configured to log to different third party systems.
   For more information on this, please reference the official documentation:
   {{{ weblink(link="https://docs.openshift.com/container-platform/latest/observability/logging/logging-6.0/log6x-clf.html") }}}
   </p>
@@ -24,7 +24,7 @@ references:
   srg: SRG-APP-000126-CTR-000275
 
 identifiers:
-  cce@ocp4: CCE-90688-3
+  cce@ocp4: CCE-86561-8
 
 severity: medium
 
@@ -39,6 +39,21 @@ warnings:
 - general: |-
     {{{ openshift_cluster_setting() | indent(4) }}}
     {{{ openshift_filtered_cluster_setting_suppressed({
-            "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance": 'try [.spec.outputs[].url] catch []',
             "/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders": 'try [.items[].spec.outputs[][]|objects|.url] catch []',
         }) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    # A list of clusterlogforwarders is available at https://docs.openshift.com/container-platform/4.16/observability/logging/logging-6.0/log6x-clf.html#outputs
+    # The log forwarder outputs consist of an object and two strings (name and type).
+    # The url is part of the object and its name will vary depending on its type.
+    # By using the objects filter we ensure we are getting the object to query for its url.
+    filepath: "{{{ openshift_filtered_path('/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders', 'try [.items[].spec.outputs[][]|objects|.url] catch []') }}}"
+    yamlpath: "[:]"
+    entity_check: "all"
+    values:
+    - value: "^(https|tls)://.*$"
+      entity_check: "all"
+      operation: "pattern match"

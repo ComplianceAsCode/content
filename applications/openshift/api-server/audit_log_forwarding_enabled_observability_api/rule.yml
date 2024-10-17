@@ -5,7 +5,7 @@ description: |-
   OpenShift audit works at the API server level, logging all requests coming to the server.
   Audit is on by default and the best practice is to ship audit logs off the cluster for retention.
   The cluster-logging-operator is able to do this with the <pre>ClusterLogForwarders</pre> resource.
-  The forementioned resource can be configured to logs to different third party systems.
+  The forementioned resource can be configured to log to different third party systems.
   For more information on this, please reference the official documentation:
   {{{ weblink(link="https://docs.openshift.com/container-platform/latest/observability/logging/logging-6.0/log6x-clf.html") }}}
 
@@ -17,7 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-  cce@ocp4: CCE-84076-9
+  cce@ocp4: CCE-86265-6
 
 references:
   cis@ocp4: 1.2.21
@@ -38,4 +38,15 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting(["/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders", "/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance"], true) | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders", true) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/observability.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders
+    yamlpath: ".items[].spec.pipelines[:].inputRefs[:]"
+    entity_check: "at least one"
+    values:
+    - value: "audit"
+      entity_check: "at least one"
