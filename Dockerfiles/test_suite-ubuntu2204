@@ -10,9 +10,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Install Python so Ansible remediations can work
 # Don't clean all, as the test scenario may require package install.
 RUN true \
-        && apt-get update && apt-get install -y openssh-server \
-		python3 \
-		$ADDITIONAL_PACKAGES \
+        && apt-get update && apt-get install -y ansible-lint cmake g++ jq libacl1-dev libblkid-dev libbz2-dev libcap-dev libcurl4-openssl-dev\
+        libdbus-1-dev libdbus-glib-1-dev libgconf2-dev libgcrypt20-dev libldap2-dev libpcre3-dev libperl-dev librpm-dev libselinux1-dev\
+        libxml2-dev libxml2-utils libxml-parser-perl libxmlsec1-dev libxmlsec1-openssl libxml-xpath-perl libxslt1-dev libyaml-dev\
+        ninja-build openssh-server python3 python3-deepdiff python3-jinja2 python3-pip python3-requests python3-yaml swig wget xsltproc\
+        $ADDITIONAL_PACKAGES \
         && true
 
 RUN true \
