@@ -25,7 +25,7 @@
     <ind:object object_ref="obj_require_rescue_service" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_rescue_service" version="1">
-    {{%- if 'rhel' in product -%}}
+    {{%- if 'rhel' in product or product == 'fedora' -%}}
     <ind:path>/etc/systemd/system/rescue.service.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{%- else -%}}
