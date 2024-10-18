@@ -533,30 +533,40 @@ controls:
     levels:
     - elevated
     description: >-
-      The behaviour of containers and the applications or services running in them SHOULD be
-      monitored. Deviations from normal behaviour SHOULD be noticed and reported. The reports
+      (1) The behaviour of containers and the applications or services running in them SHOULD be
+      monitored. (2) Deviations from normal behaviour SHOULD be noticed and reported. (3) The reports
       SHOULD be handled appropriately in a centralised process for security incident handling.
-      At minimum, the behaviour to be monitored SHOULD cover:
-      • Network connections
-      • Created processes
-      • File system access attempts
-      • Kernel requests (syscalls)
+      (4) At minimum, the behaviour to be monitored SHOULD cover:
+        (5) • Network connections
+        (6) • Created processes
+        (7) • File system access attempts
+        (8) • Kernel requests (syscalls)
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      The requirement is not met by OpenShift itself but requires the implementation of additional 
+      container runtime security solutions such as Red Hat Advanced Cluster Security (ACS).
+
+      Note: At the host level, Red Hat CoreOS supports auditd, which is enabled by default. 
+      Policies for auditd can include network connections, created processes, file accesses and syscalls. 
+      Red Hat CoreOS provides many sample policies that cover all of the areas described.
+    status: does not meet
 
   - id: SYS.1.6.A25
     title: High Availability of Containerised Applications
     levels:
     - elevated
     description: >-
-      In cases involving containerised applications with high availability requirements, the
+      (1) In cases involving containerised applications with high availability requirements, the
       necessary level of availability SHOULD be defined (e.g. redundant at the host level)
     notes: >-
-      ToDo
+      OpenShift offers multiple technical options by default (replicas, pod anti-affinities,
+      topology spread constraints). The applications needs to support this high availability.
+      Clusters can also be distributed across multiple fire zones (failure zones) within a region/location.
+      Multi-Cluster/Multi-Region distribution can be considered additionally, if required.
+      
+      The decision of the most appropriate level needs to be done organizationally per application.
+      No rules are checked here, as no required level of high availability is stated in the requirement.
+      Note: Technical checks for this can be found at APP.4.4.A19: "High Availability of Kubernetes"
     status: manual
-    #rules:
 
   - id: SYS.1.6.A26
     title: Advanced Isolation and Encapsulation of Containers
