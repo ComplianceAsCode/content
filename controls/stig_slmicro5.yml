@@ -106,8 +106,9 @@ controls:
       title:
           Vendor-packaged SLEM 5 security patches and updates must be installed and
           up to date.
-      rules: []
-      status: pending
+      rules:
+          - security_patches_up_to_date
+      status: automated
     
     - id: SLEM-05-214015
       levels:
