@@ -1,0 +1,11 @@
+<def-group>
+  <definition class="inventory" id="bootc" version="1">
+    {{{ oval_metadata("Bootable container or bootc system", affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+      <criterion comment="kernel is installed" test_ref="inventory_test_kernel_installed" />
+      <criterion comment="rpm-ostree is installed" test_ref="inventory_test_rpm_ostree_installed" />
+    </criteria>
+  </definition>
+{{{ oval_test_package_installed(package="kernel", test_id="inventory_test_kernel_installed") }}}
+{{{ oval_test_package_installed(package="rpm-ostree", test_id="inventory_test_rpm_ostree_installed") }}}
+</def-group>
