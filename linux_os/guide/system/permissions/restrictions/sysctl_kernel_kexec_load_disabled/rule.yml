@@ -31,7 +31,7 @@ srg_requirement: '{{{ full_name }}} must prevent the loading of a new kernel for
 {{% if product == "ol8" %}}
 platform: machine and not (secure_boot and kernel_uek)
 {{% else %}}
-platform: machine
+platform: system_with_kernel
 {{% endif %}}
 
 template:

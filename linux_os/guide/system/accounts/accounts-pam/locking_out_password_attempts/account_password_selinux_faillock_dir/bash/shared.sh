@@ -1,4 +1,3 @@
-#!/bin/bash
 # platform = multi_platform_all
 
 FAILLOCK_CONF_FILES="/etc/security/faillock.conf /etc/pam.d/system-auth /etc/pam.d/password-auth"

@@ -86,7 +86,7 @@ ocil: |-
     export TMOUT
     {{% endif %}}
 
-platform: machine
+platform: system_with_kernel
 
 fixtext: |-
     Configure {{{ full_name }}} to terminate user sessions after {{{ xccdf_value("var_accounts_tmout") }}} seconds of inactivity.

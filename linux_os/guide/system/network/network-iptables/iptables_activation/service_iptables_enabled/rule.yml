@@ -29,7 +29,7 @@ references:
     nist: AC-4,CM-7(b),CA-3(5),SC-7(21),CM-6(a)
     nist-csf: DE.AE-1,ID.AM-3,PR.AC-5,PR.DS-5,PR.IP-1,PR.PT-3,PR.PT-4
 
-platform: machine and package[iptables] and service_disabled[firewalld]
+platform: system_with_kernel and package[iptables] and service_disabled[firewalld]
 
 ocil: |-
     {{{ ocil_service_enabled(service="iptables") }}}
