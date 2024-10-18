@@ -2,7 +2,7 @@
 # platform = multi_platform_fedora,multi_platform_rhel,multi_platform_sle
 rm -f /etc/systemd/system/emergency.service
 mkdir -p /etc/systemd/system/emergency.service.d/
-cat << EOF > /etc/systemd/system/emergency.service.d/10-automatus.conf
+cat << EOF > /etc/systemd/system/emergency.service.d/10-oscap.conf
 [Service]
-ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
+ExecStart=/bin/bash
 EOF

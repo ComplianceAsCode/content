@@ -8,7 +8,7 @@
       {{%- if product not in ["ol8"] and 'rhel' not in product  -%}}
       <criterion test_ref="test_require_rescue_service_runlevel1" />
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
-            <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
+      <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
       {{%- endif -%}}
     </criteria>
   </definition>
@@ -25,7 +25,7 @@
     <ind:object object_ref="obj_require_rescue_service" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_rescue_service" version="1">
-    {{%- if 'rhel' in product -%}}
+    {{%- if 'rhel' in product or product == 'fedora' -%}}
     <ind:path>/etc/systemd/system/rescue.service.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{%- else -%}}
