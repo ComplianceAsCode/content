@@ -795,7 +795,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         package name is provided, socketname is used. Currently, the package name
         is used when running Automatus test scenarios.
 
-- languages: Ansible, Bash, OVAL
+- languages: Ansible, Bash, OVAL, SCE
 
 #### sshd_lineinfile
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config` or
