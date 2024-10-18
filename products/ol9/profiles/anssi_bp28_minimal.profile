@@ -26,3 +26,4 @@ selections:
   - '!accounts_passwords_pam_tally2_unlock_time'
   - '!ensure_redhat_gpgkey_installed'
   - '!package_xinetd_removed'
+  - '!package_kea_removed'
