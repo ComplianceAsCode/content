@@ -983,7 +983,7 @@ The selected value can be changed in the profile (consult the actual variable fo
         provided it is assumed that the name of the RPM package is the
         same as the name of the SystemD timer unit.
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, OVAL, SCE
 
 #### yamlfile_value
 -   Check if value(s) of certain type is (are) present in a YAML (or
