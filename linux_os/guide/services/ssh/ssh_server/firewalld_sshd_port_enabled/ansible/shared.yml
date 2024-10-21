@@ -53,7 +53,7 @@
 
     - name: '{{{ rule_title }}} - Collect firewalld active zones'
       ansible.builtin.shell:
-        cmd: firewall-cmd --get-active-zones | grep -v interfaces
+        cmd: firewall-cmd --get-active-zones | grep -v "^ " | cut -d " " -f 1
       register: result_firewall_cmd_zones_names
       changed_when: false
 
