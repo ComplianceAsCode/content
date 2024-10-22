@@ -1392,7 +1392,7 @@ controls:
           - service_systemd-journal-upload_enabled
           - systemd_journal_upload_url
           - systemd_journal_upload_server_tls
-      status: automated
+      status: manual # do not assume anything set external variables before use
 
     - id: SLEM-05-653010
       levels:
