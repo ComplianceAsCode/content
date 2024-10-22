@@ -70,6 +70,7 @@ option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, X
 # Validation Options
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
+option(SSG_SCAP_VALIDATION_ENABLED "If enabled, CTest tests will contain validation of built SCAP content. This is very time consuming." TRUE)
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests." TRUE)
 option(ENABLE_SCAPVAL13 "Set to ON to enable SCAPVal tests" OFF)
@@ -308,6 +309,7 @@ if(ENABLE_SCAPVAL13)
         message(SEND_ERROR "java is required for SCAPVal!")
     endif()
 endif()
+message(STATUS "Validate SCAP content: ${SSG_SCAP_VALIDATION_ENABLED}")
 message(STATUS "Force validate everything: ${FORCE_VALIDATE_EVERYTHING}")
 
 message(STATUS " ")
