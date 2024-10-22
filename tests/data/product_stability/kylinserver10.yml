@@ -5,19 +5,27 @@ aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 auid: 1000
 basic_properties_derived: true
-benchmark_id: ANOLIS-23
+benchmark_id: KYLINSERVER10
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- anolis23:
-    check_id: installed_OS_is_anolis23
-    name: cpe:/o:anolis:anolis_os:23
-    title: Anolis OS 23
+- kylin-sp1:
+    check_id: installed_OS_is_kylinserver10
+    name: cpe:/o:Kylin:Kylin:V10_SP1:ga:server
+    title: Kylin V10 SP1
+- kylin-sp2:
+    check_id: installed_OS_is_kylinserver10
+    name: cpe:/o:Kylin:Kylin:V10_SP2:ga:server
+    title: Kylin V10 SP2
+- kylin-sp3:
+    check_id: installed_OS_is_kylinserver10
+    name: cpe:/o:Kylin:Kylin:V10_SP3:ga:server
+    title: Kylin V10 SP3
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 faillock_path: /var/run/faillock
-full_name: Anolis OS 23
+full_name: Kylin Server 10
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub2
@@ -26,13 +34,13 @@ grub_helper_executable: grubby
 init_system: systemd
 nobody_gid: 65534
 nobody_uid: 65534
-pkg_manager: yum
+pkg_manager: dnf
 pkg_manager_config_file: /etc/yum.conf
 pkg_system: rpm
 platform_package_overrides:
   aarch64_arch: null
   grub2: grub2-common
-  login_defs: shadow-utils
+  login_defs: login
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
@@ -43,7 +51,7 @@ platform_package_overrides:
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: anolis23
+product: kylinserver10
 profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
