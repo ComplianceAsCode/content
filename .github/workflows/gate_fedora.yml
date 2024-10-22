@@ -48,7 +48,7 @@ jobs:
                         rhel10 \
                         rhv4 \
                 env:
-                    ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+                    ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON -DSSG_SCAP_VALIDATION_ENABLED=OFF"
             -   name: Test
                 run: ctest -j2 --output-on-failure -E unique-stigids
                 working-directory: ./build
