@@ -37,7 +37,7 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
-    {{% if product in ['sle12', 'sle15'] or "ubuntu" in product %}}
+    {{% if product in ["sle12", "sle15", "slmicro5"] or "ubuntu" in product %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
     {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*(?:typeset|declare)[\s]+-xr[\s]+TMOUT=([\w$]+).*$</ind:pattern>
