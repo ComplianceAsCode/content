@@ -16,8 +16,16 @@ title: Bare-metal systems, virtual machines, bootc container images, running boo
 # was set in past.
 check_id: system_with_kernel
 {{% if pkg_system == "rpm" %}}
+{{% if "sle" in product or "slmicro" in product %}}
+bash_conditional: "rpm --quiet -q kernel-default"
+{{% else %}}
 bash_conditional: "rpm --quiet -q kernel"
+{{% endif %}}
 {{% else %}}
 bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'kernel' 2>/dev/null | grep -q installed"
 {{% endif %}}
+{{% if "sle" in product or "slmicro" in product %}}
+ansible_conditional: '"kernel-default" in ansible_facts.packages'
+{{% else %}}
 ansible_conditional: '"kernel" in ansible_facts.packages'
+{{% endif %}}
