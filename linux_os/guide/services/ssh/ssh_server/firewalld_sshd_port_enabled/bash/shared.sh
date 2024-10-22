@@ -32,9 +32,9 @@ else
         systemctl restart NetworkManager
 
         # Active zones are zones with at least one interface assigned to it.
-        # It is possible that traffic is comming by any active interface and consequently any
+        # It is possible that traffic is coming by any active interface and consequently any
         # active zone. So, this make sure all active zones are permanently allowing SSH service.
-        readarray -t firewalld_active_zones < <(firewall-cmd --get-active-zones | grep -v interfaces)
+        readarray -t firewalld_active_zones < <(firewall-cmd --get-active-zones | grep -v "^ " | cut -d " " -f 1)
         for zone in "${firewalld_active_zones[@]}"; do
             firewall-cmd --permanent --zone="$zone" --add-service=ssh
         done
