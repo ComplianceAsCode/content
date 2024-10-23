@@ -445,12 +445,20 @@ controls:
       Section 4: This is standard in OpenShift environments. OpenShift offers a terminal login
       via the oc administration tool. Communication runs via the control plane to the container
       and is both authenticated and authorized.
-    status: automated
+    status: manual
     rules:
       #  Section 2:
-      - scc_limit_host_dir_volume_plugin
+      - scc_drop_container_capabilities
       - scc_limit_container_allowed_capabilities
+      - scc_limit_host_dir_volume_plugin
+      - scc_limit_host_ports
+      - scc_limit_ipc_namespace
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
       - scc_limit_privilege_escalation
+      - scc_limit_privileged_containers
+      - scc_limit_process_id_namespace
+      - scc_limit_root_containers
 
   - id: SYS.1.6.A17
     title: Running Containers Without Privileges
