@@ -5,7 +5,7 @@
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
       test_ref="test_require_rescue_service" />
-      {{%- if product not in ["ol8"] and 'rhel' not in product  -%}}
+      {{%- if product not in ["ol8"] and 'rhel' not in product and "fedora" != product-%}}
       <criterion test_ref="test_require_rescue_service_runlevel1" />
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
       <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
@@ -32,9 +32,9 @@
     <ind:filepath>/usr/lib/systemd/system/rescue.service</ind:filepath>
     {{%- endif -%}}
     {{%- if product in ["fedora", "ol8", "ol9", "rhcos4", "sle12", "sle15"] or 'rhel' in product -%}}
-    <ind:pattern operation="pattern match">^ExecStart=\-.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:pattern>
+    <ind:pattern operation="pattern match">^ExecStart\s?=\s?\-.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:pattern>
     {{%- else -%}}
-    <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>
+    <ind:pattern operation="pattern match">^ExecStart\s?=\s?\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>
     {{%- endif -%}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
