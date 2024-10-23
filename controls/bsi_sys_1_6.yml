@@ -201,7 +201,8 @@ controls:
       (3) Images used SHOULD have metadata that makes their function and history traceable. (4) Digital
       signatures SHOULD secure each image against modification.
     notes: >-
-      Section 1: This requirement must be implemented organizationally.
+      Section 1: The source of images can be restricted by configuring the allowed registries.
+      In addition, this requirement must be implemented organizationally.
       Section 2: This requirement must be implemented organizationally.
       Section 3: This requirement is solved using image labels. Red Hat Images contain the
       labels io.k8s.description, summary, vender, version, url, vcs-ref and vcs-type,
@@ -213,6 +214,9 @@ controls:
       OpenShift then only executes images from this registry that are secured using this signature.
     status: partial
     rules:
+      # Section 1
+      - ocp_allowed_registries
+      - ocp_allowed_registries_for_import
       # Section 4
       - reject_unsigned_images_by_default
 
