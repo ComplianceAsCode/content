@@ -26,6 +26,7 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
 include(CMakeDependentOption)
+include(FindOpenSCAP)
 include(FindPythonModule)
 include(SSGCommon)
 
