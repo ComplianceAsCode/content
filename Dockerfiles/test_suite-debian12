@@ -11,7 +11,7 @@ ARG ADDITIONAL_PACKAGES
 RUN true \
         && apt update \
 	&& apt install -y openssh-server python3 openscap-scanner \
-	   $ADDITIONAL_PACKAGES \
+	   python3-apt $ADDITIONAL_PACKAGES \
         && true
 
 RUN true \

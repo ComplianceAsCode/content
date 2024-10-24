@@ -13,7 +13,7 @@ RUN true \
         && apt update \
 	&& apt install -y cmake g++ libacl1-dev libblkid-dev libbz2-dev libcap-dev libcurl4-openssl-dev libdbus-1-dev libdbus-glib-1-dev \
         libgconf2-dev libgcrypt20-dev libldap2-dev libpcre2-dev libperl-dev librpm-dev libselinux1-dev libxml2-dev libxml-parser-perl \
-        libxmlsec1-dev libxmlsec1-openssl libxml-xpath-perl libxslt1-dev libyaml-dev openssh-server python3-dev swig wget \
+        libxmlsec1-dev libxmlsec1-openssl libxml-xpath-perl libxslt1-dev libyaml-dev openssh-server python3-dev python3-apt swig wget \
 	   $ADDITIONAL_PACKAGES \
         && true
 

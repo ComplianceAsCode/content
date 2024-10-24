@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Ensure the Default Bash Umask is Set Correctly'
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or 'ubuntu' in product or 'debian' in product %}}
 {{% set etc_bash_rc = "/etc/bash.bashrc" %}}
 {{% else %}}
 {{% set etc_bash_rc = "/etc/bashrc" %}}
