@@ -46,6 +46,9 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue.net") }}}
 
+conflicts:
+    - sshd_enable_warning_banner
+
 template:
     name: sshd_lineinfile
     vars:
