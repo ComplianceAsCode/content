@@ -33,3 +33,4 @@ selections:
     - '!sysctl_fs_protected_fifos'
     - '!cracklib_accounts_password_pam_dcredit'
     - '!grub2_page_alloc_shuffle_argument'
+    - '!package_kea_removed'
