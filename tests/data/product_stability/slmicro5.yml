@@ -1,49 +1,65 @@
 aide_also_checks_audispd: 'yes'
 aide_also_checks_rsyslog: 'no'
-aide_bin_path: /usr/sbin/aide
+aide_bin_path: /usr/bin/aide
 aide_conf_path: /etc/aide.conf
 audisp_conf_path: /etc/audit
 auid: 1000
 basic_properties_derived: true
-benchmark_id: ANOLIS-23
+benchmark_id: SLMICRO5
 benchmark_root: ../../linux_os/guide
 chrony_conf_path: /etc/chrony.conf
 chrony_d_path: /etc/chrony.d/
 cpes:
-- anolis23:
-    check_id: installed_OS_is_anolis23
-    name: cpe:/o:anolis:anolis_os:23
-    title: Anolis OS 23
+- slmicro-5.2:
+    check_id: installed_OS_is_slmicro5
+    name: cpe:/o:suse:sle-microos:5.2
+    title: SLE MicroOS 5.2
+- slmicro-5.3:
+    check_id: installed_OS_is_slmicro5
+    name: cpe:/o:suse:sle-micro:5.3
+    title: SLE Micro 5.3
+- slmicro-5.4:
+    check_id: installed_OS_is_slmicro5
+    name: cpe:/o:suse:sle-micro:5.4
+    title: SLE Micro 5.4
+- slmicro-5.5:
+    check_id: installed_OS_is_slmicro5
+    name: cpe:/o:suse:sle-micro:5.5
+    title: SLE Micro 5.5
 cpes_root: ../../shared/applicability
 dconf_gdm_dir: gdm.d
 faillock_path: /var/run/faillock
-full_name: Anolis OS 23
+full_name: SUSE Linux Enterprise Micro 5
 gid_min: 1000
 groups: {}
 grub2_boot_path: /boot/grub2
 grub2_uefi_boot_path: /boot/grub2
 grub_helper_executable: grubby
 init_system: systemd
+journald_conf_dir_path: /etc/systemd/journal.conf.d
+major_version_ordinal: 5
 nobody_gid: 65534
 nobody_uid: 65534
-pkg_manager: yum
-pkg_manager_config_file: /etc/yum.conf
+oval_feed_url: https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5-patch.xml.bz2
+pkg_manager: zypper
+pkg_manager_config_file: /etc/zypp/zypp.conf
 pkg_system: rpm
 platform_package_overrides:
   aarch64_arch: null
-  grub2: grub2-common
-  login_defs: shadow-utils
+  grub2: grub2
+  login_defs: shadow
   no_ovirt: null
   non-uefi: null
   not_aarch64_arch: null
   not_s390x_arch: null
   ovirt: null
+  passwd: shadow
   s390x_arch: null
-  sssd: sssd-common
+  sssd: sssd
   sssd-ldap: null
   uefi: null
   zipl: s390utils-base
-product: anolis23
+product: slmicro5
 profiles_root: ./profiles
 reference_uris:
   anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
@@ -71,7 +87,7 @@ reference_uris:
   stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
   stigref: https://public.cyber.mil/stigs/srg-stig-tools/
 sshd_distributed_config: 'false'
-sysctl_remediate_drop_in_file: 'false'
+sysctl_remediate_drop_in_file: 'true'
 type: platform
 uid_max: 60000
 uid_min: 1000
