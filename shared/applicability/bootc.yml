@@ -1,0 +1,19 @@
+name: cpe:/a:bootc
+title: Bootable containers
+# Matches:
+# - bootc (RHEL Image Mode) containers and container images
+# - running bootc (RHEL Image Mode) systems
+# Does not match:
+# - classic containers and container images
+# - normal bare-metal systems or VMs
+# - other rpm-ostree based systems eg. Silverblue
+#
+# The matching platforms and non-matching platforms can be easily distinguished
+# by checking for presence of the kernel, rpm-ostree, and bootc RPM packages.
+# Bootable containers and running bootc systems both contain these packages.
+# Normal bare-metal systems usually don't have the rpm-ostree, normal
+# containers don't contain kernel.
+#
+check_id: bootc
+bash_conditional: "{ rpm --quiet -q kernel } && { rpm --quiet -q rpm-ostree } && { rpm --quiet -q bootc }"
+ansible_conditional: '"kernel" in ansible_facts.packages and "rpm-ostree" in ansible_facts.packages and "bootc" in ansible_facts.packages'
