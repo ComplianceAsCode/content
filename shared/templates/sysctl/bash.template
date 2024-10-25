@@ -38,10 +38,12 @@ SYSCONFIG_FILE="/etc/sysctl.conf"
 {{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
 {{{ bash_instantiate_variables("sysctl_" ~ SYSCTLID ~ "_value") }}}
 
+if [[ "$OSCAP_BOOTC_BUILD" != "YES" ]] ; then
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
 /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+fi
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
@@ -54,10 +56,12 @@ sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 
 {{%- else %}}
 
+if [[ "$OSCAP_BOOTC_BUILD" != "YES" ]] ; then
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
 /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+fi
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"

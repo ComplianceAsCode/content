@@ -29,8 +29,12 @@
       <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
                          definition_ref="{{{ rule_id }}}_static"/>
 {{% if CHECK_RUNTIME == "true" %}}
-      <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
-                         definition_ref="{{{ rule_id }}}_runtime"/>
+      <criteria operator="OR">
+        <extend_definition comment="we are building bootable container image"
+                          definition_ref="oscap_bootc_env_var"/>
+        <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
+                          definition_ref="{{{ rule_id }}}_runtime"/>
+      </criteria>
 {{%- endif %}}
     </criteria>
   </definition>
@@ -53,8 +57,12 @@
         <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check"
                            definition_ref="{{{ rule_id }}}_static"/>
 {{% if CHECK_RUNTIME == "true" %}}
-        <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
-                           definition_ref="{{{ rule_id }}}_runtime"/>
+        <criteria operator="OR">
+          <extend_definition comment="we are building bootable container image"
+                            definition_ref="oscap_bootc_env_var"/>
+          <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check"
+                            definition_ref="{{{ rule_id }}}_runtime"/>
+        </criteria>
 {{%- endif %}}
       </criteria>
     </criteria>

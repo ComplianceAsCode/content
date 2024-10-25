@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory" id="oscap_bootc_env_var" version="2">
+    <metadata>
+      <title>Check if the environment is execution of the oscap-bootc build tool in the podman build environment</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+       </affected>
+      <description>Check the value of environment variable OSCAP_BOOTC_BUILD.</description>
+      <reference ref_id="cpe:/a:osbuild" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Check the value of OSCAP_BOOTC_BUILD variable" test_ref="test_oscap_bootc_env_var" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_test check="all" check_existence="all_exist"
+    comment="environment variable OSCAP_BOOTC_BUILD is set to bwrap-osbuild"
+    id="test_oscap_bootc_env_var" version="1">
+    <ind:object object_ref="object_oscap_bootc_env_var" />
+    <ind:state state_ref="state_oscap_bootc_env_var" />
+  </ind:environmentvariable58_test>
+
+  <ind:environmentvariable58_object 
+    id="object_oscap_bootc_env_var" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>OSCAP_BOOTC_BUILD</ind:name>
+  </ind:environmentvariable58_object>
+
+  <ind:environmentvariable58_state
+    id="state_oscap_bootc_env_var" version="1">
+    <ind:value>YES</ind:value>
+  </ind:environmentvariable58_state>
+</def-group>
