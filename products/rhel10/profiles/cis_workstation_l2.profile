@@ -15,3 +15,6 @@ description: |-
 
 selections:
     - cis_rhel10:all:l2_workstation
+    - '!file_ownership_home_directories'
+    - '!group_unique_name'
+    - '!file_owner_at_allow'
