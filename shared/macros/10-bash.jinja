@@ -2522,7 +2522,7 @@ chmod -R u=rwX,go=rX /etc/dconf/profile
 This macro defines a conditional expression that is evaluated as true
 if the remediation is performed during a build of a bootable container image.
 #}}
-{{%- macro bootc_build() -%}}
+{{%- macro bash_bootc_build() -%}}
 [[ "$OSCAP_BOOTC_BUILD" == "YES" ]]
 {{%- endmacro -%}}
 
@@ -2530,6 +2530,6 @@ if the remediation is performed during a build of a bootable container image.
 This macro defines a conditional expression that is evaluated as true
 if the remediation is not performed during a build of a bootable container image.
 #}}
-{{%- macro not_bootc_build() -%}}
+{{%- macro bash_not_bootc_build() -%}}
 [[ "$OSCAP_BOOTC_BUILD" != "YES" ]]
 {{%- endmacro -%}}

@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-if {{{ bootc_build() }}} ; then
+if {{{ bash_bootc_build() }}} ; then
     systemctl disable ctrl-alt-del.target
     systemctl mask ctrl-alt-del.target
 else
