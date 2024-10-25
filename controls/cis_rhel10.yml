@@ -553,7 +553,7 @@ controls:
     status: automated
     rules:
       - configure_crypto_policy
-      - var_system_crypto_policy=default_policy
+      - var_system_crypto_policy=default_nosha1
 
   - id: 1.6.2
     title: Ensure system wide crypto policy is not set in sshd configuration (Automated)
@@ -1528,7 +1528,7 @@ controls:
       Therefore I moved it to pending until deeper investigation.
     related_rules:
       - sshd_use_approved_ciphers
-      - sshd_approved_ciphers=cis_rhel8
+      - sshd_approved_ciphers=cis_rhel9
 
   - id: 5.1.5
     title: Ensure sshd KexAlgorithms is configured (Automated)
@@ -1541,7 +1541,7 @@ controls:
       Therefore I moved it to pending until deeper investigation.
     rules:
       - sshd_use_strong_kex
-      - sshd_strong_kex=cis_rhel8
+      - sshd_strong_kex=cis_rhel9
 
   - id: 5.1.6
     title: Ensure sshd MACs are configured (Automated)
@@ -1554,7 +1554,7 @@ controls:
       Therefore I moved it to pending until deeper investigation.
     rules:
       - sshd_use_strong_macs
-      - sshd_strong_macs=cis_rhel8
+      - sshd_strong_macs=cis_rhel9
 
   - id: 5.1.7
     title: Ensure sshd access is configured (Automated)
@@ -2143,7 +2143,7 @@ controls:
     rules:
       - account_disable_post_pw_expiration
       - accounts_set_post_pw_existing
-      - var_account_disable_post_pw_expiration=30
+      - var_account_disable_post_pw_expiration=45
 
   - id: 5.4.1.6
     title: Ensure all users last password change date is in the past (Automated)
@@ -2542,8 +2542,8 @@ controls:
     rules:
       - auditd_data_disk_error_action
       - auditd_data_disk_full_action
-      - var_auditd_disk_error_action=cis_rhel8
-      - var_auditd_disk_full_action=cis_rhel8
+      - var_auditd_disk_error_action=cis_rhel9
+      - var_auditd_disk_full_action=cis_rhel9
 
   - id: 6.3.2.4
     title: Ensure system warns when audit logs are low on space (Automated)
@@ -2556,8 +2556,8 @@ controls:
       - auditd_data_retention_admin_space_left_action
       - auditd_data_retention_space_left_action
       - var_auditd_action_mail_acct=root
-      - var_auditd_admin_space_left_action=cis_rhel8
-      - var_auditd_space_left_action=cis_rhel8
+      - var_auditd_admin_space_left_action=cis_rhel9
+      - var_auditd_space_left_action=cis_rhel9
 
   - id: 6.3.3.1
     title: Ensure changes to system administration scope (sudoers) is collected (Automated)
