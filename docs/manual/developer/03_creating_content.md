@@ -977,7 +977,7 @@ original_title: used as a reference for policies not yet available in English
 source: a link to the original policy, eg. a URL of a PDF document
 controls_dir: a directory containing files representing controls that will be imported into this policy
 reference_type: Reference type represented by control IDs in this policy.
-product: product ID, set if the policy is specific to a single product.
+product: list of product IDs, set if the policy is specific to a single or number of products.
 levels: a list of levels, the first one is default
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
