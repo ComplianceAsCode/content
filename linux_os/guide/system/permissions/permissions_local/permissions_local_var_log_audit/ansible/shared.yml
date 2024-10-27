@@ -10,7 +10,7 @@
   shell: >
     set -o pipefail
     chkstat --set --system
-  when: update_update_permissions_var_log_audit.changed
+  when: update_permissions_var_log_audit.changed
 
 {{{ ansible_lineinfile(msg='Configure permission for /var/log/audit.log', path='/etc/permissions.local', regex='^\/var\/log\/audit\/audit.log\s+root.*', insensitive=false, new_line='/var/log/audit/audit.log root:root 600', create='yes', state='present', register='update_permissions_var_log_audit_audit_log') }}}
 
