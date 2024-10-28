@@ -74,8 +74,25 @@ jobs:
           RANDOM=${{ github.event.pull_request.number }}
           for rule in $RULES; do
             readarray -t TEMP <<< $(grep -lr -e "- ${rule}\$" build/*/profiles | sort)
-            ALL_PROFILES+=(${TEMP[@]})
-            PROFILES+=(${TEMP[$(($RANDOM%(${#TEMP[@]})))]})
+
+            # Let's ilter out profiles for which we don't have a CI job configured
+            # Here is an example of how to quicly update this variable in the future
+            # TESTED_PROFILES=$(grep -r PROFILE= ./ComplianceAsCode-content-master__4.16.yaml | sort -u | sed 's/.*export PROFILE=\(.*\)/\1/')
+            # echo -n TESTED_PROFILES=\(${TESTED_PROFILES[@]}\)
+            # Copy and paste the profiles here
+            TESTED_PROFILES=(bsi bsi-node cis cis-node e8 high high-node moderate moderate-node pci-dss pci-dss-4-0 pci-dss-node pci-dss-node-4-0 stig stig-node)
+
+            ELIGIBLE_PROFILES=()
+            for index in "${!TEMP[@]}"; do
+              for tp in ${TESTED_PROFILES[@]}; do
+                if [[ ${TEMP[$index]} =~  build\/.*\/profiles\/${tp}\.profile ]]; then
+                  ELIGIBLE_PROFILES+=(${TEMP[$index]});
+                fi
+              done
+            done
+
+            ALL_PROFILES+=(${ELIGIBLE_PROFILES[@]})
+            PROFILES+=(${ELIGIBLE_PROFILES[$(($RANDOM%(${#ELIGIBLE_PROFILES[@]})))]})
           done
 
           # Sort and ensure that the profiles are unique
