@@ -453,63 +453,148 @@ controls:
     levels:
     - standard
     description: >-
-      System accounts within a container SHOULD have no permissions on the host system. If such
+      (1) System accounts within a container SHOULD have no permissions on the host system. (2) If such
       authorisation is required for operational reasons, it SHOULD only apply to the data and
-      system access that is absolutely necessary. The account in the container that is necessary to
+      system access that is absolutely necessary. (3) The account in the container that is necessary to
       exchange data SHOULD be known in the host system
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: With OpenShift, accounts within the container are separated from the host system by
+      SELinux. This includes preventing the use of privileged user and group IDs as well as
+      corresponding rights extensions (SET-UID, Set-GID bit). A range of UIDs/GIDs is provided for
+      use in containers.
+
+      Section 2: Security Context Constraints (SCCs) allow accounts in the container to gain
+      controlled access.
+
+      Section 3: The host system Red Hat CoreOS is immutable. The changes to the host operating
+      system should only be made by OpenShift and should be necessary so that hardening by Red Hat
+      is not inadvertently undermined.
+      Since, in contrast to an unprotected container runtime environment, SELinux enforces the
+      separation between the container runtime and the operating system, this mirroring of account
+      names is not necessary.
+    status: automated
+    rules:
+      # Section 1
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
+      # Section 2
+      - general_apply_scc
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
 
   - id: SYS.1.6.A19
     title:  Including Data Stores in Containers
     levels:
     - standard
     description: >-
-      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
-      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
+      (1) Containers SHOULD ONLY be able to access the mass storage and directories necessary for
+      operation. (2) Permissions SHOULD only be explicitly assigned where needed. (3) If the container
       runtime for a container includes local storage, the access rights in the file system SHOULD be
-      restricted to the service account of the container. If network storage is used, the permissions
+      restricted to the service account of the container. (4) If network storage is used, the permissions
       SHOULD be set on the network storage itself
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: Applications can access persistent volumes (PVs) and temporary (ephemeral) storage
+      in OpenShift. Persisted volumes are connected as network storage, ephemeral storage serves
+      primarily as volatile, short-lived mass storage and is allocated within the container file
+      system. This configures which PV can be reached and the use of the ephemeral storage is
+      separated per pod. This means that each pod has its own volatile mass storage. Volumes can be
+      limited in size.
+
+      Section 2: OpenShift implements the principle of least privileges. The definition is made via
+      an explicit configuration at the deployment level.
+
+      Section 3: By default, no local storage is included. For reasons of reliability, this is
+      explicitly not recommended.
+
+      Section 4: The network storage dictates the permissions. OpenShift supports this with the
+      dynamically assigned UID/GID of the projects (clients).
+    status: automated
+    rules:
+      # Section 1
+      - scc_limit_host_dir_volume_plugin
+      # Section 2
+      - rbac_least_privilege
 
   - id: SYS.1.6.A20
     title: Protection of Configuration Data
     levels:
     - standard
     description: >-
-      Containers SHOULD ONLY be able to access the mass storage and directories necessary for
-      operation. Permissions SHOULD only be explicitly assigned where needed. If the container
-      runtime for a container includes local storage, the access rights in the file system SHOULD be
-      restricted to the service account of the container. If network storage is used, the permissions
-      SHOULD be set on the network storage itself
+      (1) Descriptions of container configuration data SHOULD be versioned. (2) Changes SHOULD be
+      documented in a comprehensible manner.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: OpenShift only maintains the current version of the configuration. It is therefore
+      recommended to use GitOps, in which the configuration is transferred from a git repository to
+      the OpenShift cluster. OpenShift includes OpenShift GitOps (based on the community project
+      ArgoCD), which supports easy implementation of a GitOps-based administration concept.
+
+      Section 2: With a GitOps approach, all changes are documented in git.
+    status: automated
+    rules:
+      # Section 1,2
+      - gitops_operator_exists
 
   - id: SYS.1.6.A21
-    title: Compile options for the compiler plugins
+    title: Extended Security Policies
     levels:
     - elevated
     description: >-
-      Extended policies SHOULD restrict the permissions of containers. Mandatory Access Control
-      (MAC) or a comparable technology SHOULD enforce these policies. At minimum, policies
+      (1) Extended policies SHOULD restrict the permissions of containers. (2) Mandatory Access Control
+      (MAC) or a comparable technology SHOULD enforce these policies. (3) At minimum, policies
       SHOULD restrict the following types of access:
       • Incoming and outgoing network connections
       • File system access attempts
       • Kernel requests (syscalls)
-      A runtime SHOULD start containers in such a way that the kernel of the host system prevents
+      (4) A runtime SHOULD start containers in such a way that the kernel of the host system prevents
       all activities of the containers that are not allowed by the relevant policy (e.g. by setting up
       local packet filters or revoking permissions), or at least reports violations appropriately.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
+      Section 1: By default, OpenShift blocks the containers' permissions (security-by-default).
+
+      Section 2: OpenShift already uses SELinux Mandatory Access Control to restrict permissions by
+      default Using the Security Profiles Operator, workload-dependent SELinux
+      and Seccomp profiles can be created and managed.
+
+      Section 3: These permissions are managed in OpenShift and controlled via Security Context
+      Constraints (SCCs). For tool-based policy management, ACS or Red Hat Advanced Cluster
+      Management (ACM) (with Kyverno or Open Policy Agent) can be used.
+
+      Section 4: OpenShift already meets this requirement as standard (security-by-design).
+    status: automated
+    rules:
+      # Section 2
+      - coreos_enable_selinux_kernel_argument
+      - selinux_policytype
+      - selinux_state
+      # Section 3
+      - general_apply_scc
+      - scc_limit_privileged_containers
+      - scc_limit_root_containers
+      # inter process communication
+      - scc_limit_ipc_namespace
+      # process IDs
+      - scc_limit_process_id_namespace
+      # file system
+      - scc_limit_host_dir_volume_plugin
+      # network
+      - scc_limit_net_raw_capability
+      - scc_limit_network_namespace
+      # network policies
+      - configure_network_policies
+      - configure_network_policies_namespaces
+      - service_firewalld_enabled
+      # Section 3,4
+      - security_profiles_operator_exists
 
   - id: SYS.1.6.A22
     title: Provision for Investigations
