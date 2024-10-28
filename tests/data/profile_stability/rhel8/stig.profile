@@ -492,7 +492,7 @@ selections:
 - var_slub_debug_options=P
 - var_user_initialization_files_regex=all_dotfiles
 - var_screensaver_lock_delay=5_seconds
-- var_logind_session_timeout=15_minutes
+- var_logind_session_timeout=10_minutes
 - var_auditd_name_format=stig
 unselected_groups: []
 platforms: !!set {}
