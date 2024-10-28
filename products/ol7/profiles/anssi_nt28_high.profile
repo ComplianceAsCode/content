@@ -72,3 +72,4 @@ selections:
     - '!kernel_config_strict_module_rwx'
     - '!kernel_config_modify_ldt_syscall'
     - '!grub2_pti_argument'
+    - '!package_kea_removed'
