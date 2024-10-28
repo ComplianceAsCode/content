@@ -1,0 +1,16 @@
+# platform = multi_platform_slmicro
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_accounts_tmout") }}}
+
+{{{ ansible_set_config_file(file='/etc/profile.d/autologout.sh', parameter='TMOUT', separator='=', separator_regex='=', value='{{ var_accounts_tmout }}', create='yes') }}}
+{{{ ansible_set_config_file(file='/etc/profile.d/autologout.sh', parameter='readonly', separator=' ', value='TMOUT', create='yes') }}}
+{{{ ansible_set_config_file(file='/etc/profile.d/autologout.sh', parameter='export', separator=' ', value='TMOUT', create='yes') }}}
+
+- name: Set the permission for /etc/profile.d/autologout.sh
+  file:
+    path: /etc/profile.d/autologout.sh
+    mode: '0755'
+  when: lookup('ansible.builtin.file', '/etc/profile.d/autologout.sh', errors='warn')

@@ -23,8 +23,8 @@ controls:
           - medium
       title: SLEM 5 must implement an endpoint security tool.
       rules: []
-      status: pending
-
+      status: manual
+    
     - id: SLEM-05-211020
       levels:
           - medium
@@ -948,8 +948,10 @@ controls:
       levels:
           - medium
       title: SLEM 5 must initiate a session lock after a 15-minute period of inactivity.
-      rules: []
-      status: pending
+      rules:
+          - accounts_tmout
+          - var_accounts_tmout=15_min
+      status: automated
 
     - id: SLEM-05-412020
       levels:
@@ -1498,8 +1500,8 @@ controls:
           SLEM 5 audit tools must have the proper permissions applied to protect against
           unauthorized access.
       rules: []
-      status: pending
-
+      status: manual
+    
     - id: SLEM-05-653065
       levels:
           - low
