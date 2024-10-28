@@ -547,7 +547,7 @@ selections:
 
     # RHEL-08-020035
     - logind_session_timeout
-    - var_logind_session_timeout=15_minutes
+    - var_logind_session_timeout=10_minutes
 
     # RHEL-08-020039
     - package_tmux_installed
