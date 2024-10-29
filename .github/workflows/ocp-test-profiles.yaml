@@ -62,6 +62,11 @@ jobs:
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
         id: profiles_to_test 
         run: |
+          # Let's grab the profiles for which we have a CI job configured
+          PROW_CONFIG=https://raw.githubusercontent.com/openshift/release/refs/heads/master/ci-operator/config/ComplianceAsCode/content/ComplianceAsCode-content-master.yaml
+          curl -o prow_config.yaml ${PROW_CONFIG}
+          readarray -t TESTED_PROFILES <<< $(grep -r PROFILE= ./prow_config.yaml | sort -u | sed 's/.*export PROFILE=\(.*\)/\1/')
+
           RULES=$(cat ctf-output.json | jq -r '.rules[]')
 
           # Let's grab one profile for each changed rule
@@ -73,13 +78,6 @@ jobs:
           RANDOM=${{ github.event.pull_request.number }}
           for rule in $RULES; do
             readarray -t TEMP <<< $(grep -lr -e "- ${rule}\$" build/*/profiles | sort)
-
-            # Let's ilter out profiles for which we don't have a CI job configured
-            # Here is an example of how to quicly update this variable in the future
-            # TESTED_PROFILES=$(grep -r PROFILE= ./ComplianceAsCode-content-master__4.16.yaml | sort -u | sed 's/.*export PROFILE=\(.*\)/\1/')
-            # echo -n TESTED_PROFILES=\(${TESTED_PROFILES[@]}\)
-            # Copy and paste the profiles here
-            TESTED_PROFILES=(bsi bsi-node cis cis-node e8 high high-node moderate moderate-node pci-dss pci-dss-4-0 pci-dss-node pci-dss-node-4-0 stig stig-node)
 
             ELIGIBLE_PROFILES=()
             for index in "${!TEMP[@]}"; do
