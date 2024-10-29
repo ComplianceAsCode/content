@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'The File /etc/ssh/sshd_config.d/50-redhat.conf Must Exist'
+
+description: |-
+    The <tt>/etc/ssh/sshd_config.d/50-redhat.conf</tt> file must exist as it contains important
+    settings to secure SSH.
+
+
+rationale: |-
+    The file must exist to configure SSH correctly.
+
+severity: medium
+
+warnings:
+    - general:
+        There is no remediation available for this rule since this file
+        needs to have the correct content for the given system.
+
+
+template:
+    name: 'file_existence'
+    vars:
+        filepath: '/etc/ssh/sshd_config.d/50-redhat.conf'
+        exists: true
+    backends:
+        ansible: off
+        bash: off

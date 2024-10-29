@@ -1847,7 +1847,8 @@ controls:
             - medium
         title: RHEL 9 SSH daemon must be configured to use system-wide crypto policies.
         rules:
-            - harden_sshd_ciphers_opensshserver_conf_crypto_polic
+            - harden_sshd_ciphers_opensshserver_conf_crypto_policy
+            - file_sshd_50_redhat_exists
         status: automated
 
     -   id: RHEL-09-255060
