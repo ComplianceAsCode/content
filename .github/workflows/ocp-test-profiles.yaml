@@ -62,7 +62,6 @@ jobs:
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' && (contains(steps.product.outputs.prop, 'ocp4') || contains(steps.product.outputs.prop, 'rhcos4')) }}
         id: profiles_to_test 
         run: |
-          OCP_VERSIONS=(4.17 4.16)
           RULES=$(cat ctf-output.json | jq -r '.rules[]')
 
           # Let's grab one profile for each changed rule
@@ -101,9 +100,7 @@ jobs:
 
           # Craft a command to trigger tests
           COMMAND=$(for profile in ${UNIQUE_PROFILES[@]}; do
-            for OCP_V in "${OCP_VERSIONS[@]}"; do
-              echo ${profile} | sed 's/build\/\(.*\)\/profiles\/\(.*\)\.profile/\/test '"${OCP_V}"'-e2e-aws-\1-\2/'
-            done
+            echo ${profile} | sed 's/build\/\(.*\)\/profiles\/\(.*\)\.profile/\/test e2e-aws-\1-\2/'
           done)
 
           # COMMAND is a multiline string, so we need to set it this way
