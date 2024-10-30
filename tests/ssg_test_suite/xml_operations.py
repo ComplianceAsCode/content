@@ -42,9 +42,14 @@ def get_all_xccdf_ids_in_datastream(datastream):
         logging.error(
             "Checklists not found within data stream")
 
-    all_checklist_components = checklists_node.findall('ds:component-ref',
-                                                       PREFIX_TO_NS)
-    xccdf_ids = [component.get("id") for component in all_checklist_components]
+    xccdf_ids = []
+    for cref in checklists_node.findall("ds:component-ref", PREFIX_TO_NS):
+        href = cref.get('{%s}href' % PREFIX_TO_NS["xlink"])
+        comp_id = href.lstrip("#")
+        query = ".//ds:component[@id='%s']/xccdf-1.2:Benchmark" % (comp_id)
+        benchmark_node = root.find(query, PREFIX_TO_NS)
+        if benchmark_node is not None:
+            xccdf_ids.append(cref.get("id"))
     return xccdf_ids
 
 
