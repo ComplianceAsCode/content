@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R14.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V2R1.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -34,7 +34,7 @@ description: 'This profile contains configuration checks that align to the
 extends: null
 hidden: ''
 metadata:
-    version: V1R14
+    version: V2R1
     SMEs:
     - mab879
     - ggbecker
@@ -498,7 +498,7 @@ selections:
 - var_slub_debug_options=P
 - var_user_initialization_files_regex=all_dotfiles
 - var_screensaver_lock_delay=5_seconds
-- var_logind_session_timeout=15_minutes
+- var_logind_session_timeout=10_minutes
 - var_auditd_name_format=stig
 unselected_groups: []
 platforms: !!set {}
