@@ -41,7 +41,9 @@ SYSCONFIG_FILE="/etc/sysctl.conf"
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+if {{{ bash_not_bootc_build() }}} ; then
+    /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+fi
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
@@ -57,7 +59,9 @@ sed -i "/^$SYSCONFIG_VAR/d" /etc/sysctl.conf
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+if {{{ bash_not_bootc_build() }}} ; then
+    /sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+fi
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
