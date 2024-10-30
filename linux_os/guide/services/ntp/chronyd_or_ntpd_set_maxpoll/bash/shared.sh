@@ -20,7 +20,7 @@ $pof ntpd || {
 
 for config_file in "${CONFIG_FILES[@]}" ; do
     # Set maxpoll values to var_time_service_set_maxpoll
-    sed -i "s/^\(\(server\|pool\|peer\).*maxpoll\) [0-9][0-9]*\(.*\)$/\1 $var_time_service_set_maxpoll \3/" "$config_file"
+    sed -i "s/^\(\(server\|pool\|peer\).*maxpoll\) [0-9,-][0-9]*\(.*\)$/\1 $var_time_service_set_maxpoll \3/" "$config_file"
 done
 
 for config_file in "${CONFIG_FILES[@]}" ; do
