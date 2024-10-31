@@ -62,7 +62,7 @@ function check_sysctl_configuration()
     return $XCCDF_RESULT_FAIL
 }
 
-{{% if "I" in FLAGS -%}}
+{{% if IPV6 == "true" -%}}
 # pass if IPv6 is disabled
 check_sysctl_configuration "net.ipv6.conf.all.disable_ipv6" "1"
 if [[ $? == $XCCDF_RESULT_PASS ]] ; then
