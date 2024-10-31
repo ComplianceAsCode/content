@@ -62,7 +62,6 @@
 </def-group>
 
 {{%- endif %}}
-{{%- if "R" in FLAGS -%}}
 
 {{% if CHECK_RUNTIME == "true" %}}
 <def-group>
@@ -121,8 +120,6 @@
 </def-group>
 {{% endif %}}
 
-{{%- endif -%}}
-{{%- if "S" in FLAGS -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
@@ -269,4 +266,3 @@
 {{% endfor %}}
 {{% endif %}}
 </def-group>
-{{%- endif -%}}

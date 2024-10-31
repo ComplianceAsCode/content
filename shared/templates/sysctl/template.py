@@ -8,7 +8,7 @@ def preprocess(data, lang):
     ipv6_flag = "P"
     if data["sysctlid"].find("ipv6") >= 0:
         ipv6_flag = "I"
-    data["flags"] = "SR" + ipv6_flag
+    data["flags"] = ipv6_flag
     if "operation" not in data:
         data["operation"] = "equals"
     if isinstance(data["sysctlval"], list) and len(data["sysctlval"]) == 0:
