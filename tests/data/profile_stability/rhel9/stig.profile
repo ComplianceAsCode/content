@@ -190,7 +190,6 @@ selections:
 - configure_opensc_card_drivers
 - configure_openssl_crypto_policy
 - configure_openssl_tls_crypto_policy
-- configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
 - configure_tmux_lock_keybinding
@@ -305,6 +304,7 @@ selections:
 - file_permissions_var_log
 - file_permissions_var_log_audit
 - file_permissions_var_log_messages
+- file_sshd_50_redhat_exists
 - firewalld-backend
 - firewalld_sshd_port_enabled
 - gid_passwd_group_same
@@ -463,6 +463,7 @@ selections:
 - sshd_enable_pubkey_auth
 - sshd_enable_strictmodes
 - sshd_enable_warning_banner
+- sshd_include_crypto_policy
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
@@ -554,6 +555,7 @@ selections:
 - var_logind_session_timeout=15_minutes
 - var_accounts_fail_delay=4
 - var_accounts_max_concurrent_login_sessions=10
+- var_accounts_tmout=10_min
 - var_accounts_authorized_local_users_regex=rhel9
 - var_accounts_passwords_pam_faillock_unlock_time=never
 - var_accounts_passwords_pam_faillock_fail_interval=900

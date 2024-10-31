@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'SSHD Must Include System'
+title: 'SSHD Must Include System Crypto Policy Config File'
 
 description: |-
     SSHD should follow the system cryptographic policy.
@@ -10,3 +10,11 @@ rationale: |-
     Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
 
 severity: medium
+
+identifiers:
+    cce@rhel9: CCE-90566-1
+
+references:
+    disa: CCI-001453
+    nist: AC-17 (2)
+    srg: SRG-OS-000250-GPOS-00093
