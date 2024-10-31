@@ -55,7 +55,6 @@ selections:
 - accounts_minimum_age_login_defs
 - accounts_no_uid_except_zero
 - accounts_password_all_shadowed_sha512
-- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_dictcheck
 - accounts_password_pam_difok
@@ -193,18 +192,13 @@ selections:
 - chronyd_server_directive
 - chronyd_specify_remote_server
 - clean_components_post_updating
-- configure_bashrc_tmux
 - configure_bind_crypto_policy
 - configure_crypto_policy
-- configure_firewalld_ports
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_opensc_card_drivers
 - configure_openssl_crypto_policy
 - configure_openssl_tls_crypto_policy
-- configure_tmux_lock_after_time
-- configure_tmux_lock_command
-- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - configured_firewalld_default_deny
 - coredump_disable_backtraces
@@ -354,7 +348,6 @@ selections:
 - mount_option_home_nodev
 - mount_option_home_noexec
 - mount_option_home_nosuid
-- mount_option_krb_sec_remote_filesystems
 - mount_option_nodev_nonroot_local_partitions
 - mount_option_nodev_remote_filesystems
 - mount_option_nodev_removable_partitions
@@ -383,7 +376,6 @@ selections:
 - no_files_unowned_by_user
 - no_host_based_files
 - no_shelllogin_for_systemaccounts
-- no_tmux_in_shells
 - no_user_host_based_files
 - package_aide_installed
 - package_audispd-plugins_installed
@@ -414,7 +406,6 @@ selections:
 - package_sudo_installed
 - package_telnet-server_removed
 - package_tftp-server_removed
-- package_tmux_installed
 - package_tuned_removed
 - package_usbguard_installed
 - package_vsftpd_removed
@@ -458,7 +449,6 @@ selections:
 - set_password_hashing_algorithm_libuserconf
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_passwordauth
-- set_password_hashing_min_rounds_logindefs
 - ssh_keys_passphrase_protected
 - sshd_disable_compression
 - sshd_disable_empty_passwords
@@ -479,7 +469,6 @@ selections:
 - sshd_set_idle_timeout
 - sshd_set_keepalive
 - sshd_set_loglevel_verbose
-- sshd_use_priv_separation
 - sshd_x11_use_localhost
 - sssd_certificate_verification
 - sssd_enable_certmap
@@ -525,7 +514,6 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_ra
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
-- tftpd_uses_secure_mode
 - usbguard_generate_policy
 - use_pam_wheel_for_su
 - wireless_disable_interfaces
