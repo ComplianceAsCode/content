@@ -11,7 +11,7 @@ jobs:
             image: fedora:latest
         steps:
             -   name: Install Dependencies
-                run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible-lint libxslt ansible
+                run: dnf install -y cmake ninja-build openscap-utils python3-pip python3-devel gcc-c++ ansible-lint libxslt ansible python3-setuptools
             -   name: Checkout
                 uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
             -   name: Install python deps
