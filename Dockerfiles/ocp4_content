@@ -2,7 +2,7 @@ FROM registry.fedoraproject.org/fedora-minimal:latest as builder
 
 WORKDIR /content
 
-RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-jinja2 openscap-utils
+RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-jinja2 openscap-utils python3-setuptools
 
 COPY . .
 
