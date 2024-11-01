@@ -10,7 +10,7 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 git python3-deepdiff python3-requests jq python3-pip
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 git python3-deepdiff python3-requests jq python3-pip python3-setuptools
       - name: Install deps python
         run: pip install gitpython xmldiff
       - name: Checkout
