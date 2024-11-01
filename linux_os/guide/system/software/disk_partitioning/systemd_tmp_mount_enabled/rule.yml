@@ -26,7 +26,7 @@ ocil: |-
 
 ocil_clause: "the tmp.mount unit is masked or disabled"
 
-platform: machine
+platform: not container and not bootc
 
 template:
     name: systemd_mount_enabled

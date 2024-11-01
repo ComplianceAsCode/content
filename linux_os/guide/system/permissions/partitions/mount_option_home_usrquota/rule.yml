@@ -48,13 +48,13 @@ warnings:
 {{% endif %}}
 
 {{% if "ol" in product %}}
-platform: machine
+platform: not container and not bootc
 template:
     name: mount_option_home
     vars:
         mountoption: usrquota
 {{% else %}}
-platform: machine and mount[home]
+platform: not container and not bootc and mount[home]
 template:
     name: mount_option
     vars:
