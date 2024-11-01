@@ -33,7 +33,7 @@ less ~/OpenSCAP/STARTGUIDE.md
 On *Red Hat Enterprise Linux 8* and *Fedora* the package list but must also include python3:
 
 ```bash
-dnf install cmake make openscap-utils openscap-scanner python3
+dnf install cmake make openscap-utils openscap-scanner python3 python3-setuptools
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
