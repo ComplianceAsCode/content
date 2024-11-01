@@ -8,7 +8,11 @@ description: |-
 
 rationale: |-
     <tt>libreport-plugin-logger</tt> is a ABRT plugin to report bugs into the
+    {{%- if 'ol' in families %}}
+    Oracle Linux Support system.
+    {{%- else %}}
     Red Hat Support system.
+    {{%- endif %}}
 
 severity: low
 

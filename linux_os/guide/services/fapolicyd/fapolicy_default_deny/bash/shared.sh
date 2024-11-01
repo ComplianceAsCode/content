@@ -5,7 +5,9 @@
 # disruption = low
 
 cat > /etc/fapolicyd/rules.d/99-deny-everything.rules << EOF
+{{%- if 'ol' not in families %}}
 # Red Hat KCS 7003854 (https://access.redhat.com/solutions/7003854)
+{{%- endif %}}
 deny perm=any all : all
 EOF
 
