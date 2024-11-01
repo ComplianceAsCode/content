@@ -1,4 +1,8 @@
 # platform = multi_platform_all
+# complexity = low
+# strategy = configure
+# disruption = low
+# reboot = false
 
 -   name: "{{{ rule_title }}} - Ensure That Drop In SSH Config Files are Included"
     ansible.builtin.lineinfile:
