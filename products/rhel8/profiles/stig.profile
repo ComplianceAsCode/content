@@ -92,10 +92,6 @@ selections:
     # RHEL-08-010000
     - installed_OS_is_vendor_supported
 
-    # RHEL-08-010001
-    - package_mcafeetp_installed
-    - agent_mfetpd_running
-
     # RHEL-08-010010
     - security_patches_up_to_date
 
@@ -549,27 +545,11 @@ selections:
     - logind_session_timeout
     - var_logind_session_timeout=10_minutes
 
-    # RHEL-08-020039
-    - package_tmux_installed
-
-    # RHEL-08-020040
-    - configure_tmux_lock_command
-    - configure_tmux_lock_keybinding
-
-    # RHEL-08-020041
-    - configure_bashrc_tmux
-
-    # RHEL-08-020042
-    - no_tmux_in_shells
-
     # RHEL-08-020050
     - dconf_gnome_lock_screen_on_smartcard_removal
 
     # RHEL-08-020060
     - dconf_gnome_screensaver_idle_delay
-
-    # RHEL-08-020070
-    - configure_tmux_lock_after_time
 
     # RHEL-08-020080
     - dconf_gnome_screensaver_user_locks
