@@ -12,12 +12,20 @@
 
 {{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
 
+{{% if product == 'rhel10' %}}
+{{% set audit_loading_systemd_directive="ExecStart" %}}
+{{% set audit_loading_service_file="audit-rules.service" %}}
+{{% else %}}
+{{% set audit_loading_systemd_directive="ExecStartPost" %}}
+{{% set audit_loading_service_file="auditd.service" %}}
+{{% endif %}}
+
 - name: Service facts
   ansible.builtin.service_facts:
 
 - name: Check the rules script being used
   ansible.builtin.command:
-    grep '^ExecStartPost' /usr/lib/systemd/system/auditd.service
+    grep '^{{{ audit_loading_systemd_directive }}}' /usr/lib/systemd/system/{{{ audit_loading_service_file }}}
   register: check_rules_scripts_result
   changed_when: false
   failed_when: false
