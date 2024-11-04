@@ -699,7 +699,7 @@ When the remediation is applied duplicate occurrences of `key` are removed.
         `var_selinuxuser_execheap` to turn on or off the SELinux
         boolean.
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, OVAL, SCE
 
 #### service_disabled
 -   Checks if a service is disabled. Uses either systemd or SysV init

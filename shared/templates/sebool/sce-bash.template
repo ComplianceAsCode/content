@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# check-import = stdout
+{{% if not SEBOOL_BOOL %}}
+# check-export = var_{{{ SEBOOLID }}}=var_{{{ SEBOOLID }}}
+{{% endif %}}
+
+function check_sebool_value()
+{
+    local seboolid="$1"
+    local exp_value="$2"
+
+    if seinfo -xb "$seboolid" | grep -q "$seboolid[[:space:]]\+$exp_value;" ; then
+        return $XCCDF_RESULT_PASS
+    else
+        return $XCCDF_RESULT_FAIL
+    fi
+}
+
+{{% if SEBOOL_BOOL -%}}
+expected_value="{{{ SEBOOL_BOOL }}}"
+{{%- else -%}}
+expected_value="$XCCDF_VALUE_var_{{{ SEBOOLID }}}"
+{{%- endif %}}
+
+check_sebool_value {{{ SEBOOLID }}} "$expected_value"
+exit $?
