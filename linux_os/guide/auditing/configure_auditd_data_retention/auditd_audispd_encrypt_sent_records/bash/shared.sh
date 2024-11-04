@@ -1,7 +1,7 @@
 # platform = multi_platform_all
 
 AUDISP_REMOTE_CONFIG="{{{ audisp_conf_path }}}/audisp-remote.conf"
-{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+{{% if product in ["rhel8", "fedora", "ol8", "rhv4", "sle15"] %}}
 option="^transport"
 value="KRB5"
 {{% else %}}
