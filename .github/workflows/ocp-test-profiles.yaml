@@ -117,7 +117,7 @@ jobs:
             echo "${ALL_PROFILES_FORMATTED}"
             echo EOF
           } >> $GITHUB_OUTPUT
-      - uses: thollander/actions-comment-pull-request@e2c37e53a7d2227b61585343765f73a9ca57eda9 # v2
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v2
         if: ${{ steps.profiles_to_test.outputs.TEST_PROFILES_COMMAND != '' }}
         with:
           message: |
