@@ -75,6 +75,7 @@ if [[ $? == 0 ]] ; then
 fi
 {{% endif %}}
 
+{{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" -%}}
 expected_value="$XCCDF_VALUE_sysctl_{{{ SYSCTLID }}}_value"
 {{%- else -%}}
@@ -84,4 +85,12 @@ check_sysctl_configuration "{{{ SYSCTLVAR }}}" "$expected_value"
 if [[ $? == 0 ]] ; then
     exit $XCCDF_RESULT_PASS
 fi
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+check_sysctl_configuration "{{{ SYSCTLVAR }}}" "{{{ x }}}"
+if [[ $? == 0 ]] ; then
+    exit $XCCDF_RESULT_PASS
+fi
+{{% endfor %}}
+{{% endif %}}
 exit $XCCDF_RESULT_FAIL
