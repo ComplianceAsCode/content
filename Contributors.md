@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2024-07-25 20:02 UTC
+Last Modified: 2024-11-05 16:58 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -33,6 +33,7 @@ The following people have contributed to the SCAP Security Guide project
 * Gabriel Becker <ggasparb@redhat.com>
 * BenGui <benoit.guillon1@etu.unilim.fr>
 * Alexander Bergmann <abergmann@suse.com>
+* Eric Berry <eric.berry@canonical.com>
 * Dale Bewley <dale@bewley.net>
 * Jose Luis BG <bgjoseluis@gmail.com>
 * binyanling <binyanling@uniontech.com>
@@ -79,7 +80,7 @@ The following people have contributed to the SCAP Security Guide project
 * François Duthilleul <francoisduthilleul@gmail.com>
 * Greg Elin <gregelin@gitmachines.com>
 * eradot4027 <jrtonmac@gmail.com>
-* ermeratos <manuel.ermer@atos.net>
+* ermeratos <manuel.ermer@eviden.net>
 * Alexis Facques <alexis.facques@mythalesgroup.io>
 * Henry Finucane <hfinucane@zscaler.com>
 * Leah Fisher <lfisher047@gmail.com>
@@ -144,14 +145,17 @@ The following people have contributed to the SCAP Security Guide project
 * Ian Lee <lee1001@llnl.gov>
 * Jarrett Lee <jarrettl@umd.edu>
 * Joseph Lenox <joseph.lenox@collins.com>
+* lichtblaugue <guenther.lichtblau@eviden.com>
 * Jan Lieskovsky <jlieskov@redhat.com>
 * Markus Linnala <Markus.Linnala@knowit.fi>
 * Flos Lonicerae <lonicerae@gmail.com>
 * Simon Lukasik <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
+* Mab879 <207087+Mab879@users.noreply.github.com>
 * Mackemania <8738793+Mackemania@users.noreply.github.com>
 * Caitlin Macleod <caitelatte@gmail.com>
+* Dmitry Makovey <dmakovey@yahoo.com>
 * Nick Maludy <nmaludy@gmail.com>
 * Lokesh Mandvekar <lsm5@fedoraproject.org>
 * Matus Marhefka <mmarhefk@redhat.com>
@@ -228,6 +232,7 @@ The following people have contributed to the SCAP Security Guide project
 * rumch-se <77793453+rumch-se@users.noreply.github.com>
 * Rutvik <rutksh@gmail.com>
 * Ray Shaw (Cont ARL/CISD) rvshaw <rvshaw@esme.arl.army.mil>
+* Nicolas SAID <nicolas.said@atos.net>
 * Earl Sampson <ESampson@suse.com>
 * sampsone <esampson@suse.com>
 * Mirco Santori <mirco.santori@roche.com>
@@ -300,7 +305,9 @@ The following people have contributed to the SCAP Security Guide project
 * Guang Yee <guang.yee@suse.com>
 * Achilleas John Yfantis <ayfantis@redhat.com>
 * YiLin.Li <YiLin.Li@linux.alibaba.com>
+* yunimoo <yunimoo@nekocake.cafe>
 * YuQing <yyq0391@163.com>
+* zhaoyun <zhaoyun@kylinos.cn>
 * Kevin Zimmerman <kevin.zimmerman@kitware.com>
 * Luigi Mario Zuccarelli <luzuccar@redhat.com>
 * Jan Černý <jcerny@redhat.com>
