@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R1
+    version: V2R2
     SMEs:
         - abergmann
 
@@ -11,13 +11,13 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V2R1.
+    DISA STIG for SUSE Linux Enterprise 15 V2R2.
 
 
 selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
-    - var_accounts_tmout=15_min
+    - var_accounts_tmout=10_min
     - inactivity_timeout_value=15_minutes
     - var_password_pam_dcredit=1
     - var_password_pam_lcredit=1
