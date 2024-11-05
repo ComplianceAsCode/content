@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: Verify Permissions On /etc/chrony.keys File
 
-description: '{{{ describe_file_permissions(file="/etc/chrony.keys", perms="0644") }}}'
+description: '{{{ describe_file_permissions(file="/etc/chrony.keys", perms="0640") }}}'
 
 rationale: |-
     Setting correct permissions on the /etc/chrony.keys file is important
@@ -17,17 +17,17 @@ identifiers:
     cce@rhel9: CCE-86384-5
     cce@rhel10: CCE-88155-7
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/chrony.keys", perms="0644") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/chrony.keys", perms="0640") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/chrony.keys", perms="0644") }}}
+    {{{ ocil_file_permissions(file="/etc/chrony.keys", perms="0640") }}}
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/chrony.keys", mode="0644") }}}'
+fixtext: '{{{ fixtext_file_permissions(file="/etc/chrony.keys", mode="0640") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/chrony.keys", mode="0644") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/chrony.keys", mode="0640") }}}'
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/chrony.keys
-        filemode: '0644'
+        filemode: '0640'
