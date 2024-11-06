@@ -11,7 +11,8 @@ Script created to help maintainers during the release process by automating Gith
 # - https://pygithub.readthedocs.io/en/latest/github_objects.html
 # - https://docs.github.com/en/rest
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
+
 from github import Github
 import argparse
 import configparser
@@ -362,7 +363,7 @@ def get_next_stabilization_date(release_date) -> datetime:
 
 def get_next_release_date(latest_release_date: datetime) -> datetime:
     month = get_next_quarter_first_month(latest_release_date)
-    now = datetime.now()
+    now = datetime.now(UTC)
 
     if month > 9 and latest_release_date <= now:
         year = latest_release_date.year + 1
