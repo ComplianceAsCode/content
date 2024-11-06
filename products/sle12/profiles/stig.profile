@@ -26,7 +26,6 @@ selections:
     - var_password_pam_lcredit=1
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
-    - var_password_pam_remember=5
     - var_password_pam_retry=3
     - var_password_pam_ucredit=1
     - var_accounts_maximum_age_login_defs=60
@@ -59,7 +58,6 @@ selections:
     - accounts_password_all_shadowed_sha512
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
-    - accounts_password_pam_pwhistory_remember
     - accounts_password_set_max_life_existing
     - accounts_password_set_min_life_existing
     - accounts_tmout
