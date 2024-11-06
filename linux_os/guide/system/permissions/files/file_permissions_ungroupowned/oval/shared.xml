@@ -8,15 +8,28 @@
   </definition>
 
   <!-- Create a file_state to filter out files group-owned by known groups. -->
-  <ind:textfilecontent54_object id="etc_group_objects" version="1">
+  <ind:textfilecontent54_object id="object_etc_group" version="1">
     <ind:filepath>/etc/group</ind:filepath>
     <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_object id="object_usr_lib_group" version="1">
+    <ind:filepath>/usr/lib/group</ind:filepath>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]*:([\d]+):[^:]*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_all_gids" version="1">
+    <set>
+      <object_reference>object_etc_group</object_reference>
+      <object_reference>object_usr_lib_group</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
   <local_variable id="var_all_local_gids" version="1"
     datatype="int" comment="all GIDs extracted from /etc/group on the target system">
-    <object_component object_ref="etc_group_objects" item_field="subexpression"/>
+    <object_component object_ref="object_all_gids" item_field="subexpression"/>
   </local_variable>
 
   <unix:file_state id="state_file_permissions_ungroupowned_local_group_owner" version="1"
