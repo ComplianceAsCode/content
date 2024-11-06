@@ -3,14 +3,8 @@
     {{{ oval_metadata("Multiple remote chronyd or ntpd NTP Servers for time synchronization should be specified (and dependencies are met)") }}}
 
     <criteria operator="OR">
-      <criteria comment="chronyd enabled and multiple remote servers specified" operator="AND">
-        <extend_definition comment="service chronyd enabled" definition_ref="service_chronyd_enabled" />
-        <extend_definition comment="multiple chronyd remote servers specified" definition_ref="chronyd_specify_multiple_servers" />
-      </criteria>
-      <criteria comment="ntpd enabled and multile remote servers specified" operator="AND">
-        <extend_definition comment="service ntpd enabled" definition_ref="service_ntpd_enabled" />
-        <extend_definition comment="multiple ntpd remote servers specified" definition_ref="ntpd_specify_multiple_servers" />
-      </criteria>
+      <extend_definition comment="multiple chronyd remote servers specified" definition_ref="chronyd_specify_multiple_servers" />
+      <extend_definition comment="multiple ntpd remote servers specified" definition_ref="ntpd_specify_multiple_servers" />
     </criteria>
 
   </definition>
