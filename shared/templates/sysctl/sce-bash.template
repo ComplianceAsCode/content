@@ -22,10 +22,15 @@ function pass_if_set_correctly()
         found_value=$(grep -P "$regex" $files | sed -E "s/$regex/\1/")
         if [[ -n "$found_value" ]] ; then
             if [[ "$found_value" == "$expected_value" ]] ; then
-                return 0
+                found=1
+            else
+                return 1
             fi
         fi
     done
+    if [[ $found == 1 ]] ; then
+        return 0
+    fi
     return 1
 }
 
