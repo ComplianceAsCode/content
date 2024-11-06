@@ -5,10 +5,10 @@ def preprocess(data, lang):
     data["sysctlid"] = ssg.utils.escape_id(data["sysctlvar"])
     if not data.get("sysctlval"):
         data["sysctlval"] = ""
-    ipv6_flag = "P"
     if data["sysctlid"].find("ipv6") >= 0:
-        ipv6_flag = "I"
-    data["flags"] = "SR" + ipv6_flag
+        data["ipv6"] = "true"
+    else:
+        data["ipv6"] = "false"
     if "operation" not in data:
         data["operation"] = "equals"
     if isinstance(data["sysctlval"], list) and len(data["sysctlval"]) == 0:

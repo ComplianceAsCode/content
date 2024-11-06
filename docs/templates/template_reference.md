@@ -934,7 +934,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     the remediation scripts will set the variable with correct value to a drop-in file in
     `/etc/sysctl.d/var_name.conf` file.
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, OVAL, SCE
 
 #### systemd_dropin_configuration
 - checks if a Systemd-style configuration exists either in the main file or in any file within specified dropin directory.

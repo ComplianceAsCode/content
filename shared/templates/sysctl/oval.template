@@ -20,7 +20,7 @@
     <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*\S)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- endmacro -%}}
-{{%- if "P" in FLAGS -%}}
+{{%- if IPV6 == "false" -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="3">
@@ -36,7 +36,7 @@
   </definition>
 </def-group>
 
-{{%- elif "I" in FLAGS -%}}
+{{%- else -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="4">
@@ -62,7 +62,6 @@
 </def-group>
 
 {{%- endif %}}
-{{%- if "R" in FLAGS -%}}
 
 {{% if CHECK_RUNTIME == "true" %}}
 <def-group>
@@ -121,8 +120,6 @@
 </def-group>
 {{% endif %}}
 
-{{%- endif -%}}
-{{%- if "S" in FLAGS -%}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
@@ -269,4 +266,3 @@
 {{% endfor %}}
 {{% endif %}}
 </def-group>
-{{%- endif -%}}
