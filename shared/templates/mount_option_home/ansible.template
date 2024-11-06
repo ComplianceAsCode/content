@@ -1,0 +1,67 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = high
+
+-   name: "{{{ rule_title }}} - Initialize variables"
+    ansible.builtin.set_fact:
+        non_allowed_partitions: ["/", "/lib", "/opt", "/usr", "/bin", "/sbin", "/boot", "/dev", "/proc"]
+        home_directories: []
+        allowed_mount_point: []
+        fstab_mount_point_info: []
+
+-   name: "{{{ rule_title }}} - Get home directories from passwd"
+    ansible.builtin.getent:
+        database: passwd
+
+-   name: "{{{ rule_title }}} - Filter home directories based on UID range"
+    ansible.builtin.set_fact:
+        home_directories: "{{ home_directories + [item.data[4]] }}"
+    when:
+        - item.data[4] is defined
+        - item.data[2]|int >= {{{ uid_min }}}
+        - item.data[2]|int != {{{ nobody_uid }}}
+        - item.data[4] not in non_allowed_partitions
+    with_items: "{{ ansible_facts.getent_passwd | dict2items(key_name='user', value_name='data')}}"
+
+-   name: "{{{ rule_title }}} - Gather mount points"
+    ansible.builtin.setup:
+        filter: ansible_mounts
+
+-   name: "{{{ rule_title }}} - Ensure mount options for home directories"
+    block:
+
+    -   name: " {{{ rule_title }}} - Obtain mount point using df and shell"
+        ansible.builtin.shell: |
+            df {{ item }} | awk '/^\/dev/ {print $6}'
+        register: df_output
+        with_items: "{{ home_directories }}"
+
+    -   name: "{{{ rule_title }}} - Set mount point for each home directory"
+        ansible.builtin.set_fact:
+            allowed_mount_point: "{{ allowed_mount_point + [item.stdout_lines[0]] }}"
+        with_items: "{{ df_output.results }}"
+        when: 
+            - item.stdout_lines is defined
+            - item.stdout_lines | length > 0
+            - item.stdout_lines[0] != ""
+
+    -   name: "{{{ rule_title }}} - Obtain full mount information for allowed mount point"
+        ansible.builtin.set_fact:
+            fstab_mount_point_info: "{{ fstab_mount_point_info + [ ansible_mounts | selectattr('mount', 'equalto', item) | first ]}}"
+        with_items: "{{ allowed_mount_point }}"
+        when: allowed_mount_point is defined
+
+    -   name: "{{{ rule_title }}} - Ensure mount option {{{ MOUNTOPTION }}} is in fstab for allowed mount point"
+        ansible.builtin.mount:
+            path: "{{ item.mount }}"
+            src: "{{ item.device }}"
+            opts: "{{ item.options }},{{{ MOUNTOPTION }}}"
+            state: mounted
+            fstype: "{{ item.fstype }}"
+        with_items: "{{ fstab_mount_point_info }}"
+        when:
+            - allowed_mount_point is defined
+            - item.mount not in non_allowed_partitions
+            - "'{{{ MOUNTOPTION }}}' not in item.options"
