@@ -35,3 +35,9 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!grub2_page_alloc_shuffle_argument'
     - '!package_kea_removed'
+    # disable R45: Enable AppArmor security profiles
+    - '!apparmor_configured'
+    - '!all_apparmor_profiles_enforced'
+    - '!grub2_enable_apparmor'
+    - '!package_apparmor_installed'
+    - '!package_pam_apparmor_installed'
