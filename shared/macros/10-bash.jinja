@@ -1432,9 +1432,9 @@ for home_dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid
     # the permission is already defined as expected, therefore not impacting in possible integrity
     # check systems that also check inodes timestamps.
     {{%- if recursive %}}
-    find "$home_dir" -perm /7027 -exec chmod u-s,g-w-s,o=- {} \;
+    find "$home_dir" -perm /7027 \! -type l -exec chmod u-s,g-w-s,o=- {} \;
     {{%- else %}}
-    find "$home_dir" -maxdepth 0 -perm /7027 -exec chmod u-s,g-w-s,o=- {} \;
+    find "$home_dir" -maxdepth 0 -perm /7027 \! -type l -exec chmod u-s,g-w-s,o=- {} \;
     {{%- endif %}}
 done
 {{%- endmacro -%}}
