@@ -5,7 +5,7 @@
 # If apparmor or apparmor-utils are not installed, then this test fails.
 {{{ bash_package_installed("apparmor") }}}
 if [ $? -ne 0 ]; then
-        exit ${XCCDF_RESULT_FAIL}
+    exit ${XCCDF_RESULT_FAIL}
 fi
 
 # if number of apparmor profiles loaded not the same as enforced profiles, then it fails.
