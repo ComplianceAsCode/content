@@ -15,7 +15,7 @@ if [ "$APPARMOR_MODE" = "enforce" ]
 then
   {{% if 'ubuntu' in product %}}
   # Set all profiles to enforce mode except disabled profiles
-  find /etc/apparmor.d -maxdepth 1 ! -type d -exec bash -c '[[ -e "/etc/apparmor.d/disable/$(basename "{}")" ]] || aa-enforce "{}"' \;
+  find /etc/apparmor.d -maxdepth 1 ! -type d -exec bash -c '[[ -e "/etc/apparmor.d/disable/$(basename "$1")" ]] || aa-enforce "$1"' _ {} \;
   {{% else %}}
   # Set all profiles to enforce mode
   aa-enforce /etc/apparmor.d/*
