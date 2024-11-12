@@ -25,6 +25,10 @@ if [ ! -f {{{ path }}} ]; then
     mkdir -p "$(dirname '{{{ path }}}')"
     touch {{{ path }}}
 fi
+if [ -L {{{ path }}} ]; then
+    rm {{{ path }}}
+    touch {{{ path }}}
+fi
 chown testuser_123 {{{ path }}}
 {{% endif %}}
 {{% endfor %}}
