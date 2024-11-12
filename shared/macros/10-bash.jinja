@@ -2164,7 +2164,8 @@ fi
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
-if ! grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*" "{{{ pam_file }}}"; then
+{{% set control_regex = control | escape_regex %}}
+if ! grep -qP "^\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s*.*" "{{{ pam_file }}}"; then
     # Line matching group + control + module was not found. Check group + module.
     if [ "$(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}")" -eq 1 ]; then
         # The control is updated only if one single line matches.
@@ -2207,19 +2208,20 @@ fi
 
 #}}
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
+{{% set control_regex = control | escape_regex %}}
 {{{ bash_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
 # Check the option
-if ! grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b" "{{{ pam_file }}}"; then
+if ! grep -qP "^\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b" "{{{ pam_file }}}"; then
     {{%- if value == '' %}}
-    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}/" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}/" "{{{ pam_file }}}"
     {{%- else %}}
-    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}={{{ value }}}/" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "/\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}.*/ s/$/ {{{ option }}}={{{ value }}}/" "{{{ pam_file }}}"
     {{%- endif %}}
 {{%- if value == '' %}}
 fi
 {{%- else %}}
 else
-    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]+\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(\s*{{{ group }}}\s+{{{ control_regex }}}\s+{{{ module }}}\s+.*)({{{ option }}}=)[[:alnum:]]+\s*(.*)/\1\2{{{ value }}} \3/" "{{{ pam_file }}}"
 fi
 {{%- endif %}}
 {{%- endmacro -%}}
