@@ -1,3 +1,7 @@
+"""
+Common functions for processing OVAL in SSG
+"""
+
 from __future__ import absolute_import
 from __future__ import print_function
 
@@ -26,9 +30,23 @@ except AttributeError:
 
 def applicable_platforms(oval_file, oval_version_string=None):
     """
-    Returns the applicable platforms for a given oval file
-    """
+    Returns the applicable platforms for a given OVAL file.
 
+    This function processes an OVAL file to extract the platforms it applies to. It uses a
+    specified OVAL version string or a default version if none is provided. The function
+    constructs an XML tree from the OVAL file and extracts platform information from it.
+
+    Args:
+        oval_file (str): The path to the OVAL file to be processed.
+        oval_version_string (str, optional): The OVAL version string to be used.
+                                             If not provided, a default version is used.
+
+    Returns:
+        list: A list of platforms that the OVAL file applies to.
+
+    Raises:
+        Exception: If there is an error while parsing the OVAL file.
+    """
     platforms = []
 
     if not oval_version_string:
@@ -67,14 +85,23 @@ def applicable_platforms(oval_file, oval_version_string=None):
 
 def parse_affected(oval_contents):
     """
-    Returns the tuple (start_affected, end_affected, platform_indents) for
-    the passed oval file contents. start_affected is the line number of
-    starting tag of the <affected> element, end_affected is the line number of
-    the closing tag of the </affected> element, and platform_indents is a
-    string containing the indenting characters before the contents of the
-    <affected> element.
-    """
+    Returns the tuple (start_affected, end_affected, platform_indents) for the passed OVAL file contents.
 
+    Args:
+    oval_contents (list of str): The contents of the OVAL file, where each element is a line from
+                                 the file.
+
+    Returns:
+        tuple: A tuple containing:
+            - start_affected (int): The line number of the starting <affected> tag.
+            - end_affected (int): The line number of the closing </affected> tag.
+            - platform_indents (str): The indenting characters before the contents of the
+              <affected> element.
+
+    Raises:
+        ValueError: If the OVAL file does not contain a single <affected> element, if the start
+                    tag is after the end tag, or if the tags contain other elements.
+    """
     start_affected = list(filter(lambda x: "<affected" in oval_contents[x],
                                  range(0, len(oval_contents))))
     if len(start_affected) != 1:
