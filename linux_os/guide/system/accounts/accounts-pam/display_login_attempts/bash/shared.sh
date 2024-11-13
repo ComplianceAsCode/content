@@ -13,7 +13,7 @@
 {{%- elif "sle" in product %}}
 {{%- set control = "optional" %}}
 {{%- else %}}
-{{%- set control = "\[default=1\]" %}}
+{{%- set control = "[default=1]" %}}
 {{%- endif %}}
 
 {{{ bash_pam_lastlog_enable_showfailed(pam_lastlog_path, control, after_match) }}}
