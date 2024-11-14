@@ -38,6 +38,18 @@ class Function(boolean.Function):
         return isinstance(self, boolean.NOT)
 
     def as_id(self):
+        """
+        Generate a string representation of the boolean expression.
+
+        This method constructs a unique identifier for the boolean expression by recursively
+        calling `as_id` on its arguments and combining them with the appropriate boolean operator.
+
+        Returns:
+            str: A string representing the boolean expression. If the expression is a negation, it
+                 returns 'not_' followed by the identifier of the negated argument. If the
+                 expression is a conjunction or disjunction, it returns the identifiers of the
+                 arguments joined by '_and_' or '_or_'.
+        """
         if self.is_not():
             return 'not_{0}'.format(self.args[0].as_id())
         op = 'unknown_bool_op'
