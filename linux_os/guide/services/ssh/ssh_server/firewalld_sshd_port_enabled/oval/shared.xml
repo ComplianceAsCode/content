@@ -31,7 +31,7 @@
 
     <!-- all interfaces have a zone defined -->
     <ind:variable_test id="test_firewalld_sshd_port_enabled_all_nics_in_zones"
-        check="all" check_existence="at_least_one_exists" version="1"
+        check="all" check_existence="any_exist" version="1"
         comment="All NICs must have a firewalld zone defined in their settings">
         <ind:object object_ref="object_firewalld_sshd_port_enabled_network_conf_files_count"/>
         <ind:state state_ref="state_firewalld_sshd_port_enabled_network_conf_files_count"/>
