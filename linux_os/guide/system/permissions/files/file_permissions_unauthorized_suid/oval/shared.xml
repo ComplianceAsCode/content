@@ -12,6 +12,11 @@
         <unix:suid datatype="boolean">true</unix:suid>
     </unix:file_state>
 
+    <unix:file_state id="state_file_permissions_unauthorized_suid_sysroot" version="1"
+        comment="Used to filter out all files in the /sysroot directory">
+        <unix:filepath operation="pattern match">^/sysroot/.*$</unix:filepath>
+    </unix:file_state>
+
     {{%- set var_local_mount_points = "var_" ~ rule_id ~ "_local_mountpoints" -%}}
     {{{ create_local_mount_points_list(var_local_mount_points) }}}
 
@@ -28,6 +33,7 @@
                 var_ref="{{{ var_local_mount_points }}}"/>
         <unix:filename operation="pattern match">^.*$</unix:filename>
         <filter action="include">state_file_permissions_unauthorized_suid_set</filter>
+        <filter action="exclude">state_file_permissions_unauthorized_suid_sysroot</filter>
     </unix:file_object>
 
     <local_variable id="var_file_permissions_unauthorized_suid_all_suid_files" version="1"
