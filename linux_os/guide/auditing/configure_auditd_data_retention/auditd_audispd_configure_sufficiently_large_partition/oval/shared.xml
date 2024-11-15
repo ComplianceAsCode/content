@@ -1,4 +1,4 @@
-{{% if product not in ['ubuntu2204'] %}}
+{{% if product not in ['ubuntu2204', 'ubuntu2404'] %}}
 {{% if target_oval_version >= [5, 11.2] %}}
 <def-group oval_version="5.11.2">
   <definition class="compliance" id="{{{ rule_id }}}" version="1">

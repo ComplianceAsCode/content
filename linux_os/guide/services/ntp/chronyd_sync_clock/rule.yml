@@ -1,6 +1,6 @@
 documentation_complete: true
 
-{{% if product == 'ubuntu2204' -%}}
+{{% if product in ['ubuntu2204', 'ubuntu2404'] -%}}
 {{% set step_value = '1 1' -%}}
 {{% else -%}}
 {{% set step_value = '1 -1' -%}}
