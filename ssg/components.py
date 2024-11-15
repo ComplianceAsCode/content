@@ -115,10 +115,6 @@ class Component:
         templates (list, optional): A list of templates associated with the component. Defaults to an empty list.
         groups (list, optional): A list of groups associated with the component. Defaults to an empty list.
         changelog (list, optional): A list of changelog entries for the component. Defaults to an empty list.
-
-    Methods:
-        __init__(filepath):
-            Initializes the Component instance by loading data from a YAML file.
     """
     def __init__(self, filepath):
         yaml_data = ssg.yaml.open_raw(filepath)

@@ -97,20 +97,6 @@ class IDTranslator(object):
 
     Attributes:
         content_id (str): The content identifier used in generating IDs.
-
-    Methods:
-        __init__(content_id):
-            Initializes the IDTranslator with a given content ID.
-
-        generate_id(tagname, name):
-            Generates a new ID based on the tag name and the original name.
-
-        translate(tree, store_defname=False):
-            Translates the IDs in an XML tree to the new format. Optionally stores the old name
-            in the metadata for OVAL definitions.
-
-        translate_oval_document(oval_document, store_defname=False):
-            Translates the IDs in an OVAL document to the new format and validates the references.
     """
     def __init__(self, content_id):
         self.content_id = content_id

@@ -34,17 +34,6 @@ class ElementFinder(object):
         target (str): The name of the target element to find.
         attrib (str): The attribute of the target element to retrieve.
         result (set): A set to store the results of the found elements' attributes.
-
-    Methods:
-        find_element(start_element, target_element_name, sought_attrib):
-            Initiates the search for the target element starting from the given element.
-
-        _recurse(element):
-            Recursively searches through the XML elements to find the target element.
-
-        _examine_element(element):
-            Examines the current element to determine if it references another group and processes
-            it accordingly.
     """
     def __init__(self, oval_groups):
         self.oval_groups = oval_groups

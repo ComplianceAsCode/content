@@ -64,31 +64,6 @@ class Requirement:
     Attributes:
         _req (pkg_resources.Requirement): The parsed requirement object.
         _specs (utils.VersionSpecifierSet): The set of version specifiers for the requirement.
-
-    Methods:
-        __contains__(item):
-            Checks if the item is in the requirement.
-
-        __str__():
-            Returns the string representation of the requirement.
-
-        has_version_specs():
-            Checks if the requirement has version specifications.
-
-        ver_specs:
-            Returns the version specifiers of the requirement.
-
-        name:
-            Returns the project name of the requirement.
-
-        arg:
-            Returns the first extra argument of the requirement if it exists, otherwise None.
-
-        is_parametrized(name):
-            Checks if the given name is parametrized.
-
-        get_base_for_parametrized(name):
-            Returns the base project name for a parametrized requirement.
     """
     def __init__(self, obj):
         self._req = pkg_resources.Requirement.parse(obj)

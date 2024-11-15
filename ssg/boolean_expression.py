@@ -16,17 +16,6 @@ class Function(boolean.Function):
 
     This class should be subclassed and passed to the `Algebra` as `function_cls`
     to enrich expression elements with domain-specific methods.
-
-    Methods:
-        is_and() -> bool:
-            Check if the instance is of type `boolean.AND`.
-        is_or() -> bool:
-            Check if the instance is of type `boolean.OR`.
-        is_not() -> bool:
-            Check if the instance is of type `boolean.NOT`.
-        as_id() -> str:
-            Generate a unique string identifier usable as an XML id based on
-            the properties of the entity.
     """
     def is_and(self):
         return isinstance(self, boolean.AND)
@@ -70,19 +59,6 @@ class Symbol(boolean.Symbol):
     Attributes:
         requirement (requirement_specs.Requirement): The requirement object associated with the symbol.
         obj (requirement_specs.Requirement): Alias for the requirement attribute.
-    Methods:
-        __call__(**kwargs): Evaluates the symbol based on provided keyword arguments.
-        __hash__(): Returns a hash value for the symbol based on its unique identifier.
-        __eq__(other): Checks equality between two symbols based on their hash values.
-        __lt__(other): Compares two symbols based on their unique identifiers.
-        as_id(): Generates a unique string identifier for the symbol, usable as an XML id based on
-            the properties of the entity.
-        as_dict(): Returns a dictionary representation of the symbol.
-        has_version_specs(): Checks if the symbol has version specifications.
-        arg (property): Returns the argument of the requirement.
-        name (property): Returns the name of the requirement.
-        is_parametrized(name): Checks if a given name is parametrized.
-        get_base_of_parametrized_name(name): Returns the base name of a parametrized name.
     """
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)

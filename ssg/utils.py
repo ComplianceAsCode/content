@@ -40,10 +40,6 @@ class VersionSpecifierSet(set):
                       VersionSpecifier objects with ':'.
         oval_id (str): A string representation of the set, joining the OVAL IDs of the contained
                        VersionSpecifier objects with '_'.
-
-    Methods:
-        __init__(s): Initializes the VersionSpecifierSet with an optional iterable of
-                     VersionSpecifier objects.
     """
     def __init__(self, s=()):
         for el in s:
@@ -73,21 +69,6 @@ class VersionSpecifier:
     Attributes:
         op (str): The operation associated with the version specifier.
         _evr_ver_dict (dict): A dictionary containing epoch, version, and release information.
-
-    Methods:
-        __str__(): Returns a string representation of the version specifier.
-        __repr__(): Returns a detailed string representation of the version specifier.
-        __hash__(): Returns a hash value for the version specifier.
-        __eq__(other): Checks equality between two version specifiers.
-        __lt__(other): Compares two version specifiers.
-        evr_op(): Returns the operation in OVAL format.
-        ver(): Returns the version as a string.
-        evr_ver(): Returns the epoch-version-release as a string.
-        ev_ver(): Returns the epoch-version as a string.
-        title(): Returns a formatted title string.
-        cpe_id(): Returns a formatted CPE ID string.
-        oval_id(): Returns a formatted OVAL ID string.
-        evr_dict_to_str(evr, fully_formed_evr_string=False): Converts an EVR dictionary to a string.
     """
     def __init__(self, op, evr_ver_dict):
         self._evr_ver_dict = evr_ver_dict

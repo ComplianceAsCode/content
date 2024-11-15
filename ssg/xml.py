@@ -253,28 +253,14 @@ def get_element_namespace(self):
 
 
 class XMLElement(object):
-    '''
+    """
     Represents a generic element read from an XML file.
 
     Attributes:
         ns (dict): A dictionary mapping namespace prefixes to their respective URIs.
         root (Element): The root element of the XML structure.
         content_xccdf_ns (str): The XCCDF version namespace determined from the XML.
-
-    Methods:
-        __init__(root):
-            Initializes the XMLElement with the given root element and determines the XCCDF version.
-
-        get_attr(attr):
-            Retrieves the value of the specified attribute from the root element.
-
-        get_namespace():
-            Extracts and returns the namespace URI from the root element's tag.
-
-        _determine_xccdf_version():
-            Determines the XCCDF version based on the namespace of the root element and sets the
-            content_xccdf_ns attribute.
-    '''
+    """
     ns = {
         "ds": datastream_namespace,
         "xccdf-1.1": XCCDF11_NS,
@@ -336,28 +322,6 @@ class XMLContent(XMLElement):
 
     Attributes:
         check_engines (list): A list of tuples containing check engine names and their corresponding XML tags.
-
-    Methods:
-        __init__(root):
-            Initializes the XMLContent object with the given root element.
-
-        get_component_refs():
-            Retrieves component references from the XML content.
-
-        get_uris():
-            Retrieves URIs from the XML content.
-
-        is_benchmark():
-            Checks if the root element is an XCCDF Benchmark.
-
-        get_benchmarks():
-            Yields XMLBenchmark objects found in the XML content.
-
-        find_benchmark(id_):
-            Finds and returns an XMLBenchmark object with the given ID.
-
-        _find_all_component_contents():
-            Finds and returns all component contents in the XML content.
     """
     check_engines = [("OVAL", "oval:oval_definitions"), ("OCIL", "ocil:ocil")]
 
@@ -516,17 +480,6 @@ class XMLBenchmark(XMLElement):
 
     Attributes:
         root (Element): The root element of the XML document.
-
-    Methods:
-        find_rules(rule_id):
-            Finds and returns a list of XMLRule objects matching the given rule_id.
-            If rule_id is None, returns all rules.
-
-        find_rule(rule_id):
-            Finds and returns a single XMLRule object matching the given rule_id.
-
-        find_all_cpe_platforms(idref):
-            Finds and returns a list of XMLCPEPlatform objects matching the given idref.
     """
 
     def __init__(self, root):
@@ -594,35 +547,6 @@ class XMLRule(XMLElement):
         root (Element): The root element of the XML tree.
         content_xccdf_ns (str): The namespace for XCCDF content.
         ns (dict): The namespace dictionary for XML parsing.
-
-    Methods:
-        get_check_element(check_system_uri):
-            Finds and returns the check element with the specified system URI.
-
-        get_check_content_ref_element(check_element):
-            Finds and returns the check-content-ref element within the given check element.
-
-        get_fix_element(fix_uri):
-            Finds and returns the fix element with the specified system URI.
-
-        get_version_element():
-            Finds and returns the version element.
-
-        get_all_platform_elements():
-            Finds and returns all platform elements.
-
-        _get_description_text(el):
-            Recursively collects and returns the text content of the description element,
-            replacing 'sub' elements with the id of the variable they reference.
-
-        get_element_text(el):
-            Collects and returns the text content of the given element, handling 'description'
-            elements separately to include referenced variable ids.
-
-        join_text_elements():
-            Collects and returns the text of almost all subelements, skipping elements that
-            are not relevant for comparison. Injects a line for each element whose text was
-            collected to facilitate tracking of the text's origin within the rule.
     """
     def __init__(self, root):
         super(XMLRule, self).__init__(root)
@@ -771,25 +695,6 @@ class XMLComponent(XMLElement):
     Represents the element of the Datastream component that has relevant content.
 
     This makes it easier to access contents pertaining to a SCAP component.
-
-    Methods:
-        __init__(root)
-            Initializes the XMLComponent with the given root element.
-
-        find_oval_definition(def_id)
-            Finds and returns an OVAL definition by its ID.
-
-        find_ocil_questionnaire(def_id)
-            Finds and returns an OCIL questionnaire by its ID.
-
-        find_ocil_test_action(test_action_ref)
-            Finds and returns an OCIL test action by its reference ID.
-
-        find_ocil_boolean_question(question_id)
-            Finds and returns an OCIL boolean question by its ID.
-
-        find_boolean_question(ocil_id)
-            Finds and returns the text of an OCIL boolean question by its questionnaire ID.
     """
     def __init__(self, root):
         super(XMLComponent, self).__init__(root)
@@ -905,18 +810,6 @@ class XMLOvalDefinition(XMLComponent):
     Attributes:
         root (xml.etree.ElementTree.Element): The root element of the XML document.
         ns (dict): A dictionary of XML namespaces.
-
-    Methods:
-        __init__(root):
-            Initializes the XMLOvalDefinition with the given root element.
-
-        get_criteria_element():
-            Retrieves the 'criteria' element from the XML document.
-
-        get_elements():
-            Extracts and returns a list of tuples representing the elements within the 'criteria'
-            element. Each tuple contains the element type ('criteria', 'criterion', or
-            'extend_definition') and its associated attribute value.
     """
     def __init__(self, root):
         super(XMLOvalDefinition, self).__init__(root)
@@ -969,10 +862,6 @@ class XMLOcilQuestionnaire(XMLComponent):
     Attributes:
         root (Element): The root element of the XML structure.
         ns (dict): A dictionary of XML namespaces.
-
-    Methods:
-        get_test_action_ref_element():
-            Retrieves the 'test_action_ref' element from the XML structure.
     """
     def __init__(self, root):
         super(XMLOcilQuestionnaire, self).__init__(root)
@@ -997,10 +886,6 @@ class XMLOcilTestAction(XMLComponent):
 
     Attributes:
         root (Element): The root element of the XML structure.
-
-    Methods:
-        __init__(root)
-            Initializes the XMLOcilTestAction with the given root element.
     """
     def __init__(self, root):
         super(XMLOcilTestAction, self).__init__(root)
@@ -1013,10 +898,6 @@ class XMLOcilQuestion(XMLComponent):
     Attributes:
         root (Element): The root element of the XML structure.
         ns (dict): The namespace dictionary for XML parsing.
-
-    Methods:
-        get_question_test_element():
-            Retrieves the question text element from the XML structure.
     """
     def __init__(self, root):
         super(XMLOcilQuestion, self).__init__(root)
@@ -1040,10 +921,6 @@ class XMLCPEPlatform(XMLElement):
 
     Attributes:
         root (xml.etree.ElementTree.Element): The root element of the XML tree.
-
-    Methods:
-        find_all_check_fact_ref_elements():
-            Finds all 'check-fact-ref' elements within the XML tree using the specified namespace.
     """
     def __init__(self, root):
         super(XMLCPEPlatform, self).__init__(root)

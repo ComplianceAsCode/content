@@ -317,10 +317,6 @@ def ordered_dump(data, stream=None, Dumper=yaml_Dumper, **kwds):
         OrderedDumper is a custom YAML Dumper class that ensures the correct indentation of tags
         when dumping YAML data. It inherits from the base Dumper class and overrides the
         increase_indent method to fix tag indentations.
-
-        Methods:
-            increase_indent(flow=False, indentless=False):
-                Overrides the base method to ensure proper indentation of tags.
         """
         # fix tag indentations
         def increase_indent(self, flow=False, indentless=False):

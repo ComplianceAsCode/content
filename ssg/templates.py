@@ -88,22 +88,6 @@ class Template:
         template_path (str): The path to the template directory.
         template_yaml_path (str): The path to the template's YAML configuration file.
         preprocessing_file_path (str): The path to the template's preprocessing file.
-
-    Methods:
-        load_template(cls, templates_root_directory, name):
-            Class method to load a template if it looks like a valid template.
-
-        _load():
-            Loads the template configuration and supported languages.
-
-        preprocess(parameters, lang):
-            Preprocesses the parameters using the template's preprocessing module.
-
-        _preprocess_with_template_module(parameters, lang):
-            Helper method to preprocess parameters with the template's preprocessing module.
-
-        _looks_like_template():
-            Checks if the directory structure looks like a valid template.
     """
     def __init__(self, templates_root_directory, name):
         self.langs = []
@@ -263,38 +247,6 @@ class Builder(object):
         output_dirs (dict): Dictionary of output directories for different languages.
         templates (dict): Dictionary of loaded templates.
         product_cpes (ProductCPEs): Instance of ProductCPEs for managing CPE items.
-
-    Methods:
-        __init__(env_yaml, resolved_rules_dir, templates_dir, remediations_dir, checks_dir, platforms_dir, cpe_items_dir):
-            Initializes the Builder with the given directories and environment YAML.
-        _init_and_load_templates():
-            Initializes and loads templates from the templates directory.
-        _init_lang_output_dirs():
-            Initializes output directories for different languages.
-        get_resolved_langs_to_generate(templatable):
-            Determines which languages are generated for a given Templatable instance.
-        process_template_lang_file(template_name, template_vars, lang, local_env_yaml):
-            Processes a template for a given template name and language and returns rendered content.
-        get_lang_contents_for_templatable(templatable, language):
-            Builds and returns the specified language content for a given Templatable.
-        write_lang_contents_for_templatable(filled_template, lang, templatable):
-            Writes the filled template content to the appropriate output directory.
-        build_lang_for_templatable(templatable, lang):
-            Builds templated content for a given Templatable and language.
-        build_cpe(cpe):
-            Builds templated content for a given CPE and updates the product CPEs.
-        build_platform(platform):
-            Builds templated content for a given Platform and updates the platform.
-        build_rule(rule):
-            Builds templated content for a given Rule and writes the output to the correct directories.
-        build_extra_ovals():
-            Builds extra OVAL definitions from the extra_ovals.yml file.
-        build_all_platforms():
-            Builds templated content for all platforms.
-        build_all_rules():
-            Builds templated content for all rules.
-        build():
-            Builds all templated content for all languages and writes the output to the correct directories.
     """
     def __init__(self, env_yaml, resolved_rules_dir, templates_dir,
                  remediations_dir, checks_dir, platforms_dir, cpe_items_dir):

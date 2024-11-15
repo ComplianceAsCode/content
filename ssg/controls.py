@@ -33,22 +33,6 @@ class Status:
         DOES_NOT_MEET (str): Indicates the control does not meet requirements.
         DOCUMENTATION (str): Indicates the control is related to documentation.
         AUTOMATED (str): Indicates the control is fully automated.
-
-    Methods:
-        __init__(self, status):
-            Initializes a Status instance with the given status.
-
-        get_status_list(cls):
-            Returns a list of valid statuses.
-
-        from_control_info(cls, ctrl, status):
-            Returns the status if it is valid, otherwise raises an InvalidStatus exception.
-
-        __str__(self):
-            Returns the status as a string.
-
-        __eq__(self, other):
-            Compares the status with another Status instance or a string.
     """
     SUPPORTED = "supported"
     PLANNED = "planned"
@@ -149,15 +133,6 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
     Attributes:
         KEYS (dict): A dictionary defining the expected keys and their types.
         MANDATORY_KEYS (set): A set of keys that are mandatory for a control.
-
-    Methods:
-        __init__(): Initializes a new instance of the Control class.
-        __hash__(): Returns a hash value for the control based on its ID.
-        _check_keys(control_dict): Checks if the keys in the control dictionary are valid.
-        from_control_dict(control_dict, env_yaml=None, default_level=["default"]):
-            Creates a Control instance from a dictionary.
-        represent_as_dict(): Represents the control as a dictionary.
-        add_references(reference_type, rules): Adds references to the control.
     """
     KEYS = dict(
         id=str,
@@ -341,9 +316,6 @@ class Level(ssg.entities.common.XCCDFEntity):
         id (str): The unique identifier for the level.
         inherits_from (str or None): The identifier of the level from which this level inherits, if any.
 
-    Methods:
-        from_level_dict(cls, level_dict): Creates an instance of Level from a dictionary.
-
     Args:
         level_dict (dict): A dictionary containing the level data.
 
@@ -395,25 +367,6 @@ class Policy(ssg.entities.common.XCCDFEntity):
         source (str): The source of the policy.
         reference_type (str): The type of reference used in the policy.
         product (list): A list of products associated with the policy.
-
-    Methods:
-        represent_as_dict(): Represents the policy as a dictionary.
-        default_level(): Returns the default level for the policy.
-        check_all_rules_exist(existing_rules): Checks if all rules exist in the policy.
-        check_levels_validity(): Checks the validity of levels defined in the policy.
-        remove_selections_not_known(known_rules): Removes selections that are not known.
-        _create_control_from_subtree(subtree): Creates a control from a subtree.
-        _extract_and_record_subcontrols(current_control, controls_tree): Extracts and records subcontrols.
-        _parse_controls_tree(tree): Parses a controls tree.
-        save_controls_tree(tree): Saves a controls tree.
-        _parse_file_into_control_trees(dirname, basename): Parses a file into control trees.
-        _load_from_subdirectory(yaml_contents): Loads controls from a subdirectory.
-        load(): Loads the policy from a file.
-        get_control(control_id): Retrieves a control by its ID.
-        get_level(level_id): Retrieves a level by its ID.
-        get_level_with_ancestors_sequence(level_id): Retrieves a level with its ancestors sequence.
-        _check_conflict_in_rules(rules): Checks for conflicts in rules.
-        add_references(rules): Adds references to rules.
     """
     def __init__(self, filepath, env_yaml=None):
         self.id = None
@@ -842,17 +795,6 @@ class ControlsManager():
         env_yaml (str, optional): The environment YAML file.
         existing_rules (dict, optional): Existing rules to check against.
         policies (dict): A dictionary of loaded policies.
-
-    Methods:
-        load(): Loads control policies from the specified directory.
-        check_all_rules_exist(): Checks if all rules exist in the loaded policies.
-        remove_selections_not_known(known_rules): Removes selections that are not known from the policies.
-        resolve_controls(): Resolves all controls within the policies.
-        get_control(policy_id, control_id): Retrieves a specific control from a policy.
-        get_all_controls_dict(policy_id): Retrieves all controls from a policy as a dictionary.
-        get_all_controls_of_level(policy_id, level_id): Retrieves all controls of a specific level from a policy.
-        save_everything(output_dir): Saves all policies to the specified output directory.
-        add_references(rules): Adds references to the rules from the policies.
     """
     def __init__(self, controls_dir, env_yaml=None, existing_rules=None):
         """

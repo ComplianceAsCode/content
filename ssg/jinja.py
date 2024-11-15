@@ -42,13 +42,6 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
 
     Attributes:
         encoding (str): The encoding used to read the template files. Defaults to 'utf-8'.
-
-    Methods:
-        __init__(encoding='utf-8'):
-            Initializes the loader with the specified encoding.
-
-        get_source(environment, template):
-            Loads the template source from the file system.
     """
     def __init__(self, encoding='utf-8'):
         self.encoding = encoding

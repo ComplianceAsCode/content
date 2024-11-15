@@ -16,14 +16,6 @@ class CCEFile:
 
     Attributes:
         project_root (str): The root directory of the project.
-
-    Methods:
-        absolute_path: Abstract property that should return the absolute path of the CCE file.
-        line_to_cce(line): Converts a line to a CCE format.
-        line_isnt_cce(cce, line): Checks if a line is not equal to a given CCE.
-        read_cces(): Reads and validates CCEs from the file.
-        remove_cce_from_file(cce): Removes a specific CCE from the file.
-        random_cce(): Returns a random CCE from the file.
     """
     def __init__(self, project_root=None):
         if not project_root:

@@ -139,51 +139,6 @@ class Product(object):
     Attributes:
         _primary_data (dict): A dictionary to store primary data loaded from a file.
         _acquired_data (dict): A dictionary to store additional data acquired after initialization.
-
-    Methods:
-        __init__(self, filename):
-            Initializes the Product instance by loading data from the given filename and deriving
-            basic properties if necessary.
-
-        _data_as_dict(self):
-            Returns a dictionary combining primary and acquired data.
-
-        write(self, filename):
-            Writes the combined data to a file in an ordered format.
-
-        __getitem__(self, key):
-            Returns the value associated with the given key from the combined data.
-
-        __contains__(self, key):
-            Checks if the given key is present in the combined data.
-
-        __iter__(self):
-            Returns an iterator over the combined data items.
-
-        __len__(self):
-            Returns the number of items in the combined data.
-
-        get(self, key, default=None):
-            Returns the value associated with the given key from the combined data, or the default
-            value if the key is not found.
-
-        _load_from_filename(self, filename):
-            Loads primary data from the given filename.
-
-        _derive_basic_properties(self, filename):
-            Derives basic properties from the primary data and updates the primary data dictionary.
-
-        expand_by_acquired_data(self, property_dict):
-            Expands the acquired data with the given property dictionary, raising an error if a
-            property is already defined.
-
-        transform_default_and_overrides_mappings_to_mapping(mappings):
-            Transforms a dictionary containing default and overrides mappings into a single
-            dictionary.
-
-        read_properties_from_directory(self, path):
-            Reads properties from YAML files in the given directory and expands the acquired data
-            with the new properties.
     """
     def __init__(self, filename):
         self._primary_data = dict()
