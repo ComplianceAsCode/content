@@ -185,31 +185,6 @@ class Control(ssg.entities.common.SelectionHandler, ssg.entities.common.XCCDFEnt
     }
 
     def __init__(self):
-        """
-        Initializes a new instance of the Control class.
-
-        Attributes:
-            id (str or None): The identifier of the control.
-            levels (list): A list of levels associated with the control.
-            notes (str): Notes related to the control.
-            title (str): The title of the control.
-            description (str): A description of the control.
-            rationale (str): The rationale behind the control.
-            automated (str): Indicates if the control is automated.
-            status (str or None): The current status of the control.
-            mitigation (str): Mitigation information for the control.
-            artifact_description (str): Description of artifacts related to the control.
-            status_justification (str): Justification for the control's status.
-            fixtext (str): Text describing how to fix issues related to the control.
-            check (str): Check information for the control.
-            controls (list): A list of sub-controls.
-            tickets (list): A list of tickets associated with the control.
-            original_title (str): The original title of the control.
-                For example, when the control is not originally written in English.
-            related_rules (list): A list of related rules that are already used by other controls
-                in the policy or might be useful in slightly different contexts.
-            rules (list): A list of rules associated with the control.
-        """
         super(Control, self).__init__()
         self.id = None
         self.levels = []
@@ -441,28 +416,6 @@ class Policy(ssg.entities.common.XCCDFEntity):
         add_references(rules): Adds references to rules.
     """
     def __init__(self, filepath, env_yaml=None):
-        """
-        Initialize the control object.
-
-        Args:
-            filepath (str): The path to the file associated with the control.
-            env_yaml (dict, optional): A dictionary representing the environment YAML
-                                       configuration. Defaults to None.
-
-        Attributes:
-            id (None): The identifier for the control, initially set to None.
-            env_yaml (dict): The environment YAML configuration.
-            filepath (str): The path to the file associated with the control.
-            controls_dir (str): The directory of the control file without its extension.
-            controls (list): A list to store control objects.
-            controls_by_id (dict): A dictionary to store controls indexed by their IDs.
-            levels (list): A list to store levels.
-            levels_by_id (dict): A dictionary to store levels indexed by their IDs.
-            title (str): The title of the control, initially set to an empty string.
-            source (str): The source of the control, initially set to an empty string.
-            reference_type (None): The type of reference, initially set to None.
-            product (None): The product associated with the control, initially set to None.
-        """
         self.id = None
         self.env_yaml = env_yaml
         self.filepath = filepath
