@@ -90,7 +90,7 @@ ocil: |-
 platform: package[pam]
 
 fixtext: |-
-    {{% if product in ['ol9', 'rhel9', 'ubuntu2204'] -%}}
+    {{% if product in ['ol9', 'rhel9', 'ubuntu2204', 'ubuntu2404'] -%}}
     Configure {{{ full_name }}} to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
     {{% else %}}
     Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
