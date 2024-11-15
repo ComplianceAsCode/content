@@ -71,7 +71,7 @@ class DocumentationNotComplete(Exception):
 
 def _save_rename(result, stem, prefix):
     """
-    Renames a key in the result dictionary by prefixing it with a given prefix and the stem.
+    Renames a key (represented by the stem argument) in the result dictionary by prefixing it with a given prefix.
 
     Args:
         result (dict): The dictionary where the renamed key-value pair will be stored.

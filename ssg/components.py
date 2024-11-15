@@ -105,7 +105,8 @@ def rule_component_mapping(components):
 
 class Component:
     """
-    A class to represent a component in the SSG (Security Standards Guide).
+    A class to represent a component.
+    With regards to the content, a component usually represents a piece of software.
 
     Attributes:
         name (str): The name of the component.
