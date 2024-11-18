@@ -10,6 +10,22 @@ except ImportError:
 
 
 def subprocess_check_output(*popenargs, **kwargs):
+    """
+    Run command with arguments and return its output as a byte string.
+
+    This function is a backport of subprocess.check_output from Python 2.7 standard library,
+    compatible with BSD-3.
+
+    Args:
+        *popenargs: Variable length argument list to pass to subprocess.Popen.
+        **kwargs: Arbitrary keyword arguments to pass to subprocess.Popen.
+
+    Returns:
+        bytes: The output of the command.
+
+    Raises:
+        subprocess.CalledProcessError: If the command exits with a non-zero status.
+    """
     # Backport of subprocess.check_output taken from
     # https://gist.github.com/edufelipe/1027906
     #

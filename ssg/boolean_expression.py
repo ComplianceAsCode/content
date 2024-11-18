@@ -1,3 +1,7 @@
+"""
+Common functions for Boolean Expressions
+"""
+
 from ssg.ext.boolean import boolean
 from ssg import requirement_specs
 
@@ -8,18 +12,11 @@ VERSION_SYMBOLS = ['.', '-', '_', ":"]
 
 class Function(boolean.Function):
     """
-    Base class for boolean functions
+    Base class for boolean functions.
 
-    Subclass it and pass to the `Algebra` as `function_cls` to enrich
-    expression elements with domain-specific methods.
-
-    Provides `is_and`, `is_or` and `is_not` methods to distinguish instances
-    between different boolean functions.
-
-    The `as_id` method will generate a unique string identifier usable as
-    an XML id based on the properties of the entity.
+    This class should be subclassed and passed to the `Algebra` as `function_cls`
+    to enrich expression elements with domain-specific methods.
     """
-
     def is_and(self):
         return isinstance(self, boolean.AND)
 
@@ -30,6 +27,18 @@ class Function(boolean.Function):
         return isinstance(self, boolean.NOT)
 
     def as_id(self):
+        """
+        Generate a string representation of the boolean expression.
+
+        This method constructs a unique identifier for the boolean expression by recursively
+        calling `as_id` on its arguments and combining them with the appropriate boolean operator.
+
+        Returns:
+            str: A string representing the boolean expression. If the expression is a negation, it
+                 returns 'not_' followed by the identifier of the negated argument. If the
+                 expression is a conjunction or disjunction, it returns the identifiers of the
+                 arguments joined by '_and_' or '_or_'.
+        """
         if self.is_not():
             return 'not_{0}'.format(self.args[0].as_id())
         op = 'unknown_bool_op'
@@ -42,15 +51,15 @@ class Function(boolean.Function):
 
 class Symbol(boolean.Symbol):
     """
-    Base class for boolean symbols
+    Symbol class represents a boolean symbol with domain-specific methods.
 
-    Subclass it and pass to the `Algebra` as `symbol_cls` to enrich
-    expression elements with domain-specific methods.
+    This class should be subclassed and passed to the `Algebra` as `symbol_cls`
+    to enrich expression elements with domain-specific methods.
 
-    The `as_id` method will generate a unique string identifier usable as
-    an XML id based on the properties of the entity.
+    Attributes:
+        requirement (requirement_specs.Requirement): The requirement object associated with the symbol.
+        obj (requirement_specs.Requirement): Alias for the requirement attribute.
     """
-
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
         self.requirement = requirement_specs.Requirement(obj)
@@ -133,20 +142,25 @@ class Symbol(boolean.Symbol):
 
 class Algebra(boolean.BooleanAlgebra):
     """
-    Base class for boolean algebra
+    Base class for boolean algebra.
 
-    Algebra class will parse and evaluate boolean expressions,
-    where operators could be any combination of "~, &, |, !, *, +, not, and, or"
-    and variable symbols could contain version specifiers as described
-    in PEP440 and PEP508.
+    The Algebra class parses and evaluates boolean expressions, where operators
+    can be any combination of "~, &, |, !, *, +, not, and, or" and variable symbols
+    can contain version specifiers as described in PEP440 and PEP508.
+    - No white space is allowed inside specifier expressions.
+    - The ~= specifier operator is not supported.
 
     Limitations:
     - no white space is allowed inside specifier expressions;
     - ~= specifier operator is not supported.
 
-    For example: "(oranges>=2.0.8,<=5 | fried[banana]) and !pie[apple]"
-    """
+    Example:
+        "(oranges>=2.0.8,<=5 | fried[banana]) and !pie[apple]"
 
+    Attributes:
+        symbol_cls (class): The class used for symbols in the boolean expressions.
+        function_cls (class): The class used for functions in the boolean expressions.
+    """
     def __init__(self, symbol_cls, function_cls):
         not_cls = type('FunctionNOT', (function_cls, boolean.NOT), {})
         and_cls = type('FunctionAND', (function_cls, boolean.AND), {})
