@@ -440,8 +440,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - sysctl_kernel_yama_ptrace_scope_value=1
+      - sysctl_kernel_yama_ptrace_scope
+    status: automated
 
   - id: 1.5.3
     title: Ensure core dumps are restricted (Automated)

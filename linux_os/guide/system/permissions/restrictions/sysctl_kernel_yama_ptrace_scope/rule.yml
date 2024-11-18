@@ -42,5 +42,13 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.yama.ptrace_scope
+        {{% if product in ['ubuntu2404'] %}}
+        sysctlval:
+          - '1'
+          - '2'
+          - '3'
+        wrong_sysctlval_for_testing: '0'
+        {{% else %}}
         sysctlval: '1'
+        {{% endif %}}
         datatype: int
