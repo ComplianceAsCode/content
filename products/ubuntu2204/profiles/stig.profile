@@ -559,7 +559,6 @@ selections:
 
     # UBTU-22-211015 The Ubuntu operating system must disable the x86 Ctrl-Alt-Delete key sequence.
     - disable_ctrlaltdel_reboot
-    - disable_ctrlaltdel_burstaction
 
     # UBTU-22-291010 The Ubuntu operating system must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
     - kernel_module_usb-storage_disabled
