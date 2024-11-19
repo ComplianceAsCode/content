@@ -546,54 +546,66 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - enable_dconf_user_profile
+    rules:
       - login_banner_text=cis_default
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.8.2.
+    status: automated
 
   - id: 1.7.3
     title: Ensure GDM disable-user-list option is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - dconf_gnome_disable_user_list
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.8.3.
+    status: automated
 
   - id: 1.7.4
     title: Ensure GDM screen locks when the user is idle (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=5_seconds
+      - dconf_gnome_screensaver_idle_delay
       - dconf_gnome_screensaver_lock_enabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.8.4.
+      - dconf_gnome_screensaver_lock_delay
+    status: automated
+    notes: |
+      The rules satisfy both controls 1.7.4 and 1.7.5.
+      Rule lock_enabled is not part of CIS recommendation but is
+      required to assure the lock is enabled and cannot be manually disabled.
+      See https://workbench.cisecurity.org/benchmarks/18959/tickets/23123
 
   - id: 1.7.5
     title: Ensure GDM screen locks cannot be overridden (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
+      - dconf_gnome_screensaver_idle_delay
+      - dconf_gnome_screensaver_lock_enabled
       - dconf_gnome_screensaver_lock_delay
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.8.5.
+    status: automated
+    notes: |
+      The rules satisfy both controls 1.7.4 and 1.7.5.
+      Rule lock_enabled is not part of CIS recommendation but is
+      required to assure the lock is enabled and cannot be manually disabled.
+      See https://workbench.cisecurity.org/benchmarks/18959/tickets/23123
 
   - id: 1.7.6
     title: Ensure GDM automatic mounting of removable media is disabled (Automated)
     levels:
       - l1_server
       - l2_workstation
-    related_rules:
+    rules:
       - dconf_gnome_disable_automount
       - dconf_gnome_disable_automount_open
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.8.6.
+    status: automated
+    notes: |
+      The rules satisfy both controls 1.7.6 and 1.7.7
 
   - id: 1.7.7
     title: Ensure GDM disabling automatic mounting of removable media is not overridden (Automated)
@@ -615,6 +627,8 @@ controls:
     rules:
       - dconf_gnome_disable_autorun
     status: automated
+    notes: |
+      The rule satisfies both controls 1.7.8 and 1.7.9
 
   - id: 1.7.9
     title: Ensure GDM autorun-never is not overridden (Automated)
