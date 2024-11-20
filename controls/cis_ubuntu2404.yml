@@ -730,10 +730,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - package_nis_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.14.
+    rules:
+      - package_ypserv_removed
+      - service_ypserv_disabled
+    status: automated
 
   - id: 2.1.11
     title: Ensure print server services are not in use (Automated)
