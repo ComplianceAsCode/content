@@ -721,8 +721,8 @@ controls:
       - l1_workstation
     related_rules:
       - package_nfs-kernel-server_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.6.
+      - service_nfs_disabled
+    status: automated
 
   - id: 2.1.10
     title: Ensure nis server services are not in use (Automated)
