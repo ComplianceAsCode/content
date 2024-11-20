@@ -1,14 +1,14 @@
 documentation_complete: true
 
-
 title: 'Disable LDAP Server (slapd)'
 
 description: |-
-    The Lightweight Directory Access Protocol (LDAP) is a service that provides a method for looking up information from a central database.
+    The Lightweight Directory Access Protocol (LDAP) is a service that
+    provides a method for looking up information from a central database.
 
 rationale: |-
-    If the system will not need to act as an LDAP server, it is recommended that the software be
-    disabled to reduce the potential attack surface.
+    If the system will not need to act as an LDAP server, it is recommended
+    that the software be disabled to reduce the potential attack surface.
 
 severity: medium
 
@@ -29,3 +29,4 @@ template:
     vars:
         servicename: slapd
         packagename: openldap-servers
+        packagename@ubuntu2404: slapd

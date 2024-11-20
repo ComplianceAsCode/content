@@ -699,10 +699,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_openldap-servers_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.5.
+      - service_slapd_disabled
+    status: automated
 
   - id: 2.1.8
     title: Ensure message access server services are not in use (Automated)
