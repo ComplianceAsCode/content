@@ -780,10 +780,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_net-snmp_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.13.
+      - service_snmpd_disabled
+    status: automated
 
   - id: 2.1.16
     title: Ensure tftp server services are not in use (Automated)
