@@ -750,10 +750,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_rpcbind_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.3.6.
+      - service_rpcbind_disabled
+    status: automated
 
   - id: 2.1.13
     title: Ensure rsync services are not in use (Automated)
