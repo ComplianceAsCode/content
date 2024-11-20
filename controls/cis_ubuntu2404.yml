@@ -662,10 +662,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_dhcp_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.4.
+      - service_dhcpd_disabled
+      - service_dhcpd6_disabled
+    status: automated
 
   - id: 2.1.4
     title: Ensure dns server services are not in use (Automated)
