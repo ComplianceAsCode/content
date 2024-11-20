@@ -709,11 +709,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - package_cyrus-imapd_removed
+    rules:
       - package_dovecot_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.10.
+      - service_dovecot_disabled
+    status: automated
 
   - id: 2.1.9
     title: Ensure network file system services are not in use (Automated)
