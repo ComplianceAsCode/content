@@ -800,10 +800,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_squid_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.12.
+      - service_squid_disabled
+    status: automated
 
   - id: 2.1.18
     title: Ensure web server services are not in use (Automated)
