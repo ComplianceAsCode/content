@@ -821,8 +821,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_xinetd_removed
+      - service_xinetd_disabled
+    status: automated
 
   - id: 2.1.20
     title: Ensure X window server services are not in use (Automated)
