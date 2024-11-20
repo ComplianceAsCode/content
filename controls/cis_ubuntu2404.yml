@@ -830,10 +830,9 @@ controls:
     title: Ensure X window server services are not in use (Automated)
     levels:
       - l2_server
-    related_rules:
+    rules:
       - package_xorg-x11-server-common_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.1.
+    status: automated
 
   - id: 2.1.21
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
