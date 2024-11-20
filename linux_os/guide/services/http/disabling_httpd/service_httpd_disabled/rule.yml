@@ -1,10 +1,15 @@
 documentation_complete: true
 
+{{% if 'ubuntu' in product %}}
+{{% set service_name = "apache2" %}}
+{{% else %}}
+{{% set service_name = "httpd" %}}
+{{% endif %}}
 
-title: 'Disable httpd Service'
+title: 'Disable {{{ service_name }}} Service'
 
 description: |-
-    {{{ describe_service_disable(service="httpd") }}}
+    {{{ describe_service_disable(service=service_name) }}}
 
 rationale: |-
     Running web server software provides a network-based avenue
@@ -30,14 +35,14 @@ references:
     nist-csf: PR.IP-1,PR.PT-3
 
 ocil_clause: |-
-    {{{ ocil_clause_service_disabled(service="httpd") }}}
+    {{{ ocil_clause_service_disabled(service=service_name) }}}
 
 ocil: |-
-    {{{ ocil_service_disabled(service="httpd") }}}
+    {{{ ocil_service_disabled(service=service_name) }}}
 
 platform: system_with_kernel
 
 template:
     name: service_disabled
     vars:
-        servicename: httpd
+        servicename: {{{ service_name }}}
