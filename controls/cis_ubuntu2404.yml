@@ -689,10 +689,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_vsftpd_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.8.
+      - service_vsftpd_disabled
+    status: automated
 
   - id: 2.1.7
     title: Ensure ldap server services are not in use (Automated)
