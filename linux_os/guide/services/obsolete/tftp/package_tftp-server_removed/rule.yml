@@ -1,12 +1,17 @@
 documentation_complete: true
 
+{{% if product in ['ubuntu2404'] %}}
+{{% set package_name = "tftpd-hpa" %}}
+{{% else %}}
+{{% set package_name = "tftp-server" %}}
+{{% endif %}}
 
-title: 'Uninstall tftp-server Package'
+title: 'Uninstall {{{ package_name }}} Package'
 
-description: '{{{ describe_package_remove(package="tftp-server") }}}'
+description: '{{{ describe_package_remove(package=package_name) }}}'
 
 rationale: |-
-    Removing the <tt>tftp-server</tt> package decreases the risk of the accidental
+    Removing the <tt>{{{ package_name }}}</tt> package decreases the risk of the accidental
     (or intentional) activation of tftp services.
     <br /><br />
     If TFTP is required for operational support (such as transmission of router
@@ -37,13 +42,13 @@ references:
     stigid@ol8: OL08-00-040190
     stigid@rhel8: RHEL-08-040190
 
-{{{ complete_ocil_entry_package(package="tftp-server") }}}
+{{{ complete_ocil_entry_package(package=package_name) }}}
 
-fixtext: '{{{ fixtext_package_removed("tftp-server") }}}'
+fixtext: '{{{ fixtext_package_removed(package_name) }}}'
 
 srg_requirement: 'The Trivial File Transfer Protocol (TFTP) server package must not be installed if not required for {{{ full_name }}} operational support.'
 
 template:
     name: package_removed
     vars:
-        pkgname: tftp-server
+        pkgname: {{{ package_name }}}

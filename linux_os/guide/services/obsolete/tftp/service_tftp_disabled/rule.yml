@@ -1,14 +1,21 @@
 documentation_complete: true
 
+{{% if product in ['ubuntu2404'] %}}
+{{% set service_name = "tftpd-hpa" %}}
+{{% set package_name = "tftpd-hpa" %}}
+{{% else %}}
+{{% set service_name = "tftp" %}}
+{{% set package_name = "tftp-server" %}}
+{{% endif %}}
 
-title: 'Disable tftp Service'
+title: 'Disable {{{ service_name }}} Service'
 
 description: |-
-    The <tt>tftp</tt> service should be disabled.
-    {{{ describe_service_disable(service="tftp") }}}
+    The <tt>{{{ service_name }}}</tt> service should be disabled.
+    {{{ describe_service_disable(service=service_name) }}}
 
 rationale: |-
-    Disabling the <tt>tftp</tt> service ensures the system is not acting
+    Disabling the <tt>{{{ service_name }}}</tt> service ensures the system is not acting
     as a TFTP server, which does not provide encryption or authentication.
 
 severity: high
@@ -28,15 +35,15 @@ references:
     nist-csf: PR.AC-3,PR.IP-1,PR.PT-3,PR.PT-4
 
 ocil_clause: |-
-    {{{ ocil_clause_service_disabled(service="tftp") }}}
+    {{{ ocil_clause_service_disabled(service=service_name) }}}
 
 ocil: |-
-    {{{ ocil_service_disabled(service="tftp") }}}
+    {{{ ocil_service_disabled(service=service_name) }}}
 
 platform: system_with_kernel
 
 template:
     name: service_disabled
     vars:
-        servicename: tftp
-        packagename: tftp-server
+        servicename: {{{ service_name }}}
+        packagename: {{{ package_name }}}
