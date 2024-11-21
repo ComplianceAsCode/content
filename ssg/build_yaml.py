@@ -1444,7 +1444,7 @@ class Group(XCCDFEntity):
         Args:
             child (object): The child object to be added. If None, the method returns immediately.
             childs (dict): A dictionary where the key is the child's ID and the value is the child object.
-            env_yaml (optional): Environment YAML configuration. Default is None.
+            env_yaml (dict, optional): Environment YAML configuration. Default is None.
             product_cpes (optional): Product CPEs configuration. Default is None.
 
         Returns:
