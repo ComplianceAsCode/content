@@ -1,7 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 # packages = gdm3
-# variables = login_banner_text=default
+# variables = login_banner_text=Authorized users only. All activity may be monitored and reported.
 
 source $SHARED/dconf_test_functions.sh
 clean_dconf_settings
