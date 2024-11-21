@@ -980,7 +980,7 @@ class Benchmark(XCCDFEntity):
         Args:
             group (Group): The group object to be added. Must have an 'id_' attribute.
             env_yaml (dict, optional): Additional environment YAML data. Default is None.
-            product_cpes (optional): Additional product CPEs data. Default is None.
+            product_cpes (dict, optional): Additional product CPEs data. Default is None.
 
         Returns:
             None
