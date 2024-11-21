@@ -853,7 +853,7 @@ class Benchmark(XCCDFEntity):
                                                   will be appended.
             components_to_not_include (dict): A dictionary specifying components (e.g., groups)
                                               that should not be included.
-            env_yaml (optional): An optional environment YAML configuration that may be passed to
+            env_yaml (dict, optional): An optional environment YAML configuration that may be passed to
                                  the group's to_xml_element method.
         """
         groups_in_bench = list(self.groups.keys())
