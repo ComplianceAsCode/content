@@ -772,7 +772,7 @@ class Benchmark(XCCDFEntity):
                                                   will be added.
             cpe_platforms_to_not_include (list): A list of platform IDs to be excluded from the
                                                  CPE XML.
-            product_cpes (optional): An object containing product CPEs. Defaults to None.
+            product_cpes (dict, optional): An object containing product CPEs. Defaults to None.
 
         Returns:
             None
@@ -853,8 +853,8 @@ class Benchmark(XCCDFEntity):
                                                   will be appended.
             components_to_not_include (dict): A dictionary specifying components (e.g., groups)
                                               that should not be included.
-            env_yaml (dict, optional): An optional environment YAML configuration that may be passed to
-                                 the group's to_xml_element method.
+            env_yaml (dict, optional): An optional environment YAML configuration that may be passed
+                                       to the group's to_xml_element method.
         """
         groups_in_bench = list(self.groups.keys())
         priority_order = ["system", "services", "auditing"]
@@ -948,7 +948,7 @@ class Benchmark(XCCDFEntity):
 
         Args:
             file_name (str): The name of the file to which the XML data will be written.
-            env_yaml (dict, ptional): An optional parameter that can be used to customize the XML generation.
+            env_yaml (dict, optional): An optional parameter that can be used to customize the XML generation.
 
         Returns:
             None
@@ -1101,7 +1101,7 @@ class Group(XCCDFEntity):
             cls (type): The class type that calls this method.
             input_contents (dict): The input dictionary containing initial data.
             env_yaml (dict): The environment YAML data.
-            product_cpes (optional): The product CPEs, defaults to None.
+            product_cpes (dict, optional): The product CPEs, defaults to None.
 
         Returns:
             dict: The processed data dictionary with updated rules, groups, values, and platforms.
@@ -1708,7 +1708,7 @@ class Rule(XCCDFEntity, Templatable):
         (indicating that the platforms have not been evaluated yet).
 
         Args:
-            rule (object): The rule object which may contain platform information.
+            rule (Rule): The rule object which may contain platform information.
             product_cpes (list): A list of product CPEs to look up.
 
         Returns:
@@ -3193,7 +3193,7 @@ class LinearLoader(object):
                 to be used for generating the benchmark XML.
 
         Yields:
-            tuple: A tuple containing the profile ID and the corresponding benchmark XML.
+            tuple: A tuple containing the profile ID (str) and the corresponding benchmark XML (str).
 
         Raises:
             Exception: If the benchmark is not loaded before calling this method.
@@ -3451,11 +3451,11 @@ class Platform(XCCDFEntity):
         Args:
             cls: The class itself.
             expression (str): The text expression to parse.
-            product_cpes: The product CPEs to use for parsing and resolving CPE items.
+            product_cpes (ProductCPEs): The product CPEs to use for parsing and resolving CPE items.
 
         Returns:
-            platform: A platform object with the parsed and enriched CPE information, or None if
-                      product_cpes is empty.
+            platform (Platform): A platform object with the parsed and enriched CPE information,
+                                 or None if product_cpes is empty.
         """
         if not product_cpes:
             return None
