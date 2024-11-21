@@ -948,7 +948,7 @@ class Benchmark(XCCDFEntity):
 
         Args:
             file_name (str): The name of the file to which the XML data will be written.
-            env_yaml (optional): An optional parameter that can be used to customize the XML generation.
+            env_yaml (dict, ptional): An optional parameter that can be used to customize the XML generation.
 
         Returns:
             None
