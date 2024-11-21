@@ -596,7 +596,6 @@ selections:
 
     # UBTU-20-010460 The Ubuntu operating system must disable the x86 Ctrl-Alt-Delete key sequence.
     - disable_ctrlaltdel_reboot
-    - disable_ctrlaltdel_burstaction
 
     # UBTU-20-010461 The Ubuntu operating system must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.
     - kernel_module_usb-storage_disabled
