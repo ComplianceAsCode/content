@@ -810,11 +810,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_httpd_removed
       - package_nginx_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.9.
+      - service_httpd_disabled
+      - service_nginx_disabled
+    status: automated
 
   - id: 2.1.19
     title: Ensure xinetd services are not in use (Automated)

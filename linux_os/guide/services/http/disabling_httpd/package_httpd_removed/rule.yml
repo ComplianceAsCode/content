@@ -1,14 +1,15 @@
 documentation_complete: true
 
+{{% if 'ubuntu' in product %}}
+{{% set package_name = "apache2" %}}
+{{% else %}}
+{{% set package_name = "httpd" %}}
+{{% endif %}}
 
-title: 'Uninstall httpd Package'
+title: 'Uninstall {{{ package_name }}} Package'
 
 description: |-
-    {{% if 'ubuntu' not in product %}}
-    {{{ describe_package_remove(package="httpd") }}}
-    {{% else %}}
-    {{{ describe_package_remove(package="apache2") }}}
-    {{% endif %}}
+    {{{ describe_package_remove(package=package_name) }}}
 
 rationale: |-
     If there is no need to make the web server software available,
@@ -36,17 +37,9 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-{{% if 'ubuntu' not in product %}}
-{{{ complete_ocil_entry_package(package="httpd") }}}
-{{% else %}}
-{{{ complete_ocil_entry_package(package="apache2") }}}
-{{% endif %}}
+{{{ complete_ocil_entry_package(package=package_name) }}}
 
 template:
     name: package_removed
     vars:
-        pkgname: httpd
-        pkgname@ubuntu1604: apache2
-        pkgname@ubuntu1804: apache2
-        pkgname@ubuntu2004: apache2
-        pkgname@ubuntu2204: apache2
+        pkgname: {{{ package_name }}}
