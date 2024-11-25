@@ -477,10 +477,9 @@ controls:
       - l1_server
       - l1_workstation
     related_rules:
-      - login_banner_text=cis_default
-      - banner_etc_motd
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.7.1.
+      - cis_banner_text=cis
+      - banner_etc_motd_cis
+    status: automated
 
   - id: 1.6.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -488,7 +487,8 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - banner_etc_issue
+      - cis_banner_text=cis
+      - banner_etc_issue_cis
     status: automated
 
   - id: 1.6.3
@@ -497,7 +497,8 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - banner_etc_issue_net
+      - cis_banner_text=cis
+      - banner_etc_issue_net_cis
     status: automated
 
   - id: 1.6.4
