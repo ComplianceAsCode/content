@@ -665,11 +665,10 @@ controls:
     levels:
       - l1_server
       - l2_workstation
-    related_rules:
+    rules:
       - package_avahi_removed
       - service_avahi-daemon_disabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.2.
+    status: automated
 
   - id: 2.1.3
     title: Ensure dhcp server services are not in use (Automated)
@@ -686,10 +685,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_bind_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.7.
+      - service_named_disabled
+    status: automated
 
   - id: 2.1.5
     title: Ensure dnsmasq services are not in use (Automated)
@@ -706,31 +705,30 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_vsftpd_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.8.
+      - service_vsftpd_disabled
+    status: automated
 
   - id: 2.1.7
     title: Ensure ldap server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_openldap-servers_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.5.
+      - service_slapd_disabled
+    status: automated
 
   - id: 2.1.8
     title: Ensure message access server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - package_cyrus-imapd_removed
+    rules:
       - package_dovecot_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.10.
+      - service_dovecot_disabled
+    status: automated
 
   - id: 2.1.9
     title: Ensure network file system services are not in use (Automated)
@@ -739,87 +737,88 @@ controls:
       - l1_workstation
     related_rules:
       - package_nfs-kernel-server_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.6.
+      - service_nfs_disabled
+    status: automated
 
   - id: 2.1.10
     title: Ensure nis server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - package_nis_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.14.
+    rules:
+      - package_ypserv_removed
+      - service_ypserv_disabled
+    status: automated
 
   - id: 2.1.11
     title: Ensure print server services are not in use (Automated)
     levels:
       - l1_server
       - l2_workstation
-    related_rules:
+    rules:
       - package_cups_removed
       - service_cups_disabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.3.
+    status: automated
 
   - id: 2.1.12
     title: Ensure rpcbind services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_rpcbind_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.3.6.
+      - service_rpcbind_disabled
+    status: automated
 
   - id: 2.1.13
     title: Ensure rsync services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_rsync_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.16.
+      - service_rsyncd_disabled
+    status: automated
 
   - id: 2.1.14
     title: Ensure samba file server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_samba_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.11.
+      - service_smb_disabled
+    status: automated
 
   - id: 2.1.15
     title: Ensure snmp services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_net-snmp_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.13.
+      - service_snmpd_disabled
+    status: automated
 
   - id: 2.1.16
     title: Ensure tftp server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_tftp-server_removed
+      - service_tftp_disabled
+    status: automated
 
   - id: 2.1.17
     title: Ensure web proxy server services are not in use (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - package_squid_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.12.
+      - service_squid_disabled
+    status: automated
 
   - id: 2.1.18
     title: Ensure web server services are not in use (Automated)
@@ -838,17 +837,18 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_xinetd_removed
+      - service_xinetd_disabled
+    status: automated
 
   - id: 2.1.20
     title: Ensure X window server services are not in use (Automated)
     levels:
       - l2_server
-    related_rules:
+    rules:
       - package_xorg-x11-server-common_removed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.2.1.
+    status: automated
 
   - id: 2.1.21
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
