@@ -1,11 +1,9 @@
 <def-group>
-  {{%- set local_id = POINTID ~ "_partition_" ~ MOUNTOPTIONID ~ "_" ~ ("optional" if MOUNT_HAS_TO_EXIST else "expected") -%}}
+  {{%- set local_id = POINTID ~ "_partition_" ~ MOUNTOPTIONID ~ "_" ~ ("optional" if FSTAB_ENTRY_IS_OPTIONAL else "expected") -%}}
   <!-- The test will check if correct option is present in both active (/proc/mounts) and
        configured (/etc/fstab) mount points. It won't fail if the mount point is not currently
        active, but will consider absence of the mount point configuration as a failure unless
-       MOUNT_HAS_TO_EXIST is set to `true` (the name is a bit controversial: it means that
-       the mount point has to exist in the configuration file to be checked, and we don't care
-       about it if it is not configured). -->
+       FSTAB_ENTRY_IS_OPTIONAL is set to `true` -->
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata(MOUNTPOINT ~ " should be mounted with mount option " ~ MOUNTOPTION ~ ".") }}}
@@ -20,7 +18,7 @@
       <criteria operator="OR">
          <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} in /etc/fstab"
            test_ref="test_{{{ local_id }}}_in_fstab"/>
-    {{% if MOUNT_HAS_TO_EXIST %}}
+    {{% if FSTAB_ENTRY_IS_OPTIONAL %}}
          <criterion comment="{{{ MOUNTPOINT }}} does not exist in /etc/fstab"
            test_ref="test_{{{ local_id }}}_exist_in_fstab"
            negate="true" />
@@ -100,7 +98,7 @@
     <linux:object object_ref="object_{{{ local_id }}}"/>
   </linux:partition_test>
 
-{{% if MOUNT_HAS_TO_EXIST %}}
+{{% if FSTAB_ENTRY_IS_OPTIONAL %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
     comment="{{{ MOUNTPOINT }}} exists in /etc/fstab"
     id="test_{{{ local_id }}}_exist_in_fstab">

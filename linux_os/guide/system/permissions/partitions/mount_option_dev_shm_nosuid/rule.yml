@@ -50,10 +50,10 @@ template:
     vars:
         mountpoint: /dev/shm
         mountoption: nosuid
-        mount_has_to_exist: false
+        fstab_entry_is_optional: false
         filesystem: tmpfs
         type: tmpfs
-        mount_has_to_exist@sle12: true
+        fstab_entry_is_optional@sle12: true
         filesystem@sle12: ''
         type@sle12: ''
     backends:

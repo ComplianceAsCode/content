@@ -46,7 +46,7 @@ template:
         mountpoint: /proc
         mountoption: hidepid
         mountoption_arg_var: var_mount_option_proc_hidepid
-        mount_has_to_exist: false
+        fstab_entry_is_optional: false
         filesystem: proc
         type: proc
     backends:

@@ -14,8 +14,8 @@ def _mount_option(data, lang):
 
 
 def preprocess(data, lang):
-    data["mount_has_to_exist"] = parse_template_boolean_value(data,
-                                                              parameter="mount_has_to_exist",
+    data["fstab_entry_is_optional"] = parse_template_boolean_value(data,
+                                                              parameter="fstab_entry_is_optional",
                                                               default_value=True)
     if lang == "oval":
         data["mountoptionid"] = data["mountoption"].split()[0]

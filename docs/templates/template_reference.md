@@ -521,7 +521,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
     -   **type** - filesystem type. Used only in Bash remediation.
 
-    -   **mount_has_to_exist** - Specifies if the **mountpoint**
+    -   **fstab_entry_is_optional** - Specifies if the **mountpoint**
         entry has to exist in `/etc/fstab` before the remediation is
         executed. If set to `true` and the **mountpoint** entry is not
         present in `/etc/fstab` the Bash remediation terminates. If set
@@ -544,7 +544,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
         new entry in `/etc/fstab`), eg. `tmpfs`. Used only in Bash
         remediation.
 
-    -   **mount_has_to_exist** - Used only in Bash remediation.
+    -   **fstab_entry_is_optional** - Used only in Bash remediation.
         Specifies if the **mountpoint** entry has to exist in
         `/etc/fstab` before the remediation is executed. If set to `yes`
         and the **mountpoint** entry is not present in `/etc/fstab` the
