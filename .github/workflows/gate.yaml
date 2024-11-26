@@ -121,6 +121,25 @@ jobs:
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
 
+  validate-ubuntu-24-04:
+    name: Build, Test on Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install Deps
+        run: sudo apt-get update && sudo apt-get install cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - name: Install deps python
+        run: pip3 install -r requirements.txt -r test-requirements.txt
+      - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF"
+        run: |-
+          ./build_product ubuntu2404
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
     runs-on: ubuntu-latest
