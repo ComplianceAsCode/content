@@ -6,6 +6,7 @@ IFS=$"\n"
 for f in $UNOWNED_FILES; do
 	rm -f "$f"
 done
+sed -i  's/group:\s\+\(.*\)/group: altfiles \1/' /etc/nsswitch.conf
 
 touch /root/test
 chown 9999:9999 /root/test
