@@ -7,16 +7,18 @@ description: |-
    Configure the nftables firewall rules for new outbound and established connections
 
 rationale: |-
-    If rules are not in place for new outbound and established connections, all packets 
+    If rules are not in place for new outbound and established connections, all packets
     will be dropped by the default policy preventing network usage.
 
 severity: medium
 
 identifiers:
     cce@sle15: CCE-92564-4
+    cce@slmicro5: CCE-93977-7
 
 references:
     cis@sle15: 3.5.2.7
+    cis@slmicro5: 3.5.2.7
 
 ocil_clause: 'All nftables rules for established incoming, and for new and outbound connections do not match site policy'
 
@@ -39,7 +41,7 @@ ocil: |-
       ip protocol udp ct state established,related,new accept
       ip protocol icmp ct state established,related,new accept
     </tt>
-    To configure nftables in accordance with site policy which will allow all outbound and all 
+    To configure nftables in accordance with site policy which will allow all outbound and all
     established connections, run the following commands:
     <pre>$ sudo nft add rule inet filter input ip protocol tcp ct state established accept</pre>
     <pre>$ sudo nft add rule inet filter input ip protocol udp ct state established accept</pre>

@@ -14,7 +14,11 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ensure_gpgcheck_never_disabled"
   version="1">
-    <ind:path>/etc/yum.repos.d</ind:path>
+  {{%- if product in ["sle12", "sle15", "slmicro5"] %}}
+      <ind:path>/etc/zypp/repos.d</ind:path>
+  {{%- else %}}
+      <ind:path>/etc/yum.repos.d</ind:path>
+  {{%- endif %}}
     <ind:filename operation="pattern match">.*</ind:filename>
     <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*0\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
