@@ -20,10 +20,12 @@ identifiers:
     cce@rhel10: CCE-90611-5
     cce@sle12: CCE-92320-1
     cce@sle15: CCE-92478-7
+    cce@slmicro5: CCE-93872-0
 
 references:
     cis@sle12: 4.1.1.1
     cis@sle15: 4.1.1.1
+    cis@slmicro5: 4.1.1.1
     disa: CCI-000130,CCI-000131,CCI-000132,CCI-000133,CCI-000134,CCI-000135,CCI-000154,CCI-000158,CCI-000172,CCI-001464,CCI-001487,CCI-003938,CCI-001875,CCI-001876,CCI-001877,CCI-001878,CCI-001879,CCI-001880,CCI-001881,CCI-001882,CCI-001889,CCI-001914,CCI-002884,CCI-000169
     nerc-cip: CIP-004-6 R3.3,CIP-007-3 R6.5
     nist: AC-7(a),AU-7(1),AU-7(2),AU-14,AU-12(2),AU-2(a),CM-6(a)
@@ -33,7 +35,7 @@ references:
 
 ocil_clause: 'the {{{ package_name }}} package is not installed'
 
-{{% if product in ["sle12","sle15"] %}}
+{{% if product in ["sle12","sle15","slmicro5"] %}}
 ocil: '{{{ ocil_package("libaudit1") }}}'
 {{% else %}}
 ocil: '{{{ ocil_package("audit-libs") }}}'
@@ -41,7 +43,7 @@ ocil: '{{{ ocil_package("audit-libs") }}}'
 
 fixtext: |-
     Install the {{{ package_name }}} package (if {{{ package_name }}} package is not already installed) with the following command:
-{{% if product in ["sle12","sle15"] %}}
+{{% if product in ["sle12","sle15","slmicro5"] %}}
     {{{ package_install("libaudit1") }}}
 {{% else %}}
     {{{ package_install("audit-libs") }}}
@@ -52,3 +54,4 @@ template:
     vars:
         pkgname: audit-libs
         pkgname@sle15: libaudit1
+        pkgname@slmicro5: libaudit1

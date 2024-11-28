@@ -4,39 +4,39 @@ documentation_complete: true
 title: 'Ensure GPG keys are configured'
 
 description: |-
-    The operation system or installed application can be successfully bootstrapped 
-    without the GPG key being trusted. However, you cannot install new packages or 
+    The operation system or installed application can be successfully bootstrapped
+    without the GPG key being trusted. However, you cannot install new packages or
     update them until the keys are trusted.
-    <br /><br /> 
-    Most packages managers implement GPG key signing to verify package integrity 
+    <br /><br />
+    Most packages managers implement GPG key signing to verify package integrity
     during installation.
     <br /><br />
-    To verify GPG keys are configured correctly for your package manager, 
+    To verify GPG keys are configured correctly for your package manager,
     one of the following command groups may provide the needed information
-    depending on the package manager in use. 
+    depending on the package manager in use.
     <br /><br />
     In SUSE Linux distributions, the administrators have to follow the next steps: <br />
     1. Log on to the system as a user with administrator rights.<br />
     2. Locate and download package, for example zoom_x86_64.rpm<br />
-    3. Locate and download the public key (GPG) from the software download site, for 
+    3. Locate and download the public key (GPG) from the software download site, for
     example the key for zoom package is package-signing-key-5-12-6.pub<br />
     4. Import the key public key:<br />
     <tt>$ sudo rpm --import package-signing-key-5-12-6.pub</tt><br />
-    5. List the keys, for example the command:<br /> 
+    5. List the keys, for example the command:<br />
     <tt>$ sudo rpm -qa gpg-pubkey*</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502</tt><br />
     6. Get more details about the key, via the command:<br />
     <tt>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</tt><br />
-    7. Check the GPG key, for example the command:<br /> 
+    7. Check the GPG key, for example the command:<br />
     <tt>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</tt><br />
     <br /><br />
-    
+
 rationale: |-
-    It is important to ensure that updates are obtained from a valid source to protect 
-    against spoofing that could lead to the inadvertent installation of malware on the 
+    It is important to ensure that updates are obtained from a valid source to protect
+    against spoofing that could lead to the inadvertent installation of malware on the
     system.
 
 severity: medium
@@ -44,32 +44,34 @@ severity: medium
 identifiers:
     cce@sle12: CCE-92384-7
     cce@sle15: CCE-92542-0
+    cce@slmicro5: CCE-94072-6
 
 references:
     cis@sle12: 1.2.1
     cis@sle15: 1.2.1
+    cis@slmicro5: 1.2.1
 
 ocil_clause: 'Your package manager GPG keys are not configured in accordance with site policy'
 
 ocil: |-
-    To verify GPG keys are configured correctly for your package manager, one of the 
-    following command groups may provide the needed information depending on the 
-    package manager in use. 
+    To verify GPG keys are configured correctly for your package manager, one of the
+    following command groups may provide the needed information depending on the
+    package manager in use.
 
     In SUSE Linux distributions, the administrators have to follow the next steps: <br />
     1. Log on to the system as a user with administrator rights.<br />
     2. Locate and download package, for example zoom_x86_64.rpm<br />
-    3. Locate and download the public key (GPG) from the software download site, for example 
+    3. Locate and download the public key (GPG) from the software download site, for example
     the key for zoom package is package-signing-key-5-12-6.pub<br />
     4. Import the key public key:<br />
     <tt>set pub_key_import = "$ sudo rpm --import package-signing-key-5-12-6.pub</tt><br />
-    5. List the keys, for example the command:<br /> 
+    5. List the keys, for example the command:<br />
     <tt>$ sudo rpm -qa gpg-pubkey*</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502</tt><br />
     6. Get more details about the key, via the command:<br />
     <tt>$ sudo rpm -qa gpg-pubkey-dd79b481-62fe7502</tt><br />
-    7. Check the GPG key, for example the command:<br /> 
+    7. Check the GPG key, for example the command:<br />
     <tt>$ sudo rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --&gt; %{summary}\n'</tt><br />
     will provide:<br />
     <tt>gpg-pubkey-dd79b481-62fe7502 --&gt; gpg(Zoom Video Communications, Inc. &lt;CryptoOpsCodeSignProd@zoom.us&gt;)</tt><br />

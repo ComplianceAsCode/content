@@ -3,7 +3,7 @@ documentation_complete: true
 
 title: 'Ensure the Default Bash Umask is Set Correctly'
 
-{{% if 'sle' in product or 'ubuntu' in product or 'debian' in product %}}
+{{% if 'sle' in product or 'ubuntu' in product or 'debian' in product or product == 'slmicro5' %}}
 {{% set etc_bash_rc = "/etc/bash.bashrc" %}}
 {{% else %}}
 {{% set etc_bash_rc = "/etc/bashrc" %}}
@@ -29,11 +29,13 @@ identifiers:
     cce@rhel10: CCE-88580-6
     cce@sle12: CCE-91530-6
     cce@sle15: CCE-91215-4
+    cce@slmicro5: CCE-94023-9
 
 references:
     cis-csc: '18'
     cis@sle12: 5.4.5
     cis@sle15: 5.4.5
+    cis@slmicro5: 5.4.5
     cis@ubuntu2004: 5.4.4
     cis@ubuntu2204: 5.5.4
     cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03

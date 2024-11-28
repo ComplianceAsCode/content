@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_ol,multi_platform_fedora,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle,multi_platform_slmicro
 # reboot = false
 # strategy = enable
 # complexity = low
@@ -6,7 +6,7 @@
 - name: Grep for {{{ pkg_manager }}} repo section names
   shell: |
     set -o pipefail
-{{%- if product in ["sle12", "sle15"] %}}
+{{%- if product in ["sle12", "sle15", "slmicro5"] %}}
     grep -HEr '^\[.+\]' -r /etc/zypp/repos.d/
 {{%- else %}}
     grep -HEr '^\[.+\]' -r /etc/yum.repos.d/
