@@ -5,4 +5,7 @@
 
 source ubuntu_common.sh
 
+rm -f /usr/share/cac_faillock*
+pam-auth-update
+
 echo > /etc/security/faillock.conf

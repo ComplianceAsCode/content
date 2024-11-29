@@ -791,7 +791,7 @@ authselect enable-feature {{{ feature }}}
 
 #}}
 {{%- macro bash_enable_pam_faillock_directly_in_pam_files() -%}}
-{{% if 'ubuntu' in product or 'debian' in product %}}
+{{% if 'debian' in product %}}
 pam_file="/etc/pam.d/common-auth"
 if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "$pam_file" ; then
     # insert at the top
@@ -823,6 +823,38 @@ pam_file="/etc/pam.d/common-account"
 if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "$pam_file" ; then
     echo 'account   required     pam_faillock.so' >> "$pam_file"
 fi
+{{% elif 'ubuntu' in product %}}
+conf_name=cac_faillock
+
+if [ ! -f /usr/share/pam-configs/"$conf_name" ]; then
+    cat << EOF > /usr/share/pam-configs/"$conf_name"
+Name: Enable pam_faillock to deny access
+Default: yes
+Conflicts: faillock
+Priority: 0
+Auth-Type: Primary
+Auth:
+    [default=die]                   pam_faillock.so authfail
+EOF
+fi
+
+if [ ! -f /usr/share/pam-configs/"$conf_name"_notify ]; then
+    cat << EOF > /usr/share/pam-configs/"$conf_name"_notify
+Name: Notify of failed login attempts and reset count upon success
+Default: yes
+Conflicts: faillock_notify
+Priority: 1025
+Auth-Type: Primary
+Auth:
+    requisite                       pam_faillock.so preauth
+Account-Type: Primary
+Account:
+    required                        pam_faillock.so
+EOF
+fi
+
+DEBIAN_FRONTEND=noninteractive pam-auth-update
+
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 for pam_file in "${AUTH_FILES[@]}"
@@ -997,11 +1029,13 @@ fi
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
 {{% if 'ubuntu' in product %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
+APPEND_FAILLOCK_CONF=true
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+APPEND_FAILLOCK_CONF=false
 {{% endif %}}
 FAILLOCK_CONF="/etc/security/faillock.conf"
-if [ -f $FAILLOCK_CONF ]; then
+if [ -f $FAILLOCK_CONF ] || [ "$APPEND_FAILLOCK_CONF" = "true" ]; then
     {{%- if value == '' %}}
     regex="^\s*{{{ option }}}"
     line="{{{ option }}}"
@@ -1018,10 +1052,12 @@ if [ -f $FAILLOCK_CONF ]; then
         sed -i --follow-symlinks 's|^\s*\({{{ option }}}\s*=\s*\)\(\S\+\)|\1'"{{{ value }}}"'|g' $FAILLOCK_CONF
     fi
     {{%- endif %}}
+    {{% if 'ubuntu' not in product %}}
     for pam_file in "${AUTH_FILES[@]}"
     do
         {{{ bash_remove_pam_module_option_configuration("$pam_file",'auth','','pam_faillock.so', option ) | indent(8) }}}
     done
+    {{% endif %}}
 else
     for pam_file in "${AUTH_FILES[@]}"
     do
