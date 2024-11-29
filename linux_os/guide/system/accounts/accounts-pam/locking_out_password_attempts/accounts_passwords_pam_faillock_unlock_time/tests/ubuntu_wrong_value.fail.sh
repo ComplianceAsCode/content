@@ -4,4 +4,4 @@
 
 source ubuntu_common.sh
 
-echo "#unlock_time=1000" > /etc/security/faillock.conf
+echo "unlock_time=100" > /etc/security/faillock.conf

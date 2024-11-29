@@ -1029,13 +1029,13 @@ fi
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
 {{% if 'ubuntu' in product %}}
 AUTH_FILES=("/etc/pam.d/common-auth")
-APPEND_FAILLOCK_CONF=true
+SKIP_FAILLOCK_CHECK=true
 {{% else %}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
-APPEND_FAILLOCK_CONF=false
+SKIP_FAILLOCK_CHECK=false
 {{% endif %}}
 FAILLOCK_CONF="/etc/security/faillock.conf"
-if [ -f $FAILLOCK_CONF ] || [ "$APPEND_FAILLOCK_CONF" = "true" ]; then
+if [ -f $FAILLOCK_CONF ] || [ "$SKIP_FAILLOCK_CHECK" = "true" ]; then
     {{%- if value == '' %}}
     regex="^\s*{{{ option }}}"
     line="{{{ option }}}"
