@@ -355,17 +355,31 @@ controls:
     levels:
     - standard
     description: >-
-      The sources of images that have been classified as trusted and SHOULD be adequately
-      documented along with the corresponding reasons. In addition, the process of how images or
+      (1) The sources of images that have been classified as trusted and SHOULD be adequately
+      documented along with the corresponding reasons. (2) In addition, the process of how images or
       the software components contained in an image are obtained from trusted sources and
       eventually deployed to a productive environment SHOULD be adequately documented.
-      Images used SHOULD have metadata that makes their function and history traceable. Digital
+      (3) Images used SHOULD have metadata that makes their function and history traceable. (4) Digital
       signatures SHOULD secure each image against modification.
     notes: >-
-      ToDo
-    status: manual
-    #rules:
-
+      Section 1: The source of images can be restricted by configuring the allowed registries.
+      In addition, this requirement must be implemented organizationally.
+      Section 2: This requirement must be implemented organizationally.
+      Section 3: This requirement is solved using image labels. Red Hat Images contain the
+      labels io.k8s.description, summary, vender, version, url, vcs-ref and vcs-type,
+      through which the delivered images are transparent in their function and history.
+      For internal images, the existence of the labels can be ensured during application
+      development.
+      The existence of the corresponding labels can be ensured via ACS.
+      Section 4: OpenShift can be configured to assign a digital signature to each approved registry.
+      OpenShift then only executes images from this registry that are secured using this signature.
+    status: partial
+    rules:
+      # Section 1
+      - ocp_allowed_registries
+      - ocp_allowed_registries_for_import
+      # Section 4
+      - reject_unsigned_images_by_default
 
   - id: SYS.1.6.A13
     title: Release of Images
@@ -375,9 +389,14 @@ controls:
       All images for productive operation SHOULD undergo a test and release process in the same
       way as software products in accordance with module OPS.1.1.6 Software Tests and Approvals
     notes: >-
-      ToDo
+      This requirement must be solved organizationally.
+      Note: OpenShift offers various CI/CD solutions that can be used for automation.
+      OpenShift Pipelines (Tekton-based) and traditional Jenkins are available directly in OpenShift.
+      If the user uses gitlab-ci or github Actions, the runners can be executed in OpenShift.
+      If the release process contains specific artifacts such as if you require SBOMs
+      or the ability to statically analyze Dockerfiles, Quay and ACS can provide the necessary functionality.
     status: manual
-    #rules:
+    rules: []
 
   - id: SYS.1.6.A14
     title: Updating Images
