@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssg"
+description = "Library used while building and maintaining the ComplianceasCode/content project"
+dynamic = ["version"]
+dependencies = [
+  "pyyaml",
+  "Jinja2",
+  "setuptools"
+]
+requires-python = ">= 3"
+maintainers = [
+  {name = "Gabriel Gaspar Becker", email = "ggasparb@redhat.com"},
+  {name = "Jan Cerny", email = "jcerny@redhat.com"},
+  {name = "Marcus Burghardt", email = "maburgha@redhat.com"},
+  {name = "Matthew Burket", email = "mburket@redhat.com"},
+  {name = "Matus Marhefka", email = "mmarhefk@redhat.com"},
+  {name = "Vojtech Polasek", email = "vpolasek@redhat.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://github.com/ComplianceAsCode/content"
+Documentation = "https://complianceascode.readthedocs.io/en/latest/"
+
+
+[tool.setuptools_scm]
+# The ComplianceasCode/content uses git tag in an uncommon way.
+# That's why this elaborate command is used to get somehow meaningful version.
+# The project uses tags, but they describe commits which are not in the master branch.
+# Instead, they describe commits which are marked as final in stabilization branches.
+# These branches are temporary and they are deleted after stabilization finishes.
+# That is the reason why the regular "git describe --long" command cannot be used in this place.
+# Instead the latest tag is selected with some heuristics added, stored in the $tag variable.
+# Then number of commits between the tag and the current head is calculated and stored in the $numcommits variable.
+# Then the HEAD short commit hash is added.
+git_describe_command = ["sh", "-c", "tag=$(git tag | grep -v '-' | sort | tail -n 1); numcommits=$(git rev-list --count $tag..HEAD); com=$(git log -1 --pretty=format:%h); echo $tag-$numcommits-$com"]
+
+[tool.setuptools.packages.find]
+include = ["ssg*"]
