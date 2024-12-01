@@ -15,6 +15,9 @@ for file in ${configuration_files[@]}; do
 		"/etc/authselect/custom/testingProfile/$file"
 done
 authselect select --force custom/testingProfile
+{{% elif 'ubuntu' in product %}}
+rm -f /usr/share/pam-configs/*pwquality
+DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
 for file in ${configuration_files[@]}; do
 	sed -i --follow-symlinks "/pam_pwquality\.so/d" "/etc/pam.d/$file"
