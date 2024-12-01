@@ -1075,6 +1075,38 @@ fi
 
 
 {{#
+    Sets PAM pwquality module options and values. The module argument is not removed from pam files
+    since it is not inserted there in Ubuntu case.
+    It also assume pam_pwquality.so is added as required module for account.
+
+:param option: pwquality option eg. retry, minlen, dcredit
+:type option: str
+:param value: value of option
+:type value: str
+
+#}}
+{{%- macro bash_pam_pwquality_parameter_value(option, value='') -%}}
+PWQUALITY_CONF="/etc/security/pwquality.conf"
+    {{%- if value == '' %}}
+    regex="^\s*{{{ option }}}"
+    line="{{{ option }}}"
+    {{%- else %}}
+    regex="^\s*{{{ option }}}\s*="
+    line="{{{ option }}} = {{{ value }}}"
+    {{%- endif %}}
+    if ! grep -q $regex $PWQUALITY_CONF; then
+        echo $line >> $PWQUALITY_CONF
+    {{%- if value == '' %}}
+    fi
+    {{%- else %}}
+    else
+        sed -i --follow-symlinks 's|^\s*\({{{ option }}}\s*=\s*\)\(\S\+\)|\1'"{{{ value }}}"'|g' $PWQUALITY_CONF
+    fi
+    {{%- endif %}}
+{{%- endmacro -%}}
+
+
+{{#
     Print a message to stderr and exit the shell
 
 :param message: The message to print.
