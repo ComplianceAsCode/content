@@ -848,6 +848,28 @@ fi
 
 
 {{#
+    Enable pam_pwquality.so PAM module by using pam-auth-update.
+    This option is only recommended when pam-auth-update tool is available for the system.
+#}}
+{{%- macro bash_pam_pwquality_enable() -%}}
+conf_name=cac_pwquality
+if [ ! -f /usr/share/pam-configs/"$conf_name" ]; then
+    cat << EOF > /usr/share/pam-configs/"$conf_name"
+Name: Pwquality password strength checking
+Default: yes
+Priority: 1025
+Conflicts: cracklib, pwquality
+Password-Type: Primary
+Password:
+    requisite                   pam_pwquality.so
+EOF
+fi
+
+DEBIAN_FRONTEND=noninteractive pam-auth-update
+{{%- endmacro -%}}
+
+
+{{#
     Validate an authselect custom profile integrity and ensures the correct file path is defined
     in the "PAM_FILE_PATH" variable. The macros which change PAM files are the same regardless of
     using authselect or not. The only change is the file path. However, this file path can change
