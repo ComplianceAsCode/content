@@ -5,6 +5,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
+env:
+  DATASTREAM: ssg-ubuntu2404-ds.xml
 jobs:
   build-content:
     name: Build Content
@@ -55,12 +57,12 @@ jobs:
           prop_path: 'product'
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
+        run: ./build_product ubuntu2404 --datastream-only
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
-          name: ssg-${{steps.product.outputs.prop}}-ds.xml
-          path: build/ssg-${{steps.product.outputs.prop}}-ds.xml
+          name: ${{ env.DATASTREAM }}
+          path: build/${{ env.DATASTREAM }}
   validate-ubuntu:
     name: Run Tests
     needs: build-content
@@ -123,10 +125,10 @@ jobs:
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
-          name: ssg-${{steps.product.outputs.prop}}-ds.xml
+          name: ${{ env.DATASTREAM }}
       - name: Run tests in a container - Bash
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --no-make-applicable-in-containers --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(fromJSON(steps.rules.outputs.prop))}}
+        run: tests/test_rule_in_container.sh --no-make-applicable-in-containers --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ${{ env.DATASTREAM }} ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
           ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --remove-fips-certified"
       - name: Check for ERROR in logs
@@ -147,7 +149,7 @@ jobs:
           path: logs_bash/
       - name: Run tests in a container - Ansible
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --no-make-applicable-in-containers --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(fromJSON(steps.rules.outputs.prop))}}
+        run: tests/test_rule_in_container.sh --no-make-applicable-in-containers --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ${{ env.DATASTREAM }} ${{join(fromJSON(steps.rules.outputs.prop))}}
         env:
           ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --remove-fips-certified"
       - name: Check for ERROR in logs
