@@ -4,6 +4,7 @@ LOGROTATE_CONF_FILE="/etc/logrotate.conf"
 {{% if 'sle' in product %}}
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 {{% else %}}
+{{{ bash_package_install("crontabs") }}}
 CRON_DAILY_LOGROTATE_FILE="/etc/cron.daily/logrotate"
 {{% endif %}}
 
