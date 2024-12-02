@@ -11,7 +11,8 @@ def required_attribute(_xml_el, _key):
     if _key in _xml_el.attrib:
         return _xml_el.get(_key)
     raise ValueError(
-        "%s is required but was not found in:\n%s" % (_key, repr(_xml_el.attrib))
+        "%s attribute is required but was not found in %s element:\n%s" % (
+            _key, _xml_el.tag, repr(_xml_el.attrib))
     )
 
 
