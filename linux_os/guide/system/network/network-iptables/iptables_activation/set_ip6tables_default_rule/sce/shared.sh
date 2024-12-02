@@ -12,8 +12,8 @@ if [ -z "${output}" ]; then
 fi
 
 while read -r line; do
-    chain=$(echo "$line" | awk '{print $1, $2}')
-    policy=$(echo "$line" | awk '{print $4}' | tr -d ")")
+    chain=$(echo "$line" | cut -f1-2 -d' ')
+    policy=$(echo "$line" | cut -f4 -d' ' | tr -d ')')
     if [ "$chain" = "Chain INPUT" ] || [ "$chain" = "Chain FORWARD" ] ||
        [ "$chain" = "Chain OUTPUT" ]; then
         if [ "$policy" != "DROP" ] && [ "$policy" != "REJECT" ]; then

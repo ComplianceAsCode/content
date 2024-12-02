@@ -6,7 +6,11 @@ description: |-
     To set the default policy to DROP (instead of ACCEPT) for
     the built-in INPUT chain which processes incoming packets,
     add or correct the following line in
+    {{% if 'ubuntu' in product %}}
+    <tt>/etc/iptables/rules.v6</tt>:
+    {{% else %}}
     <tt>/etc/sysconfig/ip6tables</tt>:
+    {{% endif %}}
     <pre>:INPUT DROP [0:0]</pre>
     If changes were required, reload the ip6tables rules:
     <pre>$ sudo service ip6tables reload</pre>
