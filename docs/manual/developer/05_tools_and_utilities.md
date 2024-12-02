@@ -9,9 +9,11 @@ this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the current
 shell, simply call `source .pyenv.sh`. For more information on how to
 use this script, please see the comments at the top of the file.
 
-It is also possible to install the module with `pip`. In this case it is recommended to install it within a Python virtual environment.
+It is also possible to install the module with `pip`.
+In this case it is recommended to install it within a Python virtual environment.
 Please note that this possibility was added after releasing the 0.1.75 version and until the release 0.1.76 is out it can only be installed from `master` branch.
 To install the ssg module currently present in the master branch, run the following command:
+
 ```bash
 pip install git+https://github.com/ComplianceasCode/content
 ```
