@@ -5,7 +5,7 @@
 {{% if "debian" in product or "sle12" in product %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
 {{% elif "ubuntu" in product %}}
-{{%- set accounts_password_pam_unix_remember_file = '/usr/share/pam-configs/unix' -%}}
+{{%- set accounts_password_pam_unix_remember_file = '/usr/share/pam-configs/cac_unix' -%}}
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
 {{% endif %}}
