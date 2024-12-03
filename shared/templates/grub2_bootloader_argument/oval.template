@@ -12,7 +12,6 @@
 {{% set system_with_kernel_options_in_etc_default_grub_d = false -%}}
 {{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
 {{% set system_with_bios_and_uefi_support = false -%}}
-{{% set bootable_containers_supported = false %}}
 
 {{% if product in ["fedora", "ol9", "rhel9", "rhel10"] -%}}
 {{% set system_with_expanded_kernel_options_in_loader_entries = true %}}
@@ -32,10 +31,6 @@
 
 {{% if grub2_uefi_boot_path and grub2_uefi_boot_path != grub2_boot_path -%}}
 {{% set system_with_bios_and_uefi_support = true %}}
-{{%- endif -%}}
-
-{{% if product in ["rhel9", "rhel10"] -%}}
-{{% set bootable_containers_supported = true %}}
 {{%- endif -%}}
 
 <def-group>
@@ -114,7 +109,7 @@
         </criteria>
       {{%- endif %}}
     </criteria>
-    {{% if bootable_containers_supported %}}
+    {{% if bootable_containers_supported == "true" %}}
       <criteria operator="AND">
         <extend_definition comment="The system is RHEL Image Mode"  definition_ref="bootc" />
         <criterion comment="The {{{ ARG_NAME_VALUE }}} is present in the /usr/lib/bootc/kargs.d/*.toml files"  test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
@@ -319,7 +314,7 @@
   <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
 {{% endif %}}
 
-{{% if bootable_containers_supported %}}
+{{% if bootable_containers_supported == "true" %}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d"
                               comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
                               check="at least one" check_existence="at_least_one_exists" version="1">
