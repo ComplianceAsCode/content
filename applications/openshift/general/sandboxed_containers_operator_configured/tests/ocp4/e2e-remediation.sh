@@ -20,6 +20,10 @@ oc wait -n openshift-sandboxed-containers-operator --for=condition=ContainersRea
 echo "configuring kataconfig"
 oc apply -f ${ROOT_DIR}/ocp-resources/e2e/sandboxed-containers-instance.yaml --server-side=true
 
+while [ -z "$(oc get -n openshift-sandboxed-containers-operator --ignore-not-found machineconfigpool/kata-oc)" ]; do
+    sleep 3
+done
+
 echo "check, that the mcp was updated"
 oc wait --for=condition=Updated --timeout=3600s machineconfigpool/kata-oc
 
