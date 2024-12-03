@@ -27,6 +27,8 @@ description: |-
 selections:
     - bsi_app_4_4:all
     - bsi_sys_1_6:all
+    - bsi_sys_1_1:all
+    - bsi_sys_1_3:all
 
     # BSI APP.4.4.A4
     - var_selinux_policy_name=targeted
