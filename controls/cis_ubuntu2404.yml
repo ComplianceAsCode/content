@@ -1527,10 +1527,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - ip6tables_rules_for_open_ports
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/3.5.3.3.4.
+    status: automated
+    notes: |
+      Remediation is not automated to avoid lockout.
 
   - id: 5.1.1
     title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
