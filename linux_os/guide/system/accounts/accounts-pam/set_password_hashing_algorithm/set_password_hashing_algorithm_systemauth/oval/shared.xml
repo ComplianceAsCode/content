@@ -18,7 +18,7 @@
   {{% endif %}}
 
   {{% set pam_unix_algorithms = "(sha512|yescrypt|gost_yescrypt|blowfish|sha256|md5|bigcrypt)" %}}
-  {{% set hashing_pattern = line_pattern + "(?!.*" + pam_unix_algorithms + ".*" + pam_unix_algorithms + ").*" + pam_unix_algorithms + ".*$" %}}
+  {{% set hashing_pattern = line_pattern + "(?!.*" + pam_unix_algorithms + "[^#]*" + pam_unix_algorithms + ").*" + pam_unix_algorithms + ".*$" %}}
 
   <!--
     In addition to the pam file, what usually differ between products are the controls in the
