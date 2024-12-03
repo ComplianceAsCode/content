@@ -5,7 +5,7 @@
 {{% if "debian" in product or "sle12" in product %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/common-password' -%}}
 {{% elif "ubuntu" in product %}}
-{{%- set accounts_password_pam_unix_remember_file = '/usr/share/pam-configs/cac_unix' -%}}
+config_file="/usr/share/pam-configs/cac_unix"
 {{% else %}}
 {{%- set accounts_password_pam_unix_remember_file = '/etc/pam.d/system-auth' -%}}
 {{% endif %}}
@@ -21,7 +21,14 @@ sed -i -E '/^Password:/,/^[^[:space:]]/ {
         s/\s*remember=[^[:space:]]*//g
         s/$/ remember='"$var_password_pam_unix_remember"'/g
     }
-}' "$accounts_password_pam_unix_remember_file"
+}' "$config_file"
+
+sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
+    /pam_unix\.so/ {
+        s/\s*remember=[^[:space:]]*//g
+        s/$/ remember='"$var_password_pam_unix_remember"'/g
+    }
+}' "$config_file"
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
