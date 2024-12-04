@@ -1,0 +1,30 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("The system must be booted with fips=1 and /proc/cmdline must not contain fips=0") }}}
+        <criteria operator="AND">
+            <criterion comment="FIPS mode is enabled" test_ref="test_{{{ rule_id }}}_mode_exists" />
+            <criterion comment="FIPS mode is not disabled" test_ref="test_{{{ rule_id }}}_not_disabled" />
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="FIPS mode is enabled" id="test_{{{ rule_id }}}_mode_exists" version="1">
+        <ind:object object_ref="obj_{{{ rule_id }}}_mode_exists" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_test check="all" check_existence="none_exist" id="test_{{{ rule_id }}}_not_disabled" version="1" comment="FIPS mode isn't disable">
+        <ind:object object_ref="obj_{{{ rule_id }}}_not_disabled" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_mode_exists" version="1">
+        <ind:filepath>/proc/cmdline</ind:filepath>
+        <ind:pattern operation="pattern match">.+fips*=1.+</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_not_disabled" version="1">
+        <ind:filepath>/proc/cmdline</ind:filepath>
+        <ind:pattern operation="pattern match">.+fips*=0.+</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+</def-group>
