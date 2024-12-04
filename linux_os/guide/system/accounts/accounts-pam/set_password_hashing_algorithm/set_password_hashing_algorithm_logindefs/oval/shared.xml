@@ -37,8 +37,16 @@
   <!-- Define corresponding variable state (the requirement) for the variable object -->
   <!-- The check should PASS if retrieved last ENCRYPT_METHOD value is equal to the requirement -->
   <ind:variable_state id="state_set_password_hashing_algorithm_logindefs" version="1">
-    <ind:value operation="equals" datatype="string" var_ref="var_password_hashing_algorithm"/>
+    <ind:value operation="pattern match" datatype="string" var_ref="var_password_hashing_algorithm_regex"/>
   </ind:variable_state>
+
+  <local_variable datatype="string" id="var_password_hashing_algorithm_regex" version="1" comment="Limit regex">
+    <concat>
+      <literal_component>^</literal_component>
+       <variable_component var_ref="var_password_hashing_algorithm"/>
+      <literal_component>$</literal_component>
+    </concat>
+  </local_variable>
 
   <external_variable id="var_password_hashing_algorithm" version="1"
     datatype="string" comment="hashing algorithm for /etc/login.defs"/>

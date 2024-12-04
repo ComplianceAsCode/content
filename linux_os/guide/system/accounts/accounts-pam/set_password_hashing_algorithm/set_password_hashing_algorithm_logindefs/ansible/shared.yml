@@ -9,6 +9,6 @@
   lineinfile:
       dest: /etc/login.defs
       regexp: ^#?ENCRYPT_METHOD
-      line: ENCRYPT_METHOD {{ var_password_hashing_algorithm }}
+      line: ENCRYPT_METHOD {{ var_password_hashing_algorithm.split('|')[0] }}
       state: present
       create: yes
