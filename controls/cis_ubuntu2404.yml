@@ -1684,11 +1684,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - sshd_max_auth_tries_value=4
       - sshd_set_max_auth_tries
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.2.18.
+    status: automated
 
   - id: 5.1.17
     title: Ensure sshd MaxSessions is configured (Automated)
