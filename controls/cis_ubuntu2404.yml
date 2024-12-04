@@ -1704,11 +1704,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - var_sshd_set_maxstartups=10:30:60
       - sshd_set_maxstartups
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.2.19.
+    status: automated
 
   - id: 5.1.19
     title: Ensure sshd PermitEmptyPasswords is disabled (Automated)
