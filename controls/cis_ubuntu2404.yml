@@ -1759,10 +1759,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - sudo_add_use_pty
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.3.2.
+    status: automated
 
   - id: 5.2.3
     title: Ensure sudo log file exists (Automated)
@@ -1833,8 +1832,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_pam_pwquality_installed
+    status: automated
 
   - id: 5.3.2.1
     title: Ensure pam_unix module is enabled (Automated)
@@ -2285,20 +2285,18 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - journald_compress
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.1.3.
+    status: automated
 
   - id: 6.1.2.4
     title: Ensure journald Storage is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - journald_storage
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.1.4.
+    status: automated
 
   - id: 6.1.3.1
     title: Ensure rsyslog is installed (Automated)
@@ -2323,8 +2321,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.2.3.
+    rules:
+      - journald_forward_to_syslog
+    status: automated
 
   - id: 6.1.3.4
     title: Ensure rsyslog log file creation mode is configured (Automated)
