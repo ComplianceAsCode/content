@@ -2278,8 +2278,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.1.5.
+    rules:
+      - journald_disable_forward_to_syslog
+    status: automated
 
   - id: 6.1.2.3
     title: Ensure journald Compress is configured (Automated)
