@@ -58,17 +58,7 @@ fixtext: |-
 
     <pre>--loginuid-immutable</pre>
 
-    If the file doesn't exist, it can be copied from <tt>/usr/share/audit/sample-rules</tt>
-    using the next command
-
-    <pre>
-    cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
-    </pre>
-
     Then, run the following commands:
 
     $ sudo chmod o-rwx "/etc/audit/rules.d/11-loginuid.rules"
     $ sudo augenrules --load
-
-srg_requirement: |-
-    {{{ full_name }}} audit system must protect logon UIDs from unauthorized change.
