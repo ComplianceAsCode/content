@@ -958,6 +958,7 @@ controls:
             - medium
         title: RHEL 9 cron configuration directories must have a mode of 0700 or less permissive.
         rules:
+            - package_cron_installed
             - file_permissions_cron_d
             - file_permissions_cron_daily
             - file_permissions_cron_hourly
