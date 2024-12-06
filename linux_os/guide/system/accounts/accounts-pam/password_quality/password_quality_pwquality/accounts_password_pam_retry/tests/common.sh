@@ -16,7 +16,7 @@ for file in ${configuration_files[@]}; do
 done
 authselect select --force custom/testingProfile
 {{% elif 'ubuntu' in product %}}
-rm -f /usr/share/pam-configs/*pwquality
+rm -f /usr/share/pam-configs/pwquality
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
 for file in ${configuration_files[@]}; do
