@@ -31,7 +31,7 @@
     <linux:object object_ref="obj_env_has_grub2_installed" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_env_has_grub2_installed" version="1">
-    <linux:name>{{% if product in ["sle12", "sle15"] %}}grub2{{% else %}}grub2-common{{% endif %}}</linux:name>
+    <linux:name>{{% if product in ["sle12", "sle15", "slmicro5"] %}}grub2{{% else %}}grub2-common{{% endif %}}</linux:name>
   </linux:rpminfo_object>
 {{% elif pkg_system == "dpkg" %}}
   <linux:dpkginfo_test check="all" check_existence="all_exist"

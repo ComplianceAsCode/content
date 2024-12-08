@@ -12,7 +12,7 @@ description: |-
     {{{ describe_service_disable(service="firewalld") }}}
 
 rationale: |-
-    Running Firewalld along other service with the same functionality may lead to conflict 
+    Running Firewalld along other service with the same functionality may lead to conflict
     and unexpected results.
 
 severity: medium
@@ -21,10 +21,11 @@ platform: package[firewalld]
 
 identifiers:
     cce@sle15: CCE-92472-0
+    cce@slmicro5: CCE-94007-2
 
 references:
     cis@sle15: 3.5.2.2,3.5.3.1.3
-
+    cis@slmicro5: 3.5.2.2,3.5.3.1.3
 
 ocil_clause: |-
     {{{ ocil_clause_service_disabled(service="firewalld") }}}
