@@ -114,6 +114,9 @@ args:
   pam:
     {{% if pkg_system == "rpm" %}}
       pkgname: pam
+      {{% if product in ["openembedded"] %}}
+        pkgname: libpam-runtime
+      {{% endif %}}
     {{% else %}}
       pkgname: libpam-runtime
     {{% endif %}}
