@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: "Set PAM Password Hashing Algorithm - system-auth"
 
-{{% if 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
+{{% if 'embedded' in product or 'debian' in product or 'sle' in product or 'slmicro' in product or 'ubuntu' in product %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/system-auth" %}}

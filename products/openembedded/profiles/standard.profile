@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Sample Security Profile for OpenEmbedded Distros'
+title: 'Standard Security Profile for OE with sysvinit and stateless/read-only root'
 
 description: |-
-    This profile is an sample for use in documentation and example content.
+    This profile is an embedded example for use in documentation and example content.
     The selected rules are standard and should pass quickly on most systems.
 
 selections:
@@ -66,29 +66,32 @@ selections:
     - accounts_password_pam_minlen
     - accounts_password_pam_retry
     - var_password_pam_minclass=4
-    - var_password_pam_minlen=14
+    - var_password_pam_minlen=10
+    - var_password_pam_retry=3
     - accounts_password_pam_pwhistory_remember_password_auth
     - accounts_password_pam_pwhistory_remember_system_auth
-    - var_password_pam_remember_control_flag=required
-    - var_password_pam_remember=5
+    - accounts_password_pam_unix_remember
+    - var_password_pam_remember=24
+    - var_password_hashing_algorithm=SHA512
+    - var_password_hashing_algorithm_pam=sha512
     - set_password_hashing_algorithm_systemauth
     - var_accounts_maximum_age_login_defs=365
+    # Needs variable: var_accounts_password_set_max_life_existing=365
+    - accounts_maximum_age_login_defs
     - accounts_password_set_max_life_existing
-    - var_accounts_minimum_age_login_defs=7
+    - var_accounts_minimum_age_login_defs=1
+    # Needs variable: var_accounts_password_set_min_life_existing=1
+    - accounts_minimum_age_login_defs
     - accounts_password_set_min_life_existing
     - var_accounts_password_warn_age_login_defs=7
+    - accounts_password_warn_age_login_defs
     - account_disable_post_pw_expiration
     - var_account_disable_post_pw_expiration=30
     - no_shelllogin_for_systemaccounts
-    - accounts_tmout
-    - var_accounts_tmout=15_min
     - accounts_root_gid_zero
     - accounts_umask_etc_profile
     - use_pam_wheel_for_su
     - sshd_allow_only_protocol2
-    - journald_forward_to_syslog
-    - journald_compress
-    - journald_storage
     - service_auditd_enabled
     - service_httpd_disabled
     - service_vsftpd_disabled
@@ -111,6 +114,8 @@ selections:
     - banner_etc_issue
     - login_banner_text=cis_banners
     - login_banner_contents=cis_default
+    - banner_etc_issue_net
+    - remote_login_banner_text=cis_banners
     - file_groupowner_etc_motd
     - file_owner_etc_motd
     - file_permissions_etc_motd

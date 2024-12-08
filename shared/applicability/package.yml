@@ -113,12 +113,13 @@ args:
     pkgname: openssl
   pam:
     {{% if pkg_system == "rpm" %}}
-      pkgname: pam
-      {{% if product in ["openembedded"] %}}
-        pkgname: libpam-runtime
-      {{% endif %}}
+    {{% if product in ["openembedded"] %}}
+    pkgname: libpam-runtime
     {{% else %}}
-      pkgname: libpam-runtime
+    pkgname: pam
+    {{% endif %}}
+    {{% else %}}
+    pkgname: libpam-runtime
     {{% endif %}}
   pam_apparmor:
     pkgname: pam_apparmor
