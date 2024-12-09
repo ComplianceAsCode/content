@@ -2351,8 +2351,11 @@ controls:
       - l1_workstation
     related_rules:
       - rsyslog_remote_loghost
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.2.6.
+    status: manual
+    notes: |
+      Existing rule (rsyslog_remote_loghost) is not used because rsyslog configuration
+      is site-specific and can be too complex to reliably audit and remediate.
+      See also https://github.com/ComplianceAsCode/content/issues/11812
 
   - id: 6.1.3.7
     title: Ensure rsyslog is not configured to receive logs from a remote client (Automated)
@@ -2448,15 +2451,12 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    related_rules:
-      - var_auditd_disk_error_action=halt
-      - var_auditd_disk_full_action=halt
+    rules:
+      - var_auditd_disk_error_action=cis_ubuntu2404
+      - var_auditd_disk_full_action=cis_ubuntu2404
       - auditd_data_disk_error_action
       - auditd_data_disk_full_action
-    status: planned
-    notes: |
-      TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.1.2.3.
-      The variables should allow multiple options.
+    status: automated
 
   - id: 6.2.2.4
     title: Ensure system warns when audit logs are low on space (Automated)
@@ -2497,24 +2497,21 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    related_rules:
+    rules:
       - audit_sudo_log_events
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.1.3.3.
+    status: automated
 
   - id: 6.2.3.4
     title: Ensure events that modify date and time information are collected (Automated)
     levels:
       - l2_server
       - l2_workstation
-    related_rules:
+    rules:
       - audit_rules_time_adjtimex
       - audit_rules_time_clock_settime
       - audit_rules_time_settimeofday
-      - audit_rules_time_stime
       - audit_rules_time_watch_localtime
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.1.3.4.
+    status: automated
 
   - id: 6.2.3.5
     title: Ensure events that modify the system's network environment are collected (Automated)
@@ -2931,8 +2928,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - file_owner_etc_shells
+      - file_groupowner_etc_shells
+      - file_permissions_etc_shells
+    status: automated
 
   - id: 7.1.10
     title: Ensure permissions on /etc/security/opasswd are configured (Automated)
