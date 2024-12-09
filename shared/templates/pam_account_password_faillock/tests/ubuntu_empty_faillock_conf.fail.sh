@@ -1,8 +1,8 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-# This test should fail because neither pam.d or faillock.conf have deny defined
+{{{ tests_init_faillock_vars("correct") }}}
 
-source ubuntu_common.sh
+{{{ bash_enable_pam_faillock_directly_in_pam_files() }}}
 
 echo > /etc/security/faillock.conf
