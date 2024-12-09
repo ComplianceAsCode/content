@@ -20,20 +20,20 @@ ocil_clause: 'the security profiles operator is not installed'
 
 ocil: |-
   To check if the Security Profiles Operator is installed, run the following command:
-  <pre>oc get sub -nopenshift-security-profiles security-profiles-operator-sub -ojsonpath='{.status.installedCSV}'</pre>
+  <pre>oc get sub -nopenshift-security-profiles security-profiles-operator -ojsonpath='{.status.installedCSV}'</pre>
   the output should return the version of the CSV that represents the installed operator.
 
 severity: medium
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator-sub") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator") | indent(4) }}}
 
 template:
     name: yamlfile_value
     vars:
       ocp_data: 'true'
-      filepath: /apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator-sub
+      filepath: /apis/operators.coreos.com/v1alpha1/namespaces/openshift-security-profiles/subscriptions/security-profiles-operator
       yamlpath: .status.installedCSV
       values:
       - value: security-profiles-operator\.v.*
