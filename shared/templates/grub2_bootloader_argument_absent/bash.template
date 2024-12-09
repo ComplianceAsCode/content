@@ -3,4 +3,8 @@
    See the OVAL template for more comments.
    Product-specific categorization should be synced across all template content types
 -#}}
+if {{{ bash_bootc_build() }}} ; then
+    sed -i -E '/kargs\s+=\s+\["{{{ ARG_NAME }}}.*"\]/d' /usr/lib/bootc/kargs.d/*.toml
+else
 {{{ grub2_bootloader_argument_absent_remediation(ARG_NAME) }}}
+fi
