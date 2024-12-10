@@ -79,3 +79,5 @@ selections:
     - '!sssd_enable_pam_services'
     - '!sssd_ldap_configure_tls_reqcert'
     - '!sssd_ldap_start_tls'
+    # These rules are no longer relevant
+    - '!prefer_64bit_os'
