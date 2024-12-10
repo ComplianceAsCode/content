@@ -8,6 +8,7 @@ from __future__ import print_function
 
 from copy import deepcopy
 import datetime
+import time
 import json
 import os
 import os.path
@@ -741,7 +742,10 @@ class Benchmark(XCCDFEntity):
         root.set('xml:lang', 'en-US')
 
         status = ET.SubElement(root, '{%s}status' % XCCDF12_NS)
-        status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
+        status.set(
+            'date',
+            time.strftime("%Y-%m-%d",
+                          time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))))
         status.text = self.status
 
         add_sub_element(root, "title", XCCDF12_NS, self.title)
