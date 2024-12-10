@@ -34,6 +34,8 @@ rules:
 - file_groupowner_etc_group
 - file_groupowner_etc_gshadow
 - file_groupowner_etc_passwd
+- file_groupowner_etc_security_opasswd
+- file_groupowner_etc_security_opasswd_old
 - file_groupowner_etc_shadow
 - file_groupowner_etc_shells
 - file_groupowner_systemmap
@@ -50,6 +52,8 @@ rules:
 - file_owner_etc_group
 - file_owner_etc_gshadow
 - file_owner_etc_passwd
+- file_owner_etc_security_opasswd
+- file_owner_etc_security_opasswd_old
 - file_owner_etc_shells
 - file_owner_etc_shadow
 - file_owner_systemmap
@@ -72,6 +76,8 @@ rules:
 - file_permissions_etc_group
 - file_permissions_etc_gshadow
 - file_permissions_etc_passwd
+- file_permissions_etc_security_opasswd
+- file_permissions_etc_security_opasswd_old
 - file_permissions_etc_shadow
 - file_permissions_etc_shells
 - file_permissions_library_dirs
@@ -151,3 +157,4 @@ templates:
 - mount_option
 - mount_option_remote_filesystems
 - mount_option_removable_partitions
+

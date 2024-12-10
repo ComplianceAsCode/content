@@ -2942,8 +2942,14 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - file_owner_etc_security_opasswd
+      - file_groupowner_etc_security_opasswd
+      - file_permissions_etc_security_opasswd
+      - file_owner_etc_security_opasswd_old
+      - file_groupowner_etc_security_opasswd_old
+      - file_permissions_etc_security_opasswd_old
+    status: automated
 
   - id: 7.1.11
     title: Ensure world writable files and directories are secured (Automated)
