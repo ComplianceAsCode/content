@@ -54,8 +54,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - kernel_module_jffs2_disabled
+    status: automated
 
   - id: 1.1.1.6
     title: Ensure overlayfs kernel module is not available (Automated)
