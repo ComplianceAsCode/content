@@ -62,8 +62,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - kernel_module_overlayfs_disabled
+    status: automated
 
   - id: 1.1.1.7
     title: Ensure squashfs kernel module is not available (Automated)
