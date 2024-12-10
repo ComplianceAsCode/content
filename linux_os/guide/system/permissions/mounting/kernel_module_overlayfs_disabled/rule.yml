@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Ensure overlayfs kernel module is not available'
+
+description: |-
+    {{{ describe_module_disable(module="overlayfs") }}}
+    overlayfs is a Linux filesystem that layers multiple filesystems to create a single
+    unified view which allows a user to "merge" several mount points into a unified
+    filesystem.
+
+rationale: |-
+    The overlayfs has known CVE's. Disabling the overlayfs reduces the local attack 
+    surface by removing support for unnecessary filesystem types and mitigates potential
+    risks associated with unauthorized execution of setuid files, enhancing the overall
+    system security.
+
+severity: low
+
+platform: system_with_kernel
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: overlayfs
