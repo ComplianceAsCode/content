@@ -4,6 +4,7 @@ FROM ubuntu:24.04
 ENV AUTH_KEYS=/root/.ssh/authorized_keys
 
 ARG CLIENT_PUBLIC_KEY
+ARG ADDITIONAL_PACKAGES
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install Python so Ansible remediations can work
@@ -11,7 +12,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN true \
         && apt update \
         && apt install -y openscap-utils openscap-scanner \
-        && apt install -y openssh-server
+                          openssh-server python3 python3-apt \
+                          $ADDITIONAL_PACKAGES \
+        && true
 
 RUN true \
         && ssh-keygen -A \
