@@ -848,6 +848,28 @@ fi
 
 
 {{#
+    Enable pam_pwquality.so PAM module by using pam-auth-update.
+    This option is only recommended when pam-auth-update tool is available for the system.
+#}}
+{{%- macro bash_pam_pwquality_enable() -%}}
+conf_name=cac_pwquality
+if [ ! -f /usr/share/pam-configs/"$conf_name" ]; then
+    cat << EOF > /usr/share/pam-configs/"$conf_name"
+Name: Pwquality password strength checking
+Default: yes
+Priority: 1025
+Conflicts: cracklib, pwquality
+Password-Type: Primary
+Password:
+    requisite                   pam_pwquality.so
+EOF
+fi
+
+DEBIAN_FRONTEND=noninteractive pam-auth-update
+{{%- endmacro -%}}
+
+
+{{#
     Validate an authselect custom profile integrity and ensures the correct file path is defined
     in the "PAM_FILE_PATH" variable. The macros which change PAM files are the same regardless of
     using authselect or not. The only change is the file path. However, this file path can change
@@ -1049,6 +1071,38 @@ else
         {{%- endif %}}
     done
 fi
+{{%- endmacro -%}}
+
+
+{{#
+    Sets PAM pwquality module options and values. The module argument is not removed from pam files
+    since it is not inserted there in Ubuntu case.
+    It also assume pam_pwquality.so is added as required module for account.
+
+:param option: pwquality option eg. retry, minlen, dcredit
+:type option: str
+:param value: value of option
+:type value: str
+
+#}}
+{{%- macro bash_pam_pwquality_parameter_value(option, value='') -%}}
+PWQUALITY_CONF="/etc/security/pwquality.conf"
+    {{%- if value == '' %}}
+    regex="^\s*{{{ option }}}"
+    line="{{{ option }}}"
+    {{%- else %}}
+    regex="^\s*{{{ option }}}\s*="
+    line="{{{ option }}} = {{{ value }}}"
+    {{%- endif %}}
+    if ! grep -q $regex $PWQUALITY_CONF; then
+        echo $line >> $PWQUALITY_CONF
+    {{%- if value == '' %}}
+    fi
+    {{%- else %}}
+    else
+        sed -i --follow-symlinks 's|^\s*\({{{ option }}}\s*=\s*\)\(\S\+\)|\1'"{{{ value }}}"'|g' $PWQUALITY_CONF
+    fi
+    {{%- endif %}}
 {{%- endmacro -%}}
 
 
