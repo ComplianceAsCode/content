@@ -5,8 +5,8 @@ title: 'Ensure Unnecessary Services and Ports Are Not Accepted'
 
 description: |-
     Services and ports can be accepted or explicitly rejected or dropped by a zone.
-    For every zone, a default behavior can be set that handles incoming traffic that 
-    is not further specified. Such behavior is defined by setting the target of the zone. 
+    For every zone, a default behavior can be set that handles incoming traffic that
+    is not further specified. Such behavior is defined by setting the target of the zone.
     The possible options are:
     - <tt>ACCEPT</tt> - accepts all incoming packets except those disabled by a specific rule.
     - <tt>REJECT</tt> - disables all incoming packets except those that have been allowed in
@@ -24,18 +24,20 @@ platform: package[firewalld]
 
 identifiers:
     cce@sle15: CCE-92552-9
+    cce@slmicro5: CCE-94011-4
 
 references:
     cis@sle15: 3.5.1.6
+    cis@slmicro5: 3.5.1.6
 
 ocil_clause: 'the system accepts incoming packets for unnecessary services and ports'
 
 ocil: |-
-    To review and to ensure that listed services and ports follow site policy run the 
-    following command: 
+    To review and to ensure that listed services and ports follow site policy run the
+    following command:
     <pre>$ sudo firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do
     firewall-cmd --list-all --zone=$ZN; done</pre>
-    To remove an unnecessary service, run the following command: 
+    To remove an unnecessary service, run the following command:
     <pre>$ sudo firewall-cmd --remove-service=<service></pre>
     To remove an unnecessary port, run the following command:
     <pre>$ sudo firewall-cmd --remove-port=<port-number>/<port-type></pre>

@@ -2,7 +2,7 @@
 
 {{{ bash_instantiate_variables("var_accounts_user_umask") }}}
 
-{{% if 'sle' in product or 'ubuntu' in product or 'debian' in product %}}
+{{% if 'sle' in product or 'ubuntu' in product or 'debian' in product or product == 'slmicro5' %}}
 {{% set etc_bash_rc = "/etc/bash.bashrc" %}}
 {{% else %}}
 {{% set etc_bash_rc = "/etc/bashrc" %}}

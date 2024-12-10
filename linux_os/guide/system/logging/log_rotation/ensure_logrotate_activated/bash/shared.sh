@@ -1,7 +1,7 @@
 # platform = multi_platform_all
 
 LOGROTATE_CONF_FILE="/etc/logrotate.conf"
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or product == 'slmicro5' %}}
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 {{% else %}}
 {{{ bash_package_install("crontabs") }}}
@@ -14,7 +14,7 @@ grep -q "^daily$" $LOGROTATE_CONF_FILE|| echo "daily" >> $LOGROTATE_CONF_FILE
 # remove any line configuring weekly, monthly or yearly rotation
 sed -i '/^\s*\(weekly\|monthly\|yearly\).*$/d' $LOGROTATE_CONF_FILE
 
-{{% if 'sle' in product %}}
+{{% if 'sle' in product or product == 'slmicro5' %}}
 # enable logrotate timer service
 "$SYSTEMCTL_EXEC" unmask 'logrotate.timer'
 "$SYSTEMCTL_EXEC" start 'logrotate.timer'
