@@ -2264,8 +2264,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented. Analogous to ubuntu2204/4.2.1.1.3.
+    status: automated
+    rules:
+      - service_systemd-journal-upload_enabled
 
   - id: 6.1.2.1.4
     title: Ensure systemd-journal-remote service is not in use (Automated)
