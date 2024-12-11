@@ -12,7 +12,19 @@ for FILE in ${NULLOK_FILES}; do
 done
 {{% elif 'ubuntu' in product %}}
 {{{ bash_pam_unix_enable() }}}
-sed --follow-symlinks -i 's/\<nullok\>//g' /usr/share/pam-configs/cac_unix
+config_file="/usr/share/pam-configs/unix"
+sed -i -E '/^Password:/,/^[^[:space:]]/ {
+    /pam_unix\.so/ {
+        s/\s*nullok//g
+    }
+}' "$config_file"
+
+sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
+    /pam_unix\.so/ {
+        s/\s*nullok//g
+    }
+}' "$config_file"
+
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
 if [ -f /usr/bin/authselect ]; then
