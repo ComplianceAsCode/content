@@ -6,7 +6,8 @@
 
 pam_files=("password-auth" "system-auth")
 
-authselect create-profile testingProfile --base-on minimal
+authselect create-profile testingProfile --base-on minimal || \
+    authselect create-profile testingProfile --base-on local
 
 CUSTOM_PROFILE_DIR="/etc/authselect/custom/testingProfile"
 
