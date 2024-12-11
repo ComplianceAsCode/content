@@ -1,0 +1,25 @@
+documentation_complete: true
+
+
+
+title: 'Remove tnftp Package'
+
+description: |-
+    tnftp an enhanced FTP client, is the user interface to the Internet standard File
+    Transfer Protocol. The program allows a user to transfer files to and from a remote
+    network site.
+    {{{ describe_package_remove(package="ftp") }}}
+
+rationale: |-
+    Unless there is a need to run the system using Internet standard File Transfer Protocol
+    (for example, to allow anonymous downloads), it is recommended that the package be
+    removed to reduce the potential attack surface.
+
+severity: low
+
+ocil: '{{{ describe_package_remove(package="tnftp") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: tnftp

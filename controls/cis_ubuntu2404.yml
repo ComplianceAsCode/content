@@ -928,8 +928,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_ftp_removed
+      - package_tnftp_removed
+    status: automated
 
   - id: 2.3.1.1
     title: Ensure a single time synchronization daemon is in use (Automated)
