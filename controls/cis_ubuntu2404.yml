@@ -148,8 +148,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    status: automated
+    rules:
+      - partition_for_dev_shm
 
   - id: 1.1.2.2.2
     title: Ensure nodev option set on /dev/shm partition (Automated)
