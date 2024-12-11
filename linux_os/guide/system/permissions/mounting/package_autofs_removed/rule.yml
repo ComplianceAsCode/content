@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Remove autofs Package'
+
+description: |-
+   autofs allows automatic mounting of devices, typically including CD/DVDs and USB
+   drives.
+    {{{ describe_package_remove(package="autofs") }}}
+
+rationale: |-
+    With automounting enabled anyone with physical access could attach a USB drive or
+    disc and have its contents available in the filesystem even if they lacked permissions to
+    mount it themselves.
+
+severity: low
+
+ocil: '{{{ describe_package_remove(package="autofs") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: autofs
