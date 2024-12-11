@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify that the system was booted with fips=1'
 
 description: |-
-    On a system where FIPS 140-3 mode is enabled, the system must be booted with the
+    On a system where FIPS 140 mode is enabled, the system must be booted with the
     <tt>fips=1</tt> kernel argument.
     To verify FIPS mode, run the following command:
     <pre>cat /proc/cmdline</pre>
@@ -34,7 +34,7 @@ ocil: |-
 
 warnings:
     - general: |-
-        To configure the OS to run in FIPS 140-3 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        To configure the OS to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
         Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes
