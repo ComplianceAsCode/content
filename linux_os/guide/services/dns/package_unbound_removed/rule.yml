@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Uninstall unbound Package'
+
+description: |-
+    The <tt>named</tt> service is provided by the <tt>unbound</tt> package.
+    {{{ describe_package_remove(package="unbound") }}}
+
+rationale: |-
+    If there is no need to make DNS server software available,
+    removing it provides a safeguard against its activation.
+
+severity: low
+
+identifiers:
+    cce@rhel10: CCE-86181-5
+
+
+references:
+    disa: CCI-000366
+    nist: CM-7(a),CM-7(b),CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227
+
+template:
+    name: package_removed
+    vars:
+        pkgname: unbound
