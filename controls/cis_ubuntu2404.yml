@@ -662,11 +662,11 @@ controls:
     levels:
       - l1_server
       - l2_workstation
-    related_rules:
+    rules:
       - service_autofs_disabled
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.1.9.
-
+      - package_autofs_removed
+    status: automated
+    
   - id: 2.1.2
     title: Ensure avahi daemon services are not in use (Automated)
     levels:
