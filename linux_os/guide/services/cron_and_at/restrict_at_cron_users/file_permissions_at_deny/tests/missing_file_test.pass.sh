@@ -1,4 +1,4 @@
 #!/bin/bash
 #
 
-rm -f /etc/at.allow
+rm -f /etc/at.deny

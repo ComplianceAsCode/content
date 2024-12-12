@@ -4,8 +4,9 @@ documentation_complete: true
 title: Ensure that /etc/at.deny exists
 
 description: |-
-    The file <tt>/etc/at.deny</tt> should exist and should be used instead
-    of <tt>/etc/at.deny</tt>.
+    The file <tt>/etc/at.access</tt> should exist and should be used instead
+    of <tt>/etc/at.deny</tt>. But if at.deny is used, it should exist and have the correct
+    permisisons and owner.
 
 rationale: |-
     On many systems, only the system administrator is authorized to schedule at jobs.
@@ -15,7 +16,7 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: 'the file /etc/at.deny does not exist'
+ocil_clause: 'the file /etc/at.deny exists'
 
 ocil: |-
     The file <tt>/etc/at.deny</tt> should exist.
