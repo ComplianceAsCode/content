@@ -13,12 +13,10 @@ description: |-
     By default, the <tt>debug-shell</tt> systemd service is already disabled.
 
     Ensure the debug-shell is not enabled by the <tt>systemd.debug-shel=1</tt>
-    boot paramenter option.
+    boot parameter option.
 
-    Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
-    doesn't contain the argument <tt>systemd.debug-shell=1</tt>.
-    Run the following command to update command line for already installed kernels:
-    <pre># grubby --update-kernel=ALL --remove-args="systemd.debug-shell"</pre>
+    {{{ describe_grub2_argument_absent("systemd.debug-shell")  | indent(4) }}}
+
 
 rationale: |-
     This prevents attackers with physical access from trivially bypassing security
@@ -44,7 +42,6 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_grub2_bootloader_argument_absent("debug-shell") | indent(4) }}}
 
-platform: machine
 
 template:
     name: grub2_bootloader_argument_absent

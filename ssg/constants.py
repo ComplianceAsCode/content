@@ -457,6 +457,7 @@ DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
 DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE = 'false'
+DEFAULT_BOOTABLE_CONTAINERS_SUPPORTED = 'false'
 
 
 # Constants for OVAL object model
