@@ -1096,6 +1096,10 @@ controls:
       - file_owner_at_allow
       - file_permissions_at_allow
       - file_at_deny_not_exist
+      - '!file_at_deny_exists'
+      - '!file_groupowner_at_deny'
+      - '!file_owner_at_deny'
+      - '!file_permissions_at_deny'
     status: automated
     
   - id: 3.1.1
