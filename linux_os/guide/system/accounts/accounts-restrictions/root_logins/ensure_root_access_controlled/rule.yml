@@ -1,0 +1,35 @@
+documentation_complete: true
+
+
+title: 'Ensure root account access is controlled'
+
+description: |-
+    There are a number of methods to access the root account directly. 
+    Without a password set any user would be able to gain access and 
+    thus control over the entire system.
+
+rationale: |-
+    Access to root should be secured at all times.
+
+severity: medium
+
+platform: system_with_kernel
+
+ocil_clause: 'root password is not set or is not locked'
+
+ocil: |-
+    Run the following command to verify that either the root user's
+    password is set or the root user's account is locked:
+    <pre># passwd -S root | awk '$2 ~ /^(P|L)/ {print "User: \"" $1 "\" Password is status: " $2}'</pre>
+    Verify the output is either: 
+    User: "root" Password is status: P
+    - OR -
+    User: "root" Password is status: L
+    Note:
+    - P - Password is set
+    - L - Password is locked
+    
+
+warnings:
+  - general: This rule doesn't come with a remediation, as the exact requirement allows root to either have a password or be locked.
+  
