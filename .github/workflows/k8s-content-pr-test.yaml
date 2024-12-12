@@ -43,7 +43,7 @@ jobs:
         id: save-go-version
         run: |
           echo "go-version=$(cat compliance-operator/go-version)" > compliance-operator/go-version
-      - uses: actions/setup-go@41dfa10bad2bb2ae585af6ee5bb4d7d973ad74ed # v5
+      - uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a # v5
         with:
           go-version: ${{ steps.save-go-version.outputs.go-version }}
       - name: Run ginkgo tests and check if each XCCDF file is parsed correctly
