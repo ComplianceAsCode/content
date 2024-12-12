@@ -35,7 +35,7 @@ fixtext: |-
     {{{ fixtext_service_enabled("nftables") }}}
 
 
-platform: machine and package[nftables] and service_disabled[firewalld]
+platform: system_with_kernel and package[nftables] and service_disabled[firewalld]
 
 
 {{%- if product in [ "sle12", "sle15" ] %}}
