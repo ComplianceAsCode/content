@@ -324,23 +324,23 @@
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
     <ind:path>/usr/lib/bootc/kargs.d/</ind:path>
     <ind:filename operation="pattern match">^.*\.toml$</ind:filename>
-    <ind:pattern operation="pattern match">^kargs = \["([^\"]+)"\]$</ind:pattern>
+    <ind:pattern operation="pattern match">^kargs = \[([^\]]+)\]$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% if ARG_VALUE %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
-    <ind:subexpression operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
+    <ind:subexpression operation="pattern match">^.*"{{{ ESCAPED_ARG_NAME_VALUE }}}".*$</ind:subexpression>
   </ind:textfilecontent54_state>
 {{% else %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
-    <ind:subexpression operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}" />
+    <ind:subexpression operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs" />
   </ind:textfilecontent54_state>
 
-  <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}"
+  <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs"
   comment="Regex that matches {{{ ARG_NAME }}} with value {{{ ARG_VARIABLE }}}"
   datatype="string" version="1">
     <concat>
-      <literal_component>^(?:.*\s)?{{{ ARG_NAME }}}=</literal_component>
+      <literal_component>^.*"{{{ ARG_NAME }}}=</literal_component>
       {{% if IS_SUBSTRING == "true" %}}
       <literal_component>\S*</literal_component>
       {{% endif %}}
@@ -348,7 +348,7 @@
       {{% if IS_SUBSTRING == "true" %}}
       <literal_component>\S*</literal_component>
       {{% endif %}}
-      <literal_component>(?:\s.*)?$</literal_component>
+      <literal_component>".*$</literal_component>
     </concat>
   </local_variable>
 
