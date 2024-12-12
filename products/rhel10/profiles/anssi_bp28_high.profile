@@ -81,3 +81,11 @@ selections:
     - '!sssd_ldap_start_tls'
     # These rules are no longer relevant
     - '!prefer_64bit_os'
+    - '!kernel_config_devkmem'
+    - '!kernel_config_hardened_usercopy_fallback'
+    - '!kernel_config_page_poisoning_no_sanity'
+    - '!kernel_config_page_poisoning_zero'
+    - '!kernel_config_page_table_isolation'
+    - '!kernel_config_refcount_full'
+    - '!kernel_config_retpoline'
+    - '!kernel_config_security_writable_hooks'
