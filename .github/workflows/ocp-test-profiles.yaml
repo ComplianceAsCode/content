@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: fedora:latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Install Deps
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 git python3-deepdiff python3-requests jq python3-pip nodejs
