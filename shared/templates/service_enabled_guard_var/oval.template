@@ -7,8 +7,6 @@
 {{% else %}}
   {{%- set variable_value_op = "equals" -%}}
 {{% endif %}}
-{{% if target_oval_version >= [5, 11] %}}
-
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
     <criteria operator="OR" comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start or not needed">
@@ -64,107 +62,6 @@
   <linux:systemdunitproperty_state id="state_service_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is running">
       <linux:value>active</linux:value>
   </linux:systemdunitproperty_state>
-
-{{% else %}}
-
-  <definition class="compliance" id="{{{ _RULE_ID }}}"
-  version="1">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
-    <criteria operator="OR" comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start or not needed">
-      <criteria comment="service {{{ SERVICENAME }}} is not needed" operator="AND">
-        <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"
-        test_ref="test_variable_{{{ VARIABLE }}}_set_to_{{{ VALUE }}}" negate="true"/>
-      </criteria>
-      <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
-      <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
-      <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">
-        <criterion comment="{{{ SERVICENAME }}} runlevel 0" test_ref="test_runlevel0_{{{ SERVICENAME }}}_on" />
-        <criterion comment="{{{ SERVICENAME }}} runlevel 1" test_ref="test_runlevel1_{{{ SERVICENAME }}}_on" />
-        <criterion comment="{{{ SERVICENAME }}} runlevel 2" test_ref="test_runlevel2_{{{ SERVICENAME }}}_on" />
-        <criterion comment="{{{ SERVICENAME }}} runlevel 3" test_ref="test_runlevel3_{{{ SERVICENAME }}}_on" />
-        <criterion comment="{{{ SERVICENAME }}} runlevel 4" test_ref="test_runlevel4_{{{ SERVICENAME }}}_on" />
-        <criterion comment="{{{ SERVICENAME }}} runlevel 5" test_ref="test_runlevel5_{{{ SERVICENAME }}}_on" />
-        <criterion comment="{{{ SERVICENAME }}} runlevel 6" test_ref="test_runlevel6_{{{ SERVICENAME }}}_on" />
-      </criteria>
-      </criteria>
-    </criteria>
-  </definition>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel0_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel0_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel1_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel1_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel2_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel2_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel3_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel3_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel4_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel4_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel5_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel5_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_test check="all" check_existence="any_exist"
-  comment="Runlevel test" id="test_runlevel6_{{{ SERVICENAME }}}_on"
-  version="2">
-    <unix:object object_ref="obj_runlevel6_{{{ SERVICENAME }}}_on" />
-    <unix:state state_ref="state_service_{{{ SERVICENAME }}}_on" />
-  </unix:runlevel_test>
-  <unix:runlevel_object id="obj_runlevel0_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">0</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_object id="obj_runlevel1_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">1</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_object id="obj_runlevel2_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">2</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_object id="obj_runlevel3_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">3</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_object id="obj_runlevel4_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">4</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_object id="obj_runlevel5_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">5</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_object id="obj_runlevel6_{{{ SERVICENAME }}}_on" version="1">
-    <unix:service_name>{{{ SERVICENAME }}}</unix:service_name>
-    <unix:runlevel operation="equals">6</unix:runlevel>
-  </unix:runlevel_object>
-  <unix:runlevel_state comment="configured to start" id="state_service_{{{ SERVICENAME }}}_on" version="1">
-    <unix:start datatype="boolean">true</unix:start>
-    <unix:kill datatype="boolean">false</unix:kill>
-  </unix:runlevel_state>
-
-{{% endif %}}
 {{{ oval_test_external_variable_value(variable=VARIABLE, value=VALUE, test_id=variable_value_test_id, operation=variable_value_op) }}}
 {{{ oval_test_package_installed(package=PACKAGENAME, evr="", test_id=package_installed_test_id) }}}
 </def-group>
