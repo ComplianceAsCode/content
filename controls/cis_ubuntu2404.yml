@@ -1090,14 +1090,14 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - file_at_deny_not_exist
+    rules:
+      - file_at_allow_exists
       - file_groupowner_at_allow
       - file_owner_at_allow
       - file_permissions_at_allow
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.1.9.
-
+      - file_at_deny_not_exist
+    status: automated
+    
   - id: 3.1.1
     title: Ensure IPv6 status is identified (Manual)
     levels:
