@@ -430,8 +430,9 @@ use of device access control software or by disabling external communication int
         rules:
             - configure_crypto_policy
             - enable_dracut_fips_module
-            - enable_fips_mode
+            - system_booted_in_fips_mode
             - var_system_crypto_policy=fips
+            - grub2_enable_fips_mode
         status: automated
 
     -   id: '1449'
