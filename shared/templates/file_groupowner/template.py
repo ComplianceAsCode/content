@@ -5,9 +5,6 @@ from ssg.utils import ensure_file_paths_and_file_regexes_are_correctly_defined
 def preprocess(data, lang):
     ensure_file_paths_and_file_regexes_are_correctly_defined(data)
 
-    data["missing_file_pass"] = parse_template_boolean_value(
-        data, parameter="missing_file_pass", default_value=False)
-
     data["recursive"] = parse_template_boolean_value(data,
                                                      parameter="recursive",
                                                      default_value=False)

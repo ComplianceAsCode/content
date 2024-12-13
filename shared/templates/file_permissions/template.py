@@ -41,8 +41,6 @@ def preprocess(data, lang):
 
     data["allow_stricter_permissions"] = parse_template_boolean_value(data, parameter="allow_stricter_permissions", default_value=True)
 
-    data["missing_file_pass"] = parse_template_boolean_value(data, parameter="missing_file_pass", default_value=False)
-
     data["recursive"] = parse_template_boolean_value(data,
                                                      parameter="recursive",
                                                      default_value=False)
