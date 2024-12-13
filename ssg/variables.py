@@ -18,6 +18,7 @@ from .yaml import open_and_macro_expand
 # Cache variable files to avoid multiple reads
 _var_files_cache = {}
 
+
 def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list[str]:
     """
     Retrieve a list of variable files within a specified folder in the project.
@@ -268,9 +269,11 @@ def _process_selections(profile_yaml: dict, profile_variables: dict, policies: d
     return profile_variables
 
 
-def _process_profile(profiles_files: list, file: str, policies: dict, profile_variables=None) -> dict:
+def _process_profile(profiles_files: list, file: str, policies: dict,
+                     profile_variables=None) -> dict:
     """
-    Processes a profile by loading its YAML file, handling profile extensions, and processing selections.
+    Processes a profile by loading its YAML file, handling profile extensions, and processing
+    selections.
 
     Args:
         profiles_files (list): A list of profile file paths.
@@ -285,7 +288,8 @@ def _process_profile(profiles_files: list, file: str, policies: dict, profile_va
         profile_variables = {}
 
     profile_yaml = _load_yaml_profile_file(file)
-    profile_variables = _process_profile_extension(profiles_files, profile_yaml, profile_variables, policies)
+    profile_variables = _process_profile_extension(profiles_files, profile_yaml,
+                                                   profile_variables, policies)
     profile_variables = _process_selections(profile_yaml, profile_variables, policies)
     return profile_variables
 
@@ -338,11 +342,13 @@ def _get_variables_from_profiles(profiles: list) -> dict:
     Extracts variables from a list of profiles and organizes them into a nested dictionary.
 
     Args:
-        profiles (list): A list of profile objects, each containing variables, product, and id attributes.
+        profiles (list): A list of profile objects, each containing variables, product, and id
+                         attributes.
 
     Returns:
-        dict: A nested dictionary where the first level keys are variable names, the second level keys are product names,
-              and the third level keys are profile IDs, with the corresponding values being the variable values.
+        dict: A nested dictionary where the first level keys are variable names, the second level
+              keys are product names, and the third level keys are profile IDs, with the
+              corresponding values being the variable values.
     """
     variables = defaultdict(lambda: defaultdict(dict))
     for profile in profiles:
@@ -370,14 +376,16 @@ def get_variables_by_products(content_dir: str, products: list) -> dict[str, dic
     """
     Retrieve variables by products from the specified content root directory.
 
-    This function collects profiles for the given products and extracts variables from these profiles.
+    This function collects profiles for the given products and extracts variables from these
+    profiles.
 
     Args:
         content_dir (str): The root directory of the content.
         products (list): A list of products to retrieve variables for.
 
     Returns:
-        dict: A dictionary where keys are variable names and values are dictionaries of product-profile pairs.
+        dict: A dictionary where keys are variable names and values are dictionaries of
+              product-profile pairs.
     """
     profiles = _get_profiles_from_products(content_dir, products)
     profiles_variables = _get_variables_from_profiles(profiles)
@@ -389,7 +397,8 @@ def get_variable_values(content_dir: str, profiles_variables: dict) -> dict:
     Update the variables dictionary with actual values for each variable option.
 
     Given a content root directory and a dictionary of variables, this function retrieves the
-    respective options values from variable files and updates the variables dictionary with these values.
+    respective options values from variable files and updates the variables dictionary with
+    these values.
 
     Args:
         content_dir (str): The root directory of the content.
@@ -406,7 +415,9 @@ def get_variable_values(content_dir: str, profiles_variables: dict) -> dict:
         for product, profiles in profiles_variables[variable].items():
             for profile in profiles:
                 profile_option = profiles.get(profile, None)
-                profiles_variables[variable][product][profile] = variable_options.get(profile_option, 'default')
+                profiles_variables[variable][product][profile] = variable_options.get(
+                    profile_option, 'default'
+                )
 
         if 'any' not in profiles_variables[variable] or not isinstance(
                 profiles_variables[variable]['any'], dict):
