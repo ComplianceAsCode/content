@@ -74,3 +74,4 @@ selections:
     - '!sshd_use_approved_macs'
     - '!sshd_use_approved_ciphers'
     - '!security_patches_up_to_date'
+    - '!kernel_module_dccp_disabled'
