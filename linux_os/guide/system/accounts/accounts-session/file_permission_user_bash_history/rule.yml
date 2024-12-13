@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Ensure User Bash History File Has Correct Permissions'
+
+description: |-
+    Set the mode of the bash history file to <tt>0600</tt> with the
+    following command:
+    <pre>$ sudo chmod 0600 /home/<i>USER</i>/.bash_history</pre>
+
+rationale: |-
+    Incorrect permissions may enable malicious users to recover
+    other users' command history.
+
+severity: medium
+
+ocil_clause: 'file is not 0600 or more permissive'
+
+ocil: |-
+    To verify that .bash_history has a mode of <tt>0600</tt> or
+    less permissive, run the following command:
+    <pre>$ sudo find /home -type f -name '\.bash_history' -perm /0177</pre>
+    There should be no output.
+
+fixtext: |-
+    Set the mode of the bash history file to "0600" with the following command:
+
+    Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
+
+    $ sudo chmod 0600 /home/smithj/.bash_history
