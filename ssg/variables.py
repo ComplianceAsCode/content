@@ -59,17 +59,21 @@ def get_variable_files(content_dir: str) -> list[str]:
     return variable_files
 
 
-def get_all_variables_options(content_dir: str) -> dict[str, dict]:
+def get_variable_options(content_dir: str, variable_id: str = None) -> dict:
     """
-    Retrieve all variable options from the specified content root directory.
+    Retrieve the options for specific or all variables from the content root directory.
 
-    This function collects all variable files and extracts their options.
+    If `variable_id` is provided, returns options for that variable only.
+    If `variable_id` is not provided, returns a dictionary of all variable options.
 
     Args:
         content_dir (str): The root directory containing benchmark directories.
+        variable_id (str, optional): The ID of the variable to retrieve options for.
+                                     Defaults to None.
 
     Returns:
-        dict: A dictionary where keys are variable IDs and values are their options.
+        dict: If `variable_id` is None, a dictionary where keys are variable IDs and values are
+              their options. Otherwise, a dictionary of options for the specified variable.
     """
     all_variable_files = get_variable_files(content_dir)
     all_options = {}
@@ -81,35 +85,20 @@ def get_all_variables_options(content_dir: str) -> dict[str, dict]:
             print(f"Error processing file {var_file}: {e}")
             continue
 
-        variable_id = os.path.basename(var_file).split('.var')[0]
-        options = yaml_content.get('options', {})
-        all_options[variable_id] = options
+        var_id = os.path.basename(var_file).split('.var')[0]
+        options = yaml_content.get("options", {})
+
+        if variable_id:
+            if var_id == variable_id:
+                return options
+        else:
+            all_options[var_id] = options
+
+    if variable_id:
+        print(f"Variable {variable_id} not found")
+        return {}
 
     return all_options
-
-
-def get_variable_options(content_dir: str, variable_id: str) -> dict[dict]:
-    """
-    Retrieve the options for a specific variable from the content root directory.
-
-    Args:
-        content_dir (str): The root directory containing benchmark directories.
-        variable_id (str): The ID of the variable to retrieve options for.
-
-    Returns:
-        dict: A dictionary of options for the specified variable.
-    """
-    all_variable_files = get_variable_files(content_dir)
-
-    for var_file in all_variable_files:
-        var_id = os.path.basename(var_file).split('.var')[0]
-        if var_id == variable_id:
-            yaml_content = open_and_macro_expand(var_file)
-            options = yaml_content.get('options', {})
-            return options
-
-    print(f"Variable {variable_id} not found")
-    return {}
 
 
 class ProfileVariables:
@@ -405,7 +394,7 @@ def get_variable_values(content_dir: str, profiles_variables: dict) -> dict:
     Returns:
         dict: The updated variables dictionary with possible values for each variable.
     """
-    all_variables_options = get_all_variables_options(content_dir)
+    all_variables_options = get_variable_options(content_dir)
 
     for variable in profiles_variables:
         variable_options = all_variables_options.get(variable, {})
