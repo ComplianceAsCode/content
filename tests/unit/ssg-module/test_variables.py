@@ -5,7 +5,6 @@ from ssg.constants import BENCHMARKS
 from ssg.variables import (
     get_variable_files_in_folder,
     get_variable_files,
-    get_all_variables_options,
     get_variable_options,
     get_variables_by_products,
     get_variable_values,
@@ -41,23 +40,6 @@ def test_get_variable_files(tmp_path):
     result = get_variable_files(str(content_dir))
     assert len(result) == 2
     assert all(os.path.basename(file) == "test.var" for file in result)
-
-
-def test_get_all_variables_options(tmp_path):
-    content_dir = tmp_path / "content"
-    benchmarks = ["app", "app/rules"]
-    for benchmark_folder in benchmarks:
-        path = content_dir / benchmark_folder
-        os.makedirs(content_dir / benchmark_folder)
-        var_file = path / "test.var"
-        var_file.write_text("options:\n  option: value\n")
-        print(var_file.read_text())
-
-    BENCHMARKS.add(content_dir)
-    result = get_all_variables_options(str(content_dir))
-    print(result)
-    assert "test" in result
-    assert result["test"] == {"option": "value"}
 
 
 def test_get_variable_options(tmp_path):
