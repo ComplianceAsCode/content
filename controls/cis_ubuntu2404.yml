@@ -1096,11 +1096,12 @@ controls:
       - file_owner_at_allow
       - file_permissions_at_allow
       - file_at_deny_not_exist
-      - '!file_at_deny_exists'
-      - '!file_groupowner_at_deny'
-      - '!file_owner_at_deny'
-      - '!file_permissions_at_deny'
+      - file_groupowner_at_deny
+      - file_owner_at_deny
+      - file_permissions_at_deny
     status: automated
+    notes: file_owner_at_deny and file_owner_at_allow currently require root as owner
+           and don't accept daemon
     
   - id: 3.1.1
     title: Ensure IPv6 status is identified (Manual)
