@@ -118,15 +118,15 @@ class ProfileVariables:
 
     Attributes:
     -----------
-    id : str
+    profile_id : str
         The unique identifier for the profile.
     product : str
         The product associated with the profile.
     variables : dict
         A dictionary containing the variables for the profile.
     """
-    def __init__(self, id, product, variables):
-        self.id = id
+    def __init__(self, profile_id, product, variables):
+        self.profile_id = profile_id
         self.product = product
         self.variables = variables
 
@@ -353,7 +353,7 @@ def _get_variables_from_profiles(profiles: list) -> dict:
     variables = defaultdict(lambda: defaultdict(dict))
     for profile in profiles:
         for variable, value in profile.variables.items():
-            variables[variable][profile.product][profile.id] = value
+            variables[variable][profile.product][profile.profile_id] = value
     return variables
 
 
