@@ -4,9 +4,13 @@ title: 'Verify that the system was booted with fips=1'
 
 description: |-
     On a system where FIPS 140 mode is enabled, the system must be booted with the
-    <tt>fips=1</tt> kernel argument.
-    To verify FIPS mode, run the following command:
-    <pre>cat /proc/cmdline</pre>
+    The file <tt>/proc/sys/crypto/fips_enabled</tt> must have the contents of <tt>1</tt>
+
+    To verify the system has been booted in FIPS mode, run the following command:
+    <pre>
+    # cat /proc/sys/crypto/fips_enabled
+    1
+    </pre>
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
@@ -24,13 +28,13 @@ references:
     nist: SC-12(2),SC-12(3),SC-13
     srg: SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
 
-ocil_clause: 'thee system is not booted with fips=1'
+ocil_clause: 'the system is not booted in fips mode'
 
 ocil: |-
-    To verify that system is booted with <tt>fips=1</tt> run the following command:
-    $ cat /proc/cmdline
+    To verify that the system is booted with fips mode by running the following command:
+    $ cat /proc/sys/crypto/fips_enabled
 
-    The output must contain <tt>fips=1</tt>
+    The output must be <tt>1</tt>.
 
 warnings:
     - general: |-
