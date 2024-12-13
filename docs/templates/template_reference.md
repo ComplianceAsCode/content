@@ -292,9 +292,6 @@
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
 
-    -   **missing_file_pass** - If set to `"true"` the OVAL check will
-        pass when file is absent. Default value is `"false"`.
-
     -   **file_regex** - Regular expression that matches file names in
         a directory specified by **filepath**. Can be set only if
         **filepath** parameter specifies a directory. Note: Applies to
@@ -332,9 +329,6 @@ they must be of the same length.
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
 
-    -   **missing_file_pass** - If set to `"true"` the OVAL check will
-        pass when file is absent. Default value is `"false"`.
-
     -   **file_regex** - Regular expression that matches file names in
         a directory specified by **filepath**. Can be set only if
         **filepath** parameter specifies a directory. Note: Applies to
@@ -368,9 +362,6 @@ they must be of the same length.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
-
-    -   **missing_file_pass** - If set to `"true"` the OVAL check will
-        pass when file is absent. Default value is `"false"`.
 
     -   **file_regex** - Regular expression that matches file names in
         a directory specified by **filepath**. Can be set only if
