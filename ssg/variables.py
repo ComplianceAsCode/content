@@ -270,7 +270,7 @@ def _process_selections(profile_yaml: dict, profile_variables: dict, policies: d
 
 
 def _process_profile(profiles_files: list, file: str, policies: dict,
-                     profile_variables=None) -> dict:
+                     profile_variables={}) -> dict:
     """
     Processes a profile by loading its YAML file, handling profile extensions, and processing
     selections.
@@ -279,14 +279,11 @@ def _process_profile(profiles_files: list, file: str, policies: dict,
         profiles_files (list): A list of profile file paths.
         file (str): The path to the profile file to be processed.
         policies (dict): A dictionary of policies defined by control files.
-        profile_variables (dict, optional): A dictionary of profile variables. Defaults to None.
+        profile_variables (dict, optional): A dictionary of profile variables. Defaults to empty.
 
     Returns:
         dict: A dictionary containing the processed profile variables.
     """
-    if profile_variables is None:
-        profile_variables = {}
-
     profile_yaml = _load_yaml_profile_file(file)
     profile_variables = _process_profile_extension(profiles_files, profile_yaml,
                                                    profile_variables, policies)
