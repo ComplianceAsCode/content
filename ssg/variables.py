@@ -1,8 +1,9 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import os
 import glob
+import os
+import sys
 import yaml
 
 from collections import defaultdict
@@ -15,11 +16,20 @@ from .products import (
 )
 from .yaml import open_and_macro_expand
 
+
+if sys.version_info >= (3, 9):
+    list_type = list  # Python 3.9+ supports built-in generics
+    dict_type = dict
+else:
+    from typing import List as list_type  # Fallback for older versions
+    from typing import Dict as dict_type
+
+
 # Cache variable files to avoid multiple reads
 _var_files_cache = {}
 
 
-def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list[str]:
+def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list_type[str]:
     """
     Retrieve a list of variable files within a specified folder in the project.
 
@@ -36,7 +46,7 @@ def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list[str]:
     return glob.glob(pattern, recursive=True)
 
 
-def get_variable_files(content_dir: str) -> list[str]:
+def get_variable_files(content_dir: str) -> list_type[str]:
     """
     Retrieves all variable files from the specified content root directory.
 
@@ -59,7 +69,7 @@ def get_variable_files(content_dir: str) -> list[str]:
     return variable_files
 
 
-def get_variable_options(content_dir: str, variable_id: str = None) -> dict:
+def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type:
     """
     Retrieve the options for specific or all variables from the content root directory.
 
@@ -135,7 +145,7 @@ def _load_product_yaml(content_dir: str, product: str) -> object:
     return load_product_yaml(file_yaml_path)
 
 
-def _load_yaml_profile_file(file_path: str) -> dict:
+def _load_yaml_profile_file(file_path: str) -> dict_type:
     """
     Load the content of a YAML file intended to profiles definitions.
 
@@ -172,7 +182,7 @@ def _get_extended_profile_path(profiles_files: list, profile_name: str) -> str:
 
 
 def _process_profile_extension(profiles_files: list, profile_yaml: dict,
-                               profile_variables: dict, policies: dict) -> dict:
+                               profile_variables: dict, policies: dict) -> dict_type:
     """
     Processes the extension of a profile by recursively checking if the profile extends another
     profile and updating the profile variables accordingly.
@@ -195,7 +205,7 @@ def _process_profile_extension(profiles_files: list, profile_yaml: dict,
     return profile_variables
 
 
-def _process_controls(control_line: str, profile_variables: dict, policies: dict) -> dict:
+def _process_controls(control_line: str, profile_variables: dict, policies: dict) -> dict_type:
     """
     Process a control file inheritance to update profile variables based on the given policies.
 
@@ -236,7 +246,7 @@ def _process_controls(control_line: str, profile_variables: dict, policies: dict
     return profile_variables
 
 
-def _process_selections(profile_yaml: dict, profile_variables: dict, policies: dict) -> dict:
+def _process_selections(profile_yaml: dict, profile_variables: dict, policies: dict) -> dict_type:
     """
     Processes the selections from the profile YAML and updates the profile variables accordingly.
 
@@ -259,7 +269,7 @@ def _process_selections(profile_yaml: dict, profile_variables: dict, policies: d
 
 
 def _process_profile(profiles_files: list, file: str, policies: dict,
-                     profile_variables={}) -> dict:
+                     profile_variables={}) -> dict_type:
     """
     Processes a profile by loading its YAML file, handling profile extensions, and processing
     selections.
@@ -296,7 +306,7 @@ def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
     return control_mgr
 
 
-def _get_profiles_from_products(content_dir: str, products: list) -> list:
+def _get_profiles_from_products(content_dir: str, products: list) -> list_type:
     """
     Retrieves profiles with respective variables from the given products.
 
@@ -323,7 +333,7 @@ def _get_profiles_from_products(content_dir: str, products: list) -> list:
     return profiles
 
 
-def _get_variables_from_profiles(profiles: list) -> dict:
+def _get_variables_from_profiles(profiles: list) -> dict_type:
     """
     Extracts variables from a list of profiles and organizes them into a nested dictionary.
 
@@ -343,7 +353,7 @@ def _get_variables_from_profiles(profiles: list) -> dict:
     return variables
 
 
-def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict:
+def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict_type:
     """
     Recursively converts a defaultdict to a regular dictionary.
 
@@ -358,7 +368,7 @@ def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict:
     return dictionary
 
 
-def get_variables_by_products(content_dir: str, products: list) -> dict[str, dict]:
+def get_variables_by_products(content_dir: str, products: list) -> dict_type[str, dict]:
     """
     Retrieve variables by products from the specified content root directory.
 
@@ -378,7 +388,7 @@ def get_variables_by_products(content_dir: str, products: list) -> dict[str, dic
     return _convert_defaultdict_to_dict(profiles_variables)
 
 
-def get_variable_values(content_dir: str, profiles_variables: dict) -> dict:
+def get_variable_values(content_dir: str, profiles_variables: dict) -> dict_type:
     """
     Update the variables dictionary with actual values for each variable option.
 
