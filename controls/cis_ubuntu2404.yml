@@ -1120,8 +1120,9 @@ controls:
     levels:
       - l1_server
       - l2_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - sshd_disable_forwarding
+    status: automated
 
   - id: 3.2.1
     title: Ensure dccp kernel module is not available (Automated)
