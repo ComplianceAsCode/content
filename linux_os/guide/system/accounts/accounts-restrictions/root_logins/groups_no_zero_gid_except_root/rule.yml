@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Verify Only Group Root Has GID 0'
+
+description: |-
+    If any group other than root has a GID of 0, this misconfiguration should
+    be investigated and the groups other than root should be removed or have
+    their GID changed.
+
+rationale: |-
+    Ensuring that only the <tt>root</tt> group has a GID of 0 helps prevent
+    root group owned files from becoming accidentally accessible to
+    non-privileged users.
+
+severity: high
+
+ocil_clause: 'any groups other than "root" have a GID of "0"'
+
+ocil: |-
+    Verify that only the "root" group has a GID "0" assignment with the
+    following command:
+    <pre>$ awk -F: '$3 == 0 {print $1}' /etc/group</pre>
+    <pre>root</pre>
+
+fixtext: |-
+    Change the GID of any group on the system, other than root, that has a GID of "0".
+
+warnings:
+  - general: |-
+       This rule doesn't come with a remediation. The removal of groups from a system
+       or reassigning the GID is considered too disruptive.
