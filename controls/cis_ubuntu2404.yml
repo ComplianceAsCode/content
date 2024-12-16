@@ -1626,9 +1626,10 @@ controls:
     levels:
       - l1_workstation
       - l2_server
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
-
+    rules:
+      - sshd_disable_gssapi_auth
+    status: automated
+    
   - id: 5.1.10
     title: Ensure sshd HostbasedAuthentication is disabled (Automated)
     levels:
