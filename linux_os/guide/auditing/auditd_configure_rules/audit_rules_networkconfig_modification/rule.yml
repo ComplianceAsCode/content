@@ -12,6 +12,9 @@ description: |-
     -w /etc/issue -p wa -k audit_rules_networkconfig_modification
     -w /etc/issue.net -p wa -k audit_rules_networkconfig_modification
     -w /etc/hosts -p wa -k audit_rules_networkconfig_modification
+    {{% if product in ['ubuntu2404'] %}}
+    -w /etc/netplan/ -p wa -k audit_rules_networkconfig_modification
+    {{% endif %}}
     {{% if 'ubuntu' in product -%}}
     -w /etc/networks -p wa -k audit_rules_networkconfig_modification
     -w /etc/network/ -p wa -k audit_rules_networkconfig_modification</pre>
@@ -72,7 +75,9 @@ ocil_clause: 'the system is not configured to audit changes of the network confi
 ocil: |-
     To determine if the system is configured to audit changes to its network configuration,
     run the following command:
-    {{% if 'ubuntu' in product -%}}
+    {{% if product in ['ubuntu2404'] -%}}
+    <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/networks|/etc/network/|/etc/netplan/)'</pre>
+    {{% elif 'ubuntu' in product -%}}
     <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/networks|/etc/network/)'</pre>
     {{% else -%}}
     <pre>auditctl -l | grep -E '(/etc/issue|/etc/issue.net|/etc/hosts|/etc/sysconfig/network)'</pre>
