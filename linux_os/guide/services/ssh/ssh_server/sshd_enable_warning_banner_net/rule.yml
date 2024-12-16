@@ -46,8 +46,10 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue.net") }}}
 
+{{% if 'ubuntu' not in product %}}
 conflicts:
     - sshd_enable_warning_banner
+{{% endif %}}
 
 template:
     name: sshd_lineinfile
