@@ -197,7 +197,7 @@ def _process_profile_extension(profiles_files: list, profile_yaml: dict,
         dict: The updated profile variables after processing the extended profile,
               or the original profile variables if no extension is found.
     """
-    extended_profile = profile_yaml.get("extends", None)
+    extended_profile = profile_yaml.get("extends")
     if isinstance(extended_profile, str):
         extended_profile = _get_extended_profile_path(profiles_files, extended_profile)
         if extended_profile is not None:
@@ -258,7 +258,7 @@ def _process_selections(profile_yaml: dict, profile_variables: dict, policies: d
     Returns:
         dict: The updated profile variables dictionary.
     """
-    selections = profile_yaml.get("selections", None)
+    selections = profile_yaml.get("selections")
     for selected in selections:
         if "=" in selected and "!" not in selected:
             variable_name, variable_value = selected.split('=', 1)
