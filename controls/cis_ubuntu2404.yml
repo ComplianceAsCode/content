@@ -2577,14 +2577,16 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    related_rules:
+    rules:
       - audit_rules_usergroup_modification_group
       - audit_rules_usergroup_modification_gshadow
       - audit_rules_usergroup_modification_opasswd
       - audit_rules_usergroup_modification_passwd
       - audit_rules_usergroup_modification_shadow
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.1.3.8.
+      - audit_rules_usergroup_modification_nsswitch_conf
+      - audit_rules_usergroup_modification_pam_conf
+      - audit_rules_usergroup_modification_pamd
+    status: automated
 
   - id: 6.2.3.9
     title: Ensure discretionary access control permission modification events are collected (Automated)
