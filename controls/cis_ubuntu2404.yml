@@ -2829,10 +2829,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - aide_periodic_cron_checking
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/1.3.2.
+    rules:
+      - aide_periodic_checking_systemd_timer
+    status: automated
 
   - id: 6.3.3
     title: Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)
