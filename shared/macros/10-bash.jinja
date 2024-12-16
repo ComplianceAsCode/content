@@ -907,13 +907,13 @@ DEBIAN_FRONTEND=noninteractive pam-auth-update
 #}}
 {{%- macro bash_pam_unix_enable() -%}}
 conf_name=cac_unix
-conf_path="/usr/share/pam-configs/"
+conf_path="/usr/share/pam-configs"
 
 if [ ! -f "$conf_path"/"$conf_name" ]; then
     if [ -f "$conf_path"/unix ]; then
         if grep -q "$(md5sum "$conf_path"/unix | cut -d ' ' -f 1)" /var/lib/dpkg/info/libpam-runtime.md5sums;then
             cp "$conf_path"/unix "$conf_path"/"$conf_name"
-            sed '/Default: yes/a Priority: 257\
+            sed -i '/Default: yes/a Priority: 257\
 Conflicts: unix' "$conf_path"/"$conf_name"
             DEBIAN_FRONTEND=noninteractive pam-auth-update
         else
