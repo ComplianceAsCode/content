@@ -2167,8 +2167,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - accounts_umask_root
+    status: automated
 
   - id: 5.4.2.7
     title: Ensure system accounts do not have a valid login shell (Automated)
