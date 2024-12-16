@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
+    <criteria operator="AND" comment="Check if pam_pwhistory.so is properly enabled">
+      <!--
+        pam_pwhistory.so parameters can be defined directly in pam files or, in newer versions,
+        in /etc/security/pwhistory.conf. The last is the recommended option when available. Also,
+        is the option used by auselect tool. However, regardless the approach, a minimal
+        declaration is common in pam files. -->
+      <criterion test_ref="test_accounts_password_pam_pwhistory_remember_common_password"
+        comment="pam_pwhistory.so is properly defined in password section of common-password"/>
+    </criteria>
+  </definition>
+
+  <!-- is pam_pwhistory.so enabled? -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_common_password" check="all"
+    check_existence="at_least_one_exists" version="1" comment="Check pam_pwhistory.so presence in /etc/pam.d/common-password">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_common_password"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_common_password"
+    version="1">
+    <ind:filepath>/etc/pam.d/common-password</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*password[\s]+((?:\[success=\d+\s+default=ignore\])|(?:requisite)|(?:required))[\s]+pam_pwhistory\.so[\s]+.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
