@@ -2145,8 +2145,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - ensure_root_access_controlled
+    status: automated
+    notes: This rule doesn't come with a remediation, as the exact requirement allows root to either have a password or be locked.
 
   - id: 5.4.2.5
     title: Ensure root path integrity (Automated)
