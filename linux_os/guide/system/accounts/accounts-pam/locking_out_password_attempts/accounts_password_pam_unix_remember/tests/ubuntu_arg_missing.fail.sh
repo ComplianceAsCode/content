@@ -1,7 +1,8 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
-cat << EOF > /usr/share/pam-configs/unix
+config_file=/usr/share/pam-configs/tmpunix
+cat << EOF > "$config_file"
 Name: Unix authentication
 Default: yes
 Priority: 256
@@ -28,3 +29,4 @@ Password-Initial:
 EOF
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+rm "$config_file"

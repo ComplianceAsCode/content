@@ -2,7 +2,7 @@
 # platform = multi_platform_ubuntu
 # variables = var_password_pam_unix_remember=5
 
-config_file=/usr/share/pam-configs/unix
+config_file=/usr/share/pam-configs/tmpunix
 remember_cnt=3
 
 cat << EOF > "$config_file"
@@ -32,3 +32,4 @@ Password-Initial:
 EOF
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+rm $config_file

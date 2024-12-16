@@ -2,7 +2,8 @@
 # platform = multi_platform_ubuntu
 # variables = var_password_hashing_algorithm_pam=sha512
 
-cat << EOF > /usr/share/pam-configs/unix
+config_file=/usr/share/pam-configs/tmpunix
+cat << EOF > "$config_file"
 Name: Unix authentication
 Default: yes
 Priority: 256
@@ -28,3 +29,4 @@ Password-Initial:
         [success=end default=ignore]    pam_unix.so obscure sha5122
 EOF
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+rm "$config_file"

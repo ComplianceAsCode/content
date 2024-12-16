@@ -3,7 +3,8 @@
 # variables = var_password_hashing_algorithm_pam=sha512
 
 {{% if 'ubuntu' in product %}}
-cat << EOF > /usr/share/pam-configs/unix
+config_file=/usr/share/pam-configs/tmpunix
+cat << EOF > "$config_file"
 Name: Unix authentication
 Default: yes
 Priority: 256
@@ -29,6 +30,7 @@ Password-Initial:
         [success=end default=ignore]    pam_unix.so obscure
 EOF
 DEBIAN_FRONTEND=noninteractive pam-auth-update
+rm "$config_file"
 {{% else %}}
 sed -i --follow-symlinks '/^password.*sufficient.*pam_unix\.so/ s/sha512//g' "/etc/pam.d/system-auth"
 {{% endif %}}
