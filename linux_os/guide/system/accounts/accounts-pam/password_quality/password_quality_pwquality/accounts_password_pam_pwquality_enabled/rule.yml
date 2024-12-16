@@ -1,0 +1,21 @@
+documentation_complete: true
+
+
+title: 'Verify pam_pwquality module is activated'
+
+description: |-
+    The <tt>pam_pwquality.so</tt> module ensures password quality by evaluating user-created passwords 
+    against a system dictionary and a set of rules designed to detect weak choices. Originally derived 
+    from the pam_cracklib module, this module is backward-compatible with options of pam_cracklib.
+    <br /><br />
+    The module's process includes prompting the user for a password, checking its strength, and if it 
+    meets the criteria requesting the password again for confirmation. If both entries match, the 
+    password is passed to subsequent modules to be set as the new authentication token.
+
+rationale: |-
+    Strong passwords significantly increase the time and effort required for unauthorized access, 
+    increasing overall system security.
+
+severity: medium
+
+platform: package[pam]
