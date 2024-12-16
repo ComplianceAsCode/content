@@ -907,36 +907,29 @@ DEBIAN_FRONTEND=noninteractive pam-auth-update
 #}}
 {{%- macro bash_pam_unix_enable() -%}}
 conf_name=cac_unix
-if [ ! -f /usr/share/pam-configs/"$conf_name" ]; then
-    cat << EOF > /usr/share/pam-configs/"$conf_name"
-Name: Unix authentication
-Default: yes
-Priority: 257
-Conflicts: unix
-Auth-Type: Primary
-Auth:
-	[success=end default=ignore]	pam_unix.so nullok try_first_pass
-Auth-Initial:
-	[success=end default=ignore]	pam_unix.so nullok
-Account-Type: Primary
-Account:
-	[success=end new_authtok_reqd=done default=ignore]	pam_unix.so
-Account-Initial:
-	[success=end new_authtok_reqd=done default=ignore]	pam_unix.so
-Session-Type: Additional
-Session:
-	required	pam_unix.so
-Session-Initial:
-	required	pam_unix.so
-Password-Type: Primary
-Password:
-	[success=end default=ignore]	pam_unix.so obscure use_authtok try_first_pass yescrypt
-Password-Initial:
-	[success=end default=ignore]	pam_unix.so obscure yescrypt
-EOF
+conf_path="/usr/share/pam-configs/"
+remediate=false
+
+if [ ! -f "$conf_path"/"$conf_name" ]; then
+    if [ -f "$conf_path"/unix ]; then
+        if grep -q `md5sum "$conf_path"/unix | cut -d ' ' -f 1` /var/lib/dpkg/info/libpam-runtime.md5sums;then
+            cp "$conf_path/unix" "$conf_path/"$conf_name""
+            remediate=true
+        else
+            echo "Not remediating - checksum of $conf_path/unix does not match the original." >&2
+        fi
+    else
+        echo "Not remediating - $conf_path/unix does not exist" >&2
+    fi
+else
+    remediate=true
 fi
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update
+if [ $remediate = "true" ]; then
+    sed '/Default: yes/a Priority: 257\
+Conflicts: unix' "$conf_path"/"$conf_name"
+    DEBIAN_FRONTEND=noninteractive pam-auth-update
+fi
 {{%- endmacro -%}}
 
 
