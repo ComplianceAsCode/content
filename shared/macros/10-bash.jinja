@@ -902,6 +902,32 @@ DEBIAN_FRONTEND=noninteractive pam-auth-update
 
 
 {{#
+    Enable pam_unix.so PAM module by using pam-auth-update.
+    This option is only recommended when pam-auth-update tool is available for the system.
+#}}
+{{%- macro bash_pam_unix_enable() -%}}
+conf_name=cac_unix
+conf_path="/usr/share/pam-configs"
+
+if [ ! -f "$conf_path"/"$conf_name" ]; then
+    if [ -f "$conf_path"/unix ]; then
+        if grep -q "$(md5sum "$conf_path"/unix | cut -d ' ' -f 1)" /var/lib/dpkg/info/libpam-runtime.md5sums;then
+            cp "$conf_path"/unix "$conf_path"/"$conf_name"
+            sed -i '/Default: yes/a Priority: 257\
+Conflicts: unix' "$conf_path"/"$conf_name"
+            DEBIAN_FRONTEND=noninteractive pam-auth-update
+        else
+            echo "Not applicable - checksum of $conf_path/unix does not match the original." >&2
+        fi
+    else
+        echo "Not applicable - $conf_path/unix does not exist" >&2
+    fi
+fi
+
+{{%- endmacro -%}}
+
+
+{{#
     Validate an authselect custom profile integrity and ensures the correct file path is defined
     in the "PAM_FILE_PATH" variable. The macros which change PAM files are the same regardless of
     using authselect or not. The only change is the file path. However, this file path can change
