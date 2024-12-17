@@ -6,6 +6,10 @@
 # This test will ensure that OVAL also checks the configuration in 
 # /etc/security/pwquality.conf.d/*.conf files
 
+{{% if product == "ubuntu2404" %}}
+{{{ bash_pam_pwquality_enable() }}}
+{{% endif %}}
+
 truncate -s 0 /etc/security/pwquality.conf
 
 config_dir="/etc/security/pwquality.conf.d"
