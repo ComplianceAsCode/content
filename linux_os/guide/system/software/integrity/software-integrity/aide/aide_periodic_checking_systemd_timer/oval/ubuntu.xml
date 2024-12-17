@@ -1,0 +1,56 @@
+{{% set aide_service = 'dailyaidecheck.service' %}}
+{{% set aide_timer = 'dailyaidecheck.timer' %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="3">
+    {{{ oval_metadata("Make sure systemd timer is defined to run perodic AIDE check.") }}}
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed"/>
+      <criteria operator="AND">
+        <criterion test_ref="tst_{{{ rule_id }}}_aidecheck-service_static"
+          comment="systemd aidecheck.service static"/>
+        <criterion test_ref="tst_{{{ rule_id }}}_aidecheck-timer_enabled"
+          comment="systemd aidecheck.timer enabled"/>
+        <criterion test_ref="tst_{{{ rule_id }}}_aidecheck-timer_active"
+          comment="systemd aidecheck.timer active"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_aidecheck-service_unitfilestate" version="1">
+    <linux:unit>{{{ aide_service }}}</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_aidecheck-timer_unitfilestate" version="1">
+    <linux:unit>{{{ aide_timer }}}</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_aidecheck-timer_activestate" version="1">
+    <linux:unit>{{{ aide_timer }}}</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="ste_{{{ rule_id }}}_aide_is_static" version="1">
+    <linux:value>static</linux:value>
+  </linux:systemdunitproperty_state>
+  <linux:systemdunitproperty_state id="ste_{{{ rule_id }}}_aide_is_enabled" version="1">
+    <linux:value>enabled</linux:value>
+  </linux:systemdunitproperty_state>
+  <linux:systemdunitproperty_state id="ste_{{{ rule_id }}}_aide_is_active" version="1">
+    <linux:value>active</linux:value>
+  </linux:systemdunitproperty_state>
+
+  <linux:systemdunitproperty_test check="all" id="tst_{{{ rule_id }}}_aidecheck-service_static" version="1"
+    comment="systemd aidecheck.service static">
+    <linux:object object_ref="obj_{{{ rule_id }}}_aidecheck-service_unitfilestate" />
+    <linux:state state_ref="ste_{{{ rule_id }}}_aide_is_static" />
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_test check="all" id="tst_{{{ rule_id }}}_aidecheck-timer_enabled" version="1"
+    comment="systemd aidecheck.timer enabled">
+    <linux:object object_ref="obj_{{{ rule_id }}}_aidecheck-timer_unitfilestate" />
+    <linux:state state_ref="ste_{{{ rule_id }}}_aide_is_enabled" />
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_test check="all" id="tst_{{{ rule_id }}}_aidecheck-timer_active" version="1"
+    comment="systemd aidecheck.timer active">
+    <linux:object object_ref="obj_{{{ rule_id }}}_aidecheck-timer_activestate" />
+    <linux:state state_ref="ste_{{{ rule_id }}}_aide_is_active" />
+  </linux:systemdunitproperty_test>
+</def-group>
