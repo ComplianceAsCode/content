@@ -983,7 +983,7 @@ if [ -f /usr/bin/authselect ]; then
     fi
 else
 {{% if 'ubuntu' in product %}}
-conf_name=cac_pwhistory
+conf_name={{{ pam_file }}}
 conf_path="/usr/share/pam-configs"
 
 if [ ! -f "$conf_path"/"$conf_name" ]; then
@@ -992,7 +992,7 @@ Name: pwhistory password history checking
 Default: yes
 Priority: 1024
 Password-Type: Primary
-Password: requisite pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
+Password: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
 EOF
 fi
 
