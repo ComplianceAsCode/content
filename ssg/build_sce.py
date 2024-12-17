@@ -34,12 +34,33 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     return load_sce_and_metadata_parsed(raw_content)
 
 
+def _modify_sce_with_environment(sce_content, environment):
+    if environment == "any":
+        return
+    if environment == "bootc":
+        condition = "\"$OSCAP_BOOTC_BUILD\" == \"YES\""
+    if environment == "normal":
+        condition = "\"$OSCAP_BOOTC_BUILD\" != \"YES\""
+    for i in range(len(sce_content)):
+        if len(sce_content[i]) > 0:
+            sce_content[i] = (4 * " ") + sce_content[i]
+    sce_content.insert(0, "if [[ " + condition + " ]] ; then")
+    sce_content.append("else")
+    sce_content.append("    echo \"The SCE check can't run in this environment.\"")
+    sce_content.append("    exit \"$XCCDF_RESULT_ERROR\"")
+    sce_content.append("fi")
+
+
 def load_sce_and_metadata_parsed(raw_content):
     metadata = dict()
     sce_content = []
 
-    keywords = ['platform', 'check-import', 'check-export', 'complex-check']
+    keywords = ['platform', 'check-import', 'check-export', 'complex-check', 'environment']
+    shebang = "#!/usr/bin/bash"
     for line in raw_content.split("\n"):
+        if line.startswith("#!"):
+            shebang = line
+            continue
         found_metadata = False
         for keyword in keywords:
             if not line.startswith('# ' + keyword + ' = '):
@@ -66,6 +87,18 @@ def load_sce_and_metadata_parsed(raw_content):
     if 'platform' in metadata:
         metadata['platform'] = metadata['platform'].split(',')
 
+    if "environment" not in metadata:
+        metadata["environment"] = "normal"
+    environment_options = ["normal", "bootc", "any"]
+    if metadata["environment"] not in environment_options:
+        raise RuntimeError(
+            "Wrong value of the 'environment' headers: '%s'. It needs to be "
+            "one of %s" % (
+                metadata["environment"], ", ".join(environment_options))
+        )
+
+    _modify_sce_with_environment(sce_content, metadata["environment"])
+    sce_content.insert(0, shebang)
     return "\n".join(sce_content), metadata
 
 
