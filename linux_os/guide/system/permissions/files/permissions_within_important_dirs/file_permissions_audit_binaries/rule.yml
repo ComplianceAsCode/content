@@ -13,9 +13,13 @@ description: |-
     /sbin/auditctl 755
     /sbin/aureport 755
     /sbin/ausearch 755
+    {{% if product not in ["rhel10"] %}}
     /sbin/autrace 755
+    {{% endif %}}
     /sbin/auditd 755
+    {{% if 'rhel' not in product %}}
     /sbin/audispd 755
+    {{% endif %}}
     /sbin/augenrules 755
     </pre>
 
@@ -54,9 +58,9 @@ ocil: |-
     /sbin/auditctl 755
     /sbin/aureport 755
     /sbin/ausearch 755
-    /sbin/autrace 755
+    {{% if product not in ["rhel10"] %}}/sbin/autrace 755{{% endif %}}
     /sbin/auditd 755
-    /sbin/audispd 755
+    {{% if 'rhel' not in product %}}/sbin/audispd 755{{% endif %}}
     /sbin/augenrules 755
     </pre>
 
@@ -77,8 +81,8 @@ template:
             - /sbin/auditctl
             - /sbin/aureport
             - /sbin/ausearch
-            - /sbin/autrace
+            {{% if product not in ["rhel10"] %}}- /sbin/autrace{{% endif %}}
             - /sbin/auditd
-            - /sbin/audispd
+            {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
         filemode: '0755'

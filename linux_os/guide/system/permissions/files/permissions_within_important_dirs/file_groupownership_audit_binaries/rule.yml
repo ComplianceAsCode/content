@@ -13,9 +13,9 @@ description: |-
     /sbin/auditctl root
     /sbin/aureport root
     /sbin/ausearch root
-    /sbin/autrace root
+    {{% if product not in ["rhel10"] %}}/sbin/autrace root{{% endif %}}
     /sbin/auditd root
-    /sbin/audispd root
+    {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
     /sbin/augenrules root
     </pre>
 
@@ -53,9 +53,9 @@ ocil: |-
     /sbin/auditctl root
     /sbin/aureport root
     /sbin/ausearch root
-    /sbin/autrace root
+    {{% if product not in ["rhel10"] %}}/sbin/autrace root{{% endif %}}
     /sbin/auditd root
-    /sbin/audispd root
+    {{% if 'rhel' not in product %}}/sbin/audispd root{{% endif %}}
     /sbin/augenrules root
     </pre>
 
@@ -75,8 +75,8 @@ template:
             - /sbin/auditctl
             - /sbin/aureport
             - /sbin/ausearch
-            - /sbin/autrace
+            {{% if product not in ["rhel10"] %}}- /sbin/autrace{{% endif %}}
             - /sbin/auditd
-            - /sbin/audispd
+            {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
         gid_or_name: '0'
