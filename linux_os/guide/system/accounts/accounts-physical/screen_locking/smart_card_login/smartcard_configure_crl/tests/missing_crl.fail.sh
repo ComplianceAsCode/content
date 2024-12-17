@@ -2,8 +2,6 @@
 # platform = multi_platform_ubuntu
 # packages = libpam-pkcs11
 
-if [ ! -f /etc/pam_pkcs11/pam_pkcs11.conf ]; then
-    cp /usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example /etc/pam_pkcs11/pam_pkcs11.conf
-fi
+mkdir -p /etc/pam_pkcs11
+echo "# cert_policy = ca,signature,ocsp_on,crl_auto;" > /etc/pam_pkcs11/pam_pkcs11.conf
 
-sed -i "/^\s*#/! s/cert_policy.*/cert_policy = ca,signature,ocsp_on;/g" /etc/pam_pkcs11/pam_pkcs11.conf
