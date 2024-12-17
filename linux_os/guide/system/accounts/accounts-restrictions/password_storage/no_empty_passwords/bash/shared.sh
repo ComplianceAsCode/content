@@ -12,7 +12,7 @@ for FILE in ${NULLOK_FILES}; do
 done
 {{% elif 'ubuntu' in product %}}
 {{{ bash_pam_unix_enable() }}}
-config_file="/usr/share/pam-configs/unix"
+config_file="/usr/share/pam-configs/cac_unix"
 sed -i -E '/^Password:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {
         s/\s*nullok//g
