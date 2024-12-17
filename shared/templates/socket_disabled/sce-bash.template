@@ -1,4 +1,5 @@
 #!/bin/bash
+# environment = bootc
 # check-import = stdout
 if [[ $(systemctl is-enabled {{{ SOCKETNAME }}}.socket) == "masked" ]] ; then
     exit "$XCCDF_RESULT_PASS"
