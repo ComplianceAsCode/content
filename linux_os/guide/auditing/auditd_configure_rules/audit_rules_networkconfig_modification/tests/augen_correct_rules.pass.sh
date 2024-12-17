@@ -13,3 +13,6 @@ echo "-w /etc/network/ -p wa -k audit_rules_networkconfig_modification" >> /etc/
 {{% else -%}}
 echo "-w /etc/sysconfig/network -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/rules.d/networkconfig.rules
 {{% endif %}}
+{{% if product in ['ubuntu2404'] %}}
+echo "-w /etc/netplan/ -p wa -k audit_rules_networkconfig_modification" >> /etc/audit/rules.d/networkconfig.rules
+{{% endif %}}
