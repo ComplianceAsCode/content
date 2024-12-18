@@ -1269,6 +1269,46 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - not result_faillock_conf_check.stat.exists
 {{%- endmacro -%}}
 
+{{#
+  This macro ensures the pam_pwquality.so PAM module is enabled.
+  It is enabled using the pam-auth-update tool.
+
+:param path: The path of pam-auth-update configuration for pam_pwquality.so.
+:type parameter: str
+
+#}}
+{{%- macro ansible_pam_pwquality_enable(path) -%}}
+
+{{{ ansible_check_pam_auth_update_presence() }}}
+
+- name: {{{ rule_title }}} - Remediation where pam-auth-update tool is present
+  block:
+    - name: Check if {{{ path }}} exists
+      stat:
+        path: {{{ path }}}
+      register: pwquality_file_stat
+
+    - name: Put the content into {{{ path }}} if it does not exist
+      copy:
+        dest: {{{ path }}}
+        content: |+
+          Name: Pwquality password strength checking
+          Default: yes
+          Priority: 1024
+          Conflicts: cracklib
+          Password-Type: Primary
+          Password:
+            requisite           pam_pwquality.so retry=3
+        force: yes
+      when: not pwquality_file_stat.stat.exists
+
+    {{{ ansible_apply_pam_auth_update_changes('cac_pwquality') | indent(4) }}}
+
+  when:
+    - result_pam_auth_update_present.stat.exists
+
+{{%- endmacro -%}}
+
 
 {{#
 Macro for Ansible remediation for adding a kernel command line argument to the GRUB 2 bootloader.
