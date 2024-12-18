@@ -34,24 +34,7 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     return load_sce_and_metadata_parsed(raw_content)
 
 
-def _modify_sce_with_environment(sce_content, environment):
-    if environment == "any":
-        return
-    if environment == "bootc":
-        condition = "\"$OSCAP_BOOTC_BUILD\" == \"YES\""
-    if environment == "normal":
-        condition = "\"$OSCAP_BOOTC_BUILD\" != \"YES\""
-    for i in range(len(sce_content)):
-        if len(sce_content[i]) > 0:
-            sce_content[i] = (4 * " ") + sce_content[i]
-    sce_content.insert(0, "if [[ " + condition + " ]] ; then")
-    sce_content.append("else")
-    sce_content.append("    echo \"The SCE check can't run in this environment.\"")
-    sce_content.append("    exit \"$XCCDF_RESULT_ERROR\"")
-    sce_content.append("fi")
-
-
-def load_sce_and_metadata_parsed(raw_content):
+def _parse_metadata(raw_content):
     metadata = dict()
     sce_content = []
 
@@ -74,7 +57,10 @@ def load_sce_and_metadata_parsed(raw_content):
 
         if not found_metadata:
             sce_content.append(line)
+    return shebang, "\n".join(sce_content), metadata
 
+
+def _set_metadata_default_values(metadata):
     if 'check-export' in metadata:
         # Special case for the variables exposed to the SCE script: prepend
         # the OSCAP_VALUE prefix to reference the variable
@@ -97,9 +83,32 @@ def load_sce_and_metadata_parsed(raw_content):
                 metadata["environment"], ", ".join(environment_options))
         )
 
-    _modify_sce_with_environment(sce_content, metadata["environment"])
-    sce_content.insert(0, shebang)
-    return "\n".join(sce_content), metadata
+
+def _modify_sce_with_environment(sce_content, environment):
+    if environment == "any":
+        return
+    if environment == "bootc":
+        condition = "\"$OSCAP_BOOTC_BUILD\" == \"YES\""
+    if environment == "normal":
+        condition = "\"$OSCAP_BOOTC_BUILD\" != \"YES\""
+    lines = list(sce_content.split("\n"))
+    for i in range(len(lines)):
+        if len(lines[i]) > 0:
+            lines[i] = (4 * " ") + lines[i]
+    lines.insert(0, "if [[ " + condition + " ]] ; then")
+    lines.append("else")
+    lines.append("    echo \"The SCE check can't run in this environment.\"")
+    lines.append("    exit \"$XCCDF_RESULT_ERROR\"")
+    lines.append("fi")
+    return "\n".join(lines)
+
+
+def load_sce_and_metadata_parsed(raw_content):
+    shebang, sce_content, metadata = _parse_metadata(raw_content)
+    _set_metadata_default_values(metadata)
+    sce_content = _modify_sce_with_environment(sce_content, metadata["environment"])
+    sce_content = shebang + "\n" + sce_content
+    return sce_content, metadata
 
 
 def _check_is_applicable_for_product(metadata, product):
