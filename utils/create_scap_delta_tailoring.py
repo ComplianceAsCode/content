@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import time
 import json
 import os
 import re
@@ -165,10 +166,8 @@ setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET
 
 
 def _get_datetime():
-    try:
-        return datetime.datetime.now(datetime.UTC).isoformat()
-    except AttributeError:
-        return datetime.datetime.utcnow().isoformat()
+    return datetime.datetime.fromtimestamp(
+        int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))).isoformat()
 
 
 def create_tailoring(args):
