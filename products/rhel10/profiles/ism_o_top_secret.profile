@@ -44,3 +44,5 @@ selections:
     - '!openssl_use_strong_entropy'
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
     - '!enable_dracut_fips_module'
+    # This rule is not applicable for RHEL 10
+    - '!force_opensc_card_drivers'
