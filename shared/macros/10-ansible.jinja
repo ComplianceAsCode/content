@@ -939,6 +939,17 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   register: result_authselect_present
 {{%- endmacro -%}}
 
+{{#
+    Used to identify if pam-auth-update is present or not in the system.
+    Some macros can change the remediation behavior based on the presence of authselect.
+
+#}}
+{{%- macro ansible_check_pam_auth_update_presence() -%}}
+- name: '{{{ rule_title }}} - Check if system relies on pam-auth-update tool'
+  ansible.builtin.stat:
+    path: /usr/sbin/pam-auth-update
+  register: result_pam_auth_update_present
+{{%- endmacro -%}}
 
 {{#
     Ensure pam_lastlog.so PAM module shows the failed logins according to the system capabilities.
