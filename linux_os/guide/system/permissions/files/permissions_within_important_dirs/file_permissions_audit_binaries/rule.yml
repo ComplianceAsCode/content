@@ -13,13 +13,13 @@ description: |-
     /sbin/auditctl 755
     /sbin/aureport 755
     /sbin/ausearch 755
-    {{% if product not in ["rhel10"] %}}
+    {{%- if product not in ["rhel10"] %}}
     /sbin/autrace 755
-    {{% endif %}}
+    {{%- endif %}}
     /sbin/auditd 755
-    {{% if 'rhel' not in product %}}
+    {{%- if 'rhel' not in product %}}
     /sbin/audispd 755
-    {{% endif %}}
+    {{%- endif %}}
     /sbin/augenrules 755
     </pre>
 
