@@ -847,6 +847,23 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{%- endif %}}
 {{%- endmacro %}}
 
+{{#
+    Macro used to apply changes on pam-auth-update profiles. If the "profile_name" parameter is not defined, the
+    pam-auth-update will apply all profile changes by default.
+
+:param profile_name:        Changes the default profile used by pam-auth-update.
+:type profile_name: str
+
+#}}
+{{% macro ansible_apply_pam_auth_update_changes(profile_name='') -%}}
+- name: '{{{ rule_title }}} - Ensure pam-auth-update profile changes are applied'
+  ansible.builtin.command:
+    {{%- if profile_name == '' %}}
+    cmd: pam-auth-update
+    {{%- else %}}
+    cmd: pam-auth-update --enable {{{ profile_name }}}
+    {{%- endif %}}
+{{%- endmacro %}}
 
 {{#
     Disable authselect feature if the authselect current profile is intact or inform that its
