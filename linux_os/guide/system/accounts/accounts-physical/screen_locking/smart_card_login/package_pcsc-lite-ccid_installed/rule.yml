@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Install the pcsc-lite-ccid package'
+
+description: |-
+    {{{ describe_package_install(package="pcsc-lite-ccid") }}}
+
+rationale: |-
+    The pcsc-lite-ccid package must be installed if it is to be available for
+    multifactor authentication using smartcards.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86243-3
+    cce@rhel9: CCE-86246-6
+    cce@rhel10: CCE-86250-8
+
+references:
+    disa: CCI-004046
+    ism: 1382,1384,1386
+    nist: CM-6(a)
+    srg: SRG-OS-000375-GPOS-00160
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="pcsc-lite-ccid") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: pcsc-lite-ccid
+
+fixtext: |-
+    {{{ fixtext_package_installed(package="pcsc-lite-ccid") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_package_installed("pcsc-lite-ccid") }}}'
