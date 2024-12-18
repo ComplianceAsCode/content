@@ -432,7 +432,7 @@ def get_profiles_directory(env_yaml):
     profiles_root = None
     if env_yaml:
         profiles_root = required_key(env_yaml, "profiles_root")
-    return profiles_root
+    return os.path.normpath(profiles_root)
 
 
 def get_profile_files_from_root(env_yaml, product_yaml):
