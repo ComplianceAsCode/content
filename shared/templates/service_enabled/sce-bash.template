@@ -1,4 +1,5 @@
 #!/bin/bash
+# environment = bootc
 # check-import = stdout
 if [[ $(systemctl is-enabled {{{ DAEMONNAME }}}.service) == "enabled" ]] ; then
     exit "$XCCDF_RESULT_PASS"
