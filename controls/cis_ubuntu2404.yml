@@ -1985,8 +1985,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - var_password_pam_enforcing=1
+      - accounts_password_pam_enforcing
+    status: automated
 
   - id: 5.3.3.2.8
     title: Ensure password quality is enforced for the root user (Automated)
