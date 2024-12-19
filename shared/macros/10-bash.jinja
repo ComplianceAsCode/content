@@ -390,7 +390,7 @@ then
     if [ ! -e "$key_rule_file" ]
     then
         touch "$key_rule_file"
-        chmod 0640 "$key_rule_file"
+        chmod 0600 "$key_rule_file"
     fi
     files_to_inspect+=("$key_rule_file")
 fi

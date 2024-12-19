@@ -4,7 +4,7 @@ documentation_complete: true
 title: 'Verify Permissions on /etc/audit/rules.d/*.rules'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0640") }}}
+    {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0600") }}}
 
 
 rationale: |-
@@ -32,15 +32,15 @@ references:
     stigid@ubuntu2004: UBTU-20-010133
     stigid@ubuntu2204: UBTU-22-653065
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-r-----") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-------") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-r-----") }}}
+    {{{ ocil_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-------") }}}
 
 fixtext: |-
-    {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0640") }}}
+    {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0600") }}}
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/audit/rules.d/*.rules", mode="0640")  }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/audit/rules.d/*.rules", mode="0600")  }}}'
 
 template:
     name: file_permissions
@@ -48,4 +48,4 @@ template:
       filepath: /etc/audit/rules.d/
       file_regex: ^.*rules$
       allow_stricter_permissions: "true"
-      filemode: '0640'
+      filemode: '0600'
