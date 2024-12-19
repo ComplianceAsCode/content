@@ -1928,8 +1928,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - var_password_pam_minlen=14
+      - accounts_password_pam_minlen
+    status: automated
 
   - id: 5.3.3.2.3
     title: Ensure password complexity is configured (Manual)
