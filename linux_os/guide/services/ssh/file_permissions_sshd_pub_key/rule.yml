@@ -57,3 +57,8 @@ template:
         filepath: /etc/ssh/
         file_regex: ^.*\.pub$
         filemode: '0644'
+
+warnings:
+    - general: |-
+        Remediation is not possible at bootable container build time because SSH host
+        keys are generated post-deployment.
