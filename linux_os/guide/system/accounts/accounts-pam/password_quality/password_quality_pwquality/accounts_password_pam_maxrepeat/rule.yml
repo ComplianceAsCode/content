@@ -58,6 +58,9 @@ template:
     vars:
         variable: maxrepeat
         operation: less than or equal
+{{%- if product == "ubuntu2404" %}}
+        zero_comparison_operation: greater than
+{{%- endif %}}
 
 fixtext: |-
     Configure {{{ full_name }}} to require the change of the number of repeating consecutive characters when passwords are changed by setting the "maxrepeat" option.
