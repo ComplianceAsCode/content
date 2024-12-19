@@ -10,7 +10,6 @@ controls:
             - set_password_hashing_algorithm_logindefs
             - set_password_hashing_algorithm_systemauth
             - set_password_hashing_min_rounds_logindefs
-            - accounts_password_all_shadowed_sha512
-            - var_password_hashing_algorithm_pam=sha512
-            - var_password_pam_unix_rounds=5000
+            - var_password_hashing_algorithm_pam=yescrypt
+            - var_password_pam_unix_rounds=5
         status: automated
