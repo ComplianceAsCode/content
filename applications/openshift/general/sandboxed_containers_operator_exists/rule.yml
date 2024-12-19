@@ -1,0 +1,38 @@
+
+title: Ensure that Sandboxed Containers Operator exists in the cluster
+
+description: |-
+    {{{ weblink(link="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7",
+                text="The Sandboxed Containers Operator") }}}
+    provides containers with a dedicated kernel by running them in a virtual machine. This allows for extended separation, as no kernel is shared. This is done by using RHCOS cluster extension and is only available on RHCOS nodes.
+
+rationale: |-
+    Using separate kernels for each container provides for better isolation, and makes it harder for adveseries to move laterally to other containers or the container-host.
+
+severity: medium
+
+identifiers:
+    cce@ocp4: CCE-86496-7
+
+ocil_clause: 'Sandboxed Containers Operator is not installed'
+
+ocil: |-
+    Run the following command to check if a subscription for the operator exists in the system:
+    <pre>$ oc get sub -n openshift-sandboxed-containers-operator</pre>
+    Make sure the Sandboxed Containers Operator is installed.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operators.coreos.com/v1alpha1/subscriptions") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: '/apis/operators.coreos.com/v1alpha1/subscriptions'
+    yamlpath: ".items[:].status.installedCSV"
+    check_existence: "at_least_one_exists"
+    values:
+    - value: "sandboxed-containers-operator.*"
+      operation: "pattern match"
+      entity_check: "at least one"
