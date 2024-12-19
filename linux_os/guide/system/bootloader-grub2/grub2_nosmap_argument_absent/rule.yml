@@ -10,10 +10,7 @@ description: |-
     Ensure that Supervisor Mode Access Prevention (SMAP) is not disabled by
     the <tt>nosmap</tt> boot paramenter option.
 
-    Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
-    doesn't contain the argument <tt>nosmap</tt>.
-    Run the following command to update command line for already installed kernels:
-    <pre># grubby --update-kernel=ALL --remove-args="nosmap"</pre>
+    {{{ describe_grub2_argument_absent("nosmap") | indent(4) }}}
 
 rationale: |-
     Disabling SMAP can facilitate exploitation of vulnerabilities caused by unintended access and
@@ -34,7 +31,6 @@ ocil: |-
     <pre>grep -q nosmap /boot/config-`uname -r`</pre>
     If the command returns a line, it means that SMAP is being disabled.
 
-platform: machine
 
 template:
     name: grub2_bootloader_argument_absent
