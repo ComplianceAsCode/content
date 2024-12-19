@@ -847,6 +847,23 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{%- endif %}}
 {{%- endmacro %}}
 
+{{#
+    Macro used to apply changes on pam-auth-update profiles. If the "profile_name" parameter is not defined, the
+    pam-auth-update will apply all profile changes by default.
+
+:param profile_name:        Changes the default profile used by pam-auth-update.
+:type profile_name: str
+
+#}}
+{{% macro ansible_apply_pam_auth_update_changes(profile_name='') -%}}
+- name: '{{{ rule_title }}} - Ensure pam-auth-update profile changes are applied'
+  ansible.builtin.command:
+    {{%- if profile_name == '' %}}
+    cmd: pam-auth-update
+    {{%- else %}}
+    cmd: pam-auth-update --enable {{{ profile_name }}}
+    {{%- endif %}}
+{{%- endmacro %}}
 
 {{#
     Disable authselect feature if the authselect current profile is intact or inform that its
@@ -922,6 +939,17 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   register: result_authselect_present
 {{%- endmacro -%}}
 
+{{#
+    Used to identify if pam-auth-update is present or not in the system.
+    Some macros can change the remediation behavior based on the presence of authselect.
+
+#}}
+{{%- macro ansible_check_pam_auth_update_presence() -%}}
+- name: '{{{ rule_title }}} - Check if system relies on pam-auth-update tool'
+  ansible.builtin.stat:
+    path: /usr/sbin/pam-auth-update
+  register: result_pam_auth_update_present
+{{%- endmacro -%}}
 
 {{#
     Ensure pam_lastlog.so PAM module shows the failed logins according to the system capabilities.
@@ -1250,6 +1278,46 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     {{%- endif %}}
   when:
     - not result_faillock_conf_check.stat.exists
+{{%- endmacro -%}}
+
+{{#
+  This macro ensures the pam_pwquality.so PAM module is enabled.
+  It is enabled using the pam-auth-update tool.
+
+:param path: The path of pam-auth-update configuration for pam_pwquality.so.
+:type parameter: str
+
+#}}
+{{%- macro ansible_pam_pwquality_enable(path) -%}}
+
+{{{ ansible_check_pam_auth_update_presence() }}}
+
+- name: {{{ rule_title }}} - Remediation where pam-auth-update tool is present
+  block:
+    - name: Check if {{{ path }}} exists
+      stat:
+        path: {{{ path }}}
+      register: pwquality_file_stat
+
+    - name: Put the content into {{{ path }}} if it does not exist
+      copy:
+        dest: {{{ path }}}
+        content: |+
+          Name: Pwquality password strength checking
+          Default: yes
+          Priority: 1024
+          Conflicts: cracklib
+          Password-Type: Primary
+          Password:
+            requisite           pam_pwquality.so retry=3
+        force: yes
+      when: not pwquality_file_stat.stat.exists
+
+    {{{ ansible_apply_pam_auth_update_changes('cac_pwquality') | indent(4) }}}
+
+  when:
+    - result_pam_auth_update_present.stat.exists
+
 {{%- endmacro -%}}
 
 

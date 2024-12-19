@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: 'Limit the maximum number of sequential characters in passwords'
+
+description: |-
+    The <tt>pwquality maxsequence</tt> setting defines the maximum allowable length for consecutive 
+    character sequences in a new password. Such sequences can be, e.g., 123 or abc. If the value is 
+    set to 0, this check will be turned off.
+    <br /><br />
+    Note: Passwords that consist mainly of such sequences are unlikely to meet the simplicity criteria 
+    unless the sequence constitutes only a small portion of the overall password.
+
+rationale: |-
+    Use of a strong password helps to increase the time and resources required to
+    compromise the password. Password complexity, or strength, is a measure of the
+    effectiveness of a password in resisting attempts at guessing and brute-force attacks.
+    <br /><br />
+    Password complexity is one important factor that determines the duration required to crack it.
+    A more intricate password results in a larger number of potential combinations that must be 
+    tested before successfully compromising the password.
+
+severity: medium
+
+platform: package[pam]
+
+template:
+    name: accounts_password
+    vars:
+        variable: maxsequence
+        operation: less than or equal
+        zero_comparison_operation: greater than

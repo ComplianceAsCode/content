@@ -29,6 +29,10 @@
 }}}
 {{% endif %}}
 
+{{% if "ubuntu" in product %}}
+{{{ ansible_pam_pwquality_enable('/usr/share/pam-configs/cac_pwquality') }}}
+{{% endif %}}
+
 - name: {{{ rule_title }}} - Ensure PAM variable {{{ VARIABLE }}} is set accordingly
   ansible.builtin.lineinfile:
     create: yes
