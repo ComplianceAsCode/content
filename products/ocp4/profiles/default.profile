@@ -25,7 +25,6 @@ selections:
     - file_permissions_var_lib_etcd
     - file_owner_openvswitch
     - file_permissions_openvswitch
-    - kubelet_configure_tls_cipher_suites_openshiftapiserver_operator
     - file_groupowner_ovs_conf_db_lock_not_s390x
     - oauth_inactivity_timeout
     - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
@@ -46,7 +45,7 @@ selections:
     - api_server_api_priority_v1_flowschema_catch_all
     - file_groupowner_openvswitch
     - gcp_disk_encryption_enabled
-    - kubelet_configure_tls_cipher_suites_ingresscontroller
+    - ingress_controller_tls_cipher_suites
     - file_groupowner_ovs_conf_db_lock_s390x
     - ebs_encryption_enabled_on_machinesets
     - project_template_network_policy
@@ -56,7 +55,6 @@ selections:
     - file_owner_pod_logs
     - project_config_has_template
     - kubelet_eviction_thresholds_set_soft_imagefs_available
-    - kubelet_configure_tls_cipher_suites_kubeapiserver_operator
     - file_groupowner_ovs_sys_id_conf_not_s390x
     - ingress_controller_tls_security_profile_custom_min_tls_version
     - kubelet_read_only_port_secured
