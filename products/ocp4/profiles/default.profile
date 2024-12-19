@@ -26,6 +26,7 @@ selections:
     - file_permissions_var_lib_etcd
     - file_owner_openvswitch
     - file_permissions_openvswitch
+    - file_groupowner_ovs_conf_db_lock_not_s390x
     - kubelet_configure_tls_cipher_suites_openshiftapiserver_operator
     - oauth_inactivity_timeout
     - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
@@ -53,6 +54,7 @@ selections:
     - file_owner_pod_logs
     - project_config_has_template
     - kubelet_eviction_thresholds_set_soft_imagefs_available
+    - file_groupowner_ovs_sys_id_conf_not_s390x
     - kubelet_configure_tls_cipher_suites_kubeapiserver_operator
     - ingress_controller_tls_security_profile_custom_min_tls_version
     - kubelet_read_only_port_secured
