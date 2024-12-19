@@ -45,7 +45,6 @@ selections:
     - api_server_api_priority_v1_flowschema_catch_all
     - file_groupowner_openvswitch
     - gcp_disk_encryption_enabled
-    - kubelet_configure_tls_cipher_suites_ingresscontroller
     - file_groupowner_ovs_conf_db_lock_s390x
     - ebs_encryption_enabled_on_machinesets
     - project_template_network_policy
