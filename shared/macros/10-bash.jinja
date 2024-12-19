@@ -1008,7 +1008,24 @@ if [ -f /usr/bin/authselect ]; then
         {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", 'password', control, 'pam_pwhistory.so', after_match) | indent(8) }}}
     fi
 else
+{{% if 'ubuntu' in product %}}
+conf_name={{{ pam_file }}}
+conf_path="/usr/share/pam-configs"
+
+if [ ! -f "$conf_path"/"$conf_name" ]; then
+    cat << EOF > "$conf_path"/"$conf_name"
+Name: pwhistory password history checking
+Default: yes
+Priority: 1024
+Password-Type: Primary
+Password: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
+EOF
+fi
+
+DEBIAN_FRONTEND=noninteractive pam-auth-update
+{{% else %}}
     {{{ bash_ensure_pam_module_line(pam_file, 'password', control, 'pam_pwhistory.so', after_match) | indent(4) }}}
+{{% endif %}}
 fi
 {{%- endmacro -%}}
 
