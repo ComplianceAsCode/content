@@ -33,7 +33,7 @@ ocil: |-
     Storing logs with persistent storage ensures they are available after a reboot or system crash.
     Run the command below to verify that logs are being persistently stored to disk.
     <pre>
-{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["fedora", "sle15"] or "rhel" in product %}}
     grep "^\sStorage" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
 {{% else %}}
     grep "^\sStorage" /etc/systemd/journald.conf
@@ -44,7 +44,7 @@ ocil: |-
     Storage=persistent
     </pre>
 
-{{%- if product in ["fedora", "rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["fedora", "sle15"] or "rhel" in product %}}
 template:
     name: systemd_dropin_configuration
     vars:

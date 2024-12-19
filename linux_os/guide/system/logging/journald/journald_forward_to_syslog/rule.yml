@@ -33,7 +33,7 @@ ocil: |-
     Storing logs remotely protects the integrity of the data from local attacks.
     Run the following command to verify that journald is forwarding logs to a remote host.
     <pre>
-{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["sle15"] or "rhel" in product %}}
     grep "^\sForwardToSyslog" /etc/systemd/journald.conf {{{ journald_conf_dir_path }}}/*.conf
 {{% else %}}
     grep "^\sForwardToSyslog" /etc/systemd/journald.conf
@@ -44,7 +44,7 @@ ocil: |-
     ForwardToSyslog=yes
     </pre>
 
-{{%- if product in ["rhel8", "rhel9", "sle15"] %}}
+{{%- if product in ["sle15"] or "rhel" in product %}}
 template:
     name: systemd_dropin_configuration
     vars:
