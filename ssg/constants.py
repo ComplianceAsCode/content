@@ -320,6 +320,10 @@ RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:10": "cpe:/o:centos:centos:10",
 }
 
+RHEL_ALMALINUX_CPE_MAPPING = {
+    "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:almalinux:almalinux:9",
+}
+
 CENTOS_NOTICE = \
     "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
     "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
@@ -343,6 +347,41 @@ CENTOS_NOTICE = \
     "</ul>\n" \
     "\n" \
     "<p>Members of the <i>CentOS</i> community are invited to participate in " \
+    "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
+    "SCAP Security Guide</a> development. Bug reports and patches " \
+    "can be sent to GitHub: " \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
+    "https://github.com/ComplianceAsCode/content</a>. " \
+    "The mailing list is at " \
+    "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
+    "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
+    ".</p>" \
+    "</div>"
+
+ALMALINUX_NOTICE = \
+    "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
+    "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
+    "benchmark developed for <i>Red Hat Enterprise Linux</i>. It has been " \
+    "modified through an automated process to remove specific dependencies " \
+    "on <i>Red Hat Enterprise Linux</i> and to function with <i>AlmaLinux</i>. " \
+    "The result is a generally useful <i>SCAP Security Guide</i> benchmark " \
+    "with the following caveats:</p>\n" \
+    "<ul>\n" \
+    "<li><i>AlmaLinux</i> is not an exact copy of " \
+    "<i>Red Hat Enterprise Linux</i>. There may be configuration differences " \
+    "that produce false positives and/or false negatives. If this occurs " \
+    "please file a bug report.</li>\n" \
+    "\n" \
+    "<li><i>AlmaLinux</i> has its own build system, compiler options, patchsets, " \
+    "and is a community supported, non-commercial operating system. " \
+    "<i>AlmaLinux</i> does not inherit " \
+    "certifications or evaluations from <i>Red Hat Enterprise Linux</i>. As " \
+    "such, some configuration rules (such as those requiring " \
+    "<i>FIPS 140-2</i> encryption) will continue to fail on <i>AlmaLinux</i>.</li>\n" \
+    "</ul>\n" \
+    "\n" \
+    "<p>Members of the <i>AlmaLinux</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
     "<a href=\"https://github.com/ComplianceAsCode/content\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \
@@ -483,6 +522,7 @@ DERIVATIVES_PRODUCT_MAPPING = {
     "centos8": "rhel8",
     "cs9": "rhel9",
     "cs10": "rhel10",
+    "almalinux9": "rhel9",
 }
 
 BENCHMARKS = {

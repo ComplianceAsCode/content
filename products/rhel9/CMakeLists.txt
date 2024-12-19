@@ -24,3 +24,7 @@ ssg_build_html_stig_tables_per_profile(${PRODUCT} "stig_gui")
 if(SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "cs9")
 endif()
+
+if(SSG_ALMALINUX_DERIVATIVES_ENABLED)
+    ssg_build_derivative_product(${PRODUCT} "almalinux" "almalinux9")
+endif()
