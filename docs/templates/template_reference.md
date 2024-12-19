@@ -612,6 +612,30 @@ When the remediation is applied duplicate occurrences of `key` are removed.
     - **app** - optional. If not set the check will use the default text `The respective application or service`.
       If set, the `app` is used within sentences like: "`application` is configured correctly and configuration file exists"
 
+#### pam_account_password_faillock
+-   Checks if the pam_faillock is enabled in PAM and if the specified
+    parameter is correctly configured either in /etc/security/faillock.conf
+    or directly in /etc/pam.d/* files.
+
+    The allowed interval for the faillock parameter is defined by
+    template parameters `variable_lower_bound` and `variable_upper_bound`.
+    The boundaries are inclusive (lower <= parameter value <= upper) and
+    can be set as:
+    - `use_ext_variable`: use value in external XCCDF variable defined by `ext_variable`
+    - number: literal number
+    - undefined: no boundary
+
+-   Parameters:
+    -   **description** - Description of rule
+    -   **prm_name** - name of faillock parameter
+    -   **prm_regex_conf** - regex for faillock parameter in /etc/security/faillock.conf
+    -   **prm_regex_pamd** - regex for faillock parameter in /etc/pam.d/*
+    -   **variable_lower_bound** - lower boundary for allowed parameter value
+    -   **variable_upper_bound** - upper boundary for allowed parameter value
+    -   **ext_variable** - external XCCDG variable used to define interval boundaries and
+                           the value used in the remediation.
+
+
 #### pam_options
 -   Checks if the parameters or arguments of a given Linux-PAM (Pluggable
     Authentication Modules) module in a given PAM configuration file
