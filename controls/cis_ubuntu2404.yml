@@ -1687,11 +1687,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - sshd_strong_macs=cis_ubuntu2404
       - sshd_use_strong_macs
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.2.14.
+    status: automated
 
   - id: 5.1.16
     title: Ensure sshd MaxAuthTries is configured (Automated)
