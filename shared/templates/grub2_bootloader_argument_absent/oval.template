@@ -34,6 +34,9 @@
     {{{ oval_metadata("Ensure " + ARG_NAME + " is not set in the kernel line in /etc/default/grub.") }}}
     <criteria operator="OR">
     <criteria operator="AND">
+      {{% if bootable_containers_supported == "true" %}}
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" negate="true" />
+      {{% endif %}}
       {{% if system_with_kernel_options_in_grubenv -%}}
       {{% if system_with_bios_and_uefi_support -%}}
       <criteria operator="OR">

@@ -38,6 +38,9 @@
     {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
     <criteria operator="OR">
     <criteria operator="AND">
+      {{% if bootable_containers_supported == "true" %}}
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" negate="true" />
+      {{% endif %}}
       {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
       <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
       comment="Check /boot/loader/entries/*.conf files if they contain direct reference to {{{ ARG_NAME_VALUE }}} or if they contain $kernelopts" />
@@ -111,7 +114,7 @@
     </criteria>
     {{% if bootable_containers_supported == "true" %}}
       <criteria operator="AND">
-        <extend_definition comment="The system is RHEL Image Mode"  definition_ref="bootc" />
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
         <criterion comment="The {{{ ARG_NAME_VALUE }}} is present in the /usr/lib/bootc/kargs.d/*.toml files"  test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
       </criteria>
     {{% endif %}}
