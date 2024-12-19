@@ -43,9 +43,10 @@
     path: /etc/audit/rules.d/privileged.rules
     line: "{{  item.rule  }}"
     regexp: "{{ item.regex }}"
+    mode: "0600"
     create: yes
   when:
-    - ('"auditd.service" in ansible_facts.services' or 
+    - ('"auditd.service" in ansible_facts.services' or
         '"augenrules.service" in ansible_facts.services')
   register: augenrules_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
@@ -57,7 +58,7 @@
     regexp: "{{ item.regex }}"
     create: yes
   when:
-    - ('"auditd.service" in ansible_facts.services' or 
+    - ('"auditd.service" in ansible_facts.services' or
         '"augenrules.service" in ansible_facts.services')
   register: auditctl_audit_rules_privilege_function_update_result
   with_items: "{{ suid_audit_rules }}"
