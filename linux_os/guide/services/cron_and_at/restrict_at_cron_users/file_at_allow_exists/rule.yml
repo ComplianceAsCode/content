@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: Ensure that /etc/at.allow exists
+
+description: |-
+    The file <tt>/etc/at.allow</tt> should exist and should be used instead
+    of <tt>/etc/at.deny</tt>.
+
+rationale: |-
+    Using the at.allow file to control who can run at jobs enforces this who can schedule jobs.
+    It is easier to manage an allow list than a deny list. 
+
+severity: medium
+
+ocil_clause: 'the file /etc/at.allow does not exist'
+
+ocil: |-
+    The file <tt>/etc/at.allow</tt> should exist.
+    This can be checked by running the following command:
+    <pre>
+    stat /etc/at.allow
+    </pre>
+    and the output should list the file.
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/at.allow
+        exists: true
+        fileuid: "0"
+        filemode: "0640"
