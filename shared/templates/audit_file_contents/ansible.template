@@ -10,7 +10,7 @@
     )
 }}}
 
-- name: Remove any permissions from other group
-  file:
+- name: {{{ rule_title }}} - Remove any permissions from group and other
+  ansible.builtin.file:
     path: {{{ FILEPATH }}}
-    mode: o-rwx
+    mode: g-rwx,o-rwx
