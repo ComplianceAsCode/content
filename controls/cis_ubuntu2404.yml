@@ -1940,24 +1940,18 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - var_password_pam_minlen=14
+    rules:
       - var_password_pam_minclass=4
       - var_password_pam_dcredit=1
-      - var_password_pam_ucredit=1
-      - var_password_pam_ocredit=1
       - var_password_pam_lcredit=1
-      - var_password_pam_retry=3
-      - package_pam_pwquality_installed
+      - var_password_pam_ocredit=1
+      - var_password_pam_ucredit=1
+      - accounts_password_pam_minclass
       - accounts_password_pam_dcredit
       - accounts_password_pam_lcredit
-      - accounts_password_pam_minclass
-      - accounts_password_pam_minlen
       - accounts_password_pam_ocredit
-      - accounts_password_pam_retry
       - accounts_password_pam_ucredit
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.4.1.
+    status: automated
 
   - id: 5.3.3.2.4
     title: Ensure password same consecutive characters is configured (Automated)
