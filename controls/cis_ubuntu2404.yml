@@ -1102,7 +1102,7 @@ controls:
     status: automated
     notes: file_owner_at_deny and file_owner_at_allow currently require root as owner
            and don't accept daemon
-    
+
   - id: 3.1.1
     title: Ensure IPv6 status is identified (Manual)
     levels:
@@ -1871,7 +1871,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    rules: 
+    rules:
       - accounts_password_pam_pwquality_enabled
     status: automated
 
@@ -1919,8 +1919,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - var_password_pam_difok=2
+      - accounts_password_pam_difok
+    status: automated
 
   - id: 5.3.3.2.2
     title: Ensure minimum password length is configured (Automated)
