@@ -33,7 +33,7 @@ ocil_clause: 'vsyscalls are enabled'
 ocil: |-
     {{{ ocil_grub2_argument("vsyscall=none") | indent(4) }}}
 
-platform: machine and x86_64_arch
+platform: x86_64_arch
 
 template:
     name: grub2_bootloader_argument

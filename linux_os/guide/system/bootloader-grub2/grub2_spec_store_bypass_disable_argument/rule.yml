@@ -39,7 +39,6 @@ ocil_clause: 'SSB is not configured appropriately'
 ocil: |-
     {{{ ocil_grub2_argument("spec_store_bypass_disable=" + xccdf_value("var_spec_store_bypass_disable_options")) | indent(4) }}}
 
-platform: machine
 
 template:
     name: grub2_bootloader_argument
