@@ -48,3 +48,4 @@ selections:
     - '!enable_dracut_fips_module'
     # This rule is not applicable for RHEL 10
     - '!force_opensc_card_drivers'
+    - '!service_chronyd_or_ntpd_enabled'
