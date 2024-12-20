@@ -33,11 +33,14 @@
 {{% set system_with_bios_and_uefi_support = true %}}
 {{%- endif -%}}
 
-
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
+    <criteria operator="OR">
     <criteria operator="AND">
+      {{% if bootable_containers_supported == "true" %}}
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" negate="true" />
+      {{% endif %}}
       {{% if system_with_expanded_kernel_options_in_loader_entries_or_with_options_in_grubenv %}}
       <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries_expanded_or_referenced"
       comment="Check /boot/loader/entries/*.conf files if they contain direct reference to {{{ ARG_NAME_VALUE }}} or if they contain $kernelopts" />
@@ -108,6 +111,13 @@
           </criteria>
         </criteria>
       {{%- endif %}}
+    </criteria>
+    {{% if bootable_containers_supported == "true" %}}
+      <criteria operator="AND">
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
+        <criterion comment="The {{{ ARG_NAME_VALUE }}} is present in the /usr/lib/bootc/kargs.d/*.toml files"  test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
+      </criteria>
+    {{% endif %}}
     </criteria>
   </definition>
 
@@ -305,6 +315,48 @@
   </local_variable>
 
   <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
+{{% endif %}}
+
+{{% if bootable_containers_supported == "true" %}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d"
+                              comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
+                              check="at least one" check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
+    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
+    <ind:path>/usr/lib/bootc/kargs.d/</ind:path>
+    <ind:filename operation="pattern match">^.*\.toml$</ind:filename>
+    <ind:pattern operation="pattern match">^kargs = \[([^\]]+)\]$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% if ARG_VALUE %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
+    <ind:subexpression operation="pattern match">^.*"{{{ ESCAPED_ARG_NAME_VALUE }}}".*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% else %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d" version="1">
+    <ind:subexpression operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs" />
+  </ind:textfilecontent54_state>
+
+  <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}_bootc_kargs"
+  comment="Regex that matches {{{ ARG_NAME }}} with value {{{ ARG_VARIABLE }}}"
+  datatype="string" version="1">
+    <concat>
+      <literal_component>^.*"{{{ ARG_NAME }}}=</literal_component>
+      {{% if IS_SUBSTRING == "true" %}}
+      <literal_component>\S*</literal_component>
+      {{% endif %}}
+      <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
+      {{% if IS_SUBSTRING == "true" %}}
+      <literal_component>\S*</literal_component>
+      {{% endif %}}
+      <literal_component>".*$</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
+{{% endif %}}
 {{% endif %}}
 
 </def-group>

@@ -36,7 +36,6 @@ ocil_clause: 'l1tf mitigations are not configured appropriately'
 ocil: |-
     {{{ ocil_grub2_argument("l1tf=" + xccdf_value("var_l1tf_options")) | indent(4) }}}
 
-platform: machine
 
 template:
     name: grub2_bootloader_argument

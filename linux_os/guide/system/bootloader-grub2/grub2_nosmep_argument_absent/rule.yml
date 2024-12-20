@@ -10,10 +10,7 @@ description: |-
     Ensure that Supervisor Mode Execution Prevention (SMEP) is not disabled by
     the <tt>nosmep</tt> boot paramenter option.
 
-    Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
-    doesn't contain the argument <tt>nosmep</tt>.
-    Run the following command to update command line for already installed kernels:
-    <pre># grubby --update-kernel=ALL --remove-args="nosmep"</pre>
+    {{{ describe_grub2_argument_absent("nosmep") | indent(4) }}}
 
 rationale: |-
     Disabling SMEP can facilitate exploitation of certain vulnerabilities because it allows
@@ -34,7 +31,6 @@ ocil: |-
     <pre>grep -q nosmep /boot/config-`uname -r`</pre>
     If the command returns a line, it means that SMEP is being disabled.
 
-platform: machine
 
 template:
     name: grub2_bootloader_argument_absent

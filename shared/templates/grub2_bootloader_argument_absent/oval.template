@@ -32,7 +32,11 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata("Ensure " + ARG_NAME + " is not set in the kernel line in /etc/default/grub.") }}}
+    <criteria operator="OR">
     <criteria operator="AND">
+      {{% if bootable_containers_supported == "true" %}}
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" negate="true" />
+      {{% endif %}}
       {{% if system_with_kernel_options_in_grubenv -%}}
       {{% if system_with_bios_and_uefi_support -%}}
       <criteria operator="OR">
@@ -76,6 +80,13 @@
           </criteria>
         </criteria>
       {{%- endif %}}
+    </criteria>
+    {{% if bootable_containers_supported == "true" %}}
+      <criteria operator="AND">
+        <extend_definition comment="The system is RHEL Image Mode" definition_ref="bootc" />
+        <criterion comment="The {{{ ARG_NAME }}} is not present in the /usr/lib/bootc/kargs.d/*.toml files"  test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d_absent" />
+      </criteria>
+    {{% endif %}}
     </criteria>
   </definition>
 
@@ -174,4 +185,17 @@
 {{%- endif %}}
 {{%- endif %}}
 
+{{% if bootable_containers_supported == "true" %}}
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d_absent"
+                              comment="check kernel command line parameters for {{{ ARG_NAME }}}"
+                              check="at least one" check_existence="none_exist" version="1">
+    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d_absent" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_usr_lib_bootc_kargs_d_absent" version="1">
+    <ind:path>/usr/lib/bootc/kargs.d/</ind:path>
+    <ind:filename operation="pattern match">^.*\.toml$</ind:filename>
+    <ind:pattern operation="pattern match">^kargs = \["{{{ ARG_NAME }}}.*"\]$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>
