@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 from ssg.build_sce import collect_sce_checks
 from ssg.constants import (
     cat_namespace, datastream_namespace, oval_namespace, sce_namespace,
-    XCCDF12_NS, xlink_namespace)
+    timestamp, XCCDF12_NS, xlink_namespace)
 import ssg.xml
 
 try:
@@ -47,7 +47,7 @@ def embed_sce_checks_in_datastream(datastreamtree, checklists, checks, build_dir
             datastreamtree, '{%s}extended-component' % datastream_namespace,
             attrib={
                 'id': component_id,
-                'timestamp': get_timestamp(path)
+                'timestamp': timestamp
             })
         # Append the file content
         script_data = ET.SubElement(component, '{%s}script' % sce_namespace)
@@ -190,16 +190,6 @@ def parse_args():
     return parser.parse_args()
 
 
-def get_timestamp(file_name):
-    source_date_epoch = os.getenv("SOURCE_DATE_EPOCH")
-    if source_date_epoch:
-        time_sec = float(source_date_epoch)
-    else:
-        time_sec = os.path.getmtime(file_name)
-    timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(time_sec))
-    return timestamp
-
-
 def add_component(
         ds_collection, component_ref_parent, component_file_name,
         dependencies=None):
@@ -210,7 +200,7 @@ def add_component(
     component = ET.SubElement(
         ds_collection, "{%s}component" % datastream_namespace)
     component.set("id", component_id)
-    component.set("timestamp", get_timestamp(component_file_name))
+    component.set("timestamp", timestamp)
     component_ref = ET.SubElement(
         component_ref_parent, "{%s}component-ref" % datastream_namespace)
     component_ref_id = "scap_%s_cref_%s" % (
@@ -247,6 +237,7 @@ def compose_ds(
     ds.set("id", "scap_%s_datastream_%s" % (ID_NS, name))
     ds.set("scap-version", "1.3")
     ds.set("use-case", "OTHER")
+    ds.set("timestamp", timestamp)
     dictionaries = ET.SubElement(ds, "{%s}dictionaries" % datastream_namespace)
     checklists = ET.SubElement(ds, "{%s}checklists" % datastream_namespace)
     checks = ET.SubElement(ds, "{%s}checks" % datastream_namespace)
