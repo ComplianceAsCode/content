@@ -16,6 +16,6 @@ oc wait -n openshift-security-profiles --for=condition=Available  --timeout=300s
     deployment/security-profiles-operator
 
 echo "waiting the subscription to have .status.installedCSV"
-while [ -z "$(oc get subscription security-profiles-operator-sub -nopenshift-security-profiles -o jsonpath='{.status.installedCSV}')" ]; do
+while [ -z "$(oc get subscription security-profiles-operator -nopenshift-security-profiles -o jsonpath='{.status.installedCSV}')" ]; do
     sleep 3
 done
