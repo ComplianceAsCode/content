@@ -454,7 +454,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
     path: "{{ all_files[0] }}"
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
     create: yes
-    mode: '0640'
+    mode: '0600'
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 {{%- endmacro %}}
 
@@ -484,7 +484,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
     state: present
     dest: /etc/audit/audit.rules
     create: yes
-    mode: '0640'
+    mode: '0600'
   when: find_existing_watch_audit_rules.matched is defined and find_existing_watch_audit_rules.matched == 0
 {{%- endmacro %}}
 
@@ -577,7 +577,7 @@ The macro requires following parameters:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
-    mode: o-rwx
+    mode: g-rwx,o-rwx
     state: present
   when: syscalls_found | length == 0
 {{%- endmacro %}}
@@ -654,7 +654,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
-    mode: o-rwx
+    mode: g-rwx,o-rwx
     state: present
   when: syscalls_found | length == 0
 {{%- endmacro %}}
