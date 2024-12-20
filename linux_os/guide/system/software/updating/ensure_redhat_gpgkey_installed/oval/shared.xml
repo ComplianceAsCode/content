@@ -22,6 +22,13 @@
         test_ref="test_redhat_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" />
       </criteria>
       {{%- endif %}}
+      {{%- if almalinux_major_version %}}
+      <criteria comment="AlmaLinux Vendor Keys" operator="AND">
+        <extend_definition comment="AlmaLinux{{{ almalinux_major_version }}} installed" definition_ref="installed_OS_is_almalinux{{{ almalinux_major_version }}}" />
+        <criterion comment="package gpg-pubkey-{{{ almalinux_pkg_version }}}-{{{ almalinux_pkg_release }}} is installed"
+        test_ref="test_redhat_package_gpgkey-{{{ almalinux_pkg_version }}}-{{{ almalinux_pkg_release }}}_installed" />
+      </criteria>
+      {{%- endif %}}
     </criteria>
   </definition>
 
@@ -68,6 +75,20 @@
   <linux:rpminfo_state id="state_redhat_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" version="1">
     <linux:release>{{{ centos_pkg_release }}}</linux:release>
     <linux:version>{{{ centos_pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+  {{%- endif %}}
+
+  {{%- if almalinux_major_version %}}
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_redhat_package_gpgkey-{{{ almalinux_pkg_version }}}-{{{ almalinux_pkg_release }}}_installed" version="1"
+  comment="AlmaLinux{{{ almalinux_major_version }}} key package is installed">
+    <linux:object object_ref="object_redhat_package_gpg-pubkey" />
+    <linux:state state_ref="state_redhat_package_gpg-pubkey-{{{ almalinux_pkg_version }}}-{{{ almalinux_pkg_release }}}" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_redhat_package_gpg-pubkey-{{{ almalinux_pkg_version }}}-{{{ almalinux_pkg_release }}}" version="1">
+    <linux:release>{{{ almalinux_pkg_release }}}</linux:release>
+    <linux:version>{{{ almalinux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
   {{%- endif %}}
 
