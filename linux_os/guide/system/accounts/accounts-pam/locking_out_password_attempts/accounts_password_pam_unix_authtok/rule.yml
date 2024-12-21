@@ -1,0 +1,32 @@
+documentation_complete: true
+
+
+title: 'Require use_authtok for pam_unix.so'
+
+{{% set configFile = "/etc/pam.d/common-password" %}}
+
+description: |-
+    When password changing enforce the module to set the new password to the one
+    provided by a previously stacked password module
+
+rationale: |-
+    Require use_authtok in pam_unix.so configuration
+
+severity: medium
+
+ocil_clause: 'Usage of use_authtok for pam_unix.so is required'
+
+ocil: |-
+    To verify the password reuse setting is compliant, run the following command:
+    <pre>$ grep use_authtok {{{ configFile }}}</pre>
+    The output should show use_authtok on the line.
+
+fixtext: |-
+    To configure the <tt>use_authtok</tt> option for the <tt>pam_unix</tt> 
+    PAM modules, in the file <tt>{{{ configFile }}}</tt>, append <tt>use_authtok</tt>
+    to the line which refers to the <tt>pam_unix.so</tt>, as
+    shown below:
+
+    <pre>password [success=1 default=ignore] pam_unix.so <i>...existing_options...</i> use_authtok</pre>
+
+platform: package[pam]
