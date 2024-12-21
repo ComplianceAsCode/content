@@ -913,8 +913,8 @@ if [ ! -f "$conf_path"/"$conf_name" ]; then
     if [ -f "$conf_path"/unix ]; then
         if grep -q "$(md5sum "$conf_path"/unix | cut -d ' ' -f 1)" /var/lib/dpkg/info/libpam-runtime.md5sums;then
             cp "$conf_path"/unix "$conf_path"/"$conf_name"
-            sed -i '/Default: yes/a Priority: 257\
-Conflicts: unix' "$conf_path"/"$conf_name"
+            sed -i 's/Priority: [0-9]\+/Priority: 257\
+Conflicts: unix/' "$conf_path"/"$conf_name"
             DEBIAN_FRONTEND=noninteractive pam-auth-update
         else
             echo "Not applicable - checksum of $conf_path/unix does not match the original." >&2
