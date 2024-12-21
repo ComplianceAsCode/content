@@ -16,6 +16,7 @@
     regexp: '^\s*(?:-e)\s+.*$'
     state: absent
   loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
+  register: auditd_immutable_option
   
 - name: Add Audit -e option into /etc/audit/rules.d/90-immutable.rules
   lineinfile:
