@@ -9,6 +9,8 @@ description: |-
 
     The mitigations must not be set to "off".
 
+    {{{ describe_grub2_argument_absent("mitigations=off") | indent(4) }}}
+
 rationale: |-
     Hardware vulnerabilities allow programs to steal data that is currently processed on the
     computer. While programs are typically not permitted to read data from other programs, a
@@ -24,7 +26,6 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010424
 
-platform: grub2
 
 ocil_clause: 'mitigations is set to off'
 
