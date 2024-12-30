@@ -40,6 +40,7 @@ SSG_REF_URIS = {
 product_directories = [
     'alinux2',
     'alinux3',
+    'almalinux9',
     'anolis8',
     'anolis23',
     'al2023',
@@ -203,6 +204,7 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Alibaba Cloud Linux 2": "alinux2",
     "Alibaba Cloud Linux 3": "alinux3",
+    "AlmaLinux OS 9": "almalinux9",
     "Anolis OS 8": "anolis8",
     "Anolis OS 23": "anolis23",
     "Amazon Linux 2023": "al2023",
@@ -289,10 +291,11 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "openeuler", "kylinserver",
                        "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "anolis", "openembedded", "al",
-                       "slmicro"]
+                       "slmicro", "almalinux"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2", "alinux3"],
+    "multi_platform_almalinux": ["almalinux9"],
     "multi_platform_anolis": ["anolis8", "anolis23"],
     "multi_platform_debian": ["debian11", "debian12"],
     "multi_platform_example": ["example"],
@@ -418,6 +421,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
     'alinux': 'Alibaba Cloud Linux',
+    'almalinux': 'AlmaLinux OS',
     'anolis': 'Anolis OS',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
