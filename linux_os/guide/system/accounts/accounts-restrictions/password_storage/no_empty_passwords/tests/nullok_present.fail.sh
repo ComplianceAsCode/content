@@ -1,10 +1,11 @@
 #!/bin/bash
 # platform = Oracle Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ubuntu
+# packages = pam
 
 {{% if 'ubuntu' in product %}}
 for FILE in "/etc/pam.d/common-password"; do
     if ! grep -q "^[^#].*pam_unix\.so.*nullok" ${FILE}; then
-        sed -i 's/\([\s]pam_unix\.so\)/\1 nullok/g' ${FILE}
+        sed -i 's/\([\s].*pam_unix\.so\)/\1 nullok/g' ${FILE}
     fi
 done
 {{% else %}}

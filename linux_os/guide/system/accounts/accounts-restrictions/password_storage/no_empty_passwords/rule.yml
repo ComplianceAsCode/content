@@ -102,3 +102,7 @@ warnings:
        container. Having user with empty password within a container is not
        considered a risk, because it should not be possible to directly login into
        a container anyway.
+
+{{% if 'ubuntu' in product %}}
+platform: package[pam]
+{{% endif %}}
