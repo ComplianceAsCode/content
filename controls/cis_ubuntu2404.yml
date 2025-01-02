@@ -1899,8 +1899,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    status: automated
+    rules:
+      - var_accounts_passwords_pam_faillock_unlock_time=600
+      - accounts_passwords_pam_faillock_unlock_time
 
   - id: 5.3.3.1.3
     title: Ensure password failed attempts lockout includes root account (Automated)
