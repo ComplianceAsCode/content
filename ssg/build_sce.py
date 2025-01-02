@@ -86,7 +86,7 @@ def _set_metadata_default_values(metadata):
 
 def _modify_sce_with_environment(sce_content, environment):
     if environment == "any":
-        return
+        return sce_content
     if environment == "bootc":
         condition = "(rpm -q --quiet bootc && [ -e /run/.containerenv ])"
     if environment == "normal":
