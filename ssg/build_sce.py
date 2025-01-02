@@ -88,14 +88,14 @@ def _modify_sce_with_environment(sce_content, environment):
     if environment == "any":
         return
     if environment == "bootc":
-        condition = "\"$OSCAP_BOOTC_BUILD\" == \"YES\""
+        condition = "(rpm -q --quiet bootc && [ -e /run/.containerenv ])"
     if environment == "normal":
-        condition = "\"$OSCAP_BOOTC_BUILD\" != \"YES\""
+        condition = "! (rpm -q --quiet bootc && [ -e /run/.containerenv ])"
     lines = list(sce_content.split("\n"))
     for i in range(len(lines)):
         if len(lines[i]) > 0:
             lines[i] = (4 * " ") + lines[i]
-    lines.insert(0, "if [[ " + condition + " ]] ; then")
+    lines.insert(0, "if " + condition + " ; then")
     lines.append("else")
     lines.append("    echo \"The SCE check can't run in this environment.\"")
     lines.append("    exit \"$XCCDF_RESULT_ERROR\"")
