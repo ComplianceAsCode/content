@@ -74,7 +74,7 @@ def _set_metadata_default_values(metadata):
         metadata['platform'] = metadata['platform'].split(',')
 
     if "environment" not in metadata:
-        metadata["environment"] = "normal"
+        metadata["environment"] = "any"
     environment_options = ["normal", "bootc", "any"]
     if metadata["environment"] not in environment_options:
         raise RuntimeError(
