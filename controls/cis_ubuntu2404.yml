@@ -2028,8 +2028,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - no_empty_passwords
+    status: automated
 
   - id: 5.3.3.4.2
     title: Ensure pam_unix does not include remember (Automated)
