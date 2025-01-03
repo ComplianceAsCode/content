@@ -34,29 +34,30 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     return load_sce_and_metadata_parsed(raw_content)
 
 
+def _process_raw_content_line(line, sce_content, metadata):
+    found_metadata = False
+    keywords = ['platform', 'check-import', 'check-export', 'complex-check', 'environment']
+    for keyword in keywords:
+        if not line.startswith('# ' + keyword + ' = '):
+            continue
+        found_metadata = True
+        # Strip off the initial comment marker
+        _, value = line[2:].split('=', maxsplit=1)
+        metadata[keyword] = value.strip()
+
+    if not found_metadata:
+        sce_content.append(line)
+
+
 def _parse_metadata(raw_content):
     metadata = dict()
     sce_content = []
-
-    keywords = ['platform', 'check-import', 'check-export', 'complex-check', 'environment']
     shebang = "#!/usr/bin/bash"
     for line in raw_content.split("\n"):
         if line.startswith("#!"):
             shebang = line
             continue
-        found_metadata = False
-        for keyword in keywords:
-            if not line.startswith('# ' + keyword + ' = '):
-                continue
-
-            found_metadata = True
-
-            # Strip off the initial comment marker
-            _, value = line[2:].split('=', maxsplit=1)
-            metadata[keyword] = value.strip()
-
-        if not found_metadata:
-            sce_content.append(line)
+        _process_raw_content_line(line, sce_content, metadata)
     return shebang, "\n".join(sce_content), metadata
 
 
