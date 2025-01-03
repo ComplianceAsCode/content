@@ -1889,15 +1889,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - var_accounts_passwords_pam_faillock_deny=4
-      - var_accounts_passwords_pam_faillock_fail_interval=900
-      - var_accounts_passwords_pam_faillock_unlock_time=600
       - accounts_passwords_pam_faillock_deny
-      - accounts_passwords_pam_faillock_interval
-      - accounts_passwords_pam_faillock_unlock_time
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.4.2.
+    status: automated
 
   - id: 5.3.3.1.2
     title: Ensure password unlock time is configured (Automated)
