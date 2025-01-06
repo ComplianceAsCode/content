@@ -1,8 +1,11 @@
 <def-group>
   <definition class="compliance" id="{{{rule_id}}}" version="1">
     {{{ oval_metadata("The root account should have primary group of 0") }}}
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="tests that the root account's gid is equal to 0" test_ref="test_{{{rule_id}}}" />
+      {{% if 'ubuntu' in product %}}
+      <criterion comment="no other users have primary group ID 0" test_ref="test_{{{rule_id}}}_no_other_gid_0" />
+      {{% endif %}}
     </criteria>
   </definition>
 
@@ -23,19 +26,14 @@
 
   {{% if 'ubuntu' in product %}}
   <!-- Test for other users with GID 0 (excluding sync, shutdown, halt, operator) -->
-  <ind:textfilecontent54_test id="test_{{{rule_id}}}_no_other_gid_0" check="all" comment="test that there are no other accounts with GID 0 except root" version="1">
+  <ind:textfilecontent54_test id="test_{{{rule_id}}}_no_other_gid_0" check="all" check_existence="none_exist" comment="test that there are no other accounts with GID 0 except root" version="1">
     <ind:object object_ref="object_{{{rule_id}}}_no_other_gid_0" />
-    <ind:state state_ref="state_{{{rule_id}}}_no_other_gid_0" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_{{{rule_id}}}_no_other_gid_0" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!\b(root|sync|shutdown|halt|operator)\b).+:.+:\d+:(\d+).+</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!\b(root|sync|shutdown|halt|operator)\b).+:.+:\d+:0:.+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_state id="state_{{{rule_id}}}_no_other_gid_0" version="1" comment="no other users have GID 0">
-    <ind:subexpression operation="not equal" datatype="int">0</ind:subexpression>
-  </ind:textfilecontent54_state>
   {{% endif %}}
 </def-group>
