@@ -1,0 +1,116 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="6">
+    {{{ oval_metadata(description) }}}
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+           as reference for the correct position of pam_faillock.so in auth section. If the
+           system is properly configured, it must appear only once in auth section. -->
+      <criterion test_ref="test_accounts_passwords_pam_faillock_common_pam_unix_auth"
+		  comment="pam_unix.so appears only once in auth section of common-auth"/>
+      <criterion test_ref="test_accounts_passwords_pam_faillock_common_pam_faillock_auth"
+		  comment="pam_faillock.so is properly defined in auth section of common-auth"/>
+      <criterion test_ref="test_accounts_passwords_pam_faillock_common_pam_faillock_account"
+		  comment="pam_faillock.so is properly defined in common-account"/>
+    </criteria>
+  </definition>
+
+  <!-- The following tests demand complex regex which are necessary more than once.
+       These variables make simpler the usage of regex patterns. -->
+  <constant_variable id="var_accounts_passwords_pam_faillock_pam_unix_regex"
+                     datatype="string" version="2"
+                     comment="regex to identify pam_unix.so in auth section of pam files">
+    <value>^\s*auth\N+pam_unix\.so</value>
+  </constant_variable>
+
+  <constant_variable
+      id="var_accounts_passwords_pam_faillock_pam_faillock_auth_regex"
+      datatype="string" version="2"
+      comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    {{% if 'debian' in product %}}
+    <value>^\s*auth\s+required\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail[\s\S]*^\s*auth\s+sufficient\s+pam_faillock\.so\s+authsucc</value>
+    {{% elif 'ubuntu' in product %}}
+    <value>^\s*auth\s+(requisite|required)\s+pam_faillock\.so.*preauth.*[\s\S]*^\s*auth.*pam_unix\.so[\s\S]*^\s*auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail</value>
+    {{% elif 'openeuler' in product or 'kylinserver' in product %}}
+    <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)?(?=.*?\bnew_authtok_reqd=done\b)?(?=.*?\bdefault=ignore\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=die\b)?.*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+    {{% else %}}
+    <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+    {{% endif %}}
+  </constant_variable>
+
+  <constant_variable
+      id="var_accounts_passwords_pam_faillock_pam_faillock_account_regex"
+      datatype="string" version="2"
+      comment="regex to identify pam_faillock.so entry in account section of pam files">
+    {{% if 'debian' in product or 'ubuntu' in product %}}
+    <value>^\s*account\s+required\s+pam_faillock\.so\s*(#.*)?$</value>
+    {{% elif 'openeuler' in product or 'kylinserver' in product %}}
+    <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_unix\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)?(?=.*?\bnew_authtok_reqd=ok\b)?(?=.*?\bignore=ignore\b)?(?=.*?\bdefault=bad\b)?.*\])[\s]+pam_faillock\.so</value>
+    {{% else %}}
+    <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
+    {{% endif %}}
+  </constant_variable>
+
+  {{% macro generate_test_faillock_enabled(file_stem) %}}
+  <!-- Check occurences of pam_unix.so in auth section of {{{ file_stem }}}-auth file -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="none_exist" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_unix_auth"
+      comment="no more that one pam_unix.so is expected in auth section of {{{ file_stem }}}-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_unix_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_unix_auth"
+      comment="Get the second and subsequent occurrences of pam_unix.so in auth section of {{{ file_stem}}}-auth">
+    <ind:filepath>/etc/pam.d/{{{file_stem}}}-auth</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="var_accounts_passwords_pam_faillock_pam_unix_regex"/>
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check common definition of pam_faillock.so in {{{ file_stem }}}-auth file -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="only_one_exists" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_faillock_auth"
+      comment="One and only one occurrence is expected in auth section of {{{ file_stem }}}-auth">
+    <ind:object
+	object_ref="object_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_faillock_auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_faillock_auth"
+      comment="Check common definition of pam_faillock.so in auth section of common-auth">
+    <ind:filepath>/etc/pam.d/{{{ file_stem }}}-auth</ind:filepath>
+    <ind:pattern operation="pattern match"
+		 var_ref="var_accounts_passwords_pam_faillock_pam_faillock_auth_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+
+  {{{ generate_test_faillock_enabled (file_stem="common")   }}}
+
+  {{% macro generate_test_faillock_account(file_stem, file) %}}
+  <!-- Check common definition of pam_faillock.so in {{{ file_stem }}}-account -->
+  <ind:textfilecontent54_test
+      check="all" check_existence="only_one_exists" version="2"
+      id="test_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_faillock_account"
+      comment="One and only one occurrence is expected in {{{ file }}}">
+    <ind:object
+	object_ref="object_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_faillock_account"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object
+      version="2"
+      id="object_accounts_passwords_pam_faillock_{{{ file_stem }}}_pam_faillock_account"
+      comment="Check common definition of pam_faillock.so in account section of {{{ file }}}">
+    <ind:filepath>/etc/pam.d/{{{ file }}}</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_pam_faillock_account_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endmacro %}}
+
+  {{{ generate_test_faillock_account (file_stem="common",   file="common-account") }}}
+
+</def-group>
