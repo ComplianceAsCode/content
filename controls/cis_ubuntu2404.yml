@@ -2136,8 +2136,10 @@ controls:
       - l1_workstation
     related_rules:
       - accounts_root_gid_zero
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.5.3.
+    status: automated
+    notes: |
+      The remediation is not automated as the removal or modification
+      of group IDs from a system is too disruptive.
 
   - id: 5.4.2.3
     title: Ensure group root is the only GID 0 group (Automated)
