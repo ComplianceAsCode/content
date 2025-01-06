@@ -11,6 +11,6 @@ def preprocess(data, lang):
            type(data.get(var)) != int:
             errmsg = ("The template instance of the rule {0} requires the "
                       "parameter {1} is either 'use_ext_variable' or "
-                      "a number or undefined".formate(data["_rule_id"], date["var"]))
+                      "a number or undefined".format(data["_rule_id"], data["var"]))
             raise ValueError(errmsg)
     return data
