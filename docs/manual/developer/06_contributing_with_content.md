@@ -518,7 +518,7 @@ then contain the following subdirectories:
 
 - `kickstart` - For Kickstart remediation content, ending in `.cfg`
 
-- `bootc` - for remediation content used in the `oscap-bootc` tool internally, ending in `.bo`
+- `bootc` - for remediation content used in the `oscap-im` tool internally, ending in `.bo`
 
 In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
