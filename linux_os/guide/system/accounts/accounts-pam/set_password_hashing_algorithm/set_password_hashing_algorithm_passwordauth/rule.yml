@@ -63,7 +63,7 @@ ocil: |-
 
 platform: package[pam]
 
-{{% if product in ['ol9', 'rhel9'] %}}
+{{% if product in ['ol9', 'rhel9', 'rhel10'] %}}
 srg_requirement: 'The {{{ full_name }}} pam_unix.so module must be configured in the password-auth file to use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.'
 
 fixtext: |-
