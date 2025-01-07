@@ -36,7 +36,7 @@ ocil_clause: 'StatefulSets with neither anti-affinity rules or topology spread c
 ocil: |-
     Run the following command to determine anti-affinity rules and topology spread constraints of
     all statefulsets:
-    <pre>$ oc get statefulsets -A -o json | jq '{{{ jqfilter }}}'"</pre>
+    <pre>$ oc get statefulsets -A -o json | jq '{{{ jqfilter }}}'</pre>
     Make sure that either suitable anti-affinity rule or topology spread constraints are configured
     for all workloads that require high availability.
 
