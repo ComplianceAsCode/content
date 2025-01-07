@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] %}}
+{{% if product in ['ol8', 'ol9'] or 'rhel' in product %}}
 {{% set configuration_files = ["password-auth","system-auth"] %}}
 {{% else %}}
 {{% set configuration_files = ["system-auth"] %}}
@@ -9,7 +9,7 @@
 
 {{{ bash_instantiate_variables("var_password_pam_retry") }}}
 
-{{% if product in ['ol8', 'ol9', 'rhel8', 'rhel9'] -%}}
+{{% if product in ['ol8', 'ol9'] or 'rhel' in product -%}}
 	{{{ bash_replace_or_append('/etc/security/pwquality.conf',
 							   '^retry',
 							   '$var_password_pam_retry',
