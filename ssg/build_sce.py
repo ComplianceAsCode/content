@@ -34,26 +34,34 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     return load_sce_and_metadata_parsed(raw_content)
 
 
-def load_sce_and_metadata_parsed(raw_content):
+def _process_raw_content_line(line, sce_content, metadata):
+    found_metadata = False
+    keywords = ['platform', 'check-import', 'check-export', 'complex-check', 'environment']
+    for keyword in keywords:
+        if not line.startswith('# ' + keyword + ' = '):
+            continue
+        found_metadata = True
+        # Strip off the initial comment marker
+        _, value = line[2:].split('=', maxsplit=1)
+        metadata[keyword] = value.strip()
+
+    if not found_metadata:
+        sce_content.append(line)
+
+
+def _parse_metadata(raw_content):
     metadata = dict()
     sce_content = []
-
-    keywords = ['platform', 'check-import', 'check-export', 'complex-check']
+    shebang = "#!/usr/bin/bash"
     for line in raw_content.split("\n"):
-        found_metadata = False
-        for keyword in keywords:
-            if not line.startswith('# ' + keyword + ' = '):
-                continue
+        if line.startswith("#!"):
+            shebang = line
+            continue
+        _process_raw_content_line(line, sce_content, metadata)
+    return shebang, "\n".join(sce_content), metadata
 
-            found_metadata = True
 
-            # Strip off the initial comment marker
-            _, value = line[2:].split('=', maxsplit=1)
-            metadata[keyword] = value.strip()
-
-        if not found_metadata:
-            sce_content.append(line)
-
+def _set_metadata_default_values(metadata):
     if 'check-export' in metadata:
         # Special case for the variables exposed to the SCE script: prepend
         # the OSCAP_VALUE prefix to reference the variable
@@ -66,7 +74,42 @@ def load_sce_and_metadata_parsed(raw_content):
     if 'platform' in metadata:
         metadata['platform'] = metadata['platform'].split(',')
 
-    return "\n".join(sce_content), metadata
+    if "environment" not in metadata:
+        metadata["environment"] = "any"
+    environment_options = ["normal", "bootc", "any"]
+    if metadata["environment"] not in environment_options:
+        raise RuntimeError(
+            "Wrong value of the 'environment' headers: '%s'. It needs to be "
+            "one of %s" % (
+                metadata["environment"], ", ".join(environment_options))
+        )
+
+
+def _modify_sce_with_environment(sce_content, environment):
+    if environment == "any":
+        return sce_content
+    if environment == "bootc":
+        condition = "(rpm -q --quiet bootc && [ -e /run/.containerenv ])"
+    if environment == "normal":
+        condition = "! (rpm -q --quiet bootc && [ -e /run/.containerenv ])"
+    lines = list(sce_content.split("\n"))
+    for i in range(len(lines)):
+        if len(lines[i]) > 0:
+            lines[i] = (4 * " ") + lines[i]
+    lines.insert(0, "if " + condition + " ; then")
+    lines.append("else")
+    lines.append("    echo \"The SCE check can't run in this environment.\"")
+    lines.append("    exit \"$XCCDF_RESULT_ERROR\"")
+    lines.append("fi")
+    return "\n".join(lines)
+
+
+def load_sce_and_metadata_parsed(raw_content):
+    shebang, sce_content, metadata = _parse_metadata(raw_content)
+    _set_metadata_default_values(metadata)
+    sce_content = _modify_sce_with_environment(sce_content, metadata["environment"])
+    sce_content = shebang + "\n" + sce_content
+    return sce_content, metadata
 
 
 def _check_is_applicable_for_product(metadata, product):

@@ -1889,15 +1889,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - var_accounts_passwords_pam_faillock_deny=4
-      - var_accounts_passwords_pam_faillock_fail_interval=900
-      - var_accounts_passwords_pam_faillock_unlock_time=600
       - accounts_passwords_pam_faillock_deny
-      - accounts_passwords_pam_faillock_interval
-      - accounts_passwords_pam_faillock_unlock_time
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.4.2.
+    status: automated
 
   - id: 5.3.3.1.2
     title: Ensure password unlock time is configured (Automated)
@@ -1997,8 +1992,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - accounts_password_pam_enforce_root
+    status: automated
 
   - id: 5.3.3.3.1
     title: Ensure password history remember is configured (Automated)
@@ -2048,11 +2044,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - var_password_hashing_algorithm=yescrypt
-      - set_password_hashing_algorithm_logindefs
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.4.4.
+    rules:
+      - var_password_hashing_algorithm_pam=yescrypt
+      - set_password_hashing_algorithm_systemauth
+    status: automated
 
   - id: 5.3.3.4.4
     title: Ensure pam_unix includes use_authtok (Automated)
