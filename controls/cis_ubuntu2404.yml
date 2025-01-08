@@ -2049,11 +2049,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - var_password_hashing_algorithm=yescrypt
-      - set_password_hashing_algorithm_logindefs
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.4.4.
+    rules:
+      - var_password_hashing_algorithm_pam=yescrypt
+      - set_password_hashing_algorithm_systemauth
+    status: automated
 
   - id: 5.3.3.4.4
     title: Ensure pam_unix includes use_authtok (Automated)
