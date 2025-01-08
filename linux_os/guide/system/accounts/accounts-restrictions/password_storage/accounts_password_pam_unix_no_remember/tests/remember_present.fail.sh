@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
+# packages = pam
 
 config_file=/usr/share/pam-configs/tmpunix
 
