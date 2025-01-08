@@ -7,14 +7,24 @@ description: |-
     <tt>augenrules</tt> program to read audit rules during daemon startup (the
     default), add the following line to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt>:
+    {{% if 'ubuntu' in product %}}
+    <pre>-w /etc/apparmor/ -p wa -k MAC-policy</pre>
+    <pre>-w /etc/apparmor.d/ -p wa -k MAC-policy</pre>
+    {{% else %}}
     <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+    {{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
+    {{% if 'ubuntu' in product %}}
+    <pre>-w /etc/apparmor/ -p wa -k MAC-policy</pre>
+    <pre>-w /etc/apparmor.d/ -p wa -k MAC-policy</pre>
+    {{% else %}}
     <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+    {{% endif %}}
 
 rationale: |-
-    The system's mandatory access policy (SELinux) should not be
+    The system's mandatory access policy (SELinux or Apparmor) should not be
     arbitrarily changed by anything other than administrator action. All changes to
     MAC policy should be audited.
 
