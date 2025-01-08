@@ -2,4 +2,4 @@
 # platform = multi_platform_ubuntu
 # packages = pam
 
-{{{ bash_enable_pam_faillock_directly_in_pam_files() }}}
+sed '/pam_faillock.so/d' /etc/pam.d/common-auth
