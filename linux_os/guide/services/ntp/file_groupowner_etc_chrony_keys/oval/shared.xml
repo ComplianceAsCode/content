@@ -1,19 +1,19 @@
 <def-group>
 
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("All files should be owned by a group") }}}
+    {{{ oval_metadata("/etc/chrony.keys should be owned by chrony group") }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles" negate="true"
           comment="The /etc/nsswitch.conf does not use nss-altfiles"/>
         <criterion test_ref="test_file_groupowner_etc_chrony_keys"
-          comment="Check all local files and make sure they are owned by a group"/>
+          comment="Check group ownership of /etc/chrony.keys"/>
       </criteria>
       <criteria operator="AND">
         <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles"
           comment="The /etc/nsswitch.conf uses nss-altfiles"/>
         <criterion test_ref="test_file_groupowner_etc_chrony_keys_with_usrlib"
-          comment="Check all local files and make sure they are owned by a group"/>
+          comment="Check group ownership of /etc/chrony.keys"/>
       </criteria>
     </criteria>
   </definition>
