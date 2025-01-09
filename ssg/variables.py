@@ -94,6 +94,23 @@ def _get_variables_content(content_dir: str) -> dict_type:
     return variables_content
 
 
+def get_variable_property(content_dir: str, variable_id: str, property_name: str) -> str:
+    """
+    Retrieve a specific property of a variable from the content root directory.
+
+    Args:
+        content_dir (str): The root directory containing benchmark directories.
+        variable_id (str): The ID of the variable to retrieve the property for.
+        property_name (str): The name of the property to retrieve.
+
+    Returns:
+        str: The value of the specified property for the variable.
+    """
+    variables_content = _get_variables_content(content_dir)
+    variable_content = variables_content.get(variable_id, {})
+    return variable_content.get(property_name, '')
+
+
 def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type:
     """
     Retrieve the options for specific or all variables from the content root directory.

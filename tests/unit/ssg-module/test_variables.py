@@ -6,6 +6,7 @@ from ssg.variables import (
     get_variable_files_in_folder,
     get_variable_files,
     get_variable_options,
+    get_variable_property,
     get_variables_by_products,
     get_variables_from_profiles,
     get_variable_values,
@@ -25,7 +26,10 @@ def setup_test_files(base_dir, benchmark_dirs, create_txt_file=False):
         path = base_dir / benchmark_dir
         os.makedirs(path, exist_ok=True)
         var_file = path / "test.var"
-        var_file.write_text("options:\n  default: value\n  option1: value1\n  option2: value2\n")
+        var_file.write_text(
+            "options:\n  default: value\n  option1: value1\n  option2: value2\n"
+            "title: Test Title\ndescription: Test Description\n"
+        )
         if create_txt_file:
             txt_file = path / "test.txt"
             txt_file.write_text("options:\n  option: value\n")
@@ -114,3 +118,19 @@ def test_get_variables_from_profiles():
 
     result = get_variables_from_profiles(profiles)
     assert result == expected_result
+
+def test_get_variable_property(tmp_path):
+    content_dir = tmp_path / "content"
+    benchmark_dirs = ["app", "app/rules"]
+    setup_test_files(content_dir, benchmark_dirs)
+
+    result = get_variable_property(str(content_dir), "test", "title")
+    assert result == "Test Title"
+
+    # Test for a non-existent property
+    result = get_variable_property(str(content_dir), "test", "non_existent_property")
+    assert result == ""
+
+    # Test for a non-existent variable
+    result = get_variable_property(str(content_dir), "non_existent_variable", "property_name")
+    assert result == ""
