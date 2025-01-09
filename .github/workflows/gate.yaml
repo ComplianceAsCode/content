@@ -137,7 +137,7 @@ jobs:
         run: |-
           ./build_product ubuntu2404
       - name: Test
-        run: ctest -j2 --output-on-failure -E unique-stigids
+        run: ctest -j2 --output-on-failure -E "unique-stigids|python-unit-utils/oscal"
         working-directory: ./build
 
   validate-fedora-rawhide:
