@@ -105,7 +105,7 @@ def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type
     return all_options
 
 
-def _get_variables_from_profiles(profiles: list) -> dict_type:
+def get_variables_from_profiles(profiles: list) -> dict_type:
     """
     Extracts variables from a list of profiles and organizes them into a nested dictionary.
 
@@ -144,7 +144,8 @@ def get_variables_by_products(content_dir: str, products: list) -> dict_type[str
     Retrieve variables by products from the specified content root directory.
 
     This function collects profiles for the given products and extracts variables from these
-    profiles.
+    profiles. If you already have a list of Profiles obtained by get_profiles_from_products()
+    defined in profiles.py, consider to use get_variables_from_profiles() instead.
 
     Args:
         content_dir (str): The root directory of the content.
@@ -155,7 +156,7 @@ def get_variables_by_products(content_dir: str, products: list) -> dict_type[str
               product-profile pairs.
     """
     profiles = get_profiles_from_products(content_dir, products)
-    profiles_variables = _get_variables_from_profiles(profiles)
+    profiles_variables = get_variables_from_profiles(profiles)
     return _convert_defaultdict_to_dict(profiles_variables)
 
 

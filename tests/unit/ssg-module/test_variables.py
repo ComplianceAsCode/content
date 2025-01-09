@@ -7,6 +7,7 @@ from ssg.variables import (
     get_variable_files,
     get_variable_options,
     get_variables_by_products,
+    get_variables_from_profiles,
     get_variable_values,
 )
 
@@ -79,3 +80,37 @@ def test_get_variable_values(tmp_path):
     result = get_variable_values(str(content_dir), profiles_variables)
     assert result["test"]["product1"]["profile1"] == "value1"
     assert result["test"]["product2"]["profile2"] == "value2"
+
+
+def test_get_variables_from_profiles():
+    class MockProfile:
+        def __init__(self, product, profile_id, variables):
+            self.product = product
+            self.profile_id = profile_id
+            self.variables = variables
+
+    profiles = [
+        MockProfile("product1", "profile1", {"var1": "value1", "var2": "value2"}),
+        MockProfile("product1", "profile2", {"var1": "value3"}),
+        MockProfile("product2", "profile1", {"var2": "value4"}),
+    ]
+
+    expected_result = {
+        "var1": {
+            "product1": {
+                "profile1": "value1",
+                "profile2": "value3",
+            }
+        },
+        "var2": {
+            "product1": {
+                "profile1": "value2",
+            },
+            "product2": {
+                "profile1": "value4",
+            }
+        }
+    }
+
+    result = get_variables_from_profiles(profiles)
+    assert result == expected_result
