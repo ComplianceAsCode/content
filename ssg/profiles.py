@@ -137,7 +137,7 @@ def _process_controls(profile: ProfileSelections, control_line: str, policies: d
         policy_id, _, level = control_line.split(":")
     else:
         policy_id, _ = control_line.split(":")
-        level = None
+        level = 'all'
 
     try:
         policy = policies[policy_id]
@@ -146,7 +146,7 @@ def _process_controls(profile: ProfileSelections, control_line: str, policies: d
         return profile
 
     for control in policy.controls:
-        if level in control.levels:
+        if level == 'all' or level in control.levels:
             for rule in control.rules:
                 if "=" in rule:
                     variable_name, variable_value = rule.split('=', 1)
