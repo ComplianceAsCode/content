@@ -19,8 +19,9 @@ else:
     from typing import Dict as dict_type
 
 
-# Cache variable files to avoid multiple reads
+# Cache variable files and respective content to avoid multiple reads
 _var_files_cache = {}
+_vars_content_cache = {}
 
 
 def get_variable_files_in_folder(content_dir: str, subfolder: str) -> list_type[str]:
@@ -63,12 +64,42 @@ def get_variable_files(content_dir: str) -> list_type[str]:
     return variable_files
 
 
+def _get_variables_content(content_dir: str) -> dict_type:
+    """
+    Retrieve the content of all variable files from the specified content root directory.
+
+    Args:
+        content_dir (str): The root directory containing benchmark directories.
+
+    Returns:
+        dict: A dictionary where keys are variable IDs and values are the content of the variable
+              files.
+    """
+    if content_dir in _vars_content_cache:
+        return _vars_content_cache[content_dir]
+
+    variables_content = {}
+
+    for var_file in get_variable_files(content_dir):
+        try:
+            yaml_content = open_and_macro_expand(var_file)
+        except Exception as e:
+            print(f"Error processing file {var_file}: {e}")
+            continue
+
+        var_id = os.path.basename(var_file).split('.var')[0]
+        variables_content[var_id] = yaml_content
+
+    _vars_content_cache[content_dir] = variables_content
+    return variables_content
+
+
 def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type:
     """
     Retrieve the options for specific or all variables from the content root directory.
 
     If `variable_id` is provided, returns options for that variable only.
-    If `variable_id` is not provided, returns a dictionary of all variable options.
+    If `variable_id` is not provided, returns a dictionary of all variables with their options.
 
     Args:
         content_dir (str): The root directory containing benchmark directories.
@@ -79,18 +110,11 @@ def get_variable_options(content_dir: str, variable_id: str = None) -> dict_type
         dict: If `variable_id` is None, a dictionary where keys are variable IDs and values are
               their options. Otherwise, a dictionary of options for the specified variable.
     """
-    all_variable_files = get_variable_files(content_dir)
+    variables_content = _get_variables_content(content_dir)
     all_options = {}
 
-    for var_file in all_variable_files:
-        try:
-            yaml_content = open_and_macro_expand(var_file)
-        except Exception as e:
-            print(f"Error processing file {var_file}: {e}")
-            continue
-
-        var_id = os.path.basename(var_file).split('.var')[0]
-        options = yaml_content.get("options", {})
+    for var_id, var_yaml in variables_content.items():
+        options = var_yaml.get("options", {})
 
         if variable_id:
             if var_id == variable_id:
@@ -121,7 +145,7 @@ def get_variables_from_profiles(profiles: list) -> dict_type:
     for profile in profiles:
         for variable, value in profile.variables.items():
             variables[variable][profile.product_id][profile.profile_id] = value
-    return variables
+    return _convert_defaultdict_to_dict(variables)
 
 
 def _convert_defaultdict_to_dict(dictionary: defaultdict) -> dict_type:
