@@ -258,7 +258,7 @@ def _process_selections(profile_yaml: dict, profile_variables: dict, policies: d
     Returns:
         dict: The updated profile variables dictionary.
     """
-    selections = profile_yaml.get("selections")
+    selections = profile_yaml.get("selections", [])
     for selected in selections:
         if "=" in selected and "!" not in selected:
             variable_name, variable_value = selected.split('=', 1)
