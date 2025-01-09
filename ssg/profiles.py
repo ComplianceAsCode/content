@@ -5,7 +5,7 @@ import os
 import sys
 import yaml
 
-from .controls import ControlsManager
+from .controls import ControlsManager, Policy
 from .products import (
     get_profile_files_from_root,
     load_product_yaml,
@@ -117,6 +117,92 @@ def _process_profile_extension(profile: ProfileSelections, profile_yaml: dict,
     return profile
 
 
+def _parse_control_line(control_line: str) -> tuple[str, str]:
+    """
+    Parses a control line string and returns a tuple containing the first and third parts of the
+    string, separated by a colon. If the string does not contain three parts, the second element
+    of the tuple defaults to 'all'.
+
+    Args:
+        control_line (str): The control line string to be parsed.
+
+    Returns:
+        tuple[str, str]: A tuple containing the first part of the control line and either the
+                         third part or 'all' if the third part is not present.
+    """
+    parts = control_line.split(":")
+    if len(parts) == 3:
+        return parts[0], parts[2]
+    return parts[0], 'all'
+
+
+def _process_selected_variable(profile: ProfileSelections, variable: str) -> None:
+    """
+    Processes a selected variable and updates the profile's variables.
+
+    Args:
+        profile (ProfileSelections): The profile object containing variables.
+        variable (str): The variable in the format 'name=value'.
+
+    Raises:
+        ValueError: If the variable is not in the correct format.
+    """
+    variable_name, variable_value = variable.split('=', 1)
+    if variable_name not in profile.variables:
+        profile.variables[variable_name] = variable_value
+
+
+def _process_selected_rule(profile: ProfileSelections, rule: str) -> None:
+    """
+    Adds a rule to the profile's selected rules if it is not already selected or unselected.
+
+    Args:
+        profile (ProfileSelections): The profile containing selected and unselected rules.
+        rule (str): The rule to be added to the profile's selected rules.
+
+    Returns:
+        None
+    """
+    if rule not in profile.unselected_rules and rule not in profile.rules:
+        profile.rules.append(rule)
+
+
+def _process_control(profile: ProfileSelections, control: object) -> None:
+    """
+    Processes a control by iterating through its rules and applying the appropriate processing
+    function. Not that at this level rules list in control can include both variables and rules.
+    The function distinguishes between variable and rules based on the presence of an '='
+    character in the rule.
+
+    Args:
+        profile (ProfileSelections): The profile selections to be processed.
+        control: The control object containing rules to be processed.
+    """
+    for rule in control.rules:
+        if "=" in rule:
+            _process_selected_variable(profile, rule)
+        else:
+            _process_selected_rule(profile, rule)
+
+
+def _update_profile_with_policy(profile: ProfileSelections, policy: Policy, level: str) -> None:
+    """
+    Updates the given profile with controls from the specified policy based on the provided level.
+
+    Args:
+        profile (ProfileSelections): The profile to be updated.
+        policy (Policy): The policy containing controls to update the profile with.
+        level (str): The level of controls to be processed. If 'all', all controls are processed.
+                     Otherwise, only controls matching the specified level are processed.
+
+    Returns:
+        None
+    """
+    for control in policy.controls:
+        if level == 'all' or level in control.levels:
+            _process_control(profile, control)
+
+
 def _process_controls(profile: ProfileSelections, control_line: str,
                       policies: dict) -> ProfileSelections:
     """
@@ -131,33 +217,15 @@ def _process_controls(profile: ProfileSelections, control_line: str,
 
     Returns:
         ProfileSelections: The updated profile object.
-
-    Raises:
-        KeyError: If the policy ID from the control line is not found in the policies dictionary.
     """
-    if control_line.count(":") == 2:
-        policy_id, _, level = control_line.split(":")
-    else:
-        policy_id, _ = control_line.split(":")
-        level = 'all'
+    policy_id, level = _parse_control_line(control_line)
+    policy = policies.get(policy_id)
 
-    try:
-        policy = policies[policy_id]
-    except KeyError:
+    if policy is None:
         print(f"Policy {policy_id} not found")
         return profile
 
-    for control in policy.controls:
-        if level == 'all' or level in control.levels:
-            for rule in control.rules:
-                if "=" in rule:
-                    variable_name, variable_value = rule.split('=', 1)
-                    # When a profile extends a control file, the variables explicitly defined in
-                    # profiles files must be honored, so don't update variables already defined.
-                    if variable_name not in profile.variables:
-                        profile.variables[variable_name] = variable_value
-                elif rule not in profile.unselected_rules and rule not in profile.rules:
-                    profile.rules.append(rule)
+    _update_profile_with_policy(profile, policy, level)
     return profile
 
 
