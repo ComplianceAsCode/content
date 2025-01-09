@@ -19,6 +19,7 @@ else:
     from typing import List as list_type  # Fallback for older versions
     from typing import Dict as dict_type
 
+
 class ProfileSelections:
     """
     A class to represent profile with sections of rules and variables.
@@ -116,7 +117,8 @@ def _process_profile_extension(profile: ProfileSelections, profile_yaml: dict,
     return profile
 
 
-def _process_controls(profile: ProfileSelections, control_line: str, policies: dict) -> ProfileSelections:
+def _process_controls(profile: ProfileSelections, control_line: str,
+                      policies: dict) -> ProfileSelections:
     """
     Process a control file inheritance to update profile selections based on the given policies.
 
@@ -159,7 +161,8 @@ def _process_controls(profile: ProfileSelections, control_line: str, policies: d
     return profile
 
 
-def _process_selections(profile: ProfileSelections, profile_yaml: dict, policies: dict) -> ProfileSelections:
+def _process_selections(profile: ProfileSelections, profile_yaml: dict,
+                        policies: dict) -> ProfileSelections:
     """
     Processes the selections from the profile YAML and updates the profile accordingly.
 
@@ -237,7 +240,8 @@ def _sort_profiles_selections(profiles: list) -> ProfileSelections:
     return profiles
 
 
-def get_profiles_from_products(content_dir: str, products: list, sorted: bool = False) -> list_type:
+def get_profiles_from_products(content_dir: str, products: list,
+                               sorted: bool = False) -> list_type:
     """
     Retrieves profiles with respective variables from the given products.
 
@@ -260,7 +264,8 @@ def get_profiles_from_products(content_dir: str, products: list, sorted: bool = 
             profile_yaml = _load_yaml_profile_file(file)
             profile_title = profile_yaml.get("title")
             profile = ProfileSelections(profile_id, profile_title, product)
-            profile = _process_profile(profile, profile_yaml, profiles_files, controls_manager.policies)
+            profile = _process_profile(profile, profile_yaml, profiles_files,
+                                       controls_manager.policies)
             profiles.append(profile)
 
     if sorted:
