@@ -28,15 +28,18 @@ class ProfileSelections:
     -----------
     profile_id : str
         The unique identifier for the profile.
-    product : str
-        The product associated with the profile.
-    variables : dict
-        A dictionary containing the variables for the profile.
+    profile_title : str
+        The profile title associated with the profile id.
+    product_id : str
+        The product id associated with the profile.
+    product_title : str
+        The product title associated with the product id.
     """
-    def __init__(self, profile_id, profile_title, product):
+    def __init__(self, profile_id, profile_title, product_id, product_title):
         self.profile_id = profile_id
         self.profile_title = profile_title
-        self.product = product
+        self.product_id = product_id
+        self.product_title = product_title
         self.rules = []
         self.unselected_rules = []
         self.variables = {}
@@ -325,13 +328,14 @@ def get_profiles_from_products(content_dir: str, products: list,
 
     for product in products:
         product_yaml = _load_product_yaml(content_dir, product)
+        product_title = product_yaml.get("full_name")
         profiles_files = get_profile_files_from_root(product_yaml, product_yaml)
         controls_manager = _load_controls_manager(controls_dir, product_yaml)
         for file in profiles_files:
             profile_id = os.path.basename(file).split('.profile')[0]
             profile_yaml = _load_yaml_profile_file(file)
             profile_title = profile_yaml.get("title")
-            profile = ProfileSelections(profile_id, profile_title, product)
+            profile = ProfileSelections(profile_id, profile_title, product, product_title)
             profile = _process_profile(profile, profile_yaml, profiles_files,
                                        controls_manager.policies)
             profiles.append(profile)

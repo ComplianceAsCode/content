@@ -35,6 +35,6 @@ def test_get_profiles_from_products():
     profiles = get_profiles_from_products(content_dir, products, sorted=True)
 
     assert len(profiles) == count_profiles_in_products_dir(products[0])
-    assert 'rhel' in profiles[0].product
+    assert 'rhel' in profiles[0].product_id
     assert len(profiles[0].rules) > 0
     assert len(profiles[0].variables) > 0

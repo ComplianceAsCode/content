@@ -81,11 +81,10 @@ def test_get_variable_values(tmp_path):
     assert result["test"]["product1"]["profile1"] == "value1"
     assert result["test"]["product2"]["profile2"] == "value2"
 
-
 def test_get_variables_from_profiles():
     class MockProfile:
-        def __init__(self, product, profile_id, variables):
-            self.product = product
+        def __init__(self, product_id, profile_id, variables):
+            self.product_id = product_id
             self.profile_id = profile_id
             self.variables = variables
 

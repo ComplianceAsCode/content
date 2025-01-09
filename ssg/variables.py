@@ -120,7 +120,7 @@ def get_variables_from_profiles(profiles: list) -> dict_type:
     variables = defaultdict(lambda: defaultdict(dict))
     for profile in profiles:
         for variable, value in profile.variables.items():
-            variables[variable][profile.product][profile.profile_id] = value
+            variables[variable][profile.product_id][profile.profile_id] = value
     return variables
 
 
