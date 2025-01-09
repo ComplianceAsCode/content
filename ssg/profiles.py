@@ -12,12 +12,15 @@ from .products import (
     product_yaml_path,
 )
 
+
 if sys.version_info >= (3, 9):
-    list_type = list  # Python 3.9+ supports built-in generics
-    dict_type = dict
+    dict_type = dict    # Python 3.9+ supports built-in generics
+    list_type = list
+    tuple_type = tuple
 else:
-    from typing import List as list_type  # Fallback for older versions
-    from typing import Dict as dict_type
+    from typing import Dict as dict_type    # Fallback for older versions
+    from typing import List as list_type
+    from typing import Tuple as tuple_type
 
 
 class ProfileSelections:
@@ -120,7 +123,7 @@ def _process_profile_extension(profile: ProfileSelections, profile_yaml: dict,
     return profile
 
 
-def _parse_control_line(control_line: str) -> tuple[str, str]:
+def _parse_control_line(control_line: str) -> tuple_type[str, str]:
     """
     Parses a control line string and returns a tuple containing the first and third parts of the
     string, separated by a colon. If the string does not contain three parts, the second element
