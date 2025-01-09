@@ -171,7 +171,7 @@ def _process_selections(profile: ProfileSelections, profile_yaml: dict, policies
     Returns:
         profile: The updated profile object.
     """
-    selections = profile_yaml.get("selections")
+    selections = profile_yaml.get("selections", [])
     for selected in selections:
         if selected.startswith("!"):
             profile.unselected_rules.append(selected[1:])
