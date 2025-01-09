@@ -220,7 +220,24 @@ def _load_controls_manager(controls_dir: str, product_yaml: dict) -> object:
     return control_mgr
 
 
-def get_profiles_from_products(content_dir: str, products: list) -> list_type:
+def _sort_profiles_selections(profiles: list) -> ProfileSelections:
+    """
+    Sorts profiles selections (rules and variables) by selections ids.
+
+    Args:
+        profiles (list): A list of ProfileSelections objects to be sorted.
+
+    Returns:
+        ProfileSelections: The sorted list of ProfileSelections objects.
+    """
+    for profile in profiles:
+        profile.rules = sorted(profile.rules)
+        profile.unselected_rules = sorted(profile.unselected_rules)
+        profile.variables = dict(sorted(profile.variables.items()))
+    return profiles
+
+
+def get_profiles_from_products(content_dir: str, products: list, sorted: bool = False) -> list_type:
     """
     Retrieves profiles with respective variables from the given products.
 
@@ -245,5 +262,8 @@ def get_profiles_from_products(content_dir: str, products: list) -> list_type:
             profile = ProfileSelections(profile_id, profile_title, product)
             profile = _process_profile(profile, profile_yaml, profiles_files, controls_manager.policies)
             profiles.append(profile)
+
+    if sorted:
+        profiles = _sort_profiles_selections(profiles)
 
     return profiles
