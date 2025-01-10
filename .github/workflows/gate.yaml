@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libopenscap8 libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Install Deps
-        run: sudo apt-get update && sudo apt-get install cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build openscap-utils libxml2-utils xsltproc ansible-lint bats python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-setuptools python3-yaml shellcheck
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Install deps python
@@ -180,8 +180,8 @@ jobs:
     name: Build on Windows
     runs-on: windows-latest
     env:
-      OPENSCAP_VERSION: "1.4.1"
-      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.1"
+      OPENSCAP_VERSION: "1.4.2"
+      OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.2"
     steps:
         - name: Install Deps
           run: choco install xsltproc

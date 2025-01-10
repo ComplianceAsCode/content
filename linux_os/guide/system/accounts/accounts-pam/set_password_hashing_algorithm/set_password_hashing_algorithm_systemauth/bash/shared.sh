@@ -4,13 +4,13 @@
 
 {{% if 'sle' in product or 'slmicro' in product -%}}
 PAM_FILE_PATH="/etc/pam.d/common-password"
-CONTROL="required"
+{{% set control = "required" %}}
 {{%- elif 'ubuntu' in product -%}}
 {{{ bash_pam_unix_enable() }}}
 PAM_FILE_PATH=/usr/share/pam-configs/cac_unix
 {{%- else -%}}
 PAM_FILE_PATH="/etc/pam.d/system-auth"
-CONTROL="sufficient"
+{{% set control = "sufficient" %}}
 {{%- endif %}}
 
 {{% if 'ubuntu' in product -%}}
@@ -31,7 +31,7 @@ if ! grep -qzP "Password-Initial:\s*\n\s+.*\s+pam_unix.so\s+.*\b$var_password_ha
 fi
 
 {{%- else -%}}
-{{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'password', "$CONTROL", 'pam_unix.so', "$var_password_hashing_algorithm_pam", '', '') }}}
+{{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'password', control, 'pam_unix.so', "$var_password_hashing_algorithm_pam", '', '') }}}
 {{%- endif %}}
 
 # Ensure only the correct hashing algorithm option is used.

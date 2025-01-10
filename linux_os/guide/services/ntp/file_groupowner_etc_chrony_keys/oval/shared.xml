@@ -1,0 +1,72 @@
+<def-group>
+
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("/etc/chrony.keys should be owned by chrony group") }}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles" negate="true"
+          comment="The /etc/nsswitch.conf does not use nss-altfiles"/>
+        <criterion test_ref="test_file_groupowner_etc_chrony_keys"
+          comment="Check group ownership of /etc/chrony.keys"/>
+      </criteria>
+      <criteria operator="AND">
+        <criterion test_ref="test_file_groupowner_etc_chrony_keys_nsswitch_uses_altfiles"
+          comment="The /etc/nsswitch.conf uses nss-altfiles"/>
+        <criterion test_ref="test_file_groupowner_etc_chrony_keys_with_usrlib"
+          comment="Check group ownership of /etc/chrony.keys"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+{{{ oval_test_nsswitch_uses_altfiles() }}}
+
+  <unix:file_test id="test_file_groupowner_etc_chrony_keys" version="1" check="all" comment="Testing group ownership of /etc/chrony.keys" check_existence="none_exist" state_operator="AND">
+    <unix:object object_ref="object_file_groupowner_etc_chrony_keys" />
+  </unix:file_test>
+  <unix:file_object id="object_file_groupowner_etc_chrony_keys" version="1" comment="/etc/chrony.keys">
+    <unix:filepath>/etc/chrony.keys</unix:filepath>
+    <filter action="exclude">state_file_groupowner_etc_chrony_keys_uid_chrony</filter>
+    <filter action="exclude">state_file_groupowner_etc_chrony_keys_gid_chrony</filter>
+  </unix:file_object>
+  <ind:textfilecontent54_object id="object_file_groupowner_etc_chrony_keys_etc_group" version="1" comment="gid of the dedicated chrony group">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^chrony:\w+:(\w+):.*</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <unix:file_state id="state_file_groupowner_etc_chrony_keys_gid_chrony" version="1" operator="AND">
+    <unix:group_id datatype="int" var_ref="var_dedicated_groupowner_etc_chrony_keys_uid_chrony" />
+  </unix:file_state>
+  <unix:file_state id="state_file_groupowner_etc_chrony_keys_uid_chrony" version="1" operator="AND">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+  <local_variable id="var_dedicated_groupowner_etc_chrony_keys_uid_chrony" version="1" datatype="int" comment="gid of the dedicated chrony group">
+    <object_component item_field="subexpression" object_ref="object_file_groupowner_etc_chrony_keys_etc_group" />
+  </local_variable>
+
+  <unix:file_test id="test_file_groupowner_etc_chrony_keys_with_usrlib" version="1" check="all" comment="Testing group ownership of /etc/chrony.keys" check_existence="none_exist" state_operator="AND">
+    <unix:object object_ref="object_file_groupowner_etc_chrony_keys_with_usrlib" />
+  </unix:file_test>
+  <unix:file_object id="object_file_groupowner_etc_chrony_keys_with_usrlib" version="1" comment="/etc/chrony.keys">
+    <unix:filepath>/etc/chrony.keys</unix:filepath>
+    <filter action="exclude">state_file_groupowner_etc_chrony_keys_uid_chrony</filter>
+    <filter action="exclude">state_file_groupowner_etc_chrony_keys_gid_chrony_with_usrlib</filter>
+  </unix:file_object>
+  <ind:textfilecontent54_object id="object_file_groupowner_etc_chrony_keys_etc_group_with_usrlib" version="1" comment="gid of the dedicated chrony group">
+    <set>
+      <object_reference>object_file_groupowner_etc_chrony_keys_etc_group</object_reference>
+      <object_reference>object_file_groupowner_etc_chrony_keys_usr_lib_group</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="object_file_groupowner_etc_chrony_keys_usr_lib_group" version="1">
+    <ind:filepath>/usr/lib/group</ind:filepath>
+    <ind:pattern operation="pattern match">^chrony:\w+:(\w+):.*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <unix:file_state id="state_file_groupowner_etc_chrony_keys_gid_chrony_with_usrlib" version="1" operator="AND">
+    <unix:group_id datatype="int" var_ref="var_dedicated_groupowner_etc_chrony_keys_uid_chrony_with_usrlib" />
+  </unix:file_state>
+  <local_variable id="var_dedicated_groupowner_etc_chrony_keys_uid_chrony_with_usrlib" version="1" datatype="int" comment="gid of the dedicated chrony group">
+    <object_component item_field="subexpression" object_ref="object_file_groupowner_etc_chrony_keys_etc_group_with_usrlib" />
+  </local_variable>
+
+</def-group>
