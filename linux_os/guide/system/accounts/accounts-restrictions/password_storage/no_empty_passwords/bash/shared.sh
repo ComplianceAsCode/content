@@ -24,7 +24,7 @@ sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
         s/\s*nullok//g
     }
 }' "$config_file"
-{{{ bash_remove_pam_module_option('/etc/pam.d/common-password', 'password', '', 'pam_unix.so', 'nullok') }}}
+
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
 if [ -f /usr/bin/authselect ]; then
