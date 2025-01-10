@@ -1,0 +1,19 @@
+documentation_complete: true
+
+
+title: 'Ensure pam_faillock module is enabled'
+
+description: |-
+    The <tt>pam_faillock.so</tt> module maintains a list of failed authentication attempts per
+    user during a specified interval and locks the account in case there were more than the
+    configured number of consecutive failed authentications (this is defined by the <tt>deny</tt>
+    parameter in the faillock configuration). It stores the failure records into per-user files in
+    the tally directory.
+
+rationale: |-
+    Locking out user IDs after n unsuccessful consecutive login attempts mitigates brute
+    force password attacks against your systems.
+
+severity: medium
+
+platform: package[pam]
