@@ -64,8 +64,6 @@ selections:
 - accounts_password_pam_minclass
 - accounts_password_pam_minlen
 - accounts_password_pam_ocredit
-- accounts_password_pam_pwhistory_remember_password_auth
-- accounts_password_pam_pwhistory_remember_system_auth
 - accounts_password_pam_pwquality_password_auth
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
