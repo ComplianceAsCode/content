@@ -1,4 +1,4 @@
-{{% if product in ["rhel9", "rhel10", "sle12", "sle15"] %}}
+{{% if product in ["rhel8", "rhel9", "rhel10", "sle12", "sle15"] %}}
 {{% set package_name = "cronie" %}}
 {{% else %}}
 {{% set package_name = "cron" %}}
@@ -15,6 +15,7 @@ rationale: 'The cron service allow periodic job execution, needed for almost all
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-86178-1
     cce@rhel9: CCE-86170-8
     cce@rhel10: CCE-86619-4
     cce@sle12: CCE-92263-3
