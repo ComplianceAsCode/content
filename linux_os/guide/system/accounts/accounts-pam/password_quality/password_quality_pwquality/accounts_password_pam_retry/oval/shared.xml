@@ -1,6 +1,6 @@
 {{% if 'ubuntu' in product or 'debian' in product %}}
 {{% set configuration_files = ["common-password"] %}}
-{{% elif product in ['ol8','ol9','rhel8', 'rhel9'] %}}
+{{% elif product in ['ol8','ol9'] or 'rhel' in product %}}
 {{% set configuration_files = ["password-auth","system-auth"] %}}
 {{% else %}}
 {{% set configuration_files = ["system-auth"] %}}
@@ -17,7 +17,7 @@
       </criteria>
       <criteria operator="AND" comment="Conditions for retry in pwquality.conf file are satisfied">
         {{% for file in configuration_files %}}
-        <criterion 
+        <criterion
         comment="retry value not set in PAM files"
         test_ref="test_password_pam_pwquality_retry_{{{ (file | escape_id) }}}_not_set"/>
         {{% endfor %}}
