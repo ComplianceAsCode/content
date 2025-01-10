@@ -9,6 +9,6 @@ sed -i -E '/^Password:/,/^[^[:space:]]/ {
 }'  "$config_file"
 
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update
+DEBIAN_FRONTEND=noninteractive pam-auth-update --remove unix --enable cac_unix
 
 

@@ -29,5 +29,5 @@ Password-Initial:
         [success=end default=ignore]    pam_unix.so obscure yescrypt 
 EOF
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update --remove unix --enable tmpunix --force
+DEBIAN_FRONTEND=noninteractive pam-auth-update --remove unix --enable tmpunix
 rm "$config_file"
