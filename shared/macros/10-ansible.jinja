@@ -648,6 +648,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
     backrefs: yes
     state: present
+    mode: g-rwx,o-rwx
   when: syscalls_found | length > 0 and missing_syscalls | length > 0
 
 - name: Add the audit rule to {{ audit_file }}
