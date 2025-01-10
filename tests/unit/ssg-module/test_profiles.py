@@ -11,17 +11,7 @@ from ssg.profiles import (
 )
 
 
-# The get_profiles_from_products function interacts with many objects and other functions that
-# would be complex to mock. So it will be tested with a real content directory. To make it
-# predictable, all existing products will be collected and the first rhel product will be used
-# for testing. The decision to use a rhel product is that I am more used to them and I know their
-# profiles also use control files.
-content_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
-
-def get_first_rhel_product_from_products_dir():
-    products = get_all(content_dir)
-    rhel_products = [product for product in products.linux if "rhel" in product]
-    return rhel_products[0]
+content_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data/content_dir"))
 
 
 def count_profiles_in_products_dir(product):
@@ -31,7 +21,7 @@ def count_profiles_in_products_dir(product):
 
 
 def test_get_profiles_from_products():
-    products = [get_first_rhel_product_from_products_dir()]
+    products = ["rhel8"]
     profiles = get_profiles_from_products(content_dir, products, sorted=True)
 
     assert len(profiles) == count_profiles_in_products_dir(products[0])
