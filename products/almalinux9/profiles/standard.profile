@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: 'Standard System Security Profile for AlmaLinux OS 9'
 
