@@ -1724,3 +1724,39 @@ The macros generates the OVAL test including the dependent OVAL object and OVAL 
   <ind:subexpression operation="pattern match">altfiles</ind:subexpression>
 </ind:textfilecontent54_state>
 {{%- endmacro -%}}
+
+{{#
+  Macro for checking the system architecture in /proc/sys/kernel/{osrelease,arch}
+
+  :param arch: system architecture (x86_64, aarch64, s90x, ppc64le, ...)
+#}}
+{{%- macro oval_check_proc_sys_kernel_osrelease_arch(arch) -%}}
+<def-group>
+  <definition class="inventory" id="proc_sys_kernel_osrelease_arch_{{{ arch }}}"
+  version="1">
+    <metadata>
+      <title>Test that the architecture is {{{ arch }}}</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that architecture of kernel in /proc/sys/kernel is {{{ arch }}}</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Architecture is {{{ arch }}}"
+      test_ref="test_proc_sys_kernel_osrelease_arch_{{{ arch }}}" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+      comment="proc_sys_kernel is for {{{ arch }}} architecture"
+      id="test_proc_sys_kernel_osrelease_arch_{{{ arch }}}" version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_arch_{{{ arch }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_{{{ arch }}}" version="1">
+    <ind:filepath operation="pattern match">/proc/sys/kernel/(osrelease|arch)</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.{{{ arch }}}$|^{{{ arch }}}$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+{{%- endmacro -%}}
