@@ -51,6 +51,7 @@ selections:
     - '!accounts_passwords_pam_tally2'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!gnome_gdm_disable_unattended_automatic_login'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!cracklib_accounts_password_pam_minlen'

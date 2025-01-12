@@ -51,6 +51,7 @@ selections:
     # Use Oracle gpgkey rule
     - '!ensure_redhat_gpgkey_installed'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - 'ensure_oracle_gpgkey_installed'
     # Rules not applicable to OL8
     - '!package_dhcp_removed'

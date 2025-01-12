@@ -8,4 +8,9 @@ description: |-
     all of these checks should pass.
 
 selections:
-    - accounts_password_minlen_login_defs
+    - sshd_disable_root_login
+    - ensure_almalinux_gpgkey_installed
+    - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_never_disabled
+    - rpm_verify_permissions
+    - security_patches_up_to_date

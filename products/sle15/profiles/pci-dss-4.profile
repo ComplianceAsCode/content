@@ -42,6 +42,7 @@ selections:
     - '!file_owner_user_cfg'
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!firewalld_loopback_traffic_restricted'
     - '!accounts_password_pam_lcredit'
     - '!file_group_ownership_var_log_audit'

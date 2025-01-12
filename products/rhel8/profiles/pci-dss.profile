@@ -48,6 +48,7 @@ selections:
     - '!cracklib_accounts_password_pam_lcredit'
     - '!service_timesyncd_enabled'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!ensure_shadow_group_empty'
     - '!mask_nonessential_services'
     - '!gnome_gdm_disable_unattended_automatic_login'

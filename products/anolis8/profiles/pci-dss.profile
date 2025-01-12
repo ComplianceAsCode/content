@@ -101,6 +101,7 @@ selections:
     - '!package_ypbind_removed'
     - '!bios_enable_execution_restrictions'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!selinux_policytype'
     - '!gnome_gdm_disable_automatic_login'
