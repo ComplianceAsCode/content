@@ -138,7 +138,6 @@ def is_remote_feed(href):
             href.startswith("oval-com.ubuntu") or \
             href.startswith("pub-projects-security-oval-suse") or \
             href.startswith('security-oval-oval-definitions-bookworm') or \
-            href.startswith('security-oval-oval-definitions-bullseye') or \
             href.startswith("oval-org.almalinux")
 
 def main():
