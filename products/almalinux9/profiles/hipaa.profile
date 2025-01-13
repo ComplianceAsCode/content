@@ -1,4 +1,4 @@
-documentation_complete: True
+documentation_complete: true
 
 metadata:
     SMEs:

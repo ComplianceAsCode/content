@@ -140,6 +140,7 @@ def is_remote_feed(href):
             href.startswith('security-oval-oval-definitions-bookworm') or \
             href.startswith("oval-org.almalinux")
 
+
 def main():
     global exit_value
     (options, args) = parse_options()
