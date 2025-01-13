@@ -12,7 +12,11 @@ import yaml
 
 from collections import OrderedDict
 
-from .jinja import load_macros, process_file
+from .jinja import (
+    load_macros,
+    load_macros_from_content_dir,
+    process_file,
+)
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
@@ -214,6 +218,27 @@ def open_and_macro_expand(yaml_file, substitutions_dict=None):
         dict: The expanded content of the YAML file with macros substituted.
     """
     substitutions_dict = load_macros(substitutions_dict)
+    return open_and_expand(yaml_file, substitutions_dict)
+
+
+def open_and_macro_expand_from_dir(yaml_file, content_dir, substitutions_dict=None):
+    """
+    Opens a YAML file and expands macros from a specified directory. It is similar to
+    open_and_macro_expand but loads macro definitions from a specified directory instead of the
+    default directory defined in constants. This is useful in cases where the SSG library is
+    consumed by an external project.
+
+    Args:
+        yaml_file (str): The path to the YAML file to be opened and expanded.
+        content_dir (str): The content dir directory to be used for expansion.
+        substitutions_dict (dict, optional): A dictionary of substitutions to be used for macro
+                                             expansion. If None, a new dictionary will be created
+                                             from the content_dir.
+
+    Returns:
+        dict: The expanded content of the YAML file.
+    """
+    substitutions_dict = load_macros_from_content_dir(content_dir, substitutions_dict)
     return open_and_expand(yaml_file, substitutions_dict)
 
 
