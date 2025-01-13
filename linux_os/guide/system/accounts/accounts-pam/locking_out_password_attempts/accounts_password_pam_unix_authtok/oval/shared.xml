@@ -17,7 +17,7 @@
 
   <ind:textfilecontent54_object id="obj_test_use_authtok" version="1">
     <ind:filepath>{{{ accounts_password_pam_unix_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+([^#\n\r]+)[ \t]+pam_unix\.so[ \t]+([^#\n\r]+[ \t]+)?use_authtok.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+([^\n\r]+)[\n\r]+[ \t]*password[ \t]+([^#\n\r]+)[ \t]+pam_unix\.so[ \t]+([^#\n\r]+[ \t]+)?use_authtok.*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
