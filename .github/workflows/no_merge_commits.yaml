@@ -1,0 +1,24 @@
+name: Merge Commit Check
+
+on:
+    pull_request:
+
+concurrency:
+    group: ${{ github.workflow }}-no-merges-${{ github.event.number || github.run_id }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+    pull-requests: read
+
+jobs:
+    validate-merge-commits:
+        name: Ensure No Merge Commits
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+            -   name: Check for Merge Commits
+                uses: NexusPHP/no-merge-commits@9754184b5234ed0c8ef57d63dc70f03f1f753cba # v2.1.0
+                with:
+                    token: ${{ secrets.GITHUB_TOKEN }}
