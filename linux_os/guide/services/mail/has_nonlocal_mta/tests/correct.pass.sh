@@ -2,4 +2,4 @@
 # packages = postfix
 
 echo "inet_interfaces = localhost" > /etc/postfix/main.cf
-systemctl restart postfix
+postfix reload || postfix start

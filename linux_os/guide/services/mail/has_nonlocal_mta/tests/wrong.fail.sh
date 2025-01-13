@@ -3,4 +3,4 @@
 # remediation = none
 
 echo "inet_interfaces = all" > /etc/postfix/main.cf
-systemctl restart postfix
+postfix reload || postfix start
