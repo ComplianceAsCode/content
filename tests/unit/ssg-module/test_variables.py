@@ -1,5 +1,4 @@
 import os
-import pytest
 
 from ssg.constants import BENCHMARKS
 from ssg.variables import (
@@ -22,6 +21,10 @@ def setup_test_files(base_dir, benchmark_dirs, create_txt_file=False):
         benchmark_dirs (list[str]): List of benchmark folder paths to create.
         create_txt_file (bool): Whether to create an additional .txt file in each benchmark.
     """
+    # Ensures the shared/macros directory exists even if in this case the testing example does
+    # not use Jinja2 macros.
+    os.makedirs(base_dir / "shared" / "macros", exist_ok=True)
+
     for benchmark_dir in benchmark_dirs:
         path = base_dir / benchmark_dir
         os.makedirs(path, exist_ok=True)
@@ -118,6 +121,7 @@ def test_get_variables_from_profiles():
 
     result = get_variables_from_profiles(profiles)
     assert result == expected_result
+
 
 def test_get_variable_property(tmp_path):
     content_dir = tmp_path / "content"
