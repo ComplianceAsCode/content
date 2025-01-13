@@ -1729,6 +1729,7 @@ The macros generates the OVAL test including the dependent OVAL object and OVAL 
   Macro for checking the system architecture in /proc/sys/kernel/{osrelease,arch}
 
   :param arch: system architecture (x86_64, aarch64, s90x, ppc64le, ...)
+  :type arch: str
 #}}
 {{%- macro oval_check_proc_sys_kernel_osrelease_arch(arch) -%}}
 <def-group>
