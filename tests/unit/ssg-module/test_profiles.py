@@ -1,10 +1,6 @@
 import os
-import pytest
 
-from ssg.products import (
-    get_all,
-    get_profile_files_from_root,
-)
+from ssg.products import get_profile_files_from_root
 from ssg.profiles import (
     get_profiles_from_products,
     _load_product_yaml,
