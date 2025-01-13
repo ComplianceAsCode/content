@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = audit
-# platform = Red Hat Enterprise Linux 8, Red Hat Enterprise Linux 9
+# platform = multi_platform_rhel
 # profiles = xccdf_org.ssgproject.content_profile_cis
 
 {{{ setup_auditctl_environment() }}}
