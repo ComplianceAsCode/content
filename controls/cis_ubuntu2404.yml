@@ -962,6 +962,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - service_chronyd_disabled
       - service_timesyncd_enabled
     status: automated
 
@@ -995,7 +996,8 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - service_chronyd_enabled
+      - "!service_chronyd_enabled"
+      - "!service_timesyncd_disabled"
     status: automated
 
   - id: 2.4.1.1

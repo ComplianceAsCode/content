@@ -1,0 +1,47 @@
+<def-group>
+  <!-- Check that exactly one time synchronization service is active -->
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  {{{ oval_metadata("Ensure a Single Time Synchronization Service is in Use") }}}
+    <criteria>
+        <criterion comment="exactly one time synchronization service is active"
+            test_ref="test_{{{ rule_id }}}_single_active_timesync"/>
+    </criteria>
+  </definition>
+
+  <!-- Objects and states to identify active time synchronization services -->
+  <linux:systemdunitproperty_object id="obj_{{{ rule_id }}}_timesync_services" version="1"
+      comment="All active time synchronization services">
+    <linux:unit operation="pattern match">^(chrony|systemd-timesyncd).service$</linux:unit>
+    <linux:property>ActiveState</linux:property>
+    <filter action="include">ste_{{{ rule_id }}}_timesync_services</filter>
+  </linux:systemdunitproperty_object>
+
+  <linux:systemdunitproperty_state id="ste_{{{ rule_id }}}_timesync_services" version="1">
+    <linux:value>active</linux:value>
+  </linux:systemdunitproperty_state>
+
+  <!-- Count active time synchronization services -->
+  <local_variable id="var_{{{ rule_id }}}_timesync_active_count" datatype="int" version="1"
+                 comment="Number of currently active time synchronization services">
+   <count>
+     <regex_capture pattern="^active$">
+       <object_component item_field="value" object_ref="obj_{{{ rule_id }}}_timesync_services"/>
+     </regex_capture>
+   </count>
+  </local_variable>
+
+  <!-- Test that count equals one -->
+  <ind:variable_test id="test_{{{ rule_id }}}_single_active_timesync" version="1" check="all"
+                     comment="Verify exactly one time synchronization service is active">
+    <ind:object object_ref="obj_{{{ rule_id }}}_count"/>
+    <ind:state state_ref="ste_{{{ rule_id }}}_count"/>
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_{{{ rule_id }}}_count" version="1">
+    <ind:var_ref>var_{{{ rule_id }}}_timesync_active_count</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="ste_{{{ rule_id }}}_count" version="1">
+    <ind:value operation="equals" datatype="int">1</ind:value>
+  </ind:variable_state>
+</def-group>
