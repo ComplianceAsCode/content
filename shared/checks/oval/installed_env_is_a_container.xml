@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="inventory" id="installed_env_is_a_container" version="2">
+    <metadata>
+      <title>Check if the scan target is a container</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check for presence of files characterizing container filesystems.</description>
+      <reference ref_id="cpe:/a:container" source="CPE" />
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Check if /.dockerenv exists" test_ref="test_installed_env_is_a_docker_container" />
+      <criterion comment="Check if /run/.containerenv exists" test_ref="test_installed_env_is_a_podman_container" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /.dockerenv exists" id="test_installed_env_is_a_docker_container" version="1">
+    <unix:object object_ref="object_installed_env_is_a_docker_container" />
+  </unix:file_test>
+
+  <unix:file_object comment="Check file /.dockerenv" id="object_installed_env_is_a_docker_container" version="1">
+    <unix:filepath datatype="string">/.dockerenv</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /run/.containerenv exists" id="test_installed_env_is_a_podman_container" version="1">
+    <unix:object object_ref="object_installed_env_is_a_podman_container" />
+  </unix:file_test>
+
+  <unix:file_object comment="Check file /run/.containerenv" id="object_installed_env_is_a_podman_container" version="1">
+     <unix:filepath datatype="string">/run/.containerenv</unix:filepath>
+  </unix:file_object>
+</def-group>
