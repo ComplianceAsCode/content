@@ -939,12 +939,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - package_chrony_installed
-      - package_ntp_installed
-      - package_timesyncd_installed
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/2.1.1.1.
+    rules:
+      - ntp_single_service_active
+    status: automated
 
   - id: 2.3.2.1
     title: Ensure systemd-timesyncd configured with authorized timeserver (Automated)

@@ -16,10 +16,10 @@ rationale: |-
 
 severity: medium
 
-platform: package[chrony] or package[ntp]
+platform: package[systemd-timesyncd]
 
 template:
     name: service_disabled
     vars:
         servicename: systemd-timesyncd
-        packagename: systemd
+        packagename: systemd-timesyncd
