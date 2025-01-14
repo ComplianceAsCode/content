@@ -231,7 +231,6 @@ def _load_macros_from_directory(macros_directory: str, substitutions_dict: dict)
                 macros_file = os.path.join(macros_directory, filename)
                 update_substitutions_dict(macros_file, substitutions_dict)
     except Exception as exc:
-        print(macros_directory)
         msg = ("Error extracting macro definitions from '{1}': {0}"
                .format(str(exc), filename))
         raise RuntimeError(msg)
