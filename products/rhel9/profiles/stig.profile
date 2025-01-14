@@ -28,3 +28,6 @@ selections:
   - stig_rhel9:all
   # Following rules once had a prodtype incompatible with the rhel9 product
   - '!audit_rules_immutable_login_uids'
+# the following rule causes problems with irqbalance which is present in default RHEL 9 installation, therefore it is not enforced
+  - sysctl_user_max_user_namespaces.role=unscored
+  - sysctl_user_max_user_namespaces.severity=info
