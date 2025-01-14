@@ -45,8 +45,4 @@ ocil: |-
 template:
     name: package_installed
     vars:
-        pkgname: cron
-        pkgname@rhel9: cronie
-        pkgname@rhel10: cronie
-        pkgname@sle12: cronie
-        pkgname@sle15: cronie
+        pkgname: {{{ package_name }}}
