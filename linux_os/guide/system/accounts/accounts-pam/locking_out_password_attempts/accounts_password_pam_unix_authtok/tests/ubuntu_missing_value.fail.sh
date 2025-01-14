@@ -1,12 +1,17 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 
+source ubuntu_common.sh
+
 config_file=/usr/share/pam-configs/tmpunix
 
+# lower priority to ensure the config is below the cac_test_echo
+# on the stack, thus using the "Password:" configuration
 cat << EOF > "$config_file"
 Name: Unix authentication
 Default: yes
 Priority: 1024
+Conflicts: unix
 Auth-Type: Primary
 Auth:
         [success=end default=ignore]    pam_unix.so try_first_pass
@@ -29,5 +34,5 @@ Password-Initial:
         [success=end default=ignore]    pam_unix.so obscure yescrypt 
 EOF
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update --remove unix --enable tmpunix
+DEBIAN_FRONTEND=noninteractive pam-auth-update
 rm "$config_file"

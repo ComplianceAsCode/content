@@ -10,14 +10,33 @@
   </definition>
 
   <ind:textfilecontent54_test id="test_password_pam_unix_use_authtok" version="1"
-    check="all" check_existence="at_least_one_exists"
+    check="all" check_existence="any_exist"
     comment="use_authtok is configured in pam unix in common_password file">
     <ind:object object_ref="obj_test_use_authtok" />
+    <ind:state state_ref="ste_test_use_authtok" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_test_use_authtok" version="1">
-    <ind:filepath>{{{ accounts_password_pam_unix_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+([^\n\r]+)[\n\r]+[ \t]*password[ \t]+([^#\n\r]+)[ \t]+pam_unix\.so[ \t]+([^#\n\r]+[ \t]+)?use_authtok.*$</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
+    <set>
+      <object_reference>obj_test_use_authtok_password_lines_except_first</object_reference>
+      <filter action="include">ste_test_use_authtok_pam_unix_lines</filter>
+    </set>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="ste_test_use_authtok" version="1">
+      <ind:subexpression operation="pattern match">^[^#\n\r]+[ \t]+pam_unix\.so[ \t]+[^#\n\r]+use_authtok.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <!-- Get all password lines except the first line. This is to avoid matching a pam_unix
+  line on the top of the stack, which does not need use_authtok to pass -->
+  <ind:textfilecontent54_object id="obj_test_use_authtok_password_lines_except_first" version="1">
+    <ind:filepath>{{{ accounts_password_pam_unix_file }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+(.+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">2</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="ste_test_use_authtok_pam_unix_lines" version="1">
+      <ind:subexpression operation="pattern match">^[^#\n\r]+[ \t]+pam_unix\.so.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 </def-group>

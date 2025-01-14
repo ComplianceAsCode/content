@@ -30,6 +30,7 @@ Session-Initial:
 Password-Type: Primary
 Password:
         [success=end default=ignore]    pam_unix.so obscure use_authtok try_first_pass yescrypt 
+        [success=end default=ignore]    pam_unix.so obscure try_first_pass yescrypt 
 Password-Initial:
         [success=end default=ignore]    pam_unix.so obscure yescrypt 
 EOF
