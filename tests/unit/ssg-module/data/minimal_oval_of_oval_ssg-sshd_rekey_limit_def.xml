@@ -27,7 +27,7 @@
     <oval-def:criteria comment="sshd is installed and configured" operator="AND">
      <oval-def:extend_definition comment="sshd is required or requirement is unset" definition_ref="oval:ssg-sshd_required_or_unset:def:1" />
      <oval-def:extend_definition comment="rpm package openssh-server installed" definition_ref="oval:ssg-package_openssh-server_installed:def:1" />
-     <oval-def:criteria comment="sshd is configured corectly" operator="OR">
+     <oval-def:criteria comment="sshd is configured correctly" operator="OR">
       <oval-def:criterion comment="Check the RekeyLimit in /etc/ssh/sshd_config" test_ref="oval:ssg-test_sshd_rekey_limit:tst:1" />
       <oval-def:criterion comment="Check the RekeyLimit in /etc/ssh/sshd_config.d" test_ref="oval:ssg-test_sshd_rekey_limit_config_dir:tst:1" />
      </oval-def:criteria>

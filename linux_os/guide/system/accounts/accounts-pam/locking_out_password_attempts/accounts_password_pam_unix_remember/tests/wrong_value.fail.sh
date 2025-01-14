@@ -22,7 +22,7 @@ do
 			# option is set, replace value
 			sed -r -i --follow-symlinks "s/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\1remember=$remember_cnt\3/" $config_file
 		fi
-		# ensure corect control is being used per os requirement
+		# ensure correct control is being used per os requirement
 		if ! grep -q "^password.*requisite.*pam_pwhistory\.so.*" $config_file; then
 			#replace incorrect value
 			sed -r -i --follow-symlinks "s/(^password.*)(required|requisite)(.*pam_pwhistory\.so.*)$/\1requisite\3/" $config_file

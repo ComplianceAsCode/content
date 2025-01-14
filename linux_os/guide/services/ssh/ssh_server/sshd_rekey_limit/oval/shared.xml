@@ -12,7 +12,7 @@
   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
     {{{- application_not_required_or_requirement_unset() }}}
     {{{- application_required_or_requirement_unset() }}}
-      <criteria comment="sshd is configured corectly" operator="OR">
+      <criteria comment="sshd is configured correctly" operator="OR">
         {{{- oval_line_in_file_criterion(sshd_config_path, parameter) }}}
         {{%- if sshd_distributed_config == "true" %}}
         {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
