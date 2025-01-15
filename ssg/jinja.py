@@ -32,11 +32,6 @@ from .utils import (required_key,
                     sha256
                     )
 
-if sys.version_info >= (3, 9):
-    dict_type = dict    # Python 3.9+ supports built-in generics
-else:
-    from typing import Dict as dict_type    # Fallback for older versions
-
 
 class MacroError(RuntimeError):
     pass
@@ -214,7 +209,7 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['expand_yaml_path'] = expand_yaml_path
 
 
-def _load_macros_from_directory(macros_directory: str, substitutions_dict: dict) -> None:
+def _load_macros_from_directory(macros_directory, substitutions_dict):
     """
     Helper function to load and update macros from the specified directory.
 
@@ -236,7 +231,7 @@ def _load_macros_from_directory(macros_directory: str, substitutions_dict: dict)
         raise RuntimeError(msg)
 
 
-def _load_macros(macros_directory: str, substitutions_dict=None) -> dict_type:
+def _load_macros(macros_directory, substitutions_dict=None):
     """
     Load macros from a specified directory and add them to a substitutions dictionary.
 
@@ -268,7 +263,7 @@ def _load_macros(macros_directory: str, substitutions_dict=None) -> dict_type:
     return substitutions_dict
 
 
-def load_macros(substitutions_dict=None) -> dict_type:
+def load_macros(substitutions_dict=None):
     """
     Augments the provided substitutions_dict with project Jinja macros found in the in
     JINJA_MACROS_DIRECTORY from constants.py.
@@ -283,7 +278,7 @@ def load_macros(substitutions_dict=None) -> dict_type:
     return _load_macros(JINJA_MACROS_DIRECTORY, substitutions_dict)
 
 
-def load_macros_from_content_dir(content_dir: str, substitutions_dict=None) -> dict_type:
+def load_macros_from_content_dir(content_dir, substitutions_dict=None):
     """
     Augments the provided substitutions_dict with project Jinja macros found in a specified
     content directory.
