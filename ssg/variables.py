@@ -8,7 +8,7 @@ import sys
 from collections import defaultdict
 from .constants import BENCHMARKS
 from .profiles import get_profiles_from_products
-from .yaml import open_and_macro_expand
+from .yaml import open_and_macro_expand_from_dir
 
 
 if sys.version_info >= (3, 9):
@@ -82,7 +82,7 @@ def _get_variables_content(content_dir: str) -> dict_type:
 
     for var_file in get_variable_files(content_dir):
         try:
-            yaml_content = open_and_macro_expand(var_file)
+            yaml_content = open_and_macro_expand_from_dir(var_file, content_dir)
         except Exception as e:
             print(f"Error processing file {var_file}: {e}")
             continue

@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os.path
+import sys
 import jinja2
 
 try:
@@ -208,13 +209,64 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['expand_yaml_path'] = expand_yaml_path
 
 
+def _load_macros_from_directory(macros_directory, substitutions_dict):
+    """
+    Helper function to load and update macros from the specified directory.
+
+    Args:
+        macros_directory (str): The path to the directory containing macro files.
+        substitutions_dict (dict): A dictionary to be augmented with Jinja macros.
+
+    Raises:
+        RuntimeError: If there is an error while reading or processing the macro files.
+    """
+    try:
+        for filename in sorted(os.listdir(macros_directory)):
+            if filename.endswith(".jinja"):
+                macros_file = os.path.join(macros_directory, filename)
+                update_substitutions_dict(macros_file, substitutions_dict)
+    except Exception as exc:
+        msg = ("Error extracting macro definitions from '{1}': {0}"
+               .format(str(exc), filename))
+        raise RuntimeError(msg)
+
+
+def _load_macros(macros_directory, substitutions_dict=None):
+    """
+    Load macros from a specified directory and add them to a substitutions dictionary.
+
+    This function checks if the given macros directory exists, adds Python functions to the
+    substitutions dictionary, and then loads macros from the directory into the dictionary.
+
+    Args:
+        macros_directory (str): The path to the directory containing macro files.
+        substitutions_dict (dict, optional): A dictionary to store the loaded macros.
+                                             If None, a new dictionary is created.
+
+    Returns:
+        dict: The updated substitutions dictionary containing the loaded macros.
+
+    Raises:
+        RuntimeError: If the specified macros directory does not exist.
+    """
+    if substitutions_dict is None:
+        substitutions_dict = dict()
+
+    add_python_functions(substitutions_dict)
+
+    if not os.path.isdir(macros_directory):
+        msg = (f"The directory '{macros_directory}' does not exist.")
+        raise RuntimeError(msg)
+
+    _load_macros_from_directory(macros_directory, substitutions_dict)
+
+    return substitutions_dict
+
+
 def load_macros(substitutions_dict=None):
     """
-    Augments the provided substitutions_dict with project Jinja macros found in the /shared/ directory.
-
-    This function loads Jinja macro files from a predefined directory, processes them, and updates
-    the substitutions_dict with the macro definitions. If no substitutions_dict is provided, a new
-    dictionary is created.
+    Augments the provided substitutions_dict with project Jinja macros found in the in
+    JINJA_MACROS_DIRECTORY from constants.py.
 
     Args:
         substitutions_dict (dict, optional): A dictionary to be augmented with Jinja macros.
@@ -222,25 +274,25 @@ def load_macros(substitutions_dict=None):
 
     Returns:
         dict: The updated substitutions_dict containing the Jinja macros.
-
-    Raises:
-        RuntimeError: If there is an error while reading or processing the macro files.
     """
-    if substitutions_dict is None:
-        substitutions_dict = dict()
+    return _load_macros(JINJA_MACROS_DIRECTORY, substitutions_dict)
 
-    add_python_functions(substitutions_dict)
-    try:
-        for filename in sorted(os.listdir(JINJA_MACROS_DIRECTORY)):
-            if filename.endswith(".jinja"):
-                macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
-                update_substitutions_dict(macros_file, substitutions_dict)
-    except Exception as exc:
-        msg = ("Error extracting macro definitions from '{1}': {0}"
-               .format(str(exc), filename))
-        raise RuntimeError(msg)
 
-    return substitutions_dict
+def load_macros_from_content_dir(content_dir, substitutions_dict=None):
+    """
+    Augments the provided substitutions_dict with project Jinja macros found in a specified
+    content directory.
+
+    Args:
+        content_dir (str): The base directory containing the 'shared/macros' subdirectory.
+        substitutions_dict (dict, optional): A dictionary to be augmented with Jinja macros.
+                                             Defaults to None.
+
+    Returns:
+        dict: The updated substitutions_dict containing the Jinja macros.
+    """
+    jinja_macros_directory = os.path.join(content_dir, 'shared', 'macros')
+    return _load_macros(jinja_macros_directory, substitutions_dict)
 
 
 def process_file_with_macros(filepath, substitutions_dict):
