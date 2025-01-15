@@ -4,16 +4,48 @@
 # complexity = low
 # disruption = low
 
+{{{ ansible_instantiate_variables("var_password_hashing_min_rounds_login_defs") }}}
+
+- name: "{{{ rule_title }}} - extract contents of the file /etc/login.defs"
+  ansible.builtin.slurp:
+    src: "/etc/login.defs"
+  register: etc_login_defs
+
+- name: "{{{ rule_title }}} - extract the value of SHA_CRYPT_MIN_ROUNDS if present"
+  ansible.builtin.set_fact:
+    etc_login_defs_sha_crypt_min_rounds: "{{ etc_login_defs['content'] | b64decode | regex_search('^\\s*SHA_CRYPT_MIN_ROUNDS\\s+(\\d+)', '\\1', multiline=True) | default([], true) }}"
+
+- name: "{{{ rule_title }}} - extract the value of SHA_CRYPT_MAX_ROUNDS if present"
+  ansible.builtin.set_fact:
+    etc_login_defs_sha_crypt_max_rounds: "{{ etc_login_defs['content'] | b64decode | regex_search('^\\s*SHA_CRYPT_MAX_ROUNDS\\s+(\\d+)', '\\1', multiline=True) | default([], true) }}"
+
 - name: "{{{ rule_title }}} - Ensure SHA_CRYPT_MIN_ROUNDS has Minimum Value of 5000"
   ansible.builtin.replace:
     path: /etc/login.defs
     regexp: '(^\s*SHA_CRYPT_MIN_ROUNDS\s+)(?!(?:[5-9]\d{3,}|\d{5,}))\S*(\s*$)'
-    replace: '\g<1>5000\g<2>'
+    replace: '\g<1>{{ var_password_hashing_min_rounds_login_defs }}\g<2>'
     backup: no
+  when: etc_login_defs_sha_crypt_min_rounds | length > 0 and etc_login_defs_sha_crypt_min_rounds | first | int < var_password_hashing_min_rounds_login_defs | int
 
 - name: "{{{ rule_title }}} - Ensure SHA_CRYPT_MAX_ROUNDS has Minimum Value of 5000"
   ansible.builtin.replace:
     path: /etc/login.defs
     regexp: '(^\s*SHA_CRYPT_MAX_ROUNDS\s+)(?!(?:[5-9]\d{3,}|\d{5,}))\S*(\s*$)'
-    replace: '\g<1>5000\g<2>'
+    replace: '\g<1>{{ var_password_hashing_min_rounds_login_defs }}\g<2>'
     backup: no
+  when: etc_login_defs_sha_crypt_max_rounds | length > 0 and etc_login_defs_sha_crypt_max_rounds | first | int < var_password_hashing_min_rounds_login_defs | int
+
+- name: "{{ rule_title }} - SHA_CRYPT_MIN_ROUNDS add configuration if not found"
+  ansible.builtin.lineinfile:
+    line: "SHA_CRYPT_MIN_ROUNDS {{ var_password_hashing_min_rounds_login_defs }}"
+    path: /etc/login.defs
+    state: present
+  when: etc_login_defs_sha_crypt_min_rounds | length == 0
+
+- name: "{{ rule_title }} - SHA_CRYPT_MAX_ROUNDS add configuration if not found"
+  ansible.builtin.lineinfile:
+    line: "SHA_CRYPT_MAX_ROUNDS {{ var_password_hashing_min_rounds_login_defs }}"
+    path: /etc/login.defs
+    state: present
+  when: etc_login_defs_sha_crypt_max_rounds | length == 0
+
