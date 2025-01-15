@@ -17,7 +17,7 @@
     <ind:filepath>/etc/aide.conf</ind:filepath>
     {{% if 'sle' in product or 'slmicro' in product %}}
       <ind:pattern operation="pattern match">^database=file:/([/a-z.]+)$</ind:pattern>
-    {{% elif product == 'rhel10' %}}
+    {{% elif product in [ 'ol10', 'rhel10' ] %}}
       <ind:pattern operation="pattern match">^database_in=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^database=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>

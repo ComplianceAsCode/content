@@ -10,7 +10,7 @@
       create: yes
       dest: /usr/lib/systemd/system/rescue.service
       regexp: "^#?ExecStart="
-      {{% if product in ["ol8", "ol9", "sle12", "sle15", "slmicro5"]-%}}
+      {{% if product in ["sle12", "sle15", "slmicro5"] or 'ol' in families -%}}
       line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue"
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
