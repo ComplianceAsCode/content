@@ -1,0 +1,69 @@
+---
+policy: ABCD Benchmark for securing Linux systems with levels
+title: ABCD Benchmark for securing Linux systems with levels
+id: abcd-levels
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+levels:
+  - id: low
+  - id: medium
+    inherits_from:
+      - low
+  - id: high
+    inherits_from:
+      - medium
+
+controls:
+  - id: S1
+    title: User session timeout
+
+  - id: S2
+    levels:
+      - low
+    rules:
+      - var_password_pam_minlen=1
+
+  - id: S3
+    levels:
+      - medium
+
+  - id: S4
+    title: Configure authentication
+    controls:
+      - id: S4.a
+        title: Disable administrator accounts
+        levels:
+          - low
+
+      - id: S4.b
+        title: Enforce password quality standards
+        levels:
+          - high
+        rules:
+          - var_password_pam_minlen=2
+
+  # S5, S6 and S7 are used to test if level inheritance is working correctly
+  # when multiple levels select the same rule
+  - id: S5
+    title: Default Crypto Policy
+    levels:
+      - low
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=default_policy
+
+  - id: S6
+    title: FIPS Crypto Policy
+    levels:
+      - medium
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=fips
+
+  - id: S7
+    title: Future Crypto Policy
+    levels:
+      - high
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=future

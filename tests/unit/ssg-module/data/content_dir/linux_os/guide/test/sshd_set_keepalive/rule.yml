@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Test Set SSH Client Alive Count Max'
+
+description: |-
+    The SSH server sends at most <tt>ClientAliveCountMax</tt> messages during a SSH session and
+    waits for a response from the SSH client. The option <tt>ClientAliveInterval</tt> configures
+    timeout after each <tt>ClientAliveCountMax</tt> message.
+
+rationale: |-
+    This ensures a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
+    is reached.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-12345-4
+    cce@rhel9: CCE-12345-5
+
+references:
+    cis-csc: 1,12,13,14,15,16,18,3,5,7,8
+    cis@sle15: 5.2.16
+    cis@ubuntu2204: 5.2.22
+    disa: CCI-001133,CCI-002361
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-2(5),AC-12,AC-17(a),SC-10,CM-6(a)
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109
+    stigid@ol8: OL08-00-010200
+    stigid@rhel8: RHEL-08-010200
+    stigid@sle15: SLES-15-010320
+    stigid@ubuntu2204: UBTU-22-255030
+
+requires:
+    - sshd_set_idle_timeout
+
+ocil_clause: 'it is commented out or not configured properly'
+
+ocil: |-
+    To ensure <tt>ClientAliveInterval</tt> is set correctly, run the following command:
+    <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        parameter: ClientAliveCountMax
+        xccdf_variable: var_sshd_set_keepalive
+        datatype: int
