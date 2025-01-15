@@ -48,9 +48,9 @@
   <ind:textfilecontent54_object id="object_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}" comment="Check {{{ arg['argument'] }}} configuration of PAM {{{ MODULE }}} module" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
 {{% if arg['argument_match']|length %}}
-    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}(?:(?!\n)\s)+{{{ MATCH_CONTROL_FLAG }}}(?:(?!\n)\s)+{{{ MODULE }}}((?!\n)\s[^\n]+)?(?!\n)\s+{{{ arg['argument'] }}}={{{ arg['argument_match'] }}}((\s+\S+)*\s*\\*\s*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}(?:(?!\n)\s)+{{{ MATCH_CONTROL_FLAG }}}(?:(?!\n)\s)+{{{ MODULE }}}((?!\n)\s[^\n#]+)?(?!\n)\s+{{{ arg['argument'] }}}={{{ arg['argument_match'] }}}((\s+\S+)*\s*\\*\s*)$</ind:pattern>
 {{% else %}}
-    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}(?:(?!\n)\s)+{{{ MATCH_CONTROL_FLAG }}}(?:(?!\n)\s)+{{{ MODULE }}}((?!\n)\s[^\n]+)?(?!\n)\s+{{{ arg['argument'] }}}((\s+\S+)*\s*\\*\s*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}(?:(?!\n)\s)+{{{ MATCH_CONTROL_FLAG }}}(?:(?!\n)\s)+{{{ MODULE }}}((?!\n)\s[^\n#]+)?(?!\n)\s+{{{ arg['argument'] }}}((\s+\S+)*\s*\\*\s*)$</ind:pattern>
 {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
