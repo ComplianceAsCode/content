@@ -201,6 +201,7 @@ selections:
 - package_audispd-plugins_installed
 - package_audit_installed
 - package_chrony_installed
+- package_cron_installed
 - package_dhcp_removed
 - package_firewalld_installed
 - package_ftp_removed
