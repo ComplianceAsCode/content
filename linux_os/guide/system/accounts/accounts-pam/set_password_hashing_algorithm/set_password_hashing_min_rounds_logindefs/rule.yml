@@ -5,12 +5,12 @@ title: 'Set Password Hashing Rounds in /etc/login.defs'
 
 description: |-
     In <tt>/etc/login.defs</tt>, ensure <tt>SHA_CRYPT_MIN_ROUNDS</tt> and
-    <tt>SHA_CRYPT_MAX_ROUNDS</tt> has the minimum value of <tt>5000</tt>.
+    <tt>SHA_CRYPT_MAX_ROUNDS</tt> has the minimum value of <tt>{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}</tt>.
     For example:
-    <pre>SHA_CRYPT_MIN_ROUNDS 5000
-    SHA_CRYPT_MAX_ROUNDS 5000</pre>
+    <pre>SHA_CRYPT_MIN_ROUNDS {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}
+    SHA_CRYPT_MAX_ROUNDS {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}</pre>
     Notice that if neither are set, they already have the default value of 5000.
-    If either is set, they must have the minimum value of 5000.
+    If either is set, they must have the minimum value of {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}.
 
 rationale: |-
     Passwords need to be protected at all times, and encryption is the standard
@@ -43,9 +43,9 @@ references:
 ocil_clause: 'it does not'
 
 ocil: |-
-    Inspect <tt>/etc/login.defs</tt> and ensure that if eihter
+    Inspect <tt>/etc/login.defs</tt> and ensure that if either
     <tt>SHA_CRYPT_MIN_ROUNDS</tt> or <tt>SHA_CRYPT_MAX_ROUNDS</tt>
-    are set, they must have the minimum value of <tt>5000</tt>.
+    are set, they must have the minimum value of <tt>{{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}</tt>.
 
 srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds.'
 
@@ -54,4 +54,4 @@ fixtext: |-
 
     Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "5000":
 
-    SHA_CRYPT_MIN_ROUNDS 5000
+    SHA_CRYPT_MIN_ROUNDS {{{ xccdf_value("var_password_hashing_min_rounds_login_defs") }}}
