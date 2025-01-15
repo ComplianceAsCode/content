@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: Enable FIPS Mode
 
 description: |-
@@ -16,6 +15,13 @@ description: |-
     <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
+
+    <br />
+    To enable FIPS mode at bootable container build time configure <tt>fips=1</tt> kernel argument
+    in <tt>/usr/lib/bootc/kargs.d/01-fips.toml</tt>:
+    <pre>kargs = ["fips=1"]</pre>
+    Then set the cryptographic policy to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>:
+    <pre>update-crypto-policies --no-reload --set {{{ xccdf_value("var_system_crypto_policy") }}}</pre>
 {{% else %}}
     OpenShift has an installation-time flag that can enable FIPS mode
     for the cluster. The flag <pre>fips: true</pre> must be enabled
@@ -77,5 +83,10 @@ fixtext: |-
     $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
 
     The system needs to be rebooted for these changes to take effect.
+
+    To enable FIPS mode at bootable container build time, add the following commands in Containerfile:
+
+    RUN echo 'kargs = ["fips=1"]' > /usr/lib/bootc/kargs.d/01-fips.toml
+    RUN update-crypto-policies --no-reload --set {{{ xccdf_value("var_system_crypto_policy") }}}
 
 srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'

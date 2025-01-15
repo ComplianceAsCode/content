@@ -1,44 +1,93 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check if FIPS mode is enabled on the system") }}}
-    <criteria operator="AND">
-        <criterion test_ref="test_proc_sys_crypto_fips_enabled"
-            comment="check contents of /proc/sys/crypto/fips_enabled"/>
-      <extend_definition definition_ref="sysctl_crypto_fips_enabled"
-        comment="check option crypto.fips_enabled = 1 in sysctl"/>
-      {{%- if product not in ["rhel10"] -%}}
-      <extend_definition definition_ref="enable_dracut_fips_module"
-        comment="dracut FIPS module is enabled"/>
-      {{%- endif -%}}
-      <extend_definition definition_ref="configure_crypto_policy"
-        comment="system cryptography policy is configured"/>
-      <criterion test_ref="test_system_crypto_policy_value"
-        comment="check if var_system_crypto_policy variable selection is set to FIPS"/>
-      {{% if "ol" in product or "rhel" in product %}}
-      <criteria operator="OR">
-        <criteria operator="AND">
-          <extend_definition definition_ref="system_info_architecture_s390_64"
-            comment="generic test for s390x architecture"/>
-          <criterion test_ref="test_fips_1_argument_in_boot_loader_entries_conf"
-            comment="check if kernel option fips=1 is present in /boot/loader/entries/.*.conf"/>
-        </criteria>
-        <criteria operator="AND">
-          <criteria negate="true">
-            <extend_definition definition_ref="system_info_architecture_s390_64"
-              comment="generic test for non-s390x architecture"/>
-          </criteria>
-          {{% if product in ["ol8", "rhel8"] %}}
-          <criterion test_ref="test_grubenv_fips_mode"
-            comment="check if the kernel boot parameter is configured for FIPS mode"/>
-          {{% else %}}
-          <criterion test_ref="test_fips_1_argument_in_boot_loader_entries_conf"
-            comment="check if kernel option fips=1 is present in /boot/loader/entries/.*.conf"/>
-          {{% endif %}}
-        </criteria>
+
+    {{% if bootable_containers_supported == "true" %}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition definition_ref="bootc" comment="The system is RHEL Image Mode"/>
+        <extend_definition definition_ref="installed_env_is_a_container" comment="The system is container"/>
+        {{%- if product not in ["rhel10"] -%}}
+        <extend_definition definition_ref="enable_dracut_fips_module"
+          comment="dracut FIPS module is enabled"/>
+        {{%- endif -%}}
+        <extend_definition definition_ref="configure_crypto_policy"
+          comment="system cryptography policy is configured"/>
+        <criterion test_ref="test_system_crypto_policy_value"
+          comment="check if var_system_crypto_policy variable selection is set to FIPS"/>
+        <criterion test_ref="test_fips_1_argument_in_usr_lib_bootc_kargs_d"
+          comment="check if fips=1 present in the /usr/lib/bootc/kargs.d/*.toml"/>
       </criteria>
-      {{% endif %}}
+    {{% endif %}}
+
+      <criteria operator="AND">
+        {{% if bootable_containers_supported == "true" %}}
+        <criteria operator="OR">
+          <extend_definition definition_ref="bootc" negate="true" comment="The system is RHEL Image Mode"/>
+          <criteria operator="AND">
+            <extend_definition definition_ref="bootc" comment="The system is RHEL Image Mode"/>
+            <extend_definition definition_ref="installed_env_is_a_container" negate="true" comment="The system is container"/>
+          </criteria>
+        </criteria>
+        {{% endif %}}
+        <criterion test_ref="test_proc_sys_crypto_fips_enabled"
+          comment="check contents of /proc/sys/crypto/fips_enabled"/>
+        <extend_definition definition_ref="sysctl_crypto_fips_enabled"
+          comment="check option crypto.fips_enabled = 1 in sysctl"/>
+        {{%- if product not in ["rhel10"] -%}}
+        <extend_definition definition_ref="enable_dracut_fips_module"
+          comment="dracut FIPS module is enabled"/>
+        {{%- endif -%}}
+        <extend_definition definition_ref="configure_crypto_policy"
+          comment="system cryptography policy is configured"/>
+        <criterion test_ref="test_system_crypto_policy_value"
+          comment="check if var_system_crypto_policy variable selection is set to FIPS"/>
+        {{% if "ol" in product or "rhel" in product %}}
+        <criteria operator="OR">
+          <criteria operator="AND">
+            <extend_definition definition_ref="system_info_architecture_s390_64"
+              comment="generic test for s390x architecture"/>
+            <criterion test_ref="test_fips_1_argument_in_boot_loader_entries_conf"
+              comment="check if kernel option fips=1 is present in /boot/loader/entries/.*.conf"/>
+          </criteria>
+          <criteria operator="AND">
+            <criteria negate="true">
+              <extend_definition definition_ref="system_info_architecture_s390_64"
+                comment="generic test for non-s390x architecture"/>
+            </criteria>
+            {{% if product in ["ol8", "rhel8"] %}}
+            <criterion test_ref="test_grubenv_fips_mode"
+              comment="check if the kernel boot parameter is configured for FIPS mode"/>
+            {{% else %}}
+            <criterion test_ref="test_fips_1_argument_in_boot_loader_entries_conf"
+              comment="check if kernel option fips=1 is present in /boot/loader/entries/.*.conf"/>
+            {{% endif %}}
+          </criteria>
+        </criteria>
+        {{% endif %}}
+      </criteria>
+    {{% if bootable_containers_supported == "true" %}}
     </criteria>
+    {{% endif %}}
   </definition>
+
+  <ind:textfilecontent54_test id="test_fips_1_argument_in_usr_lib_bootc_kargs_d" version="1"
+    check="at least one" check_existence="at_least_one_exists"
+    comment="check if fips=1 present in the /usr/lib/bootc/kargs.d/*.toml">
+    <ind:object object_ref="object_fips_1_argument_in_usr_lib_bootc_kargs_d" />
+    <ind:state state_ref="state_fips_1_argument_in_usr_lib_bootc_kargs_d" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_fips_1_argument_in_usr_lib_bootc_kargs_d" version="1">
+    <ind:path>/usr/lib/bootc/kargs.d/</ind:path>
+    <ind:filename operation="pattern match">^.*\.toml$</ind:filename>
+    <ind:pattern operation="pattern match">^kargs[\s]*=[\s]*\[([^\]]+)\]$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_fips_1_argument_in_usr_lib_bootc_kargs_d" version="1">
+    <ind:subexpression operation="pattern match">^.*"[\s]*fips[\s]*=[\s]*1[\s]*".*$</ind:subexpression>
+  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test id="test_fips_1_argument_in_boot_loader_entries_conf" version="1"
     check="all" check_existence="all_exist"
