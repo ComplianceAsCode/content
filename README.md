@@ -6,7 +6,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/62c1f8d8064b2163db3e/maintainability)](https://codeclimate.com/github/ComplianceAsCode/content/maintainability)
 [![Stats, Guides, Tables](https://github.com/ComplianceAsCode/content/actions/workflows/gh-pages.yaml/badge.svg)](https://complianceascode.github.io/content-pages/)
 [![Join the chat at https://gitter.im/Compliance-As-Code-The/content](https://badges.gitter.im/Compliance-As-Code-The/content.svg)](https://gitter.im/Compliance-As-Code-The/content?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/ComplianceAsCode/content)
 
 
 The purpose of this project is to create *security policy content* for various
