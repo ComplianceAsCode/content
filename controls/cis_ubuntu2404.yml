@@ -2214,8 +2214,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - no_nologin_in_shells
+    status: automated
 
   - id: 5.4.3.2
     title: Ensure default user shell timeout is configured (Automated)

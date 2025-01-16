@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Ensure nologin Shell is Not Listed in /etc/shells'
+
+description: |-
+    The <tt>/sbin/nologin</tt> shell is used to restrict accounts from having login access
+    and should not be listed as a valid login shell in <tt>/etc/shells</tt>.
+    To verify that nologin is not listed in /etc/shells, run:
+    <pre>$ grep nologin /etc/shells</pre>
+    The command should return no output.
+
+rationale: |-
+    The <tt>/etc/shells</tt> is consulted by various programs to evaluate
+    whether the user is somehow restricted. For example, the chsh utility will
+    consult the file to determine if the user is allowed to change their shell. 
+
+severity: medium
+
+ocil_clause: 'nologin is listed in /etc/shells'
+
+ocil: |-
+    To verify that nologin is not listed in /etc/shells, run:
+    <pre>$ grep nologin /etc/shells</pre>
+    The command should return no output.
