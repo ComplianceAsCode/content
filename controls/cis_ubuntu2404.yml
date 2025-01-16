@@ -1280,8 +1280,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - firewall_single_service_active
+    status: automated
+    notes: |
+      Remediation is not automated.
+
 
   - id: 4.2.1
     title: Ensure ufw is installed (Automated)
