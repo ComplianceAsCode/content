@@ -1098,7 +1098,21 @@ controls:
         title: RHEL 9 /etc/group- file must be owned by root.
         rules:
             - file_owner_backup_etc_group
+
+    -   id: RHEL-09-232103
+        title: RHEL 9 "/etc/audit/" must be owned by root.
+        levels:
+        - medium
+        rules:
+            - file_ownership_audit_configuration
         status: automated
+
+    -   id: RHEL-09-232104
+        title: RHEL 9 "/etc/audit/" must be group-owned by root.
+        levels:
+            - medium
+        rules:
+            - file_groupownership_audit_configuration
 
     -   id: RHEL-09-232105
         levels:
