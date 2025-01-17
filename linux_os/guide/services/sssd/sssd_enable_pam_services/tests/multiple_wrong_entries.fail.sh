@@ -1,18 +1,17 @@
 #!/bin/bash
-# packages = sssd
-#
+# packages = sssd-common
 
-rm -rf /etc/sssd/conf.d/
-mkdir -p /etc/sssd/conf.d/
-SSSD_CONF="/etc/sssd/conf.d/sssd.conf"
+SSSD_CONF_FILE="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR_FILE="/etc/sssd/conf.d/sssd.conf"
+SSSD_CONF_DIR_FILES="/etc/sssd/conf.d/*.conf"
 
-cp wrong_sssd.conf $SSSD_CONF
+rm -rf $SSSD_CONF_FILE $SSSD_CONF_DIR_FILES
 
-SSSD_CONF="/etc/sssd/sssd.conf"
-cp wrong_sssd.conf $SSSD_CONF
+for file in $SSSD_CONF_FILE $SSSD_CONF_DIR_FILE; do
+    cp wrong_sssd.conf $file
+done
 
-SSSD_CONF="/etc/sssd/sssd_custom.conf"
-cat <<EOF > $SSSD_CONF
+cat <<EOF > "/etc/sssd/conf.d/sssd_custom.conf"
 [sssd]
 services = nss
 domains = shadowutils
@@ -23,7 +22,7 @@ domains = shadowutils
 services = pam
 
 [domain/shadowutils]
-id_provider = files
+id_provider = ldap
 
 auth_provider = proxy
 proxy_pam_target = sssd-shadowutils

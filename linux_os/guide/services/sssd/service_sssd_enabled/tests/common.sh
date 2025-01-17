@@ -7,7 +7,7 @@ services = nss, pam
 domains = example.com
 
 [domain/example.com]
-id_provider = files
+id_provider = ldap
 access_provider = simple
 simple_allow_users = user1, user2
 
