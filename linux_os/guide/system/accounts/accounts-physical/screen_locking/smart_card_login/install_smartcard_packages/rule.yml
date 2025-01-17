@@ -6,8 +6,8 @@
 {{% set smartcard_packages = ['pam_pkcs11'] %}}
 {{% elif 'ubuntu' in product %}}
 {{% set smartcard_packages = ['libpam-pkcs11'] %}}
-{{% elif product in ['rhel10'] %}}
-{{% set smartcard_package = ['pkcs11-provider'] %}}
+{{% elif product in ['rhel10', 'ol10'] %}}
+{{% set smartcard_packages = ['pkcs11-provider'] %}}
 {{% else %}}
 {{% set smartcard_packages = ['openssl-pkcs11'] %}}
 {{% endif %}}
@@ -75,6 +75,7 @@ template:
     vars:
         pkgname: openssl-pkcs11
         pkgname@ol7: pam_pkcs11
+        pkgname@ol10: pkcs11-provider
         pkgname@rhel10: pkcs11-provider
         pkgname@ubuntu1604: libpam-pkcs11
         pkgname@ubuntu1804: libpam-pkcs11

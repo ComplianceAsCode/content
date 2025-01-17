@@ -12,7 +12,7 @@
 
 {{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
 
-{{% if product == 'rhel10' %}}
+{{% if product in ['ol10', 'rhel10'] %}}
 {{% set audit_loading_systemd_directive="ExecStart" %}}
 {{% set audit_loading_service_file="audit-rules.service" %}}
 {{% else %}}
