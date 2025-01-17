@@ -579,6 +579,15 @@ controls:
             - package_s-nail_installed
         status: automated
 
+    -   id: RHEL-09-215100
+        levels:
+            - medium
+        title: RHEL 9 must have the crypto-policies package installed.
+        rules:
+            - package_crypto-policies_installed
+        status: automated
+
+
     -   id: RHEL-09-231010
         levels:
             - medium
@@ -4041,14 +4050,6 @@ controls:
             use a FIPS 140-3 approved cryptographic hashing algorithm for system authentication.
         rules:
             - set_password_hashing_algorithm_passwordauth
-        status: automated
-
-    -   id: RHEL-09-672010
-        levels:
-            - medium
-        title: RHEL 9 must have the crypto-policies package installed.
-        rules:
-            - package_crypto-policies_installed
         status: automated
 
     -   id: RHEL-09-672015
