@@ -1,13 +1,7 @@
 <def-group>
   <!-- Check that exactly one firewall service is active -->
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    <metadata>
-      <title>Ensure Only One Firewall Service is Active</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Only one firewall service (ufw, iptables, or nftables) should be active.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure Only One Firewall Service is Active") }}}
     <criteria>
         <criterion comment="exactly one firewall service is active" 
             test_ref="test_{{{ rule_id }}}_single_active_firewall"/>
