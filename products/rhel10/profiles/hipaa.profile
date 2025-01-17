@@ -32,6 +32,7 @@ selections:
     - '!dconf_gnome_remote_access_encryption'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_fedora_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!grub2_uefi_admin_username'
     - '!grub2_uefi_pass'
     - '!service_ypbind_disabled'

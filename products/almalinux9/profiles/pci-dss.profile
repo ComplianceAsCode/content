@@ -3,13 +3,11 @@ documentation_complete: true
 metadata:
     version: '4.0.1'
     SMEs:
-        - marcusburghardt
-        - mab879
-        - vojtapolasek
+        - sej7278
 
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 
-title: 'PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 9'
+title: 'PCI-DSS v4.0.1 Control Baseline for AlmaLinux OS 9'
 
 description: |-
     Payment Card Industry - Data Security Standard (PCI-DSS) is a set of
@@ -17,18 +15,19 @@ description: |-
     data, with the goal of preventing data breaches and protecting sensitive
     financial information.
 
-    This profile ensures Red Hat Enterprise Linux 9 is configured in alignment
+    This profile ensures AlmaLinux OS 9 is configured in alignment
     with PCI-DSS v4.0.1 requirements.
 
 selections:
     - pcidss_4:all
-    # audit-audispd-plugins package does not exist in RHEL 9
+    # audit-audispd-plugins package does not exist in AlmaLinux OS 9
     # use only package_audispd-plugins_installed
     - '!package_audit-audispd-plugins_installed'
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'
-    # these rules do not apply to RHEL but they have to keep the prodtype for historical reasons
+    # these rules do not apply to AlmaLinux but they have to keep the prodtype for historical reasons
+    # most of these packages are no longer available in EL9 distributions
     - '!package_audit-audispd-plugins_installed'
     - '!service_ntp_enabled'
     - '!ntpd_specify_remote_server'
@@ -43,7 +42,7 @@ selections:
     - '!package_xinetd_removed'
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
-    # Following rules once had a prodtype incompatible with the rhel9 product
+    # Following rules once had a prodtype incompatible with the almalinux9 product
     - '!service_chronyd_or_ntpd_enabled'
     - '!install_PAE_kernel_on_x86-32'
     - '!mask_nonessential_services'
@@ -61,7 +60,7 @@ selections:
     - '!sshd_use_approved_ciphers'
     - '!accounts_passwords_pam_tally2'
     - '!ensure_suse_gpgkey_installed'
-    - '!ensure_almalinux_gpgkey_installed'
+    - '!ensure_redhat_gpgkey_installed'
     - '!gnome_gdm_disable_unattended_automatic_login'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!cracklib_accounts_password_pam_minlen'
