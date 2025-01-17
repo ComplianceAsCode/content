@@ -587,6 +587,13 @@ controls:
             - package_crypto-policies_installed
         status: automated
 
+    -   id: RHEL-09-215105
+        levels:
+            - medium
+        title: RHEL 9 must implement a system-wide encryption policy.
+        rules:
+            - configure_crypto_policy
+        status: automated
 
     -   id: RHEL-09-231010
         levels:
@@ -4097,14 +4104,6 @@ controls:
         title: RHEL 9 must implement DOD-approved TLS encryption in the OpenSSL package.
         rules:
             - configure_openssl_tls_crypto_policy
-        status: automated
-
-    -   id: RHEL-09-672045
-        levels:
-            - medium
-        title: RHEL 9 must implement a system-wide encryption policy.
-        rules:
-            - configure_crypto_policy
         status: automated
 
     -   id: RHEL-09-672050
