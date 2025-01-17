@@ -11,7 +11,9 @@ checktext: |-
 
     $ mount | grep /var/log/audit
 
-    UUID=2efb2979-45ac-82d7-0ae632d11f51 on /var/log/home type xfs  (rw,realtime,seclabel,attr2,inode64)
+    /dev/mapper/rootvg-varlogaudit on /var/log/audit type xfs (rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota)
+
+    Note: Options displayed for mount may differ.
 
     If no line is returned, this is a finding.
 
