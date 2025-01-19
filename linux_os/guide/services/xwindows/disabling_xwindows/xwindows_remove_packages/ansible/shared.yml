@@ -1,16 +1,20 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_almalinux
+# platform = Red Hat Enterprise Linux 8,multi_platform_almalinux,multi_platform_ol,multi_platform_sle
 # reboot = true
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-- name: Ensure xorg packages are removed
-  package:
-    name:
-      - xorg-x11-server-Xorg
-      - xorg-x11-server-common
-      - xorg-x11-server-utils
-{{% if product not in ["ol7"] %}}
-      - xorg-x11-server-Xwayland
+{{% if product in ["sle12", "sle15"] %}}
+{{% set xwindows_packages = ['xorg-x11-server', 'xorg-x11-server-extra', 'xorg-x11-server-Xvfb', 'xwayland'] %}}
+{{% elif 'ol7' in product %}}
+{{% set xwindows_packages = ['xorg-x11-server-Xorg', 'xorg-x11-server-common', 'xorg-x11-server-utils'] %}}
+{{% else %}}
+{{% set xwindows_packages = ['xorg-x11-server-Xorg', 'xorg-x11-server-common', 'xorg-x11-server-utils', 'xorg-x11-server-Xwayland'] %}}
 {{% endif %}}
+
+{{% for package in xwindows_packages %}}
+- name: Ensure {{{ package }}} is removed
+  package:
+    name: {{{ package }}}
     state: absent
+{{% endfor %}}
