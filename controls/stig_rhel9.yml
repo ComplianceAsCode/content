@@ -1944,6 +1944,7 @@ controls:
         title: RHEL 9 SSH server configuration file must be group-owned by root.
         rules:
             - file_groupowner_sshd_config
+            - file_groupowner_sshd_drop_in_config
         status: automated
 
     -   id: RHEL-09-255110
@@ -1952,6 +1953,7 @@ controls:
         title: RHEL 9 SSH server configuration file must be owned by root.
         rules:
             - file_owner_sshd_config
+            - file_owner_sshd_drop_in_config
         status: automated
 
     -   id: RHEL-09-255115
@@ -1960,6 +1962,7 @@ controls:
         title: RHEL 9 SSH server configuration file must have mode 0600 or less permissive.
         rules:
             - file_permissions_sshd_config
+            - file_permissions_sshd_drop_in_config
         status: automated
 
     -   id: RHEL-09-255120
