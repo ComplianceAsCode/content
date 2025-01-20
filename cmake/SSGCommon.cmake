@@ -214,14 +214,17 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         string(REGEX REPLACE "version: " "" SHELLCHECK_VERSION "${SHELLCHECK_VERSION_LINE}")
 
         if(SHELLCHECK_VERSION VERSION_GREATER_EQUAL "0.10.0")
-            set(SHELLCHECK_EXTENDED_ANALYSIS_OPTION "--extended-analysis=false")
+            add_test(
+                NAME "${PRODUCT}-bash-shellcheck"
+                COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning "--extended-analysis=false"
+            )
         else()
-            set(SHELLCHECK_EXTENDED_ANALYSIS_OPTION "")
+            add_test(
+                NAME "${PRODUCT}-bash-shellcheck"
+                COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+            )
         endif()
-        add_test(
-            NAME "${PRODUCT}-bash-shellcheck"
-            COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning "${SHELLCHECK_EXTENDED_ANALYSIS_OPTION}"
-        )
+
     endif()
 endmacro()
 
