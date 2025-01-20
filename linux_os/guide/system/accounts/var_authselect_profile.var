@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: Authselect  profile
+title: Authselect profile
 
 description: |-
     Specify the authselect profile to select
@@ -12,6 +12,12 @@ operator: equals
 interactive: false
 
 options:
+{{%- if ('rhel' in product or 'ol' in families) and product not in ['ol8', 'ol9', 'rhel8', 'rhel9']%}}
+    default: local
+    minimal: local
+    local: local
+{{%- else %}}
     default: minimal
     minimal: minimal
+{{%- endif %}}
     sssd: sssd
