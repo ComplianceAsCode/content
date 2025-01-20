@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Mandatory Access Controls (/etc/selinux)'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+
+rationale: |-
+    The system's mandatory access policy (SELinux) should not be
+    arbitrarily changed by anything other than administrator action. All changes to
+    MAC policy should be audited.
+
+severity: medium
+
+identifiers:
+    cce@rhel10: CCE-90737-8
+
+
+references:
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    pcidss: Req-10.5.5
+
+ocil_clause: 'the system is not configured to audit attempts to change files within the /etc/selinux directory'
+
+ocil: |-
+    To determine if the system is configured to audit changes to its SELinux
+    configuration files, run the following command:
+    <pre>$ sudo auditctl -l | grep "dir=/etc/selinux"</pre>
+    If the system is configured to watch for changes to its SELinux
+    configuration, a line should be returned (including
+    <tt>perm=wa</tt> indicating permissions that are watched).
+
+template:
+    name: audit_rules_watch
+    vars:
+        path: /etc/selinux
