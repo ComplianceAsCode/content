@@ -127,6 +127,7 @@ selections:
   ## 0479 / 0480 / 0481 / 0489 / 0497 / 0994 / 0998 / 1001 /  1139 / 
   ## 1372 / 1373 / 1374 / 1375
   - enable_fips_mode
+  - enable_dracut_fips_module
   - var_system_crypto_policy=fips
   - configure_crypto_policy
 
