@@ -54,5 +54,4 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - 'ensure_oracle_gpgkey_installed'
     # Rules not applicable to OL8
-    - '!package_dhcp_removed'
     - '!install_PAE_kernel_on_x86-32'

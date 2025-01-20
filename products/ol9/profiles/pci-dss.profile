@@ -61,7 +61,6 @@ selections:
     - '!service_timesyncd_enabled'
     # Not applicable to OL9, packages not available in OL9
     - '!package_cryptsetup-luks_installed'
-    - '!package_dhcp_removed'
     - '!service_rpcbind_disabled'
     # Add oracle gpg key rule
     - 'ensure_oracle_gpgkey_installed'
