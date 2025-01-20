@@ -154,7 +154,7 @@ def parse_args():
         "--osinfo",
         dest="osinfo",
         default=None,
-        help="Specify OSInfo for virt-install command.",
+        help="Specify OSInfo for virt-install command ('rhel8-unknown' is used by default when '--distro' has any of the RHEL available selected). Run 'virt-install --osinfo list' to get a list of available options",
     )
 
     return parser.parse_args()
@@ -327,6 +327,10 @@ def get_virt_install_command(data):
 
     if data.osinfo:
         command.append(f'--osinfo={data.osinfo}')
+    else:
+        if 'rhel' in data.distro:
+            command.append(f'--osinfo=rhel8-unknown')
+
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
