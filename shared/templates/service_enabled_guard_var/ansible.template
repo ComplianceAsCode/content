@@ -14,7 +14,7 @@
 
 {{%- if init_system == "systemd" %}}
   - name: Enable service {{{ SERVICENAME }}}
-    systemd:
+    ansible.builtin.systemd_service:
       name: "{{{ DAEMONNAME }}}"
       enabled: "yes"
       state: "started"
