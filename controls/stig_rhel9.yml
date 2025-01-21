@@ -1869,7 +1869,13 @@ controls:
             - harden_sshd_ciphers_openssh_conf_crypto_policy
             - sshd_approved_ciphers=stig_rhel9
         status: automated
-
+    -   id: RHEL-09-255064
+        title: The RHEL 9 SSH client must be configured to use only DOD-approved encryption ciphers employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+        levels:
+            - medium
+        rules:
+            - harden_sshd_ciphers_openssh_conf_crypto_policy
+            - sshd_approved_ciphers=stig_rhel9
     -   id: RHEL-09-255065
         levels:
             - medium
