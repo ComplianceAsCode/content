@@ -13,12 +13,21 @@ checktext: |-
 
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
 
-    If this line is not returned, or is commented out, this is a finding.
+    In case the output does not match, check if the <tt>ExecStart</tt> directive is not overridden:
+
+    grep ExecStart /etc/systemd/system/rescue.service.d/*.conf
+
+    The output should contain two lines:
+    ExecStart=
+    ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
+
+    If the line is not returned in any of cases mentioned above, or is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to require authentication for single-user mode.
 
-    Add or modify the following line in the "/usr/lib/systemd/system/rescue.service" file:
+    Add following two lines to the file "/etc/systemd/system/rescue.service.d/10-remediation.conf":
 
+    ExecStart=
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
 
