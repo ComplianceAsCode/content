@@ -1885,6 +1885,13 @@ controls:
         rules:
             - harden_sshd_ciphers_opensshserver_conf_crypto_policy
         status: automated
+    -   id: RHEL-09-255070
+        levels:
+            - medium
+        title: The RHEL 9 SSH client must be configured to use only DOD-approved Message Authentication Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms to protect the confidentiality of SSH client connections.
+        rules:
+            - sshd_use_strong_macs
+            - sshd_strong_macs=stig_rhel9
 
     -   id: RHEL-09-255075
         levels:
@@ -1892,7 +1899,9 @@ controls:
         title:
             RHEL 9 SSH server must be configured to use only Message Authentication Codes
             (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.
-        status: pending
+        status: automated
+        rules:
+            - configure_ssh_crypto_policy
 
     -   id: RHEL-09-255080
         levels:
