@@ -2008,11 +2008,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - var_password_pam_remember=5
-      - accounts_password_pam_unix_remember
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/5.4.3.
+    rules:
+      - var_password_pam_remember=24
+      - accounts_password_pam_pwhistory_remember
+    status: automated
 
   - id: 5.3.3.3.2
     title: Ensure password history is enforced for the root user (Automated)
