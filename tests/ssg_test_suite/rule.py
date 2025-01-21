@@ -15,6 +15,8 @@ import subprocess
 import tempfile
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
+from ssg.jinja import process_file_with_macros
+
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
@@ -422,6 +424,21 @@ class RuleChecker(oscap.Checker):
                 other_content[file_name] = file_content
         return RuleTestContent(scenarios, other_content)
 
+    def _get_shared_test_content(self):
+        product_yaml = common.get_product_context(self.test_env.product)
+        other_content = dict()
+        for dirpath, _, filenames in os.walk(common._SHARED_DIR):
+            for file_name in filenames:
+                file_path = os.path.join(dirpath, file_name)
+                rel_path = os.path.relpath(file_path, common._SHARED_DIR)
+                try:
+                    file_content = process_file_with_macros(file_path, product_yaml)
+                except Exception as e:
+                    logging.error("Error processing file {0}: {1}".format(file_path, str(e)))
+                    continue
+                other_content[rel_path] = file_content
+        return RuleTestContent([], other_content)
+
     def _get_test_content_by_rule_id(self, rules_to_test):
         test_content_by_rule_id = dict()
         for rule in rules_to_test:
@@ -429,6 +446,7 @@ class RuleChecker(oscap.Checker):
             test_content_by_rule_id[rule.id] = rule_test_content
         sliced_test_content_by_rule_id = self._slice_sbr(
             test_content_by_rule_id, self.slice_current, self.slice_total)
+        sliced_test_content_by_rule_id["shared"] = self._get_shared_test_content()
         return sliced_test_content_by_rule_id
 
     def _test_target(self):

@@ -354,7 +354,6 @@ def create_tarball(test_content_by_rule_id):
         with tempfile.NamedTemporaryFile(
                 "wb", suffix=".tar.gz", delete=False) as fp:
             with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
-                tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
                 for rule_id in os.listdir(tmpdir):
                     # When a top-level directory exists under the temporary
                     # templated tests directory, we've already validated that
