@@ -7,7 +7,7 @@
 {{{ ansible_instantiate_variables(VARIABLE) }}}
 
 - name: Ensure {{{ PKGNAME }}} is removed
-  package:
+  ansible.builtin.package:
     name: "{{{ PKGNAME }}}"
     state: absent
   when: {{{ VARIABLE }}} != "{{{ VALUE }}}"
