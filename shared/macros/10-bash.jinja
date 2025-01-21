@@ -1019,6 +1019,7 @@ Default: yes
 Priority: 1024
 Password-Type: Primary
 Password: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
+Password-Initial: {{{ control }}} pam_pwhistory.so remember=24 enforce_for_root try_first_pass
 EOF
 fi
 
