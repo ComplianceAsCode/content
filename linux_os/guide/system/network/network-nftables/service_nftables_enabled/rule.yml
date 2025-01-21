@@ -34,9 +34,21 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("nftables") }}}
 
+
 platform: system_with_kernel and package[nftables] and service_disabled[firewalld]
 
+
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: nftables
+        servicename: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
 template:
     name: service_enabled
     vars:
         servicename: nftables
+{{%- endif %}}

@@ -36,7 +36,17 @@ platform: system_with_kernel and package[iptables] and service_disabled[firewall
 ocil: |-
     {{{ ocil_service_enabled(service="iptables") }}}
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: ip6tables
+        servicename: iptables-ipv6
+        variable: var_network_filtering_service
+        value: iptables
+{{%- else %}}
 template:
     name: service_enabled
     vars:
         servicename: iptables
+{{%- endif %}}

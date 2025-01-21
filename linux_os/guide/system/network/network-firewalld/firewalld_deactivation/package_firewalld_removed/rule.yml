@@ -29,7 +29,16 @@ references:
 
 fixtext: '{{{ fixtext_package_removed("firewalld") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: firewalld
+        variable: var_network_filtering_service
+        value: firewalld
+{{%- else %}}
 template:
     name: package_removed
     vars:
         pkgname: firewalld
+{{%- endif %}}

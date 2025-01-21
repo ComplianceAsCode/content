@@ -37,8 +37,18 @@ fixtext: '{{{ fixtext_service_disabled("firewalld") }}}'
 
 srg_requirement: '{{{ srg_requirement_service_disabled("firewalld") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: firewalld
+        servicename: firewalld
+        variable: var_network_filtering_service
+        value: firewalld
+{{%- else %}}
 template:
     name: service_disabled
     vars:
         servicename: firewalld
         packagename: firewalld
+{{%- endif %}}

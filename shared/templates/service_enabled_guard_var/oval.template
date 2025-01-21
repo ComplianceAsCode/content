@@ -1,0 +1,67 @@
+<def-group>
+
+{{%- set package_installed_test_id = "test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_installed" -%}}
+{{%- set variable_value_test_id = _RULE_ID + "_test_variable_" + VARIABLE -%}}
+{{% if OPERATION is defined %}}
+  {{%- set variable_value_op = OPERATION -%}}
+{{% else %}}
+  {{%- set variable_value_op = "equals" -%}}
+{{% endif %}}
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
+    <criteria operator="OR" comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start or not needed">
+      <criteria comment="service {{{ SERVICENAME }}} is not needed" operator="AND">
+        <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"
+        test_ref="{{{ variable_value_test_id }}}" negate="true"/>
+      </criteria>
+      <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
+      <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"
+      test_ref="{{{ variable_value_test_id }}}" />
+      <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
+        <criteria comment="service {{{ SERVICENAME }}} is configured to start and is running" operator="AND">
+          <criterion comment="{{{ SERVICENAME }}} is running" test_ref="test_service_running_{{{ SERVICENAME }}}" />
+          <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">
+            <criterion comment="multi-user.target wants {{{ SERVICENAME }}}" test_ref="test_multi_user_wants_{{{ SERVICENAME }}}" />
+            <criterion comment="multi-user.target wants {{{ SERVICENAME }}} socket" test_ref="test_multi_user_wants_{{{ SERVICENAME }}}_socket" />
+          </criteria>
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_{{{ SERVICENAME }}}" version="1">
+    <linux:object object_ref="object_multi_user_target_for_{{{ SERVICENAME }}}_enabled" />
+    <linux:state state_ref="state_systemd_{{{ SERVICENAME }}}_on"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ SERVICENAME }}}_enabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_{{{ SERVICENAME }}}_on" comment="{{{ SERVICENAME }}} listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">{{{ SERVICENAME }}}.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_{{{ SERVICENAME }}}_socket" version="1">
+    <linux:object object_ref="object_multi_user_target_for_{{{ SERVICENAME }}}_socket_enabled" />
+    <linux:state state_ref="state_systemd_{{{ SERVICENAME }}}_socket_on"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ SERVICENAME }}}_socket_enabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_{{{ SERVICENAME }}}_socket_on" comment="{{{ SERVICENAME }}} listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">{{{ SERVICENAME }}}.socket</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitproperty_test id="test_service_running_{{{ SERVICENAME }}}" check="at least one" check_existence="at_least_one_exists" comment="Test that the {{{ SERVICENAME }}} service is running" version="1">
+    <linux:object object_ref="obj_service_running_{{{ SERVICENAME }}}"/>
+    <linux:state state_ref="state_service_running_{{{ SERVICENAME }}}"/>
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_object id="obj_service_running_{{{ SERVICENAME }}}" comment="Retrieve the ActiveState property of {{{ SERVICENAME }}}" version="1">
+    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(socket|service)$</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="state_service_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is running">
+      <linux:value>active</linux:value>
+  </linux:systemdunitproperty_state>
+{{{ oval_test_external_variable_value(variable=VARIABLE, value=VALUE, test_id=variable_value_test_id, operation=variable_value_op) }}}
+{{{ oval_test_package_installed(package=PACKAGENAME, evr="", test_id=package_installed_test_id) }}}
+</def-group>

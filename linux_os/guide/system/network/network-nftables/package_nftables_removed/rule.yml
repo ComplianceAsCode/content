@@ -27,7 +27,17 @@ references:
 
 fixtext: '{{{ fixtext_package_removed("nftables") }}}'
 
+{{%- if product in [ "sle12", "sle15" ] %}}
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: nftables
+        variable: var_network_filtering_service
+        value: firewalld|nftables
+        operation: pattern match
+{{%- else %}}
 template:
     name: package_removed
     vars:
         pkgname: nftables
+{{%- endif %}}

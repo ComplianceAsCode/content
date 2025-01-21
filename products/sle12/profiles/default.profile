@@ -12,6 +12,7 @@ description: |-
     is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+    - var_network_filtering_service=iptables
     - accounts_user_dot_user_ownership
     - service_timesyncd_enabled
     - gnome_gdm_disable_xdmcp

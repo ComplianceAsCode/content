@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Network filtering service'
+
+description: |-
+   Network filtering service: iptables, nftables, firewalld or ufw
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    iptables: iptables
+    nftables: nftables
+    firewalld: firewalld
+    ufw: ufw
+    default: firewalld
