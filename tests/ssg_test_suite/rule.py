@@ -11,11 +11,11 @@ import os
 import os.path
 import re
 import shutil
-import subprocess
 import tempfile
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg.jinja import process_file_with_macros
+from ssg.rules import is_rule_dir
 
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
@@ -23,7 +23,6 @@ from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 
-import ssg.templates
 
 Rule = collections.namedtuple(
     "Rule",
@@ -304,7 +303,7 @@ class RuleChecker(oscap.Checker):
 
         for dirpath, dirnames, filenames in common.walk_through_benchmark_dirs(
                 product):
-            if not common.is_rule_dir(dirpath):
+            if not is_rule_dir(dirpath):
                 continue
             short_rule_id = os.path.basename(dirpath)
             full_rule_id = OSCAP_RULE + short_rule_id
