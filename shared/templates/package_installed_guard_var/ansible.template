@@ -7,7 +7,7 @@
 {{{ ansible_instantiate_variables(VARIABLE) }}}
 
 - name: Ensure {{{ PKGNAME }}} is installed
-  package:
+  ansible.builtin.package:
     name: "{{{ PKGNAME }}}"
     state: present
 {{% if OPERATION == "pattern match" %}}
