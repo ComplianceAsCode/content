@@ -324,8 +324,13 @@ def write_rule_test_content_to_dir(rule_dir, test_content):
         scenario_file_path = os.path.join(rule_dir, scenario.script)
         with open(scenario_file_path, "w") as f:
             f.write(scenario.contents)
-    for file_name, file_content in test_content.other_content.items():
-        file_path = os.path.join(rule_dir, file_name)
+    for rel_file_path, file_content in test_content.other_content.items():
+        if os.path.dirname(rel_file_path) != "":
+            # file_path contains a directory, make sure it exists
+            subdir = os.path.join(rule_dir, os.path.dirname(rel_file_path))
+            if not os.path.exists(subdir):
+                os.mkdir(subdir)
+        file_path = os.path.join(rule_dir, rel_file_path)
         with open(file_path, "w") as f:
             f.write(file_content)
 
