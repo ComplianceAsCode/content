@@ -178,6 +178,7 @@ rules:
 - install_smartcard_packages
 - logind_session_timeout
 - no_direct_root_logins
+- no_dirs_unowned_by_root
 - no_duplicate_uids
 - no_empty_passwords
 - no_empty_passwords_etc_shadow
@@ -204,6 +205,7 @@ rules:
 - require_emergency_target_auth
 - require_singleuser_auth
 - restrict_serial_port_logins
+- root_path_all_dirs
 - root_path_default
 - root_path_no_dot
 - sebool_httpd_can_check_spam

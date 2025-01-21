@@ -2178,11 +2178,12 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - accounts_root_path_dirs_no_write
+      - root_path_all_dirs
       - root_path_no_dot
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/6.2.9.
+      - no_dirs_unowned_by_root
+    status: automated
 
   - id: 5.4.2.6
     title: Ensure root user umask is configured (Automated)
