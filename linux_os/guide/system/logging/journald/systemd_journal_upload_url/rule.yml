@@ -23,9 +23,10 @@ ocil_clause: 'systemd-journal-upload URL is missing or commented in /etc/systemd
 
 ocil: |-
     To ensure logs are sent to a remote host, examine the file
-    <tt>/etc/systemd/journal-upload.conf</tt>.
+    <tt>{{{ xccdf_value("var_journal_upload_server_key_file") }}}</tt>.
     URL should be present:
     <pre>URL={{{ xccdf_value("var_journal_upload_url") }}}</pre>
 
 fixtext: |-
-    Configure systemd-journal-upload URL to {{{ xccdf_value("var_journal_upload_url") }}}
+   Configure systemd-journal-upload config file to {{{ xccdf_value("var_journal_upload_server_key_file") }}}.
+   Configure systemd-journal-upload URL to {{{ xccdf_value("var_journal_upload_url") }}}

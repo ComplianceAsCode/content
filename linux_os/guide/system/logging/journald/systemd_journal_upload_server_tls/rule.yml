@@ -22,7 +22,7 @@ ocil_clause: 'systemd-journal-upload TLS configuration is missing or commented i
 
 ocil: |-
     To ensure logs are sent securely to a remote host, examine the file
-    <tt>/etc/systemd/journal-upload.conf</tt>.
+    <tt>{{{ xccdf_value("var_journal_upload_server_key_file") }}}</tt>.
     ServerKeyFile should be present:
     <pre>ServerKeyFile={{{ xccdf_value("var_journal_upload_server_key_file") }}}</pre>
     ServerCertificateFile should be present:
@@ -31,6 +31,7 @@ ocil: |-
     <pre>TrustedCertificateFile={{{ xccdf_value("var_journal_upload_server_trusted_certificate_file") }}}</pre>
 
 fixtext: |-
+    Configure systemd-journal-upload config file to {{{ xccdf_value("var_journal_upload_server_key_file") }}}.
     Configure systemd-journal-upload ServerKeyFile to {{{ xccdf_value("var_journal_upload_server_key_file") }}}
     Configure systemd-journal-upload ServerCertificateFile to {{{ xccdf_value("var_journal_upload_server_certificate_file") }}}
     Configure systemd-journal-upload TrustedCertificateFile to {{{ xccdf_value("var_journal_upload_server_trusted_certificate_file") }}}
