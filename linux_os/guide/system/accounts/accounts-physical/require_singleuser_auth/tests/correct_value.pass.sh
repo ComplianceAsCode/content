@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 8,Oracle Linux 9
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_ol
 
 service_file="/usr/lib/systemd/system/rescue.service"
 sulogin="/usr/lib/systemd/systemd-sulogin-shell"
