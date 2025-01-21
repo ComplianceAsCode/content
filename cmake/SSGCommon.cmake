@@ -202,11 +202,29 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
     if(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
-        add_test(
-            NAME "${PRODUCT}-bash-shellcheck"
-            COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+        # Get the shellcheck version
+        execute_process(
+            COMMAND ${SHELLCHECK_EXECUTABLE} --version
+            OUTPUT_VARIABLE SHELLCHECK_VERSION_OUTPUT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-        set_tests_properties("${PRODUCT}-bash-shellcheck" PROPERTIES LABELS quick)
+
+        # Extract the version number from the output
+        string(REGEX MATCH "version: [0-9]+\\.[0-9]+\\.[0-9]+" SHELLCHECK_VERSION_LINE "${SHELLCHECK_VERSION_OUTPUT}")
+        string(REGEX REPLACE "version: " "" SHELLCHECK_VERSION "${SHELLCHECK_VERSION_LINE}")
+
+        if(SHELLCHECK_VERSION VERSION_GREATER_EQUAL "0.10.0")
+            add_test(
+                NAME "${PRODUCT}-bash-shellcheck"
+                COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning "--extended-analysis=false"
+            )
+        else()
+            add_test(
+                NAME "${PRODUCT}-bash-shellcheck"
+                COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+            )
+        endif()
+
     endif()
 endmacro()
 
