@@ -12,8 +12,6 @@
         comment="At least one pwhistory line exists"/>
       <criterion test_ref="{{{ rule_id }}}_test_password_pam_pwhistory_use_authtok"
         comment="use_authtok is configured in pam pwhistory in common_password file"/>
-      <criterion test_ref="{{{ rule_id }}}_test_password_pam_pwhistory_without_use_authtok"
-        comment="use_authtok is configured not in pam pwhistory in common_password file"/>
     </criteria>
   </definition>
 
@@ -58,18 +56,5 @@
   <ind:textfilecontent54_state id="{{{ rule_id }}}_ste_use_authtok_pam_pwhistory_lines" version="1">
       <ind:subexpression operation="pattern match">^[^#\n\r]*pam_pwhistory\.so.*$</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <!-- Test to check if use_authtok is not configured in the first password line containing pam_pwhistory.so -->
-  <ind:textfilecontent54_test id="{{{ rule_id }}}_test_password_pam_pwhistory_without_use_authtok" version="1"
-    check="all" check_existence="all_exist"
-    comment="use_authtok is configured not in pam pwhistory on top of stack in common_password file">
-    <ind:object object_ref="{{{ rule_id }}}_obj_without_use_authtok" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="{{{ rule_id }}}_obj_without_use_authtok" version="1">
-    <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[ \t]*password[ \t]+[^#\n\r]*pam_pwhistory\.so.*$</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
 
 </def-group>
