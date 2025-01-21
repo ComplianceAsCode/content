@@ -64,6 +64,17 @@ ocil: |-
         <pre>ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"</pre>
     {{%- endif %}}
 
+    In case the output does not match, check if the <tt>ExecStart</tt> directive is not overridden:
+    <pre>grep ExecStart /etc/systemd/system/rescue.service.d/*.conf</pre>
+    The output should contain two lines:
+    <pre>ExecStart=
+    {{% if product in ["fedora", "rhcos4", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
+    ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
+    {{%- else -%}}
+    ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"</pre>
+    {{%- endif %}}
+
+
     {{% if product not in ["ol8", "rhel8"] %}}
     Then, verify that the rescue service is in the runlevel1.target.
     Run the following command:
@@ -85,11 +96,12 @@ ocil: |-
 fixtext: |-
     Configure {{{ full_name }}} to require authentication in single user mode.
 
-    Add or update the following line in "/usr/lib/systemd/system/rescue.service":
+    Ensure that there are following two lines  in <tt>/etc/systemd/system/rescue.service.d/10-remediation.conf</tt>:
+    <pre>ExecStart=
     {{% if product in ["fedora", "sle12", "sle15", "slmicro5"] or 'ol' in families or 'rhel' in product -%}}
-    ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
+    ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
     {{%- else -%}}
-    ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"
+    ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"</pre>
     {{%- endif %}}
 
 srg_requirement: '{{{ full_name }}} must require authentication upon booting into rescue mode.'
