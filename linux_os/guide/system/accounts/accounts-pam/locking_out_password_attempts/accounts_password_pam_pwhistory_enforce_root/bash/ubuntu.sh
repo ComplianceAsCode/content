@@ -8,6 +8,12 @@ if ! grep -qE 'pam_pwhistory\.so\s+[^#\n]*\benforce_for_root\b' "$conf_file"; th
         s/$/ enforce_for_root/g
     }
     }' "$conf_file"
+
+    sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
+    /pam_pwhistory\.so/ {
+        s/$/ enforce_for_root/g
+    }
+    }' "$conf_file"
 fi
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update --enable cac_pwhistory
