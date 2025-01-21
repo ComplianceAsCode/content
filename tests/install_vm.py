@@ -34,8 +34,16 @@ def path_from_tests(path):
 
 
 def parse_args():
+    import textwrap
+    osinfo_epilog = textwrap.dedent(r"""
+        --osinfo details: 'rhel8-unknown' is used by default when '--distro' has any of
+        the RHEL available selected). Run 'virt-install --osinfo list'
+        to get a list of available options
+    """)
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=argparse.RawTextHelpFormatter,
+        # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        epilog=osinfo_epilog,
     )
 
     parser.add_argument(
@@ -154,7 +162,7 @@ def parse_args():
         "--osinfo",
         dest="osinfo",
         default=None,
-        help="Specify OSInfo for virt-install command ('rhel8-unknown' is used by default when '--distro' has any of the RHEL available selected). Run 'virt-install --osinfo list' to get a list of available options",
+        help="Specify OSInfo for virt-install command",
     )
 
     return parser.parse_args()
