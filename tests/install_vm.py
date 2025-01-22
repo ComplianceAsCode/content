@@ -41,13 +41,11 @@ def path_from_tests(path):
 def parse_args():
     import textwrap
     osinfo_epilog = textwrap.dedent(r"""
-        --osinfo details: 'rhel8-unknown' is used by default when '--distro' has any of
-        the RHEL available selected. Run 'virt-install --osinfo list'
-        to get a list of available options
-    """)
+        --osinfo details: 'For unreleased distros, these are the following
+        default data used as input {}.
+    """.format(UNRELEASED_DISTROS_AND_OSINFO))
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,
-        # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         epilog=osinfo_epilog,
     )
 
@@ -342,8 +340,8 @@ def get_virt_install_command(data):
         command.append(f'--osinfo={data.osinfo}')
     else:
         if data.distro in UNRELEASED_DISTROS_AND_OSINFO.keys():
-            command.append("--osinfo={}".format(UNRELEASED_DISTROS_AND_OSINFO.get(data.distro, "rhel9-unknown")))
-
+            command.append("--osinfo={}".format(
+                UNRELEASED_DISTROS_AND_OSINFO.get(data.distro, "rhel9-unknown")))
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
