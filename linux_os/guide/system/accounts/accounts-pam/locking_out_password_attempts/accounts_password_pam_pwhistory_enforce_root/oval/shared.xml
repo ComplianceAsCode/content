@@ -8,7 +8,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("Enforce password history for root of pam_pwhistory.") }}}
       <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
-        <criterion test_ref="test_accounts_password_pam_pwhistory_enabled"
+        <criterion test_ref="test_accounts_password_pam_pwhistory_enforce_root_enabled"
                    comment="pam_pwhistory.so is properly defined in password section of PAM file"/>
         <criterion test_ref="test_accounts_password_pam_pwhistory_enforce_for_root_parameter"
                  comment="enforce_for_root parameter of pam_pwhistory.so is properly configured"/>
@@ -16,12 +16,12 @@
   </definition>
 
   <!-- is pam_pwhistory.so enabled? -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_enabled"
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_enforce_root_enabled"
                               check="all" version="1" comment="Check pam_pwhistory.so presence in PAM file">
-    <ind:object object_ref="object_accounts_password_pam_pwhistory_enabled"/>
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_enforce_root_enabled"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_enabled"
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_enforce_root_enabled"
                                 version="1">
     <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
     <ind:pattern var_ref="var_accounts_password_pam_pwhistory_module_regex"

@@ -6,7 +6,7 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The passwords to remember of pam_pwhistory should be set correctly.") }}}
       <criteria operator="AND" comment="Check if pam_pwhistory.so is properly configured">
-        <criterion test_ref="test_accounts_password_pam_pwhistory_enabled"
+        <criterion test_ref="test_accounts_password_pam_pwhistory_remember_enabled"
                    comment="pam_pwhistory.so is properly defined in password section of PAM file"/>
         <criterion test_ref="test_accounts_password_pam_pwhistory_remember_parameter"
                  comment="Remember parameter of pam_pwhistory.so is properly configured"/>
@@ -16,12 +16,12 @@
   <external_variable comment="number of passwords that should be remembered" datatype="int" id="var_password_pam_remember" version="1" />
 
   <!-- is pam_pwhistory.so enabled? -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_enabled"
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_enabled"
                               check="all" version="1" comment="Check pam_pwhistory.so presence in PAM file">
-    <ind:object object_ref="object_accounts_password_pam_pwhistory_enabled"/>
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_enabled"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_enabled"
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_enabled"
                                 version="1">
     <ind:filepath>{{{ accounts_password_pam_file }}}</ind:filepath>
     <ind:pattern var_ref="var_accounts_password_pam_pwhistory_module_regex"
