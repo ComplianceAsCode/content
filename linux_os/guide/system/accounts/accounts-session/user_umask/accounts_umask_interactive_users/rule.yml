@@ -40,10 +40,10 @@ ocil: |-
 
     Note: The example is for a system that is configured to create users home directories in the "/home" directory.
 
-    # grep -ri umask /home/
+    $ sudo find /home -maxdepth 2 -type f -name ".[^.]*" -exec grep -iH -d skip --exclude=.bash_history umask {} \;
 
-    /home/smithj/.bash_history:grep -i umask /etc/bashrc /etc/csh.cshrc /etc/profile
-    /home/smithj/.bash_history:grep -i umask /etc/login.defs
+    /home/wadea/.bash_history:grep -i umask /etc/bashrc /etc/csh.cshrc /etc/profile
+    /home/wadea/.bash_history:grep -i umask /etc/login.defs
 
 fixtext: |-
     Remove the umask statement from all local interactive user's initialization files.
