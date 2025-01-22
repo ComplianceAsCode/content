@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle,multi_platform_almalinux
 
 # Declare variables used for the tests and define the create_rsyslog_test_logs function
 source $SHARED/rsyslog_log_utils.sh
