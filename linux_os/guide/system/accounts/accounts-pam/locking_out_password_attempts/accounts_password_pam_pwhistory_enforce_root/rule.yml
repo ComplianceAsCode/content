@@ -1,0 +1,18 @@
+documentation_complete: true
+
+
+title: 'Limit Password Reuse'
+
+description: |-
+    Do not allow root to reuse recent passwords. This can be
+    accomplished by using the <tt>enforce_for_root</tt> option for the
+    <tt>pam_pwhistory</tt> PAM modules.
+    <br /><br />
+    In the file <tt>/etc/pam.d/common-password</tt>, make sure the parameters
+    <tt>enforce_for_root</tt> is present.
+
+rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
+
+severity: medium
+
+platform: package[pam]
