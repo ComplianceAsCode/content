@@ -2142,9 +2142,9 @@ This macro creates a Bash conditional which uses dpkg to check if a package pass
 #}}
 {{%- macro bash_pkg_conditional_dpkg(package, op=None, ver=None) -%}}
 {{%- if ver -%}}
-dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed && {{{ bash_compare_version_dpkg(package, op, ver) }}}
+dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q '^installed' && {{{ bash_compare_version_dpkg(package, op, ver) }}}
 {{%- else -%}}
-dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q '^installed'
 {{%- endif -%}}
 {{%- endmacro -%}}
 
