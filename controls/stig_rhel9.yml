@@ -3249,16 +3249,6 @@ controls:
             - rsyslog_remote_access_monitoring
         status: automated
 
-    -   id: RHEL-09-652035
-        levels:
-            - medium
-        title:
-            RHEL 9 must be configured to offload audit records onto a different system
-            from the system being audited via syslog.
-        rules:
-            - auditd_audispd_syslog_plugin_activated
-        status: automated
-
     -   id: RHEL-09-652040
         levels:
             - medium
