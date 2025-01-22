@@ -19,6 +19,7 @@
   <!-- #### creation of object #### -->
   <ind:textfilecontent54_object id="object_accounts_umask_interactive_users"
                                 comment="Umask value from initialization files" version="1">
+    <ind:behaviors max_depth="0" recurse_direction="down" />
     <ind:path var_ref="var_accounts_umask_interactive_users_dirs" var_check="at least one"/>
     <ind:filename operation="pattern match">^\..*</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*umask\s*</ind:pattern>
