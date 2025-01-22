@@ -2208,8 +2208,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - no_invalid_shell_accounts_unlocked
+    status: automated
+    notes: |
+      Remediation is not automated.
 
   - id: 5.4.3.1
     title: Ensure nologin is not listed in /etc/shells (Automated)
