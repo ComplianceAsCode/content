@@ -333,6 +333,9 @@ def write_rule_test_content_to_dir(rule_dir, test_content):
         file_path = os.path.join(rule_dir, rel_file_path)
         with open(file_path, "w") as f:
             f.write(file_content)
+            # Ensure newline at the end of the file because
+            # process_file_with_macros strips it off
+            f.write("\n")
 
 
 def create_tarball(test_content_by_rule_id):
