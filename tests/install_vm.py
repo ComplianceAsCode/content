@@ -14,8 +14,13 @@ KNOWN_DISTROS = [
     "centos9",
     "rhel8",
     "rhel9",
-    "rhel10",
 ]
+
+# put here any unreleased distro in development that needs to be tested
+# and any working osinfo known to be used by default when installating it
+UNRELEASED_DISTROS_AND_OSINFO = {
+    "rhel10": "rhel9-unknown"
+}
 
 DISTRO_URL = {
     "fedora":
@@ -37,7 +42,7 @@ def parse_args():
     import textwrap
     osinfo_epilog = textwrap.dedent(r"""
         --osinfo details: 'rhel8-unknown' is used by default when '--distro' has any of
-        the RHEL available selected). Run 'virt-install --osinfo list'
+        the RHEL available selected. Run 'virt-install --osinfo list'
         to get a list of available options
     """)
     parser = argparse.ArgumentParser(
@@ -62,7 +67,7 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        choices=KNOWN_DISTROS,
+        choices=KNOWN_DISTROS + list(UNRELEASED_DISTROS_AND_OSINFO.keys()),
         help="What distribution to install.",
     )
     parser.add_argument(
@@ -162,7 +167,7 @@ def parse_args():
         "--osinfo",
         dest="osinfo",
         default=None,
-        help="Specify OSInfo for virt-install command",
+        help="Specify OSInfo for virt-install command.",
     )
 
     return parser.parse_args()
@@ -336,8 +341,8 @@ def get_virt_install_command(data):
     if data.osinfo:
         command.append(f'--osinfo={data.osinfo}')
     else:
-        if 'rhel' in data.distro:
-            command.append(f'--osinfo=rhel8-unknown')
+        if data.distro in UNRELEASED_DISTROS_AND_OSINFO.keys():
+            command.append("--osinfo={}".format(UNRELEASED_DISTROS_AND_OSINFO.get(data.distro, "rhel9-unknown")))
 
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
