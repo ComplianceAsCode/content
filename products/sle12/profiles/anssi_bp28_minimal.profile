@@ -35,6 +35,7 @@ selections:
   - '!accounts_password_pam_ocredit'
   - '!accounts_password_pam_lcredit'
   - '!ensure_redhat_gpgkey_installed'
+  - '!ensure_almalinux_gpgkey_installed'
   - '!accounts_passwords_pam_faillock_deny'
   - '!accounts_passwords_pam_faillock_unlock_time'
   - '!accounts_passwords_pam_faillock_interval'

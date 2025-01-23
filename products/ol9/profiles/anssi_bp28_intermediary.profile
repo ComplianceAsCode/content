@@ -29,6 +29,7 @@ selections:
     - '!enable_pam_namespace'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_umask'
     - '!sudo_add_ignore_dot'
     - '!sudo_add_env_reset'
