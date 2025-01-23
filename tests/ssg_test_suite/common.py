@@ -19,7 +19,7 @@ from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
 from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
-from ssg.rules import get_rule_dir_yaml, is_rule_dir
+from ssg.rules import get_rule_dir_yaml
 from ssg.utils import mkdir_p
 from ssg_test_suite.log import LogHelper
 
@@ -324,10 +324,18 @@ def write_rule_test_content_to_dir(rule_dir, test_content):
         scenario_file_path = os.path.join(rule_dir, scenario.script)
         with open(scenario_file_path, "w") as f:
             f.write(scenario.contents)
-    for file_name, file_content in test_content.other_content.items():
-        file_path = os.path.join(rule_dir, file_name)
+    for rel_file_path, file_content in test_content.other_content.items():
+        if os.path.dirname(rel_file_path) != "":
+            # file_path contains a directory, make sure it exists
+            subdir = os.path.join(rule_dir, os.path.dirname(rel_file_path))
+            if not os.path.exists(subdir):
+                os.mkdir(subdir)
+        file_path = os.path.join(rule_dir, rel_file_path)
         with open(file_path, "w") as f:
             f.write(file_content)
+            # Ensure newline at the end of the file because
+            # process_file_with_macros strips it off
+            f.write("\n")
 
 
 def create_tarball(test_content_by_rule_id):
@@ -349,7 +357,6 @@ def create_tarball(test_content_by_rule_id):
         with tempfile.NamedTemporaryFile(
                 "wb", suffix=".tar.gz", delete=False) as fp:
             with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
-                tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
                 for rule_id in os.listdir(tmpdir):
                     # When a top-level directory exists under the temporary
                     # templated tests directory, we've already validated that
