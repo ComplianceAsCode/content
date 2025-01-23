@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_almalinux
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -24,7 +24,7 @@
     log_file: "{{ log_file_line.stdout | trim }}"
   when: (log_file_exists is not skipped) and (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
 
-{{% if 'ol' not in product and "rhel" not in product %}}
+{{% if 'ol' not in product and "rhel" not in product and 'almalinux' not in product %}}
 - name: Get log files group
   command: grep -m 1 ^log_group /etc/audit/auditd.conf
   failed_when: false

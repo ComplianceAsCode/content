@@ -5,7 +5,7 @@
 # disruption = low
 
 {{%- set ok_by_default = false %}}
-{{%- if product in ["ol7", "ol8", "ol9", "fedora", "almalinux9"] or 'rhel' in product %}}
+{{%- if product in ["ol7", "ol8", "ol9", "fedora", "almalinux"] or 'rhel' in product %}}
 {{%- set ok_by_default = true %}}
 {{%- endif %}}
 
