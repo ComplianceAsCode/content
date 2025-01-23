@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Ensure a Single Time Synchronization Service is in Use'
+
+description: |-
+    The system must have exactly one active time synchronization service to avoid conflicts
+    and ensure consistent time synchronization. Only one of the following services should be
+    enabled and active at any time:
+    <ul>
+        <li>chrony - A versatile NTP implementation</li>
+        <li>systemd-timesyncd - A lightweight NTP client</li>
+    </ul>
+    Having zero active time synchronization services leaves the system without accurate
+    time synchronization, while having multiple active services can lead to unexpected and
+    unreliable results.
+
+rationale: |-
+    Running multiple time synchronization services simultaneously can lead to conflicts
+    in time synchronization, unpredictable behavior, and unreliable results. A single service
+    ensures consistent and accurate time synchronization.
+
+    Having no active time synchronization service leaves the system without accurate
+    time synchronization, which can affect security mechanisms, log consistency, and forensic
+    investigations.
+
+severity: medium
+
+platform: machine
+
+warnings:
+    - general: |-
+        This rule does not come with a remediation. There are specific rules
+        for enabling each time synchronization service, which should be used instead.
