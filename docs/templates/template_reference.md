@@ -612,6 +612,8 @@ When the remediation is applied duplicate occurrences of `key` are removed.
 
     - **value** - the value the key should have in the specified path
 
+    - **xccdf_variable** - use value stored in an XCCDF variable instead of hardcoded value
+
     - **app** - optional. If not set the check will use the default text `The respective application or service`.
       If set, the `app` is used within sentences like: "`application` is configured correctly and configuration file exists"
 
