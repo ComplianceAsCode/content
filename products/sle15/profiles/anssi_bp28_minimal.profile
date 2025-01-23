@@ -41,5 +41,6 @@ selections:
   - '!accounts_password_pam_ucredit'
   - '!accounts_password_pam_minlen'
   - '!ensure_oracle_gpgkey_installed'
+  - '!ensure_almalinux_gpgkey_installed'
   - '!enable_authselect'
   - '!package_kea_removed'

@@ -47,6 +47,7 @@ selections:
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
     - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
     # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R29.
     - '!file_groupowner_efi_grub2_cfg'

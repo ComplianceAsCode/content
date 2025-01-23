@@ -21,6 +21,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!install_PAE_kernel_on_x86-32'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!package_dracut-fips-aesni_installed'
     - '!cracklib_accounts_password_pam_lcredit'
     - '!cracklib_accounts_password_pam_ocredit'

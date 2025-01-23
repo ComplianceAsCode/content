@@ -38,6 +38,7 @@ selections:
     - '!kernel_config_hardened_usercopy_fallback'
     - '!accounts_passwords_pam_faillock_deny'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!accounts_passwords_pam_faillock_unlock_time'
     - '!accounts_passwords_pam_faillock_interval'
     - '!kernel_config_gcc_plugin_latent_entropy'
