@@ -929,18 +929,6 @@ controls:
       - service_httpd_disabled
     # rule would be nice to disable nginx service
 
-  - id: 2.1.19
-    title: Ensure xinetd services are not in use (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    status: automated
-    notes: Review the availability of this package when the product is out.
-    rules:
-      - package_xinetd_removed
-    related_rules:
-      - service_xinetd_disabled
-
   - id: 2.1.20
     title: Ensure X window server services are not in use (Automated)
     levels:
