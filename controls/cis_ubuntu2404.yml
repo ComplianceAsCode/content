@@ -2272,8 +2272,16 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - logging_services_active
+    status: automated
+    notes: |
+      The title of this rule is misleading. The actual audit checks that at least
+      one of "rsyslogd" and "systemd-journald" is active.
+      See https://workbench.cisecurity.org/benchmarks/18959/tickets/23601
+
+      Remediation is not automated as the choice of correct logging service
+      is dependent on site policy.
 
   - id: 6.1.2.1.1
     title: Ensure systemd-journal-remote is installed (Automated)
