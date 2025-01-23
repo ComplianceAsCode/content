@@ -226,6 +226,7 @@ selections:
 - ensure_gpgcheck_local_packages
 - ensure_gpgcheck_never_disabled
 - ensure_redhat_gpgkey_installed
+- fapolicy_default_deny
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
 - file_audit_tools_permissions
