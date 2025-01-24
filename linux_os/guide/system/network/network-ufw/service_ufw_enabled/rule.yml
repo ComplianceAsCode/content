@@ -23,9 +23,19 @@ ocil_clause: 'the service is not enabled'
 ocil: |-
     {{{ ocil_service_enabled(service="ufw") }}}
 
+platform: system_with_kernel and package[ufw]
+
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: ufw
+        servicename: ufw
+        variable: var_network_filtering_service
+        value: ufw
+{{%- else %}}
 template:
     name: service_enabled
     vars:
         servicename: ufw
-
-platform: system_with_kernel and package[ufw]
+{{%- endif %}}
