@@ -33,7 +33,7 @@
 <xsl:variable name="cis-cscuri">https://www.cisecurity.org/controls/</xsl:variable>
 <xsl:variable name="osppuri">https://www.niap-ccevs.org/Profile/PP.cfm</xsl:variable>
 <xsl:variable name="pcidssuri">https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf</xsl:variable>
-<xsl:variable name="nerc-cipuri">https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx</xsl:variable>
+<xsl:variable name="nerc-cipuri">https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx</xsl:variable>
 <xsl:variable name="ssg-contributors-uri">https://github.com/ComplianceAsCode/content/wiki/Contributors</xsl:variable>
 
 <!-- misc language URI's -->
