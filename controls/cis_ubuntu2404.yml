@@ -2433,10 +2433,16 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
-      - permissions_local_var_log
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.3.
+    rules:
+      - file_permissions_var_log_cloud-init
+      - file_permissions_var_log_lastlog
+      - file_permissions_var_log_cloud-init
+      - file_permissions_var_log_localmessages
+      - file_permissions_var_log_messages
+      - file_permissions_var_log_syslog
+      - file_permissions_var_log_waagent
+      - file_permissions_var_log_wbtmp
+    status: automated
 
   - id: 6.2.1.1
     title: Ensure auditd packages are installed (Automated)
