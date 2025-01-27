@@ -1,13 +1,14 @@
 documentation_complete: true
 
 
-title: 'Disable X Windows Startup By Setting Default Target'
+title: 'Disable Graphical Environment Startup By Setting Default Target'
 
 description: |-
     Systems that do not require a graphical user interface should only boot by
     default into <tt>multi-user.target</tt> mode. This prevents accidental booting of the system
     into a <tt>graphical.target</tt> mode. Setting the system's default target to
-    <tt>multi-user.target</tt> will prevent automatic startup of the X server. To do so, run:
+    <tt>multi-user.target</tt> will prevent automatic startup of the graphical environment.
+    To do so, run:
     <pre>$ systemctl set-default multi-user.target</pre>
     You should see the following output:
     <pre>Removed symlink /etc/systemd/system/default.target.
@@ -15,9 +16,7 @@ description: |-
 
 rationale: |-
     Services that are not required for system and application processes
-    must not be active to decrease the attack surface of the system. X windows has a
-    long history of security vulnerabilities and should not be used unless approved
-    and documented.
+    must not be active to decrease the attack surface of the system.
 
 severity: medium
 
