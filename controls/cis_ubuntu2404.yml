@@ -1832,16 +1832,21 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_pam_runtime_installed
+    status: automated
+    notes: |
+      The CIS control checks that version >= 1.5.3-5 and not that
+      it is the latest version as the title suggests.
 
   - id: 5.3.1.2
     title: Ensure libpam-modules is installed (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - package_pam_modules_installed
+    status: automated
 
   - id: 5.3.1.3
     title: Ensure libpam-pwquality is installed (Automated)
