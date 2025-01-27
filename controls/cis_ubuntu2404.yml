@@ -1913,8 +1913,10 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    status: planned
-    notes: TODO. Rule does not seem to be implemented, nor does it map to any rules in ubuntu2204 profile.
+    rules:
+      - var_accounts_passwords_pam_faillock_unlock_time=900
+      - accounts_passwords_pam_faillock_root_unlock_time
+    status: automated
 
   - id: 5.3.3.2.1
     title: Ensure password number of changed characters is configured (Automated)
