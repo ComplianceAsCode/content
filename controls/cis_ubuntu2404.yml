@@ -940,8 +940,18 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - var_timesync_service=systemd-timesyncd
+      - package_chrony_installed
+      - service_chronyd_enabled
+      - service_chronyd_disabled
+      - package_timesyncd_installed
+      - service_timesyncd_enabled
+      - service_timesyncd_disabled
       - ntp_single_service_active
     status: automated
+    notes: |
+      To select which timesync daemon to install and configure, use the
+      profile variable var_timesync_service.
 
   - id: 2.3.2.1
     title: Ensure systemd-timesyncd configured with authorized timeserver (Automated)
@@ -958,10 +968,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    rules:
-      - service_chronyd_disabled
+    related_rules:
       - service_timesyncd_enabled
+      - service_timesyncd_disabled
     status: automated
+    notes: Implemented in 2.3.1.1
 
   - id: 2.3.3.1
     title: Ensure chrony is configured with authorized timeserver (Automated)
@@ -977,7 +988,6 @@ controls:
       Rule does not check or remediate config files included via
       confdir and sourcedir directives.
 
-
   - id: 2.3.3.2
     title: Ensure chrony is running as user _chrony (Automated)
     levels:
@@ -992,10 +1002,11 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    rules:
-      - "!service_chronyd_enabled"
-      - "!service_timesyncd_disabled"
+    related_rules:
+      - service_chronyd_enabled
+      - service_chronyd_disabled
     status: automated
+    notes: Implemented in 2.3.1.1
 
   - id: 2.4.1.1
     title: Ensure cron daemon is enabled and active (Automated)
