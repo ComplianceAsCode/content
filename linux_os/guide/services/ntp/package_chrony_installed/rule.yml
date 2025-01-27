@@ -15,7 +15,6 @@ rationale: |-
 
 severity: medium
 
-
 identifiers:
     cce@rhel8: CCE-82874-9
     cce@rhel9: CCE-84215-3
@@ -46,7 +45,16 @@ fixtext: '{{{ describe_package_install(package="chrony") }}}'
 
 srg_requirement: '{{{ srg_requirement_package_installed("chrony") }}}'
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: chrony
+        variable: var_timesync_service
+        value: chronyd
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: chrony
+{{%- endif %}}

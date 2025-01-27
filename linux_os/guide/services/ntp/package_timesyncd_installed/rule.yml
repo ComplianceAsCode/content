@@ -22,7 +22,16 @@ references:
     nist-csf: PR.PT-1
     pcidss: Req-10.4
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: systemd-timesyncd
+        variable: var_timesync_service
+        value: systemd-timesyncd
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: systemd-timesyncd
+{{%- endif %}}
