@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Install nftables Package'
 
 description: |-
@@ -36,10 +35,19 @@ ocil: '{{{ ocil_package(package="nftables") }}}'
 
 platform: system_with_kernel and service_disabled[iptables] and service_disabled[ufw]
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: package_installed_guard_var
+    vars:
+        pkgname: nftables
+        variable: var_network_filtering_service
+        value: nftables
+{{%- else %}}
 template:
     name: package_installed
     vars:
         pkgname: nftables
+{{%- endif %}}
 
 fixtext: |-
     {{{ describe_package_install(package="nftables") }}}

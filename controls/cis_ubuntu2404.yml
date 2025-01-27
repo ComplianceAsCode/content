@@ -1281,10 +1281,11 @@ controls:
       - l1_workstation
     rules:
       - firewall_single_service_active
+      - var_network_filtering_service=nftables
     status: automated
     notes: |
-      Remediation is not automated.
-
+      Remediation is not automated. To select which firewall to
+      install and configure, use the profile variable var_network_filtering_service.
 
   - id: 4.2.1
     title: Ensure ufw is installed (Automated)
@@ -1463,7 +1464,6 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - package_nftables_removed
       - service_nftables_disabled
     status: automated
 

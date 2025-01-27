@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Verify nftables Service is Enabled'
 
 description: |-
@@ -34,11 +33,9 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("nftables") }}}
 
-
 platform: system_with_kernel and package[nftables] and service_disabled[firewalld]
 
-
-{{%- if product in [ "sle12", "sle15" ] %}}
+{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
 template:
     name: service_enabled_guard_var
     vars:
