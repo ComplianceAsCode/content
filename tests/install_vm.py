@@ -14,8 +14,13 @@ KNOWN_DISTROS = [
     "centos9",
     "rhel8",
     "rhel9",
-    "rhel10",
 ]
+
+# put here any unreleased distro in development that needs to be tested
+# and any working osinfo known to be used by default when installating it
+UNRELEASED_DISTROS_AND_OSINFO = {
+    "rhel10": "rhel9-unknown"
+}
 
 DISTRO_URL = {
     "fedora":
@@ -34,8 +39,14 @@ def path_from_tests(path):
 
 
 def parse_args():
+    import textwrap
+    osinfo_epilog = textwrap.dedent(r"""
+        --osinfo details: 'For unreleased distros, these are the following
+        default data used as input {}.
+    """.format(UNRELEASED_DISTROS_AND_OSINFO))
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=argparse.RawTextHelpFormatter,
+        epilog=osinfo_epilog,
     )
 
     parser.add_argument(
@@ -54,7 +65,7 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        choices=KNOWN_DISTROS,
+        choices=KNOWN_DISTROS + list(UNRELEASED_DISTROS_AND_OSINFO.keys()),
         help="What distribution to install.",
     )
     parser.add_argument(
@@ -327,6 +338,10 @@ def get_virt_install_command(data):
 
     if data.osinfo:
         command.append(f'--osinfo={data.osinfo}')
+    else:
+        if data.distro in UNRELEASED_DISTROS_AND_OSINFO.keys():
+            command.append("--osinfo={}".format(
+                UNRELEASED_DISTROS_AND_OSINFO.get(data.distro, "rhel9-unknown")))
 
     command.extend(join_extented_opt("--boot", ",", boot_opts))
     command.extend(join_extented_opt("--extra-args", " ", extra_args_opts))
