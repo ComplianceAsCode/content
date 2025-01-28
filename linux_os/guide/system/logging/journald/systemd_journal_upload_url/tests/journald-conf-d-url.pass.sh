@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = systemd-journal-remote
+# platform = multi_platform_ubuntu
 # variables = var_journal_upload_url=192.168.50.42
 
 a_settings=("URL=192.168.50.42" "ServerKeyFile=/etc/ssl/private/journal-upload.pem" \
