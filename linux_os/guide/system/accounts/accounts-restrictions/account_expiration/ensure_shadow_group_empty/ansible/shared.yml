@@ -1,0 +1,5 @@
+# platform = multi_platform_all
+
+- name: Ensure interactive local users are the owners of their respective initialization files
+  ansible.builtin.shell:
+    cmd: sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/\1/' /etc/group
