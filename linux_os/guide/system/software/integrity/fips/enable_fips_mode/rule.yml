@@ -3,7 +3,22 @@ documentation_complete: true
 title: Enable FIPS Mode
 
 description: |-
-{{% if product != "rhcos4" %}}
+{{% if product == "rhcos4" %}}
+    OpenShift has an installation-time flag that can enable FIPS mode
+    for the cluster. The flag <pre>fips: true</pre> must be enabled
+    at install time in the <pre>install-config.yaml</pre> file. If
+    this rule fails on an installed cluster, then this is a permanent
+    finding and cannot be fixed.
+{{% elif product == "rhel10" %}}
+    Add the <tt>fips=1</tt> option to the kernel command line during the system installation.
+    During the software selection stage, do not install any third-party software.
+    After the installation, the system starts in FIPS mode automatically.
+    <br />
+    After the system starts, check that FIPS mode is enabled:
+    <pre>cat /proc/sys/crypto/fips_enabled
+    1</pre>
+    <br />
+{{% else %}}
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
     <br />
@@ -15,19 +30,15 @@ description: |-
     <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
+{{% endif %}}
 
-    <br />
+{{% if bootable_containers_supported == "true" %}}
+    <br /><br />
     To enable FIPS mode at bootable container build time configure <tt>fips=1</tt> kernel argument
     in <tt>/usr/lib/bootc/kargs.d/01-fips.toml</tt>:
     <pre>kargs = ["fips=1"]</pre>
     Then set the cryptographic policy to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>:
     <pre>update-crypto-policies --no-reload --set {{{ xccdf_value("var_system_crypto_policy") }}}</pre>
-{{% else %}}
-    OpenShift has an installation-time flag that can enable FIPS mode
-    for the cluster. The flag <pre>fips: true</pre> must be enabled
-    at install time in the <pre>install-config.yaml</pre> file. If
-    this rule fails on an installed cluster, then this is a permanent
-    finding and cannot be fixed.
 {{% endif %}}
 
 rationale: |-
@@ -58,17 +69,28 @@ ocil_clause: 'FIPS mode is not enabled'
 
 ocil: |-
     To verify that FIPS mode is enabled properly, run the following command:
+{{% if product == "rhel10" %}}
+    <pre>cat /proc/sys/crypto/fips_enabled</pre>
+    The output should contain the following:
+    <pre>1</pre>
+{{% else %}}
     <pre>fips-mode-setup --check</pre>
     The output should contain the following:
     <pre>FIPS mode is enabled.</pre>
+{{% endif %}}
     To verify that the cryptographic policy has been configured correctly, run the
     following command:
     <pre>$ update-crypto-policies --show</pre>
     The output should return <pre>{{{ xccdf_value("var_system_crypto_policy") }}}</pre>.
 
 warnings:
+{{% if product == "rhel10" %}}
+    - general: |-
+        Only enabling FIPS mode during the RHEL installation ensures that the system generates all keys with FIPS-approved algorithms and continuous monitoring tests in place.
+{{% else %}}
     - general: |-
         The system needs to be rebooted for these changes to take effect.
+{{% endif %}}
     - regulatory: |-
         This rule DOES NOT CHECK if the components of the operating system are FIPS certified.
         You can find the list of FIPS certified modules at {{{ weblink(link="https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search") }}}.
@@ -76,17 +98,21 @@ warnings:
 
 fixtext: |-
     Configure {{{ full_name }}} to run in FIPS mode.
-
+{{% if product == "rhel10" %}}
+    Add the fips=1 option to the kernel command line during the system installation.
+{{% else %}}
     Run the following commands:
 
     $ sudo fips-mode-setup --enable
     $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
 
     The system needs to be rebooted for these changes to take effect.
-
+{{% endif %}}
+{{% if bootable_containers_supported == "true" %}}
     To enable FIPS mode at bootable container build time, add the following commands in Containerfile:
 
     RUN echo 'kargs = ["fips=1"]' > /usr/lib/bootc/kargs.d/01-fips.toml
     RUN update-crypto-policies --no-reload --set {{{ xccdf_value("var_system_crypto_policy") }}}
+{{% endif %}}
 
 srg_requirement: '{{{ full_name }}} must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'

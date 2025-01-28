@@ -5,6 +5,7 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_system_crypto_policy") }}}
 
+{{% if product != "rhel10" %}}
 - name: "{{{ rule_title }}} - Check to See the Current Status of FIPS Mode"
   ansible.builtin.command: /usr/bin/fips-mode-setup --check
   register: is_fips_enabled
@@ -15,6 +16,7 @@
   ansible.builtin.command: /usr/bin/fips-mode-setup --enable
   when:
     - is_fips_enabled.stdout.find('FIPS mode is enabled.') == -1
+{{% endif %}}
 
 - name: "{{{ rule_title }}} - Configure Crypto Policy"
   ansible.builtin.lineinfile:

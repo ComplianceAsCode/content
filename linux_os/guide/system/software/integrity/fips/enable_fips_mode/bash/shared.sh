@@ -6,8 +6,10 @@ if {{{ bash_bootc_build() }}}; then
 	cat > /usr/lib/bootc/kargs.d/01-fips.toml << EOF
 kargs = ["fips=1"]
 EOF
+{{% if product != "rhel10" %}}
 else
 	fips-mode-setup --enable
+{{% endif %}}
 fi
 
 stderr_of_call=$(update-crypto-policies $crypto_policies_no_reload --set ${var_system_crypto_policy} 2>&1 > /dev/null)
