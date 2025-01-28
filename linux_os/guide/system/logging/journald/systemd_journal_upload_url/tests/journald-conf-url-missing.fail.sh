@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = systemd-journal-remote
-# variables = var_journal_upload_conf_file=/etc/systemd/journal-upload.conf.d/60-journald_upload.conf,var_journal_upload_url=192.168.50.42
+# variables = var_journal_upload_url=192.168.50.42
 
 a_settings=("ServerKeyFile=/etc/ssl/private/journal-upload.pem" \
      "ServerCertificateFile=/etc/ssl/certs/journal-upload.pem" "TrustedCertificateFile=/etc/ssl/ca/trusted.pem")
