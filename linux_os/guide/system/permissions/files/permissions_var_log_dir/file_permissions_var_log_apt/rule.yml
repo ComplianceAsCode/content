@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on files in the /var/log/apt/.* directory'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/apt/.*", perms="0644") }}}
+
+rationale: |-
+    The <tt>/var/log/apt</tt> directory contains information about APT
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/apt/.*", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/apt/.*", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/apt/
+        file_regex: ^.*$
+        filemode: '0644'

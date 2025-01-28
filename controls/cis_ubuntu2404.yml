@@ -2434,6 +2434,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - file_permissions_var_log_apt
       - file_permissions_var_log_auth
       - file_permissions_var_log_cloud-init
       - file_permissions_var_log_gdm
@@ -2447,6 +2448,7 @@ controls:
       - file_permissions_var_log_syslog
       - file_permissions_var_log_waagent
       - file_permissions_var_log_wbtmp
+      - permissions_local_var_log
     status: automated
 
   - id: 6.2.1.1
