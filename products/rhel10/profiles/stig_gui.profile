@@ -34,3 +34,6 @@ selections:
     - '!logind_session_timeout'
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
     - '!enable_dracut_fips_module'
+
+    # Package gdm cannot be removed as it is required for GUI installation ('@Server with GUI' package group)
+    - '!package_gdm_removed'
