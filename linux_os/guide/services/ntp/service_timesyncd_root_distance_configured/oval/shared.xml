@@ -9,7 +9,11 @@
 
   <ind:textfilecontent54_object comment="Ensure NTP server distance is set"
     id="{{{ rule_id }}}_object_systemd_timesyncd_dropin_distance_configuration" version="1">
+    {{% if "sle15" in product %}}
+    <ind:path>/usr/lib/systemd/timesyncd.conf.d/</ind:path>
+    {{% else %}}
     <ind:path>/etc/systemd/timesyncd.d</ind:path>
+    {{% endif %}}
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^\s*RootDistanceMax=\d+</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>

@@ -6,7 +6,11 @@
 
 - name: {{{ rule_title }}} - Add missing / update wrong records for root distance
   ansible.builtin.lineinfile:
+{{% if "sle15" in product %}}
+    path: /usr/lib/systemd/timesyncd.conf.d/oscap-remedy.conf
+{{% else %}}
     path: /etc/systemd/timesyncd.d/oscap-remedy.conf
+{{% endif %}}
     regexp: '^\s*RootDistanceMax\s*='
     state: present
     line: 'RootDistanceMax=1'
