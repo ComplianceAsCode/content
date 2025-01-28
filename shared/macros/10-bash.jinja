@@ -684,11 +684,15 @@ Macro to enable or disable a particular service.
 #}}
 {{%- if init_system == "systemd" -%}}
   {{%- if service_state == "disable" -%}}
+if [[ $(/usr/bin/systemctl is-system-running) != "offline" ]]; then
 /usr/bin/systemctl stop "{{{ service }}}"
+fi
 /usr/bin/systemctl disable "{{{ service }}}"
   {{%- else -%}}
 /usr/bin/systemctl enable "{{{ service }}}"
+if [[ $(/usr/bin/systemctl is-system-running) != "offline" ]]; then
 /usr/bin/systemctl start "{{{ service }}}"
+fi
   {{%- endif %}}
 # The service may not be running because it has been started and failed,
 # so let's reset the state so OVAL checks pass.
