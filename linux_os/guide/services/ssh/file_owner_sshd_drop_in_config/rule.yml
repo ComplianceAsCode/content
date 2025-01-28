@@ -43,6 +43,5 @@ srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/ssh/sshd_config.d", 
 template:
     name: file_owner
     vars:
-        filepath: /etc/ssh/sshd_config.d
+        filepath: /etc/ssh/sshd_config.d/
         fileuid: '0'
-        recursive: true

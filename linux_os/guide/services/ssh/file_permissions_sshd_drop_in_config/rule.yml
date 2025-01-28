@@ -42,6 +42,5 @@ srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ssh/sshd_config
 template:
     name: file_permissions
     vars:
-        filepath: /etc/ssh/sshd_config.d
+        filepath: /etc/ssh/sshd_config.d//
         filemode: '0600'
-        recursive: true
