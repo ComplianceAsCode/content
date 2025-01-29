@@ -41,6 +41,15 @@ fixtext: '{{{ fixtext_service_enabled(service="chronyd") }}}'
 
 srg_requirement: '{{{ srg_requirement_service_enabled(service="chronyd") }}}'
 
+{{%- if product in [ "ubuntu2404" ] %}}
+template:
+    name: service_enabled_guard_var
+    vars:
+        packagename: chrony
+        servicename: chrony
+        variable: var_timesync_service
+        value: chronyd
+{{%- else %}}
 template:
     name: service_enabled
     vars:
@@ -49,3 +58,4 @@ template:
         servicename@ubuntu2004: chrony
         servicename@ubuntu2204: chrony
         servicename@debian12: chrony
+{{%- endif %}}
