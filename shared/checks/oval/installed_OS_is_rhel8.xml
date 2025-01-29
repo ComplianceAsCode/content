@@ -42,7 +42,7 @@
     <linux:state state_ref="state_rhel8" />
   </linux:rpminfo_test>
   <linux:rpminfo_state id="state_rhel8" version="1">
-    <linux:version operation="pattern match">^8.*$</linux:version>
+    <linux:version operation="pattern match">^8\.\d{1,2}$</linux:version>
   </linux:rpminfo_state>
   <linux:rpminfo_object id="obj_rhel8" version="1">
     <linux:name>redhat-release</linux:name>
