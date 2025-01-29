@@ -176,6 +176,7 @@ and keep these guidelines in mind when writing new code.
 * Methods should be defined before they are called
 * Shall use the `.py` for the file extension
 * Shall use 4-space indentation
+* Shall support Python 3.6 and later
 * New methods and scripts should have type hints
 
 ### YAML
