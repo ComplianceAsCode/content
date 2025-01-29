@@ -7,7 +7,9 @@
 
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" unmask '{{{ DAEMONNAME }}}.service'
-"$SYSTEMCTL_EXEC" start '{{{ DAEMONNAME }}}.service'
+if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+  "$SYSTEMCTL_EXEC" start '{{{ DAEMONNAME }}}.service'
+fi
 "$SYSTEMCTL_EXEC" enable '{{{ DAEMONNAME }}}.service'
 {{% else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'

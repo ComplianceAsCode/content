@@ -8,6 +8,8 @@ SOCKET_NAME="{{{ SOCKETNAME }}}.socket"
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 
 if "$SYSTEMCTL_EXEC" -q list-unit-files --type socket | grep -q "$SOCKET_NAME"; then
-    "$SYSTEMCTL_EXEC" stop "$SOCKET_NAME"
+    if [[ $("$SYSTEMCTL_EXEC" is-system-running) != "offline" ]]; then
+      "$SYSTEMCTL_EXEC" stop "$SOCKET_NAME"
+    fi
     "$SYSTEMCTL_EXEC" mask "$SOCKET_NAME"
 fi
