@@ -13,10 +13,10 @@ checktext: |-
 
     Note: The example is for a system that is configured to create users home directories in the "/home" directory.
 
-    $ sudo grep -ir umask /home
+    $ sudo find /home -maxdepth 2 -type f -name ".[^.]*" -exec grep -iH -d skip --exclude=.bash_history umask {} \;
 
-    /home/smithj/.bash_history:grep -i umask /etc/bashrc /etc/csh.cshrc /etc/profile
-    /home/smithj/.bash_history:grep -i umask /etc/login.defs
+    /home/wadea/.bash_history:grep -i umask /etc/bashrc /etc/csh.cshrc /etc/profile
+    /home/wadea/.bash_history:grep -i umask /etc/login.defs
 
     If any local interactive user initialization files are found to have a umask statement that sets a value less restrictive than "077", this is a finding.
 
