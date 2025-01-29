@@ -2714,6 +2714,14 @@ controls:
             - service_fapolicyd_enabled
         status: automated
 
+    -   id: RHEL-09-433016
+        levels:
+            - medium
+        title: The RHEL 9 fapolicy module must be configured to employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs.
+        rules:
+            - fapolicy_default_deny
+        status: automated
+
     -   id: RHEL-09-611010
         levels:
             - medium
