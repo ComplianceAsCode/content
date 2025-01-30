@@ -7,6 +7,7 @@ config_file=/usr/share/pam-configs/tmp_unix
 
 cat << EOF > "$config_file"
 Name: Unix authentication
+Conflicts: unix
 Default: yes
 Priority: 256
 Auth-Type: Primary

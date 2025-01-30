@@ -7,13 +7,14 @@ config_file=/usr/share/pam-configs/tmp_unix
 
 cat << EOF > "$config_file"
 Name: Unix authentication
+Conflicts: unix
 Default: yes
 Priority: 256
 Auth-Type: Primary
 Auth:
-	[success=end default=ignore]	pam_unix.so nullok try_first_pass
+	[success=end default=ignore]	pam_unix.so try_first_pass
 Auth-Initial:
-	[success=end default=ignore]	pam_unix.so nullok
+	[success=end default=ignore]	pam_unix.so
 Account-Type: Primary
 Account:
 	[success=end new_authtok_reqd=done default=ignore]	pam_unix.so
