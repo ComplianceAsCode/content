@@ -281,3 +281,5 @@ selections:
     - enable_dracut_fips_module
     - audit_delete_success
     - mount_option_var_log_nodev
+    - use_pam_wheel_group_for_su
+    - ensure_pam_wheel_group_empty
