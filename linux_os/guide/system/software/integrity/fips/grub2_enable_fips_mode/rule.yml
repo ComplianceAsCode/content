@@ -7,6 +7,7 @@ description: |-
     To ensure FIPS mode is enabled, install package <tt>dracut-fips</tt>, and rebuild <tt>initramfs</tt> by running the following commands:
     <pre>{{{ package_install("dracut-fips") }}}
     dracut -f</pre>
+    {{% if 'rhel' not in product %}}
     After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
     GRUB 2 command line for the Linux operating system in
     <tt>/etc/default/grub</tt>, in the manner below:
@@ -19,6 +20,14 @@ description: |-
     <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
     <pre>~]# grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre></li>
     </ul>
+    {{% else %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+    {{% endif %}}
+
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
@@ -60,7 +69,11 @@ warnings:
     - functionality: |-
         Running <pre>dracut -f</pre> will overwrite the existing initramfs file.
     - general: |-
+        {{% if 'rhel' not in product %}}
         The system needs to be rebooted for these changes to take effect.
+        {{% else %}}
+        To configure the operating system to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes
         FIPS-140 certifications.
