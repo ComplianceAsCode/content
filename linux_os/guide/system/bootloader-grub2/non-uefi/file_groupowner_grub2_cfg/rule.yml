@@ -50,7 +50,11 @@ fixtext: '{{{ fixtext_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}
 
 srg_requirement: '{{{ srg_requirement_file_group_owner(grub2_boot_path ~ "/grub.cfg", "root") }}}'
 
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
 platform: not bootc
+{{% endif %}}
 
 template:
     name: file_groupowner

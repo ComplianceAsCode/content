@@ -26,4 +26,8 @@ description: |-
     modify it to create separate logical volumes for the directories
     listed above. The Logical Volume Manager (LVM) makes this possible.
 
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
 platform: not container and not bootc
+{{% endif %}}
