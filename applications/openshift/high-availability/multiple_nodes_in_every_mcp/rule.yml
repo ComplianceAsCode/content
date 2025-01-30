@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Ensure every MachineConfigPool consists of More Than One Node'
+
+description: |- 
+    To ensure, that workloads are able to be provisioned highly available, every node MachineConfigPool
+    should consist of more than one node. This enables workloads to be scheduled across multiple nodes and
+    stay available in case one node of a MachineConfigPool is unavailable. Different MachineConfigPools
+    may exist to isolate control plane, infrastructure and application workload. There might be additional
+    use cases to create additional MachineConfigPools for further isolation.
+
+rationale: |-
+    To ensure, that workloads are able to be provisioned highly available, every MachineConfigPool should
+    consist of more than one node. This enables workloads to be scheduled across multiple nodes and
+    stay available in case one node of a MachineConfigPool is unavailable.
+
+{{% set jqfilter = '[.items[] | select(.status.machineCount == 1 or .status.machineCount == 0) | .metadata.name]' %}}
+
+ocil_clause: 'MachineConfigPools with less than two nodes exist'
+
+ocil: |-
+    Run the following command to retrieve a list of MachineConfigPools that have less than two nodes.
+    <pre>$ oc get machineconfigpools -o json | jq '{{{ jqfilter }}}'</pre>
+    Make sure that there is output nothing in the result.
+
+identifiers:
+    cce@ocp4: CCE-90465-6
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/machineconfiguration.openshift.io/v1/machineconfigpools': jqfilter}) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/machineconfiguration.openshift.io/v1/machineconfigpools', jqfilter) }}}
+    yamlpath: "[:]"
+    check_existence: "none_exist"
+    entity_check: "all"
+    values:
+      - value: "(.*?)"
+        operation: "pattern match"
