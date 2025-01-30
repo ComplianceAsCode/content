@@ -60,6 +60,9 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
 	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-v2r1.profile && \
 	sed -i 's/\(documentation_complete: \).*/\1true/' products/ocp4/profiles/stig-node-v2r1.profile && \
 	sed -i 's/\(documentation_complete: \).*/\1true/' products/rhcos4/profiles/stig-v2r1.profile; \
+    elif [ "$(uname -m)" = "ppc64le" ]; then \
+        find products/rhcos4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' && \
+        find products/ocp4 -name "*stig*.profile" | xargs sed -i 's/\(documentation_complete: \).*/\1true/' ; \
 	fi
 
 # OCPBUGS-32794: Ensure stability of rules shipped
