@@ -14,6 +14,8 @@ name: pam
 packages:
 - pam
 - pam_apparmor
+- libpam-runtime
+- libpam-modules
 rules:
 - account_disable_inactivity_password_auth
 - account_disable_inactivity_system_auth
@@ -198,7 +200,9 @@ rules:
 - no_tmux_in_shells
 - package_opensc_installed
 - package_pam_apparmor_installed
+- package_pam_modules_installed
 - package_pam_pwquality_installed
+- package_pam_runtime_installed
 - package_pcsc-lite_installed
 - package_screen_installed
 - package_tmux_installed
