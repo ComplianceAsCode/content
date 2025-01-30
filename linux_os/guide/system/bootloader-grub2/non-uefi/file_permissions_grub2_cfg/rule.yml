@@ -46,7 +46,11 @@ ocil: |-
     If properly configured, the output should indicate the following
     permissions: <tt>-rw-------</tt>
 
+{{% if 'ubuntu' in product %}}
+platform: not container
+{{% else %}}
 platform: not bootc
+{{% endif %}}
 
 template:
     name: file_permissions
