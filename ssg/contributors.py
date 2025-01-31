@@ -26,6 +26,8 @@ ignored_emails = (
     "root@ip-10-0-8-36.ec2.internal",
     "badger@gitter.im",
     "46447321+allcontributors[bot]@users.noreply.github.com",
+    "konflux@no-reply.konflux-ci.dev",
+    "126015336+red-hat-konflux[bot]@users.noreply.github.com",
 )
 
 
