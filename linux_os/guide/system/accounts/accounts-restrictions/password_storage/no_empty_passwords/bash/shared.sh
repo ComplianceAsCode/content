@@ -13,17 +13,7 @@ done
 {{% elif 'ubuntu' in product %}}
 {{{ bash_pam_unix_enable() }}}
 config_file="/usr/share/pam-configs/cac_unix"
-sed -i -E '/^Password:/,/^[^[:space:]]/ {
-    /pam_unix\.so/ {
-        s/\s*nullok//g
-    }
-}' "$config_file"
-
-sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
-    /pam_unix\.so/ {
-        s/\s*nullok//g
-    }
-}' "$config_file"
+sed -i '/pam_unix\.so/s/nullok//g' "$config_file"
 
 DEBIAN_FRONTEND=noninteractive pam-auth-update
 {{% else %}}
