@@ -1699,7 +1699,15 @@ Part of the grub2_bootloader_argument_absent template.
     cmd: authselect create-profile hardening -b {{ authselect_current_profile }}
   when:
     - result_authselect_check_cmd is success
-    - authselect_current_profile is not match("custom/")
+    - authselect_current_profile is not match("^(custom/|local)")
+    - not result_authselect_custom_profile_present.stat.exists
+
+- name: '{{{ rule_title }}} - Create an authselect custom profile based on sssd profile'
+  ansible.builtin.command:
+    cmd: authselect create-profile hardening -b sssd
+  when:
+    - result_authselect_check_cmd is success
+    - authselect_current_profile is match("local")
     - not result_authselect_custom_profile_present.stat.exists
 
 {{{ ansible_apply_authselect_changes('before-hardening-custom-profile') }}}
