@@ -3,7 +3,19 @@ documentation_complete: true
 title: Enable FIPS Mode
 
 description: |-
-{{% if product != "rhcos4" %}}
+{{% if product == "rhcos4" %}}
+    OpenShift has an installation-time flag that can enable FIPS mode
+    for the cluster. The flag <pre>fips: true</pre> must be enabled
+    at install time in the <pre>install-config.yaml</pre> file. If
+    this rule fails on an installed cluster, then this is a permanent
+    finding and cannot be fixed.
+{{% elif 'rhel' in product %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+{{% else %}}
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
     <br />
@@ -15,25 +27,14 @@ description: |-
     <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
-
+{{% endif %}}
+{{% if bootable_containers_supported == "true" %}}
     <br />
     To enable FIPS mode at bootable container build time configure <tt>fips=1</tt> kernel argument
     in <tt>/usr/lib/bootc/kargs.d/01-fips.toml</tt>:
     <pre>kargs = ["fips=1"]</pre>
     Then set the cryptographic policy to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>:
     <pre>update-crypto-policies --no-reload --set {{{ xccdf_value("var_system_crypto_policy") }}}</pre>
-{{% elif 'rhel' in product %}}
-    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
-    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
-    enabled. Enabling FIPS mode on a preexisting system is not supported. If
-    this rule fails on an installed system, then this is a permanent
-    finding and cannot be fixed.
-{{% else %}}
-    OpenShift has an installation-time flag that can enable FIPS mode
-    for the cluster. The flag <pre>fips: true</pre> must be enabled
-    at install time in the <pre>install-config.yaml</pre> file. If
-    this rule fails on an installed cluster, then this is a permanent
-    finding and cannot be fixed.
 {{% endif %}}
 
 rationale: |-
@@ -64,13 +65,13 @@ ocil_clause: 'FIPS mode is not enabled'
 
 ocil: |-
     To verify that FIPS mode is enabled properly, run the following command:
-    <precat cat /proc/sys/crypto/fips_enabled</pre>
+    <pre>cat /proc/sys/crypto/fips_enabled</pre>
     The output be must:
     <pre>1</pre>
 
 warnings:
     - general: |-
-        To configure the operating system to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        To configure {{{ full_name }}} to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
         Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
     - regulatory: |-
         This rule DOES NOT CHECK if the components of the operating system are FIPS certified.
