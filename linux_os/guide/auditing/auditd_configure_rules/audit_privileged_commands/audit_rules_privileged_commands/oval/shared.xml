@@ -1,3 +1,4 @@
+{{% if product not in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Audit rules about the information on the use of privileged commands are enabled.") }}}
@@ -310,3 +311,4 @@
     <ind:state state_ref="state_priv_cmds_from_auditctl_count_bootc" />
   </ind:variable_test>
 </def-group>
+{{% endif %}}
