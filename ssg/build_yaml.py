@@ -1260,12 +1260,14 @@ class Group(XCCDFEntity):
         regex = (r'(package_.*_(installed|removed))|' +
                  r'(service_.*_(enabled|disabled))|' +
                  r'install_smartcard_packages|' +
+                 r'sshd_.*|' +
                  r'sshd_set_keepalive(_0)?|' +
                  r'sshd_set_idle_timeout|' +
                  r'chronyd_specify_remote_server|' +
                  r'zipl_.*_argument(_absent)?$')
         priority_order = ["enable_authselect", "installed", "install_smartcard_packages", "removed",
-                          "enabled", "disabled", "sshd_set_keepalive_0",
+                          "enabled", "disabled", "sshd_include_crypto_policy",
+                          "sshd_set_keepalive_0",
                           "sshd_set_keepalive", "sshd_set_idle_timeout",
                           "chronyd_specify_remote_server",
                           "argument"]

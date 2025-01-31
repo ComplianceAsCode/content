@@ -4,16 +4,9 @@
 # disruption = low
 # reboot = false
 
--   name: "{{{ rule_title }}} - Ensure That Drop In SSH Config Files are Included"
-    ansible.builtin.lineinfile:
-      path: "/etc/ssh/sshd_config"
-      line: "Include /etc/ssh/sshd_config.d/*.conf"
-      regexp: "^Include /etc/ssh/sshd_config.d/\\*.conf"
-      state: present
+# the shell module is used because those three commands have to be executed in one Ansible task.
+# Othervise the SSH server will be stopped and Ansible will be not able to conect again and continue.
 
--   name: "{{{ rule_title }}} - Ensure That System Crypto Policies are Included"
-    ansible.builtin.lineinfile:
-      path: "/etc/ssh/ssh_config.d/50-redhat.conf"
-      regexp: "Include /etc/crypto-policies/back-ends/opensshserver.config"
-      line: "Include /etc/crypto-policies/back-ends/opensshserver.config"
-      state: present
+-   name: "{{{ rule_title }}} - reinstall the openssh-server package"
+    ansible.builtin.shell:
+      cmd: dnf -y remove openssh-server; dnf -y install openssh-server; systemctl restart sshd.service
