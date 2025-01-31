@@ -127,6 +127,7 @@ selections:
 
     # OL08-00-010130
     - set_password_hashing_min_rounds_logindefs
+    - var_password_hashing_min_rounds_login_defs=100000
 
     # OL08-00-010140
     - grub2_uefi_password
