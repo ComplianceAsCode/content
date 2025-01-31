@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2024-11-05 16:58 UTC
+Last Modified: 2025-01-31 08:16 UTC
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -33,7 +33,7 @@ The following people have contributed to the SCAP Security Guide project
 * Gabriel Becker <ggasparb@redhat.com>
 * BenGui <benoit.guillon1@etu.unilim.fr>
 * Alexander Bergmann <abergmann@suse.com>
-* Eric Berry <eric.berry@canonical.com>
+* Eric Berry <eric@approvedworkman.com>
 * Dale Bewley <dale@bewley.net>
 * Jose Luis BG <bgjoseluis@gmail.com>
 * binyanling <binyanling@uniontech.com>
@@ -120,6 +120,7 @@ The following people have contributed to the SCAP Security Guide project
 * Jakub Jelen <jjelen@redhat.com>
 * Jessicahfy <Jessicahfy@users.noreply.github.com>
 * Stephan Joerrens <Stephan.Joerrens@fiduciagad.de>
+* Simon John <sjohn@tuxcare.com>
 * Hunter Jones <hjones2199@gmail.com>
 * Jono <jono@ubuntu-18.localdomain>
 * justchris1 <justchris1@justchris1.email>
@@ -173,6 +174,7 @@ The following people have contributed to the SCAP Security Guide project
 * Mixer9 <35545791+Mixer9@users.noreply.github.com>
 * mmosel <mmosel@kde.example.com>
 * Thomas Montague <montague.thomas@gmail.com>
+* Alan Moore <alan.moore@canonical.com>
 * Zbynek Moravec <zmoravec@redhat.com>
 * Kazuo Moriwaka <moriwaka@users.noreply.github.com>
 * Michael Moseley <michael@eclipse.ncsc.mil>
@@ -297,7 +299,7 @@ The following people have contributed to the SCAP Security Guide project
 * Willumpie <willumpie@xs4all.nl>
 * Rob Wilmoth <rwilmoth@redhat.com>
 * win97pro <win97pro@protonmail.com>
-* wqian <alan.moore@canonical.com>
+* xcfxr <xucee@qq.com>
 * Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
 * Xirui Yang <xirui.yang@oracle.com>
 * Yuqing Yang <yyq01323329@alibaba-inc.com>
