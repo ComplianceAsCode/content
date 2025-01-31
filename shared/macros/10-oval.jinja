@@ -43,15 +43,22 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type section: str
 :param quotes: If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
 :type quotes: str
+:param xccdf_variable: the name of an XCCDF variable carrying the value, this conflicts with the value parameter
+:type xccdf_variable: str
 
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='') -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', xccdf_variable="") -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
+{{%- if xccdf_variable -%}}
+{{%- set description= "Ensure '" + parameter + "' is configured with value configured through XCCDF variable " + xccdf_variable + (" in section '" + section if section else "") + "' in " + path -%}}
+{{%- else -%}}
+{{%- set description="Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path -%}}
+{{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
+    {{{ oval_metadata(description) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
@@ -84,9 +91,19 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     </criteria>
     {{%- endif %}}
   </definition>
+
+  {{% if xccdf_variable %}}
+  {{{ oval_line_in_file_define_variable(xccdf_variable, datatype="string") }}}
+  {{% endif %}}
+
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{%- if xccdf_variable -%}}
+  {{{ oval_line_in_file_state_xccdf_variable(xccdf_variable, datatype="string") }}}
+  {{%- else -%}}
   {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{%- endif -%}}
+
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
