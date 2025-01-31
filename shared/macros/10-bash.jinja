@@ -2421,6 +2421,11 @@ CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
 # If not already in use, a custom profile is created preserving the enabled features.
 if [[ ! $CURRENT_PROFILE == custom/* ]]; then
     ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
+    # The "local" profile does not contain essential security features required by multiple Benchmarks.
+    # If currently used, it is replaced by "sssd", which is the best option in this case.
+    if [[ $CURRENT_PROFILE == local ]]; then
+        CURRENT_PROFILE="sssd"
+    fi
     authselect create-profile hardening -b $CURRENT_PROFILE
     CURRENT_PROFILE="custom/hardening"
     {{{ bash_apply_authselect_changes('before-hardening-custom-profile') | indent(4) }}}
