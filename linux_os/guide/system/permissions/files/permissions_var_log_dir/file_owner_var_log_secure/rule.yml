@@ -2,12 +2,6 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/secure File'
 
-{{%  if 'ubuntu2404' not in product %}}
-    {{% set target_fileuid="104" %}}
-{{% else %}}
-    {{% set target_fileuid="102" %}}
-{{% endif %}}
-
 description: '{{{ describe_file_owner(file="/var/log/secure", owner="syslog") }}}'
 
 rationale: |-
@@ -16,19 +10,7 @@ rationale: |-
 
 severity: medium
 
-references:
-    disa: CCI-001314
-    srg: SRG-OS-000206-GPOS-00084
-    stigid@ubuntu2004: UBTU-20-010421
-    stigid@ubuntu2204: UBTU-22-232130
-
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/secure", owner="syslog") }}}'
 
 ocil: |-
     {{{ ocil_file_owner(file="/var/log/secure", owner="syslog") }}}
-
-template:
-    name: file_owner
-    vars:
-        filepath: /var/log/secure
-        fileuid: '{{{ target_fileuid }}}'

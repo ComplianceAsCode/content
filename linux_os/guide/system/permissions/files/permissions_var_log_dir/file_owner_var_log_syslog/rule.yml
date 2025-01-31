@@ -2,12 +2,6 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/syslog File'
 
-{{%  if 'ubuntu2404' not in product %}}
-    {{% set target_fileuid="104" %}}
-{{% else %}}
-    {{% set target_fileuid="102" %}}
-{{% endif %}}
-
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 
 rationale: |-
@@ -27,8 +21,10 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog")
 ocil: |-
     {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog") }}}
 
+{{%  if 'ubuntu2404' not in product %}}
 template:
     name: file_owner
     vars:
         filepath: /var/log/syslog
-        fileuid: '{{{ target_fileuid }}}'
+        fileuid: '104'
+{{%- endif %}}

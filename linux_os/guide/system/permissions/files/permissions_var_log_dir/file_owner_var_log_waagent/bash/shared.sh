@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-chown syslog /var/log/auth.log
+chown syslog /var/log/waagent.log*

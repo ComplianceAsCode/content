@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="file_ownership_var_log_auth" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
       {{{ oval_metadata("Owner of /var/log/auth.log should be root or syslog.") }}}
     <criteria comment="Check file ownership of /var/log/auth.log">
      <criterion test_ref="test_file_ownership_var_log_auth_log" />
@@ -9,7 +9,7 @@
   <unix:password_object id="object_syslog_uid" version="1">
     <unix:username operation="pattern match">syslog</unix:username>
   </unix:password_object>
-  <local_variable id="var_syslog_uid" datatype="int" version="1">
+  <local_variable id="var_syslog_uid" comment="Retrieve the uid of syslog" datatype="int" version="1">
     <object_component item_field="user_id" object_ref="object_syslog_uid" />
   </local_variable>
 
