@@ -38,7 +38,8 @@ ocil: |-
 
 warnings:
     - general: |-
-        To configure the OS to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        To configure {{{ full_name }}} to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        Only enabling FIPS 140 mode during the {{{ full_name }}} installation ensures that the system generates all keys with FIPS-approved algorithms and continuous monitoring tests in place.
         Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes
