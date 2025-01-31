@@ -67,7 +67,7 @@ selections:
 - accounts_password_pam_ocredit
 - accounts_password_pam_pwquality_password_auth
 - accounts_password_pam_pwquality_system_auth
-- accounts_password_pam_retry
+- accounts_password_pam_pwquality_conf_retry
 - accounts_password_pam_ucredit
 - accounts_password_pam_unix_rounds_password_auth
 - accounts_password_pam_unix_rounds_system_auth
