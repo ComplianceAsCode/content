@@ -3,16 +3,30 @@
     {{{ oval_metadata("The password hashing minimum rounds should be set correctly in /etc/login.defs.", title="Set Password Hashing Minimum Rounds in /etc/login.defs") }}}
     <criteria operator="AND">
         <criteria operator="OR">
-          <criterion test_ref="test_etc_login_defs_sha_crypt_min_rounds_default" />
+          <criteria operator="AND">
+            <criterion test_ref="test_etc_login_defs_sha_crypt_min_rounds_default" />
+            <criterion test_ref="test_var_password_hashing_min_rounds_login_defs_le_5000" />
+          </criteria>
           <criterion test_ref="test_etc_login_defs_sha_crypt_min_rounds_present" />
         </criteria>
         <criteria operator="OR">
-          <criterion test_ref="test_etc_login_defs_sha_crypt_max_rounds_default" />
+          <criteria operator="AND">
+            <criterion test_ref="test_var_password_hashing_min_rounds_login_defs_le_5000" />
+            <criterion test_ref="test_etc_login_defs_sha_crypt_max_rounds_default" />
+          </criteria>
           <criterion test_ref="test_etc_login_defs_sha_crypt_min_rounds_default" negate="true"/>
           <criterion test_ref="test_etc_login_defs_sha_crypt_max_rounds_present" />
         </criteria>
     </criteria>
   </definition>
+
+  <local_variable id="local_var_password_hashing_min_rounds_login_defs"
+  comment="variable storing number of password hashing rounds"
+  datatype="int" version="1">
+      <variable_component var_ref="var_password_hashing_min_rounds_login_defs" />
+  </local_variable>
+
+  <external_variable comment="Variable defining the value the argument should have" datatype="int" id="var_password_hashing_min_rounds_login_defs" version="1" />
 
   <ind:textfilecontent54_test id="test_etc_login_defs_sha_crypt_min_rounds_default" check="all" check_existence="none_exist" comment="SHA_CRYPT_MIN_ROUNDS is not explicitly configured in /etc/login.defs and therefore takes on the default value" version="1">
     <ind:object object_ref="object_etc_login_defs_sha_crypt_min_rounds_default" />
@@ -54,7 +68,22 @@
 
   <ind:textfilecontent54_state id="state_etc_login_defs_sha_crypt_rounds"
   comment="Rounds should be set to more than 5000" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal">5000</ind:subexpression>
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="local_var_password_hashing_min_rounds_login_defs" />
   </ind:textfilecontent54_state>
+
+  <ind:variable_test check="all" check_existence="all_exist"
+  comment="Check if the variable is set to 5000 or lower"
+  id="test_var_password_hashing_min_rounds_login_defs_le_5000" version="1">
+    <ind:object object_ref="object_var_password_hashing_min_rounds_login_defs_le_5000" />
+    <ind:state state_ref="state_var_password_hashing_min_rounds_login_defs_le_5000" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_password_hashing_min_rounds_login_defs_le_5000" version="1">
+    <ind:var_ref>local_var_password_hashing_min_rounds_login_defs</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_var_password_hashing_min_rounds_login_defs_le_5000" version="1">
+    <ind:value operation="less than or equal" datatype="int">5000</ind:value>
+  </ind:variable_state>
 
 </def-group>
