@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Verify User Who Owns /var/log/syslog File'
+title: 'Verify User Who Owns /var/log/secure File'
 
 {{%  if 'ubuntu2404' not in product %}}
     {{% set target_fileuid="104" %}}
@@ -8,10 +8,10 @@ title: 'Verify User Who Owns /var/log/syslog File'
     {{% set target_fileuid="102" %}}
 {{% endif %}}
 
-description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
+description: '{{{ describe_file_owner(file="/var/log/secure", owner="syslog") }}}'
 
 rationale: |-
-    The <tt>/var/log/syslog</tt> file contains logs of error messages in
+    The <tt>/var/log/secure</tt> file contains logs of error messages in
     the system and should only be accessed by authorized personnel.
 
 severity: medium
@@ -22,13 +22,13 @@ references:
     stigid@ubuntu2004: UBTU-20-010421
     stigid@ubuntu2204: UBTU-22-232130
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/secure", owner="syslog") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/secure", owner="syslog") }}}
 
 template:
     name: file_owner
     vars:
-        filepath: /var/log/syslog
+        filepath: /var/log/secure
         fileuid: '{{{ target_fileuid }}}'

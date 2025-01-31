@@ -2434,6 +2434,13 @@ controls:
       - l1_server
       - l1_workstation
     rules:
+      - file_owner_var_log_auth
+      - file_owner_var_log_cloud_init
+      - file_owner_var_log_localmessages
+      - file_owner_var_log_messages
+      - file_owner_var_log_secure
+      - file_owner_var_log_syslog
+      - file_owner_var_log_waagent
       - file_permissions_var_log_apt
       - file_permissions_var_log_auth
       - file_permissions_var_log_cloud-init
