@@ -1,10 +1,9 @@
 documentation_complete: true
 
-
-title: 'Verify Owner on SSH Server config file'
+title: 'Verify Owner on SSH Server Configuration Files'
 
 description: |-
-    {{{ describe_file_owner(file="/etc/ssh/sshd_config.d", owner="root") }}}
+    {{{ describe_files_in_directory_owner(directory="/etc/ssh/sshd_config.d", owner="root") }}}
 
 rationale: |-
     Service configuration files enable or disable features of their respective
@@ -31,17 +30,18 @@ references:
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ssh/sshd_config.d", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_files_in_directory_owner(directory="/etc/ssh/sshd_config.d", owner="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/etc/ssh/sshd_config.d", owner="root") }}}
+    {{{ ocil_files_in_directory_owner(directory="/etc/ssh/sshd_config.d", owner="root") }}}
 
-fixtext: '{{{ fixtext_file_owner(file="/etc/ssh/sshd_config.d", owner="root") }}}'
+fixtext: '{{{ fixtext_files_in_directory_owner(directory="/etc/ssh/sshd_config.d", owner="root") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_owner(file="/etc/ssh/sshd_config.d", owner="root") }}}'
+srg_requirement: '{{{ srg_requirement_files_in_directory_owner(directory="/etc/ssh/sshd_config.d", owner="root") }}}'
 
 template:
     name: file_owner
     vars:
-        filepath: /etc/ssh/sshd_config.d/
+        filepath: '/etc/ssh/sshd_config.d/'
+        file_regex: '^.*$'
         fileuid: '0'

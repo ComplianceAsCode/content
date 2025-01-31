@@ -839,6 +839,34 @@ substituting the correct package management software.
     <pre>$ sudo chown {{{ owner }}} {{{ file }}} </pre>
 {{%- endmacro %}}
 
+{{#
+    Describe how to set a directory owner
+
+:param directory: Directory to change
+:type directory: str
+:param owner: The owner of the directory
+:type owner: str
+
+#}}
+{{%- macro describe_directory_owner(directory, owner) %}}
+    To properly set the owner of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chown {{{ owner }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file owner of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param owner: The owner for the files in the directory
+:type owner: str
+
+#}}
+{{%- macro describe_files_in_directory_owner(directory, owner) %}}
+    To properly set the owner of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chown -L {{{ owner }}} {} \;</pre>
+{{%- endmacro %}}
+
 
 {{#
     Describe how to set the file group owner of a file.
@@ -854,6 +882,33 @@ substituting the correct package management software.
     <pre>$ sudo chgrp {{{ group }}} {{{ file }}}</pre>
 {{%- endmacro %}}
 
+{{#
+    Describe how to set a directory group owner
+
+:param directory: Directory to change
+:type directory: str
+:param group: The group owner of the directory
+:type group: str
+
+#}}
+{{%- macro describe_directory_group_owner(directory, group) %}}
+    To properly set the group owner of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chgrp {{{ group }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file group owner of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param group: The group owner for the files in the directory
+:type group: str
+
+#}}
+{{%- macro describe_files_in_directory_group_owner(directory, group) %}}
+    To properly set the group owner of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chgrp -L {{{ group }}} {} \;</pre>
+{{%- endmacro %}}
 
 {{#
     How to check a file for the correct permissions.
@@ -871,6 +926,33 @@ substituting the correct package management software.
     <code>{{{ perms }}}</code>
 {{%- endmacro %}}
 
+{{#
+    Describe how to set correct directory permissions
+
+:param directory: Directory to change
+:type directory: str
+:param perms: The permissions of the directory
+:type perms: str
+
+#}}
+{{%- macro describe_directory_permissions(directory, perms) %}}
+    To properly set the permissions of <code>{{{ directory }}}</code>, run the command:
+    <pre>$ sudo chmod {{{ perms }}} {{{ directory }}}</pre>
+{{%- endmacro %}}
+
+{{#
+    Describe how to set the file permissions of files in the given directory.
+
+:param directory: Directory to change
+:type directory: str
+:param perms: The permissions for the files in the directory
+:type perms: str
+
+#}}
+{{%- macro describe_files_in_directory_permissions(directory, perms) %}}
+    To properly set the permissions of files in <code>{{{ directory }}}</code>, run the command:
+    <pre>find -H {{{ directory }}} -type d -exec chown {{{ perms }}} {} \;</pre>
+{{%- endmacro %}}
 
 {{#
     How add mount options to :code:`/etc/fstab`

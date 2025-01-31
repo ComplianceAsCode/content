@@ -223,8 +223,11 @@ selections:
 - dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
+- directory_groupowner_sshd_config_d
 - directory_group_ownership_var_log_audit
 - directory_ownership_var_log_audit
+- directory_owner_sshd_config_d
+- directory_permissions_sshd_config_d
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
 - disable_host_auth

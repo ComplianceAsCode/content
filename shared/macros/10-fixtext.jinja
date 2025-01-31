@@ -465,6 +465,20 @@ Change the owner of the file {{{ file }}} to {{{ owner }}} by running the follow
 $ sudo chown {{{ owner }}} {{{ file }}}
 {{%- endmacro %}}
 
+{{#
+Fixtext for setting the owner on files in a directory.
+
+:param directory: The path of the directory in which files are located to set the owner on
+:type directory: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_files_in_directory_owner(directory, owner) %}}
+Change the owner of the files in the {{{ directory }}} directory to {{{ owner }}} by running the following command:
+
+$ sudo chown -R {{{ owner }}} {{{ directory }}}
+{{%- endmacro %}}
 
 {{#
 Fixtext for setting the group owner on a file.
@@ -479,6 +493,21 @@ Fixtext for setting the group owner on a file.
 Change the group of the file {{{ file }}} to {{{ group }}} by running the following command:
 
 $ sudo chgrp {{{ group }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the group owner on files in a directory.
+
+:param directory: The path of the directory in which files are located to set the group owner on
+:type directory: str
+:param group: The group to be set
+:type group: str
+
+#}}
+{{% macro fixtext_files_in_directory_group_owner(directory, group) %}}
+Change the group of the files in the {{{ directory }}} directory to {{{ group }}} by running the following command:
+
+$ sudo chgrp -R {{{ group }}} {{{ directory }}}
 {{%- endmacro %}}
 
 
@@ -545,6 +574,20 @@ Configure the "{{{ file }}}" file to "{{{ mode }}}" by running the following com
 $ sudo chmod {{{ mode }}} {{{ file }}}
 {{%- endmacro %}}
 
+{{#
+Fixtext for setting the permissions on files in a directory.
+
+:param directory: The path of the directory in which files are located to set the permissions on
+:type directory: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_files_in_directory_permissions(directory, mode) %}}
+Change the permissions of the files in the {{{ directory }}} directory to {{{ mode }}} by running the following command:
+
+$ sudo chmod -R {{{ mode }}} {{{ directory }}}
+{{%- endmacro %}}
 
 {{#
 Fixtext for having a mount point on another partition

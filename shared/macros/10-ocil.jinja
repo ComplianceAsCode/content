@@ -915,6 +915,49 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     <code>{{{ perms }}}</code>
 {{%- endmacro %}}
 
+{{#
+    OCIL how to check permissions a directory
+
+:param directory: Directory path
+:type directory: str
+:param perms: the permissions of the given directory
+:type perms: str
+
+#}}
+{{%- macro ocil_directory_permissions(directory, perms) -%}}
+    To check the permissionsship of <code>{{{ directory }}}</code> directory,
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -ldL {{{ directory }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+{{#
+    OCIL how to check file permissions of files in a directory
+
+:param directory: Directory path
+:type directory: str
+:param perms: the permissions for the files in the given directory
+:type perms: str
+
+#}}
+{{%- macro ocil_files_in_directory_permissions(directory, perms) -%}}
+    To check the permissions of files in the <code>{{{ directory }}}</code> directory,
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ directory }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
 
 {{#
     OCIL clause for file permissions
@@ -929,6 +972,31 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{{ file }}} does not have unix mode {{{ perms }}}
 {{%- endmacro %}}
 
+{{#
+    OCIL clause for directory permissions
+
+:param directory: Directory path
+:type directory: str
+:param perms: the permissions for the files
+:type perms: str
+
+#}}
+{{%- macro ocil_clause_directory_permissions(directory, perms) -%}}
+    {{{ directory }}} directory does not have unix mode {{{ permms }}}
+{{%- endmacro %}}
+
+{{#
+    OCIL clause for file permissions of files in a directory
+
+:param directory: Directory path
+:type directory: str
+:param perms: the permissions for the files
+:type perms: str
+
+#}}
+{{%- macro ocil_clause_files_in_directory_permissions(directory, perms) -%}}
+    files in the {{{ directory }}} directory do not have unix mode {{{ perms }}}
+{{%- endmacro %}}
 
 {{#
     OCIL how to check the file owner of a file.
@@ -954,6 +1022,50 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
+    OCIL how to check owner a directory
+
+:param directory: Directory path
+:type directory: str
+:param owner: the owner of the given directory
+:type owner: str
+
+#}}
+{{%- macro ocil_directory_owner(directory, owner) -%}}
+    To check the ownership of <code>{{{ directory }}}</code> directory,
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -ldL {{{ directory }}}</pre>
+    If properly configured, the output should indicate the following owner:
+    <code>{{{ owner }}}</code>
+{{%- endmacro %}}
+
+{{#
+    OCIL how to check file owner of files in a directory
+
+:param directory: Directory path
+:type directory: str
+:param owner: the owner for the files in the given directory
+:type owner: str
+
+#}}
+{{%- macro ocil_files_in_directory_owner(directory, owner) -%}}
+    To check the ownership of files in the <code>{{{ directory }}}</code> directory,
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ directory }}}</pre>
+    If properly configured, the output should indicate the following owner:
+    <code>{{{ owner }}}</code>
+{{%- endmacro %}}
+
+{{#
     OCIL clause for file owner
 
 :param file: File to change
@@ -966,6 +1078,32 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{{ file }}} does not have an owner of {{{ owner }}}
 {{%- endmacro %}}
 
+
+{{#
+    OCIL clause for directory owner
+
+:param directory: Directory path
+:type directory: str
+:param owner: the owner for the files
+:type owner: str
+
+#}}
+{{%- macro ocil_clause_directory_owner(directory, owner) -%}}
+    {{{ directory }}} directory does not have a owner owner of {{{ owner }}}
+{{%- endmacro %}}
+
+{{#
+    OCIL clause for file owner of files in a directory
+
+:param directory: Directory path
+:type directory: str
+:param owner: the owner for the files
+:type owner: str
+
+#}}
+{{%- macro ocil_clause_files_in_directory_owner(directory, owner) -%}}
+    files in the {{{ directory }}} directory do not have a owner of {{{ owner }}}
+{{%- endmacro %}}
 
 {{#
     OCIL how to check the file group owner of a file.
@@ -989,6 +1127,50 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     <code>{{{ group }}}</code>
 {{%- endmacro %}}
 
+{{#
+    OCIL how to check file group owner a directory
+
+:param directory: Directory path
+:type directory: str
+:param group: the group owner of the given directory
+:type group: str
+
+#}}
+{{%- macro ocil_directory_group_owner(directory, group) -%}}
+    To check the group ownership of <code>{{{ directory }}}</code> directory,
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -ldL {{{ directory }}}</pre>
+    If properly configured, the output should indicate the following group-owner:
+    <code>{{{ group }}}</code>
+{{%- endmacro %}}
+
+{{#
+    OCIL how to check file group owner of files in a directory
+
+:param directory: Directory path
+:type directory: str
+:param group: the group owner for the files in the given directory
+:type group: str
+
+#}}
+{{%- macro ocil_files_in_directory_group_owner(directory, group) -%}}
+    To check the group ownership of files in the <code>{{{ directory }}}</code> directory,
+    {{% if product in ["ocp4", "rhcos4"] -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ directory }}}</pre>
+    If properly configured, the output should indicate the following group-owner:
+    <code>{{{ group }}}</code>
+{{%- endmacro %}}
+
 
 {{#
     OCIL clause for file group owner
@@ -1001,6 +1183,32 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 #}}
 {{%- macro ocil_clause_file_group_owner(file, group) -%}}
     {{{ file }}} does not have a group owner of {{{ group }}}
+{{%- endmacro %}}
+
+{{#
+    OCIL clause for directory group owner of a directory
+
+:param directory: Directory path
+:type directory: str
+:param group: the group owner for the files
+:type group: str
+
+#}}
+{{%- macro ocil_clause_directory_group_owner(directory, group) -%}}
+    {{{ directory }}} directory does not have a group owner of {{{ group }}}
+{{%- endmacro %}}
+
+{{#
+    OCIL clause for file group owner of files in a directory
+
+:param directory: Directory path
+:type directory: str
+:param group: the group owner for the files
+:type group: str
+
+#}}
+{{%- macro ocil_clause_files_in_directory_group_owner(directory, group) -%}}
+    files in the {{{ directory }}} directory do not have a group owner of {{{ group }}}
 {{%- endmacro %}}
 
 
