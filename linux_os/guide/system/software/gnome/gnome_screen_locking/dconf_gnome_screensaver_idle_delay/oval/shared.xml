@@ -7,6 +7,9 @@
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <criterion comment="idle delay has been configured" test_ref="test_screensaver_idle_delay" />
         <criterion comment="idle delay is set correctly" test_ref="test_screensaver_idle_delay_setting" />
+        {{% if 'ubuntu' in product %}}
+        <criterion comment="screensaver idle delay setting is locked" test_ref="test_screensaver_idle_delay_locked" />
+        {{% endif %}}
       </criteria>
     </criteria>
   </definition>
@@ -50,4 +53,19 @@
 
   <external_variable comment="inactivity timeout variable" datatype="int"
   id="inactivity_timeout_value" version="1" />
+
+{{% if 'ubuntu' in product %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="screensaver idle delay setting is locked"
+      id="test_screensaver_idle_delay_locked" version="1">
+    <ind:object object_ref="obj_screensaver_idle_delay_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_screensaver_idle_delay_locked"
+  version="1">
+    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^/org/gnome/desktop/screensaver/idle-delay$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>
