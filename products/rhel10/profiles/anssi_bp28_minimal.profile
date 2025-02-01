@@ -33,8 +33,9 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!cracklib_accounts_password_pam_lcredit'
     - '!cracklib_accounts_password_pam_ocredit'
-    # Oracle key is not relevant on RHEL 10
+    # Non-Red Hat keys are irrelevant on RHEL 10
     - '!ensure_oracle_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # these packages do not exist in rhel10 (R62)

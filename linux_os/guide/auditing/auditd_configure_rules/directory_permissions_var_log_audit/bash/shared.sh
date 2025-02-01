@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
+# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu,multi_platform_almalinux
 
 if LC_ALL=C grep -iw ^log_file /etc/audit/auditd.conf; then
   DIR=$(awk -F "=" '/^log_file/ {print $2}' /etc/audit/auditd.conf | tr -d ' ' | rev | cut -d"/" -f2- | rev)

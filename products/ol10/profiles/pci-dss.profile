@@ -46,6 +46,7 @@ selections:
     - '!ensure_firewall_rules_for_open_ports'
     - '!ensure_shadow_group_empty'
     - '!ensure_suse_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!install_PAE_kernel_on_x86-32'
     - '!mask_nonessential_services'
     - '!nftables_ensure_default_deny_policy'

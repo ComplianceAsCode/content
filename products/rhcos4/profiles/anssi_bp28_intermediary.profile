@@ -104,3 +104,4 @@ selections:
   - '!ensure_gpgcheck_globally_activated'
   - '!sysctl_net_ipv6_conf_all_autoconf'
   - '!ensure_oracle_gpgkey_installed'
+  - '!ensure_almalinux_gpgkey_installed'

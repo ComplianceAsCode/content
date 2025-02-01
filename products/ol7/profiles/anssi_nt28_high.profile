@@ -23,6 +23,7 @@ selections:
     - '!kernel_config_legacy_vsyscall_none'
     - '!kernel_config_hardened_usercopy_fallback'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!aide_periodic_checking_systemd_timer'
     - '!kernel_config_gcc_plugin_latent_entropy'
     - '!package_dnf-automatic_installed'

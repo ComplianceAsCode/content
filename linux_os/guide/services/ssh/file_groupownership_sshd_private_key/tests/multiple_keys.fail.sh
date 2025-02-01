@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
 {{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name", "root") %}}
 
 test_group="cac_testgroup"

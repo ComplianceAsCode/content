@@ -28,6 +28,7 @@ selections:
     - '!cracklib_accounts_password_pam_ocredit'
     - '!accounts_passwords_pam_tally2_unlock_time'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!sudo_add_umask'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'

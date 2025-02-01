@@ -19,6 +19,7 @@ selections:
     - e8:all
 
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - ensure_oracle_gpgkey_installed
 
     - var_system_crypto_policy=default_policy

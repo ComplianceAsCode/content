@@ -19,6 +19,7 @@ selections:
     - '!accounts_passwords_pam_tally2_deny_root'
     - '!timer_logrotate_enabled'
     - '!ensure_redhat_gpgkey_installed'
+    - '!ensure_almalinux_gpgkey_installed'
     - '!audit_rules_privileged_commands_rmmod'
     - '!grub2_mds_argument'
     - '!audit_rules_privileged_commands_modprobe'

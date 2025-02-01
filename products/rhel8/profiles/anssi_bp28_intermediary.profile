@@ -37,4 +37,5 @@ selections:
   - '!grub2_page_alloc_shuffle_argument'
   - '!accounts_passwords_pam_tally2_unlock_time'
   - '!ensure_oracle_gpgkey_installed'
+  - '!ensure_almalinux_gpgkey_installed'
   - '!package_kea_removed'
