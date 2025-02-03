@@ -1,5 +1,7 @@
+{{%- set unix2_chkpwd_binary="/usr/sbin/unix2_chkpwd" %}}
 {{%- if product in ["sle15"] %}}
   {{%- set perm_x="-F perm=x " %}}
+  {{%- set unix2_chkpwd_binary="/sbin/unix2_chkpwd" %}}
 {{%- endif %}}
 
 documentation_complete: true
@@ -13,11 +15,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/sbin/unix2_chkpwd {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ unix2_chkpwd_binary }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path=/sbin/unix2_chkpwd {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ unix2_chkpwd_binary }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -62,4 +64,5 @@ ocil: |-
 template:
     name: audit_rules_privileged_commands
     vars:
-        path: /sbin/unix2_chkpwd
+        path: "/usr/sbin/unix2_chkpwd"
+        path@sle15: "/sbin/unix2_chkpwd"
