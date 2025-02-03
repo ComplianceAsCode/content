@@ -1,10 +1,9 @@
 documentation_complete: true
 
-
-title: 'Verify Permissions on SSH Server config file'
+title: 'Verify Group Who Owns SSH Server Configuration Files'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/ssh/sshd_config", perms="0600") }}}
+    {{{ describe_directory_group_owner(directory="/etc/ssh/sshd_config.d", group="root") }}}
 
 rationale: |-
     Service configuration files enable or disable features of their respective
@@ -15,20 +14,10 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel8: CCE-82894-7
-    cce@rhel9: CCE-90818-6
-    cce@rhel10: CCE-86264-9
-    cce@sle12: CCE-91674-2
-    cce@sle15: CCE-91306-1
-    cce@slmicro5: CCE-93887-8
+    cce@rhel9: CCE-86179-9
 
 references:
     cis-csc: 12,13,14,15,16,18,3,5
-    cis@sle12: 5.2.1
-    cis@sle15: 5.2.1
-    cis@slmicro5: 5.2.1
-    cis@ubuntu2004: 5.2.1
-    cis@ubuntu2204: 5.2.1
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
     disa: CCI-000366
     isa-62443-2009: 4.3.3.7.3
@@ -39,18 +28,17 @@ references:
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}'
+ocil_clause: '{{{ ocil_clause_directory_group_owner(directory="/etc/ssh/sshd_config.d", group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}
+    {{{ ocil_directory_group_owner(directory="/etc/ssh/sshd_config.d", group="root") }}}
 
-fixtext: '{{{ fixtext_file_permissions(file="/etc/ssh/sshd_config", mode="0600") }}}'
+fixtext: '{{{ fixtext_directory_group_owner(file="/etc/ssh/sshd_config.d", group="root") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ssh/sshd_config", mode="0600") }}}'
+srg_requirement: '{{{ srg_requirement_directory_group_owner(file="/etc/ssh/sshd_config.d", group="root") }}}'
 
 template:
-    name: file_permissions
+    name: file_groupowner
     vars:
-        filepath:
-            - /etc/ssh/sshd_config
-        filemode: '0600'
+        filepath: '/etc/ssh/sshd_config.d/'
+        gid_or_name: '0'
