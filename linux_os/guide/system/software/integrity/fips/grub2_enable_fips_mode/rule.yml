@@ -28,7 +28,7 @@ description: |-
     finding and cannot be fixed.
 
     Verifying that the package <tt>dracut-fips</tt> is installed ensures FIPS mode is in
-    a good.
+    a good state.
     {{% endif %}}
     To ensure FIPS mode is enabled, run the following commands:
     <pre>
@@ -81,7 +81,6 @@ warnings:
         To configure {{{ full_name }}} to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
         Only enabling FIPS 140 mode during the {{{ full_name }}} installation ensures that the system generates all keys with FIPS-approved algorithms and continuous monitoring tests in place.
         Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
-
         {{% endif %}}
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes
