@@ -377,3 +377,11 @@ if(PYTHON_VERSION_MAJOR GREATER 2 AND PYTHON_VERSION_MINOR GREATER 9)
     )
 mypy_test("tests/validate_automatus_metadata.py" "normal")
 endif()
+
+file(GLOB RHEL9_DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-rhel9-v[0-9]*r[0-9]*-xccdf-manual.xml")
+if(SSG_PRODUCT_RHEL9)
+    add_test(
+        NAME "rhel9-check-cci"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/check_cci.py" "--product" "rhel9" "--manual" "${RHEL9_DISA_STIG_REF}" "--stig-control" "stig_rhel9" "--skip" "RHEL-09-271030,RHEL-09-271035,needed_rules,RHEL-09-215105,RHEL-09-671010,RHEL-09-672030"
+    )
+endif()
