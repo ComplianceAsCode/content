@@ -1,0 +1,42 @@
+documentation_complete: true
+
+
+title: 'Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session in /etc/security/pwquality.conf'
+
+description: |-
+    To configure the number of retry prompts that are permitted per-session:
+    Edit the <tt>/etc/security/pwquality.conf</tt> to include
+    <tt>retry={{{xccdf_value("var_password_pam_retry") }}}</tt>, or a lower value if site
+    policy is more restrictive. The DoD requirement is a maximum of 3 prompts
+    per session.
+
+rationale: |-
+    Setting the password retry prompts that are permitted on a per-session basis to a low value
+    requires some software, such as SSH, to re-connect. This can slow down and
+    draw additional attention to some types of password-guessing attacks. Note that this
+    is different from account lockout, which is provided by the pam_faillock module.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86502-2
+    cce@rhel10: CCE-90663-6
+
+references:
+    disa: CCI-004066,CCI-000192
+    srg: SRG-OS-000069-GPOS-00037
+
+ocil_clause: 'the value of "retry" is set to "0" or greater than "{{{ xccdf_value("var_password_pam_retry") }}}", or is missing'
+
+ocil: |-
+    Verify {{{ full_name }}} is configured to limit the "pwquality" retry option to {{{ xccdf_value("var_password_pam_retry") }}}.
+
+    Check for the use of the "pwquality" retry option in the pwquality.conf file with the following command:
+    <pre>$ grep retry /etc/security/pwquality.conf</pre>
+
+template:
+    name: accounts_password
+    vars:
+        variable: retry
+        operation: less than or equal
+        zero_comparison_operation: greater than
