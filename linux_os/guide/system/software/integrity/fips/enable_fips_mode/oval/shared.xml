@@ -34,7 +34,7 @@
           comment="check contents of /proc/sys/crypto/fips_enabled"/>
         <extend_definition definition_ref="sysctl_crypto_fips_enabled"
           comment="check option crypto.fips_enabled = 1 in sysctl"/>
-        {{%- if product not in ["rhel10"] -%}}
+        {{%- if product not in ["rhel10", "rhel9"] -%}}
         <extend_definition definition_ref="enable_dracut_fips_module"
           comment="dracut FIPS module is enabled"/>
         {{%- endif -%}}
