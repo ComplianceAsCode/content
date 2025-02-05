@@ -183,9 +183,16 @@ oval_header = (
         {0}#linux linux-definitions-schema.xsd">"""
     .format(oval_namespace))
 
+_timestamp = time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))
+
 timestamp = time.strftime(
     "%Y-%m-%dT%H:%M:%S",
-    time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))
+    _timestamp
+)
+
+timestamp_yyyy_mm_dd = time.strftime(
+    "%Y-%m-%d",
+    _timestamp
 )
 
 PKG_MANAGER_TO_SYSTEM = {
