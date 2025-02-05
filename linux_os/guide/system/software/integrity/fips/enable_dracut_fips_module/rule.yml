@@ -4,8 +4,16 @@ documentation_complete: true
 title: "Enable Dracut FIPS Module"
 
 description: |-
+    {{% if 'rhel' not in product %}}
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
+    {{% else %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+    {{% endif %}}
     To enable FIPS, the system requires that the <tt>fips</tt> module is added in <tt>dracut</tt> configuration.
     Check if <tt>/etc/dracut.conf.d/40-fips.conf</tt> contain <tt>add_dracutmodules+=" fips "</tt>
 
@@ -41,9 +49,16 @@ ocil: |-
     The output should look like this:
     <tt>add_dracutmodules+=" fips "</tt>
 
+platform: not bootc
+
 warnings:
     - general: |-
+        {{% if 'rhel' not in product %}}
         The system needs to be rebooted for these changes to take effect.
+        {{% else %}}
+        To configure the operating system to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
+        {{% endif %}}
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes FIPS-140 certifications.
         FIPS-140 is applicable to all Federal agencies that use cryptographic-based security

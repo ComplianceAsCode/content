@@ -4,6 +4,7 @@ documentation_complete: true
 title: 'Enable FIPS Mode in GRUB2'
 
 description: |-
+    {{% if 'rhel' not in product %}}
     To ensure FIPS mode is enabled, install package <tt>dracut-fips</tt>, and rebuild <tt>initramfs</tt> by running the following commands:
     <pre>{{{ package_install("dracut-fips") }}}
     dracut -f</pre>
@@ -19,6 +20,20 @@ description: |-
     <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
     <pre>~]# grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre></li>
     </ul>
+    {{% else %}}
+    {{{ full_name }}} has an installation-time kernel flag that can enable FIPS mode.
+    The installer must be booted with <tt>fips=1</tt> for the system to have FIPS mode
+    enabled. Enabling FIPS mode on a preexisting system is not supported. If
+    this rule fails on an installed system, then this is a permanent
+    finding and cannot be fixed.
+
+    Verifying that the package <tt>dracut-fips</tt> is installed ensures FIPS mode is in
+    a good state.
+    {{% endif %}}
+    To ensure FIPS mode is enabled, run the following commands:
+    <pre>
+    {{{ package_install("dracut-fips") }}}
+    </pre>
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
@@ -60,7 +75,13 @@ warnings:
     - functionality: |-
         Running <pre>dracut -f</pre> will overwrite the existing initramfs file.
     - general: |-
+        {{% if 'rhel' not in product %}}
         The system needs to be rebooted for these changes to take effect.
+        {{% else %}}
+        To configure {{{ full_name }}} to run in FIPS 140 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        Only enabling FIPS 140 mode during the {{{ full_name }}} installation ensures that the system generates all keys with FIPS-approved algorithms and continuous monitoring tests in place.
+        Enabling FIPS mode on a preexisting system involves a number of modifications to it and therefore is not supported.
+        {{% endif %}}
     - regulatory: |-
         System Crypto Modules must be provided by a vendor that undergoes
         FIPS-140 certifications.
