@@ -572,3 +572,5 @@ selections:
     - sshd_use_priv_separation
     - tftpd_uses_secure_mode
     - file_permissions_etc_audit_rulesd
+    - configure_openssl_tls_crypto_policy
+    - configure_openssl_crypto_policy

@@ -184,8 +184,6 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_opensc_card_drivers
-- configure_openssl_crypto_policy
-- configure_openssl_tls_crypto_policy
 - configure_ssh_crypto_policy
 - configure_usbguard_auditbackend
 - configured_firewalld_default_deny
