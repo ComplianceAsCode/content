@@ -12,7 +12,36 @@ description: |-
   for a container to use more resource than its request for that resource specifies.
   However, a container is not allowed to use more than its resource limit.
 
-# todo : better if we can keep openshift document link for this reference,
+  <p>
+  To exempt a namespace with no resource requests/limits allocated in the one or more deployments, the variable
+  {{.var_deployment_limit_namespaces_exempt_regex}}  is being flagged.
+  Namespaces matching the variable <tt>ocp4-var-deployment-limit-namespaces-exempt-regex</tt> regex
+  are excluded from this check.
+  An example allowing an SCC named <tt>additional</tt> follows:
+  </p>
+  <pre>
+  apiVersion: compliance.openshift.io/v1alpha1
+  kind: TailoredProfile
+  metadata:
+    name: moderate-exempt-reource-request-limits
+  spec:
+    description: Allows an additional scc
+    setValues:
+    - name: ocp4-var-deployment-limit-namespaces-exempt-regex
+      rationale: set the value to namespaces to be exempted
+      value: "test1|test2"
+    extends: ocp4-moderate
+    title: Modified moderate to exempt a namespace with no resource requests/limits in deployment
+  </pre>
+  <p>
+  Finally, reference this <tt>TailoredProfile</tt> in a <tt>ScanSettingBinding</tt>
+  </p>
+
+  <p>
+  To configure resource requests/limits for a deployement, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/applications/deployments/managing-deployment-processes.html#deployments-setting-resources_deployment-operations",
+              text="the documentation") }}}
+  </p>
 
 rationale: |-
   Resource requests/limits provide constraints that limit aggregate resource consumption
