@@ -46,6 +46,8 @@ template:
     filepath: |-
       {{{ openshift_filtered_path('/apis/apps/v1/daemonsets?limit=500', jqfilter) }}}
     yamlpath: "[:]"
+    xccdf_variable: var_daemonset_limit_namespaces_exempt_regex
+    embedded_data: "true"
     check_existence: "none_exist"
     entity_check: "all"
     values:
