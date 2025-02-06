@@ -22,7 +22,7 @@ template:
     name: file_permissions
     vars:
         filepath: /var/log/
-        file_regex: .*(b|w)tmp(\.[^\/]+)?$
+        file_regex: .*(b|w)tmp((\.|-)[^\/]+)?$
         filemode: '0664'
 
 fixtext: |-

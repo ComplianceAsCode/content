@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/sssd Files'
+
+description: '{{{ describe_file_owner(file="/var/log/sssd", owner="root") }}}'
+
+rationale: |-
+    The <tt>/var/log/sssd</tt> directory contains debug logs for the System
+    Security Services Daemon (SSSD) and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/sssd", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/sssd", owner="root") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/sssd", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/sssd", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/sssd/
+        fileuid: '0'
+        recursive: 'true'
