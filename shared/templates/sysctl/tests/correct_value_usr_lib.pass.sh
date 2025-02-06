@@ -4,7 +4,7 @@
 {{% endif %}}
 
 # Clean sysctl config directories
-rm -rf /usr/lib/sysctl.d/* /usr/local/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
+rm -rf /usr/lib/sysctl.d/* /usr/local/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/* /etc/ufw/sysctl.conf
 
 sed -i "/{{{ SYSCTLVAR }}}/d" /etc/sysctl.conf
 mkdir -p /usr/lib/sysctl.d
