@@ -5,7 +5,7 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'DRAFT - ANSSI-BP-028 (intermediary)'
+title: 'ANSSI-BP-028 (intermediary)'
 
 description: |-
     This is a draft profile for experimental purposes.

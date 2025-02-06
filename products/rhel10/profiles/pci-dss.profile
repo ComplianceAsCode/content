@@ -9,7 +9,7 @@ metadata:
 
 reference: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 
-title: 'DRAFT - PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 10'
+title: 'PCI-DSS v4.0.1 Control Baseline for Red Hat Enterprise Linux 10'
 
 description: |-
     This is a draft profile for experimental purposes.

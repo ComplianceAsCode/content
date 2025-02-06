@@ -6,7 +6,7 @@ metadata:
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 
-title: 'DRAFT - Health Insurance Portability and Accountability Act (HIPAA)'
+title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
     This is a draft profile for experimental purposes.
