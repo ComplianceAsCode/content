@@ -7,7 +7,7 @@
 for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-	{{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
 	OTHER_FILTERS="-C uid!=euid"
 	{{% else %}}
 	OTHER_FILTERS="-C uid!=euid -F euid=0"
@@ -24,7 +24,7 @@ done
 for ARCH in "${RULE_ARCHS[@]}"
 do
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-	{{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
 	OTHER_FILTERS="-C gid!=egid"
 	{{% else %}}
 	OTHER_FILTERS="-C gid!=egid -F egid=0"

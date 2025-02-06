@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: 'Record Events When Privileged Executables Are Run'
 
 description: |-
@@ -14,7 +13,7 @@ description: |-
 
     <pre>$ sudo grep -r execve /etc/audit/rules.d</pre>
 
-    {{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
@@ -78,7 +77,7 @@ ocil: |-
 
     The output should be the following:
 
-    {{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
@@ -95,7 +94,7 @@ fixtext: |-
 
     Add or update the following rules to "/etc/audit/rules.d/audit.rules":
 
-    {{% if product == "ol8" %}}
+    {{% if product in ["ol8", "ubuntu2404"] %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
