@@ -10,7 +10,7 @@ metadata:
 
 reference: https://www.cyber.gov.au/ism
 
-title: 'DRAFT - Australian Cyber Security Centre (ACSC) ISM Official - Top Secret'
+title: 'Australian Cyber Security Centre (ACSC) ISM Official - Top Secret'
 
 description: |-
     This draft profile contains configuration checks for Red Hat Enterprise Linux 10
