@@ -2,7 +2,7 @@
 # packages = audit
 
 
-{{% if product == "ol8" %}}
+{{% if product in ["ol8", "ubuntu2404"] %}}
 OTHER_FILTERS_EUID=" -C uid!=euid"
 OTHER_FILTERS_EGID=" -C gid!=egid"
 {{% else %}}
