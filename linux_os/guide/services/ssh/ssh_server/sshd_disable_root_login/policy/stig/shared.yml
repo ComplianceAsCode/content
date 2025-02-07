@@ -9,17 +9,19 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} remote access using SSH prevents users from logging on directly as "root" with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*permitrootlogin'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*permitrootlogin'
 
     PermitRootLogin no
 
     If the "PermitRootLogin" keyword is set to "yes", is missing, or is commented out, this is a finding.
 
 fixtext: |-
-    To configure the system to prevent SSH users from logging on directly as root add or modify the following line in "/etc/ssh/sshd_config".
+    To configure the system to prevent SSH users from logging on directly as root add or modify the following line in "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d".
 
-     PermitRootLogin no
+    PermitRootLogin no
 
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

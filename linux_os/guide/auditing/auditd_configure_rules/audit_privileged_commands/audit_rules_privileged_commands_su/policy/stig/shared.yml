@@ -13,9 +13,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} is configured to audit the execution of the "su" command with the following command:
 
-    $ sudo auditctl -l | grep /usr/bin/su
+    $ sudo auditctl -l | grep '/usr/bin/su\b'
 
-    -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-priv_change
+    -a always,exit -S all -F path=/usr/bin/su -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-priv_change
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -24,5 +24,6 @@ fixtext: |-
 
     -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-priv_change
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

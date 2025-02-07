@@ -2,7 +2,7 @@ srg_requirement: |-
     {{{ full_name }}} must protect against or limit the effects of denial-of-service (DoS) attacks by ensuring rate-limiting measures on impacted network interfaces are implemented.
 
 fixtext: |-
-    Configure "nftables" to be the default "firewallbackend" for "firewalld" by adding or editing the following line in "etc/firewalld/firewalld.conf":
+    Configure "nftables" to be the default "firewallbackend" for "firewalld" by adding or editing the following line in "/etc/firewalld/firewalld.conf":
 
     FirewallBackend=nftables
 
@@ -17,8 +17,6 @@ checktext: |-
     FirewallBackend=nftables
 
     If the "nftables" is not set as the "FirewallBackend" default, this is a finding.
-
-
 
 vuldiscussion: |-
     DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.

@@ -13,9 +13,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} is configured to audit the execution of the "umount" command with the following command:
 
-    $ sudo auditctl -l | grep umount
+    $ sudo auditctl -l | grep /usr/bin/umount
 
-    -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
+    -a always,exit -S all -F path=/usr/bin/umount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-mount
 
     If the command does not return an audit rule for "umount" or any of the lines returned are commented out, this is a finding.
 
@@ -24,5 +24,6 @@ fixtext: |-
 
     -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

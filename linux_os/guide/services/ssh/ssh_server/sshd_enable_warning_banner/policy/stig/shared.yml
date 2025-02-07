@@ -9,21 +9,21 @@ vuldiscussion: |-
 checktext: |-
     Verify that any SSH connection to the operating system displays the Standard Mandatory DOD Notice and Consent Banner before granting access to the system.
 
-    Check for the location of the banner file being used with the following command:
+    Check for the location of the banner file currently being used with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*banner'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*banner'
 
     banner /etc/issue
 
-    This command will return the banner keyword and the name of the file that contains the SSH banner (in this case "/etc/issue").
-
-    If the line is commented out, this is a finding.
+    If the line is commented out or if the file is missing, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via ssh.
 
-    Edit the "/etc/ssh/sshd_config" file to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
+    Edit the "etc/ssh/sshd_config" file or a file in "/etc/ssh/sshd_config.d" to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).
 
     An example configuration line is:
 
     Banner /etc/issue
+
+

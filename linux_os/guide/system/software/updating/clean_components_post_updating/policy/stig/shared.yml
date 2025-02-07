@@ -7,16 +7,15 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} removes all software components after updated versions have been installed with the following command:
 
-    $ grep clean /etc/dnf/dnf.conf
+    $ grep -i clean_requirements_on_remove /etc/dnf/dnf.conf
 
-    clean_requirements_on_remove=1
+    clean_requirements_on_remove=True
 
-    If "clean_requirements_on_remove" is not set to "1", this is a finding.
+    If "clean_requirements_on_remove" is not set to "True", this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
 
     Edit the file /etc/dnf/dnf.conf by adding or editing the following line:
 
-     clean_requirements_on_remove=1
-
+     clean_requirements_on_remove=True

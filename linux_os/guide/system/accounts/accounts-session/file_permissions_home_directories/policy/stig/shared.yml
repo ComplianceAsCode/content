@@ -9,9 +9,9 @@ checktext: |-
 
     Note: This may miss interactive users that have been assigned a privileged user identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
 
-    $ sudo ls -ld $(awk -F: '($3&gt;=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+    $ stat -L -c '%a %n' $(awk -F: '($3&gt;=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd) 2&gt;/dev/null
 
-    drwxr-x--- 2 wadea admin 4096 Jun 5 12:41 wadea
+    700 /home/bingwa
 
     If home directories referenced in "/etc/passwd" do not have a mode of "0750" or less permissive, this is a finding.
 
@@ -21,3 +21,5 @@ fixtext: |-
     Note: The example will be for the user "wadea".
 
     $ sudo chmod 0750 /home/wadea
+
+

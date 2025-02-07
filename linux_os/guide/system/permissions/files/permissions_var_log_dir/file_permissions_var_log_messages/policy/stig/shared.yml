@@ -9,9 +9,9 @@ vuldiscussion: |-
 checktext: |-
     Verify the "/var/log/messages" file has a mode of "0640" or less permissive with the following command:
 
-    $ ls -la /var/log/messages
+    $ stat -c '%a %n' /var/log/messages
 
-    rw-------. 1 root root 564223 July 11 11:34 /var/log/messages
+    600 /var/log/messages
 
     If "/var/log/messages" does not have a mode of "0640" or less permissive, this is a finding.
 
@@ -19,4 +19,5 @@ fixtext: |-
     Configure the "/var/log/messages" file to have a mode of "0640" by running the following command:
 
     $ sudo chmod 0640 /var/log/messages
+
 

@@ -7,13 +7,13 @@ vuldiscussion: |-
     Password protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.
 
 checktext: |-
-    Verify the boot loader superuser password has been set and run the following command:
+    Verify the boot loader superuser password has been set with the following command:
 
-    $ sudo grep "superusers" /etc/grub2.cfg
+    $ sudo grep password_pbkdf2 /etc/grub2.cfg
 
-    password_pbkdf2  superusers-account   ${GRUB2_PASSWORD}
+    password_pbkdf2  &lt;superusers-accountname&gt;   ${GRUB2_PASSWORD}
 
-    To verify the boot loader superuser account password has been set, and the password encrypted, run the following command:
+    To verify the boot loader superuser account password has been set and the password encrypted, run the following command:
 
     $ sudo cat /boot/grub2/user.cfg
 
@@ -32,4 +32,5 @@ fixtext: |-
     $ sudo grub2-setpassword
     Enter password:
     Confirm password:
+
 

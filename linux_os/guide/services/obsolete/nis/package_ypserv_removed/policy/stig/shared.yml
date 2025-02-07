@@ -9,13 +9,11 @@ fixtext: |-
 checktext: |-
     Verify that the ypserv package is not installed with the following command:
 
-    $ sudo dnf list --installed ypserv
+    $ dnf list --installed ypserv
 
     Error: No matching Packages to list
 
     If the "ypserv" package is installed, this is a finding.
-
-
 
 vuldiscussion: |-
     The NIS service provides an unencrypted authentication service, which does not provide for the confidentiality and integrity of user passwords or the remote session.

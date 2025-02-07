@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep reboot
 
-    -a always,exit -F path=/usr/sbin/reboot -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-reboot
+    -a always,exit -S all -F path=/usr/sbin/reboot -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-reboot
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -18,5 +18,6 @@ fixtext: |-
 
     -a always,exit -F path=/usr/sbin/reboot -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-reboot
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

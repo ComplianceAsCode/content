@@ -9,15 +9,13 @@ checktext: |-
 
     Determine if the "IPsec" service is active with the following command:
 
-    $ systemctl status ipsec
+    $ systemctl is-active ipsec
 
-    ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
-    Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
-    Active: inactive (dead)
+    Inactive
 
     If the "IPsec" service is active, check for configured IPsec connections ("conn"), with the following command:
 
-    $ grep -rni conn /etc/ipsec.conf /etc/ipsec.d/
+    $ sudo grep -rni conn /etc/ipsec.conf /etc/ipsec.d/
 
     Verify any returned results are documented with the ISSO.
 
@@ -25,4 +23,5 @@ checktext: |-
 
 fixtext: |-
     Remove all unapproved tunnels from the system, or document them with the ISSO.
+
 

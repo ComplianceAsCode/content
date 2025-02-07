@@ -7,11 +7,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} generates an audit record for all uses of the "umount" and system call with the following command:
 
-    $ sudo grep "umount" /etc/audit/audit.*
+    $ sudo auditctl -l | grep b32 | grep 'umount\b'
 
-    If the system is configured to audit this activity, it will return a line like the following:
-
-    -a always,exit -F arch=b32 -S umount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-umount
+    -a always,exit -F arch=b32 -S umount -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-umount
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -20,5 +18,6 @@ fixtext: |-
 
     -a always,exit -F arch=b32 -S umount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-umount
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

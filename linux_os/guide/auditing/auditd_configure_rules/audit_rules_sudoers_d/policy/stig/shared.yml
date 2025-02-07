@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep /etc/sudoers.d
 
-    -w /etc/sudoers.d/ -p wa -k identity
+    -w /etc/sudoers.d -p wa -k actions
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -20,5 +20,6 @@ fixtext: |-
 
     -w /etc/sudoers.d/ -p wa -k identity
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

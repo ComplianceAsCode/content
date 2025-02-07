@@ -4,6 +4,8 @@ srg_requirement: |-
 vuldiscussion: |-
     By enabling the fs.protected_hardlinks kernel parameter, users can no longer create soft or hard links to files they do not own. Disallowing such hardlinks mitigates vulnerabilities based on insecure file system accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of open() or creat().
 
+
+
 checktext: |-
     Verify {{{ full_name }}} is configured to enable DAC on hardlinks.
 
@@ -33,4 +35,5 @@ fixtext: |-
     Load settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
 

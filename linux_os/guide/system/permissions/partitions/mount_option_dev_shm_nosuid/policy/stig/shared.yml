@@ -11,8 +11,9 @@ checktext: |-
 
     tmpfs on /dev/shm type tmpfs (rw,nodev,nosuid,noexec,seclabel)
 
-    If the /dev/shm file system is mounted without the "noexec" option, this is a finding.
+    If the /dev/shm file system is mounted without the "nosuid" option, this is a finding.
 
 fixtext: |-
     Modify "/etc/fstab" to use the "nosuid" option on the "/dev/shm" file system.
+
 

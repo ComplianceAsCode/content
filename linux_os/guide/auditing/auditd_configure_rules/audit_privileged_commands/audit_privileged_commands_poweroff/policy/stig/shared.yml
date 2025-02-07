@@ -9,7 +9,7 @@ checktext: |-
 
     $ sudo auditctl -l | grep poweroff
 
-    -a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-poweroff
+    -a always,exit -S all -F path=/usr/sbin/poweroff -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-poweroff
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -18,5 +18,6 @@ fixtext: |-
 
     -a always,exit -F path=/usr/sbin/poweroff -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-poweroff
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

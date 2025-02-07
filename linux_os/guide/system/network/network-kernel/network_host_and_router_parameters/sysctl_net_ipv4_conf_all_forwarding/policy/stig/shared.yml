@@ -13,7 +13,7 @@ fixtext: |-
     $ sudo sysctl --system
 
 checktext: |-
-    Verify {{{ full_name }}} is not performing IPv4 packet forwarding, unless the system is a router.
+    Verify {{{ full_name }}} is not performing IPv4 packet forwarding unless the system is a router.
 
     Check that IPv4 forwarding is disabled using the following command:
 
@@ -25,13 +25,11 @@ checktext: |-
 
     Check that the configuration files are present to enable this network parameter.
 
-    $ sudo (/usr/lib/systemd/systemd-sysctl --cat-config; cat /etc/sysctl.conf) | egrep -v '^(#|$)' | grep net.ipv4.conf.all.forwarding | tail -1
+    $ /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|$)' | grep -F net.ipv4.conf.all.forwarding | tail -1
 
     net.ipv4.conf.all.forwarding = 0
 
     If "net.ipv4.conf.all.forwarding" is not set to "0" and is not documented with the ISSO as an operational requirement or is missing, this is a finding.
-
-
 
 vuldiscussion: |-
     Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this capability is used when not required, system network information may be unnecessarily transmitted across the network.
