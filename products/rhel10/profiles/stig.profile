@@ -15,7 +15,7 @@ description: |-
     the release.
 
     In addition to being applicable to Red Hat Enterprise Linux 10, this
-    configuration baseline as applicable to the operating system tier of
+    configuration baseline is applicable to the operating system tier of
     Red Hat technologies that are based on Red Hat Enterprise Linux 10.
 
 selections:
