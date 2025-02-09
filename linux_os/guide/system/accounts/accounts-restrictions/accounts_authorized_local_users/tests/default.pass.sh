@@ -1,5 +1,5 @@
 #! /bin/bash
-# platform = multi_platform_ol,multi_platform_rhel
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
 # variables = var_accounts_authorized_local_users_regex=^(root|bin|daemon|adm|lp|sync|shutdown|halt|mail|operator|games|ftp|nobody|pegasus|systemd-bus-proxy|systemd-network|dbus|polkitd|abrt|unbound|tss|libstoragemgmt|rpc|colord|usbmuxd$|pcp|saslauth|geoclue|setroubleshoot|rtkit|chrony|qemu|radvd|rpcuser|nfsnobody|pulse|gdm|gnome-initial-setup|postfix|avahi|ntp|sshd|tcpdump|oprofile|uuidd)$
 
 var_accounts_authorized_local_users_regex="^(root|bin|daemon|adm|lp|sync|shutdown|halt|mail|operator|games|ftp|nobody|pegasus|systemd-bus-proxy|systemd-network|dbus|polkitd|abrt|unbound|tss|libstoragemgmt|rpc|colord|usbmuxd$|pcp|saslauth|geoclue|setroubleshoot|rtkit|chrony|qemu|radvd|rpcuser|nfsnobody|pulse|gdm|gnome-initial-setup|postfix|avahi|ntp|sshd|tcpdump|oprofile|uuidd)$"

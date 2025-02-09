@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,SUSE Linux Enterprise 15,multi_platform_slmicro
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,SUSE Linux Enterprise 15,multi_platform_slmicro,multi_platform_almalinux
 # packages = sudo
 
 touch /etc/sudoers.d/empty
