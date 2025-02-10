@@ -13,6 +13,8 @@ description: |-
 
 selections:
     - anssi:all:enhanced
+    - var_password_hashing_algorithm=SHA512
+    - var_password_pam_unix_rounds=65536
     # Following rules once had a prodtype incompatible with the ol9 product
     - '!partition_for_opt'
     - '!package_ypserv_removed'
@@ -32,7 +34,6 @@ selections:
     - '!audit_rules_privileged_commands_insmod'
     - '!package_ypbind_removed'
     - '!service_chronyd_or_ntpd_enabled'
-    - '!sudo_dedicated_group'
     - '!chronyd_configure_pool_and_server'
     - '!accounts_passwords_pam_tally2'
     - '!cracklib_accounts_password_pam_ucredit'
@@ -43,6 +44,13 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!package_xinetd_removed'
     - '!package_kea_removed'
+    # OL9 unified the paths for grub2 files. These rules are selected in control file by R29.
+    - '!file_groupowner_efi_grub2_cfg'
+    - '!file_owner_efi_grub2_cfg'
+    - '!file_permissions_efi_grub2_cfg'
+    - '!file_groupowner_efi_user_cfg'
+    - '!file_owner_efi_user_cfg'
+    - '!file_permissions_efi_user_cfg'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
