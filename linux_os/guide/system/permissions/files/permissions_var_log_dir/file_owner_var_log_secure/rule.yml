@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/secure File'
 
-description: '{{{ describe_file_owner(file="/var/log/secure", owner="syslog") }}}'
+description: '{{{ describe_file_owner(file="/var/log/secure", owner="root|syslog") }}}'
 
 rationale: |-
     The <tt>/var/log/secure</tt> file contains logs of error messages in
@@ -10,7 +10,7 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/secure", owner="syslog") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/secure", owner="root|syslog") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/secure", owner="syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/secure", owner="root|syslog") }}}

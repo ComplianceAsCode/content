@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/auth.log File'
 
-description: '{{{ describe_file_owner(file="/var/log/auth.log", owner="syslog") }}}'
+description: '{{{ describe_file_owner(file="/var/log/auth.log", owner="root|syslog") }}}'
 
 rationale: |-
     The <tt>/var/log/auth.log</tt> file contains logs of error messages in
@@ -10,7 +10,7 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/auth.log", owner="syslog") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/auth.log", owner="root|syslog") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/auth.log", owner="syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/auth.log", owner="root|syslog") }}}
