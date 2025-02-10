@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R2
+    version: V2R3
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V2R2.
+    DISA STIG for SUSE Linux Enterprise 15 V2R3.
 
 
 selections:
@@ -250,6 +250,7 @@ selections:
     - service_sshd_enabled
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
+    - var_password_hashing_min_rounds_login_defs=100000
     - set_password_hashing_min_rounds_logindefs
     - smartcard_configure_ca
     - smartcard_configure_cert_checking
