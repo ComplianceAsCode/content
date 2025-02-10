@@ -11,6 +11,8 @@ function set_grub_uefi_root {
 		fi
 	elif grep NAME /etc/os-release | grep -iq "Oracle"; then
 		GRUB_CFG_ROOT=/boot/efi/EFI/redhat
+	elif grep NAME /etc/os-release | grep -iq "Ubuntu"; then
+		GRUB_CFG_ROOT=/boot/grub
 	fi
 }
 
