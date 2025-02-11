@@ -2433,7 +2433,16 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    rules:
+    rules:  
+      - file_groupowner_var_log_auth
+      - file_groupowner_var_log_cloud_init
+      - file_groupowner_var_log_lastlog
+      - file_groupowner_var_log_localmessages
+      - file_groupowner_var_log_messages
+      - file_groupowner_var_log_secure
+      - file_groupowner_var_log_syslog
+      - file_groupowner_var_log_waagent
+      - file_groupowner_var_log_wbtmp
       - file_owner_var_log_auth
       - file_owner_var_log_cloud_init
       - file_owner_var_log_gdm

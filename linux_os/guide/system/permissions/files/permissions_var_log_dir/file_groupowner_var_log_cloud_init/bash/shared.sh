@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-chown syslog /var/log/secure*
+chgrp adm /var/log/cloud-init.log*
