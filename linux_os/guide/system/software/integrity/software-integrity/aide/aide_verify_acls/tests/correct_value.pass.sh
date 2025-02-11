@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = aide
-# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_almalinux
 
 
 cat >/etc/aide.conf <<EOL
