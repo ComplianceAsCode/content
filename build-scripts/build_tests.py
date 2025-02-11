@@ -2,6 +2,7 @@
 
 import argparse
 import pathlib
+import shutil
 
 import ssg.environment
 import ssg.jinja
@@ -41,6 +42,10 @@ def _create_arg_parser() -> argparse.ArgumentParser:
                         help=f"Path to the project. Defaults to {SSG_ROOT}")
     return parser
 
+def _is_test_file(filename: str) -> bool:
+    return (filename.endswith('.pass.sh')
+            or filename.endswith('.fail.sh') or
+            filename.endswith('.notapplicable.sh'))
 
 def main() -> int:
     args = _create_arg_parser().parse_args()
@@ -58,17 +63,52 @@ def main() -> int:
         rule_id = rule_root.name
         tests_root = rule_root / "tests"
         output_path = pathlib.Path(args.output) / rule_id
+        root_path = pathlib.Path(args.root).resolve().absolute()
+        templates_root = root_path / "shared" / "templates"
         if tests_root.exists():
             for test in tests_root.iterdir(): # type: pathlib.Path
                 if not test.name.endswith(".sh"):
                     continue
                 output_path.mkdir(parents=True, exist_ok=True)
+                if not _is_test_file(test.name):
+                    shutil.copy(test, output_path)
                 file_contents = open(str(test.absolute())).read()
-                s = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
-                if s.matches_platform(benchmark_cpes):
+                scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
+                if scenario.matches_platform(benchmark_cpes):
                     content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
                     with open(output_path / test.name, 'w') as file:
                         file.write(content)
+        if rendered_rule_obj["template"] is not None:
+            if "name" not in rendered_rule_obj["template"]:
+                raise ValueError(f"Invalid template config on rule {rule_id}")
+            template_name = rendered_rule_obj["template"]["name"]
+            template_root =  templates_root / template_name
+            template_tests_root = template_root / "tests"
+            if not template_tests_root.exists():
+                continue
+            if tests_root.exists():
+                test_config_path = tests_root/ "test_config.yml"
+                deny_templated_scenarios = list()
+                if test_config_path.exists():
+                    test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
+                    if 'deny_templated_scenarios' in test_config:
+                        deny_templated_scenarios = test_config['deny_templated_scenarios']
+                for test in tests_root.iterdir():  # type: pathlib.Path
+                    if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
+                        print(f'Skipping {test.name} for {rule_id}')
+                        continue
+                    output_path.mkdir(parents=True, exist_ok=True)
+                    template = ssg.templates.Template.load_template(str(templates_root.absolute()), template_name)
+                    template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"], "test")
+                    env_yaml = env_yaml.copy()
+                    jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
+                    file_contents =  ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
+                    scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
+                    if scenario.matches_platform(benchmark_cpes):
+                        with open(output_path / test.name, 'w') as file:
+                            file.write(file_contents)
+
+
 
 
     return 0
