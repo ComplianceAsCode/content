@@ -7,7 +7,7 @@ vuldiscussion: |-
 checktext: |-
     Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers" with the following command:
 
-    $ sudo auditctl -l | grep /etc/sudoers
+    $ sudo auditctl -l | grep '/etc/sudoers[^.]'
 
     -w /etc/sudoers -p wa -k identity
 
@@ -20,5 +20,6 @@ fixtext: |-
 
     -w /etc/sudoers -p wa -k identity
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

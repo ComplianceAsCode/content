@@ -2,20 +2,22 @@ srg_requirement: |-
     {{{ full_name }}} fapolicy module must be installed.
 
 vuldiscussion: |-
-    The organization must identify authorized software programs and permit execution of authorized software. The process used to identify software programs that are authorized to execute on organizational information systems is commonly referred to as allowlisting.
+    The organization must identify authorized software programs and permit execution of authorized software. The process used to identify software programs that are authorized to execute on organizational information systems is commonly referred to as allow listing.
 
-    Utilizing an allowlist provides a configuration management method for allowing the execution of only authorized software. Using only authorized software decreases risk by limiting the number of potential vulnerabilities. Verification of allowlisted software occurs prior to execution or at system startup.
+    Utilizing an allow list provides a configuration management method for allowing the execution of only authorized software. Using only authorized software decreases risk by limiting the number of potential vulnerabilities. Verification of allow listed software occurs prior to execution or at system startup.
 
     User home directories/folders may contain information of a sensitive nature. Nonprivileged users should coordinate any sharing of information with an SA through shared resources.
 
-    {{{ full_name }}} ships with many optional packages. One such package is a file access policy daemon called "fapolicyd". "fapolicyd" is a userspace daemon that determines access rights to files based on attributes of the process and file. It can be used to either blocklist or allowlist processes or file access.
+    {{{ full_name }}} ships with many optional packages. One such package is a file access policy daemon called "fapolicyd". "fapolicyd" is a userspace daemon that determines access rights to files based on attributes of the process and file. It can be used to either blocklist or allow list processes or file access.
 
     Proceed with caution with enforcing the use of this daemon. Improper configuration may render the system nonfunctional. The "fapolicyd" API is not namespace aware and can cause issues when launching or running containers.
+
+
 
 checktext: |-
     Verify that {{{ full_name }}} fapolicyd package is installed with the following command:
 
-    $ sudo dnf list --installed fapolicyd
+    $ dnf list --installed fapolicyd
 
     Example output:
 
@@ -27,4 +29,5 @@ fixtext: |-
     The  fapolicyd  package can be installed with the following command:
 
     $ sudo dnf install fapolicyd
+
 

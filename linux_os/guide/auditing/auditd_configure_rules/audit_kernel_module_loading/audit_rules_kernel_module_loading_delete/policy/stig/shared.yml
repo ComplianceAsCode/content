@@ -15,8 +15,8 @@ checktext: |-
 
     $ sudo auditctl -l | grep delete_module
 
-    -a always,exit -F arch=b32 -S delete_module -F auid&gt;={{{ uid_min }}} -F auid!=unset -k module_chng
-    -a always,exit -F arch=b64 -S delete_module -F auid&gt;={{{ uid_min }}} -F auid!=unset -k module_chng
+    -a always,exit -F arch=b32 -S delete_module -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=module_chng
+    -a always,exit -F arch=b64 -S delete_module -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=module_chng
 
     If both the "b32" and "b64" audit rules are not defined for the "delete_module" system call, or any of the lines returned are commented out, this is a finding.
 
@@ -26,5 +26,6 @@ fixtext: |-
     -a always,exit -F arch=b32 -S delete_module -F auid&gt;={{{ uid_min }}} -F auid!=unset -k module_chng
     -a always,exit -F arch=b64 -S delete_module -F auid&gt;={{{ uid_min }}} -F auid!=unset -k module_chng
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

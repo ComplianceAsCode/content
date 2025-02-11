@@ -7,17 +7,19 @@ vuldiscussion: |-
 checktext: |-
     Verify the {{{ full_name }}} SSHD is configured to allow for the UsePAM interface with the following command:
 
-    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '' ' ' | xargs sudo grep -iH '^\s*usepam'
+    $ sudo /usr/sbin/sshd -dd 2&gt;&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*usepam'
 
     UsePAM yes
 
     If the "UsePAM" keyword is set to "no", is missing, or is commented out, this is a finding.
 
 fixtext: |-
-    Configure the {{{ full_name }}} SSHD to use the UsePAM interface add or modify the following line in "/etc/ssh/sshd_config".
+    Configure the {{{ full_name }}} SSHD to use the UsePAM interface by adding or modifying the following line in "/etc/ssh/sshd_config" or in a file in "/etc/ssh/sshd_config.d".
 
     UsePAM yes
 
     Restart the SSH daemon for the settings to take effect:
 
     $ sudo systemctl restart sshd.service
+
+

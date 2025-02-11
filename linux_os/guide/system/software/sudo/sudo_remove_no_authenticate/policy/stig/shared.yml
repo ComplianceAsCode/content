@@ -9,7 +9,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that "/etc/sudoers" has no occurrences of "!authenticate" with the following command:
 
-    $ sudo grep -ir '!authenticate' /etc/sudoers /etc/sudoers.d/*
+    $ sudo grep -ir '!authenticate' /etc/sudoers /etc/sudoers.d/
 
     If any occurrences of "!authenticate" are returned, this is a finding.
 
@@ -19,4 +19,3 @@ fixtext: |-
     Remove any occurrence of "!authenticate" found in "/etc/sudoers" file or files in the "/etc/sudoers.d" directory.
 
     $ sudo sed -i '/\!authenticate/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*
-

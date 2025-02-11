@@ -7,9 +7,11 @@ vuldiscussion: |-
 
 
 checktext: |-
+    Note: If the system administrator demonstrates the use of an approved alternate multifactor authentication method, this requirement is Not Applicable.
+
     Verify that {{{ full_name }}} has the openssl-pkcs11 package installed with the following command:
 
-    $ sudo dnf list --installed openssl-pkcs11
+    $ dnf list --installed openssl-pkcs11
 
     Example output:
 
@@ -22,3 +24,5 @@ fixtext: |-
     The openssl-pkcs11 package can be installed with the following command:
 
     $ sudo dnf install openssl-pkcs11
+
+

@@ -16,12 +16,14 @@ vuldiscussion: |-
     RELP *.* :omrelp:remotesystemname:2514
     Note that a port number was given as there is no standard port for RELP.
 
+
+
 checktext: |-
     Verify that {{{ full_name }}} audit system offloads audit records onto a different system or media from the system being audited via rsyslog using TCP with the following command:
 
-    $ sudo grep @@ /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+    $ grep -i 'type="omfwd"' /etc/rsyslog.conf /etc/rsyslog.d/*.conf
 
-    /etc/rsyslog.conf:*.* @@[remoteloggingserver]:[port]
+    *.* action(type="omfwd" target="[remoteloggingserver]" protocol="tcp" port="[port]"
 
     If a remote server is not configured, or the line is commented out, ask the system administrator (SA) to indicate how the audit logs are offloaded to a different system or media.
 
@@ -31,4 +33,5 @@ fixtext: |-
     Configure {{{ full_name }}} to offload audit records onto a different system or media from the system being audited via TCP using rsyslog by specifying the remote logging server in "/etc/rsyslog.conf"" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
 
     *.* @@[remoteloggingserver]:[port]"
+
 

@@ -9,14 +9,15 @@ vuldiscussion: |-
 checktext: |-
     Verify that all local interactive user initialization file executable search path statements do not contain statements that will reference a working directory other than user home directories with the following commands:
 
-    $ sudo grep -i path= /home/*/.*
+    $ sudo find /home -maxdepth 2 -type f -name ".[^.]*" -exec grep -iH path= {} \;
 
-    /home/[localinteractiveuser]/.bash_profile:PATH=$PATH:$HOME/.local/bin:$HOME/bin
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
-    If any local interactive user initialization files have executable search path statements that include directories outside of their home directory and is not documented with the ISSO as an operational requirement, this is a finding.
+    If any local interactive user initialization files have executable search path statements that include directories outside of their home directory, and this is not documented with the ISSO as an operational requirement, this is a finding.
 
 fixtext: |-
     Edit the local interactive user initialization files to change any PATH variable statements that reference directories other than their home directory.
 
     If a local interactive user requires path variables to reference a directory owned by the application, it must be documented with the ISSO.
+
 

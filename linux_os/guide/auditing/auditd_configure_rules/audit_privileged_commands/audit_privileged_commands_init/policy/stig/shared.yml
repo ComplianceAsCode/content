@@ -7,9 +7,9 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} is configured to audit the execution of the "init" command with the following command:
 
-    $ sudo auditctl -l | grep init
+    $ sudo auditctl -l | grep /usr/sbin/init
 
-    -a always,exit -F path=/usr/sbin/init -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-init
+    -a always,exit -S all -F path=/usr/sbin/init -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=-1 -F key=privileged-init
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -18,5 +18,6 @@ fixtext: |-
 
     -a always,exit -F path=/usr/sbin/init -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-init
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

@@ -11,7 +11,7 @@ checktext: |-
 
     -w /var/log/tallylog -p wa -k logins
 
-    If the command does not return a line, or the line is commented out, this is a finding.
+    If the command does not return a line, or the line is commented out, is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect "/var/log/tallylog".
@@ -21,4 +21,3 @@ fixtext: |-
     -w /var/log/tallylog -p wa -k logins
 
     The audit daemon must be restarted for the changes to take effect.
-

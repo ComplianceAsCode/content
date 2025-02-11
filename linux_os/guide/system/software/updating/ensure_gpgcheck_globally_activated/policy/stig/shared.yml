@@ -11,7 +11,7 @@ vuldiscussion: |-
 checktext: |-
     Verify that dnf always checks the GPG signature of software packages originating from external software repositories before installation:
 
-    $ grep gpgcheck /etc/dnf/dnf.conf
+    $ grep -w gpgcheck /etc/dnf/dnf.conf
 
     gpgcheck=1
 
@@ -25,4 +25,3 @@ fixtext: |-
     Add or update the following line in the [main] section of the /etc/dnf/dnf.conf file:
 
     gpgcheck=1
-

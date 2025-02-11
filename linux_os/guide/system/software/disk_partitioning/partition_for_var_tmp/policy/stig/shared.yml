@@ -9,7 +9,8 @@ checktext: |-
 
     $ mount | grep /var/tmp
 
-    UUID=c274f65f-c5b5-4379-b017-bee96feb7a34 /var/log xfs noatime 1 2
+    /dev/mapper/rhel-tmp on /var/tmp type xfs (rw,nosuid,nodev,noexec,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k)
+    Note: Options displayed for mount may differ.
 
     If a separate entry for "/var/tmp" is not in use, this is a finding.
 

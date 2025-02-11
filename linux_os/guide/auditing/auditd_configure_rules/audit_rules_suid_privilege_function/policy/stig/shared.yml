@@ -9,10 +9,10 @@ checktext: |-
 
     $ sudo auditctl -l | grep execve
 
-    -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv
-    -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv
-    -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
-    -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
+    -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F key=execpriv
+    -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F key=execpriv
+    -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -F key=execpriv
+    -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -F key=execpriv
 
     If the command does not return all lines, or the lines are commented out, this is a finding.
 
@@ -26,5 +26,6 @@ fixtext: |-
     -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
     -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv
 
-    The audit daemon must be restarted for the changes to take effect.
+    To load the rules to the kernel immediately, use the following command:
 
+    $ sudo augenrules --load

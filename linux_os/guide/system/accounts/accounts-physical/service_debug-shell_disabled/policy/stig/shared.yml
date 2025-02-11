@@ -4,6 +4,8 @@ srg_requirement: |-
 vuldiscussion: |-
     The debug-shell requires no authentication and provides root privileges to anyone who has physical access to the machine. While this feature is disabled by default, masking it adds an additional layer of assurance that it will not be enabled via a dependency in systemd. This also prevents attackers with physical access from trivially bypassing security on the machine through valid troubleshooting configurations and gaining root access when the system is rebooted.
 
+
+
 checktext: |-
     Verify {{{ full_name }}} is configured to mask the debug-shell systemd service with the following command:
 
@@ -20,4 +22,5 @@ fixtext: |-
 
     $ sudo systemctl disable --now debug-shell.service
     $ sudo systemctl mask --now debug-shell.service
+
 

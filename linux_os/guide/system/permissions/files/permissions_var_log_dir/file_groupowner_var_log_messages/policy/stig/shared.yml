@@ -9,9 +9,9 @@ vuldiscussion: |-
 checktext: |-
     Verify the "/var/log/messages" file is group-owned by root with the following command:
 
-    $ ls -la /var/log/messages
+    $ stat -c "%G %n" /var/log/messages
 
-    rw-------. 1 root root 564223 July 11 11:34 /var/log/messages
+    root /var/log
 
     If "/var/log/messages" does not have a group owner of "root", this is a finding.
 
@@ -19,4 +19,5 @@ fixtext: |-
     Change the group owner of the "/var/log/messages" file to "root" by running the following command:
 
     $ sudo chgrp root /var/log/messages
+
 

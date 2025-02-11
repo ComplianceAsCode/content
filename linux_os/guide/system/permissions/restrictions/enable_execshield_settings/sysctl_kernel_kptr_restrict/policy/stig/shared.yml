@@ -4,6 +4,8 @@ srg_requirement: |-
 vuldiscussion: |-
     Exposing kernel pointers (through procfs or "seq_printf()") exposes kernel writeable structures, which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallows any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with "0".
 
+
+
 checktext: |-
     Verify the runtime status of the kernel.kptr_restrict kernel parameter with the following command:
 
@@ -27,4 +29,5 @@ fixtext: |-
     Reload settings from all system configuration files with the following command:
 
     $ sudo sysctl --system
+
 

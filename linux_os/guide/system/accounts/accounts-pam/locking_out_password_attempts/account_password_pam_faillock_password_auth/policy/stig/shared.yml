@@ -15,13 +15,18 @@ checktext: |-
 
     If the pam_faillock.so module is not present in the "/etc/pam.d/password-auth" file with the "preauth" line listed before pam_unix.so, this is a finding.
 
-fixtext: |-
-    Configure {{{ full_name }}} to include the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.
+    If the system administrator (SA) can demonstrate that the required configuration is contained in a PAM configuration file included or substacked from the system-auth file, this is not a finding.
 
-    Add/modify the appropriate sections of the "/etc/pam.d/password-auth" file to match the following lines:
+fixtext: |-
+    Configure {{{ full_name }}} to include the use of the pam_faillock.so module in the /etc/pam.d/password-auth file. If PAM is managed with authselect, enable the feature with the following command:
+
+    $ sudo authselect enable-feature with-faillock
+
+    Otherwise, add/modify the appropriate sections of the "/etc/pam.d/password-auth" file to match the following lines:
     Note: The "preauth" line must be listed before pam_unix.so.
 
     auth required pam_faillock.so preauth
     auth required pam_faillock.so authfail
     account required pam_faillock.so
+
 
