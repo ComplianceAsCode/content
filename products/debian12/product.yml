@@ -12,16 +12,22 @@ benchmark_id: DEBIAN-12
 benchmark_root: "../../linux_os/guide"
 
 profiles_root: "./profiles"
+components_root: "../../components"
 
 pkg_manager: "apt_get"
+pkg_manager_config_file: "/etc/apt/apt.conf"
 
 init_system: "systemd"
-
 oval_feed_url: "https://www.debian.org/security/oval/oval-definitions-bookworm.xml.bz2"
 
-chrony_conf_path: "/etc/chrony/chrony.conf"
-chrony_d_path: "/etc/chrony/chrony.d/"
+sshd_distributed_config: "true"
+
+aide_bin_path: "/usr/bin/aide"
 aide_conf_path: "/etc/aide/aide.conf"
+aide_default_path: "/etc/default/aide"
+audisp_conf_path: "/etc/audit"
+chrony_conf_path: "/etc/chrony/chrony.conf"
+chrony_d_path: "/etc/chrony/conf.d/"
 
 cpes_root: "../../shared/applicability"
 cpes:
@@ -32,10 +38,18 @@ cpes:
 
 # Mapping of CPE platform to package
 platform_package_overrides:
+  audit: auditd
+  avahi: avahi-daemon
+  dconf: dconf-editor
   gdm: gdm3
   grub2: grub2-common
   net-snmp: snmp
+  NetworkManager: network-manager
   nss-pam-ldapd: libpam-ldap
   pam: libpam-runtime
   shadow: login
   sssd: sssd-common
+  openssl-pkcs11: libpam-pkcs11
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/debian_linux/'
