@@ -16,7 +16,7 @@
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
-    {{%- if product == "rhel8" -%}}
+    {{%- if product in ["ol8", "rhel8"] -%}}
     <ind:pattern operation="pattern match">^(?!#).*-oCiphers=([^\s']+).*$</ind:pattern>
     {{%- else -%}}
     <ind:pattern operation="pattern match">^(?!#).*Ciphers\s+([^\s']+).*$</ind:pattern>
