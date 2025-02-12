@@ -4,7 +4,7 @@ function set_grub_uefi_root {
 	if grep NAME /etc/os-release | grep -iq fedora; then
 		GRUB_CFG_ROOT=/boot/grub2
 	elif grep NAME /etc/os-release | grep -iq "Red Hat"; then
-		if grep VERSION /etc/os-release | grep -q '9\.0'; then
+		if grep VERSION /etc/os-release | grep -q '9\.'; then
 			GRUB_CFG_ROOT=/boot/grub2
 		else
 			GRUB_CFG_ROOT=/boot/efi/EFI/redhat
