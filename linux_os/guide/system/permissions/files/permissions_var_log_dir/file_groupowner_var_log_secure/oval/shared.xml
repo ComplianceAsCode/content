@@ -23,7 +23,7 @@
     <unix:state state_ref="state_group_ownership_root_var_log_secure"/>
   </unix:file_test>
   <unix:file_object comment="/var/log/secure" id="object_group_ownership_var_log_secure" version="1">
-    <unix:filepath>/var/log/secure</unix:filepath>
+    <unix:filepath operation="pattern match">/var/log/secure(.*)</unix:filepath>
   </unix:file_object>
   <unix:file_state id="state_group_ownership_adm_var_log_secure" version="1">
     <unix:group_id datatype="int" operation="equals" var_ref="var_adm_gid"/>

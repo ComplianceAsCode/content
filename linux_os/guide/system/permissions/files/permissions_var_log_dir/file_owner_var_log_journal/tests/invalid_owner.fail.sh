@@ -1,4 +1,4 @@
 #!/bin/bash
 
-touch /var/log/my.journal-1
-chown syslog /var/log/my.journal-1
+touch /var/log/my.journal~
+chown nobody /var/log/my.journal~

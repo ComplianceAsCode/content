@@ -9,4 +9,4 @@
 # complexity = low
 # disruption = low
 
-find -L /var/log/ -maxdepth 1 -type f -regextype posix-extended -regex '.*lastlog(\.[^\/]+)?$' -exec chgrp utmp {} \;
+find -L /var/log/ -maxdepth 1 ! -group root ! -group utmp -type f -regextype posix-extended -regex '.*lastlog(\.[^\/]+)?$' -exec chgrp utmp {} \;

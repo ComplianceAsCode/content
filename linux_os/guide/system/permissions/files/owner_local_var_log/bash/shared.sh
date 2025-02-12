@@ -10,4 +10,4 @@ else
     username="root"
 fi
 
-find -L /var/log/ -maxdepth 1 -name '*' ! -name '*apt/*' ! -name 'auth.log' ! -name '*[bw]tmp' ! -name '*cloud-init' ! -name '*gdm' ! -name '*.journal' ! -name '*lastlog' ! -name '*localmessages' ! -name '*messages' ! -name 'secure' ! -name '*sssd|*SSSD' ! -name 'syslog' ! -name '*waagent'  -regextype posix-extended -regex '.*' -exec chown $username {} \;
+find -L /var/log/ -maxdepth 1 -regextype posix-extended ! -user root ! -user syslog ! -path '/var/log/apt/*' ! -name 'auth.log' ! -path '/var/log/[bw]tmp*' ! -path '/var/log/cloud-init.log*' ! -name 'gdm' ! -name 'gdm3' ! -regex '.*\.journal[~]?' ! -regex '.*lastlog(\.[^\/]+)?$' ! -regex '.*localmessages(.*)'  ! -name 'messages' ! -regex '.*secure(.*)' ! -name 'sssd' ! -name 'syslog' ! -regex '.*waagent.log(.*)' -regex '.*' -exec chown $username {} \;

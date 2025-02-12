@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-chgrp adm /var/log/messages
+find -L /var/log/ -maxdepth 1 ! -group root ! -group adm -type f -regextype posix-extended -name 'messages' -exec chgrp adm {} \;

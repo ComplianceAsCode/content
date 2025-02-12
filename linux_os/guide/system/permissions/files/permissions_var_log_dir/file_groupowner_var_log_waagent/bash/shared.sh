@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-chgrp adm /var/log/waagent.log*
+find -L /var/log/ -maxdepth 1 ! -group root ! -group adm -type f -regextype posix-extended -regex '.*waagent.log(.*)' -exec chgrp adm {} \;
