@@ -1,3 +1,4 @@
+{{% if 'ubuntu2404' in product %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
       {{{ oval_metadata("Owner of /var/log/messages should be root or syslog.") }}}
@@ -29,3 +30,4 @@
     <unix:user_id datatype="int" operation="equals">0</unix:user_id>
   </unix:file_state>
  </def-group>
+ {{%- endif %}}
