@@ -14,6 +14,7 @@ import tests.ssg_test_suite.rule
 
 SSG_ROOT = str(pathlib.Path(__file__).resolve().parent.parent.absolute())
 
+
 def _create_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Converts builds content tests to be rendered"
@@ -42,10 +43,12 @@ def _create_arg_parser() -> argparse.ArgumentParser:
                         help=f"Path to the project. Defaults to {SSG_ROOT}")
     return parser
 
+
 def _is_test_file(filename: str) -> bool:
     return (filename.endswith('.pass.sh')
             or filename.endswith('.fail.sh') or
             filename.endswith('.notapplicable.sh'))
+
 
 def main() -> int:
     args = _create_arg_parser().parse_args()
@@ -53,7 +56,7 @@ def main() -> int:
         args.build_config_yaml, args.product_yaml)
 
     product = ssg.utils.required_key(env_yaml, "product")
-    benchmark_cpes =  { env_yaml["cpes"][0][product]["name"], }
+    benchmark_cpes = {env_yaml["cpes"][0][product]["name"], }
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
 
     for rule_file in resolved_rules_dir.iterdir():  # type: pathlib.Path
@@ -66,28 +69,33 @@ def main() -> int:
         root_path = pathlib.Path(args.root).resolve().absolute()
         templates_root = root_path / "shared" / "templates"
         if tests_root.exists():
-            for test in tests_root.iterdir(): # type: pathlib.Path
+            for test in tests_root.iterdir():  # type: pathlib.Path
                 if not test.name.endswith(".sh"):
                     continue
                 output_path.mkdir(parents=True, exist_ok=True)
                 if not _is_test_file(test.name):
-                    shutil.copy(test, output_path)
+                    file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
+                    output_file = output_path / test.name
+                    with open(output_file, 'w') as file:
+                        file.write(file_contents)
+                        file.write('\n')
                 file_contents = open(str(test.absolute())).read()
                 scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
                 if scenario.matches_platform(benchmark_cpes):
                     content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
                     with open(output_path / test.name, 'w') as file:
                         file.write(content)
+                        file.write('\n')
         if rendered_rule_obj["template"] is not None:
             if "name" not in rendered_rule_obj["template"]:
                 raise ValueError(f"Invalid template config on rule {rule_id}")
             template_name = rendered_rule_obj["template"]["name"]
-            template_root =  templates_root / template_name
+            template_root = templates_root / template_name
             template_tests_root = template_root / "tests"
             if not template_tests_root.exists():
                 continue
             if tests_root.exists():
-                test_config_path = tests_root/ "test_config.yml"
+                test_config_path = tests_root / "test_config.yml"
                 deny_templated_scenarios = list()
                 if test_config_path.exists():
                     test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
@@ -102,14 +110,12 @@ def main() -> int:
                     template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"], "test")
                     env_yaml = env_yaml.copy()
                     jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
-                    file_contents =  ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
+                    file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
                     scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
                     if scenario.matches_platform(benchmark_cpes):
                         with open(output_path / test.name, 'w') as file:
                             file.write(file_contents)
-
-
-
+                            file.write('\n')
 
     return 0
 
