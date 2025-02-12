@@ -1,4 +1,8 @@
+{{% if 'ubuntu' in product %}}
+test -n "$GRUB_CFG_ROOT" || GRUB_CFG_ROOT=/boot/grub
+{{% else %}}
 test -n "$GRUB_CFG_ROOT" || GRUB_CFG_ROOT=/boot/grub2
+{{% endif %}}
 
 function set_grub_uefi_root {
 	if grep NAME /etc/os-release | grep -iq fedora; then
