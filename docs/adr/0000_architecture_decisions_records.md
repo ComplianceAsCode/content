@@ -1,7 +1,7 @@
 ---
 content-version: 0.1.77
 title: ADR-0000 - Architecture Decisions Records
-status: proposed # Valid statuses are proposed, accepted, rejected, postponed, withdrawn, or replaced
+status: proposed
 ---
 
 ## Context
@@ -46,6 +46,8 @@ References:
         * `XXXX` is a sequential number
         * `title` is a short and meaningful title for the AD separated by "_" when composed by multiple words
     * We will inform the last released version in the ADR header for a better temporal context of each ADR
+    * We will use the following statuses for ADRs:
+        * proposed, accepted, rejected, postponed, withdrawn, or replaced
 * We will require at least 3 PRs approvals to merge an ADR
 * We may still use other channels for a less formal discussion of a proposal in early stages
 
