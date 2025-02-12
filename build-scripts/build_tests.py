@@ -3,6 +3,8 @@
 import argparse
 import pathlib
 import shutil
+from typing import TypeVar, Iterator, List, Iterable, Set, Dict
+import multiprocessing
 
 import ssg.environment
 import ssg.jinja
@@ -13,6 +15,8 @@ import tests.ssg_test_suite.common
 import tests.ssg_test_suite.rule
 
 SSG_ROOT = str(pathlib.Path(__file__).resolve().parent.parent.absolute())
+JOB_COUNT = multiprocessing.cpu_count()
+T = TypeVar('T')
 
 
 def _create_arg_parser() -> argparse.ArgumentParser:
@@ -41,6 +45,8 @@ def _create_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--root", default=SSG_ROOT,
                         help=f"Path to the project. Defaults to {SSG_ROOT}")
+    parser.add_argument("--jobs", "-j", type=int, default=JOB_COUNT,
+                        help=f"Number of cores to use. Defaults to {JOB_COUNT} on this system.")
     return parser
 
 
@@ -49,31 +55,64 @@ def _is_test_file(filename: str) -> bool:
             or filename.endswith('.fail.sh') or
             filename.endswith('.notapplicable.sh'))
 
+def _divide_iters(iterator: Iterable[T], n: int) -> List[Iterator[T]]:
+    items = list(iterator)
+    length = len(items)
+
+    chunk_size = length // n
+    remainder = length % n
+
+    inters = []
+    start = 0
+
+    for i in range(n):
+        end = start + chunk_size + (1 if i < remainder else 0)
+        inters.append(iter(items[start:end]))
+        start = end
+    return inters
 
 def main() -> int:
     args = _create_arg_parser().parse_args()
+
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
 
-    product = ssg.utils.required_key(env_yaml, "product")
-    benchmark_cpes = {env_yaml["cpes"][0][product]["name"], }
-    resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
     root_path = pathlib.Path(args.root).resolve().absolute()
-    templates_root = root_path / "shared" / "templates"
     output_path = pathlib.Path(args.output).resolve().absolute()
+    resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
+
     tests_shared_root = root_path / "tests" / "shared"
     shared_output_path = output_path / "shared"
     shutil.copytree(tests_shared_root, shared_output_path)
 
+    product = ssg.utils.required_key(env_yaml, "product")
+    # TODO: Can this be done better?
+    benchmark_cpes = {env_yaml["cpes"][0][product]["name"], }
 
-    for rule_file in resolved_rules_dir.iterdir():  # type: pathlib.Path
+    templates_root = root_path / "shared" / "templates"
+    rules = resolved_rules_dir.iterdir()
+    chunked_rules = _divide_iters(rules, args.jobs)
+
+    processes = list()
+    for chunk in chunked_rules:
+        process_args = (benchmark_cpes, env_yaml, output_path, chunk, templates_root, )
+        process = multiprocessing.Process(target=process_rules, args=process_args)
+        processes.append(process)
+        process.start()
+    for process in processes:
+        process.join()
+    return 0
+
+
+def process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
+                  rules: Iterator[pathlib.Path], templates_root: pathlib.Path) -> None:
+    for rule_file in rules:  # type: pathlib.Path
         rendered_rule_obj = ssg.yaml.open_raw(str(rule_file))
         rule_path = pathlib.Path(rendered_rule_obj["definition_location"])
         rule_root = rule_path.parent
         rule_id = rule_root.name
         rule_tests_root = rule_root / "tests"
         rule_output_path = output_path / rule_id
-
 
         if rule_tests_root.exists():
             for test in rule_tests_root.iterdir():  # type: pathlib.Path
@@ -114,18 +153,19 @@ def main() -> int:
                         print(f'Skipping {test.name} for {rule_id}')
                         continue
                     rule_output_path.mkdir(parents=True, exist_ok=True)
-                    template = ssg.templates.Template.load_template(str(templates_root.absolute()), template_name)
-                    template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"], "test")
+                    template = ssg.templates.Template.load_template(str(templates_root.absolute()),
+                                                                    template_name)
+                    template_parameters = template.preprocess(
+                        rendered_rule_obj["template"]["vars"], "test")
                     env_yaml = env_yaml.copy()
                     jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
-                    file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
+                    file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
+                                                                       jinja_dict)
                     scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
                     if scenario.matches_platform(benchmark_cpes):
                         with open(rule_output_path / test.name, 'w') as file:
                             file.write(file_contents)
                             file.write('\n')
-
-    return 0
 
 
 if __name__ == "__main__":
