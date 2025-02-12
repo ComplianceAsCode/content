@@ -18,4 +18,3 @@ echo "{{{ SYSCTLVAR }}} = {{{ SYSCTL_CORRECT_VALUE }}}" >> /usr/local/lib/sysctl
 
 # set correct runtime value to check if the filesystem configuration is evaluated properly
 sysctl -w {{{ SYSCTLVAR }}}="{{{ SYSCTL_CORRECT_VALUE }}}"
-{{% endif %}}
