@@ -10,7 +10,7 @@ metadata:
 
 reference: https://www.cyber.gov.au/ism
 
-title: 'DRAFT - Australian Cyber Security Centre (ACSC) ISM Official - Secret'
+title: 'Australian Cyber Security Centre (ACSC) ISM Official - Secret'
 
 description: |-
     This is a draft profile for experimental purposes.

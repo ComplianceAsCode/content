@@ -5,7 +5,7 @@ metadata:
         - marcusburghardt
         - vojtapolasek
 
-title: 'DRAFT - ANSSI-BP-028 (high)'
+title: 'ANSSI-BP-028 (high)'
 
 description: |-
     This is a draft profile for experimental purposes.
