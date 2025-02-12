@@ -14,8 +14,8 @@ description: |-
     This profile contains configuration checks that align to the
     DISA STIG for Red Hat Enterprise Linux 9 V2R3.
 
-    In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
-    configuration baseline as applicable to the operating system tier of
+    In addition to being applicable to Red Hat Enterprise Linux 9, this
+    configuration baseline is applicable to the operating system tier of
     Red Hat technologies that are based on Red Hat Enterprise Linux 9, such as:
 
     - Red Hat Enterprise Linux Server
