@@ -2,6 +2,7 @@
 
 import argparse
 import pathlib
+import sys
 from typing import TypeVar, Iterator, List, Iterable, Set, Dict
 import multiprocessing
 
@@ -144,14 +145,10 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
             if not template_tests_root.exists():
                 continue
             test_config_path = rule_tests_root / "test_config.yml"
-            deny_templated_scenarios = list()
-            if test_config_path.exists():
-                test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
-                if 'deny_templated_scenarios' in test_config:
-                    deny_templated_scenarios = test_config['deny_templated_scenarios']
+            deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
             for test in template_tests_root.iterdir():  # type: pathlib.Path
                 if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
-                    print(f'Skipping {test.name} for {rule_id}')
+                    print(f'Skipping {test.name} for {rule_id}', file=sys.stderr)
                     continue
                 template = ssg.templates.Template.load_template(str(templates_root.absolute()),
                                                                 template_name)
@@ -167,6 +164,15 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
                     with open(rule_output_path / test.name, 'w') as file:
                         file.write(file_contents)
                         file.write('\n')
+
+
+def _get_deny_templated_scenarios(test_config_path):
+    deny_templated_scenarios = list()
+    if test_config_path.exists():
+        test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
+        if 'deny_templated_scenarios' in test_config:
+            deny_templated_scenarios = test_config['deny_templated_scenarios']
+    return deny_templated_scenarios
 
 
 def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_root):
