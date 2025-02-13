@@ -5,6 +5,6 @@
 # disruption = low
 
 - name: Ensure interactive local users are the owners of their respective initialization files
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: |
-      awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) system("chown -f " $3" "$6"/.[^\.]?*") }' /etc/passwd
+      awk -F: '{if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $3":"$6}' /etc/passwd | while IFS=: read -r uid home; do find "$home" -maxdepth 1 -name "\.[^.]*" -exec chown -f $uid "{}" \;; done
