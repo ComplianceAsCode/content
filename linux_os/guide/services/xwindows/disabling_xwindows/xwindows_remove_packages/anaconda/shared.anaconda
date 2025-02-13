@@ -1,3 +1,6 @@
 # platform = multi_platform_all
 
-package --remove=xorg-x11-server-Xorg --remove=xorg-x11-server-common --remove=xorg-x11-server-utils {{{ "--remove=xorg-x11-server-Xwayland" if product not in ["ol7"] }}}
+# remove packages
+{{% for package in xwindows_packages %}}
+package --remove={{{ package }}}
+{{% endfor %}}
