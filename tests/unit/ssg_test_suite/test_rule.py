@@ -1,7 +1,5 @@
 import os
-import pytest
 
-from ssg_test_suite import rule
 from tests.ssg_test_suite.rule import Scenario
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
