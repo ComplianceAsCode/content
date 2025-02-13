@@ -2,7 +2,6 @@
 
 import argparse
 import pathlib
-import shutil
 from typing import TypeVar, Iterator, List, Iterable, Set, Dict
 import multiprocessing
 
@@ -81,10 +80,8 @@ def main() -> int:
     output_path = pathlib.Path(args.output).resolve().absolute()
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
 
-    tests_shared_root = root_path / "tests" / "shared"
-    shared_output_path = output_path / "shared"
-    shutil.copytree(tests_shared_root, shared_output_path)
-
+    output_path.mkdir(parents=True, exist_ok=True)
+    _copy_and_process_shared(env_yaml, output_path, root_path)
     product = ssg.utils.required_key(env_yaml, "product")
     # TODO: Can this be done better?
     benchmark_cpes = {env_yaml["cpes"][0][product]["name"], }
@@ -96,16 +93,38 @@ def main() -> int:
     processes = list()
     for chunk in chunked_rules:
         process_args = (benchmark_cpes, env_yaml, output_path, chunk, templates_root, )
-        process = multiprocessing.Process(target=process_rules, args=process_args)
+        process = multiprocessing.Process(target=_process_rules, args=process_args)
         processes.append(process)
         process.start()
     for process in processes:
         process.join()
     return 0
 
+def _process_shared_file(env_yaml, file, shared_output_path):
+    file_contents = ssg.jinja.process_file_with_macros(str(file.absolute()),
+                                                       env_yaml)
+    shared_script_path = shared_output_path / file.name
+    with open(shared_script_path, 'w') as file:
+        file.write(file_contents)
+        file.write('\n')
 
-def process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
-                  rules: Iterator[pathlib.Path], templates_root: pathlib.Path) -> None:
+def _copy_and_process_shared(env_yaml, output_path, root_path):
+    tests_shared_root = root_path / "tests" / "shared"
+    shared_output_path = output_path / "shared"
+    shared_output_path.mkdir(parents=True, exist_ok=True)
+    for file in tests_shared_root.iterdir(): # type: pathlib.Path
+        # We only support one level deep, this avoids recursive functions
+        if file.is_dir():
+            for sub_file in file.iterdir():
+                shared_output_path_sub = shared_output_path / file.name
+                shared_output_path_sub.mkdir(parents=True, exist_ok=True)
+                _process_shared_file(env_yaml, sub_file, shared_output_path_sub)
+        else:
+            _process_shared_file(env_yaml, file, shared_output_path)
+
+
+def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
+                   rules: Iterator[pathlib.Path], templates_root: pathlib.Path) -> None:
     for rule_file in rules:  # type: pathlib.Path
         rendered_rule_obj = ssg.yaml.open_raw(str(rule_file))
         rule_path = pathlib.Path(rendered_rule_obj["definition_location"])
@@ -115,24 +134,7 @@ def process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib
         rule_output_path = output_path / rule_id
 
         if rule_tests_root.exists():
-            for test in rule_tests_root.iterdir():  # type: pathlib.Path
-                if not test.name.endswith(".sh"):
-                    continue
-                rule_output_path.mkdir(parents=True, exist_ok=True)
-                if not _is_test_file(test.name):
-                    file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
-                                                                       env_yaml)
-                    output_file = rule_output_path / test.name
-                    with open(output_file, 'w') as file:
-                        file.write(file_contents)
-                        file.write('\n')
-                file_contents = open(str(test.absolute())).read()
-                scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
-                if scenario.matches_platform(benchmark_cpes):
-                    content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
-                    with open(rule_output_path / test.name, 'w') as file:
-                        file.write(content)
-                        file.write('\n')
+            _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_root)
         if rendered_rule_obj["template"] is not None:
             if "name" not in rendered_rule_obj["template"]:
                 raise ValueError(f"Invalid template config on rule {rule_id}")
@@ -141,31 +143,52 @@ def process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib
             template_tests_root = template_root / "tests"
             if not template_tests_root.exists():
                 continue
-            if rule_tests_root.exists():
-                test_config_path = rule_tests_root / "test_config.yml"
-                deny_templated_scenarios = list()
-                if test_config_path.exists():
-                    test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
-                    if 'deny_templated_scenarios' in test_config:
-                        deny_templated_scenarios = test_config['deny_templated_scenarios']
-                for test in rule_tests_root.iterdir():  # type: pathlib.Path
-                    if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
-                        print(f'Skipping {test.name} for {rule_id}')
-                        continue
+            test_config_path = rule_tests_root / "test_config.yml"
+            deny_templated_scenarios = list()
+            if test_config_path.exists():
+                test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
+                if 'deny_templated_scenarios' in test_config:
+                    deny_templated_scenarios = test_config['deny_templated_scenarios']
+            for test in template_tests_root.iterdir():  # type: pathlib.Path
+                if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
+                    print(f'Skipping {test.name} for {rule_id}')
+                    continue
+                template = ssg.templates.Template.load_template(str(templates_root.absolute()),
+                                                                template_name)
+                template_parameters = template.preprocess(
+                    rendered_rule_obj["template"]["vars"], "test")
+                env_yaml = env_yaml.copy()
+                jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
+                file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
+                                                                   jinja_dict)
+                scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
+                if scenario.matches_platform(benchmark_cpes):
                     rule_output_path.mkdir(parents=True, exist_ok=True)
-                    template = ssg.templates.Template.load_template(str(templates_root.absolute()),
-                                                                    template_name)
-                    template_parameters = template.preprocess(
-                        rendered_rule_obj["template"]["vars"], "test")
-                    env_yaml = env_yaml.copy()
-                    jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
-                    file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
-                                                                       jinja_dict)
-                    scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
-                    if scenario.matches_platform(benchmark_cpes):
-                        with open(rule_output_path / test.name, 'w') as file:
-                            file.write(file_contents)
-                            file.write('\n')
+                    with open(rule_output_path / test.name, 'w') as file:
+                        file.write(file_contents)
+                        file.write('\n')
+
+
+def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_root):
+    for test in rule_tests_root.iterdir():  # type: pathlib.Path
+        if not test.name.endswith(".sh"):
+            continue
+        if not _is_test_file(test.name):
+            file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
+                                                               env_yaml)
+            output_file = rule_output_path / test.name
+            rule_output_path.mkdir(parents=True, exist_ok=True)
+            with open(output_file, 'w') as file:
+                file.write(file_contents)
+                file.write('\n')
+        file_contents = open(str(test.absolute())).read()
+        scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
+        if scenario.matches_platform(benchmark_cpes):
+            content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
+            rule_output_path.mkdir(parents=True, exist_ok=True)
+            with open(rule_output_path / test.name, 'w') as file:
+                file.write(content)
+                file.write('\n')
 
 
 if __name__ == "__main__":
