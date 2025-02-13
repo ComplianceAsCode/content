@@ -1,4 +1,7 @@
 #!/bin/bash
+{{% if 'ubuntu' in product %}}
+# platform = Not Applicable
+{{% endif %}}
 
 # gid of sshd group is 74
 test_group="sshd"
