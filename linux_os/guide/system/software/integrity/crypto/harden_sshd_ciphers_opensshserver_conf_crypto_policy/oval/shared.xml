@@ -16,20 +16,17 @@
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!#).*(-oCiphers=[^\s']+).*$</ind:pattern>
+    {{%- if product in ["ol8", "rhel8"] -%}}
+    <ind:pattern operation="pattern match">^(?!#).*-oCiphers=([^\s']+).*$</ind:pattern>
+    {{%- else -%}}
+    <ind:pattern operation="pattern match">^(?!#).*Ciphers\s+([^\s']+).*$</ind:pattern>
+    {{%- endif -%}}
     <ind:instance operation="equals" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="ste_{{{ rule_id }}}" version="1">
-    <ind:subexpression var_ref="sshd_ciphers_crypto_opensshserver" operation="equals" />
+    <ind:subexpression var_ref="sshd_approved_ciphers" operation="equals" />
   </ind:textfilecontent54_state>
-
-  <local_variable id="sshd_ciphers_crypto_opensshserver" datatype="string" comment="The regex of the directive" version="1">
-    <concat>
-      <literal_component>-oCiphers=</literal_component>
-      <variable_component var_ref="sshd_approved_ciphers"/>
-    </concat>
-  </local_variable>
 
   <external_variable comment="SSH Approved Ciphers by FIPS" datatype="string" id="sshd_approved_ciphers" version="1" />
 </def-group>
