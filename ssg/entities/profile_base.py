@@ -38,6 +38,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         description=lambda: "",
         extends=lambda: "",
         hidden=lambda: "",
+        status=lambda: "",
         metadata=lambda: None,
         reference=lambda: None,
         selections=lambda: list(),
@@ -118,6 +119,8 @@ class Profile(XCCDFEntity, SelectionHandler):
 
         element = ET.Element('{%s}Profile' % XCCDF12_NS)
         element.set("id", OSCAP_PROFILE + self.id_)
+        if self.status:
+            add_sub_element(element, "status", XCCDF12_NS, str(self.status))
         if self._should_have_version():
             add_sub_element(element, "version", XCCDF12_NS, str(self.metadata["version"]))
         if self.extends:

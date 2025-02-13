@@ -609,6 +609,9 @@ requirements or how it is applied.
 -   `reference`: URL pointing to page or organization that publishes the
     policy.
 
+-   `status`: The maturity and consensus level of the profile.
+    Accepted values are: `draft`, `interim`, `accepted` and `deprecated`.
+
 -   `version`: Version of the policy implemented by the profile.
 
 -   `SMEs`: List of people experienced with the profile, or how they are
