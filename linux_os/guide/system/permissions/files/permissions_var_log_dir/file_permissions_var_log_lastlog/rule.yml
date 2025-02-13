@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/lastlog(.*) Files'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/lastlog", perms="0664") }}}
+
+rationale: |-
+    The <tt>/var/log/lastlog</tt> file contains logs of reports the most recent login of all users
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/lastlog", perms="-rw-rw-r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/lastlog", perms="-rw-rw-r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/
+        file_regex: .*lastlog(\.[^\/]+)?$
+        filemode: '0664'
+
+fixtext: |-
+    {{{ fixtext_file_permissions("/var/log/lastlog", "0664") | indent(4) }}}

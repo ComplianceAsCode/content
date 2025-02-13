@@ -61,6 +61,7 @@ template:
         excluded_files@slmicro5: ['*[bw]tmp', '*lastlog']
         excluded_files@ubuntu2004: ['history.log', 'eipp.log.xz', '*[bw]tmp', '*lastlog']
         excluded_files@ubuntu2204: ['history.log', 'eipp.log.xz', '*[bw]tmp', '*lastlog']
+        excluded_files@ubuntu2404: ['*[bw]tmp', '*lastlog', '*cloud-init', '*localmessages', '*waagent', '*sssd|*SSSD', '*gdm', '*apt/*']
         file_regex: '.*'
         filemode: '0640'
         filepath: /var/log/

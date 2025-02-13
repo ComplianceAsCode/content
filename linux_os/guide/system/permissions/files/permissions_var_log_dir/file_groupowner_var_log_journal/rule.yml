@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns /var/log/*.journal(~) File'
+
+description: '{{{ describe_file_group_owner(file="/var/log/*.journal(~)", group="root|systemd-journal") }}}'
+
+rationale: |-
+    The <tt>/var/log/*.journal(~)</tt> files are system logs managed by the "systemd" service.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/*.journal(~)", group="root|systemd-journal") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/*.journal(~)", group="root|systemd-journal") }}}
