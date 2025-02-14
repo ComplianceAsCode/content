@@ -9,7 +9,7 @@ metadata:
         - rhmdnd
         - Vincent056
         - yuumasato
-    version: 1.5.0
+    version: 1.7.0
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
@@ -23,4 +23,7 @@ description: |-
 
     This profile is applicable to OpenShift versions 4.12 and greater.
 
-extends: cis-node-1-7
+filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
+
+selections:
+    - cis_ocp_1_4_0:all
