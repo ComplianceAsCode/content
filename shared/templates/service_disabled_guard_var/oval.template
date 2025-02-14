@@ -11,7 +11,7 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The " + SERVICENAME + " service should be disabled.", affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="OR" comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start">
-      <criteria comment="{{{ PKGNAME }}} and service {{{ SERVICENAME }}} are needed" operator="AND">
+      <criteria comment="{{{ PACKAGENAME }}} and service {{{ SERVICENAME }}} are needed" operator="AND">
         <criterion comment="variable {{{ VARIABLE }}} is set to {{{ VALUE }}}"
         test_ref="{{{ variable_value_test_id }}}"/>
       </criteria>
