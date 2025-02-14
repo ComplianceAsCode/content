@@ -191,9 +191,10 @@ def main() -> int:
 
     output_path.mkdir(parents=True, exist_ok=True)
     _copy_and_process_shared(env_yaml, output_path, root_path)
-    product = ssg.utils.required_key(env_yaml, "product")
-    # TODO: Can this be done better?
-    benchmark_cpes = {env_yaml["cpes"][0][product]["name"], }
+    benchmark_cpes = set()
+    for cpe in env_yaml["cpes"]:
+        for cpe_id, data in cpe.items():
+            benchmark_cpes.add(data["name"])
 
     templates_root = root_path / "shared" / "templates"
     rules = resolved_rules_dir.iterdir()
