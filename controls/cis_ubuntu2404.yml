@@ -2433,10 +2433,52 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:  
+      - file_groupowner_var_log_apt
+      - file_groupowner_var_log_auth
+      - file_groupowner_var_log_cloud_init
+      - file_groupowner_var_log_gdm
+      - file_groupowner_var_log_gdm3
+      - file_groupowner_var_log_journal
+      - file_groupowner_var_log_lastlog
+      - file_groupowner_var_log_localmessages
+      - file_groupowner_var_log_messages
+      - file_groupowner_var_log_secure
+      - file_groupowner_var_log_sssd
+      - file_groupowner_var_log_syslog
+      - file_groupowner_var_log_waagent
+      - file_groupowner_var_log_wbtmp
+      - file_owner_var_log_auth
+      - file_owner_var_log_cloud_init
+      - file_owner_var_log_gdm
+      - file_owner_var_log_gdm3
+      - file_owner_var_log_journal
+      - file_owner_var_log_lastlog
+      - file_owner_var_log_localmessages
+      - file_owner_var_log_messages
+      - file_owner_var_log_secure
+      - file_owner_var_log_sssd
+      - file_owner_var_log_syslog
+      - file_owner_var_log_waagent
+      - file_owner_var_log_wbtmp
+      - file_permissions_var_log_apt
+      - file_permissions_var_log_auth
+      - file_permissions_var_log_cloud-init
+      - file_permissions_var_log_gdm
+      - file_permissions_var_log_gdm3
+      - file_permissions_var_log_lastlog
+      - file_permissions_var_log_cloud-init
+      - file_permissions_var_log_localmessages
+      - file_permissions_var_log_messages
+      - file_permissions_var_log_secure
+      - file_permissions_var_log_sssd
+      - file_permissions_var_log_syslog
+      - file_permissions_var_log_waagent
+      - file_permissions_var_log_wbtmp
+      - groupowner_local_var_log
+      - owner_local_var_log
       - permissions_local_var_log
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.3.
+    status: automated
 
   - id: 6.2.1.1
     title: Ensure auditd packages are installed (Automated)

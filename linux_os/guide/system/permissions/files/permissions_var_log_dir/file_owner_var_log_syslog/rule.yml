@@ -2,7 +2,11 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/syslog File'
 
-description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
+{{%  if 'ubuntu2404' not in product %}}
+description: '{{{ describe_file_owner(file="/var/log/syslog", owner="root") }}}'
+{{%- else %}}        
+description: '{{{ describe_file_owner(file="/var/log/syslog", owner="root|syslog") }}}'
+{{%- endif %}}
 
 rationale: |-
     The <tt>/var/log/syslog</tt> file contains logs of error messages in
@@ -16,13 +20,26 @@ references:
     stigid@ubuntu2004: UBTU-20-010421
     stigid@ubuntu2204: UBTU-22-232130
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog") }}}'
+{{%  if 'ubuntu2404' not in product %}}
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/syslog", owner="root") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/syslog", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/syslog", owner="root") }}}'
 
 template:
     name: file_owner
     vars:
         filepath: /var/log/syslog
-        fileuid: '104'
+        fileuid: '0'
+{{%- else %}}        
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="root|syslog") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/syslog", owner="root|syslog") }}}
+{{%- endif %}}
+

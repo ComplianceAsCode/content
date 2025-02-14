@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/auth.log File'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/auth.log", perms="0640") }}}
+
+rationale: |-
+    The <tt>/var/log/auth.log</tt> file contains records information about user
+    login attempts and authentication processes and should only be accessed by
+    authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/auth.log", perms="-rw-r-----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/auth.log", perms="-rw-r-----") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/auth.log
+        filemode: '0640'

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/(b|w)tmp(.*|-*) File'
+
+description: '{{{ describe_file_owner(file="/var/log/(b|w)tmp(.*|-*)", owner="root") }}}'
+
+rationale: |-
+    The <tt>/var/log/(b|w)tmp(.*|-*)</tt> file contains logs of reports the most recent login of all users
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/(b|w)tmp(.*|-*)", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/(b|w)tmp(.*|-*)", owner="root") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/(b|w)tmp(.*|-*)", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/(b|w)tmp(.*|-*)", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/
+        file_regex: .*(b|w)tmp((\.|-)[^\/]+)?$
+        fileuid: '0'
