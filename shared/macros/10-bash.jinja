@@ -10,7 +10,10 @@ Then, assume that variables of that names are defined and contain the correct va
 #}}
 {{%- macro bash_instantiate_variables() -%}}
 {{%- for name in varargs -%}}
-{{{ name }}}='(bash-populate {{{ name }}})'
+{{{ name }}}=$(cat << EOF
+(bash-populate {{{ name }}})
+EOF
+)
 {{% endfor -%}}
 {{%- endmacro -%}}
 
