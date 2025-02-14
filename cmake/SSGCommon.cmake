@@ -671,6 +671,22 @@ macro(ssg_build_disa_delta PRODUCT PROFILE)
             DESTINATION ${SSG_TAILORING_INSTALL_DIR})
 endmacro()
 
+macro(ssg_build_tests PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tests/.tests_done"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/build-scripts/build_tests.py"  --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --output  "${CMAKE_CURRENT_BINARY_DIR}/tests" --product-yaml "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/product.yml"
+        # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
+        DEPENDS ${PRODUCT}-compile-all "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
+        COMMENT "[${PRODUCT}-tests] generating tests"
+    )
+
+    add_custom_target(
+        ${PRODUCT}-tests
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tests/.tests_done"
+    )
+endmacro()
+
+
 # Top-level macro to build all output artifacts for the specified product.
 # Ensures the various targets we create in the above macros are linked to
 # the default build target when applicable and handles installation steps.
@@ -883,6 +899,11 @@ macro(ssg_build_product PRODUCT)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/run_scapval.py" "--scap-version" "1.3" "--scapval-path" "${SCAPVAL_PATH}" "--datastream" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         )
         set_tests_properties("scapval-${PRODUCT}" PROPERTIES LABELS scapval)
+    endif()
+
+    if(SSG_BUILT_TESTS_ENABLED)
+        ssg_build_tests(${PRODUCT})
+        add_dependencies(${PRODUCT} ${PRODUCT}-tests)
     endif()
 
     # grab all the kickstarts (if any) and install them

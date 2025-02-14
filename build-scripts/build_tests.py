@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import logging
 import pathlib
 import sys
 from typing import TypeVar, Iterator, List, Iterable, Set, Dict
@@ -43,6 +44,7 @@ def _create_arg_parser() -> argparse.ArgumentParser:
         help="Directory with <rule-id>.yml resolved rule YAMLs"
              "e.g.: ~/scap-security-guide/build/rhel10/rules"
     )
+    parser.add_argument("--verbose", action="store_true", default=False)
     parser.add_argument("--root", default=SSG_ROOT,
                         help=f"Path to the project. Defaults to {SSG_ROOT}")
     parser.add_argument("--jobs", "-j", type=int, default=JOB_COUNT,
@@ -118,7 +120,7 @@ def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_
             with open(output_file, 'w') as file:
                 file.write(file_contents)
                 file.write('\n')
-        file_contents = open(str(test.absolute())).read()
+        file_contents = test.read_text()
         scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
         if scenario.matches_platform(benchmark_cpes):
             content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
@@ -152,7 +154,7 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
             deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
             for test in template_tests_root.iterdir():  # type: pathlib.Path
                 if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
-                    print(f'Skipping {test.name} for {rule_id}', file=sys.stderr)
+                    logging.warning("Skipping % for %s", (test.name, rule_id))
                     continue
                 template = ssg.templates.Template.load_template(str(templates_root.absolute()),
                                                                 template_name)
@@ -174,7 +176,8 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
 
 def main() -> int:
     args = _create_arg_parser().parse_args()
-
+    if not args.verbose:
+        logging.basicConfig(level=logging.ERROR)
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
 
@@ -182,8 +185,8 @@ def main() -> int:
     output_path = pathlib.Path(args.output).resolve().absolute()
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
     if not resolved_rules_dir.exists() or not resolved_rules_dir.is_dir():
-        print(f"Unable to find product at {str(resolved_rules_dir)}.", file=sys.stderr)
-        print(f"Is the product built?", file=sys.stderr)
+        logging.error("Unable to find product at %s", (str(resolved_rules_dir),))
+        logging.error("Is the product built?")
         return 1
 
     output_path.mkdir(parents=True, exist_ok=True)
@@ -203,6 +206,10 @@ def main() -> int:
         process.start()
     for process in processes:
         process.join()
+    # Write a file for CMake
+    # So we don't have dependency on a folder
+    done_file: pathlib.Path = output_path / ".test_done"
+    done_file.touch()
     return 0
 
 
