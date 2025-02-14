@@ -14,7 +14,7 @@
 
   <ind:textfilecontent54_object id="object_test_systemd_journal_upload_url" version="2">
     <ind:filepath operation="pattern match">^/etc/systemd/journal-upload.conf(\.d/[^/]+\.conf)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*URL\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[Upload\](?:[^\n]*\n+)+?^\h*URL\h*=\h*(.*)\h*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -23,5 +23,4 @@
   </ind:textfilecontent54_state>
 
   <external_variable comment="systemd-journal-upload URL" datatype="string" id="var_journal_upload_url" version="1" />
-
 </def-group>

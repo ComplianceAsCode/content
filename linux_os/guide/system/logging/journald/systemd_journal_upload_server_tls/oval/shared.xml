@@ -21,7 +21,7 @@
 
   <ind:textfilecontent54_object id="object_systemd_journal_upload_server_key_file" version="2">
     <ind:filepath operation="pattern match">^/etc/systemd/journal-upload.conf(\.d/[^/]+\.conf)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*ServerKeyFile\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[Upload\](?:[^\n]*\n+)+?^\h*ServerKeyFile\h*=\h*(.*)\h*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -40,7 +40,7 @@
 
   <ind:textfilecontent54_object id="object_systemd_journal_upload_server_certificate_file" version="2">
     <ind:filepath operation="pattern match">^/etc/systemd/journal-upload.conf(\.d/[^/]+\.conf)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*ServerCertificateFile\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[Upload\](?:[^\n]*\n+)+?^\h*ServerCertificateFile\h*=\h*(.*)\h*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -59,7 +59,7 @@
 
   <ind:textfilecontent54_object id="object_systemd_journal_upload_server_trusted_certificate_file" version="2">
     <ind:filepath operation="pattern match">^/etc/systemd/journal-upload.conf(\.d/[^/]+\.conf)?$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*TrustedCertificateFile\s*=\s*(.*)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\[Upload\](?:[^\n]*\n+)+?^\h*TrustedCertificateFile\h*=\h*(.*)\h*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
