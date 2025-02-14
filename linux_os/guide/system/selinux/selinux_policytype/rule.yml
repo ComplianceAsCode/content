@@ -72,3 +72,14 @@ fixtext: |-
     A reboot is required for the changes to take effect.
 
 srg_requirement: '{{{ full_name }}} must enable the SELinux targeted policy.'
+
+template:
+    name: key_value_pair_in_file
+    vars:
+      path: '/etc/selinux/config'
+      prefix_regex: '^'
+      key: 'SELINUXTYPE'
+      xccdf_variable: 'var_selinux_policy_name'
+      sep: '='
+      sep_regex: '='
+      app: 'selinux'
