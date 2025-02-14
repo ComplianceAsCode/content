@@ -34,3 +34,7 @@ fixtext: |-
     Configure systemd-journal-upload ServerKeyFile to {{{ xccdf_value("var_journal_upload_server_key_file") }}}
     Configure systemd-journal-upload ServerCertificateFile to {{{ xccdf_value("var_journal_upload_server_certificate_file") }}}
     Configure systemd-journal-upload TrustedCertificateFile to {{{ xccdf_value("var_journal_upload_server_trusted_certificate_file") }}}
+
+{{% if product in ['ubuntu2404'] %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}

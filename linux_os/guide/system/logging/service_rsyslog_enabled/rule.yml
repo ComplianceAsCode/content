@@ -52,3 +52,7 @@ template:
     name: service_enabled
     vars:
         servicename: rsyslog
+
+{{% if product in ['ubuntu2404'] %}}
+platform: package[rsyslog]
+{{% endif %}}

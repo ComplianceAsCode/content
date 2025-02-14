@@ -1,6 +1,5 @@
 documentation_complete: true
 
-
 title: Ensure journald is configured to compress large log files
 
 description: |-
@@ -64,3 +63,7 @@ template:
         value: yes
         no_quotes: 'true'
 {{% endif -%}}
+
+{{% if product in ['ubuntu2404'] %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}

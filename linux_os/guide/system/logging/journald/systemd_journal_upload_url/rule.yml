@@ -29,3 +29,7 @@ ocil: |-
 
 fixtext: |-
    Configure systemd-journal-upload URL to {{{ xccdf_value("var_journal_upload_url") }}}
+
+{{% if product in ['ubuntu2404'] %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}
