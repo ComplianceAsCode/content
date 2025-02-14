@@ -127,6 +127,7 @@ All issues and pull requests for product removal must use the [product-removal](
 
 ##### Architectural Decision Records
 - We use [Architectural Decision Records](../../adr/0000-architecture-decisions-records)
+- The first ADR defines the context and guidelines for new ADRs.
 
 
 #### Shared Resources

@@ -42,7 +42,7 @@ References:
 
 * We will use Architecture Decision Records
     * Each ADR will include three main sections: Context, Decision, and Consequences
-    * We will store the ADRs at `docs/adr` directory using the format `XXXX - title.md`, where:
+    * We will store the ADRs at `docs/adr` directory using the format `XXXX_title.md`, where:
         * `XXXX` is a sequential number
         * `title` is a short and meaningful title for the AD separated by "_" when composed by multiple words
     * We will inform the last released version in the ADR header for a better temporal context of each ADR
