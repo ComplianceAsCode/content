@@ -58,9 +58,7 @@ selections:
     - api_server_insecure_port
     - api_server_kubelet_certificate_authority
     - api_server_kubelet_client_cert
-    - api_server_kubelet_client_cert_pre_4_9
     - api_server_kubelet_client_key
-    - api_server_kubelet_client_key_pre_4_9
     - api_server_no_adm_ctrl_plugins_disabled
     - api_server_oauth_https_serving_cert
     - api_server_openshift_https_serving_cert
