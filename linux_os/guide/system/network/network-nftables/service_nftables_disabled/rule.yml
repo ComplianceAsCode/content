@@ -37,7 +37,7 @@ fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
 
 platform: system_with_kernel and package[nftables] and package[firewalld]
 
-{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
+{{%- if product in [ "sle12", "sle15", "ubuntu2404", "debian12" ] %}}
 template:
     name: service_disabled_guard_var
     vars:
