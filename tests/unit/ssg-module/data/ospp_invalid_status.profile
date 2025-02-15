@@ -12,7 +12,7 @@ description: 'This profile is part of Red Hat Enterprise Linux 9 Common Criteria
 
     configuration, based on Configuration Annex to the OSPP.'
 extends: null
-status: accepted
+status: complete
 metadata:
     version: 4.2.1
     SMEs:
