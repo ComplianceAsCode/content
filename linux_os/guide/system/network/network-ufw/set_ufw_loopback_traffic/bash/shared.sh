@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_ubuntu,multi_platform_debian
 
 ufw allow in on lo
 ufw allow out on lo

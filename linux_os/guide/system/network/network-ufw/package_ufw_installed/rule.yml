@@ -24,7 +24,7 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="ufw") }}}'
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if product in [ "ubuntu2404", "debian12" ] %}}
 template:
     name: package_installed_guard_var
     vars:
