@@ -24,6 +24,8 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="ufw") }}}'
 
+platform: system_with_kernel
+
 {{%- if product in [ "ubuntu2404", "debian12" ] %}}
 template:
     name: package_installed_guard_var
@@ -31,7 +33,6 @@ template:
         pkgname: ufw
         variable: var_network_filtering_service
         value: ufw
-        operation: pattern match
 {{%- else %}}
 template:
     name: package_installed
