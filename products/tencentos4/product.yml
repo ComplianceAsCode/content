@@ -1,0 +1,20 @@
+product: tencentos4
+full_name: TencentOS Server 4
+type: platform
+
+benchmark_id: TENCENTOS4
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "dnf"
+pkg_manager_config_file: "/etc/yum.conf"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - tencentos4:
+      name: "cpe:/o:tencentos:tencentos_server:4"
+      title: "TencentOS Server 4"
+      check_id: installed_OS_is_tencentos4
