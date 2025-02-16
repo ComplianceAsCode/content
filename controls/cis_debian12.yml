@@ -1319,7 +1319,6 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - check_ufw_active
       - service_ufw_enabled
     status: automated
 
@@ -1373,6 +1372,7 @@ controls:
       - l1_workstation
     rules:
       - package_ufw_removed
+      - service_ufw_disabled
     status: automated
 
   - id: 4.3.3
@@ -1477,7 +1477,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - package_ufw_removed
+      - service_ufw_disabled
     status: automated
 
   - id: 4.4.2.1
