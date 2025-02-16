@@ -938,12 +938,16 @@ controls:
       - l1_workstation
     rules:
       - var_timesync_service=systemd-timesyncd
+      # Choose chrony
       - package_chrony_installed
-      - service_chronyd_enabled
-      - service_chronyd_disabled
-      - package_timesyncd_installed
-      - service_timesyncd_enabled
-      - service_timesyncd_disabled
+      # - package_timesyncd_removed # Not written in CIS documentation
+      - service_timesyncd_disable 
+      ##
+      # Choose systemd-timesyncd
+      # - package_timesyncd_installed # Not written in CIS documentation
+      - package_chrony_removed
+      # - service_chrony_disable # Not written in CIS documentation
+      ##
       - ntp_single_service_active
     status: automated
     notes: |
@@ -956,7 +960,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - var_multiple_time_servers=ubuntu
+      - var_multiple_time_servers=debian
       - service_timesyncd_configured
     status: automated
 
@@ -967,9 +971,7 @@ controls:
       - l1_workstation
     related_rules:
       - service_timesyncd_enabled
-      - service_timesyncd_disabled
     status: automated
-    notes: Implemented in 2.3.1.1
 
   - id: 2.3.3.1
     title: Ensure chrony is configured with authorized timeserver (Automated)
@@ -977,8 +979,8 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - var_multiple_time_servers=ubuntu
-      - var_multiple_time_pools=ubuntu
+      - var_multiple_time_servers=debian
+      - var_multiple_time_pools=debian
       - chronyd_configure_pool_and_server
     status: partial
     notes: |
@@ -1001,9 +1003,7 @@ controls:
       - l1_workstation
     related_rules:
       - service_chronyd_enabled
-      - service_chronyd_disabled
     status: automated
-    notes: Implemented in 2.3.1.1
 
   - id: 2.4.1.1
     title: Ensure cron daemon is enabled and active (Automated)
@@ -1450,7 +1450,6 @@ controls:
       - var_nftables_master_config_file=etc
       - nftables_rules_permanent
     status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/3.5.2.10.
 
   - id: 4.4.1.1
     title: Ensure iptables packages are installed (Automated)
@@ -1664,7 +1663,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - sshd_strong_kex=cis_ubuntu2404
+      - sshd_strong_kex=cis_debian12
       - sshd_use_strong_kex
     status: automated
 
@@ -1693,7 +1692,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - sshd_strong_macs=cis_ubuntu2404
+      - sshd_strong_macs=cis_debian12
       - sshd_use_strong_macs
     status: automated
 
@@ -2115,7 +2114,7 @@ controls:
       - l1_workstation
     rules:
       - set_password_hashing_algorithm_logindefs
-      - var_password_hashing_algorithm=cis_ubuntu2404
+      - var_password_hashing_algorithm=cis_debian12
     status: automated
     notes: Rule allows either SHA512 or YESCRYPT
 
@@ -2437,7 +2436,6 @@ controls:
     related_rules:
       - permissions_local_var_log
     status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/4.2.3.
 
   - id: 6.2.1.1
     title: Ensure auditd packages are installed (Automated)
@@ -2449,7 +2447,6 @@ controls:
       - package_audit-audispd-plugins_installed
     status: automated
     notes: |
-      Implementation analogous to ubuntu2204/4.1.1.1.
       Added also the missing rule for audispd.
 
   - id: 6.2.1.2
@@ -2507,8 +2504,8 @@ controls:
       - l2_server
       - l2_workstation
     rules:
-      - var_auditd_disk_error_action=cis_ubuntu2404
-      - var_auditd_disk_full_action=cis_ubuntu2404
+      - var_auditd_disk_error_action=cis_debian12
+      - var_auditd_disk_full_action=cis_debian12
       - auditd_data_disk_error_action
       - auditd_data_disk_full_action
     status: automated
