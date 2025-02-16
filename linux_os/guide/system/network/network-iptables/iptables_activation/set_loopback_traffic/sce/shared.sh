@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu
+# platform = multi_platform_ubuntu,multi_platform_debian
 # check-import = stdout
 
 regex="\s+[0-9]+\s+[0-9]+\s+ACCEPT\s+all\s+--\s+lo\s+\*\s+0\.0\.0\.0\/0\s+0\.0\.0\.0\/0[[:space:]]+[0-9]+\s+[0-9]+\s+DROP\s+all\s+--\s+\*\s+\*\s+127\.0\.0\.0\/8\s+0\.0\.0\.0\/0"

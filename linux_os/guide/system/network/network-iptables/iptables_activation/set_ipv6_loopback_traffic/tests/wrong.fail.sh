@@ -1,4 +1,4 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_ubuntu,multi_platform_debian
 # remediation = none
 # packages = iptables,iptables-persistent
 

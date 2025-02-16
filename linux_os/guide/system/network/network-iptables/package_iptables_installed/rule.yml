@@ -1,7 +1,7 @@
 documentation_complete: true
 
 
-platform: system_with_kernel and not rhcos4-rhel9 and service_disabled[nftables] and service_disabled[ufw]
+platform: system_with_kernel and not rhcos4-rhel9
 
 title: 'Install iptables Package'
 
@@ -36,7 +36,7 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="iptables") }}}'
 
-{{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
+{{%- if product in [ "sle12", "sle15", "ubuntu2404", "debian12" ] %}}
 template:
     name: package_installed_guard_var
     vars:
