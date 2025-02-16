@@ -33,7 +33,7 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("nftables") }}}
 
-platform: system_with_kernel and package[nftables] and service_disabled[firewalld]
+platform: system_with_kernel and package[nftables]
 
 {{%- if product in [ "sle12", "sle15", "ubuntu2404", "debian12" ] %}}
 template:

@@ -35,9 +35,10 @@ ocil: |-
 
 fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
 
-platform: system_with_kernel and package[nftables] and package[firewalld]
 
 {{%- if product in [ "sle12", "sle15", "ubuntu2404", "debian12" ] %}}
+platform: system_with_kernel and package[iptables-persistent]
+
 template:
     name: service_disabled_guard_var
     vars:
@@ -46,6 +47,8 @@ template:
         variable: var_network_filtering_service
         value: nftables
 {{%- else %}}
+platform: system_with_kernel
+
 template:
     name: service_disabled
     vars:
