@@ -80,4 +80,4 @@ template:
             - /sbin/auditd
             {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
-        fileuid: '0'
+        uid_or_name: '0'

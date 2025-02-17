@@ -61,11 +61,11 @@ template:
           - /var/log/journal/
         recursive: 'true'
         file_regex: ^.*$
-        fileuid: '0'
+        uid_or_name: '0'
 
         {{%- else %}}
         filepath: ^/var/log/journal/.*/system.journal$
-        fileuid: '0'
+        uid_or_name: '0'
         filepath_is_regex: "true"
 
         {{%- endif %}}
