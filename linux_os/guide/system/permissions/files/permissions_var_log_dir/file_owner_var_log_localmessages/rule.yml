@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/localmessages File'
+
+description: '{{{ describe_file_owner(file="/var/log/localmessages", owner="root|syslog") }}}'
+
+rationale: |-
+    The <tt>/var/log/localmessages</tt> file contains log messages from certain boot scripts,
+    including the DHCP client, and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/localmessages", owner="root|syslog") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/localmessages", owner="root|syslog") }}}
