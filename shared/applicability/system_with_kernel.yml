@@ -25,9 +25,9 @@ bash_conditional: "rpm --quiet -q kernel"
 {{% endif %}}
 {{% else %}}
 {{% if "debian" in product or "ubuntu" in product %}}
-bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'linux-base' 2>/dev/null | grep -q ^installed"
+bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}' 'linux-base' 2>/dev/null | grep -q '^installed$'"
 {{% else %}}
-bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}\n' 'kernel' 2>/dev/null | grep -q ^installed"
+bash_conditional: "dpkg-query --show --showformat='${db:Status-Status}' 'kernel' 2>/dev/null | grep -q '^installed$'"
 {{% endif %}}
 {{% endif %}}
 {{% if "debian" in product or "ubuntu" in product %}}
