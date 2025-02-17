@@ -340,7 +340,10 @@ they must be of the same length.
         subdirectories under the directory specified by **filepath**. Default
         value is `"false"`.
 
-    -   **fileuid** - user ID (UID)
+    -   **uid_or_name** - user ID (UID) or a user name.
+        If the parameter is an integer, it is treated as user ID. If the
+        parameter is not an integer, it is treated as a user name and it is
+        converted to UID by reading /etc/passwd.
 
 -   Languages: Ansible, Bash, OVAL
 
