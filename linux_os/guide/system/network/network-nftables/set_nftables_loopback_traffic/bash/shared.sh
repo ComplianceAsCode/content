@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-{{% if "ubuntu" in product %}}
+{{% if "ubuntu" in product or 'debian' in product %}}
 {{{ bash_instantiate_variables("var_nftables_family") }}}
 {{% endif %}}
 
@@ -27,6 +27,6 @@ if [ "$disabled" = false ] ; then
     nft add rule inet filter input ip6 saddr ::1 counter drop
 fi
 
-{{% if "ubuntu" in product %}}
+{{% if "ubuntu" in product or 'debian' in product %}}
 nft list ruleset > "/etc/${var_nftables_family}-filter.rules"
 {{% endif %}}

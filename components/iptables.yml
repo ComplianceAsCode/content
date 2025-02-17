@@ -3,7 +3,6 @@ packages:
 - iptables
 - iptables-ipv6
 - iptables-nft
-- iptables-persistent
 - iptables-services
 rules:
 - directory_groupowner_etc_iptables
@@ -11,8 +10,6 @@ rules:
 - directory_permissions_etc_iptables
 - package_iptables-nft_installed
 - package_iptables-nft_installed
-- package_iptables-persistent_installed
-- package_iptables-persistent_removed
 - package_iptables-services_installed
 - package_iptables-services_removed
 - package_iptables_installed

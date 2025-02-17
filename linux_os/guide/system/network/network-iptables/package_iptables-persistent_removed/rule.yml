@@ -12,8 +12,6 @@ rationale: |-
 
 severity: medium
 
-platform: package[ufw]
-
 references:
     cis@ubuntu2004: 3.5.1.2
     cis@ubuntu2204: 3.5.1.2
@@ -22,10 +20,23 @@ ocil_clause: 'the package is installed'
 
 ocil: '{{{ ocil_package(package="iptables-persistent") }}}'
 
+{{%- if product in [ "ubuntu2404", "debian12" ] %}}
+platform: system_with_kernel and package[ufw]
+
+template:
+    name: package_removed_guard_var
+    vars:
+        pkgname: iptables-persistent
+        variable: var_network_filtering_service
+        value: iptables
+{{%- else %}}
+platform: system_with_kernel
+
 template:
     name: package_removed
     vars:
         pkgname: iptables-persistent
+{{%- endif %}}
 
 fixtext: |-
     {{{ describe_package_remove(package="iptables-persistent") }}}

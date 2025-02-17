@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Verify ufw Service is Disabled'
+
+description: |-
+    Uncomplicated Firewall (UFW) is a program for managing a netfilter firewall designed to
+    be easy to use.
+
+rationale: |-
+    Running both <tt>iptables.persistent</tt>/<tt>nftables</tt> services and <tt>ufw</tt> may lead to conflict and unexpected results.
+
+severity: medium
+
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="ufw") }}}
+
+ocil: |-
+    {{{ ocil_service_disabled(service="ufw") }}}
+
+fixtext: '{{{ fixtext_service_disabled("ufw") }}}'
+
+
+{{%- if product in [ "ubuntu2404", "debian12" ] %}}
+platform: system_with_kernel and package[iptables-persistent] or package[nftables]
+
+template:
+    name: service_disabled_guard_var
+    vars:
+        packagename: ufw
+        servicename: ufw
+        variable: var_network_filtering_service
+        value: ufw
+{{%- else %}}
+platform: system_with_kernel 
+
+template:
+    name: service_disabled
+    vars:
+        servicename: ufw
+        packagename: ufw
+{{%- endif %}}

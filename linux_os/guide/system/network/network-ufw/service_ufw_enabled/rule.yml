@@ -25,7 +25,7 @@ ocil: |-
 
 platform: system_with_kernel and package[ufw]
 
-{{%- if product in [ "ubuntu2404" ] %}}
+{{%- if product in [ "ubuntu2404", "debian12" ] %}}
 template:
     name: service_enabled_guard_var
     vars:

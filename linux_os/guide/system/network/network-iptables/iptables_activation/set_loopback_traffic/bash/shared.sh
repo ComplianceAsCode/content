@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_sle,multi_platform_ubuntu,multi_platform_debian
 
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
