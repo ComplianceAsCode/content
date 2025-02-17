@@ -21,6 +21,8 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog")
 ocil: |-
     {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog") }}}
 
+platform: package[rsyslog]
+
 template:
     name: file_owner
     vars:
