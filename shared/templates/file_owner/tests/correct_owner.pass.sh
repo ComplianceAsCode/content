@@ -8,15 +8,15 @@ fi
 {{% if FILE_REGEX %}}
 echo "Create specific tests for this rule because of regex"
 {{% elif RECURSIVE %}}
-find -L {{{ path }}} -type d -exec chown {{{ FILEUID }}} {} \;
+find -L {{{ path }}} -type d -exec chown {{{ UID_OR_NAME }}} {} \;
 {{% else %}}
-chown {{{ FILEUID }}} {{{ path }}}
+chown {{{ UID_OR_NAME }}} {{{ path }}}
 {{% endif %}}
 {{% else %}}
 if [ ! -f {{{ path }}} ]; then
     mkdir -p "$(dirname '{{{ path }}}')"
     touch {{{ path }}}
 fi
-chown {{{ FILEUID }}} {{{ path }}}
+chown {{{ UID_OR_NAME }}} {{{ path }}}
 {{% endif %}}
 {{% endfor %}}
