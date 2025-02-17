@@ -731,6 +731,7 @@ if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
 else
   sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
 fi
+{{{ bash_ensure_nl_at_eof(config_file) }}}
 {{%- endmacro -%}}
 
 
