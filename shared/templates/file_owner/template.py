@@ -9,6 +9,12 @@ def preprocess(data, lang):
                                                      parameter="recursive",
                                                      default_value=False)
 
+    try:
+        int(data["uid_or_name"])
+        data["user_represented_with_uid"] = True
+    except ValueError:
+        data["user_represented_with_uid"] = False
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
     return data
