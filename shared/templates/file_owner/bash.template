@@ -16,11 +16,11 @@
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L {{{ FILEUID }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -user {{{ UID_OR_NAME }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown -L {{{ UID_OR_NAME }}} {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chown -L {{{ FILEUID }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chown -L {{{ UID_OR_NAME }}} {} \;
 {{%- endif %}}
 {{%- else %}}
-chown {{{ FILEUID }}} {{{ path }}}
+chown {{{ UID_OR_NAME }}} {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}
