@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -owner root ! -owner syslog -type f -regextype posix-extended -regex '.*cloud-init.log(.*)' -exec chown syslog {} \;
+find -L /var/log/ -maxdepth 1 ! -user root ! -user syslog -type f -regextype posix-extended -regex '.*cloud-init.log(.*)' -exec chown syslog {} \;

@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -owner root ! -owner sssd -type d -regextype posix-extended -name 'sssd' -exec chown sssd {} \;
+find -L /var/log/ -maxdepth 1 ! -user root ! -user sssd -type d -regextype posix-extended -name 'sssd' -exec chown sssd {} \;

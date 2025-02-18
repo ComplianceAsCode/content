@@ -16,7 +16,7 @@
     <object_component item_field="subexpression" object_ref="object_utmp_gid"/>
   </local_variable>
 
-  <unix:file_test check="all" comment="/var/log/(w|b)tmp group owner is root|utmp"
+  <unix:file_test check_existence="any_exist" check="all" comment="/var/log/(w|b)tmp group owner is root|utmp"
       id="test_group_ownership_var_log_wbtmp" state_operator="OR" version="1">
     <unix:object object_ref="object_group_ownership_var_log_wbtmp" />
     <unix:state state_ref="state_group_ownership_utmp_var_log_wbtmp"/>
