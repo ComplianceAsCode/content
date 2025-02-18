@@ -2,7 +2,11 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/messages File'
 
-description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}'
+{{%  if 'ubuntu2404' not in product %}}
+description: '{{{ describe_file_group_owner(file="/var/log/messages", group="adm") }}}'
+{{%- else %}}        
+description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
+{{%- endif %}}
 
 rationale: |-
     The <tt>/var/log/messages</tt> file contains logs of error messages in
@@ -21,6 +25,7 @@ references:
     stigid@ol8: OL08-00-010230
     stigid@rhel8: RHEL-08-010230
 
+{{%  if 'ubuntu2404' not in product %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root") }}}'
 
 ocil: |-
@@ -35,3 +40,9 @@ fixtext: |-
     {{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}
 
 srg_requirement: '{{{ srg_requirement_file_group_owner("/var/log/messages", group="root") }}}'
+{{%- else %}}        
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/messages", group="root|adm") }}}
+{{%- endif %}}

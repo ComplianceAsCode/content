@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/gdm directory'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/gdm", perms="0770") }}}
+
+rationale: |-
+    The <tt>/var/log/gdm</tt> directory contains information about the GDM daemon
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/gdm", perms="-rwxrwx---") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/gdm", perms="-rwxrwx---") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/gdm/
+        filemode: '0770'

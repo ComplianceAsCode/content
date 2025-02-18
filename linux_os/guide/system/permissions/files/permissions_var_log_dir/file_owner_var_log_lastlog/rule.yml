@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/lastlog File'
+
+description: '{{{ describe_file_owner(file="/var/log/lastlog", owner="root") }}}'
+
+rationale: |-
+    The <tt>/var/log/lastlog</tt> file contains logs of reports the most recent login of all users
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/lastlog", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/lastlog", owner="root") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/lastlog", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/lastlog", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/
+        file_regex: .*lastlog(\.[^\/]+)?$
+        fileuid: '0'

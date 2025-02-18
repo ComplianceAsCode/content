@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("Group owner of /var/log/(w|b)tmp should be root or utmp.") }}}
+    <criteria comment="Check group ownership of /var/log/(w|b)tmp">
+     <criterion test_ref="test_group_ownership_var_log_wbtmp" />
+    </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_object id="object_utmp_gid" version="1" comment="gid of the dedicated utmp group">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^utmp:\w+:(\w+):.*</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable id="var_utmp_gid" datatype="int" version="1"
+                  comment="Retrieve the gid of utmp group">
+    <object_component item_field="subexpression" object_ref="object_utmp_gid"/>
+  </local_variable>
+
+  <unix:file_test check_existence="any_exist" check="all" comment="/var/log/(w|b)tmp group owner is root|utmp"
+      id="test_group_ownership_var_log_wbtmp" state_operator="OR" version="1">
+    <unix:object object_ref="object_group_ownership_var_log_wbtmp" />
+    <unix:state state_ref="state_group_ownership_utmp_var_log_wbtmp"/>
+    <unix:state state_ref="state_group_ownership_root_var_log_wbtmp"/>
+  </unix:file_test>
+  <unix:file_object comment="/var/log/(w|b)tmp" id="object_group_ownership_var_log_wbtmp" version="1">
+    <unix:filepath operation="pattern match">/var/log/(b|w)tmp((\.|-)[^\/]+)?</unix:filepath>
+  </unix:file_object>
+  <unix:file_state id="state_group_ownership_utmp_var_log_wbtmp" version="1">
+    <unix:group_id datatype="int" operation="equals" var_ref="var_utmp_gid"/>
+  </unix:file_state>
+  <unix:file_state id="state_group_ownership_root_var_log_wbtmp" version="1">
+    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  </unix:file_state>
+ </def-group>
