@@ -552,20 +552,49 @@ controls:
     levels:
     - elevated
     description: >-
-      A Kubernetes operation SHOULD be set up in such a way that if a site fails, the clusters (and
-      thus the applications in the pods) either continue to run without interruption or can be
+      (1) A Kubernetes operation SHOULD be set up in such a way that if a site fails, the clusters
+      (and thus the applications in the pods) either continue to run without interruption or can be
       restarted in a short time at another site.
-      Should a restart be required, all the necessary configuration files, images, user data, network
-      connections, and other resources required for operation (including the necessary hardware)
+      (2) Should a restart be required, all the necessary configuration files, images, user data,
+      network connections, and other resources required for operation (including the necessary hardware)
       SHOULD already be available at the alternative site.
-      For the uninterrupted operation of clusters, the control plane of Kubernetes, the infrastructure
+      (3) For the uninterrupted operation of clusters, the control plane of Kubernetes, the infrastructure
       applications of the clusters, and the pods of the applications SHOULD be distributed across
       several fire zones based on the location data of the corresponding nodes so that the failure of a
       fire zone will not lead to the failure of an application.
     notes: >-
-      TBD
-    status: pending
-    rules: []
+      Section 1: OpenShift supports topology labels to differentiate between failure zones. To achieve
+
+      continued operation without interruption, nodes of every role need to be spread across zones.
+      For quorum-based applications, such as the Kubernetes control plane, three zones are required.
+      A sufficient number of control plane nodes and sufficient spreading across zones is checked using
+      rules. If a restart-based approach is chosen, the adequacy needs to be ensured organizationally.
+
+      Section 2: The availability of all required resources for operation after restart in a different
+      site needs to be ensured organizationally. Regular tests are essential. The availability of
+      persistent data used by pods requires the storage inside of PVs/PVCs and a storage provider,
+      that is also available at the alternative site.
+
+      Section 3: The OpenShift control plane is evenly distributed across the control plane nodes
+      out-of-the box. If the control plane nodes are distributed across failure zones, the control
+      plane is hence prone to node or zone outage. For infrastructure and application workloads, a
+      distribution across nodes and zones needs to be configured during deployment using affinity /
+      anti-affinity rules or topology spread constraints.
+
+      Single Node OpenShift (SNO) is not highly available and therefore incompliant to this control.
+    status: automated
+
+    rules:
+      # Section 1, 3
+      - multiple_nodes_in_every_mcp
+      - control_plane_nodes_in_three_zones
+      - worker_nodes_in_two_zones_or_more
+      - infra_nodes_in_two_zones_or_more
+      # Section 3
+      - three_control_plane_nodes
+      - anti_affinity_or_topology_spread_constraints_in_deployment
+      - anti_affinity_or_topology_spread_constraints_in_statefulset
+
 
   - id: APP.4.4.A20
     title: Encrypted Data Storage for Pods
