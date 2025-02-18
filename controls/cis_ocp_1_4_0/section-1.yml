@@ -388,7 +388,8 @@ controls:
       title: Ensure that the API Server only makes use of Strong Cryptographic Ciphers
       status: automated
       rules:
-        - api_server_tls_cipher_suites
+        - api_server_tls_security_profile_not_old
+        - api_server_tls_security_profile_custom_min_tls_version
       levels: [ level_1, ]
     - id: 1.2.33
       title: Ensure unsupported configuration overrides are not used
