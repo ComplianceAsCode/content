@@ -469,7 +469,10 @@ DEFAULT_CHRONY_D_PATH = '/etc/chrony.d/'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
 DEFAULT_SYSCTL_REMEDIATE_DROP_IN_FILE = 'false'
 DEFAULT_BOOTABLE_CONTAINERS_SUPPORTED = 'false'
-
+DEFAULT_XWINDOWS_PACKAGES = [ 'xorg-x11-server-Xorg',
+                              'xorg-x11-server-common',
+                              'xorg-x11-server-utils',
+                              'xorg-x11-server-Xwayland']
 
 # Constants for OVAL object model
 STR_TO_BOOL = {
