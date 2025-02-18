@@ -209,7 +209,7 @@ srgid_to_iacontrol_gpos = {
     'SRG-OS-000480-GPOS-00229': 'CM-6 b',
     'SRG-OS-000480-GPOS-00230': 'CM-6 b',
     'SRG-OS-000480-GPOS-00232': 'CM-6 b',
-    'SRG-OS-000481-GPOS-000481': 'SC-8'}
+    'SRG-OS-000481-GPOS-00481': 'SC-8'}
 
 srgid_to_iacontrol_ctr = {
  'SRG-APP-000014-CTR-000035': 'AC-17 (2)',
