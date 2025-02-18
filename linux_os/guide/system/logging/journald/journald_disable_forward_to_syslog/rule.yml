@@ -9,7 +9,11 @@ rationale:
     If journald is the method for capturing logs, all logs of the system should be
     handled by journald and not forwarded to other logging mechanisms.
 
+{{% if product in ['ubuntu2404'] %}}
+platform: package[systemd] and service_disabled[rsyslog]
+{{% else %}}
 platform: package[systemd]
+{{% endif %}}
 
 severity: medium
 

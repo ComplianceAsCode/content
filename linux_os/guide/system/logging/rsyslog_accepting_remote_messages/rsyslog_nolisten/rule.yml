@@ -82,3 +82,7 @@ ocil: |-
 fixtext: |-
     The {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log
     messages from other servers unless the server is being used for log aggregation.
+
+{{% if product in ['ubuntu2404'] %}}
+platform: not service_disabled[rsyslog]
+{{% endif %}}
