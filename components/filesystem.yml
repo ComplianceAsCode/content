@@ -56,6 +56,7 @@ rules:
 - file_groupowner_var_log_wbtmp
 - file_groupownership_audit_binaries
 - file_groupownership_system_commands_dirs
+- file_groupownerships_var_log
 - file_owner_backup_etc_group
 - file_owner_backup_etc_gshadow
 - file_owner_backup_etc_passwd
@@ -86,6 +87,7 @@ rules:
 - file_ownership_audit_binaries
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
+- file_ownerships_var_log
 - file_permissions_audit_binaries
 - file_permissions_backup_etc_group
 - file_permissions_backup_etc_gshadow
@@ -125,7 +127,6 @@ rules:
 - file_permissions_var_log_syslog
 - file_permissions_var_log_waagent
 - file_permissions_var_log_wbtmp
-- groupowner_local_var_log
 - mount_option_boot_efi_nosuid
 - mount_option_boot_noauto
 - mount_option_boot_nodev
@@ -167,7 +168,6 @@ rules:
 - mount_option_var_tmp_noexec
 - mount_option_var_tmp_nosuid
 - no_files_unowned_by_user
-- owner_local_var_log
 - partition_for_boot
 - partition_for_dev_shm
 - partition_for_home
