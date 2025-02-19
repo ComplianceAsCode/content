@@ -3,4 +3,11 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -user root ! -user syslog -type f -regextype posix-extended -name 'syslog' -exec chown syslog {} \;
+
+if id "syslog" >/dev/null 2>&1; then
+    username="syslog"
+else
+    username="root"
+fi
+
+find -L /var/log/ -maxdepth 1 ! -user root ! -user syslog -type f -regextype posix-extended -name 'syslog' -exec chown $username {} \;

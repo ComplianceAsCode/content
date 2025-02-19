@@ -3,4 +3,11 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -group root ! -group gdm -type d -regextype posix-extended -name 'gdm3' -exec chgrp gdm {} \;
+
+if getent group "gdm" >/dev/null 2>&1; then
+    group="gdm"
+else
+    group="root"
+fi
+
+find -L /var/log/ -maxdepth 1 ! -group root ! -group gdm -type d -regextype posix-extended -name 'gdm3' -exec chgrp $group {} \;

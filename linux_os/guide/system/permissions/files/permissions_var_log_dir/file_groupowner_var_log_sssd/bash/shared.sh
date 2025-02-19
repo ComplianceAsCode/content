@@ -3,4 +3,8 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -group root ! -group sssd -type d -regextype posix-extended -name 'sssd' -exec chgrp root {} \;
+
+# root is default on Ubuntu 24.04
+group="root"
+
+find -L /var/log/ -maxdepth 1 ! -group root ! -group sssd -type d -regextype posix-extended -name 'sssd' -exec chgrp $group {} \;
