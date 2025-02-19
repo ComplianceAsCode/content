@@ -2,10 +2,10 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/syslog File'
 
-{{%  if 'ubuntu2404' not in product %}}
-description: '{{{ describe_file_group_owner(file="/var/log/syslog", group="adm") }}}'
-{{%- else %}}        
+{{%- if product in ['ubuntu2404'] %}}
 description: '{{{ describe_file_group_owner(file="/var/log/syslog", group="root|adm") }}}'
+{{%- else %}}
+description: '{{{ describe_file_group_owner(file="/var/log/syslog", group="adm") }}}'
 {{%- endif %}}
 
 rationale: |-
@@ -20,7 +20,12 @@ references:
     stigid@ubuntu2004: UBTU-20-010420
     stigid@ubuntu2204: UBTU-22-232135
 
-{{%  if 'ubuntu2404' not in product %}}
+{{%- if product in ['ubuntu2404'] %}}
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="root|adm") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/syslog", group="root|adm") }}}
+{{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="adm") }}}'
 
 ocil: |-
@@ -31,9 +36,4 @@ template:
     vars:
         filepath: /var/log/syslog
         gid_or_name: '4'
-{{%- else %}}        
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="root|adm") }}}'
-
-ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/syslog", group="root|adm") }}}
 {{%- endif %}}

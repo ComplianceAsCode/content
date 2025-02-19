@@ -2,10 +2,10 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/messages File'
 
-{{%  if 'ubuntu2404' not in product %}}
-description: '{{{ describe_file_group_owner(file="/var/log/messages", group="adm") }}}'
-{{%- else %}}        
+{{%- if product in ['ubuntu2404'] %}}
 description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
+{{%- else %}}
+description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}'
 {{%- endif %}}
 
 rationale: |-
@@ -25,7 +25,13 @@ references:
     stigid@ol8: OL08-00-010230
     stigid@rhel8: RHEL-08-010230
 
-{{%  if 'ubuntu2404' not in product %}}
+{{%- if product in ['ubuntu2404'] %}}
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/messages", group="root|adm") }}}
+
+{{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root") }}}'
 
 ocil: |-
@@ -40,9 +46,4 @@ fixtext: |-
     {{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}
 
 srg_requirement: '{{{ srg_requirement_file_group_owner("/var/log/messages", group="root") }}}'
-{{%- else %}}        
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
-
-ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/messages", group="root|adm") }}}
 {{%- endif %}}
