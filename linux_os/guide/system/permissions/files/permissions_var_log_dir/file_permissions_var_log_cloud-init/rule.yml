@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on /var/log/cloud-init.log(.*) Files'
 
 description: |-
-    {{{ describe_file_permissions(file="/var/log/cloud-init.log", perms="0664") }}}
+    {{{ describe_file_permissions(file="/var/log/cloud-init.log", perms="0644") }}}
 
 rationale: |-
     The <tt>/var/log/cloud-init.log</tt> file contains detailed debugging information that
@@ -26,4 +26,4 @@ template:
         filemode: '0644'
 
 fixtext: |-
-    {{{ fixtext_file_permissions("/var/log/cloud-init.log", "0664") | indent(4) }}}
+    {{{ fixtext_file_permissions("/var/log/cloud-init.log", "0644") | indent(4) }}}

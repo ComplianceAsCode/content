@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on /var/log/localmessages(.*) Files'
 
 description: |-
-    {{{ describe_file_permissions(file="/var/log/localmessages", perms="0664") }}}
+    {{{ describe_file_permissions(file="/var/log/localmessages", perms="0644") }}}
 
 rationale: |-
     The <tt>/var/log/localmessages</tt> file contains log messages from certain boot scripts,
@@ -26,4 +26,4 @@ template:
         filemode: '0644'
 
 fixtext: |-
-    {{{ fixtext_file_permissions("/var/log/localmessages", "0664") | indent(4) }}}
+    {{{ fixtext_file_permissions("/var/log/localmessages", "0644") | indent(4) }}}
