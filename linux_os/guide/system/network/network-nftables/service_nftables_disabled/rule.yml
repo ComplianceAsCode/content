@@ -9,9 +9,12 @@ description: |-
     <pre>systemctl disable nftables</pre>
 
 rationale: |-
+    {{%- if 'ubuntu' in product  %}}
+    nftables should be disabled if another firewall service is used as it may lead to conflict.
+    {{%- else %}}
     Running both <tt>firewalld</tt> and <tt>nftables</tt> may lead to conflict. <tt>nftables</tt>
     is actually one of the backends for <tt>firewalld</tt> management tools.
-
+    {{%- endif %}}
 severity: medium
 
 identifiers:
@@ -35,7 +38,11 @@ ocil: |-
 
 fixtext: '{{{ fixtext_service_disabled("nftables") }}}'
 
+{{%- if 'ubuntu' in product  %}}
+platform: system_with_kernel and package[nftables]
+{{%- else %}}
 platform: system_with_kernel and package[nftables] and package[firewalld]
+{{%- endif %}}
 
 {{%- if product in [ "sle12", "sle15", "ubuntu2404" ] %}}
 template:
