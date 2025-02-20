@@ -48,7 +48,7 @@ References:
     * We will inform the last released version in the ADR header for a better temporal context of each ADR
     * We will use the following statuses for ADRs:
         * proposed, accepted, rejected, postponed, withdrawn, or replaced
-* We will require at least 3 PRs approvals to merge an ADR
+* We will require the approval of at least three maintainers to merge an ADR
 * We may still use other channels for a less formal discussion of a proposal in early stages
 
 
