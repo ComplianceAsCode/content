@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/secure File'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/secure", perms="0640") }}}
+
+rationale: |-
+    The <tt>/var/log/secure</tt> file contains information related to authentication
+    and authorization privileges and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/secure", perms="-rw-r-----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/secure", perms="-rw-r-----") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/secure
+        filemode: '0640'

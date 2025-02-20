@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns /var/log/cloud-init.log File'
+
+description: '{{{ describe_file_owner(file="/var/log/cloud-init.log", owner="root|syslog") }}}'
+
+rationale: |-
+    The <tt>/var/log/cloud-init.log</tt> file contains detailed debugging information that
+    helps users troubleshoot cloud-init and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/cloud-init.log", owner="root|syslog") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/cloud-init.log", owner="root|syslog") }}}
