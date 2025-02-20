@@ -25,9 +25,8 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: 'not all log files owned by root or syslog'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log", owner="root|syslog") }}}'
 
 ocil: |-
-    Verify the operating system has all system log files under the
-    <pre>/var/log</pre> directory, that are not excluded, with an owner set to root | syslog,
+    '{{{ ocil_file_owner(file="/var/log", owner="root|syslog") }}}'
 

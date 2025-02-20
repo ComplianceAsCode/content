@@ -3,4 +3,11 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -group root ! -group systemd-journal -type f -regextype posix-extended -regex ".*\.journal[~]?" -exec chgrp systemd-journal {} \;
+
+if getent group "systemd-journal" >/dev/null 2>&1; then
+    group="systemd-journal"
+else
+    group="root"
+fi
+
+find -L /var/log/ -maxdepth 1 ! -group root ! -group systemd-journal -type f -regextype posix-extended -regex ".*\.journal[~]?" -exec chgrp $group {} \;

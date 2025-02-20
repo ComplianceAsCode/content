@@ -3,4 +3,11 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find -L /var/log/ -maxdepth 1 ! -group root ! -group adm -type d -regextype posix-extended -name 'apt' -exec chgrp root {} \;
+
+if getent group "adm" >/dev/null 2>&1; then
+    group="adm"
+else
+    group="root"
+fi
+
+find -L /var/log/ -maxdepth 1 ! -group root ! -group adm -type d -regextype posix-extended -name 'apt' -exec chgrp $group {} \;
