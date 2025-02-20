@@ -3,7 +3,7 @@
 find /var/log -exec chmod g-rwx,o-rwx {} \;
 
 {{% if product in ['ubuntu2004', 'ubuntu2204'] %}}
-excluded_files=('history.log.1' 'eipp.log.xz.1' 'btmp1' 'wtmp1' 'lastlog1')
+excluded_files=('2history.log' '2eipp.log.xz' 'btmp1' 'wtmp1' 'lastlog1')
 {{% elif product in ['ubuntu2404'] %}}
 excluded_files=('btmp1' 'wtmp1' 'lastlog1' '2cloud-init.log''2localmessages' '2waagent.log')
 {{% elif product in ['sle12', 'sle15'] %}}
