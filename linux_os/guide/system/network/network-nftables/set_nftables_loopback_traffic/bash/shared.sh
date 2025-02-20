@@ -28,5 +28,5 @@ if [ "$disabled" = false ] ; then
 fi
 
 {{% if "ubuntu" in product %}}
-nft list ruleset > "/etc/${var_nftables_family}-filter.rules"
+nft list ruleset > /etc/nftables.conf
 {{% endif %}}
