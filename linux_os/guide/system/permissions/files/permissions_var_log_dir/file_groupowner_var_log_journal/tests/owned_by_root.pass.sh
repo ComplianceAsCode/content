@@ -1,10 +1,11 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
-# packages = systemd
 
+chown -R root /var/log
 
-touch /var/log/test.journal
-touch /var/log/test.journal~
-chgrp root /var/log/test.journal
-chgrp root /var/log/test.journal~
+mkdir -p /var/log/journal/
+touch /var/log/journal/test.journal
+touch /var/log/journal/test.journal~
+chgrp root /var/log/journal/test.journal
+chgrp root /var/log/journal/test.journal~
 

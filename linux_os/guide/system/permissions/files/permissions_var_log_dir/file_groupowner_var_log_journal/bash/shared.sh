@@ -10,4 +10,5 @@ else
     group="root"
 fi
 
-find -L /var/log/ -maxdepth 1 ! -group root ! -group systemd-journal -type f -regextype posix-extended -regex ".*\.journal[~]?" -exec chgrp $group {} \;
+find -L /var/log/ ! -group root ! -group systemd-journal -type f \
+    -regextype posix-extended -regex ".*\.journal[~]?" -exec chgrp $group {} \;

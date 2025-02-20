@@ -1,6 +1,5 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
-# packages = rsyslog
 
-rm -f /var/log/*.journal*
+find /var/log -path "*journal*" -type f -exec rm {} \; 
 
