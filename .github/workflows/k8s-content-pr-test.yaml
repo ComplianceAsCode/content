@@ -7,6 +7,11 @@ on:
     - opened
     - reopened
     - synchronize
+  workflow_run:
+    workflows: ['Kubernetes content image for PR']
+    branches: ['master']
+    types:
+      - completed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.run_id }}
