@@ -39,7 +39,7 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@be351b03e64e3d77ebb9b64b4d130436be1c02be # v4
+        uses: mikepenz/release-changelog-builder-action@9a903f73f4cccdc8241077da63578b3faba06403 # v4
         with:
           configuration: .github/workflows/release-changelog.json
         env:
