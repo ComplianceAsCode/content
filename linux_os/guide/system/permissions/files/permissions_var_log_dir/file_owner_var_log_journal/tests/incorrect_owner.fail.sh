@@ -1,4 +1,7 @@
 #!/bin/bash
 
-touch /var/log/my.journal
-chown nobody /var/log/my.journal
+chown -R root /var/log
+
+mkdir -p /var/log/journal
+touch /var/log/journal/my.journal
+chown nobody /var/log/journal/my.journal
