@@ -4,10 +4,28 @@
 # complexity = low
 # disruption = low
 
-if getent group "adm" >/dev/null 2>&1; then
-    group="adm"
-else
-    group="root"
-fi
+# default to root
+group="root"
 
-find -L /var/log/ -maxdepth 1 -regextype posix-extended ! -group root ! -group adm -name '*' ! -path '/var/log/apt/*' ! -name 'auth.log' ! -path '/var/log/[bw]tmp*' ! -path '/var/log/cloud-init.log*' ! -name 'gdm' ! -name 'gdm3' ! -regex '.*\.journal[~]?' ! -regex '.*lastlog(\.[^\/]+)?$' ! -regex '.*localmessages(.*)'  ! -name 'messages' ! -regex '.*secure(.*)' ! -name 'sssd' ! -name 'syslog' ! -regex '.*waagent.log(.*)' -regex '.*' -exec chgrp $group {} \;
+# see https://workbench.cisecurity.org/benchmarks/18959/tickets/23964
+# regarding sssd and gdm exclusions
+
+find -L /var/log/ -type f -regextype posix-extended \
+    ! -group root ! -group adm  \
+    ! -name 'gdm' ! -name 'gdm3' \
+    ! -name 'sssd' ! -name 'SSSD' \
+    ! -name 'auth.log' \
+    ! -name 'messages' \
+    ! -name 'syslog' \
+    ! -path '/var/log/apt/*' \
+    ! -path '/var/log/gdm/*' \
+    ! -path '/var/log/gdm3/*' \
+    ! -path '/var/log/sssd/*' \
+    ! -path '/var/log/[bw]tmp*' \
+    ! -path '/var/log/cloud-init.log*' \
+    ! -regex '.*\.journal[~]?' \
+    ! -regex '.*/lastlog(\.[^\/]+)?$' \
+    ! -regex '.*/localmessages(.*)' \
+    ! -regex '.*/secure(.*)' \
+    ! -regex '.*/waagent.log(.*)' \
+    -regex '.*' -exec chgrp $group {} \;
