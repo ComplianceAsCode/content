@@ -1,9 +1,5 @@
 # platform = multi_platform_all
 
-{{% if "ubuntu" in product %}}
-{{{ bash_instantiate_variables("var_nftables_family") }}}
-{{% endif %}}
-
 grubfile="{{{ grub2_boot_path }}}/grub.cfg"
 
 # Implement the loopback rules:
