@@ -6,5 +6,9 @@ if [ ! -f /var/log/syslog ]; then
     touch /var/log/syslog
 fi
 
+if ! grep -q "^syslog:" /etc/passwd; then
+    useradd syslog
+fi
+
 chown syslog /var/log/syslog
 
