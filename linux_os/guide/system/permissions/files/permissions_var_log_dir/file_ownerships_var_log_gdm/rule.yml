@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Verify Ownership of Files in /var/log/gdm'
+
+description: '{{{ describe_file_owner(file="/var/log/gdm/*", owner="root") }}}'
+
+rationale: |-
+    The <tt>/var/log/gdm</tt> directory contains information about the GDM daemon
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/gdm/*", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/gdm/*", owner="root") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/gdm/*", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/gdm/*", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/gdm/
+        file_regex: '.*'
+        fileuid: '0'
+        recursive: 'true'

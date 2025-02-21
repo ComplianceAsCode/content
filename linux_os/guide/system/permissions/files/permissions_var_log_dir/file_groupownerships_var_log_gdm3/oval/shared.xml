@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      {{{ oval_metadata("Group owner of /var/log/gdm3 should be root or gdm.") }}}
-    <criteria comment="Check group ownership of /var/log/gdm3">
+      {{{ oval_metadata("Group owner of files in /var/log/gdm3 should be root or gdm.") }}}
+    <criteria comment="Check group ownership of files in /var/log/gdm3">
      <criterion test_ref="test_group_ownership_var_log_gdm3" />
     </criteria>
   </definition>
@@ -23,8 +23,9 @@
     <unix:state state_ref="state_group_ownership_root_var_log_gdm3"/>
   </unix:file_test>
   <unix:file_object comment="/var/log/gdm3" id="object_group_ownership_var_log_gdm3" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path>/var/log/gdm3</unix:path>
-    <unix:filename xsi:nil="true"/>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
   </unix:file_object>
   <unix:file_state id="state_group_ownership_gdm_var_log_gdm3" version="1">
     <unix:group_id datatype="int" operation="equals" var_ref="var_gdm_gid"/>

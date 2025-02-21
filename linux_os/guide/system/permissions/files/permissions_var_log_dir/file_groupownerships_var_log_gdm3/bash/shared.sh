@@ -10,4 +10,6 @@ else
     group="root"
 fi
 
-find -L /var/log/ -maxdepth 1 ! -group root ! -group gdm -type d -regextype posix-extended -name 'gdm3' -exec chgrp $group {} \;
+if [[ -d /var/log/gdm3 ]]; then
+  find -L /var/log/gdm3/ ! -group root ! -group gdm -type f -exec chgrp $group {} \;
+fi

@@ -1,8 +1,8 @@
 documentation_complete: true
 
-title: 'Verify User Who Owns /var/log/sssd Directory'
+title: 'Verify Ownership of Files in /var/log/sssd'
 
-description: '{{{ describe_file_owner(file="/var/log/sssd", owner="root|sssd") }}}'
+description: '{{{ describe_file_owner(file="/var/log/sssd/*", owner="root|sssd") }}}'
 
 rationale: |-
     The <tt>/var/log/sssd</tt> directory contains debug logs for the System
@@ -10,13 +10,8 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/sssd", owner="root|sssd") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/sssd/*", owner="root|sssd") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/sssd", owner="root|sssd") }}}
-
-fixtext: |-
-    {{{ describe_file_owner(file="/var/log/sssd", owner="root|sssd") }}}
-
-srg_requirement: '{{{ srg_requirement_file_owner("/var/log/sssd", owner="root|sssd") }}}'
+    {{{ ocil_file_owner(file="/var/log/sssd/*", owner="root|sssd") }}}
 

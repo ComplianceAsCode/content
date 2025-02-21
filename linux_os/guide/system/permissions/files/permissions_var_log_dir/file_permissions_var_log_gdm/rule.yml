@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Verify Permissions on /var/log/gdm directory'
+title: 'Verify Permissions of Files in /var/log/gdm'
 
 description: |-
-    {{{ describe_file_permissions(file="/var/log/gdm", perms="0770") }}}
+    {{{ describe_file_permissions(file="/var/log/gdm/*", perms="0660") }}}
 
 rationale: |-
     The <tt>/var/log/gdm</tt> directory contains information about the GDM daemon
@@ -11,13 +11,15 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/gdm", perms="-rwxrwx---") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/gdm/*", perms="-rw-rw----") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/var/log/gdm", perms="-rwxrwx---") }}}
+    {{{ ocil_file_permissions(file="/var/log/gdm/*", perms="-rw-rw----") }}}
 
 template:
     name: file_permissions
     vars:
         filepath: /var/log/gdm/
-        filemode: '0770'
+        file_regex: '.*'
+        filemode: '0660'
+        recursive: 'true'

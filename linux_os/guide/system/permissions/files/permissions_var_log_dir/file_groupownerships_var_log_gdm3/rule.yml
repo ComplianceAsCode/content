@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Verify Groupownership of Files in /var/log/gdm3'
+
+description: '{{{ describe_file_group_owner(file="/var/log/gdm3/*", group="root|gdm3") }}}'
+
+rationale: |-
+    The <tt>/var/log/gdm3</tt> directory contains information about the GDM daemon
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/gdm3/*", group="root|gdm3") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/gdm3/*", group="root|gdm3") }}}

@@ -42,8 +42,6 @@ rules:
 - file_groupowner_var_log
 - file_groupowner_var_log_auth
 - file_groupowner_var_log_cloud_init
-- file_groupowner_var_log_gdm
-- file_groupowner_var_log_gdm3
 - file_groupowner_var_log_journal
 - file_groupowner_var_log_lastlog
 - file_groupowner_var_log_localmessages
@@ -59,7 +57,6 @@ rules:
 - file_groupownerships_var_log_apt
 - file_groupownerships_var_log_gdm
 - file_groupownerships_var_log_gdm3
-- file_groupownerships_var_log_sssd
 - file_owner_backup_etc_group
 - file_owner_backup_etc_gshadow
 - file_owner_backup_etc_passwd
@@ -76,8 +73,6 @@ rules:
 - file_owner_var_log
 - file_owner_var_log_auth
 - file_owner_var_log_cloud_init
-- file_owner_var_log_gdm
-- file_owner_var_log_gdm3
 - file_owner_var_log_journal
 - file_owner_var_log_lastlog
 - file_owner_var_log_localmessages
@@ -92,6 +87,8 @@ rules:
 - file_ownership_library_dirs
 - file_ownerships_var_log
 - file_ownerships_var_log_apt
+- file_ownerships_var_log_gdm
+- file_ownerships_var_log_gdm3
 - file_permissions_audit_binaries
 - file_permissions_backup_etc_group
 - file_permissions_backup_etc_gshadow

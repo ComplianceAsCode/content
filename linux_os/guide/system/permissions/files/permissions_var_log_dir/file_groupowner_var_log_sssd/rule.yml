@@ -1,8 +1,8 @@
 documentation_complete: true
 
-title: 'Verify Group Who Owns /var/log/sssd Directory'
+title: 'Verify Grouponwership of Files in /var/log/sssd'
 
-description: '{{{ describe_file_group_owner(file="/var/log/sssd", group="root|sssd") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/sssd/*", group="root|sssd") }}}'
 
 rationale: |-
     The <tt>/var/log/sssd</tt> directory contains debug logs for the System
@@ -10,8 +10,8 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/sssd", group="root|sssd") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/sssd/*", group="root|sssd") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/sssd", group="root|sssd") }}}
+    {{{ ocil_file_group_owner(file="/var/log/sssd/*", group="root|sssd") }}}
 
