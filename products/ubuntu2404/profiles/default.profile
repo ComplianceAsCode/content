@@ -173,8 +173,23 @@ selections:
     - file_groupownership_audit_binaries
     - file_groupownership_audit_configuration
     - file_groupownership_home_directories
+    - file_groupownerships_var_log
+    - file_groupownerships_var_log_apt
+    - file_groupownerships_var_log_gdm
+    - file_groupownerships_var_log_gdm3
+    - file_groupownerships_var_log_sssd
     - file_group_ownership_var_log_audit
     - file_groupowner_sshd_config
+    - file_groupowner_var_log_auth
+    - file_groupowner_var_log_cloud_init
+    - file_groupowner_var_log_journal
+    - file_groupowner_var_log_lastlog
+    - file_groupowner_var_log_localmessages
+    - file_groupowner_var_log_messages
+    - file_groupowner_var_log_secure
+    - file_groupowner_var_log_syslog
+    - file_groupowner_var_log_waagent
+    - file_groupowner_var_log_wbtmp
     - file_owner_at_allow
     - file_owner_at_deny
     - file_owner_backup_etc_group
@@ -202,8 +217,23 @@ selections:
     - file_ownership_audit_binaries
     - file_ownership_audit_configuration
     - file_ownership_home_directories
+    - file_ownerships_var_log
+    - file_ownerships_var_log_apt
+    - file_ownerships_var_log_gdm
+    - file_ownerships_var_log_gdm3
+    - file_ownerships_var_log_sssd
     - file_ownership_var_log_audit_stig
     - file_owner_sshd_config
+    - file_owner_var_log_auth
+    - file_owner_var_log_cloud_init
+    - file_owner_var_log_journal
+    - file_owner_var_log_lastlog
+    - file_owner_var_log_localmessages
+    - file_owner_var_log_messages
+    - file_owner_var_log_secure
+    - file_owner_var_log_syslog
+    - file_owner_var_log_waagent
+    - file_owner_var_log_wbtmp
     - file_permissions_at_allow
     - file_permissions_at_deny
     - file_permissions_audit_binaries
@@ -238,7 +268,20 @@ selections:
     - file_permissions_sshd_pub_key
     - file_permissions_unauthorized_world_writable
     - file_permissions_ungroupowned
+    - file_permissions_var_log_apt
     - file_permissions_var_log_audit
+    - file_permissions_var_log_auth
+    - file_permissions_var_log_cloud-init
+    - file_permissions_var_log_gdm
+    - file_permissions_var_log_gdm3
+    - file_permissions_var_log_lastlog
+    - file_permissions_var_log_localmessages
+    - file_permissions_var_log_messages
+    - file_permissions_var_log_secure
+    - file_permissions_var_log_sssd
+    - file_permissions_var_log_syslog
+    - file_permissions_var_log_waagent
+    - file_permissions_var_log_wbtmp
     - file_permission_user_bash_history
     - file_permission_user_init_files
     - firewall_single_service_active
@@ -295,8 +338,8 @@ selections:
     - nftables_ensure_default_deny_policy
     - nftables_rules_permanent
     - no_dirs_unowned_by_root
-    - no_empty_passwords
     - no_empty_passwords_etc_shadow
+    - no_empty_passwords_unix
     - no_files_unowned_by_user
     - no_forward_files
     - no_invalid_shell_accounts_unlocked

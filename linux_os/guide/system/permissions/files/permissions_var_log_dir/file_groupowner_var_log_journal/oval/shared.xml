@@ -23,7 +23,9 @@
     <unix:state state_ref="state_group_ownership_root_var_log_journal"/>
   </unix:file_test>
   <unix:file_object comment="/var/log/*.journal-*" id="object_group_ownership_var_log_journal" version="1">
-    <unix:filepath operation="pattern match">/var/log/.*\.journal(~)?$</unix:filepath>
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path>/var/log</unix:path>
+    <unix:filename operation="pattern match">^.*\.journal(~)?$</unix:filename>
   </unix:file_object>
   <unix:file_state id="state_group_ownership_systemd-journal_var_log_journal" version="1">
     <unix:group_id datatype="int" operation="equals" var_ref="var_systemd-journal_gid"/>

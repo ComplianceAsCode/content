@@ -2,12 +2,12 @@ documentation_complete: true
 
 title: 'Verify Permissions on /var/log/messages File'
 
-{{%  if 'ubuntu2404' not in product %}}
-    {{% set target_perms_octal="0600" %}}
-    {{% set target_perms="-rw-------" %}}
-{{% else %}}
+{{%  if product in ['ubuntu2404'] %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0600" %}}
+    {{% set target_perms="-rw-------" %}}
 {{% endif %}}
 
 description: |-

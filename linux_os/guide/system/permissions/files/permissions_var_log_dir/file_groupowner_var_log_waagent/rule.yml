@@ -1,8 +1,8 @@
 documentation_complete: true
 
-title: 'Verify Group Who Owns /var/log/secure File'
+title: 'Verify Group Who Owns /var/log/waagent.log File'
 
-description: '{{{ describe_file_group_owner(file="/var/log/secure", group="root|adm") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/waagent.log", group="root|adm") }}}'
 
 rationale: |-
     The <tt>/var/log/waagent.log</tt> file contains Azure Linux Guest Agent records
@@ -10,7 +10,7 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/secure", group="root|adm") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/waagent.log", group="root|adm") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/secure", group="root|adm") }}}
+    {{{ ocil_file_group_owner(file="/var/log/waagent.log", group="root|adm") }}}

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Verify Ownership of Files in /var/log/apt'
+
+description: '{{{ describe_file_owner(file="/var/log/apt/*", owner="root") }}}'
+
+rationale: |-
+    The <tt>/var/log/apt</tt> directory contains information about APT
+    and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/apt/*", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/apt/*", owner="root") }}}
+
+fixtext: |-
+    {{{ describe_file_owner(file="/var/log/apt/*", owner="root") }}}
+
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/apt/*", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: '/var/log/apt/'
+        file_regex: '^.*$'
+        fileuid: '0'

@@ -1,0 +1,88 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      {{{ oval_metadata("Group owner of /var/log/* should be root or adm.") }}}
+    <criteria comment="Check group ownership of /var/log/*">
+     <criterion test_ref="test_group_ownership_var_log" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="object_adm_gid" version="1" comment="gid of the dedicated adm group">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^adm:\w+:(\w+):.*</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable id="var_adm_gid" datatype="int" version="1"
+                  comment="Retrieve the gid of adm group">
+    <object_component item_field="subexpression" object_ref="object_adm_gid"/>
+  </local_variable>
+
+  <unix:file_test check="all" comment="/var/log/* group owner is root|adm"
+      id="test_group_ownership_var_log" state_operator="OR" version="1">
+    <unix:object object_ref="object_group_ownership_var_log" />
+    <unix:state state_ref="state_group_ownership_adm_var_log_auth_log"/>
+    <unix:state state_ref="state_group_ownership_root_var_log_auth_log"/>
+  </unix:file_test>
+  <unix:file_object comment="/var/log/*" id="object_group_ownership_var_log" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path>/var/log</unix:path>
+    <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_apt</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_auth_log</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_bwtmp</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_cloudinit</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_gdm</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_journal</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_lastlog</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_localmessages</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_messages</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_secure</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_sssd</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_syslog</filter>
+    <filter action="exclude">{{{ rule_id }}}_exclude_files_waagent</filter>
+  </unix:file_object>
+  <unix:file_state id="state_group_ownership_adm_var_log_auth_log" version="1">
+    <unix:group_id datatype="int" operation="equals" var_ref="var_adm_gid"/>
+  </unix:file_state>
+  <unix:file_state id="state_group_ownership_root_var_log_auth_log" version="1">
+    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_apt" version="1">
+    <unix:filepath operation="pattern match">^/var/log/apt/.*</unix:filepath>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_auth_log" version="1">
+    <unix:filename>auth.log</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_bwtmp" version="1">
+    <unix:filename operation="pattern match">^[bw]tmp((\.|-).*)?$</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_cloudinit" version="1">
+    <unix:filename operation="pattern match">^cloud-init\.log.*</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_gdm" version="1" operator="AND">
+    <unix:filepath operation="pattern match">^/var/log/(gdm|gdm3)/.*$</unix:filepath>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_journal" version="1" operator="AND">
+    <unix:filename operation="pattern match">^.*\.journal.*$</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_lastlog" version="1">
+    <unix:filename operation="pattern match">^lastlog.*$</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_localmessages" version="1">
+    <unix:filename operation="pattern match">^localmessages.*$</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_messages" version="1">
+    <unix:filename>messages</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_secure" version="1">
+    <unix:filename operation="pattern match">^secure.*$</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_sssd" version="1" operator="AND">
+    <unix:filepath operation="pattern match">^/var/log/sssd/.*$</unix:filepath>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_syslog" version="1">
+    <unix:filename>syslog</unix:filename>
+  </unix:file_state>
+  <unix:file_state id="{{{ rule_id }}}_exclude_files_waagent" version="1">
+    <unix:filename operation="pattern match">^waagent\.log.*$</unix:filename>
+  </unix:file_state>
+</def-group>

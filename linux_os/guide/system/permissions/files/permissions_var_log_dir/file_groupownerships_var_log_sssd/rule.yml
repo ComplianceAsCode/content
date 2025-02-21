@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Verify Grouponwership of Files in /var/log/sssd'
+
+description: '{{{ describe_file_group_owner(file="/var/log/sssd/*", group="root|sssd") }}}'
+
+rationale: |-
+    The <tt>/var/log/sssd</tt> directory contains debug logs for the System
+    Security Services Daemon (SSSD) and should only be accessed by authorized personnel.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/sssd/*", group="root|sssd") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/sssd/*", group="root|sssd") }}}
+

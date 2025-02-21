@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on /var/log/waagent.log(.*) Files'
 
 description: |-
-    {{{ describe_file_permissions(file="/var/log/waagent.log", perms="0664") }}}
+    {{{ describe_file_permissions(file="/var/log/waagent.log", perms="0644") }}}
 
 rationale: |-
     The <tt>/var/log/waagent.log</tt> file contains Azure Linux Guest Agent records
@@ -26,4 +26,4 @@ template:
         filemode: '0644'
 
 fixtext: |-
-    {{{ fixtext_file_permissions("/var/log/waagent.log", "0664") | indent(4) }}}
+    {{{ fixtext_file_permissions("/var/log/waagent.log", "0644") | indent(4) }}}

@@ -1,4 +1,4 @@
-{{% if 'ubuntu2404' in product %}}
+{{%- if product in ['ubuntu2404'] %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
       {{{ oval_metadata("Owner of /var/log/messages should be root or syslog.") }}}

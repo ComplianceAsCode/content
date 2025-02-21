@@ -4,4 +4,10 @@
 # complexity = low
 # disruption = low
 
-find -L /var/log/ -maxdepth 1 ! -group root ! -group utmp -type f -regextype posix-extended -regex '.*(b|w)tmp((\.|-)[^\/]+)?$' -exec chgrp utmp {} \;
+if getent group "utmp" >/dev/null 2>&1; then
+    group="utmp"
+else
+    group="root"
+fi
+
+find -L /var/log/ -maxdepth 1 ! -group root ! -group utmp -type f -regextype posix-extended -regex '.*(b|w)tmp((\.|-)[^\/]+)?$' -exec chgrp $group {} \;

@@ -2,10 +2,11 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/messages File'
 
-{{%  if 'ubuntu2404' not in product %}}
-description: '{{{ describe_file_owner(file="/var/log/messages", owner="root") }}}'
-{{%- else %}}        
+
+{{%- if product in ['ubuntu2404'] %}}
 description: '{{{ describe_file_owner(file="/var/log/messages", owner="root|syslog") }}}'
+{{%- else %}}
+description: '{{{ describe_file_owner(file="/var/log/messages", owner="root") }}}'
 {{%- endif %}}
 
 rationale: |-
@@ -25,7 +26,12 @@ references:
     stigid@ol8: OL08-00-010220
     stigid@rhel8: RHEL-08-010220
 
-{{%  if 'ubuntu2404' not in product %}}
+{{%- if product in ['ubuntu2404'] %}}
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/messages", owner="root|syslog") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/var/log/messages", owner="root|syslog") }}}
+{{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/messages", owner="root") }}}'
 
 ocil: |-
@@ -41,9 +47,4 @@ template:
     vars:
         filepath: /var/log/messages
         fileuid: '0'
-{{%- else %}}        
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/messages", owner="root|syslog") }}}'
-
-ocil: |-
-    {{{ ocil_file_owner(file="/var/log/messages", owner="root|syslog") }}}
 {{%- endif %}}
