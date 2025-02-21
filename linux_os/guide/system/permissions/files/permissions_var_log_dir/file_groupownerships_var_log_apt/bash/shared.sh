@@ -7,4 +7,4 @@
 # root is default on Ubuntu 24.04
 group="root"
 
-find -L /var/log/ -maxdepth 1 ! -group root ! -group adm -type d -regextype posix-extended -name 'apt' -exec chgrp $group {} \;
+find -L /var/log/apt/ -type f ! -group root ! -group adm -exec chgrp $group {} \;

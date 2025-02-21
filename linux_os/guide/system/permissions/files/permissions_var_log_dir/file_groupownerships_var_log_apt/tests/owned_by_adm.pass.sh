@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
-# packages = rsyslog
 
 mkdir -p /var/log/apt
-chgrp nogroup /var/log/apt
+touch /var/log/apt/testfile
+chgrp adm /var/log/apt/testfile
