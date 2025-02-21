@@ -1,7 +1,7 @@
 policy: CIS Benchmark for Ubuntu 24.04 LTS
 title: CIS Benchmark for Ubuntu 24.04 LTS
 id: cis_ubuntu2404
-version: Draft
+version: '1.0.0'
 source: https://www.cisecurity.org/cis-benchmarks
 levels:
   - id: l1_server
@@ -389,11 +389,13 @@ controls:
     rules:
       - var_apparmor_mode=enforce
       - all_apparmor_profiles_in_enforce_complain_mode
-    status: partial
+    status: automated
     notes: |
-      Current implementation does not adequately address the nuances
-      of various profiles, including snap, disabled, force-complain,
-      and unconfined.
+      CIS recommendation does not adequately address the nuances
+      of various profiles, including disabled, force-complain,
+      and unconfined. Currently, the control changes the default apparmor
+      mode for all profiles in /etc/apparmor.d which can
+      break certain applications.
 
   - id: 1.3.1.4
     title: Ensure all AppArmor Profiles are enforcing (Automated)
@@ -403,11 +405,13 @@ controls:
     rules:
       - var_apparmor_mode=enforce
       - all_apparmor_profiles_enforced
-    status: partial
+    status: automated
     notes: |
-      Current implementation does not adequately address the nuances
-      of various profiles, including snap, disabled, force-complain,
-      and unconfined.
+      CIS recommendation does not adequately address the nuances
+      of various profiles, including disabled, force-complain,
+      and unconfined. Currently, the control changes the default apparmor
+      mode for all profiles in /etc/apparmor.d which can
+      break certain applications.
 
   - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
@@ -1445,11 +1449,14 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    related_rules:
+    rules:
       - var_nftables_master_config_file=etc
       - nftables_rules_permanent
-    status: planned
-    notes: TODO. Partial/incorrect implementation exists.See related rules. Analogous to ubuntu2204/3.5.2.10.
+    status: automated
+    notes: |
+      Audit procedure for 4.3.10 depends on local site policy thus
+      it cannot be fully automated. Upstream ticket:
+      https://workbench.cisecurity.org/benchmarks/18959/tickets/23190
 
   - id: 4.4.1.1
     title: Ensure iptables packages are installed (Automated)

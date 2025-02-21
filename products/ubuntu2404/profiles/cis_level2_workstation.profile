@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: draft
+    version: 1.0.0
     SMEs:
         - mpurg
         - dodys
@@ -9,7 +9,7 @@ metadata:
 
 reference: https://www.cisecurity.org/benchmark/ubuntu_linux
 
-title: 'DRAFT - CIS Ubuntu Linux 24.04 LTS Benchmark for Level 2 - Workstation'
+title: 'CIS Ubuntu Linux 24.04 LTS Benchmark for Level 2 - Workstation'
 
 description: |-
     This profile defines a baseline that aligns to the "Level 2 - Workstation"
