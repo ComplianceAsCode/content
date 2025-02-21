@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-      {{{ oval_metadata("Group owner of /var/log/sssd should be root or sssd.") }}}
-    <criteria comment="Check group ownership of /var/log/sssd">
+      {{{ oval_metadata("Group owner of files in /var/log/sssd should be root or sssd.") }}}
+    <criteria comment="Check group ownership of files in /var/log/sssd">
      <criterion test_ref="test_group_ownership_var_log_sssd" />
     </criteria>
   </definition>
@@ -23,8 +23,9 @@
     <unix:state state_ref="state_group_ownership_root_var_log_sssd"/>
   </unix:file_test>
   <unix:file_object comment="/var/log/sssd" id="object_group_ownership_var_log_sssd" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path>/var/log/sssd</unix:path>
-    <unix:filename xsi:nil="true"/>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
   </unix:file_object>
   <unix:file_state id="state_group_ownership_sssd_var_log_sssd" version="1">
     <unix:group_id datatype="int" operation="equals" var_ref="var_sssd_gid"/>

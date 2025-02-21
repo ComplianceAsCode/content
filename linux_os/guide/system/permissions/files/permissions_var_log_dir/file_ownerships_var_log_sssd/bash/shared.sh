@@ -7,4 +7,6 @@
 # root is default on Ubuntu 24.04
 username="root"
 
-find -L /var/log/ -maxdepth 1 ! -user root ! -user sssd -type d -regextype posix-extended -name 'sssd' -exec chown $username {} \;
+if [[ -d /var/log/sssd ]]; then
+  find -L /var/log/sssd/ ! -user root ! -user sssd -type f -exec chown $username {} \;
+fi

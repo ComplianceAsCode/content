@@ -7,4 +7,6 @@
 # root is default on Ubuntu 24.04
 group="root"
 
-find -L /var/log/ -maxdepth 1 ! -group root ! -group sssd -type d -regextype posix-extended -name 'sssd' -exec chgrp $group {} \;
+if [[ -d /var/log/sssd ]]; then
+  find -L /var/log/sssd/ ! -group root ! -group sssd -type f -exec chgrp $group {} \;
+fi
