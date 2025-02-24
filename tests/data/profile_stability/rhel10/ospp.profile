@@ -1,0 +1,193 @@
+description: 'This is draft profile is based on the Red Hat Enterprise Linux 9 Common
+    Criteria Guidance as
+
+    guidance for Red Hat Enterprise Linux 10 was not available at the time of release.
+
+
+
+    Where appropriate, CNSSI 1253 or DoD-specific values are used for
+
+    configuration, based on Configuration Annex to the OSPP.'
+extends: null
+hidden: ''
+status: ''
+metadata:
+    version: 4.3
+    SMEs:
+    - ggbecker
+    - matusmarhefka
+reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=469&id=469
+selections:
+- accounts_password_pam_dcredit
+- accounts_password_pam_lcredit
+- accounts_password_pam_minlen
+- accounts_password_pam_ocredit
+- accounts_password_pam_ucredit
+- accounts_passwords_pam_faillock_deny
+- accounts_passwords_pam_faillock_interval
+- accounts_passwords_pam_faillock_unlock_time
+- audit_access_failed
+- audit_access_failed_aarch64
+- audit_access_failed_ppc64le
+- audit_access_success
+- audit_access_success_aarch64
+- audit_access_success_ppc64le
+- audit_basic_configuration
+- audit_create_failed
+- audit_create_failed_aarch64
+- audit_create_failed_ppc64le
+- audit_create_success
+- audit_create_success_aarch64
+- audit_create_success_ppc64le
+- audit_delete_failed
+- audit_delete_failed_aarch64
+- audit_delete_failed_ppc64le
+- audit_delete_success
+- audit_delete_success_aarch64
+- audit_delete_success_ppc64le
+- audit_immutable_login_uids
+- audit_modify_failed
+- audit_modify_failed_aarch64
+- audit_modify_failed_ppc64le
+- audit_modify_success
+- audit_modify_success_aarch64
+- audit_modify_success_ppc64le
+- audit_module_load
+- audit_module_load_ppc64le
+- audit_ospp_general
+- audit_ospp_general_aarch64
+- audit_ospp_general_ppc64le
+- audit_owner_change_failed
+- audit_owner_change_failed_aarch64
+- audit_owner_change_failed_ppc64le
+- audit_owner_change_success
+- audit_owner_change_success_aarch64
+- audit_owner_change_success_ppc64le
+- audit_perm_change_failed
+- audit_perm_change_failed_aarch64
+- audit_perm_change_failed_ppc64le
+- audit_perm_change_success
+- audit_perm_change_success_aarch64
+- audit_perm_change_success_ppc64le
+- auditd_data_retention_flush
+- auditd_freq
+- auditd_log_format
+- auditd_name_format
+- chronyd_client_only
+- configure_crypto_policy
+- configure_openssl_crypto_policy
+- configure_ssh_crypto_policy
+- configure_usbguard_auditbackend
+- disable_ctrlaltdel_burstaction
+- disable_ctrlaltdel_reboot
+- disable_host_auth
+- dnf-automatic_apply_updates
+- enable_authselect
+- enable_fips_mode
+- ensure_gpgcheck_globally_activated
+- ensure_gpgcheck_local_packages
+- ensure_gpgcheck_never_disabled
+- ensure_redhat_gpgkey_installed
+- grub2_audit_argument
+- grub2_audit_backlog_limit_argument
+- grub2_disable_recovery
+- grub2_init_on_alloc_argument
+- grub2_page_alloc_shuffle_argument
+- grub2_systemd_debug-shell_argument_absent
+- grub2_uefi_password
+- grub2_vsyscall_argument
+- kernel_module_bluetooth_disabled
+- kernel_module_can_disabled
+- kernel_module_sctp_disabled
+- kernel_module_tipc_disabled
+- logind_session_timeout
+- mount_option_var_log_audit_nodev
+- mount_option_var_log_audit_noexec
+- mount_option_var_log_audit_nosuid
+- no_empty_passwords
+- package_audit_installed
+- package_chrony_installed
+- package_crypto-policies_installed
+- package_dnf-automatic_installed
+- package_fapolicyd_installed
+- package_firewalld_installed
+- package_gnutls-utils_installed
+- package_openscap-scanner_installed
+- package_openssh-clients_installed
+- package_openssh-server_installed
+- package_scap-security-guide_installed
+- package_subscription-manager_installed
+- package_sudo_installed
+- package_usbguard_installed
+- partition_for_var_log_audit
+- require_singleuser_auth
+- selinux_policytype
+- selinux_state
+- service_auditd_enabled
+- service_debug-shell_disabled
+- service_fapolicyd_enabled
+- service_firewalld_enabled
+- service_kdump_disabled
+- service_systemd-coredump_disabled
+- service_usbguard_enabled
+- ssh_client_rekey_limit
+- sshd_disable_empty_passwords
+- sshd_disable_gssapi_auth
+- sshd_disable_kerb_auth
+- sshd_disable_root_login
+- sshd_enable_warning_banner
+- sshd_rekey_limit
+- sshd_use_directory_configuration
+- sysctl_kernel_core_pattern_empty_string
+- sysctl_kernel_core_uses_pid
+- sysctl_kernel_dmesg_restrict
+- sysctl_kernel_kexec_load_disabled
+- sysctl_kernel_kptr_restrict
+- sysctl_kernel_perf_event_paranoid
+- sysctl_kernel_unprivileged_bpf_disabled_accept_default
+- sysctl_kernel_yama_ptrace_scope
+- sysctl_user_max_user_namespaces
+- timer_dnf-automatic_enabled
+- usbguard_allow_hid_and_hub
+- use_pam_wheel_for_su
+- zipl_audit_argument
+- zipl_audit_backlog_limit_argument
+- zipl_bls_entries_only
+- zipl_bootmap_is_up_to_date
+- zipl_init_on_alloc_argument
+- zipl_page_alloc_shuffle_argument
+- zipl_systemd_debug-shell_argument_absent
+- var_logind_session_timeout=30_minutes
+- var_password_pam_minlen=12
+- var_password_pam_ocredit=1
+- var_password_pam_dcredit=1
+- var_password_pam_ucredit=1
+- var_password_pam_lcredit=1
+- sysctl_kernel_unprivileged_bpf_disabled_value=2
+- var_selinux_state=enforcing
+- var_selinux_policy_name=targeted
+- var_authselect_profile=minimal
+- var_accounts_passwords_pam_faillock_deny=3
+- var_accounts_passwords_pam_faillock_fail_interval=900
+- var_accounts_passwords_pam_faillock_unlock_time=never
+- var_ssh_client_rekey_limit_size=1G
+- var_ssh_client_rekey_limit_time=1hour
+- var_rekey_limit_size=1G
+- var_rekey_limit_time=1hour
+- var_system_crypto_policy=fips_ospp
+- var_auditd_flush=incremental_async
+- audit_access_success.role=unscored
+- audit_access_success.severity=info
+- audit_access_success_aarch64.role=unscored
+- audit_access_success_aarch64.severity=info
+- audit_access_success_ppc64le.role=unscored
+- audit_access_success_ppc64le.severity=info
+unselected_groups: []
+platforms: !!set {}
+cpe_names: !!set {}
+platform: null
+filter_rules: ''
+policies:
+- ospp
+title: DRAFT - Protection Profile for General Purpose Operating Systems
+documentation_complete: true

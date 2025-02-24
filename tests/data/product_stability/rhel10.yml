@@ -1,0 +1,92 @@
+aide_also_checks_audispd: 'no'
+aide_also_checks_rsyslog: 'yes'
+aide_bin_path: /usr/sbin/aide
+aide_conf_path: /etc/aide.conf
+audisp_conf_path: /etc/audit
+auid: 1000
+aux_pkg_release: 6229229e
+aux_pkg_version: 5a6340b3
+auxiliary_key_fingerprint: 7E4624258C406535D56D6F135054E4A45A6340B3
+basic_properties_derived: true
+benchmark_id: RHEL-10
+benchmark_root: ../../linux_os/guide
+bootable_containers_supported: 'true'
+chrony_conf_path: /etc/chrony.conf
+chrony_d_path: /etc/chrony.d/
+components_root: ../../components
+cpes:
+- rhel10:
+    check_id: installed_OS_is_rhel10
+    name: cpe:/o:redhat:enterprise_linux:10
+    title: Red Hat Enterprise Linux 10
+cpes_root: ../../shared/applicability
+dconf_gdm_dir: distro.d
+dynamic_uid_max: 65519
+dynamic_uid_min: 61184
+faillock_path: /var/log/faillock
+families:
+- rhel
+- rhel-like
+full_name: Red Hat Enterprise Linux 10
+gid_min: 1000
+groups: {}
+grub2_boot_path: /boot/grub2
+grub2_uefi_boot_path: /boot/grub2
+grub_helper_executable: grubby
+init_system: systemd
+journald_conf_dir_path: /etc/systemd/journald.conf.d
+major_version_ordinal: 10
+nobody_gid: 65534
+nobody_uid: 65534
+pkg_manager: dnf
+pkg_manager_config_file: /etc/dnf/dnf.conf
+pkg_release: 4ae0493b
+pkg_system: rpm
+pkg_version: fd431d51
+platform_package_overrides:
+  aarch64_arch: null
+  grub2: grub2-common
+  login_defs: shadow-utils
+  no_ovirt: null
+  non-uefi: null
+  not_aarch64_arch: null
+  not_s390x_arch: null
+  ovirt: null
+  s390x_arch: null
+  sssd: sssd-common
+  sssd-ldap: null
+  uefi: null
+  zipl: s390utils-base
+product: rhel10
+profiles_root: ./profiles
+reference_uris:
+  anssi: https://cyber.gouv.fr/sites/default/files/document/linux_configuration-en-v2.pdf
+  app-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers
+  app-srg-ctr: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=container-platform
+  bsi: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
+  cis: https://www.cisecurity.org/benchmark/red_hat_linux/
+  cis-csc: https://www.cisecurity.org/controls/
+  cjis: https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf
+  cobit5: https://www.isaca.org/resources/cobit
+  cui: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
+  dcid: not_officially_available
+  disa: https://public.cyber.mil/stigs/cci/
+  hipaa: https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf
+  isa-62443-2009: https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat
+  isa-62443-2013: https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu
+  ism: https://www.cyber.gov.au/acsc/view-all-content/ism
+  iso27001-2013: https://www.iso.org/contents/data/standard/05/45/54534.html
+  nerc-cip: https://www.nerc.com/pa/Stand/AlignRep/One%20Stop%20Shop.xlsx
+  nist: http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf
+  nist-csf: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf
+  os-srg: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os
+  ospp: https://www.niap-ccevs.org/Profile/PP.cfm
+  pcidss: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
+  pcidss4: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf
+  stigid: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+  stigref: https://public.cyber.mil/stigs/srg-stig-tools/
+release_key_fingerprint: 567E347AD0044ADE55BA8A5F199E2F91FD431D51
+sshd_distributed_config: 'true'
+sysctl_remediate_drop_in_file: 'false'
+type: platform
+uid_min: 1000
