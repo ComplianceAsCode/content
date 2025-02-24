@@ -40,7 +40,7 @@ template:
     name: file_owner
     vars:
         filepath: /etc/issue.d/
-        fileuid: '0'
+        uid_or_name: '0'
         file_regex: ^.*$
         recursive: 'true'
 {{%- else %}}
@@ -48,5 +48,5 @@ template:
     name: file_owner
     vars:
         filepath: /etc/issue
-        fileuid: '0'
+        uid_or_name: '0'
 {{%- endif -%}}
