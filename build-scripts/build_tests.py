@@ -57,24 +57,6 @@ def _is_test_file(filename: str) -> bool:
             or filename.endswith('.fail.sh') or
             filename.endswith('.notapplicable.sh'))
 
-
-def _divide_iters(iterator: Iterable[T], n: int) -> List[Iterator[T]]:
-    items = list(iterator)
-    length = len(items)
-
-    chunk_size = length // n
-    remainder = length % n
-
-    inters = []
-    start = 0
-
-    for i in range(n):
-        end = start + chunk_size + (1 if i < remainder else 0)
-        inters.append(iter(items[start:end]))
-        start = end
-    return inters
-
-
 def _get_deny_templated_scenarios(test_config_path):
     deny_templated_scenarios = list()
     if test_config_path.exists():
@@ -210,11 +192,11 @@ def main() -> int:
                 rules_in_profile.append(selection)
 
     templates_root = root_path / "shared" / "templates"
-    all_resolved_rules = resolved_rules_dir.iterdir()
-    chunked_rules = _divide_iters(all_resolved_rules, args.jobs)
+    all_resolved_rules = list(resolved_rules_dir.iterdir())
     processes = list()
-    for chunk in chunked_rules:
-        process_args = (benchmark_cpes, env_yaml, output_path, chunk, templates_root, rules_in_profile, )
+    for chunk in range(args.jobs):
+        process_args = (benchmark_cpes, env_yaml, output_path,
+                        all_resolved_rules[chunk::args.jobs], templates_root, rules_in_profile, )
         process = multiprocessing.Process(target=_process_rules, args=process_args)
         processes.append(process)
         process.start()
