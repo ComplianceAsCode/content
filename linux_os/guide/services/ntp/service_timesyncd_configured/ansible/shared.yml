@@ -17,7 +17,11 @@
 
 - name: {{{ rule_title }}} - Add missing / update wrong records for NTP servers
   ansible.builtin.lineinfile:
+    {{% if "ubuntu" in product %}}
+    path: /etc/systemd/timesyncd.conf.d/oscap-remedy.conf
+    {{% else %}}
     path: /etc/systemd/timesyncd.d/oscap-remedy.conf
+    {{% endif %}}
     regexp: '^\s*NTP\s*='
     state: present
     line: 'NTP={{ preferred_ntp_servers }}'
@@ -25,7 +29,11 @@
 
 - name: {{{ rule_title }}} - Add missing / update wrong records for fallback servers
   ansible.builtin.lineinfile:
+    {{% if "ubuntu" in product %}}
+    path: /etc/systemd/timesyncd.conf.d/oscap-remedy.conf
+    {{% else %}}
     path: /etc/systemd/timesyncd.d/oscap-remedy.conf
+    {{% endif %}}
     regexp: '^\s*FallbackNTP\s*='
     state: present
     line: 'FallbackNTP={{ fallback_ntp_servers }}'
