@@ -17,11 +17,11 @@ from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg.jinja import process_file_with_macros
 from ssg.rules import is_rule_dir
 
-from ssg_test_suite import oscap
-from ssg_test_suite import xml_operations
-from ssg_test_suite import test_env
-from ssg_test_suite import common
-from ssg_test_suite.log import LogHelper
+from tests.ssg_test_suite import oscap
+from tests.ssg_test_suite import xml_operations
+from tests.ssg_test_suite import test_env
+from tests.ssg_test_suite import common
+from tests.ssg_test_suite.log import LogHelper
 
 
 Rule = collections.namedtuple(
