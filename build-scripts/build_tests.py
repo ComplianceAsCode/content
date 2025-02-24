@@ -131,12 +131,15 @@ def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_
 
 
 def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
-                   rules: Iterator[pathlib.Path], templates_root: pathlib.Path) -> None:
+                   rules: Iterator[pathlib.Path], templates_root: pathlib.Path,
+                   product_rules: list) -> None:
     for rule_file in rules:  # type: pathlib.Path
         rendered_rule_obj = ssg.yaml.open_raw(str(rule_file))
         rule_path = pathlib.Path(rendered_rule_obj["definition_location"])
         rule_root = rule_path.parent
         rule_id = rule_root.name
+        if rule_id not in product_rules:
+            continue
         rule_tests_root = rule_root / "tests"
         rule_output_path = output_path / rule_id
 
@@ -185,7 +188,7 @@ def main() -> int:
     output_path = pathlib.Path(args.output).resolve().absolute()
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
     if not resolved_rules_dir.exists() or not resolved_rules_dir.is_dir():
-        logging.error("Unable to find product at %s", (str(resolved_rules_dir),))
+        logging.error("Unable to find product at %s", str(resolved_rules_dir))
         logging.error("Is the product built?")
         return 1
 
@@ -196,12 +199,22 @@ def main() -> int:
         for cpe_id, data in cpe.items():
             benchmark_cpes.add(data["name"])
 
+    built_profiles_root = resolved_rules_dir.parent / "profiles"
+    rules_in_profile = list()
+    for profile_file in built_profiles_root.iterdir():  # type: pathlib.Path
+        if not profile_file.name.endswith('.profile'):
+            continue
+        profile_data = ssg.yaml.open_raw(str(profile_file.absolute()))
+        for selection in profile_data["selections"]:
+            if '=' not in selection:
+                rules_in_profile.append(selection)
+
     templates_root = root_path / "shared" / "templates"
-    rules = resolved_rules_dir.iterdir()
-    chunked_rules = _divide_iters(rules, args.jobs)
+    all_resolved_rules = resolved_rules_dir.iterdir()
+    chunked_rules = _divide_iters(all_resolved_rules, args.jobs)
     processes = list()
     for chunk in chunked_rules:
-        process_args = (benchmark_cpes, env_yaml, output_path, chunk, templates_root, )
+        process_args = (benchmark_cpes, env_yaml, output_path, chunk, templates_root, rules_in_profile, )
         process = multiprocessing.Process(target=_process_rules, args=process_args)
         processes.append(process)
         process.start()
