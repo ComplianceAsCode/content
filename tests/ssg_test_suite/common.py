@@ -21,6 +21,7 @@ from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml
 from ssg.utils import mkdir_p
+from ssg_test_suite.log import LogHelper
 
 import ssg.templates
 

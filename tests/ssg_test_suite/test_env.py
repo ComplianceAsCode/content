@@ -9,8 +9,9 @@ import subprocess
 import sys
 import time
 
-from tests.ssg_test_suite import common
-from tests.ssg_test_suite.log import LogHelper
+import ssg_test_suite
+from ssg_test_suite import common
+from ssg_test_suite.log import LogHelper
 
 
 class SavedState(object):
