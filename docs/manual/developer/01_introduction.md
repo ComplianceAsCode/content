@@ -125,6 +125,10 @@ All issues and pull requests for product removal must use the [product-removal](
 - Area of effect: Everything that is directly or indirectly used during the content build process
 - Guidelines: We need strong protection against technical debt, increases in build time and a framework to deal with deprecations or changes of behavior.
 
+##### Architectural Decision Records
+- We use [Architectural Decision Records](../../adr/0000-architecture-decisions-records)
+- The first ADR defines the context and guidelines for new ADRs.
+
 
 #### Shared Resources
 
