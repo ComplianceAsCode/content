@@ -1,7 +1,7 @@
 ---
 content-version: 0.1.77
 title: ADR-0000 - Architecture Decisions Records
-status: proposed
+status: accepted
 ---
 
 ## Context
