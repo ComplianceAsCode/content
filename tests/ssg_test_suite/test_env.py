@@ -302,7 +302,7 @@ class VMTestEnv(TestEnv):
         return state
 
     def _delete_saved_state(self, snapshot):
-        self.snapshot_stack.revert()
+        self.snapshot_stack.delete()
 
     def _local_oscap_check_base_arguments(self):
         return ['oscap-vm', "domain", self.domain_name, 'xccdf', 'eval']
