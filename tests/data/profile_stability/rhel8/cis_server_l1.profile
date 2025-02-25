@@ -178,6 +178,7 @@ selections:
 - journald_forward_to_syslog
 - journald_storage
 - kernel_module_cramfs_disabled
+- kernel_module_usb-storage_disabled
 - mount_option_dev_shm_nodev
 - mount_option_dev_shm_noexec
 - mount_option_dev_shm_nosuid
