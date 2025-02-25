@@ -114,10 +114,12 @@ def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_
                 file.write(content)
                 file.write('\n')
 
+
 def _write_path(file_contents, output_path):
     with open(output_path, 'w') as file:
         file.write(file_contents)
         file.write('\n')
+
 
 def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
                    rules: Iterable[pathlib.Path], templates_root: pathlib.Path,
