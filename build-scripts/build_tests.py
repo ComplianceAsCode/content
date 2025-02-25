@@ -177,6 +177,7 @@ def _get_benchmark_cpes(env_yaml):
             benchmark_cpes.add(data["name"])
     return benchmark_cpes
 
+
 def _get_rules_in_profile(built_profiles_root):
     rules_in_profile = list()
     for profile_file in built_profiles_root.iterdir():  # type: pathlib.Path
@@ -187,6 +188,7 @@ def _get_rules_in_profile(built_profiles_root):
             if '=' not in selection:
                 rules_in_profile.append(selection)
     return rules_in_profile
+
 
 def main() -> int:
     args = _create_arg_parser().parse_args()
