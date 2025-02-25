@@ -166,8 +166,8 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
                 scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
                 if scenario.matches_platform(benchmark_cpes):
                     rule_output_path.mkdir(parents=True, exist_ok=True)
-                    output_path = rule_output_path / test.name
-                    _write_path(file_contents, output_path)
+                    test_output_path = rule_output_path / test.name
+                    _write_path(file_contents, test_output_path)
                     logger.debug('Wrote scenario %s for rule %s', test.name, rule_id)
                 else:
                     logger.debug('Skipping scenario %s for rule %s has it not applicable',

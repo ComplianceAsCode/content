@@ -676,7 +676,7 @@ macro(ssg_build_tests PRODUCT)
         OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tests/.tests_done"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/build-scripts/build_tests.py"  --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --output  "${CMAKE_CURRENT_BINARY_DIR}/tests" --product-yaml "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/product.yml"
         # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
-        DEPENDS ${PRODUCT}-compile-all "${CMAKE_CURRENT_BINARY_DIR}/ssg_build_compile_all-${PRODUCT}"
+        DEPENDS ${PRODUCT}-content
         COMMENT "[${PRODUCT}-tests] generating tests"
     )
 
