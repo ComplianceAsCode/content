@@ -3,8 +3,7 @@
 import argparse
 import logging
 import pathlib
-import sys
-from typing import TypeVar, Iterator, List, Iterable, Set, Dict
+from typing import TypeVar, List, Iterable, Set, Dict
 import multiprocessing
 
 import ssg.environment
@@ -115,6 +114,10 @@ def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_
                 file.write(content)
                 file.write('\n')
 
+def _write_path(file_contents, output_path):
+    with open(output_path, 'w') as file:
+        file.write(file_contents)
+        file.write('\n')
 
 def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
                    rules: Iterable[pathlib.Path], templates_root: pathlib.Path,
@@ -147,7 +150,7 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
             deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
             for test in template_tests_root.iterdir():  # type: pathlib.Path
                 if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
-                    logging.warning("Skipping % for %s", (test.name, rule_id))
+                    logging.warning("Skipping % for %s", test.name, rule_id)
                     continue
                 template = ssg.templates.Template.load_template(str(templates_root.absolute()),
                                                                 template_name)
@@ -161,9 +164,8 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
                 scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
                 if scenario.matches_platform(benchmark_cpes):
                     rule_output_path.mkdir(parents=True, exist_ok=True)
-                    with open(rule_output_path / test.name, 'w') as file:
-                        file.write(file_contents)
-                        file.write('\n')
+                    output_path = rule_output_path / test.name
+                    _write_path(file_contents, output_path)
                     logger.debug('Wrote scenario %s for rule %s', test.name, rule_id)
                 else:
                     logger.debug('Skipping scenario %s for rule %s has it not applicable',
@@ -173,7 +175,7 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
 def _get_benchmark_cpes(env_yaml):
     benchmark_cpes = set()
     for cpe in env_yaml["cpes"]:
-        for cpe_id, data in cpe.items():
+        for _, data in cpe.items():
             benchmark_cpes.add(data["name"])
     return benchmark_cpes
 
