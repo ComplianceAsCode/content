@@ -1124,7 +1124,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     run the command:
     <pre>$ ls -lL {{{ file }}}</pre>
     If properly configured, the output should indicate the following group-owner:
-    <code>{{{ group }}}</code>
+    {{% for grp in group.split("|") %}}
+      <code>{{{ grp }}}</code> 
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -1182,7 +1185,11 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 #}}
 {{%- macro ocil_clause_file_group_owner(file, group) -%}}
-    {{{ file }}} does not have a group owner of {{{ group }}}
+    {{{ file }}} does not have a group owner of 
+    {{% for grp in group.split("|") %}}
+      {{{ grp }}} 
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
