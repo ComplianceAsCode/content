@@ -12,11 +12,11 @@ description: |-
     {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404", "ubuntu2404"] %}}
     <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
-    <pre># grub2-setpassword</pre>
+    <pre># grub-mkpasswd-pbkdf2 --iteration-count=600000 --salt=64</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404", "ubuntu2404"] %}}
+    {{% if product in ["sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404", "ubuntu2404", "debian12"] %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"

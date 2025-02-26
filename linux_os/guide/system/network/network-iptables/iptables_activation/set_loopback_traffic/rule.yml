@@ -17,7 +17,7 @@ rationale: |-
 
 severity: medium
 
-platform: not package[nftables] and not package[ufw] and package[iptables]
+platform: package[iptables]
 
 identifiers:
     cce@sle12: CCE-92214-6
@@ -42,11 +42,11 @@ ocil_clause: 'loopback traffic is not configured'
 ocil: |-
     Run the following commands and verify output:
     <pre>
-    # iptables -L INPUT -v -n | grep lo | grep ACCEPT
+     iptables -L INPUT -v -n | grep lo | grep ACCEPT
     </pre>
     <pre>
-    # iptables -L INPUT -v -n | grep 127.0.0.0\/8 | grep DROP
+     iptables -L INPUT -v -n | grep 127.0.0.0\/8 | grep DROP
     </pre>
     <pre>
-    # iptables -L OUTPUT -v -n | grep lo | grep ACCEPT
+     iptables -L OUTPUT -v -n | grep lo | grep ACCEPT
     </pre>

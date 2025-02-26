@@ -1,3 +1,3 @@
-# platform = multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_ubuntu
 
 {{{ bash_pam_faillock_enable() }}}

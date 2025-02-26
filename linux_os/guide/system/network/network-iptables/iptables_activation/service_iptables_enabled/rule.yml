@@ -3,10 +3,10 @@ documentation_complete: true
 title: 'Verify iptables Enabled'
 
 description: |-
-    {{{ describe_service_enable(service="iptables") }}}
+    {{{ describe_service_enable(service="netfilter-persistent") }}}
 
 rationale: |-
-    The <tt>iptables</tt> service provides the system's host-based firewalling
+    The <tt>netfilter-persistent</tt> service provides the system's host-based firewalling
     capability for IPv4 and ICMP.
 
 severity: medium
@@ -34,19 +34,9 @@ references:
 platform: system_with_kernel and package[iptables] and service_disabled[firewalld]
 
 ocil: |-
-    {{{ ocil_service_enabled(service="iptables") }}}
+    {{{ ocil_service_enabled(service="netfilter-persistent") }}}
 
-{{%- if product in [ "sle12", "sle15" ] %}}
-template:
-    name: service_enabled_guard_var
-    vars:
-        packagename: ip6tables
-        servicename: iptables-ipv6
-        variable: var_network_filtering_service
-        value: iptables
-{{%- else %}}
 template:
     name: service_enabled
     vars:
-        servicename: iptables
-{{%- endif %}}
+        servicename: netfilter-persistent

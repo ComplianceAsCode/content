@@ -2,5 +2,5 @@
 # packages = ntp
 
 
-echo 'ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS' > /usr/lib/systemd/system/ntpd.service
-rm -f /etc/sysconfig/ntpd
+echo 'NTPD_OPTS="$NTPD_OPTS -u ntpsec:ntpsec"' > /usr/libexec/ntpsec/ntp-systemd-wrapper
+rm -f /etc/systemd/system/ntpd.service

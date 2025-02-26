@@ -7,6 +7,7 @@ description: |-
     the SSH server. The longer the Grace period is the more open unauthenticated connections
     can exist. Like other session controls in this session the Grace Period should be limited to
     appropriate limits to ensure the service is available for needed access.
+    <pre>LoginGraceTime {{{ var_sshd_set_login_grace_time }}}</pre>
 
 rationale: |-
     Setting the <tt>LoginGraceTime</tt> parameter to a low number will minimize the risk of successful

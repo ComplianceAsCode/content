@@ -6,16 +6,16 @@
 
 - name: "Detect if file is not empty or missing"
   find:
-    path: /etc/sysconfig/
+    path: /etc/systemd/system/ntpd.service
     patterns: ntpd
     contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
   register: ntpd_file
 
 - name: "Replace existing setting or create a new file, rest is handled by different task"
   lineinfile:
-    path: /etc/sysconfig/ntpd
+    path: /etc/systemd/system/ntpd.service
     regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
-    line: '\1 -u ntp:ntp\2'
+    line: '\1 -u ntpsec:ntpsec\2'
     state: present
     create: True
     backrefs: True
@@ -23,8 +23,8 @@
 
 - name: "Put line into file, assume file was empty"
   lineinfile:
-    path: /etc/sysconfig/ntpd
-    line: 'OPTIONS="-u ntp:ntp"'
+    path: /etc/systemd/system/ntpd.service
+    line: 'OPTIONS="-u ntpsec:ntpsec"'
     state: present
     create: True
   when: ntpd_file.matched == 0

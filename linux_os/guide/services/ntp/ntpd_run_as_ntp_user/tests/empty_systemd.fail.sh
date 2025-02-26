@@ -2,5 +2,5 @@
 # packages = ntp
 
 
-echo "" > /usr/lib/systemd/system/ntpd.service
-rm -f /etc/sysconfig/ntpd
+echo "" > /usr/libexec/ntpsec/ntp-systemd-wrapper
+rm -f /etc/systemd/system/ntpd.service

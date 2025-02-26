@@ -1,21 +1,35 @@
 <def-group>
   <definition class="compliance" id="ntpd_specify_multiple_servers" version="2">
     {{{ oval_metadata("Multiple ntpd NTP Servers for time synchronization should be specified.") }}}
-    <criteria comment="ntp.conf conditions are met">
-      <criterion test_ref="test_ntpd_multiple_servers" />
+    <criteria operator="OR">
+      <criterion comment="Servers configured in /etc/ntpsec/ntp.conf" test_ref="test_ntpd_server" />
+      <criterion comment="Pools configured in /etc/ntpsec/ntp.conf" test_ref="test_ntpd_pool" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Ensure more than one ntpd NTP server is set" id="test_ntpd_multiple_servers"
+  comment="Ensure more than one ntpd NTP server is set" id="test_ntpd_server"
   version="1">
-    <ind:object object_ref="obj_ntpd_multiple_servers" />
+    <ind:object object_ref="obj_ntpd_server" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object comment="Ensure more than one ntpd NTP server is set"
-  id="obj_ntpd_multiple_servers" version="1">
-    <ind:filepath>/etc/ntp.conf</ind:filepath>
+  id="obj_ntpd_server" version="1">
+  <ind:filepath>/etc/ntpsec/ntp.conf</ind:filepath>
     <ind:pattern operation="pattern match">^([\s]*server[\s]+.+$){2,}$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure more than one ntpd NTP server is set" id="test_ntpd_pool"
+  version="1">
+    <ind:object object_ref="obj_ntpd_pool" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="Ensure more than one ntpd NTP pool is set"
+  id="obj_ntpd_pool" version="1">
+  <ind:filepath>/etc/ntpsec/ntp.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^([\s]*pool[\s]+.+$){2,}$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

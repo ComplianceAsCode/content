@@ -55,5 +55,4 @@ then
       echo "$PROCESS"
   done
   echo -e "----------------------------"
-  echo "The may need to have a profile created or activated for them and then be restarted."
-fi
+  echo "The may need to have a profile cre

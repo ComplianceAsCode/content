@@ -2,4 +2,4 @@
 # packages = ntp
 
 
-rm -f /etc/ntp.conf
+rm -f /etc/ntpsec/ntp.conf

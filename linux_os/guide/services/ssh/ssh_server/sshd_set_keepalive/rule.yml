@@ -16,6 +16,8 @@ description: |-
     the session will be disconnected after
     <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds without receiving
     a keep alive message.
+    The following line in <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>ClientAliveCountMax {{{ var_sshd_set_keepalive }}}</pre>
 
 rationale: |-
     This ensures a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>

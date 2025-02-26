@@ -2,4 +2,4 @@
 # packages = ntp
 
 
-echo "" > /etc/ntp.conf
+echo "" > /etc/ntpsec/ntp.conf

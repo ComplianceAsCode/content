@@ -4,14 +4,16 @@ title: 'Set Default ip6tables Policy for Incoming Packets'
 
 description: |-
     To set the default policy to DROP (instead of ACCEPT) for
-    the built-in INPUT chain which processes incoming packets,
+    the built-in INPUT, OUTPUT, and FORWARD chain which processes incoming packets,
     add or correct the following line in
-    {{% if 'ubuntu' in product %}}
+    {{% if 'ubuntu' in product or 'debian' in product %}}
     <tt>/etc/iptables/rules.v6</tt>:
     {{% else %}}
     <tt>/etc/sysconfig/ip6tables</tt>:
     {{% endif %}}
     <pre>:INPUT DROP [0:0]</pre>
+    <pre>:OUTPUT DROP [0:0]</pre>
+    <pre>:FORWARD DROP [0:0]</pre>
     If changes were required, reload the ip6tables rules:
     <pre>$ sudo service ip6tables reload</pre>
 
@@ -24,7 +26,7 @@ rationale: |-
 
 severity: medium
 
-platform: not package[nftables] and not package[ufw] and package[iptables]
+platform: not package[nftables] and not package[ufw]
 
 identifiers:
     cce@rhel8: CCE-85965-2
@@ -54,6 +56,8 @@ ocil_clause: 'the default policy for the INPUT chain is not set to DROP'
 ocil: |-
     If IPv6 is disabled, this is not applicable.
     <br /><br />
-    Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
+    Inspect the file <tt>/etc/iptables/rules.v6</tt> to determine
     the default policy for the INPUT chain. It should be set to DROP:
-    <pre>$ sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>
+    <pre>$ sudo grep ":INPUT" /etc/iptables/rules.v6</pre>
+    <pre>$ sudo grep ":OUTPUT" /etc/iptables/rules.v6</pre>
+    <pre>$ sudo grep ":FORWARD" /etc/iptables/rules.v6</pre>
