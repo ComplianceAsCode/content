@@ -40,8 +40,8 @@
   <unix:file_state id="state_file_ownership_syslog_var_log_auth_log" version="1">
     <unix:user_id datatype="int" operation="equals" var_ref="var_syslog_uid"/>
   </unix:file_state>
-  <unix:file_state id="state_group_ownership_root_var_log_auth_log" version="1">
-    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  <unix:file_state id="state_file_ownership_root_var_log_auth_log" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
   </unix:file_state>
   <unix:file_state id="{{{ rule_id }}}_exclude_files_apt" version="1">
     <unix:filepath operation="pattern match">^/var/log/apt/.*</unix:filepath>
