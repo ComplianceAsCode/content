@@ -1,7 +1,10 @@
 {{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
 {{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
 {{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
-{{% if product in ["ol8", "ubuntu2404"] %}}
+{{% if product in ["ubuntu2404"] %}}
+{{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+-F[\s]+auid!=(-1|4294967295|unset)[\s]+" %}}
+{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+-F[\s]+agid!=(-1|4294967295|unset)[\s]+" %}}
+{{% elif product in ["ol8"] %}}
 {{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+" %}}
 {{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+" %}}
 {{% else %}}

@@ -13,7 +13,12 @@ description: |-
 
     <pre>$ sudo grep -r execve /etc/audit/rules.d</pre>
 
-    {{% if product in ["ol8", "ubuntu2404"] %}}
+    {{% if product in ["ubuntu2404"] %}}
+    <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F auid!=unset -k setuid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -F auid!=unset -k setuid</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -F agid!=unset -k setgid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -F agid!=unset -k setgid</pre>
+    {{% elif product in ["ol8"] %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
     <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
