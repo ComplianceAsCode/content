@@ -387,7 +387,7 @@ controls:
       - l1_server
       - l1_workstation
     rules:
-      - var_apparmor_mode=enforce
+      - var_apparmor_mode=keep_existing_mode
       - all_apparmor_profiles_in_enforce_complain_mode
     status: automated
     notes: |
@@ -395,7 +395,9 @@ controls:
       of various profiles, including disabled, force-complain,
       and unconfined. Currently, the control changes the default apparmor
       mode for all profiles in /etc/apparmor.d which can
-      break certain applications.
+      break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
+      The remediation for this rule is currently disabled via
+      var_apparmor_mode=keep_existing_mode
 
   - id: 1.3.1.4
     title: Ensure all AppArmor Profiles are enforcing (Automated)
@@ -403,7 +405,6 @@ controls:
       - l2_server
       - l2_workstation
     rules:
-      - var_apparmor_mode=enforce
       - all_apparmor_profiles_enforced
     status: automated
     notes: |
@@ -411,7 +412,7 @@ controls:
       of various profiles, including disabled, force-complain,
       and unconfined. Currently, the control changes the default apparmor
       mode for all profiles in /etc/apparmor.d which can
-      break certain applications.
+      break certain applications. See https://workbench.cisecurity.org/benchmarks/18959/tickets/23987
 
   - id: 1.4.1
     title: Ensure bootloader password is set (Automated)
