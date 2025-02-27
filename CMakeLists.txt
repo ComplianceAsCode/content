@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16)
 
 # Strictly speaking in-source will work but will be very messy so it is not supported.
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
@@ -131,11 +131,9 @@ else()
 endif()
 message(STATUS "PYTHONPATH: $ENV{PYTHONPATH}")
 
-# Setting Python_ADDITIONAL_VERSIONS before calling PythonInterp can influence the priority of
-# python executables in a scenario where multiple versions are present.
-set(Python_ADDITIONAL_VERSIONS 3 2)
 # Required Packages
-find_package(PythonInterp REQUIRED)
+set(Python_FIND_UNVERSIONED_NAMES FIRST)
+find_package(Python REQUIRED)
 find_package(OpenSCAP REQUIRED)
 
 find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
@@ -230,7 +228,7 @@ configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/bu
 message(STATUS " ")
 message(STATUS "Summary of Python Tools and Modules:")
 # Required Python Tools
-message(STATUS "python: ${PYTHON_EXECUTABLE} (version: ${PYTHON_VERSION_STRING})")
+message(STATUS "python: ${Python_EXECUTABLE} (version: ${Python_VERSION})")
 message(STATUS "python yaml module: ${PY_YAML}")
 message(STATUS "python jinja2 module: ${PY_JINJA2}")
 # Optional Python Tools

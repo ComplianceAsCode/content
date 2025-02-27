@@ -14,7 +14,7 @@ function(find_python_module module)
             set(PY_${module}_FIND_REQUIRED TRUE)
         endif()
         if($ENV{SSG_USE_PIP_PACKAGES})
-            execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+            execute_process(COMMAND "${Python_EXECUTABLE}" "-c"
                 "import platform; print(''.join('python'+platform.python_version()[:-2]))"
                 RESULT_VARIABLE _python_version_status
                 OUTPUT_VARIABLE _python_version
@@ -26,7 +26,7 @@ function(find_python_module module)
         endif()
         # A module's location is usually a directory, but for binary modules
         # it's a .so file.
-        execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+        execute_process(COMMAND "${Python_EXECUTABLE}" "-c"
             "import re, ${module}; print(re.compile('/__init__.py.*').sub('',${module}.__file__))"
             RESULT_VARIABLE _${module}_status
             OUTPUT_VARIABLE _${module}_location

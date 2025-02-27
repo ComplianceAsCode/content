@@ -183,6 +183,14 @@ jobs:
       OPENSCAP_VERSION: "1.4.2"
       OPENSCAP_ROOT_DIR: "C:\\Program Files\\OpenSCAP 1.4.2"
     steps:
+        - name: Set up Python
+          # This is the version of the action for setting up Python, not the Python version.
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.9'
+            architecture: 'x64'
+        - name: Display Python version
+          run: python -c "import sys; print(sys.version)"
         - name: Install Deps
           run: choco install xsltproc
         - name: Get Latest OpenSCAP
