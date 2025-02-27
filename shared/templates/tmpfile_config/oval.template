@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check presence of " + TMP_ACTION + " in " + DEST_PATH) }}}
+    <criteria operator="AND" comment="Test conditions - presence of the file plus {{{ OVAL_EXTEND_DEFINITIONS | length }}} extra definitions.">
+      <criterion comment="Check that {{{ PATH }}} contains a line with certain text" test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="tests the presence of '{{{ DEST_PATH }}}' setting in the tmpfile config"
+  id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:path>/etc/tmpfiles.d/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^{{{ TMP_ACTION }}}[[:blank:]]+{{{ DEST_PATH | replace("/", "\\/") }}}[[:blank:]]+{{{ MODE }}}[[:blank:]]+{{{ OWNER }}}[[:blank:]]+{{{ GROUP_OWNER }}}[[:blank:]]+-[[:blank:]]+{{{ SOURCE_PATH | replace("/", "\\/") }}}$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
