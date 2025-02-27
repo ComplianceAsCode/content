@@ -23,6 +23,7 @@
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path>/var/log</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
+    <filter action="exclude">{{{ rule_id }}}_exclude_symlinks</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_apt</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_auth_log</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_bwtmp</filter>
@@ -37,11 +38,14 @@
     <filter action="exclude">{{{ rule_id }}}_exclude_files_syslog</filter>
     <filter action="exclude">{{{ rule_id }}}_exclude_files_waagent</filter>
   </unix:file_object>
+  <unix:file_state id="{{{ rule_id }}}_exclude_symlinks" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
   <unix:file_state id="state_file_ownership_syslog_var_log_auth_log" version="1">
     <unix:user_id datatype="int" operation="equals" var_ref="var_syslog_uid"/>
   </unix:file_state>
-  <unix:file_state id="state_group_ownership_root_var_log_auth_log" version="1">
-    <unix:group_id datatype="int" operation="equals">0</unix:group_id>
+  <unix:file_state id="state_file_ownership_root_var_log_auth_log" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
   </unix:file_state>
   <unix:file_state id="{{{ rule_id }}}_exclude_files_apt" version="1">
     <unix:filepath operation="pattern match">^/var/log/apt/.*</unix:filepath>
