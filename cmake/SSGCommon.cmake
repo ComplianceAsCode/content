@@ -428,7 +428,7 @@ endmacro()
 # If Python 3.9 or newer is used for the build, the output XML is already
 # generated pretty and doesn't need to be reformatted.
 macro(ssg_build_xml_final PRODUCT LANGUAGE)
-    if(PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MINOR LESS 9)
+    if(Python_VERSION_MAJOR LESS 3 OR Python_VERSION_MINOR LESS 9)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-${LANGUAGE}.xml"
@@ -519,7 +519,7 @@ macro(ssg_build_sds PRODUCT)
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/test_ds_sce.py" "${CMAKE_BINARY_DIR}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         )
     endif()
-    if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_PCRE2)
+    if(Python_VERSION_MAJOR GREATER 2 AND PY_PCRE2)
         add_test(
             NAME "check-pcre2-compatibility-ssg-${PRODUCT}-ds.xml"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${Python_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/check_pcre2_compatibility.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -531,7 +531,7 @@ endmacro()
 # Build per-product HTML guides to see the status of various profiles and
 # rules in the generated XCCDF guides.
 macro(ssg_build_html_guides PRODUCT)
-    if(PYTHON_VERSION_MAJOR GREATER 2 AND PY_LXML)
+    if(Python_VERSION_MAJOR GREATER 2 AND PY_LXML)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/guides"
@@ -1245,7 +1245,7 @@ macro(ssg_define_guide_and_table_tests)
         endforeach()
     endif()
 
-    if(PYTHON_VERSION_MAJOR GREATER 2)
+    if(Python_VERSION_MAJOR GREATER 2)
         add_test(
             NAME "unique-cces"
             COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.py" "${CMAKE_SOURCE_DIR}" "cce"
