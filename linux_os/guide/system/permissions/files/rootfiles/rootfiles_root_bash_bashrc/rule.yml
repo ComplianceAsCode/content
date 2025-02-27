@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: "Ensure rootfiles Sets /root/.bashrc Permissions Correctly"
+
+description: |-
+    To set the mode of the root user initialization file <tt>/root/.bashrc</tt>,
+    ensure the following line is is included in a file ending in <tt>.conf</tt> under
+    <tt>/etc/tmpfiles.d/</tt>.
+    <pre>
+        C /root/.bashrc   600 root root - /usr/share/rootfiles/.bashrc
+    </pre>
+
+rationale: |-
+    Local initialization files are used to configure the user's shell environment
+    upon logon. Malicious modification of these files could compromise accounts upon
+    logon.
+
+severity: medium
+
+platform: package[rootfiles]
+
+template:
+    name: tmpfile_config
+    vars:
+        tmp_action: 'C'
+        dest_path: '/root/.bashrc'
+        mode: '600'
+        wrong_mode: '777'
+        owner: 'root'
+        group_owner: 'root'
+        source_path: '/usr/share/rootfiles/.bashrc'
+        remedation_file: '/etc/tmpfiles.d/rootconf.conf'
