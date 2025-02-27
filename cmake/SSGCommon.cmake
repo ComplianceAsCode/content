@@ -795,7 +795,7 @@ macro(ssg_build_product PRODUCT)
     ssg_render_policies_for_product(${PRODUCT})
     add_dependencies(render-policies ${PRODUCT}-render-policies)
 
-    if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(8|9)|ol8")
+    if(SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel8|ol8")
         ssg_build_disa_delta(${PRODUCT} "stig")
         add_dependencies(${PRODUCT} generate-ssg-delta-${PRODUCT}-stig)
     endif()
