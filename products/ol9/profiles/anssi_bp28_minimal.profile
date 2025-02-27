@@ -13,6 +13,8 @@ description: |-
 
 selections:
   - anssi:all:minimal
+  - var_password_hashing_algorithm=SHA512
+  - var_password_pam_unix_rounds=65536
   # Following rules once had a prodtype incompatible with the ol9 product
   - '!package_ypbind_removed'
   - '!cracklib_accounts_password_pam_minlen'
