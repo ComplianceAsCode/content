@@ -4,27 +4,28 @@
 # we number each sentence with a RFC2119 keyword as a section, grouping sentences, which are logically connected.
 # we number inline in brackets, so the lookup is easy
 # we reference these numbers in comments over each rule or group of rules
-policy: 'BSI-SYS-1-3'
-title: 'SYS.1.3 Linux Server'
-id: bsi_sys_1_3
+policy: 'BSI-SYS-1-3-RHCOS4'
+title: 'SYS.1.3 Linux Server (RHCOS)'
+id: bsi_sys_1_3_rhcos4
 version: '1.0'
 source: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf
 levels:
   - id: basic
   - id: standard
     inherits_from:
-    - basic
+      - basic
   - id: elevated
     inherits_from:
-    - standard
+      - standard
 
 reference_type: bsi
+product: rhcos4
 
 controls:
   - id: SYS.1.3.A1
     title: ELIMINATED
     levels:
-    - basic
+      - basic
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -34,7 +35,7 @@ controls:
   - id: SYS.1.3.A2
     title: Careful Allocation of IDs
     levels:
-    - basic
+      - basic
     description: >-
       (1) Each login name, each user ID (UID) and each group ID (GID) MUST ONLY be used once.
       (2) Every user MUST be a member of at least one group. (3) Every GID mentioned in the /etc/passwd
@@ -45,9 +46,9 @@ controls:
       the systems during cross-system access.
     notes: >-
       Section 2: System accounts do not always have a group
-      Section 4 is a manual control
-      Section 5 this cant be checked on a per system base, and therefore is an organizational control
-    status: pending
+      Section 4: is a manual control
+      Section 5: this cant be checked on a per system base, and therefore is an organizational control
+    status: partial
     rules:
       # Section 1
       - account_unique_id
@@ -62,12 +63,12 @@ controls:
   - id: SYS.1.3.A3
     title: No Automatic Integration of Removable Drives
     levels:
-    - basic
+      - basic
     description: >-
       (1) Removable media such as USB pen drives or CDs/DVDs MUST NOT be integrated automatically.
     notes: >-
       https://access.redhat.com/solutions/18978
-    status: pending
+    status: automated
     rules:
       # USB
       - grub2_nousb_argument
@@ -80,7 +81,7 @@ controls:
   - id: SYS.1.3.A4
     title: Protection from Exploitation of Vulnerabilities in Applications
     levels:
-    - basic
+      - basic
     description: >-
       (1) ASLR and DEP/NX MUST be activated in the kernel and used by applications to make it harder
       to exploit vulnerabilities in applications. (2) Security functions of the kernel and of the standard
@@ -91,12 +92,14 @@ controls:
     status: automated
     rules:
       - bios_enable_execution_restrictions
-      # SELinux ergaenzen?
+      - package_libselinux_installed
+      - grub2_enable_selinux
+      - selinux_not_disabled
 
   - id: SYS.1.3.A5
     title: Secure Installation of Software Packages
     levels:
-    - basic
+      - basic
     description: >-
       (1) If software to be installed is to be compiled from source code, it MUST ONLY be unpacked,
       configured, and compiled using an unprivileged user account. (2) The software to be installed
@@ -110,27 +113,32 @@ controls:
     notes: >-
       This requirement must be implemented organizationally.
     status: manual
+    rules: []
 
   - id: SYS.1.3.A6
     title: Managing Users and Groups
     levels:
-    - standard
+      - standard
     description: >-
       (1) The corresponding management tools SHOULD be used for managing users and groups. (2) The
       configuration files /etc/passwd, /etc/shadow, /etc/group, and /etc/sudoers SHOULD NOT be
       edited directly.
     notes: >-
       This requirement must be implemented organizationally.
-      We could add auditing rules for these files, which shows edits, but do not prevent the users
+      We add auditing rules for these files, which shows edits, but do not prevent the users
       in the toolings they use for editing.
-    status: pending
+    status: partial
     rules:
-      - #auditd passwd regeln usw.
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_opasswd
 
   - id: SYS.1.3.A7
     title: ELIMINATED
     levels:
-    - standard
+      - standard
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -140,7 +148,7 @@ controls:
   - id: SYS.1.3.A8
     title: Encrypted Access via Secure Shell
     levels:
-    - standard
+      - standard
     description: >-
       (1) Only Secure Shell (SSH) SHOULD be used to create an encrypted and authenticated interactive
       connection between two IT systems. (2) All other protocols whose functions are covered by
@@ -151,12 +159,13 @@ controls:
       Section 2: this should be the default
       Section 3: The requirement says PRIMARILY use certificate, not disallow PasswordAuthentication
       completely
+      RHCOS Context: A more secure variant would be to disable SSH completely. As it is
+      not always needed, since MachineConfigs can configure the local machine.
     status: automated
     rules:
       # Section 1
       - service_sshd_enabled
       - sshd_allow_only_protocol2
-      - firewalld_sshd_port_enabled
       # Section 2
       - package_telnet-server_removed
       - package_telnet_removed
@@ -168,7 +177,7 @@ controls:
   - id: SYS.1.3.A9
     title: ELIMINATED
     levels:
-    - standard
+      - standard
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -178,7 +187,7 @@ controls:
   - id: SYS.1.3.A10
     title: Preventing Further Intrusion When Vulnerabilities Are Exploited
     levels:
-    - standard
+      - standard
     description: >-
       (1) Services and applications SHOULD be protected with individual security architecture (e.g.
       with AppArmor or SELinux). (2) In addition, chroot environments and LXC or Docker containers
@@ -201,11 +210,10 @@ controls:
       - selinux_state
       - selinux_confinement_of_daemons
 
-
   - id: SYS.1.3.A11
     title: ELIMINATED
     levels:
-    - standard
+      - standard
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -215,7 +223,7 @@ controls:
   - id: SYS.1.3.A12
     title: ELIMINATED
     levels:
-    - standard
+      - standard
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -225,7 +233,7 @@ controls:
   - id: SYS.1.3.A13
     title: ELIMINATED
     levels:
-    - elevated
+      - elevated
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -235,7 +243,7 @@ controls:
   - id: SYS.1.3.A14
     title: Preventing Unauthorised Collection of System and User Information
     levels:
-    - standard
+      - standard
     description: >-
       (1) Information output for users regarding the operating system and access to protocol and
       configuration files SHOULD be limited to the required minimum. (2) Moreover, confidential
@@ -273,37 +281,45 @@ controls:
       - file_owner_etc_issue_net
       - file_permissions_etc_issue_net
 
-      - file_groupowner_crontab
-      - file_owner_crontab
-      - file_permissions_crontab
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_crontab
+      # - file_owner_crontab
+      # - file_permissions_crontab
 
-      - file_groupowner_cron_hourly
-      - file_owner_cron_hourly
-      - file_permissions_cron_hourly
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_cron_hourly
+      # - file_owner_cron_hourly
+      # - file_permissions_cron_hourly
 
-      - file_groupowner_cron_daily
-      - file_owner_cron_daily
-      - file_permissions_cron_daily
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_cron_daily
+      # - file_owner_cron_daily
+      # - file_permissions_cron_daily
 
-      - file_groupowner_cron_weekly
-      - file_owner_cron_weekly
-      - file_permissions_cron_weekly
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_cron_weekly
+      # - file_owner_cron_weekly
+      # - file_permissions_cron_weekly
 
-      - file_groupowner_cron_monthly
-      - file_owner_cron_monthly
-      - file_permissions_cron_monthly
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_cron_monthly
+      # - file_owner_cron_monthly
+      # - file_permissions_cron_monthly
 
-      - file_groupowner_cron_d
-      - file_owner_cron_d
-      - file_permissions_cron_d
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_cron_d
+      # - file_owner_cron_d
+      # - file_permissions_cron_d
 
-      - file_groupowner_cron_allow
-      - file_owner_cron_allow
-      - file_permissions_cron_allow
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_cron_allow
+      # - file_owner_cron_allow
+      # - file_permissions_cron_allow
 
-      - file_groupowner_at_allow
-      - file_owner_at_allow
-      - file_permissions_at_allow
+      # not used in rhcos, kept for documentation
+      # - file_groupowner_at_allow
+      # - file_owner_at_allow
+      # - file_permissions_at_allow
 
       - file_groupowner_sshd_config
       - file_owner_sshd_config
@@ -366,9 +382,7 @@ controls:
       - file_permissions_etc_shells
 
       - file_permissions_unauthorized_world_writable
-
       - file_permissions_ungroupowned
-
       - file_permissions_unauthorized_suid
       - file_permissions_unauthorized_sgid
 
@@ -379,7 +393,7 @@ controls:
   - id: SYS.1.3.A15
     title: ELIMINATED
     levels:
-    - elevated
+      - elevated
     description: >-
       This requirement has been eliminated.
     notes: >-
@@ -389,20 +403,21 @@ controls:
   - id: SYS.1.3.A16
     title: Additional Prevention of Further Intrusion When Vulnerabilities Are Exploited
     levels:
-    - elevated
+      - elevated
     description: >-
       (1) The use of system calls SHOULD be limited to those absolutely necessary, particularly for
       exposed services and applications. (2) The standard profiles and/or rules (e.g. of SELinux or
       AppArmor) SHOULD be checked manually and, if necessary, adapted to an organisation's own
       security policies. (3) If necessary, new rules and profiles SHOULD be drawn up.
     notes: >-
-      This requirement must be implemented organizationally.
+      In OpenShift this can be done utilizing the Security Profiles Operator. This is done
+      on the OCP Layer and not on the RHCOS4 Layer.
     status: not applicable
 
   - id: SYS.1.3.A17
     title: Additional Kernel Protection
     levels:
-    - elevated
+      - elevated
     description: >-
       (1) Specially hardened kernels (e.g. grsecurity, PaX) and appropriate protective safeguards such as
       memory protection or file system protection SHOULD be implemented to prevent
@@ -411,3 +426,4 @@ controls:
       Section 1: Red Hat does not provide specifically hardened kernels. If using them, please be
       aware of the support policy for 3rd Party software (https://access.redhat.com/third-party-software-support).
     status: does not meet
+    rules: []
