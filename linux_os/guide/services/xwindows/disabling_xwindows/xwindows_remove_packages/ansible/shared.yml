@@ -5,7 +5,7 @@
 # disruption = low
 
 {{% for package in xwindows_packages %}}
-- name: Ensure {{{ package }}} is removed
+- name: "{{{ rule_title }}} - Ensure {{{ package }}} is removed"
   package:
     name: {{{ package }}}
     state: absent
