@@ -132,6 +132,7 @@ endif()
 message(STATUS "PYTHONPATH: $ENV{PYTHONPATH}")
 
 # Required Packages
+set(Python_FIND_UNVERSIONED_NAMES FIRST)
 find_package(Python REQUIRED)
 find_package(OpenSCAP REQUIRED)
 
