@@ -9,7 +9,7 @@ metadata:
         - rhmdnd
         - Vincent056
         - yuumasato
-    version: 1.5.0
+    version: 1.7.0
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
