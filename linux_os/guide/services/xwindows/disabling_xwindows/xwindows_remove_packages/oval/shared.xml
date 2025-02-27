@@ -1,12 +1,3 @@
-
-{{% if product in ["sle12", "sle15"] %}}
-{{% set xwindows_packages = ['xorg-x11-server', 'xorg-x11-server-extra', 'xorg-x11-server-Xvfb', 'xwayland'] %}}
-{{% elif 'ol7' in product %}}
-{{% set xwindows_packages = ['xorg-x11-server-Xorg', 'xorg-x11-server-common', 'xorg-x11-server-utils'] %}}
-{{% else %}}
-{{% set xwindows_packages = ['xorg-x11-server-Xorg', 'xorg-x11-server-common', 'xorg-x11-server-utils', 'xorg-x11-server-Xwayland'] %}}
-{{% endif %}}
-
 <def-group>
   <definition class="compliance" id="xwindows_remove_packages" version="1">
     {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
