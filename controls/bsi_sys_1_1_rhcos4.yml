@@ -1,4 +1,4 @@
-# In BSI Basic Protection are multiple Requirements in one control.
+# In BSI Basic Protection there are multiple Requirements in one control.
 # i.e. there are multiple sentences, some including a RFC2119 keyword
 # Since we must increase granularity to create a precise control,
 # we number each sentence with a RFC2119 keyword as a section, grouping sentences, which are logically connected.
@@ -73,9 +73,9 @@ controls:
       (1) It MUST be ensured that only specified removable storage media and other devices can be
       connected to servers. All interfaces that are no longer needed must be disabled.
     notes: >-
-      Section 1: If you dont utilize specific software to control the allowed devices for usb ports,
+      Section 1: If you don't utilize specific software to control the allowed devices for usb ports,
       you can ensure compliance by disabling the usb port completely.
-      Interfaces is ambigious, it is focussed on usb etc. not on network.
+      Interfaces is ambiguous, it is focused on usb etc. not on network.
     status: automated
     rules:
       # Section 1
@@ -261,7 +261,7 @@ controls:
       checked at regular intervals. (4) The results SHOULD be appropriately documented.
     notes: >-
       This requirement must be implemented organizationally.
-      If we interprete this towards hardening, the CIS Profile could be used
+      If we interpret this towards hardening, the CIS Profile could be used
     status: manual
 
   - id: SYS.1.1.A12
@@ -285,7 +285,7 @@ controls:
       be understood at any future point in time.
     notes: >-
       This requirement must be implemented organizationally.
-      Some parts could be technically checked, i.e. if repositories are configureg, if AV is
+      Some parts could be technically checked, i.e. if repositories are configured, if AV is
       installed and therelike.
     status: manual
 
