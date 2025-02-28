@@ -1,4 +1,4 @@
-# platform = multi_platform_sle,multi_platform_ubuntu
+# platform = multi_platform_debian,multi_platform_sle,multi_platform_ubuntu
 
 {{{ bash_instantiate_variables("var_apparmor_mode") }}}
 
@@ -13,7 +13,7 @@ APPARMOR_MODE="$var_apparmor_mode"
 
 if [ "$APPARMOR_MODE" = "enforce" ]
 then
-  {{% if 'ubuntu' in product %}}
+  {{% if 'ubuntu' in product or 'debian' in product %}}
   # Set all profiles to enforce mode except disabled profiles
   find /etc/apparmor.d -maxdepth 1 ! -type d -exec bash -c '[[ -e "/etc/apparmor.d/disable/$(basename "$1")" ]] || aa-enforce "$1"' _ {} \;
   {{% else %}}
@@ -24,7 +24,7 @@ fi
 
 if [ "$APPARMOR_MODE" = "complain" ]
 then
-  {{% if 'ubuntu' in product %}}
+  {{% if 'ubuntu' in product or 'debian' in product %}}
   # Load all not-loaded profiles into complain mode
   apparmor_parser -a --Complain /etc/apparmor.d/
   echo "***WARNING***: This remediation will not downgrade any existing AppArmor profiles."
@@ -34,12 +34,7 @@ then
   {{% endif %}}
 fi
 
-if [ "$APPARMOR_MODE" = "keep_existing_mode" ]
-then
-  echo "***WARNING***: This remediation will not modify any existing AppArmor profiles."
-fi
-
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or 'debian' in product %}}
 UNCONFINED=$(aa-status | grep "processes are unconfined" | awk '{print $1;}')
 if [ $UNCONFINED -ne 0 ];
 {{% else %}}
@@ -55,4 +50,5 @@ then
       echo "$PROCESS"
   done
   echo -e "----------------------------"
-  echo "The may need to have a profile cre
+  echo "The may need to have a profile created or activated for them and then be restarted."
+fi
