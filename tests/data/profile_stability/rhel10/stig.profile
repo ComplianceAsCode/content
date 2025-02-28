@@ -413,6 +413,11 @@ selections:
 - postfix_prevent_unrestricted_relay
 - require_singleuser_auth
 - root_permissions_syslibrary_files
+- rootfiles_root_bash_bash_profile
+- rootfiles_root_bash_bashrc
+- rootfiles_root_bash_cshrc
+- rootfiles_root_bash_logout
+- rootfiles_root_bash_tcshrc
 - rsyslog_cron_logging
 - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 - rsyslog_encrypt_offload_actionsendstreamdrivermode
