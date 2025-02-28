@@ -143,6 +143,7 @@ selections:
 - sebool_authlogin_nsswitch_use_ldap
 - sebool_authlogin_radius
 - sebool_kerberos_enabled
+- secure_boot_enabled
 - selinux_policytype
 - selinux_state
 - service_auditd_enabled
