@@ -65,6 +65,8 @@ selections:
     - '!set_ip6tables_default_rule'
     - '!set_loopback_traffic'
     - '!set_password_hashing_algorithm_commonauth'
+    # Following rule are excluded since, "so far" no CCEs were defined for them and maybe irrelevant for rhel10
+    - '!enable_dconf_user_profile'
 
     # Following are incompatible with the rhel10 product (based on RHEL9)
     - '!service_chronyd_or_ntpd_enabled'
