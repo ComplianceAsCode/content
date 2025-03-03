@@ -334,7 +334,7 @@ def parse_arguments():
         help="The output format of the result")
     stats_parser.add_argument(
         '-p', '--product',
-        help="product to check has required references")
+        help="product to check has required references", required=True)
     stats_parser.add_argument(
         '--show-controls', action='store_true',
         help="list the controls and their respective status")
