@@ -5,7 +5,11 @@
 authselect current
 
 if test "$?" -ne 0; then
-    authselect select "$var_authselect_profile"
+    if {{{ bash_bootc_build() }}}; then
+        authselect select --force "$var_authselect_profile"
+    else
+        authselect select "$var_authselect_profile"
+    fi
 
     if test "$?" -ne 0; then
         if rpm --quiet --verify pam; then
