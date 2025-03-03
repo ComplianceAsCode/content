@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{%- set files = ["bash_logout", "bash_profile", "bashrc", "cshrc", "tcshrc", ] %}}
+
+{{%- for file in files %}}
+    {{% set dest_path = "/root/." ~  file -%}}
+    {{% set source_path = "/usr/share/rootfiles/." ~ file -%}}
+    {{% set new_line = "C " ~ dest_path ~ " 600 root root - "  ~ source_path  %}}
+{{{ ansible_lineinfile(msg='', path='/etc/tmpfiles.d/rootconf.conf', new_line=new_line, create='yes', state='present', insert_after='', insert_before='', regex=source_path)  -}}}
+{{%- endfor %}}
