@@ -14,6 +14,15 @@ description: |-
         C /root/.tcshrc        600 root root - /usr/share/rootfiles/.tcshrc
     </pre>
 
+identifiers:
+    cce@rhel8: CCE-86473-6
+    cce@rhel9: CCE-86474-4
+    cce@rhel10: CCE-86476-9
+
+references:
+    disa: CCI-000366
+    srg: SRG-OS-000480-GPOS-00227
+
 rationale: |-
     Local initialization files are used to configure the user's shell environment
     upon logon. Malicious modification of these files could compromise accounts upon
