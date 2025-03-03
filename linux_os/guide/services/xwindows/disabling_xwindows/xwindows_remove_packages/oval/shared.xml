@@ -1,24 +1,16 @@
 <def-group>
   <definition class="compliance" id="xwindows_remove_packages" version="1">
     {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
-    <criteria>
-      <criterion comment="package xorg-x11-server-Xorg is not installed"
-        test_ref="package_xorg-x11-server-Xorg_removed" />
-      <extend_definition comment="package xorg-x11-server-common is removed"
-        definition_ref="package_xorg-x11-server-common_removed" />
-      <criterion comment="package xorg-x11-server-utils is removed"
-        test_ref="package_xorg-x11-server-utils_removed" />
-{{% if product not in ["ol7"] %}}
-      <criterion comment="package xorg-x11-server-Xwayland is removed"
-        test_ref="package_xorg-x11-server-Xwayland_removed" />
-{{% endif %}}
-    </criteria>
+    <criteria operator="AND" comment="Make sure all xwindows packages are removed">
+{{% for package in xwindows_packages %}}
+  <criterion comment="package {{{ package }}} is removed"
+  test_ref="test_package_{{{ package }}}_removed" />
+{{% endfor %}}
+</criteria>
   </definition>
 
-  {{{ oval_test_package_removed(package='xorg-x11-server-Xorg', test_id='package_xorg-x11-server-Xorg_removed') }}}
-  {{{ oval_test_package_removed(package='xorg-x11-server-utils', test_id='package_xorg-x11-server-utils_removed') }}}
-{{% if product not in ["ol7"] %}}
-  {{{ oval_test_package_removed(package='xorg-x11-server-Xwayland', test_id='package_xorg-x11-server-Xwayland_removed') }}}
-{{% endif %}}
+  {{% for package in xwindows_packages %}}
+  {{{ oval_test_package_removed(package=package, test_id="test_package_" + package + "_removed") }}}
+  {{% endfor %}}
 
 </def-group>

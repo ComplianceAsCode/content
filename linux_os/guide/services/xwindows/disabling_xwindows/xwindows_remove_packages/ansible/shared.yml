@@ -1,16 +1,12 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_almalinux
+# platform = Red Hat Enterprise Linux 8,multi_platform_almalinux,multi_platform_ol,multi_platform_sle
 # reboot = true
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-- name: Ensure xorg packages are removed
+{{% for package in xwindows_packages %}}
+- name: "{{{ rule_title }}} - Ensure {{{ package }}} is removed"
   package:
-    name:
-      - xorg-x11-server-Xorg
-      - xorg-x11-server-common
-      - xorg-x11-server-utils
-{{% if product not in ["ol7"] %}}
-      - xorg-x11-server-Xwayland
-{{% endif %}}
+    name: {{{ package }}}
     state: absent
+{{% endfor %}}
