@@ -835,9 +835,11 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_file_owner(file, owner) %}}
-    {{% set owners = owner.split("|") %}}
     To properly set the owner of <code>{{{ file }}}</code>, run the command:
-    <pre>$ sudo chown {{{ owners[0] }}} {{{ file }}} </pre>
+    {{% for own in owner.split("|") %}}
+      <pre>$ sudo chown {{{ own }}} {{{ file }}} </pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -851,7 +853,10 @@ substituting the correct package management software.
 #}}
 {{%- macro describe_directory_owner(directory, owner) %}}
     To properly set the owner of <code>{{{ directory }}}</code>, run the command:
-    <pre>$ sudo chown {{{ owner }}} {{{ directory }}}</pre>
+    {{% for own in owner.split("|") %}}
+      <pre>$ sudo chown {{{ own }}} {{{ directory }}} </pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -879,9 +884,11 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_file_group_owner(file, group) %}}
-    {{% set groups = group.split("|") %}}
     To properly set the group owner of <code>{{{ file }}}</code>, run the command:
-    <pre>$ sudo chgrp {{{ groups[0] }}} {{{ file }}}</pre>
+    {{% for grp in group.split("|") %}}
+      <pre>$ sudo chgrp {{{ grp }}} {{{ file }}}</pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#
@@ -895,7 +902,10 @@ substituting the correct package management software.
 #}}
 {{%- macro describe_directory_group_owner(directory, group) %}}
     To properly set the group owner of <code>{{{ directory }}}</code>, run the command:
-    <pre>$ sudo chgrp {{{ group }}} {{{ directory }}}</pre>
+    {{% for grp in group.split("|") %}}
+      <pre>$ sudo chgrp {{{ grp }}} {{{ directory }}}</pre>
+      {{% if not loop.last %}} or {{% endif %}}
+    {{% endfor %}}
 {{%- endmacro %}}
 
 {{#

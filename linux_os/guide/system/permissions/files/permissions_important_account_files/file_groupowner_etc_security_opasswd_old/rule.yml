@@ -10,14 +10,14 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/security/opasswd.old", group=root) }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/security/opasswd.old", group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/security/opasswd.old", group=root) }}}
+    {{{ ocil_file_group_owner(file="/etc/security/opasswd.old", group="root") }}}
 
-fixtext: '{{{ fixtext_file_group_owner(file="/etc/security/opasswd.old", group=root) }}}'
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/security/opasswd.old", group="root") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/security/opasswd.old", group=root) }}}'
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/security/opasswd.old", group="root") }}}'
 
 template:
     name: file_groupowner
