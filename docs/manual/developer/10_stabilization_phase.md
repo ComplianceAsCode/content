@@ -1,6 +1,6 @@
 # Stabilization Phase
 
-Stabilization Phase starts on the last Monday of the first month of the quarter.
+Stabilization Phase starts on the third Monday of the second month of the quarter.
 
 ## Definition
 A period of time before release, when the project is extensively tested and the only accepted contributions are fixes to issues discovered during stabilization testing.
