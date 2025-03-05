@@ -3,7 +3,7 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
         {{{ oval_metadata("Ensure that tmpfiles for rootfiles is configured correctly.") }}}]
-        <criteria operator="AND" comment="Ensure that">
+        <criteria operator="AND" comment="Ensure that tmpfiles for rootfiles is configured correctly.">
             {{%- for file in files %}}
             <criterion comment="Check that /root/.{{{ file }}} is configured correctly"
                        test_ref="test_{{{ rule_id }}}_{{{ file }}}"/>
@@ -16,15 +16,17 @@
                                     id="test_{{{ rule_id }}}_{{{ file }}}" version="1">
 
             <ind:object object_ref="obj_{{{ rule_id }}}_{{{ file }}}"/>
+            <ind:state state_ref="state_{{{ rule_id }}}_{{{ file }}}"/>
         </ind:textfilecontent54_test>
         <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_{{{ file }}}" version="1">
             <ind:path>/etc/tmpfiles.d/</ind:path>
             <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-            <ind:pattern operation="pattern match">^C[[:blank:]]+\/root\/.{{{ file
-                }}}[[:blank:]]+600[[:blank:]]+root[[:blank:]]+root[[:blank:]]+-[[:blank:]]+\/usr\/share\/rootfiles/.{{{ file
-                }}}$
-            </ind:pattern>
+            <ind:pattern operation="pattern match">^C[[:blank:]]+\/root\/.{{{ file }}}[[:blank:]]+(\d{3})[[:blank:]]+root[[:blank:]]+root[[:blank:]]+-[[:blank:]]+\/usr\/share\/rootfiles/.{{{ file }}}$</ind:pattern>
             <ind:instance datatype="int">1</ind:instance>
         </ind:textfilecontent54_object>
+
+        <ind:textfilecontent54_state id="state_{{{ rule_id }}}_{{{ file }}}" version="1">
+            <ind:subexpression datatype="int" operation="equals">600</ind:subexpression>
+        </ind:textfilecontent54_state>
     {{%- endfor %}}
 </def-group>
