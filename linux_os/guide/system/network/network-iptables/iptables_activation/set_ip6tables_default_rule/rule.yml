@@ -57,3 +57,11 @@ ocil: |-
     Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
     the default policy for the INPUT chain. It should be set to DROP:
     <pre>$ sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>
+
+{{% if 'ubuntu' in product %}}
+warnings:
+    - general: |-
+        Automated remediation for this rule is disabled.
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
+{{% endif %}}

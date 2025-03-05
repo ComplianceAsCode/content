@@ -6,7 +6,11 @@ description: |-
     To set the default policy to DROP (instead of ACCEPT) for
     the built-in INPUT chain which processes incoming packets,
     add or correct the following line in
+    {{% if 'ubuntu' in product %}}
+    <tt>/etc/iptables/rules.v4</tt>:
+    {{% else %}}
     <tt>/etc/sysconfig/iptables</tt>:
+    {{% endif %}}
     <pre>:INPUT DROP [0:0]</pre>
 
 rationale: |-
@@ -47,3 +51,11 @@ ocil: |-
     Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
     the default policy for the INPUT chain. It should be set to DROP:
     <pre>$ sudo grep ":INPUT" /etc/sysconfig/iptables</pre>
+
+{{% if 'ubuntu' in product %}}
+warnings:
+    - general: |-
+        Automated remediation for this rule is disabled.
+        Changing firewall settings while connected over network can
+        result in being locked out of the system.
+{{% endif %}}
