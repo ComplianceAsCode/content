@@ -9,8 +9,15 @@ description: 'This profile contains configuration checks for Red Hat Enterprise 
     ACSC website:
 
 
-    https://www.cyber.gov.au/publications/essential-eight-in-linux-environments'
-documentation_complete: true
+    https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers'
+extends: null
+hidden: ''
+status: ''
+metadata:
+    SMEs:
+    - shaneboulden
+    - tjbutt58
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
 selections:
 - accounts_no_uid_except_zero
 - audit_rules_dac_modification_chmod
@@ -22,7 +29,6 @@ selections:
 - audit_rules_execution_setsebool
 - audit_rules_execution_seunshare
 - audit_rules_kernel_module_loading
-- audit_rules_login_events
 - audit_rules_login_events_faillock
 - audit_rules_login_events_lastlog
 - audit_rules_login_events_tallylog
@@ -33,7 +39,11 @@ selections:
 - audit_rules_time_settimeofday
 - audit_rules_time_stime
 - audit_rules_time_watch_localtime
-- audit_rules_usergroup_modification
+- audit_rules_usergroup_modification_group
+- audit_rules_usergroup_modification_gshadow
+- audit_rules_usergroup_modification_opasswd
+- audit_rules_usergroup_modification_passwd
+- audit_rules_usergroup_modification_shadow
 - auditd_data_retention_flush
 - auditd_freq
 - auditd_local_events
@@ -115,4 +125,11 @@ selections:
 - var_authselect_profile=sssd
 - var_auditd_flush=incremental_async
 - var_system_crypto_policy=default_nosha1
+unselected_groups: []
+platforms: !!set {}
+cpe_names: !!set {}
+platform: null
+filter_rules: ''
+policies: []
 title: Australian Cyber Security Centre (ACSC) Essential Eight
+documentation_complete: true
