@@ -107,7 +107,6 @@ selections:
   - audit_rules_login_events_tallylog
   - audit_rules_login_events_faillock
   - audit_rules_login_events_lastlog
-  - audit_rules_login_events
   - audit_rules_time_adjtimex
   - audit_rules_time_clock_settime
   - audit_rules_time_watch_localtime
