@@ -1,7 +1,7 @@
 documentation_complete: true
 
 platform: ocp4
-
+status: deprecated
 metadata:
     version: V2R1
     SMEs:
