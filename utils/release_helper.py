@@ -140,8 +140,8 @@ def get_contributors_last_update() -> str:
         # This comment informs when the file was updated.
         if 'Last Modified:' in line:
             elements = line.split('{+')
-            datetime = elements[1].replace('+}', '')
-            return datetime
+            last_modified_date_time = elements[1].replace('+}', '')
+            return last_modified_date_time
 
 
 def get_new_contributors(commit) -> str:
