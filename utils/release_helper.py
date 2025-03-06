@@ -160,7 +160,7 @@ def is_contributors_list_updated(date_string) -> bool:
     date = datetime.strptime(date_string[:16], '%Y-%m-%d %H:%M')
     # As a rule of thumbs, this function consider contributors list
     # updated if not older than 2 weeks.
-    two_weeks_back = datetime.now() - timedelta(days=15)
+    two_weeks_back = datetime.now(tz=UTC) - timedelta(days=15)
     if date < two_weeks_back:
         return False
     return True
@@ -350,7 +350,7 @@ def get_third_monday_of_month(year: int, month: int) -> datetime:
     first_day_weekday = first_day_of_month.weekday()
     first_monday_date = 1 + (0 - first_day_weekday) % 7
     third_monday_date = first_monday_date + 14
-    return datetime(year, month, third_monday_date)
+    return datetime(year, month, third_monday_date, tzinfo=UTC)
 
 
 def get_next_stabilization_date(release_date: datetime) -> datetime:
@@ -600,13 +600,13 @@ def collect_release_info(repo) -> dict:
     data["latest_version"] = get_latest_version(repo)
 
     next_release_date = get_next_release_date(latest_release.published_at)
-    next_release_remaining_days = next_release_date - datetime.today()
+    next_release_remaining_days = next_release_date - datetime.now(tz=UTC)
     data["next_release_date"] = next_release_date
     data["next_release_remaining_days"] = next_release_remaining_days.days
     data["next_release_state"] = describe_next_release_state(repo)
     data["next_release_version"] = get_next_release_version(repo)
     next_stabilization_date = get_next_stabilization_date(next_release_date)
-    next_stabilization_remaining_days = next_stabilization_date - datetime.today().date()
+    next_stabilization_remaining_days = next_stabilization_date - datetime.now(tz=UTC).date()
     data["next_stabilization_date"] = next_stabilization_date
     data["next_stabilization_remaining_days"] = next_stabilization_remaining_days.days
 
@@ -649,7 +649,7 @@ def print_last_release_stats(data):
 
 
 def print_next_release_stats(data):
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now(tz=UTC).strftime("%Y-%m-%d %H:%M:%S%z")
     milestone = data['active_milestone']
     next_release_version = data['next_release_version']
     next_release_date = data['next_release_date']
