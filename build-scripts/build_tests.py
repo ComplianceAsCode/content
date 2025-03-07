@@ -5,16 +5,16 @@ import logging
 import os
 import pathlib
 import sys
-from typing import TypeVar, Generator, Iterable, Set, Dict
+from typing import TypeVar, Generator, Set, Dict
 import multiprocessing
 
+import ssg.constants
 import ssg.environment
 import ssg.jinja
 import ssg.utils
 import ssg.yaml
 import ssg.templates
-import tests.ssg_test_suite.common
-import tests.ssg_test_suite.rule
+import ssg.utils
 
 SSG_ROOT = str(pathlib.Path(__file__).resolve().parent.parent.absolute())
 JOB_COUNT = multiprocessing.cpu_count()
@@ -96,7 +96,21 @@ def _copy_and_process_shared(env_yaml: dict, output_path: pathlib.Path, root_pat
             _process_shared_file(env_yaml, file, shared_output_path)
 
 
-def _process_local_tests(benchmark_cpes: Set[str], env_yaml: dict, rule_output_path: pathlib.Path,
+def _get_platform_from_file_contents(file_contents: str) -> str:
+    # Some tests don't have an explict platform assume always applicable
+    platform = "multi_platform_all"
+    for line in file_contents.split("\n"):
+        if not line.startswith('#'):
+            break
+        if line.startswith('# platform'):
+            platform_parts = line.split('=')
+            if len(platform_parts) == 2:
+                platform = platform_parts[1]
+                break
+    return platform.strip()
+
+
+def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib.Path,
                          rule_tests_root: pathlib.Path) -> None:
     logger = logging.getLogger()
     for test in rule_tests_root.iterdir():  # type: pathlib.Path
@@ -111,30 +125,29 @@ def _process_local_tests(benchmark_cpes: Set[str], env_yaml: dict, rule_output_p
             rule_output_path.mkdir(parents=True, exist_ok=True)
             _write_path(file_contents, output_file)
         file_contents = test.read_text()
-        scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
-        if scenario.matches_platform(benchmark_cpes):
+        platform = _get_platform_from_file_contents(file_contents)
+        if ssg.utils.is_applicable_for_product(platform, product):
             content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
             rule_output_path.mkdir(parents=True, exist_ok=True)
             _write_path(content, rule_output_path / test.name)
 
 
-def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
-                   rules: Iterable[pathlib.Path], templates_root: pathlib.Path,
-                   product_rules: list) -> None:
+def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
+                   templates_root: pathlib.Path, product_rules: list, resolved_root: pathlib.Path) -> None:
     logger = logging.getLogger()
-    for rule_file in rules:  # type: pathlib.Path
+    product = resolved_root.parent.name
+    for rule_id in product_rules:
+        rule_file = resolved_root / f'{rule_id}.yml'
+
         rendered_rule_obj = ssg.yaml.open_raw(str(rule_file))
         rule_path = pathlib.Path(rendered_rule_obj["definition_location"])
         rule_root = rule_path.parent
-        rule_id = rule_root.name
-        if rule_id not in product_rules:
-            logger.debug("Skipping %s since it is not in the product", rule_id)
-            continue
+
         rule_tests_root = rule_root / "tests"
         rule_output_path = output_path / rule_id
 
         if rule_tests_root.exists():
-            _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_root)
+            _process_local_tests(product, env_yaml, rule_output_path, rule_tests_root)
         if rendered_rule_obj["template"] is not None:
             if "name" not in rendered_rule_obj["template"]:
                 raise ValueError(f"Invalid template config on rule {rule_id}")
@@ -160,8 +173,8 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
                 jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
                 file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
                                                                    jinja_dict)
-                scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
-                if scenario.matches_platform(benchmark_cpes):
+                platform = _get_platform_from_file_contents(file_contents)
+                if ssg.utils.is_applicable_for_product(platform, product):
                     rule_output_path.mkdir(parents=True, exist_ok=True)
                     test_output_path = rule_output_path / test.name
                     _write_path(file_contents, test_output_path)
@@ -193,8 +206,8 @@ def main() -> int:
     args = _create_arg_parser().parse_args()
     logging.basicConfig(level=logging.getLevelName(args.log_level))
     env_yaml = ssg.environment.open_environment(args.build_config_yaml, args.product_yaml)
-    root_path = pathlib.Path(args.root).resolve().absolute()
-    output_path = pathlib.Path(args.output).resolve().absolute()
+    root_path = pathlib.Path(args.root).resolve()
+    output_path = pathlib.Path(args.output).resolve()
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
     if not resolved_rules_dir.exists() or not resolved_rules_dir.is_dir():
         logging.error("Unable to find product at %s", str(resolved_rules_dir))
@@ -203,17 +216,15 @@ def main() -> int:
 
     output_path.mkdir(parents=True, exist_ok=True)
     _copy_and_process_shared(env_yaml, output_path, root_path)
-    benchmark_cpes = _get_benchmark_cpes(env_yaml)
 
     built_profiles_root = resolved_rules_dir.parent / "profiles"
-    rules_in_profiles = list(_get_rules_in_profile(built_profiles_root))
+    rules_in_profiles = list(set(_get_rules_in_profile(built_profiles_root)))
 
     templates_root = root_path / "shared" / "templates"
-    all_resolved_rules = list(resolved_rules_dir.iterdir())
     processes = list()
     for chunk in range(args.jobs):
-        process_args = (benchmark_cpes, env_yaml, output_path,
-                        all_resolved_rules[chunk::args.jobs], templates_root, rules_in_profiles,)
+        process_args = (env_yaml, output_path, templates_root,
+                        rules_in_profiles[chunk::args.jobs], resolved_rules_dir)
         process = multiprocessing.Process(target=_process_rules, args=process_args)
         processes.append(process)
         process.start()
