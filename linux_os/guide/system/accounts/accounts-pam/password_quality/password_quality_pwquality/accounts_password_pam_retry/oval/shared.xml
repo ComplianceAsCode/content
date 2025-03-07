@@ -8,21 +8,24 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("The password retry should meet minimum requirements") }}}
-    <criteria operator="OR" comment="Conditions for retry are satisfied">
-      <criteria operator="AND" comment="Conditions for retry in PAM files are satisfied">
-        {{% for file in configuration_files %}}
-        <criterion comment="pam_pwquality has correctly set the retry argument in  {{{ file }}}"
-        test_ref="test_password_pam_pwquality_retry_{{{ file | escape_id }}}" />
-        {{% endfor %}}
-      </criteria>
-      <criteria operator="AND" comment="Conditions for retry in pwquality.conf file are satisfied">
-        {{% for file in configuration_files %}}
-        <criterion
-        comment="retry value not set in PAM files"
-        test_ref="test_password_pam_pwquality_retry_{{{ (file | escape_id) }}}_not_set"/>
-        {{% endfor %}}
-        <criterion comment="check retry parameter in pwquality.conf"
-        test_ref="test_password_pam_pwquality_retry_pwquality_conf"/>
+    <criteria operator="AND" comment="The password retry should meet minimum requirements">
+      <extend_definition definition_ref="enable_authselect"/>
+      <criteria operator="OR" comment="Conditions for retry are satisfied">
+        <criteria operator="AND" comment="Conditions for retry in PAM files are satisfied">
+          {{% for file in configuration_files %}}
+          <criterion comment="pam_pwquality has correctly set the retry argument in  {{{ file }}}"
+          test_ref="test_password_pam_pwquality_retry_{{{ file | escape_id }}}" />
+          {{% endfor %}}
+        </criteria>
+        <criteria operator="AND" comment="Conditions for retry in pwquality.conf file are satisfied">
+          {{% for file in configuration_files %}}
+          <criterion
+          comment="retry value not set in PAM files"
+          test_ref="test_password_pam_pwquality_retry_{{{ (file | escape_id) }}}_not_set"/>
+          {{% endfor %}}
+          <criterion comment="check retry parameter in pwquality.conf"
+          test_ref="test_password_pam_pwquality_retry_pwquality_conf"/>
+        </criteria>
       </criteria>
     </criteria>
   </definition>
