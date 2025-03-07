@@ -114,9 +114,9 @@ def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib
                          rule_tests_root: pathlib.Path) -> None:
     logger = logging.getLogger()
     for test in rule_tests_root.iterdir():  # type: pathlib.Path
-        if not test.name.endswith(".sh"):
-            logger.debug("Skipping file %s in rule %s is it doesn't end with .sh.",
-                         test.name, rule_output_path.name)
+        if test.is_dir():
+            logger.warning("Skipping directory %s in rule %s", test.name,
+                         rule_output_path.name)
             continue
         if not _is_test_file(test.name):
             file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
