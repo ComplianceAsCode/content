@@ -2,8 +2,10 @@
 
 import argparse
 import logging
+import os
 import pathlib
-from typing import TypeVar, List, Iterable, Set, Dict
+import sys
+from typing import TypeVar, Generator, Iterable, Set, Dict
 import multiprocessing
 
 import ssg.environment
@@ -16,7 +18,7 @@ import tests.ssg_test_suite.rule
 
 SSG_ROOT = str(pathlib.Path(__file__).resolve().parent.parent.absolute())
 JOB_COUNT = multiprocessing.cpu_count()
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def _create_arg_parser() -> argparse.ArgumentParser:
@@ -53,29 +55,33 @@ def _create_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _write_path(file_contents: str, output_path: os.PathLike) -> None:
+    with open(output_path, "w") as file:
+        file.write(file_contents)
+        file.write("\n")
+
+
 def _is_test_file(filename: str) -> bool:
     return filename.endswith(('.pass.sh', '.fail.sh', '.notapplicable.sh'))
 
 
-def _get_deny_templated_scenarios(test_config_path):
-    deny_templated_scenarios = list()
+def _get_deny_templated_scenarios(test_config_path: pathlib.Path) -> Set[str]:
     if test_config_path.exists():
         test_config = ssg.yaml.open_raw(str(test_config_path.absolute()))
-        if 'deny_templated_scenarios' in test_config:
-            deny_templated_scenarios = test_config['deny_templated_scenarios']
-    return deny_templated_scenarios
+        deny_templated_scenarios = test_config.get('deny_templated_scenarios', set())
+        return deny_templated_scenarios
+    return set()
 
 
-def _process_shared_file(env_yaml, file, shared_output_path):
-    file_contents = ssg.jinja.process_file_with_macros(str(file.absolute()),
-                                                       env_yaml)
+def _process_shared_file(env_yaml: dict, file: pathlib.Path, shared_output_path: pathlib.Path) \
+        -> None:
+    file_contents = ssg.jinja.process_file_with_macros(str(file.absolute()), env_yaml)
     shared_script_path = shared_output_path / file.name
-    with open(shared_script_path, 'w') as file:
-        file.write(file_contents)
-        file.write('\n')
+    _write_path(file_contents, shared_script_path)
 
 
-def _copy_and_process_shared(env_yaml, output_path, root_path):
+def _copy_and_process_shared(env_yaml: dict, output_path: pathlib.Path, root_path: pathlib.Path) \
+        -> None:
     tests_shared_root = root_path / "tests" / "shared"
     shared_output_path = output_path / "shared"
     shared_output_path.mkdir(parents=True, exist_ok=True)
@@ -90,7 +96,8 @@ def _copy_and_process_shared(env_yaml, output_path, root_path):
             _process_shared_file(env_yaml, file, shared_output_path)
 
 
-def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_root):
+def _process_local_tests(benchmark_cpes: Set[str], env_yaml: dict, rule_output_path: pathlib.Path,
+                         rule_tests_root: pathlib.Path) -> None:
     logger = logging.getLogger()
     for test in rule_tests_root.iterdir():  # type: pathlib.Path
         if not test.name.endswith(".sh"):
@@ -102,23 +109,13 @@ def _process_local_tests(benchmark_cpes, env_yaml, rule_output_path, rule_tests_
                                                                env_yaml)
             output_file = rule_output_path / test.name
             rule_output_path.mkdir(parents=True, exist_ok=True)
-            with open(output_file, 'w') as file:
-                file.write(file_contents)
-                file.write('\n')
+            _write_path(file_contents, output_file)
         file_contents = test.read_text()
         scenario = tests.ssg_test_suite.rule.Scenario(test.name, file_contents)
         if scenario.matches_platform(benchmark_cpes):
             content = ssg.jinja.process_file_with_macros(str(test.absolute()), env_yaml)
             rule_output_path.mkdir(parents=True, exist_ok=True)
-            with open(rule_output_path / test.name, 'w') as file:
-                file.write(content)
-                file.write('\n')
-
-
-def _write_path(file_contents, output_path):
-    with open(output_path, 'w') as file:
-        file.write(file_contents)
-        file.write('\n')
+            _write_path(content, rule_output_path / test.name)
 
 
 def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathlib.Path,
@@ -168,13 +165,13 @@ def _process_rules(benchmark_cpes: Set[str], env_yaml: Dict, output_path: pathli
                     rule_output_path.mkdir(parents=True, exist_ok=True)
                     test_output_path = rule_output_path / test.name
                     _write_path(file_contents, test_output_path)
-                    logger.debug('Wrote scenario %s for rule %s', test.name, rule_id)
+                    logger.debug("Wrote scenario %s for rule %s", test.name, rule_id)
                 else:
-                    logger.debug('Skipping scenario %s for rule %s has it not applicable',
+                    logger.debug("Skipping scenario %s for rule %s has it not applicable",
                                  test.name, rule_id)
 
 
-def _get_benchmark_cpes(env_yaml):
+def _get_benchmark_cpes(env_yaml) -> Set[str]:
     benchmark_cpes = set()
     for cpe in env_yaml["cpes"]:
         for _, data in cpe.items():
@@ -182,24 +179,20 @@ def _get_benchmark_cpes(env_yaml):
     return benchmark_cpes
 
 
-def _get_rules_in_profile(built_profiles_root):
-    rules_in_profile = list()
+def _get_rules_in_profile(built_profiles_root) -> Generator[str, None, None]:
     for profile_file in built_profiles_root.iterdir():  # type: pathlib.Path
-        if not profile_file.name.endswith('.profile'):
+        if not profile_file.name.endswith(".profile"):
             continue
         profile_data = ssg.yaml.open_raw(str(profile_file.absolute()))
         for selection in profile_data["selections"]:
-            if '=' not in selection:
-                rules_in_profile.append(selection)
-    return rules_in_profile
+            if "=" not in selection:
+                yield selection
 
 
 def main() -> int:
     args = _create_arg_parser().parse_args()
     logging.basicConfig(level=logging.getLevelName(args.log_level))
-    env_yaml = ssg.environment.open_environment(
-        args.build_config_yaml, args.product_yaml)
-
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, args.product_yaml)
     root_path = pathlib.Path(args.root).resolve().absolute()
     output_path = pathlib.Path(args.output).resolve().absolute()
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
@@ -213,7 +206,7 @@ def main() -> int:
     benchmark_cpes = _get_benchmark_cpes(env_yaml)
 
     built_profiles_root = resolved_rules_dir.parent / "profiles"
-    rules_in_profiles = _get_rules_in_profile(built_profiles_root)
+    rules_in_profiles = list(_get_rules_in_profile(built_profiles_root))
 
     templates_root = root_path / "shared" / "templates"
     all_resolved_rules = list(resolved_rules_dir.iterdir())
@@ -227,11 +220,11 @@ def main() -> int:
     for process in processes:
         process.join()
     # Write a file for CMake
-    # So we don't have dependency on a folder
-    done_file: pathlib.Path = output_path / ".test_done"
+    # So we don't have a dependency on a folder
+    done_file = output_path / ".test_done"
     done_file.touch()
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
