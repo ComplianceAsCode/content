@@ -3357,6 +3357,9 @@ class LinearLoader(object):
             test_actions.append(action)
             questions.append(boolean_question)
 
+        if len(questionnaires) == 0:
+            raise ValueError("No OCIL content found in the provided rules.")
+
     def _get_rules_from_benchmark(self, benchmark):
         """
         Retrieves a list of rules from the benchmark that are selected in all profiles.
