@@ -14,7 +14,6 @@ import ssg.jinja
 import ssg.utils
 import ssg.yaml
 import ssg.templates
-import ssg.utils
 
 SSG_ROOT = str(pathlib.Path(__file__).resolve().parent.parent.absolute())
 JOB_COUNT = multiprocessing.cpu_count()
@@ -101,6 +100,7 @@ def _get_platform_from_file_contents(file_contents: str) -> str:
     platform = "multi_platform_all"
     for line in file_contents.split("\n"):
         if not line.startswith('#'):
+            # The loop is now in the main test content, stop processing the file.
             break
         if line.startswith('# platform'):
             platform_parts = line.split('=')
@@ -116,7 +116,7 @@ def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib
     for test in rule_tests_root.iterdir():  # type: pathlib.Path
         if test.is_dir():
             logger.warning("Skipping directory %s in rule %s", test.name,
-                         rule_output_path.name)
+                           rule_output_path.name)
             continue
         if not _is_test_file(test.name):
             file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
@@ -133,7 +133,8 @@ def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib
 
 
 def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
-                   templates_root: pathlib.Path, product_rules: list, resolved_root: pathlib.Path) -> None:
+                   templates_root: pathlib.Path, product_rules: list,
+                   resolved_root: pathlib.Path) -> None:
     logger = logging.getLogger()
     product = resolved_root.parent.name
     for rule_id in product_rules:
@@ -162,13 +163,14 @@ def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
             deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
             for test in template_tests_root.iterdir():  # type: pathlib.Path
                 if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
-                    logging.warning("Skipping % for %s", test.name, rule_id)
+                    logging.warning("Skipping %s for %s as it is a denied test scenario",
+                                    test.name, rule_id)
                     continue
                 template = ssg.templates.Template.load_template(str(templates_root.absolute()),
                                                                 template_name)
                 rendered_rule_obj["template"]["vars"]["_rule_id"] = rule_id
-                template_parameters = template.preprocess(
-                    rendered_rule_obj["template"]["vars"], "test")
+                template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"],
+                                                          "test")
                 env_yaml = env_yaml.copy()
                 jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
                 file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
@@ -180,8 +182,9 @@ def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
                     _write_path(file_contents, test_output_path)
                     logger.debug("Wrote scenario %s for rule %s", test.name, rule_id)
                 else:
-                    logger.debug("Skipping scenario %s for rule %s has it not applicable",
-                                 test.name, rule_id)
+                    logger.warning(
+                        "Skipping scenario %s for rule %s as it not applicable to %s",
+                        test.name, rule_id, product)
 
 
 def _get_benchmark_cpes(env_yaml) -> Set[str]:
