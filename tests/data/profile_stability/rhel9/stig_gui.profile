@@ -431,6 +431,7 @@ selections:
 - require_emergency_target_auth
 - require_singleuser_auth
 - root_permissions_syslibrary_files
+- rootfiles_configured
 - rsyslog_cron_logging
 - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 - rsyslog_encrypt_offload_actionsendstreamdrivermode

@@ -1,0 +1,26 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{%- set files = ["bash_logout", "bash_profile", "bashrc", "cshrc", "tcshrc", ] %}}
+
+{{%- for file in files %}}
+    {{% set dest_path = "/root/." ~  file -%}}
+    {{% set source_path = "/usr/share/rootfiles/." ~ file -%}}
+    {{% set new_line = "C " ~ dest_path ~ " 600 root root - "  ~ source_path  %}}
+- name: "{{{ rule_title }}} - Find configation files"
+  ansible.builtin.find:
+    paths: /etc/tmpfiles.d/
+    file_type: file
+    patterns: '*.conf'
+  register: {{{ rule_id }}}_{{{ file }}}_found_files
+- name: "{{{ rule_title }}} - Remove existing configuration"
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    regexp: '^C\s+/root/\.{{{ file }}}.+$'
+    state: absent
+  loop: "{{ {{{ rule_id }}}_{{{ file }}}_found_files.files }}"
+{{{ ansible_lineinfile(msg='', path='/etc/tmpfiles.d/rootfiles.conf', new_line=new_line, create='yes', state='present', insert_after='', insert_before='', regex=source_path)  -}}}
+{{%- endfor %}}
