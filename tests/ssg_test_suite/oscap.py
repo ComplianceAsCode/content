@@ -15,9 +15,9 @@ import xml.etree.ElementTree
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
-from ssg_test_suite.log import LogHelper
-from ssg_test_suite import test_env
-from ssg_test_suite import common
+from tests.ssg_test_suite.log import LogHelper
+from tests.ssg_test_suite import test_env
+from tests.ssg_test_suite import common
 
 from ssg.shims import input_func
 
