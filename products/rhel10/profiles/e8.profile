@@ -36,5 +36,3 @@ selections:
     - '!package_rsh_removed'
     - '!package_rsh-server_removed'
     - '!security_patches_up_to_date'
-    # this rule fails after being remediated through Ansible
-    - '!audit_rules_usergroup_modification'

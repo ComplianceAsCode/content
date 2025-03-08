@@ -63,7 +63,6 @@ selections:
 - audit_rules_execution_setsebool
 - audit_rules_execution_seunshare
 - audit_rules_kernel_module_loading
-- audit_rules_login_events
 - audit_rules_login_events_faillock
 - audit_rules_networkconfig_modification
 - audit_rules_privileged_commands
@@ -74,7 +73,17 @@ selections:
 - audit_rules_time_settimeofday
 - audit_rules_time_stime
 - audit_rules_time_watch_localtime
-- audit_rules_unsuccessful_file_modification
+- audit_rules_unsuccessful_file_modification_creat
+- audit_rules_unsuccessful_file_modification_ftruncate
+- audit_rules_unsuccessful_file_modification_open
+- audit_rules_unsuccessful_file_modification_open_by_handle_at
+- audit_rules_unsuccessful_file_modification_openat
+- audit_rules_unsuccessful_file_modification_truncate
+- audit_rules_usergroup_modification_group
+- audit_rules_usergroup_modification_gshadow
+- audit_rules_usergroup_modification_opasswd
+- audit_rules_usergroup_modification_passwd
+- audit_rules_usergroup_modification_shadow
 - auditd_data_retention_flush
 - auditd_freq
 - auditd_local_events
