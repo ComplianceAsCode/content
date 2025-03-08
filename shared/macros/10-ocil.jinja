@@ -1125,7 +1125,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     <pre>$ ls -lL {{{ file }}}</pre>
     If properly configured, the output should indicate the following group-owner:
     {{% for grp in group.split("|") %}}
-      {{{ grp }}} 
+      <code>{{{ grp }}}</code> 
       {{% if not loop.last %}} or {{% endif %}}
     {{% endfor %}}
 {{%- endmacro %}}
