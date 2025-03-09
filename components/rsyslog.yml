@@ -11,6 +11,8 @@ rules:
 - disable_logwatch_for_logserver
 - ensure_logrotate_activated
 - ensure_rtc_utc_configuration
+- file_groupowner_var_log_syslog
+- file_owner_var_log_syslog
 - journald_compress
 - journald_forward_to_syslog
 - journald_storage
