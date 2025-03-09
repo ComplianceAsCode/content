@@ -14,7 +14,7 @@ find /etc/audit /etc/audit/rules.d -maxdepth 1 -type f -name '*.rules' -exec sed
 # * /etc/audit/audit.rules file 		(for auditctl case)
 # * /etc/audit/rules.d/immutable.rules		(for augenrules case)
 
-for AUDIT_FILE in "/etc/audit/audit.rules" "/etc/audit/rules.d/immutable.rules"
+for AUDIT_FILE in "/etc/audit/audit.rules" "/etc/audit/rules.d/90-immutable.rules"
 do
 	echo '' >> $AUDIT_FILE
 	echo '# Set the audit.rules configuration immutable per security requirements' >> $AUDIT_FILE
