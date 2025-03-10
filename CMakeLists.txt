@@ -68,6 +68,7 @@ option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be
 option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
 option(SSG_SRG_XLSX_EXPORT "If enabled, an XLSX of SRG Export will be ceated." FALSE)
 option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
+option(SSG_BUILT_TESTS_ENABLED "If enabled, Automatus tests will be built" FALSE)
 # Validation Options
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
@@ -290,8 +291,9 @@ else()
     message(STATUS "jinja2 cache: disabled")
 endif()
 message(STATUS "Separate SCAP files: ${SSG_SEPARATE_SCAP_FILES_ENABLED}")
-message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
+message(STATUS "STIG Delta Tailoring files: ${SSG_BUILD_DISA_DELTA_FILES}")
 message(STATUS "Thin data streams: ${SSG_THIN_DS}")
+message(STATUS "Pre-build Automatus tests: ${SSG_BUILT_TESTS_ENABLED}")
 
 message(STATUS " ")
 message(STATUS "Validation options:")

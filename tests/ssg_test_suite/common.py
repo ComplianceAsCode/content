@@ -21,7 +21,7 @@ from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml
 from ssg.utils import mkdir_p
-from ssg_test_suite.log import LogHelper
+from tests.ssg_test_suite.log import LogHelper
 
 import ssg.templates
 
@@ -386,6 +386,7 @@ def send_scripts(test_env, test_content_by_rule_id):
     archive_file_basename = os.path.basename(archive_file)
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
     logging.debug("Uploading scripts.")
+    logging.debug(f"LogHelper.LOG_DIR {LogHelper.LOG_DIR}")
     log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
 
     with open(log_file_name, 'a') as log_file:
