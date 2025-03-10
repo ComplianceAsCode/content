@@ -13,6 +13,7 @@ useradd testuser_123
 if [ ! -d {{{ path }}} ]; then
     mkdir -p {{{ path }}}
 fi
+touch "{{{ path }}}"/cac_file_owner_test_file
 {{% if FILE_REGEX %}}
 find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown testuser_123 {} \;
 {{% elif RECURSIVE %}}
