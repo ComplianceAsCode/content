@@ -41,6 +41,9 @@ template:
     name: package_removed
     vars:
         pkgname: bind
+        pkgname@rhel9:
+            - bind
+            - bind9.18
         pkgname@ubuntu1604: bind9
         pkgname@ubuntu1804: bind9
         pkgname@ubuntu2004: bind9
