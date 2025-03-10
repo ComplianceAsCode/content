@@ -583,7 +583,8 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
 -   Parameters:
 
-    -   **pkgname** - name of the RPM or DEB package, eg. `tmux`
+    -   **pkgname** - name of the RPM or DEB package, eg. `tmux`.
+        Can be either a name of a single package or a list of names.
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart, Bootc
 
