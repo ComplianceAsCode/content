@@ -258,8 +258,7 @@ selections:
     - aide_scan_notification
 
     # RHEL-08-010370
-    - ensure_gpgcheck_globally_activated
-    - ensure_gpgcheck_never_disabled
+    - enable_gpgcheck_for_all_repositories
 
     # Necessary for package installs after gpgcheck is enabled
     - ensure_redhat_gpgkey_installed

@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure gpgcheck Is Enabled for All Package Repositories") }}}
+    <criteria comment="Ensure gpgcheck Is Enabled for All Package Repositories" operator="AND">
+      <criterion comment="verify all repos in /etc/yum.repos.d have gpgcheck enabled" test_ref="test_{{{ rule_id }}}_all_enabled" />
+      <criterion comment="verify no repo in /etc/yum.repos.d has gpgcheck disabled" test_ref="test_{{{ rule_id }}}_no_disabled" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_all_enabled" version="1" check_existence="all_exist" check="all" comment="verify all repos in /etc/yum.repos.d have gpgcheck enabled">
+    <ind:object object_ref="object_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}_all_enabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_no_disabled" version="1" check_existence="all_exist" check="none satisfy" comment="verify no repo in /etc/yum.repos.d has gpgcheck disabled">
+    <ind:object object_ref="object_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}_no_disabled" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}" version="1">
+    <ind:path>/etc/yum.repos.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.repo$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*\[[^]]+\]\s*\n(?:[^[]*\n)*</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_all_enabled" version="1">
+    <ind:text datatype="string" operation="pattern match">\n\s*gpgcheck\s*=\s*(True|1|yes)\s*(\n|$)</ind:text>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_no_disabled" version="1">
+    <ind:text datatype="string" operation="pattern match">\n\s*gpgcheck\s*=\s*(False|0|no)\s*(\n|$)</ind:text>
+  </ind:textfilecontent54_state>
+</def-group>

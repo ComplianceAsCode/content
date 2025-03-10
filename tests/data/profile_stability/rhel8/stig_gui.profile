@@ -218,10 +218,9 @@ selections:
 - enable_authselect
 - enable_dracut_fips_module
 - enable_fips_mode
+- enable_gpgcheck_for_all_repositories
 - encrypt_partitions
-- ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
-- ensure_gpgcheck_never_disabled
 - ensure_redhat_gpgkey_installed
 - fapolicy_default_deny
 - file_audit_tools_group_ownership
