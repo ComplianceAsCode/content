@@ -22,28 +22,19 @@ T = TypeVar("T")
 
 def _create_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Converts built content tests to be rendered."
-    )
-    parser.add_argument(
-        "--build-config-yaml", required=True,
-        help="YAML file with information about the build configuration. "
-             "e.g.: ~/scap-security-guide/build/build_config.yml"
-    )
-    parser.add_argument(
-        "--product-yaml", required=True,
-        help="YAML file with information about the product we are building. "
-             "e.g.: ~/scap-security-guide/rhel10/product.yml"
-    )
-    parser.add_argument(
-        "--output", required=True,
-        help="Output path"
-             "e.g.:  ~/scap-security-guide/build/rhel10/tests"
-    )
-    parser.add_argument(
-        "--resolved-rules-dir", required=True,
-        help="Directory with <rule-id>.yml resolved rule YAMLs"
-             "e.g.: ~/scap-security-guide/build/rhel10/rules"
-    )
+        description="Converts built content tests to be rendered.")
+    parser.add_argument("--build-config-yaml", required=True, type=str,
+                        help="YAML file with information about the build configuration. "
+                             "e.g.: ~/scap-security-guide/build/build_config.yml")
+    parser.add_argument("--product-yaml", required=True, type=str,
+                        help="YAML file with information about the product we are building. "
+                             "e.g.: ~/scap-security-guide/rhel10/product.yml")
+    parser.add_argument("--output", required=True, type=str,
+                        help="Output path"
+                             "e.g.:  ~/scap-security-guide/build/rhel10/tests")
+    parser.add_argument("--resolved-rules-dir", required=True, type=str,
+                        help="Directory with <rule-id>.yml resolved rule YAMLs "
+                             "e.g.: ~/scap-security-guide/build/rhel10/rules")
     parser.add_argument("--log-level", action="store", type=str, default="ERROR",
                         choices=["ERROR", "WARNING", "INFO", "DEBUG", "TRACE"],
                         help="What level to log at. Defaults to ERROR.")
@@ -99,9 +90,6 @@ def _get_platform_from_file_contents(file_contents: str) -> str:
     # Some tests don't have an explict platform assume always applicable
     platform = "multi_platform_all"
     for line in file_contents.split("\n"):
-        if not line.startswith('#'):
-            # The loop is now in the main test content, stop processing the file.
-            break
         if line.startswith('# platform'):
             platform_parts = line.split('=')
             if len(platform_parts) == 2:
@@ -132,10 +120,57 @@ def _process_local_tests(product: str, env_yaml: dict, rule_output_path: pathlib
             _write_path(content, rule_output_path / test.name)
 
 
+def _should_skip_templated_tests(deny_templated_scenarios, test):
+    return not test.name.endswith(".sh") or test.name in deny_templated_scenarios
+
+
+def _process_templated_tests(env_yaml: Dict, rendered_rule_obj: Dict, templates_root: pathlib.Path,
+                             rule_output_path: pathlib.Path):
+    logger = logging.getLogger()
+    rule_path = pathlib.Path(rendered_rule_obj['definition_location'])
+    product = rule_output_path.parent.parent.name
+    rule_id = rule_path.parent.name
+    if "name" not in rendered_rule_obj["template"]:
+        raise ValueError(f"Invalid template config on rule {rule_id}")
+    template_name = rendered_rule_obj["template"]["name"]
+    template_root = templates_root / template_name
+    template_tests_root = template_root / "tests"
+
+    rule_root = rule_path.parent
+    rule_tests_root = rule_root / "tests"
+
+    if not template_tests_root.exists():
+        logger.debug("Template %s doesn't have tests. Skipping for rule %s.",
+                     template_name, rule_id)
+        return
+    test_config_path = rule_tests_root / "test_config.yml"
+    deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
+    for test in template_tests_root.iterdir():  # type: pathlib.Path
+        if _should_skip_templated_tests(deny_templated_scenarios, test):
+            logger.warning("Skipping %s for %s as it is a denied test scenario",
+                           test.name, rule_id)
+            continue
+        template = ssg.templates.Template.load_template(str(templates_root.absolute()),
+                                                        template_name)
+        rendered_rule_obj["template"]["vars"]["_rule_id"] = rule_id
+        template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"], "test")
+        env_yaml = env_yaml.copy()
+        jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
+        file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()), jinja_dict)
+        platform = _get_platform_from_file_contents(file_contents)
+        if ssg.utils.is_applicable_for_product(platform, product):
+            rule_output_path.mkdir(parents=True, exist_ok=True)
+            test_output_path = rule_output_path / test.name
+            _write_path(file_contents, test_output_path)
+            logger.debug("Wrote scenario %s for rule %s", test.name, rule_id)
+        else:
+            logger.warning("Skipping scenario %s for rule %s as it not applicable to %s",
+                           test.name, rule_id, product)
+
+
 def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
                    templates_root: pathlib.Path, product_rules: list,
                    resolved_root: pathlib.Path) -> None:
-    logger = logging.getLogger()
     product = resolved_root.parent.name
     for rule_id in product_rules:
         rule_file = resolved_root / f'{rule_id}.yml'
@@ -150,41 +185,7 @@ def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
         if rule_tests_root.exists():
             _process_local_tests(product, env_yaml, rule_output_path, rule_tests_root)
         if rendered_rule_obj["template"] is not None:
-            if "name" not in rendered_rule_obj["template"]:
-                raise ValueError(f"Invalid template config on rule {rule_id}")
-            template_name = rendered_rule_obj["template"]["name"]
-            template_root = templates_root / template_name
-            template_tests_root = template_root / "tests"
-            if not template_tests_root.exists():
-                logger.debug("Template %s doesn't have tests. Skipping for rule %s.",
-                             template_name, rule_id)
-                continue
-            test_config_path = rule_tests_root / "test_config.yml"
-            deny_templated_scenarios = _get_deny_templated_scenarios(test_config_path)
-            for test in template_tests_root.iterdir():  # type: pathlib.Path
-                if not test.name.endswith(".sh") or test.name in deny_templated_scenarios:
-                    logging.warning("Skipping %s for %s as it is a denied test scenario",
-                                    test.name, rule_id)
-                    continue
-                template = ssg.templates.Template.load_template(str(templates_root.absolute()),
-                                                                template_name)
-                rendered_rule_obj["template"]["vars"]["_rule_id"] = rule_id
-                template_parameters = template.preprocess(rendered_rule_obj["template"]["vars"],
-                                                          "test")
-                env_yaml = env_yaml.copy()
-                jinja_dict = ssg.utils.merge_dicts(env_yaml, template_parameters)
-                file_contents = ssg.jinja.process_file_with_macros(str(test.absolute()),
-                                                                   jinja_dict)
-                platform = _get_platform_from_file_contents(file_contents)
-                if ssg.utils.is_applicable_for_product(platform, product):
-                    rule_output_path.mkdir(parents=True, exist_ok=True)
-                    test_output_path = rule_output_path / test.name
-                    _write_path(file_contents, test_output_path)
-                    logger.debug("Wrote scenario %s for rule %s", test.name, rule_id)
-                else:
-                    logger.warning(
-                        "Skipping scenario %s for rule %s as it not applicable to %s",
-                        test.name, rule_id, product)
+            _process_templated_tests(env_yaml, rendered_rule_obj, templates_root, rule_output_path)
 
 
 def _get_benchmark_cpes(env_yaml) -> Set[str]:
