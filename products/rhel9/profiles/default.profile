@@ -574,3 +574,6 @@ selections:
     - file_permissions_etc_audit_rulesd
     - configure_openssl_tls_crypto_policy
     - configure_openssl_crypto_policy
+    - audit_rules_login_events
+    - audit_rules_usergroup_modification
+    - audit_rules_unsuccessful_file_modification
