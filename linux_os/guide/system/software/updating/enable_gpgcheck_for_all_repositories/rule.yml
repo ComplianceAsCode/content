@@ -36,14 +36,14 @@ ocil: |-
     A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.
 
 fixtext: |-
-    Configure the operating system to verify the signature of packages from a repository prior to install by setting the following option in the "/etc/yum.repos.d/[your_repo_name].repo" file:
+    Configure {{{ full_name }}} to verify the signature of packages from a repository prior to install by setting the following option in the "/etc/yum.repos.d/[your_repo_name].repo" file:
 
     gpgcheck=1
 
 checktext: |-
-    Verify the operating system prevents the installation of patches, service packs, device drivers, or operating system components from a repository without verification that they have been digitally signed using a certificate that is recognized and approved by the organization.
+    Verify {{{ full_name }}} prevents the installation of patches, service packs, device drivers, or operating system components from a repository without verification that they have been digitally signed using a certificate that is recognized and approved by the organization.
 
-    Check that YUM verifies the signature of packages from a repository prior to install with the following command:
+    Check that {{{ pkg_manager }}} verifies the signature of packages from a repository prior to install with the following command:
 
     $ sudo grep -E '^\[.*\]|gpgcheck' /etc/yum.repos.d/*.repo
 
