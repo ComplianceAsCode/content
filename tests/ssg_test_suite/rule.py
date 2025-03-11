@@ -13,6 +13,7 @@ import re
 import shutil
 import tempfile
 
+import ssg.utils
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg.jinja import process_file_with_macros
 from ssg.rules import is_rule_dir
@@ -417,7 +418,7 @@ class RuleChecker(oscap.Checker):
                 scenario = Scenario(file_name, file_content)
                 scenario.override_profile(self.scenarios_profile)
                 if scenario.matches_regex_and_check_and_platform(
-                        self.scenarios_regex, checks, self.benchmark_cpes):
+                        self.scenarios_regex, checks, self.test_env.product):
                     scenarios.append(scenario)
             else:
                 other_content[file_name] = file_content
@@ -659,16 +660,16 @@ class Scenario():
                 return False
         return True
 
-    def matches_platform(self, benchmark_cpes):
+    def matches_platform(self, product):
+        platform = ",".join(self.script_params["platform"])
         if self.context is None:
             return False
-        if common.matches_platform(
-                self.script_params["platform"], benchmark_cpes):
+        if ssg.utils.is_applicable_for_product(platform, product):
             return True
         else:
             logging.warning(
-                "Script %s is not applicable on given platform" %
-                self.script)
+                "Script '%s' is not applicable on '%s' target because its "
+                "platform is '%s'" % (self.script, product, platform))
             return False
 
     def matches_check(self, rule_checks):
@@ -683,11 +684,11 @@ class Scenario():
         return False
 
 
-    def matches_regex_and_check_and_platform(self, scenarios_regex, checks, benchmark_cpes):
+    def matches_regex_and_check_and_platform(self, scenarios_regex, checks, product):
         return (
             self.matches_regex(scenarios_regex)
             and self.matches_check(checks)
-            and self.matches_platform(benchmark_cpes))
+            and self.matches_platform(product))
 
 
 def perform_rule_check(options):

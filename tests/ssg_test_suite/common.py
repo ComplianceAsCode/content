@@ -185,52 +185,6 @@ def _run_cmd(command_list, verbose_path, env=None):
     return returncode, output.decode('utf-8')
 
 
-def _get_platform_cpes(platform):
-    ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    if platform.startswith("multi_platform_"):
-        try:
-            products = MULTI_PLATFORM_MAPPING[platform]
-        except KeyError:
-            logging.error(
-                "Unknown multi_platform specifier: %s is not from %s"
-                % (platform, ", ".join(MULTI_PLATFORM_MAPPING.keys())))
-            raise ValueError
-        platform_cpes = set()
-        for p in products:
-            product_yaml_path = os.path.join(ssg_root, "products", p, "product.yml")
-            product_yaml = load_product_yaml(product_yaml_path)
-            p_cpes = ProductCPEs()
-            p_cpes.load_product_cpes(product_yaml)
-            p_cpes.load_content_cpes(product_yaml)
-            platform_cpes |= set(p_cpes.get_product_cpe_names())
-        return platform_cpes
-    else:
-        # scenario platform is specified by a full product name
-        try:
-            product = FULL_NAME_TO_PRODUCT_MAPPING[platform]
-        except KeyError:
-            logging.error(
-                "Unknown product name: %s is not from %s"
-                % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
-            raise ValueError
-        product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
-        product_yaml = load_product_yaml(product_yaml_path)
-        product_cpes = ProductCPEs()
-        product_cpes.load_product_cpes(product_yaml)
-        product_cpes.load_content_cpes(product_yaml)
-        platform_cpes = set(product_cpes.get_product_cpe_names())
-        return platform_cpes
-
-
-def matches_platform(scenario_platforms, benchmark_cpes):
-    if "multi_platform_all" in scenario_platforms:
-        return True
-    scenario_cpes = set()
-    for p in scenario_platforms:
-        scenario_cpes |= _get_platform_cpes(p)
-    return len(scenario_cpes & benchmark_cpes) > 0
-
-
 def run_with_stdout_logging(command, args, log_file):
     log_file.write("{0} {1}\n".format(command, " ".join(args)))
     result = subprocess.run(
