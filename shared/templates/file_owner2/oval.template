@@ -1,0 +1,48 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+  {{% if FILEPATH is not string %}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH|join(", ") + " is owned by " + FILEUID + ".") }}}
+     <criteria>
+   {{% for filepath in FILEPATH %}}
+     <criterion comment="Check file ownership of {{{ filepath }}}" test_ref="test_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" />
+   {{% endfor %}}
+  {{% else %}}
+    {{{ oval_metadata("This test makes sure that " + FILEPATH + " is owned by " + FILEUID + ".") }}}
+    <criteria>
+      <criterion comment="Check file ownership of {{{ FILEPATH }}}" test_ref="test_file_owner{{{ FILEID }}}" />
+  {{% endif %}}
+    </criteria>
+  </definition>
+
+  {{% for filepath in FILEPATH %}}
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing user ownership of {{{ filepath }}}" id="test_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    <unix:object object_ref="object_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" />
+  </unix:file_test>
+
+  <unix:file_object comment="{{{ filepath }}}" id="object_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    {{%- if IS_DIRECTORY -%}}
+      {{%- if RECURSIVE %}}
+      <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+      {{%- endif %}}
+      <unix:path>{{{ filepath[:-1] }}}</unix:path>
+      {{%- if FILE_REGEX %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
+      {{%- else %}}
+      <unix:filename xsi:nil="true" />
+      {{%- endif %}}
+    {{%- else %}}
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
+    {{%- endif %}}
+    <filter action="exclude">symlink_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}</filter>
+    <filter action="exclude">state_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}_{{{ loop.index0 }}}</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}_{{{ loop.index0 }}}" version="1">
+    <unix:user_id datatype="int">{{{ FILEUID }}}</unix:user_id>
+  </unix:file_state>
+  {{% endfor %}}
+
+  <unix:file_state id="symlink_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+</def-group>

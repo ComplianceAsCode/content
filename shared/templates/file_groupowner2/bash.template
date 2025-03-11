@@ -1,0 +1,36 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{%- set GROUPS=GROUP.split("|") %}}
+{{%- for grp in GROUPS|reverse %}}
+  {{%- if !env['newgroup'] %}}
+    if getent group "{{{grp}}}" >/dev/null 2>&1; then
+      newgroup="{{{grp}}}
+      {{%- }}
+    fi
+  {{%- endif %}}
+{{%- endfor %}}
+
+{{%- if RECURSIVE %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
+{{%- endif %}}
+
+{{%- for path in FILEPATH %}}
+{{%- if IS_DIRECTORY %}}
+{{%- if FILE_REGEX %}}
+
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{% for grp in GROUPS %}} ! -group {{{ grp }}} {{% endfor %}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+{{%- else %}}
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{% for grp in GROUPS %}} ! -group {{{ grp }}} {{% endfor %}} -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+{{%- endif %}}
+{{%- else %}}
+chgrp {{{ GID_OR_NAME }}} {{{ path }}}
+{{%- endif %}}
+{{%- endfor %}}
