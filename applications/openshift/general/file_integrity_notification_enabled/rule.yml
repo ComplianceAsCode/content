@@ -1,11 +1,13 @@
 
 title: Ensure the notification is enabled for file integrity operator
 
+platform: x86_64_arch and not ocp4-on-hypershift
+
 description: |-
   The OpenShift platform provides the File Integrity Operator to monitor for unwanted
   file changes, and this control ensures proper notification alert is enabled so that system
   administrators and security personnel are notified about the alerts
-  
+
 rationale: |-
   File Integrity Operator is able to send out alerts
 
@@ -18,7 +20,6 @@ references:
   nist: SI-6,SI-7(2),SI-4(24)
   pcidss: Req-11.5.1,Req-12.10.5
 
-platform: not ocp4-on-hypershift
 
 {{% set jqfilter = '[.items[] | select(.metadata.name =="file-integrity") | .metadata.name]' %}}
 
