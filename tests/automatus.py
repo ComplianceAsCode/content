@@ -16,7 +16,7 @@ from glob import glob
 ssg_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(ssg_dir)
 
-from ssg_test_suite.log import LogHelper
+from tests.ssg_test_suite.log import LogHelper
 import ssg_test_suite.oscap
 import ssg_test_suite.test_env
 import ssg_test_suite.profile
@@ -74,6 +74,7 @@ def parse_args():
             help="DEPRECATED: Use --remove-platforms instead; "
             "Find all CPEs that are present in local OpenSCAP's CPE dictionary "
             "that match the provided regex, "
+
             "and add them as platforms to all data stream benchmarks. "
             "If the regex doesn't match anything, it will be treated "
             "as a literal CPE, and added as a platform. "

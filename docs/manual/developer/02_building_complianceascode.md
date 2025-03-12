@@ -521,6 +521,12 @@ bash/rhel9-script-hipaa.sh
 ...
 ```
 
+### Automatus Tests
+
+You can build the Automatus tests so they can be run directly.
+To enable build with `-DSSG_BUILT_TESTS_ENABLED:BOOL=ON`
+The tests will be `$PRODUCT/tests/` with directory for each rule.
+
 ## Testing
 
 To ensure validity of built artifacts prior to installation, we recommend
