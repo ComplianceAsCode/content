@@ -1,4 +1,5 @@
 #!/bin/bash
+# platform = multi_platform_ubuntu
 # packages = rsyslog
 
 if [ ! -f /var/log/syslog ]; then

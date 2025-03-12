@@ -5,7 +5,7 @@ title: 'Verify User Who Owns /var/log/syslog File'
 {{%  if product in ['ubuntu2404'] %}}
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="root|syslog") }}}'
 {{%- else %}}
-description: '{{{ describe_file_owner(file="/var/log/syslog", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 {{%- endif %}}
 
 rationale: |-
@@ -27,15 +27,15 @@ ocil: |-
     {{{ ocil_file_owner(file="/var/log/syslog", owner="root|syslog") }}}
 
 {{%- else %}}
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/syslog", owner="root") }}}
+    {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog") }}}
 
 fixtext: |-
-    {{{ describe_file_owner(file="/var/log/syslog", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}
 
-srg_requirement: '{{{ srg_requirement_file_owner("/var/log/syslog", owner="root") }}}'
+srg_requirement: '{{{ srg_requirement_file_owner("/var/log/syslog", owner="syslog") }}}'
 
 platform: package[rsyslog]
 
