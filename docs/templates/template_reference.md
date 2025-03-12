@@ -579,7 +579,7 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart, Bootc
 
 #### package_removed
--   Checks if the given package is not installed.
+-   Checks if the given package(s) are not installed.
 
 -   Parameters:
 
