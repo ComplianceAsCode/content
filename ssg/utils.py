@@ -287,13 +287,13 @@ def get_fixed_product_version(product, product_version):
     version.
 
     Args:
-        product (str): The name of the product (e.g., "ubuntu", "macos").
+        product (str): The name of the product (e.g., "ubuntu").
         product_version (str): The version of the product as a string.
 
     Returns:
         str: The adjusted product version with the correct format.
     """
-    if product == "ubuntu" or product == "macos":
+    if product == "ubuntu":
         product_version = product_version[:2] + "." + product_version[2:]
     return product_version
 
