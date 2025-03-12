@@ -1,3 +1,5 @@
 #!/bin/bash
 
-{{{ bash_package_remove(PKGNAME) }}}
+{{% for package in PACKAGES %}}
+{{{ bash_package_remove(package) }}}
+{{% endfor %}}
