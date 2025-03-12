@@ -15,7 +15,7 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
+  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -user {{{ UID_OR_NAME }}} -regextype posix-extended -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False
@@ -24,7 +24,7 @@
 - name: Ensure owner on {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
   file:
     path: "{{ item }}"
-    owner: "{{{ FILEUID }}}"
+    owner: "{{{ UID_OR_NAME }}}"
     state: file
   with_items:
     - "{{ files_found.stdout_lines }}"
@@ -38,7 +38,7 @@
 {{% if RECURSIVE %}}
     recurse: yes
 {{% endif %}}
-    owner: "{{{ FILEUID }}}"
+    owner: "{{{ UID_OR_NAME }}}"
 
 {{% endif %}}
 {{% else %}}
@@ -48,10 +48,10 @@
     path: "{{{ path }}}"
   register: file_exists
 
-- name: Ensure owner {{{ FILEUID }}} on {{{ path }}}
+- name: Ensure owner {{{ UID_OR_NAME }}} on {{{ path }}}
   file:
     path: "{{{ path }}}"
-    owner: "{{{ FILEUID }}}"
+    owner: "{{{ UID_OR_NAME }}}"
   when: file_exists.stat is defined and file_exists.stat.exists
 
 {{% endif %}}

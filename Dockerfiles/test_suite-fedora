@@ -11,7 +11,7 @@ ARG ADDITIONAL_PACKAGES
 # Don't clean all, as the test scenario may require package install.
 RUN true \
         && yum install -y openssh-clients openssh-server openscap-scanner \
-		python3 findutils \
+		python3 findutils python3-rpm\
 		$ADDITIONAL_PACKAGES \
         && true
 

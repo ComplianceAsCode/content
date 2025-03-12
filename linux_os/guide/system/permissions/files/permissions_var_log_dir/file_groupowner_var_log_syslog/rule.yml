@@ -31,6 +31,8 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="ad
 ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/syslog", group="adm") }}}
 
+platform: package[rsyslog]
+
 template:
     name: file_groupowner
     vars:

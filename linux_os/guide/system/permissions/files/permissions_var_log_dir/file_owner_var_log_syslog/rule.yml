@@ -37,10 +37,12 @@ fixtext: |-
 
 srg_requirement: '{{{ srg_requirement_file_owner("/var/log/syslog", owner="root") }}}'
 
+platform: package[rsyslog]
+
 template:
     name: file_owner
     vars:
         filepath: /var/log/syslog
-        fileuid: '0'
+        uid_or_name: syslog
 {{%- endif %}}
 
