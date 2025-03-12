@@ -60,6 +60,7 @@ def parse_args():
     )
     parser.add_argument(
         "--thin-ds-components-dir",
+        default="off",
         help="Directory to store XCCDF, OVAL, OCIL, for thin data stream. (off: to disable)"
         "e.g.: ~/scap-security-guide/build/rhel9/thin_ds_component/"
         "Fake profiles are used to create thin DS. Components are generated for each profile.",
@@ -168,14 +169,15 @@ def main():
     _, xccdftree = get_linked_xccdf(loader, loader.get_benchmark_xml(), args)
     var_ids = get_rules_with_variables(xccdftree)
 
+    build_thin_ds_for_each_rule = args.thin_ds_components_dir != "off"
     oval_linker, xccdftree = get_linked_xccdf(
-        loader, loader.export_benchmark_to_xml(var_ids), args
+        loader, loader.export_benchmark_to_xml(var_ids, build_thin_ds_for_each_rule), args
     )
 
     ssg.xml.ElementTree.ElementTree(xccdftree).write(
         args.xccdf, xml_declaration=True, encoding="utf-8")
 
-    if args.thin_ds_components_dir is not None and args.thin_ds_components_dir != "off":
+    if build_thin_ds_for_each_rule:
         if not os.path.exists(args.thin_ds_components_dir):
             os.makedirs(args.thin_ds_components_dir)
         store_xccdf_per_profile(loader, oval_linker, var_ids, args.thin_ds_components_dir)
