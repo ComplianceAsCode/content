@@ -1,12 +1,11 @@
 documentation_complete: true
 
-
-platform: ocp4-node and not_s390x_arch and not_aarch64_arch
+platform: ocp4-node and aarch64_arch
 
 title: 'Verify Group Who Owns The Open vSwitch Persistent System ID'
 
 description: |-
-    {{{ describe_file_group_owner(file="/etc/openvswitch/system-id.conf", group="hugetlbfs") }}}
+    {{{ describe_file_group_owner(file="/etc/openvswitch/system-id.conf", group="openvswitch") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -17,7 +16,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-83677-5
+    cce@ocp4: CCE-86565-9
 
 references:
     cis@ocp4: 1.1.9
@@ -25,13 +24,13 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/system-id.conf", group="hugetlbfs") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/system-id.conf", group="openvswitch") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/openvswitch/system-id.conf", group="hugetlbfs") }}}
+    {{{ ocil_file_group_owner(file="/etc/openvswitch/system-id.conf", group="openvswitch") }}}
 
 template:
     name: file_groupowner
     vars:
         filepath: /etc/openvswitch/system-id.conf
-        gid_or_name: 'hugetlbfs'
+        gid_or_name: 'openvswitch'
