@@ -46,6 +46,7 @@ def create_parser():
     parser.add_argument(
         "--rule-id",
         type=str,
+        default="off",
         help="Creates a profile with the specified rule and does not use other profiles."
         "The profile ID is identical to the rule ID of the selected rule."
         " If you want to process all rules in benchmark of the product, "
@@ -155,12 +156,13 @@ def get_relevant_benchmarks(env_yaml, product_yaml):
     return out
 
 
-def get_minimal_profiles_by_id(rules, variables):
+def get_minimal_profiles_by_id(rules):
     out = {}
     for rule in rules:
         data = {
               'documentation_complete': True,
-              'variables': variables,
+              'single_rule_profile': True,
+              'variables': {},
               'selected': [rule],
               'id_': rule,
         }
@@ -176,7 +178,7 @@ def get_profiles_per_rule_by_id(rule_id, project_root_abspath, env_yaml, product
         raise Exception("Rule ID: {} not found!".format(rule_id))
     if "ALL_RULES" not in rule_id:
         rules = {rule_id}
-    return get_minimal_profiles_by_id(rules, {})
+    return get_minimal_profiles_by_id(rules)
 
 
 def main():
@@ -218,17 +220,21 @@ def main():
 
     add_stig_references(args.stig_references, loader.all_rules.values())
 
-    if args.rule_id is None or args.rule_id == "off":
-        profiles_by_id = get_all_resolved_profiles_by_id(
+    if args.rule_id == "ALL_RULES" or args.rule_id == "off":
+        normal_profiles = get_all_resolved_profiles_by_id(
             env_yaml, product_yaml, loader, product_cpes, controls_manager, controls_dir
         )
     else:
-        profiles_by_id = get_profiles_per_rule_by_id(
+        normal_profiles = {}
+    if args.rule_id == "ALL_RULES" or args.rule_id != "off":
+        single_rule_profiles = get_profiles_per_rule_by_id(
             args.rule_id, project_root_abspath, env_yaml, product_yaml
         )
-
+    else:
+        single_rule_profiles = {}
+    profiles = list(normal_profiles.values()) + list(single_rule_profiles.values())
     save_everything(
-        args.resolved_base, loader, controls_manager, profiles_by_id.values())
+        args.resolved_base, loader, controls_manager, profiles)
 
 
 if __name__ == "__main__":

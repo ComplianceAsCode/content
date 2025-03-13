@@ -48,6 +48,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         platform=lambda: None,
         filter_rules=lambda: "",
         policies=lambda: list(),
+        single_rule_profile=lambda: False,
         ** XCCDFEntity.KEYS
     )
 

@@ -3209,10 +3209,11 @@ class LinearLoader(object):
             )
 
         for profile in self.benchmark.profiles:
-            profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-                self.env_yaml, [profile], rule_and_variables_dict
-            )
-            yield profiles_ids.pop(), benchmark
+            if profile.single_rule_profile == "true":
+                profiles_ids, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
+                    self.env_yaml, [profile], rule_and_variables_dict
+                )
+                yield profiles_ids.pop(), benchmark
 
     def load_compiled_content(self):
         """
@@ -3262,18 +3263,23 @@ class LinearLoader(object):
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
-    def export_benchmark_to_xml(self, rule_and_variables_dict):
+    def export_benchmark_to_xml(self, rule_and_variables_dict, ignore_single_rule_profiles):
         """
         Exports the benchmark data to an XML format.
 
         Args:
             rule_and_variables_dict (dict): A dictionary containing rules and variables.
+            ignore_single_rule_profiles (bool): All profiles that contain "single_rule_profile: true" will be skipping.
 
         Returns:
             str: The benchmark data in XML format.
         """
+        if ignore_single_rule_profiles:
+            profiles = [p for p in self.benchmark.profiles if p.single_rule_profile == "false"]
+        else:
+            profiles = self.benchmark.profiles
         _, benchmark = self.benchmark.get_benchmark_xml_for_profiles(
-            self.env_yaml, self.benchmark.profiles, rule_and_variables_dict
+            self.env_yaml, profiles, rule_and_variables_dict
         )
         return benchmark
 
