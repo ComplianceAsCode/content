@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/lastlog File'
 
-description: '{{{ describe_file_group_owner(file="/var/log/lastlog", group="root|utmp") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/lastlog", group="utmp|root") }}}'
 
 rationale: |-
     The <tt>/var/log/lastlog</tt> file contains logs of reports the most recent login of all users
@@ -10,7 +10,14 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/lastlog", group="root|utmp") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/lastlog", group="utmp|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/lastlog", group="root|utmp") }}}
+    {{{ ocil_file_group_owner(file="/var/log/lastlog", group="utmp|root") }}}
+
+template:
+    name: file_groupowner2
+    vars:
+        filepath: /var/log/
+        file_regex: .*lastlog(\.[^\/]+)?
+        group: 'utmp|root'

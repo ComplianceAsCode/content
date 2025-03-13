@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/secure File'
 
-description: '{{{ describe_file_group_owner(file="/var/log/secure", group="root|adm") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/secure", group="adm|root") }}}'
 
 rationale: |-
     The <tt>/var/log/secure</tt> file contains information related to authentication
@@ -10,7 +10,15 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/secure", group="root|adm") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/secure", group="adm|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/secure", group="root|adm") }}}
+    {{{ ocil_file_group_owner(file="/var/log/secure", group="adm|root") }}}
+
+template:
+    name: file_groupowner2
+    vars:
+        filepath: /var/log/
+        file_regex: .*secure(.*[-\.].*)?
+        group: 'adm|root'
+        packages: 'rsyslog' 
