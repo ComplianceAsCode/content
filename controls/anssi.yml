@@ -1518,11 +1518,7 @@ controls:
     - audit_rules_time_stime
     - audit_rules_time_watch_localtime
 
-    {{% if product == "rhel10" %}}
-    - audit_rules_mac_modification_etc_selinux
-    {{% else %}}
     - audit_rules_mac_modification
-    {{% endif %}}
 
     - audit_rules_networkconfig_modification
 
