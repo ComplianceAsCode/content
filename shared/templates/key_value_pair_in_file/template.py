@@ -1,10 +1,14 @@
 def set_variables_for_test_scenarios(data):
-    if not data.get("value"):
-        # this implies XCCDF variable is used
-        data["correct_value"] = "correct_value"
-    else:
-        data["correct_value"] = str(data["value"])
-
+    # if no correct value is specified, we will create one for testing purposes
+    if not data.get("test_correct_value"):
+        if not data.get("value"):
+            # this implies XCCDF variable is used
+            data["test_correct_value"] = "test_correct_value"
+        else:
+            data["test_correct_value"] = str(data["value"])
+    # if no wrong value is provided, we will create one for testing purposes
+    if not data.get("test_wrong_value"):
+        data["test_wrong_value"] = "test_wrong_value"
     return data
 
 
