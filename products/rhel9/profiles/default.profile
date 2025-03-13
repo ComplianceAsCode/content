@@ -34,6 +34,7 @@ selections:
     - sebool_puppetagent_manage_all_files
     - sshd_use_strong_rng
     - grub2_uefi_admin_username
+    - grub2_uefi_password
     - sebool_staff_use_svirt
     - audit_rules_successful_file_modification_lsetxattr
     - sebool_daemons_enable_cluster_mode
