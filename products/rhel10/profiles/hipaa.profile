@@ -34,7 +34,7 @@ selections:
     - '!ensure_fedora_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!grub2_uefi_admin_username'
-    - '!grub2_uefi_pass'
+    - '!grub2_uefi_password'
     - '!service_ypbind_disabled'
     - '!service_zebra_disabled'
     - '!package_talk-server_removed'
