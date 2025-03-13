@@ -32,6 +32,9 @@ selections:
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+    # An alternative solution for R67 is using nss-pam-ldapd package, in this case ensures SSL and certificate configuration
+    - ldap_client_start_tls
+    - ldap_client_tls_cacertpath
     # Following rules once had a prodtype incompatible with the rhel8 product
     - '!kernel_config_gcc_plugin_structleak_byref_all'
     - '!accounts_passwords_pam_tally2_deny_root'
