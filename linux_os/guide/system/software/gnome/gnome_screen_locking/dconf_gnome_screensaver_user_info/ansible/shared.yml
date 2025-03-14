@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Disable Full Username on Splash Screen"
-  ini_file:
+  community.general.ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/screensaver"
     option: show-full-name-in-top-bar

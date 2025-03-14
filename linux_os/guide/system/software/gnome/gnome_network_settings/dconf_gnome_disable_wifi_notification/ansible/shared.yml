@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Disable WiFi Network Notification in GNOME3"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/dconf/db/local.d/00-security-settings
     section: org/gnome/nm-applet
     option: suppress-wireless-networks-available

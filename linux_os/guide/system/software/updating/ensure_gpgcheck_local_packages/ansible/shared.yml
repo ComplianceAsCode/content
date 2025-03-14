@@ -17,7 +17,7 @@
       when: pkg.stat.lnk_target is defined
 
     - name: Ensure GPG check Enabled for Local Packages ({{{ pkg_manager }}})
-      ini_file:
+      community.general.ini_file:
         dest: '{{ pkg_config_file_symlink |  default("{{{ pkg_manager_config_file }}}") }}'
         section: main
         option: localpkg_gpgcheck

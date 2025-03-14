@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Disable All GNOME3 Thumbnailers"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/dconf/db/local.d/00-security-settings
     section: org/gnome/desktop/thumbnailers
     option: disable-all

@@ -5,7 +5,7 @@
 # disruption = low
 
 - name: Ensure non-privileged users do not have access to nmcli
-  ini_file:
+  community.general.ini_file:
     path: /etc/polkit-1/localauthority/20-org.d/10-nm-harden-access.pkla
     section: Disable General User Access to NetworkManager
     option: "{{ item.option }}"

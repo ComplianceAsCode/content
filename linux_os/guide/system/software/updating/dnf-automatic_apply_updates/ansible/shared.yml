@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: Configure dnf-automatic to Install Available Updates Automatically
-  ini_file:
+  community.general.ini_file:
     dest: /etc/dnf/automatic.conf
     section: commands
     option: apply_updates

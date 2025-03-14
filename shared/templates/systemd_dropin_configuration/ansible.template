@@ -23,7 +23,7 @@
     count_of_systemd_dropin_files_with_section: "{{systemd_dropin_files_with_section.results | map(attribute='matched') | list | map('int') | sum}}"
 
 - name: "{{{ rule_title   }}} - Add missing configuration to correct section"
-  ini_file:
+  community.general.ini_file:
     path: "{{item}}"
     section: {{{ SECTION }}}
     option: {{{ PARAM }}}
@@ -38,7 +38,7 @@
   loop: "{{systemd_dropin_files_with_section.results | sum(attribute='files', start=[]) | map(attribute='path') | list }}"
 
 - name: "{{{ rule_title }}} - Add configuration to new remediation file"
-  ini_file:
+  community.general.ini_file:
     path: "{{{ DROPIN_DIR }}}/complianceascode_hardening.conf"
     section: {{{ SECTION }}}
     option: {{{ PARAM }}}

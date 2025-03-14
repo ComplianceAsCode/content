@@ -12,7 +12,7 @@
   register: {{{ rule_id }}}_config_files
 
 - name: "Configure {{{ PARAMETER }}} - default file"
-  ini_file:
+  community.general.ini_file:
     dest: {{{ PATH }}}/00-security-settings
     section: {{{ SECTION }}}
     option: {{{ PARAMETER }}}
@@ -21,7 +21,7 @@
   when: {{{ rule_id }}}_config_files is defined and {{{ rule_id }}}_config_files.matched == 0
 
 - name: "Configure {{{ PARAMETER }}} - existing files"
-  ini_file:
+  community.general.ini_file:
     dest: "{{ item.path }}"
     section: {{{ SECTION }}}
     option: {{{ PARAMETER }}}

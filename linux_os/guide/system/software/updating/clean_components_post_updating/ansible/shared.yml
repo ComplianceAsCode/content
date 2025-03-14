@@ -6,7 +6,7 @@
 
 {{% if 'sle' in product or 'slmicro' in product %}}
 - name: "{{{ rule_title }}} - Ensure Zypper Removes Previous Package Versions"
-  ansible.builtin.ini_file:
+  community.general.ini_file:
     dest: /etc/zypp/zypp.conf
     section: main
     option: solver.upgradeRemoveDroppedPackages

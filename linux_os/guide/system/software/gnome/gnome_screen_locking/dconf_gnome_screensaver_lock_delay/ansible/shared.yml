@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_screensaver_lock_delay") }}}
 
 - name: "Set GNOME3 Screensaver Lock Delay After Activation Period"
-  ini_file:
+  community.general.ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/screensaver"
     option: lock-delay

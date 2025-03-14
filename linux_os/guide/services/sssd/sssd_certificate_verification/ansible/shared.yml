@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("var_sssd_certificate_verification_digest_function") }}}
 
 - name: Ensure that "certificate_verification" is not set in /etc/sssd/sssd.conf
-  ini_file:
+  community.general.ini_file:
       path: /etc/sssd/sssd.conf
       section: sssd
       option: certificate_verification
@@ -14,7 +14,7 @@
       mode: 0600
 
 - name: 'Ensure that "certificate_verification" is not set in  /etc/sssd/conf.d/*.conf'
-  ini_file:
+  community.general.ini_file:
       path: /etc/sssd/conf.d/*.conf
       section: sssd
       option: certificate_verification
@@ -22,7 +22,7 @@
       mode: 0600
 
 - name: Ensure that "certificate_verification" is set
-  ini_file:
+  community.general.ini_file:
       path: /etc/sssd/conf.d/certificate_verification.conf
       section: sssd
       option: certificate_verification
