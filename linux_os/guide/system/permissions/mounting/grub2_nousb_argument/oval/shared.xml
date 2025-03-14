@@ -1,1 +1,5 @@
-{{{ oval_grub_config(parameter="GRUB_CMDLINE_LINUX", value="nousb") }}}
+{{%- set nousb_argument = 'nousb' %}}
+{{%- if product in ["rhel10"] %}}
+{{%- set nousb_argument = 'coreusb.nousb' %}}
+{{%- endif %}}
+{{{ oval_grub_config(parameter="GRUB_CMDLINE_LINUX", value=nousb_argument) }}}

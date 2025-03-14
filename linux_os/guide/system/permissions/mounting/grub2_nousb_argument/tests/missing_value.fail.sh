@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_fedora
+# platform = multi_platform_fedora,multi_platform_rhel
 
 cat <<EOF > /etc/default/grub
 GRUB_TIMEOUT=5
