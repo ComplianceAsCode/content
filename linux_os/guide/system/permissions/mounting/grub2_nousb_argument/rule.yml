@@ -1,13 +1,16 @@
+{{%- set nousb_argument = 'nousb' %}}
+{{%- if product in ["rhel10"] %}}
+{{%- set nousb_argument = 'coreusb.nousb' %}}
+{{%- endif %}}
 documentation_complete: true
-
 
 title: 'Disable Kernel Support for USB via Bootloader Configuration'
 
 description: |-
-    All USB support can be disabled by adding the <tt>nousb</tt>
+    All USB support can be disabled by adding the <tt>{{{ nousb_argument }}}</tt>
     argument to the kernel's boot loader configuration. To do so,
-    append "nousb" to the kernel line in <tt>/etc/default/grub</tt> as shown:
-    <pre>kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet nousb</pre>
+    append "{{{ nousb_argument }}}" to the kernel line in <tt>/etc/default/grub</tt> as shown:
+    <pre>kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet {{{ nousb_argument }}}</pre>
 
 rationale: |-
     Disabling the USB subsystem within the Linux kernel at system boot will
