@@ -16,8 +16,8 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="utmp|root") }}}
 
 template:
-    name: file_groupowner2
+    name: file_groupowner
     vars:
         filepath: /var/log/
         file_regex: .*(b|w)tmp((\.|-)[^\/]+)?
-        group: 'utmp|root'
+        gid_or_name: 'utmp|root'
