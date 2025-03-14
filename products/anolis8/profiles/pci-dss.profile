@@ -138,3 +138,4 @@ selections:
     - '!network_sniffer_disabled'
     - '!service_timesyncd_enabled'
     - '!package_cryptsetup-luks_installed'
+    - '!audit_rules_file_deletion_events_renameat2'

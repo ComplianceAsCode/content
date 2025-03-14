@@ -49,6 +49,7 @@ selections:
     - '!ensure_oracle_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
+    - '!audit_rules_file_deletion_events_renameat2'
     # RHEL9 unified the paths for grub2 files. These rules are selected in control file by R29.
     - '!file_groupowner_efi_grub2_cfg'
     - '!file_owner_efi_grub2_cfg'

@@ -45,6 +45,7 @@ selections:
     - '!cracklib_accounts_password_pam_dcredit'
     - '!package_xinetd_removed'
     - '!package_kea_removed'
+    - '!audit_rules_file_deletion_events_renameat2'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'

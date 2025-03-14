@@ -61,3 +61,4 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_disable_kerb_auth'
     - '!sshd_disable_gssapi_auth'
+    - '!audit_rules_file_deletion_events_renameat2'

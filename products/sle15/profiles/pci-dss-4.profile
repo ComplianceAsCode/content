@@ -64,4 +64,4 @@ selections:
     - '!dconf_gnome_disable_automount_open'
     - '!network_nmcli_permissions'
     - '!package_cryptsetup-luks_installed'
-
+    - '!audit_rules_file_deletion_events_renameat2'

@@ -32,6 +32,7 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    - '!audit_rules_file_deletion_events_renameat2'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # There is only chrony package on OL 10, no ntpd

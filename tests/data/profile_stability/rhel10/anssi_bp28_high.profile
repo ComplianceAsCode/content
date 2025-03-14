@@ -61,6 +61,7 @@ selections:
 - audit_rules_dac_modification_umount2
 - audit_rules_file_deletion_events_rename
 - audit_rules_file_deletion_events_renameat
+- audit_rules_file_deletion_events_renameat2
 - audit_rules_file_deletion_events_rmdir
 - audit_rules_file_deletion_events_unlink
 - audit_rules_file_deletion_events_unlinkat
