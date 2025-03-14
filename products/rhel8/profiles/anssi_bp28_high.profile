@@ -23,18 +23,25 @@ selections:
     - anssi:all:high
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
+
     # the following rule renders UEFI systems unbootable
     - '!sebool_secure_mode_insmod'
     - '!timer_logrotate_enabled'
+
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+
     # An alternative solution for R67 is using nss-pam-ldapd package, in this case ensures SSL and certificate configuration
     - ldap_client_start_tls
     - ldap_client_tls_cacertpath
+
+    # Ensure nis is not used for RHEL 8 in R69
+    - no_nis_in_nsswitch
+
     # Following rules once had a prodtype incompatible with the rhel8 product
     - '!kernel_config_gcc_plugin_structleak_byref_all'
     - '!accounts_passwords_pam_tally2_deny_root'

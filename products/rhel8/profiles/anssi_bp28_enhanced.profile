@@ -24,15 +24,21 @@ selections:
     - var_password_hashing_algorithm=SHA512
     - var_password_pam_unix_rounds=65536
     - '!timer_logrotate_enabled'
+
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+
     # An alternative solution for R67 is using nss-pam-ldapd package, in this case ensures SSL and certificate configuration
     - ldap_client_start_tls
     - ldap_client_tls_cacertpath
+
+    # Ensure nis is not used for RHEL 8 in R69
+    - no_nis_in_nsswitch
+
     # Following rules once had a prodtype incompatible with the rhel8 product
     - '!cracklib_accounts_password_pam_minlen'
     - '!sysctl_fs_protected_fifos'
