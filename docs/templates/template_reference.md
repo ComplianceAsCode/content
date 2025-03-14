@@ -579,11 +579,12 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint, Kickstart, Bootc
 
 #### package_removed
--   Checks if the given package is not installed.
+-   Checks if the given package(s) are not installed.
 
 -   Parameters:
 
-    -   **pkgname** - name of the RPM or DEB package, eg. `tmux`
+    -   **pkgname** - name of the RPM or DEB package, eg. `tmux`.
+        Can be either a name of a single package or a list of names.
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Kickstart, Bootc
 

@@ -5,6 +5,10 @@ title: 'Uninstall bind Package'
 description: |-
     The <tt>named</tt> service is provided by the <tt>bind</tt> package.
     {{{ describe_package_remove(package="bind") }}}
+    {{% if product == "rhel9" %}}
+    On Red Hat Enterprise Linux 9.6 and newer, the <tt>bind</tt> command is also provided by the <tt>bind9.18</tt> package.
+    {{{ describe_package_remove(package="bind9.18") }}}
+    {{% endif %}}
 
 rationale: |-
     If there is no need to make DNS server software available,
@@ -41,6 +45,9 @@ template:
     name: package_removed
     vars:
         pkgname: bind
+        pkgname@rhel9:
+            - bind
+            - bind9.18
         pkgname@ubuntu1604: bind9
         pkgname@ubuntu1804: bind9
         pkgname@ubuntu2004: bind9

@@ -4,4 +4,6 @@
 # complexity = low
 # disruption = low
 
-package remove {{{ PKGNAME }}}
+{{% for package in PACKAGES %}}
+package remove {{{ package }}}
+{{% endfor %}}
