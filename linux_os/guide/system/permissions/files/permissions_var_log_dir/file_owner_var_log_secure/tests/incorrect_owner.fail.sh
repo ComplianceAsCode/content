@@ -3,4 +3,7 @@
 # packages = rsyslog
 
 touch /var/log/secure
+touch /var/log/secure1.1
+touch /var/log/secure.1
+touch /var/log/secure-1
 chown nobody /var/log/secure*
