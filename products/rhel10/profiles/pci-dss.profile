@@ -27,6 +27,10 @@ selections:
     - var_password_hashing_algorithm=yescrypt
     - var_password_hashing_algorithm_pam=yescrypt
 
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration (PCI-DSSv4 - 10.3.4)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.
     # https://github.com/ComplianceAsCode/content/issues/11285
     - '!rpm_verify_permissions'

@@ -2861,11 +2861,7 @@ controls:
         - base
       status: automated
       rules:
-        {{% if product == "rhel10" %}}
-        - audit_rules_mac_modification_etc_selinux
-        {{% else %}}
         - audit_rules_mac_modification
-        {{% endif %}}
         - audit_rules_dac_modification_chmod
         - audit_rules_dac_modification_chown
         - audit_rules_dac_modification_fchmod
