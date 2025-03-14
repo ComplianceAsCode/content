@@ -3,4 +3,5 @@
 # packages = rsyslog
 
 touch /var/log/waagent.log
-chown syslog /var/log/waagent.log*
+touch /var/log/waagent.log1
+chown root /var/log/waagent.log*

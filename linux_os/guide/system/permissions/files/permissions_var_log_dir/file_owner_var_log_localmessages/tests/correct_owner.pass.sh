@@ -3,4 +3,5 @@
 # packages = rsyslog
 
 touch /var/log/localmessages
+touch /var/log/localmessages1
 chown syslog /var/log/localmessages*
