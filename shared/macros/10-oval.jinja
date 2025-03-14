@@ -354,19 +354,13 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endmacro %}}
 
 {{% macro oval_line_in_file_define_variable(var_name, datatype) %}}
-<local_variable id="local_var_regex_{{{ rule_id }}}"
-comment="Regex that matches exact value represented by {{{ var_name }}} XCCDF variable"
-datatype="{{{ datatype }}}" version="1">
-    <variable_component var_ref="{{{ var_name }}}" />
-</local_variable>
-
 <external_variable comment="Variable defining the value the argument should have" datatype="{{{ datatype }}}" id="{{{ var_name }}}" version="1" />
 {{% endmacro %}}
 
 {{%- macro oval_line_in_file_state_xccdf_variable(var_name='', id_stem='', datatype='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 <ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
-  <ind:subexpression datatype="{{{ datatype }}}" operation="equals" var_ref="local_var_regex_{{{ rule_id }}}" />
+  <ind:subexpression datatype="{{{ datatype }}}" operation="equals" var_ref="{{{ var_name }}}" />
 </ind:textfilecontent54_state>
 {{%- endmacro -%}}
 
