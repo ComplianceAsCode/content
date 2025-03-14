@@ -93,8 +93,8 @@ selections:
 - grub2_disable_recovery
 - grub2_init_on_alloc_argument
 - grub2_page_alloc_shuffle_argument
+- grub2_password
 - grub2_systemd_debug-shell_argument_absent
-- grub2_uefi_password
 - grub2_vsyscall_argument
 - kernel_module_bluetooth_disabled
 - kernel_module_can_disabled

@@ -21,8 +21,11 @@ description: |-
     Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).   
 
 selections:
+    # No need to keep the UEFI rules here since RHEL9 unified the BIOS/UEFI config
+    - '!grub2_uefi_admin_username'
+    - '!grub2_uefi_password'
+
     - grub2_password
-    - grub2_uefi_password
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - grub2_disable_interactive_boot
