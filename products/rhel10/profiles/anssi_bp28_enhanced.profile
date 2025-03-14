@@ -54,6 +54,8 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    # RHEL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
