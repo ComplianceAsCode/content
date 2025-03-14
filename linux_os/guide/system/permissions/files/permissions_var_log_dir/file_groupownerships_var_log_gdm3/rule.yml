@@ -16,9 +16,9 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/gdm3/*", group="gdm|gdm3|root") }}}
 
 template:
-    name: file_groupowner2
+    name: file_groupowner
     vars:
         filepath: /var/log/gdm3/
         file_regex: .*
         recursive: true
-        group: 'gdm|gdm3|root'
+        gid_or_name: 'gdm|gdm3|root'

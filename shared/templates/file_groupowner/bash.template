@@ -4,6 +4,20 @@
 # complexity = low
 # disruption = low
 
+{{%- set GROUPS=GID_OR_NAME.split("|") %}}
+{{%- for grp in GROUPS %}}
+{{%- if loop.first %}}
+if getent group "{{{grp}}}" >/dev/null 2>&1; then
+  newgroup="{{{grp}}}"
+{{%- else %}}
+elif getent group "{{{grp}}}" >/dev/null 2>&1; then
+  newgroup="{{{grp}}}"
+{{%- endif %}}
+{{%- if loop.last %}}
+fi
+{{%- endif %}}
+{{%- endfor %}}
+
 {{%- if RECURSIVE %}}
 {{%- set FIND_RECURSE_ARGS_DEP="" %}}
 {{%- set FIND_RECURSE_ARGS_SYM="" %}}
@@ -16,11 +30,11 @@
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
 
-find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f ! -group {{{ GID_OR_NAME }}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type f {{% for grp in GROUPS %}} ! -group {{{ grp }}} {{% endfor %}} -regextype posix-extended -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp -L $newgroup {} \;
 {{%- else %}}
-find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d -exec chgrp -L {{{ GID_OR_NAME }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} -type d {{% for grp in GROUPS %}} ! -group {{{ grp }}} {{% endfor %}} -exec chgrp -L $newgroup {} \;
 {{%- endif %}}
 {{%- else %}}
-chgrp {{{ GID_OR_NAME }}} {{{ path }}}
+chgrp $newgroup {{{ path }}}
 {{%- endif %}}
 {{%- endfor %}}

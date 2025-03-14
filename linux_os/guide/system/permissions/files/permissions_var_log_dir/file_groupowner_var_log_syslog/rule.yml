@@ -27,10 +27,10 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/syslog", group="adm|root") }}}
 
 template:
-    name: file_groupowner2
+    name: file_groupowner
     vars:
         filepath: /var/log/syslog
-        group: 'adm|root'
+        gid_or_name: 'adm|root'
         packages: 'rsyslog' 
 {{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="adm") }}}'

@@ -9,9 +9,9 @@ if [ -d {{{ path }}} ]; then
 {{% if FILE_REGEX %}}
 echo "Create specific tests for this rule because of regex"
 {{% elif RECURSIVE %}}
-find -L {{{ path }}} -type d -exec rm -f {} \;
+find -L {{{ path }}} -type d -exec rm -rf {} \;
 {{% else %}}
-rm -f {{{ path }}}
+rm -rf {{{ path }}}
 {{% endif %}}
 fi
 {{% else %}}

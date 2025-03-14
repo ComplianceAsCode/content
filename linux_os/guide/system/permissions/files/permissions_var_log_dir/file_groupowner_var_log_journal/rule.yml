@@ -15,9 +15,9 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/*.journal(~)", group="systemd-journal|root") }}}
 
 template:
-    name: file_groupowner2
+    name: file_groupowner
     vars:
         filepath: /var/log/
         file_regex: .*\.journal[~]?
         recursive: true
-        group: 'systemd-journal|root'
+        gid_or_name: 'systemd-journal|root'
