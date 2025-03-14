@@ -123,7 +123,7 @@ rule_results:
    default_result: PASS
    result_after_remediation: PASS
  e2e-moderate-api-server-tls-cipher-suites:
-   default_result: PASS
+   default_result: FAIL
    result_after_remediation: PASS
  e2e-moderate-api-server-tls-private-key:
    default_result: PASS
@@ -397,4 +397,10 @@ rule_results:
    result_after_remediation: MANUAL
  e2e-moderate-kubelet-configure-tls-cipher-suites-ingresscontroller:
    default_result: FAIL
+   result_after_remediation: PASS
+ e2e-moderate-api-server-tls-security-profile-custom-min-tls-version:
+   default_result: PASS
+   result_after_remediation: PASS
+ e2e-moderate-api-server-tls-security-profile-not-old:
+   default_result: PASS
    result_after_remediation: PASS
