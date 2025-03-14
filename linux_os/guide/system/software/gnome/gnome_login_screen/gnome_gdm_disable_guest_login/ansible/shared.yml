@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Disable GDM Guest Login"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/gdm/custom.conf
     section: daemon
     option: TimedLoginEnable

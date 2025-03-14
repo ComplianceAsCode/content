@@ -16,7 +16,7 @@
   changed_when: False
 
 - name: Set gpgcheck=1 for each {{{ pkg_manager }}} repo
-  ini_file:
+  community.general.ini_file:
     path: "{{ item[0] }}"
     section: "{{ item[1] }}"
     option: gpgcheck
