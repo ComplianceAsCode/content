@@ -327,7 +327,9 @@ they must be of the same length.
     -   **uid_or_name** - user ID (UID) or a user name.
         If the parameter is an integer, it is treated as user ID. If the
         parameter is not an integer, it is treated as a user name and it is
-        converted to UID by reading /etc/passwd.
+        converted to UID by reading /etc/passwd. uid_or_name can also be a 
+        list of possible user names separated by |, e.g. "syslog|root".
+        uids cannot be used with the '|' operator.
 
 -   Languages: Ansible, Bash, OVAL
 
