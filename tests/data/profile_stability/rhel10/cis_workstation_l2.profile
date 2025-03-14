@@ -69,6 +69,7 @@ selections:
 - audit_rules_execution_setfacl
 - audit_rules_file_deletion_events_rename
 - audit_rules_file_deletion_events_renameat
+- audit_rules_file_deletion_events_renameat2
 - audit_rules_file_deletion_events_unlink
 - audit_rules_file_deletion_events_unlinkat
 - audit_rules_immutable

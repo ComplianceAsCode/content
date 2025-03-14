@@ -36,6 +36,7 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
+    - '!audit_rules_file_deletion_events_renameat2'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # OL 10 unified the paths for grub2 files. These rules are selected in control file by R29.

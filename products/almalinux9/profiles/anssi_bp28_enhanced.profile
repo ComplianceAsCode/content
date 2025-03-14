@@ -53,6 +53,7 @@ selections:
     - '!file_groupowner_efi_user_cfg'
     - '!file_owner_efi_user_cfg'
     - '!file_permissions_efi_user_cfg'
+    - '!audit_rules_file_deletion_events_renameat2'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
