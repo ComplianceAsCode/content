@@ -1,9 +1,8 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
 
-groupadd gdm || true
-groupadd gdm3 || true
-
+getent group "gdm" &>/dev/null || groupadd gdm
+getent group "gdm3" &>/dev/null || groupadd gdm3
 mkdir -p /var/log/gdm3
 chgrp -R root /var/log/gdm3
 

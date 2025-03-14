@@ -16,9 +16,8 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/secure", group="adm|root") }}}
 
 template:
-    name: file_groupowner2
+    name: file_groupowner
     vars:
         filepath: /var/log/
         file_regex: .*secure(.*[-\.].*)?
-        group: 'adm|root'
-        packages: 'rsyslog' 
+        gid_or_name: 'adm|root'

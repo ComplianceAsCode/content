@@ -1,8 +1,7 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
 
-groupadd gdm || true
-
+getent group "gdm" &>/dev/null || groupadd gdm
 mkdir -p /var/log/gdm
 chgrp -R root /var/log/gdm
 

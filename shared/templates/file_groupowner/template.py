@@ -15,6 +15,11 @@ def preprocess(data, lang):
     except ValueError:
         data["group_represented_with_gid"] = False
 
+    if data["group_represented_with_gid"] == False:
+        groups = data["gid_or_name"].split("|")
+        if any(element.isnumeric() for element in groups):
+            raise ValueError("gid_or_name list cannot contain gids when there are multiple groups")
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
     return data

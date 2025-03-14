@@ -1,12 +1,16 @@
 #!/bin/bash
 
 groupadd group_test
+{{% set GROUPS=GID_OR_NAME.split("|") %}}
+{{% for grp in GROUPS %}}
+getent group "{{{ grp }}}" &>/dev/null || groupadd {{{ grp }}}
+{{%- endfor %}}
 
-{{%- if RECURSIVE %}}
+{{% if RECURSIVE %}}
 {{% set FIND_RECURSE_ARGS="" %}}
-{{%- else %}}
+{{% else %}}
 {{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
-{{%- endif %}}
+{{% endif %}}
 
 {{% for path in FILEPATH %}}
 {{% if path.endswith("/") %}}
@@ -14,7 +18,8 @@ if [ ! -d {{{ path }}} ]; then
     mkdir -p {{{ path }}}
 fi
 {{% if FILE_REGEX %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ EXCLUDED_FILES_ARGS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp group_test {} \;
+echo "Create specific tests for this rule because of regex groupowner"
+exit 1;
 {{% elif RECURSIVE %}}
 find -L {{{ path }}} -type d -exec chgrp group_test {} \;
 {{% else %}}

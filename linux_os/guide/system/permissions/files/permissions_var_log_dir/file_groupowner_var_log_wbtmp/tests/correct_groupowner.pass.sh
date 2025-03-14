@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
 
+getent group "utmp" &>/dev/null || groupadd utmp
 touch /var/log/btmp
 touch /var/log/btmp.1
 touch /var/log/btmp-1

@@ -1,6 +1,6 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
-# packages = rsyslog
 
+getent group "adm" &>/dev/null || groupadd adm
 touch /var/log/syslog
 chgrp root /var/log/syslog

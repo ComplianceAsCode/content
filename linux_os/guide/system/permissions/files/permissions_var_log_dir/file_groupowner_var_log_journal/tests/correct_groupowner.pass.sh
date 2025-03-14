@@ -1,7 +1,8 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
 
-chown -R root /var/log
+cgetent group "systemd-journal" &>/dev/null || groupadd systemd-journal
+hown -R root /var/log
 
 mkdir -p /var/log/journal/
 touch /var/log/journal/test.journal

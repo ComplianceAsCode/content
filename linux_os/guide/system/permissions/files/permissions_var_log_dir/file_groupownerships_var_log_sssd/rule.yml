@@ -16,9 +16,9 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/var/log/sssd/*", group="sssd|root") }}}
 
 template:
-    name: file_groupowner2
+    name: file_groupowner
     vars:
         filepath: /var/log/sssd/
         file_regex: .*
         recursive: true
-        group: 'sssd|root'
+        gid_or_name: 'sssd|root'

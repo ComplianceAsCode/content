@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
 
+getent group "systemd-journal" &>/dev/null || groupadd systemd-journal
 chown -R root /var/log
 
 mkdir -p /var/log/journal/

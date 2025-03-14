@@ -1,10 +1,7 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
-# packages = sssd
 
-
-groupadd sssd || true
-
+getent group "sssd" &>/dev/null || groupadd sssd
 mkdir -p /var/log/sssd
 chgrp -R root /var/log/sssd
 
