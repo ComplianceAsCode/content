@@ -38,9 +38,16 @@ references:
 {{{ complete_ocil_entry_socket_and_service_disabled("rexec") }}}
 
 platform: system_with_kernel
-
+{{% if product == "sle15" %}}
+template:
+    name: xinetd_service_disabled
+    vars:
+        servicename: rexec
+        packagename: rsh-server
+{{% else %}}
 template:
     name: service_disabled
     vars:
         servicename: rexec
         packagename: rsh-server
+{{% endif %}}
