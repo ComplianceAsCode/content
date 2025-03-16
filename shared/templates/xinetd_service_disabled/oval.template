@@ -1,0 +1,28 @@
+<def-group>
+
+{{%- set package_removed_test_id = _RULE_ID + "_test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_removed" -%}}
+{{%- set xinetd_disabled_test_id = _RULE_ID + "_test_xinetd_service_" + SERVICENAME + "_disabled" -%}}
+{{%- set xinetd_disabled_object_id = _RULE_ID + "_object_xinetd_service_" + SERVICENAME + "_disabled" -%}}
+{{%- set service_path = "/etc/xinetd.d/" + SERVICENAME -%}}
+
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("The xinetd " + SERVICENAME + " service should be disabled.", affected_platforms=["multi_platform_sle"]) }}}
+    <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
+      <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
+        <criterion comment="check for disable = yes in {{{ service_path }}}" test_ref="{{{ xinetd_disabled_test_id }}}" />
+    </criteria>
+  </definition>
+  {{{- oval_test_package_removed(package=PACKAGENAME, test_id=package_removed_test_id) }}}
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="check for disable = yes in {{{ service_path }}}" id="{{{ xinetd_disabled_test_id }}}" version="1">
+    <ind:object object_ref="{{{ xinetd_disabled_object_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="{{{ xinetd_disabled_object_id }}}" version="1">
+    <ind:filepath>{{{ service_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*disable[\s]*=[\s]*no</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

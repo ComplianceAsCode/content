@@ -1,0 +1,8 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+grep -qi disable "/etc/xinetd.d/{{{ SERVICENAME }}}" && \
+sed -i "s/disable.*/disable = yes/gI" "/etc/xinetd.d/{{{ SERVICENAME }}}"
