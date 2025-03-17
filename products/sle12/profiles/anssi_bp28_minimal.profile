@@ -44,3 +44,7 @@ selections:
   - '!ensure_oracle_gpgkey_installed'
   - '!enable_authselect'
   - '!package_kea_removed'
+  - '!package_dnf-automatic_installed'
+  - '!timer_dnf-automatic_enabled'
+  - '!dnf-automatic_apply_updates'
+  - '!dnf-automatic_security_updates_only'
