@@ -95,6 +95,10 @@ controls:
       - package_libselinux_installed
       - grub2_enable_selinux
       - selinux_not_disabled
+      - sysctl_kernel_randomize_va_space
+      - coreos_pti_kernel_argument
+      - coreos_page_poison_kernel_argument
+      - coreos_slub_debug_kernel_argument
 
   - id: SYS.1.3.A5
     title: Secure Installation of Software Packages
