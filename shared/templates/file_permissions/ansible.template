@@ -4,6 +4,14 @@
 # complexity = low
 # disruption = low
 
+{{%- if RECURSIVE %}}
+{{%- set FIND_RECURSE_ARGS_DEP="" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="" %}}
+{{%- else %}}
+{{%- set FIND_RECURSE_ARGS_DEP="-maxdepth 1" %}}
+{{%- set FIND_RECURSE_ARGS_SYM="-L" %}}
+{{%- endif %}}
+
 {{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY %}}
 
@@ -15,12 +23,6 @@
 {{% set STATE="directory" %}}
 {{% set FIND_TYPE="-type d" %}}
 {{% set FIND_FILE_REGEX="" %}}
-{{%- endif %}}
-
-{{%- if RECURSIVE %}}
-{{% set FIND_RECURSE_ARGS="" %}}
-{{%- else %}}
-{{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
 {{%- endif %}}
 
 {{%- if ALLOW_STRICTER_PERMISSIONS %}}
@@ -36,7 +38,7 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
-  command: 'find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
+  command: 'find {{{ FIND_RECURSE_ARGS_SYM }}} {{{ path }}} {{{ FIND_RECURSE_ARGS_DEP }}} {{{ PERMS }}} {{{ EXCLUDED_FILES_ARGS }}} {{{ FIND_TYPE }}} {{{ FIND_FILE_REGEX }}}'
   register: files_found
   changed_when: False
   failed_when: False
