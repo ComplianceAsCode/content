@@ -1,7 +1,8 @@
 #!/bin/bash
 # packages = audit
 # platform = multi_platform_rhel
-# profiles = xccdf_org.ssgproject.content_profile_cis
+# variables = var_accounts_passwords_pam_faillock_dir=/var/run/faillock
 
 path="/var/run/faillock"
+style="{{{ audit_watches_style }}}"
 . $SHARED/audit_rules_login_events/augenrules_correct.pass.sh

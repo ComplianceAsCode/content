@@ -4,9 +4,17 @@
 
 {{% if PATH_IS_VARIABLE %}}
 {{{ bash_instantiate_variables("var_accounts_passwords_pam_faillock_dir") }}}
-{{{ bash_fix_audit_watch_rule("auditctl", "${var_accounts_passwords_pam_faillock_dir}", "wa", "logins") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", "${var_accounts_passwords_pam_faillock_dir}", "wa", "logins") }}}
+{{% set path = "${var_accounts_passwords_pam_faillock_dir}" %}}
 {{% else %}}
-{{{ bash_fix_audit_watch_rule("auditctl", PATH, "wa", "logins") }}}
-{{{ bash_fix_audit_watch_rule("augenrules", PATH, "wa", "logins") }}}
+{{% set path = PATH %}}
+{{% endif %}}
+
+{{% if audit_watches_style == "modern" %}}
+{{{ bash_fix_audit_watch_rule("auditctl", path, "wa", "logins", audit_watches_style, "b32") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", path, "wa", "logins", audit_watches_style, "b64") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", path, "wa", "logins", audit_watches_style, "b32") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", path, "wa", "logins", audit_watches_style, "b64") }}}
+{{% else %}}
+{{{ bash_fix_audit_watch_rule("auditctl", path, "wa", "logins", audit_watches_style) }}}
+{{{ bash_fix_audit_watch_rule("augenrules", path, "wa", "logins", audit_watches_style) }}}
 {{% endif %}}

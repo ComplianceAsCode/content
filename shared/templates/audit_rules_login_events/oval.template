@@ -7,18 +7,85 @@
       <!-- Test the augenrules case -->
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+{{% if audit_watches_style == "modern" %}}
+        <criterion comment="audit augenrules {{{ NAME }}}" test_ref="test_arle_{{{ NAME }}}_augenrules_32" />
+        <criterion comment="audit augenrules {{{ NAME }}}" test_ref="test_arle_{{{ NAME }}}_augenrules_64" />
+{{% else %}}
         <criterion comment="audit augenrules {{{ NAME }}}" test_ref="test_arle_{{{ NAME }}}_augenrules" />
+{{% endif %}}
       </criteria>
 
       <!-- Test the auditctl case -->
       <criteria operator="AND">
         <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+{{% if audit_watches_style == "modern" %}}
+        <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_arle_{{{ NAME }}}_auditctl_32" />
+        <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_arle_{{{ NAME }}}_auditctl_64" />
+{{% else %}}
         <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_arle_{{{ NAME }}}_auditctl" />
+{{% endif %}}
       </criteria>
 
     </criteria>
   </definition>
 
+
+{{% if audit_watches_style == "modern" %}}
+  <ind:textfilecontent54_test check="all" comment="audit augenrules {{{ NAME }}} 32" id="test_arle_{{{ NAME }}}_augenrules_32" version="1">
+    <ind:object object_ref="object_arle_{{{ NAME }}}_augenrules_32" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_{{{ NAME }}}_augenrules_32" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="{{{ NAME }}}_path_pattern_32"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit augenrules {{{ NAME }}} 64" id="test_arle_{{{ NAME }}}_augenrules_64" version="1">
+    <ind:object object_ref="object_arle_{{{ NAME }}}_augenrules_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_{{{ NAME }}}_augenrules_64" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="{{{ NAME }}}_path_pattern_64"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit auditctl {{{ NAME }}} 32" id="test_arle_{{{ NAME }}}_auditctl_32" version="1">
+    <ind:object object_ref="object_arle_{{{ NAME }}}_auditctl_32" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_{{{ NAME }}}_auditctl_32" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="{{{ NAME }}}_path_pattern_32" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" comment="audit auditctl {{{ NAME }}} 64" id="test_arle_{{{ NAME }}}_auditctl_64" version="1">
+    <ind:object object_ref="object_arle_{{{ NAME }}}_auditctl_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_arle_{{{ NAME }}}_auditctl_64" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match" var_ref="{{{ NAME }}}_path_pattern_64" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable id="{{{ NAME }}}_path_pattern_32" comment="The composite pattern used to detect if audit as been configured" datatype="string" version="1">
+    <concat>
+      <literal_component>^\-a\s+always,exit\s+\-F\s+arch=b32\s+\-F\s+path=</literal_component>
+  {{% if PATH_IS_VARIABLE %}}
+      <variable_component var_ref="var_accounts_passwords_pam_faillock_dir"/>
+  {{% else %}}
+      <literal_component>{{{ PATH }}}</literal_component>
+  {{% endif %}}
+      <literal_component>\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
+    </concat>
+  </local_variable>
+  <local_variable id="{{{ NAME }}}_path_pattern_64" comment="The composite pattern used to detect if audit as been configured" datatype="string" version="1">
+    <concat>
+      <literal_component>^\-a\s+always,exit\s+\-F\s+arch=b64\s+\-F\s+path=</literal_component>
+  {{% if PATH_IS_VARIABLE %}}
+      <variable_component var_ref="var_accounts_passwords_pam_faillock_dir"/>
+  {{% else %}}
+      <literal_component>{{{ PATH }}}</literal_component>
+  {{% endif %}}
+      <literal_component>\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
+    </concat>
+  </local_variable>
+{{% else %}}
   <ind:textfilecontent54_test check="all" comment="audit augenrules {{{ NAME }}}" id="test_arle_{{{ NAME }}}_augenrules" version="1">
     <ind:object object_ref="object_arle_{{{ NAME }}}_augenrules" />
   </ind:textfilecontent54_test>
@@ -47,6 +114,7 @@
       <literal_component>[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</literal_component>
     </concat>
   </local_variable>
+{{% endif %}}
   {{% if PATH_IS_VARIABLE %}}
   <external_variable id="var_accounts_passwords_pam_faillock_dir" comment="Faillock directory" datatype="string" version="1"/>
   {{% endif %}}
