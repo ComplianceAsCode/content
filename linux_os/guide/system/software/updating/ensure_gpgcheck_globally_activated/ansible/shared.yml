@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: Ensure GPG check is globally activated
-  ini_file:
+  community.general.ini_file:
     dest: {{{ pkg_manager_config_file }}}
     section: main
     option: gpgcheck

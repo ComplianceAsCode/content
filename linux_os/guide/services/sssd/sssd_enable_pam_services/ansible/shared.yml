@@ -44,7 +44,7 @@
   when: sssd_conf_file.stat.exists
 
 - name: {{{ rule_title }}} - Insert entry to /etc/sssd/sssd.conf
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: sssd
     option: services

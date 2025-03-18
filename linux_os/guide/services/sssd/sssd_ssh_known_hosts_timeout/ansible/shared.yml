@@ -13,7 +13,7 @@
   check_mode: no
 
 - name: "Add default domain group (if no domain there)"
-  ini_file:
+  community.general.ini_file:
     path: /etc/sssd/sssd.conf
     section: "{{ item.section }}"
     option: "{{ item.option }}"
@@ -28,7 +28,7 @@
     - test_grep_domain.stdout | length < 1
 
 - name: "Configure SSSD to Expire SSH Known Hosts"
-  ini_file:
+  community.general.ini_file:
     dest: /etc/sssd/sssd.conf
     section: ssh
     option: ssh_known_hosts_timeout
