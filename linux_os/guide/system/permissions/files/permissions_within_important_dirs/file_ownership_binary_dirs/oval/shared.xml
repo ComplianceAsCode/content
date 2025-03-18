@@ -32,10 +32,21 @@
     <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_owner_binaries_not_root</filter>
+{{% if 'ubuntu' in product %}}
+   <filter action="exclude">state_at_owner_binaries_daemon</filter>
+{{% endif %}}
   </unix:file_object>
 
   <unix:file_state id="state_owner_binaries_not_root" version="1" operator="OR">
     <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
   </unix:file_state>
+
+{{% if 'ubuntu' in product %}}
+  <!-- Exclude /bin/at -->
+  <unix:file_state id="state_at_owner_binaries_daemon" version="1" operator="AND">
+    <unix:filename operation="pattern match">^at$</unix:filename>
+    <unix:user_id datatype="int" operation="equals">1</unix:user_id>
+  </unix:file_state>
+{{% endif %}}
 
 </def-group>
