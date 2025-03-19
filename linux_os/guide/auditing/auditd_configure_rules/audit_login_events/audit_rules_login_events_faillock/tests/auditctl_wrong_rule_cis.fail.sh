@@ -7,4 +7,4 @@
 
 path="/var/run/faillock"
 style="{{{ audit_watches_style }}}"
-. $SHARED/audit_rules_login_events/auditctl_wrong_rule.fail.sh
+. $SHARED/audit_rules_watch/auditctl_wrong_rule.fail.sh

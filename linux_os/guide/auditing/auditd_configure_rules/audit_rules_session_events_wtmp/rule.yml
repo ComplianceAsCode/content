@@ -42,9 +42,10 @@ ocil: |-
     <pre> sudo auditctl -l | grep -w '/var/log/wtmp'</pre>
 
 template:
-    name: audit_rules_login_events
+    name: audit_rules_watch
     vars:
         path: /var/log/wtmp
+        key: session
     backends:
         ansible: "off"
         bash: "off"

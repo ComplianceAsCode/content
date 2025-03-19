@@ -78,9 +78,10 @@ ocil: |-
 {{% endif %}}
 
 template:
-    name: audit_rules_login_events
+    name: audit_rules_watch
     vars:
         path: /var/log/tallylog
+        key: logins
 
 fixtext: |-
     {{{ fixtext_audit_file_watch_rule("/var/log/tallylog", "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}

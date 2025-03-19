@@ -51,6 +51,7 @@ ocil: |-
     # sudo systemctl restart auditd.service
 
 template:
-    name: audit_rules_login_events
+    name: audit_rules_watch
     vars:
         path: /var/log/faillog
+        key: logins

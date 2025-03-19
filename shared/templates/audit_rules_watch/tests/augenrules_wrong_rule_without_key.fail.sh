@@ -3,4 +3,4 @@
 
 path={{{ PATH }}}
 style={{{ audit_watches_style }}}
-. $SHARED/audit_rules_login_events/augenrules_correct_without_key.pass.sh
+. $SHARED/audit_rules_watch/augenrules_wrong_rule_without_key.fail.sh

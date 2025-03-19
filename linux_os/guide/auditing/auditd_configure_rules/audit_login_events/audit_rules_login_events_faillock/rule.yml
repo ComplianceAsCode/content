@@ -75,10 +75,11 @@ ocil: |-
 {{% endif %}}
 
 template:
-    name: audit_rules_login_events
+    name: audit_rules_watch
     vars:
         path: var_accounts_passwords_pam_faillock_dir
         path_is_variable: "true"
+        key: logins
 
 
 fixtext: |-
