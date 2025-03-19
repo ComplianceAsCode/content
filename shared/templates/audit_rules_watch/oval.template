@@ -14,7 +14,11 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  {{% if PATH_IS_VARIABLE %}}
+    {{{ oval_metadata("Check if actions on path specified in the '" ~ PATH ~ "' variable are configured to be audited") }}}
+  {{% else %}}
     {{{ oval_metadata("Check if actions on '" ~ PATH ~ "' are configured to be audited") }}}
+  {{% endif %}}
 
     <criteria operator="OR">
 
