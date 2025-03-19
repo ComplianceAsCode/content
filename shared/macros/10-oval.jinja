@@ -262,7 +262,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
-{{%- set group_regex = "([^#]*).*$" -%}}
+{{%- set group_regex = "([^#\\n]*).*$" -%}}
 {{%- else -%}}
 {{%- set group_regex = "(.+?)[ \\t]*(?:$|#)" -%}}
 {{%- endif -%}}
