@@ -19,34 +19,34 @@
   </unix:file_test>
 
   <unix:file_object comment="binary directories" id="object_file_ownership_binary_directories" version="1">
-{{% if 'ubuntu' not in product %}}
-    <!-- Check that /bin, /sbin, /usr/sbin, /usr/sbin, /usr/local/bin,
-         /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
-{{% else %}}
+{{% if 'ubuntu' in product %}}
     <!-- Check that files within /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
          /usr/local/sbin directories belong to user with uid < 100 (system accounts) -->
     <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin</unix:path>
+{{% else %}}
+    <!-- Check that /bin, /sbin, /usr/sbin, /usr/sbin, /usr/local/bin,
+         /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
+    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
 {{% endif %}}
     <unix:filename xsi:nil="true" />
     <filter action="include">state_owner_binaries_not_root</filter>
   </unix:file_object>
 
   <unix:file_object comment="binary files" id="object_file_ownership_binary_files" version="1">
-{{% if 'ubuntu' not in product %}}
-    <!-- Check that files within /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
-         /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
-{{% else %}}
+{{% if 'ubuntu' in product %}}
     <!-- Check that files within /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
          /usr/local/sbin directories belong to user with uid < 100 (system accounts) -->
     <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin</unix:path>
+{{% else %}}
+    <!-- Check that files within /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
+         /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
+    <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
 {{% endif %}}
     <unix:filename operation="pattern match">^.*$</unix:filename>
-{{% if 'ubuntu' not in product %}}
-   <filter action="include">state_owner_binaries_not_root</filter>
-{{% else %}}
+{{% if 'ubuntu' in product %}}
    <filter action="include">state_owner_binaries_not_system_accounts</filter>
+{{% else %}}
+   <filter action="include">state_owner_binaries_not_root</filter>
 {{% endif %}}
   </unix:file_object>
 
