@@ -137,9 +137,9 @@ selections:
 - file_permissions_user_cfg
 - grub2_admin_username
 - grub2_audit_argument
+- grub2_coreusb_nousb_argument
 - grub2_disable_interactive_boot
 - grub2_enable_selinux
-- grub2_nousb_argument
 - grub2_password
 - grub2_uefi_password
 - kernel_module_usb-storage_disabled
@@ -205,5 +205,6 @@ platform: null
 filter_rules: ''
 policies:
 - hipaa
+single_rule_profile: false
 title: Health Insurance Portability and Accountability Act (HIPAA)
 documentation_complete: true
