@@ -8,7 +8,7 @@ find /bin/ \
 /usr/sbin/ \
 /usr/local/sbin/ \
 /usr/libexec \
-\! -user root \! \( -user daemon -a -name "at" \) -execdir chown root {} \;
+\! -uid -100 -execdir chown root {} \;
 {{% else %}}
 find /bin/ \
 /usr/bin/ \
