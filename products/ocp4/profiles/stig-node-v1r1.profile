@@ -43,10 +43,11 @@ selections:
     - file_groupowner_openshift_sdn_cniserver_config
     - file_groupowner_ovn_cni_server_sock
     - file_groupowner_ovn_db_files
-    - file_groupowner_ovs_conf_db
-    - file_groupowner_ovs_conf_db_lock
+    - file_groupowner_ovs_conf_db_openvswitch
+    - file_groupowner_ovs_conf_db_hugetlbfs
+    - file_groupowner_ovs_conf_db_lock_openvswitch
+    - file_groupowner_ovs_conf_db_lock_hugetlbfs
     - file_groupowner_ovs_pid
-    - file_groupowner_ovs_sys_id_conf
     - file_groupowner_ovs_vswitchd_pid
     - file_groupowner_ovsdb_server_pid
     - file_groupowner_scheduler_kubeconfig

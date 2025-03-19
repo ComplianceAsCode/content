@@ -1,9 +1,9 @@
 documentation_complete: true
 
 
-platform: ocp4-node and not_s390x_arch and not_aarch64_arch
+platform: ocp4-node and x86_64_arch
 
-title: 'Verify Group Who Owns The Open vSwitch Configuration Database Lock'
+title: 'Verify Group Who Owns The Open vSwitch Configuration Database Lock is hugetlbfs'
 
 description: |-
     {{{ describe_file_group_owner(file="/etc/openvswitch/.conf.db.~lock~", group="hugetlbfs") }}}
@@ -17,7 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-84219-5
+    cce@ocp4: CCE-85936-3
 
 references:
     cis@ocp4: 1.1.9

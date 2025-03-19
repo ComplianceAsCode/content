@@ -74,9 +74,10 @@ rule_results:
   e2e-pci-dss-node-4-0-master-file-groupowner-ovn-db-files:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-pci-dss-node-4-0-master-file-groupowner-ovs-conf-db:
-    default_result: PASS
-    result_after_remediation: PASS
+  e2e-pci-dss-node-4-0-master-file-groupowner-ovs-conf-db-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-pci-dss-node-4-0-master-file-groupowner-ovs-conf-db-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
   e2e-pci-dss-node-4-0-master-file-groupowner-ovs-conf-db-lock:
     default_result: PASS
     result_after_remediation: PASS
@@ -417,9 +418,10 @@ rule_results:
   e2e-pci-dss-node-4-0-worker-file-groupowner-ovn-db-files:
     default_result: PASS
     result_after_remediation: PASS
-  e2e-pci-dss-node-4-0-worker-file-groupowner-ovs-conf-db:
-    default_result: PASS
-    result_after_remediation: PASS
+  e2e-pci-dss-node-4-0-worker-file-groupowner-ovs-conf-db-openvswitch:
+    default_result: PASS or NOT-APPLICABLE
+  e2e-pci-dss-node-4-0-worker-file-groupowner-ovs-conf-db-hugetlbfs:
+    default_result: PASS or NOT-APPLICABLE
   e2e-pci-dss-node-4-0-worker-file-groupowner-ovs-conf-db-lock:
     default_result: PASS
     result_after_remediation: PASS
