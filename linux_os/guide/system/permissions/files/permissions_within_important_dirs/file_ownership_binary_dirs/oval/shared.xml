@@ -31,9 +31,10 @@
          /usr/local/sbin, and /usr/libexec directories belong to user with uid 0 (root) -->
     <unix:path operation="pattern match">^\/(|s)bin|^\/usr\/(|local\/)(|s)bin|^\/usr\/libexec</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
+{{% if 'ubuntu' not in product %}}
    <filter action="include">state_owner_binaries_not_root</filter>
-{{% if 'ubuntu' in product %}}
-   <filter action="exclude">state_at_owner_binaries_daemon</filter>
+{{% else %}}
+   <filter action="include">state_owner_binaries_not_system_accounts</filter>
 {{% endif %}}
   </unix:file_object>
 
@@ -42,9 +43,8 @@
   </unix:file_state>
 
 {{% if 'ubuntu' in product %}}
-  <!-- Exclude owners with less than 100 uid -->
-  <unix:file_state id="state_at_owner_binaries_daemon" version="1" operator="AND">
-    <unix:user_id datatype="int" operation="less than">100</unix:user_id>
+  <unix:file_state id="state_owner_binaries_not_system_accounts" version="1" operator="AND">
+    <unix:user_id datatype="int" operation="greater than or equal">100</unix:user_id>
   </unix:file_state>
 {{% endif %}}
 
