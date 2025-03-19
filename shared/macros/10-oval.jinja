@@ -605,25 +605,33 @@ datatype="{{{ datatype }}}" version="1">
 :type missing_config_file_fail: bool
 #}}
 
-{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
+{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, separator_regex='=') %}}
 <def-group>
   {{%- set prefix_regex = "^[ \\t]*" -%}}
-  {{%- set separator_regex = '=' -%}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
     {{%- endif %}}
-
+    {{%- if missing_parameter_pass %}}
+    <criteria comment="{{{ application }}} is configured correctly"
+    operator="AND">
+        <criteria comment="Check the main config file" operator="OR">
+            {{{- oval_line_in_file_criterion(path, parameter) }}}
+            {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
+        </criteria>
+        <criteria comment="Check files in the dropin directory" operator="OR">
+            {{{ oval_line_in_directory_criterion(dropin_dir, parameter) }}}
+            {{{ oval_line_in_directory_criterion(dropin_dir, parameter, missing_parameter_pass) }}}
+        </criteria>
+    {{%- else %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
         {{{- oval_line_in_file_criterion(path, parameter) }}}
-        {{%- if missing_parameter_pass %}}
-        {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
-        {{%- endif %}}
-        {{{ oval_line_in_file_criterion(dropin_dir, parameter, missing_parameter_pass, "", rule_id ~ "_dropin_file") }}}
+        {{{ oval_line_in_directory_criterion(dropin_dir, parameter) }}}
     </criteria>
+    {{%- endif %}}
     {{%- if missing_config_file_fail %}}
         {{{- oval_config_file_exists_criterion(path) }}}
     </criteria>
@@ -638,17 +646,20 @@ datatype="{{{ datatype }}}" version="1">
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
   {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{{ oval_line_in_directory_test(dropin_dir, parameter) }}}
+  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
+  {{{ oval_line_in_directory_state(value, multi_value, quotes,) }}}
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
+  {{{ oval_line_in_directory_test(dropin_dir, parameter, missing_parameter_pass) }}}
+  {{{ oval_line_in_directory_object(dropin_dir, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
   {{%- endif %}}
   {{%- if missing_config_file_fail %}}
   {{{ oval_config_file_exists_test(path) }}}
   {{{ oval_config_file_exists_object(path) }}}
   {{%- endif %}}
-  {{{ oval_line_in_file_test(dropin_dir, parameter, missing_parameter_pass, rule_id ~ "_dropin_file") }}}
-  {{{ oval_line_in_file_object(dropin_dir, section, prefix_regex, parameter, separator_regex, false, multi_value,'^.*\.conf$', rule_id ~ "_dropin_file") }}}
-  {{{ oval_line_in_file_state(value, multi_value, quotes, rule_id ~ "_dropin_file") }}}
+
 
 </def-group>
 {{%- endmacro %}}
