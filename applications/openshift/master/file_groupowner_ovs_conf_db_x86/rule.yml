@@ -1,13 +1,13 @@
 documentation_complete: true
 
 platforms:
-  - ocp4-node and s390x_arch
+  - ocp4-node and not aarch64_arch and not s390x_arch
 
 title: 'Verify Group Who Owns The Open vSwitch Configuration Database'
 
 description: |-
     Check if the group owner of <code>/etc/openvswitch/conf.db</code> is
-    <code>openvswitch</code> for <code>s390x</code> systems.
+    <code>hugetlbfs</code> for <code>x86_64</code> systems.
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -18,7 +18,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-85927-2
+    cce@ocp4: CCE-88281-1
 
 references:
     cis@ocp4: 1.1.9
@@ -26,13 +26,13 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/conf.db", group="openvswitch") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/openvswitch/conf.db", group="openvswitch") }}}
+    {{{ ocil_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}
 
 template:
     name: file_groupowner
     vars:
         filepath: /etc/openvswitch/conf.db
-        gid_or_name: openvswitch
+        gid_or_name: hugetlbfs
