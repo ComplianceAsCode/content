@@ -159,23 +159,24 @@ controls:
       Secure Shell SHOULD be disabled completely. (3) For authentication, users SHOULD primarily
       use certificates instead of passwords.
     notes: >-
-      Section 1: this should be the default
+      Section 1: this should be the default. We do not add the sshd_allow_only_protocol2 rule,
+      as RHCOS ships with a openssh-server version, which doesnt support other protocols anyway.
+      Checking for an option without effect does not provide any value.
       Section 2: this should be the default
       Section 3: The requirement says PRIMARILY use certificate, not disallow PasswordAuthentication
-      completely
+      completely. But since the disabled root login is the default, we use this as known good.
       RHCOS Context: A more secure variant would be to disable SSH completely. As it is
       not always needed, since MachineConfigs can configure the local machine.
     status: automated
     rules:
       # Section 1
       - service_sshd_enabled
-      - sshd_allow_only_protocol2
       # Section 2
       - package_telnet-server_removed
       - package_telnet_removed
       # Section 3
       - sshd_disable_empty_passwords
-      - sshd_disable_root_password_login
+      - sshd_disable_root_login
       - sshd_enable_pubkey_auth
 
   - id: SYS.1.3.A9
