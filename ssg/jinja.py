@@ -255,7 +255,7 @@ def _load_macros(macros_directory, substitutions_dict=None):
     add_python_functions(substitutions_dict)
 
     if not os.path.isdir(macros_directory):
-        msg = (f"The directory '{macros_directory}' does not exist.")
+        msg = ("The directory '{1}' does not exist.").format(macros_directory)
         raise RuntimeError(msg)
 
     _load_macros_from_directory(macros_directory, substitutions_dict)
