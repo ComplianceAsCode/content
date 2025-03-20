@@ -69,3 +69,5 @@ selections:
     # Add oracle gpg key rule
     - 'ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
+
+    - '!audit_rules_file_deletion_events_renameat2'

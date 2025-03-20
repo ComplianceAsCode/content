@@ -60,3 +60,4 @@ selections:
     - '!cracklib_accounts_password_pam_retry'
     - '!aide_periodic_checking_systemd_timer'
     - '!package_cryptsetup-luks_installed'
+    - '!audit_rules_file_deletion_events_renameat2'

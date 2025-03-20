@@ -8,14 +8,14 @@ description: |-
     for all users and root. If the <tt>auditd</tt> daemon is configured to use the
     <tt>augenrules</tt> program to read audit rules during daemon startup (the
     default), add the following line to a file with suffix <tt>.rules</tt> in the
-    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
-    appropriate for your system:
-    <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 for 32-bit
+    system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat,renameat2 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
-    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
-    appropriate for your system:
-    <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename -S renameat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 for 32-bit
+    system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat2 -S renameat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
 
 rationale: |-
     Auditing file deletions will create an audit trail for files that are removed
@@ -50,6 +50,7 @@ ocil: |-
     {{{ ocil_audit_syscall(syscall="unlinkat") }}}
     {{{ ocil_audit_syscall(syscall="rename") }}}
     {{{ ocil_audit_syscall(syscall="renameat") }}}
+    {{{ ocil_audit_syscall(syscall="renameat2") }}}
 
 {{{ ocil_clause_entry_audit_syscall() }}}
 
@@ -62,5 +63,8 @@ warnings:
         <li><tt>audit_rules_file_deletion_events_rmdir</tt></li>
         <li><tt>audit_rules_file_deletion_events_unlink</tt></li>
         <li><tt>audit_rules_file_deletion_events_unlinkat</tt></li>
+        <li><tt>audit_rules_file_deletion_events_rename</tt></li>
+        <li><tt>audit_rules_file_deletion_events_renameat</tt></li>
+        <li><tt>audit_rules_file_deletion_events_renameat2</tt></li>
         </ul>
 

@@ -50,6 +50,7 @@ selections:
     - '!ensure_oracle_gpgkey_installed'
     - '!ensure_redhat_gpgkey_installed'
     - '!package_kea_removed'
+    - '!audit_rules_file_deletion_events_renameat2'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'
