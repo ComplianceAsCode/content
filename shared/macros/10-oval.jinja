@@ -605,9 +605,8 @@ datatype="{{{ datatype }}}" version="1">
 :type missing_config_file_fail: bool
 #}}
 
-{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, separator_regex='=') %}}
+{{%- macro oval_check_dropin_file(path, dropin_dir, section='', parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, prefix_regex='^[ \\t]*', separator_regex='=') %}}
 <def-group>
-  {{%- set prefix_regex = "^[ \\t]*" -%}}
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
     {{%- if missing_config_file_fail %}}
