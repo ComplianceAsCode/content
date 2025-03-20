@@ -56,3 +56,7 @@ selections:
   - '!ensure_oracle_gpgkey_installed'
   - '!ensure_almalinux_gpgkey_installed'
   - '!package_kea_removed'
+  - '!package_dnf-automatic_installed'
+  - '!timer_dnf-automatic_enabled'
+  - '!dnf-automatic_apply_updates'
+  - '!dnf-automatic_security_updates_only'
