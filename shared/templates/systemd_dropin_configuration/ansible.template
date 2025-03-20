@@ -4,6 +4,12 @@
 # complexity = low
 # disruption = low
 
+{{% if REMEDIATION_XCCDF_VARIABLE %}}
+{{{ ansible_instantiate_variables(REMEDIATION_XCCDF_VARIABLE) }}}
+{{% set VALUE = "{{" + REMEDIATION_XCCDF_VARIABLE + "}}" %}}
+{{% endif %}}
+
+
 - name: "{{{ rule_title }}} - Search for a section in files"
   ansible.builtin.find:
     paths: "{{item.path}}"
