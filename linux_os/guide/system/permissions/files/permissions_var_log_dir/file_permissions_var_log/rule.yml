@@ -31,6 +31,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log", perms="drwxr-xr-
 ocil: |-
     {{{ ocil_file_permissions(file="/var/log", perms="drwxr-xr-x") }}}
 
+{{% if 'ubuntu' in product %}}
+platform: service_disabled[rsyslog]
+{{% endif %}}
+
 template:
     name: file_permissions
     vars:
