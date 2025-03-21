@@ -13,3 +13,5 @@ description: |-
 selections:
   - grub2_nousb_argument
   - audit_rules_kernel_module_loading_create
+  - grub2_uefi_admin_username
+  - grub2_uefi_password

@@ -201,7 +201,6 @@ selections:
 - grub2_slub_debug_argument
 - grub2_spec_store_bypass_disable_argument
 - grub2_spectre_v2_argument
-- grub2_uefi_password
 - logind_session_timeout
 - mount_option_boot_noexec
 - mount_option_boot_nosuid

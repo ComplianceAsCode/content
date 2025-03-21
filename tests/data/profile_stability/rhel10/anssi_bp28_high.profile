@@ -205,7 +205,6 @@ selections:
 - grub2_slub_debug_argument
 - grub2_spec_store_bypass_disable_argument
 - grub2_spectre_v2_argument
-- grub2_uefi_password
 - kernel_config_acpi_custom_method
 - kernel_config_arm64_sw_ttbr0_pan
 - kernel_config_binfmt_misc

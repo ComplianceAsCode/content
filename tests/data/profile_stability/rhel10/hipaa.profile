@@ -141,7 +141,6 @@ selections:
 - grub2_disable_interactive_boot
 - grub2_enable_selinux
 - grub2_password
-- grub2_uefi_password
 - kernel_module_usb-storage_disabled
 - libreswan_approved_tunnels
 - no_direct_root_logins
