@@ -13,6 +13,8 @@ description: |-
     <pre>$ sudo auditctl -l | grep sudo.log
     -w /var/log/sudo.log -p wa -k maintenance</pre>
 
+    {{{ describe_audit_rules_watch("/var/log/sudo.log", "maintenance") }}}
+
 rationale: |-
     If events associated with nonlocal administrative access or diagnostic
     sessions are not logged, a major tool for assessing and investigating
