@@ -34,12 +34,7 @@ references:
 ocil_clause: 'there is no output'
 
 ocil: |-
-    To verify that auditing is configured for system administrator actions, run the following command:
-    Configure the operating system to generate an audit record for any all modifications to the "faillog" file occur.
-    Add or update the following rules in the "/etc/audit/audit.rules" file:
-    -w /var/log/faillog -p wa -k logins
-    The audit daemon must be restarted for the changes to take effect.
-    # sudo systemctl restart auditd.service
+    {{{ ocil_audit_rules_watch("/var/log/faillog", "logins") }}}
 
 template:
     name: audit_rules_watch
