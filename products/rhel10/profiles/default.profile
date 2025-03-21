@@ -11,4 +11,5 @@ description: |-
   this profile is to keep a rule in the product's XCCDF Benchmark.
 
 selections:
+  - grub2_nousb_argument
   - audit_rules_kernel_module_loading_create
