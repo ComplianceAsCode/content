@@ -3,15 +3,7 @@ documentation_complete: true
 title: 'Record Events that Modify the System''s Mandatory Access Controls (/etc/apparmor)'
 
 description: |-
-    If the <tt>auditd</tt> daemon is configured to use the
-    <tt>augenrules</tt> program to read audit rules during daemon startup (the
-    default), add the following line to a file with suffix <tt>.rules</tt> in the
-    directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-w /etc/apparmor/ -p wa -k MAC-policy</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add the following line to
-    <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-w /etc/apparmor/ -p wa -k MAC-policy</pre>
+    {{{ describe_audit_rules_watch("/etc/apparmor/", "MAC-policy") }}}
 
 rationale: |-
     The system's mandatory access policy (Apparmor) should not be
@@ -34,3 +26,4 @@ template:
     name: audit_rules_watch
     vars:
         path: /etc/apparmor
+        key: MAC-policy
