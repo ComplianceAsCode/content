@@ -52,15 +52,7 @@ references:
 ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/var/log/lastlog" with the following command:
-
-    $ sudo auditctl -l | grep /var/log/lastlog
-{{% if audit_watches_style == "modern" %}}
-    -a always,exit -F arch=b32 -F path=/var/log/lastlog -F perm=wa -F key=logins
-    -a always,exit -F arch=b64 -F path=/var/log/lastlog -F perm=wa -F key=logins
-{{% else %}}
-    -w /var/log/lastlog -p wa -k logins
-{{% endif %}}
+    {{{ ocil_audit_rules_watch("/var/log/lastlog", "logins") }}}
 
 template:
     name: audit_rules_watch

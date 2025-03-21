@@ -32,11 +32,7 @@ references:
 ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/sudoers" with the following command:
-
-    $ sudo auditctl -l | grep /etc/sudoers
-
-    -w /etc/sudoers -p wa -k identity
+    {{{ ocil_audit_rules_watch("/etc/sudoers", "actions") }}}
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/sudoers", "actions", "/etc/audit/rules.d/audit.rules") }}}'
 
