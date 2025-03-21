@@ -40,6 +40,8 @@ def test_template_package(
     template_vars = template["vars"]
     if template_name in ["package_installed", "package_removed"]:
         package = template_vars["pkgname"]
+        if isinstance(package, list):
+            package = package[0]
         component = package_to_component.get(package, [package])[0]
         reason = (
             "rule uses template '%s' with 'pkgname' parameter set to '%s' "
