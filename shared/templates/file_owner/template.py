@@ -11,9 +11,9 @@ def preprocess(data, lang):
 
     try:
         int(data["uid_or_name"])
-        data["user_represented_with_uid"] = True
+        data["owner_represented_with_uid"] = True
     except ValueError:
-        data["user_represented_with_uid"] = False
+        data["owner_represented_with_uid"] = False
 
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
