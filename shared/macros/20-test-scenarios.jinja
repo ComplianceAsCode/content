@@ -21,7 +21,6 @@ the external variable and parameter value to a desired state.
 
 {{%- macro tests_init_faillock_vars(state) -%}}
 
-PRM_NAME={{{ PRM_NAME }}}
 {{% if state not in ["correct", "stricter", "lenient_high", "lenient_low"] %}}
 echo "Unsupported value for argument 'state': {{{ state }}}"
 exit 2
@@ -108,5 +107,8 @@ echo "  variable_lower_bound={{{ VARIABLE_LOWER_BOUND }}}"
 echo "  ext_variable={{{ EXT_VARIABLE }}}"
 exit 2
 {{% endif %}}
+
+PRM_NAME={{{ PRM_NAME }}}
+
 {{%- endmacro -%}}
 
