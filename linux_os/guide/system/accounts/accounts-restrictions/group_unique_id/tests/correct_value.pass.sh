@@ -1,4 +1,4 @@
 #!/bin/bash
-# remediation = no
+# remediation = none
 
 groupadd cac_test$(date +%s)
