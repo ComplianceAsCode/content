@@ -56,18 +56,6 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
     {{%- endif %}}
-    {{%- if application == "sshd" %}}
-{{#-
-    This condition is here to avoid regression in sshd configuration rules.
-    The OVAL checks for sshd configuration test if the package is installed
-    and if it is required or not by the profile. When rule applicability is
-    done for these rules, it can be removed.
-#}}
-    <criteria comment="{{{ application }}} is configured correctly or is not installed"
-    operator="OR">
-        {{{- application_not_required_or_requirement_unset() }}}
-        {{{- application_required_or_requirement_unset() }}}
-    {{%- endif %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
         {{{- oval_line_in_file_criterion(path, parameter) }}}
@@ -75,10 +63,6 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
         {{%- endif %}}
     </criteria>
-    {{%- if application == "sshd" %}}
-    </criteria> {{# close criteria left open in application_required_or_requirement_unset #}}
-    </criteria>
-    {{%- endif %}}
     {{%- if missing_config_file_fail %}}
         {{{- oval_config_file_exists_criterion(path) }}}
     </criteria>
