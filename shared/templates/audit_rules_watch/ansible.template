@@ -4,5 +4,19 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_audit_augenrules_add_watch_rule(path=PATH, permissions="wa", key=KEY) }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path=PATH, permissions="wa", key=KEY) }}}
+{{% if PATH_IS_VARIABLE %}}
+{{{ ansible_instantiate_variables(PATH) }}}
+{{% set path = "{{ " + PATH + " }}" %}}
+{{% else %}}
+{{% set path = PATH %}}
+{{% endif %}}
+
+{{% if audit_watches_style == "modern" %}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b32') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY,style=audit_watches_style, arch='b64') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b32') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style, arch='b64') }}}
+{{% else %}}
+{{{ ansible_audit_augenrules_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style) }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path=path, permissions='wa', key=KEY, style=audit_watches_style) }}}
+{{% endif %}}
