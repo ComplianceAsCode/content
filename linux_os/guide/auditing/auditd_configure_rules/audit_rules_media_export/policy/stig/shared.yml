@@ -13,15 +13,17 @@ vuldiscussion: |-
 checktext: |-
     Verify that {{{ full_name }}} is configured to audit the execution of the "mount" command with the following command:
 
-    $ sudo auditctl -l | grep /usr/bin/mount
+    $ sudo auditctl -l | grep mount
 
-    -a always,exit -F path=/usr/bin/mount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
+    -a always,exit -F arch=b32 -S mount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k export
+    -a always,exit -F arch=b64 -S mount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k export
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
 fixtext: |-
     Configure {{{ full_name }}} to generate audit records upon successful/unsuccessful attempts to use the "mount" command by adding or updating the following rule in "/etc/audit/rules.d/audit.rules":
 
-    --a always,exit -F path=/usr/bin/mount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
+    -a always,exit -F arch=b32 -S mount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k export
+    -a always,exit -F arch=b64 -S mount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k export
 
     The audit daemon must be restarted for the changes to take effect.

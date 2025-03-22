@@ -10,7 +10,7 @@ do
 	OTHER_FILTERS=""
 	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 	SYSCALL="{{{ ATTR }}}"
-	KEY="perm_mod"
+	KEY="{{{ KEY }}}"
 	SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
 
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
@@ -26,7 +26,7 @@ do
 	OTHER_FILTERS=""
 	AUID_FILTERS="-F auid=0"
 	SYSCALL="{{{ ATTR }}}"
-	KEY="perm_mod"
+	KEY="{{{ KEY }}}"
 	SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
 
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
