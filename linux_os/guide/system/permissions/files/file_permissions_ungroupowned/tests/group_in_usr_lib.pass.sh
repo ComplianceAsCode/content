@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# remediation = none
 {{% if 'ubuntu' in product %}}
 # platform = Not Applicable
 {{% endif %}}

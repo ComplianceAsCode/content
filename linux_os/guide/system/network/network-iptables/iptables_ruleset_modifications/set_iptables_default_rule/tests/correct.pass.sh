@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_ubuntu
 # packages = iptables,iptables-persistent
 

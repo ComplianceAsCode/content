@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = Not Applicable
 
 # Override template test.

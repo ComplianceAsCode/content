@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_all
 {{%- if 'sle15' in product %}}
 # packages = grub2,grubby

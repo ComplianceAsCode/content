@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_ubuntu
 {{% if SYSCTLVAL == "" %}}
 # variables = sysctl_{{{ SYSCTLID }}}_value={{{ SYSCTL_CORRECT_VALUE }}}

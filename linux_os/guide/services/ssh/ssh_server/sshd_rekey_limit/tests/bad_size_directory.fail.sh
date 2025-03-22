@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_fedora,Oracle Linux 9,Red Hat Enterprise Linux 9
 # variables = var_rekey_limit_time=1h
 
