@@ -143,7 +143,7 @@ def build_container_image():
         REPO_PATH, '/Dockerfiles/compliance_operator_content.Dockerfile')
     command = [
         'podman', 'build', '-f', dockerfile_path, '-t',
-        'localcontentbuild:latest', '.']
+        'localcontentbuild:latest', '--platform', 'linux/arm64', '.']
     subprocess.run(command, check=True, capture_output=CAPTURE_OUTPUT)
     log.info('Successfully built container image')
 
