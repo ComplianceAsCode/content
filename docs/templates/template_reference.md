@@ -956,7 +956,7 @@ The selected value can be changed in the profile (consult the actual variable fo
 -   Languages: Ansible, Bash, OVAL, SCE
 
 #### systemd_dropin_configuration
-- checks if a Systemd-style configuration exists either in the main file or in any file within specified dropin directory.
+- checks if a Systemd-style configuration exists either in the main file or in a file with a `.conf` extension within specified dropin directory.
     The remediation tries to modify already existing configuration.
     If the correct section is found and the parameter exists, its value is changed to match the desired one.
     If the section is found but the parameter does not exist, it is added to this section.
@@ -972,11 +972,24 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     - **value** - the value of the parameter
 
-    - **no_quotes** - if set to "true", the value will not be enclosed in quotes
+    - **no_quotes** - if set to "true", the value will not be enclosed in quotes. Default is "false".
 
     - **missing_parameter_pass** - effective only in OVAL checks, if
         set to `"false"` and the parameter is not present in the
         configuration file, the OVAL check will return false (default value: `"false"`).
+
+    - **application** - used only in OVAL, this inserts the entered string into
+        some description tags, making it easier to read. Default is empty string.
+
+    - **missing_config_file_fail** - a boolean which is used in OVAL. In case it
+        is set to true, the rule will fail in case the master configuration file
+        is not present. Default is true.
+
+    - **remediation_xccdf_variable** - if specified, then the given XCCDF
+        variable is used during remediation instead of hardcoded value. The
+        variable is NOT used during checking. But you can specify multiple values
+        separated by | as a `value` parameter and they wil be used during
+        checking.
 
 -   Languages: Ansible, Bash, OVAL
 
