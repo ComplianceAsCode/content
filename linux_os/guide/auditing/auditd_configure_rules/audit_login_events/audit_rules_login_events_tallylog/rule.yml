@@ -10,12 +10,22 @@ description: |-
     default), add the following lines to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing logon events:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F path=/var/log/tallylog -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/var/log/tallylog -F perm=wa -F key=logins</pre>
+{{% else %}}
     <pre>-w /var/log/tallylog -p wa -k logins</pre>
+{{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
     edits of files involved in storing logon events:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F path=/var/log/tallylog -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/var/log/tallylog -F perm=wa -F key=logins</pre>
+{{% else %}}
     <pre>-w /var/log/tallylog -p wa -k logins</pre>
+{{% endif %}}
 
 rationale: |-
     Manual editing of these files may indicate nefarious activity, such
@@ -60,12 +70,18 @@ ocil: |-
 
     $ sudo auditctl -l | grep /var/log/tallylog
 
+{{% if audit_watches_style == "modern" %}}
+    -a always,exit -F arch=b32 -F path=/var/log/tallylog -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/var/log/tallylog -F perm=wa -F key=logins
+{{% else %}}
     -w /var/log/tallylog -p wa -k logins
+{{% endif %}}
 
 template:
-    name: audit_rules_login_events
+    name: audit_rules_watch
     vars:
         path: /var/log/tallylog
+        key: logins
 
 fixtext: |-
     {{{ fixtext_audit_file_watch_rule("/var/log/tallylog", "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}

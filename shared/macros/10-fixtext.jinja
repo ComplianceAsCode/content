@@ -13,8 +13,12 @@
 Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that <tt>"{{{ path }}}"</tt>.
 
 Add or update the following file system rule to <tt>"{{{ rule_path }}}"</tt>:
-
+{{% if audit_watches_style == "modern" %}}
+-a always,exit -F arch=b32 -F path={{{ path }}} -F perm=wa -F key={{{ key }}}
+-a always,exit -F arch=b64 -F path={{{ path }}} -F perm=wa -F key={{{ key }}}
+{{% else %}}
 -w {{{ path }}} -p wa -k {{{ key }}}
+{{% endif %}}
 
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}

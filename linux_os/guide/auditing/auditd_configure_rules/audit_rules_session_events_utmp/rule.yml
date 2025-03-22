@@ -42,9 +42,10 @@ ocil: |-
     <pre> sudo auditctl -l | grep -w '/run/utmp'</pre>
 
 template:
-    name: audit_rules_login_events
+    name: audit_rules_watch
     vars:
         path: /run/utmp
+        key: session
     backends:
         ansible: "off"
         bash: "off"
