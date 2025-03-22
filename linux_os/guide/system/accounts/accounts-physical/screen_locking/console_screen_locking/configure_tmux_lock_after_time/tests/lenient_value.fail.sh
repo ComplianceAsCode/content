@@ -1,3 +1,4 @@
+#!/bin/bash
 # packages = tmux
 
 tmux_conf="/etc/tmux.conf"

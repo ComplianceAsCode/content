@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_all
 
 mkdir -p /etc/ssh/sshd_config.d

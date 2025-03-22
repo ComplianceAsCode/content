@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_all
 
 echo "Match something" >> /etc/ssh/sshd_config

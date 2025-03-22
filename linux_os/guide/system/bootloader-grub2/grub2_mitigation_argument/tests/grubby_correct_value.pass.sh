@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = Oracle Linux 8
 # packages = grubby
 
