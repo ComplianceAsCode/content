@@ -22,3 +22,7 @@ selections:
     - srg_gpos:all
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.
     - '!enable_dracut_fips_module'
+    # the following rule prevents system from running containers and it prevents also other relatively common workloads.
+    # Therefore, the rule is not enforced.
+    - sysctl_user_max_user_namespaces.role=unscored
+    - sysctl_user_max_user_namespaces.severity=info

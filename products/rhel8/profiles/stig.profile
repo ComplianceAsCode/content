@@ -1172,6 +1172,10 @@ selections:
 
     # RHEL-08-040284
     - sysctl_user_max_user_namespaces
+    # the rule prevents system from running containers and it prevents also other relatively common workloads.
+    # Therefore, the rule is not enforced.
+    - sysctl_user_max_user_namespaces.role=unscored
+    - sysctl_user_max_user_namespaces.severity=info
 
     # RHEL-08-040285
     - sysctl_net_ipv4_conf_all_rp_filter

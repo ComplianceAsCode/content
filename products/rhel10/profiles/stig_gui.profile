@@ -22,14 +22,9 @@ extends: stig
 
 selections:
     - '!xwindows_remove_packages'
-
     - '!xwindows_runlevel_target'
-
     - '!package_nfs-utils_removed'
 
-    # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
-    # https://issues.redhat.com/browse/RHEL-10416
-    - '!sysctl_user_max_user_namespaces'
     # locking of idle sessions is handled by screensaver when GUI is present, the following rule is therefore redundant
     - '!logind_session_timeout'
     # Currently not working RHEL 10, changes are being made to FIPS mode. Investigation is recommended.

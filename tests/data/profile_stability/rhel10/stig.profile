@@ -508,6 +508,8 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
 - sysctl_user_max_user_namespaces
+- sysctl_user_max_user_namespaces.role=unscored
+- sysctl_user_max_user_namespaces.severity=info
 - system_booted_in_fips_mode
 - tftp_uses_secure_mode_systemd
 - usbguard_generate_policy
