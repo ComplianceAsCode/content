@@ -2,6 +2,8 @@
 
 ( IFS=:
   for p in $PATH; do
-    chmod go-w $p
+    if [ -d "$p" ]; then
+      chmod go-w $p
+    fi
   done
 )
