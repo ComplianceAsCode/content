@@ -428,7 +428,7 @@ do
 {{% if style == "modern" %}}
         current_access_bits=$(sed -ne "s#$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+path={{{ path }}}$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
 {{% else %}}
-        current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}}$sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+        current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}} $sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
 {{% endif %}}
         # Split required access bits string into characters array
         # (to check bit's presence for one bit at a time)
