@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_sle,multi_platform_rhel,multi_platform_fedora,multi_platform_ubuntu
 
 groupadd group_test

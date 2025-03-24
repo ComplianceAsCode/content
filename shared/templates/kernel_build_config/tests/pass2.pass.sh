@@ -1,5 +1,9 @@
 #!/bin/bash
 
+{{%- if VARIABLE %}}
+# variables = {{{ VARIABLE }}}=correct_value
+{{%- endif %}}
+
 source common.sh
 
 # pass 2 is the second pass scenario
@@ -15,7 +19,6 @@ for file in /boot/config-* ; do
 done
 {{% else %}}
 {{%- if VARIABLE %}}
-# variables = {{{ VARIABLE }}}=correct_value
 {{%- set VALUE="correct_value" %}}
 {{%- endif %}}
 # The second passing scenario is when the is double quoted, like VALUE="correct_value"

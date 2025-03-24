@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 
 ( IFS=:
   for p in $PATH; do

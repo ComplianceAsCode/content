@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = multi_platform_all
 
 # Handling of case-insensitivity of include is tricky

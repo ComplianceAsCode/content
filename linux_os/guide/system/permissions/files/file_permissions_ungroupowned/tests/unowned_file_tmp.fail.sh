@@ -1,6 +1,5 @@
-# platform = multi_platform_ubuntu
 #!/bin/bash
-#
+# platform = multi_platform_ubuntu
 # remediation = none
 
 mount tmpfs /tmp -t tmpfs

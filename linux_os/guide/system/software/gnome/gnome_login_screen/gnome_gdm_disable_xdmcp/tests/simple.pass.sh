@@ -1,3 +1,4 @@
+#!/bin/bash
 # packages = gdm
 
 mkdir -p /etc/gdm

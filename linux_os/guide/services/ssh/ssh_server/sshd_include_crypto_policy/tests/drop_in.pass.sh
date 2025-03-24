@@ -1,5 +1,4 @@
 #!/bin/bash
-# remediation = none
 # platform = multi_platform_all
 
 sed -i '/Include \/etc\/crypto-policies\/back-ends\/opensshserver.config/d' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf
