@@ -8,7 +8,3 @@ semodule -i /tmp/unlabeled_t.cil
 
 mknod /dev/foo c 1 5
 chcon -t unlabeled_t /dev/foo
-
-
-mknod /dev/foo c 1 5
-chcon -t device_t /dev/foo
