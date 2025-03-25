@@ -184,9 +184,6 @@ selections:
 - configure_libreswan_crypto_policy
 - configure_opensc_card_drivers
 - configure_ssh_crypto_policy
-- configure_tmux_lock_after_time
-- configure_tmux_lock_command
-- configure_tmux_lock_keybinding
 - configure_usbguard_auditbackend
 - configured_firewalld_default_deny
 - coredump_disable_backtraces
@@ -364,7 +361,6 @@ selections:
 - no_files_unowned_by_user
 - no_host_based_files
 - no_shelllogin_for_systemaccounts
-- no_tmux_in_shells
 - no_user_host_based_files
 - package_aide_installed
 - package_audispd-plugins_installed
@@ -394,7 +390,6 @@ selections:
 - package_telnet-server_removed
 - package_tftp-server_removed
 - package_tftp_removed
-- package_tmux_installed
 - package_tuned_removed
 - package_unbound_removed
 - package_usbguard_installed
