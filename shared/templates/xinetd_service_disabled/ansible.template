@@ -16,7 +16,7 @@
     register: xinetd_service
 
   - name: "{{{ rule_title }}} - Configure 'disable = yes' in /etc/xinetd.d/{{{ SERVICENAME }}}"
-    lineinfile:
+    ansible.builtin.lineinfile:
       dest: "/etc/xinetd.d/{{{ SERVICENAME }}}"
       regexp: '^[\s]*disable[\s]*=[\s]*no'
       line: "disable = yes"
