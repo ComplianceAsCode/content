@@ -54,6 +54,7 @@ template:
         param: ForwardToSyslog
         value: yes
         no_quotes: 'true'
+        missing_config_file_fail: 'false'
 {{% else %}}
 template:
     name: shell_lineinfile
