@@ -3,6 +3,8 @@ content-version: 0.1.77
 title: ADR-0000 - Architecture Decisions Records
 status: accepted
 ---
+(introduction-of-architecture-decisions-records)=
+# Introduction of Architecture Decisions Records
 
 ## Context
 

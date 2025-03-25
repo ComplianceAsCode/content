@@ -175,7 +175,10 @@ A rule itself contains these attributes:
 
     It is possible to specify multiple platforms in the list. In that case, they are implicitly connected with "OR" operator.
 
-    > ⚠ **Deprecated!** List of platforms feature is being phased out, use boolean expressions.
+    ```{important}
+    ⚠ **Deprecated!**
+    List of platforms feature is being phased out, use boolean expressions.
+    ```
 
     Platforms from groups are inherited by rules for the whole group hierarchy. They are implicitly joined with rule's platforms using "AND" operator.
 

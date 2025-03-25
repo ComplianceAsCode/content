@@ -237,7 +237,7 @@ Rules sections must be in the following order, if they are present.
     * Keys must be in alphabetical order
 * `references`
     * Keys must be in alphabetical order
-* `platforms`
+* `platform` (`platforms` should not be used for new rules)
 * `ocil_clause`
 * `ocil` (HTML Like)
 * `fixtext` (HTML Like)

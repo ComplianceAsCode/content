@@ -84,7 +84,7 @@ All issues and pull requests for product removal must use the [product-removal](
 - Guidelines: We need strong protection against technical debt, increases in build time and a framework to deal with deprecations or changes of behavior.
 
 #### Architectural Decision Records
-- We use [Architectural Decision Records](../../adr/0000-architecture-decisions-records)
+- We use [Architectural Decision Records](#introduction-of-architecture-decisions-records)
 - The first ADR defines the context and guidelines for new ADRs.
 
 
