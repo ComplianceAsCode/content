@@ -85,3 +85,7 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
+    - '!package_dnf-automatic_installed'
+    - '!timer_dnf-automatic_enabled'
+    - '!dnf-automatic_apply_updates'
+    - '!dnf-automatic_security_updates_only'
