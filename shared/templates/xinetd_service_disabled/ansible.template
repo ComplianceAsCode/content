@@ -11,7 +11,7 @@
       manager: auto
 
   - name: "{{{ rule_title }}} - Ensure /etc/xinetd.d/{{{ SERVICENAME }}} exists"
-    stat:
+    ansible.builtin.stat:
       path: "/etc/xinetd.d/{{{ SERVICENAME }}}"
     register: xinetd_service
 
