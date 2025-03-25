@@ -1,0 +1,24 @@
+srg_requirement: |-
+    {{{ full_name }}} must implement NIST FIPS-validated cryptography for
+    the following: to provision digital signatures, to generate cryptographic hashes,
+    and to protect unclassified information requiring confidentiality and cryptographic
+    protection in accordance with applicable federal laws, Executive Orders, directives,
+    policies, regulations, and standards.
+vuldiscussion: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+checktext: |-
+    Verify that {{{ full_name }}} is in FIPS mode with the following command:
+
+    cat /proc/sys/crypto/fips_enabled
+
+    If the command doesn't return 1, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to implement FIPS mode the installer kernel must be started with fips=1.
+
+
+    If this checks fails on an installed system it is a permanent finding until the system is reinstalled.
