@@ -7,13 +7,15 @@ description: |-
     events for all users and root. If the <tt>auditd</tt> daemon is configured to
     use the <tt>augenrules</tt> program to read audit rules during daemon startup
     (the default), add the following line to a file with suffix <tt>.rules</tt> in
-    the directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
-    appropriate for your system:
+    the directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 for
+    32-bit system, or having two lines for both b32 and b64 in case your
+    system is 64-bit:
     <pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;={{{ auid }}} -F auid!=unset -F key=export</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
-    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
-    appropriate for your system:
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 for
+    32-bit system, or having two lines for both b32 and b64 in case your
+    system is 64-bit:
     <pre>-a always,exit -F arch=ARCH -S mount -F auid&gt;={{{ auid }}} -F auid!=unset -F key=export</pre>
 
 rationale: |-
@@ -60,7 +62,7 @@ references:
 {{{ complete_ocil_entry_audit_syscall(syscall="mount") }}}
 
 fixtext: |-
-    {{{ fixtext_audit_rules_dac_modification_attr("mount") | indent(4) }}}
+    {{{ fixtext_audit_rules("mount", "export", None) | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_audit_syscall("mount") }}}'
 
@@ -68,3 +70,4 @@ template:
     name: audit_rules_dac_modification
     vars:
         attr: mount
+        key: export

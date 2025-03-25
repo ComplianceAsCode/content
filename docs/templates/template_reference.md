@@ -41,6 +41,8 @@
 
     -   **attr** - value of `-S` argument in Audit rule, eg. `chmod`
 
+    -   **key** - audit key. If this isn't specified then the default value `perm_mod` is used.
+
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### audit_rules_file_deletion_events
