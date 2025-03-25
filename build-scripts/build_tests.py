@@ -209,7 +209,9 @@ def _get_rules_in_profile(built_profiles_root) -> Generator[str, None, None]:
 def main() -> int:
     args = _create_arg_parser().parse_args()
     logging.basicConfig(level=logging.getLevelName(args.log_level))
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, args.product_yaml)
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, args.product_yaml,
+                                                os.path.join(args.root, "product_properties"))
+
     root_path = pathlib.Path(args.root).resolve()
     output_path = pathlib.Path(args.output).resolve()
     resolved_rules_dir = pathlib.Path(args.resolved_rules_dir)
