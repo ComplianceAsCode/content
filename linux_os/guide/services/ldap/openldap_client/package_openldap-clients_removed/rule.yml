@@ -1,7 +1,7 @@
 {{% if product in ["sle12", "sle15"] %}}
 {{% set package_name = "openldap2-client" %}}
 {{% elif "ubuntu" in product %}}
-{{% set package_name = "lapd-utils" %}}
+{{% set package_name = "ldap-utils" %}}
 {{% else %}}
 {{% set package_name = "openldap-clients" %}}
 {{% endif %}}
