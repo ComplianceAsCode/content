@@ -3,9 +3,6 @@ controls:
         title: {{{ full_name }}} must retain a users session lock until that user reestablishes
             access using established identification and authentication procedures.
         rules:
-            - configure_tmux_lock_command
-            - no_tmux_in_shells
-            - package_tmux_installed
             - dconf_gnome_lock_screen_on_smartcard_removal
             - dconf_gnome_screensaver_lock_enabled
             - dconf_gnome_screensaver_lock_locked

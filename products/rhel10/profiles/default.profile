@@ -15,3 +15,8 @@ selections:
   - audit_rules_kernel_module_loading_create
   - grub2_uefi_admin_username
   - grub2_uefi_password
+  - no_tmux_in_shells
+  - package_tmux_installed
+  - configure_tmux_lock_after_time
+  - configure_tmux_lock_command
+  - configure_tmux_lock_keybinding
