@@ -14,7 +14,6 @@ description: |-
 selections:
     - var_network_filtering_service=firewalld
     - accounts_user_dot_user_ownership
-    - service_timesyncd_enabled
     - gnome_gdm_disable_xdmcp
     - configure_user_data_backups
     - dir_ownership_binary_dirs
@@ -34,7 +33,6 @@ selections:
     - configure_etc_hosts_deny
     - sudoers_no_root_target
     - auditd_write_logs
-    - service_ntpd_enabled
     - accounts_users_home_files_groupownership
     - dconf_gnome_disable_user_list
     - coreos_enable_selinux_kernel_argument
@@ -51,7 +49,6 @@ selections:
     - directory_permissions_var_log_audit
     - service_tftp_disabled
     - file_permissions_var_log
-    - service_timesyncd_configured
     - file_ownership_sshd_private_key
     - sshd_enable_warning_banner_net
     - file_groupowner_var_log_syslog
@@ -102,7 +99,6 @@ selections:
     - auditd_log_format
     - service_syslogng_enabled
     - account_passwords_pam_faillock_audit
-    - ntpd_specify_remote_server
     - file_owner_var_log
     - service_sshd_disabled
     - sshd_disable_rhosts_rsa
