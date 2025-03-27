@@ -2,7 +2,18 @@
 
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 
+{{% if audit_watches_style == "modern" %}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", "actions", "modern", "b32", "path") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", "actions", "modern", "b64", "path") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", "actions", "modern", "b32", "path") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", "actions", "modern", "b64", "path") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", "actions", "modern", "b32", "dir") }}}
+{{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", "actions", "modern", "b64", "dir") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", "actions", "modern", "b32", "dir") }}}
+{{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", "actions", "modern", "b64", "dir") }}}
+{{% else %}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers", "wa", "actions") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers", "wa", "actions") }}}
 {{{ bash_fix_audit_watch_rule("auditctl", "/etc/sudoers.d/", "wa", "actions") }}}
 {{{ bash_fix_audit_watch_rule("augenrules", "/etc/sudoers.d/", "wa", "actions") }}}
+{{% endif %}}
