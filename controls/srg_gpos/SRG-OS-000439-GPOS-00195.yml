@@ -5,4 +5,6 @@ controls:
         title: {{{ full_name }}} must install security-relevant software updates within
             the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and
             STIGs).
-        status: pending
+        status: automated
+        rules:
+            - dnf-automatic_apply_updates
