@@ -22,7 +22,7 @@
 
 {{% set legacy_regex = "^[\\s]*cron\\.\\*[\\s]+/var/log/cron\\s*(?:#.*)?$" %}}
 {{# RainerScript keys are case-insensitive #}}
-{{% set rainer_script_regex = "^\\s*cron\\.\\*\\s+action\\(.*(?i)\\btype\\b(?-i)=\"omfile\".*(?i)\\bfile\\b(?-i)=\"/var/log/cron\".*\\)\\s*$" %}}
+{{% set rainer_script_regex = "(?m)^\\s*cron\\.\\*\\s+action\\(\\s*.*(?i)\\btype\\b(?-i)=\"omfile\"\\s*.*(?i)\\bfile\\b(?-i)=\"/var/log/cron\"\\s*.*\\)\\s*$" %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="cron is configured in /etc/rsyslog.conf"
@@ -78,7 +78,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_logging_all_facilities" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\*\.\*[\s]+/var/log/messages\s*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">(?m)^[\s]*\*\.\*[\s]+(/var/log/messages|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/messages"\s*\))\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -90,7 +90,7 @@
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_dir_logging_all_facilities" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*\*\.\*[\s]+/var/log/messages\s*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">(?m)^[\s]*\*\.\*[\s]+(/var/log/messages|action\(\s*.*(?i:\btype\b)="omfile"\s*.*(?i:\bfile\b)="/var/log/messages"\s*\))\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endif %}}
