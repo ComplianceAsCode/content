@@ -3,27 +3,33 @@
 {{{ bash_instantiate_variables("sshd_approved_macs") }}}
 
 CONF_FILE=/etc/crypto-policies/back-ends/opensshserver.config
+LOCAL_CONF_DIR=/etc/crypto-policies/local.d
+LOCAL_CONF_FILE=${LOCAL_CONF_DIR}/opensshserver-ssg.config
 correct_value="-oMACs=${sshd_approved_macs}"
 
-# Test if file exists
-test -f ${CONF_FILE} || touch ${CONF_FILE}
-
-# Ensure CRYPTO_POLICY is not commented out
-sed -i 's/#CRYPTO_POLICY=/CRYPTO_POLICY=/' ${CONF_FILE}
-
-if ! grep -q "\\$correct_value" "$CONF_FILE"; then
-    # We need to get the existing value, using PCRE to maintain same regex
-    existing_value=$(grep -Po '(-oMACs=\S+)' ${CONF_FILE})
-
-    if [[ ! -z ${existing_value} ]]; then
-        # replace existing_value with correct_value
-        sed -i "s/${existing_value}/${correct_value}/g" ${CONF_FILE}
-    else
-        # ***NOTE*** #
-        # This probably means this file is not here or it's been modified
-        # unintentionally.
-        # ********** #
-        # echo correct_value to end
-        echo "CRYPTO_POLICY='${correct_value}'" >> ${CONF_FILE}
-    fi
+# Test if file exists, create default it if not
+if [[ ! -s ${CONF_FILE} ]] || ! grep -q "^\s*CRYPTO_POLICY=" ${CONF_FILE} ; then
+    update-crypto-policies --no-reload # Generate a default configuration
 fi
+
+# Get the last occurrence of CRYPTO_POLICY
+last_crypto_policy=$(grep -Eo "^\s*CRYPTO_POLICY='[^']+'" ${CONF_FILE} | tail -n 1)
+
+# Copy the last CRYPTO_POLICY value to the local configuration file
+if [[ -n "$last_crypto_policy" ]]; then
+    if ! grep -qe "$correct_value" <<< "$last_crypto_policy"; then
+        # If an existing -oMACs= is found, replace it
+        # Else, append correct_value before the closing apostrophe
+        if [[ "$last_crypto_policy" == *"-oMACs="* ]]; then
+            last_crypto_policy=$(echo "$last_crypto_policy" | sed -E "s/-oMACs=\S+/${correct_value}/")
+        else
+            last_crypto_policy=$(echo "$last_crypto_policy" | sed -E "s/'[[:space:]]*$/ ${correct_value}'/")
+        fi
+        # Write updated line to LOCAL_CONF_FILE
+        echo -e "\n$last_crypto_policy" > "$LOCAL_CONF_FILE"
+    fi
+else
+    echo -e "\nCRYPTO_POLICY='${correct_value}'" > ${LOCAL_CONF_FILE}
+fi
+
+update-crypto-policies --no-reload
