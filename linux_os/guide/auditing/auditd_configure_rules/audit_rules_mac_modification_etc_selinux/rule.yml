@@ -23,10 +23,10 @@ references:
 ocil_clause: 'the system is not configured to audit attempts to change files within the /etc/selinux directory'
 
 ocil: |-
-    {{{ ocil_audit_rules_watch("/etc/selinux", "MAC-policy") }}}
+    {{{ ocil_audit_rules_watch("/etc/selinux/", "MAC-policy") }}}
 
 template:
     name: audit_rules_watch
     vars:
-        path: /etc/selinux
+        path: /etc/selinux/
         key: MAC-policy
