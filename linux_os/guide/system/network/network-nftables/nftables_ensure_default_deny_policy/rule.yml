@@ -8,7 +8,6 @@ description: |-
    the firewall will accept any packet that is not configured to be denied and the packet will
    continue traversing the network stack.
 
-   {% if 'ubuntu' in product %}
    Run the following commands and verify that base chains contain a policy of DROP.
    <pre>
    $ nft list ruleset | grep 'hook input'
