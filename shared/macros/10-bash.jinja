@@ -332,7 +332,7 @@ fi
 {{#
     Macro to fix audit file system object watch rule for given path:
 
-    * if rule exists, also verifies the -w bits match the requirements
+    * if rule exists, also verifies the '-w' or '-F path' match the requirements
     * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
       audit rules file, depending on the tool which was used to load audit rules
 
@@ -342,15 +342,20 @@ fi
 
 :param tool:                 tool used to load audit rules, either 'auditctl', or 'augenrules'
 :type tool: str
-:param path:                 value of -w audit rule's argument
+:param path:                 value of '-w' or '-F path=' audit rule's argument
 :type path: str
-:param required_access_bits: value of -p audit rule's argument
+:param required_access_bits: value of '-p' or '-F perm=' audit rule's argument
 :type required_access_bits: str
-:param key:                  value of -k audit rule's argument
+:param key:                  value of '-k' or '-F key=' audit rule's argument
 :type key: str
+:param style: Use "modern" or "legacy" style of audit watches
+:type style: str
+:param arch: Value of '-F arch=' audit rule's argument, generate audit watches for the "b32" or "b64" architecture. Only applicable if "style" is set to "modern".
+:type arch: str
+
 
 #}}
-{{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key) -%}}
+{{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key, style="", arch="") -%}}
 # Create a list of audit *.rules files that should be inspected for presence and correctness
 # of a particular audit rule. The scheme is as follows:
 #
@@ -372,7 +377,11 @@ files_to_inspect+=('/etc/audit/audit.rules')
 # If the audit is 'augenrules', then check if rule is already defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to list of files for inspection.
 # If rule isn't defined, add '/etc/audit/rules.d/{{{ key }}}.rules' to list of files for inspection.
+{{% if style == "modern" %}}
+readarray -t matches < <(grep -HP "[\s]*-F[\s]+path={{{ path }}}" /etc/audit/rules.d/*.rules)
+{{% else %}}
 readarray -t matches < <(grep -HP "[\s]*-w[\s]+{{{ path }}}" /etc/audit/rules.d/*.rules)
+{{% endif %}}
 
 # For each of the matched entries
 for match in "${matches[@]}"
@@ -404,7 +413,11 @@ fi
 for audit_rules_file in "${files_to_inspect[@]}"
 do
     # Check if audit watch file system object rule for given path already present
+{{% if style == "modern" %}}
+    if grep -q -P -- "^[\s]*-F[\s]+path={{{ path }}}" "$audit_rules_file"
+{{% else %}}
     if grep -q -P -- "^[\s]*-w[\s]+{{{ path }}}" "$audit_rules_file"
+{{% endif %}}
     then
         # Rule is found => verify yet if existing rule definition contains
         # all of the required access type bits
@@ -412,7 +425,11 @@ do
         # Define BRE whitespace class shortcut
         sp="[[:space:]]"
         # Extract current permission access types (e.g. -p [r|w|x|a] values) from audit rule
+{{% if style == "modern" %}}
+        current_access_bits=$(sed -ne "s#$sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+path={{{ path }}}$sp\+-F$sp\+perm=\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+{{% else %}}
         current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}} $sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
+{{% endif %}}
         # Split required access bits string into characters array
         # (to check bit's presence for one bit at a time)
         for access_bit in $(echo "{{{ required_access_bits }}}" | grep -o .)
@@ -428,12 +445,20 @@ do
         done
         # Propagate the updated rule's access bits (original + the required
         # ones) back into the /etc/audit/audit.rules file for that rule
+{{% if style == "modern" %}}
+        sed -i "s#\($sp*-a$sp\+always,exit$sp\+-F$sp\+arch={{{ arch }}}$sp\+-F$sp\+path={{{ path }}}$sp\+-F$sp\+perm=\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+{{% else %}}
         sed -i "s#\($sp*-w$sp\+{{{ path }}}$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
+{{% endif %}}
     else
         # Rule isn't present yet. Append it at the end of $audit_rules_file file
         # with proper key
 
+{{% if style == "modern" %}}
+        echo "-a always,exit -F arch={{{ arch }}} -F path={{{ path }}} -F perm={{{ required_access_bits }}} -F key={{{ key }}}" >> "$audit_rules_file"
+{{% else %}}
         echo "-w {{{ path }}} -p {{{ required_access_bits }}} -k {{{ key }}}" >> "$audit_rules_file"
+{{% endif %}}
     fi
 done
 {{%- endmacro -%}}

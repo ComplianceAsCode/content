@@ -54,17 +54,6 @@
 
 -   Languages: Ansible, Bash, OVAL
 
-#### audit_rules_login_events
--   Checks if there are Audit rules that record attempts to alter logon
-    and logout events.
-
--   Parameters:
-
-    -   **path** - value of `-w` in the Audit rule, eg.
-        `/var/run/faillock`
-
--   Languages: Ansible, Bash, OVAL, Kubernetes
-
 #### audit_rules_path_syscall
 -   Check if there are Audit rules to record events that modify
     user/group information via a syscall on a specific file.
@@ -176,13 +165,17 @@
 
 #### audit_rules_watch
 -   Check if there are file system watches configured in audit rules for the given path.
+    Supports both legacy and modern watch style.
+    The style used is selected by the `audit_watches_style` product property.
 
 -   Parameters:
 
     -   **path** - path that should be part of the audit watch rule as a value
-        of `-w` argument, eg. `/etc/group`.
+        of `-w` (legacy) or the `-F path=` (modern) argument, eg. `/etc/group`.
+    -   **key** - The key in the the audit rules that is a part of `-k` (legacy) or `-F key` (modern). If this parameter isn't specified the rule ID is used as a key.
+    -   **path_is_variable** - whether the `path` argument isn't a path but it's an XCCDF Value name
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, Kubernetes, OVAL
 
 
 #### argument_value_in_line
