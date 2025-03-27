@@ -4,4 +4,8 @@ controls:
                 or system components.'
         levels:
             - medium
-        status: pending
+        status: automated
+        rules:
+            - package_chrony_installed
+            - chronyd_or_ntpd_set_maxpoll
+            - service_chronyd_enabled
