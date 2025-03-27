@@ -1065,7 +1065,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
      <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
           definition_ref="sshd_not_required_or_unset" />
-          {{% if product in ['opensuse', 'sle12','sle15', 'slmicro5'] %}}
+          {{% if product == "sle12" %}}
           <extend_definition definition_ref="package_openssh_removed"
           comment="rpm package openssh removed"/>
           {{% else %}}
@@ -1076,7 +1076,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
      <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
           definition_ref="sshd_required_or_unset" />
-        {{% if product in ['opensuse', 'sle12','sle15', 'slmicro5'] %}}
+        {{% if product == "sle12" %}}
         <extend_definition comment="rpm package openssh installed"
           definition_ref="package_openssh_installed" />
         {{% else %}}
