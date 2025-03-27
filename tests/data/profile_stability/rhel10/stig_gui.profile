@@ -218,6 +218,7 @@ selections:
 - disable_users_coredumps
 - disallow_bypass_password_sudo
 - display_login_attempts
+- dnf-automatic_apply_updates
 - enable_authselect
 - enable_fips_mode
 - encrypt_partitions
