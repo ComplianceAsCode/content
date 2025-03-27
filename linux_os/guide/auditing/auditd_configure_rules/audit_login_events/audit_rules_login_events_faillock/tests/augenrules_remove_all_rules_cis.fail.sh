@@ -5,4 +5,5 @@
 
 path="/var/run/faillock"
 style="{{{ audit_watches_style }}}"
+filter_type="path"
 . $SHARED/audit_rules_watch/augenrules_remove_all_rules.fail.sh

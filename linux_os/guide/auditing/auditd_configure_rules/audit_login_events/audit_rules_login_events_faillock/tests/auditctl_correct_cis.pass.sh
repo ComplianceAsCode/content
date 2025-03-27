@@ -7,4 +7,5 @@
 
 path="/var/run/faillock"
 style="{{{ audit_watches_style }}}"
+filter_type="path"
 . $SHARED/audit_rules_watch/auditctl_correct.pass.sh

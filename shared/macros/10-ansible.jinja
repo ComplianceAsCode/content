@@ -428,14 +428,16 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
 :type style: str
 :param arch: Generate audit watches for the "b32" or "b64" architecture. Only applicable if "style" is set to "modern".
 :type arch: str
+:param filter_type: The string after first `-F` before first `=`. can be either `path` or `dir`. Only applicable if "style" is set to "modern".
+:type filter_type: str
 
 #}}
-{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='', style='', arch='') -%}}
+{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path') -%}}
 - name: {{{ rule_title }}} - Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
   find:
     paths: "/etc/audit/rules.d"
 {{% if style == "modern" %}}
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch={{{ arch }}}\s+-F\s+path={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch={{{ arch }}}\s+-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perm={{{ permissions }}}(\s|$)+'
 {{% else %}}
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
 {{% endif %}}
@@ -466,7 +468,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
 {{% if style == 'modern' %}}
-    line: "-a always,exit -F arch={{{ arch }}} -F path={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
+    line: "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
 {{% else %}}
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
 {{% endif %}}
@@ -489,14 +491,16 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
 :type style: str
 :param arch: Generate audit watches for the "b32" or "b64" architecture. Only applicable if "style" is set to "modern".
 :type arch: str
+:param filter_type: The string after first `-F` before first `=`. can be either `path` or `dir`. Only applicable if "style" is set to "modern".
+:type filter_type: str
 
 #}}
-{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='', style='', arch='') -%}}
+{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='', style='', arch='', filter_type='path') -%}}
 - name: {{{ rule_title }}} - Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
   find:
     paths: "/etc/audit/"
 {{% if style == 'modern' %}}
-    contains: '^\s*-F\s+path={{{ path }}}\s+-F\s+perms={{{ permissions }}}(\s|$)+'
+    contains: '^\s*-F\s+{{{ filter_type }}}={{{ path }}}\s+-F\s+perms={{{ permissions }}}(\s|$)+'
 {{% else %}}
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
 {{% endif %}}
@@ -506,7 +510,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
 - name: {{{ rule_title }}} - Add watch rule for {{{ path }}} in /etc/audit/audit.rules
   lineinfile:
 {{% if style == 'modern' %}}
-    line: "-a always,exit -F arch={{{ arch }}} -F path={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
+    line: "-a always,exit -F arch={{{ arch }}} -F {{{ filter_type }}}={{{ path }}} -F perm={{{ permissions }}} -F key={{{ key }}}"
 {{% else %}}
     line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
 {{% endif %}}

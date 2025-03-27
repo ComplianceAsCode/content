@@ -1527,8 +1527,13 @@ Create an OCIL text for rules that use the audit_rules_watch platform.
 
     $ sudo auditctl -l | grep {{{ path }}}
 {{% if audit_watches_style == "modern" %}}
-    -a always,exit -F arch=b32 -F path={{{ path }}} -F perm=wa -F key={{{ key }}}
-    -a always,exit -F arch=b64 -F path={{{ path }}} -F perm=wa -F key={{{ key }}}
+{{% if path.endswith("/") %}}
+{{% set filter_type="dir" %}}
+{{% else %}}
+{{% set filter_type="path" %}}
+{{% endif %}}
+    -a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
 {{% else %}}
     -w {{{ path }}} -p wa -k {{{ key }}}
 {{% endif %}}

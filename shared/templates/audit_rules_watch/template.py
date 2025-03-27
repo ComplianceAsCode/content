@@ -10,4 +10,8 @@ def preprocess(data, lang):
         data["path_escaped"] = path.replace("/", "\\/")
     if "key" not in data:
         data["key"] = data["_rule_id"]
+    if data["path"].endswith("/"):
+        data["filter_type"] = "dir"
+    else:
+        data["filter_type"] = "path"
     return data
