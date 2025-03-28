@@ -1,7 +1,6 @@
 #!/bin/bash
 # platform = Ubuntu 24.04
-
-useradd sssd || true
+# packages = sssd
 
 mkdir -p /var/log/sssd
 chown -R root /var/log/sssd

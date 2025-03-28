@@ -3,4 +3,5 @@
 # packages = rsyslog
 
 touch /var/log/cloud-init.log
+touch /var/log/cloud-init.log1
 chown syslog /var/log/cloud-init.log*

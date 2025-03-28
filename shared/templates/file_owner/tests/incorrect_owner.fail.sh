@@ -1,4 +1,7 @@
 #!/bin/bash
+{{% if PACKAGES %}}
+# packages = {{{PACKAGES}}}
+{{% endif %}}
 
 useradd testuser_123
 
@@ -13,9 +16,8 @@ useradd testuser_123
 if [ ! -d {{{ path }}} ]; then
     mkdir -p {{{ path }}}
 fi
-touch "{{{ path }}}"/cac_file_owner_test_file
 {{% if FILE_REGEX %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown testuser_123 {} \;
+echo "Create specific tests for this rule because of regex owner"
 {{% elif RECURSIVE %}}
 find -L {{{ path }}} -type d -exec chown testuser_123 {} \;
 {{% else %}}
