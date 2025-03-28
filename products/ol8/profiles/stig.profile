@@ -88,8 +88,6 @@ selections:
 
     # OL08-00-010020
     - sysctl_crypto_fips_enabled
-    - harden_sshd_ciphers_openssh_conf_crypto_policy
-    - harden_sshd_ciphers_openssh_conf_crypto_policy.severity=high
 
     # OL08-00-010030
     - encrypt_partitions
@@ -197,7 +195,6 @@ selections:
     - configure_ssh_crypto_policy
 
     # OL08-00-010290
-    - harden_sshd_macs_openssh_conf_crypto_policy
     - harden_sshd_macs_opensshserver_conf_crypto_policy
 
     # OL08-00-010291
