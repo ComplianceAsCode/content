@@ -152,17 +152,6 @@
 
 -   Languages: OVAL
 
-#### audit_rules_usergroup_modification
--   Check if Audit is configured to record events that modify account
-    changes.
-
--   Parameters:
-
-    -   **path** - path that should be part of the audit rule as a value
-        of `-w` argument, eg. `/etc/group`.
-
--   Languages: Ansible, Bash, OVAL
-
 #### audit_rules_watch
 -   Check if there are file system watches configured in audit rules for the given path.
     Supports both legacy and modern watch style.
