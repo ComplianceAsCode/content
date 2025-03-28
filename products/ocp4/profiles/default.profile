@@ -29,7 +29,9 @@ selections:
     - file_groupowner_ovs_conf_db_lock_not_s390x
     - oauth_inactivity_timeout
     - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
-    - file_groupowner_ovs_conf_db_not_s390x
+    - file_groupowner_ovs_conf_db_x86_64
+    - file_groupowner_ovs_conf_db_aarch64
+    - file_groupowner_ovs_conf_db_s390x
     - file_permissions_kube_scheduler
     - file_groupowner_ovs_conf_db_s390x
     - kubelet_eviction_thresholds_set_soft_memory_available
