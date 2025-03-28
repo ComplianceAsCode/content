@@ -5,17 +5,8 @@ title: 'Record Attempts to Alter Logon and Logout Events - faillog'
 
 description: |-
     The audit system already collects login information for all users
-    and root. If the <tt>auditd</tt> daemon is configured to use the
-    <tt>augenrules</tt> program to read audit rules during daemon startup (the
-    default), add the following lines to a file with suffix <tt>.rules</tt> in the
-    directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
-    edits of files involved in storing logon events:
-    <pre>-w /var/log/faillog -p wa -k logins</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add the following lines to
-    <tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
-    edits of files involved in storing logon events:
-    <pre>-w /var/log/faillog -p wa -k logins</pre>
+    and root.
+    {{{ describe_audit_rules_watch("/var/log/faillog", "logins") }}}
 
 rationale: |-
     Manual editing of these files may indicate nefarious activity, such
@@ -43,12 +34,7 @@ references:
 ocil_clause: 'there is no output'
 
 ocil: |-
-    To verify that auditing is configured for system administrator actions, run the following command:
-    Configure the operating system to generate an audit record for any all modifications to the "faillog" file occur.
-    Add or update the following rules in the "/etc/audit/audit.rules" file:
-    -w /var/log/faillog -p wa -k logins
-    The audit daemon must be restarted for the changes to take effect.
-    # sudo systemctl restart auditd.service
+    {{{ ocil_audit_rules_watch("/var/log/faillog", "logins") }}}
 
 template:
     name: audit_rules_watch

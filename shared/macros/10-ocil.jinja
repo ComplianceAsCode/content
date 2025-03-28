@@ -1513,3 +1513,28 @@ ocil: |-
 
     $ grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" {{{ filepath }}}
 {{%- endmacro %}}
+
+{{#
+Create an OCIL text for rules that use the audit_rules_watch platform.
+
+:param path: The path that should be watched by the watch.
+:type path: str
+:param key: The audit key.
+:type key: str
+#}}
+{{% macro ocil_audit_rules_watch(path, key) %}}
+    Verify {{{ full_name }}} generates audit records for all events that affect "{{{ path }}}" with the following command:
+
+    $ sudo auditctl -l | grep {{{ path }}}
+{{% if audit_watches_style == "modern" %}}
+{{% if path.endswith("/") %}}
+{{% set filter_type="dir" %}}
+{{% else %}}
+{{% set filter_type="path" %}}
+{{% endif %}}
+    -a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+{{% else %}}
+    -w {{{ path }}} -p wa -k {{{ key }}}
+{{% endif %}}
+{{% endmacro %}}

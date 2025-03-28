@@ -5,4 +5,5 @@
 
 path="/var/log/faillock"
 style="{{{ audit_watches_style }}}"
+filter_type="path"
 . $SHARED/audit_rules_watch/augenrules_correct_extra_permission.pass.sh

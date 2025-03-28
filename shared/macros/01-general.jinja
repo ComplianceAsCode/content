@@ -1345,3 +1345,39 @@ separated by an and and others are separated by a comma.
 {{%- endif -%}}
 {{%- endfor -%}}
 {{%- endmacro -%}}
+
+{{#
+Create a rule description text for rules that use the audit_rules_watch platform.
+
+:param path: The path that should be watched by the watch.
+:type path: str
+:param key: The audit key.
+:type key: str
+#}}
+
+{{% macro describe_audit_rules_watch(path, key) %}}
+{{% if path.endswith("/") %}}
+{{% set filter_type="dir" %}}
+{{% else %}}
+{{% set filter_type="path" %}}
+{{% endif %}}
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
+    program to read audit rules during daemon startup (the default), add the
+    following lines to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}</pre>
+{{% else %}}
+    <pre>-w {{{ path }}} -p wa -k {{{ key }}}</pre>
+{{% endif %}}
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt>:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}
+    -a always,exit -F arch=b64 -F {{{ filter_type }}}={{{ path }}} -F perm=wa -F key={{{ key }}}</pre>
+{{% else %}}
+    <pre>-w {{{ path }}} -p wa -k {{{ key }}}</pre>
+{{% endif %}}
+{{% endmacro %}}

@@ -1,7 +1,7 @@
 {{% macro local_variable_modern_style(lvarid, arch) %}}
   <local_variable id="{{{ lvarid }}}" comment="The composite pattern used to detect if audit has been configured" datatype="string" version="1">
     <concat>
-      <literal_component>^\-a\s+always,exit\s+\-F\s+arch={{{ arch }}}\s+\-F\s+path=</literal_component>
+      <literal_component>^\-a\s+always,exit\s+\-F\s+arch={{{ arch }}}\s+\-F\s+{{{ FILTER_TYPE }}}=</literal_component>
   {{% if PATH_IS_VARIABLE %}}
       <variable_component var_ref="{{{ PATH }}}"/>
   {{% else %}}
