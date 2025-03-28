@@ -58,7 +58,7 @@
   {{%- else %}}
     <ind:filepath>/etc/group</ind:filepath>
   {{%- endif %}}
-    <ind:pattern operation="pattern match">^{{{ GID_OR_NAME }}}:[\w!]+:(\w+):.*</ind:pattern>
+    <ind:pattern operation="pattern match">^{{{ GID_OR_NAME }}}:\w+:(\w+):.*</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
