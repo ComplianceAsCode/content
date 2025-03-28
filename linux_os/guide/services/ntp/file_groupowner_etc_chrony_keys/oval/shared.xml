@@ -59,7 +59,7 @@
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_object id="object_file_groupowner_etc_chrony_keys_usr_lib_group" version="1">
     <ind:filepath>/usr/lib/group</ind:filepath>
-    <ind:pattern operation="pattern match">^chrony:\w+:(\w+):.*</ind:pattern>
+    <ind:pattern operation="pattern match">^chrony:[\w!]+:(\w+):.*</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <unix:file_state id="state_file_groupowner_etc_chrony_keys_gid_chrony_with_usrlib" version="1" operator="AND">
