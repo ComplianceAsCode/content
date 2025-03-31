@@ -56,3 +56,5 @@ selections:
     - '!sssd_enable_pam_services'
     - '!sssd_ldap_configure_tls_reqcert'
     - '!sssd_ldap_start_tls'
+    # RHEL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'
