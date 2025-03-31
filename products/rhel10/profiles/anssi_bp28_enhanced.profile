@@ -72,6 +72,9 @@ selections:
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
     - '!package_ypserv_removed'
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration (R73)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
     # these rules are failing when they are remediated with Ansible, removing them temporarily until they are fixed
     - '!accounts_password_pam_retry'
     # These rules are being modified and they are causing trouble in their current state (R67)

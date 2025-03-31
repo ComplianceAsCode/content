@@ -24,6 +24,12 @@ description: |-
 
 selections:
     - hipaa:all
+
+    # RHEL 10 uses a different rule for auditing changes to selinux configuration
+    # HIPAA 164.308(a)(1)(ii)(D), 164.308(a)(3)(ii)(A), 164.308(a)(5)(ii)(C), 164.312(a)(2)(i), 164.312(b), 164.312(d) and 164.312(e)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+
     - '!coreos_disable_interactive_boot'
     - '!coreos_audit_option'
     - '!coreos_nousb_kernel_argument'
