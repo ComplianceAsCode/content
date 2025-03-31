@@ -21,6 +21,9 @@ description: |-
     /sbin/audispd 755
     {{%- endif %}}
     /sbin/augenrules 755
+    {{%- if 'rhel' in product %}}
+    /sbin/audisp-syslog 755
+    {{%- endif %}}
     </pre>
 
     Audit tools needed to successfully view and manipulate audit information
@@ -85,4 +88,5 @@ template:
             - /sbin/auditd
             {{% if 'rhel' not in product %}}- /sbin/audispd{{% endif %}}
             - /sbin/augenrules
+            {{% if 'rhel' in product %}}- /sbin/audisp-syslog{{% endif %}}
         filemode: '0755'
