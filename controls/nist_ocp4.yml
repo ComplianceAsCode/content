@@ -1092,14 +1092,14 @@ controls:
 - id: AC-6(8)
   status: supported
   notes: |-
-    Red Hat OpenShift provides security context constraints (SCC) [1] that control permissions for actions that a pod can perform and what resources a pod can access. 
+    Red Hat OpenShift provides security context constraints (SCC) [1] that control permissions for actions that a pod can perform and what resources a pod can access.
 
     Red Hat OpenShift does an admission control inspection for pods based on the capabilities granted to a user [2].
 
     However to assist in developing and handling SCC to address this control [3], use of Role-based Access Control (RBAC) [4] and the architecture of OpenShift provide logical access restrictions based on user and group roles in addition to logical separation of systems and components [5].
 
     [1] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
- 
+
     [2] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#admission_configuring-internal-oauth
 
     [3] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#role-based-access-to-ssc_configuring-internal-oauth
@@ -1519,7 +1519,7 @@ controls:
     the default kubeadmin account, therefore we need to check if kubeadmin account
     is disabled.
 
-    Section b: A RFE has been filed. Progress can be tracked via: 
+    Section b: A RFE has been filed. Progress can be tracked via:
 
     https://issues.redhat.com/browse/RFE-2645
   rules:
@@ -2593,7 +2593,7 @@ controls:
     OpenShift provides OpenShift Logging Operator[1] to aggregate all the logs from the
     OpenShift Container Platform cluster, such as node system audit logs, application
     container logs, and infrastructure logs. OpenShift Logging aggregates these logs
-    from throughout OpenShift cluster and stores them in a default log store. 
+    from throughout OpenShift cluster and stores them in a default log store.
 
     [1]https://docs.openshift.com/container-platform/4.10/logging/cluster-logging.html
   rules:
@@ -2690,13 +2690,13 @@ controls:
   status: automated
   notes: |-
     OpenShift by default provides warning to the user if the node filesystem space is filling up.
-    
+
     The Cluster Logging Operator is able to forward the Red Hat OpenShift
     audit logs to a SIEM for further inspection and correlation of
     information. [1]
 
     [1] https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html
-  rules: 
+  rules:
   - audit_log_forwarding_enabled
   description: |-
     The information system provides a warning to [Assignment: organization-defined personnel, roles, and/or locations] within [Assignment: organization-defined time period] when allocated audit record storage volume reaches [Assignment: organization-defined percentage] of repository maximum audit record storage capacity.
@@ -3447,7 +3447,7 @@ controls:
     OpenShift enforces access restrictions through RBAC, which is
     enabled and enforcing by default [1]. The organization can
     use RBAC to configure access restrictions for audit loggings
-    so that only designated users can make configuration changes 
+    so that only designated users can make configuration changes
     on audit loggings.
 
     [1] https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
@@ -4564,7 +4564,7 @@ controls:
     documentation for the applicable cloud provider [2][3][4][5]
     for more information. But note that this is also applicable
     in on-prem deployments.
-    
+
     OpenShift provides GitOps operator, configuration management
     changes is recommended to be be made using GitOps, so that
     any changes can tracked and audited. Other GitOps operators or
@@ -7045,7 +7045,7 @@ controls:
 
     When using the LDAP provider, care must be taken to not set
     the "insecure" flag so that TLS is used.
-  rules: 
+  rules:
   - ocp_no_ldap_insecure
   - idp_is_configured
   - ocp_idp_no_htpasswd
@@ -11446,7 +11446,7 @@ controls:
     The organization should reviews route[1] on the OpenShift platform to ensure that the
     only routes that are exposed to the public are those that are within the scope of
     the organizational defined policy.
-    
+
     [1]https://docs.openshift.com/container-platform/4.10/networking/routes/route-configuration.html
   rules: []
   description: |-
@@ -12474,7 +12474,7 @@ controls:
     Code reviews, and CI test are required on all PRs.
     Periodic static code analysis scans.
     OpenShift containers only use a few approved base images and they are signed by Red Hat and periodicly scanned for CVEs.
-    
+
     [1] https://access.redhat.com/security/overview
     [2] https://www.redhat.com/en/topics/security/hybrid-cloud-security-approach?sc_cid=7013a0000026NrNAAU
   description: |-
@@ -12611,7 +12611,7 @@ controls:
 
     Security is continuous and integrated at every stage of the app and
     infrastructure life cycle for OpenShift.[1]
-   
+
     Section a.2,a.3:
 
     There are many tools used to ensure that the security of the OpenShift
@@ -12620,7 +12620,7 @@ controls:
     Red Hat uses git and github for development, so all changes including
     their authorship are tracked in SCMs and identifiable with a hash.
     Any downstream-specific changes are tracked in a special "midstream"
-    repository. 
+    repository.
 
     All commits to repositories must be peer-reviewed. In addition,
     changes are tracked in Jira where every Epic must be signed off.
@@ -12772,7 +12772,7 @@ controls:
   notes: |-
     Trainnings and education on the use of the OpenShift is offered both
     internally and externally. Red Hat has courses and certifications
-    covering all aspect of OpenShift.[1] 
+    covering all aspect of OpenShift.[1]
 
     We have documents and tutorials on security best practices for OpenShift.[2]
 
@@ -12803,7 +12803,7 @@ controls:
     repository.
 
     Section c: All commits to repositories must be peer-reviewed. In addition,
-    changes are tracked in Jira where every Epic must be signed off. 
+    changes are tracked in Jira where every Epic must be signed off.
 
     Each individual change goes through a peer review. Larger, system-wide
     changes are tracked with a PR against the enhancements repository
@@ -13324,7 +13324,7 @@ controls:
     [6] https://kubernetes.io/docs/concepts/cluster-administration/flow-control/
 
     https://issues.redhat.com/browse/CMP-427
-  rules: 
+  rules:
   - routes_rate_limit
   - resource_requests_quota
   description: |-
@@ -13358,7 +13358,7 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-configuring.html#nodes-pods-configuring-bandwidth_nodes-pods-configuring
-  rules: 
+  rules:
   - routes_rate_limit
   - resource_requests_quota
 - id: SC-5(2)
@@ -13376,7 +13376,7 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
-  rules: 
+  rules:
   - routes_rate_limit
   - resource_requests_quota
 - id: SC-5(3)
@@ -13407,7 +13407,7 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
-  rules: 
+  rules:
   - resource_requests_limits_in_daemonset
   - resource_requests_limits_in_statefulset
   - resource_requests_limits_in_deployment
@@ -13555,11 +13555,11 @@ controls:
     https://issues.redhat.com/browse/CMP-424
 
     OpenShift Routes provide IP whitelist support, so that only authorized
-    access to a route is allowed. If a workload is to be exposed externally, 
-    it is recommended that it's behind an OpenShift Route. Routes allow for 
-    the configuration of several security attributes, but most relevant to 
-    this control is the IP whitelist settings that it allows to configure 
-    in the form of annotations. 
+    access to a route is allowed. If a workload is to be exposed externally,
+    it is recommended that it's behind an OpenShift Route. Routes allow for
+    the configuration of several security attributes, but most relevant to
+    this control is the IP whitelist settings that it allows to configure
+    in the form of annotations.
   rules:
   - configure_network_policies_namespaces
   - route_ip_whitelist
@@ -13639,7 +13639,7 @@ controls:
 
     Depending on the SDN implementation, there will be different logs
     and interfaces to monitor the network flows.
-    
+
     Application level firewall can be provided by underlying cloud provider,
     Firewall settings for the nodes themselves are usually controlled on the
     underlying cloud's configurations. Additional host-based firewall settings
@@ -14094,8 +14094,8 @@ controls:
   notes: |-
     OpenShift does not store and manage store user login credential information,
     This functionality would fall to third party software such as an Identity Provider (IdP),
-    Active Directory (MSAD), LDAP, etc. [1] 
-    
+    Active Directory (MSAD), LDAP, etc. [1]
+
     It is recommended to grant the cluster-admin clusterrole to a user or a group backed by
     an IDP and subsequently remove the kubeadmin user as described[2]
 
@@ -14691,7 +14691,7 @@ controls:
     Container Platform.[1]
 
     Integegrity of OpenShift is protected by Security Context Constraints and SELinux.[2]
-    
+
     [1]https://docs.openshift.com/container-platform/latest/backup_and_restore/
     [2]https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
   rules: []
@@ -15827,7 +15827,7 @@ controls:
   notes: |-
     OpenShift does not provide ways to audit services, however
     OpenShift provides ways to restrict traffic to pods the cluster,
-    organization can configure NetworkPolicies in all non-openshift 
+    organization can configure NetworkPolicies in all non-openshift
     namespaces to only allow approved traffic in the namespace and not
     across namespaces[1]
 
@@ -15881,9 +15881,9 @@ controls:
 
     The operator can be configured to perform integrity checks at user-defined
     intervals. [2]
-    A File Integrity Operator Prometheus rule will alert organization defined personnel for any integrity check failure. 
+    A File Integrity Operator Prometheus rule will alert organization defined personnel for any integrity check failure.
 
-    A user can also use external antivirus engine for detecting trojans, viruses, malware & other malicious threats. 
+    A user can also use external antivirus engine for detecting trojans, viruses, malware & other malicious threats.
 
     [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-installation.html
     [2] https://docs.openshift.com/container-platform/4.6/security/file_integrity_operator/file-integrity-operator-configuring.html
@@ -16117,7 +16117,7 @@ controls:
     intervals. [2]
 
     A Prometheus rule will be added for the File Integrity Operator to alert
-    organization defined personnel for any integrity check failure. 
+    organization defined personnel for any integrity check failure.
 
     [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-installation.html
     [2] https://docs.openshift.com/container-platform/4.6/security/file_integrity_operator/file-integrity-operator-configuring.html
@@ -16136,7 +16136,7 @@ controls:
     precursor to effective risk response. Personnel having an interest in integrity
     violations include, for example, mission/business owners, information system
     owners, systems administrators, software developers, systems integrators, and
-    information security officers.    
+    information security officers.
   title: >-
     SI-7(2) - SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY | AUTOMATED NOTIFICATIONS
     OF INTEGRITY VIOLATIONS
