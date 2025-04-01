@@ -1,3 +1,5 @@
+import copy
+
 from xml.sax.saxutils import escape
 
 from ..build_cpe import CPEDoesNotExist
@@ -25,9 +27,12 @@ def rule_filter_from_def(filterdef):
         return noop_rule_filterfunc
 
     def filterfunc(rule):
+        c = copy.copy(rule)
+        if c.platform is None:
+            c.platform = ''
         # Remove globals for security and only expose
         # variables relevant to the rule
-        return eval(filterdef, {"__builtins__": None}, rule.__dict__)
+        return eval(filterdef, {"__builtins__": None}, c.__dict__)
     return filterfunc
 
 
