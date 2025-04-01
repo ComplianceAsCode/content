@@ -4,16 +4,7 @@ documentation_complete: true
 title: 'Record Any Attempts to Run ssh-agent'
 
 description: |-
-    At a minimum, the audit system should collect any execution attempt
-    of the <tt>ssh-agent</tt> command for all users and root. If the <tt>auditd</tt>
-    daemon is configured to use the <tt>augenrules</tt> program to read audit rules
-    during daemon startup (the default), add the following lines to a file with suffix
-    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -k privileged-ssh-agent</pre>
-    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-    utility to read audit rules during daemon startup, add the following lines to
-    <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -k privileged-ssh-agent</pre>
+    {{{ describe_arpc("/usr/bin/ssh-agent") }}}
 
 rationale: |-
     Without generating audit records that are specific to the security and
