@@ -24,6 +24,4 @@ fixtext: |-
 
     -a always,exit -F path=/usr/bin/umount -F perm=x -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-mount
 
-    To load the rules to the kernel immediately, use the following command:
-
-    $ sudo augenrules --load
+    The audit daemon must be restarted for the changes to take effect.
