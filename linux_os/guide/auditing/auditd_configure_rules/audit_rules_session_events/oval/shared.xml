@@ -3,78 +3,59 @@
     {{{ oval_metadata("Audit rules should capture information about session initiation.") }}}
 
     <criteria operator="OR">
-
-      <!-- Test the augenrules case -->
+{{% for audit_type in ["auditctl", "augenrules"] %}}
+      <!-- Test the {{{ audit_type }}} case -->
       <criteria operator="AND">
-        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
-        <criterion comment="audit augenrules utmp" test_ref="test_arse_utmp_augenrules" />
-        <criterion comment="audit augenrules btmp" test_ref="test_arse_btmp_augenrules" />
-        <criterion comment="audit augenrules wtmp" test_ref="test_arse_wtmp_augenrules" />
+        <extend_definition comment="audit {{{ audit_type }}}" definition_ref="audit_rules_{{{ audit_type }}}" />
+{{% for basename in ["utmp", "btmp", "wtmp"] %}}
+{{% if audit_watches_style == "modern" %}}
+{{% for arch in ["b32", "b64"] %}}
+        <criterion comment="audit {{{ audit_type }}} {{{ basename }}} {{{ arch }}}" test_ref="test_arse_{{{ basename }}}_{{{ audit_type }}}_{{{ arch }}}" />
+{{% endfor %}}
+{{% else %}}
+        <criterion comment="audit {{{ audit_type }}} {{{ basename }}}" test_ref="test_arse_{{{ basename }}}_{{{ audit_type }}}" />
+{{% endif %}}
+{{% endfor %}}
       </criteria>
-
-      <!-- Test the auditctl case -->
-      <criteria operator="AND">
-        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-        <criterion comment="audit auditctl utmp" test_ref="test_arse_utmp_auditctl" />
-        <criterion comment="audit auditctl btmp" test_ref="test_arse_btmp_auditctl" />
-        <criterion comment="audit auditctl wtmp" test_ref="test_arse_wtmp_auditctl" />
-      </criteria>
-
+{{% endfor %}}
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="audit augenrules utmp" id="test_arse_utmp_augenrules" version="1">
-    <ind:object object_ref="object_arse_utmp_augenrules" />
+{{% macro test_arse(filename, audit_type, arch="") %}}
+{{% set basename = filename.split("/")[-1] %}}
+{{% if audit_watches_style == "modern" %}}
+{{% set id_part = basename + "_" + audit_type + "_" + arch %}}
+{{% else %}}
+{{% set id_part = basename + "_" + audit_type %}}
+{{% endif %}}
+  <ind:textfilecontent54_test check="all" comment="audit {{{ audit_type }}} {{{ basename }}} {{{ arch }}}" id="test_arse_{{{ id_part }}}" version="1">
+    <ind:object object_ref="object_arse_{{{ id_part }}}" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arse_utmp_augenrules" version="1">
+  <ind:textfilecontent54_object id="object_arse_{{{ id_part }}}" version="1">
+{{% if audit_type == "augenrules" %}}
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\b.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="audit augenrules btmp" id="test_arse_btmp_augenrules" version="1">
-    <ind:object object_ref="object_arse_btmp_augenrules" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arse_btmp_augenrules" version="1">
-    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\b.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="audit augenrules wtmp" id="test_arse_wtmp_augenrules" version="1">
-    <ind:object object_ref="object_arse_wtmp_augenrules" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arse_wtmp_augenrules" version="1">
-    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\b.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="audit auditctl utmp" id="test_arse_utmp_auditctl" version="1">
-    <ind:object object_ref="object_arse_utmp_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arse_utmp_auditctl" version="1">
+{{% elif audit_type == "auditctl" %}}
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/run/utmp\s+\-p\s+wa\b.*$</ind:pattern>
+{{% endif %}}
+{{% if audit_watches_style == "modern" %}}
+    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+\-F\s+arch={{{ arch }}}\s+\-F\s+path={{{ filename }}}\s+\-F\s+perm=\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*$</ind:pattern>
+{{% else %}}
+    <ind:pattern operation="pattern match">^\-w\s+{{{ filename }}}\s+\-p\s+wa\b.*$</ind:pattern>
+{{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endmacro %}}
 
-  <ind:textfilecontent54_test check="all" comment="audit auditctl btmp" id="test_arse_btmp_auditctl" version="1">
-    <ind:object object_ref="object_arse_btmp_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arse_btmp_auditctl" version="1">
-    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/btmp\s+\-p\s+wa\b.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="audit auditctl wtmp" id="test_arse_wtmp_auditctl" version="1">
-    <ind:object object_ref="object_arse_wtmp_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arse_wtmp_auditctl" version="1">
-    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/wtmp\s+\-p\s+wa\b.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+{{% for filename in ["/var/run/utmp", "/var/log/btmp", "/var/log/wtmp"] %}}
+{{% for audit_type in ["auditctl", "augenrules"] %}}
+{{% if audit_watches_style == "modern" %}}
+{{% for arch in ["b32", "b64"] %}}
+{{{ test_arse(filename, audit_type, arch) }}}
+{{% endfor %}}
+{{% else %}}
+{{{ test_arse(filename, audit_type) }}}
+{{% endif %}}
+{{% endfor %}}
+{{% endfor %}}
 
 </def-group>

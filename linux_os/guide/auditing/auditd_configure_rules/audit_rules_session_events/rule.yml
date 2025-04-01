@@ -9,16 +9,34 @@ description: |-
     default), add the following lines to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing such process information:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F path=/var/run/utmp -F perm=wa -F key=session
+    -a always,exit -F arch=b64 -F path=/var/run/utmp -F perm=wa -F key=session
+    -a always,exit -F arch=b32 -F path=/var/log/btmp -F perm=wa -F key=session
+    -a always,exit -F arch=b64 -F path=/var/log/btmp -F perm=wa -F key=session
+    -a always,exit -F arch=b32 -F path=/var/log/wtmp -F perm=wa -F key=session
+    -a always,exit -F arch=b64 -F path=/var/log/wtmp -F perm=wa -F key=session</pre>
+{{% else %}}
     <pre>-w /var/run/utmp -p wa -k session
     -w /var/log/btmp -p wa -k session
     -w /var/log/wtmp -p wa -k session</pre>
+{{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for attempted manual
     edits of files involved in storing such process information:
+{{% if audit_watches_style == "modern" %}}
+    <pre>-a always,exit -F arch=b32 -F path=/var/run/utmp -F perm=wa -F key=session
+    -a always,exit -F arch=b64 -F path=/var/run/utmp -F perm=wa -F key=session
+    -a always,exit -F arch=b32 -F path=/var/log/btmp -F perm=wa -F key=session
+    -a always,exit -F arch=b64 -F path=/var/log/btmp -F perm=wa -F key=session
+    -a always,exit -F arch=b32 -F path=/var/log/wtmp -F perm=wa -F key=session
+    -a always,exit -F arch=b64 -F path=/var/log/wtmp -F perm=wa -F key=session</pre>
+{{% else %}}
     <pre>-w /var/run/utmp -p wa -k session
     -w /var/log/btmp -p wa -k session
     -w /var/log/wtmp -p wa -k session</pre>
+{{% endif %}}
 
 rationale: |-
     Manual editing of these files may indicate nefarious activity, such
