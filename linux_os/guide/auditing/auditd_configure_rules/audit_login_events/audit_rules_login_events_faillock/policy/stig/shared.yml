@@ -9,7 +9,9 @@ checktext: |-
 
     $ sudo auditctl -l | grep /var/log/faillock
 
-    -w /var/log/faillock -p wa -k logins
+    -a always,exit -F arch=b32 -F path=/var/log/faillock -F perm=wa -F key=identity
+    -a always,exit -F arch=b64 -F path=/var/log/faillock -F perm=wa -F key=identity
+
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -18,8 +20,7 @@ fixtext: |-
 
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
 
-    -w /var/log/faillock -p wa -k logins
+    -a always,exit -F arch=b32 -F path=/var/log/faillock -F perm=wa -F key=identity
+    -a always,exit -F arch=b64 -F path=/var/log/faillock -F perm=wa -F key=identity
 
     The audit daemon must be restarted for the changes to take effect.
-
-    $ sudo service auditd restart
