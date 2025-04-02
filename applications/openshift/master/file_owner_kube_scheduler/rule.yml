@@ -26,8 +26,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resour
 ocil: |-
     {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/kube-scheduler-pod.yaml", owner="root") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-

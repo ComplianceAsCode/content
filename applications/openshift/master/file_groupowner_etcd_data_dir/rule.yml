@@ -27,8 +27,7 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd/member/", gro
 ocil: |-
     {{{ ocil_file_group_owner(file="/var/lib/etcd/member/", group="root") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-
