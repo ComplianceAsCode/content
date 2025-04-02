@@ -32,7 +32,7 @@ references:
     srg: SRG-APP-000456-CTR-001125
 
 {{% set api_path = '/apis/image.openshift.io/v1/imagestreams' %}}
-{{% set jqfilter = '[.items[] | select( .metadata.ownerReferences? // [] | all(.kind != "ClusterVersion")) | select(.metadata.labels[]? | select("samples.operator.openshift.io/managed: true") | not) | select(.spec.tags[]?.from.kind != "ImageStreamTag" and (.importPolicy.scheduled != null or .importPolicy.scheduled != false))] | any' %}}
+{{% set jqfilter = '[[.items[] | select( .metadata.ownerReferences? // [] | all(.kind != "ClusterVersion")) | select(.metadata.labels[]? | select("samples.operator.openshift.io/managed: true") | not) | select(.spec.tags[]?.from.kind != "ImageStreamTag" and (.importPolicy.scheduled != null or .importPolicy.scheduled != false))] | any]' %}}
 
 ocil_clause: 'imagestream is not configured to perform periodical updates'
 
@@ -57,5 +57,5 @@ template:
     yamlpath: "[:]"
     check_existence: "only_one_exists"
     values:
-      - value: "true"
+      - value: "false"
         operation: "equals"
