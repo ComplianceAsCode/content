@@ -18,11 +18,20 @@ description: |-
     To use UDP for log message delivery:
     <pre>*.* @<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
     <br />
+    Or in RainerScript:
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="udp")</pre>
+    <br />
     To use TCP for log message delivery:
     <pre>*.* @@<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
     <br />
+    Or in RainerScript:
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="tcp")</pre>
+    <br />
     To use RELP for log message delivery:
     <pre>*.* :omrelp:<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    <br />
+    Or in RainerScript:
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="relp")</pre>
     <br />
     There must be a resolvable DNS CNAME or Alias record set to "{{{ xccdf_value("rsyslog_remote_loghost_address") }}}" for logs to be sent correctly to the centralized logging utility.
 
@@ -72,15 +81,23 @@ ocil: |-
     <tt>/etc/rsyslog.conf</tt>.
     If using UDP, a line similar to the following should be present:
     <pre> *.* @<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="udp")</pre>
     If using TCP, a line similar to the following should be present:
     <pre> *.* @@<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="tcp")</pre>
     If using RELP, a line similar to the following should be present:
     <pre> *.* :omrelp:<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="relp")</pre>
 
 fixtext: |-
     Configure {{{ full_name }}} to off-load audit records onto a different system or media from the system being audited by specifying the remote logging server in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
 
     *.* @@[remoteloggingserver]:[port]"
+    or
+    <pre>*.* action(type="omfwd" ... target="<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i>" protocol="relp")</pre>
 
 srg_requirement: 'The {{{ full_name }}} audit records must be off-loaded onto a different system or storage media from the system being audited.'
 
@@ -100,3 +117,5 @@ warnings:
         $ActionQueueSaveOnShutdown on
         $ActionResumeRetryCount -1
         </pre>
+        Or if using Rainer Script syntax, it could be:
+        <pre>*.* action(type="omfwd" queue.type="linkedlist" queue.filename="example_fwd" action.resumeRetryCount="-1" queue.saveOnShutdown="on" target="example.com" port="30514" protocol="tcp")</pre>

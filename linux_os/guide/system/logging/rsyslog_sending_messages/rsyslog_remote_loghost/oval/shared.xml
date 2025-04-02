@@ -4,8 +4,13 @@
     <criteria operator="OR">
       <criterion comment="Remote logging set within /etc/rsyslog.conf" test_ref="test_remote_rsyslog_conf" />
       <criterion comment="Remote logging set within /etc/rsyslog.d" test_ref="test_remote_rsyslog_d" />
+      <criterion comment="Remote logging set within /etc/rsyslog.conf in RainerScript" test_ref="test_remote_rsyslog_conf_rainer" />
+      <criterion comment="Remote logging set within /etc/rsyslog.d through RainerScript" test_ref="test_remote_rsyslog_d_rainer" />
     </criteria>
   </definition>
+
+{{% set rsyslog_remote_loghost_old_regex="^\*\.\*[\s]+(?:@|\:omrelp\:)" %}}
+{{% set rsyslog_remote_loghost_rainer_regex="(?m)^\\s*\\*\\.\\*\\s+action\\(\\s*.*(?i)\\btype\\b(?-i)=\"omfwd\"\\s*.*(?i)\\btarget\\b(?-i)=\"\\S+\"\\s*.*\\)\\s*$" %}}
 
   <!-- NIST scapval validation tool complains that a variable passed to
   rsyslog_remote_loghost OVAL check from the XCCDF Rule doesn't have
@@ -33,14 +38,39 @@
 
   <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_conf" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\*\.\*[\s]+(?:@|\:omrelp\:)</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ rsyslog_remote_loghost_old_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_d" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
     <ind:filename operation="pattern match">^.+\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\*\.\*[\s]+(?:@|\:omrelp\:)</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ rsyslog_remote_loghost_old_regex }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensures system configured to export logs to remote host using Rainer syntax"
+  id="test_remote_rsyslog_conf_rainer" version="1">
+    <ind:object object_ref="object_remote_loghost_rsyslog_conf_rainer" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensures system configured to export logs to remote host using Rainer"
+  id="test_remote_rsyslog_d_rainer" version="1">
+    <ind:object object_ref="object_remote_loghost_rsyslog_d_rainer" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_conf_rainer" version="1">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">{{{ rsyslog_remote_loghost_rainer_regex }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_d_rainer" version="1">
+    <ind:path>/etc/rsyslog.d</ind:path>
+    <ind:filename operation="pattern match">^.+\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">{{{ rsyslog_remote_loghost_rainer_regex }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
