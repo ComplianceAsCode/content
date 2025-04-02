@@ -4989,18 +4989,21 @@ controls:
   - etcd_auto_tls
   - api_server_admission_control_plugin_alwayspullimages
   - controller_use_service_account
-  - file_groupowner_ovs_sys_id_conf
+  - file_groupowner_ovs_sys_id_conf_openvswitch
+  - file_groupowner_ovs_sys_id_conf_hugetlbfs
   - file_groupowner_cni_conf
   - rbac_debug_role_protects_pprof
   - rbac_limit_cluster_admin
   - file_groupowner_ovs_pid
   - api_server_admission_control_plugin_securitycontextdeny
   - directory_permissions_var_log_kube_audit
-  - file_groupowner_ovs_conf_db_lock
+  - file_groupowner_ovs_conf_db_lock_openvswitch
+  - file_groupowner_ovs_conf_db_lock_hugetlbfs
   - file_owner_ovsdb_server_pid
   - kubelet_configure_tls_cipher_suites
   - scc_limit_network_namespace
-  - file_groupowner_ovs_conf_db
+  - file_groupowner_ovs_conf_db_openvswitch
+  - file_groupowner_ovs_conf_db_hugetlbfs
   description: |-
     The organization:
      a. Establishes and documents configuration settings for information technology products employed within the information system using [Assignment: organization-defined security configuration checklists] that reflect the most restrictive mode consistent with operational requirements;
@@ -5202,17 +5205,20 @@ controls:
   - etcd_auto_tls
   - api_server_admission_control_plugin_alwayspullimages
   - controller_use_service_account
-  - file_groupowner_ovs_sys_id_conf
+  - file_groupowner_ovs_sys_id_conf_openvswitch
+  - file_groupowner_ovs_sys_id_conf_hugetlbfs
   - file_groupowner_cni_conf
   - rbac_debug_role_protects_pprof
   - rbac_limit_cluster_admin
   - file_groupowner_ovs_pid
   - api_server_admission_control_plugin_securitycontextdeny
   - file_owner_ovsdb_server_pid
-  - file_groupowner_ovs_conf_db_lock
+  - file_groupowner_ovs_conf_db_lock_openvswitch
+  - file_groupowner_ovs_conf_db_lock_hugetlbfs
   - kubelet_configure_tls_cipher_suites
   - scc_limit_network_namespace
-  - file_groupowner_ovs_conf_db
+  - file_groupowner_ovs_conf_db_openvswitch
+  - file_groupowner_ovs_conf_db_hugetlbfs
   description: |-
     The organization employs automated mechanisms to centrally manage, apply, and verify configuration settings for [Assignment: organization-defined information system components].
 

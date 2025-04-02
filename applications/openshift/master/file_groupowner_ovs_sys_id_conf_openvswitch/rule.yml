@@ -1,11 +1,12 @@
 documentation_complete: true
 
-platform: ocp4-node and aarch64_arch
 
-title: 'Verify Group Who Owns The Open vSwitch Configuration Database Lock'
+platform: ocp4-node and (aarch64_arch or s390x_arch)
+
+title: 'Verify Group Who Owns The Open vSwitch Persistent System ID is openvswitch'
 
 description: |-
-    {{{ describe_file_group_owner(file="/etc/openvswitch/.conf.db.~lock~", group="openvswitch") }}}
+    {{{ describe_file_group_owner(file="/etc/openvswitch/system-id.conf", group="openvswitch") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -16,7 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-87632-6
+    cce@ocp4: CCE-83677-5
 
 references:
     cis@ocp4: 1.1.9
@@ -24,13 +25,13 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/.conf.db.~lock~", group="openvswitch") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/system-id.conf", group="openvswitch") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/openvswitch/.conf.db.~lock~", group="openvswitch") }}}
+    {{{ ocil_file_group_owner(file="/etc/openvswitch/system-id.conf", group="openvswitch") }}}
 
 template:
     name: file_groupowner
     vars:
-        filepath: /etc/openvswitch/.conf.db.~lock~
+        filepath: /etc/openvswitch/system-id.conf
         gid_or_name: 'openvswitch'

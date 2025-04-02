@@ -1760,7 +1760,7 @@ The macros generates the OVAL test including the dependent OVAL object and OVAL 
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_{{{ arch }}}" version="1">
-    <ind:filepath operation="pattern match">/proc/sys/kernel/(osrelease|arch)</ind:filepath>
+    <ind:filepath operation="pattern match">^/proc/sys/kernel/(osrelease|arch)</ind:filepath>
     <ind:pattern operation="pattern match">^.*\.{{{ arch }}}$|^{{{ arch }}}$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
