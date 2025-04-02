@@ -18,6 +18,5 @@ fixtext: |-
 
     -a always,exit -F arch=b32 -S umount -F auid&gt;={{{ uid_min }}} -F auid!=unset -k privileged-umount
 
-    To load the rules to the kernel immediately, use the following command:
+    The audit daemon must be restarted for the changes to take effect.
 
-    $ sudo augenrules --load

@@ -9,7 +9,9 @@ checktext: |-
 
     $ sudo auditctl -l | egrep '(/etc/shadow)'
 
-    -w /etc/shadow -p wa -k identity
+    -a always,exit -F arch=b32 -F path=/etc/shadow -F perm=wa -F key=identity
+    -a always,exit -F arch=b64 -F path=/etc/shadow -F perm=wa -F key=identity
+
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -18,7 +20,8 @@ fixtext: |-
 
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
 
-    -w /etc/shadow -p wa -k identity
+    -a always,exit -F arch=b32 -F path=/etc/shadow -F perm=wa -F key=identity
+    -a always,exit -F arch=b64 -F path=/etc/shadow -F perm=wa -F key=identity
 
     The audit daemon must be restarted for the changes to take effect.
 

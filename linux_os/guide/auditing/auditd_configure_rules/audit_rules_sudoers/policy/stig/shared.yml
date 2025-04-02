@@ -9,7 +9,8 @@ checktext: |-
 
     $ sudo auditctl -l | grep '/etc/sudoers[^.]'
 
-    -w /etc/sudoers -p wa -k identity
+    -a always,exit -F arch=b32 -F path=/etc/sudoers -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/etc/sudoers -F perm=wa -F key=logins
 
     If the command does not return a line, or the line is commented out, this is a finding.
 
@@ -18,8 +19,7 @@ fixtext: |-
 
     Add or update the following file system rule to "/etc/audit/rules.d/audit.rules":
 
-    -w /etc/sudoers -p wa -k identity
+    -a always,exit -F arch=b32 -F path=/etc/sudoers -F perm=wa -F key=logins
+    -a always,exit -F arch=b64 -F path=/etc/sudoers -F perm=wa -F key=logins
 
-    To load the rules to the kernel immediately, use the following command:
-
-    $ sudo augenrules --load
+    The audit daemon must be restarted for the changes to take effect.
