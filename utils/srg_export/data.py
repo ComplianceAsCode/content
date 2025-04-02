@@ -216,7 +216,8 @@ srgid_to_iacontrol_gpos = {
     'SRG-OS-000755-GPOS-00220': 'MA-3 (5)',
     'SRG-OS-000775-GPOS-00230': 'SC-17 b',
     'SRG-OS-000780-GPOS-00240': 'SC-28 (3)',
-    'SRG-OS-000785-GPOS-00250': 'SC-45',}
+    'SRG-OS-000785-GPOS-00250': 'SC-45',
+}
 
 srgid_to_iacontrol_ctr = {
  'SRG-APP-000014-CTR-000035': 'AC-17 (2)',
@@ -512,4 +513,5 @@ srgid_to_iacontrol_ctr = {
  'SRG-APP-000605-CTR-001380': 'IA-5 (2) (a)',
  'SRG-APP-000610-CTR-001385': 'IA-7',
  'SRG-APP-000635-CTR-001405': 'AU-9 (3),MA-4 (6),SC-13,SC-23',
- 'SRG-APP-000645-CTR-001410': 'CM-7 b'}
+ 'SRG-APP-000645-CTR-001410': 'CM-7 b',
+ }
