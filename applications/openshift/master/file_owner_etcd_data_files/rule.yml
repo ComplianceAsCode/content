@@ -27,8 +27,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/etcd/member/wal/*", owne
 ocil: |-
     {{{ ocil_file_owner(file="/var/lib/etcd/member/wal/*", owner="root") }}}
 
-platforms:
-    - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
     - dependency: |-

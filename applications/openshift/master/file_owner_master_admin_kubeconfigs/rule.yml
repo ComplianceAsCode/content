@@ -32,8 +32,7 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resour
 ocil: |-
   {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-certs/secrets/node-kubeconfigs/*.kubeconfig", owner="root") }}}
 
-platforms:
-  - ocp4-master-node
+platform: ocp4-master-node
 
 warnings:
   - dependency: |-

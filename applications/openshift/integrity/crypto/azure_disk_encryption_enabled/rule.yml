@@ -1,8 +1,7 @@
 
 title: Ensure that the MachineSets provisioned by Azure have disk encryption enabled
 
-platforms:
-  - ocp4-on-azure
+platform: ocp4-on-azure
 
 description: |-
   OpenShift has an option to provide the Disk Encryption Set [1] when deploying
@@ -10,7 +9,7 @@ description: |-
   nodes have that enabled.
 
   [1] https://docs.openshift.com/container-platform/latest/machine_management/creating_machinesets/creating-machineset-azure.html#machineset-enabling-customer-managed-encryption-azure_creating-machineset-azure
-  
+
 rationale: |-
   The usage of disk encryption for the nodes protects the data at rest and
   ensures that an attacker cannot easily exfiltrate the machine contents which

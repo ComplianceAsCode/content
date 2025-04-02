@@ -25,7 +25,7 @@ description: |-
     - Building-Block APP.4.4 Kubernetes
 
 
-filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
+filter_rules: '"ocp4-node" in platform or "ocp4-master-node" in platform or "ocp4-node-on-sdn" in platform or "ocp4-node-on-ovn" in platform'
 
 selections:
     - bsi_app_4_4:all
