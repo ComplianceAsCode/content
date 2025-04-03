@@ -1,0 +1,23 @@
+srg_requirement: |-
+    {{{ full_name }}} must not have the tftp package installed.
+
+vuldiscussion: |-
+    It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities are often overlooked and therefore, may remain unsecure. They increase the risk to the platform by providing additional attack vectors.
+
+    If TFTP is required for operational support (such as transmission of router configurations), its use must be documented with the information systems security manager (ISSM), restricted to only authorized personnel, and have access control rules established.
+
+checktext: |-
+    Verify that the tftp package is not installed with the following command:
+
+    $ dnf list --installed tftp
+
+    Error: No matching Packages to list
+
+    If the "tftp" package is installed, this is a finding.
+
+fixtext: |-
+    Remove the tftp package with the following command:
+
+    $ sudo dnf remove tftp
+
+
