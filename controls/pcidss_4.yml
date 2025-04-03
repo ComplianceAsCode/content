@@ -2694,7 +2694,9 @@ controls:
           - audit_rules_login_events_faillock
           - audit_rules_login_events_lastlog
           - audit_rules_login_events_tallylog
-          - audit_rules_session_events
+          - audit_rules_session_events_utmp
+          - audit_rules_session_events_btmp
+          - audit_rules_session_events_wtmp
           - audit_sudo_log_events
         related_rules:
           # This rule incorportes faillock, lastlog and tallylog. It is redundant to keep it.

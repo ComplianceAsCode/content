@@ -73,7 +73,9 @@ selections:
 - audit_rules_mac_modification_etc_selinux
 - audit_rules_media_export
 - audit_rules_networkconfig_modification
-- audit_rules_session_events
+- audit_rules_session_events_utmp
+- audit_rules_session_events_btmp
+- audit_rules_session_events_wtmp
 - audit_rules_suid_privilege_function
 - audit_rules_sysadmin_actions
 - audit_rules_time_adjtimex
