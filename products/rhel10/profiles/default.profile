@@ -20,3 +20,4 @@ selections:
   - configure_tmux_lock_after_time
   - configure_tmux_lock_command
   - configure_tmux_lock_keybinding
+  - audit_rules_session_events
