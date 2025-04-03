@@ -86,6 +86,7 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 
 # Products to build content for. These generally correspond to directories in the root of this
 # project. Note that the example product is always disabled unless explicitly asked for.
+option(SSG_PRODUCT_AL2023 "If enabled, the Amazon Linux 2023 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_ALINUX2 "If enabled, the Alibaba Cloud Linux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_ALINUX3 "If enabled, the Alibaba Cloud Linux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_ALMALINUX9 "If enabled, the AlmaLinux OS 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -114,14 +115,13 @@ option(SSG_PRODUCT_RHEL10 "If enabled, the RHEL10 SCAP content will be built" ${
 option(SSG_PRODUCT_RHV4 "If enabled, the RHV4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLE12 "If enabled, the SLE12 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLE15 "If enabled, the SLE15 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_TENCENTOS4 "If enabled, the TencentOS Server 4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_SLMICRO5 "If enabled, the SLE Micro 5 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_TENCENTOS4 "If enabled, the TencentOS Server 4 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1604 "If enabled, the Ubuntu 16.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2204 "If enabled, the Ubuntu 22.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU2404 "If enabled, the Ubuntu 24.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_AL2023 "If enabled, the AL2023 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 # Products derivatives
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 
