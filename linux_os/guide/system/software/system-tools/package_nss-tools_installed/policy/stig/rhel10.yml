@@ -1,0 +1,21 @@
+checktext: |-
+    Verify that {{{ full_name }}} has the nss-tools package installed with the following command:
+
+    $ dnf list --installed nss-tools
+
+    Example output:
+
+    nss-tools.x86_64          3.101.0-13.el10
+
+    If the "nss-tools" package is not installed, this is a finding.
+
+srg_requirement: |-
+    {{{ full_name }}} must have the nss-tools package installed.
+
+vuldiscussion: |-
+    Network Security Services (NSS) is a set of libraries designed to support cross-platform development of security-enabled client and server applications. Install the "nss-tools" package to install command-line tools to manipulate the NSS certificate and key database.
+
+fixtext: |-
+    The nss-tools package can be installed with the following command:
+
+    $ sudo dnf install nss-tools
