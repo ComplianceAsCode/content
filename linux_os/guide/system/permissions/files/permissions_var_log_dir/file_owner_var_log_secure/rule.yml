@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/secure File'
 
-description: '{{{ describe_file_owner(file="/var/log/secure", owner="root|syslog") }}}'
+description: '{{{ describe_file_owner(file="/var/log/secure", owner="syslog|root") }}}'
 
 rationale: |-
     The <tt>/var/log/secure</tt> file contains information related to authentication
@@ -10,7 +10,15 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/secure", owner="root|syslog") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/secure", owner="syslog|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/secure", owner="root|syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/secure", owner="syslog|root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/
+        file_regex: .*secure(.*[-\.].*)?
+        uid_or_name: 'syslog|root'
+

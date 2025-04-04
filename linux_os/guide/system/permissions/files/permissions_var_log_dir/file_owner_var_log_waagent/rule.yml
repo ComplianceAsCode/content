@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns /var/log/waagent.log File'
 
-description: '{{{ describe_file_owner(file="/var/log/waagent.log", owner="root|syslog") }}}'
+description: '{{{ describe_file_owner(file="/var/log/waagent.log", owner="syslog|root") }}}'
 
 rationale: |-
     The <tt>/var/log/waagent.log</tt> file contains Azure Linux Guest Agent records
@@ -10,7 +10,15 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/waagent.log", owner="sroot|yslog") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/waagent.log", owner="syslog|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/waagent.log", owner="root|syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/waagent.log", owner="syslog|root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/
+        file_regex: .*waagent.log.*
+        uid_or_name: 'syslog|root'
+

@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify User Who Owns /var/log/syslog File'
 
 {{%  if product in ['ubuntu2404'] %}}
-description: '{{{ describe_file_owner(file="/var/log/syslog", owner="root|syslog") }}}'
+description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog|root") }}}'
 {{%- else %}}
 description: '{{{ describe_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 {{%- endif %}}
@@ -21,11 +21,16 @@ references:
     stigid@ubuntu2204: UBTU-22-232130
 
 {{%- if product in ['ubuntu2404'] %}}
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="root|syslog") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/log/syslog", owner="root|syslog") }}}
+    {{{ ocil_file_owner(file="/var/log/syslog", owner="syslog|root") }}}
 
+template:
+    name: file_owner
+    vars:
+        filepath: /var/log/syslog
+        uid_or_name: 'syslog|root'
 {{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/log/syslog", owner="syslog") }}}'
 
