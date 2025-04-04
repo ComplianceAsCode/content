@@ -29,7 +29,6 @@ selections:
   - package_telnet-server_removed
   - package_rsh_removed
   - package_rsh-server_removed
-  - package_quagga_removed
   - service_avahi-daemon_disabled
   - package_squid_removed
   - service_squid_disabled
