@@ -879,10 +879,10 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
-      - package_ypserv_removed
+    notes: It appears that the ypserv package was never in RHEL 9.
     related_rules:
       - service_ypserv_disabled
+      - package_ypserv_removed
 
   - id: 2.1.11
     title: Ensure print server services are not in use (Automated)

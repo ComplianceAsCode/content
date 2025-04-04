@@ -23,7 +23,6 @@ selections:
   ### Remove obsolete packages
   - package_talk_removed
   - package_talk-server_removed
-  - package_ypbind_removed
   - package_telnet_removed
   - service_telnet_disabled
   - package_telnet-server_removed

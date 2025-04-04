@@ -63,3 +63,4 @@ selections:
     - '!package_rsh_removed'
     - '!package_xinetd_removed'
     - '!package_ypbind_removed'
+    - '!package_ypserv_removed'
