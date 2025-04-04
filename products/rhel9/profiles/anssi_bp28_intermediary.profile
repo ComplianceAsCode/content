@@ -44,3 +44,4 @@ selections:
   - '!package_kea_removed'
   - '!package_rsh-server_removed'
   - '!package_rsh_removed'
+  - '!package_xinetd_removed'

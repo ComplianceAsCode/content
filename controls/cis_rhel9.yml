@@ -602,7 +602,7 @@ controls:
       - l1_server
       - l1_workstation
     status: manual
-    notes: |-        
+    notes: |-
         User should manually ensure that CVE-2023-48795 is addressed.
         This is not automated and it might be difficult to automate actually.
         Therefore, keeping this control as manual.
@@ -982,9 +982,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
-      - package_xinetd_removed
+    notes: The xinetd appears to never have been in RHEL 9.
     related_rules:
+      - package_xinetd_removed
       - service_xinetd_disabled
 
   - id: 2.1.20
