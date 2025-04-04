@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Group Who Owns /var/log/messages File'
 
 {{%- if product in ['ubuntu2404'] %}}
-description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/messages", group="adm|root") }}}'
 {{%- else %}}
 description: '{{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}'
 {{%- endif %}}
@@ -26,10 +26,16 @@ references:
     stigid@rhel8: RHEL-08-010230
 
 {{%- if product in ['ubuntu2404'] %}}
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root|adm") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="adm|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/messages", group="root|adm") }}}
+    {{{ ocil_file_group_owner(file="/var/log/messages", group="adm|root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/messages
+        gid_or_name: 'adm|root'
 
 {{%- else %}}
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/messages", group="root") }}}'

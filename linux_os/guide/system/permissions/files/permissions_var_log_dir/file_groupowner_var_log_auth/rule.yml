@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/auth.log File'
 
-description: '{{{ describe_file_group_owner(file="/var/log/auth.log", group="root|adm") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/auth.log", group="adm|root") }}}'
 
 rationale: |-
     The <tt>/var/log/auth.log</tt> file contains records information about user
@@ -11,7 +11,14 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/auth.log", group="root|adm") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/auth.log", group="adm|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/auth.log", group="root|adm") }}}
+    {{{ ocil_file_group_owner(file="/var/log/auth.log", group="adm|root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/auth.log
+        gid_or_name: 'adm|root'
+
