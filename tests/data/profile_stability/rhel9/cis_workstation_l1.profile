@@ -223,9 +223,6 @@ selections:
 - package_tftp-server_removed
 - package_tftp_removed
 - package_vsftpd_removed
-- package_xinetd_removed
-- package_ypbind_removed
-- package_ypserv_removed
 - partition_for_dev_shm
 - partition_for_tmp
 - postfix_network_listening_disabled

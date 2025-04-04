@@ -5,7 +5,7 @@ metadata:
         - shaneboulden
         - tjbutt58
 
-reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers 
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
 
 title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
 
@@ -29,10 +29,7 @@ selections:
   - package_telnet_removed
   - service_telnet_disabled
   - package_telnet-server_removed
-  - package_rsh_removed
-  - package_rsh-server_removed
   - service_zebra_disabled
-  - package_quagga_removed
   - service_avahi-daemon_disabled
   - package_squid_removed
   - service_squid_disabled
