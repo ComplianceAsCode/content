@@ -59,3 +59,4 @@ selections:
     - '!grub2_enable_apparmor'
     - '!package_apparmor_installed'
     - '!package_pam_apparmor_installed'
+    - '!package_rsh-server_removed'

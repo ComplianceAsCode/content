@@ -30,7 +30,6 @@ selections:
   - service_telnet_disabled
   - package_telnet-server_removed
   - package_rsh_removed
-  - package_rsh-server_removed
   - service_zebra_disabled
   - service_avahi-daemon_disabled
   - package_squid_removed
