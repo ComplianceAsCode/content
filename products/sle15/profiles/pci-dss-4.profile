@@ -65,3 +65,4 @@ selections:
     - '!network_nmcli_permissions'
     - '!package_cryptsetup-luks_installed'
     - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_mac_modification_etc_selinux'
