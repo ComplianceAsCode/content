@@ -295,7 +295,7 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
     row['SRG Check'] = html_plain_text(srg['check'])
     row['SRG Fix'] = srg['fix']
     row['Severity'] = ssg.build_stig.get_severity(srg.get('severity'))
-    row['IA Control'] = get_iacontrol(row['SRGID'])
+    row['IA Control'] = get_iacontrol(row['SRGID'].split(','))
     row['Mitigation'] = item.mitigation
     row['Artifact Description'] = item.artifact_description
     row['Status Justification'] = item.status_justification
@@ -352,8 +352,6 @@ def handle_csv_output(output: str, results: list) -> str:
 
 def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
-    for row in results:
-        row['IA Control'] = get_iacontrol(row['SRGID'])
     xlsx.handle_dict(results, output, f'{product} SRG Mapping')
     return output
 
