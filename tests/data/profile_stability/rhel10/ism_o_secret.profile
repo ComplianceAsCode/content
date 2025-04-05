@@ -66,7 +66,9 @@ selections:
 - audit_rules_login_events_faillock
 - audit_rules_networkconfig_modification
 - audit_rules_privileged_commands
-- audit_rules_session_events
+- audit_rules_session_events_utmp
+- audit_rules_session_events_btmp
+- audit_rules_session_events_wtmp
 - audit_rules_sysadmin_actions
 - audit_rules_time_adjtimex
 - audit_rules_time_clock_settime

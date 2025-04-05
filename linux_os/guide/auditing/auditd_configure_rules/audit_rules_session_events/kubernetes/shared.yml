@@ -6,8 +6,17 @@
 # disruption = low
 
 {{% macro audit_session_events_rule() %}}
+{{% if audit_watches_style == "modern" %}}
+-a always,exit -F arch=b32 -F path=/var/run/utmp -F perm=wa -F key=session
+-a always,exit -F arch=b64 -F path=/var/run/utmp -F perm=wa -F key=session
+-a always,exit -F arch=b32 -F path=/var/log/btmp -F perm=wa -F key=session
+-a always,exit -F arch=b64 -F path=/var/log/btmp -F perm=wa -F key=session
+-a always,exit -F arch=b32 -F path=/var/log/wtmp -F perm=wa -F key=session
+-a always,exit -F arch=b64 -F path=/var/log/wtmp -F perm=wa -F key=session
+{{% else %}}
 -w /var/run/utmp -p wa -k session
 -w /var/log/btmp -p wa -k session
 -w /var/log/wtmp -p wa -k session
+{{% endif %}}
 {{% endmacro %}}
 {{{ kubernetes_machine_config_file(path="/etc/audit/rules.d/75-audit-session-events.rules", file_permissions_mode='0600', source=audit_session_events_rule()) }}}
