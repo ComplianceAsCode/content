@@ -2,20 +2,20 @@ srg_requirement: |-
     {{{ full_name }}} must allow only the information system security manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.
 
 fixtext: |-
-    Configure the files in directory "/etc/audit/rules.d/" and the "/etc/audit/auditd.conf" file to have a mode of "0640" with the following commands:
+    Configure the files in directory "/etc/audit/rules.d/" and the "/etc/audit/auditd.conf" file to have a mode of "0600" with the following commands:
 
-    $ sudo chmod 0640 /etc/audit/rules.d/audit.rules
-    $ sudo chmod 0640 /etc/audit/rules.d/[customrulesfile].rules
-    $ sudo chmod 0640 /etc/audit/auditd.conf
+    $ sudo chmod 0600 /etc/audit/rules.d/audit.rules
+    $ sudo chmod 0600 /etc/audit/rules.d/[customrulesfile].rules
+    $ sudo chmod 0600 /etc/audit/auditd.conf
 
 checktext: |-
-    Verify that the files in directory "/etc/audit/rules.d/" and "/etc/audit/auditd.conf" file have a mode of "0640" or less permissive with the following command:
+    Verify that the files in directory "/etc/audit/rules.d/" and "/etc/audit/auditd.conf" file have a mode of "0600" or less permissive with the following command:
 
     # stat -c "%a %n"  /etc/audit/rules.d/*.rules
 
     640 /etc/audit/rules.d/audit.rules
 
-    If the files in the "/etc/audit/rules.d/" directory or the "/etc/audit/auditd.conf" file have a mode more permissive than "0640", this is a finding.
+    If the files in the "/etc/audit/rules.d/" directory or the "/etc/audit/auditd.conf" file have a mode more permissive than "600", this is a finding.
 
 
 

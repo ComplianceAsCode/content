@@ -1,0 +1,27 @@
+checktext: |-
+    Verify USBGuard is installed on the operating system with the following command:
+
+    $ sudo dnf list installed usbguard
+
+    Example output:
+
+    Installed Packages
+    usbguard.x86_64          1.1.3-6.el10
+
+    If the USBGuard package is not installed, ask the SA to indicate how unauthorized peripherals are being blocked.
+
+    If there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.
+
+srg_requirement: |-
+    {{{ full_name }}} must have the USBGuard package installed.
+
+vuldiscussion: |-
+    The USBguard-daemon is the main component of the USBGuard software framework. It runs as a service in the background and enforces the USB device authorization policy for all USB devices. The policy is defined by a set of rules using a rule language described in the usbguard-rules.conf file. The policy and the authorization state of USB devices can be modified during runtime using the usbguard tool.
+
+    The system administrator (SA) must work with the site information system security officer (ISSO) to determine a list of authorized peripherals and establish rules within the USBGuard software framework to allow only authorized devices.
+
+fixtext: |-
+    Install the usbguard package with the following command:
+
+    $ sudo dnf install usbguard
+
