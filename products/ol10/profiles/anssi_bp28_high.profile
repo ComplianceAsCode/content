@@ -36,7 +36,6 @@ selections:
     - '!sudo_add_umask'
     - '!cracklib_accounts_password_pam_minlen'
     - '!cracklib_accounts_password_pam_dcredit'
-    - '!audit_rules_file_deletion_events_renameat2'
     # this rule is not automated anymore
     - '!security_patches_up_to_date'
     # OL 10 unified the paths for grub2 files. These rules are selected in control file by R29.
@@ -71,3 +70,8 @@ selections:
     - '!kernel_config_refcount_full'
     - '!kernel_config_retpoline'
     - '!kernel_config_security_writable_hooks'
+    # OL 10 uses a different rule for auditing changes to selinux configuration (R73)
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
+    # OL 10 unified the paths for grub2 files. This rule is selected in control file by R5.
+    - '!grub2_uefi_password'
