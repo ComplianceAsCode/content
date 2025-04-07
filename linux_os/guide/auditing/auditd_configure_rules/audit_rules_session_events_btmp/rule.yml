@@ -15,11 +15,11 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@sle15: CCE-85758-1
-    cce@slmicro5: CCE-93725-0
     cce@rhel8: CCE-86196-3
     cce@rhel9: CCE-86198-9
     cce@rhel10: CCE-86190-6
+    cce@sle15: CCE-85758-1
+    cce@slmicro5: CCE-93725-0
 
 references:
     disa: CCI-000172
@@ -39,6 +39,3 @@ template:
     vars:
         path: /var/log/btmp
         key: session
-    backends:
-        ansible: "off"
-        bash: "off"
