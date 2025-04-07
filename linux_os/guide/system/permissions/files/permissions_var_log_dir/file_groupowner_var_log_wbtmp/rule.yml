@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns /var/log/(b|w)tmp(.*|-*) File'
 
-description: '{{{ describe_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="root|utmp") }}}'
+description: '{{{ describe_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="utmp|root") }}}'
 
 rationale: |-
     The <tt>/var/log/(b|w)tmp(.*|-*)</tt> file contains logs of reports the most recent login of all users
@@ -10,7 +10,14 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="root|utmp") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="utmp|root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="root|utmp") }}}
+    {{{ ocil_file_group_owner(file="/var/log/(b|w)tmp(.*|-*)", group="utmp|root") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/
+        file_regex: .*(b|w)tmp((\.|-)[^\/]+)?
+        gid_or_name: 'utmp|root'

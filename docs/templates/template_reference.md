@@ -290,7 +290,9 @@
     -   **gid_or_name** - group ID (GID) or a group name.
         If the parameter is an integer, it is treated as group ID. If the
         parameter is not an integer, it is treated as a group name and it is
-        converted to GID by reading /etc/group.
+        converted to GID by reading /etc/group. gid_or_name can also be a 
+        list of possible group names separated by |, e.g. "syslog|root".
+        gids cannot be used with the '|' operator.
 
 -   Languages: Ansible, Bash, OVAL
 
