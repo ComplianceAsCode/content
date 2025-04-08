@@ -718,3 +718,4 @@ selections:
     - package_mcafeetp_installed
     - harden_sshd_ciphers_openssh_conf_crypto_policy
     - harden_sshd_macs_openssh_conf_crypto_policy
+    - package_quagga_removed
