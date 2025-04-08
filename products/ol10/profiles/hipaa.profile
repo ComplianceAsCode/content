@@ -37,7 +37,7 @@ selections:
     - '!ensure_fedora_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'
     - '!grub2_uefi_admin_username'
-    - '!grub2_uefi_pass'
+    - '!grub2_uefi_password'
     - '!service_ypbind_disabled'
     - '!service_zebra_disabled'
     - '!package_talk-server_removed'
@@ -61,4 +61,7 @@ selections:
     - '!sshd_allow_only_protocol2'
     - '!sshd_disable_kerb_auth'
     - '!sshd_disable_gssapi_auth'
-    - '!audit_rules_file_deletion_events_renameat2'
+
+    # OL 10 uses a different rule for auditing changes to selinux configuration
+    - '!audit_rules_mac_modification'
+    - audit_rules_mac_modification_etc_selinux
