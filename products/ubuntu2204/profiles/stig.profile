@@ -532,9 +532,6 @@ selections:
     # UBTU-22-651015 The Ubuntu operating system must use a file integrity tool to verify correct operation of all security functions.
     - aide_build_database
 
-    # UBTU-22-412015 The Ubuntu operating system must display the date and time of the last successful account logon upon logon.
-    - display_login_attempts
-
     # UBTU-22-251015 The Ubuntu operating system must enable and run the Uncomplicated Firewall (ufw).
     - check_ufw_active
 
