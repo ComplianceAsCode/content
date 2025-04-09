@@ -130,6 +130,7 @@ controls:
     levels:
       - low
     rules:
+      #- var_audispd_remote_server=192.168.122.126
       - auditd_audispd_configure_remote_server
       - package_audit-audispd-plugins_installed
     status: automated
@@ -207,6 +208,8 @@ controls:
     levels:
       - medium
     related_rules:
+      # TODO define var
+      #- sshd_approved_ciphers=stig_ubuntu2404
       - sshd_use_approved_ciphers_ordered_stig
     status: planned
 
@@ -218,6 +221,8 @@ controls:
     levels:
       - medium
     related_rules:
+      # TODO define var
+      #- sshd_approved_macs=stig_ubuntu2404
       - sshd_use_approved_macs_ordered_stig
     status: planned
 
@@ -297,6 +302,7 @@ controls:
     levels:
       - low
     rules:
+      - var_accounts_max_concurrent_login_sessions=10
       - accounts_max_concurrent_login_sessions
     status: automated
 
@@ -306,6 +312,8 @@ controls:
     levels:
       - medium
     related_rules:
+      - inactivity_timeout_value=15_minutes
+      - var_screensaver_lock_delay=immediate
       - dconf_gnome_screensaver_idle_delay
       - dconf_gnome_screensaver_lock_delay
     status: planned
@@ -325,6 +333,7 @@ controls:
     levels:
       - medium
     related_rules:
+      - var_accounts_tmout=15_min
       - accounts_tmout
     status: planned
 
@@ -416,6 +425,9 @@ controls:
     levels:
       - low
     related_rules:
+      - var_accounts_passwords_pam_faillock_deny=3
+      - var_accounts_passwords_pam_faillock_fail_interval=900
+      - var_accounts_passwords_pam_faillock_unlock_time=never
       - accounts_passwords_pam_faillock_audit
       - accounts_passwords_pam_faillock_deny
       - accounts_passwords_pam_faillock_interval
@@ -429,6 +441,7 @@ controls:
     levels:
       - medium
     rules:
+      - remote_login_banner_text=dod_banners
       - sshd_enable_warning_banner_net
       - banner_etc_issue_net
     status: automated
@@ -449,6 +462,7 @@ controls:
     levels:
       - medium
     rules:
+      - login_banner_text=dod_banners
       - dconf_gnome_login_banner_text
     status: automated
 
@@ -543,6 +557,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_dictcheck=1
       - accounts_password_pam_dictcheck
     status: automated
 
@@ -552,6 +567,7 @@ controls:
     levels:
       - medium
     related_rules:
+      - var_password_pam_retry=3
       - accounts_password_pam_enforcing
       - accounts_password_pam_retry
     status: planned
@@ -562,6 +578,7 @@ controls:
     levels:
       - low
     related_rules:
+      - var_password_pam_delay=4000000
       - accounts_passwords_pam_faildelay_delay
     status: planned
 
@@ -650,6 +667,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_accounts_user_umask=077
       - accounts_umask_etc_login_defs
     status: automated
 
@@ -739,6 +757,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_ucredit=1
       - accounts_password_pam_ucredit
     status: automated
 
@@ -748,6 +767,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_lcredit=1
       - accounts_password_pam_lcredit
     status: automated
 
@@ -757,6 +777,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_dcredit=1
       - accounts_password_pam_dcredit
     status: automated
 
@@ -766,6 +787,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_difok=8
       - accounts_password_pam_difok
     status: automated
 
@@ -776,6 +798,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_accounts_minimum_age_login_defs=1
       - accounts_minimum_age_login_defs
     status: automated
 
@@ -785,6 +808,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_accounts_maximum_age_login_defs=60
       - accounts_maximum_age_login_defs
     status: automated
 
@@ -793,6 +817,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_minlen=15
       - accounts_password_pam_minlen
     status: automated
 
@@ -802,6 +827,7 @@ controls:
     levels:
       - medium
     rules:
+      - var_password_pam_ocredit=1
       - accounts_password_pam_ocredit
     status: automated
 
@@ -885,6 +911,7 @@ controls:
     levels:
       - medium
     related_rules:
+      - var_sshd_set_keepalive=1
       - sshd_set_keepalive
     status: automated
 
@@ -894,6 +921,7 @@ controls:
     levels:
       - medium
     related_rules:
+      - sshd_idle_timeout_value=10_minutes
       - sshd_set_idle_timeout
     status: automated
 
@@ -968,6 +996,7 @@ controls:
     levels:
       - low
     rules:
+      - var_time_service_set_maxpoll=18_hours
       - chronyd_or_ntpd_set_maxpoll
     status: automated
 
@@ -1590,6 +1619,8 @@ controls:
     levels:
       - low
     related_rules:
+      - var_auditd_space_left_percentage=25pc
+      - var_auditd_space_left_action=email
       - auditd_data_retention_space_left_action
       - auditd_data_retention_space_left_percentage
     status: automated
@@ -1601,6 +1632,7 @@ controls:
     levels:
       - low
     rules:
+      - var_auditd_action_mail_acct=root
       - auditd_data_retention_action_mail_acct
     status: automated
 
