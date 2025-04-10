@@ -1,4 +1,7 @@
 #!/bin/bash
+{{%- if NO_REMEDIATION %}}
+# remediation = none
+{{%- endif -%}}
 {{% if SYSCTLVAL == "" %}}
 # variables = sysctl_{{{ SYSCTLID }}}_value={{{ SYSCTL_CORRECT_VALUE }}}
 {{% endif %}}
