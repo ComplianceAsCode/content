@@ -372,17 +372,17 @@ class SelectionHandler(object):
         else:
             self.selected.append(item)
 
-    def _subtract_refinements(self, extended_refinements):
+    def _subtract_refinements(self):
         """
-        Given a dict of rule refinements from the extended profile,
-        "undo" every refinement prefixed with '!' in this profile.
+        From the resolved profile, "undo" every refinement prefixed with '!' in this profile.
         """
         for rule, refinements in list(self.refine_rules.items()):
             if rule.startswith("!"):
                 for prop, val in refinements:
-                    extended_refinements[rule[1:]].remove((prop, val))
+                    self.refine_rules[rule[1:]].remove((prop, val))
                 del self.refine_rules[rule]
-        return extended_refinements
+                if not self.refine_rules[rule[1:]]:
+                    del self.refine_rules[rule[1:]]
 
     def update_with(self, rhs):
         extended_selects = set(rhs.selected)
@@ -394,9 +394,8 @@ class SelectionHandler(object):
         self.variables = updated_variables
 
         extended_refinements = deepcopy(rhs.refine_rules)
-        updated_refinements = self._subtract_refinements(extended_refinements)
-        updated_refinements.update(self.refine_rules)
-        self.refine_rules = updated_refinements
+        extended_refinements.update(self.refine_rules)
+        self.refine_rules = extended_refinements
 
 
 class Templatable(object):
