@@ -1,5 +1,12 @@
 documentation_complete: true
 
+{{% if product == "rhel10" %}}
+{{# This path shouldn't contain trailing slash #}}
+{{% set original_copies_path="/usr/share/audit-rules" %}}
+{{% else %}}
+{{# This path should contain trailing slash #}}
+{{% set original_copies_path="/usr/share/audit/sample-rules/" %}}
+{{% endif %}}
 
 title: 'Perform general configuration of Audit for OSPP (AArch64)'
 
@@ -18,7 +25,7 @@ title: 'Perform general configuration of Audit for OSPP (AArch64)'
 ## 30-ospp-v42-6-owner-change-failed.rules,
 ## 30-ospp-v42-6-owner-change-success.rules
 ##
-## original copies may be found in /usr/share/audit-rules
+## original copies may be found in " ~ original_copies_path ~ "
 
 
 ## User add delete modify. This is covered by pam. However, someone could
