@@ -747,9 +747,11 @@ controls:
     title: Ubuntu 24.04 LTS must store only encrypted representations of passwords.
     levels:
       - medium
-    related_rules:
-      - set_password_hashing_algorithm_systemauth
-    status: planned
+    rules:
+      - var_password_pam_unix_rounds=100000
+      - set_password_hashing_algorithm_auth_stig
+      - accounts_password_pam_unix_rounds_password_auth
+    status: automated
 
   - id: UBTU-24-400260
     title: Ubuntu 24.04 LTS must enforce password complexity by requiring that at
