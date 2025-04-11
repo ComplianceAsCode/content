@@ -1,4 +1,6 @@
-{{%- if product == 'ubuntu2204' %}}
+{{%- if product == 'ubuntu2404' %}}
+{{%- set sshd_approved_macs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256" %}}
+{{%- elif product == 'ubuntu2204' %}}
 {{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com" %}}
 {{%- else %}}
 {{%- set sshd_approved_macs = "hmac-sha2-512,hmac-sha2-256" %}}
