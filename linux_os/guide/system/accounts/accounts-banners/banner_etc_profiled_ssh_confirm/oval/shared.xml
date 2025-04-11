@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    {{{ oval_metadata("The SSH confirmation banner text should be set correctly.") }}}
+    <criteria operator="AND">
+      <criterion comment="/etc/profile.d/ssh_confirm.sh must exist" test_ref="test_banner_etc_profiled_ssh_confirm_exists"/>
+      <criterion comment="/etc/profile.d/ssh_confirm.sh is set appropriately" test_ref="test_banner_etc_profiled_ssh_confirm" />
+    </criteria>
+  </definition>
+
+  <unix:file_test version="1" id="test_banner_etc_profiled_ssh_confirm_exists" check="all" check_existence="all_exist" comment="/etc/profile.d/ssh_confirm.sh exists">
+      <unix:object object_ref="object_banner_etc_profiled_ssh_confirm_exists" />
+  </unix:file_test>
+
+  <unix:file_object version="1" id="object_banner_etc_profiled_ssh_confirm_exists">
+      <unix:filepath>/etc/profile.d/ssh_confirm.sh</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/profile.d/ssh_confirm.sh" id="test_banner_etc_profiled_ssh_confirm" version="1">
+    <ind:object object_ref="object_banner_etc_profiled_ssh_confirm" />
+    <ind:state state_ref="state_banner_etc_profiled_ssh_confirm" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_banner_etc_profiled_ssh_confirm" version="1">
+    <ind:behaviors singleline="true" multiline="false" />
+    <ind:filepath>/etc/profile.d/ssh_confirm.sh</ind:filepath>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_banner_etc_profiled_ssh_confirm" version="1">
+    <ind:subexpression datatype="string" var_ref="var_ssh_confirm_text" operation="pattern match" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="warning banner text variable" datatype="string" id="var_ssh_confirm_text" version="1" />
+
+</def-group>
