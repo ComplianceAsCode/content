@@ -20,9 +20,9 @@
   <ind:textfilecontent54_object id="object_password_auth_pam_unix_rounds" version="1">
     <ind:filepath operation="pattern match">^{{{ pam_passwd_file_path }}}$</ind:filepath>
     {{% if product in ["debian12", 'ubuntu2404'] %}}
-    <ind:pattern operation="pattern match">^\s*password\s+.*\s+pam_unix\.so.*rounds=([0-9]*).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*password\s+.*\s+pam_unix\.so[^#]*rounds=([0-9]*).*$</ind:pattern>
     {{% else %}}
-    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*rounds=([0-9]*).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so[^#]*rounds=([0-9]*).*$</ind:pattern>
     {{% endif %}}
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
