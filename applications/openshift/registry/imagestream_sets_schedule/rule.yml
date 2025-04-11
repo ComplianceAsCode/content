@@ -32,17 +32,17 @@ references:
     srg: SRG-APP-000456-CTR-001125
 
 {{% set api_path = '/apis/image.openshift.io/v1/imagestreams' %}}
-{{% set jqfilter = '[[.items[] | select( .metadata.ownerReferences? // [] | all(.kind != "ClusterVersion")) | select(.metadata.labels[]? | select("samples.operator.openshift.io/managed: true") | not) | select(.spec.tags[]?.from.kind != "ImageStreamTag" and (.importPolicy.scheduled != null or .importPolicy.scheduled != false))] | any]' %}}
+{{% set jqfilter = '[[.items[] | ( .spec.tags[]?.from.kind != "ImageStreamTag" and ([.spec.tags[]? | (.importPolicy.scheduled == null or .importPolicy.scheduled == false)] | any) ) and ((.metadata.labels == null) or (.metadata.labels."samples.operator.openshift.io/managed" == null) or (.metadata.labels."samples.operator.openshift.io/managed" != "true")) and ((.metadata.ownerReferences == null) or (.metadata.ownerReferences | length == 0) or (.metadata.ownerReferences?[].kind == null) or (isempty(.metadata.ownerReferences?[] | select(.kind == "ClusterVersion"))))] | any]' %}}
 
 ocil_clause: 'imagestream is not configured to perform periodical updates'
 
 ocil: |-
   To list all the imagestreams and identify which imagestream tags are
   configured to periodically check for updates (<pre>imagePolicy = { scheduled: true }</pre>), run the following command:
-  <pre>oc get imagestream -A -ojson | jq -r '.items[] | select( .metadata.ownerReferences? // [] | all(.kind == "ClusterVersion")) | select(.metadata.labels[]? | select( "samples.operator.openshift.io/managed: true")) | select( .spec.tags[]?.from.kind != "ImageStreamTag" and .importPolicy.scheduled == true).metadata.name' | sort | uniq</pre>
+  <pre>oc get imagestream -A -ojson | jq -r '.items[] | select(( (.spec.tags[]?.from.kind != "ImageStreamTag") and ([.spec.tags[]? | (.importPolicy.scheduled == null or .importPolicy.scheduled == false)] | any) and ((.metadata.labels == null) or (.metadata.labels["samples.operator.openshift.io/managed"] == null) or (.metadata.labels["samples.operator.openshift.io/managed"] != "true")) and ((.metadata.ownerReferences == null) or (.metadata.ownerReferences | length == 0) or (.metadata.ownerReferences[]?.kind == null) or (isempty(.metadata.ownerReferences[]? | select(.kind == "ClusterVersion")))) )|not) | "\(.metadata.namespace),\(.metadata.name)"' | sort | uniq</pre>
   Alternatively, to view a list of ImageStreams that do not schedule updates,
   run:
-  <pre>oc get imagestream -A -ojson | jq -r '.items[] | select( .metadata.ownerReferences? // [] | all(.kind != "ClusterVersion")) | select(.metadata.labels[]? | select( "samples.operator.openshift.io/managed: true") | not) | select( .spec.tags[]?.from.kind != "ImageStreamTag" and (.importPolicy.scheduled == null or .importPolicy.scheduled == false)) | "\(.metadata.namespace),\(.metadata.name)"' | sort | uniq</pre>
+  <pre>oc get imagestream -A -ojson | jq -r '.items[] | select(( (.spec.tags[]?.from.kind != "ImageStreamTag") and ([.spec.tags[]? | (.importPolicy.scheduled == null or .importPolicy.scheduled == false)] | any) and ((.metadata.labels == null) or (.metadata.labels["samples.operator.openshift.io/managed"] == null) or (.metadata.labels["samples.operator.openshift.io/managed"] != "true")) and ((.metadata.ownerReferences == null) or (.metadata.ownerReferences | length == 0) or (.metadata.ownerReferences[]?.kind == null) or (isempty(.metadata.ownerReferences[]? | select(.kind == "ClusterVersion")))) )) | "\(.metadata.namespace),\(.metadata.name)"' | sort | uniq</pre>
 
 warnings:
 - general: |-
@@ -55,7 +55,7 @@ template:
     filepath: |-
       {{{ openshift_filtered_path(api_path, jqfilter) }}}
     yamlpath: "[:]"
-    check_existence: "only_one_exists"
+    check_existence: "at_least_one_exists"
     values:
       - value: "false"
         operation: "equals"
