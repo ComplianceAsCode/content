@@ -8,6 +8,6 @@
 {{% set cfg_file = '/etc/pam.d/common-auth' %}}
 {{% endif %}}
 
-{{{ bash_ensure_pam_module_option( cfg_file, 'auth', 'required', 'pam_tally2.so', 'deny', "${var_password_pam_tally2}", '') }}}
 {{{ bash_ensure_pam_module_option( cfg_file, 'auth', 'required', 'pam_tally2.so', 'onerr', 'fail', '(fail)') }}}
+{{{ bash_ensure_pam_module_option( cfg_file, 'auth', 'required', 'pam_tally2.so', 'deny', "${var_password_pam_tally2}", '') }}}
 {{{ bash_ensure_pam_module_option('/etc/pam.d/common-account', 'account', 'required', 'pam_tally2.so', '', '', '') }}}
