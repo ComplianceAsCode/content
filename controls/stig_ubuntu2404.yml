@@ -207,11 +207,9 @@ controls:
       changes to information during transmission.
     levels:
       - medium
-    related_rules:
-      # TODO define var
-      #- sshd_approved_ciphers=stig_ubuntu2404
+    rules:
       - sshd_use_approved_ciphers_ordered_stig
-    status: planned
+    status: automated
 
   - id: UBTU-24-100830
     title: Ubuntu 24.04 LTS must configure the SSH daemon to use Message Authentication
@@ -220,20 +218,18 @@ controls:
       during transmission.
     levels:
       - medium
-    related_rules:
-      # TODO define var
-      #- sshd_approved_macs=stig_ubuntu2404
+    rules:
       - sshd_use_approved_macs_ordered_stig
-    status: planned
+    status: automated
 
   - id: UBTU-24-100840
     title: Ubuntu 24.04 LTS SSH server must be configured to use only FIPS 140-3 validated
       key exchange algorithms.
     levels:
       - medium
-    related_rules:
+    rules:
       - sshd_use_approved_kex_ordered_stig
-    status: planned
+    status: automated
 
   - id: UBTU-24-100850
     title: Ubuntu 24.04 LTS must configure the SSH client to use FIPS 140-3 approved
