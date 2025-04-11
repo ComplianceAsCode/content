@@ -311,12 +311,12 @@ controls:
       of inactivity.
     levels:
       - medium
-    related_rules:
-      - inactivity_timeout_value=15_minutes
+    rules:
+      - inactivity_timeout_value=10_minutes
       - var_screensaver_lock_delay=immediate
       - dconf_gnome_screensaver_idle_delay
       - dconf_gnome_screensaver_lock_delay
-    status: planned
+    status: automated
 
   - id: UBTU-24-200040
     title: Ubuntu 24.04 LTS must retain a user's session lock until the user reestablishes
@@ -332,10 +332,10 @@ controls:
       timeouts have expired.
     levels:
       - medium
-    related_rules:
-      - var_accounts_tmout=15_min
+    rules:
+      - var_accounts_tmout=10_min
       - accounts_tmout
-    status: planned
+    status: automated
 
   - id: UBTU-24-200090
     title: Ubuntu 24.04 LTS must monitor remote access methods.
@@ -1666,9 +1666,9 @@ controls:
     title: Ubuntu 24.04 LTS must configure the audit tools to be group-owned by root.
     levels:
       - medium
-    related_rules:
+    rules:
       - file_groupownership_audit_binaries
-    status: planned
+    status: automated
 
   - id: UBTU-24-901260
     title: Ubuntu 24.04 LTS must have directories that contain system commands set
@@ -1748,6 +1748,6 @@ controls:
       change.
     levels:
       - medium
-    related_rules:
+    rules:
       - audit_rules_immutable
-    status: planned
+    status: automated
