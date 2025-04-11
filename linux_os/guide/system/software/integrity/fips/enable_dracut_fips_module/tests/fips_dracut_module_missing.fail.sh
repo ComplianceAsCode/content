@@ -1,7 +1,7 @@
 #!/bin/bash
 # packages = crypto-policies-scripts
 # platform = multi_platform_rhel,Red Hat Virtualization 4,multi_platform_ol
-    {{% if 'rhel' in product %}}
+{{% if 'rhel' in product %}}
 # remediation = none
 {{% endif %}}
 
