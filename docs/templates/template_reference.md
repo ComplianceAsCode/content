@@ -953,7 +953,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     `/etc/sysctl.d/var_name.conf` file.
 
     - **no_remediation** - this is a hint for templated test scenarios that the rule does not have remediation.
-        In this case, est scenarios are modified so that they do not expect the rule to be remediated.
+        In this case, test scenarios are modified so that they do not expect the rule to be remediated.
 
 -   Languages: Ansible, Bash, OVAL, SCE
 
