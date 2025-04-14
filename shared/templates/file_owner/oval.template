@@ -49,7 +49,7 @@
     {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
     {{%- endif %}}
-    <filter action="exclude">symlink_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}</filter>
+    <filter action="exclude">symlink_file_owner</filter>
     {{% for own in OWNERS %}}
       <filter action="exclude">state_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}_{{{ own }}}</filter>
     {{% endfor %}}
@@ -59,9 +59,8 @@
       <unix:user_id datatype="int" operation="equals" var_ref="var_file_owner{{{ FILEID }}}_{{{ own }}}_uid"></unix:user_id>
     </unix:file_state>
   {{% endfor %}}
-  <unix:file_state id="symlink_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+  {{% endfor %}}
+  <unix:file_state id="symlink_file_owner" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
-  {{% endfor %}}
-
 </def-group>
