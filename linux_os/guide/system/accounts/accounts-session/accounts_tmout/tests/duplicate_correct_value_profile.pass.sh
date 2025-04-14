@@ -1,5 +1,9 @@
 #!/bin/bash
 
+{{% if 'ubuntu' in product %}}
+# platform = Not Applicable
+{{% endif %}}
+
 # variables = var_accounts_tmout=700
 
 sed -i "/.*TMOUT.*/d" /etc/profile.d/*.sh
