@@ -7,6 +7,7 @@
 # complexity = low
 # disruption = low
 
+{{% if product == "rhel10" %}}
 - name: {{{ rule_title }}} - Set architecture for audit {{{ PATH }}}
   set_fact:
     audit_arch: "b64"
@@ -54,3 +55,23 @@
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
   when: audit_arch == "b64"
+{{% else %}}
+- name: {{{ rule_title }}} - Perform remediation of Audit rules for {{{ PATH }}}
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit",
+      other_filters="-F path="~PATH~perm_x,
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=SYSCALL,
+      key="privileged",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit",
+      other_filters="-F path="~PATH~perm_x,
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=SYSCALL,
+      key="privileged",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+{{% endif %}}
