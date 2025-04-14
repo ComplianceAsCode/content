@@ -53,6 +53,8 @@ if ! grep -qzP "Password-Initial:\s*\n\s+.*\s+pam_unix.so\s+.*\b$var_password_ha
 }' "$PAM_FILE_PATH"
 fi
 
+DEBIAN_FRONTEND=noninteractive pam-auth-update
+
 {{%- else -%}}
 {{{ bash_ensure_pam_module_configuration("$PAM_FILE_PATH", 'password', control, 'pam_unix.so', "$var_password_hashing_algorithm_pam", '', '') }}}
 {{%- endif %}}
