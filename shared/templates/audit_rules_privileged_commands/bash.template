@@ -4,7 +4,6 @@
 # platform = multi_platform_all
 
 # Retrieve hardware architecture of the underlying system
-[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 OTHER_FILTERS="-F path={{{ PATH }}}{{{ perm_x }}}"
 AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 SYSCALL=""
@@ -12,6 +11,7 @@ KEY="privileged"
 SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
 
 {{% if product == "rhel10" %}}
+[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 for ARCH in "${RULE_ARCHS[@]}"
 do
   ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
