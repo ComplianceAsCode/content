@@ -20,12 +20,12 @@ for hash_option in "${HASHING_ALGORITHMS_OPTIONS[@]}"; do
   {{% if 'ubuntu' in product -%}}
     sed -i -E '/^Password:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {
-      s/\s*'"$hash_option"'//g
+      s/\s*\b'"$hash_option"'\b//g
     }
     }' "$PAM_FILE_PATH"
     sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {
-      s/\s*'"$hash_option"'//g
+      s/\s*\b'"$hash_option"'\b//g
     }
     }' "$PAM_FILE_PATH"
     DEBIAN_FRONTEND=noninteractive pam-auth-update
