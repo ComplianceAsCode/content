@@ -952,6 +952,9 @@ The selected value can be changed in the profile (consult the actual variable fo
     the remediation scripts will set the variable with correct value to a drop-in file in
     `/etc/sysctl.d/var_name.conf` file.
 
+    - **no_remediation** - this is a hint for templated test scenarios that the rule does not have remediation.
+        In this case, test scenarios are modified so that they do not expect the rule to be remediated.
+
 -   Languages: Ansible, Bash, OVAL, SCE
 
 #### systemd_dropin_configuration

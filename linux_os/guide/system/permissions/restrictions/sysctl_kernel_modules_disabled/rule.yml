@@ -36,6 +36,7 @@ template:
         sysctlvar: kernel.modules_disabled
         sysctlval: '1'
         datatype: int
+        no_remediation: true
     backends:
         # Automated remediation of this rule during installations disrupts the first boot
         bash: 'off'
