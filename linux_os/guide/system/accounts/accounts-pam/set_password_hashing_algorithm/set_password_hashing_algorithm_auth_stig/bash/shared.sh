@@ -9,12 +9,12 @@ declare -a HASHING_ALGORITHMS_OPTIONS=("sha512" "yescrypt" "gost_yescrypt" "blow
 for hash_option in "${HASHING_ALGORITHMS_OPTIONS[@]}"; do
   sed -i -E '/^Password:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {
-      s/\s*\b\S*'"$hash_option"'\S*\b//g
+      s/\s*\b'"$hash_option"'\b//g
     }
 }' "$PAM_FILE_PATH"
   sed -i -E '/^Password-Initial:/,/^[^[:space:]]/ {
     /pam_unix\.so/ {
-      s/\s*\b\S*'"$hash_option"'\S*\b//g
+      s/\s*\b'"$hash_option"'\b//g
     }
 }' "$PAM_FILE_PATH"
 done
