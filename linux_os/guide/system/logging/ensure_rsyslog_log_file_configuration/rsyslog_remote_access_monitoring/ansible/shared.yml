@@ -22,6 +22,8 @@
   file:
     path: "{{ conf_files.0 }}"
     state: touch
+    access_time: preserve
+    modification_time: preserve
 
 - name: "{{{ rule_title }}}: Gather conf.d files"
   find:
