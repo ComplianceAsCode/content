@@ -67,6 +67,7 @@ TEST_VALUE=4
 TEST_VALUE=6
 {{% elif state == "lenient_low" %}}
 # there is no lower limit so the test should be not-applicable
+# platform = Not Applicable (rule does not set a lower boundary for '{{{ PRM_NAME }}}')
 {{% endif %}}
 
 {{% elif VARIABLE_LOWER_BOUND == "use_ext_variable" and VARIABLE_UPPER_BOUND is number %}}
@@ -93,6 +94,7 @@ TEST_VALUE=5
 TEST_VALUE=6
 {{% elif state == "lenient_high" %}}
 # there is no upper limit so the test should be not-applicable
+# platform = Not Applicable (rule does not set an upper boundary for '{{{ PRM_NAME }}}')
 {{% elif state == "lenient_low" %}}
 # variables = {{{ EXT_VARIABLE }}}=5
 TEST_VALUE=4
