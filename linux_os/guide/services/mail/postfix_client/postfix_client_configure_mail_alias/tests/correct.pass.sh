@@ -1,4 +1,4 @@
 #!/bin/bash
 # packages = postfix
 
-echo "root: system.administrator@mail.mil" > /etc/aliases
+echo "root: change_me@localhost" > /etc/aliases
