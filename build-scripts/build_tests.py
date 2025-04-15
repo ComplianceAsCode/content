@@ -188,12 +188,6 @@ def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
             _process_templated_tests(env_yaml, rendered_rule_obj, templates_root, rule_output_path)
 
 
-def _get_benchmark_cpes(env_yaml) -> Set[str]:
-    benchmark_cpes = set()
-    for cpe in env_yaml["cpes"]:
-        for _, data in cpe.items():
-            benchmark_cpes.add(data["name"])
-    return benchmark_cpes
 
 
 def _get_rules_in_profile(built_profiles_root) -> Generator[str, None, None]:
