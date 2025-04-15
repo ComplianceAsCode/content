@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_all
+# remediation = none
 
 source common.sh
 
