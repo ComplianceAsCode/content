@@ -45,8 +45,6 @@ selections:
     - sshd_disable_root_login
     - libreswan_approved_tunnels
     - no_rsh_trust_files
-    - package_talk_removed
-    - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
     - package_cron_installed
