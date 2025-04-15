@@ -1,3 +1,8 @@
 #!/bin/bash
-
-echo 'global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")' >> /etc/rsyslog.conf
+{{% if product in ["fedora", "rhel10" ] %}}
+{{# https://fedoraproject.org/wiki/Changes/dropingOfCertPemFile #}}
+{{% set cafile = "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem" %}}
+{{% else %}}
+{{% set cafile = "/etc/pki/tls/cert.pem" %}}
+{{% endif %}}
+echo 'global(DefaultNetstreamDriverCAFile="{{{ cafile }}}")' >> /etc/rsyslog.conf
