@@ -61,5 +61,6 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'
     - '!package_rsh-server_removed'
     - '!package_rsh_removed'

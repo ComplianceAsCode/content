@@ -75,3 +75,4 @@ selections:
     - '!grub2_pti_argument'
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'

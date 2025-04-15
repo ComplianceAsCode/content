@@ -53,6 +53,7 @@ selections:
     - '!ensure_almalinux_gpgkey_installed'
     - '!package_kea_removed'
     - '!audit_rules_file_deletion_events_renameat2'
+    - '!audit_rules_dac_modification_fchmodat2'
     # disable R45: Enable AppArmor security profiles
     - '!apparmor_configured'
     - '!all_apparmor_profiles_enforced'

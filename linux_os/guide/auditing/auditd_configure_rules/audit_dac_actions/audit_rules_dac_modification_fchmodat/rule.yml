@@ -85,3 +85,6 @@ template:
           - chmod
           - fchmod
           - fchmodat
+{{% if product == "rhel10" %}}
+          - fchmodat2
+{{% endif %}}
