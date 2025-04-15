@@ -62,3 +62,4 @@ selections:
     - '!package_cryptsetup-luks_installed'
     - '!audit_rules_file_deletion_events_renameat2'
     - '!audit_rules_mac_modification_etc_selinux'
+    - '!audit_rules_dac_modification_fchmodat2'
