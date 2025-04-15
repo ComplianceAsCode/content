@@ -32,7 +32,7 @@ jobs:
         working-directory: ./build
       - name: Set Version
         id: set_version
-        run: |- 
+        run: |-
           echo "tag=${GITHUB_REF/refs\/tags\//}"  >> $GITHUB_OUTPUT
           echo "ver=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_OUTPUT
         env:
@@ -56,5 +56,7 @@ jobs:
             build/scap-security-guide-*.tar.bz2.sha512
             build/zipfile/scap-security-guide-*.zip
             build/zipfile/scap-security-guide-*.zip.sha512
+            build/zipfile/scap-security-guide-*.tar.gz
+            build/zipfile/scap-security-guide-*.tar.gz.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
