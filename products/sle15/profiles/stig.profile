@@ -265,8 +265,8 @@ selections:
     - sshd_print_last_log
     - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive_0
+    - var_sshd_set_keepalive=1
+    - sshd_set_keepalive
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers_ordered_stig
     - sshd_use_approved_kex_ordered_stig
