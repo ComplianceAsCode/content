@@ -181,13 +181,10 @@ def _process_rules(env_yaml: Dict, output_path: pathlib.Path,
 
         rule_tests_root = rule_root / "tests"
         rule_output_path = output_path / rule_id
-
-        if rule_tests_root.exists():
-            _process_local_tests(product, env_yaml, rule_output_path, rule_tests_root)
         if rendered_rule_obj["template"] is not None:
             _process_templated_tests(env_yaml, rendered_rule_obj, templates_root, rule_output_path)
-
-
+        if rule_tests_root.exists():
+            _process_local_tests(product, env_yaml, rule_output_path, rule_tests_root)
 
 
 def _get_rules_in_profile(built_profiles_root) -> Generator[str, None, None]:
