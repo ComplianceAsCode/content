@@ -2681,6 +2681,14 @@ controls:
             - var_selinux_policy_name=targeted
         status: automated
 
+
+    -   id: RHEL-09-431016
+        title: 'RHEL 9 must elevate the SELinux context when an administrator calls the sudo command.'
+        rules:
+            - selinux_context_elevation_for_sudo
+        status: automated
+
+
     -   id: RHEL-09-431020
         levels:
             - medium
