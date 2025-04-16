@@ -1,4 +1,5 @@
 #!/bin/bash
+# remediation = none
 
 # selinux does not allow unlabeled_t in /dev
 # we have to modify the selinux policy to allow that
