@@ -2,14 +2,9 @@ groups:
 - account_expiration
 - accounts
 - accounts-banners
-- accounts-pam
-- accounts-physical
-- accounts-restrictions
-- accounts-session
 - password_expiration
 - password_quality
 - password_quality_pamcracklib
-- password_quality_pwquality
 name: pam
 packages:
 - pam
@@ -189,5 +184,4 @@ rules:
 - verify_use_mappers
 - vlock_installed
 templates:
-- accounts_password
 - pam_options
