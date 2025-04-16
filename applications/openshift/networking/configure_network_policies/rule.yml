@@ -50,6 +50,5 @@ template:
     yamlpath: "[:]"
     check_existence: "any_exist"
     entity_check: "all"
-    values:
-      - value: "OpenShiftSDN|OVN|Calico"
-        operation: "pattern match"
+    regex_data: "true"
+    xccdf_variable: var_configure_network_policies_regex
