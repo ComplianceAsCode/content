@@ -82,7 +82,6 @@ selections:
 - disable_ctrlaltdel_reboot
 - disable_host_auth
 - dnf-automatic_apply_updates
-- enable_authselect
 - enable_fips_mode
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages

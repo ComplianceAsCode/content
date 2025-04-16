@@ -125,7 +125,6 @@ selections:
 - directory_permissions_etc_sysctld
 - dnf-automatic_apply_updates
 - dnf-automatic_security_updates_only
-- enable_authselect
 - enable_pam_namespace
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages

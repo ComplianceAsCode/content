@@ -57,7 +57,6 @@ selections:
 - configure_ssh_crypto_policy
 - dir_perms_world_writable_sticky_bits
 - dnf-automatic_security_updates_only
-- enable_authselect
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
 - ensure_gpgcheck_never_disabled

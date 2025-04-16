@@ -27,6 +27,7 @@ selections:
 
     - '!package_nfs-utils_removed'
 
+    - '!enable_authselect'
     # Limiting user namespaces cause issues with user apps, such as Firefox and Cheese
     # https://issues.redhat.com/browse/RHEL-10416
     - '!sysctl_user_max_user_namespaces'

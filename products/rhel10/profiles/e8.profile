@@ -22,6 +22,7 @@ description: |-
 
 selections:
     - e8:all
+    - '!enable_authselect'
     # nosha1 crypto policy does not exist in RHEL 10
     - var_system_crypto_policy=default_policy
     # More tests are needed to identify which rule is conflicting with rpm_verify_permissions.

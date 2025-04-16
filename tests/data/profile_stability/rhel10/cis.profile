@@ -137,7 +137,6 @@ selections:
 - dir_perms_world_writable_sticky_bits
 - directory_permissions_var_log_audit
 - disable_host_auth
-- enable_authselect
 - ensure_gpgcheck_globally_activated
 - ensure_pam_wheel_group_empty
 - ensure_root_password_configured
@@ -442,7 +441,6 @@ selections:
 - cis_banner_text=cis
 - var_system_crypto_policy=default_policy
 - var_selinux_policy_name=targeted
-- var_authselect_profile=sssd
 - var_accounts_passwords_pam_faillock_dir=run
 - var_auditd_action_mail_acct=root
 - var_auditd_admin_space_left_action=cis_rhel8

@@ -101,7 +101,6 @@ selections:
 - disable_host_auth
 - dnf-automatic_apply_updates
 - dnf-automatic_security_updates_only
-- enable_authselect
 - enable_fips_mode
 - enable_ldap_client
 - ensure_gpgcheck_globally_activated

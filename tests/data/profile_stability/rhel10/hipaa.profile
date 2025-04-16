@@ -125,7 +125,6 @@ selections:
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
 - disable_host_auth
-- enable_authselect
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
