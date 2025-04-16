@@ -587,6 +587,15 @@ controls:
             - package_crypto-policies_installed
         status: automated
 
+    -   id: RHEL-09-215101
+        levels:
+            - medium
+        title: RHEL 9 must have the Postfix package installed.
+        status: automated
+        rules:
+            - package_postfix_installed
+
+
     -   id: RHEL-09-215105
         levels:
             - medium
