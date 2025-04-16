@@ -6,47 +6,55 @@
     {{{ oval_metadata("Audit rules about the information on the use of " + NAME + " is enabled.") }}}
 
     <criteria operator="OR">
-
-      <!-- Test the augenrules case -->
+{{% for audit_tool in ["augenrules", "auditctl"] %}}
+      <!-- Test the {{{ audit_tool }}} case -->
       <criteria operator="AND">
-        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
-        <criterion comment="audit augenrules 32-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_augenrules_32bit" />
+        <extend_definition comment="audit {{{ audit_tool }}}" definition_ref="audit_rules_{{{ audit_tool }}}" />
+{{% if product == "rhel10" %}}
+        <criterion comment="audit {{{ audit_tool }}} 32-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_{{{ audit_tool }}}_32bit" />
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ NAME }}} audit rule -->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ NAME }}} audit rule -->
-          <criterion comment="audit augenrules 64-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_augenrules_64bit" />
+          <criterion comment="audit {{{ audit_tool }}} 64-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_{{{ audit_tool }}}_64bit" />
         </criteria>
+{{% else %}}
+        <criterion comment="audit {{{ audit_tool }}} {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_{{{ audit_tool }}}" />
+{{% endif %}}
       </criteria>
-
-      <!-- Test the auditctl case -->
-      <criteria operator="AND">
-        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-        <criterion comment="audit auditctl 32-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_auditctl_32bit" />
-        <criteria operator="OR">
-          <!-- System either isn't 64-bit => we just check presence of 32-bit version of the {{{ NAME }}} audit rule -->
-          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
-          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ NAME }}} audit rule -->
-          <criterion comment="audit auditctl 64-bit {{{ NAME }}}" test_ref="test_{{{ rule_id }}}_auditctl_64bit" />
-        </criteria>
-      </criteria>
+{{% endfor %}}
     </criteria>
   </definition>
 
-{{% macro arpc_tftst(audit_tool, filepath, bits) %}}
-  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="audit {{{ audit_tool }}} {{{ NAME }}}" id="test_{{{ rule_id }}}_{{{ audit_tool }}}_{{{ bits }}}bit" version="1">
-    <ind:object object_ref="object_{{{ rule_id }}}_{{{ audit_tool }}}_{{{ bits }}}bit" />
+{{% macro arpc_tftst(audit_tool, bits=None) %}}
+{{% set id_root = rule_id ~ "_" ~ audit_tool %}}
+{{% set arch_regex = "" %}}
+{{% if bits != None %}}
+{{% set id_root = id_root ~ "_" ~ bits ~ "bit" %}}
+{{% set arch_regex = "-F[\s]+arch=b" ~ bits ~ "[\s]+" %}}
+{{% endif %}}
+{{% if audit_tool == "augenrules" %}}
+{{% set filepath = "^/etc/audit/rules\.d/.*\.rules$" %}}
+{{% elif audit_tool == "auditctl" %}}
+{{% set filepath = "/etc/audit/audit.rules" %}}
+{{% endif %}}
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="audit {{{ audit_tool }}} {{{ NAME }}}" id="test_{{{ id_root }}}" version="1">
+    <ind:object object_ref="object_{{{ id_root }}}" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_{{{ audit_tool }}}_{{{ bits }}}bit" version="1">
+  <ind:textfilecontent54_object id="object_{{{ id_root }}}" version="1">
     <ind:filepath operation="pattern match">{{{ filepath }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b{{{ bits }}}[\s]+-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+{{{ arch_regex }}}-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endmacro %}}
 
-{{{ arpc_tftst("augenrules", "^/etc/audit/rules\.d/.*\.rules$", "32") }}}
-{{{ arpc_tftst("augenrules", "^/etc/audit/rules\.d/.*\.rules$", "64") }}}
-{{{ arpc_tftst("auditctl", "/etc/audit/audit.rules", "32") }}}
-{{{ arpc_tftst("auditctl", "/etc/audit/audit.rules", "64") }}}
+{{% for audit_tool in ["augenrules", "auditctl"] %}}
+{{% if product == "rhel10" %}}
+{{{ arpc_tftst(audit_tool, "32") }}}
+{{{ arpc_tftst(audit_tool, "64") }}}
+{{% else %}}
+{{{ arpc_tftst(audit_tool) }}}
+{{% endif %}}
+{{% endfor %}}
 
 </def-group>

@@ -1392,6 +1392,13 @@ Create a rule description for rules using the `audit_rules_privileged_commands` 
 {{% macro describe_arpc(path) %}}
 {{%- if product in ["almalinux9", "debian12", "fedora", "ol7", "ol8", "ol9", "ol10", "rhel8", "rhel9", "rhel10", "sle12", "sle15", "slmicro5", "ubuntu2004", "ubuntu2204", "ubuntu2404"] %}}
   {{%- set perm_x="-F perm=x " %}}
+{{%- endif -%}}
+{{%- if product == "rhel10" -%}}
+{{% set arch_clause=", setting ARCH to either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit" %}}
+{{% set rule="-a always,exit -F arch=ARCH -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
+{{% else %}}
+{{% set arch_clause="" %}}
+{{% set rule="-a always,exit -F path=" ~ path ~ " " ~ perm_x ~ "-F auid&gt;=" ~ auid ~ " -F auid!=unset -F key=privileged" %}}
 {{%- endif %}}
     At a minimum, the audit system should collect the execution of privileged
     commands for all users and root.
@@ -1399,15 +1406,11 @@ Create a rule description for rules using the `audit_rules_privileged_commands` 
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
     program to read audit rules during daemon startup (the default), add
     a line of the following form to a file with suffix <tt>.rules</tt>
-    in the directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32
-    for 32-bit system, or having two lines for both b32 and b64 in case your
-    system is 64-bit:
-    <pre>-a always,exit -F arch=ARCH -F path={{{ path }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    in the directory <tt>/etc/audit/rules.d</tt>{{{ arch_clause }}}:
+    <pre>{{{ rule }}}</pre>
 
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the
-    following form to <tt>/etc/audit/audit.rules</tt>, setting ARCH to either
-    b32 for 32-bit system, or having two lines for both b32 and b64 in case
-    your system is 64-bit:
-    <pre>-a always,exit -F arch=ARCH -F path={{{ path }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    following form to <tt>/etc/audit/audit.rules</tt>{{{ arch_clause }}}:
+    <pre>{{{ rule }}}</pre>
 {{%- endmacro -%}}

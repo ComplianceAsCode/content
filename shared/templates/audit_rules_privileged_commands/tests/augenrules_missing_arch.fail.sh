@@ -1,4 +1,5 @@
 #!/bin/bash
+# platform = Red Hat Enterprise Linux 10
 
 source common.sh
 
