@@ -13,11 +13,11 @@ product to product.
 Even between products in the family (RHEL 8 and RHEL 9, for example) the CCI references from DISA are very different.
 
 
-To aid in keeping the content update there was an effort to automate the updates to CCI.
+To aid in keeping the content updated there was an effort to automate the updates to CCI.
 However, as discussed above since each product was so different this was not possible.
 
 ## Decision
-We will remove and not add cci references to the project.
+We will remove and not add CCI references to the project.
 
 ## Consequences
 There will be less information to users in reports.
