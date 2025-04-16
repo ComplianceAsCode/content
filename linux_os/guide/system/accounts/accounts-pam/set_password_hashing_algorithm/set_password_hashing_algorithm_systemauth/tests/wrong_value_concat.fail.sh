@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_ubuntu
 # variables = var_password_hashing_algorithm_pam=sha512
+# remediation = none
 
 config_file=/usr/share/pam-configs/tmpunix
 cat << EOF > "$config_file"

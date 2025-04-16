@@ -2415,7 +2415,7 @@ if grep -qP "^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ p
     sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- else %}}
 if grep -qP "^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s.*\b{{{ option }}}\b" "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
+    sed -i -E --follow-symlinks "s/(.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g" "{{{ pam_file }}}"
 {{%- endif %}}
 fi
 {{%- endmacro -%}}
