@@ -70,7 +70,6 @@ selections:
 - dconf_gnome_session_idle_user_locks
 - dir_perms_world_writable_sticky_bits
 - disable_host_auth
-- enable_authselect
 - ensure_gpgcheck_globally_activated
 - ensure_pam_wheel_group_empty
 - ensure_root_password_configured
@@ -346,7 +345,6 @@ selections:
 - cis_banner_text=cis
 - var_system_crypto_policy=default_policy
 - var_selinux_policy_name=targeted
-- var_authselect_profile=sssd
 unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}

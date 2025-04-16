@@ -36,6 +36,7 @@ selections:
     - '!coreos_enable_selinux_kernel_argument'
     - '!dconf_gnome_remote_access_credential_prompt'
     - '!dconf_gnome_remote_access_encryption'
+    - '!enable_authselect'
     - '!ensure_suse_gpgkey_installed'
     - '!ensure_fedora_gpgkey_installed'
     - '!ensure_almalinux_gpgkey_installed'

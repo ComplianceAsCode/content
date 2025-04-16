@@ -219,7 +219,6 @@ selections:
 - disallow_bypass_password_sudo
 - display_login_attempts
 - dnf-automatic_apply_updates
-- enable_authselect
 - enable_fips_mode
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated

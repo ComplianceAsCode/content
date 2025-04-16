@@ -36,6 +36,7 @@ selections:
     - '!rpm_verify_permissions'
 
     # these rules do not apply to RHEL 10
+    - '!enable_authselect'
     - '!package_audit-audispd-plugins_installed'
     - '!package_dhcp_removed'
     - '!package_ypserv_removed'
