@@ -8,7 +8,8 @@ cat << EOF > "$config_file"
 Name: Unix authentication
 Conflicts: unix
 Default: yes
-Priority: 256
+Priority: 257
+Conflicts: unix
 Auth-Type: Primary
 Auth:
 	[success=end default=ignore]	pam_unix.so try_first_pass
