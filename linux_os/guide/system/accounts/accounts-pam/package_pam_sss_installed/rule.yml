@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Install pam-sss Package'
+
+description: |-
+    {{{ describe_package_install(package="libpam-sss") }}}
+
+rationale: |-
+    libpam-sss has pam module for the SSSD
+    (System Security Services Daemon).
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libpam-sss
+        pkgname@ubuntu2404: libpam-sss
