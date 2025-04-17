@@ -15,5 +15,10 @@ pam_cert_auth = True
 ldap_user_certificate = usercertificate;binary
 certificate_verification = ca_cert
 ca_cert = /etc/ssl/certs/ca-certificates.crt
+
+[domain/test2.com]
+ldap_user_certificate = usercertificate;binary
+certificate_verification = ca_cert
+ca_cert = /etc/ssl/certs/ca-certificates.crt
 " >> /etc/sssd/sssd.conf
 
