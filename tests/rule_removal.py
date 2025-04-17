@@ -26,7 +26,7 @@ def _create_arg_parser() -> argparse.ArgumentParser:
 
 def _get_rules(root: ET.Element) -> Generator[str, None, None]:
     for rule in root.findall('.//xccdf-1.2:Rule', namespaces=NS):
-        yield rule.get('id')
+        yield rule.get('id', '')
 
 
 def main() -> int:
