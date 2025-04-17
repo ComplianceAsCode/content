@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the sssd_use_usb SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>sssd_use_usb</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="sssd_use_usb") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="sssd_use_usb") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: sssd_use_usb

@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Enable the virtqemud_use_execmem SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>virtqemud_use_execmem</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="virtqemud_use_execmem") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="virtqemud_use_execmem") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virtqemud_use_execmem

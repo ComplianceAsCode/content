@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the systemd_socket_proxyd_connect_any SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>systemd_socket_proxyd_connect_any</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="systemd_socket_proxyd_connect_any") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="systemd_socket_proxyd_connect_any") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: systemd_socket_proxyd_connect_any

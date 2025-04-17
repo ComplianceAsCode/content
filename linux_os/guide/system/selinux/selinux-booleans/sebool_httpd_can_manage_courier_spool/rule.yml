@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the httpd_can_manage_courier_spool SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_can_manage_courier_spool</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="httpd_can_manage_courier_spool") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_can_manage_courier_spool") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: httpd_can_manage_courier_spool

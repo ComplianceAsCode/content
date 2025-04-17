@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the screen_allow_session_sharing SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>screen_allow_session_sharing</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="screen_allow_session_sharing") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="screen_allow_session_sharing") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: screen_allow_session_sharing

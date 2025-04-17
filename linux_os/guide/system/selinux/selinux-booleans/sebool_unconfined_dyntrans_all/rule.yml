@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the unconfined_dyntrans_all SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>unconfined_dyntrans_all</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="unconfined_dyntrans_all") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="unconfined_dyntrans_all") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: unconfined_dyntrans_all

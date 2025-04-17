@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Enable the xdm_manage_bootloader SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>xdm_manage_bootloader</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    {{{ describe_sebool_enable(sebool="xdm_manage_bootloader") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="xdm_manage_bootloader") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: xdm_manage_bootloader

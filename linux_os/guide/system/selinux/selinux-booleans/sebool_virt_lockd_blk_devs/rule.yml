@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the virt_lockd_blk_devs SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>virt_lockd_blk_devs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="virt_lockd_blk_devs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_lockd_blk_devs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: virt_lockd_blk_devs

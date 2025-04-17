@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the sssd_access_kernel_keys SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>sssd_access_kernel_keys</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="sssd_access_kernel_keys") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="sssd_access_kernel_keys") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: sssd_access_kernel_keys

@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the sanlock_enable_home_dirs SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>sanlock_enable_home_dirs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="sanlock_enable_home_dirs") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="sanlock_enable_home_dirs") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: sanlock_enable_home_dirs

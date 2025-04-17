@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the sssd_connect_all_unreserved_ports SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>sssd_connect_all_unreserved_ports</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="sssd_connect_all_unreserved_ports") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="sssd_connect_all_unreserved_ports") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: sssd_connect_all_unreserved_ports

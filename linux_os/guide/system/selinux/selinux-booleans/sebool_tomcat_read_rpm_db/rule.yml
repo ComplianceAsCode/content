@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Disable the tomcat_read_rpm_db SELinux Boolean
+
+description: |-
+    By default, the SELinux boolean <tt>tomcat_read_rpm_db</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    {{{ describe_sebool_disable(sebool="tomcat_read_rpm_db") }}}
+
+rationale: ""
+
+severity: medium
+
+{{{ complete_ocil_entry_sebool_disabled(sebool="tomcat_read_rpm_db") }}}
+
+template:
+    name: sebool
+    vars:
+        seboolid: tomcat_read_rpm_db
