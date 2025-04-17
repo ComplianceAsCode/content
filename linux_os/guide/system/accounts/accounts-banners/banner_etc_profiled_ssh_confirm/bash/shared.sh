@@ -11,7 +11,7 @@
 {{{ bash_deregexify_banner_newline("var_ssh_confirm_text", "\\n") }}}
 # 3 - Remove any leftover backslash. (From any parethesis in the banner, for example).
 {{{ bash_deregexify_banner_backslash("var_ssh_confirm_text") }}}
-formatted=$(echo "$var_ssh_confirm_text" | fold -sw 80)
+formatted=$(echo "$var_ssh_confirm_text")
 
 cat <<EOF >/etc/profile.d/ssh_confirm.sh
 $formatted
